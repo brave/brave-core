@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesUtil;
+import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
 import org.chromium.components.search_engines.TemplateUrl;
 
 import java.util.HashSet;
@@ -92,7 +92,8 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     public static @SearchEngineAdapter.TemplateUrlSourceType int getSearchEngineSourceType(
             TemplateUrl templateUrl, TemplateUrl defaultSearchEngine) {
         if (templateUrl.getIsPrepopulated()
-                || CustomSearchEnginesUtil.isCustomSearchEngineAdded(templateUrl.getKeyword())) {
+                || CustomSearchEnginesManager.getInstance()
+                        .isCustomSearchEngineAdded(templateUrl.getKeyword())) {
             return SearchEngineAdapter.TemplateUrlSourceType.PREPOPULATED;
         } else if (templateUrl.equals(defaultSearchEngine)) {
             return SearchEngineAdapter.TemplateUrlSourceType.DEFAULT;

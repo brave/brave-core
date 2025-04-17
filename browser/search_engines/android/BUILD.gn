@@ -9,12 +9,13 @@ import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 android_library("java") {
   sources = [
+    "java/src/org/chromium/brave/browser/search_engines/CustomSearchEnginesManager.java",
+    "java/src/org/chromium/brave/browser/search_engines/CustomSearchEnginesPrefManager.java",
     "java/src/org/chromium/brave/browser/search_engines/settings/AddCustomSearchEnginePreferenceFragment.java",
     "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEngineAdapter.java",
     "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEngineViewHolder.java",
     "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesCallback.java",
     "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesPreference.java",
-    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesUtil.java",
   ]
   deps = [
     ":java_resources",

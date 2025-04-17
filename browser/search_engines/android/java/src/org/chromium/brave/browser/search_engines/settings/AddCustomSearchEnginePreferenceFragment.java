@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
@@ -49,12 +50,15 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
 
     private String mSearchEngineKeywordForEdit;
 
+    private CustomSearchEnginesManager mCustomSearchEnginesManager;
+
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.add_custom_search_engine));
+        mCustomSearchEnginesManager = CustomSearchEnginesManager.getInstance();
     }
 
     @Nullable
@@ -85,7 +89,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
     }
 
     private void updateToolbarTitle() {
-        mSearchEngineKeywordForEdit = getArguments().getString(CustomSearchEnginesUtil.KEYWORD);
+        mSearchEngineKeywordForEdit = getArguments().getString(CustomSearchEnginesManager.KEYWORD);
         if (mSearchEngineKeywordForEdit == null) {
             return;
         }
@@ -203,7 +207,8 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             String url) {
         String queryReplacedUrl = url.replace("%s", "{searchTerms}");
         if (templateUrlService.update(searchEngineKeyword, title, keyword, queryReplacedUrl)) {
-            CustomSearchEnginesUtil.updateCustomSearchEngine(searchEngineKeyword, keyword);
+            mCustomSearchEnginesManager.updateCustomSearchEngine(
+                    searchEngineKeyword, title, keyword, url);
             handleBackPressed();
         } else {
             Toast.makeText(
@@ -217,7 +222,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
     private void handleSearchEngineAdd(
             BraveTemplateUrlService templateUrlService, String title, String keyword, String url) {
         String queryReplacedUrl = url.replace("%s", "{searchTerms}");
-        if (CustomSearchEnginesUtil.isCustomSearchEngineAdded(keyword)) {
+        if (mCustomSearchEnginesManager.isCustomSearchEngineAdded(keyword)) {
             Toast.makeText(
                             getActivity(),
                             getString(R.string.search_engine_already_exists_error),
@@ -227,7 +232,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         }
 
         if (templateUrlService.add(title, keyword, queryReplacedUrl)) {
-            CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+            mCustomSearchEnginesManager.addCustomSearchEngine(keyword);
             handleBackPressed();
         } else {
             Toast.makeText(

@@ -25,6 +25,8 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
+import org.chromium.brave.browser.search_engines.CustomSearchEnginesPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -38,6 +40,8 @@ public class CustomSearchEnginesPreference extends Preference
     private RecyclerView mRecyclerView;
     private Profile mProfile;
     private CustomSearchEngineAdapter mCustomSearchEngineAdapter;
+    private CustomSearchEnginesPrefManager mCustomSearchEnginesPrefManager;
+    private CustomSearchEnginesManager mCustomSearchEnginesManager;
 
     public CustomSearchEnginesPreference(Context context) {
         super(context);
@@ -50,6 +54,8 @@ public class CustomSearchEnginesPreference extends Preference
 
     public void initialize(Profile profile) {
         mProfile = profile;
+        mCustomSearchEnginesPrefManager = CustomSearchEnginesPrefManager.getInstance();
+        mCustomSearchEnginesManager = CustomSearchEnginesManager.getInstance();
     }
 
     @Override
@@ -71,7 +77,7 @@ public class CustomSearchEnginesPreference extends Preference
         if (mRecyclerView == null || mCustomSearchEngineAdapter == null) {
             return;
         }
-        List<String> customSearchEngines = CustomSearchEnginesUtil.getCustomSearchEngines();
+        List<String> customSearchEngines = mCustomSearchEnginesPrefManager.getCustomSearchEngines();
         mCustomSearchEngineAdapter.submitList(customSearchEngines);
     }
 
@@ -86,7 +92,7 @@ public class CustomSearchEnginesPreference extends Preference
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
         Bundle args = new Bundle();
-        args.putString(CustomSearchEnginesUtil.KEYWORD, searchEngineKeyword);
+        args.putString(CustomSearchEnginesManager.KEYWORD, searchEngineKeyword);
 
         AddCustomSearchEnginePreferenceFragment fragment =
                 new AddCustomSearchEnginePreferenceFragment();
@@ -102,7 +108,8 @@ public class CustomSearchEnginesPreference extends Preference
     @Override
     public void loadSearchEngineLogo(ImageView logoView, String searchEngineKeyword) {
         if (mProfile != null) {
-            CustomSearchEnginesUtil.loadSearchEngineLogo(mProfile, logoView, searchEngineKeyword);
+            mCustomSearchEnginesManager.loadSearchEngineLogo(
+                    mProfile, logoView, searchEngineKeyword);
         }
     }
 
@@ -153,7 +160,7 @@ public class CustomSearchEnginesPreference extends Preference
                                                                 mProfile))
                                                 .remove(searchEngineKeyword);
                                 if (isSuccess) {
-                                    CustomSearchEnginesUtil.removeCustomSearchEngine(
+                                    mCustomSearchEnginesManager.removeCustomSearchEngine(
                                             searchEngineKeyword);
                                     updateCustomSearchEngines();
                                 } else {

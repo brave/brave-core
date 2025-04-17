@@ -14,8 +14,8 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.brave.browser.search_engines.CustomSearchEnginesPrefManager;
 import org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference;
-import org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesUtil;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -90,7 +90,8 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     }
 
     private void updateCustomSearchEnginesPreference() {
-        List<String> searchEngines = CustomSearchEnginesUtil.getCustomSearchEngines();
+        List<String> searchEngines =
+                CustomSearchEnginesPrefManager.getInstance().getCustomSearchEngines();
 
         if (searchEngines == null || searchEngines.isEmpty()) {
             removeCustomSearchEnginesPreference();
