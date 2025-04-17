@@ -79,7 +79,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
     private static final int FAVICON_DESIRED_SIZE = 64; // px
-    @Nullable private static LargeIconBridge sLargeIconBridge;
+    private static @Nullable LargeIconBridge sLargeIconBridge;
 
     public static final String BAT_TEXT = "BAT";
     public static final String USD_TEXT = "USD";
@@ -87,8 +87,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     public static final String FIVE_BAT_TEXT = "5 BAT";
     public static final String TEN_BAT_TEXT = "10 BAT";
 
-    @Nullable private String mFaviconUrl;
-    @Nullable private LargeIconReadyCallback mCallback;
+    private @Nullable String mFaviconUrl;
+    private @Nullable LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
     private int mFetchCount;
     private static final int MAX_FAVICON_FETCH_COUNT = 8;
