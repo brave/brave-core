@@ -48,7 +48,6 @@ public class BraveClassAdapter {
         chain = new BraveDynamicColorsClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorBaseClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
-        chain = new BraveExportFlowClassAdapter(chain);
         chain = new BraveExternalNavigationHandlerClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveFeedSurfaceMediatorClassAdapter(chain);
