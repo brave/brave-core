@@ -5,21 +5,10 @@
 
 package org.chromium.brave.browser.search_engines.settings;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,16 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.search_engines.CustomSearchEnginesPrefManager;
+import org.chromium.brave.browser.search_engines.R;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.search_engines.R;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.components.search_engines.BraveTemplateUrlService;
-import org.chromium.ui.widget.Toast;
 
 import java.util.List;
 
-public class CustomSearchEnginesPreference extends Preference
-        implements CustomSearchEnginesCallback {
+public class CustomSearchEnginesPreference extends Preference {
     private RecyclerView mRecyclerView;
     private Profile mProfile;
     private CustomSearchEngineAdapter mCustomSearchEngineAdapter;
@@ -66,8 +51,7 @@ public class CustomSearchEnginesPreference extends Preference
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
-        mCustomSearchEngineAdapter = new CustomSearchEngineAdapter();
-        mCustomSearchEngineAdapter.setCustomSearchEnginesCallback(this);
+        mCustomSearchEngineAdapter = new CustomSearchEngineAdapter(getContext(), mProfile);
         mRecyclerView.setAdapter(mCustomSearchEngineAdapter);
 
         updateCustomSearchEngines();
@@ -79,112 +63,5 @@ public class CustomSearchEnginesPreference extends Preference
         }
         List<String> customSearchEngines = mCustomSearchEnginesPrefManager.getCustomSearchEngines();
         mCustomSearchEngineAdapter.submitList(customSearchEngines);
-    }
-
-    @Override
-    public void onSearchEngineClick(String searchEngineKeyword) {
-        Context context = getContext();
-        if (context == null || !(context instanceof FragmentActivity)) {
-            return;
-        }
-
-        FragmentActivity activity = (FragmentActivity) context;
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-        Bundle args = new Bundle();
-        args.putString(CustomSearchEnginesManager.KEYWORD, searchEngineKeyword);
-
-        AddCustomSearchEnginePreferenceFragment fragment =
-                new AddCustomSearchEnginePreferenceFragment();
-        fragment.setArguments(args);
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.content, fragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void loadSearchEngineLogo(ImageView logoView, String searchEngineKeyword) {
-        if (mProfile != null) {
-            mCustomSearchEnginesManager.loadSearchEngineLogo(
-                    mProfile, logoView, searchEngineKeyword);
-        }
-    }
-
-    @Override
-    public void removeSearchEngine(String searchEngineKeyword) {
-        showConfirmDeleteSearchEngineDialog(searchEngineKeyword);
-    }
-
-    private void showConfirmDeleteSearchEngineDialog(String searchEngineKeyword) {
-        final Dialog dialog = createDialog();
-        setupDialogViews(dialog, searchEngineKeyword);
-        setupDialogButtons(dialog, searchEngineKeyword);
-        showDialog(dialog);
-    }
-
-    private Dialog createDialog() {
-        final Dialog dialog = new Dialog(getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.custom_search_engine_alert_dialog_layout);
-        return dialog;
-    }
-
-    private void setupDialogViews(Dialog dialog, String searchEngineKeyword) {
-        TextView titleTextView = dialog.findViewById(R.id.dialogTitle);
-        TextView messageTextView = dialog.findViewById(R.id.dialogMessage);
-
-        titleTextView.setText(getContext().getString(R.string.delete_custom_search_engine_title));
-        messageTextView.setText(
-                getContext()
-                        .getString(R.string.delete_custom_search_engine_text, searchEngineKeyword));
-    }
-
-    private void setupDialogButtons(Dialog dialog, String searchEngineKeyword) {
-        Button positiveButton = dialog.findViewById(R.id.positiveButton);
-        Button negativeButton = dialog.findViewById(R.id.negativeButton);
-
-        positiveButton.setText(getContext().getString(R.string.delete_action_text));
-        negativeButton.setText(getContext().getString(R.string.cancel_action_text));
-
-        positiveButton.setOnClickListener(
-                v -> {
-                    Runnable templateUrlServiceReady =
-                            () -> {
-                                boolean isSuccess =
-                                        ((BraveTemplateUrlService)
-                                                        TemplateUrlServiceFactory.getForProfile(
-                                                                mProfile))
-                                                .remove(searchEngineKeyword);
-                                if (isSuccess) {
-                                    mCustomSearchEnginesManager.removeCustomSearchEngine(
-                                            searchEngineKeyword);
-                                    updateCustomSearchEngines();
-                                } else {
-                                    Toast.makeText(
-                                                    getContext(),
-                                                    getContext()
-                                                            .getString(
-                                                                    R.string
-                                                                            .failed_to_delete_search_engine),
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            };
-                    TemplateUrlServiceFactory.getForProfile(mProfile)
-                            .runWhenLoaded(templateUrlServiceReady);
-                    dialog.dismiss();
-                });
-
-        negativeButton.setOnClickListener(v -> dialog.dismiss());
-    }
-
-    private void showDialog(Dialog dialog) {
-        dialog.show();
-        Window window = dialog.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

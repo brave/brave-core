@@ -6,18 +6,14 @@
 package org.chromium.brave.browser.search_engines;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.Log;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class CustomSearchEnginesPrefManager {
     private static final String TAG = "CustomSearchEngines";
@@ -70,7 +66,7 @@ public class CustomSearchEnginesPrefManager {
                 customSearchEnginesList.add(searchEnginesArray.getString(i));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error getting search engines", e);
         }
 
         return customSearchEnginesList;

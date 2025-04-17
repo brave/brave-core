@@ -26,7 +26,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
-import org.chromium.chrome.browser.search_engines.R;
+import org.chromium.brave.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.search_engines.BraveTemplateUrlService;

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
@@ -20,17 +19,13 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class CustomSearchEnginesManager {
-
-    private static final String TAG = "CustomSearchEngines";
     public static String KEYWORD = "keyword";
 
-    private static CustomSearchEnginesManager instance;
+    private static CustomSearchEnginesManager sInstance;
     private CustomSearchEnginesPrefManager mCustomSearchEnginesPrefManager;
 
     private CustomSearchEnginesManager() {
@@ -38,10 +33,10 @@ public class CustomSearchEnginesManager {
     }
 
     public static CustomSearchEnginesManager getInstance() {
-        if (instance == null) {
-            instance = new CustomSearchEnginesManager();
+        if (sInstance == null) {
+            sInstance = new CustomSearchEnginesManager();
         }
-        return instance;
+        return sInstance;
     }
 
     public void addCustomSearchEngine(String searchEngineKeyword) {
@@ -84,6 +79,7 @@ public class CustomSearchEnginesManager {
                 customSearchEnginesList.set(index, newSearchEngineKeyword);
             }
             mCustomSearchEnginesPrefManager.saveCustomSearchEngines(customSearchEnginesList);
+        }
     }
 
     public void loadSearchEngineLogo(Profile profile, ImageView logoView, String searchKeyword) {

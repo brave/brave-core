@@ -450,8 +450,4 @@ public class QuickSearchEnginesUtil {
                 NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION,
                 googleServerCallback);
     }
-
-    public static void addSearchEngine(Profile profile) {
-        // ((BraveTemplateUrlService)TemplateUrlServiceFactory.getForProfile(profile)).addSearchEngine();
-    }
 }
