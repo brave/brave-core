@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.share;
 
+import android.content.Context;
+
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
@@ -17,6 +19,7 @@ import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 
 public class BraveShareDelegateImpl extends ShareDelegateImpl {
     public BraveShareDelegateImpl(
+            Context context,
             BottomSheetController controller,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             Supplier<Tab> tabProvider,
@@ -26,6 +29,7 @@ public class BraveShareDelegateImpl extends ShareDelegateImpl {
             boolean isCustomTab,
             DataSharingTabManager dataSharingTabManager) {
         super(
+                context,
                 controller,
                 lifecycleDispatcher,
                 tabProvider,
