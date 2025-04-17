@@ -819,12 +819,6 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
-                        "runSharePasswordsIntent",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/omnibox/styles/OmniboxResourceProvider",
                         "getToolbarSidePaddingForNtp",
                         MethodModifier.STATIC,
@@ -1790,11 +1784,6 @@ public class BytecodeTest {
                         Optional.class,
                         Supplier.class,
                         Supplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
-                        "org/chromium/chrome/browser/password_manager/settings/BraveExportFlow",
-                        int.class));
 
         Assert.assertTrue(
                 constructorsMatch(
