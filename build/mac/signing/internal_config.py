@@ -11,7 +11,6 @@
 
 import os
 
-from os.path import basename, dirname
 from signing.chromium_config import ChromiumCodeSignConfig
 from signing.model import Distribution, NotarizeAndStapleLevel
 
