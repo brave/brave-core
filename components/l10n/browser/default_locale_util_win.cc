@@ -7,31 +7,31 @@
 
 #include <windows.h>
 
-#include <memory>
 #include <optional>
+#include <vector>
+
+#include "base/strings/utf_string_conversions.h"
 
 namespace brave_l10n {
 
 std::optional<std::string> MaybeGetDefaultLocaleString() {
   const int buffer_size =
-      ::GetLocaleInfoEx(/*lpLocaleName*/ nullptr,
-                        /*LCType*/ LOCALE_SNAME, /*lpLCData*/ nullptr,
-                        /*cchData*/ 0);
+      ::GetLocaleInfoEx(/*lpLocaleName=*/nullptr,
+                        /*LCType=*/LOCALE_SNAME, /*lpLCData=*/nullptr,
+                        /*cchData=*/0);
   if (buffer_size == 0) {
     return std::nullopt;
   }
 
-  const std::unique_ptr<wchar_t[]> locale_sname(new wchar_t[buffer_size]);
-  if (::GetLocaleInfoEx(/*lpLocaleName*/ nullptr, /*LCType*/ LOCALE_SNAME,
-                        /*lpLCData*/ locale_sname.get(),
-                        /*cchData*/ buffer_size) == 0) {
+  std::vector<wchar_t> buffer(buffer_size);
+  if (::GetLocaleInfoEx(/*lpLocaleName=*/nullptr,
+                        /*LCType=*/LOCALE_SNAME,
+                        /*lpLCData=*/buffer.data(),
+                        /*cchData=*/buffer_size) == 0) {
     return std::nullopt;
   }
 
-  const std::unique_ptr<char[]> default_locale(new char[buffer_size]);
-  wcstombs(/*dest*/ default_locale.get(), /*src*/ locale_sname.get(),
-           /*max*/ buffer_size);
-  return {default_locale.get()};
+  return base::WideToUTF8(buffer.data());
 }
 
 }  // namespace brave_l10n
