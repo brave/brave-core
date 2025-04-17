@@ -1356,6 +1356,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/share/ShareDelegateImpl",
                         "org/chromium/chrome/browser/share/BraveShareDelegateImpl",
+                        Context.class,
                         BottomSheetController.class,
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
