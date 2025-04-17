@@ -53,7 +53,6 @@ class WeakTabManagerDelegate {
 // TabManager must extend NSObjectProtocol in order to implement WKNavigationDelegate
 class TabManager: NSObject {
   fileprivate var delegates = [WeakTabManagerDelegate]()
-  fileprivate let tabEventHandlers: [TabEventHandler]
   weak var stateDelegate: TabManagerStateDelegate?
 
   /// Internal url to access the new tab page.
@@ -130,7 +129,6 @@ class TabManager: NSObject {
     self.tabGeneratorAPI = tabGeneratorAPI
     self.historyAPI = historyAPI
     self.privateBrowsingManager = privateBrowsingManager
-    self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
 
     Preferences.Shields.blockImages.observe(from: self)
@@ -378,11 +376,8 @@ class TabManager: NSObject {
       SessionTab.setSelected(tabId: tabId)
     }
 
-    previous?.isVisible = false
-
     UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebView()
-    selectedTab?.isVisible = true
 
     if let selectedTab = selectedTab,
       selectedTab.visibleURL == nil
@@ -394,10 +389,10 @@ class TabManager: NSObject {
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
     if let tab = previous {
-      TabEvent.post(.didLoseFocus, for: tab)
+      tab.isVisible = false
     }
     if let tab = selectedTab {
-      TabEvent.post(.didGainFocus, for: tab)
+      tab.isVisible = true
     }
 
     if let tabID = tab?.id {
@@ -1039,7 +1034,6 @@ class TabManager: NSObject {
     assert(count == prevCount - 1, "Make sure the tab count was actually removed")
 
     delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
-    TabEvent.post(.didClose, for: tab)
 
     if currentTabs.isEmpty {
       addTab(isPrivate: tab.isPrivate)

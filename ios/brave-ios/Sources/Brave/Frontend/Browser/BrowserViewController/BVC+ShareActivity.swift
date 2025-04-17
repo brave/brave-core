@@ -179,7 +179,7 @@ extension BrowserViewController {
       )
 
       // Add Feed To Brave News Activity
-      if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadata,
+      if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadataHelper?.metadata,
         !metadata.feeds.isEmpty
       {
         let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in

@@ -31,7 +31,7 @@ extension BrowserViewController {
   /// - Parameter webView: webview triggered open seach engine
   @discardableResult
   func evaluateWebsiteSupportOpenSearchEngine(in tab: some TabState) -> Bool {
-    if let openSearchMetaData = tab.pageMetadata?.search,
+    if let openSearchMetaData = tab.pageMetadataHelper?.metadata?.search,
       let url = tab.visibleURL,
       url.isSecureWebPage()
     {
