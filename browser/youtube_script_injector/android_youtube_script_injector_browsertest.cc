@@ -6,7 +6,6 @@
 #include <string>
 
 #include "base/path_service.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -17,6 +16,10 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+
+namespace {
+std::string command = "window._pipScriptInjected === true";
+}  // namespace
 
 class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
  public:
@@ -52,10 +55,6 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
     return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
   }
 
-  void TearDownOnMainThread() override {
-    PlatformBrowserTest::TearDownOnMainThread();
-  }
-
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
@@ -74,7 +73,6 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
  protected:
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list.
   net::EmbeddedTestServer https_server_;
-  base::test::ScopedFeatureList feature_list_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -87,7 +85,6 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
   const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
 
   NavigateToURL(url);
-  std::string command = "window._pipScriptInjected === true";
   EXPECT_TRUE(content::EvalJs(web_contents(), command).ExtractBool());
 }
 
@@ -96,6 +93,5 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
   const GURL url = https_server_.GetURL("youtub.com", "/simple.html");
 
   NavigateToURL(url);
-  std::string command = "window._pipScriptInjected === true";
   EXPECT_FALSE(content::EvalJs(web_contents(), command).ExtractBool());
 }
