@@ -51,9 +51,9 @@ class AssociatedContentManager
 
   // Removes a content driver from the list of content drivers.
   void RemoveContent(ConversationHandler::AssociatedContentDelegate* driver,
-                     bool notify_updated = false);
+                     bool notify_updated = true);
 
-  void GetContent(ConversationHandler::GetPageContentCallback callback);
+  void GetContent(base::OnceClosure callback);
   void GetStagedEntriesFromContent(
       ConversationHandler::GetStagedEntriesCallback callback);
   void GetTopSimilarityWithPromptTilContextLimit(
@@ -73,9 +73,11 @@ class AssociatedContentManager
 
   bool HasOpenAIChatPermission() const;
   bool HasNonArchiveContent() const;
-  bool HasContent() const;
+  bool HasAssociatedContent() const;
 
   // Determines if the content for this conversation is a single video.
+  // Deprecated: Instead use the |type| field on the associated content.
+  // TODO(fallaciousreasoning): Remove this method.
   bool IsVideo() const;
 
   // ConversationHandler::AssociatedContentDelegate::Observer
@@ -90,8 +92,8 @@ class AssociatedContentManager
   void SetShouldSend(bool value);
 
   std::vector<ConversationHandler::AssociatedContentDelegate*>
-  GetContentDriversForTesting() {
-    return content_drivers_;
+  GetContentDelegatesForTesting() {
+    return content_delegates_;
   }
 
  private:
@@ -101,7 +103,8 @@ class AssociatedContentManager
 
   raw_ptr<ConversationHandler> conversation_;
 
-  std::vector<ConversationHandler::AssociatedContentDelegate*> content_drivers_;
+  std::vector<ConversationHandler::AssociatedContentDelegate*>
+      content_delegates_;
 
   // Used for ownership - still stored in the above array.
   std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;
@@ -112,7 +115,6 @@ class AssociatedContentManager
       content_observations_{this};
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
-  std::vector<std::string> cached_text_content_;
 
   base::WeakPtrFactory<AssociatedContentManager> weak_ptr_factory_{this};
 };

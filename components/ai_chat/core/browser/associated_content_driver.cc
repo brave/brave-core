@@ -152,11 +152,11 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
   on_page_text_fetch_complete_ = nullptr;
 }
 
-std::string_view AssociatedContentDriver::GetCachedTextContent() {
+std::string_view AssociatedContentDriver::GetCachedTextContent() const {
   return cached_text_content_;
 }
 
-bool AssociatedContentDriver::GetCachedIsVideo() {
+bool AssociatedContentDriver::GetCachedIsVideo() const {
   return is_video_;
 }
 

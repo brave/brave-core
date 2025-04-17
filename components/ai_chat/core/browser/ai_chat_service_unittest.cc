@@ -68,10 +68,7 @@ namespace {
 
 void WaitForAssociatedContentFetch(AssociatedContentManager* manager) {
   base::RunLoop run_loop;
-  manager->GetContent(base::BindLambdaForTesting(
-      [&](std::string text, bool is_video, std::string invalidation_token) {
-        run_loop.Quit();
-      }));
+  manager->GetContent(run_loop.QuitClosure());
   run_loop.Run();
 }
 
@@ -174,19 +171,19 @@ class MockAssociatedContent
 
   void GetContent(
       ConversationHandler::GetPageContentCallback callback) override {
+    cached_text_content_ = GetTextContent();
     std::move(callback).Run(GetTextContent(), GetCachedIsVideo(), "");
   }
 
-  std::string_view GetCachedTextContent() override {
-    cached_text_content_ = GetTextContent();
+  std::string_view GetCachedTextContent() const override {
     return cached_text_content_;
   }
 
   MOCK_METHOD(GURL, GetURL, (), (const, override));
   MOCK_METHOD(std::u16string, GetTitle, (), (const, override));
-  MOCK_METHOD(bool, GetCachedIsVideo, (), (override));
+  MOCK_METHOD(bool, GetCachedIsVideo, (), (const, override));
 
-  MOCK_METHOD(std::string, GetTextContent, (), ());
+  MOCK_METHOD(std::string, GetTextContent, (), (const));
 
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
@@ -541,7 +538,7 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
             conversation2->get_conversation_uuid());
 
   EXPECT_EQ(conversation2->associated_content_manager()
-                ->GetContentDriversForTesting()[0],
+                ->GetContentDelegatesForTesting()[0],
             &associated_content);
   ExpectAssociatedContentEquals(
       FROM_HERE,
@@ -714,7 +711,8 @@ TEST_P(AIChatServiceUnitTest, MultiContentConversation_AddContent) {
   EXPECT_EQ(
       conversation->associated_content_manager()->GetAssociatedContent().size(),
       1u);
-  EXPECT_TRUE(conversation->associated_content_manager()->HasContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasNonArchiveContent());
 
@@ -722,7 +720,8 @@ TEST_P(AIChatServiceUnitTest, MultiContentConversation_AddContent) {
   EXPECT_EQ(
       conversation->associated_content_manager()->GetAssociatedContent().size(),
       2u);
-  EXPECT_TRUE(conversation->associated_content_manager()->HasContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasNonArchiveContent());
 
@@ -748,7 +747,8 @@ TEST_P(AIChatServiceUnitTest, MultiContentConversation_RemoveContent) {
   EXPECT_EQ(
       conversation->associated_content_manager()->GetAssociatedContent().size(),
       1u);
-  EXPECT_TRUE(conversation->associated_content_manager()->HasContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasNonArchiveContent());
 
@@ -756,7 +756,8 @@ TEST_P(AIChatServiceUnitTest, MultiContentConversation_RemoveContent) {
   EXPECT_EQ(
       conversation->associated_content_manager()->GetAssociatedContent().size(),
       2u);
-  EXPECT_TRUE(conversation->associated_content_manager()->HasContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasNonArchiveContent());
 
@@ -769,7 +770,8 @@ TEST_P(AIChatServiceUnitTest, MultiContentConversation_RemoveContent) {
   EXPECT_EQ(
       conversation->associated_content_manager()->GetAssociatedContent().size(),
       1u);
-  EXPECT_TRUE(conversation->associated_content_manager()->HasContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasNonArchiveContent());
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
@@ -805,7 +807,7 @@ TEST_P(AIChatServiceUnitTest,
 
 TEST_P(
     AIChatServiceUnitTest,
-    MultiContentConversation_RemovingContentShouldSetShouldSendIfHasContent) {
+    MultiContentConversation_RemovingContentShouldSetShouldSendIfHasAssociatedContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
   ON_CALL(associated_content1, GetTextContent)

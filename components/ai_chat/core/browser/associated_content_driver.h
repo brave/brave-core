@@ -66,8 +66,8 @@ class AssociatedContentDriver
   std::u16string GetTitle() const override;
   void GetContent(
       ConversationHandler::GetPageContentCallback callback) override;
-  std::string_view GetCachedTextContent() override;
-  bool GetCachedIsVideo() override;
+  std::string_view GetCachedTextContent() const override;
+  bool GetCachedIsVideo() const override;
   void GetStagedEntriesFromContent(
       ConversationHandler::GetStagedEntriesCallback callback) override;
 
