@@ -177,7 +177,14 @@ void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
               creative_ads.size());
 
   std::erase_if(creative_ads, [](const CreativeNewTabPageAdInfo& creative_ad) {
-    return !MatchConditions(creative_ad.condition_matchers);
+    const bool does_match_conditions =
+        MatchConditions(creative_ad.condition_matchers);
+    if (!does_match_conditions) {
+      BLOG(1, "creativeInstanceId " << creative_ad.creative_instance_id
+                                    << " does not match conditions");
+    }
+
+    return !does_match_conditions;
   });
 }
 
