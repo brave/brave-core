@@ -5,24 +5,32 @@
 
 #include "brave/components/l10n/browser/default_locale_util.h"
 
-#include <cstdlib>
 #include <optional>
+#include <string>
+
+#include "base/environment.h"
 
 namespace brave_l10n {
 
+namespace {
+
+constexpr char kEnvVarLcAll[] = "LC_ALL";
+constexpr char kEnvVarLang[] = "LANG";
+
+}  // namespace
+
 std::optional<std::string> MaybeGetDefaultLocaleString() {
-  // LC_ALL should always override the LANG variable, whether it is set or not.
-  char const* language = language = std::getenv("LC_ALL");
+  std::unique_ptr<base::Environment> env = base::Environment::Create();
 
-  if (!language || !*language) {
-    language = std::getenv("LANG");
+  std::optional<std::string> language = env->GetVar(kEnvVarLcAll);
+  if (!language || language->empty()) {
+    language = env->GetVar(kEnvVarLang);
+    if (!language || language->empty()) {
+      return std::nullopt;
+    }
   }
 
-  if (!language || !*language) {
-    return std::nullopt;
-  }
-
-  return {language};
+  return language;
 }
 
 }  // namespace brave_l10n
