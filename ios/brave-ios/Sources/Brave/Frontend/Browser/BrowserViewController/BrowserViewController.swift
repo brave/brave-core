@@ -1893,7 +1893,7 @@ public class BrowserViewController: UIViewController {
     browser.tabManager.addTabsForURLs([url], zombie: false, isPrivate: isPrivate)
   }
 
-  public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool) {
+  public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool, isPrivileged: Bool) {
     popToBVC(isAnimated: false)
 
     if let tab = tabManager.getTabForURL(url, isPrivate: isPrivate) {
