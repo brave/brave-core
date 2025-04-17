@@ -311,7 +311,6 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Mixtral-8x7b",
               displayMaker: "Powerful, fast and adaptive",
-              engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -328,7 +327,6 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Mixtral-8x7b",
               displayMaker: "Powerful, fast and adaptive",
-              engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -344,7 +342,6 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Claude-Instant",
               displayMaker: "Strength in creative tasks",
-              engineType: .claudeRemote,
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -360,7 +357,6 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Llama-2x13b",
               displayMaker: "General purpose chat",
-              engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -376,7 +372,6 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Llama-2x70b",
               displayMaker: "Advanced and accurate chat",
-              engineType: .llamaRemote,
               category: .chat,
               access: .premium,
               maxAssociatedContentLength: 9000,

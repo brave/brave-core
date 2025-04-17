@@ -370,7 +370,6 @@ const MODELS: Mojom.Model[] = [
       leoModelOptions: {
         name: 'model-one',
         displayMaker: 'Company',
-        engineType: Mojom.ModelEngineType.LLAMA_REMOTE,
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC,
         maxAssociatedContentLength: 10000,
@@ -387,7 +386,6 @@ const MODELS: Mojom.Model[] = [
       leoModelOptions: {
         name: 'model-two-premium',
         displayMaker: 'Company',
-        engineType: Mojom.ModelEngineType.LLAMA_REMOTE,
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.PREMIUM,
         maxAssociatedContentLength: 10000,
@@ -404,7 +402,6 @@ const MODELS: Mojom.Model[] = [
       leoModelOptions: {
         name: 'model-three-freemium',
         displayMaker: 'Company',
-        engineType: Mojom.ModelEngineType.LLAMA_REMOTE,
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 10000,

@@ -100,7 +100,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = "mixtral-8x7b-instruct";
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -120,7 +119,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = "bedrock-us.deepseek-r1-v1:0";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 64000;
 
@@ -140,7 +138,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = kClaudeHaikuModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
 
@@ -160,7 +157,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = kClaudeSonnetModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
 
@@ -182,7 +178,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -204,7 +199,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -226,7 +220,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;
-      options->engine_type = mojom::ModelEngineType::BRAVE_CONVERSATION_API;
       options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -700,10 +693,8 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     AIChatCredentialManager* credential_manager) {
   const mojom::Model* model = GetModel(model_key);
   std::unique_ptr<EngineConsumer> engine;
-  // Only LeoModels are passed to the following engines.
   if (model->options->is_leo_model_options()) {
     auto& leo_model_opts = model->options->get_leo_model_options();
-    CHECK(leo_model_opts->engine_type == mojom::ModelEngineType::BRAVE_CONVERSATION_API);
     DVLOG(1) << "Started AI engine: conversation api";
     engine = std::make_unique<EngineConsumerConversationAPI>(
         *leo_model_opts, url_loader_factory, credential_manager);

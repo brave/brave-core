@@ -26,12 +26,6 @@ enum APIError {
   ServiceOverloaded
 };
 
-enum ModelEngineType {
-  LLAMA_REMOTE,
-  CLAUDE_REMOTE,
-  BRAVE_CONVERSATION_API,
-};
-
 // When adding or modifying category names, associated UI strings must also
 // be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
 enum ModelCategory {
@@ -275,8 +269,6 @@ struct LeoModelOptions {
   string name;
   // maker, for users
   string display_maker;
-  // how to run this model
-  ModelEngineType engine_type;
   // user-facing category
   ModelCategory category;
   // Which access level grants permission to use the model
