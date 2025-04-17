@@ -223,7 +223,7 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 """
 
 
-def _get_current_branch_upstream_name():
+def _get_current_branch_upstream_name() -> Optional[str]:
     """Retrieves the name of the current branch's upstream.
     """
     try:
@@ -233,17 +233,14 @@ def _get_current_branch_upstream_name():
         return None
 
 
-def _update_pinslist_timestamp():
+def _update_pinslist_timestamp() -> str:
     """Updates the pinslist timestamp in the input_file_parsers.cc file for the
     version commit.
+
+    Returns:
+        The readable timestamp of the update into the file.
     """
-    try:
-        with open(PINSLIST_TIMESTAMP_FILE, "r", encoding="utf-8") as file:
-            content = file.read()
-    except FileNotFoundError:
-        logging.exception("ERROR: File %s not found. Aborting.",
-                          PINSLIST_TIMESTAMP_FILE)
-        sys.exit(1)
+    content = repository.brave.read_file(PINSLIST_TIMESTAMP_FILE)
 
     pattern = r"# Last updated:.*\nPinsListTimestamp\n[0-9]{10}\n"
     match = re.search(pattern, content, flags=re.DOTALL)
@@ -272,6 +269,8 @@ def _update_pinslist_timestamp():
     updated = repository.brave.run_git('diff', PINSLIST_TIMESTAMP_FILE)
     if updated == '':
         raise ValueError('Pinslist timestamp failed to update.')
+
+    return readable_timestamp
 
 
 def _is_gh_cli_logged_in():

@@ -27,7 +27,7 @@ class FakeChromiumRepo:
         """
         self.temp_dir: tempfile.TemporaryDirectory = (
             tempfile.TemporaryDirectory())
-        self.base_path: Path = Path(self.temp_dir.name)
+        self.base_path: Path = Path(self.temp_dir.name) / 'workspace'
         self._init_repo(self.chromium)
         self._init_repo(self.brave)  # Create the brave repository
 
@@ -45,6 +45,11 @@ class FakeChromiumRepo:
     def brave_patches(self) -> Path:
         """Returns the path to the Brave patches directory."""
         return self.brave / 'patches'
+
+    @property
+    def remote(self) -> Path:
+        """Returns the path to the Brave directory"""
+        return self.base_path / 'remote'
 
     def _run_git_command(self,
                          command: List[str],
@@ -81,6 +86,20 @@ class FakeChromiumRepo:
         (path / 'README.md').write_text(f'# Fake {path.name} repo\n')
         self._run_git_command(['add', 'README.md'], path)
         self._run_git_command(['commit', '-m', 'Initial commit'], path)
+
+    def create_brave_remote(self) -> None:
+        """Creates a remote repository for Brave and sets it as the origin.
+
+        Initializes a git repository at the path returned by `self.remote` and
+        adds it as the `origin` remote for the Brave repository.
+        """
+        # Initialize the remote repository
+        self._init_repo(self.remote / 'brave')
+
+        # Add the remote as 'origin' for the Brave repository
+        self._run_git_command(
+            ['remote', 'add', 'origin',
+             str(self.remote / 'brave')], self.brave)
 
     def add_repo(self, relative_path: str) -> None:
         """Adds a new repository at the specified relative path.
