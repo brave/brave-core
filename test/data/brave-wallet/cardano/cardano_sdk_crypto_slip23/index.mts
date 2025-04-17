@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Bip32Ed25519, SodiumBip32Ed25519 } from "@cardano-sdk/crypto";
+import * as Crypto from '@cardano-sdk/crypto';
 import { HexBlob } from "@cardano-sdk/util";
 import { XorShift } from "xorshift";
 import { createHash } from "crypto";
@@ -15,8 +15,6 @@ import fs from "node:fs/promises";
 const testCases = 1000;
 const entropySize = 32;
 const maxPathLength = 8;
-
-const bip32Ed25519: Bip32Ed25519 = new SodiumBip32Ed25519();
 
 const makeRng = (seed: string) => {
   return new XorShift([
@@ -45,6 +43,8 @@ const randomPath = (rng: XorShift) => {
   ];
 };
 
+const bip32Ed25519 = await Crypto.SodiumBip32Ed25519.create();
+
 let result: Array<{
   test: string;
   entropy: string;
@@ -62,11 +62,11 @@ for (let i = 0; i < testCases; i++) {
   const path = randomPath(rng);
   const rootPrivateKey = bip32Ed25519.fromBip39Entropy(entropy, "");
 
-  const privatekey = await bip32Ed25519.derivePrivateKey(rootPrivateKey, path);
-  const pubkey = await bip32Ed25519.getBip32PublicKey(privatekey);
+  const privatekey = bip32Ed25519.derivePrivateKey(rootPrivateKey, path);
+  const pubkey = bip32Ed25519.getBip32PublicKey(privatekey);
 
-  const signature = await bip32Ed25519.sign(
-    await bip32Ed25519.getRawPrivateKey(privatekey),
+  const signature = bip32Ed25519.sign(
+    bip32Ed25519.getRawPrivateKey(privatekey),
     Buffer.from("message").toString("hex") as HexBlob
   );
 

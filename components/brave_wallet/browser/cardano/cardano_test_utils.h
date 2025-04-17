@@ -12,10 +12,8 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -41,7 +39,8 @@ class CardanoTestRpcServer {
 
   std::array<uint8_t, 32> CreateNewTxHash();
 
-  std::map<std::string, cardano_rpc::UnspentOutputs> utxos_map_;
+  std::map<std::string, std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>
+      utxos_map_;
   std::array<uint8_t, 32> next_tx_hash_ = {};
 
   network::TestURLLoaderFactory url_loader_factory_;

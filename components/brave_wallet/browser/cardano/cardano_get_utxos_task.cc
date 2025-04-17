@@ -13,10 +13,8 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/rand_util.h"
-#include "base/strings/string_number_conversions.h"
+#include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 
 namespace brave_wallet {
@@ -24,14 +22,17 @@ namespace brave_wallet {
 GetCardanoUtxosTask::GetCardanoUtxosTask(
     CardanoWalletService& cardano_wallet_service,
     const std::string& chain_id,
-    std::vector<mojom::CardanoAddressPtr> addresses,
-    GetCardanoUtxosTask::Callback callback)
+    std::vector<CardanoAddress> addresses)
     : cardano_wallet_service_(cardano_wallet_service),
       chain_id_(chain_id),
-      addresses_(std::move(addresses)),
-      callback_(std::move(callback)) {}
+      addresses_(std::move(addresses)) {}
 
 GetCardanoUtxosTask::~GetCardanoUtxosTask() = default;
+
+void GetCardanoUtxosTask::Start(Callback callback) {
+  callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
+  ScheduleWorkOnTask();
+}
 
 void GetCardanoUtxosTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -51,27 +52,23 @@ void GetCardanoUtxosTask::MaybeSendRequests() {
     return;
   }
 
-  // Shuffle addresses so requests are always done in different order to
-  // increase privacy a bit.
-  base::RandomShuffle(addresses_.begin(), addresses_.end());
-
-  for (const auto& address_info : addresses_) {
+  for (const auto& address : addresses_) {
     cardano_wallet_service_->cardano_rpc().GetUtxoList(
-        chain_id_, address_info->address_string,
+        chain_id_, address.ToString(),
         base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,
-                       weak_factory_.GetWeakPtr(), address_info->Clone()));
+                       weak_factory_.GetWeakPtr(), address));
   }
 }
 
 void GetCardanoUtxosTask::OnGetUtxoList(
-    mojom::CardanoAddressPtr address,
+    CardanoAddress address,
     base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
-    error_ = utxos.error();
-    return WorkOnTask();
+    StopWithError(std::move(utxos.error()));
+    return;
   }
 
-  utxos_[address->address_string] = std::move(utxos.value());
+  utxos_[address] = std::move(utxos.value());
 
   CHECK(std::erase(addresses_, address));
   if (addresses_.empty()) {
@@ -82,17 +79,16 @@ void GetCardanoUtxosTask::OnGetUtxoList(
 }
 
 void GetCardanoUtxosTask::WorkOnTask() {
-  if (error_) {
-    std::move(callback_).Run(this, base::unexpected(std::move(*error_)));
-    return;
-  }
-
   if (result_) {
-    std::move(callback_).Run(this, base::ok(std::move(*result_)));
+    std::move(callback_).Run(base::ok(std::move(*result_)));
     return;
   }
 
   MaybeSendRequests();
+}
+
+void GetCardanoUtxosTask::StopWithError(std::string error_string) {
+  std::move(callback_).Run(base::unexpected(std::move(error_string)));
 }
 
 }  // namespace brave_wallet

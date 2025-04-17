@@ -8,22 +8,19 @@
 
 #include <map>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 
 namespace brave_wallet {
 class NetworkManager;
 }
 
 namespace brave_wallet::cardano_rpc {
-
-using UnspentOutputs = std::vector<UnspentOutput>;
 
 struct EndpointQueue;
 
@@ -44,33 +41,53 @@ class CardanoRpc {
   using RpcResponseCallback =
       base::OnceCallback<void(base::expected<T, std::string>)>;
 
-  using GetChainHeightCallback = RpcResponseCallback<uint32_t>;
-  void GetChainHeight(const std::string& chain_id,
-                      GetChainHeightCallback callback);
+  using GetLatestBlockCallback = RpcResponseCallback<Block>;
+  void GetLatestBlock(const std::string& chain_id,
+                      GetLatestBlockCallback callback);
+
+  using GetLatestEpochParametersCallback = RpcResponseCallback<EpochParameters>;
+  void GetLatestEpochParameters(const std::string& chain_id,
+                                GetLatestEpochParametersCallback callback);
 
   using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
   void GetUtxoList(const std::string& chain_id,
                    const std::string& address,
                    GetUtxoListCallback callback);
 
+  using PostTransactionCallback = RpcResponseCallback<std::string>;
+  void PostTransaction(const std::string& chain_id,
+                       const std::vector<uint8_t>& transaction,
+                       PostTransactionCallback callback);
+
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
+  bool IsIdleForTesting();
+
  private:
-  void RequestInternal(const GURL& request_url,
-                       RequestIntermediateCallback callback,
-                       APIRequestHelper::ResponseConversionCallback
-                           conversion_callback = base::NullCallback());
+  void DoGetRequestInternal(const GURL& request_url,
+                            RequestIntermediateCallback callback,
+                            APIRequestHelper::ResponseConversionCallback
+                                conversion_callback = base::NullCallback());
+  void DoPostRequestInternal(const GURL& request_url,
+                             std::string payload,
+                             RequestIntermediateCallback callback,
+                             APIRequestHelper::ResponseConversionCallback
+                                 conversion_callback = base::NullCallback());
   void OnRequestInternalDone(const GURL& endpoint_host,
                              RequestIntermediateCallback callback,
                              APIRequestResult api_request_result);
   void MaybeStartQueuedRequest(const GURL& endpoint_host);
 
-  void OnGetChainHeight(GetChainHeightCallback callback,
+  void OnGetLatestBlock(GetLatestBlockCallback callback,
                         APIRequestResult api_request_result);
+  void OnGetLatestEpochParameters(GetLatestEpochParametersCallback callback,
+                                  APIRequestResult api_request_result);
   void OnGetUtxoList(GetUtxoListCallback callback,
                      const std::string& address,
                      APIRequestResult api_request_result);
+  void OnPostTransaction(PostTransactionCallback callback,
+                         APIRequestResult api_request_result);
 
   GURL GetNetworkURL(const std::string& chain_id);
 

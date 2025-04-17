@@ -7,48 +7,50 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_GET_UTXOS_TASK_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
 class CardanoWalletService;
 
+// This class implements `CardanoWalletService::GetUtxos` logic of fetching all
+// utxos associated with `addresses`.
 class GetCardanoUtxosTask {
  public:
-  using UtxoMap = std::map<std::string, cardano_rpc::UnspentOutputs>;
+  using UtxoMap = std::map<CardanoAddress, cardano_rpc::UnspentOutputs>;
   using Callback =
-      base::OnceCallback<void(GetCardanoUtxosTask*,
-                              base::expected<UtxoMap, std::string>)>;
+      base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
 
   GetCardanoUtxosTask(CardanoWalletService& cardano_wallet_service,
                       const std::string& chain_id,
-                      std::vector<mojom::CardanoAddressPtr> addresses,
-                      Callback callback);
-  virtual ~GetCardanoUtxosTask();
+                      std::vector<CardanoAddress> addresses);
+  ~GetCardanoUtxosTask();
 
-  void ScheduleWorkOnTask();
+  void Start(Callback callback);
 
  private:
+  void ScheduleWorkOnTask();
   void WorkOnTask();
+  void StopWithError(std::string error_string);
+
   void MaybeSendRequests();
   void OnGetUtxoList(
-      mojom::CardanoAddressPtr address,
+      CardanoAddress address,
       base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
   raw_ref<CardanoWalletService> cardano_wallet_service_;
   std::string chain_id_;
-  std::vector<mojom::CardanoAddressPtr> addresses_;
+  std::vector<CardanoAddress> addresses_;
   bool requests_sent_ = false;
 
   UtxoMap utxos_;
-  std::optional<std::string> error_;
   std::optional<UtxoMap> result_;
   Callback callback_;
   base::WeakPtrFactory<GetCardanoUtxosTask> weak_factory_{this};
