@@ -11,12 +11,14 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullMarked;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+@NullMarked
 public abstract class BraveCommandLineInitUtil {
     private static final String TAG = "BraveCommandLineInitUtil";
 

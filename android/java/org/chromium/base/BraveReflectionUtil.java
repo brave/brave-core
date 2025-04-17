@@ -5,18 +5,23 @@
 
 package org.chromium.base;
 
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+@NullMarked
 public class BraveReflectionUtil {
     private static final String TAG = "BraveReflectionUtil";
 
     // NOTE: For each method for invocation add appropriate test to `testMethodsForInvocationExist`
     // method in 'brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java' file with
     // checking parameter types.
+    @Nullable
     public static Object invokeMethod(
-            Class methodOwner, Object obj, String method, Object... typesAndArgs) {
+            Class methodOwner, @Nullable Object obj, String method, Object... typesAndArgs) {
         try {
             Class<?>[] parameterTypes = null;
             Object[] args = null;
@@ -52,6 +57,7 @@ public class BraveReflectionUtil {
         return null;
     }
 
+    @Nullable
     public static Object getField(Class ownerClass, String fieldName, Object obj) {
         try {
             Field field = ownerClass.getDeclaredField(fieldName);

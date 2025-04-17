@@ -8,12 +8,12 @@ package org.chromium.chrome.browser;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.components.prefs.PrefService;
 
-/**
- * Helper for retrieving a {@link PrefService} from a browser local state.
- */
+/** Helper for retrieving a {@link PrefService} from a browser local state. */
 @JNINamespace("chrome::android")
+@NullMarked
 public class BraveLocalState {
     /** Returns the {@link PrefService} associated with the browser's local state */
     public static PrefService get() {

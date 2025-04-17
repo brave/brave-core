@@ -5,10 +5,9 @@
 
 package org.chromium.components.browser_ui.site_settings;
 
-import androidx.annotation.Nullable;
-
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
 
@@ -31,6 +30,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         }
     }
 
+    @Nullable
     protected static ResourceItem getResourceItem(int contentType) {
         switch (contentType) {
             case ContentSettingsType.AUTOPLAY:

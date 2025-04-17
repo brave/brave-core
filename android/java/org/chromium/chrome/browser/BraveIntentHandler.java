@@ -12,12 +12,15 @@ import android.text.TextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.concurrent.Callable;
 
+@NullMarked
 public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
 
@@ -27,12 +30,14 @@ public class BraveIntentHandler {
             "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
     /**
-     * Helper method to extract the raw URL from the intent, without further processing.
-     * The URL may be in multiple locations.
+     * Helper method to extract the raw URL from the intent, without further processing. The URL may
+     * be in multiple locations.
+     *
      * @param intent Intent to examine.
      * @return Raw URL from the intent, or null if raw URL could't be found.
      */
-    protected static String extractUrlFromIntent(Intent intent) {
+    @Nullable
+    protected static String extractUrlFromIntent(@Nullable Intent intent) {
         if (intent == null) return null;
         String url = IntentHandler.getUrlFromVoiceSearchResult(intent);
         if (url == null) url = getUrlForCustomTab(intent);
@@ -46,12 +51,14 @@ public class BraveIntentHandler {
         return TextUtils.isEmpty(url) ? null : url;
     }
 
+    @Nullable
     protected static String getUrlFromText(Intent intent) {
         if (intent == null) return null;
         String text = IntentUtils.safeGetStringExtra(intent, Intent.EXTRA_TEXT);
         return (text == null || isJavascriptSchemeOrInvalidUrl(text)) ? null : text;
     }
 
+    @Nullable
     protected static String getWebSearchUrl(Intent intent) {
         final String action = intent.getAction();
         if (!Intent.ACTION_WEB_SEARCH.equals(action)) {
@@ -80,11 +87,13 @@ public class BraveIntentHandler {
         return null;
     }
 
+    @Nullable
     private static String getUrlForCustomTab(Intent unused_intent) {
         assert false;
         return null;
     }
 
+    @Nullable
     private static String getUrlForWebapp(Intent unused_intent) {
         assert false;
         return null;
