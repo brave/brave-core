@@ -182,9 +182,7 @@ extension BrowserViewController: TabDownloadDelegate {
     suggestedFileName: String
   ) async -> Bool {
     // Only download if there is a valid host
-    guard let host = download.originalURL?.host() else {
-      return false
-    }
+    let host = download.originalURL?.host() ?? ""
 
     // Never present the download alert on a tab that isn't visible
     guard tab === tabManager.selectedTab
@@ -200,7 +198,7 @@ extension BrowserViewController: TabDownloadDelegate {
       ? ByteCountFormatter.string(fromByteCount: totalBytesExpected!, countStyle: .file)
       : nil
 
-    let title = "\(filename) - \(host)"
+    let title = host.isEmpty ? "\(filename)" : "\(filename) - \(host)"
 
     var downloadActionText = Strings.download
     if let expectedSize = expectedSize {
