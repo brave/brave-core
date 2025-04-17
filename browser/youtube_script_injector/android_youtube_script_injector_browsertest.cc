@@ -18,7 +18,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 namespace {
-std::string command = "window._pipScriptInjected === true";
+const char* command = "window._pipScriptInjected === true";
 }  // namespace
 
 class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
