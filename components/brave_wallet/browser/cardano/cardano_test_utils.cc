@@ -42,7 +42,7 @@ void CardanoTestRpcServer::RequestInterceptor(
   if (auto address = IsAddressUtxoRequest(request)) {
     if (utxos_map_.contains(*address)) {
       base::Value::List items;
-      for (const auto& utxo : utxos_map_[*address]) {
+      for (auto& utxo : utxos_map_[*address]) {
         items.Append(utxo.ToValue());
       }
       url_loader_factory_.AddResponse(request.url.spec(),
