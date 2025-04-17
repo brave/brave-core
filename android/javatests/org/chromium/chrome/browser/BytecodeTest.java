@@ -1200,7 +1200,8 @@ public class BytecodeTest {
                         BackPressManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        DesktopWindowStateManager.class));
+                        DesktopWindowStateManager.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
