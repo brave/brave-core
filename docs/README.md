@@ -32,6 +32,7 @@ This is only an estimate. The **github** view may differ.
 ### Checking Out and Patching
 *   [Upgrading Chromium](chromium_version_upgrade.md) Upgrading `brave-core` to a newer
     Chromium version.
+*   [WebUI Overriding](webui_overriding.md)
 *   [DevTools Frontend Patching](devtools_frontend_patching.md) Managing
     changes to the upstream project.
 
