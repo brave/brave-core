@@ -13,6 +13,8 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskRunner;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -21,9 +23,10 @@ import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
+@NullMarked
 public class BraveNewsControllerFactory {
     private static final Object sLock = new Object();
-    private static BraveNewsControllerFactory sInstance;
+    private static @Nullable BraveNewsControllerFactory sInstance;
     private final TaskRunner mTaskRunner;
 
     public static BraveNewsControllerFactory getInstance() {

@@ -1402,8 +1402,7 @@ public class BraveNewTabPageLayout
 
             TextView tileViewTitleTv = tileView.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
-            tileViewTitleTv.setTextColor(
-                    getContext().getColor(R.color.brave_state_time_count_color));
+            tileViewTitleTv.setTextAppearance(R.style.BraveSuggestionsTilesText);
 
             ImageView iconIv = tileView.findViewById(R.id.tile_view_icon);
             if (NTPImageUtil.imageCache.get(topSite.getDestinationUrl()) == null) {

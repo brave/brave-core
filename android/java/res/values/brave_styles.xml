@@ -381,6 +381,13 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!-- Suggestions tiles -->
+    <style name="BraveSuggestionsTilesText"
+           parent="TextAppearance.TextSmall.Secondary">
+        <item name="android:textColor">
+            @color/brave_state_time_count_color</item>
+    </style>
+
     <!-- Nala tokens styles  -->
 
     <style name="DefaultRegular">

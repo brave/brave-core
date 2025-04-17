@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.base.ThreadUtils.runOnUiThread;
 
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import com.airbnb.lottie.LottieProperty;
 import com.airbnb.lottie.model.KeyPath;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -249,10 +247,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             }
 
             BravePrefServiceBridge.getInstance().setNewsOptIn(true);
-            SharedPreferences.Editor sharedPreferencesEditor =
-                    ContextUtils.getAppSharedPreferences().edit();
-            sharedPreferencesEditor.putBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, false);
-            sharedPreferencesEditor.apply();
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, false);
 
             if (mIsSuggestionAvailable) {
                 mLayoutSuggestions.setVisibility(View.VISIBLE);

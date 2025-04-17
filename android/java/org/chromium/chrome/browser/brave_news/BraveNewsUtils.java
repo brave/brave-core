@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.brave_news;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.PostTask;
@@ -23,10 +22,13 @@ import org.chromium.brave_news.mojom.PromotedArticle;
 import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.brave_news.mojom.PublisherType;
 import org.chromium.brave_news.mojom.UserEnabled;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesDataListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -40,17 +42,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@NullMarked
 public class BraveNewsUtils {
     public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 1000; // milliseconds
-    private static Map<Integer, DisplayAd> sCurrentDisplayAds;
-    private static String mLocale;
-    private static List<Channel> mChannelList;
-    private static List<Publisher> mGlobalPublisherList;
-    private static List<Publisher> mPublisherList;
-    private static List<Channel> mFollowingChannelList;
-    private static List<Publisher> mFollowingPublisherList;
-    private static List<String> mSuggestionsList;
-    private static HashMap<String, Integer> mChannelIcons = new HashMap<>();
+    private static @Nullable Map<Integer, DisplayAd> sCurrentDisplayAds;
+    private static @Nullable String sLocale;
+    private static @Nullable List<Channel> sChannelList;
+    private static @Nullable List<Publisher> sGlobalPublisherList;
+    private static @Nullable List<Publisher> sPublisherList;
+    private static @Nullable List<Channel> sFollowingChannelList;
+    private static @Nullable List<Publisher> sFollowingPublisherList;
+    private static @Nullable List<String> sSuggestionsList;
+    private static HashMap<String, Integer> sChannelIcons = new HashMap<>();
 
     // TODO(sergz): Ideally we want to move all news related files into it's
     // own component in the future
@@ -58,7 +61,7 @@ public class BraveNewsUtils {
             implements BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate {
         private Profile mProfile;
         private boolean mConnectionClosed;
-        private BraveNewsController mBraveNewsController;
+        private @Nullable BraveNewsController mBraveNewsController;
 
         public BraveNewsSettingsDataFetcher(Profile profile) {
             mProfile = profile;
@@ -101,7 +104,7 @@ public class BraveNewsUtils {
 
         @Override
         public void cleanUpBraveNewsController() {
-            if (mConnectionClosed) {
+            if (mConnectionClosed || mBraveNewsController == null) {
                 return;
             }
             mBraveNewsController.close();
@@ -135,6 +138,7 @@ public class BraveNewsUtils {
         sCurrentDisplayAds.put(index, ad);
     }
 
+    @Nullable
     public static DisplayAd getFromDisplayAdsMap(Integer index) {
         if (sCurrentDisplayAds != null) {
             DisplayAd foundItem = sCurrentDisplayAds.get(index);
@@ -194,80 +198,88 @@ public class BraveNewsUtils {
     public static boolean shouldDisplayNewsOptin() {
         return BravePrefServiceBridge.getInstance().getShowNews()
                 && !BravePrefServiceBridge.getInstance().getNewsOptIn()
-                && ContextUtils.getAppSharedPreferences().getBoolean(
-                        BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);
     }
 
     public static void setChannelIcons() {
-        mChannelIcons.put("Brave", R.drawable.ic_channel_brave);
-        mChannelIcons.put("Business", R.drawable.ic_channel_business);
-        mChannelIcons.put("Cars", R.drawable.ic_channel_cars);
-        mChannelIcons.put("Crypto", R.drawable.ic_channel_crypto);
-        mChannelIcons.put("Culture", R.drawable.ic_channel_culture);
-        mChannelIcons.put("Entertainment", R.drawable.ic_channel_entertainment);
-        mChannelIcons.put("Entertainment News", R.drawable.ic_channel_entertainment);
-        mChannelIcons.put("Fashion", R.drawable.ic_channel_fashion);
-        mChannelIcons.put("Film and TV", R.drawable.ic_channel_filmtv);
-        mChannelIcons.put("Food", R.drawable.ic_channel_food);
-        mChannelIcons.put("Fun", R.drawable.ic_channel_fun);
-        mChannelIcons.put("Gaming", R.drawable.ic_channel_gaming);
-        mChannelIcons.put("Health", R.drawable.ic_channel_health);
-        mChannelIcons.put("Home", R.drawable.ic_channel_home);
-        mChannelIcons.put("Music", R.drawable.ic_channel_music);
-        mChannelIcons.put("Politics", R.drawable.ic_channel_politics);
-        mChannelIcons.put("Regional News", R.drawable.ic_channel_us_news);
-        mChannelIcons.put("Science", R.drawable.ic_channel_science);
-        mChannelIcons.put("Sports", R.drawable.ic_channel_sports);
-        mChannelIcons.put("Technology", R.drawable.ic_channel_technology);
-        mChannelIcons.put("Tech News", R.drawable.ic_channel_technology);
-        mChannelIcons.put("Tech Reviews", R.drawable.ic_channel_tech_reviews);
-        mChannelIcons.put("Top News", R.drawable.ic_channel_top_news);
-        mChannelIcons.put("Travel", R.drawable.ic_channel_travel);
-        mChannelIcons.put("UK News", R.drawable.ic_channel_us_news);
-        mChannelIcons.put("US News", R.drawable.ic_channel_us_news);
-        mChannelIcons.put("Weather", R.drawable.ic_channel_weather);
-        mChannelIcons.put("World News", R.drawable.ic_channel_world_news);
+        sChannelIcons.put("Brave", R.drawable.ic_channel_brave);
+        sChannelIcons.put("Business", R.drawable.ic_channel_business);
+        sChannelIcons.put("Cars", R.drawable.ic_channel_cars);
+        sChannelIcons.put("Crypto", R.drawable.ic_channel_crypto);
+        sChannelIcons.put("Culture", R.drawable.ic_channel_culture);
+        sChannelIcons.put("Entertainment", R.drawable.ic_channel_entertainment);
+        sChannelIcons.put("Entertainment News", R.drawable.ic_channel_entertainment);
+        sChannelIcons.put("Fashion", R.drawable.ic_channel_fashion);
+        sChannelIcons.put("Film and TV", R.drawable.ic_channel_filmtv);
+        sChannelIcons.put("Food", R.drawable.ic_channel_food);
+        sChannelIcons.put("Fun", R.drawable.ic_channel_fun);
+        sChannelIcons.put("Gaming", R.drawable.ic_channel_gaming);
+        sChannelIcons.put("Health", R.drawable.ic_channel_health);
+        sChannelIcons.put("Home", R.drawable.ic_channel_home);
+        sChannelIcons.put("Music", R.drawable.ic_channel_music);
+        sChannelIcons.put("Politics", R.drawable.ic_channel_politics);
+        sChannelIcons.put("Regional News", R.drawable.ic_channel_us_news);
+        sChannelIcons.put("Science", R.drawable.ic_channel_science);
+        sChannelIcons.put("Sports", R.drawable.ic_channel_sports);
+        sChannelIcons.put("Technology", R.drawable.ic_channel_technology);
+        sChannelIcons.put("Tech News", R.drawable.ic_channel_technology);
+        sChannelIcons.put("Tech Reviews", R.drawable.ic_channel_tech_reviews);
+        sChannelIcons.put("Top News", R.drawable.ic_channel_top_news);
+        sChannelIcons.put("Travel", R.drawable.ic_channel_travel);
+        sChannelIcons.put("UK News", R.drawable.ic_channel_us_news);
+        sChannelIcons.put("US News", R.drawable.ic_channel_us_news);
+        sChannelIcons.put("Weather", R.drawable.ic_channel_weather);
+        sChannelIcons.put("World News", R.drawable.ic_channel_world_news);
     }
 
     public static HashMap<String, Integer> getChannelIcons() {
-        return mChannelIcons;
+        return sChannelIcons;
     }
 
     private static void setLocale(String locale) {
-        mLocale = locale;
+        sLocale = locale;
     }
 
     public static String getLocale() {
-        return mLocale;
+        if (sLocale == null) {
+            return "";
+        }
+        return sLocale;
     }
 
     private static void setChannelList(List<Channel> channelList) {
-        mChannelList = channelList;
+        sChannelList = channelList;
         setFollowingChannelList();
     }
 
+    @Nullable
     public static List<Channel> getChannelList() {
-        return mChannelList;
+        return sChannelList;
     }
 
     private static void setPopularSources(List<Publisher> publisherList) {
-        mPublisherList = publisherList;
+        sPublisherList = publisherList;
         setFollowingPublisherList();
     }
 
     public static List<Publisher> getPopularSources() {
-        return mPublisherList;
+        if (sPublisherList == null) {
+            return new ArrayList<>();
+        }
+
+        return sPublisherList;
     }
 
     private static void setSuggestionsIds(List<String> suggestionsList) {
-        mSuggestionsList = suggestionsList;
+        sSuggestionsList = suggestionsList;
     }
 
     public static List<Publisher> getSuggestionsPublisherList() {
         List<Publisher> suggestionsPublisherList = new ArrayList<>();
-        if (mSuggestionsList != null && mSuggestionsList.size() > 0) {
-            for (Publisher publisher : mPublisherList) {
-                if (mSuggestionsList.contains(publisher.publisherId)) {
+        if (sPublisherList != null && sSuggestionsList != null && sSuggestionsList.size() > 0) {
+            for (Publisher publisher : sPublisherList) {
+                if (sSuggestionsList.contains(publisher.publisherId)) {
                     suggestionsPublisherList.add(publisher);
                 }
             }
@@ -277,8 +289,8 @@ public class BraveNewsUtils {
 
     public static void setFollowingPublisherList() {
         List<Publisher> publisherList = new ArrayList<>();
-        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : mGlobalPublisherList) {
+        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : sGlobalPublisherList) {
                 if (publisher.userEnabledStatus == UserEnabled.ENABLED
                         || (publisher.type == PublisherType.DIRECT_SOURCE
                                 && publisher.userEnabledStatus != UserEnabled.DISABLED)) {
@@ -286,11 +298,14 @@ public class BraveNewsUtils {
                 }
             }
         }
-        mFollowingPublisherList = publisherList;
+        sFollowingPublisherList = publisherList;
     }
 
     public static void disableFollowingPublisherList(String publisherId) {
-        for (Publisher publisher : mFollowingPublisherList) {
+        if (sFollowingPublisherList == null) {
+            return;
+        }
+        for (Publisher publisher : sFollowingPublisherList) {
             if (publisher.publisherId.equals(publisherId)) {
                 publisher.userEnabledStatus = UserEnabled.DISABLED;
                 break;
@@ -299,31 +314,35 @@ public class BraveNewsUtils {
     }
 
     public static List<Publisher> getFollowingPublisherList() {
-        return mFollowingPublisherList;
+        if (sFollowingPublisherList == null) {
+            return new ArrayList<>();
+        }
+        return sFollowingPublisherList;
     }
 
     public static void setFollowingChannelList() {
         List<Channel> channelList = new ArrayList<>();
-        if (mChannelList != null && mChannelList.size() > 0) {
-            for (Channel channel : mChannelList) {
+        if (sLocale != null && sChannelList != null && sChannelList.size() > 0) {
+            for (Channel channel : sChannelList) {
                 List<String> subscribedLocalesList =
                         new ArrayList<>(Arrays.asList(channel.subscribedLocales));
-                if (subscribedLocalesList.contains(mLocale)) {
+                if (subscribedLocalesList.contains(sLocale)) {
                     channelList.add(channel);
                 }
             }
         }
-        mFollowingChannelList = channelList;
+        sFollowingChannelList = channelList;
     }
 
+    @Nullable
     public static List<Channel> getFollowingChannelList() {
-        return mFollowingChannelList;
+        return sFollowingChannelList;
     }
 
     public static List<Channel> searchChannel(String search) {
         List<Channel> channelList = new ArrayList<>();
-        if (mChannelList != null && mChannelList.size() > 0) {
-            for (Channel channel : mChannelList) {
+        if (sChannelList != null && sChannelList.size() > 0) {
+            for (Channel channel : sChannelList) {
                 if (channel.channelName.toLowerCase(Locale.ROOT).contains(search)) {
                     channelList.add(channel);
                 }
@@ -334,8 +353,8 @@ public class BraveNewsUtils {
 
     public static List<Publisher> searchPublisher(String search) {
         List<Publisher> publisherList = new ArrayList<>();
-        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : mGlobalPublisherList) {
+        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : sGlobalPublisherList) {
                 if (publisher.publisherName.toLowerCase(Locale.ROOT).contains(search)
                         || publisher.categoryName.toLowerCase(Locale.ROOT).contains(search)
                         || publisher.feedSource.url.toLowerCase(Locale.ROOT).contains(search)
@@ -350,8 +369,8 @@ public class BraveNewsUtils {
 
     public static boolean searchPublisherForRss(String feedUrl) {
         boolean isFound = false;
-        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : mGlobalPublisherList) {
+        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : sGlobalPublisherList) {
                 if (publisher.feedSource.url.equalsIgnoreCase(feedUrl)
                         || publisher.siteUrl.url.equalsIgnoreCase(feedUrl)) {
                     isFound = true;
@@ -364,7 +383,7 @@ public class BraveNewsUtils {
 
     public static void getBraveNewsSettingsData(
             BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final Runnable postAction) {
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT,
@@ -395,7 +414,7 @@ public class BraveNewsUtils {
 
     private static void getChannels(
             BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final Runnable postAction) {
         braveNewsController.getChannels(
                 (channels) -> {
@@ -424,7 +443,7 @@ public class BraveNewsUtils {
 
     private static void getPublishers(
             BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final Runnable postAction) {
         braveNewsController.getPublishers(
                 (publishers) -> {
@@ -445,8 +464,11 @@ public class BraveNewsUtils {
         for (Map.Entry<String, Publisher> entry : publishers.entrySet()) {
             Publisher publisher = entry.getValue();
             globalPublisherList.add(publisher);
+            if (sLocale == null) {
+                continue;
+            }
             for (LocaleInfo localeInfo : publisher.locales) {
-                if (localeInfo.locale.equals(mLocale)) {
+                if (localeInfo.locale.equals(sLocale)) {
                     localesMap.put(publisher.publisherId, localeInfo);
                     publisherList.add(publisher);
                     break;
@@ -460,13 +482,19 @@ public class BraveNewsUtils {
 
         Collections.sort(globalPublisherList, compareByName);
 
-        mGlobalPublisherList = globalPublisherList;
+        sGlobalPublisherList = globalPublisherList;
 
         Collections.sort(publisherList, compareByName);
 
-        Comparator<Publisher> compareByRank = (Publisher o1, Publisher o2)
-                -> Integer.compare(
-                        localesMap.get(o1.publisherId).rank, localesMap.get(o2.publisherId).rank);
+        Comparator<Publisher> compareByRank =
+                (Publisher o1, Publisher o2) ->
+                        Integer.compare(
+                                localesMap.get(o1.publisherId) == null
+                                        ? -1
+                                        : localesMap.get(o1.publisherId).rank,
+                                localesMap.get(o2.publisherId) == null
+                                        ? -1
+                                        : localesMap.get(o2.publisherId).rank);
 
         Collections.sort(publisherList, compareByRank);
 
@@ -475,7 +503,7 @@ public class BraveNewsUtils {
 
     public static void getSuggestionsSources(
             BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            @Nullable BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
             final Runnable postAction) {
         braveNewsController.getSuggestedPublisherIds(
                 (publisherIds) -> {
