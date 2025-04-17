@@ -98,10 +98,8 @@
 @interface NTPSponsoredImageBackground ()
 @property(nonatomic, copy) NSURL* imagePath;
 @property(nonatomic) CGPoint focalPoint;
-@property(nonatomic, copy) NSString* backgroundColor;
 @property(nonatomic, copy) NSString* creativeInstanceId;
 @property(nonatomic) NTPSponsoredImageLogo* logo;
-@property(nonatomic) CGRect viewBox;
 @property(nonatomic) BOOL shouldMetricsFallbackToP3A;
 @end
 
@@ -109,18 +107,14 @@
 
 - (instancetype)initWithImagePath:(NSURL*)imagePath
                        focalPoint:(CGPoint)focalPoint
-                  backgroundColor:(NSString*)backgroundColor
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-                          viewBox:(CGRect)viewBox
        shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A {
   if ((self = [super init])) {
     self.imagePath = imagePath;
     self.focalPoint = focalPoint;
-    self.backgroundColor = backgroundColor;
     self.creativeInstanceId = creativeInstanceId;
     self.logo = logo;
-    self.viewBox = viewBox;
     self.shouldMetricsFallbackToP3A = shouldMetricsFallbackToP3A;
   }
   return self;
@@ -132,21 +126,16 @@
       [NSURL fileURLWithPath:base::SysUTF8ToNSString(
                                  sponsoredBackground.file_path.value())];
   auto focalPoint = sponsoredBackground.focal_point.ToCGPoint();
-  auto backgroundColor =
-      base::SysUTF8ToNSString(sponsoredBackground.background_color);
   auto creativeInstanceId =
       base::SysUTF8ToNSString(sponsoredBackground.creative_instance_id);
   auto logo =
       [[NTPSponsoredImageLogo alloc] initWithLogo:sponsoredBackground.logo];
-  auto viewBox = sponsoredBackground.viewbox.value_or(gfx::Rect()).ToCGRect();
   const bool shouldMetricsFallbackToP3A =
       sponsoredBackground.should_metrics_fallback_to_p3a;
   return [self initWithImagePath:imagePath
                       focalPoint:focalPoint
-                 backgroundColor:backgroundColor
               creativeInstanceId:creativeInstanceId
                             logo:logo
-                         viewBox:viewBox
       shouldMetricsFallbackToP3A:shouldMetricsFallbackToP3A];
 }
 

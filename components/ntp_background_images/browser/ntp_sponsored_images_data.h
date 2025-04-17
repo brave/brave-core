@@ -94,13 +94,11 @@ struct Creative {
   GURL url;
   base::FilePath file_path;
   gfx::Point focal_point;
-  std::string background_color;
 
   std::string creative_instance_id;
   bool should_metrics_fallback_to_p3a = false;
 
   Logo logo;
-  std::optional<gfx::Rect> viewbox;
 };
 
 struct Campaign {

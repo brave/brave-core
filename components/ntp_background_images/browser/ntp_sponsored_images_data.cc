@@ -36,11 +36,6 @@ constexpr char kWallpaperKey[] = "wallpaper";
 constexpr char kImageWallpaperRelativeUrlKey[] = "relativeUrl";
 constexpr char kImageWallpaperFocalPointXKey[] = "focalPoint.x";
 constexpr char kImageWallpaperFocalPointYKey[] = "focalPoint.y";
-constexpr char kImageWallpaperViewBoxXKey[] = "viewBox.x";
-constexpr char kImageWallpaperViewBoxYKey[] = "viewBox.y";
-constexpr char kImageWallpaperViewBoxWidthKey[] = "viewBox.width";
-constexpr char kImageWallpaperViewBoxHeightKey[] = "viewBox.height";
-constexpr char kImageWallpaperBackgroundColorKey[] = "backgroundColor";
 constexpr char kImageWallpaperButtonImageRelativeUrlKey[] =
     "button.image.relativeUrl";
 constexpr char kRichMediaWallpaperRelativeUrlKey[] = "relativeUrl";
@@ -337,28 +332,6 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
                 .value_or(0);
         creative.focal_point = {focal_point_x, focal_point_y};
 
-        // View box (optional, only used on iOS).
-        const int view_box_x =
-            wallpaper_dict->FindIntByDottedPath(kImageWallpaperViewBoxXKey)
-                .value_or(0);
-        const int view_box_y =
-            wallpaper_dict->FindIntByDottedPath(kImageWallpaperViewBoxYKey)
-                .value_or(0);
-        const int view_box_width =
-            wallpaper_dict->FindIntByDottedPath(kImageWallpaperViewBoxWidthKey)
-                .value_or(0);
-        const int view_box_height =
-            wallpaper_dict->FindIntByDottedPath(kImageWallpaperViewBoxHeightKey)
-                .value_or(0);
-        creative.viewbox = {view_box_x, view_box_y, view_box_width,
-                            view_box_height};
-
-        // Background color (optional, only used on iOS).
-        if (const std::string* const background_color =
-                wallpaper_dict->FindString(kImageWallpaperBackgroundColorKey)) {
-          creative.background_color = *background_color;
-        }
-
         // Button.
         const std::string* const button_image_relative_url =
             wallpaper_dict->FindStringByDottedPath(
@@ -380,8 +353,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
         creative.wallpaper_type = WallpaperType::kRichMedia;
 
         const std::string* const relative_url =
-            wallpaper_dict->FindStringByDottedPath(
-                kRichMediaWallpaperRelativeUrlKey);
+            wallpaper_dict->FindString(kRichMediaWallpaperRelativeUrlKey);
         if (!relative_url) {
           // Relative url is required.
           continue;
