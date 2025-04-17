@@ -16,6 +16,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }  // namespace switches
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kOutlineSilhouetteIcon, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(ENABLE_MIRROR) && !BUILDFLAG(IS_IOS)
     {kVerifyRequestInitiatorForMirrorHeaders,
      base::FEATURE_DISABLED_BY_DEFAULT},
