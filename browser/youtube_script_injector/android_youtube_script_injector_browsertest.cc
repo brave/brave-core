@@ -68,6 +68,7 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
   void NavigateToURL(const GURL& url) {
     content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                         true);
+    ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
  protected:
