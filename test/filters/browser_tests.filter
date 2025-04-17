@@ -402,6 +402,7 @@
 
 # These tests fail because kPrerender2 feature is disabled.
 -All/HostedAppTestWithPrerendering.*
+-All/PrerenderSpeculationRulesTagsBrowserTest.*
 -AppControllerHandoffPrerenderBrowserTest.*
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageIframeSetsCookie
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageSetsCookie
@@ -1639,6 +1640,7 @@
 
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
+-All/LensOverlayControllerBrowserPDFContextualizationTest.CurrentPageIncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.Histograms/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.LargePdfNotIncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.PageUrlIncludedInRequest/*
