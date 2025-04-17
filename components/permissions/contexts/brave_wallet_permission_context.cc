@@ -21,6 +21,7 @@
 #include "components/permissions/permissions_client.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/permission_controller_delegate.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
@@ -275,9 +276,11 @@ bool BraveWalletPermissionContext::IsPermissionDenied(
     return false;
   }
 
-  return delegate->GetPermissionStatus(permission, origin.GetURL(),
-                                       origin.GetURL()) ==
-         blink::mojom::PermissionStatus::DENIED;
+  return delegate->GetPermissionStatus(
+             content::PermissionDescriptorUtil::
+                 CreatePermissionDescriptorForPermissionType(permission),
+             origin.GetURL(),
+             origin.GetURL()) == blink::mojom::PermissionStatus::DENIED;
 }
 
 // static
@@ -341,9 +344,10 @@ bool BraveWalletPermissionContext::HasPermission(
     return false;
   }
 
-  auto status =
-      delegate->GetPermissionStatus(permission, origin_wallet_address->GetURL(),
-                                    origin_wallet_address->GetURL());
+  auto status = delegate->GetPermissionStatus(
+      content::PermissionDescriptorUtil::
+          CreatePermissionDescriptorForPermissionType(permission),
+      origin_wallet_address->GetURL(), origin_wallet_address->GetURL());
 
   *has_permission = status == blink::mojom::PermissionStatus::GRANTED;
   return true;
