@@ -277,11 +277,12 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
                 ) ?? 0
               tokenBalances = [zecToken.id: zecBalance]
             }
+          } else {
+            tokenBalances = await self.rpcService.fetchBalancesForTokens(
+              account: account,
+              networkAssets: allUserNetworkAssets
+            )
           }
-          tokenBalances = await self.rpcService.fetchBalancesForTokens(
-            account: account,
-            networkAssets: allUserNetworkAssets
-          )
         }
       }
       tokenBalanceCache.merge(with: tokenBalances)
