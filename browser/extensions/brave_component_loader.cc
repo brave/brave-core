@@ -83,7 +83,8 @@ void BraveComponentLoader::ReinstallAsNonComponent(
   const Extension* extension = registry->GetInstalledExtension(extension_id);
   DCHECK(extension);
   if (extension->location() == ManifestLocation::kComponent) {
-    service->RemoveComponentExtension(extension_id);
+    extensions::ExtensionRegistrar::Get(profile_)->RemoveComponentExtension(
+        extension_id);
     std::string error;
     scoped_refptr<Extension> normal_extension = Extension::Create(
         extension->path(), ManifestLocation::kExternalPref,
