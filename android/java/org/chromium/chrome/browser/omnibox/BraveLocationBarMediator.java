@@ -60,7 +60,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
             @NonNull OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            @Nullable BrowserControlsStateProvider browserControlsStateProvider) {
+            @Nullable BrowserControlsStateProvider browserControlsStateProvider,
+            @NonNull LocationBarCoordinator.OfflineDownloader offlineDownloader) {
         super(
                 context,
                 locationBarLayout,
@@ -79,7 +80,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 isToolbarMicEnabledSupplier,
                 dropdownEmbedder,
                 tabModelSelectorSupplier,
-                browserControlsStateProvider);
+                browserControlsStateProvider,
+                offlineDownloader);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
