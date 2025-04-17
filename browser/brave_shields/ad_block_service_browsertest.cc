@@ -212,13 +212,7 @@ base::FilePath AdBlockServiceTest::MakeFileInTempDir(
   auto dir = std::make_unique<base::ScopedTempDir>();
   EXPECT_TRUE(dir->CreateUniqueTempDir());
   auto path = dir->GetPath();
-  base::File list_file(path.AppendASCII(name), base::File::FLAG_CREATE |
-                                                   base::File::FLAG_WRITE |
-                                                   base::File::FLAG_READ);
-  EXPECT_TRUE(list_file.IsValid());
-  UNSAFE_TODO(list_file.Write(0, contents.c_str(), contents.size()));
-  list_file.Close();
-
+  EXPECT_TRUE(base::WriteFile(path.AppendASCII(name), contents));
   temp_dirs_.push_back(std::move(dir));
 
   return path;
