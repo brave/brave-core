@@ -1,0 +1,13 @@
+diff --git a/ui/native_theme/native_theme_android.cc b/ui/native_theme/native_theme_android.cc
+index 17464026f927a69f08738546d177027c4b673658..5f3696a74e59e3b11af3a338b5209fd50849f3d7 100644
+--- a/ui/native_theme/native_theme_android.cc
++++ b/ui/native_theme/native_theme_android.cc
+@@ -16,7 +16,7 @@ NativeTheme* NativeTheme::GetInstanceForWeb() {
+ }
+ 
+ NativeTheme* NativeTheme::GetInstanceForNativeUi() {
+-  NOTREACHED();
++  return NativeThemeAndroid::instance();
+ }
+ 
+ // static

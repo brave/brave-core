@@ -85,13 +85,6 @@
             "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
             "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
         ],
-        "chrome/browser/ui/webui/favicon_source.cc": [
-            "BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_",
-            "CHROME_BROWSER_SEARCH_INSTANT_SERVICE_H_",
-            "EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_",
-            "EXTENSIONS_COMMON_CONSTANTS_H_",
-            "EXTENSIONS_COMMON_MANIFEST_H_",
-        ],
         "chrome/grit/generated_resources.h": [
           "IDS_PERMISSIONS_BUBBLE_PROMPT",
         ],
