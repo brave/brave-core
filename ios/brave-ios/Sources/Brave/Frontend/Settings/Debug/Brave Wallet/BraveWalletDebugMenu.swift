@@ -21,11 +21,6 @@ struct BraveWalletDebugMenu: View {
         Toggle("Enable Zcash Testnet", isOn: $enableZcashTestnet.value)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
-
-      Section {
-        Toggle("Enable Zcash Testnet", isOn: $enableZcashTestnet.value)
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-      }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave Wallet Debug")
