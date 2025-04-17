@@ -363,6 +363,39 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
   ) {
     PlaylistP3A.recordUsage()
 
+    let addItemToPlaylist = {
+      [weak self] (
+        item: PlaylistInfo,
+        folderUUID: String?,
+        completion: ((_ didAddItem: Bool) -> Void)?
+      ) in
+      PlaylistItem.addItem(item, folderUUID: folderUUID, cachedData: nil) {
+        guard let self = self else { return }
+
+        if let url = URL(string: item.src), url.scheme == "blob" {
+          // Spawn a WebView to load the non-blob asset
+          Task { @MainActor in
+            let mediaStreamer = PlaylistMediaStreamer(
+              playerView: self.view,
+              webLoaderFactory: LivePlaylistWebLoaderFactory()
+            )
+
+            let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
+            PlaylistManager.shared.autoDownload(item: newItem)
+          }
+        } else {
+          PlaylistManager.shared.autoDownload(item: item)
+        }
+
+        self.updatePlaylistURLBar(
+          tab: self.tabManager.selectedTab,
+          state: .existingItem,
+          item: item
+        )
+        completion?(true)
+      }
+    }
+
     if PlaylistManager.shared.isDiskSpaceEncumbered()
       && !BrowserViewController.didShowStorageFullWarning
     {
@@ -385,18 +418,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
             self.addToPlayListActivityItem = nil
 
             AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-            PlaylistItem.addItem(item, folderUUID: folderUUID, cachedData: nil) { [weak self] in
-              guard let self = self else { return }
-              PlaylistManager.shared.autoDownload(item: item)
-
-              self.updatePlaylistURLBar(
-                tab: self.tabManager.selectedTab,
-                state: .existingItem,
-                item: item
-              )
-
-              completion?(true)
-            }
+            addItemToPlaylist(item, folderUUID, completion)
           }
         )
       )
@@ -419,17 +441,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
       addToPlayListActivityItem = nil
 
       AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
-      PlaylistItem.addItem(item, folderUUID: folderUUID, cachedData: nil) { [weak self] in
-        guard let self = self else { return }
-        PlaylistManager.shared.autoDownload(item: item)
-
-        self.updatePlaylistURLBar(
-          tab: self.tabManager.selectedTab,
-          state: .existingItem,
-          item: item
-        )
-        completion?(true)
-      }
+      addItemToPlaylist(item, folderUUID, completion)
     }
   }
 

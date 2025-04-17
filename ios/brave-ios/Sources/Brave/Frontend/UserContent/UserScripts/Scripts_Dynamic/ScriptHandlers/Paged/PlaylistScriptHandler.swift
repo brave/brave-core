@@ -131,20 +131,9 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
 
     // Copy the item but use the web-view's title and location instead, if available
     // This is due to a iFrames security
-    item = PlaylistInfo(
-      name: item.name,
-      src: item.src,
-      pageSrc: tab.visibleURL?.absoluteString ?? item.pageSrc,
-      pageTitle: tab.title ?? item.pageTitle,
-      mimeType: item.mimeType,
-      duration: item.duration,
-      lastPlayedOffset: 0.0,
-      detected: item.detected,
-      dateAdded: item.dateAdded,
-      tagId: item.tagId,
-      order: item.order,
-      isInvisible: item.isInvisible
-    )
+    item.pageSrc = tab.visibleURL?.absoluteString ?? item.pageSrc
+    item.pageTitle = tab.title ?? item.pageTitle
+    item.lastPlayedOffset = 0.0
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
