@@ -17,6 +17,7 @@ public enum AIChatModelKey: String {
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
   case chatVisionBasic = "chat-vision-basic"
+  case chatDeepseekR1 = "chat-deepseek-r1"
 }
 
 public protocol AIChatWebDelegate: AnyObject {
@@ -350,5 +351,65 @@ extension AIChatViewModel: AIChatDelegate {
 
   public func onServiceStateChanged(_ state: AiChat.ServiceState) {
     self._canShowPremiumPrompt = state.canShowPremiumPrompt
+  }
+}
+
+extension AiChat.Model {
+  var introMessage: String {
+    guard let modelKey = AIChatModelKey(rawValue: self.key) else {
+      return String(format: Strings.AIChat.introMessageGenericMessageDescription, self.displayName)
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaMessageDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralMessageDescription
+
+    case .chatQwen:
+      return Strings.AIChat.introMessageQwenMessageDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuMessageDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetMessageDescription
+
+    case .chatVisionBasic:
+      return Strings.AIChat.introMessageLlamaVisionMessageDescription
+
+    case .chatDeepseekR1:
+      return Strings.AIChat.introMessageDeepSeekR1MessageDescription
+    }
+  }
+
+  var purposeDescription: String {
+    guard let modelKey = AIChatModelKey(rawValue: self.key) else {
+      return self.displayName
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaModelPurposeDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralModelPurposeDescription
+
+    case .chatQwen:
+      return Strings.AIChat.introMessageQwenModelPurposeDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
+
+    case .chatVisionBasic:
+      return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
+
+    case .chatDeepseekR1:
+      return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription
+    }
   }
 }
