@@ -30,9 +30,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -94,7 +92,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
         features::kFreemiumAvailable.Get()
             ? mojom::ModelAccess::BASIC_AND_PREMIUM
             : mojom::ModelAccess::PREMIUM;
-    const bool conversation_api = features::kConversationAPIEnabled.Get();
 
     std::vector<mojom::ModelPtr> models;
     {
@@ -103,9 +100,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = "mixtral-8x7b-instruct";
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -125,9 +119,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = "bedrock-us.deepseek-r1-v1:0";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 64000;
 
@@ -147,9 +138,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = kClaudeHaikuModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::CLAUDE_REMOTE;
       options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
 
@@ -169,9 +157,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = kClaudeSonnetModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::CLAUDE_REMOTE;
       options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
 
@@ -193,9 +178,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -217,9 +199,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -241,9 +220,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->access = features::kFreemiumAvailable.Get()
                             ? mojom::ModelAccess::BASIC_AND_PREMIUM
                             : mojom::ModelAccess::BASIC;
-      options->engine_type =
-          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
-                           : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
 
@@ -717,26 +693,11 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     AIChatCredentialManager* credential_manager) {
   const mojom::Model* model = GetModel(model_key);
   std::unique_ptr<EngineConsumer> engine;
-  // Only LeoModels are passed to the following engines.
   if (model->options->is_leo_model_options()) {
     auto& leo_model_opts = model->options->get_leo_model_options();
-
-    // Engine enum on model to decide which one
-    if (leo_model_opts->engine_type ==
-        mojom::ModelEngineType::BRAVE_CONVERSATION_API) {
-      DVLOG(1) << "Started AI engine: conversation api";
-      engine = std::make_unique<EngineConsumerConversationAPI>(
-          *leo_model_opts, url_loader_factory, credential_manager);
-    } else if (leo_model_opts->engine_type ==
-               mojom::ModelEngineType::LLAMA_REMOTE) {
-      DVLOG(1) << "Started AI engine: llama";
-      engine = std::make_unique<EngineConsumerLlamaRemote>(
-          *leo_model_opts, url_loader_factory, credential_manager);
-    } else {
-      DVLOG(1) << "Started AI engine: claude";
-      engine = std::make_unique<EngineConsumerClaudeRemote>(
-          *leo_model_opts, url_loader_factory, credential_manager);
-    }
+    DVLOG(1) << "Started AI engine: conversation api";
+    engine = std::make_unique<EngineConsumerConversationAPI>(
+        *leo_model_opts, url_loader_factory, credential_manager);
   } else if (model->options->is_custom_model_options()) {
     auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";

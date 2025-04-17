@@ -100,7 +100,6 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
             leoModelOptions: .init(
               name: "Mixtral-8x7b",
               displayMaker: "Powerful, fast and adaptive",
-              engineType: .llamaRemote,
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
