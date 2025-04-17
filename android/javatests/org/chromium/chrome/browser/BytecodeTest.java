@@ -142,6 +142,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.bookmarks.BookmarkItem;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -1251,7 +1252,8 @@ public class BytecodeTest {
                         TabCreatorManager.class,
                         OneshotSupplier.class,
                         ModalDialogManager.class,
-                        ThemeColorProvider.class));
+                        ThemeColorProvider.class,
+                        UndoBarThrottle.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
@@ -2014,6 +2016,9 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mTabGroupUiOneshotSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mUndoBarThrottle"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",

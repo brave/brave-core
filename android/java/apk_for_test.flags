@@ -157,6 +157,7 @@
     *** mCurrentOrientation;
     *** mInitializedWithNative;
     *** mTabGroupUiOneshotSupplier;
+    *** mUndoBarThrottle;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
