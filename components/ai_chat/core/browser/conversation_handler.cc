@@ -680,8 +680,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
-  const bool is_page_associated = associated_content_manager_->HasContent() &&
-                                  associated_content_manager_->should_send();
+  const bool is_page_associated =
+      associated_content_manager_->HasAssociatedContent() &&
+      associated_content_manager_->should_send();
   if (is_page_associated) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
@@ -809,7 +810,7 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
 void ConversationHandler::SubmitSummarizationRequest() {
   // This is a special case for the pre-optin UI which has a specific button
   // to summarize the page if we're associatable with content.
-  DCHECK(associated_content_manager_->HasContent())
+  DCHECK(associated_content_manager_->HasAssociatedContent())
       << "This conversation request is not associated with content";
   DCHECK(associated_content_manager_->should_send())
       << "This conversation request should send page contents";
@@ -883,7 +884,7 @@ void ConversationHandler::GenerateQuestions() {
     DLOG(ERROR) << "Cannot get suggestions when not associated with content.";
     return;
   }
-  if (!associated_content_manager_->HasContent()) {
+  if (!associated_content_manager_->HasAssociatedContent()) {
     DLOG(ERROR)
         << "Should not be associated with content when not allowed to be";
     return;
@@ -897,7 +898,7 @@ void ConversationHandler::GenerateQuestions() {
   }
   // We're not expecting to already have generated suggestions
   const size_t expected_existing_suggestions_size =
-      (associated_content_manager_->HasContent() &&
+      (associated_content_manager_->HasAssociatedContent() &&
        associated_content_manager_->should_send())
           ? 1u
           : 0u;
@@ -947,7 +948,7 @@ void ConversationHandler::SetShouldSendPageContents(bool should_send) {
   if (associated_content_manager_->should_send() == should_send) {
     return;
   }
-  if (!associated_content_manager_->HasContent() && should_send) {
+  if (!associated_content_manager_->HasAssociatedContent() && should_send) {
     return;
   }
   associated_content_manager_->SetShouldSend(should_send);
@@ -1117,7 +1118,7 @@ void ConversationHandler::PerformAssistantGeneration(
   if (features::IsPageContentRefineEnabled() &&
       page_content.length() > max_content_length &&
       last_entry->action_type != mojom::ActionType::SUMMARIZE_PAGE &&
-      associated_content_manager_->HasContent()) {
+      associated_content_manager_->HasAssociatedContent()) {
     DVLOG(2) << "Refining content of length: " << page_content.length();
 
     auto refined_content_callback = base::BindOnce(
@@ -1229,8 +1230,9 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 }
 
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
-  const bool is_page_associated = associated_content_manager_->HasContent() &&
-                                  associated_content_manager_->should_send();
+  const bool is_page_associated =
+      associated_content_manager_->HasAssociatedContent() &&
+      associated_content_manager_->should_send();
 
   if (!is_page_associated) {
     suggestions_.clear();
@@ -1309,7 +1311,7 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   }
 
   const bool can_check_for_staged_conversation =
-      associated_content_manager_->HasContent() &&
+      associated_content_manager_->HasAssociatedContent() &&
       associated_content_manager_->should_send();
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
@@ -1333,7 +1335,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
   if (is_request_in_progress_ || !entries ||
-      !associated_content_manager_->HasContent() ||
+      !associated_content_manager_->HasAssociatedContent() ||
       !associated_content_manager_->should_send()) {
     return;
   }
@@ -1368,7 +1370,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
 void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   VLOG(1) << __func__;
   DCHECK(associated_content_manager_->should_send());
-  DCHECK(associated_content_manager_->HasContent())
+  DCHECK(associated_content_manager_->HasAssociatedContent())
       << "Shouldn't have been asked to generate page text when "
       << "|associated_content_manager_->HasContent()| is false.";
 
@@ -1392,24 +1394,16 @@ void ConversationHandler::GeneratePageContentInternal(
 
 void ConversationHandler::OnGeneratePageContentComplete(
     GetPageContentCallback callback,
-    std::string previous_content,
-    std::string contents_text,
-    bool is_video,
-    std::string invalidation_token) {
+    std::string previous_content) {
+  auto contents_text = associated_content_manager_->GetCachedTextContent();
   engine_->SanitizeInput(contents_text);
 
   // Keep is_content_different_ as true if it's the initial state
   is_content_different_ =
       is_content_different_ || contents_text != previous_content;
 
-  if (!metadata_->associated_content.empty()) {
-    // TODO(fallaciousreasoning): Ask @petemill if this is correct.
-    metadata_->associated_content[0]->content_type =
-        is_video ? mojom::ContentType::VideoTranscript
-                 : mojom::ContentType::PageContent;
-  }
-
-  std::move(callback).Run(contents_text, is_video, invalidation_token);
+  std::move(callback).Run(contents_text, associated_content_manager_->IsVideo(),
+                          "");
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
@@ -1590,7 +1584,8 @@ void ConversationHandler::OnConversationEntryAdded(
     return;
   }
   std::optional<std::vector<std::string_view>> associated_content_value;
-  if (is_content_different_ && associated_content_manager_->HasContent()) {
+  if (is_content_different_ &&
+      associated_content_manager_->HasAssociatedContent()) {
     associated_content_value = associated_content_manager_->GetCachedContent();
     is_content_different_ = false;
   }

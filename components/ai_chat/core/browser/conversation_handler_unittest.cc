@@ -132,15 +132,21 @@ class MockAssociatedContent
 
   int GetContentId() const override { return 0; }
 
+  std::string_view GetCachedTextContent() const override {
+    return cached_text_content_;
+  }
+
+  void GetContent(
+      ConversationHandler::GetPageContentCallback callback) override {
+    cached_text_content_ = GetTextContent();
+    std::move(callback).Run(cached_text_content_, GetCachedIsVideo(), "");
+  }
+
   MOCK_METHOD(GURL, GetURL, (), (const, override));
   MOCK_METHOD(std::u16string, GetTitle, (), (const, override));
-  MOCK_METHOD(std::string_view, GetCachedTextContent, (), (override));
-  MOCK_METHOD(bool, GetCachedIsVideo, (), (override));
+  MOCK_METHOD(bool, GetCachedIsVideo, (), (const, override));
 
-  MOCK_METHOD(void,
-              GetContent,
-              (ConversationHandler::GetPageContentCallback),
-              (override));
+  MOCK_METHOD(std::string, GetTextContent, (), ());
 
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
@@ -152,6 +158,7 @@ class MockAssociatedContent
   }
 
  private:
+  std::string cached_text_content_;
   base::WeakPtrFactory<ConversationHandler::AssociatedContentDelegate>
       weak_ptr_factory_{this};
 };
@@ -457,7 +464,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt, false));
 
   // Should never ask for page content
-  EXPECT_CALL(*associated_content_, GetContent).Times(0);
+  EXPECT_CALL(*associated_content_, GetTextContent).Times(0);
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -478,8 +485,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   // that it is no longer associated with the conversation
   // and shouldn't access the conversation because the conversation
   // will not be considering the associated content for lifetime notifications.
-  EXPECT_TRUE(
-      conversation_handler_->associated_content_manager()->HasContent());
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasAssociatedContent());
   EXPECT_FALSE(
       conversation_handler_->associated_content_manager()->should_send());
 
@@ -531,8 +538,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   ON_CALL(*associated_content_, GetURL)
       .WillByDefault(testing::Return(GURL("https://www.brave.com")));
-  EXPECT_CALL(*associated_content_, GetContent)
-      .WillOnce(base::test::RunOnceCallback<0>(page_content, false, ""));
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillOnce(testing::Return(page_content));
   conversation_handler_->SetShouldSendPageContents(true);
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](std::vector<mojom::AssociatedContentPtr> site_info,
@@ -1114,8 +1121,8 @@ TEST_F(ConversationHandlerUnitTest,
   // Modify an entry for the first time.
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
-  EXPECT_CALL(*associated_content_, GetContent)
-      .WillOnce(base::test::RunOnceCallback<0>("page content", false, ""));
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillOnce(testing::Return("page content"));
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
@@ -1465,8 +1472,8 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
   conversation_handler_->SetShouldSendPageContents(true);
   EXPECT_CALL(*associated_content_, GetURL)
       .WillRepeatedly(testing::Return(GURL("https://www.example.com")));
-  EXPECT_CALL(*associated_content_, GetContent)
-      .WillRepeatedly(base::test::RunOnceCallback<0>(page_content, false, ""));
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return(page_content));
 
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -1501,9 +1508,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
   // should be removed.
   EXPECT_CALL(*associated_content_, GetURL)
       .WillRepeatedly(testing::Return(GURL("https://www.example.com")));
-  EXPECT_CALL(*associated_content_, GetContent)
-      .WillRepeatedly(
-          base::test::RunOnceCallbackRepeatedly<0>("content", false, ""));
+  EXPECT_CALL(*associated_content_, GetTextContent)
+      .WillRepeatedly(testing::Return("content"));
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -1550,7 +1556,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
         EXPECT_FALSE(should_send_page_contents);
       }));
   EXPECT_CALL(*associated_content_, GetURL).Times(0);
-  EXPECT_CALL(*associated_content_, GetContent).Times(0);
+  EXPECT_CALL(*associated_content_, GetTextContent).Times(0);
 
   // Mock engine response
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(

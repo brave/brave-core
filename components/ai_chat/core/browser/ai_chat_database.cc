@@ -617,6 +617,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
     std::vector<mojom::AssociatedContentPtr> associated_content,
     std::vector<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK_EQ(associated_content.size(), contents.size());
 
   if (!LazyInit()) {
     return false;

@@ -252,7 +252,7 @@ class AIChatService : public KeyedService,
   void MaybeUnloadConversation(ConversationHandler* conversation);
   void HandleFirstEntry(ConversationHandler* handler,
                         mojom::ConversationTurnPtr& entry,
-                        std::vector<std::string> content,
+                        std::optional<std::vector<std::string>> maybe_content,
                         mojom::ConversationPtr& conversation);
   void HandleNewEntry(
       ConversationHandler* handler,

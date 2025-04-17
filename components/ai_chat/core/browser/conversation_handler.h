@@ -114,8 +114,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void GetContent(GetPageContentCallback callback) = 0;
     // Get current cache of content, if available. Do not perform any fresh
     // fetch for the content.
-    virtual std::string_view GetCachedTextContent() = 0;
-    virtual bool GetCachedIsVideo() = 0;
+    virtual std::string_view GetCachedTextContent() const = 0;
+    virtual bool GetCachedIsVideo() const = 0;
     // Get summarizer-key meta tag content from Brave Search SERP if exists and
     // use it to fetch search query and summary from Brave search chatllm
     // endpoint.
@@ -415,10 +415,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Its used in tests.
   void GeneratePageContentInternal(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(GetPageContentCallback callback,
-                                     std::string previous_content,
-                                     std::string contents_text,
-                                     bool is_video,
-                                     std::string invalidation_token);
+                                     std::string previous_content);
   void OnGetRefinedPageContent(
       EngineConsumer::GenerationDataCallback data_received_callback,
       EngineConsumer::GenerationCompletedCallback data_completed_callback,

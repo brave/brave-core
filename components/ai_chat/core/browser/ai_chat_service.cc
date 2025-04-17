@@ -761,10 +761,7 @@ void AIChatService::OnConversationEntryAdded(
   }
 
   if (!conversation->has_content) {
-    HandleFirstEntry(handler, entry,
-                     associated_content.has_value()
-                         ? std::move(associated_content.value())
-                         : std::vector<std::string>(),
+    HandleFirstEntry(handler, entry, std::move(associated_content),
                      conversation);
   } else {
     HandleNewEntry(handler, entry, std::move(associated_content), conversation);
@@ -778,11 +775,16 @@ void AIChatService::OnConversationEntryAdded(
 void AIChatService::HandleFirstEntry(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::vector<std::string> associated_content,
+    std::optional<std::vector<std::string>> maybe_associated_content,
     mojom::ConversationPtr& conversation) {
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
            << " being persisted for first time.";
   CHECK(entry->uuid.has_value());
+
+  std::vector<std::string> associated_content;
+  if (maybe_associated_content.has_value()) {
+    associated_content = std::move(maybe_associated_content.value());
+  }
 
   // We can persist the conversation metadata for the first time as well as the
   // entry.
@@ -902,7 +904,7 @@ void AIChatService::OnConversationTokenInfoChanged(
 }
 
 void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
-  if (handler->associated_content_manager()->HasContent()) {
+  if (handler->associated_content_manager()->HasAssociatedContent()) {
     return;
   }
   MaybeUnloadConversation(handler);

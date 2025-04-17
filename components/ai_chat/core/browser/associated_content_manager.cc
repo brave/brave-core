@@ -11,7 +11,8 @@
 #include <string>
 #include <vector>
 
-#include "base/barrier_callback.h"
+#include "base/barrier_closure.h"
+#include "base/functional/callback_forward.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
@@ -46,7 +47,8 @@ void AssociatedContentManager::SetContent(
   // This class should only be provided with a delegate when
   // it is allowed to use it (e.g. not internal WebUI content).
   // The user can toggle this via the UI.
-  should_send_ = features::IsPageContextEnabledInitially() && HasContent();
+  should_send_ =
+      features::IsPageContextEnabledInitially() && HasAssociatedContent();
   conversation_->OnAssociatedContentUpdated();
 }
 
@@ -93,9 +95,9 @@ void AssociatedContentManager::SetArchiveContent(int content_id,
   DVLOG(1) << __func__;
 
   auto it =
-      std::ranges::find(content_drivers_, content_id,
+      std::ranges::find(content_delegates_, content_id,
                         [](const auto& ptr) { return ptr->GetContentId(); });
-  CHECK(it != content_drivers_.end()) << "Couldn't find |content_id|";
+  CHECK(it != content_delegates_.end()) << "Couldn't find |content_id|";
 
   auto* delegate = *it;
   content_observations_.RemoveObservation(delegate);
@@ -119,7 +121,7 @@ void AssociatedContentManager::AddContent(
   // If we're adding content, we probably want to send it.
   should_send_ = true;
 
-  content_drivers_.push_back(delegate);
+  content_delegates_.push_back(delegate);
   content_observations_.AddObservation(delegate);
 
   if (notify_updated) {
@@ -132,13 +134,13 @@ void AssociatedContentManager::RemoveContent(
     bool notify_updated) {
   DVLOG(1) << __func__;
 
-  auto it = std::ranges::find(content_drivers_, delegate,
+  auto it = std::ranges::find(content_delegates_, delegate,
                               [](const auto& ptr) { return ptr; });
-  if (it != content_drivers_.end()) {
+  if (it != content_delegates_.end()) {
     // Let the content know it isn't associated with this conversation
     // anymore.
     content_observations_.RemoveObservation(delegate);
-    content_drivers_.erase(it);
+    content_delegates_.erase(it);
   }
 
   // If this is archived content, delete it.
@@ -150,7 +152,7 @@ void AssociatedContentManager::RemoveContent(
   }
 
   // If we're modifying the associated content, we probably want to send it.
-  should_send_ = !content_drivers_.empty();
+  should_send_ = !content_delegates_.empty();
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -169,12 +171,15 @@ AssociatedContentManager::GetAssociatedContent() const {
   uint32_t total_consumed_chars = 0;
 
   std::vector<mojom::AssociatedContentPtr> result;
-  for (auto* driver : content_drivers_) {
+  for (auto* driver : content_delegates_) {
     mojom::AssociatedContentPtr content = mojom::AssociatedContent::New();
     content->uuid = driver->uuid();
     content->content_id = driver->GetContentId();
     content->url = driver->GetURL();
     content->title = base::UTF16ToUTF8(driver->GetTitle());
+    content->content_type = driver->GetCachedIsVideo()
+                                ? mojom::ContentType::VideoTranscript
+                                : mojom::ContentType::PageContent;
 
     const uint32_t content_length =
         driver->GetCachedTextContent().length() + kAdditionalCharsPerContent;
@@ -199,57 +204,41 @@ AssociatedContentManager::GetAssociatedContent() const {
   return result;
 }
 
-void AssociatedContentManager::GetContent(
-    ConversationHandler::GetPageContentCallback callback) {
+void AssociatedContentManager::GetContent(base::OnceClosure callback) {
   DVLOG(1) << __func__;
 
   // Note: |GetContent| on the AssociatedContentDelegate's is sometimes sync,
   // sometimes async depending on whether it has already been run. This means we
   // need to make sure we don't destroy the signal before we post this callback.
-  auto cb = base::BindOnce(
-      [](base::WeakPtr<AssociatedContentManager> self,
-         ConversationHandler::GetPageContentCallback callback) {
-        if (!self) {
-          return;
-        }
-        self->conversation_->OnAssociatedContentUpdated();
-        std::move(callback).Run(self->GetCachedTextContent(), self->IsVideo(),
-                                "");
-      },
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
   if (!on_page_text_fetch_complete_) {
     on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
 
     // Note: When we create the signal here its important we post the callback
     // before running the BarrierCallback, which will null out the signal when
     // it completes (if all the |GetContent| calls are synchronous).
-    on_page_text_fetch_complete_->Post(FROM_HERE, std::move(cb));
+    on_page_text_fetch_complete_->Post(FROM_HERE, std::move(callback));
 
     // wait for all GetPageContent to finish
-    auto content_callback = base::BarrierCallback<std::string>(
-        content_drivers_.size(),
+    auto content_callback = base::BarrierClosure(
+        content_delegates_.size(),
         base::BindOnce(
-            [](base::WeakPtr<AssociatedContentManager> self,
-               std::vector<std::string> results) {
+            [](base::WeakPtr<AssociatedContentManager> self) {
               if (!self) {
                 return;
               }
 
-              self->cached_text_content_ = std::move(results);
               self->on_page_text_fetch_complete_->Signal();
               self->on_page_text_fetch_complete_ = nullptr;
             },
             weak_ptr_factory_.GetWeakPtr()));
-    for (auto* content : content_drivers_) {
+    for (auto* content : content_delegates_) {
       content->GetContent(base::BindOnce(
-          [](base::RepeatingCallback<void(std::string)> callback,
-             std::string content, bool is_video,
-             std::string invalidation_token) { callback.Run(content); },
+          [](base::RepeatingClosure callback, std::string content,
+             bool is_video, std::string invalidation_token) { callback.Run(); },
           content_callback));
     }
   } else {
-    on_page_text_fetch_complete_->Post(FROM_HERE, std::move(cb));
+    on_page_text_fetch_complete_->Post(FROM_HERE, std::move(callback));
   }
 }
 
@@ -257,12 +246,12 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
     ConversationHandler::GetStagedEntriesCallback callback) {
   DVLOG(1) << __func__;
 
-  if (content_drivers_.size() != 1) {
+  if (content_delegates_.size() != 1) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  content_drivers_[0]->GetStagedEntriesFromContent(std::move(callback));
+  content_delegates_[0]->GetStagedEntriesFromContent(std::move(callback));
 }
 
 void AssociatedContentManager::GetTopSimilarityWithPromptTilContextLimit(
@@ -272,30 +261,32 @@ void AssociatedContentManager::GetTopSimilarityWithPromptTilContextLimit(
     TextEmbedder::TopSimilarityCallback callback) {
   DVLOG(1) << __func__;
 
-  if (content_drivers_.size() != 1) {
+  if (content_delegates_.size() != 1) {
     // TODO(@fallaciousreasoning): Ask @petemill if this is correct.
     std::move(callback).Run(base::unexpected("No content driver"));
     return;
   }
 
   // TODO(@fallaciousreasoning): Ask @petemill if this is correct.
-  content_drivers_[0]->GetTopSimilarityWithPromptTilContextLimit(
+  content_delegates_[0]->GetTopSimilarityWithPromptTilContextLimit(
       prompt, text, context_limit, std::move(callback));
 }
 
 std::string AssociatedContentManager::GetCachedTextContent() const {
   DVLOG(1) << __func__;
 
+  auto cached_content = GetCachedContent();
+
   // If we only have one content driver directly return the content.
   // Otherwise, wrap each content in <page> tags.
-  if (cached_text_content_.size() == 1) {
-    return cached_text_content_[0];
+  if (cached_content.size() == 1) {
+    return std::string(cached_content[0]);
   }
 
-  if (cached_text_content_.size() > 0) {
-    return base::StrCat(
-        {"<page>", base::JoinString(cached_text_content_, "</page><page>"),
-         "</page>"});
+  if (cached_content.size() > 0) {
+    return base::StrCat({"<page>",
+                         base::JoinString(cached_content, "</page><page>"),
+                         "</page>"});
   }
   return "";
 }
@@ -305,8 +296,8 @@ std::vector<std::string_view> AssociatedContentManager::GetCachedContent()
   DVLOG(1) << __func__;
 
   std::vector<std::string_view> result;
-  for (const auto& content : cached_text_content_) {
-    result.push_back(content);
+  for (auto* delegate : content_delegates_) {
+    result.push_back(delegate->GetCachedTextContent());
   }
 
   return result;
@@ -315,33 +306,33 @@ std::vector<std::string_view> AssociatedContentManager::GetCachedContent()
 bool AssociatedContentManager::HasOpenAIChatPermission() const {
   DVLOG(1) << __func__;
 
-  return content_drivers_.size() == 1 &&
-         content_drivers_[0]->HasOpenAIChatPermission();
+  return content_delegates_.size() == 1 &&
+         content_delegates_[0]->HasOpenAIChatPermission();
 }
 
 bool AssociatedContentManager::HasNonArchiveContent() const {
   DVLOG(1) << __func__;
 
-  return archive_content_.size() < content_drivers_.size();
+  return archive_content_.size() < content_delegates_.size();
 }
 
-bool AssociatedContentManager::HasContent() const {
+bool AssociatedContentManager::HasAssociatedContent() const {
   DVLOG(1) << __func__;
 
-  return !content_drivers_.empty();
+  return !content_delegates_.empty();
 }
 
 bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
-  return content_drivers_.size() == 1 &&
-         content_drivers_[0]->GetCachedIsVideo();
+  return content_delegates_.size() == 1 &&
+         content_delegates_[0]->GetCachedIsVideo();
 }
 
 void AssociatedContentManager::SetShouldSend(bool value) {
   DVLOG(1) << __func__ << " " << value;
 
-  should_send_ = value && HasContent();
+  should_send_ = value && HasAssociatedContent();
   conversation_->OnAssociatedContentUpdated();
 }
 
@@ -374,7 +365,7 @@ void AssociatedContentManager::DetachContent() {
   DVLOG(1) << __func__;
 
   content_observations_.RemoveAllObservations();
-  content_drivers_.clear();
+  content_delegates_.clear();
   archive_content_.clear();
 }
 

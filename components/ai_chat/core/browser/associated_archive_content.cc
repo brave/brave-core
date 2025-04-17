@@ -64,11 +64,11 @@ void AssociatedArchiveContent::GetContent(
   std::move(callback).Run(text_content_, is_video_, "");
 }
 
-std::string_view AssociatedArchiveContent::GetCachedTextContent() {
+std::string_view AssociatedArchiveContent::GetCachedTextContent() const {
   return text_content_;
 }
 
-bool AssociatedArchiveContent::GetCachedIsVideo() {
+bool AssociatedArchiveContent::GetCachedIsVideo() const {
   return is_video_;
 }
 

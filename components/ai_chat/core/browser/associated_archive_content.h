@@ -50,8 +50,8 @@ class AssociatedArchiveContent
 
   void GetContent(
       ConversationHandler::GetPageContentCallback callback) override;
-  std::string_view GetCachedTextContent() override;
-  bool GetCachedIsVideo() override;
+  std::string_view GetCachedTextContent() const override;
+  bool GetCachedIsVideo() const override;
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr();
 
