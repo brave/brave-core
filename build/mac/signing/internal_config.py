@@ -14,12 +14,11 @@ import os
 from os.path import basename, dirname
 from signing.chromium_config import ChromiumCodeSignConfig
 from signing.model import Distribution, NotarizeAndStapleLevel
-from signing_helper import BraveCodesignConfig
 
 BRAVE_CHANNEL = os.environ.get('BRAVE_CHANNEL')
 
 
-class InternalCodeSignConfig(BraveCodesignConfig, ChromiumCodeSignConfig):
+class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -14,20 +14,6 @@ import re
 from lib.widevine import can_generate_sig_file, generate_sig_file
 
 
-class BraveCodesignConfig:
-
-    @property
-    def codesign_requirements_outer_app(self):
-        # base_bundle_id comes from the CodeSignConfig superclass.
-        # pylint: disable=no-member
-        return 'designated => identifier "' + self.base_bundle_id + '"'
-
-    @property
-    def codesign_requirements_basic(self):
-        # Mirror Chrome, Edge and GoogleUpdater:
-        return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = KL8N8XSYF4'  # pylint: disable=line-too-long
-
-
 def GenerateBraveWidevineSigFile(paths, config, part):
     """ Generates Widevine .sig file """
     if can_generate_sig_file():
