@@ -5,12 +5,11 @@
       "scale" : "1x"
     },
     {
-      "filename" : "Vector@2x.png",
+      "filename" : "zec-asset-icon.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Vector@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -195,7 +195,14 @@ extension BraveWallet.AccountInfo {
   }
 
   var supportsAccountExport: Bool {
-    coin != .btc && coin != .zec
+    switch coin {
+    case .eth, .sol, .fil:
+      return true
+    case .btc, .zec, .ada:
+      return false
+    @unknown default:
+      return false
+    }
   }
 
   var supportsNFT: Bool {
@@ -249,7 +256,7 @@ extension BraveWallet.CoinType {
     case .zec:
       return [.zCashMainnet, .zCashTestnet]
     case .ada:
-      fallthrough
+      return [.cardanoMainnet, .cardanoTestnet]
     @unknown default:
       return [.default]
     }
@@ -663,7 +670,7 @@ extension BraveWallet.KeyringId {
     case .zec:
       return chainId == BraveWallet.ZCashMainnet ? .zCashMainnet : .zCashTestnet
     case .ada:
-      fallthrough
+      return chainId == BraveWallet.CardanoMainnet ? .cardanoMainnet : .cardanoTestnet
     @unknown default:
       return .default
     }
