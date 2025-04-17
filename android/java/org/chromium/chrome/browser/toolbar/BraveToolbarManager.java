@@ -395,6 +395,10 @@ public class BraveToolbarManager extends ToolbarManager
     // Also ToolbarManager.initializeWithNative calls
     // TopToolbarCoordinator.initializeWithNative where 3rd parameter is
     // `OnClickListener tabSwitcherClickHandler`. So it is a tabSwitcherClickHandler.
+    //
+    // Suppress to observe SharedPreferences, which is discouraged; use another messaging channel
+    // instead.
+    @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     @Override
     public void initializeWithNative(
             @NonNull LayoutManagerImpl layoutManager,
