@@ -37,6 +37,9 @@ public abstract class BraveCommandLineInitUtil {
         appendBraveSwitchesAndArguments();
     }
 
+    // Suppress to access SharedPreferences, which is discouraged; we cannot depend on //chrome from
+    // //base to use ChromeSharedPreferences
+    @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     private static void appendBraveSwitchesAndArguments() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         String qaCommandLine = sharedPreferences.getString(PREF_QA_COMMAND_LINE, "");
