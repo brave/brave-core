@@ -4,10 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 group("search_engines") {
-  deps = [
-    "//brave/components/search_engines/android:jni_headers",
-    "//components/search_engines",
-  ]
+  deps = [ "//components/search_engines" ]
 }
 
 source_set("unit_tests") {

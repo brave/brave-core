@@ -11,6 +11,7 @@ android_library("java") {
   sources = [ "java/src/org/chromium/components/search_engines/BraveTemplateUrlService.java" ]
   deps = [
     "//base:log_java",
+    "//build/android:build_java",
     "//components/search_engines/android:java",
     "//third_party/jni_zero:gendeps_java",
     "//third_party/jni_zero:jni_zero_java",

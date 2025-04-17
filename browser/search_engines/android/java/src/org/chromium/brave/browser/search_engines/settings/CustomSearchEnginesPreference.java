@@ -14,7 +14,6 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.search_engines.CustomSearchEnginesPrefManager;
 import org.chromium.brave.browser.search_engines.R;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -26,7 +25,6 @@ public class CustomSearchEnginesPreference extends Preference {
     private Profile mProfile;
     private CustomSearchEngineAdapter mCustomSearchEngineAdapter;
     private CustomSearchEnginesPrefManager mCustomSearchEnginesPrefManager;
-    private CustomSearchEnginesManager mCustomSearchEnginesManager;
 
     public CustomSearchEnginesPreference(Context context) {
         super(context);
@@ -40,7 +38,6 @@ public class CustomSearchEnginesPreference extends Preference {
     public void initialize(Profile profile) {
         mProfile = profile;
         mCustomSearchEnginesPrefManager = CustomSearchEnginesPrefManager.getInstance();
-        mCustomSearchEnginesManager = CustomSearchEnginesManager.getInstance();
     }
 
     @Override

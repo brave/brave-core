@@ -1860,7 +1860,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/search_engines/TemplateUrlService",
-                        "org/chromium/components/search_engines/BraveTemplateUrlService"));
+                        "org/chromium/components/search_engines/BraveTemplateUrlService",
+                        long.class));
     }
 
     @Test
