@@ -37,7 +37,6 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
-import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
@@ -78,7 +77,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier,
-            OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors,
             ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
@@ -109,7 +107,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 resourceManagerSupplier,
                 historyDelegate,
                 partnerHomepageEnabledSupplier,
-                offlineDownloader,
                 initializeWithIncognitoColors,
                 constraintsSupplier,
                 compositorInMotionSupplier,

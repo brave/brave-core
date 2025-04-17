@@ -101,7 +101,6 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.reload_button.ReloadButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
-import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
@@ -1500,7 +1499,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier,
-            OfflineDownloader offlineDownloader,
             UserEducationHelper userEducationHelper,
             ObservableSupplier<Tracker> trackerSupplier,
             ToolbarProgressBar progressBar,
@@ -1513,7 +1511,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 tabSwitcherButtonCoordinator,
                 historyDelegate,
                 partnerHomepageEnabledSupplier,
-                offlineDownloader,
                 userEducationHelper,
                 trackerSupplier,
                 progressBar,

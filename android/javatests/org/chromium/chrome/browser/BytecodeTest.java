@@ -94,6 +94,7 @@ import org.chromium.chrome.browser.ntp.NewTabPageCreationTracker;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
+import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
@@ -135,7 +136,6 @@ import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
-import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -1324,7 +1324,6 @@ public class BytecodeTest {
                         Supplier.class,
                         HistoryDelegate.class,
                         BooleanSupplier.class,
-                        OfflineDownloader.class,
                         boolean.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1494,7 +1493,8 @@ public class BytecodeTest {
                         Supplier.class,
                         OnLongClickListener.class,
                         BrowserControlsStateProvider.class,
-                        boolean.class));
+                        boolean.class,
+                        LocationBarCoordinator.OfflineDownloader.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1516,7 +1516,8 @@ public class BytecodeTest {
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                         ObservableSupplier.class,
-                        BrowserControlsStateProvider.class));
+                        BrowserControlsStateProvider.class,
+                        LocationBarCoordinator.OfflineDownloader.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
