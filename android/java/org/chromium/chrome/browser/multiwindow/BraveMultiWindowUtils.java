@@ -76,9 +76,10 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
             MultiInstanceManager multiInstanceManager =
                     BraveActivity.getBraveActivityFromTaskId(activity.getTaskId())
                             .getMultiInstanceManager();
-            if (multiInstanceManager != null) {
-                multiInstanceManager.handleMenuOrKeyboardAction(
-                        org.chromium.chrome.R.id.move_to_other_window_menu_id, false);
+            if (multiInstanceManager instanceof MultiInstanceManagerImpl) {
+                ((MultiInstanceManagerImpl) multiInstanceManager)
+                        .handleMenuOrKeyboardAction(
+                                org.chromium.chrome.R.id.move_to_other_window_menu_id, false);
                 if (activity != null) {
                     Intent intent = new Intent(activity, ChromeTabbedActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
