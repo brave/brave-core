@@ -250,24 +250,18 @@ public class AppearancePreferences extends BravePreferenceFragment
         String key = preference.getKey();
         boolean shouldRelaunch = false;
         if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
-            SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
             Boolean originalStatus = BottomToolbarConfiguration.isBraveBottomControlsEnabled();
             updatePreferenceSummary(
                     BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
                     !originalStatus ? R.string.text_on : R.string.text_off);
-            preferencesManager
-                    .getEditor()
-                    .putBoolean(
-                            BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus)
-                    .apply();
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus);
 
             shouldRelaunch = true;
         } else if (PREF_SHOW_BRAVE_REWARDS_ICON.equals(key)) {
-            SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
-            preferencesManager
-                    .getEditor()
-                    .putBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue)
-                    .apply();
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue);
             shouldRelaunch = true;
         } else if (PREF_ADS_SWITCH.equals(key)) {
             setPrefAdsInBackgroundEnabled((boolean) newValue);
