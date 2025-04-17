@@ -82,6 +82,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
+import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
@@ -127,6 +128,7 @@ public class BraveToolbarManager extends ToolbarManager
     private int mCurrentOrientation;
     private boolean mInitializedWithNative;
     private @Nullable TabGroupUiOneshotSupplier mTabGroupUiOneshotSupplier;
+    private @Nullable UndoBarThrottle mUndoBarThrottle;
 
     // Own members.
     private boolean mIsBraveBottomControlsVisible;
@@ -307,7 +309,8 @@ public class BraveToolbarManager extends ToolbarManager
                             mTabCreatorManager,
                             mLayoutStateProviderSupplier,
                             mModalDialogManagerSupplier.get(),
-                            bottomUiThemeColorProvider);
+                            bottomUiThemeColorProvider,
+                            mUndoBarThrottle);
             var bottomControlsContentDelegateSupplier =
                     (OneshotSupplier<BottomControlsContentDelegate>)
                             ((OneshotSupplier<? extends BottomControlsContentDelegate>)
@@ -413,7 +416,8 @@ public class BraveToolbarManager extends ToolbarManager
             OnClickListener bookmarkClickHandler,
             OnClickListener customTabsBackClickHandler,
             @Nullable ObservableSupplier<Integer> archivedTabCountSupplier,
-            ObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier) {
+            ObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
+            @Nullable UndoBarThrottle undoBarThrottle) {
 
         super.initializeWithNative(
                 layoutManager,
@@ -422,7 +426,8 @@ public class BraveToolbarManager extends ToolbarManager
                 bookmarkClickHandler,
                 customTabsBackClickHandler,
                 archivedTabCountSupplier,
-                tabModelNotificationDotSupplier);
+                tabModelNotificationDotSupplier,
+                undoBarThrottle);
 
         mOpenGridTabSwitcherHandler = openGridTabSwitcherHandler;
 
