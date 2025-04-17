@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from __future__ import print_function
 from builtins import str
@@ -14,7 +15,7 @@ import json
 
 from lib.config import get_env_var, BRAVE_CORE_ROOT
 from lib.util import execute, scoped_cwd
-from lib.helpers import *
+from lib.helpers import channels
 from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         parse_labels, get_file_contents, get_milestones,
                         add_reviewers_to_pull_request, create_pull_request,
@@ -23,7 +24,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         set_issue_details)
 
 
-class PrConfig(object):
+class PrConfig():
     channel_names = channels()
     channels_to_process = []
     is_verbose = False
@@ -65,8 +66,8 @@ class PrConfig(object):
             return 0
         except Exception as e:
             print(
-                '[ERROR] error returned from GitHub API while initializing config: '
-                + str(e))
+                '[ERROR] error returned from GitHub API while initializing ' +
+                'config: ' + str(e))
             return 1
 
 
@@ -115,8 +116,8 @@ def validate_channel(channel):
     global config
     try:
         config.channel_names.index(channel)
-    except Exception:
-        raise Exception('Channel name "' + channel + '" is not valid!')
+    except Exception as e:
+        raise Exception('Channel name "' + channel + '" is not valid!') from e
 
 
 def parse_args():
@@ -138,7 +139,7 @@ def parse_args():
     parser.add_argument(
         '--uplift-using-pr',
         help=
-        'link to already existing pull request (number) to use as a reference for uplifting',
+        'link to already existing pull request (number) to use as a reference for uplifting',  # pylint: disable=line-too-long
         required=True)
     parser.add_argument(
         '--start-from',
@@ -163,10 +164,9 @@ def parse_args():
         '--title',
         help='title to use (instead of inferring one from the first commit)',
         default=None)
-    parser.add_argument(
-        '--copy-ci-labels',
-        action='store_true',
-        help='copy the `CI/*` labels from the PR (if present)')
+    parser.add_argument('--copy-ci-labels',
+                        action='store_true',
+                        help='copy the `CI/*` labels from the PR (if present)')
 
     return parser.parse_args()
 
@@ -187,7 +187,7 @@ def fancy_print(text):
 
 def parse_issues_fixed(body):
     try:
-        regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'  # nopep8
+        regex = r'((Resolves|Fixes|Fix|Closes|Close|resolves|fixes|fix|closes|close) https:\/\/github\.com\/brave\/brave-browser\/issues\/(\d*))'  # pylint: disable=line-too-long
         return re.findall(regex, body)
     except Exception as e:
         print(str(e))
@@ -219,7 +219,8 @@ def main():
     if not is_nightly(args.start_from):
         top_level_base = remote_branches[args.start_from]
 
-    # optionally (instead of having a local branch), allow uplifting a specific PR
+    # optionally (instead of having a local branch)
+    # allow uplifting a specific PR
     # this pulls down the pr locally (in a special branch)
     if args.uplift_using_pr:
         try:
@@ -248,8 +249,9 @@ def main():
 
         except Exception as e:
             print(
-                '[ERROR] Error parsing or error returned from API when looking up pull request "'
-                + str(args.uplift_using_pr) + '":\n' + str(e))
+                '[ERROR] Error parsing or error returned from API when looking '
+                + 'up pull request "' + str(args.uplift_using_pr) + '":\n' +
+                str(e))
             return 1
 
         # set starting point AHEAD of the PR provided
@@ -466,16 +468,18 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
         pr_body += '- [ ] You have tested your change on Nightly. \n'
         pr_body += '- [ ] This contains text which needs to be translated. \n'
         pr_body += '    - [ ] There are more than 7 days before the release. \n'
-        pr_body += '    - [ ] I\'ve notified folks in #l10n on Slack that translations are needed. \n'
-        pr_body += '- [ ] The PR milestones match the branch they are landing to. \n\n'
+        pr_body += '    - [ ] I\'ve notified folks in #l10n on Slack that ' \
+                    'translations are needed. \n'
+        pr_body += '- [ ] The PR milestones match the branch they are ' \
+                    'landing to. \n\n'
 
         pr_body += '\nPre-merge checklist: \n'
-        pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
-                    'pass or are not related to your PR. \n\n'
+        pr_body += '- [ ] You have checked CI and the builds, lint, and ' \
+                    'tests all pass or are not related to your PR. \n\n'
 
         pr_body += 'Post-merge checklist: \n'
-        pr_body += '- [ ] The associated issue milestone is set to the smallest version ' \
-                    'that the changes is landed on.'
+        pr_body += '- [ ] The associated issue milestone is set to the ' \
+                    'smallest version that the changes is landed on.'
 
     number = create_pull_request(config.github_token,
                                  BRAVE_CORE_REPO,
