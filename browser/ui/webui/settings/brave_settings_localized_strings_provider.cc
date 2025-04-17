@@ -980,11 +980,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
-  auto reset_zcash_sync_state_confirmation_text = l10n_util::GetStringFUTF16(
-      IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMATION,
-      confirmation_phrase);
-  html_source->AddString("resetZCashSyncStateConfirmation",
-                         reset_zcash_sync_state_confirmation_text);
+  html_source->AddString(
+      "resetZCashSyncStateConfirmation",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMATION,
+          confirmation_phrase));
   html_source->AddString(
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
