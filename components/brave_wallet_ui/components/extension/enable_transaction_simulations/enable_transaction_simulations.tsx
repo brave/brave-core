@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { BraveWallet } from '../../../constants/types'
 
 // utils
-import { getLocale, getLocaleWithTags } from '../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { openTab } from '../../../utils/routes-utils'
 
 // hooks
@@ -104,30 +104,10 @@ export const EnableTransactionSimulations: React.FC = () => {
 
             <TermsText>
               <span>
-                {getLocaleWithTags(
-                  'braveWalletTransactionSimulationTerms',
-                  3
-                ).map((text, index) => {
-                  return (
-                    <span key={text.duringTag ?? index}>
-                      {text.beforeTag}
-                      {index === 0 ? (
-                        <strong>{text.duringTag}</strong>
-                      ) : (
-                        <a
-                          href='#'
-                          onClick={() =>
-                            index === 1
-                              ? openTab(BLOWFISH_TERMS_URL)
-                              : openTab(BLOWFISH_PRIVACY_POLICY_URL)
-                          }
-                        >
-                          {text.duringTag}
-                        </a>
-                      )}
-                      {text.afterTag}
-                    </span>
-                  )
+                {formatLocale('braveWalletTransactionSimulationTerms', {
+                  $1: content => <strong>{content}</strong>,
+                  $2: content => <a href='#' onClick={() => openTab(BLOWFISH_TERMS_URL)}>{content}</a>,
+                  $3: content => <a href='#' onClick={() => openTab(BLOWFISH_PRIVACY_POLICY_URL)}>{content}</a>
                 })}
               </span>
             </TermsText>

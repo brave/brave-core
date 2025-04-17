@@ -6,7 +6,7 @@
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale, getLocaleWithTag } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import Flex from '$web-common/Flex'
 
 const TodayGraphic = <svg width="370" height="80" viewBox="0 0 370 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,7 +57,11 @@ const EnableButton = styled(Button)`
   margin-bottom: 48px;
 `
 
-const descriptionTwoTextParts = getLocaleWithTag('braveNewsIntroDescriptionTwo')
+const description = formatLocale('braveNewsIntroDescriptionTwo', {
+  $1: content => <a href='https://brave.com/privacy/browser/'>
+    {content}
+  </a>
+})
 
 export default function DisabledPlaceholder (props: { enableBraveNews: () => void }) {
   return (
@@ -71,11 +75,7 @@ export default function DisabledPlaceholder (props: { enableBraveNews: () => voi
           {getLocale('braveNewsIntroDescription')}
         </Subtitle>
         <Subtitle>
-          {descriptionTwoTextParts.beforeTag}
-            <a href={'https://brave.com/privacy/browser/'}>
-              {descriptionTwoTextParts.duringTag}
-            </a>
-          {descriptionTwoTextParts.afterTag}
+          {description}
         </Subtitle>
       </div>
       <EnableButton onClick={props.enableBraveNews}>

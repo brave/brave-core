@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { WalletRoutes } from '../../../../constants/types'
 
 // components
@@ -24,16 +24,20 @@ import {
 import { ContinueButton } from '../onboarding.style'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 
+const walletHardwareDescription = formatLocale(
+  'braveWalletConnectHardwareDescription',
+  {
+    $1: <Bold>{getLocale('braveWalletConnectHardwareLedger')}</Bold>,
+    $2: <Bold>{getLocale('braveWalletConnectHardwareTrezor')}</Bold>
+  }
+)
+
 export const OnboardingImportHardwareWalletWelcome = () => {
   const history = useHistory()
 
   const onClickContinue = () => {
     history.push(WalletRoutes.OnboardingHardwareWalletCreatePassword)
   }
-
-  const { beforeTag, duringTag, afterTag } = splitStringForTag(
-    getLocale('braveWallectConnectHardwareDescription')
-  )
 
   return (
     <OnboardingContentLayout
@@ -45,11 +49,7 @@ export const OnboardingImportHardwareWalletWelcome = () => {
       </Description>
       <VerticalSpace space='28px' />
       <Description>
-        {beforeTag}
-        <Bold>{getLocale('braveWalletConnectHardwareLedger')}</Bold>
-        {duringTag}
-        <Bold>{getLocale('braveWalletConnectHardwareTrezor')}</Bold>
-        {afterTag}
+        {walletHardwareDescription}
       </Description>
       <Column margin='117px 0 88px 0'>
         <ContinueButton onClick={onClickContinue}>

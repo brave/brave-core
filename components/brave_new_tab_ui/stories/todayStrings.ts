@@ -11,5 +11,5 @@ provideStrings({
   braveNewsScrollHint: 'Scroll for Brave News',
   braveNewsIntroTitle: 'Turn on Brave News, and never miss a story',
   braveNewsIntroDescription: 'Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and…voila!',
-  braveNewsIntroDescriptionTwo: 'Brave News is ad-supported with private, anonymized ads. $1Learn more.$2.'
+  braveNewsIntroDescriptionTwo: 'Brave News is ad-supported with private, anonymized ads. $1Learn more.$1.'
 })

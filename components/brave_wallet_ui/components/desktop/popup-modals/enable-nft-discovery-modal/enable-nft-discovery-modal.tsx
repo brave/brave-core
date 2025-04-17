@@ -11,7 +11,7 @@ import {
 import { UISelectors } from '../../../../common/selectors'
 
 // utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { loadTimeData } from '../../../../../common/loadTimeData'
 
 // components
@@ -35,19 +35,21 @@ interface Props {
 const LEARN_MORE_LINK =
   'https://github.com/brave/brave-browser/wiki/NFT-Discovery'
 
+const enableNftAutoDiscovery = formatLocale('braveWalletEnableNftAutoDiscoveryModalDescription', {
+  $1: content => <Underline>{content}</Underline>,
+  $2: content => <Link
+    target='_blank'
+    rel='noreferrer'
+    href={LEARN_MORE_LINK}
+  >
+    {content}
+  </Link>
+})
+
 export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
-
-  const { beforeTag, duringTag, afterTag } = splitStringForTag(
-    getLocale('braveWalletEnableNftAutoDiscoveryModalDescription'),
-    1
-  )
-  const { beforeTag: beforeLink, duringTag: learnMore } = splitStringForTag(
-    afterTag || '',
-    3
-  )
 
   return (
     <PopupModal
@@ -66,16 +68,7 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
           {getLocale('braveWalletEnableNftAutoDiscoveryModalHeader')}
         </Header>
         <Description>
-          {beforeTag}
-          <Underline>{duringTag}</Underline>
-          {beforeLink}
-          <Link
-            target='_blank'
-            rel='noreferrer'
-            href={LEARN_MORE_LINK}
-          >
-            {learnMore}
-          </Link>
+          {enableNftAutoDiscovery}
         </Description>
         <ButtonRow>
           <LeoSquaredButton

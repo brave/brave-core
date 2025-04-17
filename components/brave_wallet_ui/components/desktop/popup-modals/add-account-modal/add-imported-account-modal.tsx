@@ -15,7 +15,7 @@ import {
 
 // utils
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
-import { getLocale, getLocaleWithTag } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 
 // options
@@ -76,6 +76,18 @@ const reduceFileName = (address: string) => {
   const reduced = firstHalf.concat('......', secondHalf)
   return reduced
 }
+
+const filPrivateKeyFormatDescription = formatLocale(
+  'braveWalletFilImportPrivateKeyFormatDescription', {
+    $1: content => <a
+        target='_blank'
+        href={FILECOIN_FORMAT_DESCRIPTION_URL}
+        rel='noopener noreferrer'
+      >
+        {content}
+      </a>
+  }
+)
 
 export const ImportAccountModal = () => {
   // refs
@@ -139,10 +151,6 @@ export const ImportAccountModal = () => {
         selectedAccountType.name
       )
     : getLocale('braveWalletAddAccountImport')
-
-  const filPrivateKeyFormatDescriptionTextParts = getLocaleWithTag(
-    'braveWalletFilImportPrivateKeyFormatDescription'
-  )
 
   // methods
   const onClickClose = React.useCallback(() => {
@@ -351,15 +359,7 @@ export const ImportAccountModal = () => {
 
           {selectedAccountType.coin === BraveWallet.CoinType.FIL && (
             <Alert type='warning'>
-              {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-              <a
-                target='_blank'
-                href={FILECOIN_FORMAT_DESCRIPTION_URL}
-                rel='noopener noreferrer'
-              >
-                {filPrivateKeyFormatDescriptionTextParts.duringTag}
-              </a>
-              {filPrivateKeyFormatDescriptionTextParts.afterTag}
+              {filPrivateKeyFormatDescription}
             </Alert>
           )}
           {selectedAccountType.coin === BraveWallet.CoinType.BTC && (

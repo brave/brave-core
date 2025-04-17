@@ -12,7 +12,7 @@ import {
 } from '../../../../constants/types'
 
 // Utils
-import { getLocale, splitStringForTag } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import {
   findTransactionToken,
   getFormattedTransactionTransferredValue,
@@ -92,11 +92,11 @@ export const TransactionIntent = (props: Props) => {
       txAccount &&
       txToAddress
       ? {
-          accountId: txAccount.accountId,
-          testnet: transactionNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
-          use_shielded_pool: transactionsToken.isShielded,
-          address: txToAddress
-        }
+        accountId: txAccount.accountId,
+        testnet: transactionNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
+        use_shielded_pool: transactionsToken.isShielded,
+        address: txToAddress
+      }
       : skipToken
   )
 
@@ -125,9 +125,9 @@ export const TransactionIntent = (props: Props) => {
       transaction.swapInfo?.toChainId &&
       transaction.swapInfo.toCoin !== undefined
       ? {
-          chainId: transaction.swapInfo.toChainId,
-          coin: transaction.swapInfo.toCoin
-        }
+        chainId: transaction.swapInfo.toChainId,
+        coin: transaction.swapInfo.toCoin
+      }
       : skipToken
   )
 
@@ -139,13 +139,13 @@ export const TransactionIntent = (props: Props) => {
 
   const formattedSellAmount = sellToken
     ? sellAmountWei
-        .divideByDecimals(sellToken.decimals)
-        .formatAsAsset(6, sellToken.symbol)
+      .divideByDecimals(sellToken.decimals)
+      .formatAsAsset(6, sellToken.symbol)
     : ''
   const formattedBuyAmount = buyToken
     ? buyAmountWei
-        .divideByDecimals(buyToken.decimals)
-        .formatAsAsset(6, buyToken.symbol)
+      .divideByDecimals(buyToken.decimals)
+      .formatAsAsset(6, buyToken.symbol)
     : ''
 
   const transactionFailed =
@@ -167,8 +167,8 @@ export const TransactionIntent = (props: Props) => {
     isERC20Approval
       ? txApprovalTarget
       : isSwapOrBridge
-      ? swapOrBridgeRecipient
-      : txToAddress,
+        ? swapOrBridgeRecipient
+        : txToAddress,
     accountInfosRegistry
   )
 
@@ -190,9 +190,8 @@ export const TransactionIntent = (props: Props) => {
   }, [transactionsToken, normalizedTransferredValue])
 
   const formattedApprovalAmount = isTxApprovalUnlimited
-    ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${
-        transactionsToken?.symbol ?? ''
-      }`
+    ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${transactionsToken?.symbol ?? ''
+    }`
     : formattedSendAmount
 
   const sendSwapOrBridgeLocale = React.useMemo(() => {
@@ -312,90 +311,49 @@ export const TransactionIntent = (props: Props) => {
     isShieldingFunds
   ])
 
-  const descriptionString = getLocale(descriptionLocale)
-    .replace('$5', firstDuringValue)
-    .replace('$6', secondDuringValue)
-    .replace(
-      '$7',
-      transactionFailed ? sendSwapOrBridgeLocale : txNetwork?.chainName ?? ''
-    )
-
-  const {
-    beforeTag: firstBefore,
-    duringTag: firstDuring,
-    afterTag: firstAfter
-  } = splitStringForTag(descriptionString, 1)
-  const {
-    beforeTag: secondBefore,
-    duringTag: secondDuring,
-    afterTag: secondAfter
-  } = splitStringForTag(firstAfter ?? '', 3)
+  const description = formatLocale(descriptionLocale, {
+    $1: <Text
+      textColor='primary'
+      textSize='14px'
+      isBold
+    >
+      {firstDuringValue}
+    </Text>,
+    $2: <Row
+      width='unset'
+      gap='4px'
+    >
+      <Text
+        textColor='primary'
+        textSize='14px'
+        isBold
+      >
+        {secondDuringValue}
+      </Text>
+      <Button
+        onClick={onClickViewOnBlockExplorer(
+          isSwapOrBridge && transaction.swapInfo?.provider === 'lifi'
+            ? 'lifi'
+            : 'tx',
+          transaction.txHash
+        )}
+      >
+        <ExplorerIcon />
+      </Button>
+    </Row>,
+    $3: transactionFailed ? sendSwapOrBridgeLocale : txNetwork?.chainName ?? ''
+  }, {
+    noErrorOnMissingReplacement: true
+  })
 
   return (
     <Row
       gap='4px'
       flexWrap='wrap'
     >
-      {firstBefore && (
-        <Text
-          textColor='secondary'
-          textSize='14px'
-          isBold={false}
-        >
-          {firstBefore}
-        </Text>
-      )}
-      {firstDuring && (
-        <Text
-          textColor='primary'
-          textSize='14px'
-          isBold={true}
-        >
-          {firstDuring}
-        </Text>
-      )}
-      {secondBefore && (
-        <Text
-          textColor='secondary'
-          textSize='14px'
-          isBold={false}
-        >
-          {secondBefore}
-        </Text>
-      )}
-      {secondDuring && (
-        <Row
-          width='unset'
-          gap='4px'
-        >
-          <Text
-            textColor='primary'
-            textSize='14px'
-            isBold={true}
-          >
-            {secondDuring}
-          </Text>
-          <Button
-            onClick={onClickViewOnBlockExplorer(
-              isSwapOrBridge && transaction.swapInfo?.provider === 'lifi'
-                ? 'lifi'
-                : 'tx',
-              transaction.txHash
-            )}
-          >
-            <ExplorerIcon />
-          </Button>
-        </Row>
-      )}
-      {secondAfter && (
-        <Text
-          textColor='secondary'
-          textSize='14px'
-          isBold={false}
-        >
-          {secondAfter}
-        </Text>
-      )}
+      <Text textColor='secondary' textSize='14px'>
+        {description}
+      </Text>
     </Row>
   )
 }
