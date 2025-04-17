@@ -322,7 +322,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
 void ConversationAPIClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
-    APIRequestResult result) {
+    api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {

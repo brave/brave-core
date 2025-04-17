@@ -16,7 +16,6 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
@@ -67,7 +66,7 @@ class OAIAPIClient {
 
  private:
   void OnQueryCompleted(GenerationCompletedCallback callback,
-                        APIRequestResult result);
+                        api_request_helper::APIRequestResult result);
   void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 

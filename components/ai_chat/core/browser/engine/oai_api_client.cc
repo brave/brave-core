@@ -136,8 +136,9 @@ void OAIAPIClient::PerformRequest(
 // completion (which could be an empty string), or an error. We aim to provide
 // more information to the user/UI when invalid payloads are received. That
 // effort is tracked here: https://github.com/brave/brave-browser/issues/43536
-void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
-                                    APIRequestResult result) {
+void OAIAPIClient::OnQueryCompleted(
+    GenerationCompletedCallback callback,
+    api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
