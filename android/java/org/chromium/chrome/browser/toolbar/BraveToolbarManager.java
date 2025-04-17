@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -189,7 +190,8 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable BackPressManager backPressManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
-            @Nullable DesktopWindowStateManager desktopWindowStateManager) {
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
+            @Nullable MultiInstanceManager multiInstanceManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -232,7 +234,8 @@ public class BraveToolbarManager extends ToolbarManager
                 backPressManager,
                 overviewColorSupplier,
                 readAloudControllerSupplier,
-                desktopWindowStateManager);
+                desktopWindowStateManager,
+                multiInstanceManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
