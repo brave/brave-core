@@ -53,6 +53,8 @@ void TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged(
       ai_chat::features::IsTabOrganizationEnabled() &&
       profile->GetPrefs()->GetBoolean(
           ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
+  page_->ShowFREChanged(!profile->GetPrefs()->HasPrefPath(
+      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
 
 TabSearchPageHandler::~TabSearchPageHandler() = default;
@@ -250,4 +252,10 @@ void TabSearchPageHandler::OpenLeoGoPremiumPage() {
 void TabSearchPageHandler::SetTabFocusEnabled() {
   Profile::FromWebUI(web_ui_)->GetPrefs()->SetBoolean(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled, true);
+}
+
+void TabSearchPageHandler::GetTabFocusShowFRE(
+    GetTabFocusShowFRECallback callback) {
+  std::move(callback).Run(!Profile::FromWebUI(web_ui_)->GetPrefs()->HasPrefPath(
+      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }

@@ -38,4 +38,6 @@ interface PageHandler {
   OpenLeoGoPremiumPage();
   // Set the user pref to enable tab focus with Leo.
   SetTabFocusEnabled();
+  // Whether we should show FRE for tab focus.
+  GetTabFocusShowFRE() => (bool show_FRE);
 };
