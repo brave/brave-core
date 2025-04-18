@@ -1165,7 +1165,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env,
       stdio: stdio,
       cwd: this.srcDir,
-      shell: true,
+      // Shell is required to launch .bat files (gclient, vpython3, etc.).
+      shell: process.platform === 'win32',
       git_cwd: '.',
     }
   },

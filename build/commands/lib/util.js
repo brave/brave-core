@@ -741,7 +741,7 @@ const util = {
       num_compile_failure = 0
 
     let ninjaOpts = [
-      '-C', outputDir, targets.join(' '),
+      '-C', outputDir, ...targets,
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
