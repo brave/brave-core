@@ -33,7 +33,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   // The client blinds this token using a blinding scalar. Blinding ensures that
   // the token is not recognizable or linkable to the original value until it's
   // unblinded.
-  const std::optional<cbr::BlindedToken> blinded_token = token.Blind();
+  std::optional<cbr::BlindedToken> blinded_token = token.Blind();
   EXPECT_TRUE(blinded_token);
 
   // The server generates a random signing key.
@@ -42,14 +42,14 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
 
   // The server signs the blinded token using its signing key. This signature
   // proves the server’s endorsement of the token.
-  const std::optional<cbr::SignedToken> signed_token =
+  std::optional<cbr::SignedToken> signed_token =
       signing_key.Sign(*blinded_token);
   EXPECT_TRUE(signed_token);
 
   // The client verifies the batch DLEQ proof using the public key provided by
   // the server. This step confirms that the signatures are valid and correspond
   // to the public key.
-  const std::optional<cbr::PublicKey> public_key = signing_key.GetPublicKey();
+  std::optional<cbr::PublicKey> public_key = signing_key.GetPublicKey();
   EXPECT_TRUE(public_key);
 
   const cbr::BlindedTokenList blinded_tokens = {*blinded_token};
@@ -62,7 +62,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
 
   // The client unblinds the signed tokens using the blinding scalar.
   const cbr::TokenList tokens = {token};
-  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
+  std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, signed_tokens,
                                         *public_key);
   EXPECT_TRUE(unblinded_tokens);
@@ -76,19 +76,19 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
 
     // The client signs the message using the shared verification key and sends
     // it to the server as a `signature` in the credential.
-    const std::optional<cbr::VerificationSignature> verification_signature =
+    std::optional<cbr::VerificationSignature> verification_signature =
         shared_verification_key->Sign(kMessage);
     EXPECT_TRUE(verification_signature);
 
     // The client decodes the token preimage from the unblinded token and sends
     // it to the server as `t` in the credential.
-    const std::optional<cbr::TokenPreimage> token_preimage =
+    std::optional<cbr::TokenPreimage> token_preimage =
         unblinded_token.GetTokenPreimage();
     EXPECT_TRUE(token_preimage);
 
     // The server rederives the unblinded token using the server signing key and
     // the token preimage.
-    const std::optional<cbr::UnblindedToken> rederived_unblinded_token =
+    std::optional<cbr::UnblindedToken> rederived_unblinded_token =
         signing_key.RederiveUnblindedToken(*token_preimage);
     EXPECT_TRUE(rederived_unblinded_token);
 

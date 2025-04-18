@@ -48,7 +48,7 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
   reward.blinded_token = blinded_tokens.front();
 
   // Confirmation token
-  const std::optional<ConfirmationTokenInfo> confirmation_token =
+  std::optional<ConfirmationTokenInfo> confirmation_token =
       MaybeGetConfirmationToken();
   if (!confirmation_token) {
     BLOG(0, "Failed to get confirmation token");
@@ -68,7 +68,7 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
   ConfirmationInfo mutable_confirmation(confirmation);
   mutable_confirmation.reward = reward;
 
-  const std::optional<std::string> reward_credential_base64url =
+  std::optional<std::string> reward_credential_base64url =
       BuildRewardCredential(mutable_confirmation);
   if (!reward_credential_base64url) {
     return std::nullopt;
@@ -82,7 +82,7 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
 
 std::optional<std::string> BuildRewardCredential(
     const ConfirmationInfo& confirmation) {
-  const std::optional<std::string> reward_credential =
+  std::optional<std::string> reward_credential =
       json::writer::WriteRewardCredential(
           confirmation.reward,
           json::writer::WriteConfirmationPayload(confirmation));
@@ -113,7 +113,7 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   confirmation.user_data =
       BuildConfirmationUserData(transaction, std::move(user_data));
 
-  const std::optional<RewardInfo> reward = BuildReward(confirmation);
+  std::optional<RewardInfo> reward = BuildReward(confirmation);
   if (!reward) {
     BLOG(0, "Failed to build reward");
     return std::nullopt;

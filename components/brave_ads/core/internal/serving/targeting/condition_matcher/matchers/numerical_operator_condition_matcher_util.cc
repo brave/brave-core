@@ -40,7 +40,7 @@ bool MatchNumericalOperator(std::string_view value,
     return false;
   }
 
-  const std::optional<double> number = ParseNumber(condition);
+  std::optional<double> number = ParseNumber(condition);
   if (!number) {
     // Invalid number.
     return false;

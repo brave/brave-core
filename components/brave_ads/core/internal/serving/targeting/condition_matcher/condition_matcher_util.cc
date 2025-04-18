@@ -54,7 +54,7 @@ bool MatchConditions(const ConditionMatcherMap& condition_matchers) {
 
         const std::string stripped_pref_path =
             MaybeStripOperatorPrefix(pref_path);
-        const std::optional<std::string> value =
+        std::optional<std::string> value =
             MaybeGetPrefValueAsString(stripped_pref_path);
 
         if (HasNotOperator(pref_path)) {

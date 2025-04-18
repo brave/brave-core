@@ -32,7 +32,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
     const std::string& resource_id) {
   CHECK(!resource_id.empty());
 
-  const std::optional<ComponentInfo> component = GetComponentInfo(resource_id);
+  std::optional<ComponentInfo> component = GetComponentInfo(resource_id);
   if (!component) {
     return VLOG(1) << "Ads resource not supported for " << resource_id;
   }

@@ -19,8 +19,7 @@ constexpr char kRegionKey[] = "region";
 }  // namespace
 
 std::optional<std::string> ParseSubdivision(const std::string& json) {
-  const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
   if (!dict) {
     return std::nullopt;
   }

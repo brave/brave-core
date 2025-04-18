@@ -21,7 +21,7 @@ std::optional<VerifiableConversionInfo> MaybeBuildVerifiableConversion(
     return std::nullopt;
   }
 
-  const std::optional<std::string> verifiable_conversion_id =
+  std::optional<std::string> verifiable_conversion_id =
       MaybeParseVerifiableConversionId(redirect_chain, html,
                                        resource_id_patterns);
   if (!verifiable_conversion_id) {

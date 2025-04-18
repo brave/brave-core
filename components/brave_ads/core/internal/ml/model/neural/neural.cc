@@ -120,7 +120,7 @@ std::optional<PredictionMap> NeuralModel::GetTopCountPredictions(
 std::optional<PredictionMap> NeuralModel::GetTopCountPredictionsImpl(
     const VectorData& data,
     size_t top_count) const {
-  const std::optional<PredictionMap> predictions = Predict(data);
+  std::optional<PredictionMap> predictions = Predict(data);
   if (!predictions) {
     return std::nullopt;
   }

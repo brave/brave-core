@@ -12,8 +12,7 @@
 namespace brave_ads::json::reader {
 
 std::optional<ConfirmationList> ReadConfirmations(const std::string& json) {
-  const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
   if (!dict) {
     return std::nullopt;
   }

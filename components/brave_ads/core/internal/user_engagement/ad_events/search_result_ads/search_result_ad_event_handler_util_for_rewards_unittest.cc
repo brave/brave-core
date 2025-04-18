@@ -41,7 +41,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression);
 
   // Assert
-  const std::optional<CreativeSetConversionInfo> creative_set_conversion =
+  std::optional<CreativeSetConversionInfo> creative_set_conversion =
       FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad);
   ASSERT_TRUE(creative_set_conversion);
 

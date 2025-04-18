@@ -119,7 +119,7 @@ void UserActivityManager::RecordEventForPageTransition(
     RecordEvent(UserActivityEventType::kOpenedLinkFromExternalApplication);
   }
 
-  const std::optional<UserActivityEventType> event_type =
+  std::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(type);
   if (!event_type) {
     return;

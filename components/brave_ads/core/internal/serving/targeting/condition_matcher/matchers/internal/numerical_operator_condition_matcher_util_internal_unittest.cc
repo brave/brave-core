@@ -17,7 +17,7 @@ class BraveAdsNumericalOperatorConditionMatcherUtilInternalTest
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilInternalTest,
        ParseIntegerNumber) {
   // Act & Assert
-  const std::optional<double> number = ParseNumber("[R=]:1");
+  std::optional<double> number = ParseNumber("[R=]:1");
   ASSERT_TRUE(number);
 
   EXPECT_DOUBLE_EQ(1.0, *number);
@@ -26,7 +26,7 @@ TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilInternalTest,
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilInternalTest,
        ParseDoubleNumber) {
   // Act & Assert
-  const std::optional<double> number = ParseNumber("[R=]:1.0");
+  std::optional<double> number = ParseNumber("[R=]:1.0");
   ASSERT_TRUE(number);
 
   EXPECT_DOUBLE_EQ(1.0, *number);

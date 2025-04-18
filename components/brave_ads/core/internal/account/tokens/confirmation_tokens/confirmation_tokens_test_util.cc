@@ -32,7 +32,7 @@ ConfirmationTokenInfo BuildConfirmationToken(
   confirmation_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
 
-  const std::optional<std::string> signature_base64 =
+  std::optional<std::string> signature_base64 =
       crypto::Sign(unblinded_token_base64, wallet.secret_key_base64);
   CHECK(signature_base64);
   confirmation_token.signature_base64 = *signature_base64;

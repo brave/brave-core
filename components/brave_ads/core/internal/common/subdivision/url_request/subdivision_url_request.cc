@@ -83,7 +83,7 @@ void SubdivisionUrlRequest::FetchCallback(
   }
 
   BLOG(1, "Parsing subdivision");
-  const std::optional<std::string> subdivision =
+  std::optional<std::string> subdivision =
       json::reader::ParseSubdivision(mojom_url_response.body);
   if (!subdivision) {
     BLOG(0, "Failed to parse subdivision");

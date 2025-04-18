@@ -23,13 +23,12 @@ class BraveAdsSegmentUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithMultipleCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
-  const std::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(*contents);
+  std::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*contents);
   ASSERT_TRUE(catalog);
 
   // Act

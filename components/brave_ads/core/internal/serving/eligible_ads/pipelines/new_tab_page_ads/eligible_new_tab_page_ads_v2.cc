@@ -150,7 +150,7 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
   // For each bucket of prioritized ads attempt to predict the most suitable ad
   // for the user in priority order.
   for (const auto& [priority, prioritized_eligible_creative_ads] : buckets) {
-    const std::optional<CreativeNewTabPageAdInfo> predicted_creative_ad =
+    std::optional<CreativeNewTabPageAdInfo> predicted_creative_ad =
         MaybePredictCreativeAd(prioritized_eligible_creative_ads, user_model,
                                ad_events);
     if (!predicted_creative_ad) {

@@ -53,7 +53,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -73,7 +73,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/true);
   ASSERT_TRUE(confirmation);
 
@@ -103,7 +103,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -135,7 +135,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
        {{net::HTTP_NOT_FOUND, net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -170,7 +170,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
          net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -204,7 +204,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
        {{net::HTTP_ACCEPTED, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -239,7 +239,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
          net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -273,7 +273,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
        {{net::HTTP_OK, /*response_body=*/test::kMalformedJson}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -320,7 +320,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -368,7 +368,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -409,7 +409,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -456,7 +456,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -504,7 +504,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -551,7 +551,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -598,7 +598,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -646,7 +646,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -691,7 +691,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -736,7 +736,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -784,7 +784,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
             })"}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -817,7 +817,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, FetchPaymentTokenAfter) {
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 

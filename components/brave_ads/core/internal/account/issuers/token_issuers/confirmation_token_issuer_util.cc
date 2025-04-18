@@ -18,7 +18,7 @@
 namespace brave_ads {
 
 bool IsConfirmationTokenIssuerValid(const IssuersInfo& issuers) {
-  const std::optional<TokenIssuerInfo> token_issuer =
+  std::optional<TokenIssuerInfo> token_issuer =
       GetTokenIssuerForType(issuers, TokenIssuerType::kConfirmations);
   if (!token_issuer) {
     return false;

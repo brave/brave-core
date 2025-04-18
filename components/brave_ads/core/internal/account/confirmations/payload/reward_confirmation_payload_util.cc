@@ -23,12 +23,12 @@ constexpr char kPublicKeyKey[] = "publicKey";
 base::Value::Dict BuildRewardConfirmationPayload(const RewardInfo& reward) {
   base::Value::List list;
 
-  const std::optional<std::string> blinded_token_base64 =
+  std::optional<std::string> blinded_token_base64 =
       reward.blinded_token.EncodeBase64();
   CHECK(blinded_token_base64);
   list.Append(*blinded_token_base64);
 
-  const std::optional<std::string> public_key_base64 =
+  std::optional<std::string> public_key_base64 =
       reward.public_key.EncodeBase64();
   CHECK(public_key_base64);
 

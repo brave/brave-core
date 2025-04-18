@@ -45,7 +45,7 @@ std::optional<SegmentList> ParseFunnelSegments(const SegmentList& segments,
   const size_t segments_size = segments.size();
 
   for (const auto& funnel_segment_value : *funnel_segment_list) {
-    const std::optional<int> index = funnel_segment_value.GetIfInt();
+    std::optional<int> index = funnel_segment_value.GetIfInt();
     if (!index || index >= segments_size) {
       return std::nullopt;
     }
@@ -108,7 +108,7 @@ std::optional<PurchaseIntentSegmentKeyphraseList> ParseSegmentKeyphrases(
     const size_t segments_size = segments.size();
 
     for (const auto& index_value : indexes_value.GetList()) {
-      const std::optional<int> index = index_value.GetIfInt();
+      std::optional<int> index = index_value.GetIfInt();
       if (!index || index >= segments_size) {
         return std::nullopt;
       }
@@ -166,7 +166,7 @@ std::optional<PurchaseIntentFunnelSiteMap> ParseFunnelSites(
       return std::nullopt;
     }
 
-    const std::optional<SegmentList> funnel_segments =
+    std::optional<SegmentList> funnel_segments =
         ParseFunnelSegments(segments, *funnel_dict);
     if (!funnel_segments) {
       return std::nullopt;

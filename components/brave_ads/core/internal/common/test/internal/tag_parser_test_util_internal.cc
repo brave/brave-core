@@ -76,7 +76,7 @@ std::optional<std::string> ParseTimeTagValue(const std::string& value) {
   }
 
   if (re2::RE2::FullMatch(value, "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {
-    const std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
+    std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
     CHECK(time_delta) << "Invalid time tag value: " << value;
     return base::TimeFormatAsIso8601(Now() + *time_delta);
   }
@@ -109,8 +109,7 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
     std::string value = components.at(1);
 
     if (key == kTimeTagKey) {
-      const std::optional<std::string> time_tag_value =
-          ParseTimeTagValue(value);
+      std::optional<std::string> time_tag_value = ParseTimeTagValue(value);
       CHECK(time_tag_value) << "Invalid time tag value: " << value;
       value = *time_tag_value;
     } else {

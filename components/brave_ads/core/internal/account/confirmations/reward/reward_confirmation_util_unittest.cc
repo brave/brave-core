@@ -42,12 +42,12 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act
-  const std::optional<std::string> reward_credential =
+  std::optional<std::string> reward_credential =
       BuildRewardCredential(*confirmation);
   ASSERT_TRUE(reward_credential);
 
@@ -68,7 +68,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       BuildRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -119,7 +119,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       BuildRewardConfirmation(transaction, /*user_data=*/{});
 
   // Assert

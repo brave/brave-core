@@ -34,7 +34,7 @@ TEST(BraveAdsSearchEngineResultsPageUtilTest,
 TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
   // Act & Assert
   for (const auto& url : test::GetSearchEngineResultsPageUrls()) {
-    if (const std::optional<std::string> search_term_query_value =
+    if (std::optional<std::string> search_term_query_value =
             ExtractSearchTermQueryValue(url)) {
       EXPECT_EQ("foobar", search_term_query_value);
     }

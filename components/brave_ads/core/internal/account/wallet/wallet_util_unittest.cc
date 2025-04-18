@@ -16,7 +16,7 @@ namespace brave_ads {
 
 TEST(BraveAdsWalletUtilTest, CreateWalletFromRecoverySeed) {
   // Act
-  const std::optional<WalletInfo> wallet = CreateWalletFromRecoverySeed(
+  std::optional<WalletInfo> wallet = CreateWalletFromRecoverySeed(
       test::kWalletPaymentId, test::kWalletRecoverySeedBase64);
   ASSERT_TRUE(wallet);
 

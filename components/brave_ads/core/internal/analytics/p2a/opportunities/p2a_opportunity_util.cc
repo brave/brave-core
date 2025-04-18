@@ -41,7 +41,7 @@ std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
   CHECK(!segment.empty());
 
   const std::string parent_segment = GetParentSegment(segment);
-  const std::optional<std::string> normalized_segment =
+  std::optional<std::string> normalized_segment =
       NormalizeSegment(parent_segment);
   if (!normalized_segment) {
     return std::nullopt;
@@ -70,7 +70,7 @@ std::vector<std::string> BuildP2AAdOpportunityEvents(
   events.reserve(segments.size() + 1);
 
   for (const auto& segment : segments) {
-    if (const std::optional<std::string> ad_opportunities_per_segment_event =
+    if (std::optional<std::string> ad_opportunities_per_segment_event =
             BuildAdOpportunitiesPerSegmentEvent(mojom_ad_type, segment)) {
       events.push_back(*ad_opportunities_per_segment_event);
     }

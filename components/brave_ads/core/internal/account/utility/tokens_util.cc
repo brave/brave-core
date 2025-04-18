@@ -86,8 +86,7 @@ std::optional<cbr::UnblindedTokenList> ParseVerifyAndUnblindTokens(
     return std::nullopt;
   }
 
-  const std::optional<cbr::SignedTokenList> signed_tokens =
-      ParseSignedTokens(dict);
+  std::optional<cbr::SignedTokenList> signed_tokens = ParseSignedTokens(dict);
   if (!signed_tokens) {
     BLOG(0, "Failed to parse signed tokens");
     return std::nullopt;

@@ -60,7 +60,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
 
-  const std::optional<std::string> rotating_hash_before =
+  std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
   ASSERT_TRUE(rotating_hash_before);
 
@@ -82,7 +82,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
 
-  const std::optional<std::string> rotating_hash_before =
+  std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
   ASSERT_TRUE(rotating_hash_before);
 
@@ -102,7 +102,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  const std::optional<std::string> rotating_hash_before =
+  std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
   ASSERT_TRUE(rotating_hash_before);
 

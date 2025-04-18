@@ -32,7 +32,7 @@ base::expected<AntiTargetingResourceInfo, std::string>
 AntiTargetingResourceInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingResourceInfo anti_targeting;
 
-  if (const std::optional<int> version = dict.FindInt(kVersionKey)) {
+  if (std::optional<int> version = dict.FindInt(kVersionKey)) {
     if (version != kAntiTargetingResourceVersion.Get()) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }

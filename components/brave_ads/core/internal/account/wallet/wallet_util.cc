@@ -18,13 +18,13 @@ namespace brave_ads {
 std::optional<WalletInfo> CreateWalletFromRecoverySeed(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {
-  const std::optional<std::vector<uint8_t>> recovery_seed =
+  std::optional<std::vector<uint8_t>> recovery_seed =
       base::Base64Decode(recovery_seed_base64);
   if (!recovery_seed) {
     return std::nullopt;
   }
 
-  const std::optional<crypto::KeyPairInfo> key_pair =
+  std::optional<crypto::KeyPairInfo> key_pair =
       crypto::GenerateSignKeyPairFromSeed(*recovery_seed);
   if (!key_pair || !key_pair->IsValid()) {
     return std::nullopt;

@@ -32,25 +32,25 @@ std::optional<base::Value::Dict> MaybeBuildCredential(
     return std::nullopt;
   }
 
-  const std::optional<VerificationSignature> verification_signature =
+  std::optional<VerificationSignature> verification_signature =
       verification_key->Sign(payload);
   if (!verification_signature) {
     return std::nullopt;
   }
 
-  const std::optional<std::string> verification_signature_base64 =
+  std::optional<std::string> verification_signature_base64 =
       verification_signature->EncodeBase64();
   if (!verification_signature_base64) {
     return std::nullopt;
   }
 
-  const std::optional<TokenPreimage> token_preimage =
+  std::optional<TokenPreimage> token_preimage =
       unblinded_token.GetTokenPreimage();
   if (!token_preimage) {
     return std::nullopt;
   }
 
-  const std::optional<std::string> token_preimage_base64 =
+  std::optional<std::string> token_preimage_base64 =
       token_preimage->EncodeBase64();
   if (!token_preimage_base64) {
     return std::nullopt;

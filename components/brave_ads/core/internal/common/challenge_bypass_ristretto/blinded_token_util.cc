@@ -18,7 +18,7 @@ BlindedTokenList BlindTokens(const TokenList& tokens) {
       return {};
     }
 
-    const std::optional<BlindedToken> blinded_token = token.Blind();
+    std::optional<BlindedToken> blinded_token = token.Blind();
     if (!blinded_token) {
       return {};
     }

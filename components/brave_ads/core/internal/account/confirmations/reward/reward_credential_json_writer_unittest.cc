@@ -25,14 +25,14 @@ TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const RewardInfo reward = test::BuildReward(*confirmation);
 
   // Act
-  const std::optional<std::string> reward_credential =
+  std::optional<std::string> reward_credential =
       json::writer::WriteRewardCredential(
           reward,
           /*payload=*/"definition: the weight of a payload");

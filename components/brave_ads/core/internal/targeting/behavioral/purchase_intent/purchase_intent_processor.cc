@@ -55,8 +55,7 @@ void PurchaseIntentProcessor::Process(const GURL& url) {
         "Failed to process purchase intent because the visited URL is invalid");
   }
 
-  const std::optional<PurchaseIntentSignalInfo> signal =
-      MaybeExtractSignal(url);
+  std::optional<PurchaseIntentSignalInfo> signal = MaybeExtractSignal(url);
   if (!signal || signal->segments.empty()) {
     return BLOG(1, "No purchase intent matches found");
   }
@@ -88,7 +87,7 @@ void PurchaseIntentProcessor::MaybeProcess(int32_t tab_id, const GURL& url) {
 
 std::optional<PurchaseIntentSignalInfo>
 PurchaseIntentProcessor::MaybeExtractSignal(const GURL& url) const {
-  const std::optional<std::string> search_term_query_value =
+  std::optional<std::string> search_term_query_value =
       ExtractSearchTermQueryValue(url);
 
   return search_term_query_value
@@ -104,7 +103,7 @@ PurchaseIntentProcessor::MaybeExtractSignalForSearchQuery(
   KeywordList search_query_keywords = ParseKeyphrase(search_query);
   std::ranges::sort(search_query_keywords);
 
-  const std::optional<SegmentList> search_query_segments =
+  std::optional<SegmentList> search_query_segments =
       MaybeGetSegmentsForSearchQuery(search_query_keywords);
   if (!search_query_segments || search_query_segments->empty()) {
     return std::nullopt;
@@ -165,8 +164,7 @@ std::optional<PurchaseIntentSignalInfo>
 PurchaseIntentProcessor::MaybeExtractSignalForUrl(const GURL& url) const {
   BLOG(1, "Extracting purchase intent signal from visited URL");
 
-  const std::optional<PurchaseIntentFunnelInfo> funnel =
-      MaybeGetFunnelForUrl(url);
+  std::optional<PurchaseIntentFunnelInfo> funnel = MaybeGetFunnelForUrl(url);
   if (!funnel) {
     return std::nullopt;
   }

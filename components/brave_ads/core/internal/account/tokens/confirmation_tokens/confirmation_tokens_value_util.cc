@@ -26,13 +26,13 @@ base::Value::List ConfirmationTokensToValue(
   base::Value::List list;
 
   for (const auto& confirmation_token : confirmation_tokens) {
-    const std::optional<std::string> unblinded_token_base64 =
+    std::optional<std::string> unblinded_token_base64 =
         confirmation_token.unblinded_token.EncodeBase64();
     if (!unblinded_token_base64) {
       continue;
     }
 
-    const std::optional<std::string> public_key_base64 =
+    std::optional<std::string> public_key_base64 =
         confirmation_token.public_key.EncodeBase64();
     if (!public_key_base64) {
       continue;

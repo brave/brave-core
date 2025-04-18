@@ -100,7 +100,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     ++index;
   }
 
-  const std::optional<std::string> signature_base64 =
+  std::optional<std::string> signature_base64 =
       crypto::Sign(concatenated_message, wallet_.secret_key_base64);
   if (!signature_base64) {
     return {};
@@ -115,7 +115,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   base::Value::List list;
 
   for (const auto& blinded_token : blinded_tokens_) {
-    if (const std::optional<std::string> blinded_token_base64 =
+    if (std::optional<std::string> blinded_token_base64 =
             blinded_token.EncodeBase64()) {
       list.Append(*blinded_token_base64);
     }

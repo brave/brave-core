@@ -24,7 +24,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
       test::kVerifiableConversionAdvertiserPublicKeyBase64};
 
   // Act
-  const std::optional<VerifiableConversionEnvelopeInfo>
+  std::optional<VerifiableConversionEnvelopeInfo>
       sealed_verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(verifiable_conversion);
   ASSERT_TRUE(sealed_verifiable_conversion_envelope);

@@ -30,8 +30,8 @@ base::Value::Dict BuildStudiesUserData() {
 
   base::Value::List list;
 
-  if (const std::optional<base::FieldTrial::ActiveGroup>
-          active_field_trial_group = GetActiveFieldTrialStudyGroup()) {
+  if (std::optional<base::FieldTrial::ActiveGroup> active_field_trial_group =
+          GetActiveFieldTrialStudyGroup()) {
     list.Append(base::Value::Dict()
                     .Set(kTrialNameKey, active_field_trial_group->trial_name)
                     .Set(kGroupNameKey, active_field_trial_group->group_name));

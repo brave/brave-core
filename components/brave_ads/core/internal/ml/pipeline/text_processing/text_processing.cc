@@ -133,7 +133,7 @@ std::optional<PredictionMap> TextProcessing::GetPredictions(
 
 std::optional<PredictionMap> TextProcessing::GetTopPredictions(
     const std::string& text) const {
-  const std::optional<PredictionMap> predictions = GetPredictions(text);
+  std::optional<PredictionMap> predictions = GetPredictions(text);
   if (!predictions) {
     return std::nullopt;
   }

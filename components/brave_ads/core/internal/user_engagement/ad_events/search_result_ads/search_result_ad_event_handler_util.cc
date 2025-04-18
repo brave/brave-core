@@ -43,7 +43,7 @@ void MaybeBuildAndSaveCreativeSetConversion(
     return;
   }
 
-  if (const std::optional<CreativeSetConversionInfo> creative_set_conversion =
+  if (std::optional<CreativeSetConversionInfo> creative_set_conversion =
           FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad)) {
     database::SaveCreativeSetConversions({*creative_set_conversion});
   }

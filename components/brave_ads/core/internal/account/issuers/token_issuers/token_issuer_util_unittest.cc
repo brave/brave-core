@@ -118,7 +118,7 @@ TEST_F(BraveAdsTokenIssuerUtilTest, GetTokenIssuerForType) {
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
   // Act
-  const std::optional<TokenIssuerInfo> token_issuer =
+  std::optional<TokenIssuerInfo> token_issuer =
       GetTokenIssuerForType(issuers, TokenIssuerType::kPayments);
   ASSERT_TRUE(token_issuer);
 

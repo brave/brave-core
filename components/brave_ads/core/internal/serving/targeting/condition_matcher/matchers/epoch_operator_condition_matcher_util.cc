@@ -37,13 +37,13 @@ bool MatchEpochOperator(std::string_view value, std::string_view condition) {
     return false;
   }
 
-  const std::optional<int> days = ParseDays(condition);
+  std::optional<int> days = ParseDays(condition);
   if (!days) {
     // Invalid days.
     return false;
   }
 
-  const std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
+  std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
   if (!time_delta) {
     // Invalid time delta.
     BLOG(1, "Invalid epoch operator condition matcher for " << condition);

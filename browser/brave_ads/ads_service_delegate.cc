@@ -151,7 +151,7 @@ base::Value::Dict AdsServiceDelegate::GetSkus() const {
     }
 
     // Parse the SKUs JSON because it is stored as a string in local state.
-    const std::optional<base::Value::Dict> sku_state =
+    std::optional<base::Value::Dict> sku_state =
         base::JSONReader::ReadDict(value.GetString());
     if (!sku_state) {
       continue;

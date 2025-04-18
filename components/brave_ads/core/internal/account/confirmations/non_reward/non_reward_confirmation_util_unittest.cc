@@ -40,7 +40,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -60,7 +60,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   test::DisableBraveRewards();
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(/*transaction=*/{}, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
@@ -78,7 +78,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 

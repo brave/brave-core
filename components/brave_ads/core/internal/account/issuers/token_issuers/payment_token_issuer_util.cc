@@ -18,7 +18,7 @@
 namespace brave_ads {
 
 bool IsPaymentTokenIssuerValid(const IssuersInfo& issuers) {
-  const std::optional<TokenIssuerInfo> payment_token_issuer =
+  std::optional<TokenIssuerInfo> payment_token_issuer =
       GetTokenIssuerForType(issuers, TokenIssuerType::kPayments);
   if (!payment_token_issuer) {
     return false;

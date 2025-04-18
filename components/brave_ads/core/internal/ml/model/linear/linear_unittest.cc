@@ -64,13 +64,13 @@ TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
   const VectorData class_3_vector_data({0.0, 1.0, 2.0});
 
   // Act
-  const std::optional<PredictionMap> predictions_1 =
+  std::optional<PredictionMap> predictions_1 =
       linear->Predict(class_1_vector_data);
   ASSERT_TRUE(predictions_1);
-  const std::optional<PredictionMap> predictions_2 =
+  std::optional<PredictionMap> predictions_2 =
       linear->Predict(class_2_vector_data);
   ASSERT_TRUE(predictions_2);
-  const std::optional<PredictionMap> predictions_3 =
+  std::optional<PredictionMap> predictions_3 =
       linear->Predict(class_3_vector_data);
   ASSERT_TRUE(predictions_3);
 
@@ -98,8 +98,7 @@ TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
   const VectorData avg_vector({1.0, 1.0, 1.0});
 
   // Act
-  const std::optional<PredictionMap> predictions =
-      linear_biased->Predict(avg_vector);
+  std::optional<PredictionMap> predictions = linear_biased->Predict(avg_vector);
   ASSERT_TRUE(predictions);
 
   // Assert
@@ -122,13 +121,11 @@ TEST_F(BraveAdsLinearTest, BinaryClassifierPredictionTest) {
   const VectorData vector_data_1({1.11, 1.63, 1.21});
 
   // Act
-  const std::optional<PredictionMap> predictions_0 =
-      linear->Predict(vector_data_0);
+  std::optional<PredictionMap> predictions_0 = linear->Predict(vector_data_0);
   ASSERT_TRUE(predictions_0);
   ASSERT_THAT(*predictions_0, ::testing::SizeIs(1));
 
-  const std::optional<PredictionMap> predictions_1 =
-      linear->Predict(vector_data_1);
+  std::optional<PredictionMap> predictions_1 = linear->Predict(vector_data_1);
   ASSERT_TRUE(predictions_1);
   ASSERT_THAT(*predictions_1, ::testing::SizeIs(1));
 
@@ -163,13 +160,13 @@ TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
   const VectorData point_3(pt_3);
 
   // Act
-  const std::optional<PredictionMap> predictions_1 =
+  std::optional<PredictionMap> predictions_1 =
       linear_biased->GetTopPredictions(point_1);
   ASSERT_TRUE(predictions_1);
-  const std::optional<PredictionMap> predictions_2 =
+  std::optional<PredictionMap> predictions_2 =
       linear_biased->GetTopCountPredictions(point_2, kPredictionLimits[0]);
   ASSERT_TRUE(predictions_2);
-  const std::optional<PredictionMap> predictions_3 =
+  std::optional<PredictionMap> predictions_3 =
       linear_biased->GetTopCountPredictions(point_3, kPredictionLimits[1]);
   ASSERT_TRUE(predictions_3);
 
