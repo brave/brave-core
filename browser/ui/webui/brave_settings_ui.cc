@@ -122,10 +122,7 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
-  for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
-    html_source->AddResourcePath(UNSAFE_TODO(kBraveSettingsResources[i]).path,
-                                 UNSAFE_TODO(kBraveSettingsResources[i]).id);
-  }
+  html_source->AddResourcePaths(kBraveSettingsResources);
 
   // These resource files are generated from the files in
   // brave/browser/resources/settings/shortcuts_page
@@ -133,10 +130,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   // components, and the React DOM is mounted inside a Web Component, so it
   // doesn't interfere with the Polymer tree/styles.
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    for (size_t i = 0; i < kCommandsGeneratedSize; ++i) {
-      html_source->AddResourcePath(UNSAFE_TODO(kCommandsGenerated[i]).path,
-                                   UNSAFE_TODO(kCommandsGenerated[i]).id);
-    }
+    html_source->AddResourcePaths(kCommandsGenerated);
   }
 
   html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
