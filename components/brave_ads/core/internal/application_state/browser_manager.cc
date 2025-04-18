@@ -84,7 +84,7 @@ void BrowserManager::OnNotifyDidInitializeAds() {
 }
 
 void BrowserManager::OnNotifyBrowserDidBecomeActive() {
-  if (is_active_ && *is_active_) {
+  if (is_active_.has_value() && *is_active_) {
     // Already active.
     return;
   }
@@ -97,7 +97,7 @@ void BrowserManager::OnNotifyBrowserDidBecomeActive() {
 }
 
 void BrowserManager::OnNotifyBrowserDidResignActive() {
-  if (is_active_ && !*is_active_) {
+  if (is_active_.has_value() && !*is_active_) {
     // Already inactive.
     return;
   }
@@ -110,7 +110,7 @@ void BrowserManager::OnNotifyBrowserDidResignActive() {
 }
 
 void BrowserManager::OnNotifyBrowserDidEnterForeground() {
-  if (is_in_foreground_ && *is_in_foreground_) {
+  if (is_in_foreground_.has_value() && *is_in_foreground_) {
     // Already in foreground.
     return;
   }
@@ -123,7 +123,7 @@ void BrowserManager::OnNotifyBrowserDidEnterForeground() {
 }
 
 void BrowserManager::OnNotifyBrowserDidEnterBackground() {
-  if (is_in_foreground_ && !*is_in_foreground_) {
+  if (is_in_foreground_.has_value() && !*is_in_foreground_) {
     // Already in background.
     return;
   }

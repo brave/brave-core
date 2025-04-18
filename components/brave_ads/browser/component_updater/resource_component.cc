@@ -159,7 +159,7 @@ void ResourceComponent::LoadResourceCallback(
     return VLOG(1) << "Resource schema version is missing";
   }
 
-  if (*schema_version != kSchemaVersion) {
+  if (schema_version != kSchemaVersion) {
     return VLOG(1) << "Resource schema version mismatch";
   }
 

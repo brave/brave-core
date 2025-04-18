@@ -39,7 +39,7 @@ TEST(BraveAdsCountIfUntilUtilTest, CountIfUntilWithEmptyContainerAndStopCount) {
   // Arrange
   const std::vector<int> container;
   const auto predicate = [](int number) { return number % 2 == 0; };
-  const size_t stop_count = 0;
+  const size_t stop_count{0};
 
   // Act & Assert
   EXPECT_EQ(0U, count_if_until(container, predicate, stop_count));
@@ -49,7 +49,7 @@ TEST(BraveAdsCountIfUntilUtilTest, CountIfUntilWithStopCount) {
   // Arrange
   const std::vector<int> container = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
   const auto predicate = [](int number) { return number % 2 == 0; };
-  const size_t stop_count = 3;
+  const size_t stop_count{3};
 
   // Act & Assert
   EXPECT_EQ(3U, count_if_until(container, predicate, stop_count));

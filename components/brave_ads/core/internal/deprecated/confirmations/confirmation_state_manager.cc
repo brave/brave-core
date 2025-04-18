@@ -138,17 +138,15 @@ void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
   if (wallet_ && !filtered_confirmation_tokens.empty()) {
     const std::string public_key_base64 = wallet_->public_key_base64;
 
-    auto to_remove =
-        std::ranges::remove_if(
-            filtered_confirmation_tokens,
-            [&public_key_base64](
-                const ConfirmationTokenInfo& confirmation_token) {
-              const std::optional<std::string> unblinded_token_base64 =
-                  confirmation_token.unblinded_token.EncodeBase64();
-              return !unblinded_token_base64 ||
-                     !crypto::Verify(*unblinded_token_base64, public_key_base64,
-                                     confirmation_token.signature_base64);
-            });
+    auto to_remove = std::ranges::remove_if(
+        filtered_confirmation_tokens,
+        [&public_key_base64](const ConfirmationTokenInfo& confirmation_token) {
+          const std::optional<std::string> unblinded_token_base64 =
+              confirmation_token.unblinded_token.EncodeBase64();
+          return !unblinded_token_base64 ||
+                 !crypto::Verify(*unblinded_token_base64, public_key_base64,
+                                 confirmation_token.signature_base64);
+        });
 
     filtered_confirmation_tokens.erase(to_remove.begin(), to_remove.end());
   }

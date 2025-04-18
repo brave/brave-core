@@ -42,6 +42,35 @@ constexpr char16_t kSerializeDocumentToStringJavaScript[] =
 constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
 
+// Returns 'false' if the navigation was a back/forward navigation or a reload,
+// otherwise 'true'.
+bool IsNewNavigation(content::NavigationHandle* const navigation_handle) {
+  CHECK(navigation_handle);
+
+  return ui::PageTransitionIsNewNavigation(
+      navigation_handle->GetPageTransition());
+}
+
+// NOTE: DO NOT use this method before the navigation commit as it will return
+// null. It is safe to use from `WebContentsObserver::DidFinishNavigation()`.
+std::optional<int> HttpStatusCode(
+    content::NavigationHandle* const navigation_handle) {
+  CHECK(navigation_handle);
+
+  if (const net::HttpResponseHeaders* const response_headers =
+          navigation_handle->GetResponseHeaders()) {
+    return response_headers->response_code();
+  }
+
+  return std::nullopt;
+}
+
+bool IsErrorPage(int http_status_code) {
+  const int http_status_code_class = http_status_code / 100;
+  return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
+         http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
+}
+
 std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
   return absl::StrFormat("%d%d%d", id.frame_routing_id.child_id,
                          id.frame_routing_id.frame_routing_id, id.player_id);
@@ -109,7 +138,7 @@ bool AdsTabHelper::IsVisible() const {
 }
 
 void AdsTabHelper::MaybeSetBrowserIsActive() {
-  if (is_browser_active_ && *is_browser_active_) {
+  if (is_browser_active_.has_value() && *is_browser_active_) {
     // Already active.
     return;
   }
@@ -124,7 +153,7 @@ void AdsTabHelper::MaybeSetBrowserIsActive() {
 }
 
 void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
-  if (is_browser_active_ && !*is_browser_active_) {
+  if (is_browser_active_.has_value() && !*is_browser_active_) {
     // Already inactive.
     return;
   }
@@ -136,32 +165,6 @@ void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
   // Maybe notify of tab change after the browser's active state changes because
   // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
   MaybeNotifyTabDidChange();
-}
-
-bool AdsTabHelper::IsNewNavigation(
-    content::NavigationHandle* const navigation_handle) {
-  CHECK(navigation_handle);
-
-  return ui::PageTransitionIsNewNavigation(
-      navigation_handle->GetPageTransition());
-}
-
-std::optional<int> AdsTabHelper::HttpStatusCode(
-    content::NavigationHandle* const navigation_handle) {
-  CHECK(navigation_handle);
-
-  if (const net::HttpResponseHeaders* const response_headers =
-          navigation_handle->GetResponseHeaders()) {
-    return response_headers->response_code();
-  }
-
-  return std::nullopt;
-}
-
-bool AdsTabHelper::IsErrorPage(int http_status_code) const {
-  const int http_status_code_class = http_status_code / 100;
-  return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
-         http_status_code_class == kHttpServerErrorResponseStatusCodeClass;
 }
 
 void AdsTabHelper::ProcessNavigation() {

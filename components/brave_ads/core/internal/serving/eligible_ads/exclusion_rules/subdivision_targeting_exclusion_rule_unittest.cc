@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 
 #include <memory>
+#include <string>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -30,8 +31,8 @@ namespace brave_ads {
 namespace {
 
 struct ParamInfo final {
-  const char* const country_code;
-  const char* const subdivision_code;
+  std::string country_code;
+  std::string subdivision_code;
 } constexpr kTests[] = {{.country_code = "US", .subdivision_code = "AL"},
                         {.country_code = "US", .subdivision_code = "AK"},
                         {.country_code = "US", .subdivision_code = "AZ"},
@@ -120,18 +121,17 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
                                   GetParam().subdivision_code);
   }
 
-  static std::string BuildOtherSubdivisionForTestParam() {
-    const char* subdivision_code = "";
+  static std::string BuildDifferentSubdivisionForTestParam() {
+    std::string subdivision_code;
 
-    if (GetParam().country_code ==
-        std::string_view("US") /*United States of America*/) {
-      if (GetParam().subdivision_code == std::string_view("FL") /*Florida*/) {
-        subdivision_code = "CA";  // Alabama
+    if (GetParam().country_code == "US" /*United States of America*/) {
+      if (GetParam().subdivision_code == "FL" /*Florida*/) {
+        subdivision_code = "CA";  // California
       } else {
         subdivision_code = "FL";  // Florida
       }
-    } else if (GetParam().country_code == std::string_view("CA") /*Canada*/) {
-      if (GetParam().subdivision_code == std::string_view("QC") /*Quebec*/) {
+    } else if (GetParam().country_code == "CA" /*Canada*/) {
+      if (GetParam().subdivision_code == "QC" /*Quebec*/) {
         subdivision_code = "AB";  // Alberta
       } else {
         subdivision_code = "QC";  // Quebec
@@ -216,7 +216,7 @@ TEST_P(
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
-                             BuildOtherSubdivisionForTestParam()};
+                             BuildDifferentSubdivisionForTestParam()};
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
@@ -282,7 +282,7 @@ TEST_P(
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
-                             BuildOtherSubdivisionForTestParam()};
+                             BuildDifferentSubdivisionForTestParam()};
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
@@ -417,7 +417,8 @@ TEST_P(
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
-std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
+std::string TestParamToString(
+    const ::testing::TestParamInfo<ParamInfo>& test_param) {
   return base::ReplaceStringPlaceholders(
       "CountryCode$1SubdivisionCode$2",
       {test_param.param.country_code, test_param.param.subdivision_code},

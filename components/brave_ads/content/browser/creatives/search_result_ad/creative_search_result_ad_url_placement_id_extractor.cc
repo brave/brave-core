@@ -30,7 +30,7 @@ std::optional<std::string> MaybeExtractCreativeAdPlacementIdFromUrl(
 
   for (net::QueryIterator iter(url); !iter.IsAtEnd(); iter.Advance()) {
     if (iter.GetKey() == kPlacementIdQueryKey) {
-      std::string placement_id = std::string(iter.GetValue());
+      std::string placement_id{iter.GetValue()};
       if (placement_id.empty()) {
         return std::nullopt;
       }

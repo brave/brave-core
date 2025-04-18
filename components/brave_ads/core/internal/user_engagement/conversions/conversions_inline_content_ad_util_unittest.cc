@@ -64,7 +64,7 @@ TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
-       AllowedToConvertAdClickedEvent) {
+       AllowedToConvertClickedAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
                                   /*should_generate_random_uuids=*/false);
@@ -76,7 +76,7 @@ TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
-       NotAllowedToConvertAdClickedEventIfOptedOutOfBraveNewsAds) {
+       NotAllowedToConvertClickedAdEventIfOptedOutOfBraveNewsAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
 
@@ -90,7 +90,7 @@ TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
-       AllowedToConvertAdClickedEventForNonRewardsUser) {
+       AllowedToConvertClickedAdEventForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -104,7 +104,7 @@ TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdUtilTest,
-       NotAllowedToConvertAdNonViewedOrClickedEvents) {
+       NotAllowedToConvertNonViewedOrClickedAdEvents) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
                                   /*should_generate_random_uuids=*/false);

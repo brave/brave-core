@@ -62,17 +62,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MaybeSetBrowserIsActive();
   void MaybeSetBrowserIsNoLongerActive();
 
-  // Returns 'false' if the navigation was a back/forward navigation or a
-  // reload, otherwise 'true'.
-  bool IsNewNavigation(content::NavigationHandle* navigation_handle);
-
-  // NOTE: DO NOT use this method before the navigation commit as it will return
-  // null. It is safe to use from `WebContentsObserver::DidFinishNavigation()`.
-  std::optional<int> HttpStatusCode(
-      content::NavigationHandle* navigation_handle);
-
-  bool IsErrorPage(int http_status_code) const;
-
   void ProcessNavigation();
   void ProcessSameDocumentNavigation();
   void ResetNavigationState();
