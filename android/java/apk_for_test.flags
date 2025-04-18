@@ -154,6 +154,8 @@
     *** mReadAloudControllerSupplier;
     *** mTopUiThemeColorProvider;
     *** mCurrentOrientation;
+    *** mInitializedWithNative;
+    *** mTabGroupUiOneshotSupplier;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
