@@ -21,11 +21,8 @@ export const style = scoped.css`
     --self-column-count: min(var(--self-tile-count), ${collapsedTileCount});
     --self-max-grid-width: calc(100vi - 110px);
 
-    anchor-name: --top-sites-anchor;
-    container-type: inline-size;
-
     flex-grow: 1;
-    height: var(--self-tile-height);
+    container-type: inline-size;
   }
 
   &.expanded {
@@ -37,69 +34,22 @@ export const style = scoped.css`
   }
 
   .top-sites {
-    position: absolute;
-    position-anchor: --top-sites-anchor;
-    inset-block-start: anchor(start);
-    inset-inline-start: anchor(start);
-    inline-size: 100cqi;
-    block-size: fit-content;
-
     display: flex;
     align-items: flex-start;
     justify-content: center;
     gap: 8px;
-
-    .widget-position-top & {
-      inset-block-start: unset;
-      inset-block-end: anchor(end);
-    }
-
-    transition:
-      overlay var(--self-transition-duration) allow-discrete;
-
-    &::backdrop {
-      background: rgba(0, 0, 0, 0);
-      backdrop-filter: blur(0);
-      transition: all var(--self-backdrop-transition-duration) allow-discrete;
-      transition-delay: 100ms;
-    }
-
-    &:popover-open::backdrop {
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(25px);
-      transition-delay: 0s;
-
-      @starting-style {
-        background: rgba(0, 0, 0, 0);
-        backdrop-filter: blur(0);
-      }
-    }
-  }
-
-  @container (width > 930px) {
-    &.single-row, &.double-row {
-      .top-sites::backdrop {
-        display: none;
-      }
-    }
-
-    &.double-row {
-      &.expanded {
-        height: calc(var(--self-tile-height) * 2 + 16px);
-      }
-    }
-  }
-
-  &.expanded .top-sites {
-    inline-size: calc(100vi - 56px);
   }
 
   .top-site-tiles-mask {
+    --self-available-width: calc(100cqi - 64px);
+
     flex-grow: 1;
     overflow-x: hidden;
     overflow-y: hidden;
     height: var(--self-tile-height);
-    max-width: calc(var(--self-column-count) * var(--self-tile-width));
+    max-width: min(
+      calc(var(--self-column-count) * var(--self-tile-width)),
+      round(down, var(--self-available-width), var(--self-tile-width)));
 
     transition:
       height var(--self-transition-duration),
@@ -108,7 +58,6 @@ export const style = scoped.css`
 
   &.expanded .top-site-tiles-mask {
     height: fit-content;
-    margin-bottom: 24px;
   }
 
   .top-site-tiles {
@@ -203,12 +152,6 @@ export const style = scoped.css`
     .top-site-icon {
       background: rgba(255, 255, 255, .35);
     }
-  }
-
-  /* Opacity transitions interact poorly with backdrop blur. For tiles that will
-     be transitioning opacity, disable backdrop blur. */
-  .top-site-tile:nth-child(n + ${collapsedTileCount + 1}) .top-site-icon {
-    backdrop-filter: blur(0);
   }
 
   .top-site-title {
@@ -313,7 +256,7 @@ export const style = scoped.css`
     }
   }
 
-  &.collapsed:hover {
+  &:hover {
     .menu-button, .expand-button:not(:disabled) {
       opacity: 1;
       visibility: visible;
