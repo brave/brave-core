@@ -91,17 +91,6 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
   return true;
 }
-
-void InjectScriptOnYouTubeDomain(content::WebContents* web_contents) {
-  // Filter only YT domain here
-  if (!IsYouTubeDomain(web_contents->GetLastCommittedURL())) {
-    return;
-  }
-  if (IsBackgroundVideoPlaybackEnabled(web_contents)) {
-    web_contents->GetPrimaryMainFrame()->ExecuteJavaScript(
-        kYoutubeBackgroundPlaybackAndPipScript, base::NullCallback());
-  }
-}
 }  // namespace
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
@@ -113,7 +102,15 @@ BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
 BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {}
 
 void BackgroundVideoPlaybackTabHelper::PrimaryMainDocumentElementAvailable() {
-  InjectScriptOnYouTubeDomain(web_contents());
+  content::WebContents* contents = web_contents();
+  // Filter only YT domain here
+  if (!IsYouTubeDomain(contents->GetLastCommittedURL())) {
+    return;
+  }
+  if (IsBackgroundVideoPlaybackEnabled(contents)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubeBackgroundPlaybackAndPipScript, base::NullCallback());
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundVideoPlaybackTabHelper);
