@@ -16,6 +16,9 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/brave_file_select_utils.h"
+#include "brave/browser/ui/sidebar/sidebar.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -33,12 +36,6 @@
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
-
-#if defined(TOOLKIT_VIEWS)
-#include "brave/browser/ui/sidebar/sidebar.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
-#endif
 
 namespace {
 
@@ -58,20 +55,17 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
-#if defined(TOOLKIT_VIEWS)
-  if (!sidebar::CanUseSidebar(this)) {
-    return;
+  if (sidebar::CanUseSidebar(this)) {
+    // Below call order is important.
+    // When reaches here, Sidebar UI is setup in BraveBrowserView but
+    // not initialized. It's just empty because sidebar controller/model is not
+    // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
+    // So, initializing sidebar controller/model here and then ask to initialize
+    // sidebar UI. After that, UI will be updated for model's change.
+    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
+        tab_strip_model_.get(), profile());
+    sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
   }
-  // Below call order is important.
-  // When reaches here, Sidebar UI is setup in BraveBrowserView but
-  // not initialized. It's just empty because sidebar controller/model is not
-  // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
-  // So, initializing sidebar controller/model here and then ask to initialize
-  // sidebar UI. After that, UI will be updated for model's change.
-  sidebar_controller_ =
-      std::make_unique<sidebar::SidebarController>(this, profile());
-  sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
-#endif
 
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
@@ -86,7 +80,6 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
   Browser::ScheduleUIUpdate(source, changed_flags);
 
-#if defined(TOOLKIT_VIEWS)
   if (tab_strip_model_->GetIndexOfWebContents(source) ==
       TabStripModel::kNoTab) {
     return;
@@ -105,7 +98,6 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
       }
     }
   }
-#endif
 }
 
 void BraveBrowser::OnTabClosing(content::WebContents* contents) {
@@ -215,7 +207,6 @@ void BraveBrowser::OnTabStripModelChanged(
     }
   }
 
-#if defined(TOOLKIT_VIEWS)
   // sidebar() can return a nullptr in unit tests.
   if (!sidebar_controller_ || !sidebar_controller_->sidebar()) {
     return;
@@ -227,7 +218,6 @@ void BraveBrowser::OnTabStripModelChanged(
       selection.active_tab_changed()) {
     sidebar_controller_->sidebar()->UpdateSidebarItemsState();
   }
-#endif
 }
 
 void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
