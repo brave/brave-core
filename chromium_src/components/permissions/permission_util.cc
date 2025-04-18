@@ -10,6 +10,25 @@
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
 
+// Since we don't do UMA just reuse an existing UMA type instead of adding one.
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE         \
+  case RequestType::kWidevine:                       \
+  case RequestType::kBraveEthereum:                  \
+  case RequestType::kBraveSolana:                    \
+  case RequestType::kBraveGoogleSignInPermission:    \
+  case RequestType::kBraveLocalhostAccessPermission: \
+  case RequestType::kBraveOpenAIChat:                \
+    return RequestTypeForUma::PERMISSION_VR;
+
+// These requests may be batched together, so we must handle them explicitly as
+// GetUmaValueForRequests expects only a few specific request types to be
+// batched
+#define BRAVE_GET_UMA_VALUE_FOR_REQUESTS             \
+  if (request_type >= RequestType::kBraveMinValue && \
+      request_type <= RequestType::kBraveMaxValue) { \
+    return GetUmaValueForRequestType(request_type);  \
+  }
+
 #define PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE \
   case PermissionType::BRAVE_ADS:                                \
     return ContentSettingsType::BRAVE_ADS;                       \
@@ -42,6 +61,8 @@
 
 #include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
+#undef BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
+#undef BRAVE_GET_UMA_VALUE_FOR_REQUESTS
 #undef PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
 
 namespace permissions {
