@@ -7,7 +7,7 @@
   border-radius: var(--leo-radius-m);
   border: 1px solid var(--leo-color-divider-subtle);
   width: 100%;
-  font: var(--leo-font-default-regular);
+  font: var(--leo-font-large-regular);
   color: var(--leo-color-text-primary);
   position: relative;
   transition: all 0.2s ease-in-out;
@@ -17,7 +17,7 @@
     background: var(--leo-color-container-highlight);
 
     &::placeholder {
-      color: var(--leo-color-text-disabled);
+      color: var(--leo-color-text-tertiary);
     }
   }
 }
@@ -108,12 +108,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--leo-spacing-xl) 4px;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl) 10px;
 }
 
 .tools {
   display: flex;
-  gap: 10px;
+  gap: var(--leo-spacing-xl);
 }
 
 .actionsLabelContainer {
