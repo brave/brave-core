@@ -115,6 +115,10 @@ export const style = scoped.css`
     align-items: stretch;
     gap: 16px;
 
+    &:empty {
+      flex-basis: 0;
+    }
+
     @container (max-width: 900px) {
       --widget-flex-basis: var(--widget-height);
 
