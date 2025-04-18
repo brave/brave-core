@@ -15,7 +15,7 @@ import json
 
 from lib.config import get_env_var, BRAVE_CORE_ROOT
 from lib.util import execute, scoped_cwd
-from lib.helpers import channels
+from lib.helpers import channels, BRAVE_CORE_REPO
 from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         parse_labels, get_file_contents, get_milestones,
                         add_reviewers_to_pull_request, create_pull_request,
