@@ -44,28 +44,51 @@ namespace {
 
 constexpr char kRootDirectory[] = "/";
 
+// This is a little wrapper for the buffer provided by `getmntinfo_r_np`, to
+// make sure we release it.
+class MountedVolumes {
+ public:
+  MountedVolumes() {
+    struct statfs* mounted_volumes = nullptr;
+    count_ = getmntinfo_r_np(&mounted_volumes, 0);
+    mounted_volumes_ = mounted_volumes;
+  }
+  MountedVolumes(const MountedVolumes&) = delete;
+  MountedVolumes& operator=(const MountedVolumes&) = delete;
+  ~MountedVolumes() = default;
+
+  int count() const { return count_; }
+
+  base::span<const struct statfs> as_span() {
+    // SAFETY: This is the nature of this API, where `count_` represents the
+    // number of elements for the `mounted_volumes_` pointer.
+    return UNSAFE_BUFFERS(
+        base::span<const struct statfs>(mounted_volumes_.get(), count_));
+  }
+
+ private:
+  size_t count_ = 0;
+  raw_ptr<struct statfs> mounted_volumes_ = nullptr;
+};
+
 // Return the BSD name (e.g. '/dev/disk1') of the root directory by enumerating
 // through the mounted volumes. Returns an empty string if an error occurred.
 std::string FindBSDNameOfSystemDisk() {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::MAY_BLOCK);
 
-  struct statfs* mounted_volumes;
-  const int count = getmntinfo_r_np(&mounted_volumes, 0);
-  if (count == 0) {
+  MountedVolumes mounted_volumes;
+  if (mounted_volumes.count() == 0) {
     return {};
   }
 
   std::string root_bsd_name;
-  for (int i = 0; i < count; i++) {
-    const struct statfs& volume = UNSAFE_TODO(mounted_volumes[i]);
+  for (auto volume : mounted_volumes.as_span()) {
     if (std::string(volume.f_mntonname) == kRootDirectory) {
       root_bsd_name = std::string(volume.f_mntfromname);
       break;
     }
   }
-
-  free(mounted_volumes);
   return root_bsd_name;
 }
 
