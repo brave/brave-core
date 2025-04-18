@@ -62,7 +62,7 @@ class ConnectErrorIconBackground : public views::Background {
     auto bounds = view->GetLocalBounds();
     bounds.Inset(gfx::Insets::TLBR(2, 4, 2, 4));
     canvas->FillRect(bounds,
-                     color().ConvertToSkColor(view->GetColorProvider()));
+                     color().ResolveToSkColor(view->GetColorProvider()));
   }
 };
 
