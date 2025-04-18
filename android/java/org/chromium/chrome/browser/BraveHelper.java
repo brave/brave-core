@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -13,6 +14,7 @@ import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
 
+@NullMarked
 public class BraveHelper {
     public static final String SHARED_PREF_DISPLAYED_INFOBAR_PROMO =
             "displayed_data_reduction_infobar_promo";

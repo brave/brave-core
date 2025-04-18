@@ -12,9 +12,11 @@ import android.content.DialogInterface;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 
 @JNINamespace("chrome::android")
+@NullMarked
 public class BraveRelaunchUtils {
     public static void askForRelaunch(Context context) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);

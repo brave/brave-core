@@ -8,7 +8,10 @@ package org.chromium.chrome.browser;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.build.annotations.NullMarked;
+
 @JNINamespace("chrome::android")
+@NullMarked
 public abstract class BraveFeatureUtil {
     // The method sets a feature state that is passed in `enabled` var. However it can
     // set the feature to a Default state if Default state is what is `enabled` var.

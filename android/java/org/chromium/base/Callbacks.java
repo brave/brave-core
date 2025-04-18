@@ -5,7 +5,10 @@
 
 package org.chromium.base;
 
+import org.chromium.build.annotations.NullMarked;
+
 /** Contains a generic interface for callbacks. */
+@NullMarked
 public interface Callbacks {
 
     /** A generic callback. */

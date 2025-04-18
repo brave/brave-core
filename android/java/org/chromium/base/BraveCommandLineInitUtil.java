@@ -11,12 +11,14 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullMarked;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+@NullMarked
 public abstract class BraveCommandLineInitUtil {
     private static final String TAG = "BraveCommandLineInitUtil";
 
@@ -35,6 +37,9 @@ public abstract class BraveCommandLineInitUtil {
         appendBraveSwitchesAndArguments();
     }
 
+    // Suppress to access SharedPreferences, which is discouraged; we cannot depend on //chrome from
+    // //base to use ChromeSharedPreferences
+    @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     private static void appendBraveSwitchesAndArguments() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         String qaCommandLine = sharedPreferences.getString(PREF_QA_COMMAND_LINE, "");

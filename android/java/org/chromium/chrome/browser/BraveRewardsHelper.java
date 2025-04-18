@@ -28,14 +28,14 @@ import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-
 import org.jni_zero.CalledByNative;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -57,6 +57,7 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+@NullMarked
 public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL =
             "show_brave_rewards_onboarding_modal";
@@ -78,7 +79,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
     private static final int FAVICON_DESIRED_SIZE = 64; // px
-    private static LargeIconBridge sLargeIconBridge;
+    private static @Nullable LargeIconBridge sLargeIconBridge;
 
     public static final String BAT_TEXT = "BAT";
     public static final String USD_TEXT = "USD";
@@ -86,8 +87,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     public static final String FIVE_BAT_TEXT = "5 BAT";
     public static final String TEN_BAT_TEXT = "10 BAT";
 
-    private String mFaviconUrl;
-    private LargeIconReadyCallback mCallback;
+    private @Nullable String mFaviconUrl;
+    private @Nullable LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
     private int mFetchCount;
     private static final int MAX_FAVICON_FETCH_COUNT = 8;
@@ -292,9 +293,12 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
 
     @Override
     @CalledByNative("LargeIconCallback")
-    public void onLargeIconAvailable(@Nullable Bitmap icon, int fallbackColor,
-                                     boolean isFallbackColorDefault, @IconType int iconType) {
-        if (mFaviconUrl.isEmpty()) {
+    public void onLargeIconAvailable(
+            @Nullable Bitmap icon,
+            int fallbackColor,
+            boolean isFallbackColorDefault,
+            @IconType int iconType) {
+        if (mFaviconUrl == null || mFaviconUrl.isEmpty()) {
             return;
         }
 
@@ -308,9 +312,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             scheduleIconRetrievalWithDelay();
             return;
         }
-        //else: icon is available
 
-        if (mCallback != null) {
+        if (mCallback != null && icon != null) {
             mCallback.onLargeIconReady(icon);
         }
     }
@@ -423,6 +426,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return Integer.toString(currentTime.get(Calendar.YEAR));
     }
 
+    @Nullable
     public static Tab currentActiveChromeTabbedActivityTab() {
         ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
         if (activity == null) {

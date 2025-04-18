@@ -9,10 +9,13 @@ import androidx.annotation.VisibleForTesting;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.build.annotations.NullMarked;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+@NullMarked
 public class BraveRewardsBalance {
     public static final String WALLET_BLINDED = "blinded";
 

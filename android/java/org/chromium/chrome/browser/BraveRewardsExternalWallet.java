@@ -15,10 +15,12 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_rewards.mojom.WalletStatus;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 
+@NullMarked
 public class BraveRewardsExternalWallet {
-    //fields
+    // fields
     public static final String ACCOUNT_URL = "account_url";
     public static final String ADDRESS = "address";
     public static final String STATUS = "status";

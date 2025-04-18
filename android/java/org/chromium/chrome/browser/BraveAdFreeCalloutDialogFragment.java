@@ -18,11 +18,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
+@NullMarked
 public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
     private static final String TAG = "BraveAdFreeCallout";
 
@@ -46,7 +49,9 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ad_free_callout_dialog, container, false);
 
         if (getDialog() != null && getDialog().getWindow() != null) {
@@ -57,7 +62,7 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mConfettiImageView = view.findViewById(R.id.confetti_imageview);
 
         Button btnVideos = view.findViewById(R.id.btn_videos);
