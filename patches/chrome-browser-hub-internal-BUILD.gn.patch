@@ -6,7 +6,7 @@ index 4aed38ac84315f295395a1668998b3fd80d9fbd1..596b91db691acada403d025e2ddd443f
      "//ui/android:ui_no_recycler_view_java",
      "//url:url_java",
    ]
-+  sources += brave_browser_hub_internal_java_sources deps += brave_browser_hub_internal_java_deps
++  deps += brave_browser_hub_internal_java_deps
  }
  
  android_resources("java_resources") {
