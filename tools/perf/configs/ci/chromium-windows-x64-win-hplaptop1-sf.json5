@@ -16,7 +16,8 @@
       "stories": [
         "example.com_cold",
         "wikipedia.com_cold",
-        "IGN_warm",
+        // https://github.com/brave/brave-browser/issues/45551:
+        // "IGN_warm",
       ]
     },
     {
