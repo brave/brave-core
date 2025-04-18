@@ -136,7 +136,11 @@ BASE_FEATURE(kCosmeticFilteringSyncLoad,
 // If the feature flag is on, we show the Block all Cookies toggle
 BASE_FEATURE(kBlockAllCookiesToggle,
              "BlockAllCookiesToggle",
+#if BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
              base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 // when enabled, allow to select and block HTML elements
 BASE_FEATURE(kBraveShieldsElementPicker,
              "BraveShieldsElementPicker",

@@ -3106,13 +3106,6 @@ extension Strings {
     value: "Blocks JavaScript (may break sites).",
     comment: ""
   )
-  public static let blockCookiesDescription = NSLocalizedString(
-    "BlockCookiesDescription",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Prevents websites from storing information about your previous visits.\nThe \"Block all Cookies\" option has been deprecated. To learn how to force-enable this option, visit [our help page](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)",
-    comment: ""
-  )
   public static let fingerprintingProtection = NSLocalizedString(
     "FingerprintingProtection",
     tableName: "BraveShared",
@@ -3222,7 +3215,7 @@ extension Strings {
     "BlockAllCookies",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Block all Cookies",
+    value: "Block All Cookies",
     comment: "Title for setting to block all website cookies."
   )
   public static let blockAllCookiesAction = NSLocalizedString(
@@ -3232,19 +3225,19 @@ extension Strings {
     value: "Block All",
     comment: "block all cookies settings action title"
   )
-  public static let blockAllCookiesAlertInfo = NSLocalizedString(
-    "BlockAllCookiesAlertInfo",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Blocking all Cookies will prevent some websites from working correctly.",
-    comment: "Information displayed to user when block all cookie is enabled."
-  )
   public static let blockAllCookiesAlertTitle = NSLocalizedString(
-    "BlockAllCookiesAlertTitle",
+    "blockAllCookiesAlertTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Block all Cookies?",
-    comment: "Title of alert displayed to user when block all cookie is enabled."
+    value: "Block All Cookies?",
+    comment: "Title of confirmation alert displayed to user when block all cookie toggle is enabled."
+  )
+  public static let blockAllCookiesDescription = NSLocalizedString(
+    "blockAllCookiesDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shields already blocks 3rd-party cookies. This setting to block ALL cookies will remove existing cookies and site data, and could break websites.",
+    comment: "Description of confirmation alert displayed to user when block all cookie toggle is enabled."
   )
   public static let blockAllCookiesFailedAlertMsg = NSLocalizedString(
     "BlockAllCookiesFailedAlertMsg",
@@ -3252,20 +3245,6 @@ extension Strings {
     bundle: .module,
     value: "Failed to set the preference. Please try again.",
     comment: "Message of alert displayed to user when block all cookie operation fails"
-  )
-  public static let dontBlockCookies = NSLocalizedString(
-    "DontBlockCookies",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Don't block cookies",
-    comment: "cookie settings option"
-  )
-  public static let cookieControl = NSLocalizedString(
-    "CookieControl",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Cookie Control",
-    comment: "Cookie settings option title"
   )
   public static let neverShow = NSLocalizedString(
     "NeverShow",
