@@ -90,7 +90,7 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_mac',
     'action': ['vpython3', 'build/download_dep.py',
-               'omaha4/BraveUpdater-136.1.79.7.zip',
+               'omaha4/BraveUpdater-136.1.79.71.zip',
                '//third_party/updater/chrome_mac_universal_prod/cipd'],
   },
   {
