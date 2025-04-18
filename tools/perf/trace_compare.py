@@ -45,15 +45,16 @@ class Slice:
         return self.name
 
 
-def ensure_len(l: List[float], length: int):
+def ensure_len(l: List, length: int, default):
     if len(l) < length:
-        l.extend([0.0] * (length - len(l)))
+        l.extend([default] * (length - len(l)))
 
 @dataclass
 class Stats:
     files: List[str] = field(default_factory=list)
     slices: Dict[int, Slice] = field(default_factory=dict)
     slice_thread_durations: Dict[int, List[float]] = field(default_factory=dict)
+    slice_count: Dict[int, List[int]] = field(default_factory=dict)
     thread_total_durations: Dict[Tuple[str, str], List[float]] = field(default_factory=dict)
 
 
@@ -101,13 +102,16 @@ class Stats:
                               trace_file_idx = trace_idx)
 
                 durations = self.slice_thread_durations.setdefault(slice_hash, [])
+                counts = self.slice_count.setdefault(slice_hash, [])
 
-                ensure_len(durations, trace_idx + 1)
+                ensure_len(durations, trace_idx + 1, 0.0)
+                ensure_len(counts, trace_idx + 1, 0)
                 durations[trace_idx] += thread_dur
+                counts[trace_idx] += 1
 
                 if is_top_level:
                     thread_total_duration = self.thread_total_durations.setdefault((thread_name, row.process_name), [])
-                    ensure_len(thread_total_duration, trace_idx + 1)
+                    ensure_len(thread_total_duration, trace_idx + 1, 0.0)
                     thread_total_duration[trace_idx] += thread_dur
 
     def default_thread_duration(self):
@@ -118,6 +122,16 @@ class Stats:
         if index is None:
             return self.default_thread_duration()
         return self.slice_thread_durations.get(slice_id, self.default_thread_duration())
+
+    def default_slice_count(self):
+        return [0] * len(self.files)
+
+    def get_slice_count(self, slice_id: int):
+        index = self.slices.get(slice_id)
+        if index is None:
+            return self.default_slice_count()
+        return self.slice_count.get(slice_id, self.default_slice_count())
+
 
 def compare_values(before_data: List[float], after_data: List[float], display_name: str, verbose: bool, args) -> Tuple[Optional[float], str]:
     before_dur = np.mean(before_data)
@@ -204,11 +218,46 @@ def compare_events(before: Stats, after: Stats, args):
     differences.sort(key=lambda x: -x[0])
     return differences
 
+def analyze_stats(stats: Stats, args):
+    differences: List[Tuple[float, str]] = []
+
+    for slice_id, slice in stats.slices.items():
+        durations = stats.get_thread_duration(slice_id)
+        counts = stats.get_slice_count(slice_id)
+        min = np.min(durations)
+        max = np.max(durations)
+        std = np.std(durations)
+        mean = np.mean(durations)
+        if mean < args.min_abs_diff:
+            continue
+        rel_diff = (max - min) / (max + 0.0001)
+        if rel_diff < args.min_rel_diff:
+            continue
+
+
+        # TODO: move to load stage
+        if args.thread_name and slice.thread_name != args.thread_name:
+            continue
+        if args.process_name and slice.process_name != args.process_name:
+            continue
+
+
+        idx_max = -1
+        for i in range(len(durations)):
+            if durations[i] == max:
+                idx_max = i
+                break
+
+        differences.append((std, f'{ slice.display_name(args.slice_verbose)} ({mean:.1f}±{std:.1f}ms, min = {min:.1f}, max = {max:.1f} len_min = {np.min(counts)}, len_max = {np.max(counts)}), idx_max = {idx_max}'))
+
+    differences.sort(key=lambda x: -x[0])
+    return differences
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Compare trace files.')
+    parser.add_argument('mode', type=str, choices=['compare', 'analyze'], help='Compare or analyze traces')
     parser.add_argument('folder1', type=str, help='First folder containing trace files')
-    parser.add_argument('folder2', type=str, help='Second folder containing trace files')
+    parser.add_argument('folder2', nargs='?', type=str, help='Second folder containing trace files')
     parser.add_argument('--min-p-value', type=float, default=0.05, help='Minimum p-value')
     parser.add_argument('--min-abs-diff', type=float, default=10, help='Minimum absolute difference in ms')
     parser.add_argument('--min-rel-diff', type=float, default=0.05, help='Minimum relative difference in %')
@@ -220,23 +269,15 @@ if __name__ == '__main__':
 
     pattern = '**/*.pb.gz'
     f1 = os.path.join(args.folder1, pattern)
-    f2 = os.path.join(args.folder2, pattern)
     trace_files1 = glob.glob(f1, recursive=True)
-    trace_files2 = glob.glob(f2, recursive=True)
 
     if len(trace_files1) == 0:
         print(f"No trace files found in {args.folder1}")
         exit(1)
 
-    if len(trace_files2) == 0:
-        print(f"No trace files found in {args.folder2}")
-        exit(1)
-
-    print(f"Comparing {len(trace_files1)} traces with {len(trace_files2)} traces")
 
     # TODO(atuchin): fetch trace_processor_shell
     trace_processor_shell_path = "../tools/perf/core/perfetto_binary_roller/bin/trace_processor_shell"
-
     config = TraceProcessorConfig(bin_path=trace_processor_shell_path)
     trace_processor_url, subprocess = load_shell(config.bin_path,
                                   config.unique_port,
@@ -244,18 +285,34 @@ if __name__ == '__main__':
                                   config.ingest_ftrace_in_raw,
                                   config.enable_dev_features,
                                   PlatformDelegate())
-
     trace_processor_url = 'http://' + trace_processor_url
     print(f"trace_processor_url: {trace_processor_url}")
-    stats_before = calc_stats(trace_files1, trace_processor_url)
-    stats_after = calc_stats(trace_files2, trace_processor_url)
-    if args.threads:
-        differences = compare_threads(stats_before, stats_after, args)
-    else:
-        differences = compare_events(stats_before, stats_after, args)
+
+    if args.mode == 'compare':
+      f2 = os.path.join(args.folder2, pattern)
+      trace_files2 = glob.glob(f2, recursive=True)
+      if len(trace_files2) == 0:
+          print(f"No trace files found in {args.folder2}")
+          exit(1)
+
+      print(f"Comparing {len(trace_files1)} traces with {len(trace_files2)} traces")
+
+      stats_before = calc_stats(trace_files1, trace_processor_url)
+      stats_after = calc_stats(trace_files2, trace_processor_url)
+      if args.threads:
+          differences = compare_threads(stats_before, stats_after, args)
+      else:
+          differences = compare_events(stats_before, stats_after, args)
+      print("Significant differences between the two runs:")
+      for diff, message in differences:
+          print(f"{message}")
+
+    if args.mode == 'analyze':
+        print("Analyzing traces")
+        stats = calc_stats(trace_files1, trace_processor_url)
+        differences = analyze_stats(stats, args)
+        for diff, message in differences:
+            print(f"{message}")
+
     subprocess.kill()
     subprocess.wait()
-
-    print("Significant differences between the two runs:")
-    for diff, message in differences:
-        print(f"{message}")
