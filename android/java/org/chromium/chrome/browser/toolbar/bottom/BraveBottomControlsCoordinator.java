@@ -115,6 +115,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             IncognitoStateProvider incognitoStateProvider,
             ViewGroup topToolbarRoot,
             Runnable closeAllTabsAction) {
+        super.initializeWithNative();
+
         if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             mBottomToolbarCoordinator =
                     new BottomToolbarCoordinator(
