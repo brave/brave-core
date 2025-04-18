@@ -72,6 +72,10 @@ browser/ui/webui/settings/brave_tor*.* @brave/tor-reviewers
 components/tor/ @brave/tor-reviewers
 net/proxy_resolution/ @brave/tor-reviewers
 
+# New tab page
+browser/resources/brave_new_tab_page_refresh @brave/brave-core-ntp
+browser/ui/webui/brave_new_tab_page_refresh @brave/brave-core-ntp
+
 # Chromium Extension API modifications
 chromium_src/**/extensions/**/*_features.json @brave/sec-team
 chromium_src/tools/json_schema_compiler/ @brave/sec-team
