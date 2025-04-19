@@ -385,7 +385,13 @@ extension SceneDelegate {
         let urlString = userInfo[CSSearchableItemActivityIdentifier] as? String,
         let url = URL(string: urlString)
       {
-        scene.browserViewController?.switchToTabForURLOrOpen(url, isPrivileged: false)
+        let isPrivateBrowsing =
+          scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+        scene.browserViewController?.switchToTabForURLOrOpen(
+          url,
+          isPrivate: isPrivateBrowsing,
+          isPrivileged: false
+        )
         return
       }
     case ActivityType.newTab.identifier:
@@ -480,7 +486,13 @@ extension SceneDelegate {
         break
       }
 
-      scene.browserViewController?.switchToTabForURLOrOpen(url, isPrivileged: true)
+      let isPrivateBrowsing =
+        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+      scene.browserViewController?.switchToTabForURLOrOpen(
+        url,
+        isPrivate: isPrivateBrowsing,
+        isPrivileged: false
+      )
       return
     }
   }
@@ -665,7 +677,11 @@ extension SceneDelegate {
     if let urlToOpen = urlToOpen {
       DispatchQueue.main.async {
         browserViewController.loadViewIfNeeded()
-        browserViewController.switchToTabForURLOrOpen(urlToOpen, isPrivileged: false)
+        browserViewController.switchToTabForURLOrOpen(
+          urlToOpen,
+          isPrivate: isPrivate,
+          isPrivileged: false
+        )
       }
     }
 
