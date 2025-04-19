@@ -132,6 +132,15 @@ void SidebarItemsContentsView::OnThemeChanged() {
   }
 }
 
+void SidebarItemsContentsView::AddedToWidget() {
+  CHECK(sidebar_model_);
+  // Setup with initial items.
+  int index = 0;
+  for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
+    OnItemAdded(item, index++, false);
+  }
+}
+
 void SidebarItemsContentsView::Update() {
   UpdateAllBuiltInItemsViewState();
 }

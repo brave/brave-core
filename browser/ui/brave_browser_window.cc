@@ -26,9 +26,7 @@ BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
 }
 
 #if defined(TOOLKIT_VIEWS)
-sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
-  return nullptr;
-}
+void BraveBrowserWindow::InitSidebar() {}
 
 void BraveBrowserWindow::ToggleSidebar() {}
 

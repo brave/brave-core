@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/webui_url_constants.h"
@@ -55,18 +56,6 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
-  if (sidebar::CanUseSidebar(this)) {
-    // Below call order is important.
-    // When reaches here, Sidebar UI is setup in BraveBrowserView but
-    // not initialized. It's just empty because sidebar controller/model is not
-    // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
-    // So, initializing sidebar controller/model here and then ask to initialize
-    // sidebar UI. After that, UI will be updated for model's change.
-    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
-        tab_strip_model_.get(), profile());
-    sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
-  }
-
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
@@ -75,6 +64,10 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 }
 
 BraveBrowser::~BraveBrowser() = default;
+
+sidebar::SidebarController* BraveBrowser::sidebar_controller() {
+  return GetFeatures().sidebar_controller();
+}
 
 void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
@@ -89,9 +82,9 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   if (changed_flags & content::INVALIDATE_TYPE_URL) {
     if (source == tab_strip_model_->GetActiveWebContents()) {
       // sidebar() can return a nullptr in unit tests.
-      if (sidebar_controller_) {
-        if (sidebar_controller_->sidebar()) {
-          sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+      if (sidebar_controller()) {
+        if (sidebar_controller()->sidebar()) {
+          sidebar_controller()->sidebar()->UpdateSidebarItemsState();
         } else {
           CHECK_IS_TEST();
         }
@@ -208,7 +201,7 @@ void BraveBrowser::OnTabStripModelChanged(
   }
 
   // sidebar() can return a nullptr in unit tests.
-  if (!sidebar_controller_ || !sidebar_controller_->sidebar()) {
+  if (!sidebar_controller() || !sidebar_controller()->sidebar()) {
     return;
   }
   // We need to update sidebar UI whenever active tab is changed or
@@ -216,7 +209,7 @@ void BraveBrowser::OnTabStripModelChanged(
   if (change.type() == TabStripModelChange::Type::kInserted ||
       change.type() == TabStripModelChange::Type::kRemoved ||
       selection.active_tab_changed()) {
-    sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+    sidebar_controller()->sidebar()->UpdateSidebarItemsState();
   }
 }
 
