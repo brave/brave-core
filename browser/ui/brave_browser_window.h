@@ -17,12 +17,6 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-#if defined(TOOLKIT_VIEWS)
-namespace sidebar {
-class Sidebar;
-}  // namespace sidebar
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 namespace speedreader {
 class SpeedreaderBubbleView;
@@ -52,7 +46,7 @@ class BraveBrowserWindow : public BrowserWindow {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  virtual sidebar::Sidebar* InitSidebar();
+  virtual void InitSidebar();
   virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
   virtual void CleanAndCopySelectedURL();

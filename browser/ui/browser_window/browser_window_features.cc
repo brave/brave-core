@@ -7,9 +7,13 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
@@ -61,4 +65,26 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
+}
+
+void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
+  BrowserWindowFeatures_ChromiumImpl::InitPostWindowConstruction(browser);
+
+  const bool is_type_normal =
+      browser->GetType() == BrowserWindowInterface::TYPE_NORMAL;
+  if (is_type_normal) {
+    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
+        browser->tab_strip_model(), browser->profile());
+    sidebar_controller_->set_side_panel_ui(side_panel_ui());
+    static_cast<BraveBrowserWindow*>(browser->window())->InitSidebar();
+  }
+}
+
+void BrowserWindowFeatures::TearDownPreBrowserViewDestruction() {
+  // As |sidebar_controller_| depends on side_panel_ui(),
+  // reset it before panel ui is gone.
+  if (sidebar_controller_) {
+    sidebar_controller_->set_side_panel_ui(nullptr);
+  }
+  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserViewDestruction();
 }

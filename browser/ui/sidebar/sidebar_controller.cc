@@ -61,6 +61,8 @@ SidebarController::SidebarController(TabStripModel* tab_strip_model,
     : tab_strip_model_(tab_strip_model),
       profile_(profile),
       sidebar_model_(new SidebarModel(profile_)) {
+  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS));
   sidebar_service_observed_.Observe(GetSidebarService(profile_));
 }
 
@@ -237,16 +239,6 @@ void SidebarController::UpdateActiveItemState(
   if (auto index = sidebar_model_->GetIndexOf(*active_panel_item)) {
     ActivateItemAt(*index);
   }
-}
-
-void SidebarController::SetSidebar(Sidebar* sidebar) {
-  CHECK(!sidebar_) << " Can set only once";
-
-  sidebar_ = sidebar;
-  CHECK(sidebar_);
-
-  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS));
 }
 
 }  // namespace sidebar
