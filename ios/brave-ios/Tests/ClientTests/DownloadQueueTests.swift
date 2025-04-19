@@ -178,6 +178,11 @@ class DownloadQueueTests: XCTestCase {
       ]
     )
   }
+
+  func test_downloadSuggestedFileName_UnicodeBidiControlEscaped() {
+    let download = Download(suggestedFilename: "file\u{0000202e}4pm.doc", originalURL: nil)
+    XCTAssertEqual(download.filename, "file4pm.doc")
+  }
 }
 
 // MARK: - Tests Helpers

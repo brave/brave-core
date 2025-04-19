@@ -30,8 +30,6 @@ class WebKitDownload: Download {
       mimeType: response.mimeType
     )
 
-    self.originalURL = download.originalRequest?.url
-
     self.totalBytesExpected =
       response.expectedContentLength > 0 ? response.expectedContentLength : nil
 
