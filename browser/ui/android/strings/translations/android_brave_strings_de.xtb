@@ -104,7 +104,7 @@
 <translation id="1799030480311994998">Funktionen</translation>
 <translation id="2005732746077850308">Brave Schutz und Datenschutz</translation>
 <translation id="4692623383562244444">Suchmaschinen</translation>
-<translation id="1468415711258933398">Standard-Registerkarte</translation>
+<translation id="1468415711258933398">Standard-Tab</translation>
 <translation id="3377025655491224618">Privater Tab</translation>
 <translation id="7304425663107214334">Browser-Empfehlungen anzeigen</translation>
 <translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
@@ -184,7 +184,7 @@
 <translation id="7172792761509429092">Brave-Nachrichten haben keine Inhalte zum Anzeigen.</translation>
 <translation id="1771307734839364850">Inhaltsquellen wählen</translation>
 <translation id="6891769200437737956">Verhindert, dass Websites einen Fingerabdruck von mir erstellen</translation>
-<translation id="7459000603787995422">Registerkarten beim Beenden schließen</translation>
+<translation id="7459000603787995422">Tabs beim Beenden schließen</translation>
 <translation id="4448697385961650078">Tracker &amp; Werbung blockieren</translation>
 <translation id="2448893613530489637">Verhindert, dass Tracker und Werbung auf Websites geladen und angezeigt werden</translation>
 <translation id="1025207378813960343">Stellen Sie sicher, dass die Verbindungen zu Webseiten sicher sind.</translation>
@@ -194,7 +194,7 @@
 <translation id="4690906712010847708">Verbindungen nicht auf HTTPS upgraden (deaktiviert)</translation>
 <translation id="693506469193748756">Vergiss mich, wenn ich diese Seite schließe</translation>
 <translation id="6975864539539353406">Löscht Cookies und andere Seitendaten, wenn Sie eine Seite schließen</translation>
-<translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
+<translation id="1680858055899097121">Tabs zwischen Browsersitzungen nicht beibehalten</translation>
 <translation id="7142548388914389999">Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)</translation>
 <translation id="5254037869598726291">Mit anonymisierten P3A-Informationen kann Brave die Gesamtnutzung einschätzen und sicherstellen, dass wir beliebte Funktionen verbessern.</translation>
 <translation id="4174337572777167894">Web-Erkundungsprojekt</translation>
@@ -218,7 +218,7 @@
 <translation id="2675679258824361492">Andere Datenschutzeinstellungen</translation>
 <translation id="8026334261755873520">Browserdaten löschen</translation>
 <translation id="1690924763769415936">Hintergrundwiedergabe</translation>
-<translation id="6332924730165919598">Das Schließen aller Registerkarten schließt Brave</translation>
+<translation id="6332924730165919598">Das Schließen aller Tabs schließt Brave</translation>
 <translation id="8308305244351876417">Erlaubt die Wiedergabe, wenn Sie zu einem anderen Brave-Tab oder einer anderen App wechseln oder sich Ihr Gerätebildschirm abschaltet.</translation>
 <translation id="49147335255967913">YouTube-Links in Brave öffnen</translation>
 <translation id="4150201353443180367">Ansicht</translation>
@@ -406,8 +406,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7551563084530025179">Bevor Sie Passwörter synchronisieren können, müssen Sie eine Authentifizierung mithilfe von Geräte-Biometrie/Passcode vornehmen. Diese zusätzliche Sicherheitsmaßnahme schützt Ihre Passwörter.</translation>
 <translation id="6925081665778864449">Um Passwörter zu synchronisieren, aktivieren Sie bitte die Authentifizierung per Biometrie/Passcode auf Ihrem Android-Gerät. Diese zusätzliche Sicherheitsmaßnahme schützt Ihre Passwörter.</translation>
 <translation id="597993392929850353">Brave-Lizenz</translation>
-<translation id="6336451774241870485">Neue private Registerkarte</translation>
-<translation id="3110967157686007724">Private Registerkarte</translation>
+<translation id="6336451774241870485">Neuer private Tab</translation>
+<translation id="3110967157686007724">Privater Tab</translation>
 <translation id="944340256927461196">Anonymität auf deinem Gerät</translation>
 <translation id="2063044449012253966">Websites, die du in privaten Fenstern besuchst, werden nicht in deinem Verlauf angezeigt. Cookies, Formulardaten und Website-Daten verschwinden, sobald alle privaten Fenster geschlossen sind.</translation>
 <translation id="7395764193745523646">Sichtbarkeit beim Surfen</translation>
@@ -1154,7 +1154,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6896758677409633944">Kopieren</translation>
 <translation id="3803384303807438047">Offline-Daten des Elements löschen</translation>
 <translation id="4195643157523330669">In neuem Tab öffnen</translation>
-<translation id="4243710787042215766">In privater Registerkarte öffnen</translation>
+<translation id="4243710787042215766">In privatem Tab öffnen</translation>
 <translation id="8261506727792406068">Löschen</translation>
 <translation id="377872456482681602">Bitte wählen Sie zuerst Elemente aus</translation>
 <translation id="286472539388773794">Bitte geben Sie einen gültigen Playlistnamen ein</translation>
@@ -1227,7 +1227,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2728518864712716830">Update wurde heruntergeladen.</translation>
 <translation id="8403338849301491865">Die Filterliste wurde erfolgreich aktualisiert</translation>
 <translation id="4650851936784160359">Die Filterliste konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.</translation>
-<translation id="3098054327870766317">Rückgängig-Schaltfläche anzeigen, wenn Registerkarten geschlossen werden</translation>
+<translation id="3098054327870766317">Rückgängig-Schaltfläche anzeigen, wenn Tabs geschlossen werden</translation>
 <translation id="1336494649091412226">Bist du sicher, dass du Brave verlassen möchtest?</translation>
 <translation id="2361906291514218784">Leo-KI</translation>
 <translation id="7942415993090181327">Chat-Verlauf</translation>
