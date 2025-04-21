@@ -5,7 +5,6 @@
 
 #include <algorithm>
 
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -14,6 +13,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
@@ -91,8 +91,7 @@ class AIChatProfileTest : public InProcessBrowserTest,
 };
 
 IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidebarCheck) {
-  auto* sidebar_model =
-      static_cast<BraveBrowser*>(browser_)->sidebar_controller()->model();
+  auto* sidebar_model = browser_->GetFeatures().sidebar_controller()->model();
 
   bool is_in_sidebar = std::ranges::any_of(
       sidebar_model->GetAllSidebarItems(), [](const auto& item) {
