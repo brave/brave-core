@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .header {
-  padding: 8px 16px 8px 16px;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   display: flex;
   align-items: center;
@@ -15,7 +15,9 @@
     flex-grow: 0;
   }
 }
-
+main .header{
+  padding: var(--leo-spacing-m) var(--leo-spacing-4xl);
+}
 .actions {
   --leo-icon-size: 20px;
   --gap: 12px;
