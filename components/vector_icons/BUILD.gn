@@ -101,6 +101,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_tune_small.icon",
     "leo_user_add.icon",
     "leo_user_circle.icon",
+    "leo_user_picture.icon",
     "leo_verification_filled.icon",
     "leo_warning_triangle_outline.icon",
     "leo_window_binary_code.icon",
