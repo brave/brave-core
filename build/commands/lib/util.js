@@ -628,7 +628,9 @@ const util = {
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
-    util.runGnGen(config.nativeRedirectCCDir, buildArgs)
+    util.runGnGen(config.nativeRedirectCCDir, buildArgs, [
+      '--root-target=//brave/tools/redirect_cc'
+    ])
     await util.buildTargets(['brave/tools/redirect_cc'], mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
     Log.progressFinish('build redirect_cc')
   },
