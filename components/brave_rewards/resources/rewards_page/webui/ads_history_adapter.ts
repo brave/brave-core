@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { AdsHistoryItem, AdLikeStatus } from '../lib/app_state'
+import { AdsHistoryItem, AdLikeStatus, AdType } from '../lib/app_state'
 
 // Currently, the Ads service provides Ads history data as untyped `base::Value`
 // (JSON) data. In order to interact with these history items, the caller must
@@ -41,8 +41,13 @@ function convertLikeAction(likeAction: number) {
 function convertMapValue(id: string, value: MapValue): AdsHistoryItem | null {
   const { detail } = value
   const { adContent } = detail
+  const type = convertAdType(String(adContent.adType || ''))
+  if (!type) {
+    return null
+  }
   const item: AdsHistoryItem = {
     id,
+    type,
     createdAt: value.createdAt,
     name: String(adContent.brand || ''),
     text: String(adContent.brandInfo || ''),
@@ -56,6 +61,15 @@ function convertMapValue(id: string, value: MapValue): AdsHistoryItem | null {
     return null
   }
   return item
+}
+
+function convertAdType(typeString: string): AdType | null {
+  switch (typeString) {
+    case 'ad_notification': return 'notification'
+    case 'new_tab_page_ad': return 'new-tab-page'
+    case 'search_result_ad': return 'search-result'
+    default: return null
+  }
 }
 
 class AdsHistoryAdapter {
