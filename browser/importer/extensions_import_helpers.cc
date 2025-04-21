@@ -29,7 +29,7 @@
 
 namespace extensions_import {
 
-// Silent installer via websotre w/o any prompt or bubble.
+// Silent installer via webstore w/o any prompt or bubble.
 class WebstoreInstallerForImporting
     : public extensions::WebstoreInstallWithPrompt {
  public:
@@ -236,7 +236,7 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
                          extensions::webstore_install::Result::SUCCESS));
     } else {
       extension.installer = base::MakeRefCounted<WebstoreInstallerForImporting>(
-          extension.id, target_profile_, nullptr,
+          extension.id, target_profile_, /*parent_window=*/gfx::NativeWindow(),
           base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
                          weak_factory_.GetWeakPtr(), &extension,
                          std::move(wrapper)));
