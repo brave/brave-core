@@ -44,7 +44,7 @@
         android:id="@+id/auto_reconnect_vpn_tutorial_warning_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="invisible"
         style="@style/LargeRegular"
         android:layout_marginBottom="24dp"
         android:textColor="@color/system_feedback_error"
