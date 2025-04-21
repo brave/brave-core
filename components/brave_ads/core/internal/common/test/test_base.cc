@@ -308,7 +308,8 @@ void TestBase::SetUpIntegrationTest() {
                    base::BindOnce(&TestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 
-  AdsClientNotifierWaiter(/*notifier=*/this).WaitForOnNotifyDidInitializeAds();
+  AdsClientNotifierWaiter(/*ads_client_notifier=*/this)
+      .WaitForOnNotifyDidInitializeAds();
 }
 
 void TestBase::SetUpIntegrationTestCallback(bool success) {

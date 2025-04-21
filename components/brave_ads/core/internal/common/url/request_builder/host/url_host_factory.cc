@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_factory.h"
 
-#include <ostream>
+#include <ostream>  // IWYU pragma: keep
 
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"

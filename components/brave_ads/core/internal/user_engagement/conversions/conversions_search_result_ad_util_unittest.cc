@@ -51,7 +51,7 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
-       AllowedToConvertAdClickedEvent) {
+       AllowedToConvertClickedAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*should_generate_random_uuids=*/false);
@@ -63,7 +63,7 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
-       NotAllowedToConvertAdClickedEventIfOptedOutOfSearchResultAds) {
+       NotAllowedToConvertClickedAdEventIfOptedOutOfSearchResultAds) {
   // Arrange
   test::OptOutOfSearchResultAds();
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
-       NotAllowedToConvertAdNonViewedOrClickedEvents) {
+       NotAllowedToConvertNonViewedOrClickedAdEvents) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
                                   /*should_generate_random_uuids=*/false);
@@ -113,7 +113,7 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
 }
 
 TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
-       AllowedToConvertAdClickedEventForNonRewardsUser) {
+       AllowedToConvertClickedAdEventForNonRewardsUser) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       {kShouldAlwaysTriggerBraveSearchResultAdEventsFeature});

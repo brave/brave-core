@@ -37,14 +37,13 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
     return VLOG(1) << "Ads resource not supported for " << resource_id;
   }
 
-  if (resource_component_id_ &&
-      resource_component_id_ != component->id.data()) {
+  if (resource_component_id_ && resource_component_id_ != component->id) {
     Unregister();
     OnComponentUnregistered(*resource_component_id_);
   }
   resource_component_id_ = component->id;
-  const std::string resource_component_public_key =
-      std::string(component->public_key);
+
+  const std::string resource_component_public_key{component->public_key};
 
   const std::string component_name =
       base::ReplaceStringPlaceholders(kComponentName, {resource_id}, nullptr);
