@@ -33,13 +33,19 @@ export function EarningCard() {
   const [showAdsSettingsModal, setShowAdsSettingsModal] = React.useState(false)
   const [showAdsHistoryModal, setShowAdsHistoryModal] = React.useState(false)
 
+  let adsReceivedThisMonth = 0
+  if (adsInfo) {
+    adsReceivedThisMonth = Object.values(adsInfo.adTypesReceivedThisMonth)
+      .reduce((prev, current) => prev + current, 0)
+  }
+
   const unconnectedAdsViewedString = usePluralString(
     'unconnectedAdsViewedText',
-    adsInfo?.adsReceivedThisMonth)
+    adsReceivedThisMonth)
 
   const connectedAdsViewedString = usePluralString(
     'connectedAdsViewedText',
-    adsInfo?.adsReceivedThisMonth)
+    adsReceivedThisMonth)
 
   function toggleAdDetails() {
     setShowAdDetails(!showAdDetails)
@@ -154,7 +160,7 @@ export function EarningCard() {
             {
               adsInfo && formatMessage(getString('earningsAdsReceivedText'), [
                 <span key='value' className='value'>
-                  {adsInfo.adsReceivedThisMonth}
+                  {adsReceivedThisMonth}
                 </span>
               ])
             }
