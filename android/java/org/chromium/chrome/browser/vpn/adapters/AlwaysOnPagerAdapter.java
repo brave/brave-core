@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.vpn.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Layout;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
@@ -87,9 +88,22 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                             autoReconnectVpnWarningText,
                             new SpanInfo("<learn_more>", "</learn_more>", learnMoreClickableSpan));
 
-            autoReconnectVpnTutorialWarningText.setVisibility(View.VISIBLE);
             autoReconnectVpnTutorialWarningText.setMovementMethod(LinkMovementMethod.getInstance());
             autoReconnectVpnTutorialWarningText.setText(learnMoreSpannableString);
+            autoReconnectVpnTutorialWarningText.post(
+                    () -> {
+                        Layout layout = autoReconnectVpnTutorialWarningText.getLayout();
+                        if (layout != null) {
+                            int desiredHeight =
+                                    layout.getLineTop(
+                                            autoReconnectVpnTutorialWarningText.getLineCount());
+                            ViewGroup.LayoutParams params =
+                                    autoReconnectVpnTutorialWarningText.getLayoutParams();
+                            params.height = desiredHeight;
+                            autoReconnectVpnTutorialWarningText.setLayoutParams(params);
+                            autoReconnectVpnTutorialWarningText.setVisibility(View.VISIBLE);
+                        }
+                    });
         } else {
             autoReconnectVpnTutorialText.setText(autoReconnectVpnText);
         }
