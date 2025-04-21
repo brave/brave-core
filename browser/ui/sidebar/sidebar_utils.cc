@@ -9,7 +9,6 @@
 
 #include "base/check_is_test.h"
 #include "base/command_line.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -22,6 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
@@ -220,10 +220,7 @@ std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
   BuiltInItemType type =
       static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
   // If cached type item is not included in current model, return null.
-  if (!static_cast<BraveBrowser*>(browser)
-           ->sidebar_controller()
-           ->model()
-           ->GetIndexOf(type)) {
+  if (!browser->GetFeatures().sidebar_controller()->model()->GetIndexOf(type)) {
     return std::nullopt;
   }
   return SidePanelIdFromSideBarItemType(type);

@@ -9,13 +9,13 @@
 
 #include "base/check_is_test.h"
 #include "base/functional/callback.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
@@ -58,8 +58,7 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
 }
 
 void PlaylistSidePanelCoordinator::ActivatePanel() {
-  auto* sidebar_controller =
-      static_cast<BraveBrowser*>(browser_.get())->sidebar_controller();
+  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
   sidebar_controller->ActivatePanelItem(
       sidebar::SidebarItem::BuiltInItemType::kPlaylist);
 }

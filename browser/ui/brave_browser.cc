@@ -65,10 +65,6 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 
 BraveBrowser::~BraveBrowser() = default;
 
-sidebar::SidebarController* BraveBrowser::sidebar_controller() {
-  return GetFeatures().sidebar_controller();
-}
-
 void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
   Browser::ScheduleUIUpdate(source, changed_flags);
@@ -82,9 +78,9 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   if (changed_flags & content::INVALIDATE_TYPE_URL) {
     if (source == tab_strip_model_->GetActiveWebContents()) {
       // sidebar() can return a nullptr in unit tests.
-      if (sidebar_controller()) {
-        if (sidebar_controller()->sidebar()) {
-          sidebar_controller()->sidebar()->UpdateSidebarItemsState();
+      if (auto* sidebar_controller = GetFeatures().sidebar_controller()) {
+        if (sidebar_controller->sidebar()) {
+          sidebar_controller->sidebar()->UpdateSidebarItemsState();
         } else {
           CHECK_IS_TEST();
         }
@@ -201,7 +197,8 @@ void BraveBrowser::OnTabStripModelChanged(
   }
 
   // sidebar() can return a nullptr in unit tests.
-  if (!sidebar_controller() || !sidebar_controller()->sidebar()) {
+  auto* sidebar_controller = GetFeatures().sidebar_controller();
+  if (!sidebar_controller || !sidebar_controller->sidebar()) {
     return;
   }
   // We need to update sidebar UI whenever active tab is changed or
@@ -209,7 +206,7 @@ void BraveBrowser::OnTabStripModelChanged(
   if (change.type() == TabStripModelChange::Type::kInserted ||
       change.type() == TabStripModelChange::Type::kRemoved ||
       selection.active_tab_changed()) {
-    sidebar_controller()->sidebar()->UpdateSidebarItemsState();
+    sidebar_controller->sidebar()->UpdateSidebarItemsState();
   }
 }
 

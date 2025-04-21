@@ -18,6 +18,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -222,7 +223,7 @@ void SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed(
 }
 
 void SidebarAddItemBubbleDelegateView::OnCurrentItemButtonPressed() {
-  browser_->sidebar_controller()->AddItemWithCurrentTab();
+  browser_->GetFeatures().sidebar_controller()->AddItemWithCurrentTab();
   CloseOrReLayoutAfterAddingItem();
 }
 

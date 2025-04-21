@@ -9,10 +9,6 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
 
-namespace sidebar {
-class SidebarController;
-}  // namespace sidebar
-
 class BraveBrowserWindow;
 
 namespace content {
@@ -57,9 +53,6 @@ class BraveBrowser : public Browser {
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
-
-  // TODO(simonhong): Delete this.
-  sidebar::SidebarController* sidebar_controller();
 
   BraveBrowserWindow* brave_window();
 
