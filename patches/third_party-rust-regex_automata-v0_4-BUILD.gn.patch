@@ -6,6 +6,6 @@ index 1f5143b0afc2f2e480d0c7b7b773d7fc295b338c..82e90a0c2b203d31bf6ccbb4a8b50f19
    # //third_party/rust/chromium_crates_io/Cargo.toml to use
    # it from first-party code.
    visibility = [ "//third_party/rust/*" ]
-+  features += [ "alloc", "meta", "nfa-pikevm", "nfa-thompson", "syntax" ]
-+  deps = [ "//brave/third_party/rust/regex_syntax/v0_8:lib" ]
++  features += [ "alloc", "dfa-onepass", "dfa-search", "hybrid", "meta", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary" ]
++  deps = [ "//brave/third_party/rust/aho_corasick/v1:lib", "//brave/third_party/rust/regex_syntax/v0_8:lib", "//third_party/rust/memchr/v2:lib" ]
  }
