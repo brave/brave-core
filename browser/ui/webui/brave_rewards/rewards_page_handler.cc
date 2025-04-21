@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_ads/core/public/user_engagement/reactions/reactions_util.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
@@ -79,9 +78,6 @@ class RewardsPageHandler::UpdateObserver
         brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision,
         UpdateSource::kAds);
     AddPrefListener(brave_ads::prefs::kOptedInToSearchResultAds,
-                    UpdateSource::kAds);
-    AddPrefListener(brave_news::prefs::kBraveNewsOptedIn, UpdateSource::kAds);
-    AddPrefListener(brave_news::prefs::kNewTabPageShowToday,
                     UpdateSource::kAds);
     AddPrefListener(ntp_background_images::prefs::
                         kNewTabPageShowSponsoredImagesBackgroundImage,
@@ -407,9 +403,6 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
       prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
   settings->search_ads_enabled =
       prefs_->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
-  settings->inline_content_ads_enabled =
-      prefs_->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
-      prefs_->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
 
   settings->notification_ads_per_hour =
       ads_service_->GetMaximumNotificationAdsPerHour();
@@ -447,7 +440,6 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 
     statement->min_earnings_previous_month = info->min_earnings_previous_month;
     statement->next_payment_date = info->next_payment_date;
-    statement->ads_received_this_month = info->ads_received_this_month;
     statement->ad_type_summary_this_month = mojom::AdTypeSummary::New();
 
     auto& summary = statement->ad_type_summary_this_month;
@@ -457,7 +449,6 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 
     summary->notification_ads = ad_type_map[AdType::kNotificationAd];
     summary->new_tab_page_ads = ad_type_map[AdType::kNewTabPageAd];
-    summary->inline_content_ads = ad_type_map[AdType::kInlineContentAd];
     summary->search_result_ads = ad_type_map[AdType::kSearchResultAd];
 
     std::move(callback).Run(std::move(statement));
