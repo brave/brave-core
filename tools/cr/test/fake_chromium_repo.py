@@ -6,7 +6,7 @@
 import tempfile
 import subprocess
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 import json
 import shutil
 
@@ -304,11 +304,18 @@ class FakeChromiumRepo:
                 f'{str(filename).replace("/", "-")}.patch').relative_to(
                     self.brave)
 
-    def run_apply_patches(self) -> None:
-        """Similar to `npm run apply_patches`"""
+    def run_apply_patches(self) -> List[Dict]:
+        """Similar to `npm run apply_patches`.
+
+        This method applies patches for all modified files in Chromium and its
+        dependencies. If any patch fails to apply, it returns a list of
+        dictionary entries for the failed patches.
+        """
         if not self.brave_patches.exists():
             raise FileNotFoundError(
                 f'Patches directory {self.brave_patches} does not exist.')
+
+        failed_patches = []
 
         for patch_file in self.brave_patches.rglob('*.patch'):
             # Using the relative path of the patch file to determine the target
@@ -321,11 +328,40 @@ class FakeChromiumRepo:
                 raise FileNotFoundError(
                     f'Target repository {target_repo_path} does not exist.')
 
-            # Apply the patch
-            self._run_git_command(['apply', str(patch_file)], target_repo_path)
+            try:
+                # Apply the patch
+                self._run_git_command(['apply', str(patch_file)],
+                                      target_repo_path)
 
-            # Reset the file to ensure applied changes are not staged
-            self._run_git_command(['reset'], target_repo_path)
+                # Reset the file to ensure applied changes are not staged
+                self._run_git_command(['reset'], target_repo_path)
+            except subprocess.CalledProcessError:
+                # Extract the "path" value from the patch file
+                with patch_file.open('r') as f:
+                    for line in f:
+                        if line.startswith('--- a/'):
+                            path = line[6:].strip()
+                            break
+                    else:
+                        path = None
+
+                # Check if the file exists, and update the reason if it doesn't
+                if path is not None:
+                    file_path = target_repo_path / path
+                    if not file_path.exists():
+                        reason = 'SRC_REMOVED'
+                    else:
+                        reason = 'PATCH_CHANGED'
+                else:
+                    reason = 'PATCH_CHANGED'
+
+                failed_patches.append({
+                    "patchPath": str(patch_file.relative_to(self.brave)),
+                    "path": path,
+                    "reason": reason
+                })
+
+        return failed_patches
 
     def cleanup(self) -> None:
         """Cleans up the temporary directory used for the fake repository."""
