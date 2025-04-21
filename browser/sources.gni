@@ -649,6 +649,6 @@ if (!is_android) {
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
 }
 
-if (target_os == "mac" && enable_updater) {
+if (target_os == "mac") {
   brave_chrome_browser_deps += [ "//brave/browser:mac_features" ]
 }
