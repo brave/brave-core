@@ -67,7 +67,6 @@ export function convertAdType(adType: AdType) {
     case 'new-tab-page': return mojom.AdType.kNewTabPageAd
     case 'notification': return mojom.AdType.kNotificationAd
     case 'search-result': return mojom.AdType.kSearchResultAd
-    case 'inline-content': return mojom.AdType.kInlineContentAd
   }
 }
 
