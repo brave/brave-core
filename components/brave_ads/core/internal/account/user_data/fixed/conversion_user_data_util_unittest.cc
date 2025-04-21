@@ -42,7 +42,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
                     test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act
-  const std::optional<base::Value::Dict> verifiable_conversion_user_data =
+  std::optional<base::Value::Dict> verifiable_conversion_user_data =
       MaybeBuildVerifiableConversionUserData(conversion);
   ASSERT_TRUE(verifiable_conversion_user_data);
 

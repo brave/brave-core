@@ -101,7 +101,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
 
   const std::vector<float> data_4 = {1.0, 0.0, 0.0};
   const VectorData data_point_3(data_4);
-  const std::optional<PredictionMap> data_point_3_predictions =
+  std::optional<PredictionMap> data_point_3_predictions =
       linear_model.Predict(data_point_3);
   ASSERT_TRUE(data_point_3_predictions);
   EXPECT_THAT(*data_point_3_predictions, ::testing::SizeIs(3));
@@ -110,7 +110,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
       std::move(transformations), std::move(linear_model));
 
   // Act
-  const std::optional<PredictionMap> predictions =
+  std::optional<PredictionMap> predictions =
       pipeline.GetTopPredictions(kTestString);
   ASSERT_TRUE(predictions);
   ASSERT_GT(predictions->size(), 0U);
@@ -145,7 +145,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   for (size_t i = 0; i < train_texts.size(); ++i) {
     std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(train_texts[i]);
-    const std::optional<PredictionMap> prediction_map =
+    std::optional<PredictionMap> prediction_map =
         text_processing_pipeline.Apply(std::move(text_data));
     ASSERT_TRUE(prediction_map);
     prediction_maps[i] = *prediction_map;
@@ -201,7 +201,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
-  const std::optional<PredictionMap> prediction_map =
+  std::optional<PredictionMap> prediction_map =
       text_processing_pipeline.Apply(std::move(text_data));
 
   // Assert
@@ -222,7 +222,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
-  const std::optional<PredictionMap> prediction_map =
+  std::optional<PredictionMap> prediction_map =
       text_processing_pipeline.Apply(std::move(text_data));
 
   // Assert
@@ -247,7 +247,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
   // Act & Assert
   for (const auto& text : input_texts) {
     std::unique_ptr<Data> text_data = std::make_unique<TextData>(text);
-    const std::optional<PredictionMap> prediction_map =
+    std::optional<PredictionMap> prediction_map =
         text_processing_pipeline.Apply(std::move(text_data));
     EXPECT_FALSE(prediction_map);
   }
@@ -327,7 +327,7 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
   // Act
-  const std::optional<PredictionMap> predictions =
+  std::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
   ASSERT_TRUE(predictions);
 
@@ -353,12 +353,12 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   pipeline::TextProcessing text_processing_pipeline;
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(file)));
 
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToString(kTextCMCCrash);
   ASSERT_TRUE(contents);
 
   // Act
-  const std::optional<PredictionMap> predictions =
+  std::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(*contents);
   ASSERT_TRUE(predictions);
 

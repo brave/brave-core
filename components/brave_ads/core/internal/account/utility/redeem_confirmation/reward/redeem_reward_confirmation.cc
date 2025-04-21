@@ -198,7 +198,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/true));
   }
 
-  const std::optional<base::Value::Dict> dict =
+  std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(mojom_url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
@@ -226,7 +226,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/false));
   }
 
-  const std::optional<cbr::PublicKey> public_key =
+  std::optional<cbr::PublicKey> public_key =
       ParsePublicKey(*payment_token_dict);
   if (!public_key.has_value()) {
     return base::unexpected(std::make_tuple("Failed to parse public key",
@@ -240,7 +240,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                         /*should_retry=*/true));
   }
 
-  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
+  std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       ParseVerifyAndUnblindTokens(
           *payment_token_dict, {confirmation.reward->token},
           {confirmation.reward->blinded_token}, *public_key);

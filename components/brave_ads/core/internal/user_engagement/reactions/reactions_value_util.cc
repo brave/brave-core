@@ -25,7 +25,7 @@ ReactionMap ReactionMapFromDict(const base::Value::Dict& dict) {
   ReactionMap reactions;
 
   for (const auto [id, value] : dict) {
-    if (const std::optional<int> type = value.GetIfInt()) {
+    if (std::optional<int> type = value.GetIfInt()) {
       reactions[id] = static_cast<mojom::ReactionType>(*type);
     }
   }

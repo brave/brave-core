@@ -205,7 +205,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleHttpStatusCodeQueryKey(
 
   int http_status_code_as_int;
   EXPECT_TRUE(base::StringToInt(value, &http_status_code_as_int));
-  const std::optional<net::HttpStatusCode> http_status_code =
+  std::optional<net::HttpStatusCode> http_status_code =
       net::TryToGetHttpStatusCode(http_status_code_as_int);
   EXPECT_TRUE(http_status_code);
   http_response->set_code(*http_status_code);

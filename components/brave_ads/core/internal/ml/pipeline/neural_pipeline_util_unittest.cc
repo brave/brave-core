@@ -24,14 +24,13 @@ class BraveAdsNeuralPipelineUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
   // Arrange
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToString(kOnlyRequiredFieldsNeuralModelPipeline);
   ASSERT_TRUE(contents);
 
   // Act
-  const std::optional<pipeline::PipelineInfo> pipeline =
-      pipeline::LoadNeuralPipeline(
-          reinterpret_cast<const uint8_t*>(contents->data()), contents->size());
+  std::optional<pipeline::PipelineInfo> pipeline = pipeline::LoadNeuralPipeline(
+      reinterpret_cast<const uint8_t*>(contents->data()), contents->size());
 
   // Assert
   EXPECT_TRUE(pipeline);

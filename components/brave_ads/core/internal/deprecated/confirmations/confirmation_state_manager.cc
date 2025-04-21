@@ -106,8 +106,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::FromJson", "json",
               json.size());
 
-  const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
   confirmation_tokens_.RemoveAll();
   payment_tokens_.RemoveAllTokens();
 
@@ -141,7 +140,7 @@ void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
     auto to_remove = std::ranges::remove_if(
         filtered_confirmation_tokens,
         [&public_key_base64](const ConfirmationTokenInfo& confirmation_token) {
-          const std::optional<std::string> unblinded_token_base64 =
+          std::optional<std::string> unblinded_token_base64 =
               confirmation_token.unblinded_token.EncodeBase64();
           return !unblinded_token_base64 ||
                  !crypto::Verify(*unblinded_token_base64, public_key_base64,

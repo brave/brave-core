@@ -213,7 +213,7 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEvent(
     return;
   }
 
-  const std::optional<std::string> placement_id =
+  std::optional<std::string> placement_id =
       MaybeExtractCreativeAdPlacementIdFromUrl(url);
   if (!placement_id || placement_id->empty()) {
     // The URL does not contain a placement id.

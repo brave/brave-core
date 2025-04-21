@@ -21,7 +21,7 @@ constexpr char kCaptchaIdKey[] = "captcha_id";
 
 std::optional<std::string> Sign(const cbr::UnblindedToken& unblinded_token,
                                 const WalletInfo& wallet) {
-  const std::optional<std::string> unblinded_token_base64 =
+  std::optional<std::string> unblinded_token_base64 =
       unblinded_token.EncodeBase64();
   if (!unblinded_token_base64) {
     return std::nullopt;
@@ -38,7 +38,7 @@ ConfirmationTokenList BuildConfirmationTokens(
   confirmation_tokens.reserve(unblinded_tokens.size());
 
   for (const cbr::UnblindedToken& unblinded_token : unblinded_tokens) {
-    const std::optional<std::string> signature = Sign(unblinded_token, wallet);
+    std::optional<std::string> signature = Sign(unblinded_token, wallet);
     CHECK(signature);
 
     confirmation_tokens.emplace_back(unblinded_token, public_key, *signature);

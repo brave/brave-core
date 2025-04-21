@@ -99,7 +99,7 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
       continue;
     }
 
-    const std::optional<std::string> public_key_base64 =
+    std::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();
     CHECK(public_key_base64);
 

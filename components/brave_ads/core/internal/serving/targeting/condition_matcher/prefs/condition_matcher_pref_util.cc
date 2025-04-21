@@ -11,7 +11,7 @@ namespace brave_ads {
 
 std::optional<std::string> MaybeGetPrefValueAsString(
     const std::string& pref_path) {
-  if (const std::optional<base::Value> value = MaybeGetPrefValue(pref_path)) {
+  if (std::optional<base::Value> value = MaybeGetPrefValue(pref_path)) {
     return ToString(*value);
   }
 

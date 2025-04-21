@@ -26,14 +26,12 @@ void SetIssuers(const IssuersInfo& issuers) {
 }
 
 std::optional<IssuersInfo> GetIssuers() {
-  const std::optional<base::Value::List> list =
-      GetProfileListPref(prefs::kIssuers);
+  std::optional<base::Value::List> list = GetProfileListPref(prefs::kIssuers);
   if (!list || list->empty()) {
     return std::nullopt;
   }
 
-  const std::optional<TokenIssuerList> token_issuers =
-      TokenIssuersFromValue(*list);
+  std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(*list);
   if (!token_issuers) {
     return std::nullopt;
   }
@@ -56,7 +54,7 @@ bool HasIssuers() {
 }
 
 bool HasIssuersChanged(const IssuersInfo& other) {
-  const std::optional<IssuersInfo> issuers = GetIssuers();
+  std::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return true;
   }

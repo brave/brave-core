@@ -127,7 +127,7 @@ void SaveCreativeNewTabPageAdsCallback(
 
 void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
                                ResultCallback callback) {
-  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
+  std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     // Currently, only version 2 is supported. Update this code to maintain.
     return std::move(callback).Run(/*success=*/false);
@@ -151,7 +151,7 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
       continue;
     }
 
-    const std::optional<int> campaign_version =
+    std::optional<int> campaign_version =
         campaign_dict->FindInt(kCampaignVersionKey);
     if (campaign_version != kExpectedCampaignVersion) {
       // Currently, only version 1 is supported. Update this code to maintain

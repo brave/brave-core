@@ -27,7 +27,7 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 

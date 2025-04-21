@@ -30,13 +30,13 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
   base::Value::List list;
 
   for (const auto& payment_token : payment_tokens) {
-    const std::optional<std::string> unblinded_token_base64 =
+    std::optional<std::string> unblinded_token_base64 =
         payment_token.unblinded_token.EncodeBase64();
     if (!unblinded_token_base64) {
       continue;
     }
 
-    const std::optional<std::string> public_key_base64 =
+    std::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();
     if (!public_key_base64) {
       continue;

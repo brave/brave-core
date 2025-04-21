@@ -29,7 +29,7 @@ void NotificationAdEventHandler::FireEvent(
     FireNotificationAdEventHandlerCallback callback) {
   CHECK(!placement_id.empty());
 
-  const std::optional<NotificationAdInfo> ad =
+  std::optional<NotificationAdInfo> ad =
       NotificationAdManager::GetInstance().MaybeGetForPlacementId(placement_id);
   if (!ad) {
     BLOG(0, "Failed to fire notification ad event due to missing placement id "

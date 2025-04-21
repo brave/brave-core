@@ -85,7 +85,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
                         return FailedToMigrate(std::move(callback));
                       }
 
-                      const std::optional<ConfirmationList> confirmations =
+                      std::optional<ConfirmationList> confirmations =
                           json::reader::ReadConfirmations(json);
                       if (!confirmations) {
                         // Confirmation queue state does not exist.

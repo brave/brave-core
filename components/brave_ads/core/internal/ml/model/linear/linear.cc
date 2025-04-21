@@ -70,7 +70,7 @@ std::optional<PredictionMap> LinearModel::GetTopCountPredictions(
 std::optional<PredictionMap> LinearModel::GetTopCountPredictionsImpl(
     const VectorData& data,
     std::optional<size_t> top_count) const {
-  const std::optional<PredictionMap> predictions = Predict(data);
+  std::optional<PredictionMap> predictions = Predict(data);
   if (!predictions) {
     return std::nullopt;
   }

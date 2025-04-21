@@ -15,7 +15,7 @@ namespace brave_ads::cbr::test {
 
 VerificationKey GetVerificationKey() {
   const UnblindedToken unblinded_token = GetUnblindedToken();
-  const std::optional<VerificationKey> verification_key =
+  std::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
   CHECK(verification_key);
   return *verification_key;

@@ -14,18 +14,17 @@
 namespace brave_ads::json::reader {
 
 std::optional<IssuersInfo> ReadIssuers(const std::string& json) {
-  const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
   if (!dict) {
     return std::nullopt;
   }
 
-  const std::optional<int> ping = ParsePing(*dict);
+  std::optional<int> ping = ParsePing(*dict);
   if (!ping) {
     return std::nullopt;
   }
 
-  const std::optional<TokenIssuerList> token_issuers = ParseTokenIssuers(*dict);
+  std::optional<TokenIssuerList> token_issuers = ParseTokenIssuers(*dict);
   if (!token_issuers) {
     return std::nullopt;
   }

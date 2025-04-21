@@ -57,7 +57,7 @@ SealVerifiableConversionEnvelope(
   plaintext.insert(plaintext.cend(), kCipherTextLength - plaintext.size(), 0);
   CHECK_EQ(kCipherTextLength, plaintext.size());
 
-  const std::optional<std::vector<uint8_t>> public_key =
+  std::optional<std::vector<uint8_t>> public_key =
       base::Base64Decode(public_key_base64);
   if (!public_key) {
     return std::nullopt;

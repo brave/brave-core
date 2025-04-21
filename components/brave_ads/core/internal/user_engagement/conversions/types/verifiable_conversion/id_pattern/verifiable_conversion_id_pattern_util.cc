@@ -68,14 +68,14 @@ std::optional<std::string> MaybeParseVerifiableConversionId(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const ConversionResourceIdPatternMap& resource_id_patterns) {
-  const std::optional<ConversionResourceIdPatternInfo> resource_id_pattern =
+  std::optional<ConversionResourceIdPatternInfo> resource_id_pattern =
       FindMatchingConversionResourceIdPattern(resource_id_patterns,
                                               redirect_chain);
   if (!resource_id_pattern) {
     return MaybeParseDefaultVerifiableConversionId(html);
   }
 
-  if (const std::optional<std::string> verifiable_conversion_id =
+  if (std::optional<std::string> verifiable_conversion_id =
           MaybeParseResourceIdPatternSearchInTypeVerifiableConversionId(
               redirect_chain, html, *resource_id_pattern)) {
     return verifiable_conversion_id;

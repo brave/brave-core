@@ -118,8 +118,7 @@ void ResourceComponent::LoadManifestCallback(const std::string& component_id,
                                              const std::string& json) {
   VLOG(8) << "Manifest JSON: " << json;
 
-  const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
   if (!dict) {
     VLOG(0) << "Failed to parse manifest";
     return;
@@ -146,15 +145,14 @@ void ResourceComponent::LoadResourceCallback(
     const std::string& json) {
   VLOG(8) << "Resource JSON: " << json;
 
-  const std::optional<base::Value::Dict> root =
-      base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> root = base::JSONReader::ReadDict(json);
   if (!root) {
     VLOG(0) << "Failed to parse resource";
     return;
   }
   const base::Value::Dict& dict = *root;
 
-  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
+  std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (!schema_version) {
     return VLOG(1) << "Resource schema version is missing";
   }
@@ -182,7 +180,7 @@ void ResourceComponent::LoadResourceCallback(
       continue;
     }
 
-    const std::optional<int> version = item_dict->FindInt(kResourceVersionKey);
+    std::optional<int> version = item_dict->FindInt(kResourceVersionKey);
     if (!version) {
       VLOG(1) << *resource_id << " resource version is missing";
       continue;

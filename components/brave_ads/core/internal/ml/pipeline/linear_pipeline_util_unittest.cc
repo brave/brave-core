@@ -24,14 +24,13 @@ class BraveAdsLinearPipelineUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
   // Arrange
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(contents);
 
   // Act
-  const std::optional<pipeline::PipelineInfo> pipeline =
-      pipeline::LoadLinearPipeline(
-          reinterpret_cast<const uint8_t*>(contents->data()), contents->size());
+  std::optional<pipeline::PipelineInfo> pipeline = pipeline::LoadLinearPipeline(
+      reinterpret_cast<const uint8_t*>(contents->data()), contents->size());
 
   // Assert
   EXPECT_TRUE(pipeline);

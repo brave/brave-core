@@ -40,7 +40,7 @@ bool Verify(const ConfirmationInfo& confirmation) {
     return false;
   }
 
-  const std::optional<base::Value::Dict> dict =
+  std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(credential);
   if (!dict) {
     return false;

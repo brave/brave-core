@@ -33,7 +33,7 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversion) {
       test::kVerifiableConversionAdvertiserPublicKeyBase64;
 
   // Act
-  const std::optional<VerifiableConversionInfo> verifiable_conversion =
+  std::optional<VerifiableConversionInfo> verifiable_conversion =
       MaybeBuildVerifiableConversion(
           test::BuildVerifiableConversionRedirectChain(),
           test::kVerifiableConversionHtml, resource_id_patterns,

@@ -52,7 +52,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidPublicKey) {
 
 TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
   // Act
-  const std::optional<cbr::SignedTokenList> signed_tokens =
+  std::optional<cbr::SignedTokenList> signed_tokens =
       ParseSignedTokens(BuildUrlResponseBody());
   ASSERT_TRUE(signed_tokens);
 

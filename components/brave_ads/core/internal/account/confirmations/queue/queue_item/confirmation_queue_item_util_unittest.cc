@@ -32,7 +32,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
@@ -54,7 +54,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
@@ -77,7 +77,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
@@ -105,7 +105,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
 
   AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -141,7 +141,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
 
   AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 

@@ -59,7 +59,7 @@ std::optional<TabInfo> TabManager::MaybeGetForId(int32_t tab_id) const {
 }
 
 bool TabManager::IsPlayingMedia(int32_t tab_id) const {
-  if (const std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+  if (std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
     return tab->is_playing_media;
   }
 
@@ -275,7 +275,7 @@ void TabManager::OnNotifyTabDidChange(int32_t tab_id,
 }
 
 void TabManager::OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) {
-  if (const std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+  if (std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
     NotifyTabDidLoad(*tab, http_status_code);
   }
 }

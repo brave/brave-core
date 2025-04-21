@@ -27,7 +27,7 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest,
           /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<CreativeSetConversionInfo> creative_set_conversion =
+  std::optional<CreativeSetConversionInfo> creative_set_conversion =
       FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad);
   ASSERT_TRUE(creative_set_conversion);
 

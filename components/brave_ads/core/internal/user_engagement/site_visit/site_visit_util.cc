@@ -62,8 +62,7 @@ bool ShouldResumePageLand(int32_t tab_id) {
 }
 
 bool DidLandOnPage(int32_t tab_id, const GURL& url) {
-  const std::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(tab_id);
+  std::optional<TabInfo> tab = TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {
     // The tab has been closed.
     return false;

@@ -41,8 +41,7 @@ TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeToString) {
 
   // Act & Assert
   for (int i = 0; i <= net::HTTP_STATUS_CODE_MAX; ++i) {
-    const std::optional<std::string> http_status_code =
-        HttpStatusCodeToString(i);
+    std::optional<std::string> http_status_code = HttpStatusCodeToString(i);
     if (!http_status_code) {
       // Nonsensical HTTP status code.
       continue;

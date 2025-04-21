@@ -119,8 +119,7 @@ base::Value::List TokenIssuersToValue(const TokenIssuerList& token_issuers) {
   base::Value::List list;
 
   for (const auto& token_issuer : token_issuers) {
-    const std::optional<std::string> token_issuer_type =
-        ToString(token_issuer.type);
+    std::optional<std::string> token_issuer_type = ToString(token_issuer.type);
     if (!token_issuer_type) {
       continue;
     }
@@ -155,14 +154,14 @@ std::optional<TokenIssuerList> TokenIssuersFromValue(
       return std::nullopt;
     }
 
-    const std::optional<TokenIssuerType> token_issuer_type =
+    std::optional<TokenIssuerType> token_issuer_type =
         ParseTokenIssuerType(*dict);
     if (!token_issuer_type) {
       return std::nullopt;
     }
     CHECK_NE(TokenIssuerType::kUndefined, *token_issuer_type);
 
-    const std::optional<TokenIssuerPublicKeyMap> token_issuer_public_keys =
+    std::optional<TokenIssuerPublicKeyMap> token_issuer_public_keys =
         ParseTokenIssuerPublicKeys(*dict);
     if (!token_issuer_public_keys) {
       return std::nullopt;

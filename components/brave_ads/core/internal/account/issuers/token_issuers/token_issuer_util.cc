@@ -18,7 +18,7 @@
 namespace brave_ads {
 
 bool TokenIssuerExistsForType(TokenIssuerType token_issuer_type) {
-  const std::optional<IssuersInfo> issuers = GetIssuers();
+  std::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return false;
   }
@@ -40,19 +40,18 @@ std::optional<TokenIssuerInfo> GetTokenIssuerForType(
 
 bool TokenIssuerPublicKeyExistsForType(TokenIssuerType token_issuer_type,
                                        const cbr::PublicKey& public_key) {
-  const std::optional<IssuersInfo> issuers = GetIssuers();
+  std::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return false;
   }
 
-  const std::optional<TokenIssuerInfo> token_issuer =
+  std::optional<TokenIssuerInfo> token_issuer =
       GetTokenIssuerForType(*issuers, token_issuer_type);
   if (!token_issuer) {
     return false;
   }
 
-  const std::optional<std::string> public_key_base64 =
-      public_key.EncodeBase64();
+  std::optional<std::string> public_key_base64 = public_key.EncodeBase64();
 
   return public_key_base64 &&
          token_issuer->public_keys.contains(public_key_base64);

@@ -38,8 +38,7 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 
 void HandleAdHistoryMigration(const std::string& json,
                               InitializeCallback callback) {
-  const std::optional<AdHistoryList> ad_history =
-      json::reader::ReadAdHistory(json);
+  std::optional<AdHistoryList> ad_history = json::reader::ReadAdHistory(json);
   if (!ad_history) {
     BLOG(3, "Successfully migrated client state");
     return SuccessfullyMigrated(std::move(callback));

@@ -89,7 +89,7 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& mojom_url_response) {
   }
 
   BLOG(1, "Parsing issuers");
-  const std::optional<IssuersInfo> issuers =
+  std::optional<IssuersInfo> issuers =
       json::reader::ReadIssuers(mojom_url_response.body);
   if (!issuers) {
     BLOG(0, "Failed to parse issuers");

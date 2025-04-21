@@ -48,7 +48,7 @@ void CreativeAdCache::MaybeAdd(const std::string& placement_id,
     return;
   }
 
-  if (const std::optional<TabInfo> tab =
+  if (std::optional<TabInfo> tab =
           TabManager::GetInstance().MaybeGetVisible()) {
     creative_ad_variants_[placement_id] = std::move(creative_ad_variant);
     placement_ids_[tab->id].push_back(placement_id);

@@ -28,7 +28,7 @@ std::optional<std::string> GetSplitTestGroupName(
 }
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  const std::optional<std::string> split_test_group =
+  std::optional<std::string> split_test_group =
       GetSplitTestGroupName(kTrialName);
   if (!split_test_group) {
     // Only respect cap if browser has signed up to a field trial.

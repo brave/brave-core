@@ -47,8 +47,7 @@ InlineContentAdServing::~InlineContentAdServing() {
 void InlineContentAdServing::MaybeServeAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  const std::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetVisible();
+  std::optional<TabInfo> tab = TabManager::GetInstance().MaybeGetVisible();
   if (!tab) {
     BLOG(1, "Inline content ad not served: No visible tab found");
     return FailedToServeAd(dimensions, std::move(callback));

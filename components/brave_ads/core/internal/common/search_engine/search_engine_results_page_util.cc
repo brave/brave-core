@@ -36,7 +36,7 @@ std::optional<SearchEngineInfo> FindSearchEngineResultsPage(const GURL& url) {
 }  // namespace
 
 bool IsSearchEngineResultsPage(const GURL& url) {
-  const std::optional<SearchEngineInfo> search_engine =
+  std::optional<SearchEngineInfo> search_engine =
       FindSearchEngineResultsPage(url);
   if (!search_engine) {
     return false;
@@ -54,7 +54,7 @@ bool IsSearchEngineResultsPage(const GURL& url) {
 }
 
 std::optional<std::string> ExtractSearchTermQueryValue(const GURL& url) {
-  const std::optional<SearchEngineInfo> search_engine =
+  std::optional<SearchEngineInfo> search_engine =
       FindSearchEngineResultsPage(url);
   if (!search_engine) {
     return std::nullopt;

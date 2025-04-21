@@ -38,7 +38,7 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
     return std::nullopt;
   }
 
-  const std::optional<VerifiableConversionEnvelopeInfo>
+  std::optional<VerifiableConversionEnvelopeInfo>
       sealed_verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(*conversion.verifiable);
   if (!sealed_verifiable_conversion_envelope) {

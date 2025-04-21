@@ -45,7 +45,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
@@ -67,7 +67,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
              net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 

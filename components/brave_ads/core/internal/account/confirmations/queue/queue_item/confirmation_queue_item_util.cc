@@ -95,7 +95,7 @@ ConfirmationInfo RebuildConfirmationWithoutDynamicUserData(
   mutable_confirmation.user_data.dynamic.clear();
 
   if (mutable_confirmation.reward) {
-    const std::optional<std::string> reward_credential_base64url =
+    std::optional<std::string> reward_credential_base64url =
         BuildRewardCredential(mutable_confirmation);
     CHECK(reward_credential_base64url);
 
@@ -115,7 +115,7 @@ ConfirmationInfo RebuildConfirmationDynamicUserData(
   mutable_confirmation.user_data.dynamic = BuildDynamicUserData();
 
   if (mutable_confirmation.reward) {
-    const std::optional<std::string> reward_credential_base64url =
+    std::optional<std::string> reward_credential_base64url =
         BuildRewardCredential(mutable_confirmation);
     CHECK(reward_credential_base64url);
 

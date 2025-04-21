@@ -45,13 +45,12 @@ TEST(BraveAdsCryptoUtilTest, Sha256WithEmptyString) {
 
 TEST(BraveAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
   // Arrange
-  const std::optional<std::vector<uint8_t>> seed =
+  std::optional<std::vector<uint8_t>> seed =
       base::Base64Decode("x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=");
   ASSERT_TRUE(seed);
 
   // Act
-  const std::optional<KeyPairInfo> key_pair =
-      GenerateSignKeyPairFromSeed(*seed);
+  std::optional<KeyPairInfo> key_pair = GenerateSignKeyPairFromSeed(*seed);
   ASSERT_TRUE(key_pair);
   ASSERT_THAT(key_pair->public_key,
               ::testing::SizeIs(crypto_sign_ed25519_PUBLICKEYBYTES));
@@ -81,7 +80,7 @@ TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
 
 TEST(BraveAdsCryptoUtilTest, Sign) {
   // Act
-  const std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
+  std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
 
   // Assert
   EXPECT_TRUE(signature);
@@ -89,7 +88,7 @@ TEST(BraveAdsCryptoUtilTest, Sign) {
 
 TEST(BraveAdsCryptoUtilTest, Verify) {
   // Act
-  const std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
+  std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
   ASSERT_TRUE(signature);
 
   // Assert

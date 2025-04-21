@@ -173,7 +173,7 @@ std::optional<ConfirmationList> ParseConfirmations(
       continue;
     }
 
-    if (const std::optional<ConfirmationInfo> confirmation =
+    if (std::optional<ConfirmationInfo> confirmation =
             ParseConfirmation(*confirmation_dict)) {
       confirmations.push_back(*confirmation);
     }

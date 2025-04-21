@@ -69,7 +69,7 @@ TEST_F(BraveAdsNeuralTest, Prediction) {
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const std::optional<PredictionMap> sample_predictions =
+  std::optional<PredictionMap> sample_predictions =
       neural->Predict(sample_observation);
   ASSERT_TRUE(sample_predictions);
 
@@ -96,7 +96,7 @@ TEST_F(BraveAdsNeuralTest, PredictionNomatrices) {
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const std::optional<PredictionMap> sample_predictions =
+  std::optional<PredictionMap> sample_predictions =
       neural->Predict(sample_observation);
   ASSERT_TRUE(sample_predictions);
 
@@ -127,7 +127,7 @@ TEST_F(BraveAdsNeuralTest, PredictionDefaultPostMatrixFunctions) {
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const std::optional<PredictionMap> sample_predictions =
+  std::optional<PredictionMap> sample_predictions =
       neural->Predict(sample_observation);
   ASSERT_TRUE(sample_predictions);
 
@@ -158,12 +158,12 @@ TEST_F(BraveAdsNeuralTest, TopPredictions) {
   const VectorData sample_observation({0.2, 0.65, 0.15});
 
   // Act
-  const std::optional<PredictionMap> sample_predictions =
+  std::optional<PredictionMap> sample_predictions =
       neural->GetTopPredictions(sample_observation);
   ASSERT_TRUE(sample_predictions);
   ASSERT_THAT(*sample_predictions, ::testing::SizeIs(3));
 
-  const std::optional<PredictionMap> sample_predictions_constrained =
+  std::optional<PredictionMap> sample_predictions_constrained =
       neural->GetTopCountPredictions(sample_observation, 2);
   ASSERT_TRUE(sample_predictions_constrained);
   ASSERT_THAT(*sample_predictions_constrained, ::testing::SizeIs(2));

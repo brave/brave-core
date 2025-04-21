@@ -33,7 +33,7 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
 
 std::optional<ConfirmationInfo> BuildRewardConfirmationWithoutDynamicUserData(
     bool should_generate_random_uuids) {
-  const std::optional<ConfirmationInfo> confirmation =
+  std::optional<ConfirmationInfo> confirmation =
       BuildRewardConfirmation(should_generate_random_uuids);
   CHECK(confirmation);
 
@@ -58,7 +58,7 @@ RewardInfo BuildReward(const ConfirmationInfo& confirmation) {
   reward.signature =
       R"(+yxJmIDobOZ5DBncIVuzjQEZfIa0+UPrSQhzA5pwEAL9qC4UW7A1H35nKAhVLehJlXnnfMVKV02StVO3fBU5CQ==)";
 
-  const std::optional<std::string> reward_credential_base64url =
+  std::optional<std::string> reward_credential_base64url =
       BuildRewardCredential(confirmation);
   CHECK(reward_credential_base64url);
   reward.credential_base64url = *reward_credential_base64url;

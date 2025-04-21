@@ -51,7 +51,7 @@ ComputeCreativeAdModelBasedPredictorLastSeenAdInputVariable(
   CreativeAdModelBasedPredictorLastSeenInputVariableInfo
       last_seen_ad_input_variable;
 
-  const std::optional<base::Time> last_seen_ad_at =
+  std::optional<base::Time> last_seen_ad_at =
       GetLastSeenAdAt(ad_events, creative_ad.creative_instance_id);
   if (last_seen_ad_at) {
     last_seen_ad_input_variable.value = base::Time::Now() - *last_seen_ad_at;
