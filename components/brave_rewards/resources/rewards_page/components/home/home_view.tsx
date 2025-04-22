@@ -12,6 +12,7 @@ import { EarningCard } from './earning_card'
 import { PayoutAccountCard } from './payout_account_card'
 import { BenefitsCard } from './benefits_card'
 import { RecurringContributionCard } from './recurring_contribution_card'
+import { PromoCard } from './promo_card'
 
 import { style } from './home_view.style'
 
@@ -23,6 +24,7 @@ export function HomeView() {
   if (viewType === 'double' && externalWallet) {
     return (
       <div data-css-scope={style.scope}>
+        <PromoCard />
         <ContributeCard />
         <EarningCard />
         <div className='columns'>
@@ -40,6 +42,7 @@ export function HomeView() {
 
   return (
     <div data-css-scope={style.scope}>
+      <PromoCard />
       <ContributeCard />
       <EarningCard />
       <PayoutAccountCard />

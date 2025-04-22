@@ -7,30 +7,7 @@ import * as React from 'react'
 
 import { UICardItem } from '../../lib/app_state'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
-
-function sanitizeURL(url: string) {
-  try {
-    return new URL(url).protocol === 'https:' ? url : ''
-  } catch {
-    return ''
-  }
-}
-
-function faviconURL(item: UICardItem) {
-  return `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(item.url)}`
-}
-
-function thumbnailURL(url: string) {
-  url = sanitizeURL(url)
-  try {
-    if (/(^|\.)brave(software)?\.com$/i.test(new URL(url).hostname)) {
-      return `chrome://rewards-image/${url}`
-    }
-    return ''
-  } catch {
-    return ''
-  }
-}
+import { sanitizeURL, faviconURL, cardImageURL } from './card_urls'
 
 interface Props {
   item: UICardItem
@@ -38,14 +15,14 @@ interface Props {
 
 export function CardItemView(props: Props) {
   const { item } = props
-  const thumbnail = thumbnailURL(item.thumbnail)
+  const thumbnail = cardImageURL(item.thumbnail)
   return (
     <NewTabLink href={sanitizeURL(item.url)}>
       <span className='thumbnail'>
         {
           thumbnail
             ? <img src={thumbnail} />
-            : <img className='favicon' src={faviconURL(item)} />
+            : <img className='favicon' src={faviconURL(item.url)} />
         }
       </span>
       <span className='item-info'>
