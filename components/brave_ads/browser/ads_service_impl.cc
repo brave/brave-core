@@ -305,7 +305,7 @@ bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
 }
 
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
-  delegate_->InitNotificationHelper(base::BindOnce(
+  delegate_->MaybeInitNotificationHelper(base::BindOnce(
       &AdsServiceImpl::InitializeNotificationsForCurrentProfileCallback,
       weak_ptr_factory_.GetWeakPtr()));
 }
@@ -806,6 +806,8 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
     // Rewards, opted into notification ads, and the Bat Ads Service has
     // already started.
     RegisterResourceComponentsForDefaultLanguageCode();
+
+    InitializeNotificationsForCurrentProfile();
   }
 
   MaybeStartBatAdsService();
