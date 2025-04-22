@@ -1131,10 +1131,14 @@ SimpleHashClient::ParseMetadatas(const base::Value::Dict& dict) {
     const std::string* image = nft->FindString("image_url");
     if (image) {
       GURL original_url(*image);
-      GURL::Replacements replacements;
-      replacements.SetHostStr(kSimpleHashCdnBraveProxyHost);
-      GURL proxy_url = original_url.ReplaceComponents(replacements);
-      nft_metadata->image = proxy_url.spec();
+      if (original_url.host() == "cdn.simplehash.com") {
+        GURL::Replacements replacements;
+        replacements.SetHostStr(kSimpleHashCdnBraveProxyHost);
+        GURL proxy_url = original_url.ReplaceComponents(replacements);
+        nft_metadata->image = proxy_url.spec();
+      } else {
+        nft_metadata->image = *image;
+      }
     }
 
     // external_url
