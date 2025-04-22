@@ -59,13 +59,13 @@ public final class BlockedResource: NSManagedObject, CRUD {
       }
 
       items.forEach {
-        guard let etldPlusOne = $0.domain.etldPlusOne else {
+        guard let baseDomain = $0.domain.baseDomain else {
           return
         }
 
         let blockedResource = BlockedResource(entity: entity, insertInto: context)
         blockedResource.host = $0.host
-        blockedResource.domain = etldPlusOne
+        blockedResource.domain = baseDomain
         blockedResource.faviconUrl = $0.domain.domainURL.absoluteString
         blockedResource.timestamp = $0.date
       }

@@ -179,7 +179,7 @@ class RecentlyClosedTests: CoreDataTestCase {
     XCTAssertNotNil(RecentlyClosed.get(with: googleQueryURL.absoluteString))
 
     backgroundSaveAndWaitForExpectation {
-      RecentlyClosed.remove(etldPlusOnes: .init(["brave.com"]))
+      RecentlyClosed.remove(baseDomains: .init(["brave.com"]))
     }
 
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)

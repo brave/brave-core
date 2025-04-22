@@ -465,7 +465,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   private func changedShieldSettings() {
-    let currentDomain = self.tabManager.selectedTab?.visibleURL?.etldPlusOne
+    let currentDomain = self.tabManager.selectedTab?.visibleURL?.baseDomain
     let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
       .compactMap({ $0.browserViewController })
 
@@ -476,7 +476,7 @@ extension BrowserViewController: TopToolbarDelegate {
       // Reload the tabs. This will also trigger an update of the brave icon in `TabLocationView` if
       // the setting changed is the global `.AllOff` shield
       browser.tabManager.allTabs.forEach {
-        if $0.visibleURL?.etldPlusOne == currentDomain {
+        if $0.visibleURL?.baseDomain == currentDomain {
           $0.reload()
           // Domain specific shield setting changed, reset selectors cache.
           $0.contentBlocker?.resetSelectorsCache()

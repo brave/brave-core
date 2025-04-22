@@ -149,7 +149,7 @@ private struct FavoritesGridView: View {
                   FaviconImage(image: image, contentMode: .scaleAspectFit, includePadding: false)
                     .background(Color(attributes.backgroundColor))
                 } else {
-                  Text(verbatim: favorite.url.etldPlusOne?.first?.uppercased() ?? "")
+                  Text(verbatim: favorite.url.baseDomain?.first?.uppercased() ?? "")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .font(.system(size: 36))
                     .aspectRatio(1.0, contentMode: .fit)

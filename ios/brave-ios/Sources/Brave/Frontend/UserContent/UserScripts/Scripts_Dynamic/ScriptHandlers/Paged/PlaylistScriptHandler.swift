@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVKit
+import BraveShared
 import Data
 import Foundation
 import Playlist
@@ -122,7 +123,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
       return
     }
 
-    if handler.url?.etldPlusOne != "soundcloud.com", item.isInvisible {
+    if handler.url?.baseDomain != "soundcloud.com", item.isInvisible {
       DispatchQueue.main.async {
         handler.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
       }

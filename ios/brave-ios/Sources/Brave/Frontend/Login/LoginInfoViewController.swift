@@ -127,7 +127,7 @@ class LoginInfoViewController: LoginAuthViewController {
     super.viewDidLoad()
 
     navigationItem.do {
-      $0.title = URL(string: credentials.signOnRealm)?.etldPlusOne ?? ""
+      $0.title = URL(string: credentials.signOnRealm)?.baseDomain ?? ""
       $0.rightBarButtonItem = UIBarButtonItem(
         barButtonSystemItem: .edit,
         target: self,

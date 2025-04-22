@@ -57,10 +57,10 @@ class URLPartinessScriptHandler: TabContentScript {
         return
       }
 
-      let frameETLD1 = frameURL.etldPlusOne
+      let frameETLD1 = frameURL.baseDomain
 
       for urlString in dto.data.urls {
-        guard let etld1 = (NSURL(idnString: urlString) as? URL)?.etldPlusOne else {
+        guard let etld1 = (NSURL(idnString: urlString) as? URL)?.baseDomain else {
           // We can't determine a url.
           // Let's assume it's 3rd party
           results[urlString] = false

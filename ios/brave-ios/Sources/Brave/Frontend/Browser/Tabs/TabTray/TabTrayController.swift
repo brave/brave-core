@@ -681,7 +681,7 @@ class TabTrayController: AuthenticationController {
       for session in allSessions {
         let queriedSyncedTabList = session.tabs.filter {
           ($0.title?.lowercased().contains(query) ?? false)
-            || ($0.url.etldPlusOne?.contains(query) ?? false)
+            || ($0.url.baseDomain?.contains(query) ?? false)
         }
 
         if !queriedSyncedTabList.isEmpty {

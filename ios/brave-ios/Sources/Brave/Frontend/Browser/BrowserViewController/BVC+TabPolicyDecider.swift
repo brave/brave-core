@@ -169,7 +169,7 @@ extension BrowserViewController: TabPolicyDecider {
             $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
           })?.value?.asURL,
           requestInfo.isMainFrame,
-          adpURL.etldPlusOne == request.url?.etldPlusOne
+          adpURL.baseDomain == request.url?.baseDomain
         {
           return .allow
         }
@@ -253,8 +253,8 @@ extension BrowserViewController: TabPolicyDecider {
         // if we navigated away from the previous domain
         if let currentURL = tab.visibleURL,
           !InternalURL.isValid(url: currentURL),
-          let currentETLDP1 = currentURL.etldPlusOne,
-          mainDocumentURL.etldPlusOne != currentETLDP1
+          let currentETLDP1 = currentURL.baseDomain,
+          mainDocumentURL.baseDomain != currentETLDP1
         {
           tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
         }
@@ -419,7 +419,7 @@ extension BrowserViewController: TabPolicyDecider {
       pendingRequests[requestURL.absoluteString] = request
 
       if requestInfo.isMainFrame,
-        let etldP1 = requestURL.etldPlusOne,
+        let etldP1 = requestURL.baseDomain,
         tab.proceedAnywaysDomainList?.contains(etldP1) == false
       {
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
@@ -582,7 +582,7 @@ extension BrowserViewController {
     if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
       debounceService.isEnabled,
       let currentURL = tab.visibleURL,
-      currentURL.etldPlusOne != requestURL.etldPlusOne
+      currentURL.baseDomain != requestURL.baseDomain
     {
       if let redirectURL = debounceService.debounce(requestURL) {
         // For now we only allow the `Referer`. The browser will add other headers during navigation.
@@ -696,7 +696,7 @@ extension BrowserViewController {
     // Handle invalid upgrade to https
     guard let originalRequest = tab.upgradedHTTPSRequest,
       let originalURL = originalRequest.url,
-      responseURL.etldPlusOne == originalURL.etldPlusOne
+      responseURL.baseDomain == originalURL.baseDomain
     else {
       return nil
     }
@@ -739,14 +739,14 @@ extension BrowserViewController {
     }
 
     // Check if the current url of the caller has changed
-    if let domain = tab.visibleURL?.etldPlusOne,
+    if let domain = tab.visibleURL?.baseDomain,
       domain != tab.externalAppURLDomain
     {
       tab.externalAppAlertCounter = 0
       tab.isExternalAppAlertSuppressed = false
     }
 
-    tab.externalAppURLDomain = tab.visibleURL?.etldPlusOne
+    tab.externalAppURLDomain = tab.visibleURL?.baseDomain
 
     // Do not try to present over existing warning
     if let tabData = tab.browserData,

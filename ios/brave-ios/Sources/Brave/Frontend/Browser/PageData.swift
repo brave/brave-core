@@ -95,9 +95,9 @@ import WebKit
     // Add the `farblingProtection` script if needed
     // Note: The added farbling protection script based on the document url, not the frame's url.
     // It is also added for every frame, including subframes.
-    if isFPProtectionOn, let etldP1 = mainFrameURL.etldPlusOne {
+    if isFPProtectionOn, let baseDomain = mainFrameURL.baseDomain {
       userScriptTypes.insert(.nacl)  // dependency for `farblingProtection`
-      userScriptTypes.insert(.farblingProtection(etld: etldP1))
+      userScriptTypes.insert(.farblingProtection(etld: baseDomain))
     }
 
     // Handle dynamic domain level scripts on the request that don't use shields

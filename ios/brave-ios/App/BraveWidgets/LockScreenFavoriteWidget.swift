@@ -102,7 +102,7 @@ private struct LockScreenFavoriteView: View {
               .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
               .padding(12)
           } else {
-            Text(verbatim: fav.url.etldPlusOne?.first?.uppercased() ?? "")
+            Text(verbatim: fav.url.baseDomain?.first?.uppercased() ?? "")
               .frame(maxWidth: .infinity, maxHeight: .infinity)
               .font(.system(size: 28))
               .clipped()

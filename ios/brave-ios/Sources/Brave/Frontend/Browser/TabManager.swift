@@ -233,7 +233,7 @@ class TabManager: NSObject {
       // Display title is the only data that will be present on every situation
       return allTabs.filter {
         $0.displayTitle.lowercased().contains(query)
-          || ($0.visibleURL?.etldPlusOne?.contains(query) ?? false)
+          || ($0.visibleURL?.baseDomain?.contains(query) ?? false)
       }
     } else {
       return allTabs
@@ -777,9 +777,9 @@ class TabManager: NSObject {
   ) {
     guard FeatureList.kBraveShredFeature.enabled else { return }
     guard let url = url.urlToShred,
-      let etldPlusOne = url.etldPlusOne
+      let baseDomain = url.baseDomain
     else { return }
-    forgetTasks[tab.isPrivate]?[etldPlusOne]?.cancel()
+    forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
     let siteDomain = Domain.getOrCreate(
       forUrl: url,
       persistent: !tab.isPrivate
@@ -796,7 +796,7 @@ class TabManager: NSObject {
         existingTab !== tab
       }
       // Ensure that no othe tabs are open for this domain
-      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.etldPlusOne == etldPlusOne })
+      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.baseDomain == baseDomain })
       else {
         return
       }
@@ -806,7 +806,7 @@ class TabManager: NSObject {
 
   @MainActor func shredData(for url: URL, in tab: some TabState) {
     guard let url = url.urlToShred,
-      let etldP1 = url.etldPlusOne
+      let baseDomain = url.baseDomain
     else { return }
 
     // Select the next or previous tab that is not being destroyed
@@ -815,7 +815,7 @@ class TabManager: NSObject {
       // First seach down or up for a tab that is not being destroyed
       var increasingIndex = index + 1
       while nextTab == nil, increasingIndex < allTabs.count {
-        if allTabs[increasingIndex].visibleURL?.urlToShred?.etldPlusOne != etldP1
+        if allTabs[increasingIndex].visibleURL?.urlToShred?.baseDomain != baseDomain
           && allTabs[increasingIndex].isPrivate == tab.isPrivate
         {
           nextTab = allTabs[increasingIndex]
@@ -825,7 +825,7 @@ class TabManager: NSObject {
 
       var decreasingIndex = index - 1
       while nextTab == nil, decreasingIndex > 0 {
-        if allTabs[decreasingIndex].visibleURL?.urlToShred?.etldPlusOne != etldP1
+        if allTabs[decreasingIndex].visibleURL?.urlToShred?.baseDomain != baseDomain
           && allTabs[decreasingIndex].isPrivate == tab.isPrivate
         {
           nextTab = allTabs[decreasingIndex]
@@ -841,7 +841,7 @@ class TabManager: NSObject {
 
     // Remove all unwanted tabs
     for tab in allTabs {
-      guard tab.visibleURL?.urlToShred?.etldPlusOne == etldP1 else { continue }
+      guard tab.visibleURL?.urlToShred?.baseDomain == baseDomain else { continue }
       // The Tab's WebView is not deinitialized immediately, so it's possible the
       // WebView still stores data after we shred but before the WebView is deinitialized.
       // Delete the web view to prevent data being stored after data is Shred.
@@ -863,12 +863,12 @@ class TabManager: NSObject {
     delay: TimeInterval
   ) {
     guard let url = url.urlToShred,
-      let etldPlusOne = url.etldPlusOne
+      let baseDomain = url.baseDomain
     else { return }
     forgetTasks[tab.isPrivate] = forgetTasks[tab.isPrivate] ?? [:]
     // Start a task to delete all data for this etldP1
     // The task may be delayed in case we want to cancel it
-    forgetTasks[tab.isPrivate]?[etldPlusOne] = Task {
+    forgetTasks[tab.isPrivate]?[baseDomain] = Task {
       try await Task.sleep(seconds: delay)
       await self.forgetData(for: url, in: tab)
     }
@@ -877,21 +877,21 @@ class TabManager: NSObject {
   @MainActor private func forgetData(for url: URL, in tab: (any TabState)?) async {
     await forgetData(for: [url], dataStore: tab?.configuration.websiteDataStore)
 
-    ContentBlockerManager.log.debug("Cleared website data for `\(url.etldPlusOne ?? "")`")
-    if let etldPlusOne = url.etldPlusOne, let tab {
-      forgetTasks[tab.isPrivate]?.removeValue(forKey: etldPlusOne)
+    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
+    if let baseDomain = url.baseDomain, let tab {
+      forgetTasks[tab.isPrivate]?.removeValue(forKey: baseDomain)
     }
   }
 
   @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
     let urls = urls.compactMap(\.urlToShred)
-    let etldPlusOnes = Set(urls.compactMap { $0.etldPlusOne })
-    guard !etldPlusOnes.isEmpty else { return }
+    let baseDomains = Set(urls.compactMap { $0.baseDomain })
+    guard !baseDomains.isEmpty else { return }
 
     let dataStore = dataStore ?? WKWebsiteDataStore.default()
     // Delete 1P data records
     await dataStore.deleteDataRecords(
-      forDomains: etldPlusOnes
+      forDomains: baseDomains
     )
 
     if BraveCore.FeatureList.kBraveShredCacheData.enabled {
@@ -908,7 +908,7 @@ class TabManager: NSObject {
     // Delete the history for forgotten websites
     if let historyAPI = self.historyAPI {
       // if we're only forgetting 1 site, we can query history by it's domain
-      let query = urls.count == 1 ? urls.first?.etldPlusOne : nil
+      let query = urls.count == 1 ? urls.first?.baseDomain : nil
 
       let nodes = await withCheckedContinuation { continuation in
         var historyCancellable: HistoryCancellable?
@@ -928,13 +928,13 @@ class TabManager: NSObject {
           }
         )
       }.filter { node in
-        guard let etldPlusOne = node.url.etldPlusOne else { return false }
-        return etldPlusOnes.contains(etldPlusOne)
+        guard let baseDomain = node.url.baseDomain else { return false }
+        return baseDomains.contains(baseDomain)
       }
       historyAPI.removeHistory(for: nodes)
     }
 
-    RecentlyClosed.remove(etldPlusOnes: etldPlusOnes)
+    RecentlyClosed.remove(baseDomains: baseDomains)
 
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
@@ -943,9 +943,9 @@ class TabManager: NSObject {
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
   @MainActor func cancelForgetData(for url: URL, in tab: some TabState) {
-    guard let etldP1 = url.urlToShred?.etldPlusOne else { return }
-    forgetTasks[tab.isPrivate]?[etldP1]?.cancel()
-    forgetTasks[tab.isPrivate]?.removeValue(forKey: etldP1)
+    guard let etldPlusOne = url.urlToShred?.baseDomain else { return }
+    forgetTasks[tab.isPrivate]?[etldPlusOne]?.cancel()
+    forgetTasks[tab.isPrivate]?.removeValue(forKey: etldPlusOne)
   }
 
   @MainActor func removeTab(_ tab: any TabState) {

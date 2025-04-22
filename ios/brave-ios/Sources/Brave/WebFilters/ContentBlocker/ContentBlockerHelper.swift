@@ -80,9 +80,9 @@ class ContentBlockerHelper: ObservableObject {
 
   var statsDidChange: ((TPPageStats) -> Void)?
   @Published var blockedRequests: OrderedSet<BlockedRequestInfo> = []
-  /// Cached standard selectors. Key is the URL's `etldPlusOne`.
+  /// Cached standard selectors. Key is the URL's `baseDomain`.
   private var hiddenStandardSelectors: [String: Set<String>] = [:]
-  /// Cached aggressive selectors. Key is the URL's `etldPlusOne`.
+  /// Cached aggressive selectors. Key is the URL's `baseDomain`.
   private var hiddenAggressiveSelectors: [String: Set<String>] = [:]
 
   init(tab: (any TabState)?) {
@@ -124,12 +124,10 @@ class ContentBlockerHelper: ObservableObject {
 
   /// Get the cached selectors for the given URL.
   func cachedSelectors(for url: URL) -> (standard: Set<String>, aggressive: Set<String>)? {
-    guard let etldPlusOne = url.etldPlusOne else {
+    guard let baseDomain = url.baseDomain else {
       return nil
     }
-    return (
-      hiddenStandardSelectors[etldPlusOne] ?? [], hiddenAggressiveSelectors[etldPlusOne] ?? []
-    )
+    return (hiddenStandardSelectors[baseDomain] ?? [], hiddenAggressiveSelectors[baseDomain] ?? [])
   }
 
   /// Cache the given selectors for the given URL.
@@ -138,14 +136,14 @@ class ContentBlockerHelper: ObservableObject {
     standardSelectors: Set<String>,
     aggressiveSelectors: Set<String>
   ) {
-    guard let etldPlusOne = url.etldPlusOne else {
+    guard let baseDomain = url.baseDomain else {
       return
     }
-    var cachedStandardSelectors = hiddenStandardSelectors[etldPlusOne] ?? .init()
+    var cachedStandardSelectors = hiddenStandardSelectors[baseDomain] ?? .init()
     cachedStandardSelectors.formUnion(standardSelectors)
-    var cachedAggressiveSelectors = hiddenAggressiveSelectors[etldPlusOne] ?? .init()
+    var cachedAggressiveSelectors = hiddenAggressiveSelectors[baseDomain] ?? .init()
     cachedAggressiveSelectors.formUnion(aggressiveSelectors)
-    hiddenStandardSelectors[etldPlusOne] = cachedStandardSelectors
-    hiddenAggressiveSelectors[etldPlusOne] = cachedAggressiveSelectors
+    hiddenStandardSelectors[baseDomain] = cachedStandardSelectors
+    hiddenAggressiveSelectors[baseDomain] = cachedAggressiveSelectors
   }
 }

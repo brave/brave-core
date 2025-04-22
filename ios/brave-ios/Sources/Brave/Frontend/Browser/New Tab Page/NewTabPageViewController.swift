@@ -133,7 +133,7 @@ class NewTabPageViewController: UIViewController {
     try? frc.performFetch()
     guard let section = sections.firstIndex(where: { $0 is FavoritesSectionProvider }),
       let item = frc.fetchedObjects?.firstIndex(where: {
-        $0.url.flatMap(URL.init(string:))?.etldPlusOne == "youtube.com"
+        $0.url.flatMap(URL.init(string:))?.baseDomain == "youtube.com"
       }),
       let cell = collectionView.cellForItem(at: .init(item: item, section: section))
     else {
