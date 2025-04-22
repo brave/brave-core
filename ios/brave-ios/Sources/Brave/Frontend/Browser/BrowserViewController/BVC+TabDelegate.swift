@@ -335,7 +335,7 @@ extension BrowserViewController: TabDelegate {
     shouldBlockUniversalLinksForRequest request: URLRequest
   ) -> Bool {
     func isYouTubeLoad() -> Bool {
-      guard let domain = request.mainDocumentURL?.baseDomain else {
+      guard let domain = request.mainDocumentURL?.etldPlusOne else {
         return false
       }
       let domainsWithUniversalLinks: Set<String> = ["youtube.com", "youtu.be"]

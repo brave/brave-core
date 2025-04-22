@@ -84,7 +84,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     } else {
       if let url = self.browserTab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
         self.rewardsView.publisherView.isHidden = false
-        self.rewardsView.publisherView.hostLabel.text = url.baseDomain
+        self.rewardsView.publisherView.hostLabel.text = url.etldPlusOne
         rewardsAPI.fetchPublisherActivity(
           from: url,
           faviconURL: nil,
@@ -105,7 +105,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     ) {
       rewardsView.publisherView.hostLabel.attributedText = displayName
     } else {
-      rewardsView.publisherView.hostLabel.text = browserTab.visibleURL?.baseDomain
+      rewardsView.publisherView.hostLabel.text = browserTab.visibleURL?.etldPlusOne
     }
   }
 

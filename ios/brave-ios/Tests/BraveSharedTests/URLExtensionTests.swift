@@ -267,6 +267,9 @@ class URLExtensionTests: XCTestCase {
     XCTAssertEqual(URL(string: "http://test.co.uk")?.etldPlusOne, "test.co.uk")
     XCTAssertEqual(URL(string: "https://test.co.uk")?.etldPlusOne, "test.co.uk")
 
+    XCTAssertEqual(URL(string: "http://youtube.com")?.etldPlusOne, "youtube.com")
+    XCTAssertEqual(URL(string: "https://youtu.be")?.etldPlusOne, "youtu.be")
+
     // Test cases where `baseDomain` would be empty due to inclusion in effective_tld_names.dat
     // brave-browser#44214
     XCTAssertEqual(URL(string: "http://cloudflare.net")?.etldPlusOne, "cloudflare.net")

@@ -31,8 +31,8 @@ public struct BraveVPNAlertJSONModel: Decodable {
     // If possible we only add the base domain part of the host.
     // Reason is we do the same for regular ad blocking resources
     // This makes it easier to group together and show total counts for vpn + regular blocked resources.
-    // https scheme is added only to make the `baseDomain` helper to return a non nil value.
-    self.host = URL(string: "https://" + hostString)?.baseDomain ?? hostString
+    // https scheme is added only to make the `etldPlusOne` helper to return a non nil value.
+    self.host = URL(string: "https://" + hostString)?.etldPlusOne ?? hostString
     self.message = try container.decode(String.self, forKey: .message)
     self.title = try container.decode(String.self, forKey: .title)
 

@@ -53,12 +53,12 @@ class PrintScriptHandler: TabContentScript {
 
     if let url = tab.visibleURL, let viewPrintFormatter = tab.viewPrintFormatter {
       // If the main-frame's URL has changed
-      if let domain = url.baseDomain, domain != currentDomain, message.frameInfo.isMainFrame {
+      if let domain = url.etldPlusOne, domain != currentDomain, message.frameInfo.isMainFrame {
         isBlocking = false
         printCounter = 0
       }
 
-      currentDomain = url.baseDomain
+      currentDomain = url.etldPlusOne
 
       if isPresentingController || isBlocking {
         return

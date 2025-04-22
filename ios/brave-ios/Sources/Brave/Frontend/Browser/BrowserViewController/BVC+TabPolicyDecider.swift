@@ -739,14 +739,14 @@ extension BrowserViewController {
     }
 
     // Check if the current url of the caller has changed
-    if let domain = tab.visibleURL?.baseDomain,
+    if let domain = tab.visibleURL?.etldPlusOne,
       domain != tab.externalAppURLDomain
     {
       tab.externalAppAlertCounter = 0
       tab.isExternalAppAlertSuppressed = false
     }
 
-    tab.externalAppURLDomain = tab.visibleURL?.baseDomain
+    tab.externalAppURLDomain = tab.visibleURL?.etldPlusOne
 
     // Do not try to present over existing warning
     if let tabData = tab.browserData,
