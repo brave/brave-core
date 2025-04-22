@@ -218,7 +218,6 @@ void BraveSettingsUI::BindInterface(
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
         pending_receiver) {
-LOG(INFO) << "[PSST] BraveSettingsUI::BindInterface check is it calld?";
   auto assistant_handler = std::make_unique<settings::BraveLeoAssistantHandler>(
       std::make_unique<ai_chat::AIChatSettingsHelper>(
           web_ui()->GetWebContents()->GetBrowserContext()));

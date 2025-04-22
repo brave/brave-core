@@ -66,9 +66,6 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
   psst_consent_handler_ = std::make_unique<BravePsstConsentHelperHandler>(
       browser_->tab_strip_model(), this, std::move(psst_consent_helper),
       std::move(psst_consent_dialog));
-
-  // data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-  //     std::move(data_handler_receiver), this, browser_->tab_strip_model());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BravePsstDialogUI)

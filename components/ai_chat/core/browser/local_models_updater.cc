@@ -163,9 +163,6 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus) {
-  LOG(INFO) << "[PSST] On LocalModelsComponentRegistration start ai:"
-            << (ai_chat::features::IsAIChatEnabled()) << " PageContentRefine:"
-            << ai_chat::features::IsPageContentRefineEnabled();
   // Migrate deprecated component dir
   if (base::PathExists(GetDeprecatedComponentDir())) {
     base::DeletePathRecursively(GetDeprecatedComponentDir());
@@ -181,7 +178,6 @@ void ManageLocalModelsComponentRegistration(
   installer->Register(
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {
-        LOG(INFO) << "[PSST] On LocalModelsComponentRegistration done";
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
             ->EnsureInstalled(kComponentId);
       }));

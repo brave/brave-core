@@ -58,7 +58,7 @@ class BravePsstDialogUIConfig
     : public content::DefaultWebUIConfig<BravePsstDialogUI> {
  public:
  BravePsstDialogUIConfig()
-      : DefaultWebUIConfig(content::kChromeUIScheme, kBravePsstHost) { LOG(INFO) << "[PSST] BravePsstDialogUIConfig";}
+      : DefaultWebUIConfig(content::kChromeUIScheme, kBravePsstHost) {}
 };
 
 class BravePsstDialogUI

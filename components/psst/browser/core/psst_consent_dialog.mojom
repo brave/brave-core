@@ -34,5 +34,5 @@ struct SettingCardData {
 interface PsstConsentDialog {
     SetSettingsCardData(SettingCardData scd);
     OnSetRequestDone(string url, string? error);
-    OnSetCompleted(array<string> applied_checks, array<string> errors);
+    OnSetCompleted(array<string>? applied_checks, array<string>? errors);
 };

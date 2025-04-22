@@ -49,13 +49,11 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
            <SettingGridRow key={item.url}>
             {(() => {
               if (item.settingState == SettingState.Progress) {
-                console.log('[PSST] Progress Icon')
                 return (<HorizontalContainer>
                   <SettingProgressRing mode="indeterminate" />
                   <TextSection><TextLabel>{item.description}</TextLabel></TextSection>
                 </HorizontalContainer>)
               } else if (item.settingState == SettingState.Selection) {
-                console.log('[PSST] CheckBox')
                 return (<Checkbox checked={item.checked} isDisabled={item.disabled} onChange={(e) => onItemChecked(item.url, e.checked)}>
                   <TextLabel>{item.description}</TextLabel>
                 </Checkbox>)
@@ -66,7 +64,6 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
                     <TextLabel>{item.description}</TextLabel>
                   </HorizontalContainer>)
               } else if (item.settingState == SettingState.Failed) {
-                console.log('[PSST] Error Icon')
                 return (
                   <HorizontalContainer>
                     <CheckBoxIconFailed name={"close-circle"}/>
@@ -82,7 +79,6 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
       </SettingGrid>
     )
   }
-
 };
 
 

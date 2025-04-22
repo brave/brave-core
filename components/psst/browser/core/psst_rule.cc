@@ -114,18 +114,14 @@ bool PsstRule::ShouldInsertScript(const GURL& url) const {
   // If URL matches an explicitly excluded pattern, this rule does not
   // apply.
   if (exclude_pattern_set_.MatchesURL(url)) {
-    LOG(INFO) << "[PSST] ShouldInsertScript exclude_pattern_set !!!";
     return false;
   }
   // If URL does not match an explicitly included pattern, this rule does not
   // apply.
   if (!include_pattern_set_.MatchesURL(url)) {
-    LOG(INFO) << "[PSST] ShouldInsertScript !include_pattern_set_ !!!:"
-              << (include_pattern_set_.ToValue().DebugString());
     return false;
   }
 
-  std::cerr << "ShouldInsertScript: " << url << std::endl;
   return true;
 }
 

@@ -36,7 +36,6 @@ const base::FilePath::CharType kJsonFile[] = FILE_PATH_LITERAL("psst.json");
 
 std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
-  LOG(INFO) << "[PSST] Read File #100 file_path:" << file_path;
   bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
     VLOG(2) << "ReadFile: cannot " << "read file " << file_path;
@@ -75,16 +74,12 @@ void PsstRuleRegistryAccessor::SetRegistryForTesting(
 }
 
 PsstRuleRegistryImpl::PsstRuleRegistryImpl() = default;
-
 PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 
 void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const {
-  // LOG(INFO) << "[PSST] PsstRuleRegistryImpl::CheckIfMatch url:" << url << "
-  // rules_count:" << rules_.size();
   for (const PsstRule& rule : rules_) {
-    // LOG(INFO) << "[PSST] rule:" << rule.Name();
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
@@ -106,12 +101,10 @@ void PsstRuleRegistryImpl::SetRuleDataReaderForTest(
 }
 
 void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path) {
-  LOG(INFO) << "[PSST] LoadRules #100";
   if (!rule_data_reader_) {
     rule_data_reader_ = std::make_unique<RuleDataReader>(path);
   }
 
-  LOG(INFO) << "[PSST] LoadRules #200";
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),

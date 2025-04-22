@@ -25,7 +25,6 @@ export class BravePsstConsentDialogProxy {
       const callbackRouter = new mojom.PsstConsentDialogCallbackRouter()
 
       //const psstConsentDialog = 
-
       mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
         consentHelper.$.bindNewPipeAndPassReceiver(),
         callbackRouter.$.bindNewPipeAndPassRemote())

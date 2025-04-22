@@ -10,6 +10,7 @@ namespace psst {
 
 constexpr char kUserScriptResultUserPropName[] = "user";
 constexpr char kUserScriptResultTasksPropName[] = "tasks";
+constexpr char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
 constexpr char kUserScriptResultSiteNamePropName[] = "name";
 constexpr char kUserScriptResultShareExpLinkPropName[] = "share_experience_link";
 constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";

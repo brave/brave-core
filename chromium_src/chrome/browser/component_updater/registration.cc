@@ -26,13 +26,7 @@ void RegisterComponentsForUpdate() {
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
-  LOG(INFO) << "[PSST] RegisterComponentsForUpdate() #100 isValid:"
-            << (brave_component_updater::BraveOnDemandUpdater::GetInstance()
-                    ->IsValid());
   ai_chat::ManageLocalModelsComponentRegistration(cus);
-  LOG(INFO) << "[PSST] RegisterComponentsForUpdate() #200 isValid:"
-            << (brave_component_updater::BraveOnDemandUpdater::GetInstance()
-                    ->IsValid());
   psst::RegisterPsstComponent(cus);
 }
 

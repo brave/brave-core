@@ -11,6 +11,8 @@ component("content") {
   sources = [
     "psst_tab_helper.cc",
     "psst_tab_helper.h",
+    "psst_scripts_result_handler.cc",
+    "psst_scripts_result_handler.h",
   ]
 
   deps = [
@@ -33,7 +35,9 @@ component("content") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "psst_tab_helper_unittest.cc" ]
+  sources = [ 
+    "psst_scripts_result_handler_unittest.cc",
+  ]
   deps = [
     "//base/test:test_support",
     "//brave/components/psst/common",

@@ -9,43 +9,16 @@
 
 namespace psst {
 
-PsstDialogTabHelperDelegateImpl::PsstDialogTabHelperDelegateImpl() = default;
+PsstDialogTabHelperDelegateImpl::PsstDialogTabHelperDelegateImpl(
+    content::WebContents* contents)
+    : web_contents_(contents) {}
 
 PsstDialogTabHelperDelegateImpl::~PsstDialogTabHelperDelegateImpl() = default;
 
 void PsstDialogTabHelperDelegateImpl::ShowPsstConsentDialog(
-    content::WebContents* contents,
-    std::unique_ptr<ShowDialogData> show_dialog_data) {
-  PsstDialogDelegate::ShowPsstConsentDialog(
-      contents, std::move(show_dialog_data));
-  psst::OpenPsstDialog(contents);
-}
-
-void PsstDialogTabHelperDelegateImpl::SetProgressValue(
-    content::WebContents* contents,
-    const double value) {
-  NOTIMPLEMENTED();
-}
-
-void PsstDialogTabHelperDelegateImpl::SetRequestDone(
-    content::WebContents* contents,
-    const std::string& url,
-    const std::optional<std::string>& error) {
-  PsstDialogDelegate::SetRequestDone(
-      contents, url, error);
-}
-
-void PsstDialogTabHelperDelegateImpl::SetCompletedView(
-    content::WebContents* contents,
-    const std::vector<std::string>& applied_checks,
-    const std::vector<std::string>& errors,
-    ShareCallback share_cb) {
-  PsstDialogDelegate::SetCompletedView(
-        contents, applied_checks, errors, std::move(share_cb));
-}
-
-void PsstDialogTabHelperDelegateImpl::Close(content::WebContents* contents) {
-  NOTIMPLEMENTED();
+    std::unique_ptr<ShowDialogData>& show_dialog_data) {
+  PsstDialogDelegate::ShowPsstConsentDialog(show_dialog_data);
+  psst::OpenPsstDialog(web_contents_);
 }
 
 }  // namespace psst

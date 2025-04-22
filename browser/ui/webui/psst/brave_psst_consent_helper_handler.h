@@ -38,7 +38,7 @@ class BravePsstConsentHelperHandler
   void CloseDialog() override;
 
 void OnSetRequestDone(const std::string& url, const std::optional<std::string>& error) override;
-void OnSetCompleted(const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) override;
+void OnSetCompleted(const std::optional<std::vector<std::string>>& applied_checks, const std::optional<std::vector<std::string>>& errors) override;
 
     // TabStripModelObserver
     void OnTabStripModelChanged(

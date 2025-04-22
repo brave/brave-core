@@ -11,35 +11,20 @@
 #include <vector>
 
 #include "brave/components/psst/browser/core/psst_dialog_delegate.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+//#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 
 namespace psst {
 class PsstDialogTabHelperDelegateImpl
     : public PsstDialogDelegate {
  public:
-  PsstDialogTabHelperDelegateImpl();
+  explicit PsstDialogTabHelperDelegateImpl(content::WebContents* contents);
   ~PsstDialogTabHelperDelegateImpl() override;
 
   // psst::PsstTabHelper::Delegate
-  void ShowPsstConsentDialog(
-      content::WebContents* contents,
-      std::unique_ptr<ShowDialogData> show_dialog_data) override;
-  void SetProgressValue(content::WebContents* contents,
-                        const double value) override;
-  void SetRequestDone(content::WebContents* contents,
-                      const std::string& url,
-                      const std::optional<std::string>& error) override;
-  void SetCompletedView(content::WebContents* contents,
-                        const std::vector<std::string>& applied_checks,
-                        const std::vector<std::string>& errors,
-                        ShareCallback share_cb) override;
-  void Close(content::WebContents* contents) override;
+  void ShowPsstConsentDialog(std::unique_ptr<ShowDialogData>& show_dialog_data) override;
 
  private:
-  //  void AddObserver(Observer* obs) override;
-
-  //  raw_ptr<ConstrainedWebDialogDelegate>
-  //  constrained_webdlg_delegate_{nullptr};
+  raw_ptr<content::WebContents> web_contents_;
 };
 
 }  // namespace psst

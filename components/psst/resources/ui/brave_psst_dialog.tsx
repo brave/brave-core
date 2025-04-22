@@ -15,8 +15,6 @@ import PsstDlgContainer from './containers/App'
 import { ThemeProvider } from 'styled-components'
 
  function initialize () {
-    console.log('[PSST] initialize')
-
       render(
           <ThemeProvider theme={Theme}>
                <PsstDlgContainer someProp={'T'} />

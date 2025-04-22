@@ -64,6 +64,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryAccessor {
  private:
   friend class PsstTabHelperBrowserTest;
   friend class PsstRuleRegistryUnitTest;
+  friend class PsstScriptsHandlerUnitTest;
 
   void SetRegistryForTesting(std::unique_ptr<PsstRuleRegistry> new_inst);
 
@@ -106,6 +107,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryImpl
   friend struct base::DefaultSingletonTraits<PsstRuleRegistry>;
   friend class PsstRuleRegistryUnitTest;
   friend class MockPsstRuleRegistryImpl;
+  friend class PsstScriptsHandlerUnitTest;
 };
 
 }  // namespace psst

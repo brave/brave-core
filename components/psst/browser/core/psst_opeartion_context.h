@@ -34,16 +34,11 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstOperationContext {
 
   bool IsValid() const;
 
-  const std::optional<GURL> GetShareLink(
-      const std::u16string& pre_populate_text) const;
-
  private:
   explicit PsstOperationContext(const std::string& user_id,
-                                const std::string& share_experience_link,
                                 const MatchedRule& rule);
 
   std::string user_id_;
-  std::string share_experience_link_;
   std::string rule_name_;
 };
 }  // namespace psst

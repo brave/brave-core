@@ -48,17 +48,9 @@ TEST_F(PsstOperationContextUnitTest, LoadContext) {
                       ParseJson(R"({"share_experience_link": "value"})")));
 
   constexpr char user_id[] = "user12345";
-  const std::u16string prepopulated_text(u"UTF16 Text to post. イロハニホヘト");
-  constexpr char share_experience_link[] = "http://test.link/post=$1";
-
-  url::RawCanonOutputT<char> buffer;
-  url::EncodeURIComponent(base::UTF16ToUTF8(prepopulated_text), &buffer);
-  std::string output_prepopulated(buffer.data(), buffer.length());
-
   auto user_result = ParseJson(base::ReplaceStringPlaceholders(
       R"({
     "user": "$1",
-    "share_experience_link": "$2",
     "tasks": [
         {
             "url": "https://x.com/settings/location",
@@ -78,18 +70,12 @@ TEST_F(PsstOperationContextUnitTest, LoadContext) {
         }
     ]
 })",
-      {user_id, share_experience_link}, nullptr));
+      {user_id}, nullptr));
   const auto context = TestLoadContext(
       rule_name, "user script", "policy script", 1, std::move(user_result));
   EXPECT_TRUE(context && context->IsValid());
   EXPECT_EQ(context->GetUserId(), user_id);
   EXPECT_EQ(context->GetRuleName(), rule_name);
-
-  const auto link = context->GetShareLink(prepopulated_text);
-  EXPECT_TRUE(link);
-  EXPECT_EQ(base::ReplaceStringPlaceholders(share_experience_link,
-                                            {output_prepopulated}, nullptr),
-            link);
 }
 
 }  // namespace psst

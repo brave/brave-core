@@ -92,7 +92,6 @@ BravePsstConsentHelperHandler::BravePsstConsentHelperHandler(
 
   auto scd = psst_consent_dialog::mojom::SettingCardData::New();
   scd->site_name = sdd->site_name;
-
   for (auto& task_item : sdd->request_infos) {
     if (!task_item.is_dict()) {
       continue;
@@ -121,11 +120,10 @@ void BravePsstConsentHelperHandler::OnSetRequestDone(const std::string& url, con
   client_page_->OnSetRequestDone(url, error);
 }
 
-void BravePsstConsentHelperHandler::OnSetCompleted(const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) {
+void BravePsstConsentHelperHandler::OnSetCompleted(const std::optional<std::vector<std::string>>& applied_checks, const std::optional<std::vector<std::string>>& errors) {
   if (!client_page_) {
     return;
   }
-//  LOG(INFO) << "[PSST] BravePsstConsentHelperHandler::OnSetRequestDone applied_checks:" << applied_checks.size() << " errors:" << errors.size();
   client_page_->OnSetCompleted(applied_checks, errors);
 }
 
