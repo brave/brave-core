@@ -11,6 +11,11 @@ import { BraveWallet } from '../../../constants/types'
 // Queries
 import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
+// Hooks
+import {
+  useIsDAppVerified //
+} from '../../../common/hooks/use_is_dapp_verified'
+
 // Utils
 import { getLocale } from '$web-common/locale'
 
@@ -29,6 +34,7 @@ import {
 // Styled Components
 import { FavIcon } from './connections.style'
 import { Column, Text } from '../../shared/style'
+import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
 const CONNECTABLE_COIN_TYPES = [
   BraveWallet.CoinType.ETH,
@@ -39,6 +45,9 @@ export const Connections = () => {
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
+
+  // Hooks
+  const isDAppVerified = useIsDAppVerified(activeOrigin)
 
   return (
     <WalletPageWrapper
@@ -80,6 +89,7 @@ export const Connections = () => {
               eTldPlusOne={activeOrigin.eTldPlusOne}
             />
           </Text>
+          {isDAppVerified && <VerifiedLabel />}
         </Column>
         <Column
           gap='16px'
