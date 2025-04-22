@@ -14,22 +14,26 @@
   appearance: base-select;
 
   background: transparent;
-  border: 1px solid var(--leo-color-divider-strong);
+  border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-m);
 
-  padding: 10px 7px;
-  font: var(--leo-font-default-regular);
+  padding: var(--leo-spacing-m);
+  font: var(--leo-font-small-regular);
   color: var(--leo-color-text-primary);
 
   display: flex;
   align-items: center;
 
+  min-width: var(--md-select-width, 240px);
   width: fit-content;
+  height: unset;
+
+  transition: border-color 0.12s ease-in-out;
 }
 
 .md-select:hover {
   background: transparent;
-  border-color: var(--leo-color-neutral-30);
+  border-color: var(--leo-color-divider-strong);
 }
 
 .md-select:open {
@@ -63,6 +67,15 @@
 
 .md-select option::checkmark {
   display: none;
+}
+
+.md-select::picker-icon {
+  content: '';
+
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  mask-image: url(//resources/brave-icons/carat-down.svg);
 }
 
 .md-select option:focus {
