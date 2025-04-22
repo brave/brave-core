@@ -16,6 +16,7 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "ui/base/window_open_disposition.h"
 
+class Browser;
 class GURL;
 class Profile;
 class TabStripModel;
@@ -36,7 +37,7 @@ class SidebarModel;
 // Controller will request about add/delete items to SidebarService.
 class SidebarController : public SidebarService::Observer {
  public:
-  SidebarController(TabStripModel* tab_strip_model, Profile* profile);
+  explicit SidebarController(Browser* browser);
   ~SidebarController() override;
 
   SidebarController(const SidebarController&) = delete;
@@ -94,8 +95,9 @@ class SidebarController : public SidebarService::Observer {
 
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<SidePanelUI> side_panel_ui_ = nullptr;
-  raw_ptr<Sidebar, DanglingUntriaged> sidebar_ = nullptr;
+  raw_ptr<Sidebar> sidebar_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>
