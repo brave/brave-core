@@ -41,6 +41,10 @@ inline constexpr char kMnemonicScarePiece[] =
 inline constexpr char kMnemonicAbandonAbandon[] =
     "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
     "abandon abandon about";
+inline constexpr char kMnemonicGalleryEqual[] =
+    "gallery equal segment repair outdoor bronze limb dawn daring main burst "
+    "design palm demise develop exit cycle harbor motor runway turtle quote "
+    "blast tail";
 inline constexpr char kTestWalletPassword[] = "brave";
 
 class KeyringService;

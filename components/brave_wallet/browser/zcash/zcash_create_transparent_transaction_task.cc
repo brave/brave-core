@@ -17,9 +17,8 @@ namespace brave_wallet {
 
 // CreateTransparentTransactionTask
 ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
-    absl::variant<
-        base::PassKey<ZCashWalletService>,
-        base::PassKey<class ZCashCreateTransparentTransactionTaskTest>>
+    std::variant<base::PassKey<ZCashWalletService>,
+                 base::PassKey<class ZCashCreateTransparentTransactionTaskTest>>
         pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
@@ -98,12 +97,14 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
     return;
   }
 
-  transaction_.set_fee(pick_inputs_result->fee);
   base::Extend(transaction_.transparent_part().inputs,
                pick_inputs_result->inputs);
   base::CheckedNumeric<uint32_t> value =
       base::CheckSub(transaction_.TotalInputsAmount(),
-                     transaction_.fee() + pick_inputs_result->change);
+                     pick_inputs_result->fee + pick_inputs_result->change);
+  transaction_.set_fee(pick_inputs_result->fee);
+  // value is calculated from the PickZCashTransparentInputs result
+  // and it shouldn't be less than 0.
   transaction_.set_amount(value.ValueOrDie());
 
   if (!PrepareOutputs()) {

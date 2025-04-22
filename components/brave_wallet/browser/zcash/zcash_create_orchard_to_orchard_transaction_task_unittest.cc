@@ -12,6 +12,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -99,13 +100,8 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     keyring_service_->Reset();
-    keyring_service_->RestoreWallet(
-        "gallery equal segment repair outdoor bronze limb dawn daring main "
-        "burst "
-        "design palm demise develop exit cycle harbor motor runway turtle "
-        "quote "
-        "blast tail",
-        kTestWalletPassword, false, base::DoNothing());
+    keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
+                                    false, base::DoNothing());
 
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
         db_path, *keyring_service_,
@@ -213,13 +209,14 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
               CreateTransactionTaskDone(testing::Eq(task.get())));
 
   base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
 
   task->Start();
 
-  task_environment().RunUntilIdle();
-
-  EXPECT_TRUE(tx_result.has_value());
+  task_environment().RunUntilQuit();
 
   EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 2u);
   EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 2u);
@@ -284,11 +281,14 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
               CreateTransactionTaskDone(testing::Eq(task.get())));
 
   base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
 
   task->Start();
 
-  task_environment().RunUntilIdle();
+  task_environment().RunUntilQuit();
 
   EXPECT_TRUE(tx_result.has_value());
 
@@ -347,11 +347,14 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, NotEnoughFunds) {
               CreateTransactionTaskDone(testing::Eq(task.get())));
 
   base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
 
   task->Start();
 
-  task_environment().RunUntilIdle();
+  task_environment().RunUntilQuit();
 
   EXPECT_FALSE(tx_result.has_value());
 }
@@ -383,11 +386,14 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, Error) {
               CreateTransactionTaskDone(testing::Eq(task.get())));
 
   base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
 
   task->Start();
 
-  task_environment().RunUntilIdle();
+  task_environment().RunUntilQuit();
 
   EXPECT_FALSE(tx_result.has_value());
 }
