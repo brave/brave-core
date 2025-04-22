@@ -135,6 +135,7 @@ export function createModel(): AppModel {
         title: '',
         order: 0,
         section: '',
+        banner: null,
         items: [
           {
             title: 'Brave meetup in Toronto!',
@@ -149,6 +150,7 @@ export function createModel(): AppModel {
         title: '',
         order: 0,
         section: '',
+        banner: null,
         items: [
           {
             title: 'Brave Embroidered Crop Top',
@@ -163,6 +165,7 @@ export function createModel(): AppModel {
         title: 'Ledger Hardware Wallet',
         order: 0,
         section: '',
+        banner: null,
         items: [
           {
             title: 'Secure Your Crypto with Ledger Nano',
@@ -171,6 +174,17 @@ export function createModel(): AppModel {
             thumbnail: ''
           }
         ]
+      },
+      {
+        name: 'top-banner-card',
+        title: 'Top Banner',
+        section: 'top',
+        order: 0,
+        banner: {
+          image: '',
+          url: ''
+        },
+        items: []
       }
     ]
   })

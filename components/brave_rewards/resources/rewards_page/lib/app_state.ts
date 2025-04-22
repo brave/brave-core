@@ -134,11 +134,17 @@ export interface UICardItem {
   thumbnail: string
 }
 
+export interface UICardBanner {
+  image: string
+  url: string
+}
+
 export interface UICard {
   name: string
   title: string
   section: string
   order: number
+  banner: UICardBanner | null | undefined
   items: UICardItem[]
 }
 

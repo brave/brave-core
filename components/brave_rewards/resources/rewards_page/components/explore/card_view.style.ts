@@ -29,6 +29,21 @@ export const style = scoped.css`
     }
   }
 
+  .banner {
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  section:empty {
+    display: none;
+  }
+
   section a {
     display: flex;
     gap: 16px;
