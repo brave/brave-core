@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/accelerator_table.h"
 
+#include "base/containers/extend.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -43,9 +44,7 @@ std::vector<AcceleratorMapping> GetAcceleratorList() {
   std::vector<AcceleratorMapping> accelerator_list(
       GetAcceleratorList_ChromiumImpl());
 
-  UNSAFE_TODO(accelerator_list.insert(
-      accelerator_list.end(), kBraveAcceleratorMap,
-      kBraveAcceleratorMap + std::size(kBraveAcceleratorMap)));
+  base::Extend(accelerator_list, base::span(kBraveAcceleratorMap));
 
   return accelerator_list;
 }
