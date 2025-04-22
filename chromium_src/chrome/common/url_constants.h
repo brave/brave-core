@@ -212,6 +212,10 @@ inline constexpr char16_t kFamilyGroupCreateURL[] =
 // Link for viewing family group with Google Families.
 inline constexpr char16_t kFamilyGroupViewURL[] = u"https://support.brave.com/";
 
+// "Learn more" URL for Incognito tracking protections.
+inline constexpr char kIncognitoTrackingProtectionsLearnMoreUrl[] =
+    "https://support.brave.com/";
+
 // Url to a blogpost about Flash deprecation.
 inline constexpr char kFlashDeprecationLearnMoreURL[] =
     "https://blog.chromium.org/2017/07/so-long-and-thanks-for-all-flash.html";
