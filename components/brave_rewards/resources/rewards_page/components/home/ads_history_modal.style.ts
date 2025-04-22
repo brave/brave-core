@@ -62,6 +62,8 @@ export const style = scoped.css`
 
   .actions {
     --leo-icon-size: 24px;
+
+    position: relative;
     display: flex;
     gap: 12px;
 
@@ -82,10 +84,6 @@ export const style = scoped.css`
       border-color:
         color-mix(in srgb, ${color.text.interactive} 60%, transparent);
     }
-  }
-
-  .more {
-    position: relative;
   }
 
   .more-menu {
