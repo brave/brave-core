@@ -245,10 +245,9 @@ def _update_pinslist_timestamp() -> str:
     pattern = r"# Last updated:.*\nPinsListTimestamp\n[0-9]{10}\n"
     match = re.search(pattern, content, flags=re.DOTALL)
     if not match:
-        logging.error(
+        raise ValueError(
             'Expected pattern for PinsListTimestamp block not found. '
             'Aborting.')
-        sys.exit(1)
 
     # Update the timestamp
     timestamp = int(datetime.now().timestamp())
@@ -281,7 +280,7 @@ def _is_gh_cli_logged_in():
         if 'Logged in to github.com account' in result:
             return True
     except subprocess.CalledProcessError:
-        return False
+        pass
 
     return False
 
@@ -434,6 +433,30 @@ class ContinuationFile:
         except FileNotFoundError:
             pass
 
+
+class InvalidInputException(Exception):
+    """Invalid input exceptions to be handled graciously and terminate."""
+
+    def __init__(self, message):
+        super().__init__(message)
+        logging.error(message)
+
+
+class BadOutcomeException(Exception):
+    """A failure along the way that results on task termination."""
+
+    def __init__(self, message):
+        super().__init__(message)
+        logging.warning(message)
+
+
+class TaskFailureException(Exception):
+    """An expected failure along the way that results on task termination."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        logging.info(message)
+
 class Task:
     """ Base class for all tasks in brockit.
 
@@ -442,7 +465,7 @@ class Task:
     method that will return a string to be displayed while the task is running.
     """
 
-    def run(self, *cmd) -> bool:
+    def run(self, **kwargs) -> bool:
         """Runs the task with a status message.
 
         This function will run the task inside the scope of a status message.
@@ -457,22 +480,15 @@ class Task:
         """
         console.log('[italic]🚀 Brockit!')
         with terminal.with_status(self.status_message()):
-            result = self.execute(*cmd)
-
-            if result:
-                console.log('[bold]💥 Done!')
-
-        return result == False
+            # Calling `self.execute` triggers the linter, as there's no
+            # `execute` method in this class. The derived classes are expected
+            # to provide this method.
+            # pylint: disable=no-member
+            self.execute(**kwargs)
+        console.log('[bold]💥 Done!')
 
     def status_message(self) -> str:
         """Returns a status message for the task.
-
-        This function has to be implemented by the derived class.
-        """
-        raise NotImplementedError
-
-    def execute(self) -> bool:
-        """Executes the task.
 
         This function has to be implemented by the derived class.
         """
@@ -501,13 +517,9 @@ class Versioned(Task):
             self.target_version = Version.from_git('HEAD')
 
         if self.target_version <= self.base_version:
-            logging.error(
-                'Target version is not higher than base version: '
-                'target=%s, base=%s', self.target_version, self.base_version)
-            sys.exit(1)
-
-    def execute(self) -> bool:
-        raise NotImplementedError
+            raise InvalidInputException(
+                f'Target version {self.target_version} is not higher than base '
+                f'version {self.base_version}.')
 
     def _save_updated_patches(self):
         """Creates the updated patches change
@@ -532,6 +544,9 @@ class Versioned(Task):
         repository.brave.git_commit(
             f'Updated strings for Chromium {self.target_version}.')
 
+    def status_message(self) -> str:
+        raise NotImplementedError
+
 
 class Regen(Versioned):
     """Regenerates patches and strings for the current branch.
@@ -553,7 +568,6 @@ class Regen(Versioned):
         self._save_updated_patches()
         terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
-        return True
 
 
 class GitHubIssue(Versioned):
@@ -602,23 +616,22 @@ class GitHubIssue(Versioned):
         return next((entry for entry in results if entry['title'] == title),
                     None)
 
-    def create_push_request(self, issue_url: str) -> bool:
+    def create_push_request(self, issue_url: str):
         """Creates a push request for the current branch.
 
         This function creates a push request for the upgrade.
         """
         current_branch = repository.brave.current_branch()
         if current_branch == 'HEAD':
-            logging.error('Cannot create a push request: Not in a branch')
-            return False
+            raise InvalidInputException(
+                'Cannot create a push request: Not in a branch')
 
         # It is assumed that the upstream branch is the base branch for the PR.
         upstream_branch = _get_current_branch_upstream_name()
         if upstream_branch is None:
-            logging.error(
+            raise InvalidInputException(
                 'Cannot create a push request: Not in a branch with an upstream'
             )
-            return False
         if '/' in upstream_branch:
             # removing the remote portion.
             upstream_branch = upstream_branch.split("/", 1)[-1]
@@ -632,7 +645,7 @@ class GitHubIssue(Versioned):
             console.log(
                 f'The push request for {current_branch} is: {results[0]["url"]}'
             )
-            return True
+            return
 
         # That's a naive way to think about this, but in general the uplift
         # branches are upstreamed to 1.77.x, 1.78.x, etc.
@@ -670,10 +683,9 @@ class GitHubIssue(Versioned):
             pr_url = terminal.run(cmd).stdout.strip()
             terminal.log_task(f'GitHub PR created for this bump: {pr_url}')
         except subprocess.CalledProcessError as e:
-            console.log(
+            raise BadOutcomeException(
                 f'Failed to create PR for {current_branch}: {e.stderr.strip()}'
-            )
-            return False
+            ) from e
 
         if is_uplift:
             # Only uplift branches set milestones.
@@ -683,16 +695,15 @@ class GitHubIssue(Versioned):
                     '[.[] | {number, title}]'
                 ]).stdout)
             if not results:
-                logging.warning('No milestones returned for brave-core')
-                return False
+                raise BadOutcomeException(
+                    'No milestones returned for brave-core')
 
             milestone = next(
                 (entry["number"] for entry in results
                  if entry["title"].startswith(f'{upstream_branch} - ')), None)
             if milestone is None:
-                logging.warning('Failed to find milestone for branch %s',
-                                upstream_branch)
-                return False
+                raise BadOutcomeException(
+                    f'Failed to find milestone for branch {upstream_branch}')
 
             pr_number = pr_url.split("/", 1)[-1]
             terminal.run([
@@ -701,9 +712,7 @@ class GitHubIssue(Versioned):
                 f'milestone={milestone}'
             ])
 
-        return True
-
-    def create_or_update_version_issue(self, with_pr: bool) -> bool:
+    def create_or_update_version_issue(self, with_pr: bool):
         """Creates a github issue for the upgrade.
 
         This function creates/updates the upgrade github issue.
@@ -714,7 +723,9 @@ class GitHubIssue(Versioned):
         title = self.compose_issue_title()
         issue = self.lookup_issue(title)
         if issue is not None:
-            pattern = r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
+            pattern = (
+                r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
+            )
             body = re.sub(pattern, link, issue['body'])
             if body == issue['body']:
                 console.log(
@@ -728,8 +739,8 @@ class GitHubIssue(Versioned):
                 ])
                 terminal.log_task(f'GitHub issue updated {str(issue["url"])}.')
             if with_pr:
-                return self.create_push_request(issue["url"])
-            return True
+                self.create_push_request(issue["url"])
+            return
 
         body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(
             googlesource_log_link=link)
@@ -745,15 +756,13 @@ class GitHubIssue(Versioned):
         terminal.log_task(f'GitHub Issue created for this bump: {issue_url}')
 
         if with_pr:
-            return self.create_push_request(issue_url)
-        return True
+            self.create_push_request(issue_url)
 
-    def execute(self) -> bool:
+    def execute(self):
         if not _is_gh_cli_logged_in():
-            logging.error('GitHub CLI is not logged in.')
-            return False
+            raise BadOutcomeException('GitHub CLI is not logged in.')
 
-        return self.create_or_update_version_issue(with_pr=True)
+        self.create_or_update_version_issue(with_pr=True)
 
 
 class ReUpgrade(Task):
@@ -772,7 +781,7 @@ class ReUpgrade(Task):
     def status_message(self):
         return "Restarting the upgrade process..."
 
-    def execute(self) -> bool:
+    def execute(self):
         """Restarts the upgrade process.
 
         This function will reset the repository to the state it was before the
@@ -780,11 +789,10 @@ class ReUpgrade(Task):
         """
         working_version = Version.from_git('HEAD')
         if self.target_version != working_version:
-            logging.error(
-                'Running with `--restart` but the target version does not '
-                'match the current version. %s vs %s', self.target_version,
-                working_version)
-            return False
+            raise InvalidInputException(
+                f'Running with `--restart` but the target version does not '
+                f'match the current version. {self.target_version} '
+                f'vs {working_version}')
 
         starting_change = repository.brave.last_changed(
             PINSLIST_TIMESTAMP_FILE)
@@ -793,10 +801,9 @@ class ReUpgrade(Task):
         if not commit_message.startswith(
                 'Update from Chromium ') or not commit_message.endswith(
                     f' to Chromium {self.target_version}.'):
-            logging.error(
-                'Running with `--restart` but the last change does match the '
-                'arguments provide. %s %s', starting_change, commit_message)
-            return False
+            raise InvalidInputException(
+                f'Running with `--restart` but the last change does not match '
+                f'the arguments provided. {starting_change} {commit_message}')
 
         console.log('Discarding the following changes:')
         console.log(
@@ -807,7 +814,6 @@ class ReUpgrade(Task):
 
         ContinuationFile.clear()
         repository.brave.run_git('reset', '--hard', f'{starting_change}~1')
-        return True
 
 
 class Upgrade(Versioned):
@@ -838,11 +844,10 @@ class Upgrade(Versioned):
         if self.is_continuation:
             version_on_head = Version.from_git('HEAD')
             if target_version != version_on_head:
-                logging.error(
-                    'Running with `--continue` on a branch with a different '
-                    'version what the target should be. %s vs %s',
-                    target_version, version_on_head)
-                sys.exit(1)
+                raise InvalidInputException(
+                    f'Running with `--continue` on a branch with a different '
+                    f'version what the target should be. {target_version} '
+                    f'vs {version_on_head}')
 
             # Loads the working version from the continuation file, because the
             # current branch has already updated the working version to the
@@ -850,12 +855,12 @@ class Upgrade(Versioned):
             try:
                 continuation = ContinuationFile.load(
                     target_version=target_version)
-            except FileNotFoundError:
-                logging.error(
-                    '%s continuation file does not exist. (Are you sure you '
-                    'meant to pass [bold cyan]--continue[/]?)',
-                    VERSION_UPGRADE_FILE)
-                sys.exit(1)
+            except FileNotFoundError as e:
+                raise InvalidInputException(
+                    f'{VERSION_UPGRADE_FILE} continuation file does not exist. '
+                    '(Are you sure you meant to pass [bold cyan]--continue[/]?)'
+                ) from e
+
             self.working_version = continuation.working_version
             base_version = continuation.base_version
         else:
@@ -1069,17 +1074,13 @@ class Upgrade(Versioned):
 
         status = GitStatus()
         if status.has_deleted_patch_files():
-            logging.error(
+            raise InvalidInputException(
                 'Deleted patches detected. These should be committed as their '
                 'own changes:\n%s' % '\n'.join(status.deleted))
-            return False
         if status.has_untracked_patch_files():
-            logging.error(
+            raise InvalidInputException(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n%s' % '\n'.join(status.untracked))
-            return False
-
-        return True
 
     def look_for_diffs(self, *files) -> str:
         """Return the diffs for the files provided for this upgrade.
@@ -1326,7 +1327,7 @@ class Upgrade(Versioned):
 
     def _continue(self,
                   no_conflict_continuation: bool = False,
-                  apply_record: Optional[ApplyPatchesRecord] = None) -> bool:
+                  apply_record: Optional[ApplyPatchesRecord] = None):
         """Continues the upgrade process.
 
     This function is responsible for continuing the upgrade process. It will
@@ -1349,18 +1350,15 @@ class Upgrade(Versioned):
             apply_record = (ContinuationFile.load(
                 self.target_version).apply_record)
 
-        if not self._run_update_patches_with_no_deletions():
-            return False
+        self._run_update_patches_with_no_deletions()
 
         apply_record.stage_all_patches(ignore_deleted_files=True)
         has_changes = repository.brave.has_staged_changed()
 
         if not has_changes and not no_conflict_continuation:
-            logging.error(
-                'Nothing has been staged to commit conflict-resolved '
-                'patches. (Did you mean to pass '
-                '[bold cyan]--no-conflict-change[/]?)')
-            return False
+            raise InvalidInputException(
+                'Nothing has been staged to commit conflict-resolved patches. '
+                '(Did you mean to pass [bold cyan]--no-conflict-change[/]?)')
 
         if has_changes:
             self._save_conflict_resolved_patches()
@@ -1377,9 +1375,7 @@ class Upgrade(Versioned):
         # continuation file around.
         ContinuationFile.clear()
 
-        return True
-
-    def _start(self, launch_vscode: bool, ack_advisory: bool) -> bool:
+    def _start(self, launch_vscode: bool, ack_advisory: bool):
         """Starts the upgrade process.
 
     This function is responsible for starting the upgrade process. It will
@@ -1419,9 +1415,9 @@ class Upgrade(Versioned):
             self.target_version.get_googlesource_diff_link(self.base_version))
 
         if not ack_advisory and not self._prerun_checks():
-            console.log('👋 (Address advisories and then rerun with '
-                        '[bold cyan]--ack-advisory[/])')
-            return False
+            raise TaskFailureException(
+                '👋 (Address advisories and then rerun with '
+                '[bold cyan]--ack-advisory[/])')
 
         self._update_package_version()
 
@@ -1430,8 +1426,7 @@ class Upgrade(Versioned):
 
             # When no conflicts come back, we can proceed with the
             # update_patches.
-            if not self._run_update_patches_with_no_deletions():
-                return False
+            self._run_update_patches_with_no_deletions()
         except subprocess.CalledProcessError as e:
             if ('There were some failures during git reset of specific '
                     'repo paths' in e.stderr):
@@ -1447,35 +1442,30 @@ class Upgrade(Versioned):
                     launch_vscode=launch_vscode)
                 if apply_record.requires_conflict_resolution():
                     # Manual resolution required.
-                    console.log(
+                    raise TaskFailureException(
                         '👋 (Address all sections with '
                         f'{ACTION_NEEDED_DECORATOR} above, and then rerun '
-                        '[italic]🚀Brockit![/] with [bold cyan]'
-                        '--continue[/])')
-                    return False
+                        '[italic]🚀Brockit![/] with [bold cyan]--continue[/])'
+                    ) from e
 
                 # With all conflicts resolved, it is necessary to close the
                 # upgrade with all the same steps produced when running an
                 # upgrade continuation, as recovering from a conflict-
                 # resolution failure.
-                return self._continue(apply_record=apply_record)
+                self._continue(apply_record=apply_record)
+                return
             if e.returncode != 0:
-                logging.error('Failures found when running npm run init\n%s',
-                              e.stderr)
-                return False
+                raise InvalidInputException(
+                    f'Failures found when running npm run init\n{e.stderr}'
+                ) from e
 
         self._save_updated_patches()
 
         terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
-        return True
-
-    # The argument list differs here because that's the way we get args through
-    # Task into the derived methods. Maybe something better can be done here.
-    # pylint: disable=arguments-differ
     def execute(self, no_conflict_continuation: bool, launch_vscode: bool,
-                with_github: bool, ack_advisory: bool) -> bool:
+                with_github: bool, ack_advisory: bool):
         """Executes the upgrade process.
 
     Keep in this function all code that is common to both start and continue.
@@ -1492,15 +1482,14 @@ class Upgrade(Versioned):
             the upgrade.
         """
         if self.target_version == self.working_version:
-            logging.error(
-                'This branch is already in %s. (Maybe you meant to pass [bold '
-                'cyan]--continue[/]?)', self.target_version)
-            return False
+            raise InvalidInputException(
+                f'This branch is already in {self.target_version}. (Maybe you '
+                'meant to pass [bold cyan]--continue[/]?)')
 
         if self.target_version < self.working_version:
-            logging.error('Cannot upgrade version from %s to %s',
-                          self.target_version, self.working_version)
-            return False
+            raise InvalidInputException(
+                f'Cannot upgrade version from {self.target_version} '
+                f'to {self.working_version}')
 
         if not self.is_continuation:
             if ack_advisory:
@@ -1514,10 +1503,9 @@ class Upgrade(Versioned):
                     check=False)
                 if (continuation is not None
                         and not continuation.has_shown_advisory):
-                    logging.error(
+                    raise InvalidInputException(
                         'Use [bold cyna]--ack-advisory[/] just after being '
                         'shown advisories.')
-                    return False
             # We initialise the continuation file here rather than in the
             # constructor to avoid overwritting the file if the user made the
             # mistake of calling brockit again without `--continue`.
@@ -1527,30 +1515,24 @@ class Upgrade(Versioned):
 
         if with_github and not _is_gh_cli_logged_in():
             # Fail early if gh cli is not logged in.
-            logging.error('GitHub CLI is not logged in.')
-            return False
+            raise InvalidInputException('GitHub CLI is not logged in.')
 
         if self.is_continuation:
             if self.target_version != self.chromium_src_version:
-                logging.error(
+                raise InvalidInputException(
                     'To run with [bold cyan]--continue[/] the Chromium '
-                    'version has to be in Sync with Brave.'
-                    ' Brave %s ➜ Chromium %s', self.target_version,
-                    self.chromium_src_version)
-                return False
+                    'version has to be in Sync with Brave. Brave '
+                    f'{self.target_version} ➜ '
+                    f'Chromium {self.chromium_src_version}')
 
-            result = self._continue(
-                no_conflict_continuation=no_conflict_continuation)
+            self._continue(no_conflict_continuation=no_conflict_continuation)
         else:
-            result = self._start(launch_vscode=launch_vscode,
-                                 ack_advisory=ack_advisory)
+            self._start(launch_vscode=launch_vscode, ack_advisory=ack_advisory)
 
-        if result and with_github:
+        if with_github:
             GitHubIssue(base_version=self.base_version,
                         target_version=self.target_version
                         ).create_or_update_version_issue(with_pr=False)
-
-        return result
 
 
 def solve_git_ref(from_ref: str) -> str:
@@ -1574,19 +1556,17 @@ def solve_git_ref(from_ref: str) -> str:
     if from_ref and from_ref[0] != '@':
         # No special handling needed
         if not repository.brave.is_valid_git_reference(from_ref):
-            logging.error(
-                'Value provided to [bold cyan]--from-ref[/] is not a valid git '
-                'ref: %s', from_ref)
-            sys.exit(1)
+            raise InvalidInputException(
+                'Value provided to [bold cyan]--from-ref[/] is not a valid '
+                f'git ref: {from_ref}')
         return from_ref
 
     if from_ref == "@upstream":
         upstream_branch = _get_current_branch_upstream_name()
         if upstream_branch is None:
-            logging.error(
-                'Could not determine the upstream branch. (Maybe set [bold '
-                'cyan]--set-upstream-to[/] in your branch?)')
-            sys.exit(1)
+            raise InvalidInputException(
+                'Could not determine the upstream branch. (Maybe set '
+                '[bold cyan]--set-upstream-to[/] in your branch?)')
         return upstream_branch
 
     def find_previous_version_hash(is_major: bool = False) -> str:
@@ -1724,9 +1704,6 @@ class Rebase(Task):
         with open(todo_file, 'w') as file:
             file.write(last_valid_line)
 
-    # The argument list differs here because that's the way we get args through
-    # Task into the derived methods. Maybe something better can be done here.
-    # pylint: disable=arguments-differ
     def execute(self, from_ref: Optional[str], to_ref: Optional[str],
                 recommit: bool, discard_regen_changes: bool,
                 squash_minor_bumps: bool) -> bool:
@@ -1814,10 +1791,7 @@ class Rebase(Task):
                 repository.brave.run_git('commit', '--amend', '--no-edit')
                 repository.brave.run_git('rebase', '--continue')
         except subprocess.CalledProcessError as e:
-            logging.error('Rebase failed. %s', e.stderr)
-            return False
-
-        return True
+            raise InvalidInputException(f'Rebase failed. {e.stderr}') from e
 
 
 def fetch_chromium_dash_version(channel: str) -> Version:
@@ -1864,9 +1838,6 @@ def show(args: argparse.Namespace):
         console.print(
             'latest canary version: %s' %
             fetch_lastest_canary_version(args.latest_chromiumdash_version))
-
-    return 0
-
 
 def main():
     # This is a global parser with arguments that apply to every function.
@@ -2037,32 +2008,38 @@ def main():
             return fetch_lastest_canary_version(channel)
         return Version(args.to)
 
-    if args.command == 'lift':
-        target = resolve_to_flag()
-        if args.restart:
-            if ReUpgrade(target).run() != 0:
-                return 1
+    try:
+        if args.command == 'lift':
+            target = resolve_to_flag()
+            if args.restart:
+                ReUpgrade(target).run()
 
-        if not args.is_continuation:
-            upgrade = Upgrade(target, args.is_continuation,
-                              resolve_from_ref_flag_version())
-        else:
-            upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
+            if not args.is_continuation:
+                upgrade = Upgrade(target, args.is_continuation,
+                                  resolve_from_ref_flag_version())
+            else:
+                upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
 
-        return upgrade.run(args.no_conflict, args.vscode, args.with_github,
-                           args.ack_advisory)
-    if args.command == 'rebase':
-        return Rebase().run(args.from_ref, args.to_ref, args.recommit,
-                            args.discard_regen_changes,
-                            args.squash_minor_bumps)
-    if args.command == 'regen':
-        return Regen(resolve_from_ref_flag_version()).run()
-    if args.command == 'update-version-issue':
-        return GitHubIssue(resolve_from_ref_flag_version()).run()
-    if args.command == 'reference':
-        return console.print(Markdown(__doc__))
-    if args.command == 'show':
-        return show(args)
+            upgrade.run(no_conflict_continuation=args.no_conflict,
+                        launch_vscode=args.vscode,
+                        with_github=args.with_github,
+                        ack_advisory=args.ack_advisory)
+        if args.command == 'rebase':
+            Rebase().run(from_ref=args.from_ref,
+                         to_ref=args.to_ref,
+                         recommit=args.recommit,
+                         discard_regen_changes=args.discard_regen_changes,
+                         squash_minor_bumps=args.squash_minor_bumps)
+        if args.command == 'regen':
+            Regen(resolve_from_ref_flag_version()).run()
+        if args.command == 'update-version-issue':
+            GitHubIssue(resolve_from_ref_flag_version()).run()
+        if args.command == 'reference':
+            console.print(Markdown(__doc__))
+        if args.command == 'show':
+            show(args)
+    except (InvalidInputException, BadOutcomeException, TaskFailureException):
+        return 1
 
     return 0
 

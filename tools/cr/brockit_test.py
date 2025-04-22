@@ -80,6 +80,10 @@ class BrockitTest(unittest.TestCase):
             ['commit', '-m', 'Add pinslist file for testing'],
             self.fake_chromium_src.brave)
 
+        # Ensure there is an empty line at the end of the file before the update
+        self.assertTrue(test_pinslist_path.read_text().endswith('\n'),
+                        "File does not end with an empty line before update.")
+
         # Call the function to update the timestamp
         before_update = datetime.now()
         readable_timestamp = brockit._update_pinslist_timestamp()
@@ -93,6 +97,10 @@ class BrockitTest(unittest.TestCase):
                                                '%a %b %d %H:%M:%S %Y')
         self.assertTrue(
             0 <= (before_update - timestamp_datetime).total_seconds() <= 10)
+
+        # Ensure there is still an empty line at the end of the file after
+        self.assertTrue(test_pinslist_path.read_text().endswith('\n'),
+                        "File does not end with an empty line after update.")
 
     def test_requires_conflict_resolution(self):
         """Test ApplyPatchesRecord.requires_conflict_resolution"""

@@ -66,7 +66,7 @@ class Repository:
         """Runs a git command on the repository.
         """
         if self.is_brave:
-            return terminal.run_git(*cmd)
+            return terminal.run_git(*cmd, no_trim=no_trim)
 
         return terminal.run_git('-C', self.from_brave(), *cmd, no_trim=no_trim)
 
