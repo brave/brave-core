@@ -337,27 +337,18 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  const bool user_has_opted_in_to_brave_news_ads =
-      UserHasOptedInToBraveNewsAds();
-  const bool user_has_opted_in_to_new_tab_page_ads =
-      UserHasOptedInToNewTabPageAds();
-  const bool user_has_opted_in_to_notification_ads =
-      UserHasOptedInToNotificationAds();
-  const bool user_has_opted_in_to_search_result_ads =
-      UserHasOptedInToSearchResultAds();
+  if (UserHasJoinedBraveRewards()) {
+    // Always start the service to update brave://ads-internals,
+    // brave://rewards, and brave://rewards-internals if the user has joined
+    // Brave Rewards, even if all ad units are opted out.
+    return true;
+  }
 
-  const bool should_start_for_non_rewards =
-      user_has_opted_in_to_brave_news_ads ||
-      (ShouldAlwaysRunService() && (user_has_opted_in_to_new_tab_page_ads ||
-                                    user_has_opted_in_to_search_result_ads));
-
-  const bool should_start_for_rewards =
-      UserHasJoinedBraveRewards() && (user_has_opted_in_to_brave_news_ads ||
-                                      user_has_opted_in_to_new_tab_page_ads ||
-                                      user_has_opted_in_to_notification_ads ||
-                                      user_has_opted_in_to_search_result_ads);
-
-  return should_start_for_non_rewards || should_start_for_rewards;
+  // The user has not joined Brave Rewards, so we only start the service if the
+  // user has opted in to Brave News, new tab takeover, or search result ads.
+  return UserHasOptedInToBraveNewsAds() ||
+         (ShouldAlwaysRunService() && (UserHasOptedInToNewTabPageAds() ||
+                                       UserHasOptedInToSearchResultAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
