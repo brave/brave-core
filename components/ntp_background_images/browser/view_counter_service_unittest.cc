@@ -17,7 +17,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -437,7 +437,7 @@ class ViewCounterServiceTest : public testing::Test {
       custom_background_service_delegate_mock_ = nullptr;
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
-  brave_ads::AdsServiceMock ads_service_mock_{/*delegate=*/nullptr};
+  brave_ads::AdsServiceMock ads_service_mock_;
 
   std::unique_ptr<ViewCounterService> view_counter_service_;
 };

@@ -22,7 +22,7 @@
 #include "base/strings/string_split.h"
 #include "base/test/gmock_callback_support.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
@@ -187,10 +187,7 @@ class MediaWaiter final : public content::WebContentsObserver {
 
 std::unique_ptr<KeyedService> CreateAdsService(
     content::BrowserContext* const /*context*/) {
-  // Since we are mocking the `AdsService`, a delegate is not required. Note
-  // that we are not testing the `AdsService` itself, these tests are focused
-  // on the `AdsTabHelper`.
-  return std::make_unique<AdsServiceMock>(/*delegate=*/nullptr);
+  return std::make_unique<AdsServiceMock>();
 }
 
 void OnWillCreateBrowserContextServices(

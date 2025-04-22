@@ -10,11 +10,11 @@
 
 #include "base/check.h"
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_test_constants.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -60,7 +60,7 @@ class BraveAdsCreativeSearchResultAdHandlerTest : public ::testing::Test {
   }
 
  protected:
-  AdsServiceMock ads_service_mock_{/*delegate=*/nullptr};
+  AdsServiceMock ads_service_mock_;
 };
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest, Create) {

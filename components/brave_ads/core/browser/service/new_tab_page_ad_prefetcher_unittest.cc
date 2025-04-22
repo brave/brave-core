@@ -8,9 +8,8 @@
 #include <memory>
 #include <optional>
 
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -21,7 +20,7 @@ namespace brave_ads {
 class BraveAdsNewTabPageAdPrefetcherTest : public ::testing::Test {
  public:
   BraveAdsNewTabPageAdPrefetcherTest()
-      : ads_service_(std::make_unique<AdsServiceMock>(/*delegate=*/nullptr)),
+      : ads_service_(std::make_unique<AdsServiceMock>()),
         prefetcher_(std::make_unique<NewTabPageAdPrefetcher>(*ads_service_)) {}
 
  protected:

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_MOCK_H_
 
 #include <cstdint>
 #include <memory>
@@ -20,7 +20,7 @@ namespace brave_ads {
 
 class AdsServiceMock : public AdsService {
  public:
-  explicit AdsServiceMock(std::unique_ptr<Delegate> delegate);
+  AdsServiceMock();
 
   AdsServiceMock(const AdsServiceMock&) = delete;
   AdsServiceMock& operator=(const AdsServiceMock&) = delete;
@@ -140,4 +140,4 @@ class AdsServiceMock : public AdsService {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_MOCK_H_
