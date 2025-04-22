@@ -23,7 +23,7 @@ struct AIChatPageContextInfoView: View {
         .frame(height: 1.0)
 
       HStack {
-        FaviconImage(
+        StyledFaviconImage(
           url: url?.absoluteString,
           isPrivateBrowsing: false
         )

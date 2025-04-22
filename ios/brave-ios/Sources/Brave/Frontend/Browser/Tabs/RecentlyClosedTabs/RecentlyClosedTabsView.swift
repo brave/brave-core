@@ -71,7 +71,7 @@ struct RecentlyClosedTabsView: View {
             onRecentlyClosedSelected?(recentlyClosed)
           } label: {
             HStack {
-              FaviconImage(
+              StyledFaviconImage(
                 url: recentlyClosed.url,
                 isPrivateBrowsing: tabManager?.privateBrowsingManager.isPrivateBrowsing == true
               )

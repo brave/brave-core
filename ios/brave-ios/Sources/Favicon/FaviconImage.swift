@@ -21,30 +21,43 @@ private class FaviconHelper: ObservableObject {
 }
 
 public struct FaviconImage: View {
-  let url: URL?
-  private let isPrivateBrowsing: Bool
+  var url: URL
+  var isPrivateBrowsing: Bool
   @StateObject private var faviconLoader = FaviconHelper()
 
-  public init(url: String?, isPrivateBrowsing: Bool) {
+  public init(url: URL, isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
-
-    if let url = url {
-      self.url = URL(string: url)
-    } else {
-      self.url = nil
-    }
+    self.url = url
   }
 
   public var body: some View {
     Image(uiImage: faviconLoader.image ?? Favicon.defaultImage)
       .resizable()
       .aspectRatio(contentMode: .fit)
-      .frame(width: 30, height: 30)
-      .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-      .onAppear {
-        if let url = url {
-          faviconLoader.load(url: url, isPrivateBrowsing: isPrivateBrowsing)
-        }
+      .task(id: url) {
+        faviconLoader.load(url: url, isPrivateBrowsing: isPrivateBrowsing)
       }
+  }
+}
+
+public struct StyledFaviconImage: View {
+  var url: String?
+  var isPrivateBrowsing: Bool
+
+  public init(url: String?, isPrivateBrowsing: Bool) {
+    self.url = url
+    self.isPrivateBrowsing = isPrivateBrowsing
+  }
+
+  public var body: some View {
+    Group {
+      if let urlString = url, let url = URL(string: urlString) {
+        FaviconImage(url: url, isPrivateBrowsing: isPrivateBrowsing)
+      } else {
+        Color.clear
+      }
+    }
+    .frame(width: 30, height: 30)
+    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
   }
 }

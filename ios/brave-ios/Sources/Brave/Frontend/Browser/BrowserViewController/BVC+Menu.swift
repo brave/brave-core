@@ -203,7 +203,8 @@ extension BrowserViewController {
         vc.toolbarUrlActionsDelegate = self
         menuController.presentInnerMenu(vc)
       }
-      MenuItemFactory.button(for: .history) { [unowned self, unowned menuController] in
+      MenuItemFactory.button(for: .history) { [weak self, unowned menuController] in
+        guard let self else { return }
         let vc = UIHostingController(
           rootView: HistoryView(
             model: HistoryModel(
@@ -215,7 +216,9 @@ extension BrowserViewController {
             )
           )
         )
-        menuController.pushInnerMenu(vc)
+        menuController.dismiss(animated: true) {
+          self.present(vc, animated: true)
+        }
       }
       MenuItemFactory.button(for: .downloads) {
         UIApplication.shared.openBraveDownloadsFolder { success in
@@ -817,16 +820,8 @@ extension BrowserViewController {
             )
           )
         )
-        let container = UINavigationController(rootViewController: vc)
-        // TODO: Move the button into HistoryView when old menu is removed
-        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          systemItem: .done,
-          primaryAction: .init(handler: { [unowned self] _ in
-            self.dismiss(animated: true)
-          })
-        )
         self.dismiss(animated: true) {
-          self.present(container, animated: true)
+          self.present(vc, animated: true)
         }
         return .none
       },

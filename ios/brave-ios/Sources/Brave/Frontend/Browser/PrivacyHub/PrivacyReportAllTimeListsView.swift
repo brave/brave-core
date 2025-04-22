@@ -121,7 +121,7 @@ struct PrivacyReportAllTimeListsView: View {
       Section {
         ForEach(websites) { item in
           HStack {
-            FaviconImage(url: item.faviconUrl, isPrivateBrowsing: isPrivateBrowsing)
+            StyledFaviconImage(url: item.faviconUrl, isPrivateBrowsing: isPrivateBrowsing)
             Text(item.domain)
             Spacer()
             Text("\(item.count)")
