@@ -34,7 +34,7 @@ class AdsService : public KeyedService {
    public:
     virtual ~Delegate() = default;
 
-    virtual void InitNotificationHelper(base::OnceClosure callback) = 0;
+    virtual void MaybeInitNotificationHelper(base::OnceClosure callback) = 0;
     virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
     virtual bool DoesSupportSystemNotifications() = 0;
     virtual bool CanShowNotifications() = 0;

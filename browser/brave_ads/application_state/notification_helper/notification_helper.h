@@ -29,7 +29,7 @@ class NotificationHelper final {
 
   static NotificationHelper* GetInstance();
 
-  void InitForProfile(Profile* profile, base::OnceClosure callback);
+  void MaybeInitForProfile(Profile* profile, base::OnceClosure callback);
 
   bool CanShowNotifications();
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;
@@ -47,6 +47,8 @@ class NotificationHelper final {
 
   void OnSystemNotificationPlatformBridgeReady(base::OnceClosure callback,
                                                bool success);
+
+  bool is_initialized_ = false;
 
   bool does_support_system_notifications_ = true;
 

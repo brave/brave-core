@@ -97,8 +97,13 @@ NotificationHelper* NotificationHelper::GetInstance() {
   return instance.get();
 }
 
-void NotificationHelper::InitForProfile(Profile* profile,
-                                        base::OnceClosure callback) {
+void NotificationHelper::MaybeInitForProfile(Profile* profile,
+                                             base::OnceClosure callback) {
+  if (is_initialized_) {
+    return std::move(callback).Run();
+  }
+  is_initialized_ = true;
+
   NotificationPlatformBridge* system_bridge =
       GetSystemNotificationPlatformBridge(profile);
   if (!system_bridge) {
