@@ -901,6 +901,7 @@ dependencies = [
 [[package]]
 name = "getrandom"
 version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if",
  "libc",
@@ -1552,6 +1553,7 @@ dependencies = [
 [[package]]
 name = "ppv-lite86"
 version = "0.2.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "zerocopy",
 ]
@@ -1610,6 +1612,7 @@ dependencies = [
 [[package]]
 name = "rand"
 version = "0.8.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "libc",
  "rand_chacha 0.3.1",
@@ -1628,6 +1631,7 @@ dependencies = [
 [[package]]
 name = "rand_chacha"
 version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "ppv-lite86",
  "rand_core 0.6.4",
@@ -1644,6 +1648,7 @@ dependencies = [
 [[package]]
 name = "rand_core"
 version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "getrandom 0.2.15",
 ]
@@ -2436,6 +2441,7 @@ dependencies = [
 [[package]]
 name = "zerocopy"
 version = "0.8.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "zerocopy-derive",
 ]
@@ -2443,6 +2449,7 @@ dependencies = [
 [[package]]
 name = "zerocopy-derive"
 version = "0.8.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
