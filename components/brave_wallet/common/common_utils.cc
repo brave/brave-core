@@ -62,7 +62,7 @@ bool IsZCashEnabled() {
 
 bool IsZCashShieldedTransactionsEnabled() {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  return features::kZCashShieldedTransactionsEnabled.Get();
+  return IsZCashEnabled() && features::kZCashShieldedTransactionsEnabled.Get();
 #else
   return false;
 #endif

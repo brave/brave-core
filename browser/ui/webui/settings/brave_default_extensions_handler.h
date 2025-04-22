@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -54,6 +55,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
                        bool success,
                        const std::string& error,
                        extensions::webstore_install::Result result);
+#if BUILDFLAG(ENABLE_ORCHARD)
+  void ResetZCashSyncState(const base::Value::List& args);
+#endif
   void ResetWallet(const base::Value::List& args);
   void ResetTransactionInfo(const base::Value::List& args);
   void OnRestartNeededChanged();

@@ -51,6 +51,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void RemoveHiddenNetwork(const base::Value::List& args);
   void IsBitcoinEnabled(const base::Value::List& args);
   void IsZCashEnabled(const base::Value::List& args);
+  void IsZCashShieldedTxEnabled(const base::Value::List& args);
   void IsCardanoEnabled(const base::Value::List& args);
   void IsTransactionSimulationsEnabled(const base::Value::List& args);
   void SetWalletInPrivateWindowsEnabled(const base::Value::List& args);
