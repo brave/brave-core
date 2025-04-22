@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -105,6 +106,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     @Override
     public void prepareMenu(Menu menu, AppMenuHandler handler) {
         super.prepareMenu(menu, handler);
+
+        maybeReplaceIcons(menu);
 
         mMenu = menu;
 
@@ -415,5 +418,59 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
     private boolean isMenuButtonInBottomToolbar() {
         return BraveMenuButtonCoordinator.isMenuFromBottom();
+    }
+
+    private void maybeReplaceIcons(Menu menu) {
+        if (shouldShowIconBeforeItem()) {
+            for (int i = 0; i < menu.size(); ++i) {
+                MenuItem item = menu.getItem(i);
+                if (item.hasSubMenu()) {
+                    maybeReplaceIcons(item.getSubMenu());
+                } else if (item.getItemId() == R.id.new_tab_menu_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_new_tab_page));
+                } else if (item.getItemId() == R.id.new_incognito_tab_menu_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_new_private_tab));
+                } else if (item.getItemId() == R.id.all_bookmarks_menu_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_bookmarks));
+                } else if (item.getItemId() == R.id.recent_tabs_menu_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_recent_tabs));
+                } else if (item.getItemId() == R.id.open_history_menu_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_history));
+                } else if (item.getItemId() == R.id.downloads_menu_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_downloads));
+                } else if (item.getItemId() == R.id.preferences_id) {
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_settings));
+                }
+            }
+        }
+    }
+
+    @Override
+    public int getAppMenuLayoutId() {
+        return R.menu.brave_main_menu;
+    }
+
+    @Override
+    protected boolean shouldShowNewWindow() {
+        return BraveMultiWindowUtils.shouldEnableMultiWindows() && super.shouldShowNewWindow();
+    }
+
+    @Override
+    protected boolean shouldShowMoveToOtherWindow() {
+        return BraveMultiWindowUtils.shouldEnableMultiWindows()
+                && super.shouldShowMoveToOtherWindow();
     }
 }

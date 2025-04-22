@@ -1224,7 +1224,6 @@ public class BytecodeTest {
                         View.class,
                         OneshotSupplier.class,
                         ObservableSupplier.class,
-                        OneshotSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
