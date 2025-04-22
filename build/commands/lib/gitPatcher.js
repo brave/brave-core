@@ -149,8 +149,7 @@ module.exports = class GitPatcher {
       const patchInfo = JSON.parse(patchInfoRaw)
       return patchInfo
     } catch (err) {
-      err.message = `Error reading Patch Info file at path "${patchInfoPath}": ${err.message}`
-      throw err
+      return null
     }
   }
 
@@ -318,6 +317,9 @@ module.exports = class GitPatcher {
           this.logProgressLine(`Warning: Could not remove obsolete PatchInfo file at path ${patchInfoPath}: "${err.message}"`)
         })
       ops.push(removeOp)
+      if (!patchInfo) {
+        continue
+      }
       allPaths.push(...patchInfo.appliesTo.map(s => s.path))
       allStatuses.push(...patchInfo.appliesTo.map(({path}) => ({
         path,
