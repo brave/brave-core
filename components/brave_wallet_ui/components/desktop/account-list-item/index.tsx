@@ -28,6 +28,7 @@ import {
 } from '../../../utils/rewards_utils'
 import { getLocale } from '../../../../common/locale'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import { loadTimeData } from '../../../../common/loadTimeData'
 
 // hooks
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
@@ -87,7 +88,6 @@ import {
   AccountMenuButton,
   AccountMenuIcon,
   AccountBalanceText,
-  AccountDescription,
   AccountNameWrapper,
   AccountButton,
   WarningIcon
@@ -127,6 +127,8 @@ export const AccountListItem = ({
 
   // selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
   // redux
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled
@@ -416,11 +418,16 @@ export const AccountListItem = ({
                     {reduceAddress(account.address)}
                   </Text>
                 )}
-                <AccountDescription>
+                <Text
+                  textSize='12px'
+                  isBold={false}
+                  textColor='secondary'
+                  textAlign='left'
+                >
                   {isRewardsAccount
                     ? getRewardsTokenDescription(externalProvider ?? null)
                     : getAccountTypeDescription(account.accountId)}
-                </AccountDescription>
+                </Text>
                 {showSyncWarning && (
                   <Row
                     justifyContent='flex-start'
@@ -441,7 +448,7 @@ export const AccountListItem = ({
 
             {!isDisconnectedRewardsAccount && (
               <Row width='unset'>
-                {!isPanel && !accountsFiatValue.isZero() ? (
+                {!isAndroid && !isPanel && !accountsFiatValue.isZero() ? (
                   tokensWithBalances.length ? (
                     <TokenIconsStack tokens={tokensWithBalances} />
                   ) : (

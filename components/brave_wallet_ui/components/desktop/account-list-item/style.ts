@@ -125,14 +125,6 @@ export const AccountBalanceText = styled(Text)`
   margin-right: 12px;
 `
 
-export const AccountDescription = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 400;
-  color: ${leo.color.text.secondary};
-`
-
 export const AccountNameWrapper = styled(Row)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     flex-direction: column;
