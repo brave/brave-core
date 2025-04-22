@@ -116,8 +116,8 @@ private struct TopNewsListView: View {
             )
           VStack(alignment: .leading, spacing: 8) {
             ForEach(topics.prefix(widgetFamily == .systemLarge ? 5 : 2)) { topic in
-              HStack {
-                Link(destination: topic.url) {
+              Link(destination: topic.url) {
+                HStack {
                   VStack(alignment: .leading, spacing: 2) {
                     Text(topic.title)
                       .lineLimit(widgetFamily == .systemLarge ? 3 : 2)
@@ -134,25 +134,25 @@ private struct TopNewsListView: View {
                       .font(.system(size: 10, weight: .medium, design: .rounded))
                       .foregroundColor(.secondary)
                   }
-                }
-                if let image = entry.images[topic.id] {
-                  Spacer()
-                  Color.clear
-                    .aspectRatio(1, contentMode: .fit)
-                    .frame(maxHeight: 50)
-                    .overlay(
-                      Image(uiImage: image)
-                        .resizable()
-                        .widgetAccentedRenderingModeFullColor()
-                        .aspectRatio(contentMode: .fill)
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    .overlay(
-                      RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(
-                        Color.primary.opacity(0.3),
-                        lineWidth: pixelLength
+                  if let image = entry.images[topic.id] {
+                    Spacer()
+                    Color.clear
+                      .aspectRatio(1, contentMode: .fit)
+                      .frame(maxHeight: 50)
+                      .overlay(
+                        Image(uiImage: image)
+                          .resizable()
+                          .widgetAccentedRenderingModeFullColor()
+                          .aspectRatio(contentMode: .fill)
                       )
-                    )
+                      .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                      .overlay(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(
+                          Color.primary.opacity(0.3),
+                          lineWidth: pixelLength
+                        )
+                      )
+                  }
                 }
               }
             }
