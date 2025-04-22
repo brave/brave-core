@@ -6,10 +6,17 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
+import ControlItem from '@brave/leo/react/controlItem'
 
 // Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import {
+  UISelectors,
+  WalletSelectors //
+} from '../../../common/selectors'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -30,7 +37,8 @@ import {
   BraveWallet,
   NetworkFilterType,
   SupportedTestNetworks,
-  WalletRoutes
+  WalletRoutes,
+  zcashAddressOptionType
 } from '../../../constants/types'
 
 // options
@@ -41,7 +49,8 @@ import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
   useGetNetworkQuery,
   useGetQrCodeImageQuery,
-  useGetVisibleNetworksQuery
+  useGetVisibleNetworksQuery,
+  useGetZCashAccountInfoQuery
 } from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -61,7 +70,6 @@ import {
 } from '../../../components/shared/style'
 import { Description, Title } from '../onboarding/onboarding.style'
 import {
-  AddressText,
   AddressTextLabel,
   TokenListWrapper,
   QRCodeContainer,
@@ -77,6 +85,11 @@ import {
 import {
   FilterTokenRow //
 } from '../../../components/desktop/views/portfolio/style'
+import {
+  ControlsWrapper,
+  SegmentedControl,
+  AddressText
+} from './deposit-funds.style'
 
 // components
 import {
@@ -100,6 +113,21 @@ import {
   PageTitleHeader //
 } from '../../../components/desktop/card-headers/page-title-header'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
+
+const zcashAddressOptions: zcashAddressOptionType[] = [
+  {
+    addressType: 'unified',
+    label: 'braveWalletUnified'
+  },
+  {
+    addressType: 'shielded',
+    label: 'braveWalletShielded'
+  },
+  {
+    addressType: 'transparent',
+    label: 'braveWalletTransparent'
+  }
+]
 
 interface Props {
   isAndroid?: boolean
@@ -461,6 +489,11 @@ function DepositAccount() {
   const history = useHistory()
   const { assetId: selectedDepositAssetId } = useParams<Params>()
 
+  // redux
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
+
   // queries
   const { accounts } = useAccountsQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
@@ -490,8 +523,15 @@ function DepositAccount() {
   const { receiveAddress, isFetchingAddress } = useReceiveAddressQuery(
     selectedAccount?.accountId
   )
-  const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
-    receiveAddress || skipToken
+  const [selectedZCashAddressOption, setSelectedZCashAddressOption] =
+    React.useState<string>('shielded')
+
+  // queries
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled &&
+      selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC
+      ? selectedAccount?.accountId
+      : skipToken
   )
 
   // custom hooks
@@ -530,6 +570,34 @@ function DepositAccount() {
       selectedAsset?.symbol ?? ''
     )
   }, [selectedAsset])
+
+  const address = React.useMemo(() => {
+    if (
+      isZCashShieldedTransactionsEnabled &&
+      selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC &&
+      zcashAccountInfo?.accountShieldBirthday
+    ) {
+      switch (selectedZCashAddressOption) {
+        case 'unified':
+          return zcashAccountInfo.unifiedAddress
+        case 'shielded':
+          return zcashAccountInfo.orchardAddress
+        default:
+          return zcashAccountInfo.nextTransparentReceiveAddress.addressString
+      }
+    }
+    return receiveAddress
+  }, [
+    isZCashShieldedTransactionsEnabled,
+    selectedAccount,
+    receiveAddress,
+    zcashAccountInfo,
+    selectedZCashAddressOption
+  ])
+
+  const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
+    address || skipToken
+  )
 
   // methods
   const openAccountSearch = React.useCallback(
@@ -654,16 +722,43 @@ function DepositAccount() {
         <HorizontalSpace space={'45%'} />
       </Row>
 
+      {zcashAccountInfo && zcashAccountInfo.accountShieldBirthday && (
+        <ControlsWrapper width='unset'>
+          <SegmentedControl
+            value={selectedZCashAddressOption}
+            onChange={({ value }) => {
+              if (value) {
+                setSelectedZCashAddressOption(value)
+              }
+            }}
+          >
+            {zcashAddressOptions.map((option) => (
+              <ControlItem
+                key={option.addressType}
+                value={option.addressType}
+              >
+                {getLocale(option.label)}
+              </ControlItem>
+            ))}
+          </SegmentedControl>
+        </ControlsWrapper>
+      )}
+
       <Column gap={'4px'}>
         <AddressTextLabel>
           {getLocale('braveWalletAddress')}
           {':'}
         </AddressTextLabel>
 
-        {receiveAddress && !isFetchingAddress ? (
+        {address && !isFetchingAddress ? (
           <>
             <Row gap={'12px'}>
-              <AddressText>{receiveAddress}</AddressText>
+              <AddressText
+                textSize='14px'
+                textColor='secondary'
+              >
+                {address}
+              </AddressText>
               <CopyButton
                 iconColor={'interactive05'}
                 onKeyPress={onCopyKeyPress}
@@ -682,7 +777,7 @@ function DepositAccount() {
 
         <Row>
           <QRCodeContainer>
-            {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
+            {isLoadingQrCode || !address || isFetchingAddress ? (
               <LoadingRing />
             ) : (
               <QRCodeImage src={qrCode} />
