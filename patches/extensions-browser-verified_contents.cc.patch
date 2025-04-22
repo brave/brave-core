@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/verified_contents.cc b/extensions/browser/verified_contents.cc
+index b5d8d75d53afd80bcb25e9dd8b4e8e5898494cfd..f507df06398958dd0edc405188214983e404fd76 100644
+--- a/extensions/browser/verified_contents.cc
++++ b/extensions/browser/verified_contents.cc
+@@ -105,7 +105,7 @@ std::unique_ptr<VerifiedContents> VerifiedContents::CreateFromFile(
+   return Create(public_key, contents);
+ }
+ 
+-std::unique_ptr<VerifiedContents> VerifiedContents::Create(
++std::unique_ptr<VerifiedContents> VerifiedContents::Create_ChromiumImpl(
+     base::span<const uint8_t> public_key,
+     std::string_view contents) {
+   // Note: VerifiedContents constructor is private.
