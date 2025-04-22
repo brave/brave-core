@@ -101,20 +101,20 @@ function AdsHistoryItemView(props: AdsHistoryItemViewProps) {
           }}
         >
           <Icon name='more-vertical' />
-          {
-            showMenu &&
-              <div className='more-menu'>
-                <button onClick={() => props.onToggleInappropriate(item)}>
-                  {getString('adsHistoryMarkInappropriateLabel')}
-                  <Icon
-                    name={item.inappropriate ?
-                      'checkbox-checked' :
-                      'checkbox-unchecked'}
-                  />
-                </button>
-              </div>
-          }
         </button>
+        {
+          showMenu &&
+            <div className='more-menu'>
+              <button onClick={() => props.onToggleInappropriate(item)}>
+                {getString('adsHistoryMarkInappropriateLabel')}
+                <Icon
+                  name={item.inappropriate ?
+                    'checkbox-checked' :
+                    'checkbox-unchecked'}
+                />
+              </button>
+            </div>
+        }
       </div>
     </div>
   )
@@ -173,9 +173,9 @@ export function AdsHistoryModal(props: Props) {
             <AdsHistoryItemView
               key={item.id}
               item={item}
-              onToggleLike={() => toggleLike(item)}
-              onToggleDislike={() => toggleDislike(item)}
-              onToggleInappropriate={() => toggleInappropriate}
+              onToggleLike={toggleLike}
+              onToggleDislike={toggleDislike}
+              onToggleInappropriate={toggleInappropriate}
             />
           ))}
         </div>
