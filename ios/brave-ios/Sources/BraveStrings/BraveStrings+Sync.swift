@@ -384,7 +384,7 @@ extension Strings {
       "sync.deviceRestoreDetectedMessage",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave has detected a restore from backup. Your sync chain should be reset and you should rejoin the sync chain.",
+      value: "It appears your device was restored from backup, which can affect Brave Sync. To continue using Brave Sync, you should reset and rejoin the sync chain.",
       comment: "Message for alert when the user has restored their device from a backup"
     )
     public static let deviceRestoreResetActionTitle = NSLocalizedString(
