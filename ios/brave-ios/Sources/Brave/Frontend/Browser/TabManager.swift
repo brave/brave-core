@@ -280,8 +280,6 @@ class TabManager: NSObject {
     // and pages that don't want the URL highlighted!
     configuration.dataDetectorTypes = [.phoneNumber]
     configuration.userContentController = WKUserContentController()
-    configuration.preferences = WKPreferences()
-    configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
     configuration.preferences.isFraudulentWebsiteWarningEnabled =
       Preferences.Shields.googleSafeBrowsing.value
     configuration.allowsInlineMediaPlayback = true
