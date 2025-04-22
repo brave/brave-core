@@ -126,15 +126,7 @@ bool PerformNetworkAuditProcess(
       }
     }
 
-    bool found_pattern = false;
-    for (auto pattern : kAllowedUrlPatterns) {
-      if (RE2::FullMatch(url.spec(), pattern)) {
-        found_pattern = true;
-        break;
-      }
-    }
-
-    if (!found_prefix && !found_pattern) {
+    if (!found_prefix) {
       // Check if the URL is a private IP.
       if (isPrivateURL(url)) {
         // Warn but don't fail the audit.

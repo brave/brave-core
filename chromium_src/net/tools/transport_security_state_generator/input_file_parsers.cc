@@ -50,7 +50,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "feedback.brave.com", "pins": "brave"},
     { "name": "gaia.brave.com", "pins": "brave"},
     { "name": "go-updater.brave.com", "pins": "brave"},
-    { "name": "mobile-data.s3.brave.com", "pins": "brave"},
     { "name": "pcdn.brave.com", "pins": "brave"},
     { "name": "redirector.brave.com", "pins": "brave"},
     { "name": "safebrowsing.brave.com", "pins": "brave"},
@@ -215,11 +214,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "go-updater.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "mobile-data.s3.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
