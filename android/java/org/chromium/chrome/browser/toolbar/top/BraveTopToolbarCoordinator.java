@@ -204,7 +204,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Tab> tabSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             TopUiThemeColorProvider topUiThemeColorProvider,
-            ObservableSupplier<Integer> bottomToolbarControlsOffsetSupplier) {
+            ObservableSupplier<Integer> bottomToolbarControlsOffsetSupplier,
+            ObservableSupplier<Boolean> suppressToolbarSceneLayerSupplier) {
         super.initializeWithNative(
                 profile,
                 layoutUpdater,
@@ -214,7 +215,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabSupplier,
                 browserControlsVisibilityManager,
                 topUiThemeColorProvider,
-                bottomToolbarControlsOffsetSupplier);
+                bottomToolbarControlsOffsetSupplier,
+                suppressToolbarSceneLayerSupplier);
 
         assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
                 : "Something has changed in the upstream!";
