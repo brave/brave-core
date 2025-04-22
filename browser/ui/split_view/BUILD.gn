@@ -14,6 +14,7 @@ source_set("split_view") {
 
   deps = [
     "//base",
+    "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:split_view",
     "//chrome/browser/ui/tabs:tab_strip",
     "//components/tab_collections:public",

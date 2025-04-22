@@ -7,3 +7,11 @@
 
 SplitViewWebPanelData::SplitViewWebPanelData() = default;
 SplitViewWebPanelData::~SplitViewWebPanelData() = default;
+
+void SplitViewWebPanelData::OpenedForWebPanel(content::WebContents* contents) {
+  panel_contents_ = contents;
+}
+
+bool SplitViewWebPanelData::HasWebPanel() const {
+  return !!panel_contents_;;
+}

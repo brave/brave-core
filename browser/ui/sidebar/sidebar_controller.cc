@@ -13,6 +13,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_delegate.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_handle.h"
 
 namespace sidebar {
 
@@ -181,7 +183,9 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
     // Load at current active tab if there is no tab that loaded |url|.
     auto params = GetSingletonTabNavigateParams(browser_, url);
     params.disposition = WindowOpenDisposition::CURRENT_TAB;
-    Navigate(&params);
+    if (auto handle = Navigate(&params); handle && web_panel_delegate_) {
+      web_panel_delegate_->OpenedForWebPanel(handle->GetWebContents());
+    }
     return;
   }
 
@@ -205,7 +209,9 @@ void SidebarController::LoadAtTab(const GURL& url) {
   } else {
     // Load on current tab.
     params.disposition = WindowOpenDisposition::CURRENT_TAB;
-    Navigate(&params);
+    if (auto handle = Navigate(&params); handle && web_panel_delegate_) {
+      web_panel_delegate_->OpenedForWebPanel(handle->GetWebContents());
+    }
   }
 }
 

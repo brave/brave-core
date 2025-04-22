@@ -40,6 +40,10 @@ class SplitViewController : public SplitViewBrowserDataObserver {
     return &split_view_tab_tile_data_;
   }
 
+  SplitViewWebPanelData* split_view_web_panel_data() {
+    return &split_view_web_panel_data_;
+  }
+
   void set_split_view_view(SplitViewView* view) { view_ = view; }
 
   // true when active tab is opened in split view.
