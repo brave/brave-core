@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/tab_style.h b/chrome/browser/ui/tabs/tab_style.h
+index 78cba7ebe0601f38c73e80fc464994f6c4602989..13d8b26ad98be15f1830269616c82a6978479eab 100644
+--- a/chrome/browser/ui/tabs/tab_style.h
++++ b/chrome/browser/ui/tabs/tab_style.h
+@@ -111,7 +111,7 @@ class TabStyle {
+ 
+   TabStyle(const TabStyle&) = delete;
+   TabStyle& operator=(const TabStyle&) = delete;
+-  ~TabStyle();
++  virtual ~TabStyle();
+ 
+   // Returns the preferred width of a single Tab, assuming space is
+   // available.
