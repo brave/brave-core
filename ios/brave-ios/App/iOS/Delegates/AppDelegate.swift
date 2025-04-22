@@ -12,6 +12,7 @@ import BraveShields
 import BraveStore
 import BraveVPN
 import BraveWallet
+import BraveWidgetsModels
 import Combine
 import CoreSpotlight
 import Data
@@ -264,6 +265,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
       Preferences.Search.shouldShowSuggestionsOptIn.value =
         !AppState.shared.profile.searchEngines.isBraveSearchDefaultRegion
+
+      if UIDevice.isIpad {
+        Preferences.General.toolbarShortcutButton.value = WidgetShortcut.bookmarks.rawValue
+      }
     }
 
     if Preferences.URP.referralLookupOutstanding.value == nil {
