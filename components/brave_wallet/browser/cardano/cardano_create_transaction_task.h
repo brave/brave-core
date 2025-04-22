@@ -57,7 +57,7 @@ class CardanoCreateTransactionTask {
   void OnDiscoverNextUnusedChangeAddress(
       base::expected<mojom::CardanoAddressPtr, std::string> address);
 
-  raw_ref<CardanoWalletService> cardano_wallet_service_;
+  const raw_ref<CardanoWalletService> cardano_wallet_service_;
   mojom::AccountIdPtr account_id_;
   CardanoAddress address_to_;
   bool sending_max_amount_ = false;

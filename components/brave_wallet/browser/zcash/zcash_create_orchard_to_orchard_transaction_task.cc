@@ -10,7 +10,6 @@
 
 #include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -25,21 +24,20 @@ ZCashCreateOrchardToOrchardTransactionTask::
         ZCashActionContext context,
         const OrchardAddrRawPart& receiver,
         std::optional<OrchardMemo> memo,
-        uint64_t amount,
-        ZCashWalletService::CreateTransactionCallback callback)
+        uint64_t amount)
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
       receiver_(receiver),
       memo_(memo),
-      amount_(amount),
-      callback_(std::move(callback)) {}
+      amount_(amount) {}
 
 ZCashCreateOrchardToOrchardTransactionTask::
     ~ZCashCreateOrchardToOrchardTransactionTask() = default;
 
-void ZCashCreateOrchardToOrchardTransactionTask::Start() {
-  DCHECK(!started_);
-  started_ = true;
+void ZCashCreateOrchardToOrchardTransactionTask::Start(
+    CreateTransactionCallback callback) {
+  DCHECK(!callback_);
+  callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
@@ -53,7 +51,6 @@ void ZCashCreateOrchardToOrchardTransactionTask::ScheduleWorkOnTask() {
 void ZCashCreateOrchardToOrchardTransactionTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(*error_));
-    zcash_wallet_service_->CreateTransactionTaskDone(this);
     return;
   }
 
@@ -68,7 +65,6 @@ void ZCashCreateOrchardToOrchardTransactionTask::WorkOnTask() {
   }
 
   std::move(callback_).Run(base::ok(std::move(*transaction_)));
-  zcash_wallet_service_->CreateTransactionTaskDone(this);
 }
 
 void ZCashCreateOrchardToOrchardTransactionTask::GetSpendableNotes() {

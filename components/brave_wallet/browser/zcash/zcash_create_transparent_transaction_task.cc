@@ -23,12 +23,10 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     const std::string& address_to,
-    uint64_t amount,
-    CreateTransactionCallback callback)
+    uint64_t amount)
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
-      amount_(amount),
-      callback_(std::move(callback)) {
+      amount_(amount) {
   transaction_.set_to(address_to);
   transaction_.set_amount(amount);
 }
@@ -36,9 +34,10 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
 ZCashCreateTransparentTransactionTask::
     ~ZCashCreateTransparentTransactionTask() = default;
 
-void ZCashCreateTransparentTransactionTask::Start() {
-  DCHECK(!started_);
-  started_ = true;
+void ZCashCreateTransparentTransactionTask::Start(
+    CreateTransactionCallback callback) {
+  DCHECK(!callback_);
+  callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
@@ -56,7 +55,6 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
 
   if (error_) {
     std::move(callback_).Run(base::unexpected(*error_));
-    zcash_wallet_service_->CreateTransactionTaskDone(this);
     return;
   }
 
@@ -117,7 +115,6 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
             transaction_.transparent_part().outputs.size());
 
   std::move(callback_).Run(base::ok(std::move(transaction_)));
-  zcash_wallet_service_->CreateTransactionTaskDone(this);
 }
 
 void ZCashCreateTransparentTransactionTask::OnGetChainHeight(

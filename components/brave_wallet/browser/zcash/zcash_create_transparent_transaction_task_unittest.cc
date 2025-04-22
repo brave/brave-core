@@ -54,9 +54,6 @@ class MockZCashWalletService : public ZCashWalletService {
       : ZCashWalletService(zcash_data_path,
                            keyring_service,
                            std::move(zcash_rpc)) {}
-  MOCK_METHOD1(CreateTransactionTaskDone,
-               void(ZCashCreateTransparentTransactionTask* task));
-
   MOCK_METHOD3(GetUtxos,
                void(const std::string& chain_id,
                     const mojom::AccountIdPtr& account_id,
@@ -176,10 +173,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated) {
 
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
-      10000, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+      10000);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -187,7 +181,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated) {
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -238,10 +232,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
 
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
-      100000, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+      100000);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -249,7 +240,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -291,11 +282,8 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
       callback;
 
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
-      pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1, 60,
-      callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+      pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
+      60);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -303,7 +291,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -345,10 +333,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
 
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
-      100000, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+      100000);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -356,7 +341,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -399,10 +384,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated_MaxFunds) {
 
   auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
       pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
-      kZCashFullAmount, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+      kZCashFullAmount);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -410,7 +392,7 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest, TransactionCreated_MaxFunds) {
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 

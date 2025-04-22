@@ -42,10 +42,7 @@ class DiscoverAccountTaskBase {
                           const std::string& network_id);
   virtual ~DiscoverAccountTaskBase();
 
-  void ScheduleWorkOnTask();
-  void set_callback(DiscoverAccountCallback callback) {
-    callback_ = std::move(callback);
-  }
+  void Start(DiscoverAccountCallback callback);
 
  protected:
   struct State {
@@ -60,6 +57,7 @@ class DiscoverAccountTaskBase {
 
   bool MaybeQueueRequests(bool receive_state);
 
+  void ScheduleWorkOnTask();
   void WorkOnTask();
   void OnGetAddressStats(
       bool receive_state,

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_WALLET_SERVICE_H_
 
-#include <list>
 #include <memory>
 #include <string>
 
@@ -18,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
 
@@ -73,10 +73,8 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
-  using CardanoGetUtxosTaskList =
-      std::list<std::unique_ptr<GetCardanoUtxosTask>>;
-  using CardanoCreateTransactionTaskList =
-      std::list<std::unique_ptr<CardanoCreateTransactionTask>>;
+  template <typename T>
+  using TaskContainer = absl::flat_hash_set<std::unique_ptr<T>>;
 
   const raw_ref<KeyringService> keyring_service_;
   const raw_ref<NetworkManager> network_manager_;
@@ -87,12 +85,12 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos);
 
   void OnGetUtxosTaskDone(
-      CardanoGetUtxosTaskList::iterator task,
+      GetCardanoUtxosTask* task,
       GetUtxosCallback callback,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
 
   void OnCreateCardanoTransactionTaskDone(
-      CardanoCreateTransactionTaskList::iterator task,
+      CardanoCreateTransactionTask* task,
       CardanoCreateTransactionTaskCallback callback,
       base::expected<CardanoTransaction, std::string> result);
 
@@ -106,8 +104,8 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
   cardano_rpc::CardanoRpc cardano_rpc_;
 
-  CardanoGetUtxosTaskList get_cardano_utxo_tasks_;
-  CardanoCreateTransactionTaskList create_transaction_tasks_;
+  TaskContainer<GetCardanoUtxosTask> get_cardano_utxo_tasks_;
+  TaskContainer<CardanoCreateTransactionTask> create_transaction_tasks_;
 
   base::WeakPtrFactory<CardanoWalletService> weak_ptr_factory_{this};
 };

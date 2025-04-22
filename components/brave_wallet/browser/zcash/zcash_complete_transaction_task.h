@@ -31,11 +31,10 @@ class ZCashCompleteTransactionTask {
                                ZCashWalletService& zcash_wallet_service,
                                ZCashActionContext context,
                                KeyringService& keyring_service,
-                               const ZCashTransaction& transaction,
-                               ZCashCompleteTransactionTaskCallback callback);
+                               const ZCashTransaction& transaction);
   ~ZCashCompleteTransactionTask();
 
-  void Start();
+  void Start(ZCashCompleteTransactionTaskCallback callback);
 
  private:
   void ScheduleWorkOnTask();
@@ -51,7 +50,7 @@ class ZCashCompleteTransactionTask {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   void CalculateWitness();
-  void OnWitnessCalulcateResult(
+  void OnWitnessCalculateResult(
       base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
 
   void GetTreeState();

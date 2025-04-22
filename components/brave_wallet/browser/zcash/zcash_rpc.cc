@@ -394,16 +394,15 @@ void ZCashRpc::GetTreeState(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetTreeStateURLParams(block_id));
-
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetTreeStateURLParams(block_id)));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTreeStateResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       kMaxBodySize);
 }
 
@@ -416,16 +415,16 @@ void ZCashRpc::GetLatestTreeState(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetLatestTreeStateURLParams());
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetLatestTreeStateURLParams()));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTreeStateResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       kMaxBodySize);
 }
 
@@ -439,16 +438,16 @@ void ZCashRpc::GetUtxoList(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetAddressUtxosURLParams(address));
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetAddressUtxosURLParams(address)));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetUtxosResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       kMaxBodySize);
 }
 
@@ -461,16 +460,16 @@ void ZCashRpc::GetLatestBlock(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetLatestBlockHeightParams());
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetLatestBlockHeightParams()));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetLatestBlockResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       kMaxBodySize);
 }
 
@@ -484,16 +483,16 @@ void ZCashRpc::GetTransaction(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetTransactionParams(tx_hash));
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetTransactionParams(tx_hash)));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTransactionResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       200000 /* custom amount since transaction may contain orchard part */);
 }
 
@@ -508,25 +507,23 @@ void ZCashRpc::GetCompactBlocks(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetCompactBlocksParams(from, to));
+  auto [url_loader_it, url_loader_inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetCompactBlocksParams(from, to)));
+  CHECK(url_loader_inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
+  auto [handler_it, handler_inserted] = stream_handlers_.insert(
+      std::make_unique<GetCompactBlocksGrpcStreamHandler>());
+  CHECK(handler_inserted);
+  auto* handler_ptr =
+      static_cast<GetCompactBlocksGrpcStreamHandler*>(handler_it->get());
+  handler_ptr->set_message_data_limit(2 * 1000 * 1000);
 
-  auto compact_blocks_stream_handler =
-      std::make_unique<GetCompactBlocksGrpcStreamHandler>();
-  compact_blocks_stream_handler->set_message_data_limit(2 * 1000 * 1000);
+  handler_ptr->set_callback(base::BindOnce(
+      &ZCashRpc::OnGetCompactBlocksResponse, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), url_loader_ptr, handler_ptr));
 
-  StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
-      stream_handlers_list_.begin(), std::move(compact_blocks_stream_handler));
-
-  static_cast<GetCompactBlocksGrpcStreamHandler*>(handler_it->get())
-      ->set_callback(base::BindOnce(&ZCashRpc::OnGetCompactBlocksResponse,
-                                    weak_ptr_factory_.GetWeakPtr(),
-                                    std::move(callback), it, handler_it));
-
-  (*it)->DownloadAsStream(url_loader_factory_.get(), handler_it->get());
+  url_loader_ptr->DownloadAsStream(url_loader_factory_.get(), handler_ptr);
 }
 
 void ZCashRpc::GetLightdInfo(const std::string& chain_id,
@@ -538,25 +535,26 @@ void ZCashRpc::GetLightdInfo(const std::string& chain_id,
     return;
   }
 
-  auto url_loader = MakeGRPCLoader(request_url, MakeGetLightdInfoParams());
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeGetLightdInfoParams()));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetLightdInfoResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       kMaxBodySize);
 }
 
 void ZCashRpc::OnGetCompactBlocksResponse(
     ZCashRpc::GetCompactBlocksCallback callback,
-    UrlLoadersList::iterator it,
-    StreamHandlersList::iterator handler_it,
+    network::SimpleURLLoader* url_loader,
+    GRrpcMessageStreamHandler* handler,
     base::expected<std::vector<std::string>, std::string> result) {
-  url_loaders_list_.erase(it);
-  stream_handlers_list_.erase(handler_it);
+  url_loaders_.erase(url_loader);
+  stream_handlers_.erase(handler);
 
   if (!result.has_value()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
@@ -570,11 +568,11 @@ void ZCashRpc::OnGetCompactBlocksResponse(
 }
 
 void ZCashRpc::OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
-                                  UrlLoadersList::iterator it,
+                                  network::SimpleURLLoader* url_loader,
                                   std::unique_ptr<std::string> response_body) {
-  auto current_loader = std::move(*it);
-  url_loaders_list_.erase(it);
-  if (current_loader->NetError()) {
+  auto current_loader = url_loaders_.extract(url_loader);
+  CHECK(current_loader);
+  if (current_loader.value()->NetError()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
@@ -615,11 +613,11 @@ void ZCashRpc::OnParseResult(
 
 void ZCashRpc::OnGetLatestBlockResponse(
     ZCashRpc::GetLatestBlockCallback callback,
-    UrlLoadersList::iterator it,
+    network::SimpleURLLoader* url_loader,
     std::unique_ptr<std::string> response_body) {
-  auto current_loader = std::move(*it);
-  url_loaders_list_.erase(it);
-  if (current_loader->NetError()) {
+  auto current_loader = url_loaders_.extract(url_loader);
+  CHECK(current_loader);
+  if (current_loader.value()->NetError()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
@@ -637,11 +635,11 @@ void ZCashRpc::OnGetLatestBlockResponse(
 
 void ZCashRpc::OnGetTransactionResponse(
     ZCashRpc::GetTransactionCallback callback,
-    UrlLoadersList::iterator it,
+    network::SimpleURLLoader* url_loader,
     std::unique_ptr<std::string> response_body) {
-  auto current_loader = std::move(*it);
-  url_loaders_list_.erase(it);
-  if (current_loader->NetError()) {
+  auto current_loader = url_loaders_.extract(url_loader);
+  CHECK(current_loader);
+  if (current_loader.value()->NetError()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
@@ -667,16 +665,16 @@ void ZCashRpc::SendTransaction(const std::string& chain_id,
     return;
   }
 
-  auto url_loader =
-      MakeGRPCLoader(request_url, MakeSendTransactionParams(data));
+  auto [url_loader_it, inserted] = url_loaders_.insert(
+      MakeGRPCLoader(request_url, MakeSendTransactionParams(data)));
+  CHECK(inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
-
-  (*it)->DownloadToString(
+  url_loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnSendTransactionResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     url_loader_ptr),
       kMaxBodySize);
 }
 
@@ -692,32 +690,34 @@ void ZCashRpc::IsKnownAddress(const std::string& chain_id,
     return;
   }
 
-  auto url_loader = MakeGRPCLoader(
-      request_url, MakeGetAddressTxParams(addr, block_start, block_end));
+  auto [url_loader_it, url_loader_inserted] =
+      url_loaders_.insert(MakeGRPCLoader(
+          request_url, MakeGetAddressTxParams(addr, block_start, block_end)));
+  CHECK(url_loader_inserted);
+  auto* url_loader_ptr = url_loader_it->get();
 
-  UrlLoadersList::iterator it = url_loaders_list_.insert(
-      url_loaders_list_.begin(), std::move(url_loader));
+  auto [handler_it, handler_inserted] = stream_handlers_.insert(
+      std::make_unique<IsKnownAddressTxStreamHandler>());
+  CHECK(handler_inserted);
+  auto* handler_ptr =
+      static_cast<IsKnownAddressTxStreamHandler*>(handler_it->get());
 
-  auto handler = std::make_unique<IsKnownAddressTxStreamHandler>();
   // Increase limit since there could be shielded transactions.
-  handler->set_message_data_limit(50 * 1000);
-  StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
-      stream_handlers_list_.begin(), std::move(handler));
-  static_cast<IsKnownAddressTxStreamHandler*>(handler_it->get())
-      ->set_callback(base::BindOnce(&ZCashRpc::OnGetAddressTxResponse,
-                                    weak_ptr_factory_.GetWeakPtr(),
-                                    std::move(callback), it, handler_it));
+  handler_ptr->set_message_data_limit(50 * 1000);
+  handler_ptr->set_callback(base::BindOnce(
+      &ZCashRpc::OnGetAddressTxResponse, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), url_loader_ptr, handler_ptr));
 
-  (*it)->DownloadAsStream(url_loader_factory_.get(), handler_it->get());
+  url_loader_ptr->DownloadAsStream(url_loader_factory_.get(), handler_ptr);
 }
 
 void ZCashRpc::OnSendTransactionResponse(
     ZCashRpc::SendTransactionCallback callback,
-    UrlLoadersList::iterator it,
+    network::SimpleURLLoader* url_loader,
     std::unique_ptr<std::string> response_body) {
-  auto current_loader = std::move(*it);
-  url_loaders_list_.erase(it);
-  if (current_loader->NetError()) {
+  auto current_loader = url_loaders_.extract(url_loader);
+  CHECK(current_loader);
+  if (current_loader.value()->NetError()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
@@ -735,11 +735,11 @@ void ZCashRpc::OnSendTransactionResponse(
 
 void ZCashRpc::OnGetTreeStateResponse(
     ZCashRpc::GetTreeStateCallback callback,
-    UrlLoadersList::iterator it,
+    network::SimpleURLLoader* url_loader,
     std::unique_ptr<std::string> response_body) {
-  auto current_loader = std::move(*it);
-  url_loaders_list_.erase(it);
-  if (current_loader->NetError()) {
+  auto current_loader = url_loaders_.extract(url_loader);
+  CHECK(current_loader);
+  if (current_loader.value()->NetError()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
@@ -757,11 +757,11 @@ void ZCashRpc::OnGetTreeStateResponse(
 
 void ZCashRpc::OnGetAddressTxResponse(
     ZCashRpc::IsKnownAddressCallback callback,
-    UrlLoadersList::iterator it,
-    StreamHandlersList::iterator handler_it,
+    network::SimpleURLLoader* url_loader,
+    GRrpcMessageStreamHandler* handler,
     base::expected<bool, std::string> result) {
-  url_loaders_list_.erase(it);
-  stream_handlers_list_.erase(handler_it);
+  url_loaders_.erase(url_loader);
+  stream_handlers_.erase(handler);
 
   if (!result.has_value()) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
@@ -773,9 +773,9 @@ void ZCashRpc::OnGetAddressTxResponse(
 
 void ZCashRpc::OnGetLightdInfoResponse(
     GetLightdInfoCallback callback,
-    UrlLoadersList::iterator it,
+    network::SimpleURLLoader* url_loader,
     std::unique_ptr<std::string> response_body) {
-  url_loaders_list_.erase(it);
+  url_loaders_.erase(url_loader);
 
   if (!response_body) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));

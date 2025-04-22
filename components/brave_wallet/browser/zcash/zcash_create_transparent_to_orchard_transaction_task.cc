@@ -27,21 +27,20 @@ ZCashCreateTransparentToOrchardTransactionTask::
         ZCashActionContext context,
         const OrchardAddrRawPart& receiver,
         std::optional<OrchardMemo> memo,
-        uint64_t amount,
-        ZCashWalletService::CreateTransactionCallback callback)
+        uint64_t amount)
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
       receiver_(receiver),
       memo_(memo),
-      amount_(amount),
-      callback_(std::move(callback)) {}
+      amount_(amount) {}
 
 ZCashCreateTransparentToOrchardTransactionTask::
     ~ZCashCreateTransparentToOrchardTransactionTask() = default;
 
-void ZCashCreateTransparentToOrchardTransactionTask::Start() {
-  DCHECK(!started_);
-  started_ = true;
+void ZCashCreateTransparentToOrchardTransactionTask::Start(
+    CreateTransactionCallback callback) {
+  DCHECK(!callback_);
+  callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
@@ -56,7 +55,6 @@ void ZCashCreateTransparentToOrchardTransactionTask::ScheduleWorkOnTask() {
 void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(error_.value()));
-    zcash_wallet_service_->CreateTransactionTaskDone(this);
     return;
   }
 
@@ -81,7 +79,6 @@ void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
   }
 
   std::move(callback_).Run(std::move(transaction_.value()));
-  zcash_wallet_service_->CreateTransactionTaskDone(this);
 }
 
 void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {

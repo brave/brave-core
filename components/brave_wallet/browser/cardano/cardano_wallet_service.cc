@@ -112,19 +112,20 @@ void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
     }
   }
 
-  auto it = get_cardano_utxo_tasks_.insert(
-      get_cardano_utxo_tasks_.end(),
-      std::make_unique<GetCardanoUtxosTask>(
+  auto [task_it, inserted] =
+      get_cardano_utxo_tasks_.insert(std::make_unique<GetCardanoUtxosTask>(
           *this, GetNetworkForCardanoAccount(account_id),
           std::move(cardano_addresses)));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
 
-  (*it)->Start(base::BindOnce(&CardanoWalletService::OnGetUtxosTaskDone,
-                              weak_ptr_factory_.GetWeakPtr(), it,
-                              std::move(callback)));
+  task_ptr->Start(base::BindOnce(&CardanoWalletService::OnGetUtxosTaskDone,
+                                 weak_ptr_factory_.GetWeakPtr(), task_ptr,
+                                 std::move(callback)));
 }
 
 void CardanoWalletService::OnGetUtxosTaskDone(
-    CardanoGetUtxosTaskList::iterator task,
+    GetCardanoUtxosTask* task,
     GetUtxosCallback callback,
     base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
   get_cardano_utxo_tasks_.erase(task);
@@ -140,18 +141,19 @@ void CardanoWalletService::CreateCardanoTransaction(
     CardanoCreateTransactionTaskCallback callback) {
   CHECK(IsCardanoAccount(account_id));
 
-  auto it = create_transaction_tasks_.insert(
-      create_transaction_tasks_.end(),
+  auto [task_it, inserted] = create_transaction_tasks_.insert(
       std::make_unique<CardanoCreateTransactionTask>(
           *this, account_id, address_to, amount, sending_max_amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
 
-  (*it)->Start(
-      base::BindOnce(&CardanoWalletService::OnCreateCardanoTransactionTaskDone,
-                     weak_ptr_factory_.GetWeakPtr(), it, std::move(callback)));
+  task_ptr->Start(base::BindOnce(
+      &CardanoWalletService::OnCreateCardanoTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
 }
 
 void CardanoWalletService::OnCreateCardanoTransactionTaskDone(
-    CardanoCreateTransactionTaskList::iterator task,
+    CardanoCreateTransactionTask* task,
     CardanoCreateTransactionTaskCallback callback,
     base::expected<CardanoTransaction, std::string> result) {
   create_transaction_tasks_.erase(task);

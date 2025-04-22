@@ -25,11 +25,10 @@ class ZCashResolveBalanceTask {
       base::expected<mojom::ZCashBalancePtr, std::string>)>;
   ZCashResolveBalanceTask(base::PassKey<ZCashWalletService> pass_key,
                           ZCashWalletService& zcash_wallet_service,
-                          ZCashActionContext context,
-                          ZCashResolveBalanceTaskCallback callback);
+                          ZCashActionContext context);
   ~ZCashResolveBalanceTask();
 
-  void Start();
+  void Start(ZCashResolveBalanceTaskCallback callback);
 
  private:
   void ScheduleWorkOnTask();
@@ -53,8 +52,6 @@ class ZCashResolveBalanceTask {
   const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns this
   ZCashActionContext context_;
   ZCashResolveBalanceTaskCallback callback_;
-
-  bool started_ = false;
 
   std::optional<std::string> error_;
   std::optional<ZCashWalletService::RunDiscoveryResult> discovery_result_;

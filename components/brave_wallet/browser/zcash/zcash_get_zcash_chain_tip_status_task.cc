@@ -14,24 +14,22 @@ ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTask(
     std::variant<base::PassKey<ZCashWalletService>,
                  base::PassKey<class ZCashGetChainTipStatusTaskTest>> pass_key,
     ZCashWalletService& zcash_wallet_service,
-    ZCashActionContext context,
-    ZCashGetZCashChainTipStatusTaskCallback callback)
+    ZCashActionContext context)
     : zcash_wallet_service_(zcash_wallet_service),
-      context_(std::move(context)),
-      callback_(std::move(callback)) {}
+      context_(std::move(context)) {}
 
 ZCashGetZCashChainTipStatusTask::~ZCashGetZCashChainTipStatusTask() = default;
 
-void ZCashGetZCashChainTipStatusTask::Start() {
-  DCHECK(!started_);
-  started_ = true;
+void ZCashGetZCashChainTipStatusTask::Start(
+    ZCashGetZCashChainTipStatusTaskCallback callback) {
+  DCHECK(!callback_);
+  callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
 void ZCashGetZCashChainTipStatusTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(error_.value()));
-    zcash_wallet_service_->GetZCashChainTipStatusTaskDone(this);
     return;
   }
 
@@ -52,8 +50,6 @@ void ZCashGetZCashChainTipStatusTask::WorkOnTask() {
 
   std::move(callback_).Run(base::ok(mojom::ZCashChainTipStatus::New(
       latest_scanned_block, chain_tip_height_.value())));
-
-  zcash_wallet_service_->GetZCashChainTipStatusTaskDone(this);
 }
 
 void ZCashGetZCashChainTipStatusTask::GetAccountMeta() {

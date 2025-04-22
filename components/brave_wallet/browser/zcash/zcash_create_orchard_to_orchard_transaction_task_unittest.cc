@@ -30,18 +30,6 @@ namespace brave_wallet {
 
 namespace {
 
-class MockZCashWalletService : public ZCashWalletService {
- public:
-  MockZCashWalletService(base::FilePath zcash_data_path,
-                         KeyringService& keyring_service,
-                         std::unique_ptr<ZCashRpc> zcash_rpc)
-      : ZCashWalletService(zcash_data_path,
-                           keyring_service,
-                           std::move(zcash_rpc)) {}
-  MOCK_METHOD1(CreateTransactionTaskDone,
-               void(ZCashCreateOrchardToOrchardTransactionTask* task));
-};
-
 class MockZCashRPC : public ZCashRpc {
  public:
   MockZCashRPC() : ZCashRpc(nullptr, nullptr) {}
@@ -103,7 +91,7 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
 
-    zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
+    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         db_path, *keyring_service_,
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
 
@@ -125,9 +113,7 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     return *mock_orchard_sync_state_;
   }
 
-  MockZCashWalletService& zcash_wallet_service() {
-    return *zcash_wallet_service_;
-  }
+  ZCashWalletService& zcash_wallet_service() { return *zcash_wallet_service_; }
 
   KeyringService& keyring_service() { return *keyring_service_; }
 
@@ -159,7 +145,7 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
 
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
-  std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
+  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
 
   std::unique_ptr<MockOrchardSyncState> mock_orchard_sync_state_;
   base::SequenceBound<OrchardSyncState> sync_state_;
@@ -203,10 +189,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
   std::unique_ptr<ZCashCreateOrchardToOrchardTransactionTask> task =
       std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
-          std::nullopt, 100000u, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+          std::nullopt, 100000u);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -214,7 +197,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -275,10 +258,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
   std::unique_ptr<ZCashCreateOrchardToOrchardTransactionTask> task =
       std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
-          std::nullopt, kZCashFullAmount, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+          std::nullopt, kZCashFullAmount);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -286,7 +266,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -341,10 +321,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, NotEnoughFunds) {
   std::unique_ptr<ZCashCreateOrchardToOrchardTransactionTask> task =
       std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
-          std::nullopt, 1000000u, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+          std::nullopt, 1000000u);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -352,7 +329,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, NotEnoughFunds) {
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 
@@ -380,10 +357,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, Error) {
   std::unique_ptr<ZCashCreateOrchardToOrchardTransactionTask> task =
       std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
-          std::nullopt, 1000000u, callback.Get());
-
-  EXPECT_CALL(zcash_wallet_service(),
-              CreateTransactionTaskDone(testing::Eq(task.get())));
+          std::nullopt, 1000000u);
 
   base::expected<ZCashTransaction, std::string> tx_result;
   EXPECT_CALL(callback, Run(_))
@@ -391,7 +365,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, Error) {
           SaveArg<0>(&tx_result),
           base::test::RunOnceClosure(task_environment().QuitClosure())));
 
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilQuit();
 

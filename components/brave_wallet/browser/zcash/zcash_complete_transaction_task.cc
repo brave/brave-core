@@ -41,13 +41,11 @@ ZCashCompleteTransactionTask::ZCashCompleteTransactionTask(
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     KeyringService& keyring_service,
-    const ZCashTransaction& transaction,
-    ZCashCompleteTransactionTaskCallback callback)
+    const ZCashTransaction& transaction)
     : zcash_wallet_service_(zcash_wallet_service),
       context_(std::move(context)),
       keyring_service_(keyring_service),
-      transaction_(transaction),
-      callback_(std::move(callback)) {}
+      transaction_(transaction) {}
 
 ZCashCompleteTransactionTask::~ZCashCompleteTransactionTask() = default;
 
@@ -60,7 +58,6 @@ void ZCashCompleteTransactionTask::ScheduleWorkOnTask() {
 void ZCashCompleteTransactionTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(*error_));
-    zcash_wallet_service_->CompleteTransactionTaskDone(this);
     return;
   }
 
@@ -106,10 +103,11 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
   }
 
   std::move(callback_).Run(std::move(transaction_));
-  zcash_wallet_service_->CompleteTransactionTaskDone(this);
 }
 
-void ZCashCompleteTransactionTask::Start() {
+void ZCashCompleteTransactionTask::Start(
+    ZCashCompleteTransactionTaskCallback callback) {
+  callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
@@ -177,11 +175,11 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
       .WithArgs(context_.account_id.Clone(), transaction_.orchard_part().inputs,
                 transaction_.orchard_part().anchor_block_height.value())
       .Then(base::BindOnce(
-          &ZCashCompleteTransactionTask::OnWitnessCalulcateResult,
+          &ZCashCompleteTransactionTask::OnWitnessCalculateResult,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCompleteTransactionTask::OnWitnessCalulcateResult(
+void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
     base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);

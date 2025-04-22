@@ -45,7 +45,7 @@ class GetCardanoUtxosTask {
       CardanoAddress address,
       base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
-  raw_ref<CardanoWalletService> cardano_wallet_service_;
+  const raw_ref<CardanoWalletService> cardano_wallet_service_;
   std::string chain_id_;
   std::vector<CardanoAddress> addresses_;
   bool requests_sent_ = false;

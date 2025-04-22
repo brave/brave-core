@@ -27,6 +27,9 @@ namespace brave_wallet {
 // address.
 class ZCashCreateTransparentToOrchardTransactionTask {
  public:
+  using CreateTransactionCallback =
+      ZCashWalletService::CreateTransactionCallback;
+
   ZCashCreateTransparentToOrchardTransactionTask(
       std::variant<
           base::PassKey<
@@ -36,11 +39,10 @@ class ZCashCreateTransparentToOrchardTransactionTask {
       ZCashActionContext context,
       const OrchardAddrRawPart& receiver,
       std::optional<OrchardMemo> memo,
-      uint64_t amount,
-      ZCashWalletService::CreateTransactionCallback callback);
+      uint64_t amount);
   ~ZCashCreateTransparentToOrchardTransactionTask();
 
-  void Start();
+  void Start(CreateTransactionCallback callback);
 
  private:
   void ScheduleWorkOnTask();
@@ -66,8 +68,6 @@ class ZCashCreateTransparentToOrchardTransactionTask {
   OrchardAddrRawPart receiver_;
   std::optional<OrchardMemo> memo_;
   uint64_t amount_;
-
-  bool started_ = false;
 
   std::optional<std::string> error_;
 
