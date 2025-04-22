@@ -96,7 +96,7 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
   }
 
   void SetBaseUpdateURLForTest() {
-    std::unique_ptr<base::Environment> env(base::Environment::Create());
+    auto env = base::Environment::Create();
     env->SetVar("BRAVE_REFERRALS_SERVER",
                 embedded_test_server()->base_url().spec());
   }

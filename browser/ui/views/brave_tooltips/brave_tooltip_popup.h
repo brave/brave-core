@@ -124,6 +124,7 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   bool IsWidgetValid() const;
 
+  std::unique_ptr<views::Widget> widget_;
   std::unique_ptr<BraveTooltip> tooltip_;
 
   raw_ptr<BraveTooltipView> tooltip_view_ = nullptr;

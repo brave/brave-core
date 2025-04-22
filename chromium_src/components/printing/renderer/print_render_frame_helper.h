@@ -37,11 +37,7 @@ class PrintRenderFrameHelper : public PrintRenderFrameHelper_ChromiumImpl {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void SetPrintPreviewUI(
       mojo::PendingAssociatedRemote<mojom::PrintPreviewUI> preview) override;
-  void InitiatePrintPreview(
-#if BUILDFLAG(IS_CHROMEOS_ASH)
-      mojo::PendingAssociatedRemote<mojom::PrintRenderer> print_renderer,
-#endif
-      bool has_selection) override;
+  void InitiatePrintPreview(bool has_selection) override;
   void SetIsPrintPreviewExtraction(bool value) override;
 
   bool is_print_preview_extraction_ = false;

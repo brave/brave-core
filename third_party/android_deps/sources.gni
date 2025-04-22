@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_third_party_android_deps_visibility = [
+  "//brave/third_party/android_deps:*",
+  "//chrome/android:base_module_java__assetres",
+  "//chrome/android:base_module_java__header",
+  "//chrome/android:base_module_java__errorprone",
+  "//chrome/android:base_module_java__compile_java",
+  "//chrome/android:base_module_java__host",
+  "//chrome/android:base_module_java__process_device",
+  "//chrome/android:base_module_java__dex",
+  "//chrome/android:base_module_java__validate",
+  "//chrome/android:base_module_java",
+]

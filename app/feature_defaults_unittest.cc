@@ -80,11 +80,13 @@
 TEST(FeatureDefaultsTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
+      &kOutlineSilhouetteIcon,
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
 #if BUILDFLAG(IS_ANDROID)
       &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
+      &autofill::features::kAutofillAiServerModel,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
       &autofill::features::test::kAutofillServerCommunication,
@@ -228,12 +230,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kPermissionPredictionsV2,
-      &permissions::features::kPermissionPredictionsV3,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
-      &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kDownloadsPageReferrerUrl,
@@ -289,5 +289,10 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
   EXPECT_EQ(features::kLocationProviderManagerParam.default_value,
             device::mojom::LocationProviderManagerMode::kPlatformOnly);
 #endif
-  EXPECT_FALSE(features::kShowDefaultBrowserAppMenuItem.default_value);
+}
+
+// This feature flag is not exposed in a header file, so we must explicitly test
+// it via its helper function
+TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
+  EXPECT_FALSE(lens::features::IsOmniboxEntryPointEnabled());
 }

@@ -24,6 +24,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -77,7 +78,9 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             SnackbarManager snackbarManager,
             BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
-            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
+            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager,
+            BookmarkManagerOpener bookmarkManagerOpener,
+            PriceDropNotificationManager priceDropNotificationManager) {
         super(
                 activity,
                 lifecycleOwner,
@@ -100,7 +103,9 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 snackbarManager,
                 canShowSigninPromo,
                 onScrollListenerConsumer,
-                bookmarkMoveSnackbarManager);
+                bookmarkMoveSnackbarManager,
+                bookmarkManagerOpener,
+                priceDropNotificationManager);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

@@ -154,6 +154,8 @@
     *** mReadAloudControllerSupplier;
     *** mTopUiThemeColorProvider;
     *** mCurrentOrientation;
+    *** mInitializedWithNative;
+    *** mTabGroupUiOneshotSupplier;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
@@ -430,9 +432,12 @@
     public <init>(...);
 }
 
--keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources$ResourceItem {
-    public <init>(...);
-}
+# Rules for inner class constructor match
+-keepattributes InnerClasses, EnclosingMethod
+-keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources**
+-keep class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources**
+-keepclassmembers class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources** { *; }
+-keepclassmembers class org.chromium.components.browser_ui.site_settings.ContentSettingsResources** { *; }
 
 -keep class org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher {
     *** getPermissionsType(...);
@@ -951,3 +956,5 @@
 -keep class org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerLegacy {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.suggestions.tile.TilesLinearLayout { *; }

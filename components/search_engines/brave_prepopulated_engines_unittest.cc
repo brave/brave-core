@@ -5,6 +5,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_test_environment.h"
 #include "components/search_engines/template_url_data.h"
@@ -22,8 +23,9 @@ class BravePrepopulatedEnginesTest : public testing::Test {
 TEST_F(BravePrepopulatedEnginesTest, ModifiedProviderTest) {
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       search_engines_test_environment_.pref_service(),
-      search_engines_test_environment_.search_engine_choice_service()
-          .GetCountryId(),
+      search_engines_test_environment_.regional_capabilities_service()
+          .GetCountryId()
+          .GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   // Check modified bing provider url.
   EXPECT_EQ(data->url(), "https://www.bing.com/search?q={searchTerms}");

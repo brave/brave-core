@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 62d2c45160902282d5910d77a04085ca42fbbe0d..d72a8858c5b33959f459acfeddfe55da7a2d0700 100644
+index 41f3ad5887f3676f529d80eb6fb1c1acde227add..7f4bfb85f64a02c5cfa9971b57ef8d08ede87d87 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
 @@ -569,6 +569,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe

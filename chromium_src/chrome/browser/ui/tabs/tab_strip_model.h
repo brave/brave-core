@@ -10,12 +10,13 @@
   virtual SelectRelativeTab(__VA_ARGS__); \
   friend class BraveTabStripModel
 
+#define DraggingTabsSession DraggingTabsSessionChromium
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
-#define TabDragController TabDragControllerChromium
 
 #include "src/chrome/browser/ui/tabs/tab_strip_model.h"  // IWYU pragma: export
+
 #undef IsReadLaterSupportedForAny
+#undef DraggingTabsSession
 #undef SelectRelativeTab
-#undef TabDragController
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_

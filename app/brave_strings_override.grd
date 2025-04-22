@@ -180,6 +180,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
+        <if expr="is_win or is_macosx">
+        </if>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
         Extensions, apps, and themes from unknown sources can harm your device. Brave recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
       </message>
@@ -406,7 +408,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
 
       <if expr="not is_android">
-        </if>
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+      </if>
 
       <if expr="not is_android and not is_chromeos">
         </if>
@@ -418,6 +424,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="enable_extensions">
         </if>
-    </messages>
+
+      </messages>
   </release>
 </grit>

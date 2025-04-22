@@ -1,11 +1,11 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/BUILD.gn b/ios/chrome/browser/shared/model/prefs/BUILD.gn
-index 14e322414f5a472843d9beea55df265346fc7e6e..17074635b2f6c7ace5793d63b96f56b80078f5ab 100644
+index 43f04c78cc71c1686a0e13f1d8b91c762347337d..9fbc47dffe165aa33e854a625b105354f4c817b6 100644
 --- a/ios/chrome/browser/shared/model/prefs/BUILD.gn
 +++ b/ios/chrome/browser/shared/model/prefs/BUILD.gn
-@@ -138,6 +138,7 @@ source_set("browser_prefs") {
-     "//ios/web/common:features",
-     "//ui/base",
-   ]
+@@ -145,6 +145,7 @@ source_set("browser_prefs") {
+   if (target_environment != "catalyst") {
+     deps += [ "//ios/chrome/browser/default_browser/model/default_status" ]
+   }
 +  import("//brave/chromium_src/ios/chrome/browser/shared/model/prefs/sources.gni") deps += brave_browser_prefs_deps
  }
  

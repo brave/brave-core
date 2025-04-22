@@ -1,0 +1,12 @@
+diff --git a/third_party/android_deps/BUILD.gn b/third_party/android_deps/BUILD.gn
+index 316b1b2a9c0792241b3ac3619c140949b6734fa4..3109958adee68a811550ee76dc710dc8104cbe0a 100644
+--- a/third_party/android_deps/BUILD.gn
++++ b/third_party/android_deps/BUILD.gn
+@@ -850,6 +850,7 @@ if (!limit_android_deps) {
+         "$google_play_services_package:google_firebase_firebase_encoders_proto_java",
+         "//third_party/androidx:androidx_annotation_annotation_java",
+       ]
++      import("//brave/third_party/android_deps/sources.gni") visibility += brave_third_party_android_deps_visibility
+     }
+   }
+ 

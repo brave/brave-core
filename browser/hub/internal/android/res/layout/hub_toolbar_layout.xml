@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Copyright (c) 2024 The Brave Authors. All rights reserved.
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this file,
-You can obtain one at https://mozilla.org/MPL/2.0/.
--->
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -85,8 +83,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
     </FrameLayout>
 
     <!-- Hub search is selectively hidden based on the feature flag. -->
-    <view
-      class="org.chromium.chrome.browser.ntp.search.SearchBoxContainerView"
+    <LinearLayout
       android:id="@+id/search_box"
       android:visibility="gone"
       android:layout_width="match_parent"
@@ -110,6 +107,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:focusable="false"
         android:inputType="text"
         android:singleLine="true" />
-    </view>
+    </LinearLayout>
   </org.chromium.chrome.browser.hub.BraveHubToolbarView>
 </FrameLayout>

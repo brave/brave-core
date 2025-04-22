@@ -64,7 +64,6 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel,
             /* Below are parameters from BottomControlsCoordinator */
-            Activity activity,
             WindowAndroid windowAndroid,
             LayoutManager layoutManager,
             ResourceManager resourceManager,
@@ -79,7 +78,6 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             ObservableSupplier<Integer> constraintsSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(
-                activity,
                 windowAndroid,
                 layoutManager,
                 resourceManager,
@@ -117,6 +115,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             IncognitoStateProvider incognitoStateProvider,
             ViewGroup topToolbarRoot,
             Runnable closeAllTabsAction) {
+        super.initializeWithNative();
+
         if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             mBottomToolbarCoordinator =
                     new BottomToolbarCoordinator(

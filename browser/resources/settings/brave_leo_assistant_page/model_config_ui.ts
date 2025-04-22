@@ -104,6 +104,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   apiKey: string
   modelItem: mojom.Model | null
   isEditing_: boolean
+  buttonLabel_: string
   isUrlInvalid: boolean
   shouldShowUnsafeEndpointLabel: boolean
   isValidAsPrivateEndpoint: boolean

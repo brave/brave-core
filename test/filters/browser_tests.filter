@@ -121,6 +121,7 @@
 -All/ContextMenuBrowserTest.ShowToastOnSidePanelContextMenus/LinkPreviewEnabled
 -ReadAnythingAppControllerScreen2xDataCollectionModeTest.*
 -ReadAnythingAppControllerTest.*
+-ReadAnythingAppModelNoInitTest.*
 -ReadAnythingAppModelTest.*
 -ReadAnythingReadAloudAppModelTest.*
 -SidePanelCoordinatorTest.ReadAnythingSidePanelWidthNotCappedAtTwoThirds
@@ -178,8 +179,6 @@
 -SerialBlocklistTest.*
 -SerialTest.*
 -WebAppFileHandlingBrowserTest.*
--WebBluetoothPolicyTest.*
--WebBluetoothTest.*
 -WebViewUsbTest.*
 -WithOverrideParams/ReferrerOverrideTest.CrossOriginDowngradeNavigation/ParamCapReferrerToOriginOnCrossOrigin
 
@@ -335,45 +334,75 @@
 -All/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -All/WebAppScopeExtensionsBrowserTest.ExtendedLinkCapturingFocusExisting/*
 -Capturable/WebAppLinkCapturingParameterizedBrowserTest.*
--CapturableToBrowserTabApp/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
 -CapturableToBrowserTabApp/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
--ChooseActiveBrowser/NavigationCapturingTestWithAppBInNewBrowserWindow.CheckLinkCaptureCombinations/*
 -ClientModeEnabledCaptured/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -DisplayBrowser/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -DisplayModeBrowser/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -FormPostSubmissions/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
--LeftClickToBrowserTabFromFocusOrNavigateExisting/NavigationCapturingTestWithExtraBrowserTabB.CheckLinkCaptureCombinations/*
--LeftClickToLaunchedAppOverBrowserTab/NavigationCapturingTestWithBLaunchedAndBrowserTab.CheckLinkCaptureCombinations/*
 -NavigateNew_ServerRedirect_AtoA_StartInApp/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -NavigateNew_ServerRedirect_AtoA_StartInTab/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -Redirect_CaptureNew_BrowserApp/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
--Redirect_FocusExisting*/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
--Redirect_FocusOrNavigateExisting*/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
 -Redirect_Modified_*/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -Redirection_BackgroundDisposition/WebAppLinkCapturingParameterizedBrowserTest.*
--Redirection_Capturable_FinalFocusExisting/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
 -Redirection_Capturable_Navigate_And_Focus_Existing_Reparenting/WebAppLinkCapturingParameterizedBrowserTest.*/*
 -Redirection_Capturable_Reparenting/WebAppLinkCapturingParameterizedBrowserTest.*/*
 -Redirection_NavigateCurrent/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
 -Redirection_OpenInApp_NewWindowDisposition/WebAppLinkCapturingParameterizedBrowserTest.*
 -Redirection_OpenInChrome/WebAppLinkCapturingParameterizedBrowserTest.*
 -Redirection_RightClickUseCases/WebAppLinkCapturingParameterizedBrowserTest.CheckLinkCaptureCombinations/*
--ReparentingNoBrowser/NavigationCapturingTestNoBrowser.*
--ReparentingNoBrowserModified/NavigationCapturingTestNoBrowser.*
 -RightClick/WebAppLinkCapturingParameterizedBrowserTest.*
--RightClickFocusAndNavigateExisting/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
 -RightClickNavigateNew/WebAppLinkCapturingParameterizedBrowserTest.*
 -ServiceWorker/WebAppLinkCapturingParameterizedBrowserTest.*
--TabbedMode/NavigationCapturingTestWithAppBLaunched.*
 -TabbedMode/WebAppLinkCapturingParameterizedBrowserTest.*
 -WebAppScopeExtensionsBrowserTest.ExtendedLinkCapturingFocusExisting
 
 # These tests fail because we disable features::kPwaNavigationCapturing
+-All_*Click/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Capturable/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-CapturableToBrowserTabApp/NavCaptureParameterizedBrowserTest.*/*
+-CapturableToBrowserTabApp/NavCaptureTestWithAppBLaunched.VerifyNavCapture/*
+-CapturableToBrowserTabApp/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
+-ChooseActiveBrowser/NavigationCapturingTestWithAppBInNewBrowserWindow.CheckLinkCaptureCombinations/*
 -ClientMode/WebAppNavigationCapturingAuxContentFocusBrowserTest.NoFocusForAuxContent/*
+-ClientModeEnabledCaptured/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-DisplayBrowser_*Click/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-DisplayModeBrowser/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-FormPostSubmissions/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-LeftClickToBrowserTabFromFocusOrNavigateExisting/NavigationCapturingTestWithExtraBrowserTabB.CheckLinkCaptureCombinations/*
+-LeftClickToBrowserTabFromFocusOrNavigateExisting/NavigationCapturingTestWithExtraBrowserTabB.VerifyNavCapture/*
+-LeftClickToLaunchedAppOverBrowserTab/NavCaptureTestWithBLaunchedAndBrowserTab.VerifyNavCapture/*
+-LeftClickToLaunchedAppOverBrowserTab/NavigationCapturingTestWithBLaunchedAndBrowserTab.CheckLinkCaptureCombinations/*
+-NavigateNew_ServerRedirect_AtoA_StartInApp/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-NavigateNew_ServerRedirect_AtoA_StartInTab/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-NavigationCapturingBrowserNavigatorBrowserTest.NavigateBrowserUsedForFocusExistingAppWindow
+-Redirect_CaptureNew_BrowserApp/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Redirect_FocusExisting*/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
+-Redirect_FocusOrNavigateExisting*/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
+-Redirect_FocusOrNavigateExisting/NavCaptureTestWithAppBLaunched.VerifyNavCapture/*
+-Redirect_FocusOrNavigateExisting_Browser/NavCaptureTestWithAppBLaunched.VerifyNavCapture/*
+-Redirect_Modified_BrowserApp/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-RedirectionReparentingNavNew/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-RedirectionReparentingNonNavNew/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Redirection_BackgroundDisposition/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Redirection_Capturable_FinalFocusExisting/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
+-Redirection_NavigateCurrent/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Redirection_OpenInApp_NewWindowDisposition/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Redirection_OpenInChrome/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-Redirection_RightClickUseCases/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-ReparentingNoBrowser/NavigationCapturingTestNoBrowser.*
+-ReparentingNoBrowserModified/NavigationCapturingTestNoBrowser.*
+-RightClickFocusAndNavigateExisting/NavCaptureTestWithAppBLaunched.VerifyNavCapture/*
+-RightClickFocusAndNavigateExisting/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
+-RightClickNavigateNew/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-ServiceWorker/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-TabbedMode/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
+-TabbedMode/NavCaptureTestWith*.VerifyNavCapture/*
+-TabbedMode/NavigationCapturingTestWithAppBLaunched.*
 -WebAppNavigationCapturingIntentPickerBrowserTest.*
 
 # These tests fail because kPrerender2 feature is disabled.
 -All/HostedAppTestWithPrerendering.*
+-All/PrerenderSpeculationRulesTagsBrowserTest.*
 -AppControllerHandoffPrerenderBrowserTest.*
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageIframeSetsCookie
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageSetsCookie
@@ -606,12 +635,14 @@
 
 # These tests fail because we've already implemented similar changes to prevent
 # language fingerprinting, regardless of the feature flag state
+-All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowed/False
+-All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowedIframe/False
+-All/ReduceAcceptLanguageEnterprisePolicyBrowserTest.PolicyIsFollowedImgSubresource/False
 -All/SameOriginReduceAcceptLanguageBrowserTest.*
 -CrossOriginRedirectReduceAcceptLanguageOTBrowserTest.*
 -DisableFeatureReduceAcceptLanguageBrowserTest.*
 -DisableReduceAcceptLanguageOTBrowserTest.*
 -SameOriginRedirectReduceAcceptLanguageOTBrowserTest.*
--SameOriginReduceAcceptLanguageBrowserTest.EmptyUserAcceptLanguage
 -SameOriginReduceAcceptLanguageDeprecationOTBrowserTest.*
 -SameOriginReduceAcceptLanguageOTBrowserTest.*
 -ThirdPartyReduceAcceptLanguageDeprecationOTBrowserTest.IframeRequests
@@ -648,6 +679,7 @@
 -BookmarkAccountStorageChangeDialogTest.Show
 -BookmarkAccountStorageMoveDialogInteractiveTest.*
 -BookmarkAccountStorageMoveDialogPixelTest.*
+-BubbleSignInPromoDelegateTest.*
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
@@ -665,6 +697,7 @@
 -HybridLinkingEnabled/HybridParamEnclaveAuthenticatorWithoutPinBrowserTest.MultipleDeclinedBootstrappings/*
 -Incognito/EnclaveAuthenticatorIncognitoBrowserTest.MultipleDeclinedBootstrappings/*
 -LocalWebApprovalsEnabled/SupervisedUserIframeFilterTest.*/*
+-NewTabPageUtilBrowserTest.SyncRequired
 -NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL
 -NTPTilesForSupervisedUsersTest.LoadURL
 -PasskeyUpgradeConfirmationBubbleTest.InvokeUi_default
@@ -693,6 +726,7 @@
 -SigninViewControllerBrowserCookieParamTest.SignOut/NoCookie
 -SigninViewControllerBrowserImplicitSigninTest.NoPrompt
 -SigninViewControllerBrowserTest.SignoutOrReauthWithPrompt_Reauth
+-SigninViewControllerBrowserTest.SignoutOrReauthWithPromptForPersistentErrorState_Reauth
 -SigninViewControllerBrowserTest.UpdateAccessPointOfSignInTab
 -SigninViewControllerInteractiveBrowserTest.*
 -SupervisedProfilePickerHideGuestModeTest.DeleteLastSupervisedProfile
@@ -732,6 +766,9 @@
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_LongNameExtension
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_NormalExtension
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate/*
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_ExcludeListMatch/*
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithSettingDisabled/*
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithoutBootstrappedEnclave/*
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithoutMatchingPassword/*
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithSettingDisabled/*
 
@@ -762,6 +799,7 @@
 -ExtensionManagementApiTestSupervised.ParentBlockedExtensionEnable
 -ExtensionManagementApiTestSupervised.ParentPermissionGrantedForEnable
 -ExtensionManagementApiTestSupervised.ParentPermissionNotGrantedForEnable
+-SupervisedUserParentAccessViewErrorScreenUiTest.ShowAndCloseErrorScreen
 
 # These tests fail because of the following failed DCHECK in web_view_guest.cc:
 # render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
@@ -796,13 +834,24 @@
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.*
 -StorageAccessAPIAutograntsWithFedCMOriginTrialBrowserTest.*
 -StorageAccessAPIAutograntsWithFedCMOriginTrialKillswitchBrowserTest.*
--StorageAccessAPIBrowserTest.Permission_Denied_WithoutInteraction/*
+-StorageAccessAPIBrowserTest.*
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
+-StorageAccessAPIForSiteExtensionBrowserTest.GrantGivesCrossSiteCookieAccess/*
+-StorageAccessAPIStorageBrowserTest.MultiTabTest/*
+-StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
+-StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
+-StorageAccessAPIWindowOpenMainFrameTest.PopinRSAMainFrameTest/*
+-StorageAccessAPIWindowOpenMainFrameTest.PopupRSAMainFrameTest/*
+-StorageAccessAPIWindowOpenSubFrameTest.PopinRSASubFrameTest/*
 -StorageAccessAPIWith3PCEnabledBrowserTest.AllowedByUserBypass
 -StorageAccessAPIWithCHIPSBrowserTest.*
+-StorageAccessAPIWithFirstPartySetsAndImplicitGrantsBrowserTest.*
 -StorageAccessAPIWithFirstPartySetsAndPromptsBrowserTest.Permission_GrantedForServiceDomain/*
+-StorageAccessAPIWithFirstPartySetsBrowserTest.*
+-StorageAccessAPIWithImplicitGrantsBrowserTest.*
 -StorageAccessAPIWithPartitionedCookiesBrowserTest.RequestStorageAccess_CoexistsWithPartitionedCookies
+-StorageAccessAPIWithPromptsBrowserTest.*
 
 # These tests fail because they expect the record of a cookie to go to the
 # "Standard" histogram mode, but instead it goes to the "Block3PC" mode.
@@ -1153,6 +1202,7 @@
 -All/SupervisedUserProfileIPHTest.ShowIphWhenCustomizationBubbleIsSkipped/OnSync*
 -BubbleSignInPromoDelegateTest.*
 -DiceBrowserTest.*
+-DiceBrowserTestWithAutoAcceptFlag.AutoSignin
 -DiceBrowserTestWithBoundSessionCredentialsEnabled.*
 -DiceBrowserTestWithChromeSigninIPH.SigninRememberedIPH
 -DiceBrowserTestWithWebAuthFlowInBrowserTabOff.DiceExtensionConsent_GetAuthToken
@@ -1188,6 +1238,11 @@
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
 -All/AvatarToolbarButtonBrowserTestWithExplicitBrowserSignin.*/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_MemoryPressure/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotLaunchProfile/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotSupportedProfile/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_Success/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_WillBeDestroyed/*
 -All/ProfileMenuViewSignoutTestWithExplicitBrowserSigninFeature.*/*
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.GreetingNotShownWhenManagementAccepted
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.GreetingShownWhenManagementNotAccepted
@@ -1196,7 +1251,12 @@
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeNonTransientModeAndSyncPause
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeTransientModeAndSyncPause
 -AvatarToolbarButtonWithExplicitBrowserSigninBrowserTest.SigninPaused*
+-BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_AccountAndLocalNodes
 -BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_all_tabs
+-BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_Default
+-BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_OnlyAccountNodes
+-BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_OnlyLocalChildren
+-BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_OnlyLocalNodes
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearSiteData
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearingCookiesAlsoClearsPasswordAccountStorageOptIn
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearingCookiesWithFilterAlsoClearsPasswordAccountStorageOptIn
@@ -1227,12 +1287,21 @@
 -EnterpriseWelcomeUIWindowPixelTest.InvokeUi_default/*
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninAbortedBySyncDeclined*
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninLaunchInactiveDefaultProfile
+-ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthInGlicModeShowsErrorDialog
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthNavigateBackShouldAbort
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthSuccessful
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthWithAnotherAccount
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninSuccessful
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninWithPatternMatchingShouldFailSigninWithWrongPatternEmail
 -GaiaRemoteConsentFlowParamBrowserTest.*
+-GlicButtonTest.ContextMenuPinned
+-GlicButtonTest.ContextMenuUnpinned
+-GlicButtonTest.UnpinCommand
+-GlicEnablingTest.EnabledForProfileTest
+-GlicProfileManagerBrowserTest.ProfileForLaunch_BasedOnActivationOrder
+-GlicProfileManagerBrowserTest.ProfileForLaunch_WithDetachedGlic
+-GlicProfileManagerBrowserTest.SetActiveGlic_DifferentProfiles
+-GlicProfileManagerBrowserTest.SetActiveGlic_SameProfile
 -GraduatedComposeEnablingBrowserTest.GraduatedCompose
 -IOSPromosUtilsTest.InvokeUi_addresses
 -IOSPromosUtilsTest.InvokeUi_passwords
@@ -1248,6 +1317,7 @@
 -ProfileMenuViewWebOnlyTest.ContinueAs
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_ShowsLoadingView
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_InProgress_ShowsLoadingView
+-SaveCardBubbleViewsFullFormBrowserTest/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream.*/*
 -SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstreamParameterized.Upload_CardholderNameRequested_SubmittingChangedValueLogsEditedMetric/*
 -SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstreamParameterized.Upload_CardholderNameRequested_SubmittingPrefilledValueLogsUneditedMetric/*
 -SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstreamParameterized.Upload_EnteringCardholderNameAndClickingSaveAcceptsBubbleIfCardholderNameRequested/*
@@ -1261,6 +1331,7 @@
 -All/SigninInterceptFirstRunExperienceDialogWithUnoParamBrowserTest.*
 -All/SupervisedUserExtensionWebstorePrivateApiTest.*
 -All/SupervisedUserRegionalURLFilterTest.RegionIsAdded/*
+-All/SupervisedUserServiceBrowserTest.ForceGoogleSafeSearchCanBeOverriden/*
 -All/SupervisedUserServiceBrowserTest.LocalPolicies/*
 -All/SupervisedUserServiceBrowserTest.ProfileName/*
 -All/SupervisedUserSkipParentalApprovalModeReleaseTest.OnFeatureReleaseForSupervisedUserWithExtensions/WithParentalControlsOnExtensionsManagedByExtensions
@@ -1557,6 +1628,8 @@
 # disable_fieldtrial_testing_config
 -All/FieldTrialsOnOffBrowserTest.Test/On
 -FieldTrialTest.*
+-TabSearchUIBundledCodeCacheBrowserTest.SuccessfullyLoadsCodeCache/BundledCodeCacheDisabled_WithFieldTrials
+-TabSearchUIBundledCodeCacheBrowserTest.SuccessfullyLoadsCodeCache/BundledCodeCacheEnabled_WithFieldTrials
 
 # These tests fail because we disable kNtpChromeCartModule
 -CommerceHintFeatureDefaultWithGeoTest.EnableWithGeo
@@ -1567,6 +1640,7 @@
 
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
+-All/LensOverlayControllerBrowserPDFContextualizationTest.CurrentPageIncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.Histograms/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.LargePdfNotIncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.PageUrlIncludedInRequest/*
@@ -1578,6 +1652,7 @@
 -All/LensOverlayControllerBrowserPDFContextualizationTest.SidePanel_SameTabCrossOriginLinkClick_PdfWithFragment/*
 -All/LensOverlayControllerBrowserPDFIncreaseLimitTest.PartialPdfCharacterLimitReached_IncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
+-All/LensOverlayControllerBrowserPDFUpdatedContentFieldsTest.PartialPdfIncludedInRequest/*
 -LensOverlayControllerBrowserTest.*
 -LensOverlayControllerBrowserFullscreenDisabled.*
 -LensOverlayControllerBrowserWithPixelsTest.*
@@ -1687,6 +1762,7 @@
 # These tests fail because we disable features::kDestroyProfileOnBrowserClose
 -DestroyProfileOnBrowserClose/ProfileHelperTestWithDestroyProfile.*
 -DestroyProfileOnBrowserClose/ProfileManagerBrowserTest.*
+-ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverWebAppInfoFetching
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.IconDownloading
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.UrlLoading
@@ -1790,6 +1866,7 @@
 
 # These tests fail because we disable features::kControlledFrame
 -ControlledFrameApiTest.*
+-ControlledFrameAvailabilityAdminPolicyTest.VerifyPolicy/*
 -ControlledFrameAvailabilityTest.Verify/*
 -ControlledFrameAvailableChannels/*
 -ControlledFrameContextMenusTest.*
@@ -1884,14 +1961,13 @@
 # These tests fail because we disable kPermissionStorageAccessAPI
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.FedCMGrantsAllowCookieAccess*
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.FedCMGrants_RequiresPermissionPolicy
--StorageAccessAPIBrowserTest.*
+-StorageAccessHeaderServiceBrowserTest.TrialHeader*
+-StorageAccessHeaderServiceBrowserTest.TrialToken*
 -StorageAccessHeadersBrowserTest.LoadHeader*
 -StorageAccessHeadersBrowserTest.RetryHeader*
 -StorageAccessHeadersBrowserTest.TopFrameRedirectToFirstPartyPage
 -StorageAccessHeadersDisabledBrowserTest.RetryHeader
--StorageAccessHeadersWithFedCMBrowserTest.RetryHeader
--StorageAccessHeaderServiceBrowserTest.TrialHeader*
--StorageAccessHeaderServiceBrowserTest.TrialToken*
+-StorageAccessHeadersWithFedCMBrowserTest.RetryHeader/*
 
 # This test fails because we disable FileSystemAccessAPI
 -FileSystemAccessBrowserSlowLoadTest.WaitUntilLoaded
@@ -1972,6 +2048,7 @@
 # toolbar buttons container.
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
+-CollaborationMessagingObserverBrowserTest.InstantMessageManagesSharingWithClosedGroup
 -RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionFocusTab
 -RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionReopenTab
 -SendTabToSelfBubbleTest.BubbleTriggersCorrectlyWhenPinned
@@ -2025,6 +2102,14 @@
 # These tests fail because we disable kSideBySide
 -MultiContentsViewBrowserTest.*
 
+# These tests fail because we disable MV2 deprecation and disablement
+-ManifestV2ExperimentManagerBrowserTest.*
+-ManifestV2ExperimentWithLegacyExtensionSupportTest.*
+
+# This test fails because it conflicts with our own split view layout,
+# specifically with how we currently manage our vertical tabs host view
+-SideBySideBrowserViewTest.SplitViewInactiveIndexReturnsCorrectly
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
@@ -2049,7 +2134,9 @@
 -All/PDFExtensionJSInk2Test.Ink2BottomToolbar/*
 -All/PDFExtensionJSInk2Test.Ink2BottomToolbarDropdown/*
 -All/PDFExtensionJSInk2Test.Ink2/*
+-All/PDFExtensionJSInk2Test.Ink2BottomToolbarDropdown/*
 -All/PDFExtensionJSInk2Test.Ink2SidePanel/*
+-All/PDFExtensionJSInk2Test.Ink2TextSidePanel/*
 -All/PDFExtensionJSTest.ViewerFilePicker/*
 -All/PDFExtensionTest.FullPagePdfHasFocus/0
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_ProfileSwitch
@@ -2110,6 +2197,7 @@
 -ChromeRenderProcessHostTestWithCommandLine.*
 -ChromeSignInWebViewTest.ClosingChromeSignInShouldNotCrash/InnerWebContents
 -ChromeSignInWebViewTest.NoFindInPageForUnattachedGuest/InnerWebContents
+-ChromeSignInWebViewTest.TestWebRequestOnlyDispatchToEmbedder/InnerWebContents
 -ChromeSitePerProcessTest.*
 -ChromeURLDataManagerTest.*
 -ChromeURLDataManagerWebUITrustedTypesTest.*
@@ -2180,6 +2268,7 @@
 -DownloadDeepScanningBrowserTest.*
 -DownloadProtectionServiceBrowserTest.*
 -DownloadRestrictionsDeepScanningBrowserTest.*
+-DownloadToolbarUIControllerBrowserTest.DialogAutoCloses
 -DownloadTest.*
 -DurableStorageBrowserTest.*
 -ECKIncognitoEncryptedMediaTest.*
@@ -2213,8 +2302,6 @@
 -ExtensionResourceRequestPolicyTest.*
 -ExtensionsActivityLogTest.*
 -ExtensionSettingsUIBrowserTest.*
--ExtensionTabUtilBrowserTest.*
--ExtensionTagsTest.*
 -ExtensionUninstallDialogViewInteractiveBrowserTest.*
 -ExtensionURLRewriteBrowserTest.*
 -ExtensionWebRequestApiTest.*
@@ -2234,6 +2321,8 @@
 -FlocIdProviderSortingLshUninitializedBrowserTest.*
 -FlocOriginTrialBrowserTest.*
 -FontPrewarmerTabHelperTest.*
+-FromGwsAbandonedPageLoadMetricsObserverWithImpressionBrowserTest.FromSearchWithEmptyImpression
+-FromGwsAbandonedPageLoadMetricsObserverWithImpressionBrowserTest.FromSearchWithImpression
 -GcmApiTest.*
 -GeolocationBrowserTest.*
 -GetAuthTokenFunctionInteractivityTest.*/*
@@ -2438,6 +2527,7 @@
 -PrivacySandboxDialogViewBrowserTest.InvokeUi_Notice
 -PrivacySandboxNoticeBubbleBrowserTest.InvokeUi_NoticeBubble
 -PrivacySandboxQueueTestNotice.*
+-PrivacySandboxQueueTestNoticeFeatureDisabled.ShowAndClickPrompt
 -PrivacySandboxQueueTestNoticeWithSearchEngine.*
 -PrivacySandboxSettingsBrowserTest.*
 -PrivacySandboxSettingsEventReportingBrowserTest.ReportEventCustomURLDestinationNotEnrolled
@@ -2623,14 +2713,6 @@
 -StartupBrowserWithRealWebAppTest.*
 -StartupBrowserWithWebAppTest.*
 -StartupHelperBrowserTest.*
--StorageAccessAPIForSiteExtensionBrowserTest.GrantGivesCrossSiteCookieAccess/*
--StorageAccessAPIStorageBrowserTest.MultiTabTest/*
--StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
--StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
--StorageAccessAPIWithFirstPartySetsAndImplicitGrantsBrowserTest.*
--StorageAccessAPIWithFirstPartySetsBrowserTest.*
--StorageAccessAPIWithImplicitGrantsBrowserTest.*
--StorageAccessAPIWithPromptsBrowserTest.*
 -SubframeTaskBrowserTest.*
 -SyncAwareCounterTest.*
 -SyncEncryptionKeysTabHelperBrowserTest.*
@@ -2712,6 +2794,12 @@
 -WebAppTabStripBrowserTest.ReparentingPinsHomeTab
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
 -WebAppTabStripLinkCapturingBrowserTest.*
+-WebBluetoothPolicyTest.*
+-WebBluetoothTest.*
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothIdsUsedInWebBluetoothScanning
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentIds
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentServices
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothScanningIdsNotPersistent
 -WebNavigationApiBackForwardCacheTest.*
 -WebRtcDesktopCaptureBrowserTest.*
 -WebrtcLoggingPrivateApiBrowserTest.*

@@ -1,10 +1,10 @@
 diff --git a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5 b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-index 611ccf37924646c2bfdad02e97e2ca5aaaefd97e..df574001eea785a2c3b4bed44e066ec8ee4d5b06 100644
+index cad93ee0ceb38f9df36b3e8ee7802132e0e670df..1a8cc329521f9bdfc22509cd08239cd7d4f62020 100644
 --- a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
 +++ b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-@@ -558,5 +558,13 @@
-       name: "WindowManagement",
-       permissions_policy_name: "window-management",
+@@ -583,5 +583,13 @@
+       permissions_policy_name: "writer",
+       depends_on: ["AIWriterAPI", "BuiltInAIAPI"],
      },
 +    {
 +      name: "Ethereum",

@@ -173,6 +173,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     PrefObject<boolean>
   private fingerprintingControlTypes_: ControlType[]
   private fingerprintingControlType_: string
+  private httpsUpgradeControlTypes_: ControlType[]
+  private isHttpsByDefaultEnabled_: boolean
+  private showStrictFingerprintingMode_: boolean
+  private isForgetFirstPartyStorageFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()

@@ -97,7 +97,7 @@ void BravePlayerActionIconView::UpdateBorder() {
   PageActionIconView::UpdateBorder();
 
   SetBorder(views::CreatePaddedBorder(
-      views::CreateThemedRoundedRectBorder(
+      views::CreateRoundedRectBorder(
           /*thickness*/ 1,
           /*corner_radius=*/8, kColorBravePlayerActionViewBorder),
       GetInsets()));

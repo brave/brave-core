@@ -45,10 +45,10 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
     SetLayoutManager(std::make_unique<views::FillLayout>());
     constexpr auto kCornerRadius = 4;
     constexpr auto kBorderThickness = 1;
-    SetBackground(views::CreateThemedRoundedRectBackground(
+    SetBackground(views::CreateRoundedRectBackground(
         kColorBraveSplitViewMenuButtonBackground, kCornerRadius,
         /*for_border_thickness*/ kBorderThickness));
-    SetBorder(views::CreateThemedRoundedRectBorder(
+    SetBorder(views::CreateRoundedRectBorder(
         /*thickness*/ kBorderThickness, kCornerRadius,
         kColorBraveSplitViewMenuButtonBorder));
 
@@ -227,8 +227,9 @@ void SplitViewSeparator::OnViewBoundsChanged(views::View* observed_view) {
 void SplitViewSeparator::CreateMenuButton() {
   CHECK(!menu_button_widget_);
 
-  menu_button_widget_ = new views::Widget();
+  menu_button_widget_ = std::make_unique<views::Widget>();
   views::Widget::InitParams params(
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::Type::TYPE_CONTROL);
   params.delegate = new MenuButtonDelegate(browser_);
   params.parent = GetWidget()->GetNativeView();

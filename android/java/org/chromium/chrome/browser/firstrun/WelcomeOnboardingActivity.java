@@ -12,7 +12,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -40,7 +39,6 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
-import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
@@ -703,17 +701,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mFirstRunFlowSequencer =
                 new BraveFirstRunFlowSequencer(getProfileProviderSupplier()) {
                     @Override
-                    public void onFlowIsKnown(Bundle freProperties) {
+                    public void onFlowIsKnown(boolean isChild) {
                         initializeViews();
                     }
                 };
         mFirstRunFlowSequencer.start();
         onInitialLayoutInflationComplete();
-    }
-
-    @Override
-    public int getSecondaryActivity() {
-        return SecondaryActivity.FIRST_RUN;
     }
 
     private void maybeUpdateFirstRunDefaultValues() {

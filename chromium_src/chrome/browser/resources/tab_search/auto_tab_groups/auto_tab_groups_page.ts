@@ -28,6 +28,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   private apiProxy_: BraveTabSearchApiProxy =
       TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
+
   private listenerIds_: number[] = [];
 
   private visibilityChangedListener_: () => void
@@ -48,11 +49,11 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     }
   }
 
-  availableHeight = 0
-  showBackButton = false
-  isLoadingTopics = false
-  errorMessage = ''
-  needsPremium = false
+  accessor availableHeight: number = 0
+  accessor showBackButton: boolean = false
+  accessor isLoadingTopics: boolean = false
+  accessor errorMessage: string = ''
+  accessor needsPremium: boolean = false
 
   static override get styles() {
     return getCss()
@@ -255,8 +256,10 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   override focus() {
     if (this.showBackButton) {
-      const backButton = this.shadowRoot!.querySelector('cr-icon-button')!
-      backButton.focus()
+      const backButton = this.shadowRoot.querySelector('cr-icon-button')!
+      if (backButton) {
+        backButton.focus()
+      }
     } else {
       super.focus()
     }

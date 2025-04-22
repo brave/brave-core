@@ -9,7 +9,6 @@ import androidx.preference.Preference;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,9 +33,6 @@ public class BraveManageSyncSettingsTest {
 
     private final SettingsActivityTestRule<BraveManageSyncSettings> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(BraveManageSyncSettings.class);
-
-    @Before
-    public void setUp() {}
 
     @Test
     @SmallTest
