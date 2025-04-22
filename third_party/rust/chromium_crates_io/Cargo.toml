@@ -157,10 +157,6 @@ package = "equivalent"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/foldhash-v0_1"
 package = "foldhash"
 
-[patch.crates-io.getrandom_v0_2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/getrandom-v0_2"
-package = "getrandom"
-
 [patch.crates-io.hex_v0_4]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/hex-v0_4"
 package = "hex"
@@ -205,10 +201,6 @@ package = "num-integer"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/num-traits-v0_2"
 package = "num-traits"
 
-[patch.crates-io.ppv_lite86_v0_2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-v0_2"
-package = "ppv-lite86"
-
 [patch.crates-io.proc_macro2_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-v1"
 package = "proc-macro2"
@@ -216,18 +208,6 @@ package = "proc-macro2"
 [patch.crates-io.quote_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-v1"
 package = "quote"
-
-[patch.crates-io.rand_chacha_v0_3]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/rand_chacha-v0_3"
-package = "rand_chacha"
-
-[patch.crates-io.rand_core_v0_6]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/rand_core-v0_6"
-package = "rand_core"
-
-[patch.crates-io.rand_v0_8]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/rand-v0_8"
-package = "rand"
 
 [patch.crates-io.regex_automata_v0_4]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4"
@@ -340,14 +320,6 @@ package = "zcash_encoding"
 [patch.crates-io.zcash_primitives_v0_15]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
 package = "zcash_primitives"
-
-[patch.crates-io.zerocopy_v0_7]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8"
-package = "zerocopy"
-
-[patch.crates-io.zerocopy_derive_v0_7]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-derive-v0_8"
-package = "zerocopy-derive"
 
 [patch.crates-io.zcash_client_backend_v0_12]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
