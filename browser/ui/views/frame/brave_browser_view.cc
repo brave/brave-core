@@ -386,6 +386,9 @@ BraveBrowserView::~BraveBrowserView() {
   }
 
   DCHECK(!tab_cycling_event_handler_);
+  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+    sidebar_controller->set_sidebar(nullptr);
+  }
 }
 
 void BraveBrowserView::InitSidebar() {

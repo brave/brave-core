@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check_op.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -26,7 +25,6 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
@@ -56,10 +54,10 @@ std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
 
 }  // namespace
 
-SidebarController::SidebarController(TabStripModel* tab_strip_model,
-                                     Profile* profile)
-    : tab_strip_model_(tab_strip_model),
-      profile_(profile),
+SidebarController::SidebarController(Browser* browser)
+    : tab_strip_model_(browser->tab_strip_model()),
+      profile_(browser->profile()),
+      browser_(browser),
       sidebar_model_(new SidebarModel(profile_)) {
   sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS));
@@ -115,11 +113,10 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
   if (disposition != WindowOpenDisposition::CURRENT_TAB) {
     DCHECK_NE(WindowOpenDisposition::UNKNOWN, disposition);
-    chrome::ScopedTabbedBrowserDisplayer displayer(profile_);
     NavigateParams params(profile_, item.url,
                           ui::PAGE_TRANSITION_AUTO_BOOKMARK);
     params.disposition = disposition;
-    params.browser = displayer.browser();
+    params.browser = browser_;
     Navigate(&params);
     return;
   }
@@ -153,6 +150,12 @@ bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
   const std::vector<Browser*> browsers =
       chrome::FindAllTabbedBrowsersWithProfile(profile_);
   for (Browser* browser : browsers) {
+    // Skip current browser. we are here because current active browser doesn't
+    // have a tab that loads |url|.
+    if (browser == browser_) {
+      continue;
+    }
+
     const auto all_index =
         GetAllExistingTabIndexForHost(browser->tab_strip_model(), url.host());
     if (all_index.empty())
@@ -176,8 +179,7 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
       return;
 
     // Load at current active tab if there is no tab that loaded |url|.
-    chrome::ScopedTabbedBrowserDisplayer displayer(profile_);
-    auto params = GetSingletonTabNavigateParams(displayer.browser(), url);
+    auto params = GetSingletonTabNavigateParams(browser_, url);
     params.disposition = WindowOpenDisposition::CURRENT_TAB;
     Navigate(&params);
     return;
@@ -195,9 +197,8 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
 }
 
 void SidebarController::LoadAtTab(const GURL& url) {
-  chrome::ScopedTabbedBrowserDisplayer displayer(profile_);
-  auto params = GetSingletonTabNavigateParams(displayer.browser(), url);
-  int tab_index = GetIndexOfExistingTab(displayer.browser(), params);
+  auto params = GetSingletonTabNavigateParams(browser_, url);
+  int tab_index = GetIndexOfExistingTab(browser_, params);
   // If browser has a tab that already loaded |item.url|, just activate it.
   if (tab_index >= 0) {
     tab_strip_model_->ActivateTabAt(tab_index);
@@ -215,8 +216,7 @@ void SidebarController::OnShowSidebarOptionChanged(
 }
 
 void SidebarController::AddItemWithCurrentTab() {
-  chrome::ScopedTabbedBrowserDisplayer displayer(profile_);
-  if (!sidebar::CanAddCurrentActiveTabToSidebar(displayer.browser())) {
+  if (!sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     return;
   }
 
