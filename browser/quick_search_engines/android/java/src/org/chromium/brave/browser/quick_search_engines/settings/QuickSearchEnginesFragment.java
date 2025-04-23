@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.brave.browser.quick_search.settings;
+package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,9 +25,9 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
-import org.chromium.brave.browser.quick_search.ItemTouchHelperCallback;
-import org.chromium.brave.browser.quick_search.R;
-import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
+import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
+import org.chromium.brave.browser.quick_search_engines.R;
+import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 

@@ -13,16 +13,16 @@ import("//tools/grit/grit_rule.gni")
 android_library("java") {
   # Java source files to compile
   sources = [
-    "java/src/org/chromium/brave/browser/SharedPreferencesHelper.java",
-    "java/src/org/chromium/brave/browser/quick_search/ItemTouchHelperCallback.java",
-    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesAdapter.java",
-    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesCallback.java",
-    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesFragment.java",
-    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesModel.java",
-    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesSettingsViewHolder.java",
-    "java/src/org/chromium/brave/browser/quick_search/utils/QuickSearchEnginesUtil.java",
-    "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewAdapter.java",
-    "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewHolder.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/ItemTouchHelperCallback.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesAdapter.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesCallback.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesFragment.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesModel.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesSettingsViewHolder.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtil.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/utils/SharedPreferencesHelper.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewAdapter.java",
+    "java/src/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewHolder.java",
   ]
 
   # Dependencies required by this library
@@ -53,7 +53,7 @@ android_library("java") {
   ]
 
   # Package name for generated R.java resource class
-  resources_package = "org.chromium.brave.browser.quick_search"
+  resources_package = "org.chromium.brave.browser.quick_search_engines"
 }
 
 android_resources("java_resources") {
@@ -76,10 +76,8 @@ android_resources("java_resources") {
 
 java_strings_grd("java_strings_grd") {
   defines = chrome_grit_defines
-  grd_file = "java/strings/android_search_engines_strings.grd"
-  outputs =
-      [ "values/android_search_engines_strings.xml" ] +
-      process_file_template(
-          android_bundle_locales_as_resources,
-          [ "values-{{source_name_part}}/android_search_engines_strings.xml" ])
+  grd_file = "java/strings/android_quick_search_engines_strings.grd"
+  outputs = [ "values/android_quick_search_engines_strings.xml" ] + process_file_template(
+                android_bundle_locales_as_resources,
+                [ "values-{{source_name_part}}/android_quick_search_engines_strings.xml" ])
 }

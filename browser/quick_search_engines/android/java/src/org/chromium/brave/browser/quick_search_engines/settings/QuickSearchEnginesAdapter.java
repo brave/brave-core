@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.brave.browser.quick_search.settings;
+package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,9 +16,9 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.quick_search.ItemTouchHelperCallback;
-import org.chromium.brave.browser.quick_search.R;
-import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
+import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
+import org.chromium.brave.browser.quick_search_engines.R;
+import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 
 import java.util.Collections;
 import java.util.List;
