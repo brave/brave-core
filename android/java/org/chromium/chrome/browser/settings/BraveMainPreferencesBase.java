@@ -406,6 +406,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
+        updatePreferenceIcon(MainSettings.PREF_AUTOFILL_OPTIONS, R.drawable.ic_autofill);
     }
 
     private void updateSearchEnginePreference() {
