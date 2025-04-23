@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 364f021a07e1dd20463ccadeacecbfd1361cb93c..8477af119562f001a974b7e08180c849512c6c78 100644
+index 364f021a07e1dd20463ccadeacecbfd1361cb93c..59b832d2abde6a8cd4c025a281a3069566b04fcb 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -90,7 +90,23 @@ index 364f021a07e1dd20463ccadeacecbfd1361cb93c..8477af119562f001a974b7e08180c849
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1202,6 +1218,7 @@ by a child template that "extends" this file.
+@@ -932,6 +948,7 @@ by a child template that "extends" this file.
+             android:exported="false" />
+ 
+         <!-- Search widget -->
++        <!-- 
+         <receiver
+                 android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProvider"
+                 android:label="@string/search_widget_title"
+@@ -943,6 +960,7 @@ by a child template that "extends" this file.
+                     android:name="android.appwidget.provider"
+                     android:resource="@xml/search_widget_info" />
+         </receiver>
++         -->
+ 
+         <!-- Search Activity -->
+         <activity android:name="org.chromium.chrome.browser.searchwidget.SearchActivity"
+@@ -1202,6 +1220,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
