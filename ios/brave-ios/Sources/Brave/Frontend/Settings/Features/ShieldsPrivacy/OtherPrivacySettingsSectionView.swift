@@ -3,18 +3,33 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveShields
 import BraveUI
 import Data
 import Growth
+import OSLog
 import Preferences
 import Strings
 import SwiftUI
 
 struct OtherPrivacySettingsSectionView: View {
+  private enum CookieAlertType: String, Identifiable {
+    case confirm
+    case failed
+
+    var id: String { rawValue }
+  }
+
   @State private var showPrivateBrowsingConfirmation = false
   @ObservedObject var settings: AdvancedShieldsSettings
+  @State private var cookieAlertType: CookieAlertType?
+  /// If we should force show the Block All Cookies row.
+  /// If a user disables the toggle with the feature flag disabled, we don't
+  /// want the row to disappear on the user. So if we are showing the row
+  /// when the view opens, it should remain visible until the view is dismissed.
+  @State private var showBlockAllCookies = false
 
   @Environment(\.openURL) private var openSettingsURL
 
@@ -25,6 +40,51 @@ struct OtherPrivacySettingsSectionView: View {
         subtitle: Strings.Shields.enableGPCDescription,
         option: ShieldPreferences.enableGPC
       )
+      if showBlockAllCookies || FeatureList.kBlockAllCookiesToggle.enabled
+        || Preferences.Privacy.blockAllCookies.value
+      {
+        OptionToggleView(
+          title: Strings.blockAllCookies,
+          subtitle: Strings.blockAllCookiesDescription,
+          option: Preferences.Privacy.blockAllCookies,
+          onChange: { newValue in
+            if newValue {
+              cookieAlertType = .confirm
+            } else {
+              Task {
+                await toggleCookieSetting(with: false)
+              }
+            }
+          }
+        )
+        .alert(item: $cookieAlertType) { cookieAlertType in
+          switch cookieAlertType {
+          case .confirm:
+            return Alert(
+              title: Text(Strings.blockAllCookiesAlertTitle),
+              message: Text(Strings.blockAllCookiesDescription),
+              primaryButton: .destructive(
+                Text(Strings.blockAllCookiesAction),
+                action: {
+                  Task {
+                    await toggleCookieSetting(with: true)
+                  }
+                }
+              ),
+              secondaryButton: .cancel(
+                Text(Strings.cancelButtonTitle),
+                action: {
+                  Preferences.Privacy.blockAllCookies.value = false
+                }
+              )
+            )
+          case .failed:
+            return Alert(
+              title: Text(Strings.blockAllCookiesFailedAlertMsg)
+            )
+          }
+        }
+      }
       OptionToggleView(
         title: Strings.privateBrowsingOnly,
         subtitle: nil,
@@ -111,6 +171,33 @@ struct OtherPrivacySettingsSectionView: View {
       )
     } header: {
       Text(Strings.otherPrivacySettingsSection)
+    }
+    .onAppear {
+      showBlockAllCookies = Preferences.Privacy.blockAllCookies.value
+    }
+  }
+
+  private func toggleCookieSetting(with status: Bool) async {
+    do {
+      try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: status)
+      try await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: status)
+
+      if Preferences.Privacy.blockAllCookies.value != status {
+        Preferences.Privacy.blockAllCookies.value = status
+      }
+    } catch {
+      Logger.module.error("Failed to change web data access to \(status)")
+      if status {
+        // Revert the changes. Not handling success here to avoid a loop.
+        try? await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: false)
+        try? await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: false)
+
+        if Preferences.Privacy.blockAllCookies.value != false {
+          Preferences.Privacy.blockAllCookies.value = false
+        }
+
+        cookieAlertType = .failed
+      }
     }
   }
 }
