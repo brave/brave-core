@@ -19,22 +19,8 @@ class SchemePermissionTests: XCTestCase {
     case https
     case about
     case javascript
-    case whatsapp
-
-    var description: String {
-      switch self {
-      case .http:
-        return "Http URL Scheme in new tab"
-      case .https:
-        return "Https URL Scheme in new tab"
-      case .about:
-        return "About URL Scheme in new tab"
-      case .javascript:
-        return "Javascript URL Scheme in new tab"
-      case .whatsapp:
-        return "WhatsApp URL Scheme in new tab"
-      }
-    }
+    case blob
+    case data
 
     var url: String {
       switch self {
@@ -46,8 +32,10 @@ class SchemePermissionTests: XCTestCase {
         return "about:Test"
       case .javascript:
         return "javascript:alert(Test)"
-      case .whatsapp:
-        return "whatsapp://send?text=Test"
+      case .blob:
+        return "blob:https://test.com/1234"
+      case .data:
+        return "data:,Test"
       }
     }
   }
@@ -59,42 +47,29 @@ class SchemePermissionTests: XCTestCase {
     let urlRequestHttps = urlRequestForScheme(.https)
     let urlRequestJavascript = urlRequestForScheme(.javascript)
     let urlRequestAbout = urlRequestForScheme(.about)
-    let urlRequestWhatsApp = urlRequestForScheme(.whatsapp)
+    let urlRequestBlob = urlRequestForScheme(.blob)
+    let urlRequestData = urlRequestForScheme(.data)
 
     // Test Http URL Scheme
-    XCTAssertTrue(
-      urlRequestHttp.request.url!.shouldRequestBeOpenedAsPopup(),
-      urlRequestHttp.comment
-    )
+    XCTAssertTrue(urlRequestHttp.url!.shouldRequestBeOpenedAsPopup())
 
     // Test Https URL Scheme
-    XCTAssertTrue(
-      urlRequestHttps.request.url!.shouldRequestBeOpenedAsPopup(),
-      urlRequestHttps.comment
-    )
+    XCTAssertTrue(urlRequestHttps.url!.shouldRequestBeOpenedAsPopup())
 
     // Test Javascript URL Scheme
-    XCTAssertTrue(
-      urlRequestJavascript.request.url!.shouldRequestBeOpenedAsPopup(),
-      urlRequestJavascript.comment
-    )
+    XCTAssertTrue(urlRequestJavascript.url!.shouldRequestBeOpenedAsPopup())
 
     // Test About URL Scheme
-    XCTAssertTrue(
-      urlRequestAbout.request.url!.shouldRequestBeOpenedAsPopup(),
-      urlRequestAbout.comment
-    )
+    XCTAssertTrue(urlRequestAbout.url!.shouldRequestBeOpenedAsPopup())
 
-    // Test Whatapp URL Scheme
-    XCTAssertTrue(
-      urlRequestWhatsApp.request.url!.shouldRequestBeOpenedAsPopup(),
-      urlRequestWhatsApp.comment
-    )
+    // Test blob URL Scheme
+    XCTAssertTrue(urlRequestBlob.url!.shouldRequestBeOpenedAsPopup())
+
+    // Test data URL Scheme
+    XCTAssertTrue(urlRequestData.url!.shouldRequestBeOpenedAsPopup())
   }
 
-  private func urlRequestForScheme(_ type: SchemeTestType) -> (request: URLRequest, comment: String)
-  {
-    (request: URLRequest(url: URL(string: type.url)!), comment: type.description)
+  private func urlRequestForScheme(_ type: SchemeTestType) -> URLRequest {
+    return URLRequest(url: URL(string: type.url)!)
   }
-
 }
