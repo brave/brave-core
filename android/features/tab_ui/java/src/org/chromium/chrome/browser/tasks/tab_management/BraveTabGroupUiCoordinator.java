@@ -14,9 +14,12 @@ import androidx.annotation.NonNull;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -51,7 +54,9 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull ModalDialogManager modalDialogManager,
             @NonNull ThemeColorProvider themeColorProvider,
-            UndoBarThrottle undoBarThrottle) {
+            UndoBarThrottle undoBarThrottle,
+            ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            Supplier<ShareDelegate> shareDelegateSupplier) {
         super(
                 activity,
                 parentView,
@@ -66,7 +71,9 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 layoutStateProviderSupplier,
                 modalDialogManager,
                 themeColorProvider,
-                undoBarThrottle);
+                undoBarThrottle,
+                tabBookmarkerSupplier,
+                shareDelegateSupplier);
 
         mTabModelSelector = tabModelSelector;
 

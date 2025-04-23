@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -147,6 +148,8 @@ public class BraveToolbarManager extends ToolbarManager
     private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private Runnable mOpenGridTabSwitcherHandler;
+    private final ObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
+    private final Supplier<ShareDelegate> mShareDelegateSupplier;
 
     public BraveToolbarManager(
             AppCompatActivity activity,
@@ -193,7 +196,8 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            @Nullable MultiInstanceManager multiInstanceManager) {
+            @Nullable MultiInstanceManager multiInstanceManager,
+            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -237,7 +241,8 @@ public class BraveToolbarManager extends ToolbarManager
                 overviewColorSupplier,
                 readAloudControllerSupplier,
                 desktopWindowStateManager,
-                multiInstanceManager);
+                multiInstanceManager,
+                tabBookmarkerSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -249,6 +254,8 @@ public class BraveToolbarManager extends ToolbarManager
         mBrowserControlsSizer = controlsSizer;
         mDataSharingTabManager = dataSharingTabManager;
         mTabModelSelectorSupplier = tabModelSelectorSupplier;
+        mTabBookmarkerSupplier = tabBookmarkerSupplier;
+        mShareDelegateSupplier = shareDelegateSupplier;
 
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility();
@@ -309,7 +316,9 @@ public class BraveToolbarManager extends ToolbarManager
                             mLayoutStateProviderSupplier,
                             mModalDialogManagerSupplier.get(),
                             bottomUiThemeColorProvider,
-                            mUndoBarThrottle);
+                            mUndoBarThrottle,
+                            mTabBookmarkerSupplier,
+                            mShareDelegateSupplier);
             var bottomControlsContentDelegateSupplier =
                     (OneshotSupplier<BottomControlsContentDelegate>)
                             ((OneshotSupplier<? extends BottomControlsContentDelegate>)
