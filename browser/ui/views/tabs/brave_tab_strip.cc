@@ -244,15 +244,6 @@ bool BraveTabStrip::IsFirstTabInTile(const Tab* tab) const {
   return browser->tab_strip_model()->GetIndexOfTab(tile->first.Get()) == *index;
 }
 
-TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
-  auto* tab = tab_at(index);
-  if (!IsTabTiled(tab)) {
-    return TabTiledState::kNone;
-  }
-
-  return IsFirstTabInTile(tab) ? TabTiledState::kFirst : TabTiledState::kSecond;
-}
-
 std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
   auto* browser = const_cast<Browser*>(GetBrowser());
   auto* data = browser->GetFeatures().split_view_browser_data();
