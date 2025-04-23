@@ -8,6 +8,8 @@ component("common") {
   defines = [ "IS_AI_CHAT_COMMON_IMPL" ]
 
   sources = [
+    "ai_chat_urls.cc",
+    "ai_chat_urls.h",
     "constants.h",
     "features.cc",
     "features.h",
