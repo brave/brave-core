@@ -50,6 +50,12 @@ const onClickTermsOfUse = () => {
   window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
 }
 
+const meldTermsOfUse = formatLocale('braveWalletMeldTermsOfUse', {
+  $1: content => <TermsButton onClick={onClickTermsOfUse}>
+    {content}
+  </TermsButton>
+})
+
 interface PartnerConsentModalProps {
   isOpen: boolean
   onClose: () => void
@@ -66,11 +72,6 @@ export function PartnersConsentModal(
 
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-
-  const meldTermsOfUse = formatLocale('braveWalletMeldTermsOfUse', {
-    $1: content => <TermsButton onClick={onClickTermsOfUse}>{content}</TermsButton>
-  })
-
 
   return (
     <TermsDialog

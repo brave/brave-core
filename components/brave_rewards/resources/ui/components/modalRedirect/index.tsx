@@ -75,7 +75,11 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
                   errorText.map((line, index) => <p key={index}>
                       {formatString(line, {
                       $2: content => errorTextLink
-                        ? <a href={errorTextLink} target='_blank' rel="noopener noreferrer">
+                        ? <a
+                          href={errorTextLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
                           {content}
                         </a>
                         : content
