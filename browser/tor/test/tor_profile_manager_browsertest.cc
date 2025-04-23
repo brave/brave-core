@@ -40,8 +40,8 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/extension_browsertest.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_prefs.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/extension_id.h"
@@ -474,7 +474,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
       id, extensions::ExtensionRegistry::EVERYTHING));
 
   // Component extension should always be allowed
-  extension_service()->UnloadExtension(
+  extension_registrar()->RemoveExtension(
       extension->id(), extensions::UnloadedExtensionReason::UNINSTALL);
   const extensions::Extension* component_extension =
       LoadExtensionAsComponent(extension_path());

@@ -125,11 +125,9 @@ void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
 }
 
 void BraveComponentLoader::UnloadEthereumRemoteClientExtension() {
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  DCHECK(service);
-  service->UnloadExtension(kEthereumRemoteClientExtensionId,
-                           extensions::UnloadedExtensionReason::DISABLE);
+  extensions::ExtensionRegistrar::Get(profile_)->RemoveExtension(
+      kEthereumRemoteClientExtensionId,
+      extensions::UnloadedExtensionReason::DISABLE);
 }
 #endif
 
