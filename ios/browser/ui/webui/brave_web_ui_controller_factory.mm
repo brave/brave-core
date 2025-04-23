@@ -15,6 +15,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
@@ -47,6 +48,13 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   // schemes to filter out most URLs.
   if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme) &&
       !url.SchemeIs(kChromeUIUntrustedScheme)) {
+    return nullptr;
+  }
+  
+  if (url.SchemeIs(kChromeUIUntrustedScheme)) {
+    if (url_host == "leo") {
+      return &NewWebUIIOS<AIChatUI>;
+    }
     return nullptr;
   }
 

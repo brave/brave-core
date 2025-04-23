@@ -26,12 +26,18 @@ source_set("ai_chat") {
     "ai_chat_delegate.h",
     "ai_chat_service_factory.h",
     "ai_chat_service_factory.mm",
+    "ai_chat_tab_helper.h",
+    "ai_chat_tab_helper.mm",
     "associated_content_driver_ios.h",
     "associated_content_driver_ios.mm",
     "conversation_client.h",
     "conversation_client.mm",
     "model_service_factory.h",
     "model_service_factory.mm",
+    "page_content_fetcher.h",
+    "page_content_fetcher.mm",
+    "tab_tracker_service_factory.h",
+    "tab_tracker_service_factory.mm",
   ]
 
   deps = [
