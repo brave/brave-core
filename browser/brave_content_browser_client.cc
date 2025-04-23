@@ -609,6 +609,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       registry.ForWebUI<BraveNewTabPageUI>()
           .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
           .Add<brave_rewards::mojom::RewardsPageHandler>()
+          .Add<brave_news::mojom::BraveNewsController>()
           .Add<
               ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
 

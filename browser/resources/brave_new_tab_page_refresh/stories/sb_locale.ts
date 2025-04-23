@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StringKey } from '../models/locale_strings'
+import { StringKey, PluralStringKey, Locale } from '../models/locale_strings'
 
-const localeStrings: { [K in StringKey]: string }  = {
+const localeStrings: Record<StringKey, string>  = {
   addTopSiteLabel: 'Add site',
   addTopSiteTitle: 'Add site',
   backgroundSettingsTitle: 'Background Image',
@@ -25,6 +25,69 @@ const localeStrings: { [K in StringKey]: string }  = {
   gradientBackgroundLabel: 'Gradients',
   gradientBackgroundTitle: 'Gradients',
   hideTopSitesLabel: 'Hide top sites',
+  newsAddSourcesButtonLabel: 'Add content sources',
+  newsBackButtonLabel: 'Back',
+  newsCaughtUpText: 'You\'re all caught up',
+  newsChannelBrave: 'Brave',
+  newsChannelBusiness: 'Business',
+  newsChannelCars: 'Cars',
+  newsChannelCelebrities: 'Celebrities',
+  newsChannelCrypto: 'Crypto',
+  newsChannelCulture: 'Culture',
+  newsChannelEducation: 'Education',
+  newsChannelEntertainment: 'Entertainment',
+  newsChannelFashion: 'Fashion',
+  newsChannelFilmAndTV: 'Film and TV',
+  newsChannelFood: 'Food',
+  newsChannelFun: 'Fun',
+  newsChannelGaming: 'Gaming',
+  newsChannelHealth: 'Health',
+  newsChannelHome: 'Home',
+  newsChannelLifestyle: 'Lifestyle',
+  newsChannelMusic: 'Music',
+  newsChannelPolitics: 'Politics',
+  newsChannelRegionalNews: 'Regional News',
+  newsChannelScience: 'Science',
+  newsChannelSports: 'Sports',
+  newsChannelTravel: 'Travel',
+  newsChannelTechnology: 'Technology',
+  newsChannelTopNews: 'Top News',
+  newsChannelTopSources: 'Top Sources',
+  newsChannelUKNews: 'UK News',
+  newsChannelUSNews: 'US News',
+  newsChannelWeather: 'Weather',
+  newsChannelWorldNews: 'World News',
+  newsConnectionErrorText: 'Check your internet connection and refresh',
+  newsConnectionErrorTitle: 'You appear to be offline',
+  newsContentAvailableButtonLabel: 'New content available. Reload?',
+  newsDiscoverTitle: 'You might also like',
+  newsEnableButtonLabel: 'Turn on Brave News',
+  newsEnableText: 'Turn on Brave News, and never miss a story',
+  newsFeedAllTitle: 'For You',
+  newsFeedChannelsTitle: 'Channels',
+  newsFeedFollowingTitle: 'Following',
+  newsFeedPublishersTitle: 'Publishers',
+  newsHidePublisherLabel: 'Hide content from $1',
+  newsNoArticlesText: 'There don\'t seem to be any articles in this feed at this moment. Try coming back later or refreshing the feed.',
+  newsNoArticlesTitle: 'This feed is empty',
+  newsNoFeedsText: 'Follow publishers and channels to see them in your feed.',
+  newsNoFeedsTitle: 'Your Feed is Empty',
+  newsNoMatchingFeedsText: 'No feeds found at $1',
+  newsQueryTooShortText: 'Keep typing to search sources',
+  newsRefreshButtonLabel: 'Refresh',
+  newsSearchFeedsButtonLabel: 'Get feeds from $1',
+  newsSettingsChannelsTitle: 'Channels',
+  newsSettingsDiscoverTitle: 'Discover',
+  newsSettingsFollowingTitle: 'Following',
+  newsSettingsPopularTitle: 'Popular',
+  newsSettingsQueryPlaceholder: 'Search for site, topic, or RSS feed',
+  newsSettingsSourcesTitle: 'Sources',
+  newsSettingsSuggestionsText: 'Some sources you might like. Suggestions are anonymous and matched only on your device.',
+  newsSettingsSuggestionsTitle: 'Suggestions',
+  newsSettingsTitle: 'News and RSS',
+  newsUnfollowButtonLabel: 'Unfollow',
+  newsViewAllButtonLabel: 'View all',
+  newsWidgetTitle: 'NEWS',
   photoCreditsText: 'Photo by $1',
   randomizeBackgroundLabel: 'Refresh on every new tab',
   removeTopSiteLabel: 'Remove',
@@ -50,6 +113,7 @@ const localeStrings: { [K in StringKey]: string }  = {
   settingsTitle: 'Customize Dashboard',
   showBackgroundsLabel: 'Show Background Images',
   showClockLabel: 'Show clock',
+  showNewsWidgetLabel: 'News and RSS',
   showRewardsWidgetLabel: 'Brave Rewards',
   showSearchBoxLabel: 'Show search widget in new tabs',
   showSponsoredImagesLabel: 'Show Sponsored Images',
@@ -96,13 +160,18 @@ const localeStrings: { [K in StringKey]: string }  = {
   widgetSettingsTitle: 'Widgets'
 }
 
-export function createLocale() {
-  const getString =
-    (key: string) => String((localeStrings as any)[key] || 'MISSING')
+const pluralStrings: Record<PluralStringKey, string>  = {
+  newsSourceCountText: '# sources'
+}
+
+export function createLocale(): Locale {
   return {
-    getString,
-    async getPluralString (key: string, count: number) {
-      return getString(key).replace('#', String(count))
+    getString(key) {
+      return localeStrings[key] ?? 'MISSING'
+    },
+    async getPluralString (key, count) {
+      const message =  pluralStrings[key] ?? 'MISSING'
+      return message.replace('#', String(count))
     }
   }
 }

@@ -23,6 +23,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -61,6 +62,7 @@ void NewTabPageInitializer::Initialize() {
   AddCSPOverrides();
   AddLoadTimeValues();
   AddStrings();
+  AddPluralStrings();
 
   AddFaviconDataSource();
   AddCustomImageDataSource();
@@ -137,6 +139,69 @@ void NewTabPageInitializer::AddStrings() {
       {"gradientBackgroundLabel", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
       {"gradientBackgroundTitle", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
       {"hideTopSitesLabel", IDS_NEW_TAB_HIDE_TOP_SITES_LABEL},
+      {"newsAddSourcesButtonLabel", IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL},
+      {"newsBackButtonLabel", IDS_BRAVE_NEWS_BACK_BUTTON},
+      {"newsCaughtUpText", IDS_BRAVE_NEWS_CAUGHT_UP},
+      {"newsChannelBrave", IDS_BRAVE_NEWS_CHANNEL_BRAVE},
+      {"newsChannelBusiness", IDS_BRAVE_NEWS_CHANNEL_BUSINESS},
+      {"newsChannelCars", IDS_BRAVE_NEWS_CHANNEL_CARS},
+      {"newsChannelCelebrities", IDS_BRAVE_NEWS_CHANNEL_CELEBRITIES},
+      {"newsChannelCrypto", IDS_BRAVE_NEWS_CHANNEL_CRYPTO},
+      {"newsChannelCulture", IDS_BRAVE_NEWS_CHANNEL_CULTURE},
+      {"newsChannelEducation", IDS_BRAVE_NEWS_CHANNEL_EDUCATION},
+      {"newsChannelEntertainment", IDS_BRAVE_NEWS_CHANNEL_ENTERTAINMENT},
+      {"newsChannelFashion", IDS_BRAVE_NEWS_CHANNEL_FASHION},
+      {"newsChannelFilmAndTV", IDS_BRAVE_NEWS_CHANNEL_FILM_AND_TV},
+      {"newsChannelFood", IDS_BRAVE_NEWS_CHANNEL_FOOD},
+      {"newsChannelFun", IDS_BRAVE_NEWS_CHANNEL_FUN},
+      {"newsChannelGaming", IDS_BRAVE_NEWS_CHANNEL_GAMING},
+      {"newsChannelHealth", IDS_BRAVE_NEWS_CHANNEL_HEALTH},
+      {"newsChannelHome", IDS_BRAVE_NEWS_CHANNEL_HOME},
+      {"newsChannelLifestyle", IDS_BRAVE_NEWS_CHANNEL_LIFESTYLE},
+      {"newsChannelMusic", IDS_BRAVE_NEWS_CHANNEL_MUSIC},
+      {"newsChannelPolitics", IDS_BRAVE_NEWS_CHANNEL_POLITICS},
+      {"newsChannelRegionalNews", IDS_BRAVE_NEWS_CHANNEL_REGIONAL_NEWS},
+      {"newsChannelScience", IDS_BRAVE_NEWS_CHANNEL_SCIENCE},
+      {"newsChannelSports", IDS_BRAVE_NEWS_CHANNEL_SPORTS},
+      {"newsChannelTravel", IDS_BRAVE_NEWS_CHANNEL_TRAVEL},
+      {"newsChannelTechnology", IDS_BRAVE_NEWS_CHANNEL_TECHNOLOGY},
+      {"newsChannelTopNews", IDS_BRAVE_NEWS_CHANNEL_TOP_NEWS},
+      {"newsChannelTopSources", IDS_BRAVE_NEWS_CHANNEL_TOP_SOURCES},
+      {"newsChannelUKNews", IDS_BRAVE_NEWS_CHANNEL_UK_NEWS},
+      {"newsChannelUSNews", IDS_BRAVE_NEWS_CHANNEL_US_NEWS},
+      {"newsChannelWeather", IDS_BRAVE_NEWS_CHANNEL_WEATHER},
+      {"newsChannelWorldNews", IDS_BRAVE_NEWS_CHANNEL_WORLD_NEWS},
+      {"newsConnectionErrorText", IDS_BRAVE_NEWS_OFFLINE_MESSAGE},
+      {"newsConnectionErrorTitle", IDS_BRAVE_NEWS_OFFLINE_TITLE},
+      {"newsContentAvailableButtonLabel", IDS_BRAVE_NEWS_NEW_CONTENT_AVAILABLE},
+      {"newsDiscoverTitle", IDS_BRAVE_NEWS_SOURCES_RECOMMENDATION},
+      {"newsEnableButtonLabel", IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL},
+      {"newsEnableText", IDS_BRAVE_NEWS_INTRO_TITLE},
+      {"newsFeedAllTitle", IDS_BRAVE_NEWS_FOR_YOU_FEED},
+      {"newsFeedChannelsTitle", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},
+      {"newsFeedFollowingTitle", IDS_BRAVE_NEWS_FEEDS_HEADING},
+      {"newsFeedPublishersTitle", IDS_BRAVE_NEWS_PUBLISHERS_HEADING},
+      {"newsHidePublisherLabel", IDS_BRAVE_NEWS_HIDE_CONTENT_FROM},
+      {"newsNoArticlesText", IDS_BRAVE_NEWS_NO_ARTICLES_MESSAGE},
+      {"newsNoArticlesTitle", IDS_BRAVE_NEWS_NO_ARTICLES_TITLE},
+      {"newsNoFeedsText", IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE},
+      {"newsNoFeedsTitle", IDS_BRAVE_NEWS_NO_CONTENT_HEADING},
+      {"newsNoMatchingFeedsText", IDS_BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS},
+      {"newsQueryTooShortText", IDS_BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT},
+      {"newsRefreshButtonLabel", IDS_BRAVE_NEWS_REFRESH_FEED},
+      {"newsSearchFeedsButtonLabel", IDS_BRAVE_NEWS_DIRECT_SEARCH_BUTTON},
+      {"newsSettingsChannelsTitle", IDS_BRAVE_NEWS_BROWSE_CHANNELS_HEADER},
+      {"newsSettingsDiscoverTitle", IDS_BRAVE_NEWS_DISCOVER_TITLE},
+      {"newsSettingsFollowingTitle", IDS_BRAVE_NEWS_FEEDS_HEADING},
+      {"newsSettingsPopularTitle", IDS_BRAVE_NEWS_POPULAR_TITLE},
+      {"newsSettingsQueryPlaceholder", IDS_BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL},
+      {"newsSettingsSourcesTitle", IDS_BRAVE_NEWS_ALL_SOURCES_HEADER},
+      {"newsSettingsSuggestionsText", IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE},
+      {"newsSettingsSuggestionsTitle", IDS_BRAVE_NEWS_SUGGESTIONS_TITLE},
+      {"newsSettingsTitle", IDS_BRAVE_NEWS_SETTINGS_TITLE},
+      {"newsUnfollowButtonLabel", IDS_BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING},
+      {"newsViewAllButtonLabel", IDS_BRAVE_NEWS_VIEW_ALL_BUTTON},
+      {"newsWidgetTitle", IDS_NEW_TAB_NEWS_WIDGET_TITLE},
       {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
       {"randomizeBackgroundLabel", IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL},
       {"removeTopSiteLabel", IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL},
@@ -169,6 +234,7 @@ void NewTabPageInitializer::AddStrings() {
       {"settingsTitle", IDS_NEW_TAB_SETTINGS_TITLE},
       {"showBackgroundsLabel", IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL},
       {"showClockLabel", IDS_NEW_TAB_SHOW_CLOCK_LABEL},
+      {"showNewsWidgetLabel", IDS_NEW_TAB_SHOW_NEWS_WIDGET_LABEL},
       {"showRewardsWidgetLabel", IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL},
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
@@ -218,6 +284,13 @@ void NewTabPageInitializer::AddStrings() {
       {"widgetSettingsTitle", IDS_NEW_TAB_WIDGET_SETTINGS_TITLE}};
 
   source_->AddLocalizedStrings(kStrings);
+}
+
+void NewTabPageInitializer::AddPluralStrings() {
+  auto handler = std::make_unique<PluralStringHandler>();
+  handler->AddLocalizedString("newsSourceCountText",
+                              IDS_BRAVE_NEWS_SOURCE_COUNT);
+  web_ui_->AddMessageHandler(std::move(handler));
 }
 
 void NewTabPageInitializer::AddFaviconDataSource() {
