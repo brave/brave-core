@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
@@ -13,7 +13,7 @@
   <path
       android:pathData="M0,12C0,8.272 0,6.409 0.609,4.939C1.421,2.978 2.978,1.421 4.939,0.609C6.409,0 8.272,0 12,0C15.727,0 17.591,0 19.062,0.609C21.022,1.421 22.579,2.978 23.391,4.939C24,6.409 24,8.272 24,12C24,15.727 24,17.591 23.391,19.062C22.579,21.022 21.022,22.579 19.062,23.391C17.591,24 15.727,24 12,24C8.272,24 6.409,24 4.939,23.391C2.978,22.579 1.421,21.022 0.609,19.062C0,17.591 0,15.727 0,12Z">
     <aapt:attr name="android:fillColor">
-      <gradient 
+      <gradient
           android:startX="22.753"
           android:startY="22.341"
           android:endX="-0.022"
