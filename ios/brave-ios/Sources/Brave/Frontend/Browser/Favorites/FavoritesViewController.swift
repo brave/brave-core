@@ -99,7 +99,7 @@ class FavoritesViewController: UIViewController {
   // Private Browsing
   var privateBrowsingManager: PrivateBrowsingManager
   private var privateModeCancellable: AnyCancellable?
-  
+
   // Search Engines
   private let defaultSearchEngine: OpenSearchEngine?
 
