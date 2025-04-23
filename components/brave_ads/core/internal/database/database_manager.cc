@@ -153,8 +153,6 @@ void DatabaseManager::Create(ResultCallback callback) const {
 void DatabaseManager::CreateCallback(ResultCallback callback,
                                      bool success) const {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/43317): Failed to
-    // create database.
     SCOPED_CRASH_KEY_STRING64("Issue43317", "failure_reason",
                               "Failed to create database");
     SCOPED_CRASH_KEY_NUMBER("Issue43317", "sqlite_schema_version",
@@ -190,8 +188,6 @@ void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
                                             int from_version,
                                             bool success) const {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/43331): Failed to raze
-    // database.
     SCOPED_CRASH_KEY_STRING64("Issue43331", "failure_reason",
                               "Failed to raze database");
     SCOPED_CRASH_KEY_NUMBER("Issue43331", "from_sqlite_schema_version",
@@ -244,8 +240,6 @@ void DatabaseManager::MigrateFromVersionCallback(int from_version,
   const int to_version = database::kVersionNumber;
 
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/43326): Database
-    // migration failed.
     SCOPED_CRASH_KEY_NUMBER("Issue43326", "from_sqlite_schema_version",
                             from_version);
     SCOPED_CRASH_KEY_NUMBER("Issue43326", "to_sqlite_schema_version",
