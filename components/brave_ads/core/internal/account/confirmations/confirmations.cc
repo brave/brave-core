@@ -39,7 +39,7 @@ void Confirmations::Confirm(const TransactionInfo& transaction,
                         << transaction.creative_instance_id);
 
   std::optional<ConfirmationInfo> confirmation =
-      UserHasJoinedBraveRewards()
+      UserHasJoinedBraveRewardsAndConnectedWallet()
           ? BuildRewardConfirmation(transaction, std::move(user_data))
           : BuildNonRewardConfirmation(transaction, std::move(user_data));
   if (!confirmation) {

@@ -20,7 +20,7 @@ std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,
     base::Value::Dict user_data) {
   CHECK(transaction.IsValid());
-  CHECK(!UserHasJoinedBraveRewards());
+  CHECK(!UserHasJoinedBraveRewardsAndConnectedWallet());
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction.id;

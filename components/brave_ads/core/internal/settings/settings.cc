@@ -18,6 +18,12 @@ bool UserHasJoinedBraveRewards() {
   return GetProfileBooleanPref(brave_rewards::prefs::kEnabled);
 }
 
+bool UserHasJoinedBraveRewardsAndConnectedWallet() {
+  return UserHasJoinedBraveRewards() &&
+         !GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)
+              .empty();
+}
+
 bool UserHasOptedInToBraveNewsAds() {
   return GetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn) &&
          GetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday);

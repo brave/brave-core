@@ -16,7 +16,9 @@ constexpr size_t kMinimumConfirmationTokenThreshold = 10;
 }  // namespace
 
 bool HasConfirmationTokensPermission() {
-  if (!UserHasJoinedBraveRewards()) {
+  if (!UserHasJoinedBraveRewardsAndConnectedWallet()) {
+    // Allow ads if the user has not joined Brave Rewards and connected a
+    // wallet, as confirmation tokens are not refilled in this case.
     return true;
   }
 

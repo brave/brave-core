@@ -85,6 +85,8 @@ class Account final : public AdsClientNotifierObserver,
 
   void InitializeConfirmations();
 
+  bool HasWallet() const { return !!wallet_; }
+
   void MaybeInitializeUserRewards();
 
   void MaybeRefillConfirmationTokens();

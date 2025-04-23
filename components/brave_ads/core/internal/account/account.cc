@@ -68,7 +68,7 @@ void Account::SetWallet(const std::string& payment_id,
 
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!UserHasJoinedBraveRewards()) {
-    // No-op if the user has not joined Brave Rewards.
+    // No-op if the user has not joined Brave Rewards and connected a wallet.
     return std::move(callback).Run(/*statement=*/nullptr);
   }
 
@@ -197,11 +197,14 @@ void Account::InitializeConfirmations() {
 }
 
 void Account::MaybeInitializeUserRewards() {
-  if (!wallet_) {
+  if (user_rewards_) {
+    // Already initialized.
     return;
   }
 
-  if (user_rewards_ || !UserHasJoinedBraveRewards()) {
+  if (!UserHasJoinedBraveRewardsAndConnectedWallet()) {
+    // No-op if the user has not joined Brave Rewards and connected a wallet,
+    // as rewards can only be earned when connected.
     return;
   }
 
@@ -211,10 +214,12 @@ void Account::MaybeInitializeUserRewards() {
   // Brave Rewards because the associated data and the `Ads` instance will be
   // destroyed.
 
+  if (!HasWallet()) {
+    return;
+  }
+
   user_rewards_ = std::make_unique<UserRewards>(*wallet_);
-
   user_rewards_->FetchIssuers();
-
   user_rewards_->MaybeRedeemPaymentTokens();
 }
 
