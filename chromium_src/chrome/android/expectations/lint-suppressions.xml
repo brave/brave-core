@@ -37,6 +37,10 @@
         <ignore regexp="The resource `R.drawable.quick_action_search_widget_.*` appears to be unused"/>
         <ignore regexp="The resource `R.drawable.hairline_border` appears to be unused"/>
         <ignore regexp="The resource `R.string.dino_widget_description` appears to be unused"/>
+        <ignore regexp="The resource `R.string.search_widget_description` appears to be unused"/>
+        <ignore regexp="The resource `R.string.search_widget_title` appears to be unused"/>
+        <ignore regexp="The resource `R.xml.search_widget_info` appears to be unused"/>
+        <ignore regexp="The resource `R.drawable.widget_preview` appears to be unused"/>
     </issue>
     <issue id="UnsafeOptInUsageError">
         <ignore regexp='(markerClass = androidx.media3.common.util.UnstableApi.class)' />

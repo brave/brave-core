@@ -106,7 +106,6 @@ brave_java_resources = [
   "java/res/drawable-mdpi/uphold_green.png",
   "java/res/drawable-mdpi/uphold_white.png",
   "java/res/drawable-night-nodpi/ic_quick_action_search_and_bookmark_widget_preview.png",
-  "java/res/drawable-night-nodpi/widget_preview.png",
   "java/res/drawable-night/bookmark_empty_state_illustration.xml",
   "java/res/drawable-night/ellipse_217.xml",
   "java/res/drawable-night/history_empty_state_illustration.xml",
