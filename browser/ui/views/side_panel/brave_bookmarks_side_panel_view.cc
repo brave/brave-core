@@ -153,9 +153,9 @@ BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(
       ->SetColorId(kColorSidebarPanelHeaderSeparator);
 
   // Reuse upstream's bookmarks panl nwebui.
-  auto* web_view =
-      AddChildView(BookmarksSidePanelCoordinator::GetOrCreateForBrowser(browser)
-                       ->CreateBookmarksWebView(scope));
+  auto* web_view = AddChildView(browser->browser_window_features()
+                                    ->bookmarks_side_panel_coordinator()
+                                    ->CreateBookmarksWebView(scope));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
