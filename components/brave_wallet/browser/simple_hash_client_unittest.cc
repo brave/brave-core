@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 
+#include <map>
 #include <optional>
 
 #include "base/containers/to_vector.h"
@@ -1749,6 +1750,48 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->background_color, "");
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
+
+  // Test case for NFTs with image url from different CDN
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "description": "Azuki is a cute little bean",
+        "image_url": "https://other-cdn.com/assets/img.png",
+        "extra_metadata": {
+          "metadata_original_url": "ipfs://foo/2767",
+          "attributes": [
+            {
+              "trait_type": "Color",
+              "value": "Red"
+            },
+            {
+              "trait_type": "Size",
+              "value": "Small"
+            }
+          ]
+        }
+      }
+    ]
+  })";
+  result = simple_hash_client_->ParseMetadatas(base::test::ParseJsonDict(json));
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->size(), 1u);
+
+  it = result->find(azuki_identifier);
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second->image, "https://other-cdn.com/assets/img.png");
+  EXPECT_EQ(it->second->image_data, "");
+  EXPECT_EQ(it->second->external_url, "");
+  ASSERT_EQ(it->second->attributes.size(), 2u);
+  EXPECT_EQ(it->second->attributes[0]->trait_type, "Color");
+  EXPECT_EQ(it->second->attributes[0]->value, "Red");
+  EXPECT_EQ(it->second->attributes[1]->trait_type, "Size");
+  EXPECT_EQ(it->second->attributes[1]->value, "Small");
 }
 
 TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
