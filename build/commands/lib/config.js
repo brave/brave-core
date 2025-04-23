@@ -21,6 +21,11 @@ if (process.platform === 'win32') {
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
+if (rootDir.includes(' ')) {
+  Log.error(`Root directory contains spaces, this is not supported: ${rootDir}`)
+  process.exit(1)
+}
+
 var packageConfig = function (key, sourceDir = braveCoreDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
