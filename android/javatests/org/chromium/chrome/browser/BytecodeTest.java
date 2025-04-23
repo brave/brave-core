@@ -138,6 +138,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -908,6 +909,12 @@ public class BytecodeTest {
                         void.class,
                         boolean.class,
                         boolean.class));
+        Assert.assertFalse(
+                methodExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "getAppHeaderCoordinator",
+                        MethodModifier.REGULAR,
+                        AppHeaderCoordinator.class));
     }
 
     @Test
