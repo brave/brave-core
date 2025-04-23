@@ -56,6 +56,7 @@ export default function BeginGeneration() {
           handleStopGenerating: async () => {},
           removeImage: () => {},
           uploadImage: (useMediaCapture: boolean) => {},
+          getScreenshots: () => {},
           conversationHistory: [],
           pendingMessageImages: null
         }} />

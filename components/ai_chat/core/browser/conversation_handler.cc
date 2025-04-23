@@ -101,6 +101,11 @@ bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
   return false;
 }
 
+void AssociatedContentDelegate::GetScreenshots(
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
+  std::move(callback).Run(std::nullopt);
+}
+
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
     const std::string& prompt,
     const std::string& text,
@@ -653,12 +658,17 @@ void ConversationHandler::GetIsRequestInProgress(
 
 void ConversationHandler::SubmitHumanConversationEntry(
     const std::string& input,
-    std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images) {
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  if (uploaded_images && !uploaded_images->empty()) {
+  if (uploaded_files && !uploaded_files->empty() &&
+      std::ranges::any_of(
+          uploaded_files.value(), [](const mojom::UploadedFilePtr& file) {
+            return file->type == mojom::UploadedFileType::kImage ||
+                   file->type == mojom::UploadedFileType::kScreenshot;
+          })) {
     auto* current_model =
         model_service_->GetModel(metadata_->model_key.value_or("").empty()
                                      ? model_service_->GetDefaultModelKey()
@@ -673,7 +683,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_images), false);
+      std::move(uploaded_files), false);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -704,7 +714,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     pending_conversation_entry_ = std::move(turn);
     // Pending entry is added to conversation history when asked for
     // so notify observers.
-    OnHistoryUpdate();
+    OnHistoryUpdate(nullptr);
     return;
   }
   DCHECK(latest_turn->character_type == mojom::CharacterType::HUMAN);
@@ -1280,7 +1290,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   entry->events->push_back(std::move(event));
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
-  OnHistoryUpdate();
+  OnHistoryUpdate(entry.Clone());
 }
 
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
@@ -1373,7 +1383,7 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
       return turn->from_brave_search_SERP;
     });
     if (num_entries != chat_history_.size()) {
-      OnHistoryUpdate();
+      OnHistoryUpdate(nullptr);
     }
     return;
   }
@@ -1475,7 +1485,7 @@ void ConversationHandler::OnGetRefinedPageContent(
   if (last_turn->events && !last_turn->events->empty() &&
       last_turn->events->back()->is_page_content_refine_event()) {
     chat_history_.pop_back();
-    OnHistoryUpdate();
+    OnHistoryUpdate(nullptr);
   } else {
     VLOG(1) << "last entry should be page content refine event";
   }
@@ -1608,20 +1618,20 @@ void ConversationHandler::OnModelDataChanged() {
   OnStateForConversationEntriesChanged();
 }
 
-void ConversationHandler::OnHistoryUpdate() {
+void ConversationHandler::OnHistoryUpdate(mojom::ConversationTurnPtr entry) {
   // TODO(petemill): Provide the updated converation history item so that
   // we don't need to clone every entry.
   for (auto& client : conversation_ui_handlers_) {
-    client->OnConversationHistoryUpdate();
+    client->OnConversationHistoryUpdate(entry ? entry.Clone() : nullptr);
   }
   for (auto& client : untrusted_conversation_ui_handlers_) {
-    client->OnConversationHistoryUpdate();
+    client->OnConversationHistoryUpdate(entry ? entry.Clone() : nullptr);
   }
 }
 
 void ConversationHandler::OnConversationEntryRemoved(
     std::optional<std::string> entry_uuid) {
-  OnHistoryUpdate();
+  OnHistoryUpdate(nullptr);
   if (!entry_uuid.has_value()) {
     return;
   }
@@ -1634,7 +1644,7 @@ void ConversationHandler::OnConversationEntryAdded(
     mojom::ConversationTurnPtr& entry) {
   // Only notify about staged entries once we have the first staged entry
   if (entry->from_brave_search_SERP) {
-    OnHistoryUpdate();
+    OnHistoryUpdate(nullptr);
     return;
   }
   std::optional<std::string> associated_content_value;
@@ -1658,13 +1668,13 @@ void ConversationHandler::OnConversationEntryAdded(
                                           associated_content_value);
       }
     }
-    OnHistoryUpdate();
+    OnHistoryUpdate(nullptr);
     return;
   }
   for (auto& observer : observers_) {
     observer.OnConversationEntryAdded(this, entry, associated_content_value);
   }
-  OnHistoryUpdate();
+  OnHistoryUpdate(entry.Clone());
 }
 
 int ConversationHandler::GetContentUsedPercentage() {
@@ -1818,6 +1828,14 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
 
 size_t ConversationHandler::GetConversationHistorySize() {
   return GetConversationHistory().size();
+}
+
+void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
+  if (associated_content_delegate_) {
+    associated_content_delegate_->GetScreenshots(std::move(callback));
+  } else {
+    std::move(callback).Run(std::nullopt);
+  }
 }
 
 bool ConversationHandler::should_send_page_contents() const {

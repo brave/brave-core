@@ -43,6 +43,10 @@ const std::string& GetActionTypeQuestion(mojom::ActionType action_type);
 EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
     ConversationHandler::GeneratedTextCallback callback);
 
+// Only scales down to target dimension when input bitmap is larger than
+// 1024x768
+SkBitmap ScaleDownBitmap(const SkBitmap& bitmap);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_

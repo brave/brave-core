@@ -127,4 +127,7 @@
 .attachmentWrapper {
   width: 100%;
   padding: var(--leo-spacing-m) var(--leo-spacing-m) 0px var(--leo-spacing-m);
+  max-height: 300px;
+  overflow-y: auto;
+  gap: var(--leo-spacing-m);
 }

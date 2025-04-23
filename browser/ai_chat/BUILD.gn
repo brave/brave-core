@@ -59,6 +59,7 @@ source_set("unit_tests") {
   sources = [
     "ai_chat_throttle_unittest.cc",
     "brave_open_ai_chat_permission_context_unittest.cc",
+    "full_screenshotter_unittest.cc",
     "upload_file_helper_unittest.cc",
   ]
 
@@ -72,6 +73,8 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//components/paint_preview/common/mojom",
+    "//components/services/paint_preview_compositor/public/mojom",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",

@@ -196,14 +196,26 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
   // history
   for (const auto& message : conversation_history) {
-    if (message->uploaded_images) {
-      std::vector<std::string> images;
-      for (const auto& uploaded_image : message->uploaded_images.value()) {
-        images.emplace_back(GetImageDataURL(uploaded_image->image_data));
+    if (message->uploaded_files) {
+      std::vector<std::string> uploaded_images;
+      std::vector<std::string> screenshot_images;
+      for (const auto& uploaded_file : message->uploaded_files.value()) {
+        if (uploaded_file->type == mojom::UploadedFileType::kScreenshot) {
+          screenshot_images.emplace_back(GetImageDataURL(uploaded_file->data));
+        } else if (uploaded_file->type == mojom::UploadedFileType::kImage) {
+          uploaded_images.emplace_back(GetImageDataURL(uploaded_file->data));
+        }
       }
-      conversation.push_back({mojom::CharacterType::HUMAN,
-                              ConversationEventType::UploadImage,
-                              std::move(images)});
+      if (!uploaded_images.empty()) {
+        conversation.push_back({mojom::CharacterType::HUMAN,
+                                ConversationEventType::UploadImage,
+                                std::move(uploaded_images)});
+      }
+      if (!screenshot_images.empty()) {
+        conversation.push_back({mojom::CharacterType::HUMAN,
+                                ConversationEventType::PageScreenshot,
+                                std::move(screenshot_images)});
+      }
     }
     if (message->selected_text.has_value() &&
         !message->selected_text->empty()) {

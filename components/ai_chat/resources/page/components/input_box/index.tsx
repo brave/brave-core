@@ -32,9 +32,11 @@ type Props = Pick<
   | 'isGenerating'
   | 'handleStopGenerating'
   | 'uploadImage'
+  | 'getScreenshots'
   | 'pendingMessageImages'
   | 'removeImage'
   | 'conversationHistory'
+  | 'associatedContentInfo'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -175,7 +177,9 @@ function InputBox(props: InputBoxProps) {
           )}
           <AttachmentButtonMenu
             uploadImage={props.context.uploadImage}
+            getScreenshots={props.context.getScreenshots}
             conversationHistory={props.context.conversationHistory}
+            associatedContentInfo={props.context.associatedContentInfo}
             isMobile={props.context.isMobile}
           />
         </div>

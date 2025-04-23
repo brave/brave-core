@@ -16,6 +16,9 @@ import getAPI from '../api'
 import {
   IGNORE_EXTERNAL_LINK_WARNING_KEY, MAX_IMAGES //
 } from '../../common/constants'
+import {
+  updateConversationHistory, getImageFiles
+} from '../../common/conversation_history_utils'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -26,7 +29,7 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
-export type UploadedImageData = Mojom.UploadedImage
+export type UploadedImageData = Mojom.UploadedFile
 
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
@@ -70,10 +73,11 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
   uploadImage: (useMediaCapture: boolean) => void
+  getScreenshots: () => void
   removeImage: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
-  pendingMessageImages: Mojom.UploadedImage[] | null
+  pendingMessageImages: Mojom.UploadedFile[] | null
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -117,6 +121,7 @@ const defaultContext: ConversationContext = {
   showAttachments: false,
   setShowAttachments: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
+  getScreenshots: () => {},
   removeImage: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
@@ -216,13 +221,24 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   // Initialization
   React.useEffect(() => {
-    async function updateHistory() {
-      const { conversationHistory } =
-        await conversationHandler.getConversationHistory()
-      setPartialContext({
-        conversationHistory,
-        historyInitialized: true
-      })
+    async function updateHistory(entry?: Mojom.ConversationTurn) {
+      if (entry) {
+        // Use the shared utility function to update the history
+        const updatedHistory =
+          updateConversationHistory(context.conversationHistory, entry)
+        setPartialContext({
+          conversationHistory: updatedHistory,
+          historyInitialized: true
+        })
+      } else {
+        // When no entry is provided, fetch the full history
+        const { conversationHistory } =
+          await conversationHandler.getConversationHistory()
+        setPartialContext({
+          conversationHistory,
+          historyInitialized: true
+        })
+      }
     }
 
     async function initialize() {
@@ -516,17 +532,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-  const uploadImage = (useMediaCapture: boolean) => {
-    aiChatContext.uiHandler?.uploadImage(useMediaCapture)
-    .then(({uploadedImages}) => {
-      if (uploadedImages) {
+  const processUploadedImage = (images: Mojom.UploadedFile[]) => {
         const totalUploadedImages = context.conversationHistory.reduce(
-          (total, turn) => total + (turn.uploadedImages?.length || 0),
+          (total, turn) => total +
+            (getImageFiles(turn.uploadedFiles)?.length || 0),
           0
         )
         const currentPendingImages = context.pendingMessageImages?.length || 0
         const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
-        const newImages = uploadedImages.slice(0, Math.max(0, maxNewImages))
+        const newImages = images.slice(0, Math.max(0, maxNewImages))
 
         if (newImages.length > 0) {
           setPartialContext({
@@ -535,6 +549,22 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
               : [...newImages]
           })
         }
+    }
+
+  const getScreenshots = () => {
+    conversationHandler.getScreenshots()
+    .then(({screenshots}) => {
+      if (screenshots) {
+        processUploadedImage(screenshots)
+      }
+    })
+  }
+
+  const uploadImage = (useMediaCapture: boolean) => {
+    aiChatContext.uiHandler?.uploadImage(useMediaCapture)
+    .then(({uploadedImages}) => {
+      if (uploadedImages) {
+        processUploadedImage(uploadedImages)
       }
     })
   }
@@ -645,6 +675,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
     uploadImage,
+    getScreenshots,
     removeImage,
     conversationHandler,
     setGeneratedUrlToBeOpened:

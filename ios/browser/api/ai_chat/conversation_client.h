@@ -34,7 +34,7 @@ class ConversationClient : public mojom::ConversationUI,
 
  protected:
   // mojom::ConversationUI
-  void OnConversationHistoryUpdate() override;
+  void OnConversationHistoryUpdate(mojom::ConversationTurnPtr entry) override;
   void OnAPIRequestInProgress(bool is_request_in_progress) override;
   void OnAPIResponseError(mojom::APIError error) override;
   void OnModelDataChanged(

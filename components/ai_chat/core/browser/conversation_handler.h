@@ -116,6 +116,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     // Signifies whether the content has permission to open a conversation's UI
     // within the browser.
     virtual bool HasOpenAIChatPermission() const;
+    virtual void GetScreenshots(
+        mojom::ConversationHandler::GetScreenshotsCallback callback);
 
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
@@ -259,7 +261,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
-      std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images)
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
       override;
   void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void SubmitHumanConversationEntryWithAction(
@@ -295,6 +297,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentTitleChanged();
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
+  void GetScreenshots(GetScreenshotsCallback callback) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
@@ -425,7 +428,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnModelDataChanged();
   void OnConversationDeleted();
-  void OnHistoryUpdate();
+  void OnHistoryUpdate(mojom::ConversationTurnPtr entry);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();

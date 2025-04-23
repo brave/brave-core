@@ -5,5 +5,9 @@ include_rules = [
 specific_include_rules = {
  "brave_open_ai_chat_permission_context_unittest\.cc": [
     "+brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
+ ],
+ "full_screenshotter_unittest\.cc" : [
+    "+components/paint_preview/common/mojom",
+    "+content/test",
  ]
 }

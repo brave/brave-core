@@ -29,6 +29,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -473,9 +474,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
-  auto uploaded_images = CreateSampleUploadedImages(3);
-  constexpr char kTestPrompt[] = "Tell the user what is in the image?";
-  constexpr char kAssistantResponse[] = "It's a lion!";
+  auto uploaded_images =
+      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kImage);
+  auto screenshot_images =
+      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kScreenshot);
+  uploaded_images.insert(uploaded_images.end(),
+                         std::make_move_iterator(screenshot_images.begin()),
+                         std::make_move_iterator(screenshot_images.end()));
+  constexpr char kTestPrompt[] = "Tell the user what these images are?";
+  constexpr char kAssistantResponse[] =
+      "There are images of a lion, a dragon and a stag. And screenshots appear "
+      "to be telling the story of Game of Thrones";
   auto* mock_api_client = GetMockConversationAPIClient();
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
@@ -483,24 +492,32 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
                     const std::string& selected_language,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback) {
-        // Only support one image for now.
-        ASSERT_EQ(conversation.size(), 2u);
+        ASSERT_EQ(conversation.size(), 3u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(
-            conversation[0].content[0],
-            base::StrCat({"data:image/png;base64,",
-                          base::Base64Encode(uploaded_images[0]->image_data)}));
+        for (size_t i = 0; i < 3; ++i) {
+          EXPECT_EQ(
+              conversation[0].content[i],
+              base::StrCat({"data:image/png;base64,",
+                            base::Base64Encode(uploaded_images[i]->data)}));
+        }
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
-        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[1].content[0], kTestPrompt);
-        EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+        for (size_t i = 3; i < uploaded_images.size(); ++i) {
+          EXPECT_EQ(
+              conversation[1].content[i - 3],
+              base::StrCat({"data:image/png;base64,",
+                            base::Base64Encode(uploaded_images[i]->data)}));
+        }
+        EXPECT_EQ(conversation[1].type, ConversationAPIClient::PageScreenshot);
+        EXPECT_EQ(conversation[2].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[2].content[0], kTestPrompt);
+        EXPECT_EQ(conversation[2].type, ConversationAPIClient::ChatMessage);
         std::move(callback).Run(kAssistantResponse);
       });
 
   std::vector<mojom::ConversationTurnPtr> history;
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
+      "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images), false));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
