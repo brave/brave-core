@@ -12,21 +12,21 @@ cargo_crate("lib") {
   crate_name = "arrayvec"
   epoch = "0.7"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/array_string.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/arrayvec.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/arrayvec_impl.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/char.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/errors.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.2/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/array_string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/arrayvec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/arrayvec_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/char.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/arrayvec-0.7.6/src/utils.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.7.2"
+  cargo_pkg_version = "0.7.6"
   cargo_pkg_authors = "bluss"
   cargo_pkg_name = "arrayvec"
   cargo_pkg_description = "A vector with fixed capacity, backed by an array (it can be stored on the stack too). Implements fixed capacity ArrayVec and ArrayString."

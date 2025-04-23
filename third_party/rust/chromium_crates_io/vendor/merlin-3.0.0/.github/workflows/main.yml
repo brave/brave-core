@@ -1,0 +1,65 @@
+name: Test merlin
+
+on:
+  push:
+  pull_request:
+    types: [opened, repoened, synchronize]
+
+jobs:
+  native-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        rust_toolchain: [nightly, stable]
+        os: [ubuntu-latest]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust ${{ matrix.rust_toolchain }}
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: ${{ matrix.rust_toolchain }}
+            profile: minimal
+            default: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+  # Uncomment this when adding support for big-endian targets.
+  # cross-linux-test:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       rust_target:
+  #         - powerpc-unknown-linux-gnu
+  #         - powerpc64-unknown-linux-gnu
+  #   timeout-minutes: 10
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Install Rust nightly
+  #       uses: actions-rs/toolchain@v1
+  #       with:
+  #           toolchain: nightly
+  #           profile: minimal
+  #           target: ${{ matrix.rust_target }}
+  #           default: true
+  #     - name: Build
+  #       uses: actions-rs/cargo@v1
+  #       with:
+  #         # see https://github.com/rust-embedded/cross
+  #         use-cross: true
+  #         command: build
+  #         args: --target ${{ matrix.rust_target }}
+  #     - name: Test
+  #       uses: actions-rs/cargo@v1
+  #       with:
+  #         use-cross: true
+  #         command: test
+  #         args: --target ${{ matrix.rust_target }} -- --test-threads=1
