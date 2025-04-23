@@ -20,7 +20,6 @@ class Browser;
 class GURL;
 class Profile;
 class TabStripModel;
-class SidePanelUI;
 
 namespace sidebar {
 
@@ -72,10 +71,6 @@ class SidebarController : public SidebarService::Observer {
 
   void SetSidebar(Sidebar* sidebar);
   Sidebar* sidebar() const { return sidebar_; }
-  void set_side_panel_ui(SidePanelUI* side_panel_ui) {
-    side_panel_ui_ = side_panel_ui;
-  }
-
   SidebarModel* model() const { return sidebar_model_.get(); }
 
   // SidebarService::Observer overrides:
@@ -96,7 +91,6 @@ class SidebarController : public SidebarService::Observer {
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<SidePanelUI> side_panel_ui_ = nullptr;
   raw_ptr<Sidebar, DanglingUntriaged> sidebar_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;

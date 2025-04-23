@@ -9,6 +9,7 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -70,19 +71,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
   BrowserWindowFeatures_ChromiumImpl::InitPostWindowConstruction(browser);
 
-  const bool is_type_normal =
-      browser->GetType() == BrowserWindowInterface::TYPE_NORMAL;
-  if (is_type_normal) {
+  if (sidebar::CanUseSidebar(browser)) {
     sidebar_controller_ = std::make_unique<sidebar::SidebarController>(browser);
-    sidebar_controller_->set_side_panel_ui(side_panel_ui());
   }
-}
-
-void BrowserWindowFeatures::TearDownPreBrowserViewDestruction() {
-  // As |sidebar_controller_| depends on side_panel_ui(),
-  // reset it before panel ui is gone.
-  if (sidebar_controller_) {
-    sidebar_controller_->set_side_panel_ui(nullptr);
-  }
-  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserViewDestruction();
 }

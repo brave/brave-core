@@ -131,13 +131,17 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 void SidebarController::ActivatePanelItem(
     SidebarItem::BuiltInItemType panel_item) {
   // For panel item activation, SidePanelUI is the single source of truth.
-  CHECK(side_panel_ui_);
+  auto* side_panel_ui = browser_->GetFeatures().side_panel_ui();
+  if (!side_panel_ui) {
+    return;
+  }
+  CHECK(side_panel_ui);
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
-    side_panel_ui_->Close();
+    side_panel_ui->Close();
     return;
   }
 
-  side_panel_ui_->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item));
+  side_panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item));
 }
 
 void SidebarController::DeactivateCurrentPanel() {
