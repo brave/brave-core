@@ -13,7 +13,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -182,8 +182,8 @@ void TabDragController::DetachAndAttachToNewContext(
   auto* browser = BrowserView::GetBrowserViewForNativeWindow(
                       browser_widget->GetNativeWindow())
                       ->browser();
-  SplitViewBrowserData* old_split_view_browser_data =
-      browser->GetFeatures().split_view_browser_data();
+  SplitViewTabTileData* old_split_view_browser_data =
+      browser->GetFeatures().split_view_tab_tile_data();
   if (old_split_view_browser_data) {
     std::vector<tabs::TabHandle> tabs;
     auto* tab_strip_model = browser->tab_strip_model();
@@ -208,7 +208,7 @@ void TabDragController::DetachAndAttachToNewContext(
                               GetAttachedBrowserWidget()->GetNativeWindow())
                               ->browser();
       old_split_view_browser_data->TabsAttachedToNewBrowser(
-          new_browser->GetFeatures().split_view_browser_data());
+          new_browser->GetFeatures().split_view_tab_tile_data());
     }
     return;
   }
@@ -261,7 +261,7 @@ void TabDragController::DetachAndAttachToNewContext(
                             GetAttachedBrowserWidget()->GetNativeWindow())
                             ->browser();
     old_split_view_browser_data->TabsAttachedToNewBrowser(
-        new_browser->GetFeatures().split_view_browser_data());
+        new_browser->GetFeatures().split_view_tab_tile_data());
   }
 }
 
@@ -271,8 +271,8 @@ void TabDragController::DetachAndAttachToNewContext(
   auto* browser = BrowserView::GetBrowserViewForNativeWindow(
                       browser_widget->GetNativeWindow())
                       ->browser();
-  SplitViewBrowserData* split_view_browser_data =
-      browser->GetFeatures().split_view_browser_data();
+  SplitViewTabTileData* split_view_browser_data =
+      browser->GetFeatures().split_view_tab_tile_data();
   if (!split_view_browser_data) {
     return TabDragControllerChromium::ContinueDragging(point_in_screen);
   }

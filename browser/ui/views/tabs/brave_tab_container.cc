@@ -18,7 +18,7 @@
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
@@ -121,7 +121,7 @@ void BraveTabContainer::AddedToWidget() {
 
   auto* browser_window_interface = tab_strip->GetBrowserWindowInterface();
   if (auto* split_view_data =
-          browser_window_interface->GetFeatures().split_view_browser_data()) {
+          browser_window_interface->GetFeatures().split_view_tab_tile_data()) {
     if (!split_view_data_observation_.IsObserving()) {
       split_view_data_observation_.Observe(split_view_data);
     }
@@ -297,7 +297,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 
 void BraveTabContainer::PaintBoundingBoxForTiles(
     gfx::Canvas& canvas,
-    const SplitViewBrowserData* split_view_data) {
+    const SplitViewTabTileData* split_view_data) {
   std::ranges::for_each(split_view_data->tab_tiles(), [&](const auto& tile) {
     PaintBoundingBoxForTile(canvas, tile);
   });
@@ -428,7 +428,7 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
 
   auto* browser_window_interface = tab_strip->GetBrowserWindowInterface();
   if (auto* split_view_data =
-          browser_window_interface->GetFeatures().split_view_browser_data()) {
+          browser_window_interface->GetFeatures().split_view_tab_tile_data()) {
     ui::PaintRecorder recorder(paint_info.context(),
                                paint_info.paint_recording_size(),
                                paint_info.paint_recording_scale_x(),

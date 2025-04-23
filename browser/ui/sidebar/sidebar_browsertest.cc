@@ -23,7 +23,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
@@ -607,7 +607,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
 
   auto* tab_strip_model = browser()->tab_strip_model();
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
+  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
   ASSERT_TRUE(split_view_data);
   ASSERT_TRUE(split_view_data->IsTabTiled(
       tab_strip_model->GetTabAtIndex(0)->GetHandle()));

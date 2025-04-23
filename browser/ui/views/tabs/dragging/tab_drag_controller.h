@@ -9,7 +9,7 @@
 #include <optional>
 #include <vector>
 
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
@@ -51,7 +51,7 @@ class TabDragController : public TabDragControllerChromium {
 
   VerticalTabStripRegionView::ScopedStateResetter vertical_tab_state_resetter_;
 
-  SplitViewBrowserData::OnTabDragEndedClosure on_tab_drag_ended_closure_;
+  SplitViewTabTileData::OnTabDragEndedClosure on_tab_drag_ended_closure_;
 
   base::WeakPtrFactory<TabDragController> weak_factory_{this};
 };

@@ -11,8 +11,8 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data_observer.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -36,7 +36,7 @@ class WebContents;
 namespace chrome {
 
 class BraveBrowserCommandController : public chrome::BrowserCommandController,
-                                      public SplitViewBrowserDataObserver
+                                      public SplitViewTabTileDataObserver
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     ,
                                       public brave_vpn::BraveVPNServiceObserver
@@ -71,7 +71,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
   friend class ::BraveAppMenuModelBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
 
-  // Overriden from SplitViewBrowserDataObserver:
+  // Overriden from SplitViewTabTileDataObserver:
   void OnTileTabs(const TabTile& tile) override;
   void OnWillBreakTile(const TabTile& tile) override;
   void OnWillDeleteBrowserData() override;
@@ -119,8 +119,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController,
 
   CommandUpdaterImpl brave_command_updater_;
 
-  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
-      split_view_browser_data_observation_{this};
+  base::ScopedObservation<SplitViewTabTileData, SplitViewTabTileDataObserver>
+      split_view_tab_tile_data_observation_{this};
 };
 
 }  // namespace chrome

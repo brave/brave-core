@@ -9,7 +9,7 @@
 
 #include "base/run_loop.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -32,8 +32,8 @@ class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
   TabStripModel* tab_strip_model() const {
     return browser()->tab_strip_model();
   }
-  SplitViewBrowserData& data() const {
-    return *browser()->GetFeatures().split_view_browser_data();
+  SplitViewTabTileData& data() const {
+    return *browser()->GetFeatures().split_view_tab_tile_data();
   }
   SplitViewTabStripModelAdapter& adapter() const {
     return *data().tab_strip_model_adapter_.get();

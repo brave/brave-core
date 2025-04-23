@@ -31,11 +31,11 @@ if (!is_android) {
 
 source_set("split_view") {
   sources = [
-    "split_view_browser_data.cc",
-    "split_view_browser_data.h",
-    "split_view_browser_data_observer.h",
     "split_view_tab_strip_model_adapter.cc",
     "split_view_tab_strip_model_adapter.h",
+    "split_view_tab_tile_data.cc",
+    "split_view_tab_tile_data.h",
+    "split_view_tab_tile_data_observer.h",
   ]
 
   deps = [

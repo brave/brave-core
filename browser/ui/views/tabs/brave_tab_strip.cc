@@ -16,7 +16,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -246,7 +246,7 @@ bool BraveTabStrip::IsFirstTabInTile(const Tab* tab) const {
 
 std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
   auto* browser = const_cast<Browser*>(GetBrowser());
-  auto* data = browser->GetFeatures().split_view_browser_data();
+  auto* data = browser->GetFeatures().split_view_tab_tile_data();
   if (!data) {
     return std::nullopt;
   }

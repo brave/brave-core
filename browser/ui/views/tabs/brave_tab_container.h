@@ -9,15 +9,15 @@
 #include <memory>
 #include <optional>
 
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data_observer.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "ui/gfx/canvas.h"
 
 class BraveTabContainer : public TabContainerImpl,
-                          public SplitViewBrowserDataObserver {
+                          public SplitViewTabTileDataObserver {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
   BraveTabContainer(TabContainerController& controller,
@@ -60,7 +60,7 @@ class BraveTabContainer : public TabContainerImpl,
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
 
-  // SplitViewBrowserDataObserver:
+  // SplitViewTabTileDataObserver:
   void OnTileTabs(const TabTile& tile) override;
   void OnDidBreakTile(const TabTile& tile) override;
   void OnSwapTabsInTile(const TabTile& tile) override;
@@ -102,7 +102,7 @@ class BraveTabContainer : public TabContainerImpl,
   void UpdateLayoutOrientation();
 
   void PaintBoundingBoxForTiles(gfx::Canvas& canvas,
-                                const SplitViewBrowserData* split_view_data);
+                                const SplitViewTabTileData* split_view_data);
   void PaintBoundingBoxForTile(gfx::Canvas& canvas, const TabTile& tile);
 
   static gfx::ImageSkia* GetDropArrowImage(
@@ -140,7 +140,7 @@ class BraveTabContainer : public TabContainerImpl,
   // Size we last laid out at.
   gfx::Size last_layout_size_;
 
-  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
+  base::ScopedObservation<SplitViewTabTileData, SplitViewTabTileDataObserver>
       split_view_data_observation_{this};
 };
 

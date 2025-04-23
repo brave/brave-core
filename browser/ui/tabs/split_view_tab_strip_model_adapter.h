@@ -13,14 +13,14 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
-class SplitViewBrowserData;
+class SplitViewTabTileData;
 struct TabTile;
 
 // This class observes changes in tabs' index and make other tab that are paired
 // with the changed tab be synchronized.
 class SplitViewTabStripModelAdapter : public TabStripModelObserver {
  public:
-  SplitViewTabStripModelAdapter(SplitViewBrowserData& split_view_browser_data,
+  SplitViewTabStripModelAdapter(SplitViewTabTileData& split_view_browser_data,
                                 TabStripModel* model);
   ~SplitViewTabStripModelAdapter() override;
 
@@ -62,7 +62,7 @@ class SplitViewTabStripModelAdapter : public TabStripModelObserver {
   std::vector<std::pair<content::WebContents*, content::WebContents*>>
       tiled_tabs_scheduled_to_be_removed_;
 
-  raw_ref<SplitViewBrowserData> split_view_browser_data_;  // owner
+  raw_ref<SplitViewTabTileData> split_view_tab_tile_data_;  // owner
   raw_ref<TabStripModel, DanglingUntriaged> model_;
 
   bool is_in_tab_dragging_ = false;

@@ -8,7 +8,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -49,7 +49,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
-    split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
+    split_view_tab_tile_data_ = std::make_unique<SplitViewTabTileData>(browser);
   }
 }
 

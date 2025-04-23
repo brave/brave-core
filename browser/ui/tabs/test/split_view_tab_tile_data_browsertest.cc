@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 
 #include <memory>
 
@@ -17,14 +17,14 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
+class SplitViewTabTileDataBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewBrowserDataBrowserTest()
+  SplitViewTabTileDataBrowserTest()
       : feature_list_(tabs::features::kBraveSplitView) {}
-  ~SplitViewBrowserDataBrowserTest() override = default;
+  ~SplitViewTabTileDataBrowserTest() override = default;
 
-  SplitViewBrowserData& data() {
-    return *browser()->GetFeatures().split_view_browser_data();
+  SplitViewTabTileData& data() {
+    return *browser()->GetFeatures().split_view_tab_tile_data();
   }
 
   tabs::TabModel* CreateTabModel() {
@@ -43,7 +43,7 @@ class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, TileTabs_AddsTile) {
+IN_PROC_BROWSER_TEST_F(SplitViewTabTileDataBrowserTest, TileTabs_AddsTile) {
   auto* tab_1 = CreateTabModel();
   auto* tab_2 = CreateTabModel();
   EXPECT_FALSE(data().IsTabTiled(tab_1->GetHandle()));
@@ -55,7 +55,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, TileTabs_AddsTile) {
   EXPECT_TRUE(data().IsTabTiled(tab_2->GetHandle()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, BreakTile_RemovesTile) {
+IN_PROC_BROWSER_TEST_F(SplitViewTabTileDataBrowserTest, BreakTile_RemovesTile) {
   auto* tab_1 = CreateTabModel();
   auto* tab_2 = CreateTabModel();
   data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
@@ -73,7 +73,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, BreakTile_RemovesTile) {
   EXPECT_FALSE(data().IsTabTiled(tab_2->GetHandle()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, FindTabTile) {
+IN_PROC_BROWSER_TEST_F(SplitViewTabTileDataBrowserTest, FindTabTile) {
   auto* tab_1 = CreateTabModel();
   auto* tab_2 = CreateTabModel();
   data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});

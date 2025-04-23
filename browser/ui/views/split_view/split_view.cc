@@ -132,7 +132,7 @@ SplitView::SplitView(Browser& browser,
       split_view_separator_));
 
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   CHECK(split_view_browser_data);
   split_view_observation_.Observe(split_view_browser_data);
 }
@@ -141,7 +141,7 @@ SplitView::~SplitView() = default;
 
 bool SplitView::IsSplitViewActive() const {
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   return split_view_browser_data->GetTile(GetActiveTabHandle()).has_value();
 }
 
@@ -323,7 +323,7 @@ bool SplitView::IsWebContentsTiled(content::WebContents* contents) const {
   }
   const auto tab_handle =
       browser_->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle();
-  return browser_->GetFeatures().split_view_browser_data()->IsTabTiled(
+  return browser_->GetFeatures().split_view_tab_tile_data()->IsTabTiled(
       tab_handle);
 }
 
@@ -339,7 +339,7 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
   }
 
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   auto get_tab_handle = [this, &get_index_of](content::WebContents* contents) {
     return browser_->tab_strip_model()
         ->GetTabAtIndex(get_index_of(contents))
@@ -371,7 +371,7 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
 
 void SplitView::UpdateContentsWebViewVisual() {
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   if (!split_view_browser_data) {
     return;
   }
@@ -382,7 +382,7 @@ void SplitView::UpdateContentsWebViewVisual() {
 
 void SplitView::UpdateContentsWebViewBorder() {
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   if (!split_view_browser_data) {
     return;
   }
@@ -456,7 +456,7 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
 #endif
 
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   DCHECK(split_view_browser_data);
 
   auto active_tab_handle = GetActiveTabHandle();
@@ -534,7 +534,7 @@ void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
 void SplitView::UpdateSecondaryReaderModeToolbarVisibility() {
   auto active_tab_handle = GetActiveTabHandle();
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
     if (tile->first == active_tab_handle) {
       secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->second));
@@ -557,7 +557,7 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
   ReaderModeToolbarView* primary_toolbar = browser_view->reader_mode_toolbar();
 
   auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
+      browser_->GetFeatures().split_view_tab_tile_data();
   if (split_view_browser_data &&
       split_view_browser_data->IsTabTiled(GetActiveTabHandle())) {
     // We need to swap the WebContents of the toolbars because, when the active

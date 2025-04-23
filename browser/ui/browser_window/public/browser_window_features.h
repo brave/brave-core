@@ -9,7 +9,7 @@
 #include <memory>
 
 class BraveVPNController;
-class SplitViewBrowserData;
+class SplitViewTabTileData;
 
 // This file doesn't include header file for BrowserWindowFeatures_ChromiumImpl
 // because this file only could be included at the bottom of
@@ -28,8 +28,8 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
 
   BraveVPNController* brave_vpn_controller();
-  SplitViewBrowserData* split_view_browser_data() {
-    return split_view_browser_data_.get();
+  SplitViewTabTileData* split_view_tab_tile_data() {
+    return split_view_tab_tile_data_.get();
   }
 
  protected:
@@ -37,7 +37,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 
  private:
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
-  std::unique_ptr<SplitViewBrowserData> split_view_browser_data_;
+  std::unique_ptr<SplitViewTabTileData> split_view_tab_tile_data_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

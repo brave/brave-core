@@ -14,7 +14,7 @@
 #include "base/timer/timer.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
