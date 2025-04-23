@@ -216,11 +216,15 @@ extension URL {
     return components.url ?? self
   }
 
-  /// Returns the ETLD+1 of the URL, unless URL is IPV6 or does not contain a `.`.
-  /// For example, for the URL www.bbc.co.uk, the base domain would be bbc.co.uk.
-  /// The base domain includes the public suffix (co.uk) + one level down (bbc).
-  /// - returns The eTLD+1 string for the given URL.
-  public var baseDomain: String? {
+  /// Returns the base domain from a given hostname unless URL is IPV6 or does not
+  /// contain a `.`. The base domain name is defined as the public domain suffix
+  /// with the base private domain attached to the front. For example, for the
+  /// URL www.bbc.co.uk, the base domain would be bbc.co.uk. The base domain
+  /// includes the public suffix (co.uk) + one level down (bbc).
+  /// - parameter fallbackToETLDPlusOne: if it fallsback to eTLD+1
+  ///   if the registry is empty
+  /// - returns The base domain string for the given host name.
+  public func baseDomain(fallbackToETLDPlusOne: Bool) -> String? {
     guard !isIPv6, let host = host else { return nil }
 
     // If this is just a hostname and not a FQDN, use the entire hostname.
@@ -228,8 +232,27 @@ extension URL {
       return host
     }
 
-    let etldPlusOne = (self as NSURL).etldPlusOne
-    return etldPlusOne.isEmpty ? nil : etldPlusOne
+    let registry = (self as NSURL).domainAndRegistry
+    if !registry.isEmpty {
+      return registry
+    }
+
+    if fallbackToETLDPlusOne {
+      // fallback to eTLD+1 if domainAndRegistry is empty
+      let etldPlusOne = (self as NSURL).etldPlusOne
+      return etldPlusOne.isEmpty ? nil : etldPlusOne
+    }
+    return nil
+  }
+
+  /// Returns the base domain from a given hostname unless URL is IPV6 or does not
+  /// contain a `.`. The base domain name is defined as the public domain suffix
+  /// with the base private domain attached to the front. For example, for the
+  /// URL www.bbc.co.uk, the base domain would be bbc.co.uk. The base domain
+  /// includes the public suffix (co.uk) + one level down (bbc).
+  /// - returns The eTLD+1 string for the given URL.
+  public var baseDomain: String? {
+    baseDomain(fallbackToETLDPlusOne: true)
   }
 
   /// Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
