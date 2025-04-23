@@ -419,6 +419,8 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_remoteexec: this.useRemoteExec,
+    use_reclient: this.useRemoteExec,
+    use_siso: false,
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),

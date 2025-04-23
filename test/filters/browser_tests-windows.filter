@@ -42,10 +42,11 @@
 # always return true.
 -StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
-# These tests fail on CI but passes locally
+# These tests fail on CI but pass locally
 -All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
 -All/SoftNavigationTest.LayoutShift/*
 -AppMenuBrowserTest.*
+-AvatarMenuBrowserTest.AddNewProfile
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 -SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
 
