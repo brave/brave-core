@@ -1,21 +1,15 @@
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 
 #include <string>
 #include <utility>
 
-#include "base/check.h"
-#include "base/logging.h"
 #include "base/strings/escape.h"
 #include "base/strings/stringprintf.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -24,26 +18,26 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/favicon_source.h"
+#include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/ios/browser/ui/webui/favicon_source.h"
+#include "brave/ios/browser/ui/webui/untrusted_sanitized_image_source.h"
+#include "brave/ios/web/webui/brave_url_data_source_ios.h"
+#include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
+#include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/url_data_source.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_ui.h"
-#include "content/public/browser/web_ui_data_source.h"
-#include "content/public/common/url_constants.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/components/webui/web_ui_url_constants.h"
+#include "ios/web/public/web_state.h"
+#include "ios/web/public/webui/url_data_source_ios.h"
+#include "ios/web/public/webui/web_ui_ios.h"
+#include "ios/web/public/webui/web_ui_ios_data_source.h"
+#include "ios/web/web_state/web_state_impl.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
-#else
-#include "chrome/browser/ui/browser.h"
-#endif
 
 namespace {
 constexpr char kURLLearnMoreBraveSearchLeo[] =
@@ -53,7 +47,7 @@ constexpr char kURLLearnMoreBraveSearchLeo[] =
 // Implments the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
-  UIHandler(content::WebUI* web_ui,
+  UIHandler(web::WebUIIOS* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
       : web_ui_(web_ui), receiver_(this, std::move(receiver)) {}
   UIHandler(const UIHandler&) = delete;
@@ -63,24 +57,15 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   // ai_chat::mojom::UntrustedConversationUIHandler
   void OpenLearnMoreAboutBraveSearchWithLeo() override {
-    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
-      return;
-    }
     OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
   }
 
   void OpenSearchURL(const std::string& search_query) override {
-    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
-      return;
-    }
     OpenURL(GURL("https://search.brave.com/search?q=" +
                  base::EscapeQueryParamValue(search_query, true)));
   }
 
   void OpenURLFromResponse(const GURL& url) override {
-    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
-      return;
-    }
     if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
       return;
     }
@@ -89,21 +74,26 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
-    // Route the receiver to the parent frame
-    auto* rfh = web_ui_->GetWebContents()->GetPrimaryMainFrame();
-    if (!rfh) {
+    auto* web_state = web_ui_->GetWebState();
+    if (!web_state) {
       return;
     }
 
+    // Route the receiver to the parent frame
     // We should not be embedded on a non-WebUI page
-    CHECK(rfh->GetWebUI());
+    auto* main_web_ui =
+        static_cast<web::WebStateImpl*>(web_state)->GetMainWebUI();
+    if (!main_web_ui) {
+      return;
+    }
 
     AIChatUI* ai_chat_ui_controller =
-        rfh->GetWebUI()->GetController()->GetAs<AIChatUI>();
+        static_cast<AIChatUI*>(main_web_ui->GetController());
     // We should not be embedded on any non AIChatUI page
     CHECK(ai_chat_ui_controller);
 
-    ai_chat_ui_controller->BindInterface(std::move(parent_ui_frame_receiver));
+    ai_chat_ui_controller->BindInterfaceParentUIFrame(
+        std::move(parent_ui_frame_receiver));
   }
 
  private:
@@ -112,56 +102,29 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
 
-#if !BUILDFLAG(IS_ANDROID)
-    Browser* browser =
-        ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
-    browser->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-         ui::PAGE_TRANSITION_LINK, false},
-        /*navigation_handle_callback=*/{});
-#else
-    // We handle open link different on Android as we need to close the chat
-    // window because it's always full screen
-    ai_chat::OpenURL(url.spec());
-#endif
+    web_ui_->GetWebState()->OpenURL({
+        url,
+        web::Referrer(),
+        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui::PAGE_TRANSITION_LINK,
+        false,
+    });
   }
 
-  raw_ptr<content::WebUI> web_ui_ = nullptr;
+  raw_ptr<web::WebUIIOS> web_ui_ = nullptr;
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
 };
 
 }  // namespace
 
-bool AIChatUntrustedConversationUIConfig::IsWebUIEnabled(
-    content::BrowserContext* browser_context) {
-  // Only enabled if we have a valid service
-  return (ai_chat::AIChatServiceFactory::GetForBrowserContext(
-              browser_context) != nullptr);
-}
-
-std::unique_ptr<content::WebUIController>
-AIChatUntrustedConversationUIConfig::CreateWebUIController(
-    content::WebUI* web_ui,
-    const GURL& url) {
-  return std::make_unique<AIChatUntrustedConversationUI>(web_ui);
-}
-
-AIChatUntrustedConversationUIConfig::AIChatUntrustedConversationUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme,
-                  kAIChatUntrustedConversationUIHost) {}
-
-AIChatUntrustedConversationUIConfig::~AIChatUntrustedConversationUIConfig() =
-    default;
-
 AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
-    content::WebUI* web_ui)
-    : ui::MojoWebUIController(web_ui) {
+    web::WebUIIOS* web_ui,
+    const GURL& url)
+    : web::WebUIIOSController(web_ui, url.host()) {
   // Create a URLDataSource and add resources.
-  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
-      web_ui->GetWebContents()->GetBrowserContext(),
-      kAIChatUntrustedConversationUIURL);
-  webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
-                              IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
+  BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
+      web_ui, url.host(), kAiChatUiGenerated,
+      IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
   source->AddLocalizedStrings(webui::kAiChatStrings);
 
@@ -177,38 +140,66 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' blob: chrome-untrusted://resources "
-      "chrome-untrusted://image chrome-untrusted://favicon2;");
+      "chrome-untrusted://image;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
-      absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
+      base::StringPrintf("frame-ancestors %s;", kAIChatUIURL));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
-  Profile* profile = Profile::FromWebUI(web_ui);
-  content::URLDataSource::Add(profile,
-                              std::make_unique<FaviconSource>(
-                                  profile, chrome::FaviconUrlFormat::kFavicon2,
-                                  /*serve_untrusted=*/true));
-  content::URLDataSource::Add(
-      profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+  //  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
+
+  // TODO: Fix
+  //  content::URLDataSource::Add(
+  //      profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+
+  // Bind Mojom Interface
+  web_ui->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->AddUntrustedInterface(
+          url,
+          base::BindRepeating(
+              &AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler,
+              base::Unretained(this)));
+
+  web_ui->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->AddUntrustedInterface(
+          url,
+          base::BindRepeating(&AIChatUntrustedConversationUI::
+                                  BindInterfaceUntrustedConversationHandler,
+                              base::Unretained(this)));
 }
 
-AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
+AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() {
+  const auto url = GURL(base::StrCat(
+      {kChromeUIUntrustedScheme, url::kStandardSchemeSeparator, GetHost()}));
+  web_ui()
+      ->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->RemoveUntrustedInterface(
+          url, ai_chat::mojom::UntrustedConversationHandler::Name_);
+  web_ui()
+      ->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->RemoveUntrustedInterface(url,
+                                 ai_chat::mojom::UntrustedUIHandler::Name_);
+}
 
-void AIChatUntrustedConversationUI::BindInterface(
+void AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
   ui_handler_ = std::make_unique<UIHandler>(web_ui(), std::move(receiver));
 }
 
-void AIChatUntrustedConversationUI::BindInterface(
+void AIChatUntrustedConversationUI::BindInterfaceUntrustedConversationHandler(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
         receiver) {
   // Get conversation from URL
   std::string_view conversation_uuid = ai_chat::ConversationUUIDFromURL(
-      web_ui()->GetRenderFrameHost()->GetLastCommittedURL());
+      web_ui()->GetWebState()->GetLastCommittedURL());
   DVLOG(2) << "Binding conversation frame for conversation uuid:"
            << conversation_uuid;
   if (conversation_uuid.empty()) {
@@ -216,8 +207,8 @@ void AIChatUntrustedConversationUI::BindInterface(
   }
 
   ai_chat::AIChatService* service =
-      ai_chat::AIChatServiceFactory::GetForBrowserContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
+      ai_chat::AIChatServiceFactory::GetForProfile(
+          ProfileIOS::FromWebUIIOS(web_ui()));
 
   if (!service) {
     return;
@@ -238,5 +229,3 @@ void AIChatUntrustedConversationUI::BindInterface(
           },
           std::move(receiver)));
 }
-
-WEB_UI_CONTROLLER_TYPE_IMPL(AIChatUntrustedConversationUI)
