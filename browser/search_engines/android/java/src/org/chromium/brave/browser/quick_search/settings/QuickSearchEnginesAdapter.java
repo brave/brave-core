@@ -16,8 +16,8 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.quick_search.R;
 import org.chromium.brave.browser.quick_search.ItemTouchHelperCallback;
+import org.chromium.brave.browser.quick_search.R;
 import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
 
 import java.util.Collections;

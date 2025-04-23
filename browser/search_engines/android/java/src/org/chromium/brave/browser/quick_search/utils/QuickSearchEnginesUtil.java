@@ -9,15 +9,15 @@ import android.content.Context;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.brave.browser.SharedPreferencesHelper;
 import org.chromium.brave.browser.quick_search.R;
+import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.regional_capabilities.RegionalCapabilitiesServiceFactory;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
-import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
-import org.chromium.brave.browser.SharedPreferencesHelper;
 import org.chromium.components.regional_capabilities.RegionalCapabilitiesService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -248,7 +248,7 @@ public class QuickSearchEnginesUtil {
             TemplateUrl defaultSearchEngineTemplateUrl) {
         // Get previous default search engine
         TemplateUrl previousDSETemplateUrl =
-                BraveSearchEngineUtils.getTemplateUrlByShortName(profile, getPreviousDSE());
+                BraveSearchEngineAdapter.getTemplateUrlByShortName(profile, getPreviousDSE(), null);
 
         // Create new ordered map and remove existing entries
         Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();

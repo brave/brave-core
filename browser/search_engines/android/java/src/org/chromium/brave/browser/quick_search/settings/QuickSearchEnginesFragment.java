@@ -25,8 +25,8 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
-import org.chromium.brave.browser.quick_search.R;
 import org.chromium.brave.browser.quick_search.ItemTouchHelperCallback;
+import org.chromium.brave.browser.quick_search.R;
 import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
@@ -51,6 +51,11 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.quick_search_engines));
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle bundle, String s) {
+        setHasOptionsMenu(true);
     }
 
     @Override

@@ -74,6 +74,11 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesCallback;
+import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesFragment;
+import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesModel;
+import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
+import org.chromium.brave.browser.quick_search.views.QuickSearchEnginesViewAdapter;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -157,11 +162,6 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesCallback;
-import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesFragment;
-import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesModel;
-import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
-import org.chromium.brave.browser.quick_search.views.QuickSearchEnginesViewAdapter;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
@@ -2612,7 +2612,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         mQuickSearchEnginesView =
-                getLayoutInflater().inflate(R.layout.quick_serach_engines_view, null);
+                getLayoutInflater().inflate(R.layout.quick_search_engines_view, null);
         RecyclerView recyclerView =
                 (RecyclerView)
                         mQuickSearchEnginesView.findViewById(

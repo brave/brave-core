@@ -5,37 +5,69 @@
 
 # Import required GN build configuration files
 import("//build/config/android/rules.gni")  # Android build rules
+import("//build/config/locales.gni")
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
 
 # Define an Android library target for the customize menu feature
 android_library("java") {
   # Java source files to compile
-  sources = [ 
-      "java/src/org/chromium/brave/browser/quick_search/ItemTouchHelperCallback.java",
-      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesAdapter.java",
-      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesCallback.java",
-      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesFragment.java",
-      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesModel.java",
-      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesSettingsViewHolder.java",
-      "java/src/org/chromium/brave/browser/quick_search/utils/QuickSearchEnginesUtil.java",
-      "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewHolder.java",
-      "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewAdapter.java",
-      "java/src/org/chromium/brave/browser/SharedPreferencesHelper.java",
-            ]
+  sources = [
+    "java/src/org/chromium/brave/browser/SharedPreferencesHelper.java",
+    "java/src/org/chromium/brave/browser/quick_search/ItemTouchHelperCallback.java",
+    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesAdapter.java",
+    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesCallback.java",
+    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesFragment.java",
+    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesModel.java",
+    "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesSettingsViewHolder.java",
+    "java/src/org/chromium/brave/browser/quick_search/utils/QuickSearchEnginesUtil.java",
+    "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewAdapter.java",
+    "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewHolder.java",
+  ]
 
   # Dependencies required by this library
   deps = [
+    ":java_resources",
     "//base:supplier_java",
-    "//chrome/browser/settings:java",
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+    "//brave/third_party/android_deps:com_google_code_gson_gson_java",
     "//chrome/browser/profiles/android:java",
+    "//chrome/browser/regional_capabilities/android:java",
+    "//chrome/browser/search_engines/android:java",
+    "//chrome/browser/settings:java",
+    "//components/regional_capabilities/android:java",
     "//components/search_engines/android:java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
-    "//components/regional_capabilities/android:java",
-    "//chrome/browser/regional_capabilities/android:java",
-    "//chrome/browser/search_engines/android:java",
   ]
 
   # Package name for generated R.java resource class
   resources_package = "org.chromium.brave.browser.quick_search"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/drawable/ic_leo_icon.xml",
+    "java/res/drawable/ic_microsoft_color.xml",
+    "java/res/drawable/ic_social_youtube.xml",
+    "java/res/drawable/ic_startpage_color.xml",
+    "java/res/layout/fragment_quick_search.xml",
+    "java/res/layout/quick_search_engines_view.xml",
+    "java/res/layout/quick_search_engines_view_item.xml",
+    "java/res/layout/quick_search_settings_item.xml",
+    "java/res/menu/quick_search_engines_menu.xml",
+  ]
+
+  deps = [ ":java_strings_grd" ]
+}
+
+java_strings_grd("java_strings_grd") {
+  defines = chrome_grit_defines
+  grd_file = "java/strings/android_search_engines_strings.grd"
+  outputs =
+      [ "values/android_search_engines_strings.xml" ] +
+      process_file_template(
+          android_bundle_locales_as_resources,
+          [ "values-{{source_name_part}}/android_search_engines_strings.xml" ])
 }
