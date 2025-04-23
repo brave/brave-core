@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines.settings;
+package org.chromium.brave.browser.quick_search.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,9 +16,9 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.quick_search_engines.ItemTouchHelperCallback;
+import org.chromium.brave.browser.quick_search.R;
+import org.chromium.brave.browser.quick_search.ItemTouchHelperCallback;
+import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,15 +63,15 @@ public class QuickSearchEnginesAdapter
                                 quickSearchEnginesModel);
                     }
                 });
-        if (BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(
+        if (QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(
                 quickSearchEnginesModel.getKeyword())) {
             quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
                     R.drawable.ic_social_youtube);
-        } else if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(
+        } else if (QuickSearchEnginesUtil.BING_SEARCH_ENGINE_KEYWORD.equals(
                 quickSearchEnginesModel.getKeyword())) {
             quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
                     R.drawable.ic_microsoft_color);
-        } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
+        } else if (QuickSearchEnginesUtil.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
                 quickSearchEnginesModel.getKeyword())) {
             quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
                     R.drawable.ic_startpage_color);

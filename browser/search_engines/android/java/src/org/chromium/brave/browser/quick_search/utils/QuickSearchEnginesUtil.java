@@ -3,22 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines.utils;
+package org.chromium.brave.browser.quick_search.utils;
 
 import android.content.Context;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.brave.browser.quick_search.R;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
+import org.chromium.brave.browser.quick_search.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.regional_capabilities.RegionalCapabilitiesServiceFactory;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
-import org.chromium.chrome.browser.util.SharedPreferencesHelper;
+import org.chromium.brave.browser.SharedPreferencesHelper;
 import org.chromium.components.regional_capabilities.RegionalCapabilitiesService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -43,6 +42,12 @@ public class QuickSearchEnginesUtil {
 
     private static final String JAPAN_COUNTRY_CODE = "JP";
     private static final String YAHOO_SEARCH_ENGINE_KEYWORD = "yahoo.co.jp";
+
+    public static final String GOOGLE_SEARCH_ENGINE_KEYWORD = ":g";
+    public static final String YOUTUBE_SEARCH_ENGINE_KEYWORD = ":yt";
+    public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
+    public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
+    public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
 
     /**
      * Saves the provided search engines map to SharedPreferences
@@ -199,7 +204,7 @@ public class QuickSearchEnginesUtil {
     private static void handleYtSearchEngine(
             Map<String, QuickSearchEnginesModel> searchEnginesMap) {
         // If Google search is not present, just add YouTube search
-        if (!searchEnginesMap.containsKey(BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD)) {
+        if (!searchEnginesMap.containsKey(QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_KEYWORD)) {
             addYtQuickSearchEnginesModel(searchEnginesMap);
         } else {
             // Create new map to preserve ordering while adding YouTube after Google
@@ -213,10 +218,10 @@ public class QuickSearchEnginesUtil {
                         quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
 
                 // Add YouTube search right after Google if it's not already present
-                if (BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(
+                if (QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(
                                 quickSearchEnginesModel.getKeyword())
                         && !searchEnginesMap.containsKey(
-                                BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
+                                QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
                     addYtQuickSearchEnginesModel(ytSearchEnginesMap);
                 }
             }
@@ -325,7 +330,7 @@ public class QuickSearchEnginesUtil {
         QuickSearchEnginesModel youtubeSearchEngine =
                 new QuickSearchEnginesModel(
                         youtubeDisplayName,
-                        BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD,
+                        QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD,
                         YOUTUBE_SEARCH_ENGINE_URL,
                         true,
                         QuickSearchEnginesModel.QuickSearchEnginesModelType.SEARCH_ENGINE);

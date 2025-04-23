@@ -1,0 +1,41 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Import required GN build configuration files
+import("//build/config/android/rules.gni")  # Android build rules
+
+# Define an Android library target for the customize menu feature
+android_library("java") {
+  # Java source files to compile
+  sources = [ 
+      "java/src/org/chromium/brave/browser/quick_search/ItemTouchHelperCallback.java",
+      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesAdapter.java",
+      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesCallback.java",
+      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesFragment.java",
+      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesModel.java",
+      "java/src/org/chromium/brave/browser/quick_search/settings/QuickSearchEnginesSettingsViewHolder.java",
+      "java/src/org/chromium/brave/browser/quick_search/utils/QuickSearchEnginesUtil.java",
+      "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewHolder.java",
+      "java/src/org/chromium/brave/browser/quick_search/views/QuickSearchEnginesViewAdapter.java",
+      "java/src/org/chromium/brave/browser/SharedPreferencesHelper.java",
+            ]
+
+  # Dependencies required by this library
+  deps = [
+    "//base:supplier_java",
+    "//chrome/browser/settings:java",
+    "//chrome/browser/profiles/android:java",
+    "//components/search_engines/android:java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//components/regional_capabilities/android:java",
+    "//chrome/browser/regional_capabilities/android:java",
+    "//chrome/browser/search_engines/android:java",
+  ]
+
+  # Package name for generated R.java resource class
+  resources_package = "org.chromium.brave.browser.quick_search"
+}
