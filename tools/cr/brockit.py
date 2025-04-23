@@ -705,7 +705,7 @@ class GitHubIssue(Versioned):
                 raise BadOutcomeException(
                     f'Failed to find milestone for branch {upstream_branch}')
 
-            pr_number = pr_url.split("/", 1)[-1]
+            pr_number = pr_url.rsplit('/', 1)[-1]
             terminal.run([
                 'gh', 'api', '-X', 'PATCH',
                 f'repos/brave/brave-core/issues/{pr_number}', '-F',
