@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switch_values_util.h"
 
-#include <memory>
 #include <string>
-#include <utility>
 
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
@@ -22,17 +20,23 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kFooBarSwitch[] = "foobar";
-
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  bool expected_did_override_command_line_switch;
+  bool did_override_command_line_switch;
 } const kTests[] = {
-    {{kFooBarSwitch, {}}, false},
-    {{variations::switches::kFakeVariationsChannel, {}}, false},
-    {{variations::switches::kFakeVariationsChannel, "FooBar"}, true},
-    {{variations::switches::kVariationsOverrideCountry, {}}, false},
-    {{variations::switches::kVariationsOverrideCountry, "FooBar"}, true}};
+    {.command_line_switch = {"foobar", ""},
+     .did_override_command_line_switch = false},
+    {.command_line_switch = {variations::switches::kFakeVariationsChannel, ""},
+     .did_override_command_line_switch = false},
+    {.command_line_switch = {variations::switches::kFakeVariationsChannel,
+                             "FooBar"},
+     .did_override_command_line_switch = true},
+    {.command_line_switch = {variations::switches::kVariationsOverrideCountry,
+                             ""},
+     .did_override_command_line_switch = false},
+    {.command_line_switch = {variations::switches::kVariationsOverrideCountry,
+                             "FooBar"},
+     .did_override_command_line_switch = true}};
 
 }  // namespace
 
@@ -41,14 +45,11 @@ class BraveAdsDidOverrideCommandLineSwitchValuesUtilTest
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
-    const ParamInfo param = GetParam();
+    test::AppendCommandLineSwitches({GetParam().command_line_switch});
 
-    test::AppendCommandLineSwitches({param.command_line_switch});
-
-    std::unique_ptr<base::FeatureList> feature_list =
-        std::make_unique<base::FeatureList>();
-    feature_list->InitFromCommandLine(param.command_line_switch.value, {});
-    scoped_feature_list_.InitWithFeatureList(std::move(feature_list));
+    scoped_feature_list_.InitFromCommandLine(
+        /*enable_features=*/GetParam().command_line_switch.value,
+        /*disable_features=*/{});
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -57,24 +58,22 @@ class BraveAdsDidOverrideCommandLineSwitchValuesUtilTest
 TEST_P(BraveAdsDidOverrideCommandLineSwitchValuesUtilTest,
        DidOverrideCommandLineSwitchValues) {
   // Act & Assert
-  EXPECT_EQ(GetParam().expected_did_override_command_line_switch,
+  EXPECT_EQ(GetParam().did_override_command_line_switch,
             DidOverrideCommandLineSwitchValues());
 }
 
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
-  const std::string expected_did_override_command_line_switch =
-      test_param.param.expected_did_override_command_line_switch
-          ? "DidOverride"
-          : "DidNotOverride";
+  const std::string did_override_command_line_switch =
+      test_param.param.did_override_command_line_switch ? "DidOverride"
+                                                        : "DidNotOverride";
 
   const std::string sanitized_command_line_switch =
       test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
       "Set$1CommandLineSwitchValuesFor$2",
-      {expected_did_override_command_line_switch,
-       sanitized_command_line_switch},
+      {did_override_command_line_switch, sanitized_command_line_switch},
       nullptr);
 }
 

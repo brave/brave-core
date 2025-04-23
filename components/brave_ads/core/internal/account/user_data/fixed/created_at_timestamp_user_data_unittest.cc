@@ -27,28 +27,24 @@ class BraveAdsCreatedAtTimestampUserDataTest : public test::TestBase {
 };
 
 TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
-       BuildCreatedAtTimestampUserDataForRewardsUser) {
+       BuildCreatedAtTimestampUserData) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
 
-  // Act
-  const base::Value::Dict user_data =
-      BuildCreatedAtTimestampUserData(transaction);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "createdAtTimestamp": "2020-11-18T12:00:00.000Z"
                     })JSON"),
-            user_data);
+            BuildCreatedAtTimestampUserData(transaction));
 }
 
 TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
-       BuildCreatedAtTimestampUserDataForNonRewardsUser) {
+       DoNotBuildCreatedAtTimestampUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -57,12 +53,9 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
 
-  // Act
-  const base::Value::Dict user_data =
-      BuildCreatedAtTimestampUserData(transaction);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildCreatedAtTimestampUserData(transaction),
+              ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

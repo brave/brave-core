@@ -19,12 +19,13 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  bool expected_should_debug;
-} const kTests[] = {{{"rewards", "debug=true"}, true},
-                    {{"rewards", "debug=1"}, true},
-                    {{"rewards", "debug=false"}, false},
-                    {{"rewards", "debug=foobar"}, false},
-                    {{}, false}};
+  bool should_debug;
+} const kTests[] = {
+    {.command_line_switch = {"rewards", "debug=true"}, .should_debug = true},
+    {.command_line_switch = {"rewards", "debug=1"}, .should_debug = true},
+    {.command_line_switch = {"rewards", "debug=false"}, .should_debug = false},
+    {.command_line_switch = {"rewards", "debug=foobar"}, .should_debug = false},
+    {.command_line_switch = {}, .should_debug = false}};
 
 }  // namespace
 
@@ -41,21 +42,20 @@ TEST_P(BraveAdsDebugCommandLineSwitchParserUtilTest,
        ParseDebugCommandLineSwitch) {
   // Act & Assert
   ASSERT_TRUE(GlobalState::HasInstance());
-  EXPECT_EQ(GetParam().expected_should_debug,
+  EXPECT_EQ(GetParam().should_debug,
             GlobalState::GetInstance()->Flags().should_debug);
 }
 
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
-  const std::string expected_should_debug =
-      test_param.param.expected_should_debug ? "ShouldDebug" : "ShouldNotDebug";
+  const std::string should_debug =
+      test_param.param.should_debug ? "ShouldDebug" : "ShouldNotDebug";
 
   const std::string sanitized_command_line_switch =
       test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
-      "$1For$2", {expected_should_debug, sanitized_command_line_switch},
-      nullptr);
+      "$1For$2", {should_debug, sanitized_command_line_switch}, nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

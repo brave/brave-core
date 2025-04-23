@@ -183,19 +183,6 @@ void AdsClientNotifierForTesting::NotifyDidSolveAdaptiveCaptcha() {
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::SimulateOpeningNewTab(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    int http_status_code) {
-  CHECK(!redirect_chains_.contains(tab_id)) << "Tab already open";
-
-  redirect_chains_[tab_id] = redirect_chain;
-
-  SimulateSelectTab(tab_id);
-
-  SimulateNavigateToURL(tab_id, redirect_chain, http_status_code);
-}
-
 void AdsClientNotifierForTesting::SimulateNavigateToURL(
     int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
@@ -209,6 +196,19 @@ void AdsClientNotifierForTesting::SimulateNavigateToURL(
   NotifyTabDidChange(tab_id, redirect_chain, /*is_new_navigation=*/true,
                      /*is_restoring=*/false, is_visible);
   NotifyTabDidLoad(tab_id, http_status_code);
+}
+
+void AdsClientNotifierForTesting::SimulateOpeningNewTab(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    int http_status_code) {
+  CHECK(!redirect_chains_.contains(tab_id)) << "Tab already open";
+
+  redirect_chains_[tab_id] = redirect_chain;
+
+  SimulateSelectTab(tab_id);
+
+  SimulateNavigateToURL(tab_id, redirect_chain, http_status_code);
 }
 
 void AdsClientNotifierForTesting::SimulateSelectTab(int32_t tab_id) {

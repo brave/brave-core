@@ -18,7 +18,7 @@ namespace brave_ads {
 
 class BraveAdsSegmentUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
+TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserData) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
@@ -34,19 +34,15 @@ TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
             BuildSegmentUserData(transaction));
 }
 
-TEST_F(BraveAdsSegmentUserDataTest,
-       DoNotBuildSearchResultAdSegmentUserDataForRewardsUser) {
+TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSearchResultAdSegmentUserData) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kSearchResultAd,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict user_data = BuildSegmentUserData(transaction);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSegmentUserDataTest,
@@ -59,19 +55,20 @@ TEST_F(BraveAdsSegmentUserDataTest,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict user_data = BuildSegmentUserData(transaction);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
-TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfNoTargeting) {
-  // Act
-  const base::Value::Dict user_data = BuildSegmentUserData(/*transaction=*/{});
+TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfNoSegment) {
+  // Arrange
+  TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
+  transaction.segment = "";
 
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

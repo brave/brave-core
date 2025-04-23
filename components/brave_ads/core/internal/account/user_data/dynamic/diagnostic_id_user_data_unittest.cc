@@ -18,35 +18,28 @@ namespace brave_ads {
 
 class BraveAdsDiagnosticIdUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsDiagnosticIdUserDataTest,
-       BuildDiagnosticIdUserDataForRewardsUser) {
+TEST_F(BraveAdsDiagnosticIdUserDataTest, BuildDiagnosticIdUserData) {
   // Arrange
   test::SetProfileStringPrefValue(prefs::kDiagnosticId, test::kDiagnosticId);
 
-  // Act
-  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"
                     })JSON"),
-            user_data);
+            BuildDiagnosticIdUserData());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
-       BuildDiagnosticIdUserDataForNonRewardsUser) {
+       DoNotBuildDiagnosticIdUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   test::SetProfileStringPrefValue(prefs::kDiagnosticId, test::kDiagnosticId);
 
-  // Act
-  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildDiagnosticIdUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
@@ -54,11 +47,8 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   // Arrange
   test::SetProfileStringPrefValue(prefs::kDiagnosticId, "INVALID");
 
-  // Act
-  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildDiagnosticIdUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
@@ -66,11 +56,8 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   // Arrange
   test::SetProfileStringPrefValue(prefs::kDiagnosticId, "");
 
-  // Act
-  const base::Value::Dict user_data = BuildDiagnosticIdUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildDiagnosticIdUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

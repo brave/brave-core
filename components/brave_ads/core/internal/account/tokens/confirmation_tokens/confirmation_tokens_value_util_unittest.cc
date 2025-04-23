@@ -70,15 +70,8 @@ TEST_F(BraveAdsConfirmationTokenValueUtilTest, ConfirmationTokensFromValue) {
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest,
        EmptyConfirmationTokensFromValue) {
-  // Arrange
-  const base::Value::List list = base::test::ParseJsonList("[]");
-
-  // Act
-  const ConfirmationTokenList confirmation_tokens =
-      ConfirmationTokensFromValue(list);
-
-  // Assert
-  EXPECT_THAT(confirmation_tokens, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(ConfirmationTokensFromValue({}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

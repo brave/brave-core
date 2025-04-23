@@ -100,17 +100,13 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   const ConversionInfo conversion =
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 
-  // Act
-  const base::Value::Dict user_data =
-      BuildConversionActionTypeUserData(conversion);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "action": "view"
                     })JSON"),
-            user_data);
+            BuildConversionActionTypeUserData(conversion));
 }
 
 }  // namespace brave_ads

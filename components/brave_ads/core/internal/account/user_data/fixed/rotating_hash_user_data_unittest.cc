@@ -27,8 +27,7 @@ class BraveAdsRotatingHashUserDataTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsRotatingHashUserDataTest,
-       BuildRotatingHashUserDataForRewardsUser) {
+TEST_F(BraveAdsRotatingHashUserDataTest, BuildRotatingHashUserData) {
   // Arrange
   test::MockDeviceId();
 
@@ -37,16 +36,13 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "rotatingHash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
                     })JSON"),
-            user_data);
+            BuildRotatingHashUserData(transaction));
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
@@ -61,11 +57,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
@@ -76,11 +69,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

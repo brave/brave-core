@@ -24,14 +24,13 @@ base::Value::Dict BuildRotatingHashUserData(
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  if (std::optional<std::string> rotating_hash =
-          BuildRotatingHash(transaction)) {
-    user_data.Set(kRotatingHashKey, *rotating_hash);
+  std::optional<std::string> rotating_hash = BuildRotatingHash(transaction);
+  if (!rotating_hash) {
+    // Invalid rotating hash.
+    return {};
   }
 
-  return user_data;
+  return base::Value::Dict().Set(kRotatingHashKey, *rotating_hash);
 }
 
 }  // namespace brave_ads

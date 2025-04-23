@@ -20,14 +20,10 @@ base::Value::Dict BuildBuildChannelUserData() {
     return {};
   }
 
-  base::Value::Dict user_data;
-
   const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   CHECK(!build_channel.name.empty());
 
-  user_data.Set(kBuildChannelKey, build_channel.name);
-
-  return user_data;
+  return base::Value::Dict().Set(kBuildChannelKey, build_channel.name);
 }
 
 }  // namespace brave_ads

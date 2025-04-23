@@ -26,11 +26,8 @@ TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParsePing) {
 }
 
 TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, DoNotParseMissingPing) {
-  // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict("{}");
-
   // Act & Assert
-  EXPECT_FALSE(json::reader::ParsePing(dict));
+  EXPECT_FALSE(json::reader::ParsePing({}));
 }
 
 TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
@@ -73,11 +70,8 @@ TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
 
 TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest,
        DoNotParseMissingTokenIssuers) {
-  // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict("{}");
-
   // Act & Assert
-  EXPECT_FALSE(json::reader::ParseTokenIssuers(dict));
+  EXPECT_FALSE(json::reader::ParseTokenIssuers({}));
 }
 
 }  // namespace brave_ads

@@ -20,14 +20,17 @@ base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  if (transaction.ad_type != mojom::AdType::kSearchResultAd &&
-      !transaction.segment.empty()) {
-    user_data.Set(kSegmentKey, transaction.segment);
+  if (transaction.ad_type == mojom::AdType::kSearchResultAd) {
+    // Unsupported ad type.
+    return {};
   }
 
-  return user_data;
+  if (transaction.segment.empty()) {
+    // Invalid segment.
+    return {};
+  }
+
+  return base::Value::Dict().Set(kSegmentKey, transaction.segment);
 }
 
 }  // namespace brave_ads

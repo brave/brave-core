@@ -18,7 +18,7 @@ namespace brave_ads {
 
 class BraveAdsSummaryUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
+TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserData) {
   // Arrange
   PaymentTokenList payment_tokens;
 
@@ -41,10 +41,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
                               mojom::AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
-  // Act
-  const base::Value::Dict user_data = BuildSummaryUserData(payment_tokens);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
@@ -61,34 +58,28 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
                       ]
                     }
                 )JSON"),
-            user_data);
+            BuildSummaryUserData(payment_tokens));
 }
 
-TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
+TEST_F(BraveAdsSummaryUserDataTest,
+       DoNotBuildSummaryUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/3);
 
-  // Act
-  const base::Value::Dict user_data = BuildSummaryUserData(payment_tokens);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildSummaryUserData(payment_tokens), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataIfNoPaymentTokens) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildSummaryUserData(/*payment_tokens=*/{});
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "totals": []
                     })JSON"),
-            user_data);
+            BuildSummaryUserData(/*payment_tokens=*/{}));
 }
 
 }  // namespace brave_ads

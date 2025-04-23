@@ -25,7 +25,7 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestUtilTest, ParseNonce) {
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestUtilTest, DoNotParseMissingNonce) {
   // Act & Assert
-  EXPECT_FALSE(ParseNonce(base::test::ParseJsonDict("{}")));
+  EXPECT_FALSE(ParseNonce({}));
 }
 
 }  // namespace brave_ads

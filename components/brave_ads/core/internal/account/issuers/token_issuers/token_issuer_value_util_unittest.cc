@@ -81,11 +81,9 @@ TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersFromValue) {
 }
 
 TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersFromValue) {
-  // Arrange
-  const base::Value::List list = base::test::ParseJsonList("[]");
-
   // Act
-  std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(list);
+  const std::optional<TokenIssuerList> token_issuers =
+      TokenIssuersFromValue({});
 
   // Assert
   EXPECT_THAT(*token_issuers, ::testing::IsEmpty());

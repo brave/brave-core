@@ -49,11 +49,8 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensToValue) {
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, EmptyPaymentTokensToValue) {
-  // Act
-  const base::Value::List list = PaymentTokensToValue({});
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonList("[]"), list);
+  // Act & Assert
+  EXPECT_THAT(PaymentTokensToValue({}), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensFromValue) {
@@ -69,14 +66,8 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensFromValue) {
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, EmptyPaymentTokensFromValue) {
-  // Arrange
-  const base::Value::List list = base::test::ParseJsonList("[]");
-
-  // Act
-  const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);
-
-  // Assert
-  EXPECT_THAT(payment_tokens, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(PaymentTokensFromValue({}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -22,13 +22,9 @@ base::Value::Dict BuildPageLandUserData(int http_status_code) {
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  user_data.Set(kHttpResponseStatusKey,
-                HttpStatusCodeToString(http_status_code)
-                    .value_or(kNonsensicalHttpStatusCode));
-
-  return user_data;
+  return base::Value::Dict().Set(kHttpResponseStatusKey,
+                                 HttpStatusCodeToString(http_status_code)
+                                     .value_or(kNonsensicalHttpStatusCode));
 }
 
 }  // namespace brave_ads

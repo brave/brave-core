@@ -16,33 +16,26 @@ namespace brave_ads {
 
 class BraveAdsSystemTimestampUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsSystemTimestampUserDataTest,
-       BuildSystemTimestampUserDataForRewardsUser) {
+TEST_F(BraveAdsSystemTimestampUserDataTest, BuildSystemTimestampUserData) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("November 18 2020 12:34:56.789"));
 
-  // Act
-  const base::Value::Dict user_data = BuildSystemTimestampUserData();
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "systemTimestamp": "2020-11-18T12:00:00.000Z"
                     })JSON"),
-            user_data);
+            BuildSystemTimestampUserData());
 }
 
 TEST_F(BraveAdsSystemTimestampUserDataTest,
-       BuildSystemTimestampUserDataForNonRewardsUser) {
+       DoNotBuildSystemTimestampUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  const base::Value::Dict user_data = BuildSystemTimestampUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildSystemTimestampUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

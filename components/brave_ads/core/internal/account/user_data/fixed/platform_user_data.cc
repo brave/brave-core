@@ -21,14 +21,13 @@ base::Value::Dict BuildPlatformUserData() {
     return {};
   }
 
-  base::Value::Dict user_data;
-
   const std::string platform_name = PlatformHelper::GetInstance().GetName();
-  if (!platform_name.empty()) {
-    user_data.Set(kPlatformKey, platform_name);
+  if (platform_name.empty()) {
+    // Invalid platform name.
+    return {};
   }
 
-  return user_data;
+  return base::Value::Dict().Set(kPlatformKey, platform_name);
 }
 
 }  // namespace brave_ads

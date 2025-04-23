@@ -33,11 +33,7 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
 
   const RewardInfo reward = test::BuildReward(*confirmation);
 
-  // Act
-  const base::Value::Dict reward_confirmation_payload =
-      BuildRewardConfirmationPayload(reward);
-
-  // Assert
+  // Act &s Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
@@ -46,7 +42,7 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
                       ],
                       "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="
                     })JSON"),
-            reward_confirmation_payload);
+            BuildRewardConfirmationPayload(reward));
 }
 
 }  // namespace brave_ads
