@@ -1203,7 +1203,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         DesktopWindowStateManager.class,
-                        MultiInstanceManager.class));
+                        MultiInstanceManager.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1253,7 +1254,9 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         ModalDialogManager.class,
                         ThemeColorProvider.class,
-                        UndoBarThrottle.class));
+                        UndoBarThrottle.class,
+                        ObservableSupplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
