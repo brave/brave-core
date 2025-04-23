@@ -28,6 +28,7 @@ public class Migration {
     Preferences.migrateHTTPSUpgradeLevel()
     Preferences.migrateBackgroundSponsoredImages()
     Preferences.migrateBookmarksButtonInToolbar()
+    Preferences.migrateShortcutsButtonOniPad()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -260,6 +261,11 @@ extension Preferences {
       key: "migration.bookmarks-button-in-toolbar",
       default: false
     )
+
+    static let migratedShortcutsButtonOniPad = Option<Bool>(
+      key: "migration.shortcuts-button-on-ipad",
+      default: false
+    )
   }
 
   /// Migrate a given key from `Prefs` into a specific option
@@ -424,6 +430,18 @@ extension Preferences {
     }
 
     Migration.migratedBookmarksButtonInToolbar.value = true
+  }
+
+  // Migrate new default nil value on iPads to bookmarks button since that was what was always
+  // showing on iPads until the default value was fixed
+  fileprivate class func migrateShortcutsButtonOniPad() {
+    guard !Migration.migratedShortcutsButtonOniPad.value, UIDevice.isIpad else { return }
+
+    if Preferences.General.toolbarShortcutButton.value == nil {
+      Preferences.General.toolbarShortcutButton.value = WidgetShortcut.bookmarks.rawValue
+    }
+
+    Migration.migratedShortcutsButtonOniPad.value = true
   }
 }
 

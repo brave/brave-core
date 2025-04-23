@@ -186,7 +186,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         options: .displayInline,
         children: [
           UIAction(
-            title: "Hide Shortcut Button",
+            title: Strings.ShortcutButton.hideButtonTitle,
             image: UIImage(braveSystemNamed: "leo.eye.off"),
             attributes: .destructive,
             handler: { _ in

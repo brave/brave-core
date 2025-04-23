@@ -76,9 +76,9 @@ extension Preferences {
       default: false
     )
     /// Specifies whether the bookmark button is present on toolbar
-    static let toolbarShortcutButton = Option<Int?>(
+    public static let toolbarShortcutButton = Option<Int?>(
       key: "general.show-bookmark-toolbar-shortcut",
-      default: UIDevice.isIpad ? WidgetShortcut.bookmarks.rawValue : nil
+      default: nil
     )
     /// Controls whether or not media should continue playing in the background
     static let mediaAutoBackgrounding = Option<Bool>(
