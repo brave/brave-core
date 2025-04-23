@@ -3,20 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
-
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { TopSitesState, TopSitesActions, TopSitesListKind } from '../models/top_sites'
 import { Store } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-
-export function listKindFromMojo(type: number): TopSitesListKind {
-  switch (type) {
-    case mojom.TopSitesListKind.kCustom: return 'custom'
-    case mojom.TopSitesListKind.kMostVisited: return 'most-visited'
-    default: return 'most-visited'
-  }
-}
 
 export function initializeTopSites(
     store: Store<TopSitesState>): TopSitesActions {
@@ -35,7 +25,7 @@ export function initializeTopSites(
 
     store.update({
       showTopSites,
-      topSitesListKind: listKindFromMojo(listKind)
+      topSitesListKind: listKind
     })
   }
 
@@ -74,9 +64,7 @@ export function initializeTopSites(
     },
 
     setTopSitesListKind(listKind) {
-      handler.setTopSitesListKind(listKind === 'custom'
-          ? mojom.TopSitesListKind.kCustom
-          : mojom.TopSitesListKind.kMostVisited)
+      handler.setTopSitesListKind(listKind)
     },
 
     addTopSite(url, title) {
@@ -88,7 +76,7 @@ export function initializeTopSites(
     },
 
     removeTopSite(url) {
-      if (currentListKind() === 'most-visited') {
+      if (currentListKind() === TopSitesListKind.kMostVisited) {
         handler.excludeMostVisitedTopSite(url)
         lastExcludedMostVisitedSite = url
       } else {
@@ -97,7 +85,7 @@ export function initializeTopSites(
     },
 
     undoRemoveTopSite() {
-      if (currentListKind() === 'most-visited') {
+      if (currentListKind() === TopSitesListKind.kMostVisited) {
         if (lastExcludedMostVisitedSite) {
           handler.includeMostVisitedTopSite(lastExcludedMostVisitedSite)
           lastExcludedMostVisitedSite = ''
@@ -108,9 +96,9 @@ export function initializeTopSites(
     },
 
     setTopSitePosition(url, pos) {
-      if (currentListKind() === 'custom') {
+      if (currentListKind() === TopSitesListKind.kCustom) {
         handler.setCustomTopSitePosition(url, pos)
       }
-    },
+    }
   }
 }

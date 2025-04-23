@@ -4,50 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
-import { SelectedBackgroundType } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
-import { NewTabPageAdEventType } from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-
-import {
-  BackgroundState,
-  BackgroundActions,
-  SponsoredImageBackground,
-  SponsoredRichMediaEventType,
-  BackgroundType,
-  getCurrentBackground } from '../models/backgrounds'
-
-function backgroundTypeFromMojo(type: number): BackgroundType {
-  switch (type) {
-    case SelectedBackgroundType.kBrave: return 'brave'
-    case SelectedBackgroundType.kCustom: return 'custom'
-    case SelectedBackgroundType.kSolid: return 'solid'
-    case SelectedBackgroundType.kGradient: return 'gradient'
-    default: return 'gradient'
-  }
-}
-
-function backgroundTypeToMojo(type: BackgroundType) {
-  switch (type) {
-    case 'brave': return SelectedBackgroundType.kBrave
-    case 'custom': return SelectedBackgroundType.kCustom
-    case 'solid': return SelectedBackgroundType.kSolid
-    case 'gradient': return SelectedBackgroundType.kGradient
-  }
-}
-
-function richMediaEventTypeToMojo(type: SponsoredRichMediaEventType) {
-  switch (type) {
-    case 'click': return NewTabPageAdEventType.kClicked
-    case 'interaction': return NewTabPageAdEventType.kInteraction
-    case 'mediaPlay': return NewTabPageAdEventType.kMediaPlay
-    case 'media25': return NewTabPageAdEventType.kMedia25
-    case 'media100': return NewTabPageAdEventType.kMedia100
-  }
-}
+import { BackgroundState, BackgroundActions, getCurrentBackground } from '../models/backgrounds'
 
 export function initializeBackgrounds(
   store: Store<BackgroundState>
@@ -82,18 +44,13 @@ export function initializeBackgrounds(
 
   async function updateBraveBackgrounds() {
     const { backgrounds } = await handler.getBraveBackgrounds()
-    store.update({
-      braveBackgrounds: backgrounds.map((item) => ({ type: 'brave', ...item }))
-    })
+    store.update({ braveBackgrounds: backgrounds })
   }
 
   async function updateSelectedBackground() {
     const { background } = await handler.getSelectedBackground()
     if (background) {
-      store.update({
-        selectedBackgroundType: backgroundTypeFromMojo(background.type),
-        selectedBackground: background.value
-      })
+      store.update({ selectedBackground: background })
     }
   }
 
@@ -104,22 +61,7 @@ export function initializeBackgrounds(
 
   async function updateSponsoredImageBackground() {
     const { background } = await handler.getSponsoredImageBackground()
-    if (!background) {
-      store.update({ sponsoredImageBackground: null })
-      return
-    }
-    let sponsoredImageBackground: SponsoredImageBackground | null = null
-    if (background) {
-      sponsoredImageBackground = {
-        ...background,
-        type: background.type === 'richMedia'
-            ? 'sponsored-rich-media'
-            : 'sponsored-image',
-        logo: background.logo || null,
-        shouldMetricsFallbackToP3a: background.shouldMetricsFallbackToP3a
-      }
-    }
-    store.update({ sponsoredImageBackground })
+    store.update({ sponsoredImageBackground: background ?? null })
   }
 
   newTabProxy.addListeners({
@@ -160,11 +102,8 @@ export function initializeBackgrounds(
     },
 
     selectBackground(type, value) {
-      store.update({
-        selectedBackgroundType: type,
-        selectedBackground: value
-      })
-      handler.selectBackground({ type: backgroundTypeToMojo(type), value })
+      store.update({ selectedBackground: { type, value } })
+      handler.selectBackground({ type, value })
     },
 
     async showCustomBackgroundChooser() {
@@ -196,7 +135,7 @@ export function initializeBackgrounds(
         sponsoredImageBackground.wallpaperId,
         sponsoredImageBackground.creativeInstanceId,
         sponsoredImageBackground.shouldMetricsFallbackToP3a,
-        richMediaEventTypeToMojo(type));
+        type);
     }
   }
 }

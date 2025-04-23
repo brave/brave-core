@@ -3,13 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export interface TopSite {
-  title: string
-  url: string
-  favicon: string
-}
+import { TopSite, TopSitesListKind } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
-export type TopSitesListKind = 'custom' | 'most-visited'
+export { TopSite, TopSitesListKind }
 
 export interface TopSitesState {
   showTopSites: boolean
@@ -20,7 +16,7 @@ export interface TopSitesState {
 export function defaultTopSitesState(): TopSitesState {
   return {
     showTopSites: true,
-    topSitesListKind: 'most-visited',
+    topSitesListKind: TopSitesListKind.kMostVisited,
     topSites: []
   }
 }

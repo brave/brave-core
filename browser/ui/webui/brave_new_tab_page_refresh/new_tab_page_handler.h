@@ -148,7 +148,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void GetShowClock(GetShowClockCallback callback) override;
   void SetShowClock(bool show_clock, SetShowClockCallback callback) override;
   void GetClockFormat(GetClockFormatCallback callback) override;
-  void SetClockFormat(const std::string& clock_format,
+  void SetClockFormat(mojom::ClockFormat clock_format,
                       SetClockFormatCallback callback) override;
   void GetShowShieldsStats(GetShowShieldsStatsCallback callback) override;
   void SetShowShieldsStats(bool show_shields_stats,

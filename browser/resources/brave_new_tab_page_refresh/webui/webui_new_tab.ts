@@ -6,10 +6,7 @@
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-
-import {
-  NewTabState,
-  NewTabActions } from '../models/new_tab'
+import { NewTabState, NewTabActions } from '../models/new_tab'
 
 export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
   const newTabProxy = NewTabPageProxy.getInstance()
@@ -24,11 +21,7 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
       handler.getClockFormat()
     ])
 
-    store.update({
-      showClock,
-      clockFormat:
-          clockFormat === 'h12' || clockFormat === 'h24' ? clockFormat : ''
-    })
+    store.update({ showClock, clockFormat })
   }
 
   async function updateShieldsStats() {

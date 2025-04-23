@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { useAppState } from '../context/app_model_context'
+import { ClockFormat } from '../../models/new_tab'
 
 export function Clock() {
   const [showClock, clockFormat] = useAppState((state) => [
@@ -19,7 +20,10 @@ export function Clock() {
     const formatter = new Intl.DateTimeFormat(undefined, {
       hour: 'numeric',
       minute: 'numeric',
-      hourCycle: clockFormat || undefined
+      hourCycle:
+        clockFormat === ClockFormat.k12 ? 'h12' :
+        clockFormat === ClockFormat.k24 ? 'h24' :
+        undefined
     })
 
     function update() {

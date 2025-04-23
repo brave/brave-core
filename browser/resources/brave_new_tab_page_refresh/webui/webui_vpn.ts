@@ -9,25 +9,7 @@ import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mo
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-
-import {
-  VPNState,
-  VPNActions,
-  ConnectionState,
-  defaultVPNActions } from '../models/vpn'
-
-function mapConnectionState(state: mojom.ConnectionState): ConnectionState {
-  switch (state) {
-    case mojom.ConnectionState.CONNECTED:
-      return 'connected'
-    case mojom.ConnectionState.CONNECTING:
-      return 'connecting'
-    case mojom.ConnectionState.DISCONNECTING:
-      return 'disconnecting'
-    default:
-      return 'disconnected'
-  }
-}
+import { VPNState, VPNActions, defaultVPNActions, ConnectionState } from '../models/vpn'
 
 export function initializeVPN(store: Store<VPNState>): VPNActions {
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
@@ -48,7 +30,7 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
 
     if (!vpnPurchased) {
       store.update({
-        vpnConnectionState: 'disconnected',
+        vpnConnectionState: ConnectionState.DISCONNECTED,
         vpnConnectionRegion: null
       })
       return
@@ -63,11 +45,8 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
     ])
 
     store.update({
-      vpnConnectionState: mapConnectionState(connectionState),
-      vpnConnectionRegion: !currentRegion ? null : {
-        name: currentRegion.namePretty,
-        country: currentRegion.country
-      }
+      vpnConnectionState: connectionState,
+      vpnConnectionRegion: currentRegion ?? null
     })
   }
 
@@ -117,15 +96,18 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
     toggleVpnConnection() {
       const { vpnConnectionState } = store.getState()
       switch (vpnConnectionState) {
-        case 'connected':
-        case 'connecting':
+        case ConnectionState.CONNECTED:
+        case ConnectionState.CONNECTING:
           handler.reportVPNWidgetUsage()
           vpnService.disconnect()
           break
-        case 'disconnected':
-        case 'disconnecting':
+        case ConnectionState.DISCONNECTED:
+        case ConnectionState.DISCONNECTING:
           handler.reportVPNWidgetUsage()
           vpnService.connect()
+          break
+        default:
+          console.error('Unhandled ConnectionState', vpnConnectionState)
           break
       }
     },
