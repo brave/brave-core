@@ -11,6 +11,7 @@ import repository
 from repository import Repository
 
 from test.fake_chromium_src import FakeChromiumSrc
+from unittest.mock import patch
 
 
 class RepositoryTest(unittest.TestCase):
@@ -95,6 +96,18 @@ class RepositoryTest(unittest.TestCase):
             Repository(self.fake_chromium_src.chromium /
                        "third_party/test1").run_git("rev-parse", "HEAD"),
         )
+
+    def test_run_git_no_trim(self):
+        """Test that no_trim is correctly passed to run_git."""
+        with patch("terminal.terminal.run_git") as mock_run_git:
+            # Call run_git with no_trim=True for brave repository
+            repository.brave.run_git("log", no_trim=True)
+            mock_run_git.assert_called_once_with("log", no_trim=True)
+
+            # Reset mock and call run_git with no_trim=False
+            mock_run_git.reset_mock()
+            repository.brave.run_git("log", no_trim=False)
+            mock_run_git.assert_called_once_with("log", no_trim=False)
 
     def test_unstage_all_changes(self):
         """Test unstage_all_changes and has_staged_changed."""
