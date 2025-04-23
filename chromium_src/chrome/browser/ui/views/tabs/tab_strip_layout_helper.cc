@@ -11,7 +11,7 @@
   FillTiledState(tab_widths, static_cast<BraveTabStrip*>(tab_strip_.get())) && \
           use_vertical_tabs_&& FillGroupInfo(tab_widths)                       \
       ? tabs::CalculateVerticalTabBounds(                                      \
-            layout_constants, tab_widths, available_width,                     \
+            tab_widths, available_width,                                       \
             GetBraveTabStrip() -> IsVerticalTabsFloating())                    \
       : CalculateTabBounds
 
