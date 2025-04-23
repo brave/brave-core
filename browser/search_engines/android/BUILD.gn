@@ -28,18 +28,28 @@ android_library("java") {
   # Dependencies required by this library
   deps = [
     ":java_resources",
+    "//base:base_java",
+    "//base:base_shared_preferences_java",
     "//base:supplier_java",
+    "//base:tasks_java",
     "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
     "//brave/third_party/android_deps:com_google_code_gson_gson_java",
+    "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/regional_capabilities/android:java",
     "//chrome/browser/search_engines/android:java",
     "//chrome/browser/settings:java",
+    "//chrome/browser/ui/android/favicon:java",
+    "//components/favicon/android:java",
     "//components/regional_capabilities/android:java",
     "//components/search_engines/android:java",
+    "//content/public/android:content_full_java",
+    "//net/android:net_java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//url:url_java",
   ]
 
   # Package name for generated R.java resource class
