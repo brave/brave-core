@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 
+#include <map>
 #include <optional>
 
 #include "base/containers/to_vector.h"
@@ -1706,7 +1707,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
         "description": "Azuki is a cute little bean",
         "image_url": "https://other-cdn.com/assets/img.png",
         "extra_metadata": {
-          "metadata_original_url": "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767",
+          "metadata_original_url": "ipfs://foo/2767",
           "attributes": [
             {
               "trait_type": "Color",
