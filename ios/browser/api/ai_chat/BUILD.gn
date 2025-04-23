@@ -32,6 +32,8 @@ source_set("ai_chat") {
     "conversation_client.mm",
     "model_service_factory.h",
     "model_service_factory.mm",
+    "tab_tracker_service_factory.h",
+    "tab_tracker_service_factory.mm",
   ]
 
   deps = [
