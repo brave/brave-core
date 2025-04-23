@@ -33,5 +33,8 @@ public class BraveBaseCustomTabActivityClassAdapter extends BraveClassVisitor {
 
         deleteField(sFullScreenCustomTabActivityClassName, "mCustomTabFeatureOverridesManager");
         makeProtectedField(sBaseCustomTabActivityClassName, "mCustomTabFeatureOverridesManager");
+
+        deleteMethod(sFullScreenCustomTabActivityClassName, "getAppHeaderCoordinator");
+        makePublicMethod(sBaseCustomTabActivityClassName, "getAppHeaderCoordinator");
     }
 }

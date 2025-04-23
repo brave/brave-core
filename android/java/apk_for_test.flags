@@ -913,6 +913,7 @@
     *** mTabController;
     *** mMinimizationManagerHolder;
     *** mCustomTabFeatureOverridesManager;
+    *** getAppHeaderCoordinator(...);
     public <init>(...);
 }
 
