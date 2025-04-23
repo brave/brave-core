@@ -33,8 +33,7 @@ class BraveAdsConfirmationUserDataBuilderTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsConfirmationUserDataBuilderTest,
-       BuildConfirmationUserDataForRewardsUser) {
+TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildConfirmationUserData) {
   // Arrange
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,

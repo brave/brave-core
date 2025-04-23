@@ -26,42 +26,53 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchList command_line_switches;
-  bool expected_should_debug;
-  bool expected_did_override_command_line_switches;
-  mojom::EnvironmentType expected_environment_type;
+  bool should_debug;
+  bool did_override_command_line_switches;
+  mojom::EnvironmentType environment_type;
 } const kTests[] = {
-    // Should debug
-    {{{"rewards", "debug=true"}}, true, false, kDefaultEnvironmentType},
+    // Should debug.
+    {.command_line_switches = {{"rewards", "debug=true"}},
+     .should_debug = true,
+     .did_override_command_line_switches = false,
+     .environment_type = kDefaultEnvironmentType},
 
-    // Should not debug
-    {{{"rewards", "debug=false"}}, false, false, kDefaultEnvironmentType},
+    // Should not debug.
+    {.command_line_switches = {{"rewards", "debug=false"}},
+     .should_debug = false,
+     .did_override_command_line_switches = false,
+     .environment_type = kDefaultEnvironmentType},
 
-    // Override variations command-line switches
-    {{{variations::switches::kFakeVariationsChannel, "foobar"}},
-     false,
-     true,
-     kDefaultEnvironmentType},
+    // Override variations command-line switches.
+    {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
+                                "foobar"}},
+     .should_debug = false,
+     .did_override_command_line_switches = true,
+     .environment_type = kDefaultEnvironmentType},
 
-    // Do not override variations command-line switches
-    {{{variations::switches::kFakeVariationsChannel, {}}},
-     false,
-     false,
-     kDefaultEnvironmentType},
+    // Do not override variations command-line switches.
+    {.command_line_switches = {{variations::switches::kFakeVariationsChannel,
+                                ""}},
+     .should_debug = false,
+     .did_override_command_line_switches = false,
+     .environment_type = kDefaultEnvironmentType},
 
-    // Force staging environment from command-line switch
-    {{{"rewards", "staging=true"}},
-     false,
-     false,
-     mojom::EnvironmentType::kStaging},
+    // Force staging environment from command-line switch.
+    {.command_line_switches = {{"rewards", "staging=true"}},
+     .should_debug = false,
+     .did_override_command_line_switches = false,
+     .environment_type = mojom::EnvironmentType::kStaging},
 
-    // Force production environment from command-line switch
-    {{{"rewards", "staging=false"}},
-     false,
-     false,
-     mojom::EnvironmentType::kProduction},
+    // Force production environment from command-line switch.
+    {.command_line_switches = {{"rewards", "staging=false"}},
+     .should_debug = false,
+     .did_override_command_line_switches = false,
+     .environment_type = mojom::EnvironmentType::kProduction},
 
-    // Use default environment
-    {{}, false, false, kDefaultEnvironmentType}};
+    // Use default environment.
+    {.command_line_switches = {},
+     .should_debug = false,
+     .did_override_command_line_switches = false,
+     .environment_type = kDefaultEnvironmentType}};
 
 }  // namespace
 
@@ -74,33 +85,30 @@ class BraveAdsFlagsUtilTest : public test::TestBase,
 };
 
 TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
-  // Arrange
-  const ParamInfo param = GetParam();
-
   // Act
   const mojom::FlagsPtr mojom_flags = BuildFlags();
 
   // Assert
-  EXPECT_EQ(param.expected_should_debug, mojom_flags->should_debug);
-  EXPECT_EQ(param.expected_did_override_command_line_switches,
+  EXPECT_EQ(GetParam().should_debug, mojom_flags->should_debug);
+  EXPECT_EQ(GetParam().did_override_command_line_switches,
             mojom_flags->did_override_from_command_line);
-  EXPECT_EQ(param.expected_environment_type, mojom_flags->environment_type);
+  EXPECT_EQ(GetParam().environment_type, mojom_flags->environment_type);
 }
 
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   // Environment
   const std::string environment_type =
-      test::ToString(test_param.param.expected_environment_type);
+      test::ToString(test_param.param.environment_type);
 
   // When
   std::vector<std::string> flags;
 
-  if (test_param.param.expected_should_debug) {
+  if (test_param.param.should_debug) {
     flags.emplace_back("ShouldDebug");
   }
 
-  if (test_param.param.expected_did_override_command_line_switches) {
+  if (test_param.param.did_override_command_line_switches) {
     flags.emplace_back("DidOverride");
   }
 

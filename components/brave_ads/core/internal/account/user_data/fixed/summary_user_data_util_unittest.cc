@@ -16,12 +16,8 @@
 namespace brave_ads {
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBucketsIfNoPaymentTokens) {
-  // Act
-  const AdTypeBucketMap ad_type_buckets =
-      BuildAdTypeBuckets(/*payment_tokens=*/{});
-
-  // Assert
-  EXPECT_THAT(ad_type_buckets, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildAdTypeBuckets(/*payment_tokens=*/{}), ::testing::IsEmpty());
 }
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {

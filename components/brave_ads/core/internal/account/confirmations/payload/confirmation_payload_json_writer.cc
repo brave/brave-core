@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -33,9 +31,7 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
   if (confirmation.reward) {
     dict.Set(kTransactionIdKey, confirmation.transaction_id);
 
-    base::Value::Dict reward_confirmation_payload_dict =
-        BuildRewardConfirmationPayload(*confirmation.reward);
-    dict.Merge(std::move(reward_confirmation_payload_dict));
+    dict.Merge(BuildRewardConfirmationPayload(*confirmation.reward));
   }
 
   dict.Merge(confirmation.user_data.dynamic.Clone());

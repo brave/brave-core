@@ -24,12 +24,9 @@ base::Value::Dict BuildCreatedAtTimestampUserData(
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  user_data.Set(kCreatedAtTimestampKey,
-                TimeToPrivacyPreservingIso8601(*transaction.created_at));
-
-  return user_data;
+  return base::Value::Dict().Set(
+      kCreatedAtTimestampKey,
+      TimeToPrivacyPreservingIso8601(*transaction.created_at));
 }
 
 }  // namespace brave_ads

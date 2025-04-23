@@ -20,31 +20,23 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
   // Arrange
   ASSERT_EQ(0U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-  const base::Value::Dict user_data = BuildStudiesUserData();
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "studies": []
                     })JSON"),
-            user_data);
+            BuildStudiesUserData());
 }
 
-TEST_F(BraveAdsStudiesUserDataTest,
-       BuildStudiesUserDataForSingleFieldTrialAndRewardsUser) {
+TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForSingleFieldTrial) {
   // Arrange
   const scoped_refptr<base::FieldTrial> field_trial =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
-  field_trial->group_name();
-
+  ASSERT_EQ("GroupA", field_trial->group_name());
   ASSERT_EQ(1U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-  const base::Value::Dict user_data = BuildStudiesUserData();
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
@@ -56,49 +48,43 @@ TEST_F(BraveAdsStudiesUserDataTest,
                       ]
                     }
                 )JSON"),
-            user_data);
+            BuildStudiesUserData());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest,
-       BuildStudiesUserDataForMultipleFieldTrialsAndRewardsUser) {
+       DoNotBuildStudiesUserDataForMultipleFieldTrials) {
   // Arrange
   const scoped_refptr<base::FieldTrial> field_trial_1 =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
-  field_trial_1->group_name();
+  ASSERT_EQ("GroupA", field_trial_1->group_name());
 
   const scoped_refptr<base::FieldTrial> field_trial_2 =
       base::FieldTrialList::CreateFieldTrial("BraveAds.BarStudy", "GroupB");
-  field_trial_2->group_name();
+  ASSERT_EQ("GroupB", field_trial_2->group_name());
 
   ASSERT_EQ(2U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-  const base::Value::Dict user_data = BuildStudiesUserData();
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "studies": []
                     })JSON"),
-            user_data);
+            BuildStudiesUserData());
 }
 
-TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
+TEST_F(BraveAdsStudiesUserDataTest,
+       DoNotBuildStudiesUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   const scoped_refptr<base::FieldTrial> field_trial =
       base::FieldTrialList::CreateFieldTrial("BraveAds.FooStudy", "GroupA");
-  field_trial->group_name();
-
+  ASSERT_EQ("GroupA", field_trial->group_name());
   ASSERT_EQ(1U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-  const base::Value::Dict user_data = BuildStudiesUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildStudiesUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -15,17 +15,14 @@ namespace brave_ads {
 
 class BraveAdsPlatformUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserDataForRewardsUser) {
-  // Act
-  const base::Value::Dict user_data = BuildPlatformUserData();
-
-  // Assert
+TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserData) {
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "platform": "windows"
                     })JSON"),
-            user_data);
+            BuildPlatformUserData());
 }
 
 TEST_F(BraveAdsPlatformUserDataTest,
@@ -33,11 +30,8 @@ TEST_F(BraveAdsPlatformUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  const base::Value::Dict user_data = BuildPlatformUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildPlatformUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

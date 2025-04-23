@@ -35,11 +35,8 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, ParseCaptchaId) {
 }
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, DoNotParseMissingCaptchaId) {
-  // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict("{}");
-
   // Act & Assert
-  EXPECT_FALSE(ParseCaptchaId(dict));
+  EXPECT_FALSE(ParseCaptchaId({}));
 }
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,

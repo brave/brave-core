@@ -29,17 +29,14 @@ class BraveAdsFixedUserDataBuilderTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
+TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserData) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
@@ -56,10 +53,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
                       "studies": [],
                       "versionNumber": "1.2.3.4"
                     })JSON"),
-            fixed_user_data);
+            BuildFixedUserData(transaction));
 }
 
-TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
+TEST_F(BraveAdsFixedUserDataBuilderTest,
+       DoNotBuildFixedUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -68,11 +66,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
-
-  // Assert
-  EXPECT_THAT(fixed_user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildFixedUserData(transaction), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

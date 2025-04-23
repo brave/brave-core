@@ -20,12 +20,8 @@ base::Value::Dict BuildSystemTimestampUserData() {
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  user_data.Set(kSystemTimestampKey,
-                TimeToPrivacyPreservingIso8601(base::Time::Now()));
-
-  return user_data;
+  return base::Value::Dict().Set(
+      kSystemTimestampKey, TimeToPrivacyPreservingIso8601(base::Time::Now()));
 }
 
 }  // namespace brave_ads

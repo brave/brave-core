@@ -18,42 +18,42 @@ namespace brave_ads {
 namespace {
 
 struct ParamInfo final {
-  bool should_opt_in;
+  bool should_serve_at_regular_intervals;
+  bool opted_in;
   bool should_browser_enter_foreground;
   bool can_show_while_browser_is_backgrounded;
-  bool should_serve_at_regular_intervals;
-} constexpr kTests[] = {{.should_opt_in = false,
+} constexpr kTests[] = {{.should_serve_at_regular_intervals = false,
+                         .opted_in = false,
                          .should_browser_enter_foreground = false,
-                         .can_show_while_browser_is_backgrounded = false,
-                         .should_serve_at_regular_intervals = false},
-                        {.should_opt_in = false,
+                         .can_show_while_browser_is_backgrounded = false},
+                        {.should_serve_at_regular_intervals = false,
+                         .opted_in = false,
                          .should_browser_enter_foreground = false,
-                         .can_show_while_browser_is_backgrounded = true,
-                         .should_serve_at_regular_intervals = false},
-                        {.should_opt_in = false,
+                         .can_show_while_browser_is_backgrounded = true},
+                        {.should_serve_at_regular_intervals = false,
+                         .opted_in = false,
                          .should_browser_enter_foreground = true,
-                         .can_show_while_browser_is_backgrounded = false,
-                         .should_serve_at_regular_intervals = false},
-                        {.should_opt_in = false,
+                         .can_show_while_browser_is_backgrounded = false},
+                        {.should_serve_at_regular_intervals = false,
+                         .opted_in = false,
                          .should_browser_enter_foreground = true,
-                         .can_show_while_browser_is_backgrounded = true,
-                         .should_serve_at_regular_intervals = false},
-                        {.should_opt_in = true,
+                         .can_show_while_browser_is_backgrounded = true},
+                        {.should_serve_at_regular_intervals = false,
+                         .opted_in = true,
                          .should_browser_enter_foreground = false,
-                         .can_show_while_browser_is_backgrounded = false,
-                         .should_serve_at_regular_intervals = false},
-                        {.should_opt_in = true,
+                         .can_show_while_browser_is_backgrounded = false},
+                        {.should_serve_at_regular_intervals = true,
+                         .opted_in = true,
                          .should_browser_enter_foreground = false,
-                         .can_show_while_browser_is_backgrounded = true,
-                         .should_serve_at_regular_intervals = true},
-                        {.should_opt_in = true,
+                         .can_show_while_browser_is_backgrounded = true},
+                        {.should_serve_at_regular_intervals = true,
+                         .opted_in = true,
                          .should_browser_enter_foreground = true,
-                         .can_show_while_browser_is_backgrounded = false,
-                         .should_serve_at_regular_intervals = true},
-                        {.should_opt_in = true,
+                         .can_show_while_browser_is_backgrounded = false},
+                        {.should_serve_at_regular_intervals = true,
+                         .opted_in = true,
                          .should_browser_enter_foreground = true,
-                         .can_show_while_browser_is_backgrounded = true,
-                         .should_serve_at_regular_intervals = true}};
+                         .can_show_while_browser_is_backgrounded = true}};
 
 }  // namespace
 
@@ -62,13 +62,11 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
-    const ParamInfo param = GetParam();
-
     test::SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds,
-                                     param.should_opt_in);
+                                     GetParam().opted_in);
 
     test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
-        ads_client_mock_, param.can_show_while_browser_is_backgrounded);
+        ads_client_mock_, GetParam().can_show_while_browser_is_backgrounded);
 
     test::SetMaximumNotificationAdsPerHour(1);
   }
@@ -77,14 +75,12 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
 TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
        NotificationAdHandler) {
   // Arrange
-  const ParamInfo param = GetParam();
-
-  if (param.should_browser_enter_foreground) {
+  if (GetParam().should_browser_enter_foreground) {
     NotifyBrowserDidEnterForeground();
   }
 
   // Act & Assert
-  EXPECT_EQ(param.should_serve_at_regular_intervals,
+  EXPECT_EQ(GetParam().should_serve_at_regular_intervals,
             ShouldServeAtRegularIntervals());
 }
 
@@ -94,9 +90,9 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
           ? "ShouldServeAtRegularIntervals"
           : "ShouldNotServeAtRegularIntervals";
 
-  const std::string should_opt_in = test_param.param.should_opt_in
-                                        ? "OptedInToNotificationAds"
-                                        : "NotOptedInToNotificationAds";
+  const std::string opted_in = test_param.param.opted_in
+                                   ? "OptedInToNotificationAds"
+                                   : "NotOptedInToNotificationAds";
 
   const std::string should_browser_enter_foreground =
       test_param.param.should_browser_enter_foreground
@@ -110,7 +106,7 @@ std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
 
   return base::ReplaceStringPlaceholders(
       "$1If$2And$3And$4",
-      {should_serve_at_regular_intervals, should_opt_in,
+      {should_serve_at_regular_intervals, opted_in,
        should_browser_enter_foreground, can_show_while_browser_is_backgrounded},
       nullptr);
 }

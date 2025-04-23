@@ -18,108 +18,81 @@ class BraveAdsPageLandUserDataTest : public test::TestBase {};
 
 TEST_F(BraveAdsPageLandUserDataTest,
        BuildPageLandUserDataForHttpInformationalResponseStatusCodeClass) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_SWITCHING_PROTOCOLS);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "1xx"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_SWITCHING_PROTOCOLS));
 }
 
 TEST_F(BraveAdsPageLandUserDataTest,
        BuildPageLandUserDataForHttpSuccessfulResponseStatusCodeClass) {
-  // Act
-  const base::Value::Dict user_data = BuildPageLandUserData(net::HTTP_IM_USED);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "2xx"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_IM_USED));
 }
 
 TEST_F(BraveAdsPageLandUserDataTest,
        BuildPageLandUserDataForHttpRedirectionMessageStatusCodeClass) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_MOVED_PERMANENTLY);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "3xx"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_MOVED_PERMANENTLY));
 }
 
 TEST_F(BraveAdsPageLandUserDataTest,
        BuildPageLandUserDataForHttpClientErrorResponseStatusCode) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_NOT_FOUND);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "404"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_NOT_FOUND));
 }
 
 TEST_F(BraveAdsPageLandUserDataTest,
        BuildPageLandUserDataForHttpClientErrorResponseStatusCodeClass) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_UPGRADE_REQUIRED);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "4xx"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_UPGRADE_REQUIRED));
 }
 
 TEST_F(
     BraveAdsPageLandUserDataTest,
     BuildPageLandUserDataForPrivacyPreservingHttpServerErrorResponseStatusCode) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_INTERNAL_SERVER_ERROR);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "500"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_INTERNAL_SERVER_ERROR));
 }
 
 TEST_F(
     BraveAdsPageLandUserDataTest,
     BuildPageLandUserDataForPrivacyPreservingHttpServerErrorResponseStatusCodeClass) {
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_LOOP_DETECTED);
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "httpResponseStatus": "5xx"
                     })JSON"),
-            user_data);
+            BuildPageLandUserData(net::HTTP_LOOP_DETECTED));
 }
 
 TEST_F(
@@ -128,12 +101,8 @@ TEST_F(
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  const base::Value::Dict user_data =
-      BuildPageLandUserData(net::HTTP_NOT_FOUND);
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildPageLandUserData(net::HTTP_NOT_FOUND), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

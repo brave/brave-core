@@ -22,12 +22,9 @@ base::Value::Dict BuildCatalogUserData() {
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  user_data.Set(kCatalogKey, base::Value::List().Append(base::Value::Dict().Set(
-                                 kIdKey, GetCatalogId())));
-
-  return user_data;
+  return base::Value::Dict().Set(
+      kCatalogKey, base::Value::List().Append(
+                       base::Value::Dict().Set(kIdKey, GetCatalogId())));
 }
 
 }  // namespace brave_ads

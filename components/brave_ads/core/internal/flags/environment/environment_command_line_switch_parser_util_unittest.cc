@@ -22,13 +22,17 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  mojom::EnvironmentType expected_environment_type;
+  mojom::EnvironmentType environment_type;
 } const kTests[] = {
-    {{"rewards", "staging=true"}, mojom::EnvironmentType::kStaging},
-    {{"rewards", "staging=1"}, mojom::EnvironmentType::kStaging},
-    {{"rewards", "staging=false"}, mojom::EnvironmentType::kProduction},
-    {{"rewards", "staging=foobar"}, mojom::EnvironmentType::kProduction},
-    {{}, kDefaultEnvironmentType}};
+    {.command_line_switch = {"rewards", "staging=true"},
+     .environment_type = mojom::EnvironmentType::kStaging},
+    {.command_line_switch = {"rewards", "staging=1"},
+     .environment_type = mojom::EnvironmentType::kStaging},
+    {.command_line_switch = {"rewards", "staging=false"},
+     .environment_type = mojom::EnvironmentType::kProduction},
+    {.command_line_switch = {"rewards", "staging=foobar"},
+     .environment_type = mojom::EnvironmentType::kProduction},
+    {.command_line_switch = {}, .environment_type = kDefaultEnvironmentType}};
 
 }  // namespace
 
@@ -45,21 +49,21 @@ TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
        ParseEnvironmentCommandLineSwitch) {
   // Act & Assert
   ASSERT_TRUE(GlobalState::HasInstance());
-  EXPECT_EQ(GetParam().expected_environment_type,
+  EXPECT_EQ(GetParam().environment_type,
             GlobalState::GetInstance()->Flags().environment_type);
 }
 
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
-  const std::string expected_environment_type =
-      test::ToString(test_param.param.expected_environment_type);
+  const std::string environment_type =
+      test::ToString(test_param.param.environment_type);
 
   const std::string sanitized_command_line_switch =
       test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
-      "$1EnvironmentFor$2",
-      {expected_environment_type, sanitized_command_line_switch}, nullptr);
+      "$1EnvironmentFor$2", {environment_type, sanitized_command_line_switch},
+      nullptr);
 }
 
 INSTANTIATE_TEST_SUITE_P(,

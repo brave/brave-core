@@ -26,19 +26,15 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
-       BuildDynamicUserDataForRewardsUser) {
-  // Act
-  const base::Value::Dict dynamic_user_data = BuildDynamicUserData();
-
-  // Assert
+TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest, BuildDynamicUserData) {
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
                       "systemTimestamp": "2020-11-18T12:00:00.000Z"
                     })JSON"),
-            dynamic_user_data);
+            BuildDynamicUserData());
 }
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
@@ -46,11 +42,8 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  const base::Value::Dict dynamic_user_data = BuildDynamicUserData();
-
-  // Assert
-  EXPECT_THAT(dynamic_user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildDynamicUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

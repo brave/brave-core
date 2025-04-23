@@ -19,11 +19,7 @@ base::Value::Dict BuildVersionNumberUserData() {
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  user_data.Set(kVersionNumberKey, GetBrowserVersionNumber());
-
-  return user_data;
+  return base::Value::Dict().Set(kVersionNumberKey, GetBrowserVersionNumber());
 }
 
 }  // namespace brave_ads

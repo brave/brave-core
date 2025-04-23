@@ -15,30 +15,23 @@ namespace brave_ads {
 
 class BraveAdsVersionNumberUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsVersionNumberUserDataTest,
-       BuildVersionNumberUserDataForRewardsUser) {
-  // Act
-  const base::Value::Dict user_data = BuildVersionNumberUserData();
-
-  // Assert
+TEST_F(BraveAdsVersionNumberUserDataTest, BuildVersionNumberUserData) {
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "versionNumber": "1.2.3.4"
                     })JSON"),
-            user_data);
+            BuildVersionNumberUserData());
 }
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
-       BuildVersionNumberUserDataForNonRewardsUser) {
+       DoNotBuildVersionNumberUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  const base::Value::Dict user_data = BuildVersionNumberUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildVersionNumberUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

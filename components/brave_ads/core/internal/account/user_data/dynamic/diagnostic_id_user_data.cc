@@ -23,16 +23,15 @@ base::Value::Dict BuildDiagnosticIdUserData() {
     return {};
   }
 
-  base::Value::Dict user_data;
-
   const std::string diagnostic_id = GetProfileStringPref(prefs::kDiagnosticId);
 
   const base::Uuid uuid = base::Uuid::ParseCaseInsensitive(diagnostic_id);
-  if (uuid.is_valid()) {
-    user_data.Set(kDiagnosticIdKey, diagnostic_id);
+  if (!uuid.is_valid()) {
+    // Invalid diagnotic id.
+    return {};
   }
 
-  return user_data;
+  return base::Value::Dict().Set(kDiagnosticIdKey, diagnostic_id);
 }
 
 }  // namespace brave_ads

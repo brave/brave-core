@@ -26,13 +26,9 @@ base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
     return {};
   }
 
-  base::Value::Dict user_data;
-
-  const AdTypeBucketMap ad_type_buckets = BuildAdTypeBuckets(payment_tokens);
-
   base::Value::List list;
-
-  for (const auto& [mojom_ad_type, confirmations] : ad_type_buckets) {
+  for (const auto& [mojom_ad_type, confirmations] :
+       BuildAdTypeBuckets(payment_tokens)) {
     auto dict = base::Value::Dict().Set(kAdFormatKey, ToString(mojom_ad_type));
 
     for (const auto& [confirmation_type, count] : confirmations) {
@@ -42,9 +38,7 @@ base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
     list.Append(std::move(dict));
   }
 
-  user_data.Set(kSummaryKey, std::move(list));
-
-  return user_data;
+  return base::Value::Dict().Set(kSummaryKey, std::move(list));
 }
 
 }  // namespace brave_ads

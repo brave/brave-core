@@ -15,18 +15,14 @@ namespace brave_ads {
 
 class BraveAdsBuildChannelUserDataTest : public test::TestBase {};
 
-TEST_F(BraveAdsBuildChannelUserDataTest,
-       BuildBuildChannelUserDataForRewardsUser) {
-  // Act
-  const base::Value::Dict user_data = BuildBuildChannelUserData();
-
-  // Assert
+TEST_F(BraveAdsBuildChannelUserDataTest, BuildBuildChannelUserData) {
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
                       "buildChannel": "release"
                     })JSON"),
-            user_data);
+            BuildBuildChannelUserData());
 }
 
 TEST_F(BraveAdsBuildChannelUserDataTest,
@@ -34,11 +30,8 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act
-  const base::Value::Dict user_data = BuildBuildChannelUserData();
-
-  // Assert
-  EXPECT_THAT(user_data, ::testing::IsEmpty());
+  // Act & Assert
+  EXPECT_THAT(BuildBuildChannelUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads
