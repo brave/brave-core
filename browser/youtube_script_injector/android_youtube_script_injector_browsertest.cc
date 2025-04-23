@@ -18,7 +18,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 namespace {
-const char* command = "window._pipScriptInjected === true";
+constexpr char kPipScriptInjected[] = "window._pipScriptInjected === true";
 }  // namespace
 
 class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
@@ -64,13 +64,6 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
-  // ui_test_utils::NavigateToURL isn't available on Android
-  void NavigateToURL(const GURL& url) {
-    content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
-                                                        true);
-    ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
-  }
-
  protected:
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list.
   net::EmbeddedTestServer https_server_;
@@ -85,14 +78,18 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        TestInjectionMatch) {
   const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
 
-  NavigateToURL(url);
-  EXPECT_TRUE(content::EvalJs(web_contents(), command).ExtractBool());
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+  EXPECT_TRUE(
+      content::EvalJs(web_contents(), kPipScriptInjected).ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        TestInjectionNoMatch) {
   const GURL url = https_server_.GetURL("youtub.com", "/simple.html");
 
-  NavigateToURL(url);
-  EXPECT_FALSE(content::EvalJs(web_contents(), command).ExtractBool());
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+  EXPECT_FALSE(
+      content::EvalJs(web_contents(), kPipScriptInjected).ExtractBool());
 }
