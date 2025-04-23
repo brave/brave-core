@@ -49,9 +49,9 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_ads/content/browser",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser/service:test_support",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",

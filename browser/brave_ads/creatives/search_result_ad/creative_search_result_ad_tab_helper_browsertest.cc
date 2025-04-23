@@ -12,8 +12,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
@@ -134,7 +134,7 @@ class BraveAdsCreativeSearchResultAdTabHelperTest
  private:
   net::EmbeddedTestServer https_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
-  AdsServiceMock ads_service_mock_{/*delegate=*/nullptr};
+  AdsServiceMock ads_service_mock_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,

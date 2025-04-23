@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/browser/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -28,7 +28,7 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
       bool should_metrics_fallback_to_p3a,
       bool should_report) {
-    brave_ads::AdsServiceMock ads_service(/*delegate=*/nullptr);
+    brave_ads::AdsServiceMock ads_service;
 
     std::unique_ptr<NTPP3AHelperMock> ntp_p3a_helper =
         std::make_unique<NTPP3AHelperMock>();

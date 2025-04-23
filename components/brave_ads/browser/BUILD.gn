@@ -90,13 +90,9 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "ad_units/new_tab_page_ad/new_tab_page_ad_prefetcher_unittest.cc",
-    "analytics/p3a/notification_ad_unittest.cc",
-  ]
+  sources = [ "analytics/p3a/notification_ad_unittest.cc" ]
 
   deps = [
-    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_ads/browser",
@@ -105,18 +101,5 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//content/test:test_support",
     "//testing/gtest",
-  ]
-}
-
-source_set("test_support") {
-  testonly = true
-
-  public_deps = [ ":browser" ]
-
-  deps = [ "//testing/gmock" ]
-
-  sources = [
-    "ads_service_mock.cc",
-    "ads_service_mock.h",
   ]
 }

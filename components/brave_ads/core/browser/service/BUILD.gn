@@ -21,3 +21,32 @@ source_set("service") {
     "//mojo/public/cpp/bindings",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "new_tab_page_ad_prefetcher_unittest.cc" ]
+
+  deps = [
+    ":service",
+    ":test_support",
+    "//base",
+    "//brave/components/brave_ads/core",
+    "//testing/gtest",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  public_deps = [
+    ":service",
+    "//brave/components/brave_ads/core/mojom",
+    "//testing/gmock",
+  ]
+
+  sources = [
+    "ads_service_mock.cc",
+    "ads_service_mock.h",
+  ]
+}

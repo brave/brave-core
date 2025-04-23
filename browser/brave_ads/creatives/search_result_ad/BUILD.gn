@@ -47,8 +47,7 @@ source_set("browser_tests") {
   deps = [
     ":search_result_ad",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/browser:test_support",
-    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_ads/core/browser/service:test_support",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_rewards/core",
