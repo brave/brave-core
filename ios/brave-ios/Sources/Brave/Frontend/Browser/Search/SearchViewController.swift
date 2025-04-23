@@ -704,7 +704,8 @@ public class SearchViewController: UIViewController, LoaderListener {
       return
     }
 
-    let engine = dataSource.quickSearchEngines[index - 1]
+    let offset = dataSource.isPrivate ? 0 : 1 // offset for the Leo button
+    let engine = dataSource.quickSearchEngines[index - offset]
     let localSearchQuery = dataSource.searchQuery.lowercased()
     guard let url = engine.searchURLForQuery(localSearchQuery) else {
       assertionFailure()
