@@ -8,13 +8,15 @@
 
 namespace psst {
 
-constexpr char kUserScriptResultUserPropName[] = "user";
-constexpr char kUserScriptResultTasksPropName[] = "tasks";
-constexpr char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
-constexpr char kUserScriptResultSiteNamePropName[] = "name";
-constexpr char kUserScriptResultShareExpLinkPropName[] = "share_experience_link";
-constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";
-constexpr char kUserScriptResultTaskItemDescPropName[] = "description";
+inline constexpr char kUserScriptResultUserPropName[] = "user";
+inline constexpr char kUserScriptResultTasksPropName[] = "tasks";
+inline constexpr char kUserScriptResultInitialExecutionPropName[] =
+    "initial_execution";
+inline constexpr char kUserScriptResultSiteNamePropName[] = "name";
+inline constexpr char kUserScriptResultShareExpLinkPropName[] =
+    "share_experience_link";
+inline constexpr char kUserScriptResultTaskItemUrlPropName[] = "url";
+inline constexpr char kUserScriptResultTaskItemDescPropName[] = "description";
 
 }  // namespace psst
 

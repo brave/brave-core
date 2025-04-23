@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { getLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 
- export type Message =
-   | 'bravePsstDialogTitle'
-   | 'bravePsstDialogText'
-   | 'bravePsstDialogOptionsTitle'
-   | 'bravePsstDialogOkBtn'
-   | 'bravePsstDialogReportFailedBtn'
-   | 'bravePsstDialogCloseBtn'
-   | 'bravePsstDialogCancelBtn'
- 
- export function getLocalizedString(message: Message) {
-   return getLocale(message)
- }
- 
+export type Message =
+  | 'bravePsstDialogTitle'
+  | 'bravePsstDialogText'
+  | 'bravePsstDialogOptionsTitle'
+  | 'bravePsstDialogOkBtn'
+  | 'bravePsstDialogReportFailedBtn'
+  | 'bravePsstDialogCloseBtn'
+  | 'bravePsstDialogCancelBtn'
+
+export function getLocalizedString(message: Message) {
+  return getLocale(message)
+}

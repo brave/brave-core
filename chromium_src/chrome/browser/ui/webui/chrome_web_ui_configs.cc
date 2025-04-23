@@ -4,14 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
+
 #include <memory>
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_education/buildflags.h"
-#include "content/public/browser/webui_config_map.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "content/public/browser/webui_config_map.h"
 
 #define RegisterChromeWebUIConfigs RegisterChromeWebUIConfigs_ChromiumImpl
 
@@ -103,8 +104,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<BraveEducationPageUIConfig>());
 #endif
 
-
 #if BUILDFLAG(ENABLE_PSST)
-map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
 #endif
 }

@@ -94,6 +94,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/psst/browser/core/psst_consent_dialog.mojom.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
@@ -151,7 +152,6 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "brave/components/psst/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -846,8 +846,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-content::RegisterWebUIControllerInterfaceBinder<
-psst_consent_dialog::mojom::PsstConsentFactory, psst::BravePsstDialogUI>(map);
+  content::RegisterWebUIControllerInterfaceBinder<
+      psst_consent_dialog::mojom::PsstConsentFactory, psst::BravePsstDialogUI>(
+      map);
 #endif
 
   auto* prefs =

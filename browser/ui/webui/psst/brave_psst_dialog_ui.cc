@@ -1,11 +1,12 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/check.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -31,7 +32,8 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"bravePsstDialogText", IDS_PSST_CONSENT_DIALOG_BODY},
       {"bravePsstDialogOptionsTitle", IDS_PSST_CONSENT_DIALOG_OPTIONS_TITLE},
       {"bravePsstDialogOkBtn", IDS_PSST_COMPLETE_CONSENT_DIALOG_OK},
-      {"bravePsstDialogReportFailedBtn", IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED},
+      {"bravePsstDialogReportFailedBtn",
+       IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED},
       {"bravePsstDialogCloseBtn", IDS_PSST_COMPLETE_CONSENT_DIALOG_CLOSE},
       {"bravePsstDialogCancelBtn", IDS_PSST_COMPLETE_CONSENT_DIALOG_CANCEL},
   };

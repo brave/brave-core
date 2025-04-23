@@ -21,8 +21,8 @@
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
 #include "content/public/test/browser_task_environment.h"
-#include "gmock/gmock.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace psst {

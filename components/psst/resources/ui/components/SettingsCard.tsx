@@ -4,7 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { CheckBoxIconCompleted, CheckBoxIconFailed, SettingGrid, SettingGridHeaderRow, SettingGridRow, SettingProgressRing } from './basic/display'
+import { CheckBoxIconCompleted,
+  CheckBoxIconFailed,
+  SettingGrid,
+  SettingGridHeaderRow,
+  SettingGridRow,
+  SettingProgressRing } from './basic/display'
 import Checkbox from '@brave/leo/react/checkbox'
 import { PsstProgressModalState, SettingState } from './PsstProgressModal'
 import { HorizontalContainer, TextLabel, TextSection } from './basic/structure'
@@ -45,25 +50,31 @@ export default class SettingsCard extends React.PureComponent<Props, {}> {
           </div>
         </SettingGridHeaderRow>
         {
-        progressModelState && progressModelState.optionsStatuses && Array.from(progressModelState.optionsStatuses.values()).map((item) => (
+        progressModelState && progressModelState.optionsStatuses &&
+          Array.from(progressModelState.optionsStatuses.values())
+            .map((item) => (
            <SettingGridRow key={item.url}>
             {(() => {
-              if (item.settingState == SettingState.Progress) {
+              if (item.settingState === SettingState.Progress) {
                 return (<HorizontalContainer>
                   <SettingProgressRing mode="indeterminate" />
-                  <TextSection><TextLabel>{item.description}</TextLabel></TextSection>
+                  <TextSection>
+                      <TextLabel>{item.description}</TextLabel>
+                  </TextSection>
                 </HorizontalContainer>)
-              } else if (item.settingState == SettingState.Selection) {
-                return (<Checkbox checked={item.checked} isDisabled={item.disabled} onChange={(e) => onItemChecked(item.url, e.checked)}>
+              } else if (item.settingState === SettingState.Selection) {
+                return (<Checkbox checked={item.checked}
+                  isDisabled={item.disabled}
+                  onChange={(e) => onItemChecked(item.url, e.checked)}>
                   <TextLabel>{item.description}</TextLabel>
                 </Checkbox>)
-              } else if (item.settingState == SettingState.Completed) {
+              } else if (item.settingState === SettingState.Completed) {
                 return (
                   <HorizontalContainer>
                     <CheckBoxIconCompleted name={"check-circle-outline"}/>
                     <TextLabel>{item.description}</TextLabel>
                   </HorizontalContainer>)
-              } else if (item.settingState == SettingState.Failed) {
+              } else if (item.settingState === SettingState.Failed) {
                 return (
                   <HorizontalContainer>
                     <CheckBoxIconFailed name={"close-circle"}/>

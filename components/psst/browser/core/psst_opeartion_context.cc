@@ -25,7 +25,8 @@ std::unique_ptr<PsstOperationContext> PsstOperationContext::LoadContext(
   const auto* params = user_script_result.GetIfDict();
 
   std::optional<std::string> user_id;
-  if (const std::string* parsed_user_id = params->FindString(kUserScriptResultUserPropName)) {
+  if (const std::string* parsed_user_id =
+          params->FindString(kUserScriptResultUserPropName)) {
     user_id = *parsed_user_id;
   }
 
@@ -33,15 +34,13 @@ std::unique_ptr<PsstOperationContext> PsstOperationContext::LoadContext(
     return nullptr;
   }
 
-  return std::unique_ptr<PsstOperationContext>(
+  return base::WrapUnique<PsstOperationContext>(
       new PsstOperationContext(*user_id, rule));
 }
 
-PsstOperationContext::PsstOperationContext(
-    const std::string& user_id,
-    const MatchedRule& rule)
-    : user_id_(user_id),
-      rule_name_(rule.Name()) {}
+PsstOperationContext::PsstOperationContext(const std::string& user_id,
+                                           const MatchedRule& rule)
+    : user_id_(user_id), rule_name_(rule.Name()) {}
 
 std::string PsstOperationContext::GetUserId() const {
   return user_id_;
@@ -51,8 +50,7 @@ std::string PsstOperationContext::GetRuleName() const {
 }
 
 bool PsstOperationContext::IsValid() const {
-  return !user_id_.empty() &&
-         !rule_name_.empty();
+  return !user_id_.empty() && !rule_name_.empty();
 }
 
 }  // namespace psst

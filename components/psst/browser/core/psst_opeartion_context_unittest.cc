@@ -13,8 +13,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
-#include "gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/url_util.h"
 
 using base::test::ParseJson;
@@ -58,11 +57,11 @@ TEST_F(PsstOperationContextUnitTest, LoadContext) {
         },
         {
             "url": "https://x.com/settings/data_sharing_with_business_partners",
-            "description": "Disable sharing additional information with X’s business partners."
+            "description": "Disable sharing additional information partners."
         },
         {
             "url": "https://x.com/settings/off_twitter_activity",
-            "description": "Disable personalization based on your inferred identity"
+            "description": "Disable personalization based on your identity"
         },
         {
             "url": "https://x.com/settings/ads_preferences",

@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "content/public/browser/web_contents.h"
 
 namespace psst {
 
@@ -19,8 +22,9 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
    public:
     virtual void OnSetRequestDone(const std::string& url,
                                   const std::optional<std::string>& error) = 0;
-    virtual void OnSetCompleted(const std::optional<std::vector<std::string>>& applied_checks,
-                                const std::optional<std::vector<std::string>>& errors) = 0;
+    virtual void OnSetCompleted(
+        const std::optional<std::vector<std::string>>& applied_checks,
+        const std::optional<std::vector<std::string>>& errors) = 0;
   };
 
   void AddObserver(Observer* obs);
@@ -50,14 +54,16 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
 
   PsstDialogDelegate();
   virtual ~PsstDialogDelegate();
-  virtual void ShowPsstConsentDialog(std::unique_ptr<ShowDialogData>& show_dialog_data);
+  virtual void ShowPsstConsentDialog(
+      std::unique_ptr<ShowDialogData>& show_dialog_data);
   virtual void SetProgressValue(const double value);
   virtual void SetRequestDone(const std::string& url,
                               const std::optional<std::string>& error);
-  virtual void SetCompletedView(const std::optional<std::vector<std::string>>& applied_checks,
-                                const std::optional<std::vector<std::string>>& errors
-                              //  ShareCallback share_cb
-                              );
+  virtual void SetCompletedView(
+      const std::optional<std::vector<std::string>>& applied_checks,
+      const std::optional<std::vector<std::string>>& errors
+      //  ShareCallback share_cb
+  );
   virtual void Close();
 
   ShowDialogData* GetShowDialogData();
@@ -69,4 +75,4 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
 
 }  // namespace psst
 
-#endif  //  BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_

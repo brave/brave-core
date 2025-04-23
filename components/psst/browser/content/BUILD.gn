@@ -9,10 +9,10 @@ component("content") {
   defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "psst_tab_helper.cc",
-    "psst_tab_helper.h",
     "psst_scripts_result_handler.cc",
     "psst_scripts_result_handler.h",
+    "psst_tab_helper.cc",
+    "psst_tab_helper.h",
   ]
 
   deps = [
@@ -27,17 +27,15 @@ component("content") {
     "//components/sessions",
     "//components/user_prefs",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
     "//ui/views",
     "//url",
-    "//mojo/public/cpp/bindings",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ 
-    "psst_scripts_result_handler_unittest.cc",
-  ]
+  sources = [ "psst_scripts_result_handler_unittest.cc" ]
   deps = [
     "//base/test:test_support",
     "//brave/components/psst/common",

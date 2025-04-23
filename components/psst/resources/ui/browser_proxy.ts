@@ -3,8 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as mojom from 'gen/brave/components/psst/browser/core/psst_consent_dialog.mojom.m.js'
-export * from 'gen/brave/components/psst/browser/core/psst_consent_dialog.mojom.m.js'
+import * as mojom
+  from 'gen/brave/components/psst/browser/core/psst_consent_dialog.mojom.m.js'
+export * from
+  'gen/brave/components/psst/browser/core/psst_consent_dialog.mojom.m.js'
 
 let instance: BravePsstConsentDialogProxy | null = null
 
@@ -24,12 +26,10 @@ export class BravePsstConsentDialogProxy {
       const consentHelper = new mojom.PsstConsentHelperRemote()
       const callbackRouter = new mojom.PsstConsentDialogCallbackRouter()
 
-      //const psstConsentDialog = 
       mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
         consentHelper.$.bindNewPipeAndPassReceiver(),
         callbackRouter.$.bindNewPipeAndPassRemote())
 
-     // consentHelper.setClientPage(callbackRouter.$.bindNewPipeAndPassRemote())
       instance = new BravePsstConsentDialogProxy(consentHelper, callbackRouter)
     }
 
@@ -40,6 +40,7 @@ export class BravePsstConsentDialogProxy {
   getPsstConsentHelper(): mojom.PsstConsentHelperRemote {
     return this.consentHelper
   }
+
   getCallbackRouter(): mojom.PsstConsentDialogCallbackRouter {
     return this.callbackRouter
   }

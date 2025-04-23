@@ -1,12 +1,17 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/psst/brave_psst_consent_helper_handler.h"
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/values.h"
 #include "brave/browser/ui/tabs/public/tab_features.h"
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "brave/components/psst/browser/core/psst_consent_dialog.mojom-forward.h"
 #include "brave/components/psst/common/psst_constants.h"
@@ -15,14 +20,10 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
-#include "content/public/browser/web_contents.h"
-#include "ui/aura/client/focus_change_observer.h"
-#include "ui/aura/window_delegate.h"
-#include "ui/views/widget/widget.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/web_contents.h"
 
 namespace psst {
 
@@ -74,19 +75,19 @@ BravePsstConsentHelperHandler::BravePsstConsentHelperHandler(
   }
 
   active_tab_helper_ = GetActivePsstTabHelperFromContext(web_contents);
-  if(!active_tab_helper_) {
+  if (!active_tab_helper_) {
     return;
   }
 
   psst_dialog_delegate_ = active_tab_helper_->GetPsstDialogDelegate();
-  if(!psst_dialog_delegate_) {
+  if (!psst_dialog_delegate_) {
     return;
   }
 
   psst_dialog_delegate_->AddObserver(this);
 
   auto* sdd = psst_dialog_delegate_->GetShowDialogData();
-  if(!sdd) {
+  if (!sdd) {
     return;
   }
 
@@ -113,14 +114,18 @@ BravePsstConsentHelperHandler::BravePsstConsentHelperHandler(
 
 BravePsstConsentHelperHandler::~BravePsstConsentHelperHandler() = default;
 
-void BravePsstConsentHelperHandler::OnSetRequestDone(const std::string& url, const std::optional<std::string>& error){
+void BravePsstConsentHelperHandler::OnSetRequestDone(
+    const std::string& url,
+    const std::optional<std::string>& error) {
   if (!client_page_) {
     return;
   }
   client_page_->OnSetRequestDone(url, error);
 }
 
-void BravePsstConsentHelperHandler::OnSetCompleted(const std::optional<std::vector<std::string>>& applied_checks, const std::optional<std::vector<std::string>>& errors) {
+void BravePsstConsentHelperHandler::OnSetCompleted(
+    const std::optional<std::vector<std::string>>& applied_checks,
+    const std::optional<std::vector<std::string>>& errors) {
   if (!client_page_) {
     return;
   }
@@ -140,19 +145,22 @@ void BravePsstConsentHelperHandler::OnTabStripModelChanged(
   }
 
   if (selection.new_contents) {
-    active_tab_helper_ = GetActivePsstTabHelperFromContext(selection.new_contents);
-    
-    psst_dialog_delegate_ = active_tab_helper_->GetPsstDialogDelegate();;
-    if(!psst_dialog_delegate_) {
+    active_tab_helper_ =
+        GetActivePsstTabHelperFromContext(selection.new_contents);
+
+    psst_dialog_delegate_ = active_tab_helper_->GetPsstDialogDelegate();
+    ;
+    if (!psst_dialog_delegate_) {
       return;
     }
     psst_dialog_delegate_->AddObserver(this);
   }
 }
 
-void BravePsstConsentHelperHandler::ApplyChanges(const std::vector<std::string>& selected_settings_list) {
+void BravePsstConsentHelperHandler::ApplyChanges(
+    const std::vector<std::string>& selected_settings_list) {
   auto* sdd = psst_dialog_delegate_->GetShowDialogData();
-  if(!sdd) {
+  if (!sdd) {
     return;
   }
 
@@ -164,6 +172,5 @@ void BravePsstConsentHelperHandler::CloseDialog() {
   psst_dialog_delegate_->RemoveObserver(this);
   ::psst::CloseDialog(active_tab_helper_->web_contents());
 }
-
 
 }  // namespace psst

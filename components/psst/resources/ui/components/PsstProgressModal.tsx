@@ -5,7 +5,13 @@
 
 import * as React from 'react'
 import { ModalTitle } from './basic/display'
-import { Container, HorizontalContainer, LeftAlignedItem, PsstDlgButton, RightAlignedItem, TextSection } from './basic/structure'
+import { Container,
+  HorizontalContainer,
+  LeftAlignedItem,
+  PsstDlgButton,
+  RightAlignedItem,
+  TextSection
+} from './basic/structure'
 import SettingsCard from './SettingsCard'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
@@ -35,10 +41,11 @@ import { getLocalizedString } from '../lib/locale_context'
   export interface PsstProgressModalState {
     commonState: SettingState
     site_name: string,
-    optionsStatuses: Map<string, OptionStatus> | null 
+    optionsStatuses: Map<string, OptionStatus> | null
   }
 
- export default class PsstProgressModal extends React.PureComponent<Props, PsstProgressModalState> {
+ export default class PsstProgressModal
+  extends React.PureComponent<Props, PsstProgressModalState> {
     constructor (props: Props) {
       super(props)
       this.state = {
@@ -50,7 +57,7 @@ import { getLocalizedString } from '../lib/locale_context'
 
     browserProxy_: BravePsstConsentDialogProxy =
     BravePsstConsentDialogProxy.getInstance()
-    
+
     closeDialog = () => this.browserProxy_.getPsstConsentHelper().closeDialog()
 
     setStateProp = (
@@ -61,7 +68,6 @@ import { getLocalizedString } from '../lib/locale_context'
         if (!prevState.optionsStatuses) {
           return prevState;
         }
-    
         const updatedOptionsStatuses = new Map<string, OptionStatus>();
         prevState.optionsStatuses.forEach((status, key) => {
           if (predicate(status)) {
@@ -70,7 +76,6 @@ import { getLocalizedString } from '../lib/locale_context'
             updatedOptionsStatuses.set(key, status);
           }
         });
-    
         return { ...prevState, optionsStatuses: updatedOptionsStatuses };
       });
     };
@@ -80,10 +85,9 @@ import { getLocalizedString } from '../lib/locale_context'
         if (!prevState.optionsStatuses) {
           return prevState;
         }
-    
+
         const updatedOptionsStatuses = new Map<string, OptionStatus>();
         let found = false;
-    
         prevState.optionsStatuses.forEach((status, key) => {
           if (status.url === targetUrl) {
             updatedOptionsStatuses.set(key, { ...status, ...updates });
@@ -92,7 +96,6 @@ import { getLocalizedString } from '../lib/locale_context'
             updatedOptionsStatuses.set(key, status);
           }
         });
-    
         if (found) {
           return { ...prevState, optionsStatuses: updatedOptionsStatuses };
         }
@@ -101,27 +104,32 @@ import { getLocalizedString } from '../lib/locale_context'
     };
 
     componentDidMount () {
-      this.browserProxy_.getCallbackRouter().setSettingsCardData.addListener((scd: SettingCardData) => {
-        const checkedUrlsMap = new Map<string, OptionStatus>()
-        scd.items.forEach((item) => {
-          checkedUrlsMap.set(item.url, { 
-              url: item.url, 
-              description: item.description,
-              error: null,
-              checked: true,
-              disabled: false,
-              settingState: SettingState.Selection
-          }) 
-        })
-        this.setState({
-          site_name: scd.siteName,
-          optionsStatuses: checkedUrlsMap
-        })
+      this.browserProxy_.getCallbackRouter()
+        .setSettingsCardData.addListener((scd: SettingCardData) => {
+          const checkedUrlsMap = new Map<string, OptionStatus>()
+          scd.items.forEach((item) => {
+            checkedUrlsMap.set(item.url, {
+                url: item.url,
+                description: item.description,
+                error: null,
+                checked: true,
+                disabled: false,
+                settingState: SettingState.Selection
+            })
+          })
+          this.setState({
+            site_name: scd.siteName,
+            optionsStatuses: checkedUrlsMap
+          })
       })
-      this.browserProxy_.getCallbackRouter().onSetRequestDone.addListener((url: string, error: string | null) => {
-        this.setPropForUrl(url, { settingState: error ? SettingState.Failed : SettingState.Completed, error: error })
+      this.browserProxy_.getCallbackRouter()
+        .onSetRequestDone.addListener((url: string, error: string | null) => {
+        this.setPropForUrl(url, {
+            settingState: error ? SettingState.Failed : SettingState.Completed,
+            error: error })
       })
-      this.browserProxy_.getCallbackRouter().onSetCompleted.addListener((url: string[], errors: string[]) => {
+      this.browserProxy_.getCallbackRouter()
+        .onSetCompleted.addListener((url: string[], errors: string[]) => {
         this.setState({ commonState: SettingState.Completed });
       })
     }
@@ -130,7 +138,7 @@ import { getLocalizedString } from '../lib/locale_context'
       this.setState(prevState => {
         const os = prevState?.optionsStatuses?.get(url)
         if(os){
-          prevState?.optionsStatuses?.set(url, { 
+          prevState?.optionsStatuses?.set(url, {
             checked: checked,
             url: os.url,
             description: os.description,
@@ -143,7 +151,7 @@ import { getLocalizedString } from '../lib/locale_context'
     }
 
     render () {
-        const isInProgress = this.state.commonState == SettingState.Progress
+        const isInProgress = this.state.commonState === SettingState.Progress
         return (
         <Container>
           <HorizontalContainer>
@@ -157,7 +165,8 @@ import { getLocalizedString } from '../lib/locale_context'
             <RightAlignedItem>
               <Button fab kind='plain-faint'
                 isDisabled={isInProgress}
-                onClick={() => this.browserProxy_.getPsstConsentHelper().closeDialog()}>
+                onClick={() => this.browserProxy_.getPsstConsentHelper()
+                  .closeDialog()}>
                 <Icon name={"close-circle"}/>
               </Button>
             </RightAlignedItem>
@@ -165,13 +174,14 @@ import { getLocalizedString } from '../lib/locale_context'
           <TextSection>
               {getLocalizedString('bravePsstDialogTitle')}
           </TextSection>
-           <SettingsCard title={getLocalizedString('bravePsstDialogOptionsTitle')} 
+           <SettingsCard title={
+              getLocalizedString('bravePsstDialogOptionsTitle')}
               subTitle={this.state.site_name}
               progressModelState={this.state}
               onItemChecked={this.handleSettingItemCheck} />
           {(() => {
-            if(this.state.commonState != SettingState.Completed) {
-              return (              
+            if(this.state.commonState !== SettingState.Completed) {
+              return (
                 <RightAlignedItem>
                     <PsstDlgButton
                       kind='outline'
@@ -189,19 +199,27 @@ import { getLocalizedString } from '../lib/locale_context'
                       onClick={() => {
                         let settingsToProcess: string[] = [];
                         if(this.state.optionsStatuses) {
-                          settingsToProcess = Array.from(this.state.optionsStatuses?.entries()).filter(([_, value]) => !value.checked).map(([key]) => key)
+                          settingsToProcess = Array.from(
+                            this.state.optionsStatuses?.entries())
+                            .filter(([_, value]) => !value.checked)
+                            .map(([key]) => key)
                         }
-                        this.setStateProp({ settingState: SettingState.Progress }, (status) => status.checked)
-                        this.setStateProp({ disabled: true }, (status) => !status.checked)
+                        this.setStateProp({
+                            settingState: SettingState.Progress
+                          },
+                          (status) => status.checked)
+                        this.setStateProp({ disabled: true },
+                          (status) => !status.checked)
                         this.setState({ commonState: SettingState.Progress });
-                        this.browserProxy_.getPsstConsentHelper().applyChanges(settingsToProcess)
+                        this.browserProxy_.getPsstConsentHelper()
+                          .applyChanges(settingsToProcess)
                       }}
                     >
                       {getLocalizedString('bravePsstDialogOkBtn')}
                     </PsstDlgButton>
                 </RightAlignedItem>)
             } else {
-              return (              
+              return (
                 <RightAlignedItem>
                     <PsstDlgButton
                       kind='outline'

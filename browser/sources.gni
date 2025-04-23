@@ -277,7 +277,8 @@ if (enable_psst) {
     "//brave/components/psst/browser/core",
     "//brave/components/psst/buildflags",
     "//brave/components/psst/common",
-#    "//brave/components/psst/resources",
+
+    #    "//brave/components/psst/resources",
   ]
 }
 

@@ -17,7 +17,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace psst {
 

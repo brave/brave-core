@@ -5,6 +5,11 @@
 
 #include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
 namespace psst {
 
 PsstDialogDelegate::PsstDialogDelegate() = default;
@@ -36,19 +41,19 @@ bool PsstDialogDelegate::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
-void PsstDialogDelegate::ShowPsstConsentDialog(std::unique_ptr<ShowDialogData>& show_dialog_data) {
+void PsstDialogDelegate::ShowPsstConsentDialog(
+    std::unique_ptr<ShowDialogData>& show_dialog_data) {
   show_dialog_data_ = std::move(show_dialog_data);
 }
 
-void PsstDialogDelegate::SetProgressValue(const double value) {
-
-}
+void PsstDialogDelegate::SetProgressValue(const double value) {}
 
 PsstDialogDelegate::ShowDialogData* PsstDialogDelegate::GetShowDialogData() {
   return show_dialog_data_ ? show_dialog_data_.get() : nullptr;
 }
 
-void PsstDialogDelegate::SetRequestDone(const std::string& url,
+void PsstDialogDelegate::SetRequestDone(
+    const std::string& url,
     const std::optional<std::string>& error) {
   for (Observer& obs : observer_list_) {
     obs.OnSetRequestDone(url, error);
@@ -58,15 +63,13 @@ void PsstDialogDelegate::SetRequestDone(const std::string& url,
 void PsstDialogDelegate::SetCompletedView(
     const std::optional<std::vector<std::string>>& applied_checks,
     const std::optional<std::vector<std::string>>& errors
-  //  ShareCallback share_cb
-  ) {
+    //  ShareCallback share_cb
+) {
   for (Observer& obs : observer_list_) {
     obs.OnSetCompleted(applied_checks, errors);
   }
 }
 
-void PsstDialogDelegate::Close() {
-
-}
+void PsstDialogDelegate::Close() {}
 
 }  // namespace psst

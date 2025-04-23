@@ -6,9 +6,7 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojom") {
-  sources = [
-    "psst_consent_dialog.mojom",
-  ]
+  sources = [ "psst_consent_dialog.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
@@ -23,10 +21,10 @@ component("core") {
     "matched_rule.h",
     "psst_component_installer.cc",
     "psst_component_installer.h",
-    "psst_opeartion_context.cc",
-    "psst_opeartion_context.h",
     "psst_dialog_delegate.cc",
     "psst_dialog_delegate.h",
+    "psst_opeartion_context.cc",
+    "psst_opeartion_context.h",
     "psst_rule.cc",
     "psst_rule.h",
     "psst_rule_registry.cc",
@@ -36,18 +34,18 @@ component("core") {
   ]
 
   deps = [
-    "//brave/common:mojo_bindings",
-    "//mojo/public/cpp/bindings",
-    "//mojo/public/mojom/base",
+    ":mojom_js",
     "//base",
+    "//brave/common:mojo_bindings",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/psst/common",
     "//brave/extensions:common",
     "//components/component_updater",
     "//crypto",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/mojom/base",
     "//net",
     "//url",
-    ":mojom_js",
   ]
 }
 

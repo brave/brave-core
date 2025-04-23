@@ -5,7 +5,7 @@
 
 import Button from '@brave/leo/react/button'
 import styled from 'styled-components'
-//import Button from '$web-components/button'
+// import Button from '$web-components/button'
 
 export const TextSection = styled('div') <{}>`
  margin: 6px 0 !important;

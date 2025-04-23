@@ -20,7 +20,7 @@ import { ThemeProvider } from 'styled-components'
                <PsstDlgContainer someProp={'T'} />
           </ThemeProvider>,
         document.getElementById('root')
-      )  
+      )
  }
 
  document.addEventListener('DOMContentLoaded', initialize)

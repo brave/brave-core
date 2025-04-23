@@ -12,9 +12,9 @@ component("common") {
   sources = [
     "features.cc",
     "features.h",
+    "psst_constants.h",
     "psst_prefs.cc",
     "psst_prefs.h",
-    "psst_constants.h",
   ]
 
   deps = [

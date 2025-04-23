@@ -11,17 +11,17 @@
 #include <vector>
 
 #include "brave/components/psst/browser/core/psst_dialog_delegate.h"
-//#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+// #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 
 namespace psst {
-class PsstDialogTabHelperDelegateImpl
-    : public PsstDialogDelegate {
+class PsstDialogTabHelperDelegateImpl : public PsstDialogDelegate {
  public:
   explicit PsstDialogTabHelperDelegateImpl(content::WebContents* contents);
   ~PsstDialogTabHelperDelegateImpl() override;
 
   // psst::PsstTabHelper::Delegate
-  void ShowPsstConsentDialog(std::unique_ptr<ShowDialogData>& show_dialog_data) override;
+  void ShowPsstConsentDialog(
+      std::unique_ptr<ShowDialogData>& show_dialog_data) override;
 
  private:
   raw_ptr<content::WebContents> web_contents_;

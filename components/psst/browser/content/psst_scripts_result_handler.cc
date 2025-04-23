@@ -4,18 +4,22 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/psst/browser/content/psst_scripts_result_handler.h"
-#include <optional>
 
-#include "base/strings/strcat.h"
-#include "brave/components/psst/browser/core/psst_opeartion_context.h"
-#include "brave/components/psst/common/psst_constants.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
+#include <optional>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "brave/components/psst/browser/core/psst_opeartion_context.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
-#include "ui/base/l10n/l10n_util.h"
+#include "brave/components/psst/common/psst_constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace psst {
 
@@ -63,9 +67,11 @@ void PrepareParametersForPolicyExecution(
   params->GetDict().Set(kUserScriptResultInitialExecutionPropName, is_initial);
 }
 
-std::optional<std::vector<std::string>> ParseErrors(PsstDialogDelegate* delegate, const base::Value::Dict* errors) {
+std::optional<std::vector<std::string>> ParseErrors(
+    PsstDialogDelegate* delegate,
+    const base::Value::Dict* errors) {
   DCHECK(delegate);
-  if(!errors || !delegate) {
+  if (!errors || !delegate) {
     return std::nullopt;
   }
 
@@ -85,16 +91,18 @@ std::optional<std::vector<std::string>> ParseErrors(PsstDialogDelegate* delegate
     errors_list.push_back(error_label_text);
   }
 
-  if(errors_list.empty()) {
+  if (errors_list.empty()) {
     return std::nullopt;
   }
 
   return errors_list;
 }
 
-std::optional<std::vector<std::string>> ParseAppliedList(PsstDialogDelegate* delegate, const base::Value::List* applied) {
+std::optional<std::vector<std::string>> ParseAppliedList(
+    PsstDialogDelegate* delegate,
+    const base::Value::List* applied) {
   DCHECK(delegate);
-  if(!applied || !delegate) {
+  if (!applied || !delegate) {
     return std::nullopt;
   }
 
@@ -112,7 +120,7 @@ std::optional<std::vector<std::string>> ParseAppliedList(PsstDialogDelegate* del
     applied_list.push_back(*desc);
     delegate->SetRequestDone(*url, std::nullopt);
   }
-  if(applied_list.empty()) {
+  if (applied_list.empty()) {
     return std::nullopt;
   }
   return applied_list;
@@ -145,12 +153,11 @@ void PsstScriptsHandlerImpl::Start() {
 
   PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
       url, base::BindOnce(&PsstScriptsHandlerImpl::InsertUserScript,
-        weak_factory_.GetWeakPtr()));
+                          weak_factory_.GetWeakPtr()));
 }
 
-void PsstScriptsHandlerImpl::OnUserScriptResult(
-    const MatchedRule& rule,
-    base::Value script_result) {
+void PsstScriptsHandlerImpl::OnUserScriptResult(const MatchedRule& rule,
+                                                base::Value script_result) {
   if (!TryToLoadContext(rule, script_result)) {
     return;
   }
@@ -175,9 +182,9 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(
       settings_for_site && settings_for_site->consent_status == kAllow &&
       rule.Version() > settings_for_site->script_version;
   if (!show_prompt && !prompt_for_new_version) {
-    OnUserDialogAction(false, *user_id, rule, std::move(script_result),
-                            kAllow, settings_for_site ? settings_for_site->urls_to_skip
-                                              : std::vector<std::string>());
+    OnUserDialogAction(false, *user_id, rule, std::move(script_result), kAllow,
+                       settings_for_site ? settings_for_site->urls_to_skip
+                                         : std::vector<std::string>());
     return;
   }
 
@@ -192,16 +199,16 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(
     return;
   }
 
-auto show_data = std::make_unique<PsstDialogDelegate::ShowDialogData>(
-  prompt_for_new_version, *site_name, tasks->Clone(),
-  base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
-                 weak_factory_.GetWeakPtr(), true, *user_id, rule,
-                 std::move(script_result),kAllow),
-  base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
-                 weak_factory_.GetWeakPtr(), true, *user_id, rule,
-                 std::nullopt /* no params needed */, kBlock),
-  base::BindOnce(&PsstScriptsHandlerImpl::DisablePsst,
-                 weak_factory_.GetWeakPtr()));
+  auto show_data = std::make_unique<PsstDialogDelegate::ShowDialogData>(
+      prompt_for_new_version, *site_name, tasks->Clone(),
+      base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
+                     weak_factory_.GetWeakPtr(), true, *user_id, rule,
+                     std::move(script_result), kAllow),
+      base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
+                     weak_factory_.GetWeakPtr(), true, *user_id, rule,
+                     std::nullopt /* no params needed */, kBlock),
+      base::BindOnce(&PsstScriptsHandlerImpl::DisablePsst,
+                     weak_factory_.GetWeakPtr()));
 
   delegate_->ShowPsstConsentDialog(show_data);
 }
@@ -221,15 +228,18 @@ void PsstScriptsHandlerImpl::OnUserDialogAction(
   }
 
   if (status == kAllow) {
-    PrepareParametersForPolicyExecution(script_params, disabled_checks, is_initial);
+    PrepareParametersForPolicyExecution(script_params, disabled_checks,
+                                        is_initial);
 
-    InsertScriptInPage(rule.PolicyScript(),std::move(script_params),
-                       base::BindOnce(&PsstScriptsHandlerImpl::OnPolicyScriptResult,
-                                      weak_factory_.GetWeakPtr(), rule));
+    InsertScriptInPage(
+        rule.PolicyScript(), std::move(script_params),
+        base::BindOnce(&PsstScriptsHandlerImpl::OnPolicyScriptResult,
+                       weak_factory_.GetWeakPtr(), rule));
   }
 }
 
-void PsstScriptsHandlerImpl::OnPolicyScriptResult(const MatchedRule& rule, base::Value value) {
+void PsstScriptsHandlerImpl::OnPolicyScriptResult(const MatchedRule& rule,
+                                                  base::Value value) {
   DCHECK(delegate_);
   DCHECK(web_contents_);
   if (!value.is_dict()) {
@@ -247,28 +257,29 @@ void PsstScriptsHandlerImpl::OnPolicyScriptResult(const MatchedRule& rule, base:
     delegate_->SetProgressValue(*percent);
   }
 
-  const auto applied_list = ParseAppliedList(delegate_.get(), psst->FindList("applied"));
-  const auto errors_list = ParseErrors(delegate_.get(),psst->FindDict("errors"));
+  const auto applied_list =
+      ParseAppliedList(delegate_.get(), psst->FindList("applied"));
+  const auto errors_list =
+      ParseErrors(delegate_.get(), psst->FindDict("errors"));
   if (const auto result = value.GetDict().FindBool("result");
       !result || !result.value()) {
     return;
   }
 
-  delegate_->SetCompletedView(
-      applied_list, errors_list);
+  delegate_->SetCompletedView(applied_list, errors_list);
 
   ResetContext();
 }
 
-
-void PsstScriptsHandlerImpl::InsertUserScript(const std::optional<MatchedRule>& rule) {
+void PsstScriptsHandlerImpl::InsertUserScript(
+    const std::optional<MatchedRule>& rule) {
   if (!rule) {
     return;
   }
 
   InsertScriptInPage(rule->UserScript(), std::nullopt /* no params */,
-    base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
-      weak_factory_.GetWeakPtr(), rule.value()));
+                     base::BindOnce(&PsstScriptsHandlerImpl::OnUserScriptResult,
+                                    weak_factory_.GetWeakPtr(), rule.value()));
 }
 
 void PsstScriptsHandlerImpl::InsertPolicyScript(
@@ -324,28 +335,28 @@ PsstDialogDelegate* PsstScriptsHandlerImpl::GetPsstDialogDelegate() {
 }
 
 void PsstScriptsHandlerImpl::InsertScriptInPage(
-  const std::string& script,
-  std::optional<base::Value> value,
-  InsertScriptInPageCallback cb) {
-content::RenderFrameHost* render_frame_host =
-    content::RenderFrameHost::FromID(render_frame_host_id_);
+    const std::string& script,
+    std::optional<base::Value> value,
+    InsertScriptInPageCallback cb) {
+  content::RenderFrameHost* render_frame_host =
+      content::RenderFrameHost::FromID(render_frame_host_id_);
 
-// Check if render_frame_host is still valid and if starting rfh is the same.
-if (!render_frame_host ||
-    render_frame_host_id_ !=
-        web_contents_->GetPrimaryMainFrame()->GetGlobalId()) {
-  return;
-}
+  // Check if render_frame_host is still valid and if starting rfh is the same.
+  if (!render_frame_host ||
+      render_frame_host_id_ !=
+          web_contents_->GetPrimaryMainFrame()->GetGlobalId()) {
+    return;
+  }
 
-// Add params as JS preamble to the script.
-std::string script_with_params =
-    GetScriptWithParams(script, std::move(value));
+  // Add params as JS preamble to the script.
+  std::string script_with_params =
+      GetScriptWithParams(script, std::move(value));
 
-GetRemote(render_frame_host)
-    ->RequestAsyncExecuteScript(
-        world_id_, base::UTF8ToUTF16(script_with_params),
-        blink::mojom::UserActivationOption::kDoNotActivate,
-        blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+  GetRemote(render_frame_host)
+      ->RequestAsyncExecuteScript(
+          world_id_, base::UTF8ToUTF16(script_with_params),
+          blink::mojom::UserActivationOption::kDoNotActivate,
+          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
 }
 
 mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&

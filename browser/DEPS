@@ -52,6 +52,8 @@ include_rules += [
   "+brave/components/playlist/browser",
   "+brave/components/playlist/common",
   "+brave/components/psst/browser/content",
+  "+brave/components/psst/browser/core",
+  "+brave/components/psst/buildflags",
   "+brave/components/psst/common",
   "+brave/components/skus/browser",
   "+brave/components/skus/common",

@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/psst/browser/core",
+  "+brave/components/psst/resources/grit"
+]
