@@ -298,7 +298,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 void BraveTabContainer::PaintBoundingBoxForTiles(
     gfx::Canvas& canvas,
     const SplitViewBrowserData* split_view_data) {
-  std::ranges::for_each(split_view_data->tiles(), [&](const auto& tile) {
+  std::ranges::for_each(split_view_data->tab_tiles(), [&](const auto& tile) {
     PaintBoundingBoxForTile(canvas, tile);
   });
 }

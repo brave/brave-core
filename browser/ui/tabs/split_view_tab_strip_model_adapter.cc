@@ -47,7 +47,7 @@ void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(const TabTile& tile,
 }
 
 void SplitViewTabStripModelAdapter::TabDragStarted() {
-  if (split_view_browser_data_->tiles().empty() || is_in_tab_dragging()) {
+  if (split_view_browser_data_->tab_tiles().empty() || is_in_tab_dragging()) {
     return;
   }
 
@@ -104,7 +104,7 @@ void SplitViewTabStripModelAdapter::TabDragEnded() {
   // Check if any tiles are separated after drag and drop session. Then break
   // the tiles.
   std::vector<TabTile> tiles_to_break;
-  for (const auto& tile : split_view_browser_data_->tiles()) {
+  for (const auto& tile : split_view_browser_data_->tab_tiles()) {
     int index1 = model_->GetIndexOfTab(tile.first.Get());
     int index2 = model_->GetIndexOfTab(tile.second.Get());
     if (index2 - index1 == 1) {
@@ -126,7 +126,7 @@ void SplitViewTabStripModelAdapter::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  if (split_view_browser_data_->tiles().empty()) {
+  if (split_view_browser_data_->tab_tiles().empty()) {
     return;
   }
 
@@ -163,7 +163,7 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
   }
 
   std::vector<int> indices_to_be_moved;
-  for (const auto& tile : split_view_browser_data_->tiles()) {
+  for (const auto& tile : split_view_browser_data_->tab_tiles()) {
     auto lower_index = model_->GetIndexOfTab(tile.first.Get());
     auto higher_index = model_->GetIndexOfTab(tile.second.Get());
     CHECK_LT(lower_index, higher_index);

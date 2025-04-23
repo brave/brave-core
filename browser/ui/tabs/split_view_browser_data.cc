@@ -36,92 +36,92 @@ SplitViewBrowserData::~SplitViewBrowserData() {
   }
 }
 
-void SplitViewBrowserData::TileTabs(const TabTile& tile) {
-  CHECK(!IsTabTiled(tile.first));
-  CHECK(!IsTabTiled(tile.second));
+void SplitViewBrowserData::TileTabs(const TabTile& tab_tile) {
+  CHECK(!IsTabTiled(tab_tile.first));
+  CHECK(!IsTabTiled(tab_tile.second));
 
   auto& model = tab_strip_model_adapter_->tab_strip_model();
-  CHECK_LT(model.GetIndexOfTab(tile.first.Get()),
-           model.GetIndexOfTab(tile.second.Get()));
+  CHECK_LT(model.GetIndexOfTab(tab_tile.first.Get()),
+           model.GetIndexOfTab(tab_tile.second.Get()));
 
   auto* process_misc_metrics = g_brave_browser_process->process_misc_metrics();
   if (process_misc_metrics) {
     process_misc_metrics->split_view_metrics()->ReportSplitViewUsage();
   }
 
-  tiles_.push_back(tile);
+  tab_tiles_.push_back(tab_tile);
 
-  tile_index_for_tab_[tile.first] = tiles_.size() - 1;
-  tile_index_for_tab_[tile.second] = tiles_.size() - 1;
+  tab_tile_index_for_tab_[tab_tile.first] = tab_tiles_.size() - 1;
+  tab_tile_index_for_tab_[tab_tile.second] = tab_tiles_.size() - 1;
 
-  bool tabs_are_adjacent =
-      tab_strip_model_adapter_->SynchronizePinnedState(tile, tile.first);
+  bool tabs_are_adjacent = tab_strip_model_adapter_->SynchronizePinnedState(
+      tab_tile, tab_tile.first);
   tabs_are_adjacent |= tab_strip_model_adapter_->SynchronizeGroupedState(
-      tile, /*source=*/tile.first,
-      model.GetTabGroupForTab(model.GetIndexOfTab(tile.first.Get())));
+      tab_tile, /*source=*/tab_tile.first,
+      model.GetTabGroupForTab(model.GetIndexOfTab(tab_tile.first.Get())));
 
   if (!tabs_are_adjacent) {
-    tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
+    tab_strip_model_adapter_->MakeTiledTabsAdjacent(tab_tile);
   }
 
   for (auto& observer : observers_) {
-    observer.OnTileTabs(tile);
+    observer.OnTileTabs(tab_tile);
   }
 }
 
 void SplitViewBrowserData::BreakTile(const tabs::TabHandle& tab) {
-  if (auto iter = FindTile(tab); iter != tiles_.end()) {
-    auto tile_to_break = *iter;
+  if (auto iter = FindTabTile(tab); iter != tab_tiles_.end()) {
+    auto tab_tile_to_break = *iter;
     for (auto& observer : observers_) {
-      observer.OnWillBreakTile(tile_to_break);
+      observer.OnWillBreakTile(tab_tile_to_break);
     }
 
-    auto index = tile_index_for_tab_[iter->first];
-    tile_index_for_tab_.erase(iter->first);
-    tile_index_for_tab_.erase(iter->second);
-    for (auto& [t, tile_index] : tile_index_for_tab_) {
-      if (tile_index > index) {
-        tile_index--;
+    auto index = tab_tile_index_for_tab_[iter->first];
+    tab_tile_index_for_tab_.erase(iter->first);
+    tab_tile_index_for_tab_.erase(iter->second);
+    for (auto& [t, tab_tile_index] : tab_tile_index_for_tab_) {
+      if (tab_tile_index > index) {
+        tab_tile_index--;
       }
     }
 
-    tiles_.erase(iter);
+    tab_tiles_.erase(iter);
 
     for (auto& observer : observers_) {
-      observer.OnDidBreakTile(tile_to_break);
+      observer.OnDidBreakTile(tab_tile_to_break);
     }
   } else {
     NOTREACHED() << "Tried to break tile which doesn't exist";
   }
 }
 
-std::vector<TabTile>::iterator SplitViewBrowserData::FindTile(
+std::vector<TabTile>::iterator SplitViewBrowserData::FindTabTile(
     const tabs::TabHandle& tab) {
   if (IsTabTiled(tab)) {
-    return tiles_.begin() + tile_index_for_tab_[tab];
+    return tab_tiles_.begin() + tab_tile_index_for_tab_[tab];
   }
 
-  return tiles_.end();
+  return tab_tiles_.end();
 }
 
-std::vector<TabTile>::const_iterator SplitViewBrowserData::FindTile(
+std::vector<TabTile>::const_iterator SplitViewBrowserData::FindTabTile(
     const tabs::TabHandle& tab) const {
-  return const_cast<SplitViewBrowserData*>(this)->FindTile(tab);
+  return const_cast<SplitViewBrowserData*>(this)->FindTabTile(tab);
 }
 
 void SplitViewBrowserData::Transfer(SplitViewBrowserData* other,
-                                    std::vector<TabTile> tiles) {
-  for (const auto& tile : tiles) {
-    other->TileTabs(tile);
+                                    std::vector<TabTile> tab_tiles) {
+  for (const auto& tab_tile : tab_tiles) {
+    other->TileTabs(tab_tile);
   }
 }
 
 bool SplitViewBrowserData::IsTabTiled(const tabs::TabHandle& tab) const {
-  return tile_index_for_tab_.contains(tab);
+  return tab_tile_index_for_tab_.contains(tab);
 }
 
-void SplitViewBrowserData::SwapTabsInTile(const TabTile& tile) {
-  auto iter = FindTile(tile.first);
+void SplitViewBrowserData::SwapTabsInTile(const TabTile& tab_tile) {
+  auto iter = FindTabTile(tab_tile.first);
   std::swap(iter->first, iter->second);
 
   for (auto& observer : observers_) {
@@ -131,8 +131,8 @@ void SplitViewBrowserData::SwapTabsInTile(const TabTile& tile) {
 
 std::optional<TabTile> SplitViewBrowserData::GetTile(
     const tabs::TabHandle& tab) const {
-  auto iter = FindTile(tab);
-  if (iter == tiles_.end()) {
+  auto iter = FindTabTile(tab);
+  if (iter == tab_tiles_.end()) {
     return std::nullopt;
   }
   return *iter;
@@ -140,15 +140,15 @@ std::optional<TabTile> SplitViewBrowserData::GetTile(
 
 void SplitViewBrowserData::SetSizeDelta(const tabs::TabHandle& tab,
                                         int size_delta) {
-  auto iter = FindTile(tab);
-  CHECK(iter != tiles_.end());
+  auto iter = FindTabTile(tab);
+  CHECK(iter != tab_tiles_.end());
 
   iter->split_view_size_delta = size_delta;
 }
 
 int SplitViewBrowserData::GetSizeDelta(const tabs::TabHandle& tab) {
-  auto iter = FindTile(tab);
-  CHECK(iter != tiles_.end());
+  auto iter = FindTabTile(tab);
+  CHECK(iter != tab_tiles_.end());
   return iter->split_view_size_delta;
 }
 
@@ -229,28 +229,29 @@ SplitViewBrowserData::TabDragStarted() {
 
 void SplitViewBrowserData::TabsWillBeAttachedToNewBrowser(
     const std::vector<tabs::TabHandle>& tabs) {
-  DCHECK(tiles_to_be_attached_to_new_window_.empty());
+  DCHECK(tab_tiles_to_be_attached_to_new_window_.empty());
 
   for (const auto& tab : tabs) {
-    auto iter = FindTile(tab);
-    if (iter == tiles_.end()) {
+    auto iter = FindTabTile(tab);
+    if (iter == tab_tiles_.end()) {
       continue;
     }
 
-    tiles_to_be_attached_to_new_window_.push_back(*iter);
-    // The tile in the |tile_| will be removed when they actually get detached
-    // from the current tab strip model.
+    tab_tiles_to_be_attached_to_new_window_.push_back(*iter);
+    // The tile in the |tab_tile_| will be removed when they actually get
+    // detached from the current tab strip model.
   }
 
-  if (tiles_to_be_attached_to_new_window_.size() > 1) {
-    std::ranges::sort(tiles_to_be_attached_to_new_window_);
-    auto to_remove = std::ranges::unique(tiles_to_be_attached_to_new_window_);
-    tiles_to_be_attached_to_new_window_.erase(to_remove.begin(),
-                                              to_remove.end());
+  if (tab_tiles_to_be_attached_to_new_window_.size() > 1) {
+    std::ranges::sort(tab_tiles_to_be_attached_to_new_window_);
+    auto to_remove =
+        std::ranges::unique(tab_tiles_to_be_attached_to_new_window_);
+    tab_tiles_to_be_attached_to_new_window_.erase(to_remove.begin(),
+                                                  to_remove.end());
   }
 }
 
 void SplitViewBrowserData::TabsAttachedToNewBrowser(
     SplitViewBrowserData* target_data) {
-  Transfer(target_data, std::move(tiles_to_be_attached_to_new_window_));
+  Transfer(target_data, std::move(tab_tiles_to_be_attached_to_new_window_));
 }

@@ -21,6 +21,11 @@ class BrowserWindowInterface;
 class SplitViewTabStripModelAdapter;
 class SplitViewBrowserDataObserver;
 
+// TabTile represents two tabs tied together like tile in tab strip UI.
+// Split view shows tab tile's two tabs at once.
+// Split view will put |first| tab first(left-side) and |second| one next.
+// Two tabs in tile are located in adjacently and tab index of |first| is
+// smaller thatn |second|.
 struct TabTile {
   tabs::TabHandle first;
   tabs::TabHandle second;
@@ -38,6 +43,8 @@ struct TabTile {
   }
 };
 
+// Handles tab tile operations such as create and break tab tile.
+// Observe this to know about tab tile state changes.
 class SplitViewBrowserData {
  public:
   explicit SplitViewBrowserData(
@@ -46,17 +53,20 @@ class SplitViewBrowserData {
 
   // When calling this, make sure that |tile.first| has a smaller model index
   // than |tile.second| be persistent across the all tab strip model operations.
-  void TileTabs(const TabTile& tile);
+  void TileTabs(const TabTile& tab_tile);
 
+  // Break tab tile that includes |tab|.
   void BreakTile(const tabs::TabHandle& tab);
 
+  // true when |tab| is included existing tab tile.
   bool IsTabTiled(const tabs::TabHandle& tab) const;
 
-  void SwapTabsInTile(const TabTile& tile);
+  // Swap first and second tabs in |tile|.
+  void SwapTabsInTile(const TabTile& tab_tile);
 
   std::optional<TabTile> GetTile(const tabs::TabHandle& tab) const;
 
-  const std::vector<TabTile>& tiles() const { return tiles_; }
+  const std::vector<TabTile>& tab_tiles() const { return tab_tiles_; }
 
   void SetSizeDelta(const tabs::TabHandle& tab, int size_delta);
   int GetSizeDelta(const tabs::TabHandle& tab);
@@ -95,22 +105,24 @@ class SplitViewBrowserData {
                            BreakTile_WithNonExistingTabIsError);
   FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest,
                            TileTabs_WithAlreadyTiledTabIsError);
-  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest, FindTile);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest, FindTabTile);
 
-  std::vector<TabTile>::iterator FindTile(const tabs::TabHandle& tab);
-  std::vector<TabTile>::const_iterator FindTile(
+  std::vector<TabTile>::iterator FindTabTile(const tabs::TabHandle& tab);
+  std::vector<TabTile>::const_iterator FindTabTile(
       const tabs::TabHandle& tab) const;
 
-  void Transfer(SplitViewBrowserData* other, std::vector<TabTile> tiles);
+  // When tabs are attached to another browser window and they are tiled tabs,
+  // create tab tiles to that browser by using |tab_tiles|.
+  void Transfer(SplitViewBrowserData* other, std::vector<TabTile> tab_tiles);
 
   std::unique_ptr<SplitViewTabStripModelAdapter> tab_strip_model_adapter_;
 
-  std::vector<TabTile> tiles_;
-  std::vector<TabTile> tiles_to_be_attached_to_new_window_;
+  std::vector<TabTile> tab_tiles_;
+  std::vector<TabTile> tab_tiles_to_be_attached_to_new_window_;
 
   // As UI is likely to read more frequently than insert or delete, we cache
   // index for faster look up.
-  base::flat_map<tabs::TabHandle, size_t> tile_index_for_tab_;
+  base::flat_map<tabs::TabHandle, size_t> tab_tile_index_for_tab_;
 
   base::ObserverList<SplitViewBrowserDataObserver> observers_;
 

@@ -73,32 +73,32 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, BreakTile_RemovesTile) {
   EXPECT_FALSE(data().IsTabTiled(tab_2->GetHandle()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, FindTile) {
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, FindTabTile) {
   auto* tab_1 = CreateTabModel();
   auto* tab_2 = CreateTabModel();
   data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
 
-  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
-                             data().FindTile(tab_1->GetHandle())));
-  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
-                             data().FindTile(tab_2->GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_1->GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_2->GetHandle())));
 
   data().BreakTile(tab_2->GetHandle());
-  EXPECT_EQ(data().tiles_.end(), data().FindTile(tab_1->GetHandle()));
-  EXPECT_EQ(data().tiles_.end(), data().FindTile(tab_2->GetHandle()));
+  EXPECT_EQ(data().tab_tiles_.end(), data().FindTabTile(tab_1->GetHandle()));
+  EXPECT_EQ(data().tab_tiles_.end(), data().FindTabTile(tab_2->GetHandle()));
 
   auto* tab_3 = CreateTabModel();
   auto* tab_4 = CreateTabModel();
   data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
   data().TileTabs({.first = tab_3->GetHandle(), .second = tab_4->GetHandle()});
-  EXPECT_EQ(1, std::distance(data().tiles_.begin(),
-                             data().FindTile(tab_3->GetHandle())));
-  EXPECT_EQ(1, std::distance(data().tiles_.begin(),
-                             data().FindTile(tab_4->GetHandle())));
+  EXPECT_EQ(1, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_3->GetHandle())));
+  EXPECT_EQ(1, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_4->GetHandle())));
 
   data().BreakTile(tab_1->GetHandle());
-  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
-                             data().FindTile(tab_3->GetHandle())));
-  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
-                             data().FindTile(tab_4->GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_3->GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_4->GetHandle())));
 }
