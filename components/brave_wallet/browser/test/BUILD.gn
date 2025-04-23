@@ -119,6 +119,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/wallet_data_files_installer_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
+    "//brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_grpc_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task_unittest.cc",

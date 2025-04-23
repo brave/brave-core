@@ -2277,11 +2277,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   OverrideSyncStateForTesting(std::move(overrided_sync_state));
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gallery equal segment repair outdoor bronze limb dawn daring main burst "
-      "design palm demise develop exit cycle harbor motor runway turtle quote "
-      "blast tail",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(985321);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 6);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,

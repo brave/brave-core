@@ -119,13 +119,8 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     keyring_service_->Reset();
-    keyring_service_->RestoreWallet(
-        "gallery equal segment repair outdoor bronze limb dawn daring main "
-        "burst "
-        "design palm demise develop exit cycle harbor motor runway turtle "
-        "quote "
-        "blast tail",
-        kTestWalletPassword, false, base::DoNothing());
+    keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
+                                    false, base::DoNothing());
 
     zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
         db_path, *keyring_service_,

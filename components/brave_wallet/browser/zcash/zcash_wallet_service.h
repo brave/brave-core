@@ -249,7 +249,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       GetBalanceCallback callback,
       base::expected<mojom::ZCashBalancePtr, std::string> result);
 
-  void CreateTransactionTaskDone(ZCashCreateTransparentTransactionTask* task);
+  virtual void CreateTransactionTaskDone(
+      ZCashCreateTransparentTransactionTask* task);
   void CompleteTransactionTaskDone(ZCashCompleteTransactionTask* task);
   void ResolveBalanceTaskDone(ZCashResolveBalanceTask* task);
   virtual void ResolveTransactionStatusTaskDone(
