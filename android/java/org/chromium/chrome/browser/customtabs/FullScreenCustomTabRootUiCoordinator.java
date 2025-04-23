@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.customtabs;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
@@ -36,6 +37,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -82,7 +84,8 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull Supplier<CustomTabMinimizeDelegate> minimizeDelegateSupplier,
             @NonNull Supplier<CustomTabFeatureOverridesManager> featureOverridesManagerSupplier,
             @NonNull Runnable openInBrowserRunnable,
-            @NonNull EdgeToEdgeManager edgeToEdgeManager) {
+            @NonNull EdgeToEdgeManager edgeToEdgeManager,
+            @Nullable DesktopWindowStateManager desktopWindowStateManager) {
         super(
                 activity,
                 shareDelegateSupplier,
@@ -119,7 +122,8 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 minimizeDelegateSupplier,
                 featureOverridesManagerSupplier,
                 openInBrowserRunnable,
-                edgeToEdgeManager);
+                edgeToEdgeManager,
+                desktopWindowStateManager);
     }
 
     @Override
