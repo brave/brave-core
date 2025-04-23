@@ -3,15 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Import required GN build configuration files
-import("//build/config/android/rules.gni")  # Android build rules
+import("//build/config/android/rules.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
-# Define an Android library target for the Quick search engines feature
 android_library("java") {
-  # Java source files to compile
   sources = [
     "java/src/org/chromium/brave/browser/quick_search_engines/ItemTouchHelperCallback.java",
     "java/src/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesAdapter.java",
@@ -25,7 +22,6 @@ android_library("java") {
     "java/src/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewHolder.java",
   ]
 
-  # Dependencies required by this library
   deps = [
     ":java_resources",
     "//base:base_java",
@@ -52,7 +48,6 @@ android_library("java") {
     "//url:url_java",
   ]
 
-  # Package name for generated R.java resource class
   resources_package = "org.chromium.brave.browser.quick_search_engines"
 }
 
