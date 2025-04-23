@@ -16,11 +16,13 @@ source_set("webui") {
   ]
 
   deps = [
+    ":web_ui_sources",
     "//base",
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/ui/webui:data_sources",
     "//brave/ios/browser/ui/webui/ads",
+    "//brave/ios/browser/ui/webui/ai_chat",
     "//brave/ios/browser/ui/webui/brave_account",
     "//brave/ios/browser/ui/webui/skus",
     "//components/prefs",
