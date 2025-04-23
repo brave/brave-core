@@ -57,6 +57,7 @@ android_resources("java_resources") {
     "java/res/layout/quick_search_engines_view_item.xml",
     "java/res/layout/quick_search_settings_item.xml",
     "java/res/menu/quick_search_engines_menu.xml",
+    "java/res/values/dimens.xml",
   ]
 
   deps = [ ":java_strings_grd" ]

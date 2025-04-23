@@ -196,7 +196,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.Snackbar
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
-import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -2718,7 +2717,7 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void loadSearchEngineLogo(
             ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {
-        ImageUtils.loadSearchEngineLogo(
+        QuickSearchEnginesUtil.loadSearchEngineLogo(
                 getCurrentProfile(), logoView, quickSearchEnginesModel.getKeyword());
     }
 

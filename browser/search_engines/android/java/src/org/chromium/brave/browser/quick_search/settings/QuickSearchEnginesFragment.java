@@ -30,7 +30,6 @@ import org.chromium.brave.browser.quick_search.R;
 import org.chromium.brave.browser.quick_search.utils.QuickSearchEnginesUtil;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
-import org.chromium.chrome.browser.util.ImageUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -202,7 +201,7 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     @Override
     public void loadSearchEngineLogo(
             ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {
-        ImageUtils.loadSearchEngineLogo(
+        QuickSearchEnginesUtil.loadSearchEngineLogo(
                 getProfile(), logoView, quickSearchEnginesModel.getKeyword());
     }
 }
