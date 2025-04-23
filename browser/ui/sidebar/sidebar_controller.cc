@@ -59,8 +59,6 @@ SidebarController::SidebarController(Browser* browser)
       profile_(browser->profile()),
       browser_(browser),
       sidebar_model_(new SidebarModel(profile_)) {
-  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS));
   sidebar_service_observed_.Observe(GetSidebarService(profile_));
 }
 
@@ -239,6 +237,17 @@ void SidebarController::UpdateActiveItemState(
   if (auto index = sidebar_model_->GetIndexOf(*active_panel_item)) {
     ActivateItemAt(*index);
   }
+}
+
+void SidebarController::SetSidebar(Sidebar* sidebar) {
+  DCHECK(!sidebar_);
+  // |sidebar| can be null in unit test.
+  if (!sidebar)
+    return;
+  sidebar_ = sidebar;
+
+  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
+      profile_, ServiceAccessType::EXPLICIT_ACCESS));
 }
 
 }  // namespace sidebar

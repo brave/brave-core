@@ -188,7 +188,7 @@ class BraveBrowserView : public BrowserView,
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
 
-  void InitSidebar() override;
+  sidebar::Sidebar* InitSidebar() override;
   void ToggleSidebar() override;
   bool HasSelectedURL() const override;
   void CleanAndCopySelectedURL() override;

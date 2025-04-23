@@ -18,7 +18,6 @@
 #include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -56,6 +55,17 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
+  if (auto* sidebar_controller = GetFeatures().sidebar_controller()) {
+    // TODO(https://github.com/brave/brave-browser/issues/45633): Cleanup this.
+    // Below call order is important.
+    // When reaches here, Sidebar UI is setup in BraveBrowserView but
+    // not initialized. It's just empty because sidebar controller/model is not
+    // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
+    // So, initializing sidebar controller/model here and then ask to initialize
+    // sidebar UI. After that, UI will be updated for model's change.
+    sidebar_controller->SetSidebar(brave_window()->InitSidebar());
+  }
+
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.

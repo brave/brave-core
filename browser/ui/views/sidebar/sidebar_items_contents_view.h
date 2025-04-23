@@ -50,7 +50,6 @@ class SidebarItemsContentsView : public views::View,
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
-  void AddedToWidget() override;
 
   // views::ContextMenuController overrides:
   void ShowContextMenuForViewImpl(

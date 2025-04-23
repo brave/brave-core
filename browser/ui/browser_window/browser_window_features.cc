@@ -75,7 +75,6 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
   if (is_type_normal) {
     sidebar_controller_ = std::make_unique<sidebar::SidebarController>(browser);
     sidebar_controller_->set_side_panel_ui(side_panel_ui());
-    static_cast<BraveBrowserWindow*>(browser->window())->InitSidebar();
   }
 }
 

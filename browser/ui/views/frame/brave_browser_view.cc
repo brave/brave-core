@@ -27,7 +27,6 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -386,19 +385,14 @@ BraveBrowserView::~BraveBrowserView() {
   }
 
   DCHECK(!tab_cycling_event_handler_);
-  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
-    sidebar_controller->set_sidebar(nullptr);
-  }
 }
 
-void BraveBrowserView::InitSidebar() {
+sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
-  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
-  CHECK(sidebar_controller);
-  sidebar_controller->set_sidebar(sidebar_container_view_);
   sidebar_container_view_->Init();
   UpdateSideBarHorizontalAlignment();
+  return sidebar_container_view_;
 }
 
 void BraveBrowserView::ToggleSidebar() {
