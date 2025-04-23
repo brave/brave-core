@@ -9,7 +9,7 @@ import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
-# Define an Android library target for the customize menu feature
+# Define an Android library target for the Quick search engines feature
 android_library("java") {
   # Java source files to compile
   sources = [
@@ -58,6 +58,7 @@ android_resources("java_resources") {
     "java/res/layout/quick_search_settings_item.xml",
     "java/res/menu/quick_search_engines_menu.xml",
     "java/res/values/dimens.xml",
+    "java/res/values/ids.xml",
   ]
 
   deps = [ ":java_strings_grd" ]
