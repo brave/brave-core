@@ -25,12 +25,13 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.url.mojom.Url;
 
-public class AddCustomFilterListsFragment extends BravePreferenceFragment
+public class AddCustomFilterListsFragment extends BraveBasePreferenceFragment
         implements ConnectionErrorHandler {
     private FilterListAndroidHandler mFilterListAndroidHandler;
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();

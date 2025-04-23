@@ -21,14 +21,15 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
-public class BravePlaylistPreferences extends BravePreferenceFragment
+public class BravePlaylistPreferences extends BraveBasePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     private ChromeSwitchPreference mEnablePlaylistSwitch;
     private ChromeSwitchPreference mAddToPlaylistButtonSwitch;

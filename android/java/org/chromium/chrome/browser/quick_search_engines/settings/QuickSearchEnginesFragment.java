@@ -29,14 +29,14 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.chrome.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.chrome.browser.util.ImageUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuickSearchEnginesFragment extends BravePreferenceFragment
+public class QuickSearchEnginesFragment extends BraveBasePreferenceFragment
         implements QuickSearchEnginesCallback, ItemTouchHelperCallback.OnStartDragListener {
     private RecyclerView mRecyclerView;
     private QuickSearchEnginesAdapter mQuickSearchEnginesAdapter;

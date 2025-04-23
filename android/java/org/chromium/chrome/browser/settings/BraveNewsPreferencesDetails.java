@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.url.mojom.Url;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BraveNewsPreferencesDetails extends BravePreferenceFragment
+public class BraveNewsPreferencesDetails extends BraveBasePreferenceFragment
         implements BraveNewsPreferencesListener, ConnectionErrorHandler {
     private RecyclerView mRecyclerView;
 

@@ -76,6 +76,7 @@ import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.sync.SyncService;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.IOException;
@@ -84,7 +85,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 /** Settings fragment that allows to control Sync functionality. */
-public class BraveSyncScreensPreference extends BravePreferenceFragment
+public class BraveSyncScreensPreference extends BraveBasePreferenceFragment
         implements View.OnClickListener,
                 BackPressHelper.ObsoleteBackPressedHandler,
                 BarcodeTracker.BarcodeGraphicTrackerCallback,

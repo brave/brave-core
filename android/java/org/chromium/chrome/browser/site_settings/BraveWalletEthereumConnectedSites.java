@@ -12,11 +12,11 @@ import androidx.preference.Preference;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class BraveWalletEthereumConnectedSites
-        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+        extends BraveBasePreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String PREF_BRAVE_WALLET_ETHEREUM_CONNECTED_SITES =
             "pref_brave_wallet_ethereum_connected_sites";
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();

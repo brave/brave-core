@@ -18,12 +18,13 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 /**
  * Fragment to keep track of all Brave Rewards related preferences.
  */
-public class BraveRewardsPreferences extends BravePreferenceFragment
+public class BraveRewardsPreferences extends BraveBasePreferenceFragment
         implements OnPreferenceChangeListener, BraveRewardsObserver {
     public static final String PREF_ADS_SWITCH = "ads_switch";
 

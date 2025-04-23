@@ -38,9 +38,10 @@ import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.ui.base.DeviceFormFactor;
 
-public class AppearancePreferences extends BravePreferenceFragment
+public class AppearancePreferences extends BraveBasePreferenceFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =

@@ -49,11 +49,12 @@ import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.mojo.system.MojoException;
 
 import java.util.List;
 
-public class BraveNewsPreferencesV2 extends BravePreferenceFragment
+public class BraveNewsPreferencesV2 extends BraveBasePreferenceFragment
         implements BraveNewsPreferencesDataListener,
                 ConnectionErrorHandler,
                 FragmentSettingsNavigation {

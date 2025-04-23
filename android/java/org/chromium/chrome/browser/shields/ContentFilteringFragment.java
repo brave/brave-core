@@ -27,19 +27,20 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.chrome.browser.settings.BraveSettingsActivity;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo_base.mojom.Value;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ContentFilteringFragment extends BravePreferenceFragment
+public class ContentFilteringFragment extends BraveBasePreferenceFragment
         implements FragmentSettingsNavigation,
                 BraveContentFilteringListener,
                 ConnectionErrorHandler {

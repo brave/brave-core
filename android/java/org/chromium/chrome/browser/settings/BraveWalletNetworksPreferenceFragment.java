@@ -27,9 +27,10 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragment
+public class BraveWalletNetworksPreferenceFragment extends BraveBasePreferenceFragment
         implements FragmentSettingsNavigation, BraveWalletAddNetworksFragment.Listener {
     // Preference key from R.xml.brave_wallet_networks_preference.
     private static final String PREF_BRAVE_WALLET_NETWORKS_ADD = "pref_brave_wallet_networks_add";

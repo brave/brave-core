@@ -43,11 +43,12 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
 import java.util.HashMap;
 
 // This excludes some settings in main settings screen.
-public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
+public abstract class BraveMainPreferencesBase extends BraveBasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
     private static final String PREF_FEATURES_SECTION = "features_section";

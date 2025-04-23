@@ -17,14 +17,16 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
 /**
  * Settings fragment containing preferences for QA team.
  */
-public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
+public class BraveRewardsDebugPreferences extends BraveBasePreferenceFragment {
     public static final String KEY = "brave_rewards_debug_preferences";
     private static final String QA_EXPORT_REWARDS_DB = "export_rewards_db";
 
@@ -44,6 +46,20 @@ public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
         mDbUtil = BraveDbUtil.getInstance();
         mExportRewardsDb = findPreference(QA_EXPORT_REWARDS_DB);
         setRewardsDbClickListeners();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.isSupported()) {
+            if (getPreferenceScreen() == null) return;
+            Preference braveRewardsDebugPreference =
+                    getPreferenceScreen().findPreference(KEY);
+            if (braveRewardsDebugPreference != null) {
+                getPreferenceScreen().removePreference(braveRewardsDebugPreference);
+            }
+        }
     }
 
     @Override

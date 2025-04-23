@@ -25,10 +25,11 @@ import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.mojo.system.MojoException;
 
 /* Class for Media section of main preferences */
-public class MediaPreferences extends BravePreferenceFragment
+public class MediaPreferences extends BraveBasePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     public static final String PREF_WIDEVINE_ENABLED = "widevine_enabled";
     public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";

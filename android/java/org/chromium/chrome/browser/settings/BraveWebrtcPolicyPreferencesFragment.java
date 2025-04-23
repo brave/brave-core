@@ -15,10 +15,11 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.ui.UiUtils;
 
 /** Fragment to manage webrtc policy settings. */
-public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragment {
+public class BraveWebrtcPolicyPreferencesFragment extends BraveBasePreferenceFragment {
     static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 

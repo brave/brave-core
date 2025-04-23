@@ -15,8 +15,9 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
-public class BraveLeoDefaultModelPreferences extends BravePreferenceFragment
+public class BraveLeoDefaultModelPreferences extends BraveBasePreferenceFragment
         implements BraveLeoRadioButtonGroupDefaultModelPreference.RadioButtonsDelegate {
     private static final String PREF_DEFAULT_MODEL_GROUP = "default_model";
     private BraveLeoRadioButtonGroupDefaultModelPreference mRadioButtons;

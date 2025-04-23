@@ -25,13 +25,14 @@ import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.ui.widget.Toast;
 
-public class CreateCustomFiltersFragment extends BravePreferenceFragment
+public class CreateCustomFiltersFragment extends BraveBasePreferenceFragment
         implements ConnectionErrorHandler {
     public static final String BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE =
             "https://support.brave.com/hc/en-us/articles/6449369961741";

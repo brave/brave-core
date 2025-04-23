@@ -2379,7 +2379,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/tracing/settings/DeveloperSettings",
-                        "org/chromium/chrome/browser/settings/BravePreferenceFragment"));
+                        "org/chromium/chrome/browser/settings/BraveBasePreferenceFragment"));
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/bookmarks/BookmarkModel",

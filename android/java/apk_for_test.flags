@@ -713,7 +713,7 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.settings.BravePreferenceFragment {
+-keep class org.chromium.chrome.browser.settings.BraveBasePreferenceFragment {
     public <init>(...);
 }
 

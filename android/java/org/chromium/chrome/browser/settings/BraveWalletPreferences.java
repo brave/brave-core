@@ -32,9 +32,10 @@ import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.ui.text.SpanApplier;
 
-public class BraveWalletPreferences extends BravePreferenceFragment
+public class BraveWalletPreferences extends BraveBasePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     private static final String TAG = "WalletPreferences";
     private static final String PREF_BRAVE_WALLET_AUTOLOCK = "pref_brave_wallet_autolock";

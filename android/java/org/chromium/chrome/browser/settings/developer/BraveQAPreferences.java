@@ -39,10 +39,11 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.components.user_prefs.UserPrefs;
 
 import java.io.File;
@@ -50,7 +51,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /** Settings fragment containing preferences for QA team. */
-public class BraveQAPreferences extends BravePreferenceFragment
+public class BraveQAPreferences extends BraveBasePreferenceFragment
         implements OnPreferenceChangeListener, BraveRewardsObserver {
     private static final String PREF_USE_REWARDS_STAGING_SERVER = "use_rewards_staging_server";
     private static final String PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER =

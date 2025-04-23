@@ -21,10 +21,11 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 import org.chromium.components.user_prefs.UserPrefs;
 
 /** Fragment to keep track of all the display related preferences. */
-public class BackgroundImagesPreferences extends BravePreferenceFragment
+public class BackgroundImagesPreferences extends BraveBasePreferenceFragment
         implements OnPreferenceChangeListener {
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";

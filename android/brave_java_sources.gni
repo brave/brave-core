@@ -363,7 +363,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveNewsPreferencesV2.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveNewsSettingsDividerItemDecoration.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsResetPreferenceDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineUtils.java",

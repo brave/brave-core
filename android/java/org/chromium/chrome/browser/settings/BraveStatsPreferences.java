@@ -22,11 +22,12 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
 /**
  * Fragment to keep track of all the display related preferences.
  */
-public class BraveStatsPreferences extends BravePreferenceFragment
+public class BraveStatsPreferences extends BraveBasePreferenceFragment
     implements OnPreferenceChangeListener {
 
     // deprecated preferences from browser-android-tabs

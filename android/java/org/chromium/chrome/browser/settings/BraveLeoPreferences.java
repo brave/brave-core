@@ -35,8 +35,9 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
-public class BraveLeoPreferences extends BravePreferenceFragment
+public class BraveLeoPreferences extends BraveBasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "BraveLeoPreferences";
     private static final String PREF_LINK_SUBSCRIPTION = "link_subscription";

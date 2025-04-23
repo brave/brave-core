@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.settings;
+package org.chromium.brave.browser.settings;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +17,11 @@ import android.view.MenuItem;
 import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.brave.browser.settings.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.settings.developer.BraveRewardsDebugPreferences;
+import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 
-public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment {
+public abstract class BraveBasePreferenceFragment extends ChromeBaseSettingsFragment {
     protected static final int STORAGE_PERMISSION_EXPORT_REQUEST_CODE = 8000;
     protected static final int STORAGE_PERMISSION_IMPORT_REQUEST_CODE =
             STORAGE_PERMISSION_EXPORT_REQUEST_CODE + 1;
@@ -47,20 +46,6 @@ public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.isSupported()) {
-            if (getPreferenceScreen() == null) return;
-            Preference braveRewardsDebugPreference =
-                    getPreferenceScreen().findPreference(BraveRewardsDebugPreferences.KEY);
-            if (braveRewardsDebugPreference != null) {
-                getPreferenceScreen().removePreference(braveRewardsDebugPreference);
-            }
-        }
     }
 
     protected boolean isStoragePermissionGranted(boolean isExport) {

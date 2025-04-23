@@ -20,8 +20,9 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
+import org.chromium.brave.browser.settings.BraveBasePreferenceFragment;
 
-public class BraveSearchEnginesPreferences extends BravePreferenceFragment
+public class BraveSearchEnginesPreferences extends BraveBasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
