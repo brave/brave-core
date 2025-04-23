@@ -73,6 +73,7 @@ constexpr char kZkSyncEra[] = "zksync-era";
 constexpr char kSolana[] = "solana";
 constexpr char kSolanaTestnet[] = "solana-testnet";
 constexpr char kSolanaDevnet[] = "solana-devnet";
+constexpr char kSimpleHashCdnHost[] = "cdn.simplehash.com";
 constexpr char kSimpleHashCdnBraveProxyHost[] =
     "simplehash.wallet-cdn.brave.com";
 
@@ -1131,7 +1132,7 @@ SimpleHashClient::ParseMetadatas(const base::Value::Dict& dict) {
     const std::string* image = nft->FindString("image_url");
     if (image) {
       GURL original_url(*image);
-      if (original_url.host() == "cdn.simplehash.com") {
+      if (original_url.host() == kSimpleHashCdnHost) {
         GURL::Replacements replacements;
         replacements.SetHostStr(kSimpleHashCdnBraveProxyHost);
         GURL proxy_url = original_url.ReplaceComponents(replacements);
