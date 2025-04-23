@@ -15,6 +15,8 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
@@ -52,17 +54,14 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return nullptr;
   }
 
-  // TODO: Handle RewardsInternalUI, AdsInternalUI, AdblockInternalUI URLs here
-  // ProfileIOS* browser_state =
-  // ProfileIOS::FromWebUIIOS(web_ui);
-
   const std::string url_host = url.host();
-  /*if (url_host == kAdblockInternalsHost) {
-    return &NewWebUIIOS<BraveAdblockInternalsUI>;
-  } if (url_host == kRewardsInternalsHost &&
-             brave_rewards::IsSupportedForProfile(browser_state)) {
-    return &NewWebUIIOS<BraveRewardsInternalsUI>;
-  }*/
+
+  if (url.SchemeIs(kChromeUIUntrustedScheme)) {
+    if (url_host == kAIChatUntrustedConversationUIHost) {
+      return &NewWebUIIOS<AIChatUntrustedConversationUI>;
+    }
+    return nullptr;
+  }
 
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
@@ -71,6 +70,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<BraveAccountUI>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
+  } else if (url_host == "leo-ai") {
+    return &NewWebUIIOS<AIChatUI>;
   }
   return nullptr;
 }
