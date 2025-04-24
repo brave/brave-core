@@ -37,11 +37,9 @@ import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
-import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -56,7 +54,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
@@ -260,21 +257,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             braveNews.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_news));
         }
 
-        MenuItem braveSpeedReader = menu.findItem(R.id.brave_speedreader_id);
-        braveSpeedReader.setVisible(false);
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)
-                && UserPrefs.get(mTabModelSelector.getCurrentModel().getProfile())
-                           .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED)) {
-            final Tab currentTab = mActivityTabProvider.get();
-            if (currentTab != null && BraveSpeedReaderUtils.tabSupportsDistillation(currentTab)) {
-                braveSpeedReader.setVisible(true);
-                if (shouldShowIconBeforeItem()) {
-                    braveSpeedReader.setIcon(
-                            AppCompatResources.getDrawable(mContext, R.drawable.ic_readermode));
-                }
-            }
-        }
-
         MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
         if (shouldShowIconBeforeItem()) {
             exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));
@@ -332,7 +314,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_wallet_id);
         mMenu.removeItem(R.id.brave_playlist_id);
         mMenu.removeItem(R.id.add_to_playlist_id);
-        mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
         mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
         mMenu.removeItem(R.id.request_vpn_location_id);

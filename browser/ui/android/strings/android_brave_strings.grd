@@ -3569,9 +3569,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SPEEDREADER_MESSAGE_BUTTON" desc="The label for the button to enable speedreader on current page.">
       Enable
     </message>
-    <message name="IDS_BRAVE_SPEEDREADER_TITLE" desc="Title for on demand speedreader menu item">
-      View in reader mode
-    </message>
     <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
       Enable NFT discovery
     </message>
