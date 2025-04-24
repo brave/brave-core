@@ -758,7 +758,15 @@ class SettingsViewController: TableViewController {
         text: Strings.NTP.settingsTitle,
         selection: { [unowned self] in
           self.navigationController?.pushViewController(
-            NTPTableViewController(rewards),
+            NTPTableViewController(
+              rewards: rewards,
+              linkTapped: { [unowned self] request in
+                self.tabManager.addTabAndSelect(
+                  request,
+                  isPrivate: false
+                )
+              }
+            ),
             animated: true
           )
         },

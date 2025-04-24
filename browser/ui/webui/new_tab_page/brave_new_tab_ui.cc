@@ -33,6 +33,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/ntp_background_images/common/url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
@@ -143,6 +144,9 @@ BraveNewTabUI::BraveNewTabUI(
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
   source->AddString("searchWidgetDefaultHost",
                     GetSearchWidgetDefaultHost(local_state));
+
+  source->AddString("newTabTakeoverLearnMoreLinkUrl",
+                    ntp_background_images::kNewTabTakeoverLearnMoreLinkUrl);
 
   source->AddBoolean("vpnWidgetSupported",
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
