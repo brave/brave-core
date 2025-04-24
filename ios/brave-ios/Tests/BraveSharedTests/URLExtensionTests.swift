@@ -257,7 +257,6 @@ class URLExtensionTests: XCTestCase {
     XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "hello world"))
   }
 
-  // swift-format-ignore: lineLength
   func testETLDPlusOne() {
     XCTAssertEqual((URL(string: "http://brave.com") as? NSURL)?.etldPlusOne, "brave.com")
     XCTAssertEqual((URL(string: "https://brave.com") as? NSURL)?.etldPlusOne, "brave.com")
@@ -270,6 +269,9 @@ class URLExtensionTests: XCTestCase {
     XCTAssertEqual((URL(string: "http://youtube.com") as? NSURL)?.etldPlusOne, "youtube.com")
     XCTAssertEqual((URL(string: "https://youtu.be") as? NSURL)?.etldPlusOne, "youtu.be")
 
+    // differs from `baseDomain`
+    XCTAssertEqual((URL(string: "http://brave.github.io") as? NSURL)?.etldPlusOne, "github.io")
+
     // Test cases where `baseDomain` would be empty due to inclusion in effective_tld_names.dat
     // brave-browser#44214
     XCTAssertEqual((URL(string: "http://cloudflare.net") as? NSURL)?.etldPlusOne, "cloudflare.net")
@@ -280,6 +282,33 @@ class URLExtensionTests: XCTestCase {
     // Wildcard in effective_tld_names.dat, ex. `*.otap.co`
     XCTAssertEqual((URL(string: "https://otap.co") as? NSURL)?.etldPlusOne, "otap.co")
     XCTAssertEqual((URL(string: "https://test.otap.co") as? NSURL)?.etldPlusOne, "otap.co")
+  }
+
+  func testBaseDomain() {
+    XCTAssertEqual(URL(string: "http://brave.com")?.baseDomain, "brave.com")
+    XCTAssertEqual(URL(string: "https://brave.com")?.baseDomain, "brave.com")
+    XCTAssertEqual(URL(string: "http://community.brave.com")?.baseDomain, "brave.com")
+    XCTAssertEqual(URL(string: "https://community.brave.com")?.baseDomain, "brave.com")
+
+    XCTAssertEqual(URL(string: "http://test.co.uk")?.baseDomain, "test.co.uk")
+    XCTAssertEqual(URL(string: "https://test.co.uk")?.baseDomain, "test.co.uk")
+
+    XCTAssertEqual(URL(string: "http://youtube.com")?.baseDomain, "youtube.com")
+    XCTAssertEqual(URL(string: "https://youtu.be")?.baseDomain, "youtu.be")
+
+    // differs from `etldPlusOn`e, matches WKWebsiteDataStore data records name
+    XCTAssertEqual(URL(string: "http://brave.github.io")?.baseDomain, "brave.github.io")
+
+    // Test cases where `baseDomain` would be empty due to inclusion in effective_tld_names.dat
+    // brave-browser#44214
+    XCTAssertEqual(URL(string: "http://cloudflare.net")?.baseDomain, "cloudflare.net")
+    XCTAssertEqual(URL(string: "https://cloudflare.net")?.baseDomain, "cloudflare.net")
+    XCTAssertEqual(URL(string: "http://httpbin.org")?.baseDomain, "httpbin.org")
+    XCTAssertEqual(URL(string: "https://httpbin.org")?.baseDomain, "httpbin.org")
+
+    // Wildcard in effective_tld_names.dat, ex. `*.otap.co`
+    XCTAssertEqual(URL(string: "https://otap.co")?.baseDomain, "otap.co")
+    XCTAssertEqual(URL(string: "https://test.otap.co")?.baseDomain, "otap.co")
   }
 }
 

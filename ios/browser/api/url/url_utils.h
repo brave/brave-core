@@ -37,10 +37,17 @@ OBJC_EXPORT
 /// Returns the canonicalized URL's spec.
 @property(readonly) NSString* brave_spec NS_SWIFT_NAME(spec);
 
-/// Returns the host's ETLD+1
+/// Returns the host's ETLD+1.
+/// NOTE: This always ignores the public suffix list. This excludes private
+/// registries, and returns "blogspot.com" for "test.blogspot.com" (blogspot.com
+/// is listed as a private registry). This property should not be used directly
+/// in code.
 @property(readonly) NSString* brave_ETLDPlusOne NS_SWIFT_NAME(etldPlusOne);
 
 /// Returns the ETLD+1 for the given host.
+/// NOTE: This always ignores the public suffix list. This excludes private
+/// registries, and returns "blogspot.com" for "test.blogspot.com" (blogspot.com
+/// is listed as a private registry). This function should not be used in code.
 + (NSString*)brave_ETLDPlusOne:(NSString*)host
     NS_SWIFT_NAME(etldPlusOne(host:));
 
