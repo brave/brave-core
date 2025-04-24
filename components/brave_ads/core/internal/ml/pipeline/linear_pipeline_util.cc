@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -22,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/normalization_transformation.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
 namespace brave_ads::ml::pipeline {
 
@@ -107,11 +106,9 @@ std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* const data,
     return std::nullopt;
   }
 
-  const std::string default_language_code =
-      brave_l10n::GetISOLanguageCode(brave_l10n::GetDefaultLocaleString());
   const auto* const locale = model->locale();
   if (locale == nullptr ||
-      !base::EqualsCaseInsensitiveASCII(locale->str(), default_language_code)) {
+      !base::EqualsCaseInsensitiveASCII(locale->str(), CurrentLanguageCode())) {
     return std::nullopt;
   }
 

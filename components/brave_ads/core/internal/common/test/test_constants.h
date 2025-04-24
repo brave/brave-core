@@ -8,8 +8,6 @@
 
 namespace brave_ads::test {
 
-inline constexpr char kDefaultLocale[] = "en_US";
-
 inline constexpr char kDeviceId[] =
     "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 

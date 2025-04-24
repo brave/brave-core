@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
-#include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -154,7 +154,8 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
+  test::ScopedCurrentLanguageCode scoped_current_language_code_;
+  test::ScopedCurrentCountryCode scoped_current_country_code_;
 
   ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 

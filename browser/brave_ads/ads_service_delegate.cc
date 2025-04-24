@@ -17,7 +17,7 @@
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/notifications/notification_display_service.h"
@@ -300,12 +300,9 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
                .Set("version", version_info::GetVersionNumber()))
       .Set("[virtual]:operating_system",
            base::Value::Dict()
-               .Set("locale",
-                    base::Value::Dict()
-                        .Set("language",
-                             brave_l10n::GetDefaultISOLanguageCodeString())
-                        .Set("region",
-                             brave_l10n::GetDefaultISOCountryCodeString()))
+               .Set("locale", base::Value::Dict()
+                                  .Set("language", CurrentLanguageCode())
+                                  .Set("region", CurrentCountryCode()))
                .Set("name", version_info::GetOSType()))
       .Set(
           "[virtual]:search_engine",

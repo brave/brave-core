@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
@@ -20,8 +19,8 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -105,9 +104,9 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   void SetUp() override {
     test::TestBase::SetUp();
 
-    scoped_default_locale_ =
-        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
-            base::StrCat({"en", "_", GetParam().country_code}));
+    scoped_current_country_code_ =
+        std::make_unique<test::ScopedCurrentCountryCode>(
+            GetParam().country_code);
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     subdivision_ = std::make_unique<Subdivision>();
@@ -150,7 +149,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
     test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
+  std::unique_ptr<test::ScopedCurrentCountryCode> scoped_current_country_code_;
 
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
   std::unique_ptr<Subdivision> subdivision_;
