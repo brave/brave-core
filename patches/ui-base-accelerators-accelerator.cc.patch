@@ -1,12 +1,12 @@
 diff --git a/ui/base/accelerators/accelerator.cc b/ui/base/accelerators/accelerator.cc
-index 5590f9d425229d87373c5b53651d2e2d17b779e4..75def292e624a09cc0894660a2b5176eae877282 100644
+index 7eb75d87dd3ed03fc6da738a8b397d4d52f5b5ce..1ff2db36fc0e3cd2d1562e8ecd35bb77e6e7e258 100644
 --- a/ui/base/accelerators/accelerator.cc
 +++ b/ui/base/accelerators/accelerator.cc
-@@ -315,6 +315,7 @@ std::u16string Accelerator::KeyCodeToName() const {
+@@ -322,6 +322,7 @@ std::u16string Accelerator::KeyCodeToName() const {
+ }
  
- std::u16string Accelerator::ApplyLongFormModifiers(
-     const std::u16string& shortcut) const {
-+  BRAVE_UI_BASE_ACCELERATOR_APPLY_LONG_FORM_MODIFIERS_
-   std::u16string result = shortcut;
+ std::vector<std::u16string> Accelerator::GetLongFormModifiers() const {
++  BRAVE_UI_BASE_ACCELERATOR_GET_LONG_FORM_MODIFIERS
+   std::vector<std::u16string> modifiers;
  
-   if (IsShiftDown()) {
+   if (IsCmdDown()) {
