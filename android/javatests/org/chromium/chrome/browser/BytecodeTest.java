@@ -121,7 +121,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
-import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiFlow;
+import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -1827,7 +1827,7 @@ public class BytecodeTest {
                         UserEducationHelper.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        TabGroupCreationUiFlow.class));
+                        TabGroupCreationUiDelegate.class));
 
         Assert.assertTrue(
                 constructorsMatch(
