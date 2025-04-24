@@ -53,6 +53,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -163,7 +164,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
         brave_ads::AdsServiceFactory::GetForProfile(profile),
         ntp_background_images::ViewCounterServiceFactory::GetForProfile(
             profile),
-        g_browser_process->local_state());
+        regional_capabilities::RegionalCapabilitiesServiceFactory::
+            GetForProfile(profile));
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {

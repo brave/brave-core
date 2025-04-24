@@ -12,12 +12,15 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/search_engines/template_url_table_model.h"
+#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
 
@@ -28,9 +31,17 @@ constexpr char kBraveSearchForTorKeyword[] =
     ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
 
 // Put yahoo at first place.
-void SortDefaultSearchEnginesListInJP(base::Value::List& defaults) {
-  auto* local_state = g_browser_process->local_state();
-  if (!local_state || brave_l10n::GetCountryCode(local_state) != "JP") {
+void SortDefaultSearchEnginesListInJP(base::Value::List& defaults,
+                                      Profile* profile) {
+  // Only apply this logic for JP locale
+  auto* regional_capabilities =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          profile);
+  regional_capabilities::CountryIdHolder country_id =
+      regional_capabilities->GetCountryId();
+  regional_capabilities::CountryIdHolder japan_country_id(
+      country_codes::CountryId("JP"));
+  if (country_id != japan_country_id) {
     return;
   }
 
@@ -119,7 +130,7 @@ base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     defaults.Append(std::move(dict));
   }
 
-  SortDefaultSearchEnginesListInJP(defaults);
+  SortDefaultSearchEnginesListInJP(defaults, profile_);
 
   return defaults;
 }
@@ -157,7 +168,7 @@ base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {
     return *keyword == kBraveSearchForTorKeyword;
   });
 
-  SortDefaultSearchEnginesListInJP(*defaults);
+  SortDefaultSearchEnginesListInJP(*defaults, profile_);
 
   return search_engines_info;
 }

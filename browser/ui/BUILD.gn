@@ -386,6 +386,7 @@ source_set("ui") {
       "//components/password_manager/core/browser/ui",
       "//components/pref_registry",
       "//components/prefs",
+      "//components/regional_capabilities",
       "//components/sessions",
       "//components/user_prefs",
       "//content/public/browser",
