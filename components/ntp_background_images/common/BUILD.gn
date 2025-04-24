@@ -6,6 +6,7 @@
 source_set("common") {
   sources = [
     "pref_names.h",
+    "url_constants.h",
     "view_counter_pref_names.h",
     "view_counter_pref_registry.cc",
     "view_counter_pref_registry.h",

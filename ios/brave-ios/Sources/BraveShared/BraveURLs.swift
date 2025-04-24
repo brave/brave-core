@@ -86,6 +86,10 @@ extension URL {
       string:
         "https://support.brave.com/hc/en-us/articles/32389914657549-What-is-the-Brave-VPN-Kill-Switch"
     )!
+    public static let newTabTakeoverLearnMoreLinkUrl = URL(
+      string:
+        "https://support.brave.com/hc/en-us/articles/35182999599501"
+    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(
