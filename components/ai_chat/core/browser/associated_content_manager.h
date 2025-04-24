@@ -54,6 +54,7 @@ class AssociatedContentManager
                      bool notify_updated = true);
 
   void GetContent(base::OnceClosure callback);
+  void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
   void GetStagedEntriesFromContent(
       ConversationHandler::GetStagedEntriesCallback callback);
   void GetTopSimilarityWithPromptTilContextLimit(

@@ -565,22 +565,6 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
       std::nullopt, false));
 
-  std::vector<mojom::ConversationTurnPtr> expected_history;
-  expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN,
-      mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
-      std::nullopt, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false));
-
-  std::vector<mojom::ConversationEntryEventPtr> response_events;
-  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New(expected_response)));
-  expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, expected_response, std::nullopt,
-      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, false));
-
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   // Human and AI entries, and content event for AI response.
