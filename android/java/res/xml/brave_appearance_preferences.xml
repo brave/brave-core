@@ -42,12 +42,6 @@
         android:summary="@string/enable_tab_groups_text" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_enable_speedreader"
-        android:title="@string/enable_speedreader_title"
-        android:summary="@string/enable_speedreader_summary"
-        android:defaultValue="true" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="enable_multi_windows"
         android:title="@string/enable_multi_windows_title"
         android:summary="@string/enable_multi_windows_summary" />

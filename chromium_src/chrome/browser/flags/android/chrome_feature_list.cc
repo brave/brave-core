@@ -18,7 +18,6 @@
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/features.h"
-#include "brave/components/speedreader/common/features.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "net/base/features.h"
@@ -49,7 +48,6 @@
     &brave_rewards::features::kNewRewardsUIFeature,                     \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
-    &speedreader::kSpeedreaderFeature,                                  \
     &debounce::features::kBraveDebounce,                                \
     &webcompat::features::kBraveWebcompatExceptionsService,             \
     &net::features::kBraveHttpsByDefault,                               \
