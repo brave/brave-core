@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.chromium.base.Log;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
 import org.chromium.brave_rewards.mojom.WalletStatus;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
@@ -53,6 +54,7 @@ import org.chromium.ui.text.ChromeClickableSpan;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+@NullMarked
 public class RewardsTippingPanelFragment extends Fragment implements BraveRewardsObserver {
     public static final String TAG_FRAGMENT = "tipping_panel_tag";
     private static final String TAG = "TippingPanelFragment";

@@ -15,6 +15,7 @@ import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -47,6 +48,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.HashMap;
 
 // This excludes some settings in main settings screen.
+@NullMarked
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections

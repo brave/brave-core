@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.BuildInfo;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -46,9 +47,8 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.TreeMap;
 
-/**
- * This class is used to show rewards onBoarding UI
- **/
+/** This class is used to show rewards onBoarding UI */
+@NullMarked
 public class RewardsOnboarding implements BraveRewardsObserver {
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;

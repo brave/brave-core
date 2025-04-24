@@ -18,6 +18,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
@@ -53,6 +54,7 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
+@NullMarked
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";

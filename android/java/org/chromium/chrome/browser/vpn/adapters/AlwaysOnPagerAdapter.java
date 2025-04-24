@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.ui.text.ChromeClickableSpan;
@@ -29,6 +30,7 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 import java.util.Arrays;
 import java.util.List;
 
+@NullMarked
 public class AlwaysOnPagerAdapter extends PagerAdapter {
     private Context mContext;
 

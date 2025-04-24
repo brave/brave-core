@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -37,6 +38,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.util.List;
 import java.util.Locale;
 
+@NullMarked
 class BraveAutocompleteMediator extends AutocompleteMediator
         implements BraveSuggestionHost, BraveLeoAutocompleteDelegate {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -27,6 +28,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
+@NullMarked
 public abstract class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
     public BraveAppMenuPropertiesDelegateImpl(
             Context context,

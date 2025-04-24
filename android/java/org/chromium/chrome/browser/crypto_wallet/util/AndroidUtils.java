@@ -22,9 +22,11 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.ui.text.ChromeClickableSpan;
 
+@NullMarked
 public class AndroidUtils {
     public static int getToolBarHeight(Context context) {
         TypedValue tv = new TypedValue();

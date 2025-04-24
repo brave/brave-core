@@ -13,6 +13,7 @@ import androidx.annotation.ColorInt;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -22,6 +23,7 @@ import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateMa
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.util.ColorUtils;
 
+@NullMarked
 public class BraveStatusBarColorController extends StatusBarColorController {
     // Will be removed with bytecode patch
     public @ColorInt int mBackgroundColorForNtp;
