@@ -24,6 +24,7 @@ import { SimplePageWrapper } from '../screens/page-screen.styles'
 import {
   OnboardingSuccess //
 } from '../screens/onboarding/onboarding_success/onboarding_success'
+import { PageNotFound } from '../screens/page_not_found/page_not_found'
 
 export const UnlockedWalletRoutes = ({
   sessionRoute
@@ -32,41 +33,42 @@ export const UnlockedWalletRoutes = ({
 }) => {
   // render
   return (
-    <>
-      <Switch>
-        <Route
-          path={WalletRoutes.OnboardingComplete}
-          exact
-        >
-          <WalletPageLayout>
-            <WalletSubViewLayout>
-              <OnboardingSuccess />
-            </WalletSubViewLayout>
-          </WalletPageLayout>
-        </Route>
+    <Switch>
+      <Route
+        path={WalletRoutes.OnboardingComplete}
+        exact
+      >
+        <WalletPageLayout>
+          <WalletSubViewLayout>
+            <OnboardingSuccess />
+          </WalletSubViewLayout>
+        </WalletPageLayout>
+      </Route>
 
-        <Route path={WalletRoutes.Backup}>
-          <WalletPageLayout>
-            <WalletSubViewLayout>
-              <SimplePageWrapper>
-                <BackupWalletRoutes />
-              </SimplePageWrapper>
-            </WalletSubViewLayout>
-          </WalletPageLayout>
-        </Route>
+      <Route path={WalletRoutes.Backup}>
+        <WalletPageLayout>
+          <WalletSubViewLayout>
+            <SimplePageWrapper>
+              <BackupWalletRoutes />
+            </SimplePageWrapper>
+          </WalletSubViewLayout>
+        </WalletPageLayout>
+      </Route>
 
-        <Route path={WalletRoutes.FundWalletPageStart}>
-          <FundWalletScreen />
-        </Route>
+      <Route path={WalletRoutes.FundWalletPageStart}>
+        <FundWalletScreen />
+      </Route>
 
-        <Route path={WalletRoutes.DepositFundsPageStart}>
-          <DepositFundsScreen />
-        </Route>
+      <Route path={WalletRoutes.DepositFundsPageStart}>
+        <DepositFundsScreen />
+      </Route>
 
-        <Route path={WalletRoutes.CryptoPage}>
-          <CryptoView sessionRoute={sessionRoute} />
-        </Route>
-      </Switch>
-    </>
+      <Route path={WalletRoutes.CryptoPage}>
+        <CryptoView sessionRoute={sessionRoute} />
+      </Route>
+      <Route path='*'>
+        <PageNotFound />
+      </Route>
+    </Switch>
   )
 }

@@ -1567,5 +1567,12 @@ provideStrings({
   braveWalletSyncing: 'Syncing',
   braveWalletReviewShield: 'Review shield',
   braveWalletShielding: 'Shielding',
-  braveWalletShieldZEC: 'Shield ZEC'
+  braveWalletShieldZEC: 'Shield ZEC',
+
+  // Page Not Found
+  braveWalletPageNotFoundTitle:
+    'We can’t find the page you’re looking for right now.',
+  braveWalletPageNotFoundDescription:
+    'It may have moved to a different place or the URL may contain a typo.',
+  braveWalletGoToPortfolio: 'Go to Portfolio'
 })
