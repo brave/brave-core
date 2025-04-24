@@ -150,6 +150,9 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
             return;
         }
 
+        // Settings use getOriginalProfile always as the service isn't available
+        // for OTR profiles and we still want to control the feature for
+        // original profile.
         BraveNewsControllerFactory.getInstance()
                 .getBraveNewsController(getProfile().getOriginalProfile(), this)
                 .then(
