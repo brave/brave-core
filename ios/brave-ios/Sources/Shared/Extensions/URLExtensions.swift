@@ -53,7 +53,7 @@ extension URL {
 
   public func shouldRequestBeOpenedAsPopup() -> Bool {
     // List of schemes that are allowed to be opened in new tabs.
-    let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about", "whatsapp"]
+    let schemesAllowedToBeOpenedAsPopups = ["http", "https", "blob", "data", "javascript", "about"]
 
     // Treat `window.open("")` the same as `window.open("about:blank")`.
     if absoluteString.isEmpty {
