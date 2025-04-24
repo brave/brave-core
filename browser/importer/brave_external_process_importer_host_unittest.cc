@@ -17,7 +17,6 @@
 #include "brave/browser/importer/extensions_import_helpers.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/load_error_reporter.h"
 #include "chrome/browser/extensions/test_extension_system.h"
 #include "chrome/browser/importer/importer_progress_observer.h"
@@ -25,6 +24,7 @@
 #include "components/value_store/test_value_store_factory.h"
 #include "components/value_store/value_store.h"
 #include "content/public/test/browser_task_environment.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
@@ -111,11 +111,7 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
             extensions::ExtensionSystem::Get(GetProfile()));
     extension_system->CreateExtensionService(
         base::CommandLine::ForCurrentProcess(), base::FilePath(), false);
-    extension_service_ =
-        extensions::ExtensionSystem::Get(GetProfile())->extension_service();
   }
-
-  void TearDown() override { extension_service_ = nullptr; }
 
   base::FilePath GetProductProfilePath(const std::string& product) {
     return brave_profile_dir_.GetPath()
@@ -131,10 +127,6 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
         .AppendASCII(id);
   }
 
-  extensions::ExtensionService* extension_service() {
-    return extension_service_.get();
-  }
-
   void AddExtension(const std::string& id) {
     auto extension = extensions::ExtensionBuilder()
                          .SetManifest(base::Value::Dict()
@@ -144,7 +136,8 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
                          .SetID(id)
                          .Build();
     ASSERT_TRUE(extension);
-    extension_service()->AddExtension(extension.get());
+    extensions::ExtensionRegistrar::Get(GetProfile())
+        ->AddExtension(extension.get());
   }
 
   Profile* GetProfile() { return profile_.get(); }
@@ -185,7 +178,6 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
   base::ScopedTempDir brave_profile_dir_;
 
   std::unique_ptr<TestingProfile> profile_;
-  raw_ptr<extensions::ExtensionService> extension_service_ = nullptr;
 };
 
 TEST_F(BraveExternalProcessImporterHostUnitTest, ImportEtensionsSettings) {
