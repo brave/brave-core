@@ -23,6 +23,7 @@ brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/browser/download/android:java",
   "//brave/browser/download/internal/android:java",
+  "//brave/browser/hub/internal:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
   "//brave/browser/quick_search_engines/android:java",

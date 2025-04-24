@@ -1,0 +1,33 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  resources_package = "org.chromium.chrome.browser.hub"
+  sources = [
+    "android/java/src/org/chromium/chrome/browser/hub/BraveHubManagerImpl.java",
+    "android/java/src/org/chromium/chrome/browser/hub/BraveHubToolbarView.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//chrome/browser/back_press/android:java",
+    "//chrome/browser/hub:java",
+    "//chrome/browser/hub/internal:java",
+    "//chrome/browser/hub/internal:java_resources",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/ui/android/edge_to_edge:java",
+    "//chrome/browser/ui/android/searchactivityutils:java",
+    "//chrome/browser/ui/android/toolbar:java",
+    "//chrome/browser/ui/android/toolbar:java_resources",
+    "//chrome/browser/ui/messages/android:java",
+    "//components/browser_ui/widget/android:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+}
