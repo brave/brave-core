@@ -6754,6 +6754,14 @@ extension Strings {
 
 extension Strings {
   public struct History {
+    public static let historyRecentlyClosedTabs =
+      NSLocalizedString(
+        "history.historyRecentlyClosedTabs",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Recently Closed Tabs",
+        comment: "Title for a section in the History view that shows recently closed tabs"
+      )
     public static let historyClearAlertTitle =
       NSLocalizedString(
         "history.historyClearAlertTitle",

@@ -80,7 +80,7 @@ private struct RecentlyClosedTabsSection: View {
         } label: {
           Label {
             HStack {
-              Text("Recently Closed Tabs")
+              Text(Strings.History.historyRecentlyClosedTabs)
                 .foregroundStyle(Color(braveSystemName: .textPrimary))
               Spacer()
               Image(braveSystemName: "leo.carat.down")
