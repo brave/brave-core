@@ -9,10 +9,9 @@
 #define CreateAndRegisterEntry              \
   CreateAndRegisterEntry_UnUsed() {}        \
   friend class BraveBookmarksSidePanelView; \
-  void CreateAndRegisterEntry
+  virtual void CreateAndRegisterEntry
 
 #include "src/chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"  // IWYU pragma: export
-
 #undef CreateAndRegisterEntry
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_BOOKMARKS_BOOKMARKS_SIDE_PANEL_COORDINATOR_H_
