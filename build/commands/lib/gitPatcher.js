@@ -322,7 +322,7 @@ module.exports = class GitPatcher {
         })
       ops.push(removeOp)
       if (!patchInfo) {
-        console.warn(`Warning: can't find patches file for ${patchInfoPath}`)
+        console.warn(`Warning: can't find patch files for ${patchInfoPath}`)
         continue
       }
       allPaths.push(...patchInfo.appliesTo.map(s => s.path))
