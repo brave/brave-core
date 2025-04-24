@@ -29,7 +29,8 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     brave::RegisterPrefsForBraveReferralsService(pref_registry);
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*component_update_service=*/nullptr, &pref_service_);
+        /*variations_service*/ nullptr, /*component_update_service=*/nullptr,
+        &pref_service_);
     sponsored_image_source_ = std::make_unique<NTPSponsoredImageSource>(
         background_images_service_.get());
     background_images_source_ = std::make_unique<NTPBackgroundImagesSource>(

@@ -202,7 +202,8 @@ class ViewCounterServiceTest : public testing::Test {
         /*restore_session=*/false, /*should_record_metrics=*/false);
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*component_updater_service=*/nullptr, &local_state_);
+        /*variations_service*/ nullptr, /*component_updater_service=*/nullptr,
+        &local_state_);
 
     BraveNTPCustomBackgroundService* custom_background_service = nullptr;
 
