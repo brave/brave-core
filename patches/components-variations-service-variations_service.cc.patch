@@ -1,0 +1,12 @@
+diff --git a/components/variations/service/variations_service.cc b/components/variations/service/variations_service.cc
+index e4279de7ed94de4e83d53f42ac5cb1492cf6bcce..c9d503c28d3f654383c149b081b05ddda584f31e 100644
+--- a/components/variations/service/variations_service.cc
++++ b/components/variations/service/variations_service.cc
+@@ -892,6 +892,7 @@ void VariationsService::OnSimpleLoaderComplete(
+     // modify the latest seed's date.
+     field_trial_creator_.seed_store()->UpdateSeedDateAndLogDayChange(
+         response_date.value_or(base::Time()));
++    BRAVE_VARIATIONS_SERVICE_ON_SIMPLE_LOADER_COMPLETE
+     return;
+   }
+ 
