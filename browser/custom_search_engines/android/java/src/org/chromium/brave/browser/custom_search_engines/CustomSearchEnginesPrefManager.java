@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.brave.browser.search_engines;
+package org.chromium.brave.browser.custom_search_engines;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

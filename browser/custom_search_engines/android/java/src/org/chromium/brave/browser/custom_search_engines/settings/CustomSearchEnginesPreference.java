@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.brave.browser.search_engines.settings;
+package org.chromium.brave.browser.custom_search_engines.settings;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,8 +14,8 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.search_engines.CustomSearchEnginesPrefManager;
-import org.chromium.brave.browser.search_engines.R;
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesPrefManager;
+import org.chromium.brave.browser.custom_search_engines.R;
 import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.List;

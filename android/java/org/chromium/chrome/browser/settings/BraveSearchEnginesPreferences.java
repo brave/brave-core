@@ -14,8 +14,8 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
-import org.chromium.brave.browser.search_engines.CustomSearchEnginesPrefManager;
-import org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference;
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesPrefManager;
+import org.chromium.brave.browser.custom_search_engines.settings.CustomSearchEnginesPreference;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.preferences.BravePref;

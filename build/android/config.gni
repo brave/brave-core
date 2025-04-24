@@ -21,6 +21,7 @@ brave_android_manifest_includes = [
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+  "//brave/browser/custom_search_engines/android:java",
   "//brave/browser/download/android:java",
   "//brave/browser/download/internal/android:java",
   "//brave/browser/hub/internal:java",
@@ -28,7 +29,6 @@ brave_chrome_java_deps = [
   "//brave/browser/notifications/android:java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
-  "//brave/browser/search_engines/android:java",
   "//brave/browser/tabmodel/android:java",
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/omnibox:java",
@@ -90,8 +90,8 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps = [
+  "//brave/browser/custom_search_engines/android:java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
-  "//brave/browser/search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
   "//brave/build/android:brave_java_xml_preprocess_resources",
 ]

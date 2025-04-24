@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.brave.browser.search_engines.settings;
+package org.chromium.brave.browser.custom_search_engines.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,8 +25,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
-import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
-import org.chromium.brave.browser.search_engines.R;
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
+import org.chromium.brave.browser.custom_search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.search_engines.BraveTemplateUrlService;

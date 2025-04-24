@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.chromium.brave.browser.search_engines.CustomSearchEnginesManager;
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
 import org.chromium.components.search_engines.TemplateUrl;
 
 import java.util.HashSet;

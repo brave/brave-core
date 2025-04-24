@@ -9,12 +9,12 @@ import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 android_library("java") {
   sources = [
-    "java/src/org/chromium/brave/browser/search_engines/ConfirmationDialog.java",
-    "java/src/org/chromium/brave/browser/search_engines/CustomSearchEnginesManager.java",
-    "java/src/org/chromium/brave/browser/search_engines/CustomSearchEnginesPrefManager.java",
-    "java/src/org/chromium/brave/browser/search_engines/settings/AddCustomSearchEnginePreferenceFragment.java",
-    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEngineAdapter.java",
-    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesPreference.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/ConfirmationDialog.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesManager.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesPrefManager.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/AddCustomSearchEnginePreferenceFragment.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/CustomSearchEngineAdapter.java",
+    "java/src/org/chromium/brave/browser/custom_search_engines/settings/CustomSearchEnginesPreference.java",
   ]
   deps = [
     ":java_resources",
@@ -43,7 +43,7 @@ android_library("java") {
     "//url:url_java",
   ]
 
-  resources_package = "org.chromium.brave.browser.search_engines"
+  resources_package = "org.chromium.brave.browser.custom_search_engines"
 }
 
 android_resources("java_resources") {
