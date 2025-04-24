@@ -5,13 +5,10 @@
 
 package org.chromium.chrome.browser.tab;
 
-import org.chromium.chrome.browser.speedreader.BraveSpeedReaderManager;
-
 public final class BraveTabHelpers {
     private BraveTabHelpers() {}
 
     static void initTabHelpers(Tab tab, Tab parentTab) {
-        if (BraveSpeedReaderManager.isEnabled()) BraveSpeedReaderManager.createForTab(tab);
         TabHelpers.initTabHelpers(tab, parentTab);
     }
 }
