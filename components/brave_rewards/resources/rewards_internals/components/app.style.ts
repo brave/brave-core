@@ -9,11 +9,14 @@ import { scoped, global } from '../../rewards_page/lib/scoped_css'
 import rewardsLogoImage from '../../rewards_page/assets/rewards_logo.svg'
 import rewardsLogoImageDark from '../../rewards_page/assets/rewards_logo_dark.svg'
 
+const wideWidth = '800px'
+
 export const style = scoped.css`
   & {
     display: flex;
     block-size: 100vh;
     background: #ede6fa;
+    container-type: inline-size;
 
     @media (prefers-color-scheme: dark) {
       background: #270d69;
@@ -21,10 +24,27 @@ export const style = scoped.css`
   }
 
   .sidebar {
-    flex: 0 0 250px;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
     background: ${color.container.background};
+
+    @container (width < ${wideWidth}) {
+      position: fixed;
+      inset-block-start: 0;
+      inset-block-end: 0;
+      inset-inline-start: 0;
+      z-index: 2;
+      border-inline-end: solid 1px ${color.divider.subtle};
+      box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.08);
+
+      transform: translateX(-110%);
+      transition: transform 250ms;
+
+      &.open {
+        transform: translateX(0);
+      }
+    }
   }
 
   nav {
@@ -35,9 +55,20 @@ export const style = scoped.css`
   .page-content {
     flex: 1 1 auto;
     padding: 32px;
-    overflow: hidden auto;
+    overflow: auto;
     scrollbar-gutter: stable;
     position: relative;
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    inset-block-start: 24px;
+    inset-inline-start: 24px;
+    z-index: 1;
+
+    @container (width >= ${wideWidth}) {
+      display: none;
+    }
   }
 
   header {
@@ -50,6 +81,10 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+
+  h1 {
+    padding: 0 32px;
   }
 
   ul {
