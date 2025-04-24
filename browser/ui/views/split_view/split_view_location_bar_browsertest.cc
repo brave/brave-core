@@ -16,7 +16,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"

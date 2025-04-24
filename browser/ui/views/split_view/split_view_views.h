@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_VIEWS_H_
+#define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_VIEWS_H_
 
 #include <memory>
 #include <vector>
@@ -13,7 +13,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "base/types/pass_key.h"
-#include "brave/browser/ui/split_view/split_view_view.h"
+#include "brave/browser/ui/split_view/split_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
@@ -46,25 +46,25 @@ class SplitViewSeparator;
 
 // This is view part of split view module and contains a pair of contents
 // container view. SplitViewController controls how view works.
-class SplitView : public views::View,
+class SplitViewViews : public views::View,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-                  public ReaderModeToolbarView::Delegate,
+                       public ReaderModeToolbarView::Delegate,
 #endif
-                  public views::WidgetObserver,
-                  public FullscreenObserver,
-                  public SplitViewView {
-  METADATA_HEADER(SplitView, views::View)
+                       public views::WidgetObserver,
+                       public FullscreenObserver,
+                       public SplitView {
+  METADATA_HEADER(SplitViewViews, views::View)
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
 
   static constexpr int kInactiveBorderThickness = 1;
   static constexpr int kBorderThickness = 2;
 
-  SplitView(Browser& browser,
-            views::View* contents_container,
-            ContentsWebView* contents_web_view);
+  SplitViewViews(Browser& browser,
+                 views::View* contents_container,
+                 ContentsWebView* contents_web_view);
 
-  ~SplitView() override;
+  ~SplitViewViews() override;
 
   void ListenFullscreenChanges();
 
@@ -116,7 +116,7 @@ class SplitView : public views::View,
   void Layout(PassKey) override;
   void AddedToWidget() override;
 
-  // SplitViewView:
+  // SplitView:
   void Update() override;
 
   // views::WidgetObserver:
@@ -168,4 +168,4 @@ class SplitView : public views::View,
       fullscreen_observation_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_VIEWS_H_

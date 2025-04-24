@@ -43,7 +43,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -305,9 +305,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser_->is_type_normal()) {
-    split_view_ =
-        contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
-            *browser_, contents_container_, contents_web_view_));
+    split_view_ = contents_container_->parent()->AddChildView(
+        std::make_unique<SplitViewViews>(*browser_, contents_container_,
+                                         contents_web_view_));
     set_contents_view(split_view_);
   }
 

@@ -17,7 +17,7 @@
 #include "components/tab_collections/public/tab_interface.h"
 
 class SplitViewBrowserData;
-class SplitViewView;
+class SplitView;
 class TabStripModel;
 struct TabTile;
 
@@ -37,7 +37,7 @@ class SplitViewController : public SplitViewBrowserDataObserver {
     return &split_view_tab_tile_data_;
   }
 
-  void set_split_view_view(SplitViewView* view) { view_ = view; }
+  void set_split_view(SplitView* view) { view_ = view; }
 
   // true when active tab is opened in split view.
   bool IsSplitViewActive() const;
@@ -68,7 +68,7 @@ class SplitViewController : public SplitViewBrowserDataObserver {
   void OnSwapTabsInTile(const TabTile& tile) override;
 
   // View for split view.
-  raw_ptr<SplitViewView> view_ = nullptr;
+  raw_ptr<SplitView> view_ = nullptr;
 
   SplitViewBrowserData split_view_tab_tile_data_;
 

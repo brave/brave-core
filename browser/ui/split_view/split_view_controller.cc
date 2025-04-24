@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/split_view/split_view_controller.h"
 
-#include "brave/browser/ui/split_view/split_view_view.h"
+#include "brave/browser/ui/split_view/split_view.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
 SplitViewController::SplitViewController(TabStripModel* tab_strip_model)

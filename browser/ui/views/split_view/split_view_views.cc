@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/split_view/split_view.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 
 #include <utility>
 
@@ -83,9 +83,9 @@ bool IsTabDistilled(content::WebContents* web_contents) {
 
 }  // namespace
 
-SplitView::SplitView(Browser& browser,
-                     views::View* contents_container,
-                     ContentsWebView* contents_web_view)
+SplitViewViews::SplitViewViews(Browser& browser,
+                               views::View* contents_container,
+                               ContentsWebView* contents_web_view)
     : browser_(browser),
       contents_container_(contents_container),
       contents_web_view_(contents_web_view) {
@@ -134,19 +134,19 @@ SplitView::SplitView(Browser& browser,
       split_view_separator_));
 
   CHECK(browser_->GetFeatures().split_view_controller());
-  browser_->GetFeatures().split_view_controller()->set_split_view_view(this);
+  browser_->GetFeatures().split_view_controller()->set_split_view(this);
 }
 
-SplitView::~SplitView() {
-  browser_->GetFeatures().split_view_controller()->set_split_view_view(nullptr);
+SplitViewViews::~SplitViewViews() {
+  browser_->GetFeatures().split_view_controller()->set_split_view(nullptr);
 }
 
-void SplitView::ListenFullscreenChanges() {
+void SplitViewViews::ListenFullscreenChanges() {
   fullscreen_observation_.Observe(
       browser_->exclusive_access_manager()->fullscreen_controller());
 }
 
-void SplitView::WillChangeActiveWebContents(
+void SplitViewViews::WillChangeActiveWebContents(
     BrowserViewKey,
     content::WebContents* old_contents,
     content::WebContents* new_contents) {
@@ -181,9 +181,10 @@ void SplitView::WillChangeActiveWebContents(
   secondary_contents_web_view_->SetWebContents(nullptr);
 }
 
-void SplitView::DidChangeActiveWebContents(BrowserViewKey,
-                                           content::WebContents* old_contents,
-                                           content::WebContents* new_contents) {
+void SplitViewViews::DidChangeActiveWebContents(
+    BrowserViewKey,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
   // Update secondary webview & UI after changing active WebContents.
   UpdateSplitViewSizeDelta(old_contents, new_contents);
   UpdateContentsWebViewVisual();
@@ -198,7 +199,7 @@ void SplitView::DidChangeActiveWebContents(BrowserViewKey,
   InvalidateLayout();
 }
 
-void SplitView::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
+void SplitViewViews::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
   // WebContents in secondary devtools webview could be used by primary's when
   // active tab changes. As same WebContents could not be hold by multiple
   // webview, it should be cleared WebContents from secondary devtools webview
@@ -208,14 +209,14 @@ void SplitView::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
   secondary_devtools_web_view_->SetWebContents(nullptr);
 }
 
-void SplitView::DidUpdateDevToolsForActiveContents(BrowserViewKey) {
+void SplitViewViews::DidUpdateDevToolsForActiveContents(BrowserViewKey) {
   if (secondary_contents_container_->GetVisible()) {
     UpdateSecondaryDevtoolsLayoutAndVisibility();
   }
 }
 
-void SplitView::GetAccessiblePanes(BrowserViewKey,
-                                   std::vector<views::View*>* panes) {
+void SplitViewViews::GetAccessiblePanes(BrowserViewKey,
+                                        std::vector<views::View*>* panes) {
   if (!secondary_contents_container_->GetVisible()) {
     return;
   }
@@ -231,14 +232,14 @@ void SplitView::GetAccessiblePanes(BrowserViewKey,
   }
 }
 
-void SplitView::SetSecondaryContentsResizingStrategy(
+void SplitViewViews::SetSecondaryContentsResizingStrategy(
     const DevToolsContentsResizingStrategy& strategy) {
   static_cast<ContentsLayoutManager*>(
       secondary_contents_container_->GetLayoutManager())
       ->SetContentsResizingStrategy(strategy);
 }
 
-void SplitView::Layout(PassKey key) {
+void SplitViewViews::Layout(PassKey key) {
   LayoutSuperclass<views::View>(this);
 
   auto* browser_view = static_cast<BraveBrowserView*>(browser_->window());
@@ -250,7 +251,7 @@ void SplitView::Layout(PassKey key) {
   browser_view->NotifyDialogPositionRequiresUpdate();
 }
 
-void SplitView::AddedToWidget() {
+void SplitViewViews::AddedToWidget() {
   widget_observation_.Observe(GetWidget());
 
   secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
@@ -265,7 +266,7 @@ void SplitView::AddedToWidget() {
   UpdateSecondaryContentsWebViewVisibility();
 }
 
-void SplitView::Update() {
+void SplitViewViews::Update() {
   // Update separator visibility first before starting split view layout
   // to give their final position.
   static_cast<BraveBrowserView*>(browser_->window())
@@ -274,8 +275,9 @@ void SplitView::Update() {
   UpdateContentsWebViewVisual();
 }
 
-void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
-                                         content::WebContents* new_contents) {
+void SplitViewViews::UpdateSplitViewSizeDelta(
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
   auto* model = browser_->tab_strip_model();
   if (model->GetIndexOfWebContents(old_contents) == TabStripModel::kNoTab ||
       model->GetIndexOfWebContents(new_contents) == TabStripModel::kNoTab) {
@@ -307,12 +309,12 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
   }
 }
 
-void SplitView::UpdateContentsWebViewVisual() {
+void SplitViewViews::UpdateContentsWebViewVisual() {
   UpdateContentsWebViewBorder();
   UpdateSecondaryContentsWebViewVisibility();
 }
 
-void SplitView::UpdateContentsWebViewBorder() {
+void SplitViewViews::UpdateContentsWebViewBorder() {
   auto* controller = browser_->GetFeatures().split_view_controller();
   if (!controller) {
     return;
@@ -371,7 +373,7 @@ void SplitView::UpdateContentsWebViewBorder() {
   SchedulePaint();
 }
 
-void SplitView::UpdateSecondaryContentsWebViewVisibility() {
+void SplitViewViews::UpdateSecondaryContentsWebViewVisibility() {
   if (browser_->IsBrowserClosing()) {
     secondary_contents_web_view_->SetWebContents(nullptr);
     return;
@@ -427,14 +429,15 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
   InvalidateLayout();
 }
 
-void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
+void SplitViewViews::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
   secondary_contents_web_view_->layer()->SetRoundedCornerRadius(corners);
   secondary_contents_web_view_->holder()->SetCornerRadii(corners);
   secondary_devtools_web_view_->holder()->SetCornerRadii(corners);
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
+void SplitViewViews::OnReaderModeToolbarActivate(
+    ReaderModeToolbarView* toolbar) {
   CHECK_EQ(secondary_reader_mode_toolbar_, toolbar);
   CHECK(secondary_contents_web_view_->web_contents());
   if (secondary_contents_web_view_->web_contents()->GetDelegate()) {
@@ -444,7 +447,7 @@ void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
   }
 }
 
-void SplitView::UpdateSecondaryReaderModeToolbarVisibility() {
+void SplitViewViews::UpdateSecondaryReaderModeToolbarVisibility() {
   auto* controller = browser_->GetFeatures().split_view_controller();
   if (controller->IsSplitViewActive()) {
     secondary_reader_mode_toolbar_->SetVisible(
@@ -454,7 +457,7 @@ void SplitView::UpdateSecondaryReaderModeToolbarVisibility() {
   }
 }
 
-void SplitView::UpdateSecondaryReaderModeToolbar() {
+void SplitViewViews::UpdateSecondaryReaderModeToolbar() {
   auto* browser_view = static_cast<BraveBrowserView*>(browser_->window());
   if (!browser_view) {
     return;
@@ -482,7 +485,7 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
 }
 #endif
 
-void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {
+void SplitViewViews::UpdateSecondaryDevtoolsLayoutAndVisibility() {
   DevToolsContentsResizingStrategy strategy;
   content::WebContents* devtools = DevToolsWindow::GetInTabWebContents(
       secondary_contents_web_view_->web_contents(), &strategy);
@@ -500,13 +503,13 @@ void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {
   }
 }
 
-void SplitView::OnWidgetDestroying(views::Widget* widget) {
+void SplitViewViews::OnWidgetDestroying(views::Widget* widget) {
   DCHECK(widget_observation_.IsObservingSource(widget));
   widget_observation_.Reset();
 }
 
-void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
-                                                     bool visible) {
+void SplitViewViews::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+                                                          bool visible) {
   if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
     return;
   }
@@ -520,7 +523,7 @@ void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
 #endif
 }
 
-void SplitView::OnFullscreenStateChanged() {
+void SplitViewViews::OnFullscreenStateChanged() {
   // Hide secondary contents when tab fullscreen is initiated by
   // primary contents.
   if (!browser_->GetFeatures().split_view_controller()->IsSplitViewActive()) {
@@ -530,7 +533,7 @@ void SplitView::OnFullscreenStateChanged() {
   UpdateContentsWebViewVisual();
 }
 
-bool SplitView::ShouldHideSecondaryContentsByTabFullscreen() const {
+bool SplitViewViews::ShouldHideSecondaryContentsByTabFullscreen() const {
   auto* exclusive_access_manager = browser_->exclusive_access_manager();
   if (!exclusive_access_manager) {
     return false;
@@ -539,14 +542,15 @@ bool SplitView::ShouldHideSecondaryContentsByTabFullscreen() const {
   return exclusive_access_manager->fullscreen_controller()->IsTabFullscreen();
 }
 
-SplitViewLayoutManager* SplitView::GetSplitViewLayoutManager() {
+SplitViewLayoutManager* SplitViewViews::GetSplitViewLayoutManager() {
   return const_cast<SplitViewLayoutManager*>(
-      const_cast<const SplitView*>(this)->GetSplitViewLayoutManager());
+      const_cast<const SplitViewViews*>(this)->GetSplitViewLayoutManager());
 }
 
-const SplitViewLayoutManager* SplitView::GetSplitViewLayoutManager() const {
+const SplitViewLayoutManager* SplitViewViews::GetSplitViewLayoutManager()
+    const {
   return static_cast<SplitViewLayoutManager*>(GetLayoutManager());
 }
 
-BEGIN_METADATA(SplitView)
+BEGIN_METADATA(SplitViewViews)
 END_METADATA

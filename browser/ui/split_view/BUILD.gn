@@ -5,9 +5,9 @@
 
 source_set("split_view") {
   sources = [
+    "split_view.h",
     "split_view_controller.cc",
     "split_view_controller.h",
-    "split_view_view.h",
   ]
 
   deps = [

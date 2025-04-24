@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/split_view/split_view.h"
-
 #include <utility>
 
 #include "base/test/run_until.h"
@@ -15,6 +13,7 @@
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -79,7 +78,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
     return *browser_view().split_view_->secondary_devtools_web_view_;
   }
 
-  SplitView& split_view() { return *browser_view().split_view_; }
+  SplitViewViews& split_view() { return *browser_view().split_view_; }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
 };
