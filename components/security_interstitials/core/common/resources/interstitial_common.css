@@ -1,0 +1,49 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+body {
+  --primary-color: #4a46e0;
+  --primary-color-hover: #251491;
+
+  --primary-button-fill-color: var(--primary-color);
+  --primary-button-fill-color-active: var(--primary-color-hover);
+
+  --secondary-button-text-color: var(--primary-color);
+  --secondary-button-border-color: var(--primary-color);
+  --secondary-button-hover-border-color: var(--primary-color-hover);
+
+  --secondary-button-hover-fill-color: transparent;
+}
+
+button {
+  border-radius: 8px;
+  padding: 9px;
+}
+
+button:hover {
+  background: var(--primary-button-fill-color-active);
+}
+
+button:active {
+  opacity: 0.8;
+}
+
+.nav-wrapper .secondary-button {
+  padding: 8px;
+}
+
+.secondary-button:hover {
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --primary-color: #c1c4ff;
+    --primary-color-hover: #dfe1ff;
+
+    --link-color: var(--primary-color);
+    --small-link-color: var(--link-color);
+  }
+}

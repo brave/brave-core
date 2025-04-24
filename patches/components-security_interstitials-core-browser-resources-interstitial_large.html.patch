@@ -1,0 +1,12 @@
+diff --git a/components/security_interstitials/core/browser/resources/interstitial_large.html b/components/security_interstitials/core/browser/resources/interstitial_large.html
+index c46649fe57224bb4655118af82d5cbcc8dac1d1d..91657d23f8e97c99a03f26dda456f034bff8dfa3 100644
+--- a/components/security_interstitials/core/browser/resources/interstitial_large.html
++++ b/components/security_interstitials/core/browser/resources/interstitial_large.html
+@@ -11,6 +11,7 @@
+   <title>$i18n{tabTitle}</title>
+   <link rel="stylesheet" href="../../common/resources/interstitial_core.css">
+   <link rel="stylesheet" href="../../common/resources/interstitial_common.css">
++  <link rel="stylesheet" href="../../../../../brave/components/security_interstitials/core/common/resources/interstitial_common.css">
+   <link rel="stylesheet" href="interstitial_badclock.css">
+   <link rel="stylesheet" href="interstitial_captiveportal.css">
+   <link rel="stylesheet" href="interstitial_httpsonly.css">
