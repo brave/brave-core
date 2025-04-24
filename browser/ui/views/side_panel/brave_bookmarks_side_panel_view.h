@@ -8,14 +8,12 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
 
-class Browser;
 class SidePanelEntryScope;
 
 // Gives bookmarks panel specific header view with web view.
 class BraveBookmarksSidePanelView : public BraveSidePanelViewBase {
  public:
-  explicit BraveBookmarksSidePanelView(Browser* browser,
-                                       SidePanelEntryScope& scope);
+  explicit BraveBookmarksSidePanelView(SidePanelEntryScope& scope);
   ~BraveBookmarksSidePanelView() override;
   BraveBookmarksSidePanelView(const BraveBookmarksSidePanelView&) = delete;
   BraveBookmarksSidePanelView& operator=(const BraveBookmarksSidePanelView&) =
