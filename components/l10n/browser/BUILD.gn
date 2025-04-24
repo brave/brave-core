@@ -1,4 +1,13 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 static_library("browser") {
+  # Brave l10n components are deprecated. Use Chromium's functionality
+  # unless no equivalent is available.
+  visibility = [ "//brave/components/l10n/common:common" ]
+
   sources = [ "default_locale_util.h" ]
 
   if (is_android) {
