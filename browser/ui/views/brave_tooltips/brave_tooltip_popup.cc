@@ -277,13 +277,11 @@ gfx::Point BraveTooltipPopup::GetDefaultOriginForSize(const gfx::Size& size) {
 
 gfx::Rect BraveTooltipPopup::CalculateBounds(bool use_default_origin) {
   DCHECK(tooltip_view_);
-  gfx::Size size = tooltip_view_->size();
-  size.set_height(kTooltipSize.height());
-  DCHECK(!size.IsEmpty());
 
-  const gfx::Point origin =
-      use_default_origin ? GetDefaultOriginForSize(size) : widget_origin_;
-  return gfx::Rect(origin, size);
+  const gfx::Point origin = use_default_origin
+                                ? GetDefaultOriginForSize(kTooltipSize)
+                                : widget_origin_;
+  return gfx::Rect(origin, kTooltipSize);
 }
 
 void BraveTooltipPopup::RecomputeAlignment() {
