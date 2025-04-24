@@ -97,6 +97,25 @@ views::Widget* GetBrowserWidget() {
   return widget->GetPrimaryWindowWidget();
 }
 
+content::RenderWidgetHostView* GetRenderWidgetHostViewForActiveTab() {
+  const auto* browser = BrowserList::GetInstance()->GetLastActive();
+  if (!browser) {
+    return nullptr;
+  }
+
+  auto* last_active_tab = browser->tab_strip_model()->GetActiveTab();
+  if (!last_active_tab) {
+    return nullptr;
+  }
+
+  auto* active_webcontents = last_active_tab->GetContents();
+  if (!active_webcontents) {
+    return nullptr;
+  }
+
+  return active_webcontents->GetTopLevelRenderWidgetHostView();
+}
+
 const std::optional<int> GetDlgMaxHeight(content::WebUI* web_ui,
                                          const views::Widget* browser_widget) {
   DCHECK(browser_widget);
@@ -116,10 +135,13 @@ const std::optional<int> GetDlgMaxHeight(content::WebUI* web_ui,
 
 }  // namespace
 
-WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
+WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(
+    Profile* profile,
+    content::RenderWidgetHostView* render_widget_host_view)
     : reporter_service_(
           WebcompatReporterServiceFactory::GetServiceForContext(profile)),
       pref_service_(profile->GetPrefs()),
+      render_widget_host_view_(render_widget_host_view),
       ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
       pending_report_(mojom::ReportInfo::New()) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -185,14 +207,12 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
 
 void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     const base::Value::List& args) {
-  auto* render_widget_host_view =
-      web_ui()->GetWebContents()->GetTopLevelRenderWidgetHostView();
-  CHECK(render_widget_host_view);
+  CHECK(render_widget_host_view_);
   CHECK_EQ(args.size(), 1u);
 
   AllowJavascript();
 
-  auto output_size = render_widget_host_view->GetVisibleViewportSize();
+  auto output_size = render_widget_host_view_->GetVisibleViewportSize();
   auto original_area = output_size.GetArea();
 
   if (original_area > kMaxScreenshotPixelCount) {
@@ -202,7 +222,7 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     output_size = gfx::ScaleToRoundedSize(output_size, output_scale);
   }
 
-  render_widget_host_view->CopyFromSurface(
+  render_widget_host_view_->CopyFromSurface(
       {}, output_size,
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
@@ -335,7 +355,8 @@ WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
   auto* profile = Profile::FromWebUI(web_ui);
 
   auto webcompat_reporter_handler =
-      std::make_unique<WebcompatReporterDOMHandler>(profile);
+      std::make_unique<WebcompatReporterDOMHandler>(
+          profile, GetRenderWidgetHostViewForActiveTab());
 
   webcompat_reporter_handler_ = webcompat_reporter_handler->AsWeekPtr();
 
