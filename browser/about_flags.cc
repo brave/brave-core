@@ -121,7 +121,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "brave-speedreader",                                             \
           "Enable SpeedReader",                                            \
           "Enables faster loading of simplified article-style web pages.", \
-          kOsDesktop | kOsAndroid,                                         \
+          kOsDesktop,                                                      \
           FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
       }))
 
