@@ -15,11 +15,12 @@
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tab_collections/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/ui/webui/psst/psst_dialog_tab_helper_delegate_impl.h"
-#include "brave/components/psst/browser/content/psst_tab_helper.h"
+#include "brave/browser/psst/psst_dialog_tab_helper_delegate_impl.h"
+#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #endif
 
 namespace tabs {
@@ -61,15 +62,16 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   }
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst_observer_ = psst::PsstTabHelper::MaybeCreateForWebContents(
+  psst_observer_ = psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
       tab.GetContents(),
       std::make_unique<psst::PsstDialogTabHelperDelegateImpl>(
-          tab.GetContents()));
+          tab.GetContents()),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #endif
 }
 
 #if BUILDFLAG(ENABLE_PSST)
-psst::PsstTabHelper* TabFeatures::GetPsstTabHelper() {
+psst::PsstTabWebContentsObserver* TabFeatures::GetPsstTabHelper() {
   return psst_observer_.get();
 }
 #endif

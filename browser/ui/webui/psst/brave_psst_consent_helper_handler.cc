@@ -10,15 +10,14 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/ui/tabs/public/tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
-#include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "brave/components/psst/browser/core/psst_consent_dialog.mojom-forward.h"
 #include "brave/components/psst/common/psst_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
@@ -45,7 +44,7 @@ void CloseDialog(content::WebContents* initiator_contents) {
   manager->CloseAllDialogs();
 }
 
-psst::PsstTabHelper* GetActivePsstTabHelperFromContext(
+psst::PsstTabWebContentsObserver* GetActivePsstTabHelperFromContext(
     content::WebContents* web_contents) {
   auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents);
   if (!tab_interface) {

@@ -1,0 +1,25 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("psst") {
+  sources = [
+    "brave_psst_consent_helper_handler.cc",
+    "brave_psst_consent_helper_handler.h",
+    "brave_psst_dialog_ui.cc",
+    "brave_psst_dialog_ui.h",
+  ]
+
+  deps = [
+    "//brave/components/psst/browser/content:content",
+
+    #      "//content/public/browser",
+    #      "//chrome/browser/ui/webui:webui",
+    #      "//chrome/browser/ui:ui",
+    #      "//brave/browser/ui/tabs:tabs_public",
+    "//brave/components/psst/browser/core:mojom",
+    "//brave/components/resources:static_resources_grit",
+    "//ui/base:base",
+  ]
+}

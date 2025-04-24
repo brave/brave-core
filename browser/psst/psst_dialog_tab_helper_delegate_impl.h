@@ -3,15 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
-#define BRAVE_BROWSER_UI_WEBUI_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
+#ifndef BRAVE_BROWSER_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
+#define BRAVE_BROWSER_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/psst/browser/core/psst_dialog_delegate.h"
-// #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/web_contents.h"
 
 namespace psst {
 class PsstDialogTabHelperDelegateImpl : public PsstDialogDelegate {
@@ -29,4 +28,4 @@ class PsstDialogTabHelperDelegateImpl : public PsstDialogDelegate {
 
 }  // namespace psst
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
+#endif  // BRAVE_BROWSER_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_

@@ -1,0 +1,26 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("psst") {
+  sources = [
+    "brave_psst_dialog.cc",
+    "brave_psst_dialog.h",
+    "psst_dialog_tab_helper_delegate_impl.cc",
+    "psst_dialog_tab_helper_delegate_impl.h",
+    "psst_tab_web_contents_observer.cc",
+    "psst_tab_web_contents_observer.h",
+  ]
+
+  deps = [
+    "//brave/components/constants:constants",
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core:core",
+    "//brave/components/psst/common:common",
+    "//chrome/browser/ui/webui:webui",
+    "//components/prefs:prefs",
+    "//content/public/browser",
+    "//ui/web_dialogs:web_dialogs",
+  ]
+}

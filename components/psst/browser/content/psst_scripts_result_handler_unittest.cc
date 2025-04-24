@@ -158,7 +158,8 @@ class MockHandlerForProcessUserScriptImpl : public PsstScriptsHandlerImpl {
       : PsstScriptsHandlerImpl(std::move(delegate),
                                prefs,
                                web_contents,
-                               render_frame_host) {}
+                               render_frame_host,
+                               0) {}
 
   MOCK_METHOD(void, ResetContext, (), (override));
   MOCK_METHOD(void,
@@ -188,7 +189,8 @@ class MockHandlerForProcessUserDialogActionImpl
       : PsstScriptsHandlerImpl(std::move(delegate),
                                prefs,
                                web_contents,
-                               render_frame_host) {}
+                               render_frame_host,
+                               0) {}
 
   MOCK_METHOD(void, ResetContext, (), (override));
   MOCK_METHOD(void,
@@ -209,7 +211,8 @@ class MockHandlerPolicyScriptResultImpl : public PsstScriptsHandlerImpl {
       : PsstScriptsHandlerImpl(std::move(delegate),
                                prefs,
                                web_contents,
-                               render_frame_host) {}
+                               render_frame_host,
+                               0) {}
   MOCK_METHOD(void, ResetContext, (), (override));
 };
 

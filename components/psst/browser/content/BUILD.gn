@@ -11,8 +11,6 @@ component("content") {
   sources = [
     "psst_scripts_result_handler.cc",
     "psst_scripts_result_handler.h",
-    "psst_tab_helper.cc",
-    "psst_tab_helper.h",
   ]
 
   deps = [
@@ -38,7 +36,11 @@ source_set("unit_tests") {
   sources = [ "psst_scripts_result_handler_unittest.cc" ]
   deps = [
     "//base/test:test_support",
+    "//brave/components/constants:constants",
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//components/sync_preferences:test_support",
+    "//content/test:test_support",
   ]
 }

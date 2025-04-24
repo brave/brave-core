@@ -20,7 +20,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/psst/common/psst_prefs.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -57,6 +57,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/psst_prefs.h"
 #endif
 
 namespace extensions {
@@ -101,8 +105,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kReduceLanguageEnabled] =
       settings_api::PrefType::kBoolean;
+
+#if BUILDFLAG(ENABLE_PSST)
   (*s_brave_allowlist)[psst::prefs::kPsstEnabled] =
       settings_api::PrefType::kBoolean;
+#endif
+
   (*s_brave_allowlist)[brave_shields::prefs::kAdBlockDeveloperMode] =
       settings_api::PrefType::kBoolean;
 

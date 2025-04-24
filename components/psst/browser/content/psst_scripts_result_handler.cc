@@ -17,9 +17,7 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/psst_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace psst {
 
@@ -131,12 +129,13 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     std::unique_ptr<PsstDialogDelegate> delegate,
     PrefService* prefs,
     content::WebContents* web_contents,
-    content::RenderFrameHost* const render_frame_host)
+    content::RenderFrameHost* const render_frame_host,
+    const int32_t world_id)
     : delegate_(std::move(delegate)),
       prefs_(prefs),
       render_frame_host_id_(render_frame_host->GetGlobalId()),
       web_contents_(web_contents),
-      world_id_(ISOLATED_WORLD_ID_BRAVE_INTERNAL) {}
+      world_id_(world_id) {}
 
 PsstScriptsHandlerImpl::~PsstScriptsHandlerImpl() = default;
 

@@ -18,7 +18,7 @@ class TabDataWebContentsObserver;
 }
 
 namespace psst {
-class PsstTabHelper;
+class PsstTabWebContentsObserver;
 }
 
 namespace tabs {
@@ -38,12 +38,12 @@ class TabFeatures : public TabFeatures_Chromium {
   void Init(TabInterface& tab, Profile* profile) override;
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst::PsstTabHelper* GetPsstTabHelper();
+  psst::PsstTabWebContentsObserver* GetPsstTabHelper();
 #endif
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
-  std::unique_ptr<psst::PsstTabHelper> psst_observer_;
+  std::unique_ptr<psst::PsstTabWebContentsObserver> psst_observer_;
 };
 
 }  // namespace tabs

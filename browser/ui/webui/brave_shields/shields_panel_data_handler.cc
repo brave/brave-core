@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/ui/webui/psst/brave_psst_dialog.h"
+#include "brave/browser/psst/brave_psst_dialog.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

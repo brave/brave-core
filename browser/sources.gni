@@ -275,10 +275,9 @@ if (enable_psst) {
   brave_chrome_browser_deps += [
     "//brave/components/psst/browser/content",
     "//brave/components/psst/browser/core",
+    "//brave/components/psst/browser/core:mojom",
     "//brave/components/psst/buildflags",
     "//brave/components/psst/common",
-
-    #    "//brave/components/psst/resources",
   ]
 }
 

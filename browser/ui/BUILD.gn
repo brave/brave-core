@@ -56,6 +56,7 @@ source_set("ui") {
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
+    "//brave/browser/psst",
     "//brave/browser/skus",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
@@ -113,18 +114,25 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.h",
   ]
 
-  if (!is_android && !is_ios) {
+  if (enable_psst) {
     sources += [
       "webui/psst/brave_psst_consent_helper_handler.cc",
       "webui/psst/brave_psst_consent_helper_handler.h",
-      "webui/psst/brave_psst_dialog.cc",
-      "webui/psst/brave_psst_dialog.h",
+
+      #      "webui/psst/brave_psst_dialog.cc",
+      #      "webui/psst/brave_psst_dialog.h",
       "webui/psst/brave_psst_dialog_ui.cc",
       "webui/psst/brave_psst_dialog_ui.h",
-      "webui/psst/psst_dialog_tab_helper_delegate_impl.cc",
-      "webui/psst/psst_dialog_tab_helper_delegate_impl.h",
+
+      #      "webui/psst/psst_dialog_tab_helper_delegate_impl.cc",
+      #      "webui/psst/psst_dialog_tab_helper_delegate_impl.h",
     ]
-    deps += [ "//brave/components/psst/browser/core:mojom" ]
+    deps += [
+      #      "//brave/browser/ui/webui/psst",
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/components/psst/browser/content:content",
+      "//brave/components/psst/browser/core:mojom",
+    ]
   }
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -372,6 +380,7 @@ source_set("ui") {
       "//brave/common",
       "//brave/components/constants",
       "//brave/components/misc_metrics",
+      "//brave/components/psst/buildflags:buildflags",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",

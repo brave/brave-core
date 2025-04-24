@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/psst/psst_dialog_tab_helper_delegate_impl.h"
+#include "brave/browser/psst/psst_dialog_tab_helper_delegate_impl.h"
 
-#include "brave/browser/ui/webui/psst/brave_psst_dialog.h"
+#include "brave/browser/psst/brave_psst_dialog.h"
 
 namespace psst {
 

@@ -18,6 +18,8 @@
 #include "brave/components/psst/common/psst_prefs.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 
 namespace psst {
@@ -75,7 +77,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
       std::unique_ptr<PsstDialogDelegate> delegate,
       PrefService* prefs,
       content::WebContents* web_contents,
-      content::RenderFrameHost* const render_frame_host);
+      content::RenderFrameHost* const render_frame_host,
+      const int32_t world_id);
   ~PsstScriptsHandlerImpl() override;
 
   void Start() override;
@@ -116,7 +119,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
   std::unique_ptr<PsstOperationContext> context_;
   std::unique_ptr<PsstDialogDelegate> delegate_;
   const raw_ptr<PrefService> prefs_;
-  //  std::unique_ptr<PsstScriptsDelegate> script_delegate_;
 
   const content::GlobalRenderFrameHostId render_frame_host_id_;
   raw_ptr<content::WebContents> web_contents_{nullptr};

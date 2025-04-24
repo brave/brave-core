@@ -9,14 +9,16 @@
 #include <string>
 #include <vector>
 
-#include "brave/browser/ui/brave_browser_window.h"
-#include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "brave/components/psst/browser/core/psst_consent_dialog.mojom.h"
+#include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace psst {
 
 class BravePsstDialogUI;
+class PsstTabWebContentsObserver;
 
 class BravePsstConsentHelperHandler
     : public psst_consent_dialog::mojom::PsstConsentHelper,
@@ -57,7 +59,7 @@ class BravePsstConsentHelperHandler
 
   // raw_ptr<ConstrainedWebDialogDelegate>
   // constrained_web_dlg_delegate_{nullptr};
-  raw_ptr<psst::PsstTabHelper> active_tab_helper_{nullptr};
+  raw_ptr<psst::PsstTabWebContentsObserver> active_tab_helper_{nullptr};
   raw_ptr<PsstDialogDelegate> psst_dialog_delegate_{nullptr};
   raw_ptr<BravePsstDialogUI> const dialog_ui_{nullptr};
   mojo::Receiver<psst_consent_dialog::mojom::PsstConsentHelper> receiver_;

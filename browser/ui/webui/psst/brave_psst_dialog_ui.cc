@@ -17,7 +17,8 @@
 #include "brave/components/psst/resources/grit/brave_psst_dialog_generated_map.h"
 #include "brave/components/psst/resources/grit/brave_psst_resources.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -44,7 +45,8 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
 }  // namespace
 
 BravePsstDialogUI::BravePsstDialogUI(content::WebUI* web_ui)
-    : MojoWebDialogUI(web_ui), browser_(chrome::FindLastActive()) {
+    : MojoWebDialogUI(web_ui),
+      browser_(BrowserList::GetInstance()->GetLastActive()) {
   auto* source = CreateAndAddWebUIDataSource(web_ui, kBravePsstHost,
                                              kBravePsstDialogGenerated,
                                              IDR_BRAVE_PSST_DIALOG_HTML);

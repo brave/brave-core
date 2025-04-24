@@ -162,6 +162,8 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/core",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/common",
+    "//brave/components/psst/buildflags:buildflags",
+    "//brave/components/psst/common:common",
     "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",

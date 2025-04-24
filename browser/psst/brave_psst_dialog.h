@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_H_
-#define BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_H_
+#ifndef BRAVE_BROWSER_PSST_BRAVE_PSST_DIALOG_H_
+#define BRAVE_BROWSER_PSST_BRAVE_PSST_DIALOG_H_
 
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/web_contents.h"
 
 namespace psst {
 
@@ -14,4 +14,4 @@ void OpenPsstDialog(content::WebContents* initiator);
 
 }  // namespace psst
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_H_
+#endif  // BRAVE_BROWSER_PSST_BRAVE_PSST_DIALOG_H_

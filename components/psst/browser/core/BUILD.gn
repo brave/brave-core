@@ -41,6 +41,7 @@ component("core") {
     "//brave/components/psst/common",
     "//brave/extensions:common",
     "//components/component_updater",
+    "//components/prefs:prefs",
     "//crypto",
     "//mojo/public/cpp/bindings",
     "//mojo/public/mojom/base",
@@ -60,6 +61,10 @@ source_set("unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/constants:constants",
     "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+    "//content/test:test_support",
+    "//url:url",
   ]
 }
