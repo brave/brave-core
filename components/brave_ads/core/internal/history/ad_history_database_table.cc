@@ -12,8 +12,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -128,32 +126,6 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const AdHistoryItemInfo ad_history_item = FromMojomRow(mojom_db_row);
     if (!ad_history_item.IsValid()) {
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "type",
-                            ad_history_item.type != mojom::AdType::kUndefined);
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "confirmation_type",
-                            ad_history_item.confirmation_type !=
-                                mojom::ConfirmationType::kUndefined);
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
-                            !ad_history_item.placement_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
-                            !ad_history_item.creative_instance_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
-                            !ad_history_item.creative_set_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
-                            !ad_history_item.campaign_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "advertiser_id",
-                            !ad_history_item.advertiser_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
-                            !ad_history_item.segment.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "title",
-                            !ad_history_item.title.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "description",
-                            !ad_history_item.description.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
-                            ad_history_item.target_url.is_valid());
-      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                "Invalid ad history item");
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid ad history item");
       continue;
     }
@@ -213,33 +185,6 @@ void AdHistory::Save(const AdHistoryList& ad_history,
       [](const AdHistoryItemInfo& ad_history_item) {
         const bool is_valid = ad_history_item.IsValid();
         if (!is_valid) {
-          SCOPED_CRASH_KEY_BOOL(
-              "Issue45296", "type",
-              ad_history_item.type != mojom::AdType::kUndefined);
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "confirmation_type",
-                                ad_history_item.confirmation_type !=
-                                    mojom::ConfirmationType::kUndefined);
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
-                                !ad_history_item.placement_id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
-                                !ad_history_item.creative_instance_id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
-                                !ad_history_item.creative_set_id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
-                                !ad_history_item.campaign_id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "advertiser_id",
-                                !ad_history_item.advertiser_id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
-                                !ad_history_item.segment.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "title",
-                                !ad_history_item.title.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "description",
-                                !ad_history_item.description.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
-                                ad_history_item.target_url.is_valid());
-          SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                    "Invalid ad history item");
-          base::debug::DumpWithoutCrashing();
           BLOG(0, "Invalid ad history item");
         }
 
