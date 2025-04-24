@@ -224,7 +224,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &password_manager::features::
           kUnifiedPasswordManagerLocalPasswordsMigrationWarning,
 #endif
-      &permissions::features::kOneTimePermission,
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
