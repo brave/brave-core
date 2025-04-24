@@ -43,7 +43,7 @@ public class BraveNewsControllerFactory {
     }
 
     public Promise<BraveNewsController> getBraveNewsController(
-            Profile profile, ConnectionErrorHandler connectionErrorHandler) {
+            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         final Promise<BraveNewsController> promise = new Promise<>();
 
         mTaskRunner.execute(
@@ -54,8 +54,10 @@ public class BraveNewsControllerFactory {
                     MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
                     BraveNewsController braveNewsController =
                             BraveNewsController.MANAGER.attachProxy(handle, 0);
-                    Handler handler = ((Interface.Proxy) braveNewsController).getProxyHandler();
-                    handler.setErrorHandler(connectionErrorHandler);
+                    if (connectionErrorHandler != null) {
+                        Handler handler = ((Interface.Proxy) braveNewsController).getProxyHandler();
+                        handler.setErrorHandler(connectionErrorHandler);
+                    }
 
                     promise.fulfill(braveNewsController);
                 });

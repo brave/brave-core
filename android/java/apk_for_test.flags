@@ -48,6 +48,7 @@
     *** mMvTilesContainerLayout;
     *** mLogoCoordinator;
     *** mInitialTileNum;
+    *** mProfile;
     *** insertSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);

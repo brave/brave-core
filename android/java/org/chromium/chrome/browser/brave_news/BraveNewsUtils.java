@@ -55,62 +55,6 @@ public class BraveNewsUtils {
     private static @Nullable List<String> sSuggestionsList;
     private static HashMap<String, Integer> sChannelIcons = new HashMap<>();
 
-    // TODO(sergz): Ideally we want to move all news related files into it's
-    // own component in the future
-    public static class BraveNewsSettingsDataFetcher
-            implements BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate {
-        private Profile mProfile;
-        private boolean mConnectionClosed;
-        private @Nullable BraveNewsController mBraveNewsController;
-
-        public BraveNewsSettingsDataFetcher(Profile profile) {
-            mProfile = profile;
-            mConnectionClosed = false;
-        }
-
-        public void getBraveNewsSettingsData() {
-            ThreadUtils.assertOnUiThread();
-            BraveNewsControllerFactory.getInstance()
-                    .getBraveNewsController(mProfile, new BraveNewsConnectionErrorHandler(this))
-                    .then(
-                            braveNewsController -> {
-                                mBraveNewsController = braveNewsController;
-                                BraveNewsUtils.getBraveNewsSettingsData(
-                                        braveNewsController,
-                                        null,
-                                        () -> {
-                                            mConnectionClosed = true;
-                                            braveNewsController.close();
-                                        });
-                            });
-        }
-
-        @Override
-        public void initBraveNewsControllerFromAWorkerThread() {
-            // if mConnectionClosed is set, it means that it was a controllable
-            // close event and not a channel connection failure
-            if (mConnectionClosed) {
-                return;
-            }
-            // A connection failure event is executed on a background thread,
-            // but a mojo channel creation has to be done on the main thread
-            PostTask.postTask(
-                    TaskTraits.UI_DEFAULT,
-                    () -> {
-                        new BraveNewsUtils.BraveNewsSettingsDataFetcher(mProfile)
-                                .getBraveNewsSettingsData();
-                    });
-        }
-
-        @Override
-        public void cleanUpBraveNewsController() {
-            if (mConnectionClosed || mBraveNewsController == null) {
-                return;
-            }
-            mBraveNewsController.close();
-        }
-    }
-
     public static String getPromotionIdItem(FeedItemsCard items) {
         String creativeInstanceId = "null";
         if (items.getFeedItems() != null) {
@@ -379,6 +323,24 @@ public class BraveNewsUtils {
             }
         }
         return isFound;
+    }
+
+    public static void getBraveNewsSettingsDataPerProfile(Profile profile) {
+        ThreadUtils.assertOnUiThread();
+        BraveNewsControllerFactory.getInstance()
+                .getBraveNewsController(profile, null)
+                .then(
+                        braveNewsController -> {
+                            if (braveNewsController == null) {
+                                return;
+                            }
+                            BraveNewsUtils.getBraveNewsSettingsData(
+                                    braveNewsController,
+                                    null,
+                                    () -> {
+                                        braveNewsController.close();
+                                    });
+                        });
     }
 
     public static void getBraveNewsSettingsData(

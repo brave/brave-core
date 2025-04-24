@@ -1467,8 +1467,7 @@ public abstract class BraveActivity extends ChromeActivity
         ThreadUtils.assertOnUiThread();
         if (BravePrefServiceBridge.getInstance().getShowNews()
                 && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-            new BraveNewsUtils.BraveNewsSettingsDataFetcher(mTabModelProfileSupplier.get())
-                    .getBraveNewsSettingsData();
+            BraveNewsUtils.getBraveNewsSettingsDataPerProfile(mTabModelProfileSupplier.get());
         }
     }
 
