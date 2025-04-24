@@ -133,6 +133,7 @@ SplitView::SplitView(Browser& browser,
       contents_container_, secondary_contents_container_,
       split_view_separator_));
 
+  CHECK(browser_->GetFeatures().split_view_controller());
   browser_->GetFeatures().split_view_controller()->set_split_view_view(this);
 }
 
@@ -296,7 +297,7 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
   auto* split_view_layout_manager =
       static_cast<SplitViewLayoutManager*>(GetLayoutManager());
   if (controller->IsOpenedFor(old_contents)) {
-    controller->CacheSizeDeltaFor(
+    controller->SetSizeDeltaFor(
         old_contents, split_view_layout_manager->split_view_size_delta());
   }
 

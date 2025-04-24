@@ -12,14 +12,12 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
-#include "brave/browser/ui/split_view/split_view_web_panel_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "components/tab_collections/public/tab_interface.h"
 
 class SplitViewBrowserData;
 class SplitViewView;
-class SplitViewWebPanelData;
 class TabStripModel;
 struct TabTile;
 
@@ -27,10 +25,9 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-// Control split view state based on two models(split view tab tile and web
-// panel data).
-// TODO(https://github.com/brave/brave-browser/issues/45475):
-// SplitViewWebPanelData is not implemented yet.
+// Determine which tab contents should be shown in split view based on
+// models(ex, TabTile data) and notifies to split view when it should
+// be updated.
 class SplitViewController : public SplitViewBrowserDataObserver {
  public:
   explicit SplitViewController(TabStripModel* tab_strip_model);
@@ -45,7 +42,7 @@ class SplitViewController : public SplitViewBrowserDataObserver {
   // true when active tab is opened in split view.
   bool IsSplitViewActive() const;
 
-  // true when |content| is opened in split view.
+  // true when |contents| is opened in split view.
   bool IsOpenedFor(content::WebContents* contents) const;
 
   // true when |contents[0]| and |contents[1]| are showing together in split
@@ -53,7 +50,7 @@ class SplitViewController : public SplitViewBrowserDataObserver {
   bool AreShowingTogether(const std::vector<content::WebContents*>& contents);
   bool ShouldShowActiveWebContentsAtRight() const;
   content::WebContents* GetNonActiveWebContents() const;
-  void CacheSizeDeltaFor(content::WebContents* contents, int delta);
+  void SetSizeDeltaFor(content::WebContents* contents, int delta);
   int GetSizeDeltaFor(content::WebContents* contents);
 
  private:
@@ -73,9 +70,7 @@ class SplitViewController : public SplitViewBrowserDataObserver {
   // View for split view.
   raw_ptr<SplitViewView> view_ = nullptr;
 
-  // Two models for split view.
   SplitViewBrowserData split_view_tab_tile_data_;
-  SplitViewWebPanelData split_view_web_panel_data_;
 
   raw_ref<TabStripModel> tab_strip_model_;
   base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>

@@ -88,8 +88,8 @@ std::optional<TabTile> SplitViewController::GetActiveTabTile() const {
   return split_view_tab_tile_data_.GetTile(tab_handle);
 }
 
-void SplitViewController::CacheSizeDeltaFor(content::WebContents* contents,
-                                            int delta) {
+void SplitViewController::SetSizeDeltaFor(content::WebContents* contents,
+                                          int delta) {
   CHECK(GetTileFor(contents));
   auto tab_handle = GetTabHandleFor(contents);
   split_view_tab_tile_data_.SetSizeDelta(tab_handle, delta);
