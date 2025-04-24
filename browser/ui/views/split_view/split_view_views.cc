@@ -129,7 +129,7 @@ SplitViewViews::SplitViewViews(Browser& browser,
           nullptr, secondary_reader_mode_toolbar_));
 #endif
 
-  SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
+  layout_manager_ = SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
       contents_container_, secondary_contents_container_,
       split_view_separator_));
 
@@ -138,6 +138,7 @@ SplitViewViews::SplitViewViews(Browser& browser,
 }
 
 SplitViewViews::~SplitViewViews() {
+  layout_manager_ = nullptr;
   browser_->GetFeatures().split_view_controller()->set_split_view(nullptr);
 }
 
@@ -408,7 +409,7 @@ void SplitViewViews::UpdateSecondaryContentsWebViewVisibility() {
     //
     // ex2) When right is the active tab
     //  Contents   | secondary_contents_web_view_ | contents_web_view_  |
-    GetSplitViewLayoutManager()->show_main_web_contents_at_tail(
+    layout_manager_->show_main_web_contents_at_tail(
         controller->ShouldShowActiveWebContentsAtRight());
   } else {
     secondary_location_bar_->SetWebContents(nullptr);
@@ -540,16 +541,6 @@ bool SplitViewViews::ShouldHideSecondaryContentsByTabFullscreen() const {
   }
 
   return exclusive_access_manager->fullscreen_controller()->IsTabFullscreen();
-}
-
-SplitViewLayoutManager* SplitViewViews::GetSplitViewLayoutManager() {
-  return const_cast<SplitViewLayoutManager*>(
-      const_cast<const SplitViewViews*>(this)->GetSplitViewLayoutManager());
-}
-
-const SplitViewLayoutManager* SplitViewViews::GetSplitViewLayoutManager()
-    const {
-  return static_cast<SplitViewLayoutManager*>(GetLayoutManager());
 }
 
 BEGIN_METADATA(SplitViewViews)

@@ -137,9 +137,6 @@ class SplitViewViews : public views::View,
   void UpdateContentsWebViewVisual();
   void UpdateContentsWebViewBorder();
   void UpdateSecondaryContentsWebViewVisibility();
-
-  SplitViewLayoutManager* GetSplitViewLayoutManager();
-  const SplitViewLayoutManager* GetSplitViewLayoutManager() const;
   bool ShouldHideSecondaryContentsByTabFullscreen() const;
 
   raw_ref<Browser> browser_;
@@ -158,6 +155,7 @@ class SplitViewViews : public views::View,
 #endif
 
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
+  raw_ptr<SplitViewLayoutManager> layout_manager_ = nullptr;
 
   std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
   std::unique_ptr<views::Widget> secondary_location_bar_widget_;
