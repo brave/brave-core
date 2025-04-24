@@ -221,7 +221,6 @@ export const ManagePage = ({ mappingService }:
           onReturnToMain={onReturnToMain}
             viewState={viewState}
             email={mainEmail}
-            mode={viewState.mode}
             mappingService={mappingService} />
         </AliasDialog>}
     </PageCol>
@@ -245,7 +244,7 @@ export const mountModal = (at: HTMLElement) => {
       <EmailAliasModal
         onReturnToMain={mappingService.closeBubble}
         bubble
-        mode='Create'
+        viewState={{ mode: 'Create' }}
         email='test@test.com'
         mappingService={mappingService} />
     </StyleSheetManager>
