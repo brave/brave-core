@@ -21,7 +21,7 @@ TabTrackerService* TabTrackerServiceFactory::GetForProfile(ProfileIOS* profile) 
 }
 
 // static
-TabTrackerService* TabTrackerServiceFactory::GetInstance() {
+TabTrackerServiceFactory* TabTrackerServiceFactory::GetInstance() {
   static base::NoDestructor<TabTrackerServiceFactory> instance;
   return instance.get();
 }

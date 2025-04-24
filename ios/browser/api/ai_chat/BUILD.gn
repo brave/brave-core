@@ -34,6 +34,10 @@ source_set("ai_chat") {
     "model_service_factory.mm",
     "tab_tracker_service_factory.h",
     "tab_tracker_service_factory.mm",
+    "ai_chat_tab_helper.h",
+    "ai_chat_tab_helper.mm",
+    "page_content_fetcher.h",
+    "page_content_fetcher.mm",
   ]
 
   deps = [
