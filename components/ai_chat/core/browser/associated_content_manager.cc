@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/functional/callback_forward.h"
 #include "base/strings/string_util.h"
@@ -239,6 +240,46 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
     }
   } else {
     on_page_text_fetch_complete_->Post(FROM_HERE, std::move(callback));
+  }
+}
+
+void AssociatedContentManager::GetScreenshots(
+    ConversationHandler::GetScreenshotsCallback callback) {
+  DVLOG(1) << __func__;
+
+  if (content_delegates_.size() == 0) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto all_screenshots =
+      base::BarrierCallback<std::optional<std::vector<mojom::UploadedFilePtr>>>(
+          content_delegates_.size(),
+          base::BindOnce(
+              [](ConversationHandler::GetScreenshotsCallback callback,
+                 std::vector<std::optional<std::vector<mojom::UploadedFilePtr>>>
+                     screenshots) {
+                bool all_nullopt = true;
+                std::vector<mojom::UploadedFilePtr> all_screenshots;
+                for (auto& set : screenshots) {
+                  if (!set) {
+                    continue;
+                  }
+
+                  all_nullopt = false;
+                  std::ranges::move(set.value(),
+                                    std::back_inserter(all_screenshots));
+                }
+                if (all_nullopt) {
+                  std::move(callback).Run(std::nullopt);
+                } else {
+                  std::move(callback).Run(std::move(all_screenshots));
+                }
+              },
+              std::move(callback)));
+
+  for (auto* content : content_delegates_) {
+    content->GetScreenshots(all_screenshots);
   }
 }
 

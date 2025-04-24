@@ -1711,8 +1711,8 @@ size_t ConversationHandler::GetConversationHistorySize() {
 }
 
 void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
-  if (associated_content_delegate_) {
-    associated_content_delegate_->GetScreenshots(std::move(callback));
+  if (associated_content_manager_->HasAssociatedContent()) {
+    associated_content_manager_->GetScreenshots(std::move(callback));
   } else {
     std::move(callback).Run(std::nullopt);
   }
