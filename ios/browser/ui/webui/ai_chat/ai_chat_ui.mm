@@ -48,6 +48,7 @@
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "base/strings/stringprintf.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
+#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 
 namespace {
 
@@ -108,7 +109,8 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
 
-  web_ui->AddRequestableScheme(kChromeUIUntrustedScheme);
+//  web_ui->AddRequestableScheme(kChromeUIUntrustedScheme);  // TODO??????
+      
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome://resources;");

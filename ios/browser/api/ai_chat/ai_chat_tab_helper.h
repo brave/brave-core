@@ -17,16 +17,16 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/ios/browser/api/ai_chat/associated_content_driver_ios.h"
-#include "brave/ios/browser/api/ai_chat/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "ios/web/public/web_state_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "url/gurl.h"
+#include "ios/web/public/web_state.h"
+#include "ios/web/public/web_state_observer.h"
+#include "ios/web/public/web_state_user_data.h"
 
-namespace gfx {
-class Image;
-}  // namespace gfx
 namespace mojo {
 template <typename T>
 class PendingAssociatedReceiver;
@@ -44,7 +44,6 @@ class AIChatTabHelper : public web::WebStateObserver,
   using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
 
   static void BindPageContentExtractorHost(
-      content::RenderFrameHost* rfh,
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
 
@@ -88,31 +87,19 @@ class AIChatTabHelper : public web::WebStateObserver,
 
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
-  AIChatTabHelper(web::WebState* web_state,
-                  std::unique_ptr<PrintPreviewExtractionDelegate>
-                      print_preview_extraction_delegate);
+  AIChatTabHelper(web::WebState* web_state);
 
   // web::WebStateObserver
-  void DidStartNavigation(WebState* web_state,
-                          NavigationContext* navigation_context) override;
+  void DidStartNavigation(web::WebState* web_state,
+                          web::NavigationContext* navigation_context) override;
                           
-  void DidRedirectNavigation(WebState* web_state,
-                             NavigationContext* navigation_context) override;
+  void DidRedirectNavigation(web::WebState* web_state,
+                             web::NavigationContext* navigation_context) override;
                           
-  void DidFinishNavigation(WebState* web_state,
-                           NavigationContext* navigation_context) override;
+  void DidFinishNavigation(web::WebState* web_state,
+                           web::NavigationContext* navigation_context) override;
 
-  void PageLoaded(WebState* web_state,
-                  PageLoadCompletionStatus load_completion_status) override;
-
-  void LoadProgressChanged(WebState* web_state, double progress) override;
-
-  void DidChangeBackForwardState(WebState* web_state) override;
-
-  void TitleWasSet(WebState* web_state) override;
-
-  void FaviconUrlUpdated(WebState* web_state,
-                         const std::vector<FaviconURL>& candidates) override;
+  void TitleWasSet(web::WebState* web_state) override;
 
   // ai_chat::AssociatedContentDriver
   GURL GetPageURL() const override;
@@ -135,9 +122,6 @@ class AIChatTabHelper : public web::WebStateObserver,
                                   bool is_video,
                                   std::string invalidation_token);
 
-  void OnExtractPrintPreviewContentComplete(GetPageContentCallback callback,
-                                            std::string content);
-
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
           receiver);
@@ -149,21 +133,12 @@ class AIChatTabHelper : public web::WebStateObserver,
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;
   std::u16string previous_page_title_;
-  bool is_pdf_a11y_info_loaded_ = false;
-  uint8_t check_pdf_a11y_tree_attempts_ = 0;
   bool is_page_loaded_ = false;
 
   // TODO(petemill): Use signal to allow for multiple callbacks
   GetPageContentCallback pending_get_page_content_callback_;
 
-  std::unique_ptr<PrintPreviewExtractionDelegate>
-      print_preview_extraction_delegate_;
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
-  std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
-  base::OnceClosure on_pdf_a11y_info_loaded_cb_;
-
-  // A scoper only used for PDF viewing.
-  std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
 
   mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
       page_content_extractor_receiver_{this};

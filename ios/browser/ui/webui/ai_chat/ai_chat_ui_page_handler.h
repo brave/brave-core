@@ -22,6 +22,8 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class ProfileIOS;
+
 namespace favicon {
 class FaviconService;
 }  // namespace favicon
@@ -79,11 +81,11 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
    private:
     // web::WebStateObserver
-    void WebContentsDestroyed() override;
+    void WebStateDestroyed(web::WebState* web_state) override;
     raw_ref<AIChatUIPageHandler> page_handler_;
   };
 
-  void HandleWebContentsDestroyed();
+  void HandleStateDestroyed();
 
   // AIChatTabHelper::Observer
   void OnAssociatedContentNavigated(int new_navigation_id) override;
