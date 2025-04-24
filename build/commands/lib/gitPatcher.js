@@ -149,7 +149,11 @@ module.exports = class GitPatcher {
       const patchInfo = JSON.parse(patchInfoRaw)
       return patchInfo
     } catch (err) {
-      return null
+      if (err instanceof SyntaxError) {
+        // consider invalid .patchinfo file as missing
+        return null
+      }
+      throw err
     }
   }
 
@@ -318,6 +322,7 @@ module.exports = class GitPatcher {
         })
       ops.push(removeOp)
       if (!patchInfo) {
+        console.warn(`Warning: can't find patches file for ${patchInfoPath}`)
         continue
       }
       allPaths.push(...patchInfo.appliesTo.map(s => s.path))
