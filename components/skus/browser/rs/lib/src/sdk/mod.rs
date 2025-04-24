@@ -8,12 +8,7 @@ use tracing::{event, Level};
 
 use crate::cache::CacheNode;
 use crate::models::*;
-use crate::{HTTPClient, StorageClient};
-
-#[cfg(feature = "wasm")]
-const VERSION: &str = git_version!();
-#[cfg(not(feature = "wasm"))]
-const VERSION: &str = "unknown";
+use crate::{HTTPClient, StorageClient, VersionClient};
 
 pub struct SDK<U> {
     pub client: U,
@@ -31,7 +26,7 @@ impl<U> fmt::Debug for SDK<U> {
 
 impl<U> SDK<U>
 where
-    U: HTTPClient + StorageClient,
+    U: HTTPClient + StorageClient + VersionClient,
 {
     pub fn new(
         client: U,
@@ -71,7 +66,7 @@ where
         event!(
             Level::INFO,
             environment = %self.environment,
-            version = VERSION,
+            version = U::VERSION,
             "skus sdk initialized",
         );
     }

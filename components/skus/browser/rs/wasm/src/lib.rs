@@ -1,10 +1,13 @@
 #![allow(unused_variables)]
 
 use std::cell::{RefCell, RefMut};
+use std::convert::TryFrom;
 use std::fmt;
 use std::rc::Rc;
 
 use async_trait::async_trait;
+
+use git_version::git_version;
 
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
@@ -17,7 +20,7 @@ use tracing_subscriber::util::SubscriberInitExt;
 use tracing_subscriber::{filter::LevelFilter, layer::SubscriberExt, registry::Registry};
 use tracing_web::{performance_layer, MakeConsoleWriter};
 
-use skus::{errors, http::http, sdk, tracing, Environment, HTTPClient, KVClient, KVStore};
+use skus::{errors, http::http, sdk, tracing, Environment, HTTPClient, KVClient, KVStore, VersionClient};
 
 #[wasm_bindgen]
 extern "C" {
@@ -172,12 +175,12 @@ impl JSSDK {
     }
 
     #[wasm_bindgen]
-    pub fn submit_order_credentials_to_sign(&self, order_id: String) -> js_sys::Promise {
+    pub fn submit_order_item_credentials_to_sign(&self, order_id: String, item_id: String) -> js_sys::Promise {
         let sdk = self.sdk.clone();
 
         let future = async move {
             let order =
-                sdk.submit_order_credentials_to_sign(&order_id).await.map_err(JsError::from)?;
+                sdk.submit_order_item_credentials_to_sign(&order_id, &item_id).await.map_err(JsError::from)?;
             let js_value = serde_wasm_bindgen::to_value(&order)?;
             Ok(js_value)
         };
@@ -355,21 +358,24 @@ impl JSSDK {
     }
 }
 
+#[async_trait(?Send)]
 impl KVClient for JSClient {
     type Store = JSStorage;
+    type StoreRef<'a> = RefMut<'a, JSStorage>;
 
     #[allow(clippy::needless_lifetimes)]
-    fn get_store<'a>(&'a self) -> Result<RefMut<'a, JSStorage>, errors::InternalError> {
+    async fn get_store<'a>(&'a self) -> Result<RefMut<'a, JSStorage>, errors::InternalError> {
         self.local_storage.try_borrow_mut().or(Err(errors::InternalError::BorrowFailed))
     }
 }
 
+#[async_trait(?Send)]
 impl KVStore for JSStorage {
     fn env(&self) -> &Environment {
         &self.environment
     }
 
-    fn purge(&mut self) -> Result<(), errors::InternalError> {
+    async fn purge(&mut self) -> Result<(), errors::InternalError> {
         self.store.clear().map_err(|e| {
             errors::InternalError::StorageWriteFailed(
                 e.as_string().unwrap_or_else(|| "unknown error".to_string()),
@@ -377,7 +383,7 @@ impl KVStore for JSStorage {
         })
     }
 
-    fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
+    async fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
         self.store.set(key, value).map_err(|e| {
             errors::InternalError::StorageWriteFailed(
                 e.as_string().unwrap_or_else(|| "unknown error".to_string()),
@@ -385,7 +391,7 @@ impl KVStore for JSStorage {
         })
     }
 
-    fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
+    async fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
         self.store.get(key).map_err(|e| {
             errors::InternalError::StorageReadFailed(
                 e.as_string().unwrap_or_else(|| "unknown error".to_string()),
@@ -443,14 +449,33 @@ impl HTTPClient for JSClient {
         assert!(r.is_instance_of::<Response>());
         let r: Response = r.dyn_into().unwrap();
 
-        let mut response = http::Response::builder();
-        response.status(r.status());
+        let mut response = http::Response::builder().status(r.status());
 
         let headers: Headers = r.headers().dyn_into().unwrap();
 
         for value in headers.entries() {
             let header: (String, String) = value.unwrap().into_serde().unwrap();
-            response.header(&header.0 as &str, &header.1 as &str);
+            let key = http::HeaderName::try_from(&header.0).map_err(|_| {
+                errors::InternalError::InvalidCall(
+                    concat!(
+                        "must pass a valid HTTP header name,",
+                        " i.e. ASCII charaters with no whitespace",
+                        " or separator punctuation.",
+                        "\nSee RFC 9110 section 5.6.2 for details.",
+                    )
+                    .to_string(),
+                )
+            })?;
+
+            let value = http::HeaderValue::try_from(&header.1).map_err(|_| {
+                errors::InternalError::InvalidCall(
+                    "must pass a valid (ASCII-printable) HTTP header value".to_string(),
+                )
+            })?;
+
+            if let Some(headers) = response.headers_mut() {
+                headers.insert(key, value);
+            }
         }
 
         let body = JsFuture::from(r.array_buffer().unwrap()).await;
@@ -462,4 +487,8 @@ impl HTTPClient for JSClient {
             errors::InternalError::InvalidResponse("error getting body".to_string())
         })?)
     }
+}
+
+impl VersionClient for JSClient {
+    const VERSION: &'static str = git_version!();
 }

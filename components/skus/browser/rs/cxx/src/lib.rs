@@ -45,6 +45,8 @@ pub struct NativeClient {
     inner: Rc<Mutex<NativeClientInner>>,
 }
 
+impl VersionClient for NativeClient {}
+
 impl fmt::Debug for NativeClient {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("NativeClient").finish()

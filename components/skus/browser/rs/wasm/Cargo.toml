@@ -16,9 +16,9 @@ serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
 serde-wasm-bindgen = "0.4.3"
-wasm-bindgen = { version = "0.2.82", features = ["serde-serialize"] }
+wasm-bindgen = { version = "=0.2.92", features = ["serde-serialize"] }
 wasm-bindgen-futures = { version = "0.3", features = ["futures_0_3"] }
-web-sys = { version = "0.3", features = ["console", "Headers", "Window", "Request", "RequestInit", "RequestMode", "Response", "Storage", "HtmlDocument", "Location", "Document", "Element", "HtmlIFrameElement", "CssStyleDeclaration", "MessageEvent", "Url", "DomTokenList"] }
+web-sys = { version = "=0.3.69", features = ["console", "Headers", "Window", "Request", "RequestInit", "RequestMode", "Response", "Storage", "HtmlDocument", "Location", "Document", "Element", "HtmlIFrameElement", "CssStyleDeclaration", "MessageEvent", "Url", "DomTokenList"] }
 console_error_panic_hook = "0.1.7"
 tracing-web = "0.1.2"
 wasm-cookies = "0.1.0"
@@ -26,7 +26,16 @@ futures = "0.3"
 gloo-timers = { version = "0.2.4", features = ["futures"] }
 tracing-subscriber = { version = "0.3", features = ["time"] }
 time = { version = "0.3", features = ["wasm-bindgen"] }
-
+git-version = "0.3"
+# > error: the wasm*-unknown-unknown targets are not supported by default, you may need to enable the "js" feature. 
+getrandom = { version = "0.2", features = ["js"] }
+# > error: to use `uuid` on `wasm32-unknown-unknown`, specify a source of randomness using one of the `js`, `rng-getrandom`, or `rng-rand` features
+uuid = { version = "1", features = ["js"] }
+# > error: tracing `instrument` "is imported here, but it is a module, not an attribute"
+tracing = { version = "0.1", features = ["attributes"] }
 
 [features]
 wasm = ["skus/wasm"]
+
+[patch.crates-io]
+futures-retry = { git = "https://github.com/brave-intl/futures-retry", rev = "2aaaafb", version = "0.5.0" }

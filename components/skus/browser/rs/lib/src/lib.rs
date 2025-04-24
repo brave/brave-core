@@ -16,3 +16,7 @@ pub use storage::StorageClient;
 pub use storage::{KVClient, KVStore};
 
 pub use tracing;
+
+pub trait VersionClient {
+    const VERSION: &'static str = "unknown";
+}
