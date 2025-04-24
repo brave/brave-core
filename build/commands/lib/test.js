@@ -173,7 +173,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         const filterFilePaths = getApplicableFilters(testSuite)
         if (filterFilePaths.length > 0) {
           braveArgs.push(
-              `--test-launcher-filter-file="${filterFilePaths.join(';')}"`)
+            `--test-launcher-filter-file=${filterFilePaths.join(';')}`
+          )
         }
         if (config.isTeamcity) {
           const ignorePreliminaryFailures =
@@ -200,7 +201,8 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       if (config.targetOS === 'android' && !options.manual_android_test_device) {
         // Specify emulator to run tests on
         braveArgs.push(
-            `--avd-config tools/android/avd/proto/${options.android_test_emulator_name}.textpb`)
+          `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`
+        )
       }
       let runOptions = config.defaultOptions
       if (config.isTeamcity) {
