@@ -48,6 +48,7 @@ import org.chromium.base.SysUtils;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
 import org.chromium.brave_rewards.mojom.UserType;
 import org.chromium.brave_rewards.mojom.WalletStatus;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsBalance;
@@ -88,6 +89,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@NullMarked
 public class BraveRewardsPanel
         implements BraveRewardsObserver, BraveRewardsHelper.LargeIconReadyCallback {
     public static final String PREF_WAS_BRAVE_REWARDS_TURNED_ON = "brave_rewards_turned_on";

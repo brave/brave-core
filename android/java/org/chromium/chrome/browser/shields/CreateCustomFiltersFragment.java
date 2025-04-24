@@ -22,6 +22,7 @@ import android.widget.TextView;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -31,6 +32,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
+@NullMarked
 public class CreateCustomFiltersFragment extends BravePreferenceFragment
         implements ConnectionErrorHandler {
     public static final String BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE =

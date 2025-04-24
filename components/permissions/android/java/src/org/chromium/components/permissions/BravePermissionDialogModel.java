@@ -27,6 +27,7 @@ import android.widget.TextView;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.chromium.base.IntentUtils;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.ui.LayoutInflaterUtils;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
@@ -37,6 +38,7 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.util.ColorUtils;
 
 /* Adds additional items to Permission Dialog. */
+@NullMarked
 class BravePermissionDialogModel {
     // Link for Widevine
     private static final String URL_WIDEVINE_LEARN_MORE =

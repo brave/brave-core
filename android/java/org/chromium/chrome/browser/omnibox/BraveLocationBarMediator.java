@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
@@ -30,6 +31,7 @@ import org.chromium.ui.permissions.PermissionCallback;
 
 import java.util.function.BooleanSupplier;
 
+@NullMarked
 public class BraveLocationBarMediator extends LocationBarMediator {
     private WindowAndroid mWindowAndroid;
     private LocationBarLayout mLocationBarLayout;
