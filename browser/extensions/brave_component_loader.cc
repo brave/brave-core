@@ -76,8 +76,6 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
 
 void BraveComponentLoader::ReinstallAsNonComponent(
     const std::string& extension_id) {
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   const Extension* extension = registry->GetInstalledExtension(extension_id);
@@ -89,7 +87,7 @@ void BraveComponentLoader::ReinstallAsNonComponent(
     scoped_refptr<Extension> normal_extension = Extension::Create(
         extension->path(), ManifestLocation::kExternalPref,
         *extension->manifest()->value(), extension->creation_flags(), &error);
-    service->AddExtension(normal_extension.get());
+    ExtensionRegistrar::Get(profile_)->AddExtension(normal_extension);
   }
 }
 
