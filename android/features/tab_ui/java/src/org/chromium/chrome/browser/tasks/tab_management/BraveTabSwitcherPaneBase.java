@@ -29,7 +29,7 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
             @NonNull UserEducationHelper userEducationHelper,
             @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
-            @NonNull TabGroupCreationUiFlow tabGroupCreationUiFlow) {
+            @NonNull TabGroupCreationUiDelegate tabGroupCreationUiDelegate) {
         super(
                 context,
                 factory,
@@ -38,7 +38,7 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
                 userEducationHelper,
                 edgeToEdgeSupplier,
                 compositorViewHolderSupplier,
-                tabGroupCreationUiFlow);
+                tabGroupCreationUiDelegate);
     }
 
     @Override
