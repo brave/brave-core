@@ -178,7 +178,6 @@ export const Bubble = () => {
       viewState={{ mode: 'Create' }}
       email={demoData.email}
       bubble={true}
-      mode={'Create'}
       mappingService={mockMappingServiceAccountReadyInstance}
     />
   )

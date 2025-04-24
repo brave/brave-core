@@ -82,6 +82,7 @@ const CopyToast = ({ text, tabIndex, children }: { text: string, tabIndex?: numb
   }
   return <div
     tabIndex={tabIndex}
+    data-testid="copy-toast"
     onKeyDown={onEnterKeyForDiv(copy)}
     onClick={copy}>
     <Tooltip text={copied ? getLocale('emailAliasesCopiedToClipboard') : ''} mode="mini" visible={copied}>
@@ -121,6 +122,7 @@ const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: () => vo
           <Button
             fab
             slot='anchor-content'
+            name='more'
             kind='plain-faint'
             size="large"
             onClick={() => {}}>
@@ -154,8 +156,8 @@ export const AliasList = ({ aliases, onViewChange, onListChange, mappingService 
         isDisabled={aliases.length >= MAX_ALIASES}
         kind='filled'
         size='small'
+        name='create-alias'
         title={getLocale('emailAliasesCreateAliasTitle')}
-        id='add-alias'
         onClick={
           () => {
             onViewChange({ mode: 'Create' })
