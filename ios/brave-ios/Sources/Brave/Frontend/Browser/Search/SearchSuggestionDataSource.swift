@@ -109,6 +109,10 @@ class SearchSuggestionDataSource {
       return false
     }
 
+    if let region = Locale.current.region?.identifier, region == "JP" {
+      return false
+    }
+
     let rightNow = Date()
     let nextShowDate = braveSearchPromotionLaunchDate.addingTimeInterval(
       AppConstants.isOfficialBuild
