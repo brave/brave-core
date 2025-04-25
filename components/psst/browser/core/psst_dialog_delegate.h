@@ -37,7 +37,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
       base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
   using ShareCallback = base::OnceCallback<void()>;
 
-  struct ShowDialogData {
+  struct COMPONENT_EXPORT(PSST_BROWSER_CORE) ShowDialogData {
     ShowDialogData(const bool is_new_version,
                    const std::string& site_name,
                    base::Value::List request_infos,
@@ -63,9 +63,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
                               const std::optional<std::string>& error);
   virtual void SetCompletedView(
       const std::optional<std::vector<std::string>>& applied_checks,
-      const std::optional<std::vector<std::string>>& errors
-      //  ShareCallback share_cb
-  );
+      const std::optional<std::vector<std::string>>& errors);
   virtual void Close();
 
   ShowDialogData* GetShowDialogData();
