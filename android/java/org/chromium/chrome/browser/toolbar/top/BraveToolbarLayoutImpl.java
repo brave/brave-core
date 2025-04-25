@@ -594,7 +594,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void showOnBoarding() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            int deviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
+            int deviceWidth = ConfigurationUtils.getDisplayMetricsWidth(activity);
             boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
             deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
             RewardsOnboarding panel = new RewardsOnboarding(mBraveRewardsButton, deviceWidth);
