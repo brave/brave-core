@@ -39,7 +39,8 @@ class RuleDataReaderUnitTest : public testing::Test {
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
 
-    auto psst_rules_content = ReadFile(test_data_dir_base_.Append("psst.json"));
+    auto psst_rules_content = ReadFile(test_data_dir_base_.Append(
+        base::FilePath::FromUTF8Unsafe("psst.json")));
     ASSERT_FALSE(psst_rules_content.empty());
 
     psst_rules_ = PsstRule::ParseRules(psst_rules_content);
@@ -62,17 +63,22 @@ class RuleDataReaderUnitTest : public testing::Test {
 
 TEST_F(RuleDataReaderUnitTest, LoadComponentScripts) {
   RuleDataReader crr(GetBasePath());
-  auto scripts_path = GetBasePath().Append("scripts").Append("a");
+  auto scripts_path = GetBasePath()
+                          .Append(base::FilePath::FromUTF8Unsafe("scripts"))
+                          .Append(base::FilePath::FromUTF8Unsafe("a"));
 
   auto user_script = crr.ReadUserScript(GetBasicRule());
   ASSERT_TRUE(user_script);
   ASSERT_FALSE(user_script->empty());
-  EXPECT_EQ(*user_script, ReadFile(scripts_path.Append("user.js")));
+  EXPECT_EQ(
+      *user_script,
+      ReadFile(scripts_path.Append(base::FilePath::FromUTF8Unsafe("user.js"))));
 
   auto policy_script = crr.ReadPolicyScript(GetBasicRule());
   ASSERT_TRUE(policy_script);
   ASSERT_FALSE(policy_script->empty());
-  EXPECT_EQ(*policy_script, ReadFile(scripts_path.Append("policy.js")));
+  EXPECT_EQ(*policy_script, ReadFile(scripts_path.Append(
+                                base::FilePath::FromUTF8Unsafe("policy.js"))));
 }
 
 TEST_F(RuleDataReaderUnitTest, TryToLoadWrongWithComponentScriptPath) {

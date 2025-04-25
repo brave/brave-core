@@ -95,7 +95,8 @@ class PsstRuleRegistryUnitTest : public testing::Test {
   void MockOnLoadRules(base::RunLoop& run_loop) {
     EXPECT_CALL(*GetPsstRuleRegistry(), OnLoadRules(testing::_))
         .WillOnce(testing::Invoke([&](const std::string& data) {
-          EXPECT_EQ(data, ReadFile(GetTestDataDirBase().Append("psst.json")));
+          EXPECT_EQ(data, ReadFile(GetTestDataDirBase().Append(
+                              base::FilePath::FromUTF8Unsafe("psst.json"))));
           (*GetPsstRuleRegistry()).PsstRuleRegistryImpl::OnLoadRules(data);
           run_loop.Quit();
         }));
