@@ -45,6 +45,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -54,7 +55,6 @@
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/l10n/common/country_code_util.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -274,8 +274,7 @@ void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() {
 void AdsServiceImpl::RegisterResourceComponentsForDefaultLanguageCode() {
   if (resource_component_observation_.IsObserving()) {
     resource_component_observation_.GetSource()
-        ->RegisterComponentForLanguageCode(brave_l10n::GetISOLanguageCode(
-            brave_l10n::GetDefaultLocaleString()));
+        ->RegisterComponentForLanguageCode(CurrentLanguageCode());
   }
 }
 

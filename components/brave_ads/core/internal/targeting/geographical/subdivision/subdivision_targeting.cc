@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
@@ -15,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
 
@@ -71,14 +70,10 @@ const std::string& SubdivisionTargeting::GetSubdivision() const {
 void SubdivisionTargeting::MaybeInitialize() {
   const std::string& auto_detected_subdivision =
       GetLazyAutoDetectedSubdivision();
-  std::optional<std::string> country_code =
-      GetSubdivisionCountryCode(auto_detected_subdivision);
-
-  if (!country_code) {
-    country_code = brave_l10n::GetISOCountryCode(GetLocale());
-  }
-
-  MaybeAllowForCountry(*country_code);
+  const std::string country_code =
+      GetSubdivisionCountryCode(auto_detected_subdivision)
+          .value_or(CurrentCountryCode());
+  MaybeAllowForCountry(country_code);
 }
 
 void SubdivisionTargeting::DisableSubdivision() {

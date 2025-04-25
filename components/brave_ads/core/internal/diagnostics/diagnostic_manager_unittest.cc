@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
 
@@ -27,7 +27,8 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
   test::MockDeviceId();
 
-  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
+  const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
+  const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
 
   AdvanceClockTo(test::TimeFromString("Wed, 18 Nov 1970 12:34:56"));
 
@@ -64,8 +65,12 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "true"
             },
             {
-              "name": "Locale",
-              "value": "en_KY"
+              "name": "Language",
+              "value": "en"
+            },
+            {
+              "name": "Country",
+              "value": "KY"
             },
             {
               "name": "Catalog ID",

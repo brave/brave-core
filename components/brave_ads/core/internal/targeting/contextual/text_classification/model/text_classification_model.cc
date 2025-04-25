@@ -9,10 +9,10 @@
 #include <iterator>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
 namespace brave_ads {
 
@@ -74,8 +74,8 @@ SegmentList GetTextClassificationSegments() {
           .GetTextClassificationProbabilitiesHistory();
 
   if (probabilities.empty()) {
-    BLOG(1, "No text classification probabilities found for " << GetLocale()
-                                                              << " locale");
+    BLOG(1, "No text classification probabilities found for "
+                << CurrentLanguageCode() << " language");
 
     return {};
   }

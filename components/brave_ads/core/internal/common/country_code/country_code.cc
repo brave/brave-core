@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 
 namespace brave_ads {
@@ -26,8 +26,9 @@ bool DoesSupportCountryCode() {
 
 }  // namespace
 
-CountryCode::CountryCode()
-    : cached_country_code_(brave_l10n::GetDefaultISOCountryCodeString()) {
+CountryCode::CountryCode() {
+  cached_country_code_ = CurrentCountryCode();
+
   GetAdsClient().AddObserver(this);
 }
 

@@ -24,7 +24,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -33,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
 namespace brave_ads::test {
 
@@ -49,8 +49,8 @@ constexpr char kYouCantTravelBackInTime[] =
 
 TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-      scoped_default_locale_(
-          brave_l10n::test::ScopedDefaultLocale(kDefaultLocale)) {
+      scoped_current_language_code_(kDefaultLanguageCode),
+      scoped_current_country_code_(kDefaultCountryCode) {
   set_ads_client_notifier_task_environment(&task_environment_);
 
   SimulateProfile();

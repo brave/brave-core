@@ -5,14 +5,13 @@
 
 #include "brave/components/brave_ads/core/public/ads_util.h"
 
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 
 namespace brave_ads {
 
 bool IsSupportedRegion() {
-  return !brave_l10n::IsISOCountryCodeOFACSanctioned(
-      brave_l10n::GetDefaultISOCountryCodeString());
+  return !brave_l10n::IsISOCountryCodeOFACSanctioned(CurrentCountryCode());
 }
 
 }  // namespace brave_ads

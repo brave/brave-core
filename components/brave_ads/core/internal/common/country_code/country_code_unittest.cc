@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "net/http/http_status_code.h"
@@ -50,7 +51,7 @@ class BraveAdsCountryCodeTest : public test::TestBase {
   }
 
  protected:
-  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale_{"xx_XX"};
+  const test::ScopedCurrentCountryCode scoped_current_country_code_{"XX"};
   std::unique_ptr<Subdivision> subdivision_;
   std::unique_ptr<CountryCode> country_code_;
 };

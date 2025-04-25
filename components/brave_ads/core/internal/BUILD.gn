@@ -411,8 +411,8 @@ static_library("internal") {
     "common/database/database_transaction_util.cc",
     "common/database/database_transaction_util.h",
     "common/functional/once_closure_task_queue.cc",
+    "common/locale/language_code.h",
     "common/locale/locale_util.cc",
-    "common/locale/locale_util.h",
     "common/logging_util.h",
     "common/logging_util_internal.cc",
     "common/logging_util_internal.h",
@@ -596,15 +596,17 @@ static_library("internal") {
     "diagnostics/entries/catalog_id_diagnostic_entry.h",
     "diagnostics/entries/catalog_last_updated_diagnostic_entry.cc",
     "diagnostics/entries/catalog_last_updated_diagnostic_entry.h",
+    "diagnostics/entries/country_diagnostic_entry.cc",
+    "diagnostics/entries/country_diagnostic_entry.h",
     "diagnostics/entries/device_id_diagnostic_entry.cc",
     "diagnostics/entries/device_id_diagnostic_entry.h",
     "diagnostics/entries/diagnostic_entry_interface.h",
+    "diagnostics/entries/language_diagnostic_entry.cc",
+    "diagnostics/entries/language_diagnostic_entry.h",
     "diagnostics/entries/last_unidle_time_diagnostic_entry.cc",
     "diagnostics/entries/last_unidle_time_diagnostic_entry.h",
     "diagnostics/entries/last_unidle_time_diagnostic_entry_util.cc",
     "diagnostics/entries/last_unidle_time_diagnostic_entry_util.h",
-    "diagnostics/entries/locale_diagnostic_entry.cc",
-    "diagnostics/entries/locale_diagnostic_entry.h",
     "diagnostics/entries/opted_into_brave_news_ads_diagnostic_entry.cc",
     "diagnostics/entries/opted_into_brave_news_ads_diagnostic_entry.h",
     "diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.cc",
@@ -1186,6 +1188,7 @@ static_library("internal") {
 
   if (is_android) {
     sources += [
+      "common/locale/language_code_android.cc",
       "common/platform/platform_helper_android.cc",
       "common/platform/platform_helper_android.h",
     ]
@@ -1193,6 +1196,7 @@ static_library("internal") {
 
   if (is_linux) {
     sources += [
+      "common/locale/language_code_linux.cc",
       "common/platform/platform_helper_linux.cc",
       "common/platform/platform_helper_linux.h",
     ]
@@ -1200,6 +1204,7 @@ static_library("internal") {
 
   if (is_mac) {
     sources += [
+      "common/locale/language_code_mac.mm",
       "common/platform/platform_helper_mac.h",
       "common/platform/platform_helper_mac.mm",
     ]
@@ -1207,6 +1212,7 @@ static_library("internal") {
 
   if (is_ios) {
     sources += [
+      "common/locale/language_code_ios.mm",
       "common/platform/platform_helper_ios.h",
       "common/platform/platform_helper_ios.mm",
     ]
@@ -1214,6 +1220,7 @@ static_library("internal") {
 
   if (is_win) {
     sources += [
+      "common/locale/language_code_win.cc",
       "common/platform/platform_helper_win.cc",
       "common/platform/platform_helper_win.h",
     ]
@@ -1230,6 +1237,7 @@ static_library("internal") {
     "//brave/components/p3a",
     "//brave/components/version_info",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
+    "//components/country_codes",
     "//components/pref_registry:pref_registry",
     "//components/prefs",
     "//components/variations:variations",
