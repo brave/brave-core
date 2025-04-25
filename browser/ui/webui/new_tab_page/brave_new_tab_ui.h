@@ -88,7 +88,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
       rich_media_ad_event_handler_;
   raw_ptr<regional_capabilities::RegionalCapabilitiesService>
-      regional_capabilities_;
+      regional_capabilities_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
