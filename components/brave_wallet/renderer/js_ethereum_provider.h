@@ -21,7 +21,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "v8/include/v8.h"
+#include "v8/include/v8-forward.h"
 
 namespace brave_wallet {
 
@@ -82,6 +82,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   void WillReleaseScriptContext(v8::Local<v8::Context>,
                                 int32_t world_id) override;
   void DidDispatchDOMContentLoadedEvent() override;
+  void DidFinishLoad() override;
 
   bool EnsureConnected();
 

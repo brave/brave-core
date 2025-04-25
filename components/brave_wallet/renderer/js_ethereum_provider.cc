@@ -10,13 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_writer.h"
-#include "base/no_destructor.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/uuid.h"
-#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
@@ -29,13 +24,11 @@
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/abseil-cpp/absl/base/macros.h"
-#include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "url/origin.h"
+#include "v8/include/v8.h"
 
 namespace {
 
@@ -133,6 +126,15 @@ void JSEthereumProvider::DidDispatchDOMContentLoadedEvent() {
     return;
   }
   ConnectEvent();
+}
+
+void JSEthereumProvider::DidFinishLoad() {
+  if (script_context_released_) {
+    return;
+  }
+
+  BindRequestProviderListener();
+  AnnounceProvider();
 }
 
 bool JSEthereumProvider::EnsureConnected() {
@@ -247,9 +249,6 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
       web_frame,
       LoadDataResource(
           IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS));
-
-  provider->BindRequestProviderListener();
-  provider->AnnounceProvider();
 }
 
 bool JSEthereumProvider::GetIsBraveWallet() {
@@ -680,16 +679,24 @@ void JSEthereumProvider::BindRequestProviderListener() {
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
 
-  auto onProviderRequested = gin::CreateFunctionTemplate(
+  if (context.IsEmpty()) {
+    return;
+  }
+
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Context::Scope context_scope(context);
+
+  auto on_provider_requested = gin::CreateFunctionTemplate(
       isolate, base::BindRepeating(&JSEthereumProvider::OnProviderRequested,
                                    weak_ptr_factory_.GetWeakPtr()));
-  auto functionInstance =
-      onProviderRequested->GetFunction(context).ToLocalChecked();
+  auto function_instance =
+      on_provider_requested->GetFunction(context).ToLocalChecked();
 
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(content::V8ValueConverter::Create()->ToV8Value(
       base::Value("eip6963:requestProvider"), context));
-  args.push_back(std::move(functionInstance));
+  args.push_back(std::move(function_instance));
 
   CallMethodOfObject(render_frame()->GetWebFrame(), "window",
                      "addEventListener", std::move(args));
@@ -702,6 +709,14 @@ void JSEthereumProvider::AnnounceProvider() {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame()->GetWebFrame()->MainWorldScriptContext();
+
+  if (context.IsEmpty()) {
+    return;
+  }
+
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Context::Scope context_scope(context);
 
   base::Value::Dict provider_info_value;
   provider_info_value.Set("rdns", "com.brave.wallet");
