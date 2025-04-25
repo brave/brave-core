@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/accelerator_table.h"
 
+#include <algorithm>
+
 #include "base/containers/extend.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -43,6 +45,11 @@ constexpr AcceleratorMapping kBraveAcceleratorMap[] = {
 std::vector<AcceleratorMapping> GetAcceleratorList() {
   std::vector<AcceleratorMapping> accelerator_list(
       GetAcceleratorList_ChromiumImpl());
+
+  // We disable GLIC, but this accelerator is still active so remove it
+  std::erase_if(accelerator_list, [](auto& accelerator) {
+    return accelerator.command_id == IDC_GLIC_TOGGLE_FOCUS;
+  });
 
   base::Extend(accelerator_list, base::span(kBraveAcceleratorMap));
 
