@@ -5,6 +5,8 @@
 
 import { TopSite, TopSitesListKind } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
+import { API } from '../lib/api'
+
 export { TopSite, TopSitesListKind }
 
 export interface TopSitesState {
@@ -42,3 +44,5 @@ export function defaultTopSitesActions(): TopSitesActions {
     setTopSitePosition(url, pos) {}
   }
 }
+
+export type TopSitesAPI = API<TopSitesState, TopSitesActions>
