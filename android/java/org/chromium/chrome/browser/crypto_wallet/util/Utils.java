@@ -36,8 +36,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,6 +70,7 @@ import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
@@ -130,8 +129,7 @@ public class Utils {
 
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
-    @NonNull
-    public static List<String> getRecoveryPhraseAsList(@NonNull final String recoveryPhrase) {
+    public static List<String> getRecoveryPhraseAsList(final String recoveryPhrase) {
         final String[] recoveryPhraseArray = recoveryPhrase.split(" ");
         return new ArrayList<>(Arrays.asList(recoveryPhraseArray));
     }
@@ -154,8 +152,8 @@ public class Utils {
      *     #CLEAR_CLIPBOARD_INTERVAL}.
      */
     public static void saveTextToClipboard(
-            @NonNull final Context context,
-            @NonNull final String textToCopy,
+            final Context context,
+            final String textToCopy,
             @StringRes final int textToShow,
             final boolean scheduleClear) {
         ClipboardManager clipboard =
@@ -192,7 +190,7 @@ public class Utils {
      * @param textToCompare Text to compare that will trigger the clipboard clearing in case of a
      *     match.
      */
-    public static void clearClipboard(@NonNull final String textToCompare) {
+    public static void clearClipboard(final String textToCompare) {
         String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
         if (textToCompare.equals(clipboardText)) {
             saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
@@ -216,7 +214,7 @@ public class Utils {
      *
      * @param activity Activity used to retrieve input method service.
      */
-    public static void hideKeyboard(@NonNull final Activity activity) {
+    public static void hideKeyboard(final Activity activity) {
         hideKeyboard(activity, null);
     }
 
@@ -227,8 +225,7 @@ public class Utils {
      * @param activity Activity used to retrieve input method service.
      * @param windowToken Token of the window that is making the request.
      */
-    public static void hideKeyboard(
-            @NonNull final Activity activity, @Nullable final IBinder windowToken) {
+    public static void hideKeyboard(final Activity activity, @Nullable final IBinder windowToken) {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (windowToken != null) {
@@ -339,7 +336,7 @@ public class Utils {
      *     <p><b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with
      *     an integer.
      */
-    public static BigInteger multiplyByDecimals(@NonNull final String number, final int decimals)
+    public static BigInteger multiplyByDecimals(final String number, final int decimals)
             throws ParseException {
         NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
@@ -608,7 +605,7 @@ public class Utils {
                                     }
                                 });
                     } catch (Exception exc) {
-                        org.chromium.base.Log.e("Utils", exc.getMessage());
+                        Log.e(TAG, "exc=" + exc.getMessage());
                         if (textView != null) {
                             Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                             Bitmap bitmap =
@@ -678,6 +675,9 @@ public class Utils {
         float marginTop = (float) (bitmap1Height * 0.2);
 
         int newWidth = Math.round((float) (bitmap1Width * 1.4));
+        if (bitmap1.getConfig() == null) {
+            throw new NullPointerException("Unexpected null bitmap1.getConfig()");
+        }
         Bitmap overlayBitmap = Bitmap.createBitmap(newWidth, bitmap1Height, bitmap1.getConfig());
         Canvas canvas = new Canvas(overlayBitmap);
         canvas.drawBitmap(bitmap1, new Matrix(), null);
@@ -885,7 +885,7 @@ public class Utils {
 
     @DrawableRes
     public static int getNetworkIconDrawable(
-            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+            final String chainId, @CoinType.EnumType final int coin) {
         @DrawableRes int logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
@@ -955,9 +955,8 @@ public class Utils {
         return logo;
     }
 
-    @NonNull
     public static String getNetworkIconName(
-            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+            final String chainId, @CoinType.EnumType final int coin) {
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
@@ -1027,11 +1026,11 @@ public class Utils {
         return logo;
     }
 
-    @NonNull
     public static String getNetworkIconName(NetworkInfo network) {
         return Utils.getNetworkIconName(network.chainId, network.coin);
     }
 
+    @Nullable
     public static AccountInfo findAccountByAddress(AccountInfo[] accounts, String address) {
         for (AccountInfo acc : accounts) {
             if (acc.address
@@ -1044,6 +1043,7 @@ public class Utils {
         return null;
     }
 
+    @Nullable
     public static AccountInfo findAccount(AccountInfo[] accounts, AccountId accountId) {
         for (AccountInfo acc : accounts) {
             if (WalletUtils.accountIdsEqual(acc.accountId, accountId)) {
@@ -1139,11 +1139,8 @@ public class Utils {
      * @param stringRes The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
-    @NonNull
     public static SpannableString createSpanForSurroundedPhrase(
-            @NonNull Context context,
-            @StringRes int stringRes,
-            @NonNull View.OnClickListener onClickListener) {
+            Context context, @StringRes int stringRes, View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
         SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
@@ -1212,7 +1209,6 @@ public class Utils {
         return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
     }
 
-    @NonNull
     public static Profile getProfile(boolean isIncognito) {
         ChromeActivity chromeActivity = null;
         try {
@@ -1233,7 +1229,12 @@ public class Utils {
         if (selector == null) {
             return ProfileManager.getLastUsedRegularProfile();
         }
-        return selector.getModel(isIncognito).getProfile();
+
+        Profile profile = selector.getModel(isIncognito).getProfile();
+        if (profile == null) {
+            return ProfileManager.getLastUsedRegularProfile();
+        }
+        return profile;
     }
 
     public static String formatErc721TokenTitle(String title, String id) {
@@ -1489,8 +1490,11 @@ public class Utils {
                             blockchainTokensBalancesResponses,
                             activeAddresses);
                     for (int coinType : P3ACoinTypes) {
-                        braveWalletP3A.recordActiveWalletCount(
-                                activeAddresses.get(coinType).size(), coinType);
+                        HashSet<String> addressesPerCoin = activeAddresses.get(coinType);
+                        if (addressesPerCoin != null) {
+                            braveWalletP3A.recordActiveWalletCount(
+                                    addressesPerCoin.size(), coinType);
+                        }
                     }
                 });
     }
@@ -1501,8 +1505,7 @@ public class Utils {
      * @param address full contract address
      * @return truncated address
      */
-    @NonNull
-    public static String getTruncatedAddress(@NonNull final String address) {
+    public static String getTruncatedAddress(final String address) {
 
         if (address.isEmpty()) {
             Log.w(TAG, "Empty contract address.");
