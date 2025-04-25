@@ -7,13 +7,13 @@ import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
 
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-import { BackgroundState, BackgroundActions, getCurrentBackground } from '../models/backgrounds'
+import { BackgroundAPI, defaultBackgroundState, getCurrentBackground } from '../api/backgrounds'
 
-export function initializeBackgrounds(
-  store: Store<BackgroundState>
-): BackgroundActions {
+export function createBackgroundAPI(): BackgroundAPI {
+  const store = createStore(defaultBackgroundState())
+
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   const sponsoredRichMediaAdEventHandler =
@@ -90,6 +90,10 @@ export function initializeBackgrounds(
   loadData()
 
   return {
+
+    getState: store.getState,
+
+    addListener: store.addListener,
 
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })

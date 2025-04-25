@@ -7,8 +7,8 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { TopSitesListKind } from '../../models/top_sites'
-import { useAppActions, useAppState } from '../context/app_model_context'
+import { TopSitesListKind } from '../../api/top_sites'
+import { useTopSitesState, useTopSitesActions } from '../context/top_sites_context'
 import { useLocale } from '../context/locale_context'
 import classNames from '$web-common/classnames'
 
@@ -16,10 +16,10 @@ import { style } from './top_sites_panel.style'
 
 export function TopSitesPanel() {
   const { getString } = useLocale()
-  const actions = useAppActions()
+  const actions = useTopSitesActions()
 
-  const showTopSites = useAppState((s) => s.showTopSites)
-  const listKind = useAppState((s) => s.topSitesListKind)
+  const showTopSites = useTopSitesState((s) => s.showTopSites)
+  const listKind = useTopSitesState((s) => s.topSitesListKind)
 
   function renderSelectedMarker(kind: TopSitesListKind) {
     if (kind === listKind) {

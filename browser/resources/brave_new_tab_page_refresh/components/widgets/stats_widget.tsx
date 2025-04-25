@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useAppState } from '../context/app_model_context'
+import { useNewTabState } from '../context/new_tab_context'
 import { useLocale } from '../context/locale_context'
 
 import { style } from './stats_widget.style'
@@ -18,8 +18,8 @@ const adsBlockedFormatter = new Intl.NumberFormat(undefined, {
 export function StatsWidget() {
   const { getString } = useLocale()
 
-  const showStats = useAppState((s) => s.showShieldsStats)
-  const stats = useAppState((s) => s.shieldsStats)
+  const showStats = useNewTabState((s) => s.showShieldsStats)
+  const stats = useNewTabState((s) => s.shieldsStats)
 
   function renderUnits(parts: Intl.NumberFormatPart[]) {
     return parts.map(({ type, value }) => {
