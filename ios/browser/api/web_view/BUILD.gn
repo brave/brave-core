@@ -13,13 +13,26 @@ config("config") {
 
 source_set("web_view") {
   sources = [
+    "autofill/brave_web_view_autofill_client.h",
+    "autofill/brave_web_view_autofill_client.mm",
     "brave_web_view.h",
     "brave_web_view.mm",
     "brave_web_view_internal.h",
+    "brave_web_view_configuration.h",
+    "brave_web_view_configuration.mm",
+    "passwords/brave_web_view_password_manager_client.h",
+    "passwords/brave_web_view_password_manager_client.mm",
   ]
   deps = [
     "//base",
     "//brave/ios/web_view",
+    "//components/application_locale_storage",
+    "//ios/chrome/browser/autofill/model",
+    "//ios/chrome/browser/passwords/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/signin/model",
+    "//ios/chrome/browser/sync/model",
     "//ios/chrome/browser/tabs/model",
     "//ios/web/common",
     "//ios/web/web_state",
