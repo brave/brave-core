@@ -328,9 +328,8 @@ class WebKitTabState: TabState, TabStateImpl {
     webView.allowsBackForwardNavigationGestures = true
     webView.allowsLinkPreview = true
     webView.isFindInteractionEnabled = true
-    if #available(iOS 16.4, *) {
-      webView.isInspectable = true
-    }
+    webView.isInspectable = true
+
     view.addSubview(webView)
     webView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([

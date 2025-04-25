@@ -1620,10 +1620,6 @@ extension WKWebsiteDataStore {
     types.insert("_WKWebsiteDataTypeAdClickAttributions")
     types.insert("_WKWebsiteDataTypePrivateClickMeasurements")
     types.insert("_WKWebsiteDataTypeAlternativeServices")
-    if #unavailable(iOS 17) {
-      types.insert("_WKWebsiteDataTypeMediaKeys")
-      types.insert("_WKWebsiteDataTypeSearchFieldRecentSearches")
-    }
     return types
   }
 }

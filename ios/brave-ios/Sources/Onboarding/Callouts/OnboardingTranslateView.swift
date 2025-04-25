@@ -30,17 +30,7 @@ public struct OnboardingTranslateView: View {
       .padding(24.0)
     }
     .multilineTextAlignment(.center)
-    .osAvailabilityModifiers { content in
-      if #available(iOS 16.4, *) {
-        content
-          .scrollBounceBehavior(.basedOnSize)
-      } else {
-        content
-          .introspectScrollView { scrollView in
-            scrollView.alwaysBounceVertical = false
-          }
-      }
-    }
+    .scrollBounceBehavior(.basedOnSize)
   }
 }
 

@@ -262,32 +262,13 @@ extension BrowserViewController {
       }
     }
 
-    #if compiler(>=5.8)
-    if #available(iOS 16.4, *) {
-      Task { @MainActor in
-        for await message in StoreKit.Message.messages {
-          guard let windowScene = currentScene else {
-            return
-          }
-
-          try? message.display(in: windowScene)
+    Task { @MainActor in
+      for await message in StoreKit.Message.messages {
+        guard let windowScene = currentScene else {
+          return
         }
-      }
-    } else {
-      presentVPNChurnBilling()
-    }
-    #else
-    presentVPNChurnBilling()
-    #endif
 
-    func presentVPNChurnBilling() {
-      presentVPNChurnPromoCallout(for: .updateBillingExpired) {
-        // Opens Apple's 'manage subscription' screen
-        guard let url = URL.apple.manageSubscriptions else { return }
-
-        if UIApplication.shared.canOpenURL(url) {
-          UIApplication.shared.open(url, options: [:])
-        }
+        try? message.display(in: windowScene)
       }
     }
   }

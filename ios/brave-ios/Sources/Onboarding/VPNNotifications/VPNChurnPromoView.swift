@@ -151,24 +151,7 @@ public struct VPNChurnPromoView: View {
       .padding([.top, .trailing], 10)
     }
     .padding(.vertical, 16)
-    .osAvailabilityModifiers { content in
-      #if compiler(>=5.8)
-      if #available(iOS 16.4, *) {
-        content
-          .scrollBounceBehavior(.basedOnSize)
-      } else {
-        content
-          .introspectScrollView { scrollView in
-            scrollView.alwaysBounceVertical = false
-          }
-      }
-      #else
-      content
-        .introspectScrollView { scrollView in
-          scrollView.alwaysBounceVertical = false
-        }
-      #endif
-    }
+    .scrollBounceBehavior(.basedOnSize)
   }
 
   private var headerView: some View {

@@ -78,7 +78,6 @@ struct FollowingListView: View {
       followedChannels = fetchChannels().sorted(by: { $0.name < $1.name })
       followedRSSFeeds = fetchRSSFeeds()
     }
-    .listInitialOffsetWorkaround()
   }
 }
 

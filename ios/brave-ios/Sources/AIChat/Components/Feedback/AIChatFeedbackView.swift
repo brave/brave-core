@@ -211,16 +211,7 @@ private struct AIChatFeedbackInputView: View {
           .autocapitalization(.none)
           .submitLabel(.done)
           .frame(minHeight: 80.0)
-          .osAvailabilityModifiers({ view in
-            if #available(iOS 16.4, *) {
-              view
-                .scrollContentBackground(.hidden)
-            } else {
-              view.introspectTextView { textView in
-                textView.backgroundColor = .clear
-              }
-            }
-          })
+          .scrollContentBackground(.hidden)
 
         if text.isEmpty {
           Text(Strings.AIChat.feedbackInputViewTitle)
