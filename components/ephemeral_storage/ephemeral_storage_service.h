@@ -87,9 +87,13 @@ class EphemeralStorageService : public KeyedService {
   friend EphemeralStorageQaBrowserTest;
   friend permissions::PermissionLifetimeManagerBrowserTest;
 
-  void FirstPartyStorageAreaInUse(const std::string& ephemeral_domain);
-  bool FirstPartyStorageAreaNotInUse(const std::string& ephemeral_domain,
-                                     bool shields_disabled_on_one_of_hosts);
+  void FirstPartyStorageAreaInUse(
+      const std::string& ephemeral_domain,
+      const content::StoragePartitionConfig& storage_partition_config);
+  bool FirstPartyStorageAreaNotInUse(
+      const std::string& ephemeral_domain,
+      const content::StoragePartitionConfig& storage_partition_config,
+      bool shields_disabled_on_one_of_hosts);
 
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,
@@ -109,7 +113,7 @@ class EphemeralStorageService : public KeyedService {
   // is asynchronous and cannot block the browser shutdown.
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupFirstPartyStorageAreasOnStartup();
-  void CleanupFirstPartyStorageArea(const std::string& ephemeral_domain);
+  void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   size_t FireCleanupTimersForTesting();
 
