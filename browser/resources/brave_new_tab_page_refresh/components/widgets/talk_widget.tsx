@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
-import { useLocale } from '../context/locale_context'
+import { useLocale } from '../../context/locale_context'
 import { openLink } from '../common/link'
 
 import { style } from './talk_widget.style'

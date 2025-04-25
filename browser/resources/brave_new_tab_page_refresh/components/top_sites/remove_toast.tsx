@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocale } from '../context/locale_context'
+import { useLocale } from '../../context/locale_context'
 import { Popover } from '../common/popover'
 
 import { style } from './remove_toast.style'
