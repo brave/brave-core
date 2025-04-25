@@ -21,13 +21,6 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 
-namespace {
-constexpr char kNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
-constexpr char kUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-constexpr char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-constexpr char kAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
-}  // namespace
-
 BASE_FEATURE(kExtensionsManifestV2,
              "ExtensionsManifestV2",
              base::FEATURE_DISABLED_BY_DEFAULT);

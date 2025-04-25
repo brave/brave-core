@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -19,6 +20,20 @@
 #include "extensions/browser/extension_registry_observer.h"
 
 BASE_DECLARE_FEATURE(kExtensionsManifestV2);
+
+inline constexpr char kNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
+inline constexpr char kUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
+inline constexpr char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
+inline constexpr char kAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
+
+inline constexpr auto kPreconfiguredManifestV2Extensions =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 kUBlockId,
+                                                 kNoScriptId,
+                                                 kAdGuardId,
+                                                 kUMatrixId,
+                                             });
 
 class BraveExtensionsManifestV2Handler
     : public settings::SettingsPageUIHandler,
