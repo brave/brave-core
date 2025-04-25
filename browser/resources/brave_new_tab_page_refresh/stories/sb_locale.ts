@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StringKey, PluralStringKey, Locale } from '../models/locale_strings'
+import { StringKey, PluralStringKey, Locale } from '../api/locale_strings'
 
 const localeStrings: Record<StringKey, string>  = {
   addTopSiteLabel: 'Add site',

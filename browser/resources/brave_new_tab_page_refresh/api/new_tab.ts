@@ -5,6 +5,8 @@
 
 import { ShieldsStats, ClockFormat } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
+import { API } from '../lib/api'
+
 export { ShieldsStats, ClockFormat }
 
 export interface NewTabState {
@@ -40,3 +42,5 @@ export function defaultNewTabActions(): NewTabActions {
     setShowTalkWidget(showTalkWidget) {}
   }
 }
+
+export type NewTabAPI = API<NewTabState, NewTabActions>

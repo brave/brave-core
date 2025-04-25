@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 
 import {
-  NewTabState,
-  NewTabActions,
-  defaultNewTabActions } from '../models/new_tab'
+  NewTabAPI,
+  defaultNewTabState,
+  defaultNewTabActions } from '../api/new_tab'
 
-export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
+export function createNewTabAPI(): NewTabAPI {
+  const store = createStore(defaultNewTabState())
+
   store.update({
     showClock: true,
     showShieldsStats: true,
@@ -22,6 +24,10 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
   })
 
   return {
+    getState: store.getState,
+
+    addListener: store.addListener,
+
     ...defaultNewTabActions(),
 
     setClockFormat(format) {

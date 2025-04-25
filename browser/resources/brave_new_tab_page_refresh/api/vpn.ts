@@ -5,9 +5,11 @@
 
 import { ConnectionState, Region} from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 
+import { API } from '../lib/api'
+
 export { ConnectionState, Region }
 
-export interface VPNState {
+export interface VpnState {
   vpnFeatureEnabled: boolean
   showVpnWidget: boolean
   vpnPurchased: boolean
@@ -15,7 +17,7 @@ export interface VPNState {
   vpnConnectionRegion: Region | null
 }
 
-export function defaultVPNState(): VPNState {
+export function defaultVpnState(): VpnState {
   return {
     vpnFeatureEnabled: false,
     showVpnWidget: false,
@@ -25,7 +27,7 @@ export function defaultVPNState(): VPNState {
   }
 }
 
-export interface VPNActions {
+export interface VpnActions {
   setShowVpnWidget: (showVpnWidget: boolean) => void
   startVpnTrial: () => void
   restoreVpnPurchase: () => void
@@ -33,7 +35,7 @@ export interface VPNActions {
   openVpnPanel: () => void
 }
 
-export function defaultVPNActions(): VPNActions {
+export function defaultVpnActions(): VpnActions {
   return {
     setShowVpnWidget(showVpnWidget) {},
     startVpnTrial() {},
@@ -42,3 +44,5 @@ export function defaultVPNActions(): VPNActions {
     openVpnPanel() {}
   }
 }
+
+export type VpnAPI = API<VpnState, VpnActions>

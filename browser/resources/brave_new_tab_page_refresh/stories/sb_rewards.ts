@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 import { optional } from '../lib/optional'
 
 import {
-  RewardsState,
-  RewardsActions,
-  defaultRewardsActions } from '../models/rewards'
+  RewardsAPI,
+  defaultRewardsState,
+  defaultRewardsActions } from '../api/rewards'
 
-export function initializeRewards(store: Store<RewardsState>): RewardsActions {
+export function createRewardsAPI(): RewardsAPI {
+  const store = createStore(defaultRewardsState())
+
   store.update({
     rewardsFeatureEnabled: true,
     rewardsEnabled: true,
@@ -27,6 +29,10 @@ export function initializeRewards(store: Store<RewardsState>): RewardsActions {
   })
 
   return {
+    getState: store.getState,
+
+    addListener: store.addListener,
+
     ...defaultRewardsActions(),
 
     setShowRewardsWidget(showRewardsWidget) {
