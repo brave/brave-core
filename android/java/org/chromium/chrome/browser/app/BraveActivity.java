@@ -79,7 +79,6 @@ import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEngin
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.brave.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
-import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -112,8 +111,6 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
-import org.chromium.chrome.browser.brave_news.BraveNewsConnectionErrorHandler;
-import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
@@ -245,7 +242,6 @@ public abstract class BraveActivity extends ChromeActivity
                 ConnectionErrorHandler,
                 PrefObserver,
                 BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
-                BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                 MiscAndroidMetricsConnectionErrorHandler
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate,
                 QuickSearchEnginesCallback,
@@ -326,8 +322,6 @@ public abstract class BraveActivity extends ChromeActivity
     private NewTabPageManager mNewTabPageManager;
     private UsageMonitor mUsageMonitor;
     private NotificationPermissionController mNotificationPermissionController;
-    private BraveNewsController mBraveNewsController;
-    private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
     private AppUpdateManager mAppUpdateManager;
     private boolean mWalletBadgeVisible;
@@ -484,14 +478,6 @@ public abstract class BraveActivity extends ChromeActivity
         return true;
     }
 
-    @Override
-    public void cleanUpBraveNewsController() {
-        if (mBraveNewsController != null) {
-            mBraveNewsController.close();
-        }
-        mBraveNewsController = null;
-    }
-
     // Handles only wallet related mojo failures. Don't add handlers for mojo connections that
     // are not related to wallet functionality.
     @Override
@@ -512,7 +498,6 @@ public abstract class BraveActivity extends ChromeActivity
             mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
         super.onDestroyInternal();
-        cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
     }
@@ -1216,7 +1201,7 @@ public abstract class BraveActivity extends ChromeActivity
             showAdFreeCalloutDialog();
         }
 
-        initBraveNewsController();
+        initBraveNews();
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false)) {
             ChromeSharedPreferences.getInstance()
@@ -1478,32 +1463,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    @Override
-    public void initBraveNewsControllerFromAWorkerThread() {
-        runOnUiThread(
-                () -> {
-                    initBraveNewsController();
-                });
-    }
-
-    private void initBraveNewsController() {
+    private void initBraveNews() {
         ThreadUtils.assertOnUiThread();
-        if (mBraveNewsController != null) {
-            return;
-        }
-        if (mBraveNewsConnectionErrorHandler == null) {
-            mBraveNewsConnectionErrorHandler = new BraveNewsConnectionErrorHandler(this);
-        }
-
         if (BravePrefServiceBridge.getInstance().getShowNews()
                 && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-            BraveNewsControllerFactory.getInstance()
-                    .getBraveNewsController(mBraveNewsConnectionErrorHandler)
-                    .then(
-                            braveNewsController -> {
-                                mBraveNewsController = braveNewsController;
-                                BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
-                            });
+            BraveNewsUtils.getBraveNewsSettingsDataPerProfile(mTabModelProfileSupplier.get());
         }
     }
 
