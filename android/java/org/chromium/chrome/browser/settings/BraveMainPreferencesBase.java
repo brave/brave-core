@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -97,11 +100,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
-    private Preference mVpnCalloutPreference;
+    private @Nullable Preference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Add brave's additional preferences here because |onCreatePreference| is not called
@@ -218,6 +221,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         boolean isAutofillPrivateWindow =
                 UserPrefs.get(getProfile()).getBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS);
         Preference preference = findPreference(PREF_AUTOFILL_PRIVATE_WINDOW);
+        assumeNonNull(preference);
         preference.setOnPreferenceChangeListener(this);
         if (preference instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) preference).setChecked(isAutofillPrivateWindow);
@@ -232,9 +236,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
-    /**
-     *  We need to override it to avoid NullPointerException in Chromium's child classes
-     */
+    /** We need to override it to avoid NullPointerException in Chromium's child classes */
+    @Nullable
     @Override
     public <T extends Preference> T findPreference(CharSequence key) {
         T result = super.findPreference(key);
@@ -265,101 +268,102 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             }
         }
 
-        findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
+        setPreferenceOrder(PREF_FEATURES_SECTION, ++firstSectionOrder);
 
-        findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
-        findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
+        setPreferenceOrder(PREF_SHIELDS_AND_PRIVACY, ++firstSectionOrder);
+        setPreferenceOrder(PREF_BRAVE_NEWS_V2, ++firstSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
-            findPreference(PREF_BRAVE_WALLET).setOrder(++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_WALLET, ++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            findPreference(PREF_BRAVE_PLAYLIST).setOrder(++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_PLAYLIST, ++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
 
-        if (getActivity() != null && !getActivity().isFinishing()
+        if (getActivity() != null
+                && !getActivity().isFinishing()
                 && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
-            findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_VPN, ++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN);
         }
 
         if (BraveLeoPrefUtils.isLeoEnabled()) {
-            findPreference(PREF_BRAVE_LEO).setOrder(++firstSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_LEO, ++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_LEO);
         }
 
         int generalOrder = firstSectionOrder;
-        findPreference(PREF_GENERAL_SECTION).setOrder(++generalOrder);
+        setPreferenceOrder(PREF_GENERAL_SECTION, ++generalOrder);
 
-        findPreference(PREF_BRAVE_SEARCH_ENGINES).setOrder(++generalOrder);
+        setPreferenceOrder(PREF_BRAVE_SEARCH_ENGINES, ++generalOrder);
         Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
         if (preference != null) {
             preference.setOrder(++generalOrder);
         }
 
         if (BraveSearchWidgetUtils.isRequestPinAppWidgetSupported()) {
-            findPreference(PREF_HOME_SCREEN_WIDGET).setOrder(++generalOrder);
+            setPreferenceOrder(PREF_HOME_SCREEN_WIDGET, ++generalOrder);
         } else {
             removePreferenceIfPresent(PREF_HOME_SCREEN_WIDGET);
         }
 
-        findPreference(PREF_PASSWORDS).setOrder(++generalOrder);
-        findPreference(PREF_SYNC).setOrder(++generalOrder);
-        findPreference(PREF_BRAVE_STATS).setOrder(++generalOrder);
+        setPreferenceOrder(PREF_PASSWORDS, ++generalOrder);
+        setPreferenceOrder(PREF_SYNC, ++generalOrder);
+        setPreferenceOrder(PREF_BRAVE_STATS, ++generalOrder);
         // if notification is not available (eg. for emulators)
         if (findPreference(PREF_NOTIFICATIONS) != null) {
             findPreference(PREF_NOTIFICATIONS).setOrder(++generalOrder);
         }
-        findPreference(PREF_CONTENT_SETTINGS).setOrder(++generalOrder);
-        findPreference(PREF_DOWNLOADS).setOrder(++generalOrder);
-        findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).setOrder(++generalOrder);
+        setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
+        setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
+        setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
         if (DeviceFormFactor.isTablet()) {
             removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
         } else {
-            findPreference(PREF_USE_CUSTOM_TABS).setOrder(++generalOrder);
+            setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
         }
 
         int displaySectionOrder = generalOrder;
-        findPreference(PREF_DISPLAY_SECTION).setOrder(++displaySectionOrder);
+        setPreferenceOrder(PREF_DISPLAY_SECTION, ++displaySectionOrder);
 
-        findPreference(PREF_TABS).setOrder(++displaySectionOrder);
-        findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
-        findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
-        findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
-        findPreference(PREF_ACCESSIBILITY).setOrder(++displaySectionOrder);
-        findPreference(PREF_BRAVE_LANGUAGES).setOrder(++displaySectionOrder);
+        setPreferenceOrder(PREF_TABS, ++displaySectionOrder);
+        setPreferenceOrder(PREF_MEDIA, ++displaySectionOrder);
+        setPreferenceOrder(PREF_APPEARANCE, ++displaySectionOrder);
+        setPreferenceOrder(PREF_NEW_TAB_PAGE, ++displaySectionOrder);
+        setPreferenceOrder(PREF_ACCESSIBILITY, ++displaySectionOrder);
+        setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
         int onlineCheckoutSectionOrder = displaySectionOrder;
-        findPreference(PREF_ONLINE_CHECKOUT_SECTION).setOrder(++onlineCheckoutSectionOrder);
+        setPreferenceOrder(PREF_ONLINE_CHECKOUT_SECTION, ++onlineCheckoutSectionOrder);
 
-        findPreference(PREF_PAYMENT_METHODS).setOrder(++onlineCheckoutSectionOrder);
-        findPreference(PREF_ADDRESSES).setOrder(++onlineCheckoutSectionOrder);
-        findPreference(PREF_AUTOFILL_PRIVATE_WINDOW).setOrder(++onlineCheckoutSectionOrder);
+        setPreferenceOrder(PREF_PAYMENT_METHODS, ++onlineCheckoutSectionOrder);
+        setPreferenceOrder(PREF_ADDRESSES, ++onlineCheckoutSectionOrder);
+        setPreferenceOrder(PREF_AUTOFILL_PRIVATE_WINDOW, ++onlineCheckoutSectionOrder);
 
         int supportSectionOrder = onlineCheckoutSectionOrder;
-        findPreference(PREF_SUPPORT_SECTION).setOrder(++supportSectionOrder);
+        setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
 
-        findPreference(PREF_RATE_BRAVE).setOrder(++supportSectionOrder);
+        setPreferenceOrder(PREF_RATE_BRAVE, ++supportSectionOrder);
 
         int aboutSectionOrder = supportSectionOrder;
         // This preference doesn't exist by default in Release mode
         if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
             findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
         }
-        findPreference(PREF_ABOUT_SECTION).setOrder(++aboutSectionOrder);
+        setPreferenceOrder(PREF_ABOUT_SECTION, ++aboutSectionOrder);
 
         // This preference doesn't exist by default in Release mode
         if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
             findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
         }
-        findPreference(PREF_ABOUT_CHROME).setOrder(++aboutSectionOrder);
+        setPreferenceOrder(PREF_ABOUT_CHROME, ++aboutSectionOrder);
 
         // We don't have home button on address bar at the moment.
         if (!DeviceFormFactor.isTablet()
@@ -370,6 +374,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We want to move the address bar preference to the Appearence settings.
         removePreferenceIfPresent(MainSettings.PREF_ADDRESS_BAR);
+    }
+
+    // A wrapper to suppress NullAway warning for the prefs which always present
+    private void setPreferenceOrder(CharSequence key, int order) {
+        Preference preference = findPreference(key);
+        assumeNonNull(preference);
+        preference.setOrder(order);
     }
 
     private void updatePreferenceIcon(String preferenceString, int drawable) {
@@ -416,6 +427,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 .isLoaded()) {
             ChromeBasePreference searchEnginePref =
                     (ChromeBasePreference) findPreference(PREF_BRAVE_SEARCH_ENGINES);
+            assumeNonNull(searchEnginePref);
             searchEnginePref.setEnabled(false);
             return;
         }
@@ -423,6 +435,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updateSummary(String preferenceString, int summary) {
         Preference p = findPreference(preferenceString);
+        assumeNonNull(p);
         p.setSummary(summary);
     }
 
@@ -432,29 +445,39 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void overrideChromiumPreferences() {
         // Replace fragment.
-        findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
-        Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
-        if (preference != null) {
-            preference.setFragment(BraveHomepageSettings.class.getName());
+        Preference shieldsAndPrivacyPreference = findPreference(PREF_SHIELDS_AND_PRIVACY);
+        assumeNonNull(shieldsAndPrivacyPreference);
+        shieldsAndPrivacyPreference.setFragment(BravePrivacySettings.class.getName());
+        Preference homePagePreference = findPreference(MainSettings.PREF_HOMEPAGE);
+        if (homePagePreference != null) {
+            homePagePreference.setFragment(BraveHomepageSettings.class.getName());
         }
-        findPreference(PREF_ACCESSIBILITY).setFragment(BraveAccessibilitySettings.class.getName());
+        Preference accessabilityPreference = findPreference(PREF_ACCESSIBILITY);
+        assumeNonNull(accessabilityPreference);
+        accessabilityPreference.setFragment(BraveAccessibilitySettings.class.getName());
     }
 
     private void setPreferenceListeners() {
-        findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).setOnPreferenceChangeListener(this);
+        Preference closingAllTabsClosesBravePreference =
+                findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
+        assumeNonNull(closingAllTabsClosesBravePreference);
+        closingAllTabsClosesBravePreference.setOnPreferenceChangeListener(this);
     }
 
     private void initRateBrave() {
-        findPreference(PREF_RATE_BRAVE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                BraveRateDialogFragment rateDialogFragment =
-                        BraveRateDialogFragment.newInstance(true);
-                rateDialogFragment.show(
-                        getParentFragmentManager(), BraveRateDialogFragment.TAG_FRAGMENT);
-                return true;
-            }
-        });
+        Preference rateBravePreference = findPreference(PREF_RATE_BRAVE);
+        assumeNonNull(rateBravePreference);
+        rateBravePreference.setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        BraveRateDialogFragment rateDialogFragment =
+                                BraveRateDialogFragment.newInstance(true);
+                        rateDialogFragment.show(
+                                getParentFragmentManager(), BraveRateDialogFragment.TAG_FRAGMENT);
+                        return true;
+                    }
+                });
 
         Preference homeScreenWidgetPreference = findPreference(PREF_HOME_SCREEN_WIDGET);
         if (homeScreenWidgetPreference != null) {

@@ -580,7 +580,7 @@ public class Utils {
                                     }
                                 });
                     } catch (Exception exc) {
-                        Log.e(TAG, "Error while setting Bitmap resource", exc);
+                        Log.e(TAG, "Error while setting Bitmap resource exc=" + exc.getMessage());
                         if (textView != null) {
                             Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                             Bitmap bitmap =
@@ -1124,7 +1124,12 @@ public class Utils {
         if (selector == null) {
             return ProfileManager.getLastUsedRegularProfile();
         }
-        return selector.getModel(isIncognito).getProfile();
+
+        Profile profile = selector.getModel(isIncognito).getProfile();
+        if (profile == null) {
+            return ProfileManager.getLastUsedRegularProfile();
+        }
+        return profile;
     }
 
     public static String formatErc721TokenTitle(String title, String id) {

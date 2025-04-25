@@ -131,6 +131,11 @@ class BravePermissionDialogModel {
     /* Adds a permission lifetime options to a dialog view if lifetime options are available. */
     private static void addLifetimeOptions(View customView, PermissionDialogDelegate delegate) {
         Context context = delegate.getWindow().getContext().get();
+
+        if (context == null) {
+            throw new NullPointerException("Unexpected null context");
+        }
+
         BravePermissionDialogDelegate braveDelegate =
                 (BravePermissionDialogDelegate) (Object) delegate;
 

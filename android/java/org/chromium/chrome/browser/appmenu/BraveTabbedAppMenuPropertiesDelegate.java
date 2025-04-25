@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.appmenu;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -25,7 +28,9 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -64,7 +69,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
-    private Menu mMenu;
+    private @MonotonicNonNull Menu mMenu;
     private AppMenuDelegate mAppMenuDelegate;
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
 
@@ -115,7 +120,14 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
             SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
+            if (vpnSubMenu == null) {
+                throw new NullPointerException("Unexpected null vpnSubMenu");
+            }
             MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
+            if (braveVpnSubMenuItem == null) {
+                throw new NullPointerException("Unexpected null braveVpnSubMenuItem");
+            }
+
             if (shouldShowIconBeforeItem()) {
                 braveVpnSubMenuItem.setIcon(
                         AppCompatResources.getDrawable(mContext, R.drawable.ic_vpn));
@@ -133,6 +145,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 String serverLocation = " %s  %s - %s";
                 SubMenu vpnLocationSubMenu =
                         menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
+                if (vpnLocationSubMenu == null) {
+                    throw new NullPointerException("Unexpected null vpnLocationSubMenu");
+                }
                 MenuItem vpnLocationSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
                 String regionName =
@@ -151,6 +166,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 MenuItem vpnLocationIconSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
                 Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
+                if (drawable == null) {
+                    throw new NullPointerException("Unexpected null drawable");
+                }
 
                 drawable = DrawableCompat.wrap(drawable);
                 DrawableCompat.setTint(
@@ -268,8 +286,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         MenuItem braveSpeedReader = menu.findItem(R.id.brave_speedreader_id);
         braveSpeedReader.setVisible(false);
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)
-                && UserPrefs.get(mTabModelSelector.getCurrentModel().getProfile())
-                           .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED)) {
+                && UserPrefs.get(assumeNonNull(mTabModelSelector.getCurrentModel().getProfile()))
+                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED)) {
             final Tab currentTab = mActivityTabProvider.get();
             if (currentTab != null && BraveSpeedReaderUtils.tabSupportsDistillation(currentTab)) {
                 braveSpeedReader.setVisible(true);
@@ -331,6 +349,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     @Override
     public void onMenuDismissed() {
         super.onMenuDismissed();
+
+        assertNonNull(mMenu);
 
         mMenu.removeItem(R.id.set_default_browser);
         mMenu.removeItem(R.id.brave_rewards_id);
@@ -422,8 +442,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         return BraveMenuButtonCoordinator.isMenuFromBottom();
     }
 
-    private void maybeReplaceIcons(Menu menu) {
-        if (shouldShowIconBeforeItem()) {
+    private void maybeReplaceIcons(@Nullable Menu menu) {
+        if (menu != null && shouldShowIconBeforeItem()) {
             for (int i = 0; i < menu.size(); ++i) {
                 MenuItem item = menu.getItem(i);
                 if (item.hasSubMenu()) {

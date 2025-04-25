@@ -72,7 +72,6 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                             new SpanInfo(
                                     "<auto_reconnect_vpn_tutorial>",
                                     "</auto_reconnect_vpn_tutorial>",
-                                    null,
                                     new StyleSpan(android.graphics.Typeface.BOLD)));
             autoReconnectVpnTutorialText.setText(tutorialSpannableString);
 
