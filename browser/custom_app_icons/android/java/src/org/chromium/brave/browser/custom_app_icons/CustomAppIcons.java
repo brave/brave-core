@@ -11,6 +11,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.StringRes;
 
+import org.chromium.build.annotations.NullMarked;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -20,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
  * activity alias) for each icon type - Access icon resources, titles and activity aliases - Get a
  * list of all available icons
  */
+@NullMarked
 public class CustomAppIcons {
 
     public static final int ICON_DEFAULT = 0;
@@ -73,7 +76,7 @@ public class CustomAppIcons {
         sIconDataMap.put(
                 ICON_DEFAULT,
                 new IconData(
-                        R.mipmap.ic_launcher_3d_round,
+                        R.drawable.ic_launcher_round,
                         R.string.launcher_default_title,
                         "com.google.android.apps.chrome.Main"));
 
@@ -156,7 +159,8 @@ public class CustomAppIcons {
      * @return The drawable resource ID for the icon
      */
     public static @DrawableRes int getIcon(@AppIconType int type) {
-        return sIconDataMap.get(type).iconResId;
+        IconData iconData = sIconDataMap.get(type);
+        return iconData != null ? iconData.iconResId : R.drawable.ic_launcher_round;
     }
 
     /**
@@ -166,7 +170,8 @@ public class CustomAppIcons {
      * @return The string resource ID for the title
      */
     public static @StringRes int getTitle(@AppIconType int type) {
-        return sIconDataMap.get(type).titleResId;
+        IconData iconData = sIconDataMap.get(type);
+        return iconData != null ? iconData.titleResId : R.string.launcher_default_title;
     }
 
     /**
@@ -177,7 +182,8 @@ public class CustomAppIcons {
      * @return The activity alias string
      */
     public static String getAlias(@AppIconType int type) {
-        return sIconDataMap.get(type).activityAlias;
+        IconData iconData = sIconDataMap.get(type);
+        return iconData != null ? iconData.activityAlias : "com.google.android.apps.chrome.Main";
     }
 
     /**

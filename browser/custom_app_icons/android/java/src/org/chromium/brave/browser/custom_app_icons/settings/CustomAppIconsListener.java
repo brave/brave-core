@@ -6,7 +6,10 @@
 package org.chromium.brave.browser.custom_app_icons.settings;
 
 import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
+import org.chromium.build.annotations.NullMarked;
 
+/** Interface for handling custom app icon selection events. */
+@NullMarked
 public interface CustomAppIconsListener {
     /**
      * Called when a custom app icon is selected by the user.

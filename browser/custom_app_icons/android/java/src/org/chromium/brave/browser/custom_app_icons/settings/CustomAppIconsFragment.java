@@ -21,10 +21,14 @@ import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
 import org.chromium.brave.browser.custom_app_icons.confirm_dialog.BraveConfirmationDialog;
 import org.chromium.brave.browser.custom_app_icons.confirm_dialog.OnConfirmationDialogListener;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
 
+/** Fragment for managing custom app icons settings. */
+@NullMarked
 public class CustomAppIconsFragment extends Fragment implements CustomAppIconsListener {
     private static final String TAG = "CustomAppIconsFragment";
-    private RecyclerView mRecyclerView;
+    private @MonotonicNonNull RecyclerView mRecyclerView;
 
     @Override
     public View onCreateView(

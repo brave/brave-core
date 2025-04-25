@@ -5,7 +5,10 @@
 
 package org.chromium.brave.browser.custom_app_icons.confirm_dialog;
 
+import org.chromium.build.annotations.NullMarked;
+
 /** Interface for handling confirmation dialog button clicks. */
+@NullMarked
 public interface OnConfirmationDialogListener {
     /** Called when the user clicks the confirm/positive button. */
     void onPositiveButtonClicked();

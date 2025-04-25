@@ -92,8 +92,8 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps = [
-  "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/browser/custom_app_icons/android:java_resources",
+  "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
   "//brave/build/android:brave_java_xml_preprocess_resources",
 ]

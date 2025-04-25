@@ -79,8 +79,6 @@ import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEngin
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.brave.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -226,14 +224,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
-import org.chromium.chrome.browser.billing.PurchaseModel;
-import org.chromium.chrome.browser.InternetConnection;
-import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 
 import java.util.Arrays;
 import java.util.Calendar;

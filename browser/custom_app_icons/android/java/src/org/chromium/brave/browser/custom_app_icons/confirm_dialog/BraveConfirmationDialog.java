@@ -5,6 +5,8 @@
 
 package org.chromium.brave.browser.custom_app_icons.confirm_dialog;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -15,16 +17,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.chromium.brave.browser.custom_app_icons.R;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
 
 /**
  * A dialog class that handles confirmation dialogs in Brave browser. Provides functionality for
  * creating and showing custom dialogs with configurable views and buttons. This class encapsulates
  * all the dialog creation, configuration and display logic.
  */
+@NullMarked
 public class BraveConfirmationDialog {
-    private Dialog mDialog;
-    private Context mContext;
-    private OnConfirmationDialogListener mListener;
+    private @MonotonicNonNull Dialog mDialog;
+    private @MonotonicNonNull Context mContext;
+    private @MonotonicNonNull OnConfirmationDialogListener mListener;
 
     /**
      * Shows a confirmation dialog with customizable title, message and button text.
@@ -53,21 +58,22 @@ public class BraveConfirmationDialog {
     }
 
     private void initializeDialog() {
-        mDialog = new Dialog(mContext);
+        mDialog = new Dialog(assumeNonNull(mContext));
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        assumeNonNull(mDialog.getWindow())
+                .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.setContentView(R.layout.brave_confirmation_dialog_layout);
     }
 
     private void configureDialogContent(String title, String message) {
-        TextView titleView = mDialog.findViewById(R.id.dialogTitle);
+        TextView titleView = assumeNonNull(mDialog).findViewById(R.id.dialogTitle);
         TextView messageView = mDialog.findViewById(R.id.dialogMessage);
         titleView.setText(title);
         messageView.setText(message);
     }
 
     private void configureDialogButtons(String positiveText, String negativeText) {
-        Button positiveButton = mDialog.findViewById(R.id.positiveButton);
+        Button positiveButton = assumeNonNull(mDialog).findViewById(R.id.positiveButton);
         Button negativeButton = mDialog.findViewById(R.id.negativeButton);
 
         positiveButton.setText(positiveText);
@@ -78,18 +84,18 @@ public class BraveConfirmationDialog {
     }
 
     private void handlePositiveClick() {
-        mListener.onPositiveButtonClicked();
-        mDialog.dismiss();
+        assumeNonNull(mListener).onPositiveButtonClicked();
+        assumeNonNull(mDialog).dismiss();
     }
 
     private void handleNegativeClick() {
-        mListener.onNegativeButtonClicked();
-        mDialog.dismiss();
+        assumeNonNull(mListener).onNegativeButtonClicked();
+        assumeNonNull(mDialog).dismiss();
     }
 
     private void showConfiguredDialog() {
-        mDialog.show();
-        Window window = mDialog.getWindow();
+        assumeNonNull(mDialog).show();
+        Window window = assumeNonNull(mDialog.getWindow());
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

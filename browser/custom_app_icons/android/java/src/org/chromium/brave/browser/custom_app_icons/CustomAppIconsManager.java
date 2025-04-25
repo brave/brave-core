@@ -9,16 +9,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
+@NullMarked
 public class CustomAppIconsManager {
     private static final String CURRENT_APP_ICON = "current_app_icon";
     private static final String DEFAULT_ACTIVITY_CLASS = "com.google.android.apps.chrome.Main";
 
-    private static CustomAppIconsManager instance;
+    private static @NonNull CustomAppIconsManager sInstance = new CustomAppIconsManager();
 
     private SharedPreferencesManager mPrefManager;
     private Context mContext;
@@ -34,10 +38,7 @@ public class CustomAppIconsManager {
     }
 
     public static CustomAppIconsManager getInstance() {
-        if (instance == null) {
-            instance = new CustomAppIconsManager();
-        }
-        return instance;
+        return sInstance;
     }
 
     public void switchIcon(@AppIconType int newAppIconType) {

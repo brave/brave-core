@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
@@ -31,6 +33,8 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIcons;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -63,6 +67,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.HashMap;
 
 // This excludes some settings in main settings screen.
+@NullMarked
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
@@ -112,11 +117,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
-    private Preference mVpnCalloutPreference;
+    private @MonotonicNonNull Preference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Add brave's additional preferences here because |onCreatePreference| is not called
@@ -256,7 +261,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (result == null) {
             result = (T) mRemovedPreferences.get((String) key);
         }
-        return result;
+        return assumeNonNull(result);
     }
 
     /**
@@ -413,10 +418,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private Drawable getCircularDrawable(Context context, int drawableResId, int size) {
         Drawable sourceDrawable = ContextCompat.getDrawable(context, drawableResId);
-        if (sourceDrawable == null) {
-            return null;
-        }
-
         Bitmap sourceBitmap = drawableToBitmap(sourceDrawable, size, size);
         return createCircularBitmapDrawable(context, sourceBitmap, size);
     }

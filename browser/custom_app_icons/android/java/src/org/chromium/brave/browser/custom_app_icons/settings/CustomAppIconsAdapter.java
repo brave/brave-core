@@ -18,7 +18,10 @@ import org.chromium.brave.browser.custom_app_icons.CustomAppIcons;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
+import org.chromium.build.annotations.NullMarked;
 
+/** Adapter for displaying custom app icons in a RecyclerView. */
+@NullMarked
 public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAdapter.ViewHolder> {
     private final @AppIconType int[] mCustomAppIcons;
     private final CustomAppIconsListener mListener;
