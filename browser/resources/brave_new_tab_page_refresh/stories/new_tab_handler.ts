@@ -8,9 +8,11 @@ import { Store } from '../lib/store'
 import {
   NewTabState,
   NewTabActions,
-  defaultNewTabActions } from '../models/new_tab'
+  defaultNewTabActions } from '../state/new_tab_state'
 
-export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
+export function createNewTabHandler(
+  store: Store<NewTabState>
+): NewTabActions {
   store.update({
     showClock: true,
     showShieldsStats: true,
@@ -22,6 +24,7 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
   })
 
   return {
+
     ...defaultNewTabActions(),
 
     setClockFormat(format) {

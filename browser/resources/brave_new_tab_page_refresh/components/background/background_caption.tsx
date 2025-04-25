@@ -9,13 +9,13 @@ import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
-import { useAppActions, useAppState } from '../context/app_model_context'
-import { BraveBackground, SponsoredImageBackground } from '../../models/backgrounds'
+import { BraveBackground, SponsoredImageBackground } from '../../state/background_state'
+import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
 
 import { style } from './background_caption.style'
 
 export function BackgroundCaption() {
-  const currentBackground = useAppState((s) => s.currentBackground)
+  const currentBackground = useBackgroundState((s) => s.currentBackground)
 
   function renderCaption() {
     switch (currentBackground?.type) {
@@ -56,7 +56,7 @@ interface SponsoredBackgroundLogoProps {
 }
 
 function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
-  const actions = useAppActions()
+  const actions = useBackgroundActions()
   const { logo } = props.background
   if (!logo) {
     return null

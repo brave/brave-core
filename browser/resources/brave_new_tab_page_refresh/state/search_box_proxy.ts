@@ -5,7 +5,7 @@
 
 import * as mojom from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m'
 
-import { addCallbackListeners } from './callback_listeners'
+import { addCallbackListeners } from '../lib/callback_listeners'
 
 let instance: SearchBoxProxy | null = null
 

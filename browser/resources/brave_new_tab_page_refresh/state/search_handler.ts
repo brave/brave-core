@@ -16,7 +16,7 @@ import {
   SearchActions,
   SearchEngineInfo,
   defaultSearchEngine,
-  defaultSearchActions } from '../models/search'
+  defaultSearchActions } from './search_state'
 
 const enabledSearchEnginesStorageKey = 'search-engines'
 
@@ -53,7 +53,9 @@ function storeEnabledSearchEngines(engines: Set<string>) {
   localStorage.setItem(enabledSearchEnginesStorageKey, JSON.stringify(record))
 }
 
-export function initializeSearch(store: Store<SearchState>): SearchActions {
+export function createSearchHandler(
+  store: Store<SearchState>
+): SearchActions {
   if (!loadTimeData.getBoolean('ntpSearchFeatureEnabled')) {
     return defaultSearchActions()
   }

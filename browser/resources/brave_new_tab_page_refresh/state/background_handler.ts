@@ -8,9 +8,9 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
-import { BackgroundState, BackgroundActions, getCurrentBackground } from '../models/backgrounds'
+import { BackgroundState, BackgroundActions, getCurrentBackground } from './background_state'
 
-export function initializeBackgrounds(
+export function createBackgroundHandler(
   store: Store<BackgroundState>
 ): BackgroundActions {
   const newTabProxy = NewTabPageProxy.getInstance()

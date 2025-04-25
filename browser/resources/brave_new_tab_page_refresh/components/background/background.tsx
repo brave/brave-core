@@ -5,16 +5,16 @@
 
 import * as React from 'react'
 
-import { NewTabPageAdEventType, SponsoredImageBackground } from '../../models/backgrounds'
-import { useAppState, useAppActions } from '../context/app_model_context'
+import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
+import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 
 import { style } from './background.style'
 
 export function Background() {
-  const actions = useAppActions()
-  const currentBackground = useAppState((s) => s.currentBackground)
+  const actions = useBackgroundActions()
+  const currentBackground = useBackgroundState((s) => s.currentBackground)
 
   function renderBackground() {
     if (!currentBackground) {
@@ -82,9 +82,9 @@ function ImageBackground(props: { url: string, onLoadError?: () => void }) {
 function SponsoredRichMediaBackground(
   props: { background: SponsoredImageBackground }
 ) {
-  const actions = useAppActions()
+  const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
-    useAppState((s) => s.sponsoredRichMediaBaseUrl)
+    useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
 
   return (
     <IframeBackground

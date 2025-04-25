@@ -7,20 +7,37 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
-import { AppModelContext } from './components/context/app_model_context'
-import { createAppModel } from './webui/webui_app_model'
+import { NewTabProvider } from './context/new_tab_context'
+import { BackgroundProvider } from './context/background_context'
+import { SearchProvider } from './context/search_context'
+import { TopSitesProvider } from './context/top_sites_context'
+import { VpnProvider } from './context/vpn_context'
+import { RewardsProvider } from './context/rewards_context'
+
 import { App } from './components/app'
 
 setIconBasePath('chrome://resources/brave-icons')
 
-const appModel = createAppModel()
-
-Object.assign(self, {
-  [Symbol.for('ntpAppModel')]: appModel
-})
+function AppProvider(props: { children: React.ReactNode }) {
+  return (
+    <NewTabProvider name='newTab'>
+      <BackgroundProvider name='background'>
+        <SearchProvider name='search'>
+          <TopSitesProvider name='topSites'>
+            <VpnProvider name='vpn'>
+              <RewardsProvider name='rewards'>
+                {props.children}
+              </RewardsProvider>
+            </VpnProvider>
+          </TopSitesProvider>
+        </SearchProvider>
+      </BackgroundProvider>
+    </NewTabProvider>
+  )
+}
 
 createRoot(document.getElementById('root')!).render(
-  <AppModelContext model={appModel}>
+  <AppProvider>
     <App />
-  </AppModelContext>
+  </AppProvider>
 )

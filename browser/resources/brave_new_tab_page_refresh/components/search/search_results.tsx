@@ -9,9 +9,9 @@ import Icon from '@brave/leo/react/icon'
 
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
 
-import { AutocompleteMatch, ClickEvent } from '../../models/search'
+import { AutocompleteMatch, ClickEvent } from '../../state/search_state'
+import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
-import { useAppActions, useAppState } from '../context/app_model_context'
 import { placeholderImageSrc } from '../../lib/image_loader'
 import { faviconURL } from '../../lib/favicon_url'
 import { Optional } from '../../lib/optional'
@@ -73,12 +73,12 @@ interface Props {
 export function SearchResults(props: Props) {
   const { selectedOption, options } = props
 
-  const actions = useAppActions()
+  const actions = useSearchActions()
 
   const searchSuggestionsEnabled =
-      useAppState((s) => s.searchSuggestionsEnabled)
+    useSearchState((s) => s.searchSuggestionsEnabled)
   const searchSuggestionsPromptDismissed =
-      useAppState((s) => s.searchSuggestionsPromptDismissed)
+    useSearchState((s) => s.searchSuggestionsPromptDismissed)
 
   if (options.length === 0) {
     return null

@@ -6,15 +6,15 @@
 import { Store } from '../lib/store'
 
 import {
-  VPNState,
-  VPNActions,
-  defaultVPNState,
-  defaultVPNActions,
-  ConnectionState } from '../models/vpn'
+  VpnState,
+  VpnActions,
+  defaultVpnActions,
+  ConnectionState } from '../state/vpn_state'
 
-export function initializeVPN(store: Store<VPNState>): VPNActions {
+export function createVpnHandler(
+  store: Store<VpnState>
+): VpnActions {
   store.update({
-    ...defaultVPNState(),
     vpnFeatureEnabled: true,
     showVpnWidget: true,
     vpnPurchased: true,
@@ -35,7 +35,8 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
   })
 
   return {
-    ...defaultVPNActions(),
+
+    ...defaultVpnActions(),
 
     setShowVpnWidget(showVpnWidget) {
       store.update({ showVpnWidget })

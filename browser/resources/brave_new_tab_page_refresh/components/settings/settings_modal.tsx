@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
-import { useAppState } from '../context/app_model_context'
+import { useSearchState } from '../../context/search_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
@@ -33,8 +33,7 @@ interface Props {
 }
 
 export function SettingsModal(props: Props) {
-  const searchFeatureEnabled =
-      useAppState((state) => state.searchFeatureEnabled)
+  const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
 
   const [currentView, setCurrentView] =
       React.useState<SettingsView>(props.initialView || 'background')

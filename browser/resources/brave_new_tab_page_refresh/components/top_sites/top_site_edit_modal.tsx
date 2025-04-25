@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 
 import { getString } from '../../lib/strings'
-import { TopSite } from '../../models/top_sites'
+import { TopSite } from '../../state/top_sites_state'
 import { Modal } from '../common/modal'
 
 import { style } from './top_site_edit_modal.style'

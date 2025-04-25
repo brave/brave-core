@@ -7,7 +7,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppActions, useAppState } from '../context/app_model_context'
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import classNames from '$web-common/classnames'
@@ -16,7 +15,9 @@ import {
   SelectedBackgroundType,
   backgroundCSSValue,
   solidBackgrounds,
-  gradientBackgrounds } from '../../models/backgrounds'
+  gradientBackgrounds } from '../../state/background_state'
+
+import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
 
 interface Props {
   backgroundType: SelectedBackgroundType
@@ -25,11 +26,11 @@ interface Props {
 }
 
 export function BackgroundTypePanel(props: Props) {
-  const actions = useAppActions()
+  const actions = useBackgroundActions()
 
-  const selectedBackground = useAppState((s) => s.selectedBackground)
-  const customBackgrounds = useAppState((s) => s.customBackgrounds)
-  const currentBackground = useAppState((s) => s.currentBackground)
+  const selectedBackground = useBackgroundState((s) => s.selectedBackground)
+  const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
+  const currentBackground = useBackgroundState((s) => s.currentBackground)
 
   const type = props.backgroundType
 
