@@ -489,7 +489,7 @@ void AIChatMetrics::ReportAllMetrics() {
   ReportContextSource();
   ReportLimitMetrics();
   if (tab_focus_metrics_) {
-    tab_focus_metrics_->ReportAllMetrics();
+    tab_focus_metrics_->RecordEnabled();
   }
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   ReportOmniboxCounts();

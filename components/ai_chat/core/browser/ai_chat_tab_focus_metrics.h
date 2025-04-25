@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_TAB_FOCUS_METRICS_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -47,10 +48,10 @@ class AIChatTabFocusMetrics {
   void RecordUsage(size_t tab_count);
 
   void ReportAllMetrics();
+  void RecordEnabled();
 
  private:
   void ReportCountMetrics();
-  void RecordEnabled();
   void ReportLastUsageTime();
 
   raw_ptr<PrefService> local_state_;
@@ -62,6 +63,8 @@ class AIChatTabFocusMetrics {
   WeeklyStorage total_tab_count_storage_;
   WeeklyStorage max_tab_count_storage_;
   WeeklyStorage session_count_storage_;
+
+  base::WallClockTimer periodic_report_timer_;
 };
 
 }  // namespace ai_chat
