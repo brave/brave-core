@@ -12,7 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/uninstall_reason.h"
 
@@ -31,6 +30,8 @@ inline constexpr char kAdblockExtensionsHistogramName[] =
     "Brave.Extensions.AdBlock";
 inline constexpr char kManifestV2ExtensionsHistogramName[] =
     "Brave.Extensions.ManifestV2";
+inline constexpr char kSelectManifestV2ExtensionsHistogramName[] =
+    "Brave.Extensions.SelectManifestV2";
 
 // Monitors installation/uninstallation of third-party extensions
 // and reports relevant metrics via P3A.
@@ -58,6 +59,7 @@ class ExtensionMetrics : public extensions::ExtensionRegistryObserver {
 
   base::flat_set<std::string> adblock_extensions_loaded_;
   base::flat_set<std::string> manifest_v2_extensions_loaded_;
+  base::flat_set<std::string> select_manifest_v2_extensions_loaded_;
   raw_ptr<extensions::ExtensionRegistry> extension_registry_;
   base::ScopedObservation<extensions::ExtensionRegistry,
                           ExtensionMetrics>

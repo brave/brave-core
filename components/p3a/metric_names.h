@@ -69,6 +69,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.DNS.AutoSecureRequests.Wikimedia.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.SecureSetting", {}},
     {"Brave.Extensions.AdBlock", {}},
+    {"Brave.Extensions.SelectManifestV2", {}},
     {"Brave.IOS.IsLikelyDefault", MetricConfig{.attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kSubregion, MetricAttribute::kVersion}}},
 
     {"Brave.Importer.ImporterSource.2", {}},
