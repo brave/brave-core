@@ -103,14 +103,8 @@ struct DataImporterPasswordConflictView: View {
     }
     .presentationDetents([.height(sheetHeight)])
     .presentationDragIndicator(.visible)
-    .osAvailabilityModifiers({
-      if #available(iOS 16.4, *) {
-        $0.presentationBackground(.thickMaterial)
-          .presentationCornerRadius(15.0)
-          .presentationCompactAdaptation(.sheet)
-      } else {
-        $0.background(.thickMaterial)
-      }
-    })
+    .presentationBackground(.thickMaterial)
+    .presentationCornerRadius(15.0)
+    .presentationCompactAdaptation(.sheet)
   }
 }

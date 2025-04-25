@@ -623,16 +623,6 @@ struct FilterPickerRowView<T: Equatable & Identifiable & Hashable, Content: View
           }
         }
       )
-      .osAvailabilityModifiers({
-        if #unavailable(iOS 17) {
-          // Prior to iOS 17, if selection changes from outside
-          // the Menu (ex. Reset button) the view might not
-          // resize to fit a larger label
-          $0.id(selection)
-        } else {
-          $0
-        }
-      })
       .foregroundColor(Color(WalletV2Design.textInteractive))
       .transaction { transaction in
         transaction.animation = nil

@@ -277,24 +277,7 @@ public struct OnboardingPlaylistView: View {
     }
     .foregroundStyle(.white)
     .multilineTextAlignment(.center)
-    .osAvailabilityModifiers { content in
-      #if compiler(>=5.8)
-      if #available(iOS 16.4, *) {
-        content
-          .scrollBounceBehavior(.basedOnSize)
-      } else {
-        content
-          .introspectScrollView { scrollView in
-            scrollView.alwaysBounceVertical = false
-          }
-      }
-      #else
-      content
-        .introspectScrollView { scrollView in
-          scrollView.alwaysBounceVertical = false
-        }
-      #endif
-    }
+    .scrollBounceBehavior(.basedOnSize)
   }
 }
 

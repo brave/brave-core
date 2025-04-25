@@ -126,17 +126,8 @@ struct CustomFilterListView: View {
 
   var body: some View {
     filterListEditor
-      .osAvailabilityModifiers({ view in
-        if #available(iOS 16.4, *) {
-          view
-            .scrollContentBackground(.hidden)
-            .scrollDismissesKeyboard(.interactively)
-        } else {
-          view.introspectTextView { textView in
-            textView.backgroundColor = .clear
-          }
-        }
-      })
+      .scrollContentBackground(.hidden)
+      .scrollDismissesKeyboard(.interactively)
       .background(
         Color(.secondaryBraveBackground)
           .edgesIgnoringSafeArea(.all)

@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
+import Introspect
 import SwiftUI
 
 /// A `TextEditor` made to look in the same way as `BraveTextFieldStyle` and adds a similar looking "prompt" (placeholder) to the view.

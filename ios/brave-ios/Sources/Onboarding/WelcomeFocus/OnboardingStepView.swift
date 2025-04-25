@@ -111,13 +111,7 @@ struct OnboardingStepView: View {
         ScrollView {
           content
         }
-        .osAvailabilityModifiers { content in
-          if #available(iOS 16.4, *) {
-            content.scrollBounceBehavior(.basedOnSize)
-          } else {
-            content
-          }
-        }
+        .scrollBounceBehavior(.basedOnSize)
       }
       .overlay(alignment: .bottom) {
         AnyView(step.makeActions(continueHandler: onContinue))
