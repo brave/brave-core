@@ -234,6 +234,10 @@ extension BrowserViewController: TabManagerDelegate {
       self.searchResultAdClickedInfoBar = searchResultAdClickedInfoBar
     }
 
+    if let newTabTakeoverInfoBar = toast as? NewTabTakeoverInfoBar {
+      self.newTabTakeoverInfoBar = newTabTakeoverInfoBar
+    }
+
     // If BVC isnt visible hold on to this toast until viewDidAppear
     if view.window == nil {
       pendingToast = toast
@@ -269,6 +273,9 @@ extension BrowserViewController: TabManagerDelegate {
       searchResultAdClickedInfoBar?.dismiss(false)
       searchResultAdClickedInfoBar = nil
     }
+
+    newTabTakeoverInfoBar?.dismiss(false)
+    newTabTakeoverInfoBar = nil
   }
 
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
