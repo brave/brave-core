@@ -6,9 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { TopSite, TopSitesListKind } from '../../models/top_sites'
-import { useLocale } from '../context/locale_context'
-import { useAppActions, useAppState } from '../context/app_model_context'
+import { TopSite, TopSitesListKind } from '../../api/top_sites_api'
+import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
+import { useLocale } from '../../context/locale_context'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { RemoveToast } from './remove_toast'
 import { TopSitesTile, DropLocation } from './top_site_tile'
@@ -23,11 +23,11 @@ import {
 
 export function TopSites() {
   const { getString } = useLocale()
-  const actions = useAppActions()
+  const actions = useTopSitesActions()
 
-  const showTopSites = useAppState((s) => s.showTopSites)
-  const listKind = useAppState((s) => s.topSitesListKind)
-  const topSites = useAppState((s) => s.topSites)
+  const showTopSites = useTopSitesState((s) => s.showTopSites)
+  const listKind = useTopSitesState((s) => s.topSitesListKind)
+  const topSites = useTopSitesState((s) => s.topSites)
 
   const [expanded, setExpanded] = React.useState(loadExpandedState())
   const [showEditSite, setShowEditSite] = React.useState(false)
