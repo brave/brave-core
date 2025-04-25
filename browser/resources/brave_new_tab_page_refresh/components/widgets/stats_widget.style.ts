@@ -8,6 +8,7 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -18,8 +19,9 @@ export const style = scoped.css`
   }
 
   .data {
+    flex: 1 1 auto;
     display: flex;
-    align-items: top;
+    align-items: center;
     gap: 24px;
     color: ${color.primitive.neutral[90]};
     font: ${font.xSmall.regular};
