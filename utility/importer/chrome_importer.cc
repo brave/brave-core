@@ -160,6 +160,11 @@ bool PasswordFormToImportedPasswordForm(
     imported_form.scheme = importer::ImportedPasswordForm::Scheme::kBasic;
   }
 
+  if (form.blocked_by_user &&
+      (!form.username_value.empty() || !form.password_value.empty())) {
+    return false;
+  }
+
   imported_form.signon_realm = form.signon_realm;
   imported_form.url = form.url;
   imported_form.action = form.action;
