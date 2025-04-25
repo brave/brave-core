@@ -53,9 +53,9 @@ class AdsCore final {
   // The set of creative instance ids that should fallback to P3A metric
   // reporting. This is a temporary solution which will be removed once P3A
   // metrics are deprecated.
-  void SetCreativeInstanceIdsToFallbackToP3a(
-      const base::flat_set<std::string>& creative_instance_ids);
-  bool ShouldCreativeInstanceIdFallbackToP3A(
+  void UpdateP3aMetricsFallbackState(const std::string& creative_instance_id,
+                                     bool should_metrics_fallback_to_p3a);
+  bool ShouldFallbackToP3aMetrics(
       const std::string& creative_instance_id) const;
 
  private:
@@ -81,8 +81,7 @@ class AdsCore final {
   // The set of creative instance ids that should fallback to P3A metric
   // reporting. This is a temporary solution which will be removed once P3A
   // metrics are deprecated.
-  base::flat_set</*creative_instance_id*/ std::string>
-      should_metrics_fallback_to_p3a_;
+  base::flat_set</*creative_instance_id*/ std::string> metrics_fallback_to_p3a_;
 };
 
 }  // namespace brave_ads

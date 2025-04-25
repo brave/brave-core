@@ -22,13 +22,6 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
     return true;
   }
 
-  if (ShouldCreativeInstanceIdFallbackToP3A(creative_instance_id)) {
-    // Never allow deposits for creative instance ids that should fallback to
-    // P3A. This is a temporary solution which will be removed once P3A
-    // metrics are deprecated.
-    return false;
-  }
-
   switch (mojom_ad_type) {
     case mojom::AdType::kInlineContentAd:
     case mojom::AdType::kPromotedContentAd: {
@@ -38,8 +31,9 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
 
     case mojom::AdType::kNewTabPageAd: {
       // Only allow deposits for non-Rewards users who have opted into new tab
-      // page ads.
-      return UserHasOptedInToNewTabPageAds();
+      // page ads where we should not fallback to P3A.
+      return UserHasOptedInToNewTabPageAds() &&
+             !ShouldFallbackToP3aMetrics(creative_instance_id);
     }
 
     case mojom::AdType::kNotificationAd: {

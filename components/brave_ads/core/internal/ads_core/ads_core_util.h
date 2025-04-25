@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/containers/flat_set.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
@@ -37,10 +36,9 @@ Reactions& GetReactions();
 // The set of creative instance ids that should fallback to P3A metric
 // reporting. This is a temporary solution which will be removed once P3A
 // metrics are deprecated.
-void SetCreativeInstanceIdsToFallbackToP3a(
-    const base::flat_set<std::string>& creative_instance_ids);
-bool ShouldCreativeInstanceIdFallbackToP3A(
-    const std::string& creative_instance_id);
+void UpdateP3aMetricsFallbackState(const std::string& creative_instance_id,
+                                   bool should_metrics_fallback_to_p3a);
+bool ShouldFallbackToP3aMetrics(const std::string& creative_instance_id);
 
 }  // namespace brave_ads
 

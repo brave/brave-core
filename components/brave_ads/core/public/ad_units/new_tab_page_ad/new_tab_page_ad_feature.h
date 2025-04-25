@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
@@ -16,6 +16,13 @@ class TimeDelta;
 namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
+
+// Set to `true` to support sending metrics using confirmations; otherwise,
+// metrics are always reported using P3A.
+inline constexpr base::FeatureParam<bool>
+    kShouldSupportNewTabPageAdConfirmations{
+        &kNewTabPageAdFeature, "should_support_confirmations_for_non_rewards",
+        false};
 
 // Set to 0 to never cap.
 inline constexpr base::FeatureParam<size_t> kMaximumNewTabPageAdsPerHour{
@@ -32,4 +39,4 @@ inline constexpr base::FeatureParam<base::TimeDelta>
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_FEATURE_H_

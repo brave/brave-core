@@ -38,15 +38,14 @@ Reactions& GetReactions() {
   return GetAdsCore().GetReactions();
 }
 
-void SetCreativeInstanceIdsToFallbackToP3a(
-    const base::flat_set<std::string>& creative_instance_ids) {
-  GetAdsCore().SetCreativeInstanceIdsToFallbackToP3a(creative_instance_ids);
+void UpdateP3aMetricsFallbackState(const std::string& creative_instance_id,
+                                   bool should_metrics_fallback_to_p3a) {
+  GetAdsCore().UpdateP3aMetricsFallbackState(creative_instance_id,
+                                             should_metrics_fallback_to_p3a);
 }
 
-bool ShouldCreativeInstanceIdFallbackToP3A(
-    const std::string& creative_instance_id) {
-  return GetAdsCore().ShouldCreativeInstanceIdFallbackToP3A(
-      creative_instance_id);
+bool ShouldFallbackToP3aMetrics(const std::string& creative_instance_id) {
+  return GetAdsCore().ShouldFallbackToP3aMetrics(creative_instance_id);
 }
 
 }  // namespace brave_ads

@@ -185,14 +185,18 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
 void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
         &AdsImpl::TriggerNewTabPageAdEvent, weak_factory_.GetWeakPtr(),
-        placement_id, creative_instance_id, mojom_ad_event_type,
-        std::move(callback)));
+        placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+        mojom_ad_event_type, std::move(callback)));
   }
+
+  UpdateP3aMetricsFallbackState(creative_instance_id,
+                                should_metrics_fallback_to_p3a);
 
   GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                           mojom_ad_event_type,

@@ -1416,6 +1416,7 @@ void AdsServiceImpl::MaybeServeNewTabPageAd(
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
@@ -1425,8 +1426,8 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
   }
 
   bat_ads_associated_remote_->TriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      std::move(callback));
+      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+      mojom_ad_event_type, std::move(callback));
 }
 
 void AdsServiceImpl::TriggerPromotedContentAdEvent(
