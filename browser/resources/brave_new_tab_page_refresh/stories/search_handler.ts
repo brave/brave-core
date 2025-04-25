@@ -6,17 +6,10 @@
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js'
 
 import { Store } from '../lib/store'
+import { SearchState, SearchActions, defaultSearchActions } from '../state/search_state'
 
-import {
-  SearchState,
-  SearchActions,
-  defaultSearchState,
-  defaultSearchActions } from '../models/search'
-
-export function initializeSearch(store: Store<SearchState>): SearchActions {
+export function createSearchHandler(store: Store<SearchState>): SearchActions {
   store.update({
-    ...defaultSearchState(),
-
     searchFeatureEnabled: true,
 
     showSearchBox: true,
@@ -46,6 +39,7 @@ export function initializeSearch(store: Store<SearchState>): SearchActions {
   })
 
   return {
+
     ...defaultSearchActions(),
 
     setShowSearchBox(showSearchBox) {

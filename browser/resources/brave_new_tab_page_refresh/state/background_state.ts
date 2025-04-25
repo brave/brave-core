@@ -18,21 +18,14 @@ export {
   SelectedBackgroundType
 }
 
-export type Background =
-  { type: 'brave' } & BraveBackground |
-  { type: 'color', cssValue: string } |
-  { type: 'custom', imageUrl: string } |
-  { type: 'sponsored-image' | 'sponsored-rich-media' }
-    & SponsoredImageBackground
-
 export interface BackgroundState {
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
+  backgroundRandomizer: number
   sponsoredImagesEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
   selectedBackground: SelectedBackground
-  currentBackground: Background | null
   sponsoredImageBackground: SponsoredImageBackground | null
   sponsoredRichMediaBaseUrl: string
 }
@@ -67,6 +60,7 @@ export function defaultBackgroundState(): BackgroundState {
   return {
     backgroundsEnabled: true,
     backgroundsCustomizable: true,
+    backgroundRandomizer: 0,
     sponsoredImagesEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
@@ -74,7 +68,6 @@ export function defaultBackgroundState(): BackgroundState {
       type: SelectedBackgroundType.kGradient,
       value: gradientPreviewBackground
     },
-    currentBackground: null,
     sponsoredImageBackground: null,
     sponsoredRichMediaBaseUrl: ''
   }
@@ -89,70 +82,6 @@ export interface BackgroundActions {
   notifySponsoredImageLoadError: () => void
   notifySponsoredImageLogoClicked: () => void
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
-}
-
-function chooseRandom<T>(list: T[]): T | null {
-  if (list.length === 0) {
-    return null
-  }
-  return list[Math.floor(Math.random() * list.length)]
-}
-
-const defaultBackground: Background = {
-  type: 'color',
-  cssValue: gradientPreviewBackground
-}
-
-export function getCurrentBackground(
-  state: BackgroundState
-) : Background | null {
-  const {
-    backgroundsEnabled,
-    braveBackgrounds,
-    customBackgrounds,
-    selectedBackground,
-    currentBackground,
-    sponsoredImageBackground } = state
-
-  if (!backgroundsEnabled) {
-    return defaultBackground
-  }
-
-  if (sponsoredImageBackground) {
-    return {
-      type: sponsoredImageBackground.wallpaperType === 'richMedia' ?
-        'sponsored-rich-media' : 'sponsored-image',
-      ...sponsoredImageBackground
-    }
-  }
-
-  const { type, value } = selectedBackground
-
-  switch (type) {
-    case SelectedBackgroundType.kBrave: {
-      if (currentBackground?.type === 'brave') {
-        return currentBackground
-      }
-      const braveBackground = chooseRandom(braveBackgrounds)
-      return braveBackground ? { type: 'brave', ...braveBackground } : null
-    }
-    case SelectedBackgroundType.kCustom: {
-      const imageUrl = value || chooseRandom(customBackgrounds)
-      return imageUrl ? { type: 'custom', imageUrl } : null
-    }
-    case SelectedBackgroundType.kSolid: {
-      const cssValue = value || chooseRandom(solidBackgrounds)
-      return cssValue ? { type: 'color', cssValue } : null
-    }
-    case SelectedBackgroundType.kGradient: {
-      const cssValue = value || chooseRandom(gradientBackgrounds)
-      return cssValue ? { type: 'color', cssValue } : null
-    }
-    default: {
-      console.error('Unhandled background type', type)
-      return defaultBackground
-    }
-  }
 }
 
 export function backgroundCSSValue(

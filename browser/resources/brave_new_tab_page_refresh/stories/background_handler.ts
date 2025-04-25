@@ -6,11 +6,10 @@
 import { Store } from '../lib/store'
 
 import {
-  BackgroundActions,
   BackgroundState,
+  BackgroundActions,
   SponsoredImageBackground,
-  SelectedBackgroundType,
-  getCurrentBackground } from '../models/backgrounds'
+  SelectedBackgroundType } from '../state/background_state'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -53,8 +52,9 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
   none: null
 }
 
-export function initializeBackgrounds(store: Store<BackgroundState>)
-    : BackgroundActions {
+export function createBackgroundHandler(
+  store: Store<BackgroundState>
+): BackgroundActions {
   store.update({
     braveBackgrounds: [
       {
@@ -67,7 +67,6 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
   })
 
   store.update({
-    currentBackground: getCurrentBackground(store.getState()),
     sponsoredRichMediaBaseUrl: 'https://brave.com'
   })
 
@@ -75,9 +74,6 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
 
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
-      store.update({
-        currentBackground: getCurrentBackground(store.getState())
-      })
     },
 
     setSponsoredImagesEnabled(enabled) {
@@ -87,9 +83,6 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
     selectBackground(type, value) {
       store.update({
         selectedBackground: { type, value }
-      })
-      store.update({
-        currentBackground: getCurrentBackground(store.getState())
       })
     },
 
@@ -102,10 +95,6 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
             value: sampleBackground
           }
         }))
-
-        store.update({
-          currentBackground: getCurrentBackground(store.getState())
-        })
       })
 
       return true

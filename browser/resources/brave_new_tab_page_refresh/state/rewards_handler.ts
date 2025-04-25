@@ -9,14 +9,12 @@ import { externalWalletFromExtensionData } from '../../../../components/brave_re
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { Optional } from '../lib/optional'
-import { debounceListener } from './debounce_listener'
+import { debounceListener } from '../lib/debounce_listener'
+import { RewardsState, RewardsActions, defaultRewardsActions } from './rewards_state'
 
-import {
-  RewardsState,
-  RewardsActions,
-  defaultRewardsActions } from '../models/rewards'
-
-export function initializeRewards(store: Store<RewardsState>): RewardsActions {
+export function createRewardsHandler(
+  store: Store<RewardsState>
+): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
     return defaultRewardsActions()
   }

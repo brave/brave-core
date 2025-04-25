@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import { getString } from '../../lib/strings'
-import { useAppState } from '../context/app_model_context'
+import { useRewardsState } from '../../context/rewards_context'
 import { Link, openLink } from '../common/link'
 
 import * as urls from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
@@ -26,10 +26,10 @@ const exchangeAmountFormatter = new Intl.NumberFormat(undefined, {
 })
 
 export function RewardsWidget() {
-  const rewardsEnabled = useAppState((s) => s.rewardsEnabled)
-  const externalWallet = useAppState((s) => s.rewardsExternalWallet)
-  const balance = useAppState((s) => s.rewardsBalance)
-  const exchangeRate = useAppState((s) => s.rewardsExchangeRate)
+  const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
+  const externalWallet = useRewardsState((s) => s.rewardsExternalWallet)
+  const balance = useRewardsState((s) => s.rewardsBalance)
+  const exchangeRate = useRewardsState((s) => s.rewardsExchangeRate)
 
   function renderOnboarding() {
     return (

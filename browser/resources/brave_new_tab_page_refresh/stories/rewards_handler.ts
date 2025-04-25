@@ -9,9 +9,11 @@ import { optional } from '../lib/optional'
 import {
   RewardsState,
   RewardsActions,
-  defaultRewardsActions } from '../models/rewards'
+  defaultRewardsActions } from '../state/rewards_state'
 
-export function initializeRewards(store: Store<RewardsState>): RewardsActions {
+export function createRewardsHandler(
+  store: Store<RewardsState>
+): RewardsActions {
   store.update({
     rewardsFeatureEnabled: true,
     rewardsEnabled: true,

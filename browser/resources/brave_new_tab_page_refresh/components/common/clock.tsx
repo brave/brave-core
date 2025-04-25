@@ -5,14 +5,12 @@
 
 import * as React from 'react'
 
-import { useAppState } from '../context/app_model_context'
-import { ClockFormat } from '../../models/new_tab'
+import { ClockFormat } from '../../state/new_tab_state'
+import { useNewTabState } from '../../context/new_tab_context'
 
 export function Clock() {
-  const [showClock, clockFormat] = useAppState((state) => [
-    state.showClock,
-    state.clockFormat
-  ])
+  const showClock = useNewTabState((s) => s.showClock)
+  const clockFormat = useNewTabState((s) => s.clockFormat)
 
   const ref = React.useRef<HTMLDivElement>(null)
 

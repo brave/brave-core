@@ -5,37 +5,38 @@
 
 import * as React from 'react'
 
-import { NewTabPageAdEventType, SponsoredImageBackground } from '../../models/backgrounds'
-import { useAppState, useAppActions } from '../context/app_model_context'
+import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
+
+import {
+  useBackgroundState,
+  useBackgroundActions,
+  useCurrentBackground } from '../../context/background_context'
+
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 
 import { style } from './background.style'
 
 export function Background() {
-  const actions = useAppActions()
-  const currentBackground = useAppState((s) => s.currentBackground)
+  const actions = useBackgroundActions()
+  const background = useCurrentBackground()
 
   function renderBackground() {
-    if (!currentBackground) {
-      return <ColorBackground colorValue='transparent' />
-    }
-
-    switch (currentBackground.type) {
+    switch (background.type) {
       case 'brave':
       case 'custom':
-        return <ImageBackground url={currentBackground.imageUrl} />
+        return <ImageBackground url={background.imageUrl} />
       case 'sponsored-image':
         return (
           <ImageBackground
-            url={currentBackground.imageUrl}
+            url={background.imageUrl}
             onLoadError={actions.notifySponsoredImageLoadError}
           />
         )
       case 'sponsored-rich-media':
-        return <SponsoredRichMediaBackground background={currentBackground} />
+        return <SponsoredRichMediaBackground background={background} />
       case 'color':
-        return <ColorBackground colorValue={currentBackground.cssValue} />
+        return <ColorBackground colorValue={background.cssValue} />
     }
   }
 
@@ -82,9 +83,9 @@ function ImageBackground(props: { url: string, onLoadError?: () => void }) {
 function SponsoredRichMediaBackground(
   props: { background: SponsoredImageBackground }
 ) {
-  const actions = useAppActions()
+  const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
-    useAppState((s) => s.sponsoredRichMediaBaseUrl)
+    useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
 
   return (
     <IframeBackground

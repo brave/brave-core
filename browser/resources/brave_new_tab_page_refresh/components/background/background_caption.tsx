@@ -9,20 +9,20 @@ import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
-import { useAppActions, useAppState } from '../context/app_model_context'
-import { BraveBackground, SponsoredImageBackground } from '../../models/backgrounds'
+import { BraveBackground, SponsoredImageBackground } from '../../state/background_state'
+import { useBackgroundActions, useCurrentBackground } from '../../context/background_context'
 
 import { style } from './background_caption.style'
 
 export function BackgroundCaption() {
-  const currentBackground = useAppState((s) => s.currentBackground)
+  const background = useCurrentBackground()
 
   function renderCaption() {
-    switch (currentBackground?.type) {
+    switch (background.type) {
       case 'brave':
-        return <BraveBackgroundCredits background={currentBackground} />
+        return <BraveBackgroundCredits background={background} />
       case 'sponsored-image':
-        return <SponsoredBackgroundLogo background={currentBackground} />
+        return <SponsoredBackgroundLogo background={background} />
       default:
         return null
     }
@@ -56,7 +56,7 @@ interface SponsoredBackgroundLogoProps {
 }
 
 function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
-  const actions = useAppActions()
+  const actions = useBackgroundActions()
   const { logo } = props.background
   if (!logo) {
     return null
