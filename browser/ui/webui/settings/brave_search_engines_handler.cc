@@ -15,12 +15,10 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/search_engines/template_url_table_model.h"
 #include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
-#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
 
@@ -31,12 +29,10 @@ constexpr char kBraveSearchForTorKeyword[] =
     ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
 
 // Put yahoo at first place.
-void SortDefaultSearchEnginesListInJP(base::Value::List& defaults,
-                                      Profile* profile) {
+void SortDefaultSearchEnginesListInJP(
+    base::Value::List& defaults,
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities) {
   // Only apply this logic for JP locale
-  auto* regional_capabilities =
-      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
-          profile);
   regional_capabilities::CountryIdHolder country_id =
       regional_capabilities->GetCountryId();
   regional_capabilities::CountryIdHolder japan_country_id(
@@ -67,8 +63,11 @@ void SortDefaultSearchEnginesListInJP(base::Value::List& defaults,
 
 }  // namespace
 
-BraveSearchEnginesHandler::BraveSearchEnginesHandler(Profile* profile)
-    : SearchEnginesHandler(profile) {}
+BraveSearchEnginesHandler::BraveSearchEnginesHandler(
+    Profile* profile,
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities)
+    : SearchEnginesHandler(profile),
+      regional_capabilities_(regional_capabilities) {}
 
 BraveSearchEnginesHandler::~BraveSearchEnginesHandler() = default;
 
@@ -117,8 +116,10 @@ base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     // Don't show two brave search entries from settings to prevent confusion.
     // Hide brave search for tor entry from settings UI. User doesn't need to
     // select brave search tor entry for private profile.
-    if (base::UTF16ToUTF8(template_url->keyword()) == kBraveSearchForTorKeyword)
+    if (base::UTF16ToUTF8(template_url->keyword()) ==
+        kBraveSearchForTorKeyword) {
       continue;
+    }
 
     const std::string& default_private_search_provider_guid =
         profile_->GetPrefs()->GetString(
@@ -130,7 +131,7 @@ base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     defaults.Append(std::move(dict));
   }
 
-  SortDefaultSearchEnginesListInJP(defaults, profile_);
+  SortDefaultSearchEnginesListInJP(defaults, regional_capabilities_);
 
   return defaults;
 }
@@ -168,7 +169,7 @@ base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {
     return *keyword == kBraveSearchForTorKeyword;
   });
 
-  SortDefaultSearchEnginesListInJP(*defaults, profile_);
+  SortDefaultSearchEnginesListInJP(*defaults, regional_capabilities_);
 
   return search_engines_info;
 }
