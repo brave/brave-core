@@ -730,6 +730,9 @@ TEST_F(ViewCounterServiceTest,
        DoNotGetNewTabTakeoverWallpaperForMissingCreativeInstanceId) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
 
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
+
   MockBackgroundImagesService();
 
   brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
@@ -747,6 +750,9 @@ TEST_F(ViewCounterServiceTest,
        GetNewTabTakeoverWallpaperOutsideGracePeriodForNonRewardsUser) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
 
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
+
   MockBackgroundImagesService();
   background_images_service_->sponsored_images_data_->grace_period =
       base::Minutes(1);
@@ -758,6 +764,9 @@ TEST_F(ViewCounterServiceTest,
 TEST_F(ViewCounterServiceTest,
        DoNotGetNewTabTakeoverWallpaperOnCuspOfGracePeriodForNonRewardsUser) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
+
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
 
   MockBackgroundImagesService();
   background_images_service_->sponsored_images_data_->grace_period =
@@ -774,6 +783,9 @@ TEST_F(ViewCounterServiceTest,
        DoNotGetNewTabTakeoverWallpaperWithinGracePeriodForNonRewardsUser) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
 
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
+
   MockBackgroundImagesService();
   background_images_service_->sponsored_images_data_->grace_period =
       base::Minutes(1);
@@ -788,6 +800,9 @@ TEST_F(ViewCounterServiceTest,
        GetNewTabTakeoverWallpaperOutsideGracePeriodForRewardsUser) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
 
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
+
   MockBackgroundImagesService();
   background_images_service_->sponsored_images_data_->grace_period =
       base::Minutes(1);
@@ -799,6 +814,9 @@ TEST_F(ViewCounterServiceTest,
 TEST_F(ViewCounterServiceTest,
        DoNotGetNewTabTakeoverWallpaperOnCuspOfGracePeriodForRewardsUser) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
 
   MockBackgroundImagesService();
   background_images_service_->sponsored_images_data_->grace_period =
@@ -814,6 +832,9 @@ TEST_F(ViewCounterServiceTest,
 TEST_F(ViewCounterServiceTest,
        DoNotGetNewTabTakeoverWallpaperWithinGracePeriodForRewardsUser) {
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+
+  local_state_.SetInt64(metrics::prefs::kInstallDate,
+                        base::Time::Now().InSecondsFSinceUnixEpoch());
 
   MockBackgroundImagesService();
   background_images_service_->sponsored_images_data_->grace_period =
