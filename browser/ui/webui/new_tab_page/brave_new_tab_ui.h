@@ -26,8 +26,6 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-class PrefService;
-
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
