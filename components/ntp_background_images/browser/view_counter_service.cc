@@ -501,9 +501,9 @@ bool ViewCounterService::CanShowSponsoredImages() const {
   }
 
   if (images_data->grace_period &&
-      local_state_->HasPrefPath(metrics::prefs::kInstallDate)) {
-    const base::Time installation_date =
-        local_state_->GetTime(metrics::prefs::kInstallDate);
+      local_state_->FindPreference(metrics::prefs::kInstallDate)) {
+    const base::Time installation_date = base::Time::FromSecondsSinceUnixEpoch(
+        local_state_->GetInt64(metrics::prefs::kInstallDate));
     if (base::Time::Now() < installation_date + *images_data->grace_period) {
       // We don't show sponsored images if the user has installed Brave within
       // the grace period.
