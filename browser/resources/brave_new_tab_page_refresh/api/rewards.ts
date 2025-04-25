@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { API } from '../lib/api'
 import { ExternalWallet } from '../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { Optional } from '../lib/optional'
 
@@ -35,3 +36,5 @@ export function defaultRewardsActions(): RewardsActions {
     setShowRewardsWidget(showRewardsWidget) {}
   }
 }
+
+export type RewardsAPI = API<RewardsState, RewardsActions>

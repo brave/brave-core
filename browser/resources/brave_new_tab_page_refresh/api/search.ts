@@ -5,6 +5,8 @@
 
 import * as mojom from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m'
 
+import { API } from '../lib/api'
+
 export const braveSearchHost = 'search.brave.com'
 
 export const defaultSearchEngine = braveSearchHost
@@ -93,3 +95,5 @@ export function defaultSearchActions(): SearchActions {
     reportSearchResultUsage(engine) {}
   }
 }
+
+export type SearchAPI = API<SearchState, SearchActions>

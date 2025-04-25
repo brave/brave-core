@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 
 import {
-  BackgroundActions,
-  BackgroundState,
+  BackgroundAPI,
   SponsoredImageBackground,
   SelectedBackgroundType,
-  getCurrentBackground } from '../models/backgrounds'
+  defaultBackgroundState,
+  getCurrentBackground } from '../api/backgrounds'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -53,8 +53,9 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
   none: null
 }
 
-export function initializeBackgrounds(store: Store<BackgroundState>)
-    : BackgroundActions {
+export function createBackgroundAPI(): BackgroundAPI {
+  const store = createStore(defaultBackgroundState())
+
   store.update({
     braveBackgrounds: [
       {
@@ -72,6 +73,10 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
   })
 
   return {
+
+    getState: store.getState,
+
+    addListener: store.addListener,
 
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })

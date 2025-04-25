@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { Locale, PluralStringKey } from '../../models/locale_strings'
+import { Locale, PluralStringKey } from '../../api/locale_strings'
 
 const Context = React.createContext<Locale>({
   getString: () => '',
@@ -13,13 +13,13 @@ const Context = React.createContext<Locale>({
 })
 
 interface Props {
-  locale: Locale
+  value: Locale
   children: React.ReactNode
 }
 
-export function LocaleContext(props: Props) {
+export function LocaleProvider(props: Props) {
   return (
-    <Context.Provider value={props.locale}>
+    <Context.Provider value={props.value}>
       {props.children}
     </Context.Provider>
   )

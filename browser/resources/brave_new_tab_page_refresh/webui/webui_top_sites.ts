@@ -4,12 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { TopSitesState, TopSitesActions, TopSitesListKind } from '../models/top_sites'
-import { Store } from '../lib/store'
+import { TopSitesAPI, TopSitesListKind, defaultTopSitesState } from '../api/top_sites'
+import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
 
-export function initializeTopSites(
-    store: Store<TopSitesState>): TopSitesActions {
+export function createTopSitesAPI(): TopSitesAPI {
+  const store = createStore(defaultTopSitesState())
+
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   let lastExcludedMostVisitedSite = ''
@@ -58,6 +59,10 @@ export function initializeTopSites(
   loadData()
 
   return {
+
+    getState: store.getState,
+
+    addListener: store.addListener,
 
     setShowTopSites(showTopSites) {
       handler.setShowTopSites(showTopSites)

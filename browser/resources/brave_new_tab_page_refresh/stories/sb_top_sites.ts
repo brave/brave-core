@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 
 import {
-  TopSitesState,
-  TopSitesActions,
+  TopSitesAPI,
   TopSite,
   TopSitesListKind,
-  defaultTopSitesState } from '../models/top_sites'
+  defaultTopSitesState } from '../api/top_sites'
 
-export function initializeTopSites(
-    store: Store<TopSitesState>): TopSitesActions {
+export function createTopSitesAPI(): TopSitesAPI {
+  const store = createStore(defaultTopSitesState())
+
   let lastRemovedSite: TopSite | null = null
 
   store.update({
@@ -40,6 +40,10 @@ export function initializeTopSites(
   })
 
   return {
+    getState: store.getState,
+
+    addListener: store.addListener,
+
     setShowTopSites(showTopSites) {
       store.update({ showTopSites })
     },

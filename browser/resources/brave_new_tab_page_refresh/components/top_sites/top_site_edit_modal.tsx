@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 
 import { useLocale } from '../context/locale_context'
-import { TopSite } from '../../models/top_sites'
+import { TopSite } from '../../api/top_sites'
 import { Modal } from '../common/modal'
 
 import { style } from './top_site_edit_modal.style'
