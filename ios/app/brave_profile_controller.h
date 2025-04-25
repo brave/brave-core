@@ -12,7 +12,7 @@
     BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS, DeAmpPrefs,
     BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
-    NTPBackgroundImagesService;
+    NTPBackgroundImagesService, BraveWebViewConfiguration;
 @protocol AIChatDelegate
 , IpfsAPI, ProfileBridge;
 
@@ -39,8 +39,9 @@ OBJC_EXPORT
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
 @property(readonly) WebImageDownloader* webImageDownloader;
 
-@property(readonly) CWVWebViewConfiguration* defaultWebViewConfiguration;
-@property(readonly) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
+@property(readonly) BraveWebViewConfiguration* defaultWebViewConfiguration;
+@property(readonly)
+    BraveWebViewConfiguration* nonPersistentWebViewConfiguration;
 - (void)notifyLastPrivateTabClosed;
 
 @end
