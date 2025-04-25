@@ -68,6 +68,7 @@ export type StringKey =
   'newsFeedFollowingTitle' |
   'newsFeedPublishersTitle' |
   'newsHidePublisherLabel' |
+  'newsManageFeedsButtonLabel' |
   'newsNoArticlesText' |
   'newsNoArticlesTitle' |
   'newsNoFeedsText' |
@@ -115,7 +116,7 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
-  'showNewsWidgetLabel' |
+  'showNewsLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesEarningText' |
