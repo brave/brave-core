@@ -47,6 +47,8 @@ inline constexpr char kChannelCountHistogramName[] =
 inline constexpr char kPublisherCountHistogramName[] =
     "Brave.Today.PublisherCount.2";
 inline constexpr char kIsEnabledHistogramName[] = "Brave.Today.IsEnabled";
+inline constexpr char kEnabledSettingHistogramName[] =
+    "Brave.Today.EnabledSetting";
 inline constexpr char kUsageMonthlyHistogramName[] = "Brave.Today.UsageMonthly";
 inline constexpr char kUsageDailyHistogramName[] = "Brave.Today.UsageDaily";
 
