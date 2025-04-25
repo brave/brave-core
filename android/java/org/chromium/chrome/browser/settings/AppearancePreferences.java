@@ -322,18 +322,13 @@ public class AppearancePreferences extends BravePreferenceFragment
         return true;
     }
 
-    /**
-     * Returns the user preference for whether the brave ads in background is enabled.
-     *
-     */
+    /** Returns the user preference for whether the brave ads in background is enabled. */
     public static boolean getPrefAdsInBackgroundEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(PREF_ADS_SWITCH, false);
     }
 
-    /**
-     * Sets the user preference for whether the brave ads in background is enabled.
-     */
+    /** Sets the user preference for whether the brave ads in background is enabled. */
     public void setPrefAdsInBackgroundEnabled(boolean enabled) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
