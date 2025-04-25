@@ -19,6 +19,8 @@ inline constexpr char kNewTabPageSuperReferralThemesOption[] =
     "brave.new_tab_page.super_referral_themes_option";
 inline constexpr char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
+inline constexpr char kNewTabTakeoverInfobarShowCount[] =
+    "brave.new_tab_page.new_tab_takeover_infobar_show_count";
 
 // Local prefs
 inline constexpr char kNewTabPageCachedSuperReferralComponentInfo[] =

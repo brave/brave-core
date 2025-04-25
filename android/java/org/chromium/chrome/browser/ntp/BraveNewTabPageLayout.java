@@ -1255,6 +1255,8 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter != null) {
             mNtpAdapter.setNtpImage(ntpImage);
         }
+
+        boolean wasWallpaperShown = true;
         if (ntpImage instanceof Wallpaper && ((Wallpaper) ntpImage).isRichMedia()) {
             setupSponsoredBackgroundContent();
         } else if (ntpImage instanceof Wallpaper
@@ -1267,6 +1269,13 @@ public class BraveNewTabPageLayout
                 && mSponsoredTab != null
                 && NTPImageUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
+        } else {
+            wasWallpaperShown = false;
+        }
+
+        if (wasWallpaperShown && ntpImage instanceof Wallpaper) {
+            BraveNewTabTakeoverInfobar infobar = new BraveNewTabTakeoverInfobar(mProfile);
+            infobar.maybeCreate();
         }
     }
 
