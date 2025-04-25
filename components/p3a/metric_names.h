@@ -267,6 +267,7 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.Rewards.EnabledInstallationTime", MetricConfig{.ephemeral = true}},
     {"Brave.Search.BraveDaily", MetricConfig{.ephemeral = true}},
     {"Brave.Search.DefaultEngine.4", {}},
+    {"Brave.Today.EnabledSetting", MetricConfig{.attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode}}},
     {"Brave.Today.IsEnabled", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
