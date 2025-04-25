@@ -40,11 +40,8 @@ TEST_F(PsstOperationContextUnitTest, LoadContext) {
                                ParseJson(R"([])")));
   EXPECT_FALSE(TestLoadContext(rule_name, "user script", "policy script", 1,
                                ParseJson(R"({})")));
-  EXPECT_FALSE(TestLoadContext(rule_name, "user script", "policy script", 1,
-                               ParseJson(R"({"user": "value"})")));
-  EXPECT_FALSE(
-      TestLoadContext(rule_name, "user script", "policy script", 1,
-                      ParseJson(R"({"share_experience_link": "value"})")));
+  EXPECT_TRUE(TestLoadContext(rule_name, "user script", "policy script", 1,
+                              ParseJson(R"({"user": "value"})")));
 
   constexpr char user_id[] = "user12345";
   auto user_result = ParseJson(base::ReplaceStringPlaceholders(

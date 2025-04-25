@@ -373,7 +373,6 @@ source_set("ui") {
       "//brave/common",
       "//brave/components/constants",
       "//brave/components/misc_metrics",
-      "//brave/components/psst/buildflags:buildflags",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
@@ -873,7 +872,6 @@ source_set("ui") {
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
-    "//brave/components/psst/resources",
     "//brave/components/query_filter",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
@@ -941,7 +939,9 @@ source_set("ui") {
   if (enable_psst) {
     deps += [
       "//brave/components/psst/browser/core",
+      "//brave/components/psst/buildflags:buildflags",
       "//brave/components/psst/common",
+      "//brave/components/psst/resources",
     ]
   }
 
