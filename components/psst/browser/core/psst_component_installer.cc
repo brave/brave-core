@@ -66,7 +66,8 @@ base::FilePath GetComponentDir() {
   base::FilePath components_dir =
       base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
 
-  return components_dir.Append(kPsstComponentId);
+  return components_dir.Append(
+      base::FilePath::FromUTF8Unsafe(kPsstComponentId));
 }
 }  // namespace
 
