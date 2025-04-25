@@ -11,10 +11,10 @@ static_library("static_redirect_helper") {
 
   deps = [
     "//base",
-    "//brave/browser/safebrowsing:buildflags",
     "//brave/components/constants",
+    "//brave/components/geolocation",
+    "//brave/components/safebrowsing:buildflags",
     "//brave/extensions:common",
-    "//brave/net/geolocation",
     "//url",
   ]
 }

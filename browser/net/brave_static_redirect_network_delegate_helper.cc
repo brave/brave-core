@@ -11,7 +11,7 @@
 #include <string_view>
 #include <vector>
 
-#include "brave/net/static_redirect_helper/static_redirect_helper.h"
+#include "brave/components/static_redirect_helper/static_redirect_helper.h"
 #include "net/base/net_errors.h"
 
 namespace brave {

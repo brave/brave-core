@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_NET_STATIC_REDIRECT_HELPER_STATIC_REDIRECT_HELPER_H_
-#define BRAVE_NET_STATIC_REDIRECT_HELPER_STATIC_REDIRECT_HELPER_H_
+#ifndef BRAVE_COMPONENTS_STATIC_REDIRECT_HELPER_STATIC_REDIRECT_HELPER_H_
+#define BRAVE_COMPONENTS_STATIC_REDIRECT_HELPER_STATIC_REDIRECT_HELPER_H_
 
 #include "url/gurl.h"
 
@@ -18,4 +18,4 @@ void SetSafeBrowsingEndpointForTesting(bool testing);
 
 }  // namespace brave
 
-#endif  // BRAVE_NET_STATIC_REDIRECT_HELPER_STATIC_REDIRECT_HELPER_H_
+#endif  // BRAVE_COMPONENTS_STATIC_REDIRECT_HELPER_STATIC_REDIRECT_HELPER_H_

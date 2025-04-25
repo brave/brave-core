@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/net/static_redirect_helper/static_redirect_helper.h"
+#include "brave/components/static_redirect_helper/static_redirect_helper.h"
 
 #include <algorithm>
 #include <memory>
@@ -11,9 +11,9 @@
 #include <string_view>
 
 #include "base/no_destructor.h"
-#include "brave/browser/safebrowsing/buildflags.h"
 #include "brave/components/constants/network_constants.h"
-#include "brave/net/geolocation/brave_geolocation_buildflags.h"
+#include "brave/components/geolocation/brave_geolocation_buildflags.h"
+#include "brave/components/safebrowsing/buildflags.h"
 #include "extensions/common/url_pattern.h"
 
 namespace brave {
