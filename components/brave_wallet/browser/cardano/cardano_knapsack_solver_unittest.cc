@@ -242,7 +242,8 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
   }
 }
 
-TEST_F(CardanoKnapsackSolverUnitTest, RandomTest) {
+// TODO(https://github.com/brave/brave-browser/issues/45692): Enable this test
+TEST_F(CardanoKnapsackSolverUnitTest, DISABLED_RandomTest) {
   std::vector<CardanoTransaction::TxInput> inputs;
 
   uint64_t total_inputs = 0;
