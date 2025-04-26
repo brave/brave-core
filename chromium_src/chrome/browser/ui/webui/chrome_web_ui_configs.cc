@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -39,6 +38,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #endif
 
 namespace {
@@ -83,13 +86,13 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<brave_rewards::TipPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
   map.AddWebUIConfig(std::make_unique<CookieListOptInUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());
-  map.AddWebUIConfig(std::make_unique<psst::BravePsstDialogUIConfig>());
 #else   // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<NewTabTakeoverUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -105,6 +108,6 @@ void RegisterChromeWebUIConfigs() {
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-  map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
+  map.AddWebUIConfig(std::make_unique<psst::BravePsstDialogUIConfig>());
 #endif
 }

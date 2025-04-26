@@ -392,8 +392,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Brave Wallet
   brave_wallet::RegisterProfilePrefs(registry);
 
-  // PSST
+#if BUILDFLAG(ENABLE_PSST)
   psst::RegisterProfilePrefs(registry);
+#endif
 
   // Brave Search
   if (brave_search::IsDefaultAPIEnabled()) {
