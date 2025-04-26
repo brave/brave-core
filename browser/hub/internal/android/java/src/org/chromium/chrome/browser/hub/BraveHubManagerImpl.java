@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.back_press.BackPressManager;
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -141,20 +141,19 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                             HubContainerView containerView = getContainerView();
                             LayoutParams params = (LayoutParams) containerView.getLayoutParams();
                             params.bottomMargin =
-                                    ChromeSharedPreferences.getInstance()
-                                                    .readBoolean(
+                                    ContextUtils.getAppSharedPreferences()
+                                                    .getBoolean(
                                                             BravePreferenceKeys
                                                                     .BRAVE_IS_MENU_FROM_BOTTOM,
                                                             true)
                                             ? mBottomToolbarHeight
                                             : 0;
-
                             containerView.setLayoutParams(params);
                         });
     }
 
     private boolean isToolbarBottomAnchored() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true);
+        return !ContextUtils.getAppSharedPreferences()
+                .getBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true);
     }
 }
