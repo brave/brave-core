@@ -159,11 +159,13 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
 void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerNewTabPageAdEventCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                     should_metrics_fallback_to_p3a,
                                      mojom_ad_event_type, std::move(callback));
 }
 

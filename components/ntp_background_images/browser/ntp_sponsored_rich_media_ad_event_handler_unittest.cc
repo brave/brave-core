@@ -54,6 +54,7 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
       if (should_report) {
         EXPECT_CALL(ads_service,
                     TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
+                                             should_metrics_fallback_to_p3a,
                                              mojom_ad_event_type,
                                              /*callback=*/::testing::_));
       } else {
@@ -98,14 +99,6 @@ TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
       /*should_metrics_fallback_to_p3a=*/true,
       /*should_report=*/false);
   VerifyReportAdEventMetricExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
-      /*should_metrics_fallback_to_p3a=*/true,
-      /*should_report=*/false);
-  VerifyReportAdEventMetricExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
-      /*should_metrics_fallback_to_p3a=*/true,
-      /*should_report=*/false);
-  VerifyReportAdEventMetricExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
       /*should_metrics_fallback_to_p3a=*/true,
       /*should_report=*/false);
@@ -139,14 +132,6 @@ TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
        DoNotReportAdEventMetricUsingConfirmation) {
   VerifyReportAdEventMetricExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
-      /*should_metrics_fallback_to_p3a=*/false,
-      /*should_report=*/false);
-  VerifyReportAdEventMetricExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
-      /*should_metrics_fallback_to_p3a=*/false,
-      /*should_report=*/false);
-  VerifyReportAdEventMetricExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
       /*should_metrics_fallback_to_p3a=*/false,
       /*should_report=*/false);
   VerifyReportAdEventMetricExpectation(

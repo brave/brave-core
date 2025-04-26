@@ -48,6 +48,7 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     // Ads service will handle the case when we should fallback to P3A and no-op
     // if the campaign should report using P3A.
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                           should_metrics_fallback_to_p3a,
                                            mojom_ad_event_type,
                                            /*intentional*/ base::DoNothing());
   }
