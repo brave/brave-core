@@ -60,6 +60,10 @@ brave/components/brave_ads/core/internal/security/**/*.cc @brave/ads-client
 brave/components/brave_ads/core/internal/security/**/*.h @brave/ads-client
 brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 
+# Brave l10n components are deprecated. Use Chromium's functionality
+# unless no equivalent is available.
+brave/components/l10n/ @tmancey @bridiver
+
 # Network
 browser/net/ @iefremov
 chromium_src/chrome/browser/net/profile_network_context_service.cc @brave/sec-team

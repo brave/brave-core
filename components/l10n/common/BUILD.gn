@@ -4,6 +4,49 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("common") {
+  # Brave l10n components are deprecated. Use Chromium's functionality
+  # unless no equivalent is available.
+  visibility = [
+    ":*",
+    "//brave/browser/android:android_browser_process",
+    "//brave/browser/brave_ads:impl",
+    "//brave/browser/brave_ads/tooltips",
+    "//brave/browser/brave_wallet:unit_tests",
+    "//brave/browser/extensions",
+    "//brave/browser/tor/test:browser_tests",
+    "//brave/browser/ui",
+    "//brave/browser/ui/views/brave_ads",
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh:brave_new_tab_page_refresh",
+    "//brave/browser/ui/whats_new:browser_test",
+    "//brave/browser/widevine",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/internal",
+    "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/browser/test:brave_news_unit_tests",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/decentralized_dns/content",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_widget_utils/browser",
+    "//brave/components/p3a",
+    "//brave/components/request_otr/browser",
+    "//brave/components/sidebar/browser",
+    "//brave/components/text_recognition/browser",
+    "//brave/components/webui",
+    "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/api/ai_chat",
+    "//brave/ios/browser/api/bookmarks/exporter",
+    "//brave/ios/browser/ui/webui/skus",
+    "//brave/test:*",
+    "//chrome/browser",
+    "//components/permissions",
+    "//ios/chrome/browser/shared/model/prefs:browser_prefs",
+  ]
+
   friend = [
     ":test_support",
     ":unit_tests",
