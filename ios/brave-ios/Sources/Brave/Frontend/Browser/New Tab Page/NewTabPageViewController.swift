@@ -699,6 +699,7 @@ class NewTabPageViewController: UIViewController {
       rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
+        shouldMetricsFallbackToP3a: sponsoredBackground.shouldMetricsFallbackToP3A,
         eventType: event,
         completion: { success in
           completion?(success)
