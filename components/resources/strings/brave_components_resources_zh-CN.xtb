@@ -124,7 +124,7 @@
 <translation id="730042046912793465">这是一个</translation>
 <translation id="2055363275850890030">私人窗口</translation>
 <translation id="9133213713928851646">您在私人窗口中的操作不’会在Brave中留下记录。您访问的网站将不会显示在您的历史记录中，并且当您’结束访问后，Cookie就会消失。不过，私人窗口不会允许您完全匿名在线。</translation>
-<translation id="4085423007106063912">Brave 永远不会记录您在无痕窗口下的操作。您访问过的网站不会出现在您的历史中。Cookie、表单数据和站点数据将在关闭窗口时消失。</translation>
+<translation id="4491905831789757331">Brave 永远不会记录您在无痕窗口下的操作。您访问过的网站不会出现在您的浏览记录中。Cookie、表单数据和站点数据会在您关闭所有已打开的无痕窗口时消失。</translation>
 <translation id="1700746046668116047">请注意，您的网络服务提供商、被动网络观察员或您的雇主（如果您正在使用工作机器或网络）仍然可以看到您的活动。为了更多的隐私，打开 Tor 无痕窗口。</translation>
 <translation id="8759753423332885148">了解详情。</translation>
 <translation id="8611976753572844841">带有 Tor 连接的私人窗口</translation>
@@ -1967,6 +1967,7 @@ other {# 个来源}
 <translation id="8652827551752428289">显示历史记录</translation>
 <translation id="5030659775136592441">显示书签管理器</translation>
 <translation id="6919203766034706175">导入设置</translation>
+<translation id="290553639533591736">聚焦 Gemini Live</translation>
 <translation id="6159704524780747483">打开 AI 聊天</translation>
 <translation id="1199430163665775722">编辑搜索引擎</translation>
 <translation id="4276265845501430443">显示帮助</translation>
@@ -2104,6 +2105,7 @@ other {# 个来源}
 <translation id="4567071417854988869">总结这段视频</translation>
 <translation id="7921782882718083488">总结本网页</translation>
 <translation id="7932221068776853847">断开连接以停止向 Leo 发送此页面内容，并开始新的对话</translation>
+<translation id="8743383817154663379">处理您的请求时出错了。请稍后再试。</translation>
 <translation id="2712650703044366764">该模型有一个无效端点。请检查您的配置，然后重试。</translation>
 <translation id="1167803637855350748">连接 Leo 时出现网络问题，请检查您的连接并重试。</translation>
 <translation id="1996126325390835277">您已达到  premium 速率上限。请几小时后重试。</translation>
@@ -2111,13 +2113,13 @@ other {# 个来源}
 <translation id="7692501701960747469">为该模型配置的 API 密钥无效。请检查您的配置并重试。</translation>
 <translation id="7905602379229309187">端点当前过载。请稍后再试。</translation>
 <translation id="8151638057146502721">配置</translation>
-<translation id="4177458398826096846">您好，我是 Leo。我是由 Brave 完全管理的 AI 助手。我的技术支持来自 Llama 3.1 8B，这是由 Meta 创建的模型，适用于多种使用案例并可提供高效能。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">嗨，我是 Leo，由 Brave 完全托管的 AI 助手。我的技术支持来自 Qwen 14B，这是由 Alibaba 创建的模型，性能卓越，适用于多种用例。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">您好，我是 Leo。我是由 Brave 完全管理的 AI 助手。我的技术支持来自 Mixtral 8x7B，这是由 Mistral AI 创建的模型，适用于处理进阶工作。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">您好，我是 Leo。我是由 Brave 代理并由 Claude Instant 提供技术支持，Claude Instant 是 Anthropic 创建的模型，用于为会话和文字处理任务提供技术支持。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">嗨，我是 Leo。我由 Brave 代理，并由 Anthropic 开发的 Claude Haiku 对话和文本处理模型提供支持。 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">嗨，我是 Leo。我由 Brave 代理，并由 Anthropic 开发的 Claude Sonnet 对话和文本处理模型提供支持。 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290">由<ph name="COMPANY_NAME"/>提供的<ph name="MODEL_NAME"/></translation>
+<translation id="3282183392203936979">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 3.1 8B 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 14B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mixtral 8x7B 提供支持，这是一个由 Mistral AI 为处理高级任务而创建的模型。Mixtral 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">嗨，我是 Leo。我由 Brave 代理，并由 Claude Instant 提供支持。Claude Instant 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Instant 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">嗨，我是 Leo。我由 Brave 代理，并由 Claude Haiku 提供支持。Claude Haiku 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">嗨，我是 Leo。我由 Brave 代理，并由 Claude Sonnet 提供支持。Claude Sonnet 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama Vision 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama Vision 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">高级</translation>
 <translation id="6187065185557150870">会话</translation>
 <translation id="4685048769603134644">打开整页</translation>
@@ -2180,6 +2182,7 @@ other {# 个来源}
 <translation id="8650874793377330048">停止回答</translation>
 <translation id="8712637175834984815">知道了</translation>
 <translation id="1093419424466417703">对 Leo 来说，此页面过于冗长。对话可能遗漏某些内容。因此 Leo 无法读取该页面内容的 <ph name="PERCENTAGE"/> 。</translation>
+<translation id="4592293425457329338">对话中可能缺少一些上下文信息。Leo 能够保留 <ph name="PERCENTAGE"/> 对话的相关内容。</translation>
 <translation id="2186990448773134544">由于 Leo 的页面过长，因此通过从页面中提取最相关的信息，对页面内容进行改进。</translation>
 <translation id="5140068729857132378">查找网页的相关部分...</translation>
 <translation id="4370698775470316661">对话时间太长，无法继续。可能有其他机型，Leo 能够在较长时间的对话中保持准确性。</translation>
@@ -2201,6 +2204,7 @@ other {# 个来源}
 <translation id="7979673624064378842">快速流畅的聊天</translation>
 <translation id="2836330653441111204">兼顾速度与智慧</translation>
 <translation id="6695329447007213917">普通聊天、编码等更多功能</translation>
+<translation id="5051668914970329839">通用视觉</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
 <translation id="1037324977127422019">嗨，我是 Leo！</translation>
 <translation id="8930348081963284873">Brave 内置的人工智能智能助手。</translation>
@@ -2236,11 +2240,28 @@ other {# 个来源}
 <translation id="6320643499534852464">社交媒体</translation>
 <translation id="2370739752330685659">回头再说</translation>
 <translation id="983013125018250242">Leo 工具</translation>
+<translation id="7623223587478473368">附件</translation>
+<translation id="3777121685517940177">上传文件……</translation>
+<translation id="9088751620363630236">拍摄照片……</translation>
+<translation id="4250229828105606438">截图</translation>
+<translation id="6332876390231524389">当前标签页内容</translation>
 <translation id="49269513399674318">使用麦克风</translation>
 <translation id="3895031624234442305">自定义型号</translation>
 <translation id="4572010449071015143">开始新会话</translation>
 <translation id="345901077335355561">返回当前正在进行的对话</translation>
 <translation id="6287023598025162715">新对话</translation>
+<translation id="8370801182970639038">自动（<ph name="LOCALE"/>）</translation>
+<translation id="8343473178272604223">已启用搜索引擎</translation>
+<translation id="5355776323718420036">隐藏常用网站</translation>
+<translation id="6543799171249004861">照片提供者：<ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">询问 Brave 搜索</translation>
+<translation id="6851426306697017546">显示时钟</translation>
+<translation id="4844370919312937270">在新标签页中显示搜索小部件</translation>
+<translation id="5009354496127441090">显示常用网站</translation>
+<translation id="4784802981241664605">统计</translation>
+<translation id="4290791698375397492">已移除常用网站</translation>
+<translation id="1436784010935106834">已移除</translation>
+<translation id="9030215177866748410">根据您经常访问的网站推荐热门网站.</translation>
 <translation id="6303294677342628402">盾牌</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
 <translation id="7509914170164691086">Shields 已为<ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@ other {# 个来源}
 <translation id="5799940914270080805">更改这些设置有可能会影响网站的兼容性。</translation>
 <translation id="9204041448536398473">盾牌全局设置</translation>
 <translation id="2108334320919763866">全局默认值</translation>
+<translation id="7205939464631857223">清除所有已屏蔽的元素</translation>
 <translation id="3440043456924990296">由组织管理的设置</translation>
 <translation id="7053983685419859001">禁止</translation>
 <translation id="5716230673298034837">允许所有</translation>

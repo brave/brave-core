@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Tunjukkan cadangan pelayar</translation>
 <translation id="8982438328166986164">Memaparkan cadangan tapak web berdasarkan penanda halaman dan sejarah penyemakan imbas anda.</translation>
 <translation id="924029461438529367">Tunjukkan cadangan carian</translation>
-<translation id="1571106259128580884">Tunjukkan cadangan laman teratas</translation>
+<translation id="5989135139219497991">Tunjukkan cadangan teratas</translation>
 <translation id="6285118765755298263">Indeks enjin carian lain</translation>
 <translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
 <translation id="412411722208944922">Enjin carian pantas</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Bantu Carian Brave berkembang</translation>
 <translation id="7044431516245362795">Sertai Projek Penemuan Web untuk membantu mengembangkan indeks dan meningkatkan hasil carian. <ph name="LEARN_MORE_START"/> Ketahui lebih lanjut.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Sudah tentu, saya akan membantu</translation>
-<translation id="2877653791257935258">Taipkan nama tapak web atau URL</translation>
-<translation id="5329830149661250028">Lihat perbezaan Brave: Tanpa iklan. Tanpa penjejak. Pemuatan halaman lebih pantas.</translation>
-<translation id="3941792073703079607">Lihat perbezaan Brave: Sekat iklan. Simpan data. Strim lebih pantas.</translation>
 <translation id="3545804467215833536">Ketik untuk melihat Brave Shields</translation>
 <translation id="1724327820822194498">Lihat semua perkara buruk yang disekat oleh Brave, pada setiap halaman, dengan bantuan Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> dan <ph name="TRACKER"/> penjejak &amp; iklan yang lain disekat</translation>
@@ -504,6 +501,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
+<translation id="7205939464631857223">Kosongkan semua elemen yang disekat</translation>
 <translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
 <translation id="1118508688433541158">Layar dengan lebih pantas dan sekat iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menjimatkan data dengan melayari Web dengan Brave.</translation>
@@ -1029,7 +1027,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5888208462949095139">Cari dengan <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget skrin utama</translation>
 <translation id="703185154752046151">Widget telah ditambahkan pada skrin utama</translation>
-<translation id="3290805388004282161">Cuba widget carian Brave</translation>
+<translation id="4635094429202343515">Cuba widget Carian Brave</translation>
 <translation id="4809681171446727314">Akses carian privasi yang bebas terus daripada skrin utama anda.</translation>
 <translation id="7751715172931488388">Tambah widget</translation>
 <translation id="7285167584112910782">Carian tindakan pantas Brave</translation>
@@ -1096,6 +1094,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1179407411385015942">Leo ialah pembantu pintar yang dikuasakan oleh AI, dibina terus dalam penyemak imbas</translation>
 <translation id="5781842473834867765">Simpan sejarah perbualan saya</translation>
 <translation id="4109670531935487117">Tunjukkan cadangan autolengkap dalam bar alamat</translation>
+<translation id="4983005227524068187">Tunjukkan di ruang enjin carian pantas</translation>
+<translation id="8514910864411336826">Bolehkan jalan pintas untuk lancarkan Leo dari ruang enjin carian pantas.</translation>
 <translation id="6106701981952170121">Padam semua data perbualan Leo AI</translation>
 <translation id="423600389315522551">Menetapkan semula Leo AI akan memerlukan anda untuk memilih semula penggunaannya pada masa hadapan dan akan turut memadam sejarah perbualan anda. Mengosongkan sejarah perbualan akan memadam semua perbualan terdahulu anda dengan Brave Leo AI secara kekal. Tindakan ini tidak boleh dipulihkan.</translation>
 <translation id="6742599753610126012">Kosongkan sejarah sembang</translation>
@@ -1218,11 +1218,12 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6891382640886173702">Gabungkan tetingkap</translation>
 <translation id="2912247081180973411">Tutup tetingkap</translation>
 <translation id="4010699428656610296">Sila gabungkan tab lain ke tetingkap Brave yang lain.</translation>
-<translation id="208634871997892083">VPN sentiasa hidup</translation>
+<translation id="4306918392910017801">Sambung semula VPN secara automatik</translation>
 <translation id="1599073346542156922">Cara menghidupkan:</translation>
 <translation id="7001163334415463127">1. Buka tetapan peranti anda daripada laci aplikasi anda atau ketik butang di bawah.</translation>
 <translation id="887443138775437899">2. Cari VPN Brave dan ketik pada ikon tetapan di sebelah kanan.</translation>
-<translation id="3776051499611941773">3. Togol <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN sentiasa hidup<ph name="ALWAYS_ON_TUTORIAL_END"/> untuk mendayakannya.</translation>
+<translation id="7546805138087561624">3. Togol <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sentiasa hidup<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> untuk mendayakannya.</translation>
+<translation id="2446001600399646984">Harap maklum bahawa disebabkan batasan Android, "Sekat sambungan tanpa VPN" tidak berfungsi seperti yang dijangka. <ph name="LEARN_MORE_START"/>Ketahui lebih lanjut.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Buka tetapan Android</translation>
 <translation id="2728518864712716830">Kemas kini dimuat turun.</translation>
 <translation id="8403338849301491865">Senarai penapis berjaya dikemas kini</translation>
@@ -1232,4 +1233,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="7942415993090181327">Sejarah sembang</translation>
 <translation id="6859935199732075666">Tunjukkan ralat Menyemak Imbas Secara Selamat</translation>
+<translation id="2735247450315842119">Benarkan tangkapan skrin dalam tab privet</translation>
+<translation id="8420414929552321089">Jika dibenarkan, tab privet juga akan kelihatan apabila berbilang aplikasi dibuka.</translation>
 </translationbundle>

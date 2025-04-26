@@ -317,6 +317,18 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8813509417421129632">Vložená stránka na adrese <ph name="SITE"/> sa chce uložiť</translation>
 <translation id="7700010743463174379">Táto stránka žiada o uloženie</translation>
 <translation id="6774238875569752630">Vložená stránka v tejto stránke žiada o uloženie</translation>
+<translation id="1233913566967531780">Tab focus</translation>
+<translation id="4034992002364254340">Zhromaždiť všetky súvisiace karty do nového okna</translation>
+<translation id="8012125596344613514">Odporúčané témy</translation>
+<translation id="7529120186020617755">Zadajte tému, na ktorú sa chcete sústrediť...</translation>
+<translation id="6847541693235449912">Prejsť</translation>
+<translation id="2079545284768500474">Otvoriť</translation>
+<translation id="1533980864758658574">Pre <ph name="TOPIC"/> bolo vytvorené nové okno</translation>
+<translation id="7985042437720138349">Táto funkcia odosiela údaje o vašich otvorených kartách Leovi, AI asistentovi v prehliadači Brave.</translation>
+<translation id="6165508094623778733">Dozvedieť sa viac</translation>
+<translation id="7557539689487606886">Prejsť na Premium</translation>
+<translation id="1035309871698658326">Po otvorení automaticky odošle názvy a pôvod všetkých nesúkromných kariet Leovi, aby ich mohol klasifikovať.</translation>
+<translation id="3435896845095436175">Aktivovať</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
 <translation id="1426410128494586442">Áno</translation>
@@ -353,7 +365,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2396127686705429331">Zobrazovať tlačidlo záložiek</translation>
 <translation id="2814998458708016836">Použite široký riadok adresy</translation>
 <translation id="4109670531935487117">Zobraziť návrhy automatického dopĺňania na paneli s adresou</translation>
-<translation id="2858138569776157458">Hlavné weby</translation>
+<translation id="3405901785709583668">Top výbery</translation>
 <translation id="7859704718976024901">História prehliadania</translation>
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="4144468798716165316">Rýchle pokyny</translation>
@@ -462,7 +474,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="7791141927430186653">Povoliť vložené tweety X (predtým Twitter)</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
 <translation id="8792121506918889955">Poriadok zaobchádzania WebRTC IP</translation>
-<translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="8798099450830957504">Štandardné</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
@@ -712,6 +723,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2751872555001636931">Zobraziť ikonu Leo na bočnom paneli</translation>
 <translation id="8055509865174199683">Zobraziť Lea v kontextovej ponuke na webových stránkach</translation>
 <translation id="1529674267267221673">Leo sa zobrazí v kontextovej ponuke po kliknutí pravým tlačidlom myši na webovú stránku. Tým sa kontext z aktuálnej webovej stránky odošle do Lea.</translation>
+<translation id="5226020406479918122">Režim Tab Focus</translation>
+<translation id="3705539672403311123">Umožní organizáciu kariet na stránke s vyhľadávaním kariet. Po otvorení automaticky odošle názvy a pôvod všetkých nesúkromných kariet Leovi, aby ich mohol klasifikovať. <ph name="BEGIN_LINK"/>Zistiť viac<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Zobraziť navrhované podnety v konverzácii</translation>
 <translation id="5781842473834867765">Ukladať históriu konverzácií</translation>
 <translation id="1082960401708055995">Vypnutím ukladania konverzácií sa natrvalo vymažú všetky predtým uložené konverzácie. Túto akciu nemožno vrátiť späť.</translation>
@@ -722,6 +735,9 @@ vymaže všetky vaše predchádzajúce konverzácie s Brave
 Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="5574059574002819179">Upraviť návrhy automatického doplňovania</translation>
 <translation id="7942415993090181327">História chatu</translation>
+<translation id="5385064007245738696">O AI asistentovi Leo</translation>
+<translation id="5084498230659987096">Brave Leo poskytuje priamo v prehliadači chat a ďalšie rozhrania s umelou inteligenciou, ktoré kladú dôraz na súkromie. Leo sa nikdy neučí z vašich údajov ani ich nepoužíva na trénovanie modelov. Všetky požiadavky sú sprostredkované cez anonymizačný server.</translation>
+<translation id="6458721693611638005">Prečítajte si viac informácií o tom, ako vás Brave chráni pri používaní umelej inteligencie v zásadách ochrany osobných údajov asistenta Leo. <ph name="BEGIN_LINK"/>Zistiť viac<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Predvolený model pre nové konverzácie</translation>
 <translation id="8826914609353373601">Správa prémiového predplatného</translation>
 <translation id="235457946228076038">Vytvoriť si vlastný model</translation>
@@ -732,6 +748,8 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="3553035516792776805">Názov žiadosti o model</translation>
 <translation id="7634775528597575156">Koncový bod servera</translation>
 <translation id="6374563306438145841">Kľúč API</translation>
+<translation id="3295756655687327124">Podpora videnia</translation>
+<translation id="1415432774589088566">Ak tento model používa ako vstup obrázok, napr. llama 3.2b vision</translation>
 <translation id="8008271349880309090">Názov modelu, ktorý sa zobrazí v ponuke výberu</translation>
 <translation id="1355326130503900056">Názov modelu tak, ako by sa mal objaviť v požiadavke na obslužný rámec, napr. phi-3 (upozorňujeme, že ak sa tento názov presne nezhoduje s tým, ktorý očakáva obslužný rámec, integrácia nebude fungovať)</translation>
 <translation id="3213787232304349732">Adresa URL, na ktorej váš obslužný rámec prijíma požiadavky. Ak si nie ste istí, pozrite si dokumentáciu k obslužnému rámcu. Napr. pre Ollama je to vždy http://localhost:11434/v1/chat/completions</translation>

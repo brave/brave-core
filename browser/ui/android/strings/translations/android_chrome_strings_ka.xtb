@@ -11,11 +11,13 @@
 <translation id="103269572468856066">ამ საიტებისა და აპების მონაცემთა გასუფთავებაც გსურთ?</translation>
 <translation id="1034259925032978114">ფანჯარა გახსნილია</translation>
 <translation id="1036348656032585052">გამორთვა</translation>
+<translation id="1045448422538531528">ჯგუფში დამატება</translation>
 <translation id="1045899828449635435">ამ საიტების მონაცემთა გასუფთავებაც გსურთ?</translation>
 <translation id="5186185447130319458">ინკოგნიტო</translation>
 <translation id="1052842760770519282">თქვენი ზოგიერთი პაროლი მიუწვდომელია</translation>
 <translation id="1058669287135776095">თქვენ ხაზგარეშე რეჟიმში ხართ. შეამოწმეთ კავშირი ინტერნეტთან და ხელახლა ცადეთ.</translation>
 <translation id="10614374240317010">არასოდეს შენახული</translation>
+<translation id="1070689840697074178">PDF-ების ჩამოტვირთვა აქ შეგიძლიათ</translation>
 <translation id="107147699690128016">ფაილის გაფართოების შეცვლის შემთხვევაში, ფაილი შეიძლება გაიხსნას სხვა აპლიკაციაში და პოტენციურად შეუქმნას საფრთხე თქვენს მოწყობილობას.</translation>
 <translation id="1080365971383768617">პაროლები თქვენს ყველა მოწყობილობაზე</translation>
 <translation id="1087176310396019910">სავარაუდო სპამი</translation>
@@ -57,13 +59,11 @@
 <translation id="1206892813135768548">დააკოპირეთ ბმულის ტექსტი</translation>
 <translation id="1209206284964581585">ამჯერად დამალვა</translation>
 <translation id="1227058898775614466">ნავიგაციის ისტორია</translation>
-<translation id="1231733316453485619">გსურთ სინქრონიზაციის ჩართვა?</translation>
 <translation id="123724288017357924">გვერდის გადატვირთვა ქეშირ. კონტენტის იგნორირებით</translation>
 <translation id="1239792311949352652">სწრაფად გააზიარეთ ეს გვერდი. ამ მალსახმობის რედაქტირებისთვის გადადით პარამეტრებზე.</translation>
 <translation id="1240288207750131269">იტვირთება <ph name="LANG"/></translation>
 <translation id="124116460088058876">სხვა ენები</translation>
 <translation id="4078574862195461280">თქვენი პაროლები წაიშლება Brave პაროლების მმართველიდან <ph name="CHROME_CHANNEL"/>-სთვის. პაროლების თქვენ მიერ ახლახან ჩამოტვირთული ფაილი შენარჩუნდება.</translation>
-<translation id="1242883863226959074">მოწყობილობა</translation>
 <translation id="124678866338384709">მიმდინარე ჩანართის დახურვა</translation>
 <translation id="1246905108078336582">გსურთ შემოთავაზების გაცვლის ბუფერიდან ამოშლა?</translation>
 <translation id="1996480094660735607">Brave Doodle: <ph name="DOODLE_DESCRIPTION"/></translation>
@@ -107,16 +107,12 @@
 <translation id="1407135791313364759">ყველას გახსნა</translation>
 <translation id="1409879593029778104"><ph name="FILE_NAME"/> ვერ ჩამოიტვირთა, რადგან ფაილი უკვე არსებობს.</translation>
 <translation id="3219606989239049572">თქვენი მონაცემების Brave ანგარიშში შენახვა</translation>
-<translation id="1853026300647876496">მიმდინარეობს Brave-თან დაკავშირება. ამას შეიძლება ერთი წუთი დასჭირდეს…</translation>
 <translation id="1416550906796893042">პროგრამის ვერსია</translation>
-<translation id="1416582024052267068">შეინარჩუნეთ წვდომა თქვენს პაროლებზე</translation>
 <translation id="5171187478741797469">გსურთ Brave-ის გადატვირთვა?</translation>
 <translation id="1428770807407000502">გამოირთოს სინქრონიზაცია?</translation>
 <translation id="1430915738399379752">ბეჭდვა</translation>
 <translation id="1435593198351412143">PDF-ების ავტომატურად გახსნა</translation>
-<translation id="1436784010935106834">წაშლილი</translation>
 <translation id="1437543266176261764">გაშვებულია <ph name="APP_NAME"/>-ში</translation>
-<translation id="1448147069872048656">დაადასტურეთ ვინაობა, რათა მიიღოთ წვდომა თქვენს ყველა პაროლზე ამ მოწყობილობაში</translation>
 <translation id="1448440926884431741">ორგანიზებულად დაალაგეთ თვალმიდევნებული პროდუქტები „სანიშნეებში“</translation>
 <translation id="1460751212339734034">დაზოგეთ დრო, აკრიფეთ ნაკლები</translation>
 <translation id="5598889255595678761">აირჩიეთ Brave-ის ენა</translation>
@@ -149,6 +145,7 @@
 <translation id="1851107663393500801">ჩართვის შემთხვევაში, მონაცემები გამოიყენება და თქვენს Brave ანგარიშში ინახება. გამორთვის შემთხვევაში, მონაცემები მხოლოდ ამ მოწყობილობაზე ინახება.</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{1 არჩეული ერთეულის ამოშლა}other{# არჩეული ერთეულის ამოშლა}}</translation>
 <translation id="9102838806351154392">{BOOKMARKS_COUNT,plural, =1{1 სანიშნე და სხვა ერთეულები შენახულია მხოლოდ ამ მოწყობილობაზე. თქვენს სხვა მოწყობილობებზე მათ გამოსაყენებლად შეინახეთ ისინი თქვენს Brave ანგარიშში (<ph name="ACCOUNT_EMAIL"/>).}other{# სანიშნე და სხვა ერთეულები შენახულია მხოლოდ ამ მოწყობილობაზე. თქვენს სხვა მოწყობილობებზე მათ გამოსაყენებლად შეინახეთ ისინი თქვენს Brave ანგარიშში (<ph name="ACCOUNT_EMAIL"/>).}}</translation>
+<translation id="1639239467298939599">იტვირთება</translation>
 <translation id="1641113438599504367">Safe Browsing</translation>
 <translation id="164269334534774161">თქვენ ამ გვერდის ხაზგარეშე ასლს ნახულობთ, რომლის შექმნის თარიღია: <ph name="CREATION_TIME"/></translation>
 <translation id="1644574205037202324">ისტორია</translation>
@@ -242,7 +239,6 @@
 <translation id="2111511281910874386">გვერდზე გადასვლა</translation>
 <translation id="2119609734654412418">აქ იპოვით თქვენს სანიშნეებს</translation>
 <translation id="2122601567107267586">აპის გახსნა ვერ მოხერხდა</translation>
-<translation id="2132122640199389833">ყველა მიბმული მოწყობილობის ამოშლა</translation>
 <translation id="213279576345780926"><ph name="TAB_TITLE"/> დაიხურა</translation>
 <translation id="2141396931810938595">ეფუძნება თქვენს გამოყენების მონაცემებს</translation>
 <translation id="5905359144499324202">Brave რეგულარულად ამოწმებს, არის თუ არა თქვენს ბრაუზერში ყველაზე უსაფრთხო პარამეტრები. გაცნობებთ, თუ რაიმეს შემოწმება იქნება საჭირო.</translation>
@@ -254,6 +250,7 @@
 <translation id="2172905120685242547">გსურთ, დახუროთ ფანჯარა?</translation>
 <translation id="2173302385160625112">შეამოწმეთ თქვენი ინტერნეტ-კავშირი</translation>
 <translation id="2175927920773552910">QR კოდი</translation>
+<translation id="1203189419326478388">სანიშნეების ზოლის ჩვენება ან დამალვა</translation>
 <translation id="2184272387334793084">შედით სისტემაში, თქვენი პაროლები და სხვა მონაცემები თქვენს ყველა მოწყობილობაზე რომ მიიღოთ</translation>
 <translation id="218608176142494674">გაზიარება</translation>
 <translation id="219283042927675668">ჩანართები ჯგუფში</translation>
@@ -282,7 +279,6 @@
 <translation id="2321086116217818302">მიმდინარეობს პაროლების მომზადება…</translation>
 <translation id="2323763861024343754">საიტების მეხსიერება</translation>
 <translation id="2328474416100889417">ყველა მომენტალურად დაკარგავს წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“, ხოლო მოსაწვევის ბმულები გამოირთვება</translation>
-<translation id="2328985652426384049">სისტემაში შესვლა ვერ მოხერხდა</translation>
 <translation id="2332515770639153015">გაძლიერებული Safe Browsing ჩართულია</translation>
 <translation id="233375395665273385">წაშლა და გასვლა</translation>
 <translation id="2341410551640223969"><ph name="WEBAPK_NAME"/>-ის ინსტალაცია ვერ მოხერხდა.</translation>
@@ -293,6 +289,7 @@
 <translation id="2362083820973145409">შესული ხართ, როგორც <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. გახსნის პარამეტრებს.</translation>
 <translation id="351551888962017708">წინასწარ ჩაიტვირთება მეტი გვერდი. გვერდები შეიძლება წინასწარ იტვირთებოდეს Brave-ის სერვერების მეშვეობით, როცა აღნიშნული მოთხოვნილია სხვა საიტების ან აპების მიერ.</translation>
 <translation id="2366554533468315977">ფასების ისტორია ვებში ამ ვარიანტისთვის</translation>
+<translation id="2367818124433749493">დეველოპერთა მალსახმობები</translation>
 <translation id="2385605401818128172">შეგიძლიათ გადახედოთ საიტებს, რომლებიც მეტისმეტად ბევრ შეტყობინებას გიგზავნით და შეწყვიტოთ მომავალში მათგან შეტყობინებების მიღება</translation>
 <translation id="2386938421315164605">თემების დამალვა და გამოჩენა</translation>
 <translation id="2390510615457643724">გსურთ, ხელახლა ჩამოტვირთოთ <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>)?</translation>
@@ -311,6 +308,7 @@
 <translation id="2453860139492968684">დასრულება</translation>
 <translation id="2461378706168271257">თქვენს ჩანართებში ძიება</translation>
 <translation id="2461822463642141190">ამჟამინდელი</translation>
+<translation id="2463770278804271243">გვერდი</translation>
 <translation id="2468444275314013497">თქვენ ბრაუზერი წესრიგშია</translation>
 <translation id="2542068854151299295">Brave-ის შესაძლებლობები მაქსიმალურად რომ გამოიყენოთ, შედით სისტემაში</translation>
 <translation id="247737702124049222">სურათების აღწერილობები ჩართულია</translation>
@@ -329,7 +327,6 @@
 <translation id="2527209463677295330">გვერდზე არსებული მეტი ტექსტის დართვის შემთხვევაში, შესაძლოა, უკეთესი შედეგები იხილოთ</translation>
 <translation id="2527779675047087889">გაცვლის ბუფერის შიგთავსის დამალვა</translation>
 <translation id="2532336938189706096">ვებ-ხედი</translation>
-<translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> ერთეული წაიშალა</translation>
 <translation id="253498598929009420">საიტს შეეძლება თქვენს ეკრანზე არსებული კონტენტის ნახვა</translation>
 <translation id="2536728043171574184">თქვენ ამ გვერდის ხაზგარეშე ასლს ნახულობთ</translation>
 <translation id="2542548955756682219"><ph name="TAB_TITLE"/>, ჩანართი</translation>
@@ -369,7 +366,6 @@
 <translation id="2677748264148917807">დატოვება</translation>
 <translation id="2687009626279857299">შეწყვიტა მუშაობა ამ მოწყობილობაში</translation>
 <translation id="2702516483241149200">სიახლე: გააზიარეთ ბმული, რომელიც ამ ტექსტზე გადავა</translation>
-<translation id="2705073298859543115">შეჯამების შექმნა</translation>
 <translation id="3769942772151914580">რეალურ დროში მოქმედი, პროაქტიური დაცვა სახიფათო საიტებისგან, ჩამოტვირთვებისა და გაფართოებებისგან. აღნიშნული შესაძლებელია თქვენი დათვალიერების მონაცემების Brave-ში გაგზავნის გზით.</translation>
 <translation id="2708226184420201102"><ph name="PRODUCT_NAME"/> ბრაუზერში გახსნა</translation>
 <translation id="271033894570825754">ახალი</translation>
@@ -411,7 +407,6 @@
 <translation id="2883644600102358131">პაროლები მალე შეწყვეტს ამ მოწყობილობაზე მუშაობას. პაროლების გამოყენების გასაგრძელებლად განაახლეთ Google Play services.</translation>
 <translation id="8541922081612557424">Brave-ის შესახებ</translation>
 <translation id="2891154217021530873">გვერდის ჩატვირთვის შეწყვეტა</translation>
-<translation id="4013614219085422040">Brave-მა შეიძლება გამოიყენოს თქვენი ისტორია Search-ისა და Brave-ის სხვა სერვისების თქვენზე მოსარგებად</translation>
 <translation id="2894821468041866720">საგრძნობლად არ ანელებს თქვენს ბრაუზერსა თუ მოწყობილობას.</translation>
 <translation id="2895521649038438824">ამ გვერდს შეგიძლიათ მოუსმინოთ</translation>
 <translation id="2899252057552912621">პაროლები მალე შეწყვეტს მუშაობას, რადგან Google Play services მიუწვდომელია. მისი მუშაობის შეწყვეტამდე შეგიძლიათ პაროლების ასლის შექმნა.</translation>
@@ -439,7 +434,6 @@
 <translation id="2981364137500752533">დაშვებულია მაქსიმუმ 5 ფანჯარა.</translation>
 <translation id="2983102365694924129">ეფუძნება თქვენს აქტივობას საიტზე. ეს პარამეტრი გამორთულია.</translation>
 <translation id="5948666439178419683">გარშემო ტექსტის დართვა Brave ძიებებში</translation>
-<translation id="2988638966064514052">გააძლიერეთ პაროლები</translation>
 <translation id="2989523299700148168">ახლახან მონახულებული</translation>
 <translation id="2992473221983447149">სურათების აღწერილობები</translation>
 <translation id="2996291259634659425">საიდუმლო ფრაზის შექმნა</translation>
@@ -466,7 +460,6 @@
 <translation id="3114507951000454849">გაეცანით დღის სიახლეებს <ph name="NEWS_ICON"/></translation>
 <translation id="3122883569442693641">დაწვრილებით</translation>
 <translation id="3123734510202723619">განცხადებები</translation>
-<translation id="3131961580615093332"><ph name="GIVEN_NAME"/>-მა შეცვალა ჩანართი „<ph name="TAB_NAME"/>“</translation>
 <translation id="3148237711805373460">გადასვლა</translation>
 <translation id="5063487983358782016">Brave-ის მთავარი გვერდი</translation>
 <translation id="3158667104057012316">ხელით არჩეული მიმდევრობით დალაგება</translation>
@@ -491,7 +484,6 @@
 <translation id="3250563604907490871">სურათების აღწერა გაგრძელდება, როცა Wi-Fi ქსელს დაუკავშირდებით</translation>
 <translation id="3254409185687681395">ამ გვერდის სანიშნეებში დამატება</translation>
 <translation id="3259831549858767975">გვერდზე ყველაფრის შემცირება</translation>
-<translation id="3262666254864194397">მისამართთა ზოლი <ph name="BEGIN_NEW"/>სიახლე<ph name="END_NEW"/></translation>
 <translation id="3265093782546847662"><ph name="DOMAIN"/>-ის ყველა გვერდი</translation>
 <translation id="3269093882174072735">სურათის ჩატვირთვა</translation>
 <translation id="327204079441056603">შეიცვალა ამ მოწყობილობაზე პაროლების შენახვის წესი</translation>
@@ -519,7 +511,6 @@
 <translation id="3398320232533725830">სანიშნეების მმართველის გახსნა</translation>
 <translation id="3414952576877147120">ზომა:</translation>
 <translation id="3421726884497337397">აირჩიეთ, რა შემთხვევაში დაბლოკოთ მესამე მხარის ქუქი-ჩანაწერები</translation>
-<translation id="342220687432920852">{HOURS,plural, =1{# საათის წინ}other{# საათის წინ}}</translation>
 <translation id="3430670036890315772">პროფილის ჩაკეტვის გამორთვის შემთხვევაში, შენახული ინფორმაცია წაიშლება</translation>
 <translation id="3435465986463792564">მრავალი ფანჯარა გაქვთ? მათი მართვა აქედან შეგიძლიათ</translation>
 <translation id="4114256890962999877">თქვენს პაროლებზე წვდომის შესანარჩუნებლად დააექსპორტეთ ისინი ახლავე, განაახლეთ Google Play Services და შემდეგ დააიმპორტეთ უკან Brave პაროლების მმართველში. <ph name="BEGIN_LINK"/>სრული ინსტრუქციის ნახვა<ph name="END_LINK"/>.</translation>
@@ -527,11 +518,13 @@
 <translation id="3439276997620616816">აქ იპოვით თქვენს ბოლოდროინდელ ჩანართებს</translation>
 <translation id="3443221991560634068">მიმდინარე გვერდის გადატვირთვა</translation>
 <translation id="3444179773590444986">გსურთ, გამოგვეხმაუროთ საიტებისთვის განკუთვნილი მუქი თემის შესახებ?</translation>
+<translation id="3448874648066942074">შეაჯამეთ გვერდი ხელოვნური ინტელექტის გამოყენებით</translation>
 <translation id="7384339501748168186">კონფიდენციალურობის დაცვის მიზნით, Brave არ შეავსებს ავტომატურად თქვენს პაროლს ამ ველში.</translation>
 <translation id="3467081767799433066">რეკლამის ეფექტურობის გაზომვის ფარგლებში, საკუთარი რეკლამის ეფექტურობის გაზომვის მიზნით, საიტებს შორის ზიარდება შეზღუდული ტიპის მონაცემები — მაგალითად, ის, შეიძინეთ თუ არა რამე საიტის მონახულების შემდეგ.</translation>
 <translation id="3474624961160222204">გაგრძელება, როგორც <ph name="NAME"/></translation>
 <translation id="3478363558367712427">შეგიძლიათ აირჩიოთ საძიებო სისტემა</translation>
 <translation id="3479552764303398839">ახლა არა</translation>
+<translation id="5270319788820204019">მოძებნეთ კლავიატურის, ხმის, ინკოგნიტო რეჟიმის ან კამერის გამოყენებით</translation>
 <translation id="6165882953768534820">დაექსპორტებული ფაილი, აპების ჩათვლით, შეიძლება ხელმისაწვდომი იყოს სხვებისთვის. დაექსპორტების შემდეგ თქვენი პაროლები წაიშლება Brave-იდან.</translation>
 <translation id="3488199663160411179">სახელი</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/> შემოთავაზებული კონტენტის შესახებ</translation>
@@ -544,6 +537,7 @@
 <translation id="3513704683820682405">აუგმენტური რეალობა</translation>
 <translation id="3516053221628030540">Google Play-ზე გადასვლა</translation>
 <translation id="3518985090088779359">მიღება და გაგრძელება</translation>
+<translation id="351952459507671940">ახალ ჯგუფში დამატება</translation>
 <translation id="3521388823983121502"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>-თან მუშაობის გაგრძელება ვერ ხერხდება</translation>
 <translation id="3522247891732774234">ხელმისაწვდომია განახლება. სხვა ვარიანტები</translation>
 <translation id="3888465267851728698">სინქრონიზაციის ნებისმიერ დროს შეცვლა შეგიძლიათ პარამეტრებიდან. თქვენი ისტორიის მეშვეობით Brave შეძლებს Search-ისა და სხვა სერვისების თქვენზე მორგებას.</translation>
@@ -556,8 +550,6 @@
 <translation id="3557336313807607643">კონტაქტებში დამატება</translation>
 <translation id="3563767357928833671">გაცვლის ბუფერის შიგთავსი ნაჩვენებია</translation>
 <translation id="3566639033325271639">პარამეტრების განახლება</translation>
-<translation id="3568945271227339929">გატეხილი პაროლები არ არის</translation>
-<translation id="357465026686164600">ტელეფონი უსაფრთხოების გასაღების სახით</translation>
 <translation id="3575464060651642446">მიმდინარეობს ამ მოწყობილობაში პაროლების შემოწმება…</translation>
 <translation id="3577473026931028326">წარმოიქმნა შეფერხება. ცადეთ ხელახლა.</translation>
 <translation id="3577558748185201054">მართეთ თქვენი ინტერესები და პარამეტრები</translation>
@@ -590,10 +582,10 @@
 <translation id="3710560693796335511">თანამშრომლობა</translation>
 <translation id="3714981814255182093">ძიების ზოლის გახსნა</translation>
 <translation id="7305861879874805497">შეგიძლიათ, იხილოთ სხვა აპების ისტორია, რომლებიც ბმულებს Brave-ში ხსნის.</translation>
-<translation id="3720422586473670527">არა, გმადლობთ</translation>
 <translation id="8397843425685839889">თქვენ და Brave</translation>
 <translation id="3737319253362202215">თარგმნის პარამეტრები</translation>
 <translation id="3738139272394829648">შეეხეთ ეკრანს ძიების დასაწყებად</translation>
+<translation id="4890062597702688591">თქვენს Brave ანგარიშში გატეხილი პაროლები არ არის</translation>
 <translation id="3739899004075612870">სანიშნე შენახულია „<ph name="PRODUCT_NAME"/>“-ში</translation>
 <translation id="3740525748616366977">ამ მოწყობილობაზე ხმოვანი ძიება მიუწვდომელია</translation>
 <translation id="376561056759077985">ზოგიერთი მონაცემი ჯერ არ არის შენახული</translation>
@@ -646,6 +638,7 @@
 <translation id="3985215325736559418">გსურთ, ხელახლა ჩამოტვირთოთ <ph name="FILE_NAME"/>?</translation>
 <translation id="3987993985790029246">ბმულის კოპირება</translation>
 <translation id="4000212216660919741">ხაზგარეშე მთავარი გვერდი</translation>
+<translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{1 გატეხილი პაროლი თქვენს Brave ანგარიშში}other{# გატეხილი პაროლი თქვენს Brave ანგარიშში}}</translation>
 <translation id="4016425174436051808">თვალის მიდევნება ვერ მოხერხდა. წარმოიქმნა შეფერხება.</translation>
 <translation id="4024768890073681126">თქვენს ბრაუზერს მართავს თქვენი მშობელი</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# სთ}other{# სთ}}</translation>
@@ -684,6 +677,7 @@
 <translation id="4195643157523330669">ახალ ჩანართში გახსნა</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{1 ჩანართი ამ მოწყობილობაზე}other{# ჩანართი ამ მოწყობილობაზე}}</translation>
 <translation id="4198423547019359126">ჩამოსატვირთი მდებარეობები მიუწვდომელია</translation>
+<translation id="4209029522667123437"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> • თქვენ გამოიყენეთ ამ საიტზე</translation>
 <translation id="1675646381334855139">ქუქი-ჩანაწერების დაშვების შემთხვევაში, Brave-მა, შესაძლოა, გამოიყენოს ისინი წინასწარ ჩატვირთვისთვის.</translation>
 <translation id="4216511743389425832">ამ გვერდის მოსმენა</translation>
 <translation id="4225725533026049334">თვალს ადევნებთ</translation>
@@ -700,7 +694,9 @@
 <translation id="4269820728363426813">ბმულის მისამართის კოპირება</translation>
 <translation id="4270730597186910506">პროდუქტისთვის თვალის დევნება ან თვალის დევნების გაუქმება.</translation>
 <translation id="4277529130885813215">სხვა მოწყობილობის გამოყენება</translation>
+<translation id="427987768447457592">ჩანართების ახალი ჯგუფი</translation>
 <translation id="6553929648301062677">თქვენი ორგანიზაცია, <ph name="MANAGED_DOMAIN"/>, მართავს როგორც ანგარიშს, რომელშიც შედიხართ, ისე Brave-ის გამოყენების პროცესს. თქვენს ადმინისტრატორს შეუძლია კონკრეტული ფუნქციების დაყენება ან შეზღუდვა.</translation>
+<translation id="4285498937028063278">ჩამაგრების მოხსნა</translation>
 <translation id="4285846616383034558">ქუქი-ჩანაწერები, ქეში და საიტების სხვა მონაცემები</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>ჩართეთ ეკრანის დაბლოკვა Android-ის პარამეტრებიდან<ph name="END_LINK"/></translation>
 <translation id="8120164982795455341">ახალი ინკოგნიტო ჩანართი</translation>
@@ -736,7 +732,6 @@
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> ჩანართის დახურვა</translation>
 <translation id="4452548195519783679">სანიშნე შენახულია „<ph name="FOLDER_NAME"/>“-ში</translation>
 <translation id="4460861538906892109">{ITEMS_COUNT,plural, =1{1 სანიშნე}other{# სანიშნე}}</translation>
-<translation id="4461614516424362539">სხვა მოწყობილობის QR კოდის მეშვეობით მიბმისას ის შეძლებს ამ ტელეფონის გამოყენებას უსაფრთხოების გასაღების სახით. ამოშლის შემთხვევაში მის ხელახლა მისაბმელად QR კოდის სკანირება დაგჭირდებათ.</translation>
 <translation id="4478161224666880173">ამ საიტზე შეგიძლიათ თქვენი <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ანგარიშის გამოყენება. გასაგრძელებლად შედით <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>-ში.</translation>
 <translation id="3133489217401741157">ინსტალირდება <ph name="MODULE"/> Brave-ისთვის…</translation>
 <translation id="4481181637083926190">{BOOKMARK_COUNT,plural, =1{სანიშნე შეინახა „<ph name="FOLDER_NAME"/>“-ში. ის შენახულია მხოლოდ ამ მოწყობილობაზე.}other{სანიშნეები შეინახა „<ph name="FOLDER_NAME"/>“-ში. ისინი შენახულია მხოლოდ ამ მოწყობილობაზე.}}</translation>
@@ -790,6 +785,7 @@
 <translation id="4698061626562952596">გადახედეთ უმოქმედო ჩანართებს აქ</translation>
 <translation id="4699172675775169585">ქეშირებული სურათები და ფაილები</translation>
 <translation id="4710167854527459075">დალაგება უახლესით</translation>
+<translation id="4718044610319080485">გამოიძახებს AI ასისტენტს</translation>
 <translation id="4719927025381752090">თარგმანის შემოთავაზება</translation>
 <translation id="4720556299488643018">გამოწერის გაუქმება</translation>
 <translation id="4732120983431207637">სტეკის დამშლელი</translation>
@@ -821,7 +817,6 @@
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4807098396393229769">სახელი ბარათზე</translation>
 <translation id="480990236307250886">გახსენით საწყისი გვერდი</translation>
-<translation id="481574578487123132">მიბმული მოწყობილობები</translation>
 <translation id="4822710610088666676">ჩანართების ჯგუფი „<ph name="TAB_GROUP_TITLE"/>“ დახურული და შენახულია</translation>
 <translation id="4826163340425232009">სისტემაში შესვლის ქვედა ფურცელი.</translation>
 <translation id="4834250788637067901">გადახდის მეთოდები, შემოთავაზებები და მისამართები Google Pay-დან</translation>
@@ -829,6 +824,7 @@
 <translation id="483742037940503070">{TAB_COUNT,plural, =1{ჩანართების ჯგუფის <ph name="COLOR_NAME"/> ფერის <ph name="TAB_COUNT_ONE"/> ჩანართის, როგორც ფონური რეჟიმის ჩანართების ახალი ჯგუფის აღდგენა.}other{ჩანართების ჯგუფის <ph name="COLOR_NAME"/> ფერის <ph name="TAB_COUNT_MANY"/> ჩანართის, როგორც ფონური რეჟიმის ჩანართების ახალი ჯგუფის აღდგენა.}}</translation>
 <translation id="4837753911714442426">გვერდის ბეჭდვის ვარიანტების გახსნა</translation>
 <translation id="6195403640086187022">დამატებითი უსაფრთხოებისთვის, Brave-ის პაროლების მმართველში შენახვამდე, დაშიფრეთ პაროლები თქვენს მოწყობილობაზე</translation>
+<translation id="4849731766219625109">თქვენი <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ანგარიშის გამოყენება</translation>
 <translation id="4850886885716139402">გადახედვა</translation>
 <translation id="4852014461738377247">მიმდინარეობს შესვლა…</translation>
 <translation id="4860895144060829044">დარეკვა</translation>
@@ -842,21 +838,18 @@
 <translation id="4881695831933465202">გახსნა</translation>
 <translation id="488187801263602086">ფაილის გადარქმევა</translation>
 <translation id="1248710015876067820">Brave-ის ეგზემპლარების მხარდაუჭერელი რაოდენობა.</translation>
+<translation id="8743324804589176795">თქვენს Brave ანგარიშში შენახული პაროლები არ არის</translation>
 <translation id="4905823827770127520">ამ გვერდის ბმულის დართვა</translation>
 <translation id="3217997482476578430">Discover by Brave</translation>
 <translation id="4910889077668685004">გადახდის აპები</translation>
 <translation id="4912413785358399818">ჩანართის გადატანა</translation>
 <translation id="4913169188695071480">განახლების შეწყვეტა</translation>
-<translation id="4913841543356834596">მიიღეთ წვდომა თქვენს ყველა პაროლზე</translation>
-<translation id="4918086044614829423">მიღება</translation>
 <translation id="4925120120285606924">ეკრანის ანაბეჭდი <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">თქვენი პაროლების ექსპორტირება და ჩამოტვირთვა მოხდება ტექსტური ფაილის სახით. ისინი ხილული იქნება ყველა ადამიანისა თუ აპისთვის, რომელსაც სამიზნე საქაღალდეზე წვდომა აქვს.</translation>
 <translation id="4926901776383726965">შეგიძლიათ შეინახოთ სურათები და ფაილები ხაზგარეშე რეჟიმში სანახავად ან სხვა აპებში გასაზიარებლად</translation>
 <translation id="1955495299630319741">ვინაიდან <ph name="DOMAIN_NAME"/>-ის მიერ მართული ანგარიშიდან გადიხართ, თქვენი Brave მონაცემები წაიშლება ამ მოწყობილობიდან. ისინი შენარჩუნდება თქვენს Brave ანგარიშში.</translation>
 <translation id="4943703118917034429">ვირტუალური რეალობა</translation>
 <translation id="4943872375798546930">შედეგები არ არის</translation>
-<translation id="5742837711075932301">თუ ერთსა და იმავე Brave ანგარიშში იქნებით შესული, სხვა მოწყობილობებიდან შესაძლებელი იქნება ამ ტელეფონის გამოყენება უსაფრთხოების გასაღების სახით.</translation>
-<translation id="4953833914914492602">ჩანართების ჯგუფი „<ph name="TAB_GROUP_NAME"/>“ აღარ არის ხელმისაწვდომი.</translation>
 <translation id="4957722034734105353">შეიტყვეთ მეტი…</translation>
 <translation id="4961107849584082341">თარგმნეთ ეს გვერდი ნებისმიერ ენაზე</translation>
 <translation id="6785504257633294906">Brave გაგაფრთხილებთ არაუსაფრთხო საიტებისა და ჩამოტვირთვების შესახებ</translation>
@@ -907,6 +900,7 @@
 <translation id="5174700554036517242">ჩანართი დაბრუნდა თავდაპირველ სიმაღლეზე</translation>
 <translation id="5180063720319462041">გვერდი ითარგმნა შემდეგ ენაზე: <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="5191251636205085390">შეიტყვეთ იმ ახალი ტექნოლოგიების შესახებ, რომელთა მეშვეობითაც მესამე მხარის ქუქი-ჩანაწერების ჩანაცვლება იგეგმება, ასევე, გაეცანით მათი გაკონტროლების ხერხებს</translation>
+<translation id="5197649123261764478">მარტივად მიიღეთ წვდომა თქვენს სანიშნეებზე</translation>
 <translation id="5204967432542742771">შეიყვანეთ პაროლი</translation>
 <translation id="5206168361184759344">{FILE_COUNT,plural, =1{მიმდინარეობს ფაილის ჩამოტვირთვა…}other{მიმდინარეობს # ფაილის ჩამოტვირთვა…}}</translation>
 <translation id="5210286577605176222">წინა ჩანართზე გადასვლა</translation>
@@ -932,9 +926,11 @@
 <translation id="5317780077021120954">შენახვა</translation>
 <translation id="989239400026154074">Brave გირჩევთ Brave-ს</translation>
 <translation id="5326246328175179736">ამ ანგარიშით ვერ შეხვალთ</translation>
+<translation id="5327248766486351172">სახელი</translation>
 <translation id="5328542107300944283"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>-თან გამოყენება</translation>
 <translation id="5342314432463739672">ნებართვების მოთხოვნები</translation>
 <translation id="534580735623577507"><ph name="TIME_PERIOD"/> საიტები არ ფიქსირდება</translation>
+<translation id="5354716139000094027">შეაჯამეთ ხელოვნური ინტელექტით</translation>
 <translation id="5355191726083956201">გაძლიერებული დაცვა ჩართულია</translation>
 <translation id="5375374982898812658">თქვენ მყისიერად დაკარგავთ წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“ და ის ამოიშლება თქვენი ყველა მოწყობილობიდან</translation>
 <translation id="5375577065097716013">მოიძიეთ სურათი Google Lens-ით <ph name="BEGIN_NEW"/>სიახლე<ph name="END_NEW"/></translation>
@@ -944,6 +940,7 @@
 <translation id="539881862970320163">შემოთავაზებულია ძლიერი პაროლი. კლავიატურა დამალულია.</translation>
 <translation id="5409881200985013443">გსურთ, გადაუგზავნოთ <ph name="ONE_TIME_CODE"/> <ph name="CLIENT_NAME"/>-ს?</translation>
 <translation id="5410300144953132176"><ph name="OWNER_FULL_NAME"/> (<ph name="OWNER_EMAIL"/>) გთხოვთ, რომ გაწევრიანდეთ ჩანართების ჯგუფში. ყველას, ვისაც აქვს წვდომა ბმულზე, შეუძლია ნებისმიერი ჩანართის რედაქტირება, შესაბამისად გაწევრიანებისას გამოიჩინეთ სიფრთხილე. ბმულს მოქმედების ვადა ეწურება 48 საათში.</translation>
+<translation id="5412388166586147626">AI ასისტენტის გახსნა ვერ მოხერხდა. ცადეთ ხელახლა.</translation>
 <translation id="5414836363063783498">დადასტურება…</translation>
 <translation id="5415871492522952905">თქვენს ყველა მოწყობილობაზე გექნებათ ისტორია და ჩანართები, რომ მიტოვებული საქმის გაგრძელება შეძლოთ</translation>
 <translation id="542073632571549028"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>) მყისიერად დაკარგავს წვდომას „<ph name="GROUP_NAME"/>“-ის ჩანართების ჯგუფზე</translation>
@@ -963,6 +960,7 @@
 <translation id="5456381639095306749">გვერდის ჩამოტვირთვა</translation>
 <translation id="5458366071038729214">აქ იპოვით საიტებს, რომლებსაც თვალს ადევნებთ</translation>
 <translation id="5468068603361015296">მაინც გსურთ, ჩამოტვირთოთ <ph name="FILE_NAME"/>?</translation>
+<translation id="5471273988133666918">ჩანართის „<ph name="TAB_TITLE"/>“ გადატანა შეუძლებელია</translation>
 <translation id="548278423535722844">რუკების აპში გახსნა</translation>
 <translation id="5492637351392383067">მოწყობილობაზე დაშიფვრა</translation>
 <translation id="549660026907543296">შეერთება სახელით <ph name="MEMBER_FULL_NAME"/></translation>
@@ -971,19 +969,17 @@
 <translation id="5517095782334947753">თქვენ <ph name="FROM_ACCOUNT"/>-დან მიღებული სანიშნეები, ისტორია, პაროლები და სხვა პარამეტრები გაქვთ.</translation>
 <translation id="5517326820028369152">ბოლო აქტივობების ქვედა ფურცელი</translation>
 <translation id="5526281268548144413">სხვადასხვა ფანჯრებში დახურვა შეუძლებელია</translation>
-<translation id="5528925345478618296">{MINUTES,plural, =1{# წუთის წინ}other{# წუთის წინ}}</translation>
 <translation id="5548606607480005320">უსაფრთხოების შემოწმება</translation>
-<translation id="5551564597369878730"><ph name="GIVEN_NAME"/> შეუერთდა ჩანართების ჯგუფს „<ph name="TAB_GROUP_NAME"/>“</translation>
 <translation id="4362225295386962644">პაროლის გამოყენებისას Brave გაგაფრთხილებთ ხოლმე, თუ აღმოჩნდება, რომ ის ონლაინ გამოქვეყნდა. აღნიშნული ქმედებისას თქვენი პაროლები და მომხმარებლის სახელები დაშიფრული იქნება, რაც ნიშნავს, რომ მათ ვერავინ (მათ შორის, ვერც Brave) წაიკითხავს.</translation>
 <translation id="5555525474779371165">აირჩიეთ სასურველი Safe Browsing-ის დაცვის დონე</translation>
 <translation id="5556459405103347317">ხელახლა ჩატვირთვა</translation>
 <translation id="555671485580955310">ისტორიისა და ჩანართების სინქრონიზაცია</translation>
 <translation id="555816257274242153">ფასისთვის თვალის მიდევნება შეწყდა</translation>
+<translation id="5561445479436807659">ჩაერთეთ სახალისო Dino თამაშში</translation>
 <translation id="5561549206367097665">ქსელის კავშირის მოლოდინში…</translation>
 <translation id="5568069709869097550">სისტემაში შესვლა ვერ მოხერხდა</translation>
 <translation id="557018954714092179">ახალი საქაღალდის შექმნა</translation>
 <translation id="5578795271662203820">ამ გამოსახულების ძიება <ph name="SEARCH_ENGINE"/>-ში</translation>
-<translation id="5581519193887989363"><ph name="BEGIN_LINK1"/>პარამეტრებიდან<ph name="END_LINK1"/> ნებისმიერ დროს შეგიძლიათ აირჩიოთ, რისი სინქრონიზაცია გსურთ.</translation>
 <translation id="5596627076506792578">დამატებითი ვარიანტები</translation>
 <translation id="4968908871398201967">ინკოგნიტო რეჟიმი</translation>
 <translation id="6894318537270274409">გადადით <ph name="BEGIN_LINK"/>Brave სერვისებზე<ph name="END_LINK"/>, რომ გაეცნოთ მეტ პარამეტრს, რომლებიც იყენებს მონაცემებს Brave-ში ფუნქციების თქვენზე მოსარგებად.</translation>
@@ -1009,6 +1005,7 @@
 <translation id="2320748512701464301">Brave დაგიცავთ პერსონალურ მონაცემთა გაჟონვის შემთხვევებისგან, არაუსაფრთხო ვებსაიტებისა და სხვა უსიამოვნებისგან</translation>
 <translation id="5698878456427040674">შეამოწმეთ, მხარდაჭერილია თუ არა არჩეული ანგარიში.</translation>
 <translation id="570347048394355941">ჩანართზე გადართვა</translation>
+<translation id="5709213329446699338"><ph name="SITE"/> ითხოვს დაკავშირებას თანმიმდევრულ პორტთან</translation>
 <translation id="5715150588940290235">გსურთ, წაშალოთ უსაფრთხოების შენახული კოდები?</translation>
 <translation id="8926436246118281502">თქვენი სანიშნეები, ისტორია და Brave-ის სხვა მონაცემები აღარ იქნება სინქრონიზებული თქვენს Brave ანგარიშთან</translation>
 <translation id="572328651809341494">ბოლო ჩანართები</translation>
@@ -1067,7 +1064,6 @@
 <translation id="5958275228015807058">თქვენი ფაილები და გვერდები ხელმისაწვდომია „ჩამოტვირთვების“ სექციაში</translation>
 <translation id="5958994127112619898">გვერდის გამარტივება</translation>
 <translation id="5962718611393537961">შეეხეთ ჩასაკეცად</translation>
-<translation id="5964180026566797835">ძველი პაროლების შემოწმება შეუძლებელია</translation>
 <translation id="5964869237734432770">სურათების აღწერის შეწყვეტა</translation>
 <translation id="5977976211062815271">ამ მოწყობილობაზე</translation>
 <translation id="5978661847409534366">{ITEMS_COUNT,plural, =1{1 გვერდი თქვენს საკითხავ სიაში}other{# გვერდი თქვენს საკითხავ სიაში}}</translation>
@@ -1076,7 +1072,6 @@
 <translation id="5995726099713306770">გსურთ, ხელახლა ჩამოტვირთოთ გვერდი?</translation>
 <translation id="6456271171669383967">Brave-ის შენარჩუნება</translation>
 <translation id="6000203700195075278">თვალის ხელახლა მიდევნება</translation>
-<translation id="6002122790816966947">თქვენი მოწყობილობები</translation>
 <translation id="6011308810877101166">ძიების შემოთავაზებების გაუმჯობესება</translation>
 <translation id="6013305291643746595">უძველესის მიხედვით დალაგება</translation>
 <translation id="296137235951584143">მოირგეთ Brave</translation>
@@ -1089,6 +1084,7 @@
 <translation id="605721222689873409">წწ</translation>
 <translation id="6059830886158432458">აქ შეგიძლიათ მართოთ ამბები და აქტივობა</translation>
 <translation id="4701065218405772222">გატეხილი პაროლების შესამოწმებლად შედით თქვენს Brave ანგარიშში</translation>
+<translation id="6078323886959318429">მალსახმობის დამატება</translation>
 <translation id="6085886413119427067">განსაზღვრავს დაცული კავშირით ვებსაიტებთან დაკავშირების ხერხს</translation>
 <translation id="6087286598828478206">გსურთ დაბლოკვა და ჯგუფიდან გასვლა?</translation>
 <translation id="60923314841986378">დარჩენილია <ph name="HOURS"/> საათი</translation>
@@ -1112,6 +1108,7 @@
 <translation id="6150320133806434356">სანიშნე შეინახა</translation>
 <translation id="1224606669200461217">თქვენს Brave ანგარიშში Brave-ის მონაცემები რომ გამოიყენოთ და შეინახოთ, განაახლეთ Brave</translation>
 <translation id="6154478581116148741">ამ მოწყობილობიდან პაროლების ექსპორტირებისთვის პარამეტრებიდან გაააქტიურეთ ეკრანის დაბლოკვის მეთოდი</translation>
+<translation id="383007806262310953">სანიშნეების ზოლის ჩვენება</translation>
 <translation id="7087658909840709934">წინასწარ ჩატვირთავს გვერდებს, რომლებსაც Brave-ის გათვლებით, სავარაუდოდ, ეწვევით.</translation>
 <translation id="6170675927290506430">შეტყობინების პარამეტრებზე გადასვლა</translation>
 <translation id="6186394685773237175">გატეხილი პაროლები არ მოიძებნა</translation>
@@ -1124,6 +1121,7 @@
 <translation id="6210748933810148297">არ ხართ <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">მიმდინარეობს ამ გვერდის გადახედვა</translation>
 <translation id="6221633008163990886">განბლოკეთ თქვენი პაროლის ექსპორტირებისთვის</translation>
+<translation id="6225572914528673855">მისამართთა ზოლი</translation>
 <translation id="6232535412751077445">ფუნქცია „არ ადევნო თვალი“-ს ჩართვის შემთხვევაში, ეს მოთხოვნა თქვენს ვების დათვალიერების ტრაფიკს დაერთვება. მისი ეფექტურობა დამოკიდებულია იმაზე, მოახდენს თუ არა კონკრეტული ვებსაიტი ამ მოთხოვნაზე რეაგირებას და როგორ იქნება ეს მოთხოვნა ინტერპრეტირებული.
 
 მაგალითად, ზოგიერთი ვებსაიტის რეაგირება შეიძლება გამოიხატოს იმაში, რომ ისინი არ გიჩვენებთ თქვენ მიერ ადრე მონახულებულ ვებსაიტებზე დაფუძნებულ რეკლამას. მრავალი ვებსაიტი მაინც შეაგროვებს და გამოიყენებს თქვენს დათვალიერების მონაცემებს — მაგალითად, უსაფრთხოების გაუმჯობესების, საკუთარ ვებგვერდებზე კონტენტის უზრუნველყოფის, რეკლამისა და რეკომენდაციების ჩვენების, ან ანგარიშგების სტატისტიკის გენერირების მიზნით.</translation>
@@ -1140,7 +1138,9 @@
 <translation id="6295158916970320988">ყველა საიტი</translation>
 <translation id="6296366034485697675">ექსპორტი და წაშლა</translation>
 <translation id="629730747756840877">ანგარიში</translation>
+<translation id="6301526076346731664">დეველოპერთა ხელსაწყოების გახსნა</translation>
 <translation id="6303969859164067831">გამოსვლა და სინქრონიზაციის გამორთვა</translation>
+<translation id="6307241780749477694">დაადასტურეთ ვინაობა თქვენს ყველა პაროლზე წვდომის მისაღებად</translation>
 <translation id="6312687380483398334">ვებ-აპები (ჩუმი)</translation>
 <translation id="6315386555979018699">წაშლა და გაგრძელება</translation>
 <translation id="6316139424528454185">Android-ის ვერსია მხარდაუჭერელია</translation>
@@ -1188,14 +1188,12 @@
 <translation id="387105482057676379">მიაბით ერთმანეთს Brave და სხვა Brave სერვისები პერსონალიზებისა და სხვა მიზნით</translation>
 <translation id="6482749332252372425"><ph name="FILE_NAME"/> ვერ ჩამოიტვირთა არასაკმარისი მეხსიერების გამო.</translation>
 <translation id="6486420406192123355">ეს PDF ფაილი დაუცველი კავშირით მოსარგებლე საიტიდან მოდის</translation>
-<translation id="6495590690749880440">გაიხსნას ჩანართების ჯგუფი?</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{ფაილი ჩამოიტვირთა}other{# ჩამოტვირთვა დასრულდა}}</translation>
 <translation id="3960299545138990065">Brave-ის გადატვირთვა</translation>
 <translation id="6518133107902771759">გადამოწმება</translation>
 <translation id="6527303717912515753">გაზიარება</translation>
 <translation id="3700405816184340252">Brave ისტორია</translation>
 <translation id="708829030563435351">Brave-იდან მონახულებული ვებსაიტები არ გამოჩნდება. ვებსაიტების ყველა ტაიმერი წაიშლება.</translation>
-<translation id="7723158744459952869">Brave-ს რეაგირებისთვის მეტისმეტად ბევრი დრო დასჭირდა</translation>
 <translation id="6539092367496845964">წარმოიქმნა შეფერხება. ცადეთ მოგვიანებით.</translation>
 <translation id="6541983376925655882">{NUM_HOURS,plural, =1{შემოწმდა 1 საათის წინ}other{შემოწმდა # საათის წინ}}</translation>
 <translation id="6545017243486555795">ყველა მონაცემის გასუფთავება</translation>
@@ -1207,7 +1205,6 @@
 <translation id="971059121491380239">თქვენს Android მოწყობილობას, შესაძლოა, ჰქონდეს მსგავსი პარამეტრი. თუ რეკლამის გაზომვა ჩართულია როგორც Brave-ში, ისე თქვენს Android მოწყობილობაზე, შესაბამისი კომპანია შეძლებს რეკლამის ეფექტურობის გაზომვას თქვენ მიერ მონახულებული ვებსაიტებისა და გამოყენებული აპების მასშტაბით.</translation>
 <translation id="6565959834589222080">ხელმისაწვდომობის მიხედვით გამოიყენება Wi-Fi</translation>
 <translation id="4480935821314799946">ამიერიდან, ახალი ჩანართის გახსნისას, იხილავთ ამბებს <ph name="SITE_NAME"/>-დან. თქვენ მიერ თვალმიდევნებული საიტები შეინახება თქვენს Brave ანგარიშში. მათი მართვა Discover-ის პარამეტრებიდან შეგიძლიათ.</translation>
-<translation id="6570116402456758630">გვერდის შეჯამება</translation>
 <translation id="657177046675873214">თქვენს სანიშნეებზე თქვენი ყველა მოწყობილობიდან წვდომისთვის პარამეტრებიდან ჩართეთ „სანიშნეები“</translation>
 <translation id="6573096386450695060">ყოველთვის დაშვება</translation>
 <translation id="5157964048453367290">სხვა მოწყობილობებზე თქვენ მიერ Brave-ით გახსნილი ჩანართები აქ გამოჩნდება.</translation>
@@ -1227,7 +1224,6 @@
 <translation id="7939692063031538305">ამ აპის გაუმჯობესების მიზნით, Brave უგზავნის მოხმარებისა და ავარიულად გათიშვის მონაცემებს Brave-ს. <ph name="BEGIN_UMA_LINK"/>მართვა<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">დაბლოკვა ყოველთვის</translation>
 <translation id="6641780377503683465">წაიშალოს <ph name="INTEREST"/></translation>
-<translation id="6645629752388991326">გააკონტროლეთ, რომელ მოწყობილობას შეუძლია სისტემაში შესვლა ამ მოწყობილობის უსაფრთხოების გასაღების სახით გამოყენების მეშვეობით.</translation>
 <translation id="7556503430569358637">თქვენ მიერ მონახულებული URL-ები ეგზავნება Brave-ს იმის პროგნოზირებისთვის, თუ რომელი საიტების მონახულებას მოისურვებთ შემდგომში</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 და <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> სხვა}other{<ph name="CONTACT_PREVIEW"/>\u2026 და <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> სხვა}}</translation>
 <translation id="6649642165559792194">სურათის გადახედვა <ph name="BEGIN_NEW"/>სიახლე<ph name="END_NEW"/></translation>
@@ -1285,7 +1281,6 @@
 <translation id="6865313869410766144">ფორმათა მონაცემების ავტომატური შევსება</translation>
 <translation id="4167670741834902166">ახალი ინკოგნიტო ჩანართი</translation>
 <translation id="1565666992559765293">მისამართები არ არის დაშიფრული თქვენი საიდუმლო ფრაზით. აღნიშნული საშუალებას გაძლევთ, გამოიყენოთ ისინი სხვა Brave სერვისებში.</translation>
-<translation id="6869056123412990582">კომპიუტერი</translation>
 <translation id="687838958001010630">ყველას, ვისაც აქვს ბმული, შეუძლია ნებისმიერი ჩანართის რედაქტირება</translation>
 <translation id="6880903702195291049">ნებართვები წესრიგშია</translation>
 <translation id="6883204995689174413">გაზიარება</translation>
@@ -1329,7 +1324,6 @@
 <translation id="3947065058794437451">ინკოგნიტო რეჟიმი ამ მოწყობილობაზე ხელმისაწვდომი არ არის</translation>
 <translation id="4436469586880564451">თქვენი პაროლები ჩამოიტვირთება CSV ფაილის სახით. ისინი ხილული იქნება ყველა ადამიანისა თუ აპისთვის, რომლებსაც ფაილზე წვდომა აქვთ. დაექსპორტებული პაროლები წაიშლება Brave-იდან.</translation>
 <translation id="6996145122199359148">ამ გვერდის ჩამოტვირთვა</translation>
-<translation id="2971862257346039617">დაადასტურეთ ვინაობა, რათა მიიღოთ წვდომა პაროლებზე თქვენს Brave ანგარიშში</translation>
 <translation id="7013762323294215682">წვდომის ეს გასაღები შეინახება თქვენს პაროლების მმართველში. მისით სარგებლობას შეძლებს ყველა, ვისთვისაც ხელმისაწვდომია წვდომის ეს გასაღები.</translation>
 <translation id="7020741890149022655">საკითხავ სიაში დამატება <ph name="BEGIN_NEW"/>სიახლე<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">ბრაუზერში გახსნა</translation>
@@ -1346,12 +1340,10 @@
 <translation id="4947532681094581238">თქვენი Brave მონაცემების გასუფთავება ამ მოწყობილობიდანაც</translation>
 <translation id="5499149312981370855">აირჩიეთ, დაერთოს თუ არა Brave ისტორია, Brave სერვისებში უფრო პერსონალიზებული ფუნქციებით რომ ისარგებლოთ</translation>
 <translation id="8208853227947884571">Brave განახლებულია</translation>
-<translation id="7102843846294013537">თქვენი ზოგიერთი პაროლი მიუწვდომელია ამ მოწყობილობაში</translation>
 <translation id="7106762743910369165">თქვენს ბრაუზერს მართავს თქვენი ორგანიზაცია</translation>
 <translation id="144902786838571419">Brave გაძლევთ მეტ კონტროლს თქვენთვის ხილულ რეკლამაზე. ის, ასევე, ზღუდავს იმას, თუ რომელ საიტებს შეუძლია თქვენ შესახებ ინფორმაციის მიღება, როცა მათ მიერ თქვენთვის ნაჩვენებია პერსონალიზებული რეკლამა.</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{ნებართვები განახლდა 1 საიტისთვის}other{ნებართვები განახლდა # საიტისთვის}}</translation>
 <translation id="7138678301420049075">სხვა</translation>
-<translation id="7139479418357139965">სთხოვეთ გამომგზავნს ახალი ბმულის გამოგზავნა.</translation>
 <translation id="7140829094791862589">ხელით დალაგება</translation>
 <translation id="7146622961999026732">როგორც ჩანს, თქვენთვის მნიშვნელოვანია შემდეგი აპები და საიტები:</translation>
 <translation id="7148400116894863598"><ph name="BEGIN_LINK"/>მიიღეთ დამატებითი ინფორმაცია<ph name="END_LINK"/> <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>-დან.</translation>
@@ -1359,7 +1351,6 @@
 <translation id="1206376179559420424">საიდუმლო ფრაზით დაშიფვრა არ მოიცავს გადახდის მეთოდებსა და მისამართებს Google Pay-დან.
 
 ამ პარამეტრის შესაცვლელად, <ph name="BEGIN_LINK"/>წაშალეთ Brave მონაცემები თქვენს ანგარიშში<ph name="END_LINK"/>.</translation>
-<translation id="7161230316646448869">შეასრულეთ თქვენი სანიშნეების, ისტორიისა და სხვა კონტენტის სინქრონიზაცია თქვენს ყველა მოწყობილობას შორის</translation>
 <translation id="7168323970702333693">შესული ხართ, როგორც <ph name="USER_NAME"/>. გახსნის პარამეტრებს.</translation>
 <translation id="7173114856073700355">პარამეტრების გახსნა</translation>
 <translation id="7173338713290252554">ფასის ისტორია ვებში</translation>
@@ -1407,6 +1398,7 @@
 <translation id="7359002509206457351">გადახდის მეთოდებზე წვდომა</translation>
 <translation id="7363349185727752629">კონფიდენციალურობასთან დაკავშირებული არჩევანის სახელმძღვანელო</translation>
 <translation id="7364103838544876661">დათვალიერების მონაცემების წაშლის სხვა გზები</translation>
+<translation id="5640892076695177498">Brave პაროლების მმართველში პაროლების შენახვისა და მათი გამოყენების დასაწყებად განაახლეთ Google Play services</translation>
 <translation id="7375125077091615385">ტიპი:</translation>
 <translation id="7376560087009844242">გვერდზე არსებული მეტი ტექსტის დართვის შემთხვევაში, შესაძლოა, უკეთესი შედეგები იხილოთ „ძიებისთვის შეხებით“ სარგებლობისას. ამ ფუნქციის შეცვლა ნებისმიერ დროს შეგიძლიათ <ph name="BEGIN_LINK"/>პარამეტრებიდან<ph name="END_LINK"/>.</translation>
 <translation id="7379900596734708416">ხელმისაწვდომია მუქი თემა საიტებისთვის</translation>
@@ -1415,7 +1407,6 @@
 <translation id="7400418766976504921">URL</translation>
 <translation id="724102042129299115">Brave-ის პირველი გაშვება</translation>
 <translation id="5341476184053934779">Brave ანგარიშის მომხმარებელი</translation>
-<translation id="741204030948306876">დიახ, თანახმა ვარ</translation>
 <translation id="7419565702166471774">ყოველთვის დაცული კავშირების გამოყენება</translation>
 <translation id="7421293530411019405">დატოვებთ ჩანართების ჯგუფს?</translation>
 <translation id="7431991332293347422">მართეთ თქვენი დათვალიერების ისტორიის გამოყენების ხერხები Search-ისა და სხვა სერვისების პერსონალიზებისთვის</translation>
@@ -1480,17 +1471,18 @@
 <translation id="5278260521317049275">ინკოგნიტოს ჩაკეტვის ჩართვა</translation>
 <translation id="7658239707568436148">გაუქმება</translation>
 <translation id="7663320421139257046">გასაგრძელებლად <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ამ საიტს გაუზიარებს თქვენს შემდეგ მონაცემებს: <ph name="FIELDS_STRING"/>. გაეცანით ამ საიტის <ph name="BEGIN_LINK1"/>კონფიდენციალურობის დებულებას<ph name="END_LINK1"/>.</translation>
-<translation id="7665369617277396874">ანგარიშის დამატება</translation>
 <translation id="766587987807204883">აქ გამოჩნდება სტატიები, რომელთა წაკითხვაც ხაზგარეშე რეჟიმშიც შეგიძლიათ</translation>
 <translation id="7666185984446444960"><ph name="TAB_GROUPS_AND_TABS_PART"/> დაიხურა</translation>
 <translation id="7682724950699840886">ცადეთ შემდეგი: დარწმუნდით, რომ თქვენს მოწყობილობაზე ხელმისაწვდომი მეხსიერება საკმარისია, ხოლო შემდეგ გაიმეორეთ ექსპორტირების მცდელობა.</translation>
 <translation id="7686086654630106285">ვრცლად საიტების მიერ შემოთავაზებული რეკლამის შესახებ</translation>
 <translation id="7795837497684113327">თქვენმა მოწყობილობამ ვერ გახსნა Brave. ამ პრობლემის მოსაგვარებლად ჩამოტვირთეთ Brave-ის უახლესი განახლება აპების მაღაზიიდან.</translation>
 <translation id="7691043218961417207">გაეცანით კონტენტს, რომელსაც შეგიძლიათ თვალი მიადევნოთ</translation>
+<translation id="7692761875510935111">სწრაფად გახსენით ბრაუზერში. ამ მალსახმობის რედაქტირებისთვის შეეხეთ ხანგრძლივად.</translation>
 <translation id="7697383401610880082">სახელური ჩავლებისთვის</translation>
 <translation id="7698359219371678927">ელფოსტის <ph name="APP_NAME"/>-ში შექმნა</translation>
 <translation id="7702420606070050505">ბოლო აქტივობების ქვედა ფურცელი გაიხსნა სრულ სიმაღლეზე</translation>
 <translation id="7707922173985738739">მობილური ინტერნეტის გამოყენება</translation>
+<translation id="7708994397325774423">მიიღეთ თქვენი ყველა პაროლი</translation>
 <translation id="7733878270780732638">მოწყობილობაზე არ არის საკმარისი სივრცე</translation>
 <translation id="5321611925570577577">Brave პაროლების მმართველი მალე შეწყვეტს ამ მოწყობილობაზე მუშაობას</translation>
 <translation id="774876555279732384">ავტომატური შევსების სერვისები იმართება <ph name="BEGIN_LINK"/>Android-ის პარამეტრებიდანაც<ph name="END_LINK"/>.</translation>
@@ -1531,6 +1523,7 @@
 <translation id="7913993612870913335">{FILE_COUNT,plural, =1{1 დაბლოკილია თქვენი ორგანიზაციის მიერ}other{# დაბლოკილია თქვენი ორგანიზაციის მიერ}}</translation>
 <translation id="7914399737746719723">აპი დაინსტალირებულია</translation>
 <translation id="7919123827536834358">ამ ენების ავტომატურად თარგმნა</translation>
+<translation id="7921782882718083488">შეაჯამეთ ეს გვერდი</translation>
 <translation id="7926975587469166629">ბარათის მეტსახელი</translation>
 <translation id="7929962904089429003">მენიუს გახსნა</translation>
 <translation id="7934668619883965330">ფაილის ჩამოტვირთვა ვერ ხერხდება. ფაილის ფორმატი მხარდაუჭერელია.</translation>
@@ -1554,12 +1547,10 @@
 <translation id="8004582292198964060">ბრაუზერი</translation>
 <translation id="8014210850410408071">შემდეგი, პაროლების იმპორტი</translation>
 <translation id="8015452622527143194">გვერდზე ყველაფრის ნაგულისხმევ ზომაზე დაბრუნება</translation>
-<translation id="8017431260099661477">მოსაწვევის ბმული არ იხსნება</translation>
 <translation id="8026238112629815203">ჩვენ შევცვალეთ ის, თუ როგორ ინახება პაროლები ამ მოწყობილობაზე</translation>
 <translation id="8027395186860110042">პაროლებმა, შესაძლოა, მალე შეწყვიტოს მუშაობა</translation>
 <translation id="8027863900915310177">აირჩიეთ, სად გსურთ ჩამოტვირთვა</translation>
 <translation id="8030852056903932865">დადასტურება</translation>
-<translation id="4662093674527201215">Brave პაროლების მმართველში პაროლების შენახვისა და მათი გამოყენების დასაწყებად განაახლეთ Google Play services.</translation>
 <translation id="8032569120109842252">თვალს ადევნებთ</translation>
 <translation id="8037750541064988519">დარჩენილია <ph name="DAYS"/> დღე</translation>
 <translation id="8037801708772278989">შემოწმდა რამდენიმე წამის წინ</translation>
@@ -1574,6 +1565,7 @@
 <translation id="8073388330009372546">გამოსახულების გახსნა ახალ ჩანართზე</translation>
 <translation id="8076492880354921740">ჩანართები</translation>
 <translation id="8078096376109663956">მხოლოდ ტექსტის გაზიარება</translation>
+<translation id="8078348702936632821">ამ მალსახმობის ჩამაგრება</translation>
 <translation id="8084114998886531721">შენახული პაროლი</translation>
 <translation id="1718138320251931534">მართეთ თქვენი Brave ანგარიშის მონაცემები</translation>
 <translation id="6213630783726251371">თქვენი ისტორიის ნაწილი, შესაძლოა, აქ არ გამოჩნდეს. Brave-ის მთლიანი ისტორიის სანახავად გახსენით Brave-ის სრული ისტორია. ასევე, თქვენს Brave ანგარიშში შეიძლება ინახებოდეს ვების დათვალიერების სხვა ტიპის ისტორიაც, რომელიც ხელმისაწვდომია მისამართზე <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1629,10 +1621,10 @@
 <translation id="8282297628636750033">საიტებზე მუქი თემის გამოყენება (შეძლებისდაგვარად)</translation>
 <translation id="8282950411412455249">უსაფრთხოების პარამეტრებზე გადასვლა</translation>
 <translation id="8306751933352925837">პაროლები მალე შეწყვეტს ამ მოწყობილობაზე მუშაობას. პაროლების გამოყენების გასაგრძელებლად განაახლეთ Google Play Services. <ph name="BEGIN_LINK"/>შეიტყვეთ მეტი<ph name="END_LINK"/></translation>
-<translation id="8307517230426267469"><ph name="GIVEN_NAME"/>-მა ამოშალა „<ph name="TAB_NAME"/>“</translation>
 <translation id="8310451567823644042">პაროლები მალე შეწყვეტს მუშაობას</translation>
 <translation id="831192587911042850">დაამატებს ამჟამინდელ ვებსაიტს თქვენ მიერ თვალმიდევნებული ვებსაიტების სიას.</translation>
 <translation id="8320212361750431956">ბოლო აქტივობები</translation>
+<translation id="832514020744584629"><ph name="PREF_TITLE"/>  <ph name="BEGIN_NEW"/>ახალი<ph name="END_NEW"/></translation>
 <translation id="7174809333940729365">Brave გაცნობებთ იმ საიტების შესახებ, რომლებიც მეტისმეტად ბევრ შეტყობინებას გიგზავნით</translation>
 <translation id="834313815369870491">არასოდეს ითარგმნოს საიტები</translation>
 <translation id="8348430946834215779">შეძლებისდაგვარად HTTPS-ის გამოყენება და გაფრთხილების მიღება, სანამ ჩაიტვირთება ის საიტები, რომელთა მიერაც ის მხარდაუჭერელია</translation>
@@ -1652,7 +1644,6 @@
 <translation id="8419244640277402268">დართვა</translation>
 <translation id="8422250855136581222">ამ მოწყობილობაზე ჩანართები არ არის</translation>
 <translation id="78656282836782594">Brave-ის უსაფრთხოების ხელსაწყოები</translation>
-<translation id="5735840612282428689">გვერდი გაიგზავნა. მის სანახავად გახსენით Brave თქვენს <ph name="DEVICE_TYPE"/>-ზე</translation>
 <translation id="8427875596167638501">გადახედვის ჩანართი ნახევრადგახსნილია</translation>
 <translation id="8428213095426709021">პარამეტრები</translation>
 <translation id="8430824733382774043">მხოლოდ ეკრანის ანაბეჭდის გაზიარება</translation>
@@ -1689,6 +1680,7 @@
 <translation id="8540136935098276800">შეიყვანეთ URL სწორი ფორმატით</translation>
 <translation id="854522910157234410">ამ გვერდის გახსნა</translation>
 <translation id="8547025137714087639">{ARCHIVED_TAB_COUNT,plural, =1{უმოქმედო ჩანართი (1)}other{უმოქმედო ჩანართები (#)}}</translation>
+<translation id="8547466829003330976">გადახედეთ PDF-ს ხელოვნური ინტელექტის გამოყენებით</translation>
 <translation id="5711390076756601471">Brave-იდან გასვლისას ინკოგნიტო ჩანართების ჩაკეტვა</translation>
 <translation id="5503308854539525011">Brave ზღუდავს იმ მონაცემთა საერთო მოცულობას, რომელთა გაზიარებაც შეუძლია საიტებს ბრაუზერის მეშვეობით რეკლამის ეფექტურობის გასაზომად</translation>
 <translation id="8559990750235505898">სხვა ენებზე არსებული გვერდების თარგმნის შემოთავაზება</translation>
@@ -1707,7 +1699,6 @@
 <translation id="8611922158252451755">ყველას, ვისაც აქვს წვდომა ბმულზე, შეუძლია ნებისმიერი ჩანართის რედაქტირება, შესაბამისად გაზიარებისას გამოიჩინეთ სიფრთხილე. ბმულს ვადა ეწურება 48 საათში.</translation>
 <translation id="5784514951651328424">თქვენს Brave ანგარიშში შეიძლება ინახებოდეს სხვა ტიპის დათვალიერების ისტორიაც, რომელიც ხელმისაწვდომია მისამართზე: <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8617240290563765734">გაიხსნას ჩამოტვირთულ შემცველობაში რეკომენდირებული URL?</translation>
-<translation id="8621068256433641644">ტელეფონი</translation>
 <translation id="8635399646025169806">გსურთ ჩანართების ჯგუფის შენარჩუნება?</translation>
 <translation id="8636825310635137004">თქვენს სხვა მოწყობილობებზე არსებულ ჩანართებზე წვდომის მისაღებად, ჩართეთ სინქრონიზაცია.</translation>
 <translation id="864544049772947936">ფანჯრების მართვა (<ph name="INSTANCE_COUNTS"/>)</translation>
@@ -1720,6 +1711,7 @@
 <translation id="869891660844655955">ვადის გასვლის თარიღი</translation>
 <translation id="8699120352855309748">ამ ენების თარგმნის შემოთავაზების აკრძალვა</translation>
 <translation id="8712637175834984815">კარგი</translation>
+<translation id="6146670726156522332">გააძლიერეთ პაროლები თქვენს Brave ანგარიშში</translation>
 <translation id="8723453889042591629">სწრაფად თარგმნეთ ეს გვერდი. ამ მალსახმობის რედაქტირებისთვის შეეხეთ ხანგრძლივად.</translation>
 <translation id="8725066075913043281">ხელახლა სცადეთ</translation>
 <translation id="8731268612289859741">უსაფრთხოების კოდი</translation>
@@ -1764,6 +1756,7 @@
 <translation id="1174893863889683998">გსურთ, ციფრული კომფორტიდან ამოშალოთ თქვენი აქტივობა Brave-ში?</translation>
 <translation id="8942627711005830162">სხვა ფანჯარაში გახსნა</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> — ამ ენის ჩამოტვირთვა ვერ მოხერხდა. ცადეთ მოგვიანებით.</translation>
+<translation id="8946759102391960088">შეინარჩუნეთ წვდომა თქვენს პაროლებზე</translation>
 <translation id="85151160756468368">თქვენს პაროლებზე წვდომის შესანარჩუნებლად დააექსპორტეთ ისინი ახლავე და შემდეგ დააიმპორტეთ ისინი პაროლების სასურველ მმართველში. Brave პაროლების მმართველმა შეწყვიტა მუშაობა, რადგან Google Play services მიუწვდომელია.</translation>
 <translation id="8963117664422609631">საიტის პარამეტრებზე გადასვლა</translation>
 <translation id="8965591936373831584">მომლოდინე</translation>
@@ -1785,6 +1778,7 @@
 <translation id="9022871169049522985">საიტებსა და რეკლამის განმთავსებლებს შეუძლიათ თავიანთი რეკლამის ეფექტურობის გაზომვა</translation>
 <translation id="9035378196785279980">გადატანა:\u2026</translation>
 <translation id="9042893549633094279">კონფიდენციალურობა და უსაფრთხოება</translation>
+<translation id="1612219807314383628">სწრაფად დაიწყეთ ძიება Brave-ში</translation>
 <translation id="9050666287014529139">საიდუმლო ფრაზა</translation>
 <translation id="9055497320631373736">საიტი კვლავ დაემატა პოტენციურ საიტებს</translation>
 <translation id="9057030985451135243">შეიტყვეთ გაზიარებული ჩანართების ჯგუფების შესახებ</translation>
@@ -1846,6 +1840,7 @@
 <translation id="970715775301869095">დარჩენილია <ph name="MINUTES"/> წთ</translation>
 <translation id="981121421437150478">ოფლაინი</translation>
 <translation id="983192555821071799">ყველა ჩანართის დახურვა</translation>
+<translation id="5022280646675126732">თქვენს Brave ანგარიშში პაროლების შემოწმება ვერ ხერხდება</translation>
 <translation id="987264212798334818">ზოგადი</translation>
 <translation id="3442126301004443274">თქვენი მოწყობილობიდან ინკოგნიტო რეჟიმში დათვალიერების ისტორია რომ წაშალოთ, დახურეთ ყველა ინკოგნიტო ჩანართი.</translation>
 <translation id="992745192656291733"><ph name="TAB_COUNT"/> ჩანართი</translation>

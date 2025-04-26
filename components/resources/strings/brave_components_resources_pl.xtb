@@ -124,7 +124,7 @@
 <translation id="730042046912793465">To jest</translation>
 <translation id="2055363275850890030">Okno prywatne</translation>
 <translation id="9133213713928851646">Brave nie zapamiętuje Twojej aktywności w oknie prywatnym. Strony, które odwiedzisz, nie pojawią się w Twojej historii przeglądania, a pliki cookie znikną, gdy zamkniesz przeglądarkę. Okno prywatne nie czyni cię jednak całkowicie anonimowym w sieci.</translation>
-<translation id="4085423007106063912">Brave nigdy nie zapamiętuje Twoich działań w oknie prywatnym. Odwiedzone przez Ciebie strony nie będą widoczne w historii. Pliki cookie, dane formularzy i dane witryn zostaną usunięte w momencie zamknięcie okna.</translation>
+<translation id="4491905831789757331">Brave nigdy nie zapamiętuje Twoich działań w oknie prywatnym. Odwiedzone przez Ciebie strony nie będą widoczne w historii. Pliki cookie, dane formularzy i dane witryn zostaną usunięte w chwili zamknięcia wszystkich otwartych okien prywatnych.</translation>
 <translation id="1700746046668116047">Pamiętaj, że Twoja aktywność będzie widoczna dla usługodawcy internetowego, pasywnych obserwatorów sieci lub pracodawcy (jeżeli korzystasz z firmowego urządzenia lub firmowej sieci). Aby zwiększyć poziom prywatności, otwórz okno prywatne w trybie Tor.</translation>
 <translation id="8759753423332885148">Dowiedz się więcej.</translation>
 <translation id="8611976753572844841">Okno prywatne z połączeniem z Tor</translation>
@@ -1971,6 +1971,7 @@
 <translation id="8652827551752428289">Pokaż historię</translation>
 <translation id="5030659775136592441">Pokaż menedżer zakładek</translation>
 <translation id="6919203766034706175">Importuj ustawienia</translation>
+<translation id="290553639533591736">Tryb skupienia – Gemini Live</translation>
 <translation id="6159704524780747483">Otwórz czat SI</translation>
 <translation id="1199430163665775722">Edytuj silniki wyszukiwania</translation>
 <translation id="4276265845501430443">Pokaż pomoc</translation>
@@ -2108,6 +2109,7 @@
 <translation id="4567071417854988869">Streść ten film</translation>
 <translation id="7921782882718083488">Streść tę stronę</translation>
 <translation id="7932221068776853847">Rozłącz się, aby przestać przesyłać treści tej strony do Leo i rozpocząć nową konwersację</translation>
+<translation id="8743383817154663379">Coś poszło nie tak podczas przetwarzania twojego żądania. Spróbuj ponownie później.</translation>
 <translation id="2712650703044366764">Ten model ma nieprawidłowy adres końcowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
 <translation id="1167803637855350748">Wystąpił problem sieciowy przy łączeniu z Leo; sprawdź swoje połączenie i spróbuj ponownie.</translation>
 <translation id="1996126325390835277">Osiągnięto limit częstości w wersji premium. Spróbuj ponownie za kilka godzin.</translation>
@@ -2115,13 +2117,13 @@
 <translation id="7692501701960747469">Klucz API skonfigurowany dla tego modelu jest nieprawidłowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
 <translation id="7905602379229309187">Punkt końcowy jest obecnie przeciążony. Spróbuj ponownie później.</translation>
 <translation id="8151638057146502721">Skonfiguruj</translation>
-<translation id="4177458398826096846">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Mixtral 8x7B opracowanym przez firmę Mistral AI z myślą o radzeniu sobie z zaawansowanymi zadaniami <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Haiku opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Sonnet opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> od <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Llama jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Qwen 14B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Qwen jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Mixtral 8x7B opracowanym przez firmę Mistral AI z myślą o obsłudze zaawansowanych zadań. Nasza wersja modelu Mixtral 8x7B jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Instant jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Haiku opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Haiku jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Sonnet opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Sonnet jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama Vision opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Llama Vision jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Czat</translation>
 <translation id="4685048769603134644">Otwórz całą stronę</translation>
@@ -2184,6 +2186,7 @@
 <translation id="8650874793377330048">Przestań odpowiadać</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
 <translation id="1093419424466417703">Strona jest zbyt długa dla Leo. Może brakować części kontekstu z konwersacji. Leo był w stanie odczytać <ph name="PERCENTAGE"/> treści strony.</translation>
+<translation id="4592293425457329338">W rozmowie może brakować pewnego kontekstu. Leo był w stanie zachować <ph name="PERCENTAGE"/> powiązanej treści konwersacji.</translation>
 <translation id="2186990448773134544">Zawartość strony została udoskonalona poprzez wyodrębnienie najistotniejszych treści, ponieważ była ona zbyt długa dla Leo.</translation>
 <translation id="5140068729857132378">Szukam odpowiednich treści na stronie…</translation>
 <translation id="4370698775470316661">Ta rozmowa jest za długa i nie może być kontynuowana. Mogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.</translation>
@@ -2205,6 +2208,7 @@
 <translation id="7979673624064378842">Nieprawdopodobnie szybki czat</translation>
 <translation id="2836330653441111204">Równowaga prędkości działania i inteligencji</translation>
 <translation id="6695329447007213917">Czat ogólny, generowanie kodu i nie tylko</translation>
+<translation id="5051668914970329839">Czat ogólny – Vision</translation>
 <translation id="3965507912994218570">Ustawienia Leo</translation>
 <translation id="1037324977127422019">Witaj, jestem Leo!</translation>
 <translation id="8930348081963284873">Inteligentny asystent oparty na sztucznej inteligencji, wbudowany bezpośrednio w przeglądarkę.</translation>
@@ -2240,11 +2244,28 @@
 <translation id="6320643499534852464">Media społecznościowe</translation>
 <translation id="2370739752330685659">Może później</translation>
 <translation id="983013125018250242">Narzędzia Leo</translation>
+<translation id="7623223587478473368">Załącznik</translation>
+<translation id="3777121685517940177">Prześlij plik...</translation>
+<translation id="9088751620363630236">Zrób zdjęcie...</translation>
+<translation id="4250229828105606438">Zrzut ekranu</translation>
+<translation id="6332876390231524389">Zawartość bieżącej karty</translation>
 <translation id="49269513399674318">Skorzystaj z mikrofonu</translation>
 <translation id="3895031624234442305">Modele niestandardowe</translation>
 <translation id="4572010449071015143">Rozpocznij nową rozmowę</translation>
 <translation id="345901077335355561">Wróć do aktywnej rozmowy</translation>
 <translation id="6287023598025162715">Nowa rozmowa</translation>
+<translation id="8370801182970639038">Automatycznie (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Włączone wyszukiwarki</translation>
+<translation id="5355776323718420036">Ukryj popularne strony</translation>
+<translation id="6543799171249004861">Zdjęcie autorstwa <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Zapytaj Brave Search</translation>
+<translation id="6851426306697017546">Pokaż godzinę</translation>
+<translation id="4844370919312937270">Wyświetl widżet wyszukiwania w nowych kartach</translation>
+<translation id="5009354496127441090">Pokaż popularne strony</translation>
+<translation id="4784802981241664605">STATYSTYKI</translation>
+<translation id="4290791698375397492">Usunięto popularną stronę</translation>
+<translation id="1436784010935106834">Usunięto</translation>
+<translation id="9030215177866748410">Najlepsze witryny są sugerowane na podstawie stron internetowych, które często odwiedzasz.</translation>
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="8458987127502506209">Włącz Tarcze Brave</translation>
 <translation id="7509914170164691086">Tarcze są WŁĄCZONE <ph name="LINK_BEFORE"/> dla <ph name="LINK_AFTER"/></translation>
@@ -2257,6 +2278,7 @@
 <translation id="5799940914270080805">Zmiana tych ustawień może spowodować niepoprawne działanie stron.</translation>
 <translation id="9204041448536398473">Globalne ustawienia Tarczy</translation>
 <translation id="2108334320919763866">Ustawienia ogólne</translation>
+<translation id="7205939464631857223">Wyczyść wszystkie zablokowane elementy</translation>
 <translation id="3440043456924990296">Ustawienia zarządzane przez organizację</translation>
 <translation id="7053983685419859001">Zablokuj</translation>
 <translation id="5716230673298034837">Zezwalaj na wszystkie</translation>

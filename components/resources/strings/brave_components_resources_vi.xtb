@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Đây là một</translation>
 <translation id="2055363275850890030">Cửa sổ Riêng tư</translation>
 <translation id="9133213713928851646">Brave không nhớ những gì bạn làm trong Cửa sổ Riêng tư. Các trang web bạn truy cập sẽ không hiển thị trong lịch sử của bạn, và các cookie sẽ bị xóa khi bạn duyệt xong. Mặc dù vậy, Cửa sổ Riêng tư không làm cho bạn hoàn toàn ẩn danh khi trực tuyến.</translation>
-<translation id="4085423007106063912">Brave không bao giờ ghi nhớ những gì bạn làm trong Cửa sổ Riêng tư. Các trang mà bạn truy cập sẽ không xuất hiện trong lịch sử của bạn. Cookie, dữ liệu biểu mẫu và dữ liệu trang sẽ biến mất khi bạn đóng cửa sổ.</translation>
+<translation id="4491905831789757331">Brave không bao giờ ghi nhớ những gì bạn làm trong Cửa sổ Riêng tư. Các trang mà bạn truy cập sẽ không xuất hiện trong lịch sử của bạn. Cookie, dữ liệu biểu mẫu và dữ liệu trang sẽ biến mất khi bạn đóng tất cả cửa sổ riêng tư.</translation>
 <translation id="1700746046668116047">Lưu ý rằng hoạt động của bạn có thể vẫn xuất hiện trước nhà cung cấp dịch vụ internet của bạn, các quan sát viên mạng thụ động hoặc chủ lao động của bạn (nếu bạn đang sử dụng máy hoặc mạng của công ty). Để riêng tư hơn, hãy mở một cửa sổ riêng tư với Tor.</translation>
 <translation id="8759753423332885148">Learn more.</translation>
 <translation id="8611976753572844841">Cửa sổ Riêng tư với Kết nối Tor</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Hiển thị lịch sử</translation>
 <translation id="5030659775136592441">Hiển thị trình quản lý dấu trang</translation>
 <translation id="6919203766034706175">Cài đặt nhập khẩu</translation>
+<translation id="290553639533591736">Tập trung Gemini Live</translation>
 <translation id="6159704524780747483">Cuộc trò chuyện Open AI</translation>
 <translation id="1199430163665775722">Sửa công cụ tìm kiếm</translation>
 <translation id="4276265845501430443">Hiển thị trợ giúp</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Tóm tắt video này</translation>
 <translation id="7921782882718083488">Tóm tắt trang này</translation>
 <translation id="7932221068776853847">Ngắt kết nối để ngừng gửi nội dung trang này cho Leo và bắt đầu cuộc trò chuyện mới</translation>
+<translation id="8743383817154663379">Có vấn đề xảy ra khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.</translation>
 <translation id="2712650703044366764">Mô hình này có điểm cuối không hợp lệ. Vui lòng kiểm tra cấu hình của bạn và thử lại.</translation>
 <translation id="1167803637855350748">Đã xảy ra sự cố mạng khi kết nối với Leo. Hãy kiểm tra kết nối của bạn và thử lại.</translation>
 <translation id="1996126325390835277">Bạn đã đạt đến giới hạn premium. Vui lòng thử lại sau vài giờ nữa.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">Khóa API được cấu hình cho mô hình này không hợp lệ. Vui lòng kiểm tra cấu hình của bạn và thử lại.</translation>
 <translation id="7905602379229309187">Điểm cuối hiện đang quá tải. Vui lòng thử lại sau.</translation>
 <translation id="8151638057146502721">Cấu hình</translation>
-<translation id="4177458398826096846">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình do Alibaba Cloud tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Mixtral 8x7B, một mô hình do Mistral AI tạo ra để xử lý các tác vụ nâng cao. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Xin chào, tôi là Leo. Tôi được cung cấp bởi Brave, dựa trên Claude Haiku, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Xin chào, tôi là Leo. Tôi được cung cấp bởi Brave, dựa trên Claude Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> bởi <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Llama chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình do Alibaba Cloud tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Qwen chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Mixtral 8x7B, một mô hình do Mistral AI tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Mixtral chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Instant chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Haiku, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Haiku chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Sonnet chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama Vision, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Llama Vision chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Trò chuyện</translation>
 <translation id="4685048769603134644">Mở trang đầy đủ</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">Dừng trả lời</translation>
 <translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="1093419424466417703">Trang này quá dài đối với Leo. Một số bối cảnh có thể bị thiếu trong cuộc trò chuyện. Leo đã có thể đọc <ph name="PERCENTAGE"/> nội dung của trang.</translation>
+<translation id="4592293425457329338">Cuộc trò chuyện có thể thiếu một số ngữ cảnh. Leo có thể giữ lại <ph name="PERCENTAGE"/> nội dung liên quan của cuộc trò chuyện.</translation>
 <translation id="2186990448773134544">Nội dung trang đã được tinh chỉnh bằng cách trích xuất thông tin có liên quan nhất vì nó quá dài đối với Leo.</translation>
 <translation id="5140068729857132378">Tìm các phần có liên quan của trang web...</translation>
 <translation id="4370698775470316661">Cuộc trò chuyện này quá dài và không thể tiếp tục. Có thể có sẵn các mô hình khác mà Leo có khả năng duy trì độ chính xác cho các cuộc trò chuyện dài hơn.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">Trò chuyện nhanh như chớp</translation>
 <translation id="2836330653441111204">Cân bằng tốc độ và trí thông minh</translation>
 <translation id="6695329447007213917">Trò chuyện mục đích chung, lập trình, v.v.</translation>
+<translation id="5051668914970329839">Hình ảnh cho mục đích chung</translation>
 <translation id="3965507912994218570">Cài đặt Leo</translation>
 <translation id="1037324977127422019">Xin chào, tôi là Leo!</translation>
 <translation id="8930348081963284873">Trợ lý thông minh được hỗ trợ bởi AI, được tích hợp ngay trong Brave.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">Truyền thông xã hội</translation>
 <translation id="2370739752330685659">Có lẽ để sau</translation>
 <translation id="983013125018250242">Công cụ Leo</translation>
+<translation id="7623223587478473368">Tệp đính kèm</translation>
+<translation id="3777121685517940177">Tải tệp lên...</translation>
+<translation id="9088751620363630236">Chụp ảnh...</translation>
+<translation id="4250229828105606438">Ảnh chụp màn hình</translation>
+<translation id="6332876390231524389">Nội dung thẻ hiện tại</translation>
 <translation id="49269513399674318">Sử dụng micrô</translation>
 <translation id="3895031624234442305">Mô hình tùy chỉnh</translation>
 <translation id="4572010449071015143">Bắt đầu cuộc trò chuyện mới</translation>
 <translation id="345901077335355561">Quay lại cuộc trò chuyện trước</translation>
 <translation id="6287023598025162715">Cuộc trò chuyện mới</translation>
+<translation id="8370801182970639038">Tự động (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Công cụ tìm kiếm đã bật</translation>
+<translation id="5355776323718420036">Ẩn các trang hàng đầu</translation>
+<translation id="6543799171249004861">Ảnh chụp bởi <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Hỏi Brave Tìm kiếm</translation>
+<translation id="6851426306697017546">Hiển thị đồng hồ</translation>
+<translation id="4844370919312937270">Hiển thị tiện ích tìm kiếm trong thẻ mới</translation>
+<translation id="5009354496127441090">Hiển thị các trang hàng đầu</translation>
+<translation id="4784802981241664605">THỐNG KÊ</translation>
+<translation id="4290791698375397492">Đã xóa trang hàng đầu</translation>
+<translation id="1436784010935106834">Đã xóa</translation>
+<translation id="9030215177866748410">Các trang mạng hàng đầu được đề xuất dựa trên các website bạn thường truy cập.</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
 <translation id="7509914170164691086">Khiên đã BẬT <ph name="LINK_BEFORE"/>cho<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">Thay đổi các cài đặt này có thể làm hỏng các trang web.</translation>
 <translation id="9204041448536398473">Cài đặt Lá chắn toàn cục</translation>
 <translation id="2108334320919763866">Mặc định toàn cầu</translation>
+<translation id="7205939464631857223">Xóa tất cả thành phần bị chặn</translation>
 <translation id="3440043456924990296">Cài đặt do tổ chức quản lý</translation>
 <translation id="7053983685419859001">Chặn</translation>
 <translation id="5716230673298034837">Cho phép toàn bộ</translation>

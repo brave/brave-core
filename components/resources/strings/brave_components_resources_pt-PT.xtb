@@ -124,7 +124,6 @@
 <translation id="730042046912793465">Isto é uma</translation>
 <translation id="2055363275850890030">Janela Privada</translation>
 <translation id="9133213713928851646">O Brave não se recorda do que faz numa «Janela Privada». Os ''sites'' que visita não irão aparecer no seu histórico e os ''cookies'' desaparecem quando termina. No entanto, a «Janela Privada» não o torna completamente anónimo ''on-line''.</translation>
-<translation id="4085423007106063912">O Brave nunca memoriza o que faz numa janela em modo privado. Os sites que visita não aparecerão no seu histórico. Os cookies, dados de formulário e o dados dos sites desaparecerão quando fechar a janela.</translation>
 <translation id="1700746046668116047">Note que a sua atividade ainda poderá ser visível para o seu prestador de serviços de Internet, observadores de rede passivos ou para a sua entidade patronal (se estiver a usar uma máquina ou rede de trabalho). Para mais privacidade, abra uma janela privada com o Tor.</translation>
 <translation id="8759753423332885148">Obtenha mais informações.</translation>
 <translation id="8611976753572844841">Janela Privada com ligação ao Tor</translation>
@@ -2111,13 +2110,6 @@
 <translation id="7692501701960747469">A chave API configurada para este modelo é inválida. Verifique a configuração e tente novamente.</translation>
 <translation id="7905602379229309187">De momento, o terminal encontra-se sobrecarregado. Por favor, tente novamente mais tarde.</translation>
 <translation id="8151638057146502721">Configurar</translation>
-<translation id="4177458398826096846">Olá, chamo-me Leo. Sou o assistente de IA alojado integralmente pela Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Llama 3.1 8B, criado pela Meta. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Olá, sou o Leo. Sou o assistente de IA alojado integralmente pela Brave. Para ter um bom desempenho e ser aplicável a muitos casos de utilização, utilizo o modelo Llama  8B, criado pela Meta. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Olá, chamo-me Leo. Sou o assistente de IA integralmente alojado da Brave. Para lidar com as tarefas avançadas, utilizo o modelo Mixtral 8x7B, criado pela Mistral AI. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Olá, o meu nome é Leo. Sou representado pela Brave. Para alimentar as tarefas de conversação e o processamento de texto, utilizo o modelo Claude Instant, criado pela Anthropic. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Olá, chamo-me Leo. Sou representado pela Brave e potenciado pelo Claude Haiku, um modelo criado pela Anthropic para realizar tarefas de conversa e de processamento de texto. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Olá, chamo-me Leo. Sou representado pela Brave e potenciado pelo Claude Sonnet, um modelo criado pela Anthropic para realizar tarefas de conversa e de processamento de texto. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> por <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Abrir página inteira</translation>
@@ -2241,6 +2233,9 @@
 <translation id="4572010449071015143">Iniciar uma conversa nova</translation>
 <translation id="345901077335355561">Voltar à conversa ativa</translation>
 <translation id="6287023598025162715">Nova conversa</translation>
+<translation id="6543799171249004861">Foto de <ph name="AUTHOR"/></translation>
+<translation id="4290791698375397492">Site principal removido</translation>
+<translation id="9030215177866748410">Os sites principais são sugeridos com base nos sites que visita mais frequentemente.</translation>
 <translation id="6303294677342628402">Proteções</translation>
 <translation id="8458987127502506209">Ativar Proteções do Brave</translation>
 <translation id="7509914170164691086">Proteções <ph name="LINK_BEFORE"/>ATIVADAS<ph name="LINK_AFTER"/> para</translation>

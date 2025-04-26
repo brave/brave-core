@@ -109,7 +109,6 @@
 <translation id="7304425663107214334">Prikaži predloge u pregledaču</translation>
 <translation id="8982438328166986164">Prikazuje preporučene veb-sajtove na osnovu vaših obeleživača i istorije pregledanja.</translation>
 <translation id="924029461438529367">Prikaži predloge za pretragu</translation>
-<translation id="1571106259128580884">Prikaži predloge omiljenih sajtova</translation>
 <translation id="6285118765755298263">Indeksiraj druge pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji prate specifikacije softvera OpenSearch.</translation>
 <translation id="412411722208944922">Brzi pretraživači</translation>
@@ -245,9 +244,6 @@
 <translation id="2888496576732880897">Doprinesi razvoju Brave pretrage</translation>
 <translation id="7044431516245362795">Pridružite se projektu istraživanja veba i doprinesite povećanju indeksa i poboljšau rezultata pretrage. <ph name="LEARN_MORE_START"/>Saznajte više.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Naravno, pomoći ću</translation>
-<translation id="2877653791257935258">Unesite naziv veb-sajta ili URL</translation>
-<translation id="5329830149661250028">Vidite koliko se Brave razlikuje od drugih: nema oglasa, nema praćenja, a učitavanje stranica je znatno brže.</translation>
-<translation id="3941792073703079607">Vidite koliko se Brave razlikuje od drugih: blokirajte oglase, sačuvajte podatke, strimujte brže.</translation>
 <translation id="3545804467215833536">Dodirnite da biste videli Brave štitove</translation>
 <translation id="1724327820822194498">Pogledajte sve loše stvari koje su na svakoj stranici blokirali Brave štitovi.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/>, drugi oglasi i praćenja su blokirani</translation>
@@ -1029,7 +1025,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="5888208462949095139">Pretraga pomoću: <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Vidžet za početni ekran</translation>
 <translation id="703185154752046151">Vidžet je dodat na početni ekran</translation>
-<translation id="3290805388004282161">Probajte vidžet za Brave pretragu</translation>
 <translation id="4809681171446727314">Pristupite privatnoj, nezavisnoj pretrazi direktno na početnom ekranu.</translation>
 <translation id="7751715172931488388">Dodaj vidžet</translation>
 <translation id="7285167584112910782">Brza Brave pretraga</translation>
@@ -1218,11 +1213,10 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6891382640886173702">Spoj prozore</translation>
 <translation id="2912247081180973411">Zatvori prozore</translation>
 <translation id="4010699428656610296">Spojite ostale kartice u drugi Brave prozor.</translation>
-<translation id="208634871997892083">Uvek uključen VPN</translation>
 <translation id="1599073346542156922">Kako da uključite:</translation>
 <translation id="7001163334415463127">1. Otvorite podešavanja uređaja iz spiska aplikacija ili dodirnite dugme u nastavku.</translation>
 <translation id="887443138775437899">2. Pronađite Brave VPN i dodirnite ikonicu za podešavanja s desne strane.</translation>
-<translation id="3776051499611941773">3. Aktivirajte opciju <ph name="ALWAYS_ON_TUTORIAL_START"/>Uvek uključen VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> kako biste ga uključili.</translation>
+<translation id="7546805138087561624">3. Aktivirajte opciju <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Uvek uključen VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> kako biste ga uključili.</translation>
 <translation id="4776146737004271126">Otvorite podešavanja Android-a</translation>
 <translation id="2728518864712716830">Najnovija verzija je preuzeta.</translation>
 <translation id="8403338849301491865">Spisak filtera je uspešno ažuriran</translation>

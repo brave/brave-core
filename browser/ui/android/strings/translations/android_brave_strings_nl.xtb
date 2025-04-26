@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Browsersuggesties weergeven</translation>
 <translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
 <translation id="924029461438529367">Zoeksuggesties weergeven</translation>
-<translation id="1571106259128580884">Suggesties voor topsites weergeven</translation>
+<translation id="5989135139219497991">Topsuggesties weergeven</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch spec volgen.</translation>
 <translation id="412411722208944922">Snelle zoekmachines</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Help Brave Search groeien</translation>
 <translation id="7044431516245362795">Neem deel aan het Web Discovery Project om de index te helpen groeien en de zoekresultaten te verbeteren. <ph name="LEARN_MORE_START"/>Meer informatie.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Natuurlijk, ik wil helpen</translation>
-<translation id="2877653791257935258">Typ de naam of URL van een website</translation>
-<translation id="5329830149661250028">Brave maakt het verschil: geen advertenties, geen trackers, veel kortere laadtijden.</translation>
-<translation id="3941792073703079607">Zie het verschil met Brava: Blokkeer advertenties. Bespaar data. Stream sneller.</translation>
 <translation id="3545804467215833536">Tik om Brave Shields te bekijken</translation>
 <translation id="1724327820822194498">Bekijk alles wat Brave heeft geblokkeerd op alle pagina's met Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> en nog <ph name="TRACKER"/> advertenties en trackers geblokkeerd</translation>
@@ -504,6 +501,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
+<translation id="7205939464631857223">Alle geblokkeerde elementen wissen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
 <translation id="1118508688433541158">Browse sneller en blokkeer advertenties met Brave</translation>
 <translation id="7427391215172269363">Ik bespaar dagelijks data door online te browsen met Brave.</translation>
@@ -1029,7 +1027,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5888208462949095139">Zoeken met <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Startscherm-widget</translation>
 <translation id="703185154752046151">Widget toegevoegd aan het startscherm</translation>
-<translation id="3290805388004282161">Probeer de widget 'Zoeken met Brave'</translation>
+<translation id="4635094429202343515">Probeer de Brave Search-widget</translation>
 <translation id="4809681171446727314">Krijg toegang tot privé- en onafhankelijk zoeken rechtstreeks vanaf het startscherm.</translation>
 <translation id="7751715172931488388">Widget toevoegen</translation>
 <translation id="7285167584112910782">Snel zoeken met Brave</translation>
@@ -1096,6 +1094,8 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1179407411385015942">Leo is een slimme assistent op basis van AI, die in de browser is ingebouwd</translation>
 <translation id="5781842473834867765">Mijn gespreksgeschiedenis opslaan</translation>
 <translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
+<translation id="4983005227524068187">Weergeven in snelzoekbalk</translation>
+<translation id="8514910864411336826">Maakt een snelkoppeling om Leo te starten vanuit de snelzoekbalk.</translation>
 <translation id="6106701981952170121">Alle Leo AI-gespreksgegevens verwijderen</translation>
 <translation id="423600389315522551">Als je Leo AI reset, moet je je weer aanmelden om Brave Leo AI later te gebruiken en wordt ook je chatgeschiedenis gewist. Door je chatgeschiedenis te wissen, verwijder je al je eerdere gesprekken met Brave Leo AI. Deze actie kun je niet ongedaan maken.</translation>
 <translation id="6742599753610126012">Chatgeschiedenis wissen</translation>
@@ -1218,11 +1218,12 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6891382640886173702">Vensters samenvoegen</translation>
 <translation id="2912247081180973411">Vensters sluiten</translation>
 <translation id="4010699428656610296">Voeg andere tabbladen samen in een ander Brave-venster.</translation>
-<translation id="208634871997892083">VPN altijd aan</translation>
+<translation id="4306918392910017801">VPN automatisch opnieuw verbinden</translation>
 <translation id="1599073346542156922">Hoe u deze aanzet:</translation>
 <translation id="7001163334415463127">1. Open uw apparaatinstellingen in uw applade of door op de onderstaande knop te tikken.</translation>
 <translation id="887443138775437899">2. Zoek naar Brave VPN en tik op de instellingenpictogram aan de rechterkant.</translation>
-<translation id="3776051499611941773">3. Zet <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN altijd aan<ph name="ALWAYS_ON_TUTORIAL_END"/> aan.</translation>
+<translation id="7546805138087561624">3. Zet <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN altijd aan<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> aan.</translation>
+<translation id="2446001600399646984">Vanwege Android-beperkingen werkt 'Verbindingen zonder VPN blokkeren' niet zoals verwacht. <ph name="LEARN_MORE_START"/>Meer informatie.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Android-instellingen openen</translation>
 <translation id="2728518864712716830">Update is gedownload.</translation>
 <translation id="8403338849301491865">Filterlijst is bijgewerkt</translation>
@@ -1232,4 +1233,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
 <translation id="6859935199732075666">Safe Browsing-fouten weergeven</translation>
+<translation id="2735247450315842119">Screenshots op privétabbladen toestaan</translation>
+<translation id="8420414929552321089">Als deze optie is ingeschakeld, zijn privétabbladen ook zichtbaar wanneer meerdere apps zijn geopend.</translation>
 </translationbundle>

@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Mostrar sugestões de navegador</translation>
 <translation id="8982438328166986164">Exibe sugestões de sites com base nos seus favoritos e no seu histórico de navegação.</translation>
 <translation id="924029461438529367">Mostrar sugestões de pesquisa</translation>
-<translation id="1571106259128580884">Mostrar sugestões de sites principais</translation>
+<translation id="5989135139219497991">Mostrar as sugestões principais</translation>
 <translation id="6285118765755298263">Indexar outros mecanismos de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente sites que seguem a especificação OpenSearch.</translation>
 <translation id="412411722208944922">Mecanismos de pesquisa rápida</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Ajude a melhorar a Pesquisa Brave</translation>
 <translation id="7044431516245362795">Participe do Web Discovery Project para ajudar a aumentar o índice e melhorar os resultados da pesquisa. <ph name="LEARN_MORE_START"/>Saiba mais.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Claro, vou ajudar</translation>
-<translation id="2877653791257935258">Digite o nome ou URL de um site</translation>
-<translation id="5329830149661250028">Veja o diferencial do Brave: nada de anúncios. Nada de rastreadores. Páginas que carregam bem mais rápido.</translation>
-<translation id="3941792073703079607">Veja o diferencial do Brave: bloqueie anúncios, economize dados e assista a transmissões com mais velocidade.</translation>
 <translation id="3545804467215833536">Toque para ver as Proteções do Brave</translation>
 <translation id="1724327820822194498">Veja todo o conteúdo indesejado bloqueado pelo Brave, em todas as páginas, com as Proteções.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> e mais <ph name="TRACKER"/> anúncios e rastreadores bloqueados</translation>
@@ -504,6 +501,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Agradecemos por informar aos desenvolvedores do Brave que há algo errado com este site. Faremos nosso melhor para corrigir isso!</translation>
 <translation id="650318023204990401">Controles avançados</translation>
+<translation id="7205939464631857223">Limpar todos os elementos bloqueados</translation>
 <translation id="5370478469168390143">Salvar dados online</translation>
 <translation id="1118508688433541158">Navegue com rapidez e bloqueie anúncios com o Brave</translation>
 <translation id="7427391215172269363">Economizo dados diariamente navegando na web com o Brave.</translation>
@@ -1029,7 +1027,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="5888208462949095139">Pesquisar com <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget da tela inicial</translation>
 <translation id="703185154752046151">Widget adicionado à tela inicial</translation>
-<translation id="3290805388004282161">Teste o widget da pesquisa Brave</translation>
+<translation id="4635094429202343515">Teste o widget da pesquisa Brave</translation>
 <translation id="4809681171446727314">Acesse uma pesquisa privada e independente diretamente na sua tela inicial.</translation>
 <translation id="7751715172931488388">Adicionar widget</translation>
 <translation id="7285167584112910782">Pesquisa de ação rápida do Brave</translation>
@@ -1096,6 +1094,8 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1179407411385015942">O Leo é um assistente inteligente fornecido por IA, incorporado diretamente no navegador</translation>
 <translation id="5781842473834867765">Armazenar meu histórico de conversas</translation>
 <translation id="4109670531935487117">Exibir sugestões de preenchimento automático na barra de endereço</translation>
+<translation id="4983005227524068187">Mostrar na barra de mecanismos de pesquisa rápida</translation>
+<translation id="8514910864411336826">Permite um atalho para iniciar o Leo a partir da barra de mecanismos de pesquisa rápida.</translation>
 <translation id="6106701981952170121">Excluir todos os dados da conversa Leo AI</translation>
 <translation id="423600389315522551">A redefinição do assistente Leo AI vai exigir que você opte por usar o Brave Leo AI no futuro. Isso também vai limpar o histórico de chat. A limpeza do histórico de chat vai eliminar todas as conversas anteriores com o Brave Leo. Não é possível desfazer esta ação.</translation>
 <translation id="6742599753610126012">Limpar histórico de chat</translation>
@@ -1218,11 +1218,12 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6891382640886173702">Combinar janelas</translation>
 <translation id="2912247081180973411">Fechar janelas</translation>
 <translation id="4010699428656610296">Combine outras guias em outra janela do Brave.</translation>
-<translation id="208634871997892083">VPN sempre ativa</translation>
+<translation id="4306918392910017801">Reconexão automática da VPN</translation>
 <translation id="1599073346542156922">Como ativar:</translation>
 <translation id="7001163334415463127">1. Abra as definições do dispositivo a partir da gaveta de aplicativos ou tocando no botão abaixo.</translation>
 <translation id="887443138775437899">2. Encontre a VPN Brave e toque no ícone de definições à direita.</translation>
-<translation id="3776051499611941773">3. Ative a opção <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN sempre ativa<ph name="ALWAYS_ON_TUTORIAL_END"/>.</translation>
+<translation id="7546805138087561624">3. Ative a opção <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre ativa<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
+<translation id="2446001600399646984">Observe que, devido às limitações do Android, "Bloquear conexões sem VPN" não está funcionando como esperado. <ph name="LEARN_MORE_START"/>Saiba mais.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Abrir configurações do Android</translation>
 <translation id="2728518864712716830">A atualização foi baixada.</translation>
 <translation id="8403338849301491865">A lista de filtros foi atualizada com sucesso</translation>
@@ -1232,4 +1233,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Histórico de chat</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegação Segura</translation>
+<translation id="2735247450315842119">Permitir capturas de tela em guias privadas</translation>
+<translation id="8420414929552321089">Se permitido, as guias privadas também ficarão visíveis quando vários aplicativos estiverem abertos.</translation>
 </translationbundle>

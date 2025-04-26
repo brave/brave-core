@@ -316,6 +316,18 @@
 <translation id="8813509417421129632">דף שמוטמע ב-<ph name="SITE"/> מעוניין להישמר</translation>
 <translation id="7700010743463174379">נעשה ניסיון לשמור דף זה</translation>
 <translation id="6774238875569752630">נעשה ניסיון לשמור דף המוטמע בדף זה</translation>
+<translation id="1233913566967531780">מיקוד כרטיסיות</translation>
+<translation id="4034992002364254340">לאסוף את כל הכרטיסיות הקשורות לחלון חדש</translation>
+<translation id="8012125596344613514">הצעות לנושאים</translation>
+<translation id="7529120186020617755">יש להזין נושא למיקוד...</translation>
+<translation id="6847541693235449912">פתיחה</translation>
+<translation id="2079545284768500474">בטל</translation>
+<translation id="1533980864758658574">חלון חדש נוצר עבור <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">הפיצ׳ר הזה שולח נתונים על הכרטיסיות הפתוחות שלך אל Leo, עוזר הדפדפן מבוסס ה-AI של Brave.</translation>
+<translation id="6165508094623778733">למידע נוסף</translation>
+<translation id="7557539689487606886">עבור לפרימיום</translation>
+<translation id="1035309871698658326">כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג.</translation>
+<translation id="3435896845095436175">הפעל</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="1426410128494586442">כן</translation>
@@ -352,7 +364,7 @@
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
-<translation id="2858138569776157458">אתרים נבחרים</translation>
+<translation id="3405901785709583668">הצעות מובילות</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="8820817407110198400">סרגל הסימניות</translation>
 <translation id="4144468798716165316">פקודות מהירות</translation>
@@ -461,7 +473,6 @@
 <translation id="7791141927430186653">אפשר ציוצים מוטבעים של X (לשעבר Twitter)</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
-<translation id="6165508094623778733">למידע נוסף</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
@@ -712,6 +723,8 @@
 <translation id="2751872555001636931">הצג את סמל Leo בסרגל הצד</translation>
 <translation id="8055509865174199683">הצג את ליאו בתפריט הקונטקסט באתרי אינטרנט</translation>
 <translation id="1529674267267221673">ליאו יוצג בתפריט הקונטקסט כשתלחץ על הלחצן הימני של העכבר באתר האינטרנט. הפעולה תשלח קונטקסט מדף האינטרנט הנוכחי אל ליאו.</translation>
+<translation id="5226020406479918122">מצב מיקוד כרטיסיות</translation>
+<translation id="3705539672403311123">אפשר להפעיל את ארגון הכרטיסיות בדף ׳חיפוש כרטיסיות׳. כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">הצג הצעות מוצעות בשיחה</translation>
 <translation id="5781842473834867765">לאחסן את היסטוריית השיחות שלי</translation>
 <translation id="1082960401708055995">השבתת אחסון שיחות ימחק לצמיתות את כל השיחות הקודמות שאוחסנו. הפעולה הזו לא ניתנת לביטול.</translation>
@@ -719,6 +732,9 @@
 <translation id="1335414530428321716">איפוס Leo AI יחייב אותך להצטרף לשימוש ב-Leo AI בעתיד וגם ימחק את היסטוריית הצ׳אט שלך. ניקוי היסטוריית הצ׳אט ימחק את כל השיחות הקודמות שלך עם Brave Leo AI הפעולה הזו לא ניתנת לביטול.</translation>
 <translation id="5574059574002819179">התאם הצעות בהשלמה אוטומטית</translation>
 <translation id="7942415993090181327">היסטוריית צ׳אטים</translation>
+<translation id="5385064007245738696">אודות Leo AI</translation>
+<translation id="5084498230659987096">Brav Leo מספק צ׳אט AI וממשקים מבוססי AI אחרים ממוקדי פרטיות בדפדפן. Leo לעולם לא לומד מהנתונים שלך או משתמש בהם עבור אימון המודל. כל הבקשות נשלחות דרך שרת אנונימי.</translation>
+<translation id="6458721693611638005">אפשר לקרוא עוד על האופן שבו Brave מגן על השימוש שלך ב-AI במדיניות הפרטיות של Leo. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
 <translation id="8826914609353373601">נהל מנוי פרימיום</translation>
 <translation id="235457946228076038">הביאו מודל משלכם</translation>
@@ -729,6 +745,8 @@
 <translation id="3553035516792776805">שם בקשת מודל</translation>
 <translation id="7634775528597575156">נקודת קצה של שרת</translation>
 <translation id="6374563306438145841">מפתח API</translation>
+<translation id="3295756655687327124">תמיכה בעיבוד ויזואלי</translation>
+<translation id="1415432774589088566">אם המודל הזה מקבל תמונה כקלט, למשל llama 3.2b vision</translation>
 <translation id="8008271349880309090">שם המודל כפי שהוא יופיע בתפריט לבחירת מודל</translation>
 <translation id="1355326130503900056">שם הדגם כפי שהוא אמור להופיע בבקשה למסגרת השירות, למשל, phi-3 (שים לב שאם השם לא תואם בדיוק למה שמצופה על ידי מסגרת השירות, השילוב לא יפעל)</translation>
 <translation id="3213787232304349732">כתובת ה-URL שבה נמצאת מסגרת השירות שלכם מאזינה לבקשות. אם אינך בטוח, יש לבדוק את מסמכי מסגרת השירות. למשל עבור Ollama, הכתובת תמיד תהיה http://localhost:11434/v1/chat/completions</translation>

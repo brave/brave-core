@@ -317,6 +317,18 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8813509417421129632">Norima įrašyti įterptąjį puslapį adresu <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Šis puslapis nori įrašyti</translation>
 <translation id="6774238875569752630">Įterptas puslapis nori įrašyti šiame puslapyje</translation>
+<translation id="1233913566967531780">Kortelės fokusavimas</translation>
+<translation id="4034992002364254340">Surinkite visas susijusias korteles naujame lange</translation>
+<translation id="8012125596344613514">Siūlomos temos</translation>
+<translation id="7529120186020617755">Įrašykite temą, į kurią norite sutelkti dėmesį...</translation>
+<translation id="6847541693235449912">Eikite į</translation>
+<translation id="2079545284768500474">Anuliuoti</translation>
+<translation id="1533980864758658574">Sukurtas naujas langas, skirtas <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Ši funkcija siunčia duomenis apie jūsų atidarytas korteles „Leo“ – „Brave“ su dirbtiniu intelektu veikiančiam naršyklės asistentui.</translation>
+<translation id="6165508094623778733">Sužinokite daugiau</translation>
+<translation id="7557539689487606886">Užsisakyti „Premium“</translation>
+<translation id="1035309871698658326">Atidarius šią funkciją, į „Leo“ bus automatiškai siunčiami visų ne privačių kortelių pavadinimai ir kilmė, kad jie būtų suklasifikuoti.</translation>
+<translation id="3435896845095436175">Įgalinti</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
 <translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
 <translation id="1426410128494586442">Taip</translation>
@@ -353,7 +365,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2396127686705429331">Rodyti žymių mygtuką</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
 <translation id="4109670531935487117">Adreso juostoje rodyti automatinio užbaigimo pasiūlymus</translation>
-<translation id="2858138569776157458">Popul. svet.</translation>
+<translation id="3405901785709583668">Populiariausi pasiūlymai</translation>
 <translation id="7859704718976024901">Naršymo istorija</translation>
 <translation id="8820817407110198400">Žymių juosta</translation>
 <translation id="4144468798716165316">Sparčiosios komandos</translation>
@@ -462,7 +474,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7791141927430186653">Leisti rodyti įterptąsias „X“ (anksčiau „Twitter“) žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
 <translation id="8792121506918889955">„WebRTC“ IP tvarkymo politika</translation>
-<translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
@@ -713,6 +724,8 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="2751872555001636931">Rodyti „Leo“ piktogramą šoninėje juostoje</translation>
 <translation id="8055509865174199683">Rodyti „Leo“ svetainių kontekstiniame meniu</translation>
 <translation id="1529674267267221673">„Leo“ bus rodoma kontekstiniame meniu, kai svetainėje spustelėsite dešiniu pelės klavišu. Tai nusiųs kontekstą iš dabartinio tinklalapio į „Leo“.</translation>
+<translation id="5226020406479918122">Kortelės fokusavimo režimas</translation>
+<translation id="3705539672403311123">Įgalinkite kortelių organizavimą kortelių paieškos puslapyje. Atidarius įprastas korteles, jų pavadinimai ir kilmė bus automatiškai siunčiami „Leo“ joms klasifikuoti.<ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Rodyti pranešimų siūlymus pokalbyje</translation>
 <translation id="5781842473834867765">Saugoti mano pokalbių istoriją</translation>
 <translation id="1082960401708055995">Išjungus pokalbių saugojimą, visi anksčiau išsaugoti pokalbiai bus ištrinti visam laikui. Šio veiksmo atšaukti negalima.</translation>
@@ -720,6 +733,9 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="1335414530428321716">Iš naujo nustatę „Leo“ DI, ateityje turėsite prisijungti prie „Brave Leo“ DI, taip pat bus išvalyta jūsų pokalbių istorija. Išvalius pokalbių istoriją bus ištrinti visi ankstesni jūsų pokalbiai su „Brave Leo“ DI. Šio veiksmo atšaukti negalima.</translation>
 <translation id="5574059574002819179">Koreguoti automatinio užbaigimo pasiūlymus</translation>
 <translation id="7942415993090181327">Pokalbių istorija</translation>
+<translation id="5385064007245738696">Apie „Leo“ dirbtinį intelektą</translation>
+<translation id="5084498230659987096">„Brave Leo“ siūlo privatumą užtikrinančius pokalbius su dirbtiniu intelektu ir kitas su dirbtiniu intelektu veikiančias sąsajas naršyklėje. „Leo“ niekada nesimoko iš jūsų duomenų ir nenaudojama jų modeliui mokyti. Visos užklausos perduodamos per anoniminį serverį.</translation>
+<translation id="6458721693611638005">Daugiau informacijos apie tai, kaip „Brave“ apsaugo jūsų dirbtinio intelekto naudojimą, rasite „Leo“ privatumo politikoje. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Numatytasis naujų pokalbių modelis</translation>
 <translation id="8826914609353373601">Tvarkykite premium prenumeratą</translation>
 <translation id="235457946228076038">Atsineškite savo modelį</translation>
@@ -730,6 +746,8 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="3553035516792776805">Modelio užklausos pavadinimas</translation>
 <translation id="7634775528597575156">Serverio galinis taškas</translation>
 <translation id="6374563306438145841">API raktas</translation>
+<translation id="3295756655687327124">Vizualinio apdorojimo palaikymas</translation>
+<translation id="1415432774589088566">Jei šiame modelyje kaip įvestis naudojamas vaizdas, pvz., lama 3.2b vision</translation>
 <translation id="8008271349880309090">Modelio pavadinimas, kuris bus rodomas modelio pasirinkimo meniu</translation>
 <translation id="1355326130503900056">Modelio pavadinimas, kaip jis turėtų būti rodomas užklausoje aptarnaujančiai sistemai, t. y. phi-3 (atminkite: jei šis pavadinimas nesutampa su pavadinimu, kurio tikisi aptarnaujanti sistema, integracija neveiks)</translation>
 <translation id="3213787232304349732">URL, kuriame jūsų aptarnaujanti sistema klausosi užklausų. Jei nesate tikri, patikrinkite aptarnaujančios sistemos dokumentaciją. Pavyzdžiui, „Ollama“ atveju tai visada yra http://localhost:11434/v1/chat/completions</translation>

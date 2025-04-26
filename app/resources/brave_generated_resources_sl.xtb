@@ -320,6 +320,18 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="8813509417421129632">Vdelana stran na <ph name="SITE"/> se želi shraniti</translation>
 <translation id="7700010743463174379">Ta stran se želi shraniti</translation>
 <translation id="6774238875569752630">Vdelana stran na tej strani se želi shraniti</translation>
+<translation id="1233913566967531780">Fokus zavihka</translation>
+<translation id="4034992002364254340">Zberite vse povezane zavihke v novo okno</translation>
+<translation id="8012125596344613514">Predlagane teme</translation>
+<translation id="7529120186020617755">Vnesite temo, na katero se želite osredotočiti ...</translation>
+<translation id="6847541693235449912">Naprej</translation>
+<translation id="2079545284768500474">Razveljavi</translation>
+<translation id="1533980864758658574">Ustvarjeno je bilo novo okno za <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Ta funkcija pošilja podatke o odprtih zavihkih Leu, pomočniku brskalnika z umetno inteligenco storitve Brave.</translation>
+<translation id="6165508094623778733">Preberite več</translation>
+<translation id="7557539689487606886">Pojdi na Premium</translation>
+<translation id="1035309871698658326">Ko jo odprete, bo Leu samodejno poslala naslove in izvor vseh zavihkov, ki niso zasebni, da jih razvrsti.</translation>
+<translation id="3435896845095436175">Omogoči</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -356,7 +368,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2396127686705429331">Prikaži gumb za zaznamke</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
-<translation id="2858138569776157458">Najb. prilj.</translation>
+<translation id="3405901785709583668">Top predlogi</translation>
 <translation id="7859704718976024901">Zgodovina iskanja</translation>
 <translation id="8820817407110198400">Zaznamki</translation>
 <translation id="4144468798716165316">Hitri ukazi</translation>
@@ -465,7 +477,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="7791141927430186653">Dovoli X (prej Twitter) vdelane tvite</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
 <translation id="8792121506918889955">Politika ravnanja z WebRTC IP</translation>
-<translation id="6165508094623778733">Preberite več</translation>
 <translation id="8798099450830957504">Privzeto</translation>
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
@@ -716,6 +727,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="2751872555001636931">Pokaži ikono Leo v stranski vrstici</translation>
 <translation id="8055509865174199683">Prikaži Leo v kontekstnem meniju na spletnih mestih</translation>
 <translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>
+<translation id="5226020406479918122">Način fokus zavihka</translation>
+<translation id="3705539672403311123">Omogočite organizacijo zavihkov na strani Iskanje zavihkov. Ko jo odprete, bo Leu samodejno poslala naslove in izvore vseh zavihkov, ki niso zasebni, da jih razvrsti. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
 <translation id="5781842473834867765">Shrani mojo zgodovino pogovorov</translation>
 <translation id="1082960401708055995">Če onemogočite shranjevanje pogovorov, se trajno izbrišejo vsi predhodno shranjeni pogovori. Tega dejanja ni mogoče preklicati.</translation>
@@ -723,6 +736,9 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="1335414530428321716">Če ponastavite storitev Leo AI, se boste morali strinjati z uporabo funkcije Brave Leo AI v prihodnosti, prav tako pa bo izbrisana vaša zgodovina klepetov. Z brisanjem zgodovine klepetov boste izbrisali vse svoje prejšnje pogovore s funkcijo Brave Leo AI. Tega dejanja ni mogoče preklicati.</translation>
 <translation id="5574059574002819179">Prilagodite predloge za samodejno dokončanje</translation>
 <translation id="7942415993090181327">Zgodovina klepetov</translation>
+<translation id="5385064007245738696">O storitvi Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo nudi klepet z umetno inteligenco, ki zagotavlja zasebnost, in druge vmesnike z umetno inteligenco v brskalniku. Leo se nikoli ne uči iz vaših podatkov ali jih uporablja za usposabljanje modelov. Vsi zahtevki so posredovani prek anonimizacijskega strežnika.</translation>
+<translation id="6458721693611638005">Več o tem, kako Brave varuje vašo uporabo umetne inteligence, preberite v Leovem pravilniku o zasebnosti. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="8826914609353373601">Upravljanje premium naročnine</translation>
 <translation id="235457946228076038">Prinesite svoj model</translation>
@@ -733,6 +749,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3553035516792776805">Ime zahteve za model</translation>
 <translation id="7634775528597575156">Končna točka strežnika</translation>
 <translation id="6374563306438145841">Ključ API</translation>
+<translation id="3295756655687327124">Podpora za obdelavo slik</translation>
+<translation id="1415432774589088566">Če ta model sprejema slike kot vnos, npr. llama 3.2b vision</translation>
 <translation id="8008271349880309090">Ime modela, kot bo prikazano v meniju za izbiro modela</translation>
 <translation id="1355326130503900056">Ime modela, kot bi moralo biti prikazano v zahtevi za strežno ogrodje, tj. phi-3 (upoštevajte, da integracija ne bo delovala, če se to ime ne ujema natančno s pričakovanji strežnega ogrodja)</translation>
 <translation id="3213787232304349732">URL, kjer vaše strežno ogrodje posluša zahteve. Če niste prepričani, preverite dokumentacijo strežnega ogrodja. Za npr. Ollamo je to vedno http://localhost:11434/v1/chat/completions</translation>
