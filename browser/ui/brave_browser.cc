@@ -18,10 +18,12 @@
 #include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -32,6 +34,7 @@
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
+#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -169,6 +172,29 @@ void BraveBrowser::RunFileChooser(
   }
   Browser::RunFileChooser(render_frame_host, listener, *new_params);
 #endif
+}
+
+content::WebContents* BraveBrowser::OpenURLFromTab(
+  content::WebContents* source,
+  const content::OpenURLParams& params,
+  base::OnceCallback<void(content::NavigationHandle&)>
+      navigation_handle_callback) {
+  // When an AI content agent is controlling the contents, don't open URLs
+  // in new tabs or popups.
+  if (params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
+      params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB || params.disposition == WindowOpenDisposition::NEW_POPUP) {
+    if (auto* ai_chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(source)) {
+      if (ai_chat_tab_helper->IsContentsBeingControlledByContentAgent()) {
+        // Copy params but change the disposition
+        content::OpenURLParams new_params = params;
+        new_params.disposition = WindowOpenDisposition::CURRENT_TAB;
+        return Browser::OpenURLFromTab(source, new_params,
+            std::move(navigation_handle_callback));
+      }
+    }
+  }
+  return Browser::OpenURLFromTab(source, params,
+      std::move(navigation_handle_callback));
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(

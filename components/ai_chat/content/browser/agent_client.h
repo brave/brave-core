@@ -27,6 +27,10 @@ class AgentClient : public Tool,
   AgentClient(const AgentClient&) = delete;
   AgentClient& operator=(const AgentClient&) = delete;
 
+  bool IsControllingContents() const {
+    return !pending_navigation_callback_.is_null();
+  }
+
   // Tool
   std::string_view name() const override;
   std::string_view description() const override;

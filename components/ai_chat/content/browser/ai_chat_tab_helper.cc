@@ -449,6 +449,10 @@ void AIChatTabHelper::GetOpenAIChatButtonNonce(
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
 }
 
+bool AIChatTabHelper::IsContentsBeingControlledByContentAgent() const {
+  return (agent_client_ && agent_client_->IsControllingContents());
+}
+
 bool AIChatTabHelper::HasOpenAIChatPermission() const {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
   content::PermissionController* permission_controller =

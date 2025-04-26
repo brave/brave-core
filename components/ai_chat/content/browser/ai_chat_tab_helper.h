@@ -127,6 +127,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void GetOpenAIChatButtonNonce(
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
 
+  // Whether the contents is currently in the middle of an action by an AI
+  // agent tasked with controlling only the content of the WebContents (and not
+  // the overall Browser).
+  bool IsContentsBeingControlledByContentAgent() const;
+
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
   friend class ::AIChatUIBrowserTest;
