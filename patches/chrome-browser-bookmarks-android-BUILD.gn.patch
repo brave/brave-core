@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/bookmarks/android/BUILD.gn b/chrome/browser/bookmarks/android/BUILD.gn
-index 6c06c5de2ee38485f36533f2f0df9f7fd6f8e709..63e4f78ff4ab6b2913a34d3d59d061cdb144c646 100644
+index aafe27e520d10b6de938a683b00613c3965c9353..fb9bac7ce7cc333fbc0173e7a8c7d9d480cd1f92 100644
 --- a/chrome/browser/bookmarks/android/BUILD.gn
 +++ b/chrome/browser/bookmarks/android/BUILD.gn
 @@ -92,6 +92,7 @@ android_library("java") {

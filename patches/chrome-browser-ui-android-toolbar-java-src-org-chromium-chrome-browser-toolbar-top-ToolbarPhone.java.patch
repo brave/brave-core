@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index cb759307f4f847ab84919bf013a9450390b3401b..ede864793046ed3b4378321f4dc1e1cca2203ade 100644
+index d71b590f99469799a841d513c2ef709dc2e2b442..9d2a0457a058e024f26449bba99f6537b8ef98aa 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -439,6 +439,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -449,6 +449,7 @@ public class ToolbarPhone extends ToolbarLayout
          if (mOptionalButtonCoordinator != null) {
              mOptionalButtonCoordinator.setBackgroundColorFilter(color);
          }
@@ -10,7 +10,7 @@ index cb759307f4f847ab84919bf013a9450390b3401b..ede864793046ed3b4378321f4dc1e1cc
      }
  
      private void updateModernLocationBarCorners() {
-@@ -989,6 +990,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1002,6 +1003,7 @@ public class ToolbarPhone extends ToolbarLayout
       * Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -18,7 +18,7 @@ index cb759307f4f847ab84919bf013a9450390b3401b..ede864793046ed3b4378321f4dc1e1cc
          TraceEvent.begin("ToolbarPhone.updateLocationBarLayoutForExpansionAnimation");
          if (isInTabSwitcherMode()) return;
  
-@@ -1360,6 +1362,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1373,6 +1375,7 @@ public class ToolbarPhone extends ToolbarLayout
              canvas.restore();
          }
  
@@ -26,7 +26,7 @@ index cb759307f4f847ab84919bf013a9450390b3401b..ede864793046ed3b4378321f4dc1e1cc
          // Draw the tab stack button and associated text if necessary.
          if (getTabSwitcherButtonCoordinator() != null && mUrlExpansionFraction != 1f) {
              // Draw the tab stack button image.
-@@ -1986,6 +1989,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2004,6 +2007,7 @@ public class ToolbarPhone extends ToolbarLayout
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
