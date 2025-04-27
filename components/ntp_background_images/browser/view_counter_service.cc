@@ -18,6 +18,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -138,6 +139,11 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     bool should_metrics_fallback_to_p3a) {
+  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
+    // If we don't support confirmations, we should always fallback to P3A.
+    should_metrics_fallback_to_p3a = true;
+  }
+
   if (should_metrics_fallback_to_p3a) {
     if (ntp_p3a_helper_) {
       ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
@@ -150,7 +156,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   // Ads service will handle the case when we should fallback to P3A and no-op
   // if the campaign should report using P3A.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id,
+      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
 }
 
@@ -428,6 +434,11 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
     bool should_metrics_fallback_to_p3a) {
+  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
+    // If we don't support confirmations, we should always fallback to P3A.
+    should_metrics_fallback_to_p3a = true;
+  }
+
   if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,
@@ -437,16 +448,18 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   // Ads service will handle the case when we should fallback to P3A and no-op
   // if the campaign should report using P3A.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id,
+      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    const bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (ads_service_) {
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                           should_metrics_fallback_to_p3a,
                                            mojom_ad_event_type,
                                            /*intentional*/ base::DoNothing());
   }
@@ -499,11 +512,17 @@ bool ViewCounterService::CanShowSponsoredImages() const {
 
   if (images_data->grace_period &&
       local_state_->FindPreference(metrics::prefs::kInstallDate)) {
-    const base::Time installation_date = base::Time::FromSecondsSinceUnixEpoch(
+    const base::Time install_date = base::Time::FromSecondsSinceUnixEpoch(
         local_state_->GetInt64(metrics::prefs::kInstallDate));
-    if (base::Time::Now() < installation_date + *images_data->grace_period) {
+    const base::Time grace_period_ends_at =
+        install_date + *images_data->grace_period;
+
+    if (base::Time::Now() < grace_period_ends_at) {
       // We don't show sponsored images if the user has installed Brave within
       // the grace period.
+      VLOG(1) << "Sponsored images not shown: Grace period after "
+                 "installation is still active until "
+              << grace_period_ends_at;
       return false;
     }
   }
