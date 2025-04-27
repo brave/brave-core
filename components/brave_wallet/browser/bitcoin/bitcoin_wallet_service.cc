@@ -123,6 +123,7 @@ GetBalanceTask::GetBalanceTask(BitcoinWalletService& bitcoin_wallet_service,
       current_balance_(mojom::BitcoinBalance::New()) {}
 
 void GetBalanceTask::Start(Callback callback) {
+  DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
@@ -234,6 +235,7 @@ GetUtxosTask::GetUtxosTask(BitcoinWalletService& bitcoin_wallet_service,
       addresses_(std::move(addresses)) {}
 
 void GetUtxosTask::Start(Callback callback) {
+  DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
@@ -376,6 +378,7 @@ CreateTransactionTask::CreateTransactionTask(
 }
 
 void CreateTransactionTask::Start(Callback callback) {
+  DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
@@ -653,6 +656,7 @@ DiscoverNextUnusedAddressTask::DiscoverNextUnusedAddressTask(
       start_address_(std::move(start_address)) {}
 
 void DiscoverNextUnusedAddressTask::Start(Callback callback) {
+  DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }

@@ -107,6 +107,7 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
 
 void ZCashCompleteTransactionTask::Start(
     ZCashCompleteTransactionTaskCallback callback) {
+  DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }

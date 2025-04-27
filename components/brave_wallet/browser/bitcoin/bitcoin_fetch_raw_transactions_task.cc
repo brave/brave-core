@@ -35,6 +35,7 @@ FetchRawTransactionsTask::~FetchRawTransactionsTask() = default;
 
 void FetchRawTransactionsTask::Start(
     FetchRawTransactionsTaskCallback callback) {
+  DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
