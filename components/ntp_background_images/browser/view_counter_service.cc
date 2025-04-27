@@ -144,17 +144,16 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     should_metrics_fallback_to_p3a = true;
   }
 
-  if (should_metrics_fallback_to_p3a) {
-    if (ntp_p3a_helper_) {
-      ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
-    }
-
-    branded_new_tab_count_state_->AddDelta(1);
-    UpdateP3AValues();
+  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
+    ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
   }
 
-  // Ads service will handle the case when we should fallback to P3A and no-op
-  // if the campaign should report using P3A.
+  branded_new_tab_count_state_->AddDelta(1);
+  UpdateP3AValues();
+
+  // The ads service will handle cases where fallback to P3A reporting is
+  // required and will no-op sending a confirmation. However, we still need to
+  // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
@@ -445,8 +444,9 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
         creative_instance_id);
   }
 
-  // Ads service will handle the case when we should fallback to P3A and no-op
-  // if the campaign should report using P3A.
+  // The ads service will handle cases where fallback to P3A reporting is
+  // required and will no-op sending a confirmation. However, we still need to
+  // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
@@ -455,7 +455,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const bool should_metrics_fallback_to_p3a,
+    bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (ads_service_) {
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,

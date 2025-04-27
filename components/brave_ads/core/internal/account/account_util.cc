@@ -22,6 +22,8 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
     return true;
   }
 
+  // Evaluate deposit eligibility for non-Rewards users based on ad type and
+  // other conditions.
   switch (mojom_ad_type) {
     case mojom::AdType::kInlineContentAd:
     case mojom::AdType::kPromotedContentAd: {
