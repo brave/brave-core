@@ -3,21 +3,44 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import Foundation
+import Preferences
+import Strings
 import SwiftUI
 
-struct HistoryEmptyStateView: UIViewRepresentable {
-  private let details: EmptyOverlayStateDetails
+struct HistoryEmptyStateView: View {
+  var isSearching: Bool
 
-  init(details: EmptyOverlayStateDetails) {
-    self.details = details
-  }
-
-  func makeUIView(context: Context) -> EmptyStateOverlayView {
-    return EmptyStateOverlayView(overlayDetails: details)
-  }
-
-  func updateUIView(_ view: EmptyStateOverlayView, context: Context) {
-
+  var body: some View {
+    VStack(spacing: 16) {
+      Image(braveSystemName: "leo.history")
+        .font(.title)
+        .imageScale(.large)
+        .foregroundStyle(Color(braveSystemName: .iconSecondary))
+      VStack {
+        Text(
+          isSearching
+            ? Strings.History.historyEmptySearchTitle : Strings.History.historyEmptyStateTitle
+        )
+        .font(.headline)
+        .foregroundStyle(Color(braveSystemName: .textSecondary))
+        if !isSearching {
+          Text(
+            Preferences.Privacy.privateBrowsingOnly.value
+              ? Strings.History.historyPrivateModeOnlyStateSubtitle
+              : Strings.History.historyEmptyStateSubtitle
+          )
+          .font(.subheadline)
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
+        }
+      }
+    }
   }
 }
+
+#if DEBUG
+#Preview {
+  HistoryEmptyStateView(isSearching: false)
+}
+#endif

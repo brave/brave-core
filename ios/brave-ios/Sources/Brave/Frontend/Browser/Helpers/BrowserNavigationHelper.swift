@@ -77,7 +77,7 @@ class BrowserNavigationHelper {
         )
       )
     )
-    open(vc, doneButton: DoneButton(style: .done, position: .right))
+    bvc.present(vc, animated: true)
   }
 
   func openVPNBuyScreen(iapObserver: BraveVPNInAppPurchaseObserver) {

@@ -69,7 +69,7 @@ struct MediaThumbnail: View {
       }
       .overlay {
         if displayFavicon {
-          FaviconImage(url: pageURL.absoluteString, isPrivateBrowsing: false)
+          StyledFaviconImage(url: pageURL.absoluteString, isPrivateBrowsing: false)
         }
       }
       .task(id: pageURL) {

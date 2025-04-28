@@ -211,6 +211,15 @@ class HistoryModel: NSObject, ObservableObject {
     }
   }
 
+  @MainActor func handleRecentlyClosedSelection(_ recentlyClosed: RecentlyClosed) {
+    tabManager?.addAndSelectRecentlyClosed(recentlyClosed)
+
+    // After opening the Recently Closed in a new tab delete it from list
+    RecentlyClosed.remove(with: recentlyClosed.url)
+
+    dismiss()
+  }
+
   func handleHistoryItemSelection(_ selection: HistoryItemSelection, node: HistoryNode) {
     switch selection {
     case .selectTab:

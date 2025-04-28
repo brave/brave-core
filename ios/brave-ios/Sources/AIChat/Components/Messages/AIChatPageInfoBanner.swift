@@ -13,7 +13,7 @@ struct AIChatPageInfoBanner: View {
 
   var body: some View {
     HStack {
-      FaviconImage(
+      StyledFaviconImage(
         url: url?.absoluteString,
         isPrivateBrowsing: false
       )

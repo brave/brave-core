@@ -86,7 +86,7 @@ struct ShieldsPanelView: View {
   @ViewBuilder @MainActor private var headerView: some View {
     VStack(alignment: .center, spacing: 8) {
       HStack(alignment: .center, spacing: 8) {
-        FaviconImage(
+        StyledFaviconImage(
           url: url.absoluteString,
           isPrivateBrowsing: viewModel.isPrivateBrowsing
         )

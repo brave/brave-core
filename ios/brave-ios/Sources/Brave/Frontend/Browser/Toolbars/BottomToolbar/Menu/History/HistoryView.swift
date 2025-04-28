@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShared
 import BraveStrings
+import Data
 import DesignSystem
 import Favicon
 import Preferences
@@ -15,134 +16,219 @@ import SwiftUI
 struct HistoryItemView: View {
   var title: String?
   var url: URL
+  var dateAdded: Date?
 
   var body: some View {
-    HStack {
-      FaviconImage(
-        url: url.absoluteString,
-        isPrivateBrowsing: false
-      )
-      .overlay(
-        ContainerRelativeShape()
-          .strokeBorder(Color(braveSystemName: .dividerSubtle), lineWidth: 1.0)
-      )
-      .containerShape(RoundedRectangle(cornerRadius: 6.0, style: .continuous))
+    Label {
+      HStack(alignment: .top) {
+        VStack {
+          if let title = title, !title.isEmpty {
+            Text(title)
+              .lineLimit(1)
+              .truncationMode(.tail)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .fixedSize(horizontal: false, vertical: true)
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+          }
 
-      VStack {
-        if let title = title, !title.isEmpty {
-          Text(title)
-            .font(.subheadline)
-            .lineLimit(2)
-            .truncationMode(.tail)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
+          URLElidedText(
+            text: URLFormatter.formatURLOrigin(
+              forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString
+            )
+          )
+          .font(.footnote)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
         }
 
-        URLElidedText(
-          text: URLFormatter.formatURLOrigin(
-            forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString
-          )
+        if let dateAdded {
+          Text(dateAdded, format: .dateTime.hour().minute())
+            .font(.caption2)
+            .foregroundStyle(Color(braveSystemName: .textTertiary))
+        }
+      }
+    } icon: {
+      FaviconImage(url: url, isPrivateBrowsing: false)
+        .frame(width: 20, height: 20)
+        .padding(6)
+        .overlay(
+          ContainerRelativeShape()
+            .strokeBorder(Color(braveSystemName: .dividerSubtle), lineWidth: 1.0)
         )
-        .font(.footnote)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
-        .foregroundStyle(Color(braveSystemName: .textSecondary))
+        .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+    }
+  }
+}
+
+private struct RecentlyClosedTabsSection: View {
+  @FetchRequest(
+    entity: RecentlyClosed.entity(),
+    sortDescriptors: [.init(keyPath: \RecentlyClosed.dateAdded, ascending: false)]
+  ) private var recentlyClosedTabs: FetchedResults<RecentlyClosed>
+
+  @State private var isExpanded: Bool = false
+  var restoreTab: (RecentlyClosed) -> Void
+
+  var body: some View {
+    if !recentlyClosedTabs.isEmpty {
+      Section {
+        Button {
+          withAnimation {
+            isExpanded.toggle()
+          }
+        } label: {
+          Label {
+            HStack {
+              Text(Strings.History.historyRecentlyClosedTabs)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+              Spacer()
+              Image(braveSystemName: "leo.carat.down")
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            }
+          } icon: {
+            Image(braveSystemName: "leo.browser.mobile-recent-tabs")
+              .foregroundStyle(Color(braveSystemName: .iconDefault))
+          }
+          .padding(.vertical, 4)
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        if isExpanded {
+          ForEach(recentlyClosedTabs, id: \RecentlyClosed.objectID) { tab in
+            if let url = URL(string: tab.url) {
+              Button {
+                restoreTab(tab)
+              } label: {
+                HistoryItemView(title: tab.title, url: url, dateAdded: tab.dateAdded)
+              }
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            }
+          }
+          .onDelete { indexSet in
+            // Delete an individual info from recently closed
+            let tabsToRemove = indexSet.map { recentlyClosedTabs[$0] }
+            withAnimation {
+              for tab in tabsToRemove {
+                RecentlyClosed.remove(with: tab.url)
+              }
+            }
+          }
+        }
+      } header: {
+        // This is unfortunately needed to ensure there's proper padding at the top of the list
+        // most likely due to using UIAppearance defaults across the app to manage the navigation
+        // bar appearance
+        Color.clear
       }
     }
   }
 }
 
 struct HistoryView: View {
-  @ObservedObject
-  var model: HistoryModel
+  @Environment(\.dismiss) private var dismiss
 
-  @State
-  private var searchText = ""
+  @ObservedObject var model: HistoryModel
 
-  @State
-  private var deleteAllAlertPresented = false
-
-  @State
-  private var timer: Timer?
+  @State private var searchText = ""
+  @State private var deleteAllAlertPresented = false
+  @State private var timer: Timer?
 
   var body: some View {
-    VStack(spacing: 0.0) {
-      if model.items.isEmpty {
-        HistoryEmptyStateView(
-          details: .init(
-            title: Preferences.Privacy.privateBrowsingOnly.value
-              ? Strings.History.historyPrivateModeOnlyStateTitle
-              : Strings.History.historyEmptyStateTitle,
-            icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)
-          )
-        )
-      } else {
-        List {
-          ForEach(model.items.elements, id: \.key) { section, nodes in
-            Section {
-              ForEach(nodes, id: \.self) { node in
-                Button {
-                  model.handleHistoryItemSelection(.selectTab, node: node)
-                } label: {
-                  HistoryItemView(title: node.title, url: node.url)
-                }
-                .contextMenu(menuItems: {
+    NavigationStack {
+      List {
+        if searchText.isEmpty {
+          RecentlyClosedTabsSection(restoreTab: { tab in
+            model.handleRecentlyClosedSelection(tab)
+          })
+          .environment(\.managedObjectContext, DataController.swiftUIContext)
+        }
+        ForEach(model.items.elements, id: \.key) { section, nodes in
+          Section {
+            ForEach(nodes, id: \.self) { node in
+              Button {
+                model.handleHistoryItemSelection(.selectTab, node: node)
+              } label: {
+                HistoryItemView(title: node.title, url: node.url, dateAdded: node.dateAdded)
+              }
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
+              .contextMenu {
+                Section {
                   Button {
                     model.handleHistoryItemSelection(.openInNewTab, node: node)
                   } label: {
-                    Text(Strings.openNewTabButtonTitle)
-                      .frame(maxWidth: .infinity, alignment: .leading)
-                      .fixedSize(horizontal: false, vertical: true)
-                    Image(systemName: "plus.square.on.square")
+                    Label(Strings.openNewTabButtonTitle, systemImage: "plus.square.on.square")
                   }
 
                   if !model.isPrivateBrowsing {
                     Button {
                       model.handleHistoryItemSelection(.openInNewPrivateTab, node: node)
                     } label: {
-                      Text(Strings.openNewPrivateTabButtonTitle)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                      Image(systemName: "plus.square.fill.on.square.fill")
+                      Label(
+                        Strings.openNewPrivateTabButtonTitle,
+                        systemImage: "plus.square.fill.on.square.fill"
+                      )
                     }
                   }
-
-                  Divider()
-
+                }
+                Section {
                   Button {
                     model.handleHistoryItemSelection(.copyLink, node: node)
                   } label: {
-                    Text(Strings.copyLinkActionTitle)
-                      .frame(maxWidth: .infinity, alignment: .leading)
-                      .fixedSize(horizontal: false, vertical: true)
-                    Image(systemName: "doc.on.doc")
+                    Label(Strings.copyLinkActionTitle, systemImage: "doc.on.doc")
                   }
-
                   Button {
                     model.handleHistoryItemSelection(.shareLink, node: node)
                   } label: {
-                    Text(Strings.shareLinkActionTitle)
-                      .frame(maxWidth: .infinity, alignment: .leading)
-                      .fixedSize(horizontal: false, vertical: true)
-                    Image(systemName: "square.and.arrow.up")
+                    Label(Strings.shareLinkActionTitle, systemImage: "square.and.arrow.up")
                   }
-                })
+                }
+                Section {
+                  Button(role: .destructive) {
+                    withAnimation {
+                      model.delete(nodes: [node])
+                    }
+                  } label: {
+                    Label(Strings.History.deleteFromHistory, braveSystemImage: "leo.trash")
+                  }
+                }
               }
-              .onDelete {
-                self.delete($0, in: section)
-              }
-            } header: {
-              Text(section.title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .fixedSize(horizontal: false, vertical: true)
-                .foregroundStyle(Color(braveSystemName: .textPrimary))
             }
+            .onDelete { indexSet in
+              withAnimation {
+                self.delete(indexSet, in: section)
+              }
+            }
+          } header: {
+            Text(section.title)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
         }
-        .listStyle(.plain)
-        .toolbar {
+      }
+      .animation(.default, value: model.items)
+      .scrollContentBackground(.hidden)
+      .background(Color(.braveGroupedBackground))
+      .listStyle(.insetGrouped)
+      .overlay {
+        if model.items.isEmpty {
+          HistoryEmptyStateView(isSearching: !searchText.isEmpty)
+            .transition(.opacity.animation(.default))
+        }
+      }
+      .toolbar {
+        ToolbarItemGroup(placement: .topBarLeading) {
+          Button {
+            dismiss()
+          } label: {
+            Label {
+              Text(Strings.close)
+            } icon: {
+              Image(braveSystemName: "leo.close")
+            }
+            .labelStyle(.iconOnly)
+          }
+        }
+        ToolbarItemGroup(placement: .topBarTrailing) {
           Button {
             deleteAllAlertPresented = true
           } label: {
@@ -154,27 +240,29 @@ struct HistoryView: View {
             .labelStyle(.iconOnly)
           }
         }
-        .alert(isPresented: $deleteAllAlertPresented) {
-          Alert(
-            title: Text(Strings.History.historyClearAlertTitle),
-            message: Text(Strings.History.historyClearAlertDescription),
-            primaryButton: .destructive(
-              Text(Strings.History.historyClearActionTitle),
-              action: {
-                model.deleteAll()
-              }
-            ),
-            secondaryButton: .cancel()
-          )
-        }
       }
+      .alert(isPresented: $deleteAllAlertPresented) {
+        Alert(
+          title: Text(Strings.History.historyClearAlertTitle),
+          message: Text(Strings.History.historyClearAlertDescription),
+          primaryButton: .destructive(
+            Text(Strings.History.historyClearActionTitle),
+            action: {
+              model.deleteAll()
+            }
+          ),
+          secondaryButton: .cancel()
+        )
+      }
+      .navigationTitle(Strings.historyScreenTitle)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(.visible, for: .navigationBar)
+      .searchable(
+        text: $searchText,
+        placement: .navigationBarDrawer,
+        prompt: Strings.History.historySearchBarTitle
+      )
     }
-    .navigationTitle(Strings.historyScreenTitle)
-    .searchable(
-      text: $searchText,
-      placement: .navigationBarDrawer(displayMode: .always),
-      prompt: Strings.History.historySearchBarTitle
-    )
     .onChange(of: searchText) { searchText in
       self.timer?.invalidate()
       self.timer = Timer.scheduledTimer(

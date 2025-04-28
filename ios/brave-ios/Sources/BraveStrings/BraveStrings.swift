@@ -6762,6 +6762,14 @@ extension Strings {
 
 extension Strings {
   public struct History {
+    public static let historyRecentlyClosedTabs =
+      NSLocalizedString(
+        "history.historyRecentlyClosedTabs",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Recently Closed Tabs",
+        comment: "Title for a section in the History view that shows recently closed tabs"
+      )
     public static let historyClearAlertTitle =
       NSLocalizedString(
         "history.historyClearAlertTitle",
@@ -6786,22 +6794,47 @@ extension Strings {
         value: "Clear History",
         comment: "Title for History Clear All Action"
       )
+    public static let deleteFromHistory =
+      NSLocalizedString(
+        "history.deleteFromHistory",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Delete from History",
+        comment: "A button title that when taps removes a single item that is selected from history"
+      )
 
+    public static let historyEmptyStateSubtitle =
+      NSLocalizedString(
+        "history.historyEmptyStateSubtitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Your browsing history appears here",
+        comment: "Title which is displayed when History screen is empty."
+      )
     public static let historyEmptyStateTitle =
       NSLocalizedString(
         "history.historyEmptyStateTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "History will show up here.",
-        comment: "Title which is displayed when History screen is empty."
+        value: "No History",
+        comment:
+          "Title which is displayed on History screen as a overlay when Private Browsing Only enabled"
       )
-
-    public static let historyPrivateModeOnlyStateTitle =
+    public static let historyEmptySearchTitle =
       NSLocalizedString(
-        "history.historyPrivateModeOnlyStateTitle",
+        "history.historyEmptySearchTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "History is not available in Private Browsing Only mode.",
+        value: "No Search Results",
+        comment:
+          "Title which is displayed on History screen when you search for something but no results are found"
+      )
+    public static let historyPrivateModeOnlyStateSubtitle =
+      NSLocalizedString(
+        "history.historyPrivateModeOnlyStateSubtitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "History is not available in Private Browsing Only mode",
         comment:
           "Title which is displayed on History screen as a overlay when Private Browsing Only enabled"
       )
