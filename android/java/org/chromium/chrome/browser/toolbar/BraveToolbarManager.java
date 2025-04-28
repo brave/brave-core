@@ -598,4 +598,10 @@ public class BraveToolbarManager extends ToolbarManager
                 };
         layoutStateProvider.addObserver(mLayoutStateObserver);
     }
+
+    public void openHomepage() {
+        if (mToolbarTabController == null) return;
+
+        mToolbarTabController.openHomepage();
+    }
 }

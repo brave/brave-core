@@ -45,7 +45,6 @@ import org.chromium.ui.resources.ResourceManager;
 import org.chromium.ui.util.ColorUtils;
 
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     // To delete in bytecode. Variables from the parent class will be used instead.
@@ -76,7 +75,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> homepageEnabledSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier,
             boolean initializeWithIncognitoColors,
             ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
@@ -106,7 +104,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 homepageEnabledSupplier,
                 resourceManagerSupplier,
                 historyDelegate,
-                partnerHomepageEnabledSupplier,
                 initializeWithIncognitoColors,
                 constraintsSupplier,
                 compositorInMotionSupplier,

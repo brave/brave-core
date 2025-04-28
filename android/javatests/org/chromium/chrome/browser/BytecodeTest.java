@@ -1328,7 +1328,6 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         Supplier.class,
                         HistoryDelegate.class,
-                        BooleanSupplier.class,
                         boolean.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
