@@ -42,7 +42,7 @@ async function updateUnsafeBuffersPaths() {
   updatedPathLines = bufferPathLines.filter(
       (line) => line.startsWith('-') || line.startsWith('+'));
   updatedPathLines = updatedPathLines.map(
-      (line) => {return line.slice(0, 1) + 'src/' + line.slice(1)});
+      (line) => { return line.slice(0, 1) + 'src/' + line.slice(1) });
 
   const updatedContents =
       [...bufferPathLines, ...updatedPathLines, ''].join('\n');

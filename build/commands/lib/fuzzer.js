@@ -12,10 +12,10 @@ const jszip = require('jszip')
 
 const fuzzerBuildConfig = 'Fuzzer'
 
-const buildFuzzer = (fuzzer_test_target, options) => {
+const buildFuzzer = (fuzzerTestTarget, options) => {
   options.use_libfuzzer = true
   options.is_asan = true
-  options.target = fuzzer_test_target
+  options.target = fuzzerTestTarget
   options.is_component_build = false
 
   build(fuzzerBuildConfig, options)
@@ -25,8 +25,8 @@ const getBinary = (suite) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
-const unzip = (zip_file, outdir) => {
-  fs.readFile(zip_file, (err, data) => {
+const unzip = (zipFile, outdir) => {
+  fs.readFile(zipFile, (err, data) => {
     if (err) throw err
     jszip.loadAsync(data).then((zip) => { // Sensitive
       zip.forEach((relativePath, zipEntry) => {

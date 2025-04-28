@@ -26,7 +26,7 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-var packageConfig = function (key, sourceDir = braveCoreDir) {
+const packageConfig = function (key, sourceDir = braveCoreDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
   if (fs.existsSync(configAbsolutePath)) {
@@ -35,7 +35,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
 
   // packages.config should include version string.
   let obj = Object.assign({}, packages.config, { version: packages.version })
-  for (var i = 0, len = key.length; i < len; i++) {
+  for (let i = 0, len = key.length; i < len; i++) {
     if (!obj) {
       return obj
     }
@@ -44,7 +44,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
-const getEnvConfig = (key, default_value = undefined) => {
+const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
 
@@ -76,7 +76,7 @@ const getEnvConfig = (key, default_value = undefined) => {
   if (packageConfigValue !== undefined)
     return packageConfigValue
 
-  return default_value
+  return defaultValue
 }
 
 const getDepotToolsDir = (rootDir) => {
@@ -326,10 +326,8 @@ Config.prototype.getBraveLogoIconName = function () {
 
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
-  let version_parts = version.split('+')[0]
-  version_parts = version_parts.split('.')
-
-  const chrome_version_parts = this.chromeVersion.split('.')
+  let versionParts = version.split('+')[0]
+  versionParts = versionParts.split('.')
 
   let args = {
     sardine_client_id: this.sardineClientId,
@@ -401,9 +399,9 @@ Config.prototype.buildArgs = function () {
     zebpay_sandbox_client_id: this.zebPaySandboxClientId,
     zebpay_sandbox_client_secret: this.zebPaySandboxClientSecret,
     zebpay_sandbox_oauth_url: this.zebPaySandboxOauthUrl,
-    brave_version_major: version_parts[0],
-    brave_version_minor: version_parts[1],
-    brave_version_build: version_parts[2],
+    brave_version_major: versionParts[0],
+    brave_version_minor: versionParts[1],
+    brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
     brave_sync_endpoint: this.braveSyncEndpoint,
     safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,

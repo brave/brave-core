@@ -31,10 +31,6 @@ const collect = (value, accumulator) => {
   return accumulator
 }
 
-function commaSeparatedList(value, dummyPrevious) {
-  return value.split(',')
-}
-
 // Use this wrapper function instead of JavaScript's parseInt() with option()
 // when defining integer optional parameters, or the default value might get
 // passed as well into the radix parameter of parseInt(), causing wrong results.
@@ -91,14 +87,14 @@ program
       delete options.target_arch
 
     config.update(options)
-    const current_link = options.symlink_dir
-    if (!path.isAbsolute(current_link) && !path.relative(current_link, config.srcDir).startsWith('..')) {
+    const currentLink = options.symlink_dir
+    if (!path.isAbsolute(currentLink) && !path.relative(currentLink, config.srcDir).startsWith('..')) {
       console.error('Symlink must be an absolute path in src')
       process.exit(1)
     }
 
-    fs.removeSync(current_link)
-    fs.symlinkSync(config.outputDir, current_link, 'junction')
+    fs.removeSync(currentLink)
+    fs.symlinkSync(config.outputDir, currentLink, 'junction')
     await util.generateNinjaFiles()
   })
 

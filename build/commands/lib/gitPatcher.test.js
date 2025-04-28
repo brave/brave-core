@@ -6,7 +6,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const GitPatcher = require('./gitPatcher')
-const { runAsync, runGitAsync } = require('./util')
+const { runGitAsync } = require('./util')
 const os = require('os')
 
 const dirPrefixTmp = 'brave-browser-test-git-apply-'
@@ -80,7 +80,7 @@ describe('Apply Patches', function () {
       console.warn(`Test cleanup: could not remove directory at ${patchPath}`)
     }
   })
-  
+
   test('applies simple patch to unmodified original', async function () {
     validate()
     const affectedPaths = await gitPatcher.applyPatches()

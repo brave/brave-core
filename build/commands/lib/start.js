@@ -1,7 +1,9 @@
+// Copyright (c) 2017 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 const path = require('path')
 const fs = require('fs-extra')
-const ip = require('ip')
-const URL = require('url').URL
 const config = require('../lib/config')
 const util = require('../lib/util')
 
@@ -74,23 +76,23 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
 
   braveArgs = braveArgs.concat(passthroughArgs)
 
-  let user_data_dir
-  if (options.user_data_dir_name) {
+  let userDataDir
+  if (options.userDataDir_name) {
     if (process.platform === 'darwin') {
-      user_data_dir = path.join(process.env.HOME, 'Library', 'Application\\ Support', 'BraveSoftware', options.user_data_dir_name)
+      userDataDir = path.join(process.env.HOME, 'Library', 'Application\\ Support', 'BraveSoftware', options.userDataDir_name)
     } else if (process.platform === 'win32') {
-      user_data_dir = path.join(process.env.LocalAppData, 'BraveSoftware', options.user_data_dir_name)
+      userDataDir = path.join(process.env.LocalAppData, 'BraveSoftware', options.userDataDir_name)
     } else {
-      user_data_dir = path.join(process.env.HOME, '.config', 'BraveSoftware', options.user_data_dir_name)
+      userDataDir = path.join(process.env.HOME, '.config', 'BraveSoftware', options.userDataDir_name)
     }
-    braveArgs.push('--user-data-dir=' + user_data_dir);
+    braveArgs.push('--user-data-dir=' + userDataDir);
   }
 
   let cmdOptions = {
     stdio: 'inherit',
     timeout: undefined,
     continueOnFail: false,
-    shell: process.platform === 'darwin' ? true : false,
+    shell: process.platform === 'darwin',
     killSignal: 'SIGTERM'
   }
 

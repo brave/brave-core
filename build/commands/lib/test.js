@@ -179,7 +179,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         if (config.isTeamcity) {
           const ignorePreliminaryFailures =
             '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
-          if (braveArgs.indexOf(ignorePreliminaryFailures) === -1) {
+          if (!braveArgs.includes(ignorePreliminaryFailures)) {
             braveArgs.push(ignorePreliminaryFailures)
           }
         }
