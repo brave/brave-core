@@ -1,0 +1,12 @@
+diff --git a/components/sync_sessions/BUILD.gn b/components/sync_sessions/BUILD.gn
+index 33e06933e434aded7a65b576bc7306329922575c..1921eb6c733ff866e476a4f823a0ff79df249dc3 100644
+--- a/components/sync_sessions/BUILD.gn
++++ b/components/sync_sessions/BUILD.gn
+@@ -64,6 +64,7 @@ static_library("sync_sessions") {
+     "//ui/gfx",
+     "//url",
+   ]
++  import("//brave/components/sync_sessions/sources.gni") deps += brave_components_sync_sessions_deps
+ }
+ 
+ static_library("test_support") {

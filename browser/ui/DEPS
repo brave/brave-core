@@ -6,4 +6,6 @@ include_rules += [
   "+brave/components/vector_icons",
   "+brave/components/query_filter",
   "+brave/components/text_recognition/common/buildflags",
+  "+brave/components/partitioned_tabs/buildflags",
+  "+brave/components/partitioned_tabs/browser",
 ]

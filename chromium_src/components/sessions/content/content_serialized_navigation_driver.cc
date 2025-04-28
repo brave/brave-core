@@ -8,13 +8,22 @@
 #include <string>
 
 #include "base/containers/fixed_flat_set.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "content/public/common/url_constants.h"
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler_registry.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 #define GetSanitizedPageStateForPickle \
   GetSanitizedPageStateForPickle_ChromiumImpl
+#define Sanitize Sanitize_ChromiumImpl
+
 #include <components/sessions/content/content_serialized_navigation_driver.cc>
+
 #undef GetSanitizedPageStateForPickle
+#undef Sanitize
 
 namespace sessions {
 
@@ -47,7 +56,40 @@ std::string ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
     return std::string();
   }
 
-  return GetSanitizedPageStateForPickle_ChromiumImpl(navigation);
+  std::string page_state =
+      GetSanitizedPageStateForPickle_ChromiumImpl(navigation);
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::string scheme_prefix;
+  if (auto restored_virtual_url =
+          containers::ContainedTabHandlerRegistry::GetInstance()
+              .RestoreNavigationVirtualUrl(navigation->virtual_url(),
+                                           scheme_prefix)) {
+    blink::PageState page_state_obj =
+        blink::PageState::CreateFromEncodedData(page_state);
+    page_state = page_state_obj.PrefixTopURL(scheme_prefix).ToEncodedData();
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  return page_state;
+}
+
+void ContentSerializedNavigationDriver::Sanitize(
+    SerializedNavigationEntry* navigation) const {
+  Sanitize_ChromiumImpl(navigation);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::string scheme_prefix;
+  if (auto restored_virtual_url =
+          containers::ContainedTabHandlerRegistry::GetInstance()
+              .RestoreNavigationVirtualUrl(navigation->virtual_url(),
+                                           scheme_prefix)) {
+    navigation->set_virtual_url(*restored_virtual_url);
+    blink::PageState page_state_obj = blink::PageState::CreateFromEncodedData(
+        navigation->encoded_page_state());
+    navigation->set_encoded_page_state(
+        page_state_obj.RemoveTopURLPrefix(scheme_prefix).ToEncodedData());
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 }  // namespace sessions

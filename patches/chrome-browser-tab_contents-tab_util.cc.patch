@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/tab_contents/tab_util.cc b/chrome/browser/tab_contents/tab_util.cc
+index 4ccf096e97dafd9add0bb46c01397f294d4a6b84..209abdfe6cda1a01eb425a27af3a2aaf375918d7 100644
+--- a/chrome/browser/tab_contents/tab_util.cc
++++ b/chrome/browser/tab_contents/tab_util.cc
+@@ -48,6 +48,7 @@ scoped_refptr<SiteInstance> GetSiteInstanceForNewTab(Profile* profile,
+   if (!SiteInstance::ShouldAssignSiteForURL(url))
+     return nullptr;
+ 
++  BRAVE_GET_SITE_INSTANCE_FOR_NEW_TAB
+   return SiteInstance::CreateForURL(profile, url);
+ }
+ 

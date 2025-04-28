@@ -652,21 +652,27 @@ const util = {
 
     if (config.isTeamcity) {
       // Parse output to display the build status and exact failure location.
+      const maxErrorLines = 1000 // Teamcity limit.
       let hasError = false
+      let printedErrorLines = 0
       let lastStatusTime = Date.now()
       options.onStdOutLine = (line) => {
         if (!hasError && line.startsWith('FAILED: ')) {
           hasError = true
         }
-        if (hasError) {
-          Log.error(line)
-        } else if (buildStats || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)) {
+        if (
+          buildStats
+          || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)
+        ) {
           buildStats += line + '\n'
+        } else if (hasError && printedErrorLines < maxErrorLines) {
+          Log.error(line)
+          printedErrorLines++
         } else {
           console.log(line)
           if (Date.now() - lastStatusTime > 5000) {
-            // Extract the status message from the ninja output.
-            const match = line.match(/^\[\d+ processes, (.+?) : .+?\s\]/)
+            // Extract the status message from the siso output.
+            const match = line.match(/^\[(.+?)\]/)
             if (match) {
               lastStatusTime = Date.now()
               Log.status(`build ${targets} ${match[1]}`)
