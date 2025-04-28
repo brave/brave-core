@@ -33,6 +33,13 @@ FetchRawTransactionsTask::FetchRawTransactionsTask(
 }
 FetchRawTransactionsTask::~FetchRawTransactionsTask() = default;
 
+void FetchRawTransactionsTask::Start(
+    FetchRawTransactionsTaskCallback callback) {
+  DCHECK(!callback_);
+  callback_ = std::move(callback);
+  ScheduleWorkOnTask();
+}
+
 void FetchRawTransactionsTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&FetchRawTransactionsTask::WorkOnTask,

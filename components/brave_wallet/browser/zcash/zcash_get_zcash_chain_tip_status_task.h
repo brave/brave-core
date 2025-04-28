@@ -28,11 +28,10 @@ class ZCashGetZCashChainTipStatusTask {
                    base::PassKey<class ZCashGetChainTipStatusTaskTest>>
           pass_key,
       ZCashWalletService& zcash_wallet_service,
-      ZCashActionContext context,
-      ZCashGetZCashChainTipStatusTaskCallback callback);
+      ZCashActionContext context);
   ~ZCashGetZCashChainTipStatusTask();
 
-  void Start();
+  void Start(ZCashGetZCashChainTipStatusTaskCallback callback);
 
  private:
   void WorkOnTask();
@@ -54,8 +53,6 @@ class ZCashGetZCashChainTipStatusTask {
   std::optional<OrchardStorage::AccountMeta> account_meta_;
   std::optional<uint32_t> chain_tip_height_;
   std::optional<std::string> error_;
-
-  bool started_ = false;
 
   base::WeakPtrFactory<ZCashGetZCashChainTipStatusTask> weak_ptr_factory_{this};
 };

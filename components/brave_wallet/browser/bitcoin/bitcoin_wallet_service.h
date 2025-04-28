@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_WALLET_SERVICE_H_
 
-#include <list>
 #include <map>
 #include <memory>
 #include <string>
@@ -22,9 +21,12 @@
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
 class CreateTransactionTask;
+class GetUtxosTask;
+class GetBalanceTask;
 class DiscoverNextUnusedAddressTask;
 class FetchRawTransactionsTask;
 class KeyringService;
@@ -124,8 +126,10 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
   void SetArrangeTransactionsForTesting(bool arrange);
 
  private:
+  template <typename T>
+  using TaskContainer = absl::flat_hash_set<std::unique_ptr<T>>;
+
   friend CreateTransactionTask;
-  friend DiscoverNextUnusedAddressTask;
 
   void OnRunDiscoveryDone(
       mojom::AccountIdPtr account_id,
@@ -163,21 +167,40 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       FetchRawTransactionsCallback callback,
       base::expected<std::vector<std::vector<uint8_t>>, std::string> result);
 
+  void OnDiscoverNextUnusedAddressDone(
+      DiscoverNextUnusedAddressTask* task,
+      DiscoverNextUnusedAddressCallback callback,
+      base::expected<mojom::BitcoinAddressPtr, std::string> result);
+
+  void OnGetUtxosTaskDone(GetUtxosTask* task,
+                          GetUtxosCallback callback,
+                          base::expected<UtxoMap, std::string> result);
+
+  void OnGetBalanceTaskDone(GetBalanceTask* task,
+                            GetBalanceCallback callback,
+                            mojom::BitcoinBalancePtr balance,
+                            const std::optional<std::string>& error);
+
   bool SignTransactionInternal(BitcoinTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
   bool ApplyHwSignatureInternal(BitcoinTransaction& tx,
                                 const mojom::BitcoinSignature& hw_signature);
-  void CreateTransactionTaskDone(CreateTransactionTask* task);
+  void OnCreateTransactionTaskDone(
+      CreateTransactionTask* task,
+      CreateTransactionCallback callback,
+      base::expected<BitcoinTransaction, std::string> result);
 
   const raw_ref<KeyringService> keyring_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
-  std::list<std::unique_ptr<DiscoverWalletAccountTask>>
-      discover_wallet_account_tasks_;
-  std::list<std::unique_ptr<DiscoverExtendedKeyAccountTask>>
+  TaskContainer<CreateTransactionTask> create_transaction_tasks_;
+  TaskContainer<GetUtxosTask> get_utxos_tasks_;
+  TaskContainer<DiscoverWalletAccountTask> discover_wallet_account_tasks_;
+  TaskContainer<DiscoverNextUnusedAddressTask>
+      discover_next_unused_address_tasks_;
+  TaskContainer<GetBalanceTask> get_balance_tasks_;
+  TaskContainer<DiscoverExtendedKeyAccountTask>
       discover_extended_key_account_tasks_;
-  std::list<std::unique_ptr<FetchRawTransactionsTask>>
-      fetch_raw_transactions_tasks_;
+  TaskContainer<FetchRawTransactionsTask> fetch_raw_transactions_tasks_;
 
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   bitcoin_rpc::BitcoinRpc bitcoin_rpc_;

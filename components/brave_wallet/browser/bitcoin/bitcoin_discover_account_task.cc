@@ -66,6 +66,11 @@ DiscoverAccountTaskBase::State& DiscoverAccountTaskBase::GetState(
   return receive_state ? receive_addresses_state_ : change_addresses_state_;
 }
 
+void DiscoverAccountTaskBase::Start(DiscoverAccountCallback callback) {
+  callback_ = std::move(callback);
+  ScheduleWorkOnTask();
+}
+
 void DiscoverAccountTaskBase::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&DiscoverAccountTaskBase::WorkOnTask,

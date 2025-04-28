@@ -37,19 +37,6 @@ namespace brave_wallet {
 
 namespace {
 
-class MockZCashWalletService : public ZCashWalletService {
- public:
-  MockZCashWalletService(base::FilePath zcash_data_path,
-                         KeyringService& keyring_service,
-                         std::unique_ptr<ZCashRpc> zcash_rpc)
-      : ZCashWalletService(zcash_data_path,
-                           keyring_service,
-                           std::move(zcash_rpc)) {}
-
-  MOCK_METHOD1(GetZCashChainTipStatusTaskDone,
-               void(ZCashGetZCashChainTipStatusTask* task));
-};
-
 class MockZCashRPC : public ZCashRpc {
  public:
   MockZCashRPC() : ZCashRpc(nullptr, nullptr) {}
@@ -122,7 +109,7 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
 
-    zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
+    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         db_path, *keyring_service_,
         std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
   }
@@ -145,9 +132,7 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
 
   mojom::AccountIdPtr& account_id() { return account_id_; }
 
-  MockZCashWalletService& zcash_wallet_service() {
-    return *zcash_wallet_service_;
-  }
+  ZCashWalletService& zcash_wallet_service() { return *zcash_wallet_service_; }
 
   base::PassKey<ZCashGetChainTipStatusTaskTest> CreatePassKey() {
     return base::PassKey<ZCashGetChainTipStatusTaskTest>();
@@ -168,7 +153,7 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
+  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
 };
 
 TEST_F(ZCashGetChainTipStatusTaskTest, Success) {
@@ -200,12 +185,9 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Success) {
         EXPECT_EQ(result.value()->chain_tip, 1000u);
       });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
-      CreatePassKey(), zcash_wallet_service(), CreateContext(), callback.Get());
+      CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  EXPECT_CALL(zcash_wallet_service(),
-              GetZCashChainTipStatusTaskDone(testing::Eq(task.get())));
-
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilIdle();
 }
@@ -240,12 +222,9 @@ TEST_F(ZCashGetChainTipStatusTaskTest, EmptyAccount) {
         EXPECT_EQ(result.value()->chain_tip, 1000u);
       });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
-      CreatePassKey(), zcash_wallet_service(), CreateContext(), callback.Get());
+      CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  EXPECT_CALL(zcash_wallet_service(),
-              GetZCashChainTipStatusTaskDone(testing::Eq(task.get())));
-
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilIdle();
 }
@@ -272,12 +251,9 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_AccountNotShielded) {
           [&](base::expected<mojom::ZCashChainTipStatusPtr, std::string>
                   result) { EXPECT_FALSE(result.has_value()); });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
-      CreatePassKey(), zcash_wallet_service(), CreateContext(), callback.Get());
+      CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  EXPECT_CALL(zcash_wallet_service(),
-              GetZCashChainTipStatusTaskDone(testing::Eq(task.get())));
-
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilIdle();
 }
@@ -309,12 +285,9 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetAccountMeta) {
           [&](base::expected<mojom::ZCashChainTipStatusPtr, std::string>
                   result) { EXPECT_FALSE(result.has_value()); });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
-      CreatePassKey(), zcash_wallet_service(), CreateContext(), callback.Get());
+      CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  EXPECT_CALL(zcash_wallet_service(),
-              GetZCashChainTipStatusTaskDone(testing::Eq(task.get())));
-
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilIdle();
 }
@@ -344,12 +317,9 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetLatestBlock) {
           [&](base::expected<mojom::ZCashChainTipStatusPtr, std::string>
                   result) { EXPECT_FALSE(result.has_value()); });
   auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
-      CreatePassKey(), zcash_wallet_service(), CreateContext(), callback.Get());
+      CreatePassKey(), zcash_wallet_service(), CreateContext());
 
-  EXPECT_CALL(zcash_wallet_service(),
-              GetZCashChainTipStatusTaskDone(testing::Eq(task.get())));
-
-  task->Start();
+  task->Start(callback.Get());
 
   task_environment().RunUntilIdle();
 }

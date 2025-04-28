@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_RPC_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_RPC_H_
 
-#include <list>
 #include <memory>
 #include <string>
 #include <vector>
@@ -22,6 +21,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
 
@@ -89,43 +89,44 @@ class ZCashRpc {
  private:
   friend class base::RefCountedThreadSafe<ZCashRpc>;
 
-  using UrlLoadersList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
-  using StreamHandlersList =
-      std::list<std::unique_ptr<GRrpcMessageStreamHandler>>;
+  using UrlLoadersContainer =
+      absl::flat_hash_set<std::unique_ptr<network::SimpleURLLoader>>;
+  using StreamHandlersContainer =
+      absl::flat_hash_set<std::unique_ptr<GRrpcMessageStreamHandler>>;
 
   void OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
-                          UrlLoadersList::iterator it,
+                          network::SimpleURLLoader* loader,
                           std::unique_ptr<std::string> response_body);
 
   void OnGetLatestBlockResponse(ZCashRpc::GetLatestBlockCallback callback,
-                                UrlLoadersList::iterator it,
+                                network::SimpleURLLoader* loader,
                                 std::unique_ptr<std::string> response_body);
 
   void OnGetTransactionResponse(ZCashRpc::GetTransactionCallback callback,
-                                UrlLoadersList::iterator it,
+                                network::SimpleURLLoader* loader,
                                 std::unique_ptr<std::string> response_body);
 
   void OnSendTransactionResponse(ZCashRpc::SendTransactionCallback callback,
-                                 UrlLoadersList::iterator it,
+                                 network::SimpleURLLoader* loader,
                                  std::unique_ptr<std::string> response_body);
 
   void OnGetAddressTxResponse(ZCashRpc::IsKnownAddressCallback callback,
-                              UrlLoadersList::iterator it,
-                              StreamHandlersList::iterator handler_it,
+                              network::SimpleURLLoader* loader,
+                              GRrpcMessageStreamHandler* handler,
                               base::expected<bool, std::string> result);
 
   void OnGetTreeStateResponse(ZCashRpc::GetTreeStateCallback callback,
-                              UrlLoadersList::iterator it,
+                              network::SimpleURLLoader* loader,
                               std::unique_ptr<std::string> response_body);
 
   void OnGetCompactBlocksResponse(
       ZCashRpc::GetCompactBlocksCallback callback,
-      UrlLoadersList::iterator it,
-      StreamHandlersList::iterator handler_it,
+      network::SimpleURLLoader* loader,
+      GRrpcMessageStreamHandler* handler,
       base::expected<std::vector<std::string>, std::string> result);
 
   void OnGetLightdInfoResponse(GetLightdInfoCallback callback,
-                               UrlLoadersList::iterator it,
+                               network::SimpleURLLoader* loader,
                                std::unique_ptr<std::string> response_body);
 
   template <typename T>
@@ -140,8 +141,8 @@ class ZCashRpc {
 
   GURL GetNetworkURL(const std::string& chain_id);
 
-  UrlLoadersList url_loaders_list_;
-  StreamHandlersList stream_handlers_list_;
+  UrlLoadersContainer url_loaders_;
+  StreamHandlersContainer stream_handlers_;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_ = nullptr;
 

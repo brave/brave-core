@@ -29,16 +29,14 @@ class FetchRawTransactionsTask {
   FetchRawTransactionsTask(BitcoinWalletService& bitcoin_wallet_service,
                            const std::string& network_id,
                            const std::vector<SHA256HashArray>& txids);
-  virtual ~FetchRawTransactionsTask();
+  ~FetchRawTransactionsTask();
 
-  void ScheduleWorkOnTask();
-  void set_callback(FetchRawTransactionsTaskCallback callback) {
-    callback_ = std::move(callback);
-  }
+  void Start(FetchRawTransactionsTaskCallback callback);
 
  protected:
   void MaybeQueueRequests();
 
+  void ScheduleWorkOnTask();
   void WorkOnTask();
   void OnGetTransactionRaw(
       SHA256HashArray txid,
