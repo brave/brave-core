@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -30,8 +28,9 @@
                 android:id="@+id/tx_details_param_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="4dp"
-                android:paddingStart="24dp"
+                android:paddingHorizontal="24dp"
                 android:textColor="@color/wallet_text_color"
                 android:textSize="14sp"
                 android:visibility="gone" />
