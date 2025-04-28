@@ -48,6 +48,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/partitioned_tabs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//chrome/browser/buildflags.gni")
@@ -213,6 +214,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a",
   "//brave/components/p3a:buildflags",
   "//brave/components/p3a_utils",
+  "//brave/components/partitioned_tabs/buildflags",
   "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
@@ -322,6 +324,10 @@ if (enable_brave_education) {
 if (is_android) {
   brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
   brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
+}
+
+if (enable_partitioned_tabs) {
+  brave_chrome_browser_deps += [ "//brave/components/partitioned_tabs/browser" ]
 }
 
 if (enable_containers) {

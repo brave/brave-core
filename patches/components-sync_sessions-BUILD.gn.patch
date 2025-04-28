@@ -1,0 +1,25 @@
+diff --git a/components/sync_sessions/BUILD.gn b/components/sync_sessions/BUILD.gn
+index 33e06933e434aded7a65b576bc7306329922575c..943f475b6c6e3b19e47bd02205c363a553e62aa3 100644
+--- a/components/sync_sessions/BUILD.gn
++++ b/components/sync_sessions/BUILD.gn
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/partitioned_tabs/buildflags/buildflags.gni")
++
+ static_library("sync_sessions") {
+   sources = [
+     "features.cc",
+@@ -64,6 +66,11 @@ static_library("sync_sessions") {
+     "//ui/gfx",
+     "//url",
+   ]
++
++  deps += [ "//brave/components/partitioned_tabs/buildflags" ]
++  if (enable_partitioned_tabs) {
++    deps += [ "//brave/components/partitioned_tabs/browser" ]
++  }
+ }
+ 
+ static_library("test_support") {
