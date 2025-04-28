@@ -78,7 +78,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/storage_partition_constants.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -804,12 +804,7 @@ BraveRenderViewContextMenu::GetCurrentContainerIds() {
 
   const auto& storage_partition_config =
       source_web_contents_->GetSiteInstance()->GetStoragePartitionConfig();
-  if (storage_partition_config.partition_domain() !=
-      containers::kContainersStoragePartitionDomain) {
-    return {};
-  }
-
-  if (storage_partition_config.partition_name().empty()) {
+  if (!containers::IsContainersStoragePartition(storage_partition_config)) {
     return {};
   }
 

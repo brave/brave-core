@@ -49,6 +49,10 @@ test("brave_components_unittests") {
     ]
   }
 
+  if (enable_containers) {
+    deps += [ "//brave/components/containers/content/browser:unit_tests" ]
+  }
+
   if (enable_psst) {
     deps += [
       "//brave/components/psst/browser/content:unit_tests",

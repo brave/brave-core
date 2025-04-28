@@ -6,7 +6,7 @@
 #include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
 
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/containers/core/browser/storage_partition_constants.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/site_instance.h"
@@ -48,12 +48,7 @@ ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
 
     auto storage_partition_config =
         contents->GetSiteInstance()->GetStoragePartitionConfig();
-    if (storage_partition_config.partition_domain() !=
-        containers::kContainersStoragePartitionDomain) {
-      continue;
-    }
-
-    if (storage_partition_config.partition_name().empty()) {
+    if (!containers::IsContainersStoragePartition(storage_partition_config)) {
       continue;
     }
 

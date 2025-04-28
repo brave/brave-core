@@ -12,6 +12,10 @@
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 namespace {
 
 void UpdateBraveScheme(NavigateParams* params) {
@@ -34,13 +38,28 @@ void UpdateParams(NavigateParams* params) {
   MaybeOverridePopupDisposition(params);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+std::optional<content::StoragePartitionConfig>
+GetStoragePartitionConfigToInherit(const NavigateParams& params) {
+  if (params.storage_partition_config) {
+    return *params.storage_partition_config;
+  }
+  if (params.source_site_instance) {
+    return params.source_site_instance->GetStoragePartitionConfig();
+  }
+  return std::nullopt;
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 }  // namespace
 
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateParams(params);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#define GetSiteInstanceForNewTab(...) \
-  GetSiteInstanceForNewTab(__VA_ARGS__, params.storage_partition_config)
+#define GetSiteInstanceForNewTab(...)                                \
+  GetSiteInstanceForNewTab(__VA_ARGS__,                              \
+                           containers::MaybeInheritStoragePartition( \
+                               GetStoragePartitionConfigToInherit(params)))
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/browser_navigator.cc>
