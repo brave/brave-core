@@ -265,7 +265,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         NetworkInfo network = mWalletModel.getNetworkModel().getNetwork(chainId);
         if (network == null) return;
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        String logo = Utils.getNetworkIconName(network.chainId, network.coin);
+        String logo = Utils.getNetworkIconName(network);
         if (TextUtils.isEmpty(logo)) return;
         Utils.setBitmapResource(
                 mExecutor,

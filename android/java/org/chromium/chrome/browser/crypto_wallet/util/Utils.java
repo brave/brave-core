@@ -1025,11 +1025,6 @@ public class Utils {
         return logo;
     }
 
-    @NonNull
-    public static String getNetworkIconName(NetworkInfo network) {
-        return Utils.getNetworkIconName(network.chainId, network.coin);
-    }
-
     public static AccountInfo findAccountByAddress(AccountInfo[] accounts, String address) {
         for (AccountInfo acc : accounts) {
             if (acc.address
