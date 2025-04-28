@@ -132,7 +132,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.function.BooleanSupplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout,
@@ -1498,7 +1497,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             MenuButtonCoordinator menuButtonCoordinator,
             ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier,
             UserEducationHelper userEducationHelper,
             ObservableSupplier<Tracker> trackerSupplier,
             ToolbarProgressBar progressBar,
@@ -1510,7 +1508,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 menuButtonCoordinator,
                 tabSwitcherButtonCoordinator,
                 historyDelegate,
-                partnerHomepageEnabledSupplier,
                 userEducationHelper,
                 trackerSupplier,
                 progressBar,
@@ -1588,11 +1585,5 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 showPlaylistButton(playlistItems);
             }
         }
-    }
-
-    /** Opens hompage in the current tab. Override it here to make it publicly accessible. */
-    @Override
-    public void openHomepage() {
-        super.openHomepage();
     }
 }
