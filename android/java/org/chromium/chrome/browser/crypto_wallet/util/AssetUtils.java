@@ -36,7 +36,17 @@ public class AssetUtils {
 
     public static @KeyringId.EnumType int getKeyring(
             @CoinType.EnumType int coinType, @Nullable String chainId) {
-        if (coinType == CoinType.FIL) {
+        if (coinType == CoinType.ZEC) {
+            if (BraveWalletConstants.Z_CASH_MAINNET.equals(chainId)) {
+                return KeyringId.Z_CASH_MAINNET;
+            }
+            if (BraveWalletConstants.Z_CASH_TESTNET.equals(chainId)) {
+                return KeyringId.Z_CASH_TESTNET;
+            }
+            throw new IllegalStateException(
+                    String.format("No ZCash keyring found for chain Id %s.", chainId));
+        } else if (coinType == CoinType.FIL) {
+            assert chainId != null;
             switch (chainId) {
                 case BraveWalletConstants.FILECOIN_MAINNET:
                 case BraveWalletConstants.LOCALHOST_CHAIN_ID:

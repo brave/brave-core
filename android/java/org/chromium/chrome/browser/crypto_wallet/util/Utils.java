@@ -954,8 +954,10 @@ public class Utils {
     }
 
     @NonNull
-    public static String getNetworkIconName(
-            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+    public static String getNetworkIconName(final @NonNull NetworkInfo network) {
+        final String chainId = network.chainId;
+        final int coin = network.coin;
+
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
@@ -1004,6 +1006,10 @@ public class Utils {
             case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
                 logo = "neon.png";
                 break;
+            case BraveWalletConstants.Z_CASH_MAINNET:
+            case BraveWalletConstants.Z_CASH_TESTNET:
+                logo = "zec.png";
+                break;
             default:
                 logo = "";
         }
@@ -1037,6 +1043,7 @@ public class Utils {
         return null;
     }
 
+    @Nullable
     public static AccountInfo findAccount(AccountInfo[] accounts, AccountId accountId) {
         for (AccountInfo acc : accounts) {
             if (WalletUtils.accountIdsEqual(acc.accountId, accountId)) {
