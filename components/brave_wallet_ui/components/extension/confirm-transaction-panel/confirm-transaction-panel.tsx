@@ -453,7 +453,7 @@ export const ConfirmTransactionPanel = ({
         {selectedTab === 'transaction' ? (
           <TransactionInfo
             onToggleEditGas={
-              isSolanaTransaction || isBitcoinTransaction
+              isSolanaTransaction || isBitcoinTransaction || isZCashTransaction
                 ? undefined
                 : onToggleEditGas
             }
@@ -482,6 +482,9 @@ export const ConfirmTransactionPanel = ({
 
       <NetworkFeeRow>
         <PendingTransactionNetworkFeeAndSettings
+          showEditGas={
+            !isZCashTransaction && !isBitcoinTransaction && !isSolanaTransaction
+          }
           onToggleEditGas={onToggleEditGas}
           feeDisplayMode='fiat'
         />
