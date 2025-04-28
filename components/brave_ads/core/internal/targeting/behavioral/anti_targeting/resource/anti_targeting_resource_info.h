@@ -11,7 +11,6 @@
 #include <set>
 #include <string>
 
-#include "base/types/expected.h"
 #include "base/values.h"
 
 class GURL;
@@ -34,7 +33,7 @@ struct AntiTargetingResourceInfo final {
 
   ~AntiTargetingResourceInfo();
 
-  static base::expected<AntiTargetingResourceInfo, std::string> CreateFromValue(
+  static std::optional<AntiTargetingResourceInfo> CreateFromValue(
       base::Value::Dict dict);
 
   std::optional<int> version;

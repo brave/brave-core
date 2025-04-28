@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
@@ -38,8 +37,7 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   void MaybeLoadOrUnload();
 
   void Load();
-  void LoadCallback(
-      ResourceComponentParsingErrorOr<AntiTargetingResourceInfo> result);
+  void LoadCallback(std::optional<AntiTargetingResourceInfo> resource);
 
   void MaybeUnload();
   void Unload();

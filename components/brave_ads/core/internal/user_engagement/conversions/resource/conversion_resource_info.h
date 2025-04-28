@@ -7,9 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_RESOURCE_CONVERSION_RESOURCE_INFO_H_
 
 #include <optional>
-#include <string>
 
-#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_info.h"
 
@@ -26,7 +24,7 @@ struct ConversionResourceInfo final {
 
   ~ConversionResourceInfo();
 
-  static base::expected<ConversionResourceInfo, std::string> CreateFromValue(
+  static std::optional<ConversionResourceInfo> CreateFromValue(
       base::Value::Dict dict);
 
   std::optional<int> version;

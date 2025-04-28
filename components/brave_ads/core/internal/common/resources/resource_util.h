@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
 
 namespace brave_ads {
 
 template <typename T>
 using LoadAndParseResourceComponentCallback =
-    base::OnceCallback<void(ResourceComponentParsingErrorOr<T>)>;
+    base::OnceCallback<void(std::optional<T>)>;
 
 template <typename T>
 void LoadAndParseResourceComponent(

@@ -23,42 +23,38 @@ PurchaseIntentResourceInfo& PurchaseIntentResourceInfo::operator=(
 PurchaseIntentResourceInfo::~PurchaseIntentResourceInfo() = default;
 
 // static
-base::expected<PurchaseIntentResourceInfo, std::string>
+std::optional<PurchaseIntentResourceInfo>
 PurchaseIntentResourceInfo::CreateFromValue(const base::Value::Dict dict) {
   std::optional<int> version = ParseVersion(dict);
   if (!version) {
-    return base::unexpected("Failed to parse purchase intent resource version");
+    return std::nullopt;
   }
 
   if (version != kPurchaseIntentResourceVersion.Get()) {
-    return base::unexpected("Purchase intent resource version mismatch");
+    return std::nullopt;
   }
 
   std::optional<SegmentList> segments = ParseSegments(dict);
   if (!segments) {
-    return base::unexpected(
-        "Failed to parse purchase intent resource segments");
+    return std::nullopt;
   }
 
   std::optional<PurchaseIntentSegmentKeyphraseList> segment_keyphrases =
       ParseSegmentKeyphrases(*segments, dict);
   if (!segment_keyphrases) {
-    return base::unexpected(
-        "Failed to parse purchase intent resource segment keyphrases");
+    return std::nullopt;
   }
 
   std::optional<PurchaseIntentFunnelKeyphraseList> funnel_keyphrases =
       ParseFunnelKeyphrases(dict);
   if (!funnel_keyphrases) {
-    return base::unexpected(
-        "Failed to parse purchase intent resource funnel keyphrases");
+    return std::nullopt;
   }
 
   std::optional<PurchaseIntentFunnelSiteMap> funnel_sites =
       ParseFunnelSites(*segments, dict);
   if (!funnel_sites) {
-    return base::unexpected(
-        "Failed to parse purchase intent resource funnel sites");
+    return std::nullopt;
   }
 
   PurchaseIntentResourceInfo purchase_intent;

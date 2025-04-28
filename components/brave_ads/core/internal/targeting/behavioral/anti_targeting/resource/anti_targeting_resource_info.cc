@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "url/gurl.h"
 
@@ -28,13 +30,13 @@ AntiTargetingResourceInfo& AntiTargetingResourceInfo::operator=(
 AntiTargetingResourceInfo::~AntiTargetingResourceInfo() = default;
 
 // static
-base::expected<AntiTargetingResourceInfo, std::string>
+std::optional<AntiTargetingResourceInfo>
 AntiTargetingResourceInfo::CreateFromValue(const base::Value::Dict dict) {
   AntiTargetingResourceInfo anti_targeting;
 
   if (std::optional<int> version = dict.FindInt(kVersionKey)) {
     if (version != kAntiTargetingResourceVersion.Get()) {
-      return base::unexpected("Failed to load from JSON, version mismatch");
+      return std::nullopt;
     }
 
     anti_targeting.version = version;
@@ -42,19 +44,17 @@ AntiTargetingResourceInfo::CreateFromValue(const base::Value::Dict dict) {
 
   const auto* const sites_dict = dict.FindDict(kSitesKey);
   if (!sites_dict) {
-    return base::unexpected("Failed to load from JSON, sites missing");
+    return std::nullopt;
   }
 
   for (const auto [creative_set_id, sites] : *sites_dict) {
     if (!sites.is_list()) {
-      return base::unexpected(
-          "Failed to load from JSON, sites not of type list");
+      return std::nullopt;
     }
 
     for (const auto& site : sites.GetList()) {
       if (!site.is_string()) {
-        return base::unexpected(
-            "Failed to load from JSON, site not of type string");
+        return std::nullopt;
       }
 
       anti_targeting.creative_sets[creative_set_id].insert(

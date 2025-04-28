@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_info.h"
 
+#include <string>
+
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 
@@ -28,13 +30,13 @@ ConversionResourceInfo& ConversionResourceInfo::operator=(
 ConversionResourceInfo::~ConversionResourceInfo() = default;
 
 // static
-base::expected<ConversionResourceInfo, std::string>
-ConversionResourceInfo::CreateFromValue(const base::Value::Dict dict) {
+std::optional<ConversionResourceInfo> ConversionResourceInfo::CreateFromValue(
+    const base::Value::Dict dict) {
   ConversionResourceInfo conversions;
 
   if (std::optional<int> version = dict.FindInt("version")) {
     if (version != kConversionResourceVersion.Get()) {
-      return base::unexpected("Failed to load from JSON, version mismatch");
+      return std::nullopt;
     }
     conversions.version = version;
   }
@@ -42,8 +44,7 @@ ConversionResourceInfo::CreateFromValue(const base::Value::Dict dict) {
   const auto* conversion_id_patterns_dict =
       dict.FindDict("conversion_id_patterns");
   if (!conversion_id_patterns_dict) {
-    return base::unexpected(
-        "Failed to load from JSON, conversion id patterns missing");
+    return std::nullopt;
   }
 
   for (const auto [url_pattern, conversion_id_pattern] :
@@ -52,22 +53,19 @@ ConversionResourceInfo::CreateFromValue(const base::Value::Dict dict) {
         conversion_id_pattern.GetIfDict();
 
     if (!conversion_id_pattern_dict) {
-      return base::unexpected(
-          "Failed to load from JSON, conversion id pattern not of type dict");
+      return std::nullopt;
     }
 
     const std::string* const id_pattern =
         conversion_id_pattern_dict->FindString("id_pattern");
     if (!id_pattern || id_pattern->empty()) {
-      return base::unexpected(
-          "Failed to load from JSON, pattern id_pattern missing");
+      return std::nullopt;
     }
 
     const std::string* const search_in =
         conversion_id_pattern_dict->FindString("search_in");
     if (!search_in) {
-      return base::unexpected(
-          "Failed to load from JSON, pattern search_in missing");
+      return std::nullopt;
     }
 
     ConversionResourceIdPatternSearchInType search_in_type =
