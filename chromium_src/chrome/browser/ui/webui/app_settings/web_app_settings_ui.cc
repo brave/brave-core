@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "chrome/common/chrome_features.h"
-#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
 

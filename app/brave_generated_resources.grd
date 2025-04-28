@@ -172,6 +172,9 @@
       <!-- Brave Settings WebUI strings -->
       <part file="brave_settings_strings.grdp" />
 
+      <!-- Brave App Management strings -->
+      <part file="brave_app_management.grdp" />
+
       <!--Add new items to the appropriate sections below -->
 
       <!-- App Menu -->
