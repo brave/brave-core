@@ -20,19 +20,26 @@ import androidx.fragment.app.Fragment;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
+import org.chromium.brave_wallet.mojom.ZecTxData;
+import org.chromium.brave_wallet.mojom.ZecTxInput;
+import org.chromium.brave_wallet.mojom.ZecTxOutput;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-public class TxDetailsFragment extends Fragment {
-    private TransactionInfo mTxInfo;
-    private TxData1559 mTxData1559;
+import java.util.Locale;
 
-    public static TxDetailsFragment newInstance(TransactionInfo txInfo) {
+public class TxDetailsFragment extends Fragment {
+    @NonNull
+    private final TransactionInfo mTxInfo;
+    @Nullable
+    private final TxData1559 mTxData1559;
+
+    public static TxDetailsFragment newInstance(@NonNull final TransactionInfo txInfo) {
         return new TxDetailsFragment(txInfo);
     }
 
-    private TxDetailsFragment(TransactionInfo txInfo) {
+    private TxDetailsFragment(@NonNull final TransactionInfo txInfo) {
         mTxInfo = txInfo;
         mTxData1559 =
                 mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
@@ -47,23 +54,28 @@ public class TxDetailsFragment extends Fragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_details, container, false);
-
         setupView(view);
-
         return view;
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public void setupView(View view) {
-        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0)
-                && mTxData1559 != null
-                && mTxData1559.baseData.data.length == 0) {
+    public void setupView(@NonNull final View view) {
+        TextView functionTypeWidget = view.findViewById(R.id.function_type);
+        TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
+        if (mTxInfo.txDataUnion.getZecTxData() != null) {
+            functionTypeWidget.setVisibility(View.GONE);
+            detailsParam1Widget.setVisibility(View.VISIBLE);
+            detailsParam1Widget.setText(extractZecDetails(mTxInfo.txDataUnion.getZecTxData()));
+
+            return;
+        }
+        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0) &&
+                (mTxData1559 == null || mTxData1559.baseData.data.length == 0)) {
             return;
         }
         assert mTxInfo.txParams.length == mTxInfo.txArgs.length;
         String functionType = getString(TransactionUtils.getTxType(mTxInfo));
 
-        TextView functionTypeWidget = view.findViewById(R.id.function_type);
         functionTypeWidget.setText(
                 String.format(
                         getResources().getString(R.string.wallet_details_function_type),
@@ -71,7 +83,6 @@ public class TxDetailsFragment extends Fragment {
 
         if (mTxInfo.txParams.length > 0) {
             String detailsParam1 = mTxInfo.txParams[0] + ": " + mTxInfo.txArgs[0];
-            TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
             detailsParam1Widget.setVisibility(View.VISIBLE);
             detailsParam1Widget.setText(detailsParam1);
         }
@@ -94,7 +105,6 @@ public class TxDetailsFragment extends Fragment {
                 && mTxData1559 != null
                 && mTxData1559.baseData.data.length != 0) {
             String detailsParam1 = Utils.numberArrayToHexStr(mTxData1559.baseData.data);
-            TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
             detailsParam1Widget.setVisibility(View.VISIBLE);
             detailsParam1Widget.setText(detailsParam1);
             detailsParam1Widget.setOnTouchListener(
@@ -112,5 +122,17 @@ public class TxDetailsFragment extends Fragment {
                         }
                     });
         }
+    }
+
+    @NonNull
+    private String extractZecDetails(@NonNull final ZecTxData zecTxData) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (ZecTxInput input : zecTxData.inputs) {
+            stringBuilder.append(String.format(Locale.ENGLISH, "input-%d-%s\n\n", input.value, input.address));
+        }
+        for (ZecTxOutput output : zecTxData.outputs) {
+            stringBuilder.append(String.format(Locale.ENGLISH, "output-%d-%s\n\n", output.value, output.address));
+        }
+        return stringBuilder.toString();
     }
 }

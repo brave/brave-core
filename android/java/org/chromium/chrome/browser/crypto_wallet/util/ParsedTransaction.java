@@ -24,6 +24,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
+import org.chromium.brave_wallet.mojom.ZecTxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.presenters.SolanaInstructionPresenter;
 import org.chromium.mojo_base.mojom.TimeDelta;
@@ -47,6 +48,7 @@ import java.util.regex.Pattern;
 public class ParsedTransaction extends ParsedTransactionFees {
     // Strings are initialized to empty string instead of null, as the default value from mojo
     // Common fields
+    public double marketPrice;
     private String hash = "";
     private String nonce = "";
     private TimeDelta createdTime;
@@ -70,7 +72,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
     private BlockchainToken erc721BlockchainToken;
     private String erc721TokenId = "";
     private boolean isSwap;
-    public double marketPrice;
+
+    // ZCash
+    private boolean shielded;
 
     // Token approvals
     private String approvalTarget = "";
@@ -164,6 +168,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 txDataUnion.which() == TxDataUnion.Tag.BtcTxData
                         ? txDataUnion.getBtcTxData()
                         : null;
+        ZecTxData zecTxData =
+                txDataUnion.which() == TxDataUnion.Tag.ZecTxData
+                        ? txDataUnion.getZecTxData()
+                        : null;
 
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction =
@@ -173,6 +181,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                         .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isBtcTransaction = btcTxData != null;
+        final boolean isZecTransaction = zecTxData != null;
 
         final String value =
                 isSPLTransaction
@@ -184,7 +193,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                                 ? Utils.toHex(filTxData.value)
                                                 : ""
                                         : isBtcTransaction
-                                                ? String.valueOf(btcTxData.amount)
+                                                ? String.valueOf(btcTxData.amount) :
+                                            isZecTransaction ? String.valueOf(zecTxData.amount)
                                                 : txData != null ? txData.baseData.value : "";
 
         String to =
@@ -192,7 +202,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         ? solTxData != null ? solTxData.toWalletAddress : ""
                         : isFilTransaction
                                 ? filTxData.to
-                                : isBtcTransaction ? btcTxData.to : txData.baseData.to;
+                                : isBtcTransaction ? btcTxData.to :
+                                    isZecTransaction ? zecTxData.to :
+                                            txData != null ? txData.baseData.to : "";
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
         AccountInfo account = Utils.findAccount(accounts, txInfo.fromAccountId);
@@ -212,7 +224,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         Utils.getOrDefault(
                                 blockchainTokensBalances,
                                 accountAddressLower,
-                                new HashMap<String, Double>()),
+                                new HashMap<>()),
                         Utils.tokenToString(token),
                         0.0d);
 
@@ -224,11 +236,16 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
-        parsedTransaction.sender = account.address;
-        parsedTransaction.senderLabel = account != null ? account.name : "";
+        if (account != null) {
+            parsedTransaction.sender = account.address;
+            parsedTransaction.senderLabel = account.name;
+        }
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
         parsedTransaction.marketPrice = networkSpotPrice;
+        if (isZecTransaction && zecTxData.useShieldedPool) {
+            parsedTransaction.shielded = true;
+        }
 
         int txType = txInfo.txType;
         if (txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION
@@ -485,7 +502,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                             Utils.getOrDefault(
                                     blockchainTokensBalances,
                                     accountAddressLower,
-                                    new HashMap<String, Double>()),
+                                    new HashMap<>()),
                             Utils.tokenToString(sellToken),
                             0.0d);
 
@@ -513,7 +530,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     Utils.getOrDefault(
                             assetPrices, txNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d);
             double sendAmount = 0;
-            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER) {
+            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER || isZecTransaction) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);
             } else {
                 sendAmount = Utils.fromHexWei(value, txNetwork.decimals);
@@ -755,5 +772,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public boolean isSolChangeOfOwnership() {
         return solChangeOfOwnership;
+    }
+
+    public boolean isShielded() {
+        return shielded;
     }
 }

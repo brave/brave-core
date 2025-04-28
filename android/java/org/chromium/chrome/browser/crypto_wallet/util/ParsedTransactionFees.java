@@ -15,6 +15,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
+import org.chromium.brave_wallet.mojom.ZecTxData;
 
 import java.math.BigInteger;
 
@@ -24,7 +25,7 @@ import java.math.BigInteger;
  */
 public class ParsedTransactionFees {
     // Strings are initialized to empty string instead of null, as the default value from mojo
-    private static String TAG = "ParsedTransactionFees";
+    private static final String TAG = "ParsedTransactionFees";
     private String gasLimit = "";
     private String gasPrice = "";
     private String maxPriorityFeePerGas = "";
@@ -123,10 +124,15 @@ public class ParsedTransactionFees {
                 txDataUnion.which() == TxDataUnion.Tag.BtcTxData
                         ? txDataUnion.getBtcTxData()
                         : null;
+        final ZecTxData zecTxData =
+                txDataUnion.which() == TxDataUnion.Tag.ZecTxData
+                        ? txDataUnion.getZecTxData()
+                        : null;
         final int networkDecimals = txNetwork.decimals;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isFilTransaction = filTxData != null;
         final boolean isBtcTransaction = btcTxData != null;
+        final boolean isZecTransaction = zecTxData != null;
 
         final String gasLimit;
         final String gasPrice;
@@ -151,7 +157,11 @@ public class ParsedTransactionFees {
         final boolean isEIP1559Transaction =
                 !maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty();
         final double[] gasFeeArr;
-        if (isBtcTransaction) {
+        if (isZecTransaction) {
+            final double gasFee = Utils.fromWei(Long.toString(zecTxData.fee), networkDecimals);
+            final double gasFeeFiat = gasFee * networkSpotPrice;
+            gasFeeArr = new double[] {gasFee, gasFeeFiat};
+        } else if (isBtcTransaction) {
             final double gasFee = Utils.fromWei(Long.toString(btcTxData.fee), networkDecimals);
             final double gasFeeFiat = gasFee * networkSpotPrice;
             gasFeeArr = new double[] {gasFee, gasFeeFiat};

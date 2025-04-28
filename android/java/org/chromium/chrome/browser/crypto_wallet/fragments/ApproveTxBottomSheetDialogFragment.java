@@ -37,6 +37,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -78,6 +79,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     private TransactionConfirmationListener mTransactionConfirmationListener;
     private List<TransactionInfo> mTransactionInfos;
     private Button mRejectAllTx;
+    @CoinType.EnumType
     private int mCoinType;
     private long mSolanaEstimatedTxFee;
     private WalletModel mWalletModel;
@@ -428,6 +430,8 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                 view.findViewById(R.id.warning_container).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.tab_top_space).setVisibility(View.GONE);
             }
+        } else if (parsedTx.isShielded()) {
+            txType.setText(getResources().getString(R.string.brave_wallet_shielding));
         } else {
             txType.setText(getResources().getString(R.string.send));
         }
