@@ -34,6 +34,8 @@
   virtual std::optional<GURL> SanitizeURL(content::RenderFrameHost*,         \
                                           const GURL&);                      \
   virtual bool IsWindowsRecallDisabled();                                    \
+  virtual bool ShouldInheritStoragePartition(                                \
+      const content::StoragePartitionConfig& partition_config) const;        \
   virtual void SetBrowserStartupIsCompleteForTesting
 
 #include <content/public/browser/content_browser_client.h>  // IWYU pragma: export
