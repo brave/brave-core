@@ -108,7 +108,7 @@ public class TabUtils {
             tintIcon(addMenuItem.getIcon(), tintColor);
             tintIcon(editMenuItem.getIcon(), tintColor);
             tintIcon(viewMenuItem.getIcon(), tintColor);
-            tintIcon(addMenuItem.getIcon(), tintColor);
+            tintIcon(deleteMenuItem.getIcon(), tintColor);
         }
 
         if (editingAllowed) {
