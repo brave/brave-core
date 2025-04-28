@@ -260,6 +260,7 @@ void AdsServiceImplIOS::MaybeServeNewTabPageAd(
 void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
@@ -269,6 +270,7 @@ void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
   }
 
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                 should_metrics_fallback_to_p3a,
                                  mojom_ad_event_type, std::move(callback));
 }
 
