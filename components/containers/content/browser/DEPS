@@ -1,0 +1,9 @@
+include_rules = [
+    "+components/pref_registry",
+    "+components/prefs",
+    "+components/sync_preferences",
+    "+components/user_prefs",
+    "+content/public/browser",
+    "+content/public/test",
+    "+third_party/re2",
+]

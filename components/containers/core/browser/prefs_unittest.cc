@@ -76,4 +76,16 @@ TEST_F(ContainersPrefsTest, SetContainerListEmpty) {
   EXPECT_TRUE(list.empty());
 }
 
+TEST_F(ContainersPrefsTest, IsContainerStoredInPrefs) {
+  std::vector<mojom::ContainerPtr> test_containers;
+  test_containers.push_back(
+      mojom::Container::New("test-id-1", "Test Container 1"));
+  SetContainersToPrefs(test_containers, prefs_);
+
+  EXPECT_TRUE(
+      IsContainerStoredInPrefs(mojom::Container::New("test-id-1", ""), prefs_));
+  EXPECT_FALSE(
+      IsContainerStoredInPrefs(mojom::Container::New("test-id-2", ""), prefs_));
+}
+
 }  // namespace containers

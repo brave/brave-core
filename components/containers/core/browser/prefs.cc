@@ -46,11 +46,21 @@ void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
   base::Value::List list;
   for (const auto& container : containers) {
+    CHECK(container);
     list.Append(base::Value::Dict()
                     .Set("id", container->id)
                     .Set("name", container->name));
   }
   prefs.SetList(prefs::kContainersList, std::move(list));
+}
+
+bool IsContainerStoredInPrefs(const mojom::ContainerPtr& container,
+                              const PrefService& prefs) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  CHECK(container);
+  auto containers = GetContainersFromPrefs(prefs);
+  return std::any_of(containers.begin(), containers.end(),
+                     [&](const auto& c) { return c->id == container->id; });
 }
 
 }  // namespace containers

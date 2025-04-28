@@ -8,6 +8,9 @@ include_rules += [
   "+brave/build/android/jni_headers",
   "+brave/grit",
   "+brave/components/constants",
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
+  "+brave/components/containers/core",
   "+brave/components/playlist/common/buildflags",
   "+brave/components/version_info",
   # Make sure renderer directories are not included for components with
