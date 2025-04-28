@@ -595,6 +595,7 @@ extension BrowserViewController {
   ) -> (any TabState)? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
+      braveCore.defaultHostContentSettings.popupsAllowed,
       navigationURL.shouldRequestBeOpenedAsPopup()
     else {
       print("Denying popup from request: \(request)")

@@ -133,7 +133,6 @@ class TabManager: NSObject {
     super.init()
 
     Preferences.Shields.blockImages.observe(from: self)
-    Preferences.General.blockPopups.observe(from: self)
     Preferences.General.nightModeEnabled.observe(from: self)
 
     domainFrc.delegate = self
@@ -273,8 +272,7 @@ class TabManager: NSObject {
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
     let configuration: WKWebViewConfiguration = .init()
     configuration.processPool = WKProcessPool()
-    configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General
-      .blockPopups.value
+    configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
 
     // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
@@ -1532,12 +1530,6 @@ extension TabManagerDelegate {
 extension TabManager: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     switch key {
-    case Preferences.General.blockPopups.key:
-      let allowPopups = !Preferences.General.blockPopups.value
-      // Each tab may have its own configuration, so we should tell each of them in turn.
-      allTabs.forEach {
-        $0.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-      }
     case Preferences.General.nightModeEnabled.key:
       DarkReaderScriptHandler.set(
         tabManager: self,

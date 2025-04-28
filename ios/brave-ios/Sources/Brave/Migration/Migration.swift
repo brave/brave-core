@@ -43,6 +43,7 @@ public class Migration {
     migrateDeAmpPreferences()
     migrateDebouncePreferences()
     migrateDefaultUserAgentPreferences()
+    migrateBlockPopupsPreferences()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -56,6 +57,12 @@ public class Migration {
   private func migrateDefaultUserAgentPreferences() {
     Preferences.DeprecatedPreferences.alwaysRequestDesktopSite.migrate { value in
       self.braveCore.defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+    }
+  }
+
+  private func migrateBlockPopupsPreferences() {
+    Preferences.DeprecatedPreferences.blockPopups.migrate { value in
+      self.braveCore.defaultHostContentSettings.popupsAllowed = !value
     }
   }
 
@@ -224,6 +231,9 @@ extension Preferences {
       key: "general.always-request-desktop-site",
       default: UIDevice.current.userInterfaceIdiom == .pad
     )
+
+    /// Whether or not to block popups from websites automaticaly
+    static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
   }
 
   /// Migration preferences
@@ -319,7 +329,6 @@ extension Preferences {
 
     // General
     migrate(key: "saveLogins", to: Preferences.General.saveLogins)
-    migrate(key: "blockPopups", to: Preferences.General.blockPopups)
     migrate(key: "kPrefKeyTabsBarShowPolicy", to: Preferences.General.tabBarVisibility)
 
     // Search
