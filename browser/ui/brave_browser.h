@@ -49,6 +49,9 @@ class BraveBrowser : public Browser {
       bool check_can_support) const override;
   bool PreHandleMouseEvent(content::WebContents* source,
                            const blink::WebMouseEvent& event) override;
+  std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
+      content::WebContents* source,
+      const content::StoragePartitionConfig& partition_config) override;
 
   // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
   // and it's called from WebContentsModalDialogManager.
