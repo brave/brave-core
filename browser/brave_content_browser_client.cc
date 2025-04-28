@@ -70,6 +70,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
@@ -287,6 +288,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler_registry.h"
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)
@@ -1453,6 +1458,16 @@ bool BraveContentBrowserClient::IsWindowsRecallDisabled() {
 #else
   return false;
 #endif
+}
+
+bool BraveContentBrowserClient::ShouldInheritStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  return containers::ContainedTabHandlerRegistry::GetInstance()
+      .ShouldInheritStoragePartition(partition_config);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(
