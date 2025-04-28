@@ -1522,6 +1522,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
+      shouldMetricsFallbackToP3a:(BOOL)shouldMetricsFallbackToP3a
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
@@ -1530,7 +1531,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   adsService->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
-      base::SysNSStringToUTF8(creativeInstanceId),
+      base::SysNSStringToUTF8(creativeInstanceId), shouldMetricsFallbackToP3a,
       static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
       base::BindOnce(completion));
 }

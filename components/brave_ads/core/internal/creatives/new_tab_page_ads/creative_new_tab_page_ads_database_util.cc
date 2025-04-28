@@ -12,7 +12,6 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
@@ -36,7 +35,6 @@ constexpr int kExpectedCampaignVersion = 1;
 constexpr char kCampaignsKey[] = "campaigns";
 constexpr char kCampaignVersionKey[] = "version";
 constexpr char kCampaignIdKey[] = "campaignId";
-constexpr char kCampaignMetricsKey[] = "metrics";
 
 constexpr char kCampaignAdvertiserIdKey[] = "advertiserId";
 
@@ -113,8 +111,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
   CreativeNewTabPageAdList creative_ads;
   CreativeSetConversionList creative_set_conversions;
 
-  base::flat_set<std::string> creative_instance_ids;
-
   // Campaigns.
   for (const auto& campaign_value : *campaign_list) {
     CreativeNewTabPageAdInfo creative_ad;
@@ -140,10 +136,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       continue;
     }
     creative_ad.campaign_id = *campaign_id;
-
-    const std::string* const metrics =
-        campaign_dict->FindString(kCampaignMetricsKey);
-    const bool should_metrics_fallback_to_p3a = metrics && *metrics == "p3a";
 
     const std::string* const advertiser_id =
         campaign_dict->FindString(kCampaignAdvertiserIdKey);
@@ -390,9 +382,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
           continue;
         }
         creative_ad.creative_instance_id = *creative_instance_id;
-        if (should_metrics_fallback_to_p3a) {
-          creative_instance_ids.insert(*creative_instance_id);
-        }
 
         const std::string* const company_name =
             creative_dict->FindString(kCreativeCompanyNameKey);
@@ -485,8 +474,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       }
     }
   }
-
-  SetCreativeInstanceIdsToFallbackToP3a(creative_instance_ids);
 
   SaveCreativeNewTabPageAds(creative_ads);
   SaveCreativeSetConversions(creative_set_conversions);

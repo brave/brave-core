@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 
 namespace brave_ads {
 
@@ -35,16 +36,21 @@ Reactions& AdsCore::GetReactions() {
   return reactions_;
 }
 
-void AdsCore::SetCreativeInstanceIdsToFallbackToP3a(
-    const base::flat_set<std::string>& creative_instance_ids) {
-  should_metrics_fallback_to_p3a_.clear();
-  should_metrics_fallback_to_p3a_.insert(creative_instance_ids.cbegin(),
-                                         creative_instance_ids.cend());
+void AdsCore::UpdateP3aMetricsFallbackState(
+    const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a) {
+  if (should_metrics_fallback_to_p3a) {
+    metrics_fallback_to_p3a_.insert(creative_instance_id);
+  } else {
+    metrics_fallback_to_p3a_.erase(creative_instance_id);
+  }
 }
 
-bool AdsCore::ShouldCreativeInstanceIdFallbackToP3A(
+bool AdsCore::ShouldFallbackToP3aMetrics(
     const std::string& creative_instance_id) const {
-  return should_metrics_fallback_to_p3a_.contains(creative_instance_id);
+  // If we don't support confirmations, we should always fallback to P3A.
+  return !kShouldSupportNewTabPageAdConfirmations.Get() ||
+         metrics_fallback_to_p3a_.contains(creative_instance_id);
 }
 
 }  // namespace brave_ads
