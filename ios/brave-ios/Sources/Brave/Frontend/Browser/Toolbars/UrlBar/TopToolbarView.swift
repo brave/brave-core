@@ -864,7 +864,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // Default on
     var shieldIcon = "brave.logo"
     let shieldsOffIcon = "brave.logo.greyscale"
-    if let currentURL = currentURL {
+    if let currentURL = currentURL, currentURL.isWebPage(includeDataURIs: false) {
       let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
       let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
       if domain.areAllShieldsOff {

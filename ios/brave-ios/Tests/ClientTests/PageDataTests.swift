@@ -125,6 +125,44 @@ final class PageDataTests: XCTestCase {
     waitForExpectations(timeout: 10)
   }
 
+  @MainActor func testNonWebPage() throws {
+    let mainFrameURL = URL(string: "brave://local-page")!
+
+    let sourceProvider = TestSourceProvider()
+    let groupsManager = AdBlockGroupsManager(
+      standardManager: AdBlockEngineManager(
+        engineType: .standard,
+        cacheFolderName: "test_standard"
+      ),
+      aggressiveManager: AdBlockEngineManager(
+        engineType: .standard,
+        cacheFolderName: "test_aggressive"
+      ),
+      contentBlockerManager: makeContentBlockingManager(),
+      sourceProvider: sourceProvider
+    )
+
+    let pageData = PageData(mainFrameURL: mainFrameURL, groupsManager: groupsManager)
+    let expectation = expectation(description: "")
+
+    Task { @MainActor in
+      let domain = pageData.domain(persistent: false)
+
+      let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
+        domain: domain,
+        isDeAmpEnabled: false
+      )
+
+      XCTAssertTrue(
+        mainFrameRequestTypes.isEmpty,
+        "Should have no user scripts for application urls"
+      )
+      expectation.fulfill()
+    }
+
+    waitForExpectations(timeout: 10)
+  }
+
   @MainActor private func makeContentBlockingManager() -> ContentBlockerManager {
     return ContentBlockerManager(
       ruleStore: ruleStore,
