@@ -31,8 +31,8 @@ import {
 // Utils
 import {
   getLocale,
-  splitStringForTag
-} from '../../../../../../../common/locale'
+  formatLocale
+} from '$web-common/locale'
 import {
   formatDateAsRelative //
 } from '../../../../../../utils/datetime-utils'
@@ -295,17 +295,24 @@ export const RouteOption = (props: Props) => {
               .reverse()
               .map(source => {
                 const lpIcon = getLPIcon(source)
-                const descriptionString = getLocale(
-                  'braveWalletExchangeViaProvider'
-                )
-                  .replace('$5', source.name)
-                  .replace('$6', SwapProviderNameMapping[option.provider] ?? '')
-                const { duringTag: exchange, afterTag } = splitStringForTag(
-                  descriptionString,
-                  1
-                )
-                const { beforeTag: via, duringTag: provider } =
-                  splitStringForTag(afterTag || '', 3)
+                const exchangeViaProvider = formatLocale('braveWalletExchangeViaProvider', {
+                  $1: <Text
+                      textSize='16px'
+                      isBold={true}
+                      textColor='primary'
+                    >
+                      {source.name}
+                    </Text>,
+                  $2: <Text
+                    textSize='12px'
+                    isBold={false}
+                    textColor='tertiary'
+                  >
+                    {SwapProviderNameMapping[option.provider] ?? ''}
+                  </Text>,
+                  $3: source.name,
+                  $4: SwapProviderNameMapping[option.provider] ?? ''
+                })
                 return (
                   <Column
                     fullWidth={true}
@@ -333,26 +340,13 @@ export const RouteOption = (props: Props) => {
                         width='unset'
                         gap='4px'
                       >
+
                         <Text
                           textSize='16px'
                           isBold={true}
                           textColor='primary'
                         >
-                          {exchange}
-                        </Text>
-                        <Text
-                          textSize='12px'
-                          isBold={false}
-                          textColor='tertiary'
-                        >
-                          {via}
-                        </Text>
-                        <Text
-                          textSize='16px'
-                          isBold={true}
-                          textColor='primary'
-                        >
-                          {provider}
+                          {exchangeViaProvider}
                         </Text>
                         <PercentBubble
                           padding='4px 6px'

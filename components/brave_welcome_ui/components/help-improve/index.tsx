@@ -8,7 +8,7 @@ import * as React from 'react'
 import * as S from './style'
 import Button from '$web-components/button'
 import { P3APhase, WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
-import { getLocale, splitStringForTag } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 
 interface InputCheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -17,7 +17,33 @@ interface InputCheckboxProps {
   isChecked: boolean
 }
 
-function InputCheckbox (props: InputCheckboxProps) {
+const changeSettingsNote = formatLocale('braveWelcomeChangeSettingsNote', {
+  $1: content => <a href="brave://settings/privacy" onClick={() => {
+    WelcomeBrowserProxyImpl.getInstance().openSettingsPage()
+  }}>
+    {content}
+  </a>
+})
+
+const readPrivacyPolicy = formatLocale('braveWelcomePrivacyPolicyNote', {
+  $1: content => <a href='https://brave.com/privacy/browser' target='_blank'>
+    {content}
+  </a>
+})
+
+const diagnosticReportsLabel = formatLocale('braveWelcomeSendReportsLabel', {
+  $1: content => <a href='https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting' target='_blank'>
+    {content}
+  </a>
+})
+
+const braveProductUsageDataLabel = formatLocale('braveWelcomeSendInsightsLabel', {
+  $1: content => <a href='https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-' target='_blank'>
+    {content}
+  </a>
+})
+
+function InputCheckbox(props: InputCheckboxProps) {
   return (
     <label className="item">
       <input
@@ -32,7 +58,7 @@ function InputCheckbox (props: InputCheckboxProps) {
   )
 }
 
-function HelpImprove () {
+function HelpImprove() {
   const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(true)
   const [isP3AEnabled, setP3AEnabled] = React.useState(true)
   const [completeURLPromise] = React.useState(() => {
@@ -56,15 +82,6 @@ function HelpImprove () {
     })
   }
 
-  const handleOpenSettingsPage = () => {
-    WelcomeBrowserProxyImpl.getInstance().openSettingsPage()
-  }
-
-  const changeSettingsNote = splitStringForTag(getLocale('braveWelcomeChangeSettingsNote'))
-  const readPrivacyPolicy = splitStringForTag(getLocale('braveWelcomePrivacyPolicyNote'))
-  const diagnosticReportsLabel = splitStringForTag(getLocale('braveWelcomeSendReportsLabel'))
-  const braveProductUsageDataLabel = splitStringForTag(getLocale('braveWelcomeSendInsightsLabel'))
-
   return (
     <S.MainBox>
       <div className="view-header-box">
@@ -79,22 +96,14 @@ function HelpImprove () {
             onChange={handleMetricsReportingChange}
             isChecked={isMetricsReportingEnabled}
           >
-            {diagnosticReportsLabel.beforeTag}
-            <a href="https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting" target="_blank">
-              {diagnosticReportsLabel.duringTag}
-            </a>
-            {diagnosticReportsLabel.afterTag}
+            {diagnosticReportsLabel}
           </InputCheckbox>
           <InputCheckbox
             id="p3a"
             onChange={handleP3AChange}
             isChecked={isP3AEnabled}
           >
-            {braveProductUsageDataLabel.beforeTag}
-            <a href="https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-" target="_blank">
-              {braveProductUsageDataLabel.duringTag}
-            </a>
-            {braveProductUsageDataLabel.afterTag}
+            {braveProductUsageDataLabel}
           </InputCheckbox>
         </div>
       </S.Grid>
@@ -108,17 +117,9 @@ function HelpImprove () {
             {getLocale('braveWelcomeFinishButtonLabel')}
           </Button>
           <S.FootNote>
-            {changeSettingsNote.beforeTag}
-            <a href="brave://settings/privacy" onClick={handleOpenSettingsPage}>
-              {changeSettingsNote.duringTag}
-            </a>
-            {changeSettingsNote.afterTag}
+            {changeSettingsNote}
             <span>
-              {readPrivacyPolicy.beforeTag}
-              <a href="https://brave.com/privacy/browser" target="_blank">
-                {readPrivacyPolicy.duringTag}
-              </a>
-              {readPrivacyPolicy.afterTag}
+              {readPrivacyPolicy}
             </span>
           </S.FootNote>
         </div>

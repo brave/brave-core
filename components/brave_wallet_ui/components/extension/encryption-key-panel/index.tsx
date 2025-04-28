@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { getLocale, splitStringForTag } from '../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 
 // Components
 import { NavButton } from '../buttons/nav-button/index'
@@ -53,10 +53,12 @@ export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
 
   const orb = useAccountOrb(account)
 
-  const descriptionString = getLocale(
-    'braveWalletProvideEncryptionKeyDescription'
-  ).replace('$url', payload.originInfo.originSpec)
-  const { duringTag, afterTag } = splitStringForTag(descriptionString)
+  const description = formatLocale('braveWalletProvideEncryptionKeyDescription', {
+    $1: <CreateSiteOrigin
+      originSpec={payload.originInfo.originSpec}
+      eTldPlusOne={payload.originInfo.eTldPlusOne}
+    />
+  })
 
   // methods
   const onProvideOrAllow = async () => {
@@ -91,11 +93,7 @@ export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
       </TabRow>
       <MessageBox needsCenterAlignment={false}>
         <MessageText>
-          <CreateSiteOrigin
-            originSpec={duringTag ?? ''}
-            eTldPlusOne={payload.originInfo.eTldPlusOne}
-          />
-          {afterTag}
+          {description}
         </MessageText>
       </MessageBox>
       <ButtonRow>

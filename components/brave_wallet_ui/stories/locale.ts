@@ -109,7 +109,7 @@ provideStrings({
   braveWalletReceiveEstimate: 'Receive (est.)',
   braveWalletFromToken: 'From token',
   braveWalletToToken: 'To token',
-  braveWalletNewQuoteIn: 'New quote in $1$3$2',
+  braveWalletNewQuoteIn: 'New quote in $1',
 
   // Send Tab
   braveWalletChooseAssetToSend: 'Choose asset to send',
@@ -205,7 +205,7 @@ provideStrings({
     'regain access in the event of a ' +
     'lost password, stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText:
-    'I have read and agree to the $1Terms of use$2.',
+    'I have read and agree to the $1Terms of use$1.',
 
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
@@ -434,7 +434,7 @@ provideStrings({
   braveWalletPrivateKeyImportType: 'Import type',
   braveWalletFilImportPrivateKeyFormatDescription:
     'NOTE: Private key must be provided as a hex-encoded JSON that contains ' +
-    'private key and protocol information. $1Learn more$2.',
+    'private key and protocol information. $1Learn more$1.',
 
   // Import Account
   braveWalletImportAccountDisclaimer:
@@ -476,7 +476,7 @@ provideStrings({
   braveWalletConnectHardwareSearchNothingFound: 'No results found.',
   braveWalletAuthorizeHardwareWallet: 'Authorize your wallet',
   braveWalletConnectHardwareWallet: 'Connect hardware wallet',
-  braveWallectConnectHardwareDescription:
+  braveWalletConnectHardwareDescription:
     'We currently support $1 and $2 devices.',
   braveWalletImportHardwareWalletDescription:
     'Connect your hardware wallet to manage your assets directly ' +
@@ -641,7 +641,7 @@ provideStrings({
   braveWalletSwapOnNetworkViaExchange: 'Swap on $1 via $2',
   braveWalletBridgeFromNetworkToNetwork: 'Bridge from $1 to $2',
   braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
-  braveWalletExchangeViaProvider: '$1$5$2 via $3$6$4',
+  braveWalletExchangeViaProvider: '$1 via $2',
   braveWalletSortBy: 'Sort by',
 
   // Buy
@@ -681,7 +681,7 @@ provideStrings({
     'Meld.io to complete the transaction, including your wallet address ' +
     'and country code. For more information please read Meld’s terms of use.',
   braveWalletMeldTermsOfUse:
-    'I have read and agree to the $1Meld’s Terms of use$2',
+    'I have read and agree to the $1Meld’s Terms of use$1',
   braveWalletBestOption: 'Best Option',
   braveWalletExchangeRateWithFees: 'Exchange rate with fees',
   braveWalletFees: 'Fees',
@@ -762,7 +762,7 @@ provideStrings({
   braveWalletProvideEncryptionKeyTitle:
     'A DApp is requesting your public encryption key',
   braveWalletProvideEncryptionKeyDescription:
-    '$1$url$2 is requesting your wallets public encryption key. ' +
+    '$1 is requesting your wallets public encryption key. ' +
     'If you consent to providing this key, the site will be able to ' +
     'compose encrypted messages to you.',
   braveWalletProvideEncryptionKeyButton: 'Provide',
@@ -1241,26 +1241,26 @@ provideStrings({
   braveWalletTransactionTakingLongTime: 'Taking longer than expected?',
   braveWalletViewInActivity: 'View in activity',
   braveWalletSafelyDismissWindow: 'You can safely dismiss this window.',
-  braveWalletSendingAmountToAccount: 'Sending $1$5$2 to $3$6$4',
-  braveWalletAmountSentToAccount: '$1$5$2 has been sent to account $3$6$4',
-  braveWalletSwappingAmountToAmountOnNetwork: 'Swapping $1$5$2 to $3$6$4 on $7',
+  braveWalletSendingAmountToAccount: 'Sending $1 to $2',
+  braveWalletAmountSentToAccount: '$1 has been sent to account $2',
+  braveWalletSwappingAmountToAmountOnNetwork: 'Swapping $1 to $2 on $3',
   braveWalletAmountAddedToAccount:
-    'The amount of $1$5$2 has been added to your account $3$6$4',
-  braveWalletBridgingAmountToNetwork: 'Bridging $1$5$2 to $3$6$4',
+    'The amount of $1 has been added to your account $2',
+  braveWalletBridgingAmountToNetwork: 'Bridging $1 to $2',
   braveWalletUnableToSendSwapOrBridge: 'Unable to $1',
   braveWalletErrorAttemptingToTransact:
-    'There was an error attempting to $7 $1$5$2 to $3$6$4',
-  braveWalletApprovingAmountOnExchange: 'Approving $1$5$2 to $3$6$4',
+    'There was an error attempting to $3 $1 to $2',
+  braveWalletApprovingAmountOnExchange: 'Approving $1 to $2',
   braveWalletCancelTransactionDescription:
     'A new transaction will be created to cancel your existing transaction.',
   braveWalletPendingTransactions: '$1 more transactions pending.',
   braveWalletSwapping: 'Swapping',
   braveWalletBridging: 'Bridging',
-  braveWalletSwappingOrBridgingOnNetwork: '$1$5$2 on $3$6$4',
+  braveWalletSwappingOrBridgingOnNetwork: '$1 on $2',
   braveWalletErrorAttemptingToTransactOnNetwork:
-    'There was an error attempting to $1$5$2 on $3$6$4',
-  braveWalletShieldingAmount: 'Shielding $1$5$2',
-  braveWalletAmountHasBeenShielded: '$1$5$2 has been shielded',
+    'There was an error attempting to $1 on $2',
+  braveWalletShieldingAmount: 'Shielding $1',
+  braveWalletAmountHasBeenShielded: '$1 has been shielded',
   // Submitted
   braveWalletTransactionSubmittedTitle: 'Transaction submitted',
   braveWalletTransactionSignedTitle: 'Transaction signed',
@@ -1459,7 +1459,7 @@ provideStrings({
   braveWalletEnableNftAutoDiscoveryModalDescription:
     'Brave Wallet can use a third-party service to automatically display ' +
     'your NFTs. Brave will share your wallet addresses with ' +
-    '$1SimpleHash$2 to provide this service. $3Learn more.$4',
+    '$1SimpleHash$1 to provide this service. $2Learn more.$2',
   braveWalletEnableNftAutoDiscoveryModalConfirm: 'Yes, proceed',
   braveWalletEnableNftAutoDiscoveryModalCancel:
     "No thanks, I'll do it manually",
@@ -1468,7 +1468,7 @@ provideStrings({
     'Once an NFT is detected, it’ll be displayed here.',
   braveWalletAutoDiscoveryEmptyStateFooter: 'Can’t see your NFTs?',
   braveWalletAutoDiscoveryEmptyStateActions:
-    '$1Refresh$2 or $3Import Manually$4',
+    '$1Refresh$1 or $2Import Manually$2',
   braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing',
 
   // Brave Wallet Rewards

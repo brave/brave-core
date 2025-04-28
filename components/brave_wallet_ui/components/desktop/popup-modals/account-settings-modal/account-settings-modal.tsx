@@ -23,7 +23,7 @@ import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selecto
 import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
-import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import getAPIProxy from '../../../../common/async/bridge'
 
 // constants
@@ -101,6 +101,18 @@ const zcashAddressOptions: zcashAddressOptionType[] = [
 interface DepositModalProps {
   selectedAccount: BraveWallet.AccountInfo
 }
+
+const filPrivateKeyFormatDescription = formatLocale(
+  'braveWalletFilExportPrivateKeyFormatDescription', {
+    $1: content =>  <a
+        target='_blank'
+        href={FILECOIN_FORMAT_DESCRIPTION_URL}
+        rel='noopener noreferrer'
+      >
+        {content}
+      </a>
+  }
+)
 
 export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
   // state
@@ -342,10 +354,6 @@ export const AccountSettingsModal = () => {
     }
   }
 
-  const filPrivateKeyFormatDescriptionTextParts = getLocaleWithTag(
-    'braveWalletFilExportPrivateKeyFormatDescription'
-  )
-
   // memos
   const modalTitle = React.useMemo((): string => {
     if (accountModalType) {
@@ -415,15 +423,7 @@ export const AccountSettingsModal = () => {
                 {selectedAccount?.accountId.coin ===
                   BraveWallet.CoinType.FIL && (
                   <Alert type='warning'>
-                    {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                    <a
-                      target='_blank'
-                      href={FILECOIN_FORMAT_DESCRIPTION_URL}
-                      rel='noopener noreferrer'
-                    >
-                      {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                    </a>
-                    {filPrivateKeyFormatDescriptionTextParts.afterTag}
+                    {filPrivateKeyFormatDescription}
                   </Alert>
                 )}
                 <CopyTooltip text={privateKey}>

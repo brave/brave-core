@@ -8,7 +8,7 @@ import Checkbox from '@brave/leo/react/checkbox'
 import Button from '@brave/leo/react/button'
 
 // Utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 
 // Selectors
 import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
@@ -30,6 +30,32 @@ import { Row } from '../../../shared/style'
 
 const MELD_TERMS_OF_USE_URL = 'https://www.meld.io/terms-of-use'
 
+const onClickTermsOfUse = () => {
+  if (chrome.tabs !== undefined) {
+    chrome.tabs.create(
+      {
+        url: MELD_TERMS_OF_USE_URL
+      },
+      () => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            'tabs.create failed: ' + chrome.runtime.lastError.message
+          )
+        }
+      }
+    )
+    return
+  }
+  // Tabs.create is desktop specific. Using window.open for android.
+  window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
+}
+
+const meldTermsOfUse = formatLocale('braveWalletMeldTermsOfUse', {
+  $1: content => <TermsButton onClick={onClickTermsOfUse}>
+    {content}
+  </TermsButton>
+})
+
 interface PartnerConsentModalProps {
   isOpen: boolean
   onClose: () => void
@@ -46,31 +72,6 @@ export function PartnersConsentModal(
 
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-
-  const { beforeTag, duringTag } = splitStringForTag(
-    getLocale('braveWalletMeldTermsOfUse'),
-    1
-  )
-
-  const onClickTermsOfUse = () => {
-    if (chrome.tabs !== undefined) {
-      chrome.tabs.create(
-        {
-          url: MELD_TERMS_OF_USE_URL
-        },
-        () => {
-          if (chrome.runtime.lastError) {
-            console.error(
-              'tabs.create failed: ' + chrome.runtime.lastError.message
-            )
-          }
-        }
-      )
-      return
-    }
-    // Tabs.create is desktop specific. Using window.open for android.
-    window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
-  }
 
   return (
     <TermsDialog
@@ -93,8 +94,7 @@ export function PartnersConsentModal(
         onChange={(e) => setTermsAccepted(e.checked)}
       >
         <TermsLabel>
-          {beforeTag}
-          <TermsButton onClick={onClickTermsOfUse}>{duringTag}</TermsButton>
+          {meldTermsOfUse}
         </TermsLabel>
       </Checkbox>
       <Row

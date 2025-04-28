@@ -614,7 +614,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_AUTHORIZE_HARDWARE_WALLET},
     {"braveWalletConnectHardwareWallet",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET},
-    {"braveWallectConnectHardwareDescription",
+    {"braveWalletConnectHardwareDescription",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET_DESCRIPTION},
     {"braveWalletImportHardwareWalletDescription",
      IDS_BRAVE_WALLET_IMPORT_HARDWARE_WALLET_DESCRIPTION},

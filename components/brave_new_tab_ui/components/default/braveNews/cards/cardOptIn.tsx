@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import * as Card from '../cardIntro'
 import BraveNewsLogoUrl from '../braveNewsLogo.svg'
 import { CardButton, TertiaryButton } from '../default'
@@ -15,7 +15,9 @@ type Props = {
   onDisable: () => unknown
 }
 
-const descriptionTwoTextParts = getLocaleWithTag('braveNewsIntroDescriptionTwo')
+const description = formatLocale('braveNewsIntroDescriptionTwo', {
+  $1: content => <a href='https://brave.com/privacy/browser/'>{content}</a>
+})
 
 export default function IntroCard (props: Props) {
   const introElementRef = React.useRef(null)
@@ -28,11 +30,7 @@ export default function IntroCard (props: Props) {
           {getLocale('braveNewsIntroDescription')}
         </Card.Paragraph>
         <Card.Paragraph>
-          {descriptionTwoTextParts.beforeTag}
-          <a href={'https://brave.com/privacy/browser/'}>
-            {descriptionTwoTextParts.duringTag}
-          </a>
-          {descriptionTwoTextParts.afterTag}
+          {description}
         </Card.Paragraph>
       </div>
       <CardButton onClick={props.onOptIn} isMainFocus={true}>

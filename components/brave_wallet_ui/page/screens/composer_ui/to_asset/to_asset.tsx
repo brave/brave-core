@@ -7,7 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
-import { getLocale, splitStringForTag } from '../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import {
   computeFiatAmount,
   getPriceIdForToken
@@ -155,11 +155,15 @@ export const ToAsset = (props: Props) => {
       ? millisecondToString(timeUntilNextQuote)
       : ''
 
-  const newQuoteString = getLocale('braveWalletNewQuoteIn').replace(
-    '$3',
-    countdown
-  )
-  const { beforeTag, duringTag } = splitStringForTag(newQuoteString)
+  const newQuote = formatLocale('braveWalletNewQuoteIn', {
+    $1: <Text
+      textSize='12px'
+      isBold
+      textColor='primary'
+    >
+      {countdown}
+    </Text>
+  })
 
   // render
   return (
@@ -197,15 +201,8 @@ export const ToAsset = (props: Props) => {
                   textSize='12px'
                   isBold={false}
                 >
-                  {beforeTag}
+                  {newQuote}
                 </ReceiveAndQuoteText>
-                <Text
-                  textSize='12px'
-                  isBold={true}
-                  textColor='primary'
-                >
-                  {duringTag}
-                </Text>
               </Row>
             )}
             {timeUntilNextQuote !== undefined && (

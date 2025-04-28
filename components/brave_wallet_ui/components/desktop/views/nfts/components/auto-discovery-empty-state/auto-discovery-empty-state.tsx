@@ -5,10 +5,7 @@
 import * as React from 'react'
 
 // utils
-import {
-  getLocale,
-  splitStringForTag
-} from '../../../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 
 // styles
 import {
@@ -32,13 +29,10 @@ export const AutoDiscoveryEmptyState = ({
   onImportNft,
   onRefresh
 }: Props) => {
-  const { duringTag: refreshBtnText, afterTag } = splitStringForTag(
-    getLocale('braveWalletAutoDiscoveryEmptyStateActions')
-  )
-  const { beforeTag: or, duringTag: importText } = splitStringForTag(
-    afterTag || '',
-    3
-  )
+  const emptyStateActions = formatLocale('braveWalletAutoDiscoveryEmptyStateActions', {
+    $1: content => <ActionButton onClick={onRefresh}>{content}</ActionButton>,
+    $2: content => <ActionButton onClick={onImportNft}>{content}</ActionButton>
+  })
 
   return (
     <StyledWrapper>
@@ -67,9 +61,7 @@ export const AutoDiscoveryEmptyState = ({
             </Description>
           </Row>
           <Description>
-            <ActionButton onClick={onRefresh}>{refreshBtnText}</ActionButton>
-            {or}
-            <ActionButton onClick={onImportNft}>{importText}</ActionButton>
+            {emptyStateActions}
           </Description>
         </>
       )}

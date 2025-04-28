@@ -39,104 +39,11 @@ export const getLocale = (
   return returnVal
 }
 
-interface SplitStringForTagResult {
-  beforeTag: string
-  duringTag: string | null
-  afterTag: string | null
-}
-
-/**
- * Returns text for translations with a single HTML tag
- * (like a link or button)
- * @deprecated Use formatLocale instead.
- * @param {string} key - translation identifier
- * @param {object} replacements - replacements for specific translation, replacement should be defined as {{key}}
- * @returns {SplitStringForTagResult}
- */
-export const getLocaleWithTag = (
-  key: string,
-  replacements?: Record<string, string>
-) => {
-  const text = getLocale(key, replacements)
-  return splitStringForTag(text)
-}
-
-/**
- * Returns text for translations with a multiple HTML tags
- * (like a link or button)
- * @deprecated Use formatLocale instead.
- * @param {string} key - translation identifier
- * @param {number} tags - how many tags is in translation
- * @param {object} replacements - replacements for specific translation, replacement should be defined as {{key}}
- * @returns {SplitStringForTagResult}
- */
-export const getLocaleWithTags = (
-  key: string,
-  tags: number,
-  replacements?: Record<string, string>
-) => {
-  let text = getLocale(key, replacements)
-  let result = []
-  for (let i = 1; i <= tags; i++) {
-    const split = splitStringForTag(text, i * 2 - 1)
-    text = split.afterTag || ''
-    if (i !== tags) {
-      split.afterTag = ''
-    }
-    result.push(split)
-  }
-  return result
-}
-
-/**
- * Allows an html or xml tag, or React component etc., to be injected in to a string by extracting
- * the components of the string before, during and after the tag.
- * Usage:
- *    splitStringForTag('my string with some $1bold text$2')
- *    splitStringForTag('Get more info at $1')
- *
- * @export
- * @deprecated Use formatString instead.
- * @param {string} text
- * @param {number} tagStartNumber - starting number for the tag
- * @returns {SplitStringForTagResult}
- */
-export function splitStringForTag(
-  text: string,
-  tagStartNumber: number = 1
-): SplitStringForTagResult {
-  const tagOpenPlaceholder = `$${tagStartNumber}`
-  const tagClosePlaceholder = `$${tagStartNumber + 1}`
-  const tagStartIndex: number = text.indexOf(tagOpenPlaceholder)
-  const tagEndIndex: number = text.lastIndexOf(tagClosePlaceholder)
-  const isValid = tagStartIndex !== -1
-  let beforeTag = text
-  let duringTag: string | null = null
-  let afterTag: string | null = null
-  if (isValid) {
-    beforeTag = text.substring(0, tagStartIndex)
-    if (tagEndIndex !== -1) {
-      // Handle we have 'open' and 'close' tags
-      duringTag = text.substring(
-        tagStartIndex + tagOpenPlaceholder.length,
-        tagEndIndex
-      )
-      afterTag = text.substring(tagEndIndex + tagClosePlaceholder.length)
-    } else {
-      // Handle we have a single replacement block
-      afterTag = text.substring(tagStartIndex + tagOpenPlaceholder.length)
-    }
-  }
-
-  return {
-    beforeTag,
-    duringTag,
-    afterTag
-  }
-}
-
 type Replacement = string | React.ReactNode | ((contents: string) => React.ReactNode | string)
 type ReturnType<T extends Replacement> = T extends (string | ((contents: string) => string)) ? string : React.ReactNode
+type Options = {
+  noErrorOnMissingReplacement?: boolean
+}
 
 /**
  * Formats a string with replacements. Replacements can be strings or React
@@ -155,7 +62,7 @@ type ReturnType<T extends Replacement> = T extends (string | ((contents: string)
  *   $1: (content) => <a href="#">{content}</a>
  * }) // 'Hello <a href="#">world</a>'
  */
-export function formatString<T extends Replacement>(text: string, replacements: Record<`$${number}`, T>): ReturnType<T> {
+export function formatString<T extends Replacement>(text: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
   const keysToReplace = Object.keys(replacements) as (keyof typeof replacements)[]
   const replacedRanges: ({
     start: number,
@@ -170,7 +77,12 @@ export function formatString<T extends Replacement>(text: string, replacements: 
     const start = text.indexOf(key)
 
     // If we couldn't find the key the string or replacement is wrong.
-    if (start === -1) throw new Error(`Replacement key ${key} not found in text`)
+    if (start === -1) {
+      if (options?.noErrorOnMissingReplacement) {
+        continue
+      }
+      throw new Error(`Replacement key ${key} not found in text`)
+    }
 
     // If we find an end tag, we need to replace the entire range.
     let end = text.indexOf(key, start + key.length)
@@ -242,6 +154,6 @@ export function formatString<T extends Replacement>(text: string, replacements: 
  *   $1: status => <b>${status}</b>
  * }) // <>Shields are <b>UP</b></>
  */
-export function formatLocale<T extends Replacement>(key: string, replacements: Record<`$${number}`, T>): ReturnType<T> {
-  return formatString(getLocale(key), replacements)
+export function formatLocale<T extends Replacement>(key: string, replacements: Record<`$${string}`, T>, options?: Options): ReturnType<T> {
+  return formatString(getLocale(key), replacements, options)
 }

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // utils
-import { getLocale, splitStringForTag } from '../../../../../../common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 
 // styles
 import {
@@ -41,10 +41,9 @@ export const PhraseInput = ({
   onChange,
   onHideError
 }: Props) => {
-  const { beforeTag, afterTag } = splitStringForTag(
-    getLocale('braveWalletRecoveryWordInstructions'),
-    1
-  )
+  const recoveryInstructions = formatLocale('braveWalletRecoveryWordInstructions', {
+    $1: <Bold>{wordPosition}</Bold>
+  })
 
   return (
     <Column
@@ -52,9 +51,7 @@ export const PhraseInput = ({
       gap='25px'
     >
       <FormLabel>
-        {beforeTag}
-        <Bold>{wordPosition}</Bold>
-        {afterTag}
+        {recoveryInstructions}
       </FormLabel>
       <FormInput
         value={phrase}
