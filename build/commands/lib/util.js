@@ -396,7 +396,7 @@ const util = {
         const destinationFile = path.join(output, path.relative(source, sourceFile))
         sourceFile = explicitSourceFiles[destinationFile] || sourceFile
         if (!fs.existsSync(destinationFile) ||
-            util.calculateFileChecksum(sourceFile) != util.calculateFileChecksum(destinationFile)) {
+            util.calculateFileChecksum(sourceFile) !== util.calculateFileChecksum(destinationFile)) {
           fs.copySync(sourceFile, destinationFile)
           console.log(sourceFile + ' copied to ' + destinationFile)
         }
@@ -514,7 +514,7 @@ const util = {
         for (const destPath of destPaths) {
           for (const androidSourceFile of androidSourceFiles) {
             let destinationFile = path.join(destPath, path.relative(sourcePath, androidSourceFile))
-            if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) != util.calculateFileChecksum(destinationFile)) {
+            if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) !== util.calculateFileChecksum(destinationFile)) {
               fs.copySync(androidSourceFile, destinationFile)
             }
             braveOverwrittenFiles.add(destinationFile);

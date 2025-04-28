@@ -11,7 +11,7 @@ const Log = require('./logging')
 
 function updateChromeVersion() {
   const braveVersionParts = config.braveVersion.split('.')
-  assert(braveVersionParts.length == 3)
+  assert(braveVersionParts.length === 3)
 
   const versionFilePath = path.join(config.srcDir, 'chrome', 'VERSION')
   const versionFileContent = fs.readFileSync(versionFilePath).toString()
@@ -25,10 +25,10 @@ function updateChromeVersion() {
   const versionLineRegex = /^(MAJOR|MINOR|BUILD|PATCH)=(\d+)$/
   for (let line = 0; line < 4; ++line) {
     assert(
-      versionLines[line].search(versionLineRegex) == 0,
+      versionLines[line].search(versionLineRegex) === 0,
       `${versionLines[line]} (${line}) doesn't match ${versionLineRegex}`
     )
-    if (line == 0) {
+    if (line === 0) {
       // Keep MAJOR.
       assert(versionLines[line].startsWith('MAJOR='))
     } else {
