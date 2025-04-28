@@ -1,0 +1,79 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
+.toolUse {
+  margin-left: 11px;
+  border-left: var(--leo-color-neutral-20) 2px solid;
+  padding: 8px 12px 8px 22px;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  position: relative;
+
+  .toolUseIcon {
+    position: absolute;
+    top: calc(8px + 0.5lh - 11px); left: -12px;
+    --leo-icon-size: 16px;
+    --leo-progressring-size: 16px;
+    padding: 2px;
+    width: 22px;
+    height: 22px;
+    // circle
+    border-radius: 50%;
+    border: var(--leo-color-divider-subtle) 1px solid;
+    background: var(--leo-color-container-background);
+  }
+
+  &:not(&.toolUseComplete):global(.tool-user_choice_tool) {
+    .toolUseIcon {
+      --leo-icon-color: var(--leo-color-primary-5);
+      background-color: var(--leo-color-primary-40);
+      border-color: var(--leo-color-primary-50);
+    }
+  }
+
+  &.toolUseComplete {
+    color: var(--leo-color-text-tertiary);
+
+    .toolUseIcon {
+      background: var(--leo-color-systemfeedback-success-background);
+      border-color: var(--leo-color-green-20);
+      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+    }
+  }
+}
+
+.toolUseContentPreview {
+  margin: 4px;
+  max-width: 80vw;
+}
+
+.choice {
+  margin-bottom: var(--leo-spacing-s);
+
+  &.isDisabled {
+    opacity: 0.5;
+  }
+}
+
+.completedChoiceIcon {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+.deniedChoiceIcon {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.choiceNumber {
+  border-radius: 50%;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--leo-color-schemes-on-tertiary);
+  background: var(--leo-color-text-interactive);
+}

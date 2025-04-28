@@ -299,6 +299,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   size_t GetConversationHistorySize() override;
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
+  // mojom::UntrustedConversationHandler
+  void RespondToToolUseRequest(
+    const std::string& tool_id,
+    std::optional<std::vector<mojom::ContentBlockPtr>> output_json) override;
+
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
   void MaybeFetchOrClearContentStagedConversation();
@@ -442,6 +447,13 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
 
+  std::vector<Tool*> GetTools();
+  mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
+  void MaybeRespondToNextToolUseRequest();
+  void OnToolUseComplete(
+      const std::string& tool_use_id,
+      std::optional<std::vector<mojom::ContentBlockPtr>>&& output);
+
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
 
@@ -457,11 +469,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
 
-  // TODO(petemill): Tracking whether the UI is open
-  // for a conversation might not be neccessary anymore as there
-  // are no automatic actions that occur anymore now that content
-  // fetching is on-deman.
-  // bool is_conversation_active_ = false;
+  // Are we currently performing a loop of tool uses?
+  bool is_tool_use_in_progress_ = false;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|
@@ -483,6 +492,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // When this is true, the most recent content retrieval was different to the
   // previous one.
   bool is_content_different_ = true;
+
+  // Whether further assistant responses should be appended to the last or created
+  // in a new sibling ConversationEntry.
+  bool needs_new_entry_ = false;
 
   bool is_print_preview_fallback_requested_ = false;
 

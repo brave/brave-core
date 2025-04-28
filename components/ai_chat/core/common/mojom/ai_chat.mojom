@@ -10,9 +10,17 @@ import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
+// Share some tool names between the browser and the UI so that
+// custom user actions and UI representations can be created.
+const string kPageContentToolName = "active_web_page_content_fetcher";
+const string kUserChoiceToolName = "user_choice_tool";
+
 enum CharacterType {
   HUMAN,
-  ASSISTANT
+  ASSISTANT,
+
+  // Only for API tool use events, not for UI or storage
+  TOOL,
 };
 
 enum APIError {
@@ -175,6 +183,7 @@ struct WebSourcesEvent {
 };
 
 struct CompletionEvent {
+  // TODO(petemill): Use ContentBlock or even array<ContentBlock> and rely less on multiple events
   string completion;
 };
 
@@ -203,6 +212,27 @@ struct UploadedFile {
   UploadedFileType type;
 };
 
+struct ImageContentBlock {
+  // Only base64 encoded data uri is supported
+  string image_url;
+};
+
+struct TextContentBlock {
+  string text;
+};
+
+union ContentBlock {
+  ImageContentBlock image_content_block;
+  TextContentBlock text_content_block;
+};
+
+struct ToolUseEvent {
+  string tool_name;
+  string tool_id;
+  string input_json;
+  array<ContentBlock>? output;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -210,6 +240,7 @@ union ConversationEntryEvent {
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
+  ToolUseEvent tool_use_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
@@ -312,6 +343,8 @@ struct Model {
   string display_name;
   // whether accept image as input
   bool vision_support;
+  // Model supports tool use
+  bool supports_tools;
 };
 
 struct ModelWithSubtitle {
@@ -550,6 +583,8 @@ interface UntrustedConversationHandler {
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
   ModifyConversation(uint32 turn_index, string new_text);
+
+  RespondToToolUseRequest(string tool_id, array<ContentBlock>? output_json);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying

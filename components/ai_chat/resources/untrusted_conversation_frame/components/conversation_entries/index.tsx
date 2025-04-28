@@ -19,7 +19,7 @@ import LongPageInfo from '../page_context_message/long_page_info'
 import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
-import { getReasoningText } from './conversation_entries_utils'
+import { getReasoningText, groupConversationEntries } from './conversation_entries_utils'
 import { getImageFiles } from '../../../common/conversation_history_utils'
 import styles from './style.module.scss'
 
@@ -58,6 +58,13 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
+  // Render events from consecutive assistant entries in the same parent element for style purposes.
+  // Keep their grouping so that we can still know which events are part of "active" entries.
+  const groupedEntries = React.useMemo<Mojom.ConversationTurn[][]>(
+    () => groupConversationEntries(conversationContext.conversationHistory),
+    [conversationContext.conversationHistory]
+  )
+
   const allAllowedLinks: string[] = conversationContext.conversationHistory
     .flatMap(turn =>
     turn.events?.flatMap(event =>
@@ -68,20 +75,21 @@ function ConversationEntries() {
   return (
     <>
       <div>
-        {conversationContext.conversationHistory.map((turn, id) => {
-          const isLastEntry =
-            (id === conversationContext.conversationHistory.length - 1)
+        {groupedEntries.map((group, index) => {
+          const turn = group[0]
+          const isLastEntry = (index === groupedEntries.length - 1)
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
             isLastEntry && isAIAssistant && conversationContext.isGenerating
           const isHuman = turn.characterType === Mojom.CharacterType.HUMAN
           const showLongPageContentInfo =
-            id === 1 &&
+            index === 1 &&
             isAIAssistant &&
             ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
              (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
-          const showEditInput = editInputId === id
+          // TODO(petemill): editInputId should be uuid of entry
+          const showEditInput = editInputId === index
           const showEditIndicator = !showEditInput && !!turn.edits?.length
           const latestEdit = turn.edits?.at(-1)
           const latestTurn = latestEdit ?? turn
@@ -90,6 +98,10 @@ function ConversationEntries() {
             : latestTurn.text
           const lastEditedTime = latestTurn.createdTime
           const hasReasoning = latestTurnText.includes('<think>')
+
+          // Can't edit or copy complicated structured content
+          const canEditOrCopyContent = group.length === 1 &&
+              !group[0].events?.some(event => !!event.toolUseEvent)
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: conversationContext.isMobile
@@ -114,13 +126,13 @@ function ConversationEntries() {
 
           return (
             <div
-              key={id}
+              key={turn.uuid || index}
               className={turnContainer}
             >
               <div
-                data-id={id}
+                data-id={index}
                 className={turnClass}
-                onMouseEnter={() => isHuman && setHoverMenuButtonId(id)}
+                onMouseEnter={() => isHuman && setHoverMenuButtonId(index)}
                 onMouseLeave={() => {
                   if (!isHuman) return
                   setActiveMenuId(undefined)
@@ -144,22 +156,27 @@ function ConversationEntries() {
                       }
                     />
                   )}
-                  {isAIAssistant && !showEditInput && (
-                    <AssistantResponse
-                      entry={latestTurn}
-                      isEntryInProgress={isEntryInProgress}
-                      allowedLinks={allAllowedLinks}
-                      isLeoModel={conversationContext.isLeoModel}
-                    />
-                  )}
+                  {isAIAssistant && !showEditInput &&
+                    group.map((entry, i) => {
+                      const isThisGroupInProgress = isEntryInProgress && (i === group.length - 1)
+                      const isThisGroupActive = isLastEntry && (i === group.length - 1)
+                      return <AssistantResponse
+                        events={entry.events!.filter(Boolean)}
+                        isEntryActive={isThisGroupActive}
+                        isEntryInProgress={isThisGroupInProgress}
+                        allowedLinks={allAllowedLinks}
+                        isLeoModel={conversationContext.isLeoModel}
+                      />
+                    })
+                  }
                   {isHuman && !turn.selectedText && !showEditInput && (
                     <>
-                      {hoverMenuButtonId === id ? (
+                      {hoverMenuButtonId === index ? (
                         <ContextMenuHuman
-                          isOpen={activeMenuId === id}
-                          onClick={() => showHumanMenu(id)}
+                          isOpen={activeMenuId === index}
+                          onClick={() => showHumanMenu(index)}
                           onClose={hideHumanMenu}
-                          onEditQuestionClicked={() => setEditInputId(id)}
+                          onEditQuestionClicked={() => setEditInputId(index)}
                           onCopyQuestionClicked={handleCopyText}
                         />
                       ) : (
@@ -195,7 +212,7 @@ function ConversationEntries() {
                   {showEditInput && (
                     <EditInput
                       text={latestTurnText}
-                      onSubmit={(text) => handleEditSubmit(id, text)}
+                      onSubmit={(text) => handleEditSubmit(index, text)} // TODO: uuid
                       onCancel={() => setEditInputId(undefined)}
                       isSubmitDisabled={
                         !conversationContext.canSubmitUserEntries
@@ -217,8 +234,8 @@ function ConversationEntries() {
                   !showEditInput && (
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
-                      onEditAnswerClicked={() => setEditInputId(id)}
-                      onCopyTextClicked={handleCopyText}
+                      onEditAnswerClicked={canEditOrCopyContent ? () => setEditInputId(index) : undefined}
+                      onCopyTextClicked={canEditOrCopyContent ? handleCopyText : undefined}
                     />
                   )}
               </div>

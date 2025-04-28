@@ -85,6 +85,7 @@ function Main() {
     conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
 
   const showContextToggle =
+    !aiChatContext.isSmartPageContentFeatureEnabled &&
     (conversationContext.conversationHistory.length === 0 ||
       isLastTurnBraveSearchSERPSummary) &&
     !!conversationContext.associatedContentInfo

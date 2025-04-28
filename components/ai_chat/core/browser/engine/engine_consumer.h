@@ -19,6 +19,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
+class Tool;
+
 namespace mojom {
 class ModelOptions;
 }  // namespace mojom
@@ -43,6 +45,8 @@ class EngineConsumer {
 
   using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
 
+  using Tools = std::vector<Tool*>;
+
   using GetSuggestedTopicsCallback = base::OnceCallback<void(
       base::expected<std::vector<std::string>, mojom::APIError>)>;
   using GetFocusTabsCallback = base::OnceCallback<void(
@@ -66,6 +70,8 @@ class EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
+      const Tools tools,
+      const std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
 

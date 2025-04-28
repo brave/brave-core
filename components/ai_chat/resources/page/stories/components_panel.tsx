@@ -33,6 +33,10 @@ import ErrorServiceOverloaded from '../components/alerts/error_service_overloade
 import LongConversationInfo from '../components/alerts/long_conversation_info'
 import WarningPremiumDisconnected from '../components/alerts/warning_premium_disconnected'
 import Attachments from '../components/attachments'
+import { createTextContentBlock } from '../../common/content_block'
+import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
+
+// TODO(petemill): Attempt to split this file up
 
 const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
@@ -42,6 +46,7 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
   sourcesEvent: undefined,
+  toolUseEvent: undefined,
   contentReceiptEvent: undefined
 }
 
@@ -110,6 +115,46 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
+  }
+]
+
+
+const toolEvents: Mojom.ToolUseEvent[] = [
+  {
+    toolId: 'abc123a',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: undefined,
+  },
+  {
+    toolId: 'abc123b',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: [createTextContentBlock('Some content')],
+  },
+  {
+    toolId: 'abc123c',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: [createTextContentBlock('Error - Some content')],
+  },
+  {
+    toolId: 'abc123d',
+    toolName: 'user_choice_tool',
+    inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('7:00pm')],
+  },
+  {
+    toolId: 'abc123e',
+    toolName: 'user_choice_tool',
+    inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
+  },
+  {
+    toolId: 'abc123f',
+    toolName: 'user_choice_tool',
+    inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
   }
 ]
 
@@ -228,32 +273,6 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")],
-    uploadedFiles : [],
-    fromBraveSearchSERP: false
-  },
-  {
-    uuid: undefined,
-    text: 'Summarize this excerpt',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
-    prompt: undefined,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles : [],
-    fromBraveSearchSERP: false
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
     uploadedFiles : [],
     fromBraveSearchSERP: false
   },
@@ -440,7 +459,51 @@ const HISTORY: Mojom.ConversationTurn[] = [
       )],
     uploadedFiles : [],
     fromBraveSearchSERP: false
-  }
+  },
+  {
+    uuid: undefined,
+    text: 'Summarize this excerpt',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
+    prompt: undefined,
+    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles : [],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [
+      getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'),
+      ...toolEvents.slice(0, 3).map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent }))
+    ],
+    uploadedFiles : [],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [
+      ...toolEvents.slice(3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
+    ],
+    uploadedFiles:[],
+    fromBraveSearchSERP: false
+  },
 ]
 
 const MODELS: Mojom.Model[] = [
@@ -448,6 +511,7 @@ const MODELS: Mojom.Model[] = [
     key: '1',
     displayName: 'Model One',
     visionSupport: false,
+    supportsTools: true,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -464,6 +528,7 @@ const MODELS: Mojom.Model[] = [
     key: '2',
     displayName: 'Model Two',
     visionSupport: true,
+    supportsTools: true,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -480,6 +545,7 @@ const MODELS: Mojom.Model[] = [
     key: '3',
     displayName: 'Model Three',
     visionSupport: false,
+    supportsTools: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -496,6 +562,7 @@ const MODELS: Mojom.Model[] = [
     key: '4',
     displayName: 'Microsoft Phi-3',
     visionSupport: false,
+    supportsTools: true,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {
@@ -556,6 +623,7 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
+  isSmartPageContentFeatureEnabled: boolean
   isStandalone: boolean
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
@@ -591,6 +659,7 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
+  isSmartPageContentFeatureEnabled: false,
   isStandalone: false,
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
@@ -698,6 +767,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canShowPremiumPrompt: options.args.canShowPremiumPrompt,
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
+    isSmartPageContentFeatureEnabled: options.args.isSmartPageContentFeatureEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
     tabs: [{
@@ -918,6 +988,18 @@ export const _Loading = {
     return (
       <div className={styles.container}>
         <Loading />
+      </div>
+    )
+  }
+}
+
+export const _ToolUse = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        {toolEvents.map((event) => (
+          <ToolEvent key={event.toolId} toolUseEvent={event} isEntryActive={true}></ToolEvent>
+        ))}
       </div>
     )
   }

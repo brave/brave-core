@@ -18,6 +18,7 @@ export type State = Mojom.ServiceState & {
   isPremiumUserDisconnected: boolean
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
+  isSmartPageContentFeatureEnabled: boolean
   allActions: Mojom.ActionGroup[]
   tabs: Mojom.TabData[]
 }
@@ -34,6 +35,7 @@ export const defaultUIState: State = {
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+  isSmartPageContentFeatureEnabled: loadTimeData.getBoolean('isSmartPageContentFeatureEnabled'),
   allActions: [],
   tabs: []
 }

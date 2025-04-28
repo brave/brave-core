@@ -90,6 +90,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
+  source->AddBoolean(
+      "isSmartPageContentFeatureEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kSmartPageContent));
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(

@@ -10,7 +10,7 @@ package ai_chat.store;
 option optimize_for = LITE_RUNTIME;
 
 //
-// Structured data stored by the client, usually in SQL_FROM_HERE
+// Structured data for storage, usually in SQL
 //
 
 message WebSourceProto {
@@ -21,4 +21,26 @@ message WebSourceProto {
 
 message WebSourcesEventProto {
   repeated WebSourceProto sources = 1;
+}
+
+message ImageContentBlockProto {
+  string image_url = 1;
+}
+
+message TextContentBlockProto {
+  string text = 1;
+}
+
+message ContentBlockProto {
+  oneof content {
+    ImageContentBlockProto image_content_block = 1;
+    TextContentBlockProto text_content_block = 2;
+  }
+}
+
+message ToolUseEventProto {
+  string tool_name = 1;
+  string tool_id = 2;
+  string input_json = 3;
+  repeated ContentBlockProto output = 4;
 }

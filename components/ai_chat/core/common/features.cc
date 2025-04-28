@@ -53,6 +53,21 @@ bool IsAIChatFirstEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatFirst);
 }
 
+BASE_FEATURE(kAIChatTools, "AIChatTools", base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsToolsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatTools);
+}
+
+BASE_FEATURE(kSmartPageContent,
+             "AIChatSmartPageContent",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsSmartPageContentEnabled() {
+  return IsToolsEnabled() &&
+         base::FeatureList::IsEnabled(features::kSmartPageContent);
+}
+
 BASE_FEATURE(kCustomSiteDistillerScripts,
              "CustomSiteDistillerScripts",
              base::FEATURE_ENABLED_BY_DEFAULT);

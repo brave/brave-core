@@ -18,11 +18,14 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/field_trial_params.h"
@@ -43,9 +46,11 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -76,6 +81,16 @@ using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
+
+void ForwardPageContentToToolUseResult(Tool::UseToolCallback callback,
+                                       std::string content,
+                                       bool is_video,
+                                       std::string invalidation_token) {
+  std::vector<mojom::ContentBlockPtr> output;
+  output.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New(content)));
+  std::move(callback).Run(std::move(output));
+}
 
 }  // namespace
 
@@ -721,6 +736,25 @@ void ConversationHandler::SubmitHumanConversationEntry(
   is_request_in_progress_ = true;
   OnAPIRequestInProgressChanged();
 
+  // Submitting a new human entry takes precedence over any pending tool requests, so
+  // if we have a previous assistant entry, cancel any pending tool requests.
+  if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events && !last_entry->events->empty()) {
+      // Delete any event that is_tool_use_event and has no output
+      last_entry->events.value().erase(
+          std::remove_if(
+              last_entry->events.value().begin(),
+              last_entry->events.value().end(),
+              [](const auto& event) {
+                return event->is_tool_use_event() &&
+                       !event->get_tool_use_event()->output.has_value();
+              }),
+          last_entry->events->end());
+    }
+  }
+
   // Directly modify Entry's text to remove engine-breaking substrings
   if (!has_edits) {  // Edits are already sanitized.
     engine_->SanitizeInput(latest_turn->text);
@@ -734,20 +768,42 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
+
+  MaybeSeedOrClearSuggestions();
+
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
-  if (is_page_associated) {
+
+  constexpr auto kContentFetchingMessageTypes =
+      base::MakeFixedFlatSet<mojom::ActionType>(
+          {mojom::ActionType::SUGGESTION, mojom::ActionType::SUMMARIZE_PAGE,
+           mojom::ActionType::SUMMARIZE_VIDEO,
+           mojom::ActionType::SUMMARIZE_SELECTED_TEXT});
+
+  const bool can_fetch_content =
+      is_page_associated &&
+      (!(features::IsSmartPageContentEnabled() && features::IsToolsEnabled()) ||
+       // Assume content should always be sent for conversations with
+       // content-related message types.
+       std::any_of(chat_history_.begin(), chat_history_.end(),
+                   [&kContentFetchingMessageTypes](auto& turn) {
+                     return base::Contains(kContentFetchingMessageTypes,
+                                           turn->action_type);
+                   }));
+
+  if (can_fetch_content) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
                        weak_ptr_factory_.GetWeakPtr()));
   } else {
-    // Now the conversation is committed, we can remove some unneccessary data
-    // if we're not associated with a page.
-    suggestions_.clear();
-    DisassociateContentDelegate();
-    OnSuggestedQuestionsChanged();
-    // Perform generation immediately
+    if (!is_page_associated) {
+      // Now the conversation is committed, we can remove some unneccessary data
+      // if we're not associated with a page.
+      suggestions_.clear();
+      DisassociateContentDelegate();
+      OnSuggestedQuestionsChanged();
+    }
     PerformAssistantGeneration();
   }
 }
@@ -1141,6 +1197,52 @@ void ConversationHandler::OnUserOptedIn() {
   MaybeFetchOrClearContentStagedConversation();
 }
 
+// TODO: test this function and all paths, including multiple pending tools
+void ConversationHandler::RespondToToolUseRequest(
+    const std::string& tool_id,
+    std::optional<std::vector<mojom::ContentBlockPtr>> output) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_id);
+  if (!tool_use) {
+    return;
+  }
+
+  // Some calls to this function are tools that user is giving
+  // permission to use, some are users's giving the answer, and some are to be
+  // run immediately after the tool is requested by the assistant.
+
+  // Some tools are handled by the Tool, some by the UI and some are handled by
+  // this class.
+  if (output.has_value()) {
+    // Tool use has already been handled by the UI
+    OnToolUseComplete(tool_id, std::move(output));
+    return;
+  } else if (tool_use->tool_name == kPageContentToolName) {
+    // Tool use should be handled by this class
+    auto callback = base::BindOnce(
+        &ConversationHandler::OnToolUseComplete, weak_ptr_factory_.GetWeakPtr(),
+        tool_id);
+    GeneratePageContent(base::BindOnce(&ForwardPageContentToToolUseResult,
+                                       std::move(callback)));
+    return;
+  }
+  // Tool use will be handled by the Tool itself
+  Tool* tool = nullptr;
+  auto tools = GetTools();
+  auto tool_it = std::ranges::find_if(tools, [&tool_use](const Tool* tool) {
+    return tool->Name() == tool_use->tool_name;
+  });
+  if (tool_it != tools.end()) {
+    tool = *tool_it;
+  } else {
+    LOG(ERROR) << "Tool called but not found: " << tool_use->tool_name;
+    return;
+  }
+  DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name();
+  tool->UseTool(tool_use->input_json,
+                base::BindOnce(&ConversationHandler::OnToolUseComplete,
+                               weak_ptr_factory_.GetWeakPtr(), tool_id));
+}
+
 void ConversationHandler::AddToConversationHistory(
     mojom::ConversationTurnPtr turn) {
   if (!turn) {
@@ -1207,9 +1309,15 @@ void ConversationHandler::PerformAssistantGeneration(
     OnAssociatedContentInfoChanged();
   }
 
+  // When the next response is generated, create a new entry instead of appending to the previous
+  // so that we know which tool use requests should be dealt with.
+  // TODO: test a new entry is created
+  needs_new_entry_ = true;
+
   engine_->GenerateAssistantResponse(
       is_video, page_content, chat_history_, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      GetTools(), std::nullopt, std::move(data_received_callback),
+      std::move(data_completed_callback));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1222,8 +1330,9 @@ void ConversationHandler::SetAPIError(const mojom::APIError& error) {
 
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     mojom::ConversationEntryEventPtr event) {
-  if (chat_history_.empty() ||
+  if (needs_new_entry_ || chat_history_.empty() ||
       chat_history_.back()->character_type != CharacterType::ASSISTANT) {
+    needs_new_entry_ = false;
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
@@ -1264,6 +1373,30 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
     // all UI is updated to instead use ConversationEntryEvent items.
     entry->text = event->get_completion_event()->completion;
+  }
+
+  if (event->is_tool_use_event() && entry->events->size() > 0) {
+    // Tool use events can be partial and may need to be combined with the
+    // previous event.
+    // TODO: test they get combined correctly
+    auto& last_event = entry->events->back();
+    auto& tool_use_event = event->get_tool_use_event();
+
+    DVLOG(2) << __func__
+               << " Got event for tool use: " << tool_use_event->tool_name
+               << " is empty? " << tool_use_event->tool_name.empty()
+               << " with input: " << tool_use_event->input_json
+               << " is last event tool use? "
+               << last_event->is_tool_use_event();
+
+    if (last_event->is_tool_use_event() && tool_use_event->tool_name.empty()) {
+      last_event->get_tool_use_event()->input_json =
+          base::StrCat({last_event->get_tool_use_event()->input_json,
+                        tool_use_event->input_json});
+      // TODO(petemill): Don't clone
+      OnHistoryUpdate(entry.Clone());
+      return;
+    }
   }
 
   if (event->is_conversation_title_event()) {
@@ -1363,8 +1496,8 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     }
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
-    OnSuggestedQuestionsChanged();
   }
+  OnSuggestedQuestionsChanged();
 }
 
 void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
@@ -1430,8 +1563,8 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
 
 void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   VLOG(1) << __func__;
-  DCHECK(should_send_page_contents_);
-  DCHECK(IsContentAssociationPossible())
+  CHECK(should_send_page_contents_);
+  CHECK(IsContentAssociationPossible())
       << "Shouldn't have been asked to generate page text when "
       << "|IsContentAssociationPossible()| is false.";
 
@@ -1503,8 +1636,9 @@ void ConversationHandler::OnGetRefinedPageContent(
     }
   }
   engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      is_video, page_content_to_use, chat_history_, selected_language_, {},
+      std::nullopt, std::move(data_received_callback),
+      std::move(data_completed_callback));
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
@@ -1550,6 +1684,8 @@ void ConversationHandler::OnEngineCompletionComplete(
       }
     }
   }
+
+  MaybeRespondToNextToolUseRequest();
 
   OnAPIRequestInProgressChanged();
 }
@@ -1734,7 +1870,9 @@ ConversationHandler::GetStateForConversationEntries() {
 
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
-  entries_state->is_generating = IsRequestInProgress();
+  // TODO: test
+  entries_state->is_generating =
+      IsRequestInProgress() || is_tool_use_in_progress_;
   entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->total_tokens = metadata_->total_tokens;
@@ -1812,7 +1950,8 @@ void ConversationHandler::OnSuggestedQuestionsChanged() {
 void ConversationHandler::OnAPIRequestInProgressChanged() {
   OnStateForConversationEntriesChanged();
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAPIRequestInProgress(is_request_in_progress_);
+    client->OnAPIRequestInProgress(is_request_in_progress_ ||
+                                   is_tool_use_in_progress_);
   }
   for (auto& observer : observers_) {
     observer.OnRequestInProgressChanged(this, is_request_in_progress_);
@@ -1824,6 +1963,114 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
   for (auto& client : untrusted_conversation_ui_handlers_) {
     client->OnEntriesUIStateChanged(entries_state->Clone());
   }
+}
+
+std::vector<Tool*> ConversationHandler::GetTools() {
+  return GetToolsForConversation(
+      IsContentAssociationPossible() && should_send_page_contents_,
+      GetCurrentModel());
+}
+
+mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
+    std::string_view tool_id) {
+  if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events->size() > 0) {
+      for (auto& event : *last_entry->events) {
+        if (event->is_tool_use_event()) {
+          auto& tool_use_event = event->get_tool_use_event();
+          if (tool_use_event->tool_id != tool_id) {
+            continue;
+          }
+          return tool_use_event.get();
+        }
+      }
+    }
+  }
+  return nullptr;
+}
+
+// TODO: test
+void ConversationHandler::MaybeRespondToNextToolUseRequest() {
+  // Continue the loop of tool use handling and completion continuing until either:
+  // - A response comes back with no tool use requests
+  // - Any tool use requests require user interaction (e.g. permission or providing the answer)
+  if (chat_history_.empty()) {
+    return;
+  }
+  auto& last_entry = chat_history_.back();
+  if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
+      last_entry->events->size() == 0) {
+    return;
+  }
+
+  is_tool_use_in_progress_ = false;
+
+  for (auto& event : *last_entry->events) {
+    if (event->is_tool_use_event()) {
+      auto& tool_use_event = event->get_tool_use_event();
+      if (tool_use_event->output != std::nullopt) {
+        // already handled
+        continue;
+      }
+      for (auto& tool : GetTools()) {
+        if (tool->Name() == tool_use_event->tool_name &&
+            !tool->RequiresUserInteractionBeforeHandling()) {
+          is_tool_use_in_progress_ = true;
+          RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+          break;
+        }
+      }
+      if (is_tool_use_in_progress_) {
+        break;
+      }
+    }
+  }
+  OnAPIRequestInProgressChanged();
+}
+
+void ConversationHandler::OnToolUseComplete(
+  const std::string& tool_use_id,
+  std::optional<std::vector<mojom::ContentBlockPtr>>&& output) {
+auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+if (!tool_use) {
+  DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+  is_tool_use_in_progress_ = false;
+  OnAPIRequestInProgressChanged();
+  return;
+}
+
+// If there's no output, we don't need to send to the assistant
+if (!output) {
+  DLOG(ERROR) << "No output from tool use: " << tool_use->tool_name;
+  is_tool_use_in_progress_ = false;
+  OnAPIRequestInProgressChanged();
+  return;
+}
+
+DVLOG(0) << "got output for tool: " << tool_use->tool_name;
+
+tool_use->output = std::move(output);
+// TODO(petemill): don't Clone
+OnHistoryUpdate(chat_history_.back()->Clone());
+// Only perform generation if there are no pending tools left to run from
+// the last entry.
+if (std::ranges::all_of(
+        *chat_history_.back()->events,
+        [](const mojom::ConversationEntryEventPtr& event) {
+          return !event->is_tool_use_event() ||
+                 event->get_tool_use_event()->output.has_value();
+        })) {
+  is_request_in_progress_ = true;
+  is_tool_use_in_progress_ = false;
+  OnAPIRequestInProgressChanged();
+  // TODO(petemill): Attach page content if we're not using smart page content tool
+  PerformAssistantGeneration();
+} else {
+  // Still have more tool use requests to handle.
+  MaybeRespondToNextToolUseRequest();
+}
 }
 
 size_t ConversationHandler::GetConversationHistorySize() {
