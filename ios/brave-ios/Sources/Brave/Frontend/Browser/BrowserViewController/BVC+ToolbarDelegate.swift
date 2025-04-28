@@ -400,6 +400,9 @@ extension BrowserViewController: TopToolbarDelegate {
       guard let orignalURL = internalURL.url.strippedInternalURL else { return }
       url = orignalURL
     }
+    if !url.isWebPage(includeDataURIs: false) {
+      return
+    }
 
     weak var weakPopover: PopoverController?
     let popover = PopoverController(

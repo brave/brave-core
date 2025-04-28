@@ -80,6 +80,11 @@ import WebKit
     domain: Domain,
     isDeAmpEnabled: Bool
   ) async -> Set<UserScriptType> {
+    if !mainFrameURL.isWebPage(includeDataURIs: false) {
+      // Local application urls do not need page-specific user scripts injected
+      return []
+    }
+
     var userScriptTypes: Set<UserScriptType> = [
       .siteStateListener, .gpc(ShieldPreferences.enableGPC.value),
     ]

@@ -64,7 +64,9 @@ class SiteStateListenerScriptHandler: TabContentScript {
       Task { @MainActor in
         if let pageData = tab.currentPageData {
           let domain = pageData.domain(persistent: !tab.isPrivate)
-          guard domain.globalBlockAdsAndTrackingLevel.isEnabled else {
+          guard domain.globalBlockAdsAndTrackingLevel.isEnabled,
+            pageData.mainFrameURL.isWebPage(includeDataURIs: false)
+          else {
             return
           }
 
