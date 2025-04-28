@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 28ca0a42ae16111da310361403fe89db1e889767..760b558a58d6efc9735b2c717c2cb8edeb749071 100644
+index 28ca0a42ae16111da310361403fe89db1e889767..27a1bba1a4291372572e790657343f251e0ec8b5 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -745,6 +745,7 @@ static_library("ui") {
@@ -30,3 +30,11 @@ index 28ca0a42ae16111da310361403fe89db1e889767..760b558a58d6efc9735b2c717c2cb8ed
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
+@@ -5726,6 +5731,7 @@ source_set("browser_navigator_params_headers") {
+     "//url",
+   ]
+   deps = []
++  public_deps += [ "//brave/browser/ui:browser_navigator_params_headers_public_dependencies" ]
+ }
+ 
+ if (!is_android) {
