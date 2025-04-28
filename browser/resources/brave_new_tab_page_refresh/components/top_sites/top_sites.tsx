@@ -19,7 +19,6 @@ import classNames from '$web-common/classnames'
 import {
   style,
   collapsedTileCount,
-  maxTileColumnCount,
   maxTileCount } from './top_sites.style'
 
 export function TopSites() {
@@ -30,7 +29,7 @@ export function TopSites() {
   const listKind = useAppState((s) => s.topSitesListKind)
   const topSites = useAppState((s) => s.topSites)
 
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = React.useState(loadExpandedState())
   const [showEditSite, setShowEditSite] = React.useState(false)
   const [editSite, setEditSite] = React.useState<TopSite | null>(null)
   const [showTopSitesMenu, setShowTopSitesMenu] = React.useState(false)
@@ -75,38 +74,19 @@ export function TopSites() {
     }
   }
 
-  function maybeCollapseOnClick(event: React.MouseEvent<HTMLElement>) {
-    const { target } = event
-    if (expanded && target instanceof HTMLElement) {
-      if (target.classList.contains('collapse-on-click')) {
-        setExpanded(false)
-      }
-    }
-  }
-
   return (
     <div
       ref={rootRef}
       className={classNames({
         'expanded': expanded,
         'collapsed': !expanded,
-        'hidden': !showTopSites || tileCount === 0,
-        'single-row': tileCount <= maxTileColumnCount,
-        'double-row':
-          tileCount > maxTileColumnCount &&
-          tileCount <= maxTileColumnCount * 2
+        'hidden': !showTopSites || tileCount === 0
        })}
       style={inlineCSSVars({ '--self-tile-count': tileCount })}
-      onClick={maybeCollapseOnClick}
-      onKeyDown={() => {}}
       data-css-scope={style.scope}
     >
       <div className='top-site-context-menu-anchor' />
-      <Popover
-        isOpen={expanded}
-        className='top-sites collapse-on-click'
-        onClose={() => setExpanded(false)}
-      >
+      <div className='top-sites'>
         <div className='tile-drop-indicator' />
         <button
           className='menu-button'
@@ -146,7 +126,7 @@ export function TopSites() {
           </div>
         </Popover>
         <div className='top-site-tiles-mask'>
-          <div className='top-site-tiles collapse-on-click'>
+          <div className='top-site-tiles'>
             {
               topSites.map((topSite, i) => {
                 if (i > maxTileCount) {
@@ -184,10 +164,13 @@ export function TopSites() {
         </div>
         <button
           className='expand-button'
-          onClick={() => setExpanded(true)}
           disabled={tileCount <= collapsedTileCount}
+          onClick={() => {
+            saveExpandedState(!expanded)
+            setExpanded(!expanded)}
+          }
         >
-          <Icon name='expand' />
+          <Icon name={expanded ? 'contract' : 'expand' } />
         </button>
         <Popover
           isOpen={Boolean(contextMenuSite)}
@@ -241,7 +224,21 @@ export function TopSites() {
             setShowRemoveToast(false)
           }}
         />
-      </Popover>
+      </div>
     </div>
   )
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/45697): Use a pref to
+// persist the expanded state.
+const expandedStorageKey = 'ntp-top-sites-expanded'
+
+function loadExpandedState(): boolean {
+  const value = localStorage.getItem(expandedStorageKey)
+  try { return Boolean(JSON.parse(value || '')) }
+  catch { return false }
+}
+
+function saveExpandedState(expanded: boolean) {
+  localStorage.setItem(expandedStorageKey, JSON.stringify(expanded))
 }
