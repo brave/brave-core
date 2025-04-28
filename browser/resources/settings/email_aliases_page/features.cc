@@ -7,8 +7,6 @@
 
 namespace email_aliases {
 
-BASE_FEATURE(kEmailAliases,
-             "EmailAliases",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kEmailAliases, "EmailAliases", base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace email_aliases 
+}  // namespace email_aliases
