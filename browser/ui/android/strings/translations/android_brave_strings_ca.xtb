@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Mostra els suggeriments del navegador</translation>
 <translation id="8982438328166986164">Mostra suggerències de llocs web basades en els teus marcadors i historial de navegació.</translation>
 <translation id="924029461438529367">Mostra suggeriments de cerca</translation>
-<translation id="1571106259128580884">Mostra els suggeriments dels llocs principals</translation>
+<translation id="5989135139219497991">Mostra els suggeriments destacats</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="412411722208944922">Motors de cerca ràpids</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Ajuda al Cercador de Brave a créixer</translation>
 <translation id="7044431516245362795">Participa en el Web Discovery Project per ajudar a l'índex a créixer i millorar els resultats de cerca. <ph name="LEARN_MORE_START"/>Més informació.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">És clar que ajudaré</translation>
-<translation id="2877653791257935258">Introdueix el nom o l'URL d'un lloc web</translation>
-<translation id="5329830149661250028">Nota la diferència de Brave: sense anuncis, sense rastrejadors, amb una càrrega de pàgina molt més ràpida.</translation>
-<translation id="3941792073703079607">Vegis la diferència Brave: bloqueja els anuncis. Guarda les dades. Transmet més ràpid.</translation>
 <translation id="3545804467215833536">Toca per veure els protectors de Brave</translation>
 <translation id="1724327820822194498">Consulta tots els elements indesitjables que ha bloquejat Brave, a cada pàgina, amb els protectors.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> i <ph name="TRACKER"/> altres anuncis i rastrejadors bloquejats</translation>
@@ -504,6 +501,7 @@ Segur que vols continuar?</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
 <translation id="650318023204990401">Controls avançats</translation>
+<translation id="7205939464631857223">Esborrar tots els elements bloquejats</translation>
 <translation id="5370478469168390143">Guarda les dades en línia</translation>
 <translation id="1118508688433541158">Navega més ràpid i bloqueja anuncis amb Brave</translation>
 <translation id="7427391215172269363">Cada dia estalvio dades navegant la web amb Brave.</translation>
@@ -1029,7 +1027,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="5888208462949095139">Cerca amb <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Giny de pantalla d'inici</translation>
 <translation id="703185154752046151">Giny afegit a la pantalla d'inici</translation>
-<translation id="3290805388004282161">Prova el giny de cerca de Brave</translation>
+<translation id="4635094429202343515">Prova el widget del Cercador de Brave</translation>
 <translation id="4809681171446727314">Accedeix a la cerca privada i independent des de la pantalla d'inici.</translation>
 <translation id="7751715172931488388">Afegeix un giny</translation>
 <translation id="7285167584112910782">Cerca d'acció ràpida de Brave</translation>
@@ -1096,6 +1094,8 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="1179407411385015942">Leo és un assistent intel·ligent amb IA, integrat en el navegador</translation>
 <translation id="5781842473834867765">Desar el meu historial de converses</translation>
 <translation id="4109670531935487117">Mostra suggeriments d'autocompletat a la barra d'adreces</translation>
+<translation id="4983005227524068187">Mostrar a la barra de motor de cerca ràpida</translation>
+<translation id="8514910864411336826">Activa un accés directe per iniciar Leo des de la barra de motor de cerca ràpida.</translation>
 <translation id="6106701981952170121">Esborrar totes les dades de converses amb l'IA Leo</translation>
 <translation id="423600389315522551">Per reiniciar la IA Leo, hauràs d'acceptar utilitzat la IA Leo de Brave en el futur; també esborrarà el teu historial de xat. Esborrar el teu historial de xat esborrarà totes les teves converses anteriors amb la IA Leo de Brave. Aquesta acció no es pot revertir.</translation>
 <translation id="6742599753610126012">Esborrar historial de xat</translation>
@@ -1218,11 +1218,12 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6891382640886173702">Fusiona les finestres</translation>
 <translation id="2912247081180973411">Tanca la finestra</translation>
 <translation id="4010699428656610296">Mou les altres pestanyes a una altra finestra de Brave</translation>
-<translation id="208634871997892083">VPN sempre activada</translation>
+<translation id="4306918392910017801">Reconnectar VPN automàticament</translation>
 <translation id="1599073346542156922">Com s'activa:</translation>
 <translation id="7001163334415463127">1. Obriu la configuració del vostre dispositiu des del calaix d'aplicacions o premeu el botó de sota.</translation>
 <translation id="887443138775437899">2. Cerqueu la VPN de Brave i premeu la icona de configuració de la dreta.</translation>
-<translation id="3776051499611941773">3. Activeu <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN sempre activada<ph name="ALWAYS_ON_TUTORIAL_END"/> per habilitar-la.</translation>
+<translation id="7546805138087561624">3. Activeu <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN sempre activada<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> per habilitar-la.</translation>
+<translation id="2446001600399646984">Tingues en compte que, a causa de les limitacions d'Android, la funció "Bloquejar connexions sense VPN" no funciona de la manera esperada. <ph name="LEARN_MORE_START"/>Més informació.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Obre la configuració d'Android</translation>
 <translation id="2728518864712716830">S'ha descarregat l'actualització.</translation>
 <translation id="8403338849301491865">La llista de filtres s'ha actualitzat correctament</translation>
@@ -1232,4 +1233,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2361906291514218784">IA Leo</translation>
 <translation id="7942415993090181327">Historial de xat</translation>
 <translation id="6859935199732075666">Mostra els errors de Safe Browsing</translation>
+<translation id="2735247450315842119">Permetre les captures de pantalla a les pestanyes d'incògnit</translation>
+<translation id="8420414929552321089">Si s'activa aquesta opció, les pestanyes d'incògnit també seran visibles quan hi hagi diverses aplicacions obertes.</translation>
 </translationbundle>

@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Esto es un(a)</translation>
 <translation id="2055363275850890030">Ventana privada</translation>
 <translation id="9133213713928851646">Brave no registra su actividad en una ventana privada. Los sitios que visite en ella no aparecerán en el historial, y las cookies desaparecerán cuando finalice la navegación. A pesar de ello,  las ventanas privadas no garantizan su completo anonimato durante su actividad en línea.</translation>
-<translation id="4085423007106063912">Brave nunca recuerda lo que hace en una ventana de incógnito. Los sitios que visite no aparecerán en su historial. Las cookies, los datos de formularios y los datos del sitio desaparecerán cuando cierre la ventana.</translation>
+<translation id="4491905831789757331">Brave nunca recuerda lo que haces en una ventana privada. Los sitios que visites no aparecerán en tu historial. Las cookies, los datos de formularios y los datos del sitio desaparecen una vez que cierras todas las ventanas privadas abiertas.</translation>
 <translation id="1700746046668116047">Tenga en cuenta que, aun así, su actividad podría ser visible para su proveedor de servicios de Internet, los observadores pasivos de la red o su empleador (si está utilizando una red o máquina del trabajo). Para mayor privacidad, abra una ventana de incógnito con Tor.</translation>
 <translation id="8759753423332885148">Más información.</translation>
 <translation id="8611976753572844841">Ventana de incógnito con conectividad Tor</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Mostrar historial</translation>
 <translation id="5030659775136592441">Mostrar gestor de marcadores</translation>
 <translation id="6919203766034706175">Importar configuración</translation>
+<translation id="290553639533591736">Enfocar Gemini Live</translation>
 <translation id="6159704524780747483">Abrir chat de IA</translation>
 <translation id="1199430163665775722">Editar motores de búsqueda</translation>
 <translation id="4276265845501430443">Mostrar ayuda</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Resumir este video</translation>
 <translation id="7921782882718083488">Resumir esta página</translation>
 <translation id="7932221068776853847">Desconéctese para dejar de enviar el contenido de esta página a Leo e iniciar una nueva conversación</translation>
+<translation id="8743383817154663379">Hubo un error al procesar tu solicitud. Vuelve a intentarlo más tarde.</translation>
 <translation id="2712650703044366764">Este modelo tiene un extremo no válido. Por favor, comprueba tu configuración e inténtalo de nuevo.</translation>
 <translation id="1167803637855350748">Hubo un problema de red al conectarse a Leo; compruebe su conexión y vuelva a intentarlo.</translation>
 <translation id="1996126325390835277">Has llegado al límite de la tarifa Premium. Vuelve a intentarlo dentro de unas horas.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">La clave API configurada para este modelo no es válida. Por favor, verifica tu configuración e inténtalo de nuevo.</translation>
 <translation id="7905602379229309187">El punto final está sobrecargado. Inténtalo de nuevo más tarde.</translation>
 <translation id="8151638057146502721">Configurar</translation>
-<translation id="4177458398826096846">Hola, me llamo Leo. Soy un ayudante mediante inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de Llama 3.1 8B, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Hola, me llamo Leo. Soy un ayudante mediante inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de Qwen 14B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hola, me llamo Leo. Soy un ayudante mediante inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de Mixtral 8x7B, un modelo creado por Mistral AI para llevar a cabo tareas avanzadas. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Instant, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> de <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Hola, me llamo Leo. Soy un ayudante mediante IA que se aloja exclusivamente en los servidores de Brave. Funciono con tecnología de Llama 3.1 8B, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Hola, me llamo Leo. Soy un ayudante mediante IA que se aloja exclusivamente en los servidores de Brave. Funciono con tecnología de Qwen 14B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Hola, me llamo Leo. Soy un ayudante mediante IA que se aloja exclusivamente en los servidores de Brave. Funciono con tecnología de Mixtral 8x7B, un modelo creado por Mistral IA para tareas avanzadas. Mixtral se aloja en los servidores de Brave mediante nuestra segura infraestructura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Instant, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Instant se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Haiku se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Sonnet se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Hola, me llamo Leo. Soy un ayudante mediante IA que se aloja exclusivamente en los servidores de Brave. Funciono con tecnología de Llama Vision, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama Vision se aloja en los servidores de Brave mediante nuestra segura infraestructura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Abrir página completa</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">Dejar de responder</translation>
 <translation id="8712637175834984815">Entendido</translation>
 <translation id="1093419424466417703">Esta página es demasiado extensa para las capacidades de Leo. Es posible que se pierda algo de contexto. Leo ha podido leer un <ph name="PERCENTAGE"/> del contenido de la página.</translation>
+<translation id="4592293425457329338">Es posible que falte algo de contexto en la conversación. Leo pudo retener <ph name="PERCENTAGE"/> del contenido asociado de la conversación.</translation>
 <translation id="2186990448773134544">Se ha extraído la información más relevante de la página porque era demasiado larga para Leo.</translation>
 <translation id="5140068729857132378">Buscando las partes relevantes de la página web…</translation>
 <translation id="4370698775470316661">Esta conversación es demasiado larga y no puede extenderse más. Es posible que haya disponibles otros modelos que permitan a Leo mantener conversaciones prolongadas sin perder eficacia.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">Conversaciones a la velocidad del rayo</translation>
 <translation id="2836330653441111204">Equilibrio entre velocidad e inteligencia</translation>
 <translation id="6695329447007213917">Chat de propósito general, codificación y más</translation>
+<translation id="5051668914970329839">Visión de propósito general</translation>
 <translation id="3965507912994218570">Configuración de Leo</translation>
 <translation id="1037324977127422019">¡Hola, me llamo Leo!</translation>
 <translation id="8930348081963284873">Un asistente de IA integrado en Brave.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">Redes sociales</translation>
 <translation id="2370739752330685659">Quizás más tarde</translation>
 <translation id="983013125018250242">Herramientas de Leo</translation>
+<translation id="7623223587478473368">Adjunto</translation>
+<translation id="3777121685517940177">Subir archivo...</translation>
+<translation id="9088751620363630236">Tomar una foto...</translation>
+<translation id="4250229828105606438">Captura de pantalla</translation>
+<translation id="6332876390231524389">Contenido de la pestaña actual</translation>
 <translation id="49269513399674318">Usar el micrófono</translation>
 <translation id="3895031624234442305">Modelos personalizados</translation>
 <translation id="4572010449071015143">Iniciar nueva conversación</translation>
 <translation id="345901077335355561">Volver a la conversación activa</translation>
 <translation id="6287023598025162715">Conversación nueva</translation>
+<translation id="8370801182970639038">Automático (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Motores de búsqueda habilitados</translation>
+<translation id="5355776323718420036">Ocultar los sitios principales</translation>
+<translation id="6543799171249004861">Foto de <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Preguntar al Buscador de Brave</translation>
+<translation id="6851426306697017546">Mostrar el reloj</translation>
+<translation id="4844370919312937270">Mostrar widget de búsqueda en pestañas nuevas</translation>
+<translation id="5009354496127441090">Mostrar los sitios principales</translation>
+<translation id="4784802981241664605">ESTADÍSTICAS</translation>
+<translation id="4290791698375397492">Sitios principales eliminados</translation>
+<translation id="1436784010935106834">Eliminado</translation>
+<translation id="9030215177866748410">Los sitios populares se sugieren en base a sitios web que visitas a menudo.</translation>
 <translation id="6303294677342628402">Escudos</translation>
 <translation id="8458987127502506209">Activar escudos de Brave</translation>
 <translation id="7509914170164691086">Las protecciones están ACTIVADAS <ph name="LINK_BEFORE"/>en<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">Si se modificase esta configuración, los sitios podrían dejar de funcionar.</translation>
 <translation id="9204041448536398473">Configuración global de los escudos</translation>
 <translation id="2108334320919763866">Valores predeterminados globales</translation>
+<translation id="7205939464631857223">Borrar todos los elementos bloqueados</translation>
 <translation id="3440043456924990296">Configuración gestionada por la organización</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="5716230673298034837">Autorizar todos</translation>

@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Dit is een</translation>
 <translation id="2055363275850890030">Privévenster</translation>
 <translation id="9133213713928851646">Brave onthoudt niet ’ wat je in een Privévenster doet. Websites die je bezoekt, worden niet in je geschiedenis weergegeven en cookies verdwijnen wanneer ’ je afsluit. Echter, door Privévensters te gebruiken ben je online niet ’ helemaal anoniem.</translation>
-<translation id="4085423007106063912">Brave onthoudt nooit wat je doet in een privévenster. Websites die je bezoekt, worden niet in je geschiedenis weergeven. Cookies, formuliergegevens en websitegegevens verdwijnen wanneer je het venster sluit.</translation>
+<translation id="4491905831789757331">Brave onthoudt nooit wat je doet in een privévenster. Websites die je bezoekt, worden niet in je geschiedenis weergeven. Cookies, formuliergegevens en websitegegevens verdwijnen zodra je alle geopende privévensters sluit.</translation>
 <translation id="1700746046668116047">Houd er rekening mee dat je activiteit mogelijk nog steeds zichtbaar is voor je interprovider, passieve netwerkwaarnemers of je werkgever (als je een zakelijke pc of zakelijk netwerk gebruikt). Open een privévenster met Tor voor meer privacy.</translation>
 <translation id="8759753423332885148">Meer Leren</translation>
 <translation id="8611976753572844841">Privévenster met Tor-connectiviteit</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Geschiedenis weergeven</translation>
 <translation id="5030659775136592441">Bladwijzermanager weergeven</translation>
 <translation id="6919203766034706175">Importeerinstellingen</translation>
+<translation id="290553639533591736">Focus Gemini Live</translation>
 <translation id="6159704524780747483">AI-chat openen</translation>
 <translation id="1199430163665775722">Zoekmachines bewerken</translation>
 <translation id="4276265845501430443">Help weergeven</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Deze video samenvatten</translation>
 <translation id="7921782882718083488">Deze pagina samenvatten</translation>
 <translation id="7932221068776853847">Verbreek de verbinding om ervoor te zorgen dat deze pagina geen content meer naar Leo stuurt en start een nieuw gesprek</translation>
+<translation id="8743383817154663379">Er is iets misgegaan tijdens de verwerking van je verzoek. Probeer het later nog eens.</translation>
 <translation id="2712650703044366764">Dit model heeft een ongeldig eindpunt. Controleer je configuratie en probeer het opnieuw.</translation>
 <translation id="1167803637855350748">Er was een netwerkprobleem bij het verbinden met Leo. Controleer uw verbinding en probeer het opnieuw.</translation>
 <translation id="1996126325390835277">Je hebt de limiet van Premium bereikt. Probeer het opnieuw over een paar uur.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">De geconfigureerde API-sleutel voor dit model is ongeldig. Controleer de configuratie en probeer het opnieuw.</translation>
 <translation id="7905602379229309187">Het eindpunt is momenteel overbelast. Probeer het later nog eens.</translation>
 <translation id="8151638057146502721">Configureren</translation>
-<translation id="4177458398826096846">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word gestuurd door Llama 3.1 8B, een model ontwikkeld door Meta om hoge prestaties te leveren en breed inzetbaar te zijn. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word aangedreven door Qwen 14B, een door Alibaba Cloud ontwikkeld model om hoge prestaties te leveren en je met vele taken te kunnen helpen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hallo, ik ben Leo. Ik ben een volledig gehoste AI-assistent van Brave. Ik draai op Mixtral 8x7B, een model dat ontwikkeld is door Mistral om geavanceerde taken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hallo, ik ben Leo. Ik ben een proxy van Brave en draai op Claude Instant, een model dat ontwikkeld is door Anthropic om gespreks- en tekstverwerkingstaken te ondersteunen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Haiku, een model gemaakt door Anthropic om gespreks- en tekstverwerkingstaken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Hallo, ik ben Leo. Ik ben een proxy van Brave en draai op Claude Sonnet, een model dat ontwikkeld is door Anthropic om gespreks- en tekstverwerkingstaken te ondersteunen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> door <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama 3.1 8B, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Qwen 14B, een efficiënt en breed inzetbaar model ontwikkeld door Alibaba Cloud. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Hallo, ik ben Leo. Ik nem AI-assistent die volledig door Brave wordt gehost. Ik ben gebaseerd op Mixtral 8x7B, een krachtig model van Mistral AI voor geavanceerde toepassingen. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Instant, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Haiku, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Hallo, ik ben Leo. Ik word geproxied door Brave en ben gebaseerd op Claude Sonnet, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama Vision, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Volledige pagina openen</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">Antwoord stoppen</translation>
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="1093419424466417703">Deze pagina is te lang voor Leo. Sommige context van het gesprek kan ontbreken. Leo heeft <ph name="PERCENTAGE"/> van de content op de pagina kunnen lezen.</translation>
+<translation id="4592293425457329338">Er kan wat context ontbreken in het gesprek. Leo kon <ph name="PERCENTAGE"/> van de relevante inhoud van het gesprek behouden.</translation>
 <translation id="2186990448773134544">De inhoud van de pagina is verfijnd door de meest relevante informatie uit de pagina te halen omdat deze te lang was voor Leo.</translation>
 <translation id="5140068729857132378">Relevante delen van de webpagina vinden...</translation>
 <translation id="4370698775470316661">Dit gesprek is te lang en kan niet verdergaan. Mogelijk kan Leo met andere, beschikbare modellen langere gesprekken correct uitvoeren.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">Razendsnelle chat</translation>
 <translation id="2836330653441111204">Snelheid en intelligentie in balans</translation>
 <translation id="6695329447007213917">Chat voor algemene doeleinden, codering en meer</translation>
+<translation id="5051668914970329839">Beelden voor algemene taken</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
 <translation id="1037324977127422019">Hallo, ik ben Leo!</translation>
 <translation id="8930348081963284873">Ik ben een AI-assistent die rechtstreeks in Brave is ingebouwd.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">Sociale media</translation>
 <translation id="2370739752330685659">Misschien later</translation>
 <translation id="983013125018250242">Leo-tools</translation>
+<translation id="7623223587478473368">Bijlage</translation>
+<translation id="3777121685517940177">Bestand uploaden...</translation>
+<translation id="9088751620363630236">Foto nemen...</translation>
+<translation id="4250229828105606438">Screenshot</translation>
+<translation id="6332876390231524389">Huidige tabbladinhoud</translation>
 <translation id="49269513399674318">Microfoon gebruiken</translation>
 <translation id="3895031624234442305">Aangepaste modellen</translation>
 <translation id="4572010449071015143">Nieuw gesprek beginnen</translation>
 <translation id="345901077335355561">Terug naar het actieve gesprek</translation>
 <translation id="6287023598025162715">Nieuw gesprek</translation>
+<translation id="8370801182970639038">Automatisch (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Ingeschakelde zoekmachines</translation>
+<translation id="5355776323718420036">Topsites verbergen</translation>
+<translation id="6543799171249004861">Foto gemaakt door <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Brave Search vragen</translation>
+<translation id="6851426306697017546">Klok weergeven</translation>
+<translation id="4844370919312937270">Zoekwidget weergeven op nieuwe tabbladen</translation>
+<translation id="5009354496127441090">Topsites weergeven</translation>
+<translation id="4784802981241664605">STATISTIEKEN</translation>
+<translation id="4290791698375397492">Bovenste site verwijderd</translation>
+<translation id="1436784010935106834">Verwijderd</translation>
+<translation id="9030215177866748410">Top sites worden voorgesteld op basis van websites die u vaak bezoekt.</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="8458987127502506209">Brave Schilden inschakelen</translation>
 <translation id="7509914170164691086">Shields zijn geactiveerd <ph name="LINK_BEFORE"/>voor<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">Het wijzigen van deze instellingen kan ervoor zorgen dat websites niet meer werken.</translation>
 <translation id="9204041448536398473">Algemene Schilden-instellingen</translation>
 <translation id="2108334320919763866">Algemene standaardinstellingen</translation>
+<translation id="7205939464631857223">Alle geblokkeerde elementen wissen</translation>
 <translation id="3440043456924990296">Instellingen die worden beheerd door de organisatie</translation>
 <translation id="7053983685419859001">Blokkeren</translation>
 <translation id="5716230673298034837">Alles toestaan</translation>

@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">הצג את הצעות הדפדפן</translation>
 <translation id="8982438328166986164">מציג הצעות לאתרים בהתבסס על הסימניות ועל היסטוריית הגלישה שלך.</translation>
 <translation id="924029461438529367">הצג הצעות חיפוש</translation>
-<translation id="1571106259128580884">הצג הצעות של האתרים הטובים ביותר</translation>
+<translation id="5989135139219497991">הצגת הצעות מובילות</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
 <translation id="412411722208944922">מנועי חיפוש מהירים</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">לסייע לחיפוש Brave לצמוח</translation>
 <translation id="7044431516245362795">אפשר להצטרף לפרויקט Web Discovery כדי לעזור להגדיל את האינדקס ולשפר את תוצאות החיפוש. <ph name="LEARN_MORE_START"/>למידע נוסף<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">בטח, אעזור</translation>
-<translation id="2877653791257935258">יש להקליד שם או כתובת אתר</translation>
-<translation id="5329830149661250028">ראו את ההבדל עם Brave: אין פרסומות. אין מעקב. טעינת עמודים מהירה בהרבה.</translation>
-<translation id="3941792073703079607">ראה את ההבדל של Brave: חסימת מודעות. שמירת מידע. הזרמה מהירה יותר.</translation>
 <translation id="3545804467215833536">לחצו כדי לראות את Brave Shields</translation>
 <translation id="1724327820822194498">ראו את כל הדברים הרעים שנחסמו על ידי Brave, בכל עמוד, עם Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> ו-<ph name="TRACKER"/> פרסומות אחרות &amp; רכיבי מעקב נחסמו</translation>
@@ -505,6 +502,7 @@
 <translation id="5299848999918506028">תודה!</translation>
 <translation id="76550953340008122">תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. אנו נעשה כמיטב יכולתנו לתקן זאת!</translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
+<translation id="7205939464631857223">ניקוי כל האלמנטים החסומים</translation>
 <translation id="5370478469168390143">שמור נתונים באופן מקוון</translation>
 <translation id="1118508688433541158">גלשו במהירות רבה יותר וחסמו פרסומות עם Brave</translation>
 <translation id="7427391215172269363">אני חוסך בצריכת נתונים כל יום בזכות הגלישה ב-Brave.</translation>
@@ -1030,7 +1028,7 @@
 <translation id="5888208462949095139">חיפוש עם <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">ווידג'ט מסך הבית</translation>
 <translation id="703185154752046151">ווידג'ט נוסף למסך הבית</translation>
-<translation id="3290805388004282161">נסו את ווידג'ט החיפוש של Brave</translation>
+<translation id="4635094429202343515">לנסות את ווידג׳ט החיפוש של Brave</translation>
 <translation id="4809681171446727314">בצעו חיפושים באופן פרטי ובלתי תלוי ישירות ממסך הבית שלכם.</translation>
 <translation id="7751715172931488388">הוספת ווידג'ט</translation>
 <translation id="7285167584112910782">חיפוש פעולה מהירה ב-Brave</translation>
@@ -1097,6 +1095,8 @@
 <translation id="1179407411385015942">Leo הוא עוזר חכם המופעל על ידי AI, המובנה ישירות בדפדפן</translation>
 <translation id="5781842473834867765">לאחסן את היסטוריית השיחות שלי</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
+<translation id="4983005227524068187">להציג בסרגל מנועי חיפוש מהיר</translation>
+<translation id="8514910864411336826">מאפשר קיצור דרך כדי להפעיל את Leo מסרגל מנועי החיפוש המהיר.</translation>
 <translation id="6106701981952170121">מחיקת כל נתוני השיחות של Leo AI</translation>
 <translation id="423600389315522551">איפוס Leo AI יחייב אותך להצטרף לשימוש ב-Brave Leo AI בעתיד וגם ימחק את היסטוריית הצ׳אט שלך. ניקוי היסטוריית הצ׳אט ימחק את כל השיחות הקודמות שלך עם Brave Leo AI. הפעולה הזו לא ניתנת לביטול.</translation>
 <translation id="6742599753610126012">ניקוי היסטוריית צ׳אטים</translation>
@@ -1219,11 +1219,12 @@
 <translation id="6891382640886173702">מזג חלונות</translation>
 <translation id="2912247081180973411">סגור חלונות</translation>
 <translation id="4010699428656610296">אנא מזג לשוניות אחרות לחלון Brave אחר.</translation>
-<translation id="208634871997892083">VPN תמיד פועל</translation>
+<translation id="4306918392910017801">חיבור מחדש אוטומטי של VPN</translation>
 <translation id="1599073346542156922">כיצד להפעיל:</translation>
 <translation id="7001163334415463127">1. פתח את ההגדרות של המכשיר ממגירת היישומים שלך או בלחיצה על הכפתור למטה.</translation>
 <translation id="887443138775437899">2. מצא את Brave VPN והקש על סמל ההגדרות הממוקם בימין.</translation>
-<translation id="3776051499611941773">3. החלף<ph name="ALWAYS_ON_TUTORIAL_START"/>VPN פעיל תמיד<ph name="ALWAYS_ON_TUTORIAL_END"/> כדי להפעיל אותו.</translation>
+<translation id="7546805138087561624">3. החלף<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN פעיל תמיד<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> כדי להפעיל אותו.</translation>
+<translation id="2446001600399646984">לתשומת לבך: בשל מגבלות Android, האפשורת ״חסימת חיבורים בלי VPN״ לא עובדת כצפוי. <ph name="LEARN_MORE_START"/>למידע נוסף<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">‏פתיחת הגדרות Android</translation>
 <translation id="2728518864712716830">העדכון הורד</translation>
 <translation id="8403338849301491865">רשימת הסינון עודכנה בהצלחה</translation>
@@ -1233,4 +1234,6 @@
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="7942415993090181327">היסטוריית צ׳אטים</translation>
 <translation id="6859935199732075666">הצגת שגיאות גלישה בטוחה</translation>
+<translation id="2735247450315842119">לאפשר צילומי מסך בכרטיסיות פרטיות</translation>
+<translation id="8420414929552321089">כשאפשרות זו מופעלת, כרטיסיות פרטיות גם יהיו גלויות בזמן שמספר אפליקציות פתוחות.</translation>
 </translationbundle>

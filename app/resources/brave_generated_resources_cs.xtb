@@ -317,6 +317,18 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8813509417421129632">Vložená stránka na této stránce <ph name="SITE"/> chce uložit</translation>
 <translation id="7700010743463174379">Tato stránka chce uložit</translation>
 <translation id="6774238875569752630">Vložená stránka na této stránce chce uložit</translation>
+<translation id="1233913566967531780">Zaměřeno na karty</translation>
+<translation id="4034992002364254340">Seskupte všechny související karty do nového okna</translation>
+<translation id="8012125596344613514">Navrhovaná témata</translation>
+<translation id="7529120186020617755">Zadejte téma, na které se chcete zaměřit...</translation>
+<translation id="6847541693235449912">Přejít</translation>
+<translation id="2079545284768500474">Zpět</translation>
+<translation id="1533980864758658574">Vytvořeno nové okno na téma <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Tato funkce odesílá data o vašich otevřených kartách Leovi, asistentovi prohlížeče Brave, který využívá umělou inteligenci.</translation>
+<translation id="6165508094623778733">Zjistěte více.</translation>
+<translation id="7557539689487606886">Přejít na verzi Premium</translation>
+<translation id="1035309871698658326">Když je tato funkce zapnutá, názvy a původ všech nesoukromých karet jsou odeslány Leovy k roztřídění.</translation>
+<translation id="3435896845095436175">Aktivovat</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="1426410128494586442">Ano</translation>
@@ -353,7 +365,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2396127686705429331">Zobrazit tlačítko záložek</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
-<translation id="2858138569776157458">Top weby</translation>
+<translation id="3405901785709583668">Nejlepší návrhy</translation>
 <translation id="7859704718976024901">Historie procházení</translation>
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="4144468798716165316">Rychlé příkazy</translation>
@@ -462,7 +474,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7791141927430186653">Povolit X (dříve Twitter) vložené tweety</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
 <translation id="8792121506918889955">Pravidla WebRTC pro zacházení s IP</translation>
-<translation id="6165508094623778733">Zjistěte více.</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
 <translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
@@ -713,6 +724,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2751872555001636931">Zobrazit ikonu Leo na postranním panelu</translation>
 <translation id="8055509865174199683">Zobrazit Leo v kontextové nabídce na webových stránkách</translation>
 <translation id="1529674267267221673">Leo se objeví v kontextové nabídce, když kliknete pravým tlačítkem na webovou stránku. To odešle kontext z aktuální webové stránky do Leo.</translation>
+<translation id="5226020406479918122">Režim zaměření na karty</translation>
+<translation id="3705539672403311123">Zapne organizování karet na stránce hledání karet. Když je tato funkce aktivována, názvy a původ všech nesoukromých karet jsou automaticky odesílány Leovi, aby je roztřídil. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Zobrazit navrhované výzvy v konverzaci</translation>
 <translation id="5781842473834867765">Uložit historii mých konverzací</translation>
 <translation id="1082960401708055995">Když vypnete ukládání konverzací, trvale se vymažou všechny dříve uložené konverzace. Tuto akci nelze vrátit zpět.</translation>
@@ -721,6 +734,9 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 v budoucnu a také vymaže historii vašeho chatu. Vymazání vaší historie chatu odstraní všechny vaše předchozí konverzace s Brave Leo. Tuto akci nelze vrátit zpět.</translation>
 <translation id="5574059574002819179">Úprava návrhů automatického dokončování</translation>
 <translation id="7942415993090181327">Historie chatu</translation>
+<translation id="5385064007245738696">Informace o Leovi a jeho umělé inteligenci</translation>
+<translation id="5084498230659987096">Brave Leo přináší chat s umělou inteligencí a další rozhraní využívající umělou inteligenci v prohlížeči – to vše při maximálním důrazu na ochranu soukromí. Leo se nikdy neučí z vašich dat ani je nepoužívá k trénování modelů. Všechny požadavky jsou zprostředkovány přes anonymizační server.</translation>
+<translation id="6458721693611638005">Další informace o tom, jak vás Brave chrání při používání umělé inteligence, najdete v zásadách ochrany osobních údajů asistenta Lea. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Výchozí model pro konverzace</translation>
 <translation id="8826914609353373601">Správa prémiového předplatného</translation>
 <translation id="235457946228076038">Přineste svůj vlastní model</translation>
@@ -731,6 +747,8 @@ v budoucnu a také vymaže historii vašeho chatu. Vymazání vaší historie ch
 <translation id="3553035516792776805">Název požadavku na model</translation>
 <translation id="7634775528597575156">Koncový bod serveru</translation>
 <translation id="6374563306438145841">Klíč API</translation>
+<translation id="3295756655687327124">Vizuální podpora</translation>
+<translation id="1415432774589088566">Pokud tento model používá jako vstup obrázky, např. llama 3.2b Vision.</translation>
 <translation id="8008271349880309090">Název modelu, který se zobrazí v nabídce pro výběr modelu</translation>
 <translation id="1355326130503900056">Název modelu, jak by se měl objevit v požadavku na obslužný rámec, např. phi-3 (vezměte na vědomí, že pokud se tento název přesně neshoduje s tím, co očekává obslužný rámec, integrace nebude fungovat)</translation>
 <translation id="3213787232304349732">Adresa URL, kde váš obslužný rámec naslouchá požadavkům. Pokud si nejste jisti, podívejte se do dokumentace k obslužnému rámci. Např. pro nástroj Ollama je to vždy http://localhost:11434/v1/chat/completions.</translation>

@@ -318,6 +318,18 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="8813509417421129632">Una página incrustada en <ph name="SITE"/> desea guardar</translation>
 <translation id="7700010743463174379">Esta página desea guardar</translation>
 <translation id="6774238875569752630">Una página incrustada en esta página desea guardar</translation>
+<translation id="1233913566967531780">Enfoque de pestaña</translation>
+<translation id="4034992002364254340">Combina todas las pestañas relacionadas en una nueva ventana</translation>
+<translation id="8012125596344613514">Temas sugeridos</translation>
+<translation id="7529120186020617755">Ingresa un tema en el que enfocarte...</translation>
+<translation id="6847541693235449912">Ir</translation>
+<translation id="2079545284768500474">Deshacer</translation>
+<translation id="1533980864758658574">Nueva ventana creada para <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Esta función envía datos sobre tus pestañas abiertas a Leo, el asistente de navegador de Brave Impulsado por IA.</translation>
+<translation id="6165508094623778733">Más información</translation>
+<translation id="7557539689487606886">Hazte Premium</translation>
+<translation id="1035309871698658326">Cuando se abre, automáticamente enviará los títulos y el origen de todas las pestañas no privadas a Leo para clasificarlas.</translation>
+<translation id="3435896845095436175">Habilitar</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="7179921470347911571">Reiniciar ahora</translation>
 <translation id="1426410128494586442">Sí</translation>
@@ -354,7 +366,7 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="2396127686705429331">Mostrar botón de marcadores</translation>
 <translation id="2814998458708016836">Usar la barra de direcciones amplia</translation>
 <translation id="4109670531935487117">Mostrar las sugerencias de autocompletado en la barra de direcciones</translation>
-<translation id="2858138569776157458">Populares</translation>
+<translation id="3405901785709583668">Sugerencias principales</translation>
 <translation id="7859704718976024901">Historial de navegación</translation>
 <translation id="8820817407110198400">Favoritos</translation>
 <translation id="4144468798716165316">Comandos rápidos</translation>
@@ -463,7 +475,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="7791141927430186653">Permitir tuits incrustados de X (anteriormente Twitter)</translation>
 <translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
 <translation id="8792121506918889955">Política de manejo de WebRTC IP</translation>
-<translation id="6165508094623778733">Más información</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="1822560017823072927">Interfaces públicas y privadas predeterminadas</translation>
 <translation id="5825943197137337319">Solo la interfaz pública predeterminada</translation>
@@ -714,6 +725,8 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="2751872555001636931">Mostrar el ícono de Leo en la barra lateral</translation>
 <translation id="8055509865174199683">Mostrar Leo en el menú contextual en sitios web</translation>
 <translation id="1529674267267221673">Leo aparecerá en el menú contextual cuando hagas clic con el botón derecho en un sitio web. Esto enviará el contexto de la página web en cuestión a Leo.</translation>
+<translation id="5226020406479918122">Modo de enfoque de pestaña</translation>
+<translation id="3705539672403311123">Activa la organización de pestañas en la página de búsqueda de pestañas. Cuando se abre, esto enviará automáticamente los títulos y orígenes de todas las pestañas no privadas a Leo para clasificarlas. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar sugerencias en la conversación</translation>
 <translation id="5781842473834867765">Almacenar mi historial de conversaciones</translation>
 <translation id="1082960401708055995">Deshabilitar el almacenamiento de conversaciones borrará permanentemente todas las conversaciones previamente almacenadas. Esta acción no se puede deshacer.</translation>
@@ -721,6 +734,9 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="1335414530428321716">Si restableces Leo IA, será necesario que habilites Leo IA de Brave en el futuro y se borrará el historial de chats. Si se borra el historial de chats, se eliminarán todas las conversaciones que hayas tenido con Leo IA de Brave. Esta acción no se puede deshacer.</translation>
 <translation id="5574059574002819179">Ajustar sugerencias de autocompletar</translation>
 <translation id="7942415993090181327">Historial de chat</translation>
+<translation id="5385064007245738696">Acerca de Leo IA</translation>
+<translation id="5084498230659987096">Brave Leo ofrece un chat de IA en el que la privacidad es lo primero y otras interfaces impulsadas por IA que se incluyen en el navegador. Leo nunca aprende de sus datos ni los utiliza para entrenar el modelo. Todas las solicitudes son reemplazadas a través de un servidor anonimizante.</translation>
+<translation id="6458721693611638005">Lee más sobre cómo Brave protege tu uso de IA en la política de privacidad de Leo. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modelo predeterminado para conversaciones nuevas</translation>
 <translation id="8826914609353373601">Gestionar suscripción prémium</translation>
 <translation id="235457946228076038">Use su propio modelo</translation>
@@ -731,6 +747,8 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="3553035516792776805">Nombre de solicitud de modelo</translation>
 <translation id="7634775528597575156">Terminal de servidor</translation>
 <translation id="6374563306438145841">Clave de API</translation>
+<translation id="3295756655687327124">Soporte de Visión</translation>
+<translation id="1415432774589088566">Si este modelo toma una imagen como entrada, por ejemplo, visión llama 3.2b</translation>
 <translation id="8008271349880309090">El nombre del modelo tal y como aparece en el menú de selección de modelos</translation>
 <translation id="1355326130503900056">El nombre del modelo tal y como debe aparecer en la solicitud al marco de servicio, por ejemplo, phi-3. Ten en cuenta que si este nombre no coincide exactamente con el que espera el marco de servicio, la integración no se llevará a cabo.</translation>
 <translation id="3213787232304349732">La URL en la que tu marco de servicio atiende peticiones. Si no la sabes con certeza, consulta la documentación al respecto. Por ejemplo, en el caso de Ollama, se trata siempre de http://localhost:11434/v1/chat/completions</translation>

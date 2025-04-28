@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Rādīt pārlūka ieteikumus</translation>
 <translation id="8982438328166986164">Attēlo tīmekļa vietnes ierosinājumus, balstoties uz jūsu grāmatzīmēm un pārlūkošanas vēsturi.</translation>
 <translation id="924029461438529367">Rādīt meklēšanas ieteikumus</translation>
-<translation id="1571106259128580884">Rādīt vadošo vietņu ieteikumus</translation>
+<translation id="5989135139219497991">Rādīt populārākos ieteikumus</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="412411722208944922">Ātrās meklēšanas programmas</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Atbalstiet Brave meklēšanas izaugsmi</translation>
 <translation id="7044431516245362795">Pievienojieties Tīmekļa izpētes projektam, lai palīdzētu mums paplašināt indeksu un uzlabot meklēšanas rezultātus. <ph name="LEARN_MORE_START"/>Uzzināt vairāk.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Protams, es palīdzēšu</translation>
-<translation id="2877653791257935258">Ierakstiet tīmekļa vietnes nosaukumu vai URL</translation>
-<translation id="5329830149661250028">Apskatiet, ar ko atšķiras Brave: bez reklāmām. Bez sekotājiem. Daudz ātrāka lapas ielāde.</translation>
-<translation id="3941792073703079607">Uzziniet par Brave atšķirību: bloķējiet reklāmas. Saglabājiet datus. Straumējiet ātrāk.</translation>
 <translation id="3545804467215833536">Pieskarieties, lai apskatītu Brave aizsargus</translation>
 <translation id="1724327820822194498">Skatiet visu, ko Brave ir bloķējusi katrā lapā, izmantojot aizsargus.</translation>
 <translation id="5386259141409498372">Bloķēti <ph name="BIG_TECH"/> un <ph name="TRACKER"/>citas reklāmas un izsekotāji.</translation>
@@ -504,6 +501,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5299848999918506028">Paldies!</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
 <translation id="650318023204990401">Papildu vadīklas</translation>
+<translation id="7205939464631857223">Notīrīt visus bloķētos elementus</translation>
 <translation id="5370478469168390143">Saglabāt datus tiešsaistē</translation>
 <translation id="1118508688433541158">Pārlūkojiet ātrāk un bloķējiet reklāmas ar Brave</translation>
 <translation id="7427391215172269363">Es katru dienu ietaupu datus, tīmekli pārlūkojot ar Brave.</translation>
@@ -1030,7 +1028,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="5888208462949095139">Meklē ar <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Sākuma ekrāna logrīks</translation>
 <translation id="703185154752046151">Logrīks pievienots sākuma ekrānam</translation>
-<translation id="3290805388004282161">Izmēģini Brave meklēšanas logrīku</translation>
+<translation id="4635094429202343515">Izmēģini Brave meklēšanas logrīku</translation>
 <translation id="4809681171446727314">Piekļūsti privātai, neatkarīgai meklēšanai taisni no sākuma ekrāna.</translation>
 <translation id="7751715172931488388">Pievienot logrīku</translation>
 <translation id="7285167584112910782">Brave ātrā meklēšana</translation>
@@ -1097,6 +1095,8 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1179407411385015942">Leo ir mākslīgā intelekta nodrošināts viedais asistents, kas iestrādāts tieši pārlūkā</translation>
 <translation id="5781842473834867765">Saglabāt manu sarunu vēsturi</translation>
 <translation id="4109670531935487117">Rādīt automātiskās aizpildes ieteikumus adrešu joslā</translation>
+<translation id="4983005227524068187">Rādīt ātrās meklēšanas programmu joslu</translation>
+<translation id="8514910864411336826">Iespējo saīsni Leo palaišanai no ātrās meklēšanas programmu joslas.</translation>
 <translation id="6106701981952170121">Dzēst visus Leo MI sarunu datus</translation>
 <translation id="423600389315522551">Atiestatot Leo MI, jūsu tērzēšanas vēsture tiks dzēsta, un jums būs atkal jāpiekrīt Brave Leo MI lietošanai. Dzēšot tērzēšanas vēsturi, visas jūsu iepriekšējās sarunas ar Brave Leo MI tiks dzēstas. Šo darbību nav iespējams atsaukt.</translation>
 <translation id="6742599753610126012">Notīrīt tērzēšanas vēsturi</translation>
@@ -1219,11 +1219,12 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6891382640886173702">Apvienot logus</translation>
 <translation id="2912247081180973411">Aizvērt logus</translation>
 <translation id="4010699428656610296">Lūdzu, apvienojiet citas cilnes citā Brave logā.</translation>
-<translation id="208634871997892083">VPN vienmēr ieslēgts</translation>
+<translation id="4306918392910017801">Automātiski atkārtot VPN savienojuma izveidi</translation>
 <translation id="1599073346542156922">Kā ieslēgt:</translation>
 <translation id="7001163334415463127">1. Atveriet ierīces iestatījumus lietotņu sarakstā vai nospiežot zemāk redzamo pogu.</translation>
 <translation id="887443138775437899">2. Atrodiet Brave VPN un atlasiet iestatījumu ikonu labajā pusē.</translation>
-<translation id="3776051499611941773">3. Atlasiet <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN vienmēr ieslēgts<ph name="ALWAYS_ON_TUTORIAL_END"/>, lai iespējotu to.</translation>
+<translation id="7546805138087561624">3. Atlasiet <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN vienmēr ieslēgts<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, lai iespējotu to.</translation>
+<translation id="2446001600399646984">Ņemiet vērā, ka Android ierobežojumu dēļ funkcija "Bloķēt savienojumus bez VPN" nestrādā kā paredzēts. <ph name="LEARN_MORE_START"/>Uzzināt vairāk.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Atvērt Android iestatījumus</translation>
 <translation id="2728518864712716830">Atjauninājums ir lejupielādēts.</translation>
 <translation id="8403338849301491865">Filtru saraksts ir veiksmīgi atjaunināts</translation>
@@ -1233,4 +1234,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="7942415993090181327">Tērzēšanas vēsture</translation>
 <translation id="6859935199732075666">Rādīt drošās pārlūkošanas kļūdas</translation>
+<translation id="2735247450315842119">Atļaut ekrānuzņēmumu veikšanu inkognito cilnēs</translation>
+<translation id="8420414929552321089">Šī funkcija nodrošina, ka privātās cilnes ir redzamas pat tad, ja ir atvērtas vairākas citas lietotnes.</translation>
 </translationbundle>
