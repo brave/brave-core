@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Ipakita ang mga mungkahi sa browser</translation>
 <translation id="8982438328166986164">Ipinapakita ang mga suhestiyong website batay sa iyong mga bookmark at browsing history.</translation>
 <translation id="924029461438529367">Ipakita ang mga suhestyon sa paghahanap</translation>
-<translation id="1571106259128580884">Ipakita ang mga nangungunang mungkahi sa site</translation>
+<translation id="5989135139219497991">Ipakita ang mga nangungunang mungkahi</translation>
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
 <translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
 <translation id="412411722208944922">Mabibilis na search engine</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Tumulong na palaguin ang Brave Search</translation>
 <translation id="7044431516245362795">Mag-opt in sa Web Discovery Project para makatulong sa pagpapalago sa index at mapahusay ang mga resulta ng paghahanap. <ph name="LEARN_MORE_START"/>Alamin ang higit pa.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Oo, tutulong ako</translation>
-<translation id="2877653791257935258">Mag-type ng pangalan ng website o URL</translation>
-<translation id="5329830149661250028">Makita ang pagkakaiba ng Brave: Walag mga ad. Walang mga tracker. Mas mabilis na pag-load ng page.</translation>
-<translation id="3941792073703079607">Tingnan ang pagkakaiba ng Brave: Mag-block ng mga ad. Makatipid sa data. Mag-stream nang mas mabilis.</translation>
 <translation id="3545804467215833536">I-tap para tingnan ang Brave Shields</translation>
 <translation id="1724327820822194498">Tingnan ang lahat ng masasamang bagay na na-block Brave, sa bawat page, gamit ang Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> at <ph name="TRACKER"/> iba pang ad &amp; tracker ang na-block</translation>
@@ -504,6 +501,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5299848999918506028">Salamat!</translation>
 <translation id="76550953340008122">Salamat sa pagbibigay-alam sa mga developer ng Brave na may problema sa site na ito. Gagawin namin ang buong makakaya namin para ayusin ito!</translation>
 <translation id="650318023204990401">Mga advanced na kontrol</translation>
+<translation id="7205939464631857223">I-clear ang lahat ng mga naka-block na element</translation>
 <translation id="5370478469168390143">Mag-save ng Data Online</translation>
 <translation id="1118508688433541158">Mag-browse nang mas mabilis at mag-block ng ads gamit ang Brave</translation>
 <translation id="7427391215172269363">Araw-araw, nakakatipid ako ng data sa pamamagitan ng pag-browse sa Web gamit ang Brave.</translation>
@@ -1029,7 +1027,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="5888208462949095139">Maghanap gamit ang <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget sa home screen</translation>
 <translation id="703185154752046151">Idinagdag ang widget sa home screen</translation>
-<translation id="3290805388004282161">Subukan ang widget ng Brave search</translation>
+<translation id="4635094429202343515">Subukan ang widget ng Brave Search</translation>
 <translation id="4809681171446727314">I-access ang pribado at independent na paghanap sa home screen mo mismo.</translation>
 <translation id="7751715172931488388">Magdagdag ng widget</translation>
 <translation id="7285167584112910782">Paghananap ng mabilisang pagkilos ng Brave</translation>
@@ -1096,6 +1094,8 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1179407411385015942">AI-powered smart assistant si Leo, kasama na mismo sa browser</translation>
 <translation id="5781842473834867765">I-store ang aking history ng pakikipag-usap</translation>
 <translation id="4109670531935487117">Ipakita ang mga suhestyon sa autocomplete sa address bar</translation>
+<translation id="4983005227524068187">Ipakita sa bar ng mga quick search engine</translation>
+<translation id="8514910864411336826">Nag-e-enable ng shortcut para ilunsad ang Leo sa bar ng mga quick search engine.</translation>
 <translation id="6106701981952170121">I-delete ang lahat ng data ng pakikipag-usap ng Leo AI</translation>
 <translation id="423600389315522551">Kapag na-reset ang Leo AI, kailangan mong mag-opt in sa paggamit ng Brave Leo AI sa susunod at maki-clear din ang iyong history ng chat. Kapag na-clear ang iyong history ng, made-delete ang lahat ng iyong naunang mga pakikipag-usap sa Brave Leo AI. Hindi puwedeng ma-undo ang aksyong ito.</translation>
 <translation id="6742599753610126012">I-clear ang history ng chat</translation>
@@ -1218,11 +1218,12 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6891382640886173702">I-merge ang mga window</translation>
 <translation id="2912247081180973411">Isara ang mga window</translation>
 <translation id="4010699428656610296">I-merge ang iba pang mga tab sa iba pang window ng Brave.</translation>
-<translation id="208634871997892083">Laging naka-on na VPN</translation>
+<translation id="4306918392910017801">Awtomatikong ikonekta ulit ang VPN</translation>
 <translation id="1599073346542156922">Paano i-on:</translation>
 <translation id="7001163334415463127">1. Buksan ang mga setting ng device mo mula sa app drawer mo o sa pag-tap ng button sa iba.</translation>
 <translation id="887443138775437899">2. Hanapin ang Brave VPN at i-tap ang icon ng mga setting sa kanan.</translation>
-<translation id="3776051499611941773">3. I-toggle ang <ph name="ALWAYS_ON_TUTORIAL_START"/>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> para i-enable ito.</translation>
+<translation id="7546805138087561624">3. I-toggle ang <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Always-on VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> para i-enable ito.</translation>
+<translation id="2446001600399646984">Tandaan na dahil sa mga limitasyon ng Android, hindi gumagana ang "I-block ang mga koneksyon na walang VPN" tulad ng inaasahan. <ph name="LEARN_MORE_START"/>Alamin ang higit pa.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Buksan ang mga setting ng Android</translation>
 <translation id="2728518864712716830">Na-download na ang update.</translation>
 <translation id="8403338849301491865">Na-update na ang filter list</translation>
@@ -1232,4 +1233,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">History ng chat</translation>
 <translation id="6859935199732075666">Ipakita ang mga error ng Safe Browsing</translation>
+<translation id="2735247450315842119">Payagan ang mga screenshot sa mga private tab</translation>
+<translation id="8420414929552321089">Kung papayagan, makikita rin ang mga private tab kapag nakabukas ang maraming app.</translation>
 </translationbundle>

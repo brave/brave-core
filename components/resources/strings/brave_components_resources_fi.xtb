@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Tämä on</translation>
 <translation id="2055363275850890030">Yksityinen ikkuna</translation>
 <translation id="9133213713928851646">Brave ei muista mitä teet yksityisessä ikkunassa. Sivustot, joilla käyt, eivät näy sivuhistoriassasi ja evästeet katoavat kun olet valmis. Yksityiset ikkunat eivät kuitenkaan tee sinusta täysin anonyymiä verkossa.</translation>
-<translation id="4085423007106063912">Brave ei koskaan muista, mitä teet yksityisessä ikkunassa. Käyttämäsi sivustot eivät näy historiassa. Evästeet, lomaketiedot ja sivustotiedot katoavat, kun suljet ikkunan.</translation>
+<translation id="4491905831789757331">Brave ei koskaan muista, mitä teet yksityisessä ikkunassa. Käyttämäsi sivustot eivät näy historiassa. Evästeet, lomaketiedot ja sivustotiedot katoavat, kun suljet kaikki yksityiset ikkunat.</translation>
 <translation id="1700746046668116047">Huomaa, että Internet-palveluntarjoajasi, passiiviset verkkotarkkailijat tai työnantajasi voivat ehkä nähdä toimintasi (jos käytät työkoneita tai -verkkoa). Lisää yksityisyyttä avaamalla yksityinen ikkuna Torilla.</translation>
 <translation id="8759753423332885148">Lue lisää.</translation>
 <translation id="8611976753572844841">Yksityinen ikkuna Tor-yhteydellä</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Näytä historia</translation>
 <translation id="5030659775136592441">Näytä kirjanmerkkien hallinta</translation>
 <translation id="6919203766034706175">Tuo asetukset</translation>
+<translation id="290553639533591736">Gemini Live</translation>
 <translation id="6159704524780747483">Avoin tekoälykeskustelu</translation>
 <translation id="1199430163665775722">Muokkaa hakukoneita</translation>
 <translation id="4276265845501430443">Näytä ohjeet</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Tee yhteenveto tästä videosta</translation>
 <translation id="7921782882718083488">Tee yhteenveto tästä sivusta</translation>
 <translation id="7932221068776853847">Katkaise yhteys lopettaaksesi tämän sivun sisällön lähettämisen Leolle ja aloita uusi keskustelu</translation>
+<translation id="8743383817154663379">Jokin meni pieleen pyyntösi käsittelyssä. Yritä myöhemmin uudelleen.</translation>
 <translation id="2712650703044366764">Tällä mallilla on virheellinen päätepiste. Tarkista konfigurointi ja yritä uudelleen.</translation>
 <translation id="1167803637855350748">Leoon yhteyden muodostamisessa oli verkko-ongelma, tarkista yhteys ja yritä uudelleen.</translation>
 <translation id="1996126325390835277">Olet saavuttanut premium-määrärajan. Yritä uudelleen muutaman tunnin kuluttua.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">Tähän malliin määritetty API-avain on virheellinen. Tarkista asetukset ja yritä uudelleen.</translation>
 <translation id="7905602379229309187">Päätepiste on tällä hetkellä ylikuormitettu. Yritä myöhemmin uudelleen.</translation>
 <translation id="8151638057146502721">Konfiguroi</translation>
-<translation id="4177458398826096846">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Hei, olen Leo. Olen Braven tekoälyperusteinen avustaja. Toimintani perustuu Owen 14B:hen, Alibaba Cloudin luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Mixtral 8x7B:hen, Mistral AI:n luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Claude Instantiin, Anthropicin luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> palveluntarjoaja <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Hei, olen Leo. Olen Braven kokonaan isännöimä tekoälyavustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave isännöi Llamaa oman suojatun infrastruktuurinsa kautta. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Instantiin, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave isännöi Claude Instantia oman suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/>.</translation>
+<translation id="8345529480300554358">Hei, olen Leo. Olen Braven kokonaan isännöimä tekoälyavustaja. Toimintani perustuu Mixtral 8x7B:hen, Mistral AI:n luomaan malliin, joka soveltuu edistyneisiin tehtäviin. Brave isännöi Mixtralia oman suojatun infrastruktuurinsa kautta. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Instantiin, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave isännöi Claude Instantia oman suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Haikuun, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave isännöi Claude Haikua oman suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Sonnetiin, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave isännöi Claude Sonnetia oman suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Hei, olen Leo. Olen Braven kokonaan isännöimä tekoälyavustaja. Toimintani perustuu Llama Visioniin, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave isännöi Llama Visionia oman suojatun infrastruktuurinsa kautta. <ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Avaa koko sivu</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">Lopeta vastaaminen</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="1093419424466417703">Sivu on liian pitkä Leolle. Keskustelusta saattaa puuttua jokin asiayhteys. Leo pystyi lukemaan <ph name="PERCENTAGE"/> sivun sisällöstä.</translation>
+<translation id="4592293425457329338">Keskustelusta saattaa puuttua jokin asiayhteys. Leo pystyi säilyttämään keskusteluun liittyvästä sisällöstä <ph name="PERCENTAGE"/>.</translation>
 <translation id="2186990448773134544">Sivun sisältöä on parannettu poimimalla sivulta tärkeimmät tiedot, koska se oli liian pitkä Leolle.</translation>
 <translation id="5140068729857132378">Haetaan verkkosivun asianmukaisia osia...</translation>
 <translation id="4370698775470316661">Tämä keskustelu on liian pitkä, eikä se voi jatkua. Saatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">Salamannopea chatti</translation>
 <translation id="2836330653441111204">Tasapainotettu nopeus ja älykkyys</translation>
 <translation id="6695329447007213917">Yleiseen tarkoitukseen tarkoitettu chatti, koodaus ja paljon muuta</translation>
+<translation id="5051668914970329839">Yleiskäyttöinen vision</translation>
 <translation id="3965507912994218570">Leo-asetukset</translation>
 <translation id="1037324977127422019">Hei, olen Leo!</translation>
 <translation id="8930348081963284873">Tekoälyvetoinen älykäs avustaja, joka on sisäänrakennettu suoraan Braveen.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">Some</translation>
 <translation id="2370739752330685659">Ehkä myöhemmin</translation>
 <translation id="983013125018250242">Leo-työkalut</translation>
+<translation id="7623223587478473368">Liite</translation>
+<translation id="3777121685517940177">Lataa tiedosto...</translation>
+<translation id="9088751620363630236">Ota kuva...</translation>
+<translation id="4250229828105606438">Kuvakaappaus</translation>
+<translation id="6332876390231524389">Nykyisen välilehden sisältö</translation>
 <translation id="49269513399674318">Käytä mikrofonia</translation>
 <translation id="3895031624234442305">Mukautetut mallit</translation>
 <translation id="4572010449071015143">Aloita uusi keskustelu</translation>
 <translation id="345901077335355561">Palaa aktiiviseen keskusteluun</translation>
 <translation id="6287023598025162715">Uusi keskustelu</translation>
+<translation id="8370801182970639038">Automaattinen (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Käytössä olevat hakukoneet</translation>
+<translation id="5355776323718420036">Piilota kärkisivustot</translation>
+<translation id="6543799171249004861">Valokuvan ottanut <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Kysy Brave-haulta</translation>
+<translation id="6851426306697017546">Näytä kello</translation>
+<translation id="4844370919312937270">Näytä hakupienoisohjelma uusilla välilehdillä</translation>
+<translation id="5009354496127441090">Näytä kärkisivustot</translation>
+<translation id="4784802981241664605">TILASTOT</translation>
+<translation id="4290791698375397492">Kärkisivusto poistettu</translation>
+<translation id="1436784010935106834">Poistettu</translation>
+<translation id="9030215177866748410">Kärkisivustoja suositellaan useimmin käyttämiesi verkkosivustojen perusteella.</translation>
 <translation id="6303294677342628402">Suojaukset</translation>
 <translation id="8458987127502506209">Ota Brave-suojaus käyttöön</translation>
 <translation id="7509914170164691086">Suojaukset ovat käytössä <ph name="LINK_BEFORE"/>kohteelle<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">Näiden asetusten muuttaminen saattaa rikkoa sivustoja.</translation>
 <translation id="9204041448536398473">Yleiset suojausasetukset</translation>
 <translation id="2108334320919763866">Yleiset oletukset</translation>
+<translation id="7205939464631857223">Tyhjennä kaikki estetyt elementit</translation>
 <translation id="3440043456924990296">Organisaatio ylläpitää asetuksia</translation>
 <translation id="7053983685419859001">Estä</translation>
 <translation id="5716230673298034837">Salli kaikki</translation>

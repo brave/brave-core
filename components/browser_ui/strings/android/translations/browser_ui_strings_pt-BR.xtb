@@ -20,6 +20,7 @@
 <translation id="129382876167171263">Os arquivos salvos por sites são exibidos aqui</translation>
 <translation id="131112695174432497">Os dados que afetam a personalização de anúncios são excluídos</translation>
 <translation id="1317194122196776028">Esquecer este site</translation>
+<translation id="1333965224356556482">Não permitir que os sites acessem seu local</translation>
 <translation id="1343356790768851700">Este site determina o seus interesses e sugere anúncios para outros sites</translation>
 <translation id="1369915414381695676">Site <ph name="SITE_NAME"/> adicionado</translation>
 <translation id="1371239764779356792">Permitir que um site salve dados no seu dispositivo</translation>
@@ -30,31 +31,41 @@
 <translation id="1415402041810619267">URL truncado</translation>
 <translation id="1741136041592162279">Permita que o Brave compartilhe suas guias recentes com o dispositivo para que elas apareçam na lista de apps e nos resultados da pesquisa do aparelho. É possível ativar ou desativar essa opção nas configurações do Brave.</translation>
 <translation id="1448064542941920355">Diminuir zoom</translation>
+<translation id="1464044141348608623">Não permitir que sites saibam quando você está usando o dispositivo ativamente</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> site}one{<ph name="SITE_COUNT"/> site}other{<ph name="SITE_COUNT"/> sites}}</translation>
 <translation id="1500473259453106018">Ocultar nas guias o card de redução no preço</translation>
+<translation id="1508931164824684991">Os sites podem usar o JavaScript</translation>
 <translation id="1510341833810331442">Os sites não podem salvar dados no seu dispositivo</translation>
 <translation id="1538031354170655462">Os sites geralmente usam a comunicação a curta distância (NFC) para trabalhar com tags ou dispositivos nas proximidades, como a leitura de crachás ou o pagamento por aproximação</translation>
 <translation id="1547123415014299762">Cookies de terceiros são permitidos</translation>
 <translation id="1593426485665524382">Novas ações disponíveis perto da parte de cima da tela</translation>
+<translation id="1615755956145364867">Os sites podem pedir para reproduzir conteúdo protegido</translation>
 <translation id="1620510694547887537">Câmera</translation>
+<translation id="1621729191093924223">Recursos que precisam de microfone não funcionarão</translation>
 <translation id="1633720957382884102">Sites relacionados</translation>
 <translation id="1644574205037202324">Histórico</translation>
 <translation id="1652197001188145583">Quando essa configuração está ativada, os sites podem pedir para usar dispositivos NFC. Quando está desativada, os sites não podem usar dispositivos NFC.</translation>
 <translation id="1660204651932907780">Permitir o áudio dos sites (recomendado)</translation>
 <translation id="1677097821151855053">Os cookies e outros dados do site são usados para lembrar de você, por exemplo, para conectar sua conta ou personalizar anúncios. Para gerenciar os cookies de todos os sites, acesse <ph name="BEGIN_LINK"/>Configurações<ph name="END_LINK"/>.</translation>
+<translation id="1679305402657584804">Os sites podem pedir para usar dispositivos NFC</translation>
 <translation id="1686785653877010442">Sites costumam enviar notificações para avisar sobre as últimas notícias ou mensagens de chat.</translation>
 <translation id="169515064810179024">Impedir que sites acessem os sensores de movimento</translation>
+<translation id="1703666494654169921">Não permitir que os sites usem dispositivos ou dados de realidade virtual</translation>
+<translation id="1704230497453185209">Não permitir que os sites toquem sons</translation>
 <translation id="1717218214683051432">Sensores de movimento</translation>
 <translation id="1743802530341753419">Perguntar antes de permitir que sites se conectem ao dispositivo (recomendado)</translation>
 <translation id="1779089405699405702">Decodificador de imagem</translation>
 <translation id="1785415724048343560">Recomendado para melhorar a experiência</translation>
+<translation id="1796588414813960292">Os recursos que precisam de som não funcionarão</translation>
 <translation id="7401204338724669842">Dicas do Brave</translation>
 <translation id="6704867734300244173">Quando a opção está ativada, o Brave fica mais rápido, e os recursos que usam JavaScript funcionam conforme o esperado. Quando desativada, isso reduz o desempenho, mas torna o V8 mais resistente a ataques.</translation>
 <translation id="1818308510395330587">Para permitir que o app <ph name="APP_NAME"/> use RA, também é necessário ativar a câmera nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
 <translation id="1887786770086287077">O acesso ao local está desativado neste dispositivo. Ative nas <ph name="BEGIN_LINK"/>Configurações do Android<ph name="END_LINK"/>.</translation>
+<translation id="1906181697255754968">Os sites geralmente acessam arquivos e pastas no dispositivo para recursos como salvamento automático</translation>
 <translation id="1915307458270490472">Desligar</translation>
 <translation id="1919950603503897840">Selecionar contatos</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="1954597385941141174">Os sites podem pedir permissão para se conectar a dispositivos USB</translation>
 <translation id="1979673356880165407">Aumentar ou diminuir o texto e as imagens de todos os sites visitados</translation>
 <translation id="1984937141057606926">Permitidos, exceto de terceiros</translation>
 <translation id="1985247341569771101">Quando essa configuração está ativada, os sites podem usar os sensores de movimento. Quando está desativada, os sites não podem usar sensores de movimento.</translation>
@@ -63,10 +74,12 @@
 <translation id="1994173015038366702">URL do site</translation>
 <translation id="2004697686368036666">Os recursos de alguns sites podem não funcionar</translation>
 <translation id="2025115093177348061">Realidade aumentada</translation>
+<translation id="2028449514182362831">Recursos que precisam de sensores de movimento não funcionarão</translation>
 <translation id="2030769033451695672">Toque para voltar para <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">Desfazer</translation>
 <translation id="2091887806945687916">Som</translation>
 <translation id="2096716221239095980">Excluir todos os dados</translation>
+<translation id="2102396546234652240">Não permitir que os sites usem seu microfone</translation>
 <translation id="2117655453726830283">Próximo slide</translation>
 <translation id="2146263598007866206">Os sites podem fazer o download automático de arquivos relacionados em conjunto para economizar tempo</translation>
 <translation id="2148716181193084225">Hoje</translation>
@@ -76,7 +89,9 @@
 <translation id="2185965788978862351">Essa ação vai excluir <ph name="DATASIZE"/> de dados e cookies armazenados por sites ou apps na sua tela inicial.</translation>
 <translation id="2194856509914051091">Considerações</translation>
 <translation id="2215727959747642672">Edição de arquivo</translation>
+<translation id="2218389616572918761">Os sites podem pedir acesso ao microfone</translation>
 <translation id="2228071138934252756">Para permitir que o app <ph name="APP_NAME"/> acesse sua câmera, ative-a também nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
+<translation id="2231160360698766265">Os sites podem abrir conteúdo protegido</translation>
 <translation id="2235344399760031203">Cookies de terceiros foram bloqueados</translation>
 <translation id="2238944249568001759">Pesquisas sugeridas com base na sua última guia</translation>
 <translation id="2241587408274973373">Cards da página "Nova guia"</translation>
@@ -96,6 +111,7 @@
 <translation id="2438120137003069591">Você permitiu temporariamente que este site use cookies de terceiros, o que diminui a proteção da navegação, mas dá aos recursos do site mais chances de funcionar conforme o esperado. <ph name="BEGIN_LINK"/>Enviar feedback<ph name="END_LINK"/></translation>
 <translation id="2442870161001914531">Sempre ver a versão para computador</translation>
 <translation id="1736696984974511795">Agora, o Brave compartilha as guias recentes com o dispositivo. Você vai encontrá-las na lista de apps e nos resultados da pesquisa do seu aparelho. É possível desativar essa opção a qualquer momento nas configurações do Brave.</translation>
+<translation id="245322989586167203">Os sites geralmente se conectam a portas seriais para recursos de transferência de dados, como a configuração da rede</translation>
 <translation id="2469312991797799607">Essa ação vai excluir todos os dados e cookies de <ph name="ORIGIN"/> e de todos os sites relacionados</translation>
 <translation id="2482878487686419369">Notificações</translation>
 <translation id="2485422356828889247">Desinstalar</translation>
@@ -113,6 +129,7 @@
 <translation id="2621115761605608342">Permitir JavaScript para um site específico.</translation>
 <translation id="2626708220538466178">A página inferior de navegador padrão foi fechada</translation>
 <translation id="2653659639078652383">Enviar</translation>
+<translation id="2670403088701171361">Não permitir que os sites acessem os textos e imagens da área de transferência</translation>
 <translation id="2677748264148917807">Sair</translation>
 <translation id="2682367912565197520">Excluir nível de zoom salvo</translation>
 <translation id="2683434792633810741">Excluir e redefinir?</translation>
@@ -122,8 +139,10 @@
 <translation id="8181634240306014548">Inicie o Brave com a omnibox em foco, o que reduz o tempo de inicialização em dispositivos mais simples.</translation>
 <translation id="2750481671343847896">Sites podem exibir solicitações de login de serviços de identificação.</translation>
 <translation id="2787357173144933081">Iniciar com a omnibox</translation>
+<translation id="2789132527330338807">Os sites podem pedir para criar um mapa 3D do ambiente ao seu redor ou acompanhar a posição da câmera</translation>
 <translation id="2790501146643349491">Quando essa configuração está ativada, os sites fechados recentemente podem terminar de enviar e receber dados. Quando está desativada, os sites fechados recentemente não conseguem terminar de enviar ou receber dados.</translation>
 <translation id="2795716239552913152">Os sites geralmente usam sua localização para recursos ou informações relevantes, como notícias locais ou lojas por perto</translation>
+<translation id="2802908157808345702">Não permitir que os sites enviem pop-ups e usem redirecionamentos</translation>
 <translation id="5801312978029568377">Agora, o Brave mostra suas guias recentes na lista de apps e nos resultados da pesquisa do dispositivo. É possível desativar essa opção a qualquer momento nas configurações do Brave.</translation>
 <translation id="2822354292072154809">Tem certeza de que quer redefinir todas as permissões de site para <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
 <translation id="2850913818900871965">Solicitar a versão para dispositivos móveis</translation>
@@ -137,12 +156,15 @@
 <translation id="2939338015096024043">Quando essa configuração está ativada, os sites podem pedir para rastrear a posição da câmera e saber mais sobre o ambiente à sua volta. Quando está desativada, os sites não podem rastrear a posição da câmera nem saber mais sobre o ambiente à sua volta.</translation>
 <translation id="2968755619301702150">Leitor de certificados</translation>
 <translation id="2979365474350987274">Cookies de terceiros são limitados</translation>
+<translation id="2990583317361835189">Não permitir que os sites usem os sensores de movimento</translation>
 <translation id="3008272652534848354">Redefinir permissões</translation>
 <translation id="301521992641321250">Bloqueada automaticamente</translation>
+<translation id="3064871050034234884">Os sites podem ter áudio</translation>
 <translation id="3069226013421428034">Permita o login de terceiros em um site específico.</translation>
 <translation id="310297983047869047">Slide anterior</translation>
 <translation id="3109724472072898302">Recolhido</translation>
 <translation id="310979712355504754">Excluir tudo</translation>
+<translation id="311394601889664316">Não permitir que os sites editem arquivos ou pastas no seu dispositivo</translation>
 <translation id="3114012059975132928">Player de vídeo</translation>
 <translation id="3115898365077584848">Mostrar informações</translation>
 <translation id="3123473560110926937">Bloqueados em alguns sites</translation>
@@ -181,16 +203,20 @@
 <translation id="3594780231884063836">Desativar som do vídeo</translation>
 <translation id="3600792891314830896">Silenciar sites com áudio</translation>
 <translation id="3602290021589620013">Visualizar</translation>
+<translation id="3611658447322220736">Os sites fechados recentemente podem terminar de enviar e receber dados</translation>
 <translation id="3628308229821498208">Pesquisas sugeridas</translation>
+<translation id="3641456520301071208">Os sites podem solicitar sua localização</translation>
 <translation id="3658847490588580244">Página inferior de navegador padrão</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{Há <ph name="RWS_MEMBERS_COUNT"/> site que pode ver sua atividade no grupo <ph name="RWS_OWNER"/>}one{Há <ph name="RWS_MEMBERS_COUNT"/> site que pode ver sua atividade no grupo <ph name="RWS_OWNER"/>}other{Há <ph name="RWS_MEMBERS_COUNT"/> sites que podem ver sua atividade no grupo <ph name="RWS_OWNER"/>}}</translation>
 <translation id="3676777756440746804">Os sites não podem pedir para usar as informações que salvaram sobre você</translation>
 <translation id="3697164069658504920">Quando essa configuração está ativada, os sites podem pedir para usar dispositivos USB. Quando está desativada, os sites não podem usar dispositivos USB.</translation>
 <translation id="2697264242676904869">Os sites visitados podem salvar uma pequena quantidade de informações com o Brave, principalmente para validar que você não é um bot</translation>
+<translation id="3708684582558000260">Não permitir que os sites fechados terminem de enviar ou receber dados</translation>
 <translation id="3709818294139939629">O acesso do site ao arquivo foi removido</translation>
 <translation id="3721953990244350188">Dispensar e mostrar a próxima ação disponível</translation>
 <translation id="3744111561329211289">Sincronização em segundo plano</translation>
 <translation id="3763247130972274048">Toque duas vezes no lado esquerdo ou direito do vídeo para pular 10 s</translation>
+<translation id="3776508619697147021">Os sites podem pedir para fazer o download automático de vários arquivos</translation>
 <translation id="3779154269823594982">Mudar senhas</translation>
 <translation id="3797520601150691162">Não aplicar o tema escuro para um site específico</translation>
 <translation id="3803367742635802571">Os sites que você visita podem parar de funcionar como planejado</translation>
@@ -201,13 +227,14 @@
 <translation id="1799795508209440035">O Brave vai bloquear os cookies novamente hoje</translation>
 <translation id="385051799172605136">Voltar</translation>
 <translation id="3859306556332390985">Avançar</translation>
+<translation id="389521680295183045">Os sites podem pedir para saber quando você está usando o dispositivo ativamente</translation>
 <translation id="3895926599014793903">Forçar zoom</translation>
 <translation id="3905475044299942653">Parar muitas notificações</translation>
-<translation id="3913461097001554748"><ph name="DOMAIN_URL"/> <ph name="SEPARATOR1"/> <ph name="DEVICE_NAME"/></translation>
 <translation id="3918378745482005425">É possível que alguns recursos não funcionem. Os sites relacionados ainda podem usar cookies de terceiros.</translation>
 <translation id="3922092564198021702">No smartphone, acesse as Configurações.</translation>
 <translation id="3933121352599513978">Recolher solicitações indesejadas (recomendado)</translation>
 <translation id="3955193568934677022">Permitir que os sites mostrem conteúdo protegido (recomendado)</translation>
+<translation id="3955321697524543127">Não permitir que os sites se conectem a dispositivos USB</translation>
 <translation id="3965467402665811906">Os sites podem pedir para usar informações que salvaram sobre você</translation>
 <translation id="3967822245660637423">Download concluído</translation>
 <translation id="3981465354637804599">Os sites geralmente mostram anúncios para oferecer conteúdo ou serviços sem custo financeiro. Porém, alguns sites mostram anúncios invasivos ou enganosos.</translation>
@@ -230,14 +257,17 @@
 <translation id="4259722352634471385">A Navegação GPS está bloqueada: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Depois que você sai de um site, ele pode continuar a sincronização para finalizar tarefas, como o upload de fotos ou o envio de uma mensagem de chat</translation>
 <translation id="4278390842282768270">Permitido</translation>
+<translation id="4290791284969893584">Após fechar uma página, as tarefas iniciadas talvez não sejam encerradas</translation>
 <translation id="429312253194641664">Um site está com mídia aberta</translation>
 <translation id="42981349822642051">Expandir</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Expira amanhã}one{Expira em # dia}other{Expira em # dias}}</translation>
 <translation id="8601682686806697614">O Brave vai limitar os cookies de novo hoje</translation>
 <translation id="4338831206024587507">Todos os sites em <ph name="DOMAIN"/></translation>
+<translation id="4340799661701629185">Não permitir que os sites enviem notificações</translation>
 <translation id="4402755511846832236">Impedir que sites saibam quando você está usando este dispositivo</translation>
 <translation id="4412992751769744546">Permitir cookies de terceiros</translation>
 <translation id="1675197434085185531">O Brave impede que os sites usem cookies de terceiros para rastrear você durante a navegação. Acesse as configurações para <ph name="BEGIN_LINK"/>gerenciar o acesso a cookies de terceiros<ph name="END_LINK"/>.</translation>
+<translation id="443121186588148776">Porta serial</translation>
 <translation id="4434045419905280838">Pop-ups e redirecionamentos</translation>
 <translation id="443552056913301231">Essa ação vai excluir todos os dados locais, incluindo cookies, e redefinir todas as permissões de <ph name="ORIGIN"/></translation>
 <translation id="4468959413250150279">Desativar o som de um site específico.</translation>
@@ -249,7 +279,7 @@
 <translation id="4566417217121906555">Desativar microfone</translation>
 <translation id="4570913071927164677">Detalhes</translation>
 <translation id="461356340001513807">Permite fazer login em sites usando a conta que você tem com um serviço de identidade</translation>
-<translation id="4619615317237390068">Guias de outros dispositivos</translation>
+<translation id="4635969503923889910">Não permitir que os sites usem dispositivos NFC</translation>
 <translation id="4644713492825682049">Excluir e redefinir</translation>
 <translation id="4645575059429386691">Gerenciado pelos seus pais</translation>
 <translation id="4670064810192446073">Realidade virtual</translation>
@@ -271,13 +301,13 @@
 <translation id="4945443401464700059"><ph name="SITE"/> não pode usar suas informações em</translation>
 <translation id="4953688446973710931">Quando essa configuração está ativada, os sites podem pedir o download automático de vários arquivos. Quando está desativada, os sites não podem fazer o download automático de vários arquivos.</translation>
 <translation id="4962975101802056554">Revogar todas as permissões para o dispositivo</translation>
+<translation id="4972737347717125191">Os sites podem pedir para usar dispositivos e dados de realidade virtual</translation>
 <translation id="497421865427891073">Avançar</translation>
 <translation id="4976702386844183910">Última visita: <ph name="DATE"/></translation>
 <translation id="4994033804516042629">Nenhum contato encontrado</translation>
 <translation id="4996978546172906250">Compartilhar via</translation>
 <translation id="5001526427543320409">Cookies de terceiros</translation>
 <translation id="5007392906805964215">Revisar</translation>
-<translation id="5014182796621173645">Visitado <ph name="RECENCY"/></translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="5048398596102334565">Permitir o acesso de sites aos seus sensores de movimento (recomendado)</translation>
 <translation id="5048841907079026162">Gerenciar seus dados de navegação</translation>
@@ -334,6 +364,8 @@
 <translation id="5771720122942595109">Bloqueada: <ph name="PERMISSION_1"/></translation>
 <translation id="5804241973901381774">Permissões</translation>
 <translation id="5822675474983796325">A página inferior "Personalizar 'Nova guia'" está aberta no tamanho máximo</translation>
+<translation id="5833899990800318936">Não permitir que os sites usem JavaScript</translation>
+<translation id="583673505367439042">Os sites podem pedir para editar arquivos e pastas no dispositivo</translation>
 <translation id="5844448279347999754">Quando essa configuração está ativada, os sites podem pedir para acessar texto e imagens na sua área de transferência. Quando está desativada, os sites não podem acessar texto e imagens na sua área de transferência.</translation>
 <translation id="5853982612236235577">Quando essa configuração está ativada, os sites podem pedir para enviar notificações. Quando está desativada, os sites não podem enviar notificações.</translation>
 <translation id="5860033963881614850">Desativada</translation>
@@ -342,6 +374,7 @@
 <translation id="5877248419911025165">Fechar todas as solicitações</translation>
 <translation id="5884085660368669834">Preferência do site</translation>
 <translation id="5887687176710214216">Última visita: ontem</translation>
+<translation id="5908617755156109052">Não permitir que os sites criem um mapa 3D do ambiente ao seu redor ou acompanhem a posição da câmera</translation>
 <translation id="5916664084637901428">Ativado</translation>
 <translation id="5922853908706496913">Compartilhando a tela</translation>
 <translation id="5922967540311291836">Bloquear cookies de terceiros:</translation>
@@ -399,6 +432,7 @@
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Conteúdo protegido</translation>
 <translation id="662080504995468778">Ficar</translation>
+<translation id="6635327442719709864">Quando ativada, os sites podem pedir para usar portas seriais. Quando desativada, os sites não podem usar portas seriais.</translation>
 <translation id="6653342741369270081">Pressione o botão "Voltar" para sair da tela cheia.</translation>
 <translation id="6683865262523156564">Este site está em um grupo que pode ver sua atividade. O grupo é definido por <ph name="RWS_OWNER"/>.</translation>
 <translation id="6689172468748959065">Fotos do perfil</translation>
@@ -456,6 +490,7 @@
 <translation id="7423098979219808738">Perguntar primeiro</translation>
 <translation id="7423538860840206698">Leitura da área de transferência bloqueada</translation>
 <translation id="7425915948813553151">Tema escuro para sites</translation>
+<translation id="7478658909253570368">Não permitir que os sites se conectem a portas seriais</translation>
 <translation id="7488573225650545859">Ocultar a opção "Ver guias na lista de apps"</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7547989957535180761">Quando essa configuração está ativada, os sites podem mostrar solicitações de login. Quando está desativada, os sites não podem mostrar solicitações de login.</translation>
@@ -467,6 +502,7 @@
 <translation id="7594634374516752650">Conectado a um dispositivo Bluetooth</translation>
 <translation id="7617547684249261169">Você pode excluir alguns ou todos os dados do seu histórico, cookies, dados do sites e muito mais</translation>
 <translation id="7649070708921625228">Ajuda</translation>
+<translation id="7655411746932645568">Os sites podem pedir para se conectar a portas seriais</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7667547420449112975">O Mágico de Oz</translation>
 <translation id="7681597159868843240">Os sites geralmente usam os sensores de movimento do dispositivo para recursos como realidade virtual ou monitoramento de atividade física</translation>
@@ -484,13 +520,17 @@
 <translation id="7846076177841592234">Cancelar seleção</translation>
 <translation id="2353409725922994861">O Brave impede que a maioria dos sites use cookies de terceiros. No entanto, cookies de terceiros são permitidos neste site porque eles são necessários para o fornecimento de serviços básicos.\n\nAcesse as configurações para <ph name="BEGIN_LINK"/>gerenciar o acesso a cookies de terceiros<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Permitir o som de um site específico.</translation>
+<translation id="789722939441020330">Não permitir que os sites façam o download automático de vários arquivos</translation>
 <translation id="7940722705963108451">Lembrar</translation>
+<translation id="7948081750384205628">Saiba mais sobre <ph name="SETTING_TITLE"/></translation>
+<translation id="7952708427581814389">Os sites podem pedir para acessar texto e imagens na sua área de transferência</translation>
 <translation id="7986741934819883144">Selecione um contato</translation>
 <translation id="7990211076305263060">Quando essa configuração está ativada, os sites podem pedir para usar o microfone. Quando está desativada, os sites não podem usar o microfone.</translation>
 <translation id="8007176423574883786">Desativado neste dispositivo</translation>
 <translation id="8010630645305864042">{TILE_COUNT,plural, =1{Ocultar o card "Continuar com esta guia"}one{Ocultar o card "Continuar com esta guia"}other{Ocultar o card "Continuar com estas guias"}}</translation>
 <translation id="802154636333426148">Falha no download</translation>
 <translation id="8042586301629853791">Ordenar por:</translation>
+<translation id="8051193500142930381">Recursos que precisam de câmera não funcionarão</translation>
 <translation id="8067883171444229417">Assistir vídeo</translation>
 <translation id="8068648041423924542">Não foi possível selecionar certificado.</translation>
 <translation id="8077120325605624147">Qualquer site que você visitar poderá mostrar anúncios para você</translation>
@@ -510,6 +550,7 @@
 <translation id="8200772114523450471">Retomar</translation>
 <translation id="8206354486702514201">Esta configuração é aplicada por seu administrador.</translation>
 <translation id="8211406090763984747">A conexão é segura</translation>
+<translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8249310407154411074">Mover para o início</translation>
 <translation id="8261506727792406068">Excluir</translation>
 <translation id="8284326494547611709">Legendas</translation>
@@ -530,6 +571,7 @@
 <translation id="8473055640493819707">O app <ph name="APP_NAME"/> está desatualizado e precisa ser reinstalado.</translation>
 <translation id="8487700953926739672">Disponível off-line</translation>
 <translation id="848952951823693243">Sempre ver a versão para dispositivos móveis</translation>
+<translation id="8492822722330266509">Os sites podem exibir pop-ups e usar redirecionamentos</translation>
 <translation id="8499083585497694743">Ativar microfone</translation>
 <translation id="8514955299594277296">Não permitir que os sites salvem dados no seu dispositivo (não recomendado)</translation>
 <translation id="851751545965956758">Impedir que sites se conectem a dispositivos</translation>
@@ -547,6 +589,7 @@
 <translation id="8676374126336081632">Limpar entrada</translation>
 <translation id="8681886425883659911">A publicidade é bloqueada em sites que mostram anúncios invasivos ou enganosos</translation>
 <translation id="868929229000858085">Pesquisar seus contatos</translation>
+<translation id="8707904142362025782">O site pode pedir acesso à câmera</translation>
 <translation id="8712637175834984815">Entendi</translation>
 <translation id="8715862698998036666">Arraste da parte de cima da tela e deslize da borda esquerda ou direita para sair da tela cheia.</translation>
 <translation id="8719283222052720129">Ative a permissão para o app <ph name="APP_NAME"/> nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
@@ -571,11 +614,13 @@
 <translation id="8926666909099850184">A NFC está desativada neste dispositivo. Ative-a nas <ph name="BEGIN_LINK"/>configurações do Android<ph name="END_LINK"/>.</translation>
 <translation id="8928445016601307354">Impedir que sites vejam e mudem informações em dispositivos NFC</translation>
 <translation id="8944485226638699751">Limitado</translation>
+<translation id="895054485242522631">Os sites podem usar sensores de movimento</translation>
 <translation id="8959122750345127698">A Navegação GPS está inacessível: <ph name="URL"/></translation>
 <translation id="8990043154272859344">Sua conta vai ser desconectada de todos os sites</translation>
 <translation id="8993853206419610596">Abrir todas as solicitações</translation>
 <translation id="9002538116239926534">Quando essa configuração está ativada, os sites podem salvar dados no seu dispositivo. Quando está desativada, os sites não podem salvar dados no seu dispositivo.</translation>
 <translation id="9011903857143958461"><ph name="SITE_NAME"/> permitido</translation>
+<translation id="9017522656123387064">Modo de seleção encerrado</translation>
 <translation id="9019902583201351841">Gerenciado pelos seus pais</translation>
 <translation id="902236149563113779">Os sites geralmente rastreiam a posição da câmera para recursos de RA, como jogos ou avisos de rotas</translation>
 <translation id="9039697262778250930">Sua conta pode ser desconectada desses sites</translation>
@@ -586,6 +631,7 @@
 <translation id="9138217887606523162">O zoom atual está em <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">Permita que o Brave mostre suas guias recentes na lista de apps e nos resultados da pesquisa do dispositivo. É possível desativar essa opção a qualquer momento nas configurações do Brave.</translation>
 <translation id="9162462602695099906">Esta página é perigosa</translation>
+<translation id="9182556968660520230">Não permitir que os sites reproduzam conteúdo protegido</translation>
 <translation id="947156494302904893">Os sites que você visita podem verificar que você é uma pessoa real, e não um bot</translation>
 <translation id="959682366969460160">Organize-se</translation>
 <translation id="967624055006145463">Dados armazenados</translation>

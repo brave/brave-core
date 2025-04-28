@@ -114,7 +114,6 @@
 <translation id="730042046912793465">ይሄ</translation>
 <translation id="2055363275850890030">የግል መስኮት</translation>
 <translation id="9133213713928851646">ብሬቭ’ ግል መስኮትዎ ምን እንዳደረጉ አያስታውስም። የጎበኟቸው ገፆች በፍለጋ ታሪኮ ላይ አይታዩም እንዲሁም ’ ሲጠናቀቅ ኩኪዎች ይጠፋሉ። የግል መስኮቶች በቀጥታ መስመር ላይ  ሙሉ በሙሉም የማይታወቁ አያደርጎትም።</translation>
-<translation id="4085423007106063912">Brave በግል መስኮት ውስጥ የሚያደርጉትን በጭራሽ አያስታውስም። የሚጎበኛቸው ጣቢያዎች በታሪክዎ ውስጥ አይታዩም። መስኮቱን ሲዘጉ ኩኪዎች ፣ የቅፅ ውሂብ እና የጣቢያ ውሂብ ይጠፋሉ።</translation>
 <translation id="1700746046668116047">የእርስዎ እንቅስቃሴ አሁንም ለበይነመረብ አገልግሎት አቅራቢዎ ፣ ተዘዋዋሪ የአውታረ መረብ ታዛቢዎች ወይም ለአሠሪዎ (የሥራ ማሽን ወይም አውታረ መረብ የሚጠቀሙ ከሆነ) ሊታይ እንደሚችል ልብ ይበሉ። ለበለጠ ግላዊነት ፣ በTor የግል መስኮት ይክፈቱ።</translation>
 <translation id="8759753423332885148">ተጨማሪ ይማሩ</translation>
 <translation id="8611976753572844841">የ Tor ግንኙነት ያለው የግል መስኮት</translation>
@@ -1732,7 +1731,6 @@
 <translation id="7921782882718083488">ይህንን ገጽ ያጠቃልሉ</translation>
 <translation id="7932221068776853847">የዚህን ገጽ ይዘት ለ Leo መላክ ለማቆም ግንኙነቱን ያቋርጡ እና አዲስ ውይይት ይጀምሩ</translation>
 <translation id="1167803637855350748">ከ Leo ጋር በመገናኘት የአውታረ መረብ ችግር ነበር፣ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> በ <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">ጭውውት</translation>
 <translation id="2961040541145689181">አዲስ ጭውውት</translation>
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
@@ -1811,6 +1809,8 @@
 <translation id="3130793786899299931">ርዝመቱን ቀይር</translation>
 <translation id="6320643499534852464">ማህበራዊ ሚዲያ</translation>
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
+<translation id="6543799171249004861">ፎቶ በ <ph name="AUTHOR"/></translation>
+<translation id="9030215177866748410">ከፍተኛ ጣቢያዎች ብዙውን ጊዜ በሚጎበኟቸው ድር ጣቢያዎች ላይ በመመርኮዝ ነው የሚጠቆሙት.</translation>
 <translation id="6303294677342628402">መከላከያዎች</translation>
 <translation id="8458987127502506209">Brave Shields ን አንቃ</translation>
 <translation id="7509914170164691086">መከለያዎች ተዘርግተዋል <ph name="LINK_BEFORE"/>ለ<ph name="LINK_AFTER"/></translation>

@@ -124,7 +124,7 @@
 <translation id="730042046912793465">이것은</translation>
 <translation id="2055363275850890030">비공개 윈도우</translation>
 <translation id="9133213713928851646">Brave는 당신이 비공개 윈도우에서 하는 활동을 기억하지 않습니다. 방문한 사이트는 검색 내역에 나타나지 않으며, 검색을 끝내면 쿠기도 사라집니다. 비공개 윈도우는 온라인상에서 당신을 완벽한 익명으로 만들어 줍니다.</translation>
-<translation id="4085423007106063912">시크릿 창에서 무엇을 하든 Brave에는 절대 저장되지 않습니다. 방문한 사이트가 기록에 표시되지 않습니다. 창을 닫으면 쿠키, 양식 데이터, 사이트 데이터가 삭제됩니다.</translation>
+<translation id="4491905831789757331">Brave는 비공개 창에서 사용자의 활동을 절대 저장하지 않습니다. 방문한 사이트가 기록에 표시되지 않는 것은 물론, 열려 있는 모든 비공개 창을 닫으면 쿠키와 양식 데이터, 사이트 데이터도 사라집니다.</translation>
 <translation id="1700746046668116047">귀하의 활동을 인터넷 서비스 공급자, 패시브 네트워크 옵저버, 고용주(업무용 장비나 네트워크를 사용하는 경우)는 볼 수 있습니다. 프라이버시를 더욱 보호하려면 Tor로 시크릿 창을 여세요.</translation>
 <translation id="8759753423332885148">더 알아보기.</translation>
 <translation id="8611976753572844841">Tor 연결이 제공되는 비공개 창</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">기록 표시</translation>
 <translation id="5030659775136592441">북마크 관리자 표시</translation>
 <translation id="6919203766034706175">설정 가져오기</translation>
+<translation id="290553639533591736">제미나이 라이브 포커스</translation>
 <translation id="6159704524780747483">오픈 AI 채팅</translation>
 <translation id="1199430163665775722">검색 엔진 편집</translation>
 <translation id="4276265845501430443">도움말 표시</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">이 동영상 요약하기</translation>
 <translation id="7921782882718083488">이 페이지 요약하기</translation>
 <translation id="7932221068776853847">연결을 끊어 이 페이지 콘텐츠를 레오에게 보내기를 중지하고 새 대화를 시작합니다.</translation>
+<translation id="8743383817154663379">요청을 처리하는 동안 문제가 발생했습니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="2712650703044366764">이 모델의 엔드포인트가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
 <translation id="1167803637855350748">레오에 연결 중 네트워크 문제가 있습니다. 연결 상태를 확인하고 다시 시도하세요.</translation>
 <translation id="1996126325390835277">프리미엄 답변 한도에 도달했습니다. 몇 시간 후 다시 시도해보세요.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">이 모델에 구성된 API 키가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8151638057146502721">구성</translation>
-<translation id="4177458398826096846">안녕하세요, 저는 레오예요. 전 Meta가 만든 모델인 Llama 3.1 8B 기반으로 구동되어 많은 사용 사례에 적용이 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">안녕하세요, 레오입니다. 저는 Brave의 완전 호스팅된 AI 어시스턴트입니다. 저는 높은 성능을 발휘하여 다양한 사용 사례에 적용할 수 있도록  Alibaba Cloud에서 만든 모델인 Qwen 14B로 구동됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">안녕하세요, 저는 레오예요. 전 Mistral AI가 만든 모델인 Mixtral 8x7B 기반으로 구동되어 고도의 작업도 처리 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude Instant 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Haiku를 사용하여 대화와 텍스트 작업을 처리합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Sonnet를 사용하여 대화와 텍스트 작업을 처리합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 3.1 8B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 미스트랄 AI에서 개발한 믹스트랄 8x7B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 비전 모델을 기반으로 구동됩니다. 라마 비전은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">프리미엄</translation>
 <translation id="6187065185557150870">채팅</translation>
 <translation id="4685048769603134644">전체 페이지 열기</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">응답 중지</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
+<translation id="4592293425457329338">대화에서 일부 문맥이 누락되었을 수 있습니다. 레오가 대화와 관련된 내용의 <ph name="PERCENTAGE"/>를 보관할 수 있었습니다.</translation>
 <translation id="2186990448773134544">페이지가 레오에겐 너무 길어 가장 관련성 있는 정보만 추출하여 페이지 콘텐츠를 정제했습니다.</translation>
 <translation id="5140068729857132378">웹페이지에서 관련된 부분 찾는 중...</translation>
 <translation id="4370698775470316661">대화가 너무 길어 계속할 수 없습니다. 레오가 긴 대화에서도 정확성을 유지할 수 있게 해주는 다른 모델을 사용하실 수 있습니다.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">빛처럼 빠른 채팅</translation>
 <translation id="2836330653441111204">속도와 지능의 균형</translation>
 <translation id="6695329447007213917">범용 채팅, 코딩 등</translation>
+<translation id="5051668914970329839">일반 목적의 비전</translation>
 <translation id="3965507912994218570">레오 설정</translation>
 <translation id="1037324977127422019">안녕하세요, 저는 레오예요!</translation>
 <translation id="8930348081963284873">Brave에 바로 이식된 AI 기반 지능형 어시스턴트.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">소셜 미디어</translation>
 <translation id="2370739752330685659">나중에</translation>
 <translation id="983013125018250242">레오 도구</translation>
+<translation id="7623223587478473368">첨부 파일</translation>
+<translation id="3777121685517940177">파일 업로드...</translation>
+<translation id="9088751620363630236">사진 찍기...</translation>
+<translation id="4250229828105606438">스크린샷</translation>
+<translation id="6332876390231524389">현재 탭 내용</translation>
 <translation id="49269513399674318">마이크 사용</translation>
 <translation id="3895031624234442305">맞춤 모델</translation>
 <translation id="4572010449071015143">새 대화 시작</translation>
 <translation id="345901077335355561">활성 대화로 돌아가기</translation>
 <translation id="6287023598025162715">새 대화</translation>
+<translation id="8370801182970639038">자동(<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">검색 엔진 활성화됨</translation>
+<translation id="5355776323718420036">인기 사이트 숨기기</translation>
+<translation id="6543799171249004861"><ph name="AUTHOR"/>의 사진</translation>
+<translation id="5966055668402779222">Brave 검색을 사용해 보세요</translation>
+<translation id="6851426306697017546">시계 표시</translation>
+<translation id="4844370919312937270">새 탭에 검색 위젯 표시</translation>
+<translation id="5009354496127441090">인기 사이트 표시</translation>
+<translation id="4784802981241664605">통계</translation>
+<translation id="4290791698375397492">맨 위 사이트 제거됨</translation>
+<translation id="1436784010935106834">제거됨</translation>
+<translation id="9030215177866748410">상위 사이트는 자주 방문하는 웹 사이트를 기반으로 제안됩니다.</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">이 설정을 변경하면 사이트가 깨져 보일 수 있습니다.</translation>
 <translation id="9204041448536398473">전역 Shield 설정</translation>
 <translation id="2108334320919763866">전역 기본값</translation>
+<translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
 <translation id="3440043456924990296">조직이 관리하는 설정</translation>
 <translation id="7053983685419859001">차단</translation>
 <translation id="5716230673298034837">모두 허용하기</translation>

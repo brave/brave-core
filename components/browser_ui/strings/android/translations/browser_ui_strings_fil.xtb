@@ -20,6 +20,7 @@
 <translation id="129382876167171263">Lalabas dito ang mga file na na-save ng mga website</translation>
 <translation id="131112695174432497">Dine-delete ang data na nakakaapekto sa pag-personalize ng ad</translation>
 <translation id="1317194122196776028">Kalimutan ang site na ito</translation>
+<translation id="1333965224356556482">Huwag payagan ang mga site na makita ang iyong lokasyon</translation>
 <translation id="1343356790768851700">Tinutukoy ng site na ito ang mga bagay na gusto mo at pagkatapos ay nagmumungkahi ito ng mga ad sa iba pang site</translation>
 <translation id="1369915414381695676">Nadagdag na ang site ng <ph name="SITE_NAME"/></translation>
 <translation id="1371239764779356792">Payagan ang site na mag-save ang data sa iyong device</translation>
@@ -30,31 +31,41 @@
 <translation id="1415402041810619267">Naputol ang URL</translation>
 <translation id="1741136041592162279">Hayaang i-share ng Brave ang iyong mga kamakailang tab gamit ang device mo para makita ang mga ito sa listahan ng app at mga resulta ng paghahanap ng iyong device. Puwede mo itong i-on o i-off sa mga setting ng Brave.</translation>
 <translation id="1448064542941920355">Bawasan ang pag-zoom</translation>
+<translation id="1464044141348608623">Huwag payagan ang mga site na malaman kung aktibo mong ginagamit ang iyong device</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> site}one{<ph name="SITE_COUNT"/> site}other{<ph name="SITE_COUNT"/> na site}}</translation>
 <translation id="1500473259453106018">I-hide ang card tungkol sa mga pagbaba ng presyo sa mga tab</translation>
+<translation id="1508931164824684991">Puwedeng gumamit ng JavaScript ang mga site</translation>
 <translation id="1510341833810331442">Hindi pinapayagan ang mga site na mag-save ng data sa iyong device</translation>
 <translation id="1538031354170655462">Karaniwang gumagamit ang mga site ng near-field communication (NFC) para gumana sa malalapit na tag o device, tulad ng pag-scan ng mga badge o pagbabayad nang contactless</translation>
 <translation id="1547123415014299762">Pinapayagan ang third-party na cookies</translation>
 <translation id="1593426485665524382">Available ang mga bagong pagkilos malapit sa itaas ng screen</translation>
+<translation id="1615755956145364867">Puwedeng hilingin ng mga site na mag-play ng pinoprotektahang content</translation>
 <translation id="1620510694547887537">Camera</translation>
+<translation id="1621729191093924223">Hindi gagana ang mga feature na nangangailangan ng mikropono</translation>
 <translation id="1633720957382884102">Mga kaugnay na site</translation>
 <translation id="1644574205037202324">History</translation>
 <translation id="1652197001188145583">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga NFC device. Kapag naka-off, hindi makakagamit ang mga site ng mga NFC device.</translation>
 <translation id="1660204651932907780">Payagan ang mga site na mag-play ng tunog (inirerekomenda)</translation>
 <translation id="1677097821151855053">Ginagamit ang cookies at iba pang data ng site para tandaan ka, halimbawa para i-sign in ka o i-personalize ang mga ad. Para mapamahalaan ang cookies para sa lahat ng site, tingnan ang <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
+<translation id="1679305402657584804">Puwedeng hilingin ng mga site na gumamit ng mga NFC device</translation>
 <translation id="1686785653877010442">Karaniwang nagpapadala ng mga notification ang mga site para ipaalam sa iyo ang tungkol sa breaking news o mga mensahe sa chat.</translation>
 <translation id="169515064810179024">I-block ang mga site sa pag-access sa mga sensor ng paggalaw</translation>
+<translation id="1703666494654169921">Huwag payagan ang mga site na gumamit ng mga virtual reality device o data</translation>
+<translation id="1704230497453185209">Huwag payagan ang mga site na mag-play ng tunog</translation>
 <translation id="1717218214683051432">Mga sensor ng paggalaw</translation>
 <translation id="1743802530341753419">Magtanong bago payagan ang mga site na kumonekta sa isang device (inirerekomenda)</translation>
 <translation id="1779089405699405702">Pang-decode ng larawan</translation>
 <translation id="1785415724048343560">Inirerekomenda para sa pinakamagandang experience</translation>
+<translation id="1796588414813960292">Hindi gagana ang mga feature na nangangailangan ng tunog</translation>
 <translation id="7401204338724669842">Mga Tip sa Brave</translation>
 <translation id="6704867734300244173">Kapag naka-on, mas mabilis na tatakbo ang Brave at gagana ang mga feature na gumagamit ng JavaScript ayon sa pagkakadisenyo sa mga ito. Kapag naka-off, pinapahina nito ang performance pero ginagawang mas matatag ang V8 laban sa mga attack.</translation>
 <translation id="1818308510395330587">Para payagan ang <ph name="APP_NAME"/> na gumamit ng AR, i-on din ang camera sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="1887786770086287077">Naka-off ang access sa lokasyon para sa device na ito. I-on ito sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
+<translation id="1906181697255754968">Karaniwang ina-access ng mga site ang mga file at folder sa iyong device para sa mga feature gaya ng awtomatikong pag-save sa trabaho mo</translation>
 <translation id="1915307458270490472">Ibaba</translation>
 <translation id="1919950603503897840">Pumili ng mga contact</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="1954597385941141174">Puwedeng hilingin ng mga site na kumonekta sa mga USB device</translation>
 <translation id="1979673356880165407">Mas palakihin o mas paliitin ang text at mga larawan para sa lahat ng site na binibisita mo</translation>
 <translation id="1984937141057606926">Pinapayagan, maliban ang third-party</translation>
 <translation id="1985247341569771101">Kapag naka-on, magagamit ng mga site ang mga sensor sa paggalaw ng iyong device. Kapag naka-off, hindi makakagamit ng mga sensor sa paggalaw ang mga site.</translation>
@@ -63,10 +74,12 @@
 <translation id="1994173015038366702">URL ng site</translation>
 <translation id="2004697686368036666">Posibleng hindi gumana ang mga feature sa ilang site</translation>
 <translation id="2025115093177348061">Augmented reality</translation>
+<translation id="2028449514182362831">Hindi gagana ang mga feature na nangangailangan ng mga sensor ng paggalaw</translation>
 <translation id="2030769033451695672">Mag-tap para bumalik sa <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="2079545284768500474">I-undo</translation>
 <translation id="2091887806945687916">Tunog</translation>
 <translation id="2096716221239095980">I-delete ang lahat ng data</translation>
+<translation id="2102396546234652240">Huwag payagan ang mga site na gamitin ang iyong mikropono</translation>
 <translation id="2117655453726830283">Susunod na slide</translation>
 <translation id="2146263598007866206">Posibleng awtomatikong i-download ng mga site ang magkakaugnay na file nang magkakasama para makatipid ka sa oras</translation>
 <translation id="2148716181193084225">Ngayong Araw</translation>
@@ -76,7 +89,9 @@
 <translation id="2185965788978862351">Ide-delete nito ang <ph name="DATASIZE"/> na data at cookies na na-store ng mga site o app sa iyong Home screen.</translation>
 <translation id="2194856509914051091">Mga bagay na dapat isaalang-alang</translation>
 <translation id="2215727959747642672">Pag-edit ng file</translation>
+<translation id="2218389616572918761">Puwedeng hilingin ng mga site ang iyong mikropono</translation>
 <translation id="2228071138934252756">Para payagan ang <ph name="APP_NAME"/> na i-access ang iyong camera, i-on din ang camera sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
+<translation id="2231160360698766265">Puwedeng mag-play ang mga site ng mga pinoprotektahang content</translation>
 <translation id="2235344399760031203">Bina-block ang third-party na cookies</translation>
 <translation id="2238944249568001759">Mga iminumungkahing paghahanap batay sa iyong huling tab</translation>
 <translation id="2241587408274973373">Mga card ng page na bagong tab</translation>
@@ -96,6 +111,7 @@
 <translation id="2438120137003069591">Pansamantala mong pinayagan ang site na ito na gumamit ng third-party na cookies, na nangangahulugang mas mahina ang proteksyon sa pag-browse pero mas malamang na gumana ang mga feature ng site na gaya ng inaasahan. <ph name="BEGIN_LINK"/>Magpadala ng feedback<ph name="END_LINK"/></translation>
 <translation id="2442870161001914531">Palaging hilingin ang pang-desktop na site</translation>
 <translation id="1736696984974511795">Shine-share na ngayon ng Brave ang iyong mga kamakailang tab sa device mo. Makikita mo ang mga ito sa listahan ng app at mga resulta ng paghahanap ng iyong device. Puwede mo itong i-off anumang oras sa mga setting ng Brave.</translation>
+<translation id="245322989586167203">Karaniwang kumokonekta ang mga site sa mga serial port para sa mga feature sa paglilipat ng data, gaya ng pag-set up ng iyong network</translation>
 <translation id="2469312991797799607">Ide-delete ng pagkilos na ito ang lahat ng data at cookies para sa <ph name="ORIGIN"/> at lahat ng site sa ilalim nito</translation>
 <translation id="2482878487686419369">Mga Abiso</translation>
 <translation id="2485422356828889247">I-uninstall</translation>
@@ -113,6 +129,7 @@
 <translation id="2621115761605608342">Payagan ang JavaScript para sa isang partikular na site.</translation>
 <translation id="2626708220538466178">Isinara ang bottom sheet ng default browser</translation>
 <translation id="2653659639078652383">Isumite</translation>
+<translation id="2670403088701171361">Huwag payagan ang mga site na makita ang text o mga larawan sa iyong clipboard</translation>
 <translation id="2677748264148917807">Umalis</translation>
 <translation id="2682367912565197520">I-delete ang naka-save na level ng pag-zoom</translation>
 <translation id="2683434792633810741">I-delete at i-reset?</translation>
@@ -122,8 +139,10 @@
 <translation id="8181634240306014548">Ilunsad ang Brave nang nakatuon ang Omnibox, na binabawasan ang tagal ng pag-start up sa mga low-end na device.</translation>
 <translation id="2750481671343847896">Puwedeng magpakita ang mga site ng mga prompt sa pag-sign in mula sa mga serbisyo ng pagkakakilanlan.</translation>
 <translation id="2787357173144933081">Simulan ang Omnibox</translation>
+<translation id="2789132527330338807">Puwedeng hilingin ng mga site na gumawa ng 3D na map ng iyong kapaligiran o subaybayan ang posisyon ng camera</translation>
 <translation id="2790501146643349491">Kapag naka-on, matatapos ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data. Kapag naka-off, hindi matatapos ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data.</translation>
 <translation id="2795716239552913152">Karaniwang ginagamit ng mga site ang iyong lokasyon para sa mga nauugnay na feature o impormasyon, gaya ng lokal na balita o mga kalapit na tindahan</translation>
+<translation id="2802908157808345702">Huwag payagan ang mga site na magpadala ng mga pop-up at gumamit ng mga redirect</translation>
 <translation id="5801312978029568377">Ipinapakita na ngayon ng Brave ang iyong mga kamakailang tab sa listahan ng app at mga resulta ng paghahanap ng device mo. Puwede mo itong i-off anumang oras sa mga setting ng Brave.</translation>
 <translation id="2822354292072154809">Sigurado ka bang gusto mong i-reset ang lahat ng pahintulot sa site para sa <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
 <translation id="2850913818900871965">Mag-request ng mobile view</translation>
@@ -137,12 +156,15 @@
 <translation id="2939338015096024043">Kapag naka-on, puwedeng hilingin ng mga site na i-track ang posisyon ng iyong camera at malaman ang tungkol sa paligid mo. Kapag naka-off, hindi mata-track ng mga site ang posisyon ng iyong camera o malalaman ang tungkol sa paligid mo.</translation>
 <translation id="2968755619301702150">Viewer ng certificate</translation>
 <translation id="2979365474350987274">Limitado ang third-party na cookies</translation>
+<translation id="2990583317361835189">Huwag payagan ang mga site na gumamit ng mga sensor ng paggalaw</translation>
 <translation id="3008272652534848354">I-reset ang mga pahintulot</translation>
 <translation id="301521992641321250">Awtomatikong na-block</translation>
+<translation id="3064871050034234884">Puwedeng mag-play ng tunog ang mga site</translation>
 <translation id="3069226013421428034">Payagan ang third-party na pag-sign in para sa partikular na site.</translation>
 <translation id="310297983047869047">Nakaraang slide</translation>
 <translation id="3109724472072898302">Naka-collapse</translation>
 <translation id="310979712355504754">Tanggalin lahat</translation>
+<translation id="311394601889664316">Huwag payagan ang mga site na mag-edit ng mga file o folder sa iyong device</translation>
 <translation id="3114012059975132928">Player ng video</translation>
 <translation id="3115898365077584848">Ipakita ang Impormasyon</translation>
 <translation id="3123473560110926937">Naka-block sa ilang site</translation>
@@ -181,16 +203,20 @@
 <translation id="3594780231884063836">I-mute ang video</translation>
 <translation id="3600792891314830896">I-mute ang mga site na nagpe-play ng tunog</translation>
 <translation id="3602290021589620013">I-preview</translation>
+<translation id="3611658447322220736">Puwedeng tapusin ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data</translation>
 <translation id="3628308229821498208">Mga iminumungkahing paghahanap</translation>
+<translation id="3641456520301071208">Puwedeng hilingin ng mga site ang iyong lokasyon</translation>
 <translation id="3658847490588580244">Bottom sheet ng default browser</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> site sa grupo ng mga site ng <ph name="RWS_OWNER"/> na makakakita ng iyong aktibidad sa grupo}one{<ph name="RWS_MEMBERS_COUNT"/> site sa grupo ng mga site ng <ph name="RWS_OWNER"/> na makakakita ng iyong aktibidad sa grupo}other{<ph name="RWS_MEMBERS_COUNT"/> na site sa grupo ng mga site ng <ph name="RWS_OWNER"/> na makakakita ng iyong aktibidad sa grupo}}</translation>
 <translation id="3676777756440746804">Naka-block ang mga site sa paghiling sa iyo na gamitin ang impormasyong na-save ng mga ito tungkol sa iyo</translation>
 <translation id="3697164069658504920">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga USB device. Kapag naka-off, hindi makakagamit ng mga USB device ang mga site.</translation>
 <translation id="2697264242676904869">Puwedeng mag-save ng kaunting impormasyon sa Brave ang isang site na binibisita mo, para lang ma-validate na hindi ka bot</translation>
+<translation id="3708684582558000260">Huwag payagan ang mga isinarang site na tapusin ang pagpapadala o pagtanggap ng data</translation>
 <translation id="3709818294139939629">Inalis ang file access ng site</translation>
 <translation id="3721953990244350188">I-dismiss at ipakita ang susunod na available na pagkilos</translation>
 <translation id="3744111561329211289">Pag-sync sa background</translation>
 <translation id="3763247130972274048">Mag-double tap sa kaliwa o kanan ng video para lumaktaw nang 10s</translation>
+<translation id="3776508619697147021">Puwedeng hilingin ng mga site na awtomatikong mag-download ng maraming file</translation>
 <translation id="3779154269823594982">Palitan ang mga password</translation>
 <translation id="3797520601150691162">Huwag ilapat ang madilim na tema para sa isang partikular na site</translation>
 <translation id="3803367742635802571">Posibleng hindi na gumana ayon sa disenyo ang mga site na binibisita mo</translation>
@@ -201,13 +227,14 @@
 <translation id="1799795508209440035">Magba-block ulit ang Brave ng cookies ngayong araw</translation>
 <translation id="385051799172605136">Bumalik</translation>
 <translation id="3859306556332390985">Maghanap nang pasulong</translation>
+<translation id="389521680295183045">Puwedeng hilingin ng mga site na malaman kung aktibo mong ginagamit ang iyong device</translation>
 <translation id="3895926599014793903">Puwersahang i-enable ang zoom</translation>
 <translation id="3905475044299942653">Ihinto ang napakaraming notification</translation>
-<translation id="3913461097001554748"><ph name="DOMAIN_URL"/> <ph name="SEPARATOR1"/> <ph name="DEVICE_NAME"/></translation>
 <translation id="3918378745482005425">Posibleng hindi gumana ang ilang feature. Puwede pa ring gumamit ng third-party na cookie ang mga nauugnay na site.</translation>
 <translation id="3922092564198021702">Sa iyong telepono, buksan ang Mga Setting</translation>
 <translation id="3933121352599513978">I-collapse ang mga hindi gustong request (inirerekomenda)</translation>
 <translation id="3955193568934677022">Pahintulutan ang mga site na mag-play ng pinoprotektahang content (inirerekomenda)</translation>
+<translation id="3955321697524543127">Huwag payagan ang mga site na kumonekta sa mga USB device</translation>
 <translation id="3965467402665811906">Puwedeng humiling ang mga site na gumamit ng impormasyong na-save ng mga ito tungkol sa iyo</translation>
 <translation id="3967822245660637423">Tapos na ang pag-download</translation>
 <translation id="3981465354637804599">Karaniwang nagpapakita ng mga ad ang mga site para makapagbigay ang mga ito ng content o mga serbisyo nang libre. Pero, kilalang nagpapakita ng mga nakakasagabal o nakakapanlinlang na ad ang ilang site.</translation>
@@ -230,14 +257,17 @@
 <translation id="4259722352634471385">Naka-block ang navigation: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Pagkatapos mong umalis sa isang site, puwede itong patuloy na mag-sync para matapos ang mga gawain, tulad ng pag-upload ng mga larawan o pagpapadala ng mensahe sa chat</translation>
 <translation id="4278390842282768270">Pinapayagan</translation>
+<translation id="4290791284969893584">Pagkatapos isara ang isang page, posibleng hindi matapos ang mga gawaing sinimulan mo</translation>
 <translation id="429312253194641664">May site na nagpe-play ng media</translation>
 <translation id="42981349822642051">Palawakin</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Mag-e-expire bukas}one{Mag-e-expire sa loob ng # araw}other{Mag-e-expire sa loob ng # na araw}}</translation>
 <translation id="8601682686806697614">Maglilimita ulit ang Brave ng cookies ngayong araw</translation>
 <translation id="4338831206024587507">Lahat ng site sa ilalim ng <ph name="DOMAIN"/></translation>
+<translation id="4340799661701629185">Huwag payagan ang mga site na magpadala ng mga notification</translation>
 <translation id="4402755511846832236">Pigilan ang mga site na malaman kung kailan mo aktibong ginagamit ang device na ito</translation>
 <translation id="4412992751769744546">Payagan ang third-party na cookies</translation>
 <translation id="1675197434085185531">Bina-block ng Brave ang mga site sa paggamit ng third-party na cookies para masubaybayan ka habang nagba-browse ka. Bisitahin ang mga setting para <ph name="BEGIN_LINK"/>pamahalaan ang access sa third-party na cookies<ph name="END_LINK"/>.</translation>
+<translation id="443121186588148776">Serial port</translation>
 <translation id="4434045419905280838">Mga pop-up at pag-redirect</translation>
 <translation id="443552056913301231">Ide-delete ng pagkilos na ito ang lahat ng lokal na data, kabilang ang cookies, at ire-reset nito ang lahat ng pahintulot para sa <ph name="ORIGIN"/></translation>
 <translation id="4468959413250150279">I-mute ang tunog para sa isang partikular na site.</translation>
@@ -249,7 +279,7 @@
 <translation id="4566417217121906555">I-mute ang mikropono</translation>
 <translation id="4570913071927164677">Mga Detalye</translation>
 <translation id="461356340001513807">Pinapayagan kang mag-sign in sa mga website gamit ang account na mayroon ka gamit ang serbisyo para sa pagkakakilanlan</translation>
-<translation id="4619615317237390068">Mga tab mula sa iba pang device</translation>
+<translation id="4635969503923889910">Huwag payagan ang mga site na gumamit ng mga NFC device</translation>
 <translation id="4644713492825682049">I-delete at i-reset</translation>
 <translation id="4645575059429386691">Pinamamahalaan ng iyong magulang</translation>
 <translation id="4670064810192446073">Virtual reality</translation>
@@ -271,13 +301,13 @@
 <translation id="4945443401464700059">Naka-block ang <ph name="SITE"/> sa paggamit ng iyong impormasyon sa</translation>
 <translation id="4953688446973710931">Kapag naka-on, puwedeng hilingin ng mga site na awtomatikong mag-download ng maraming file. Kapag naka-off, hindi awtomatikong makakapag-download ng maraming file ang mga site.</translation>
 <translation id="4962975101802056554">Bawiin ang lahat ng pahintulot para sa device</translation>
+<translation id="4972737347717125191">Puwedeng hilingin ng mga site na gumamit ng mga virtual reality device at data</translation>
 <translation id="497421865427891073">Sumulong</translation>
 <translation id="4976702386844183910">Huling binisita noong <ph name="DATE"/></translation>
 <translation id="4994033804516042629">Walang nakitang contact</translation>
 <translation id="4996978546172906250">Ibahagi gamit ang</translation>
 <translation id="5001526427543320409">Mga third-party na cookie</translation>
 <translation id="5007392906805964215">Suriin</translation>
-<translation id="5014182796621173645">Bumisita ka <ph name="RECENCY"/></translation>
 <translation id="5039804452771397117">Payagan</translation>
 <translation id="5048398596102334565">Payagan ang mga site na i-access ang mga sensor ng paggalaw (inirerekomenda)</translation>
 <translation id="5048841907079026162">Pamahalaan ang iyong data mula sa pag-browse</translation>
@@ -334,6 +364,8 @@
 <translation id="5771720122942595109">Naka-block ang <ph name="PERMISSION_1"/></translation>
 <translation id="5804241973901381774">Mga Pahintulot</translation>
 <translation id="5822675474983796325">Binuksan nang buo ang bottom sheet ng pag-customize ng page ng bagong tab mo</translation>
+<translation id="5833899990800318936">Huwag payagan ang mga site na gumamit ng JavaScript</translation>
+<translation id="583673505367439042">Puwedeng hilingin ng mga site na mag-edit ng mga file at folder sa iyong device</translation>
 <translation id="5844448279347999754">Kapag naka-on, puwedeng hilingin ng mga site na makita ang text at mga larawang naka-save sa iyong clipboard. Kapag naka-off, hindi makikita ng mga site ang text o mga larawang naka-save sa iyong clipboard.</translation>
 <translation id="5853982612236235577">Kapag naka-on, puwedeng hilingin ng mga site na magpadala ng mga notification. Kapag naka-off, hindi makakapagpadala ng mga notification ang mga site.</translation>
 <translation id="5860033963881614850">Naka-off</translation>
@@ -342,6 +374,7 @@
 <translation id="5877248419911025165">I-collapse ang lahat ng request</translation>
 <translation id="5884085660368669834">Preference sa site</translation>
 <translation id="5887687176710214216">Huling binisita kahapon</translation>
+<translation id="5908617755156109052">Huwag payagan ang mga site na gumawa ng 3D na map ng iyong kapaligiran o subaybayan ang posisyon ng camera</translation>
 <translation id="5916664084637901428">Naka-on</translation>
 <translation id="5922853908706496913">Ibinabahagi ang iyong screen</translation>
 <translation id="5922967540311291836">I-block ang third-party na cookies:</translation>
@@ -399,6 +432,7 @@
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Pinoprotektahang content</translation>
 <translation id="662080504995468778">Manatili</translation>
+<translation id="6635327442719709864">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga serial port. Kapag naka-off, hindi magagamit ng mga site ang mga serial port.</translation>
 <translation id="6653342741369270081">Pindutin ang button na bumalik para lumabas sa full screen.</translation>
 <translation id="6683865262523156564">Ang site na ito ay nasa isang grupong makakakita ng iyong aktibidad. Tinukoy ng <ph name="RWS_OWNER"/> ang grupo</translation>
 <translation id="6689172468748959065">Mga larawan sa profile</translation>
@@ -456,6 +490,7 @@
 <translation id="7423098979219808738">Magtanong muna</translation>
 <translation id="7423538860840206698">Na-block sa pag-read ng clipboard</translation>
 <translation id="7425915948813553151">Madilim na tema para sa mga site</translation>
+<translation id="7478658909253570368">Huwag payagan ang mga site na kumonekta sa mga serial port</translation>
 <translation id="7488573225650545859">I-hide ang Tingnan ang mga tab sa iyong listahan ng app</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7547989957535180761">Kapag naka-on, makakapagpakita ang mga site ng mga prompt sa pag-sign in. Kapag naka-off, hindi makakapagpakita ang mga site ng mga prompt sa pag-sign in.</translation>
@@ -467,6 +502,7 @@
 <translation id="7594634374516752650">Nakakonekta sa isang Bluetooth device</translation>
 <translation id="7617547684249261169">Puwede mong i-delete ang ilan sa o lahat ng iyong history, cookies, data ng site at higit pa</translation>
 <translation id="7649070708921625228">Tulong</translation>
+<translation id="7655411746932645568">Puwedeng hilingin ng mga site na kumonekta sa mga serial port</translation>
 <translation id="7658239707568436148">Kanselahin</translation>
 <translation id="7667547420449112975">The Wonderful Wizard of Oz</translation>
 <translation id="7681597159868843240">Karaniwang ginagamit ng mga site ang mga sensor ng paggalaw ng iyong device para sa mga feature na tulad ng virtual reality o pag-track sa fitness</translation>
@@ -484,13 +520,17 @@
 <translation id="7846076177841592234">Kanselahin ang pinili</translation>
 <translation id="2353409725922994861">Nililimitahan ng Brave ang karamihan sa mga site sa paggamit ng third-party na cookies. Pero pinapayagan ang third-party na cookies sa site na ito dahil umaasa ito sa mga ito para makapagbigay ng mga pangunahing serbisyo.\n\nBisitahin ang mga setting para <ph name="BEGIN_LINK"/>pamahalaan ang access sa third-party na cookies<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Payagan ang tunog para sa isang partikular na site.</translation>
+<translation id="789722939441020330">Huwag payagan ang mga site na awtomatikong mag-download ng maraming file</translation>
 <translation id="7940722705963108451">Ipaalala sa akin</translation>
+<translation id="7948081750384205628">Matuto pa tungkol sa <ph name="SETTING_TITLE"/></translation>
+<translation id="7952708427581814389">Puwedeng hilingin ng mga site na makita ang text at mga larawan sa iyong clipboard</translation>
 <translation id="7986741934819883144">Pumili ng contact</translation>
 <translation id="7990211076305263060">Kapag naka-on, puwedeng hilingin ng mga site na gamitin ang iyong mikropono. Kapag naka-off, hindi magagamit ng mga site ang iyong mikropono.</translation>
 <translation id="8007176423574883786">Naka-off para sa device na ito</translation>
 <translation id="8010630645305864042">{TILE_COUNT,plural, =1{I-hide ang card na magpatuloy sa tab na ito}one{I-hide ang card na magpatuloy sa mga tab na ito}other{I-hide ang card na magpatuloy sa mga tab na ito}}</translation>
 <translation id="802154636333426148">Hindi na-download</translation>
 <translation id="8042586301629853791">Pagbukud-bukurin ayon sa:</translation>
+<translation id="8051193500142930381">Hindi gagana ang mga feature na nangangailangan ng camera</translation>
 <translation id="8067883171444229417">I-play ang video</translation>
 <translation id="8068648041423924542">Hindi makapili ng certificate.</translation>
 <translation id="8077120325605624147">Puwedeng magpakita ng anumang ad sa iyo ang anumang site na bibisitahin mo</translation>
@@ -510,6 +550,7 @@
 <translation id="8200772114523450471">Resume</translation>
 <translation id="8206354486702514201">Ipinapatupad ng iyong administrator ang setting na ito.</translation>
 <translation id="8211406090763984747">Secure ang koneksyon</translation>
+<translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8249310407154411074">Ilipat sa itaas</translation>
 <translation id="8261506727792406068">I-delete</translation>
 <translation id="8284326494547611709">Mga Caption</translation>
@@ -530,6 +571,7 @@
 <translation id="8473055640493819707">Luma na ang '<ph name="APP_NAME"/>.' Paki-install ulit ang app.</translation>
 <translation id="8487700953926739672">Available sa offline</translation>
 <translation id="848952951823693243">Palaging hilingin ang pang-mobile na site</translation>
+<translation id="8492822722330266509">Puwedeng magpadala ng mga pop-up at gumamit ng mga pag-redirect ang mga site</translation>
 <translation id="8499083585497694743">I-unmute ang mikropono</translation>
 <translation id="8514955299594277296">Huwag payagan ang mga site na mag-save ng data sa iyong device (hindi inirerekomenda)</translation>
 <translation id="851751545965956758">I-block ang mga site sa pagkonekta sa mga device</translation>
@@ -547,6 +589,7 @@
 <translation id="8676374126336081632">I-clear ang input</translation>
 <translation id="8681886425883659911">Bina-block ang mga ad sa mga site na kilalang nagpapakita ng mga nakakasagabal o nakakapanlinlang na ad</translation>
 <translation id="868929229000858085">Maghanap sa iyong mga contact</translation>
+<translation id="8707904142362025782">Puwedeng hilingin ng site ang iyong camera</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="8715862698998036666">Mag-drag mula sa itaas at mag-swipe mula sa kaliwa o kanang gilid para lumabas sa full screen.</translation>
 <translation id="8719283222052720129">I-on ang pahintulot para sa <ph name="APP_NAME"/> sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
@@ -571,11 +614,13 @@
 <translation id="8926666909099850184">Naka-off ang NFC para sa device na ito. I-on ito sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="8928445016601307354">I-block ang mga site sa pagtingin at pagbago ng impormasyon sa mga NFC device</translation>
 <translation id="8944485226638699751">Limitado</translation>
+<translation id="895054485242522631">Puwedeng gumamit ng mga sensor ng paggalaw ang mga site</translation>
 <translation id="8959122750345127698">Hindi gumagana ang navigation: <ph name="URL"/></translation>
 <translation id="8990043154272859344">Masa-sign out ka sa lahat ng site</translation>
 <translation id="8993853206419610596">I-expand ang lahat ng request</translation>
 <translation id="9002538116239926534">Kapag naka-on, makakapag-save ng data sa iyong device ang mga site. Kapag naka-off, hindi makakapag-save ng data sa iyong device ang mga site.</translation>
 <translation id="9011903857143958461">Pinapayagan ang <ph name="SITE_NAME"/></translation>
+<translation id="9017522656123387064">Lumabas sa selection mode</translation>
 <translation id="9019902583201351841">Pinamamahalaan ng iyong mga magulang</translation>
 <translation id="902236149563113779">Karaniwang tina-track ng mga site ang posisyon ng iyong camera para sa mga feature ng AR, gaya ng mga laro o mga heads-up na direksyon</translation>
 <translation id="9039697262778250930">Posibleng ma-sign out ka sa mga site na ito</translation>
@@ -586,6 +631,7 @@
 <translation id="9138217887606523162"><ph name="ZOOM_LEVEL"/> %% ang kasalukuyang pag-zoom</translation>
 <translation id="7359422048569205930">Hayaang ipakita ng Brave ang iyong mga kamakailang tab sa listahan ng app at mga resulta ng paghahanap ng device mo. Puwede mo itong i-off anumang oras sa mga setting ng Brave.</translation>
 <translation id="9162462602695099906">Mapanganib ang page na ito</translation>
+<translation id="9182556968660520230">Huwag payagan ang mga site na mag-play ng pinoprotektahang content</translation>
 <translation id="947156494302904893">Magagawa ng mga site na binibisita mo na i-verify na totoong tao ka at hindi ka bot</translation>
 <translation id="959682366969460160">Maging organisado</translation>
 <translation id="967624055006145463">Naka-store na data</translation>

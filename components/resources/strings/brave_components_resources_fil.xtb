@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Ito ay isang</translation>
 <translation id="2055363275850890030">Pribadong Window</translation>
 <translation id="9133213713928851646">Hindi tinatandaan ng Brave kung anong ginagawa mo sa isang Pribadong Window. Ang mga site na binibisita mo ay hindi lalabas sa iyong history, at naglalaho ang cookies kapag tapos ka na. Gayunpaman, hindi ka ginagawang ganap na anonymous ng mga Private Window.</translation>
-<translation id="4085423007106063912">Hindi naaalala ng Brave kung ano ang ginagawa mo habang nasa Pribadong Window. Hindi lalabas sa iyong history ang mga site na binibisita mo. Nawawala ang cookies, data ng form, at data ng site kapag isinasara mo ang window.</translation>
+<translation id="4491905831789757331">Hindi naaalala ng Brave kung ano ang ginagawa mo habang nasa Pribadong Window. Hindi lalabas sa iyong history ang mga site na binibisita mo. Nawawala ang cookies, data ng form, at data ng site kapag isinasara mo ang lahat ng mga pribadong window.</translation>
 <translation id="1700746046668116047">Tandaang posible pa ring makita ang iyong aktibidad ng iyong internet service provider, mga passive network observer, o employer mo (kung gumagamit ka ng machine o network sa trabaho). Para sa higit pang privacy, magbukas ng pribadong window gamit ang Tor.</translation>
 <translation id="8759753423332885148">Matuto pa.</translation>
 <translation id="8611976753572844841">Pribadong Window na may koneksyon sa Tor</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Ipakita ang history</translation>
 <translation id="5030659775136592441">Ipakita ang bookmark manager</translation>
 <translation id="6919203766034706175">I-import ang mga setting</translation>
+<translation id="290553639533591736">Focus Gemini Live</translation>
 <translation id="6159704524780747483">Buksan ang AI Chat</translation>
 <translation id="1199430163665775722">I-edit ang mga search engine</translation>
 <translation id="4276265845501430443">Ipakita ang tulong</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Ibuod ang video na ito</translation>
 <translation id="7921782882718083488">Ibuod ang page na ito</translation>
 <translation id="7932221068776853847">Magdiskonekta para ihinto ang pagpapadala ng content ng page na ito sa Leo, at magsimula ng bagong pag-uusap</translation>
+<translation id="8743383817154663379">Nagkaproblema habang pinoproseso ang request mo. Pakisubukan ulit sa ibang pagkakataon.</translation>
 <translation id="2712650703044366764">May hindi valid na endpoint ang model na ito. Pakitingnan ang iyong configuration at subukan ulit.</translation>
 <translation id="1167803637855350748">Nagkaroon ng isyu sa network habang kumokonekta sa Leo, tingnan ang koneksyon mo at subukan ulit.</translation>
 <translation id="1996126325390835277">Naabot na ninyo ang limitasyon sa rate ng premium. Pakisubukan ulit pagkalipas ng ilang oras.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">Hindi valid ang naka-configure na API key para sa model na ito. Pakitingnan ang iyong configuration at subukan ulit.</translation>
 <translation id="7905602379229309187">Kasalukuyang overloaded ang endpoint. Pakisubukan ulit sa ibang pagkakataon.</translation>
 <translation id="8151638057146502721">I-configure</translation>
-<translation id="4177458398826096846">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ng Llama 3.1 8B, isang modelo na ginawa ng Meta para maging gumaganap at nagagamit sa maraming paraan. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ng Qwen 14B, isang modelo na ginawa ng Alibaba Cloud para maging gumaganap at nagagamit sa maraming paraan. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hi, ako si Leo. Ako ay isang fully hosted na AI assistant ng Brave. Pinapagana ako ng Mixtral 8x7B, isang model na ginawa ng Mistral AI para mamahala ng mga advanced na task. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Instant, isang model na ginawa ng Anthropic para magpagana ng task. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Haiku, isang model na ginawa ng Anthropic para paganahin ang conversational at text processing na mga gawain. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Sonnet, isang model na ginawa ng Anthropic para paganahin ang conversational at text processing na mga gawain. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> ng <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ng Llama 3.1 8B, isang modelo na ginawa ng Meta para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Llama sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ng Qwen 14B, isang modelo na ginawa ng Alibaba Cloud para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Qwen sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ngMixtral 8x7B, isang modelo na ginawa ng Mistral AI para i-handle ang mga advanced na gawain. Naka-host sa Brave ang Mixtral sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Instant, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Haiku, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Haiku sa pamamagitan ng sarili nitong secure na infrastructure<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Sonnet, isang model na ginawa ng Anthropic para magpagana ng conversational at text processing na task. Naka-host sa Brave ang Claude Sonnet sa pamamagitan ng sarili nitong secure na infrastructure<ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ng Llama Vision, isang modelo na ginawa ng Meta para maging gumaganap at nagagamit sa maraming paraan. Naka-host sa Brave ang Llama Vision sa pamamagitan ng sarili naming secure na infrastructure <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Buksan ang buong page</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">Huminto sa pagsagot</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="1093419424466417703">Masyadong mahaba ang page para kay Leo. Puwedeng mawala ang ilang konteksto mula sa pag-uusap. Nabasa ni Leo ang <ph name="PERCENTAGE"/> ng nilalaman ng page.</translation>
+<translation id="4592293425457329338">Posibleng may kulang na konteksto sa pag-uusap. Nagawang i-retain ng Leo ang <ph name="PERCENTAGE"/> ng nauugnay na content ng pag-uusap.</translation>
 <translation id="2186990448773134544">Pinino ang content ng page sa pamamagitan ng pagkuha sa pinakamakabuluhang impormasyon mula sa page dahil masyadong mahaba sa Leo.</translation>
 <translation id="5140068729857132378">Hinahanap ang mga nauugnay na bahagi ng web page...</translation>
 <translation id="4370698775470316661">Masyadong mahaba ang usapang ito at hindi na puwedeng magpatuloy. May ibang mga model na available kung saan mas may kakayanan si Leo na panatilihin ang katumpakan para sa mas mahabang mga pag-uusap.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">Napakabilis na chat</translation>
 <translation id="2836330653441111204">Balanseng bilis at katalinuhan</translation>
 <translation id="6695329447007213917">Panglahatang chat, coding, at higit pa</translation>
+<translation id="5051668914970329839">Pangkalahatang layunin ng vision</translation>
 <translation id="3965507912994218570">Mga Setting ni Leo</translation>
 <translation id="1037324977127422019">Hi, Ako si Leo!</translation>
 <translation id="8930348081963284873">Isang intelligent assistant na AI-powered, na binuong kasama na mismo sa Brave.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">Social Media</translation>
 <translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
 <translation id="983013125018250242">Mga tool ni Leo</translation>
+<translation id="7623223587478473368">Attachment</translation>
+<translation id="3777121685517940177">Mag-upload ng file...</translation>
+<translation id="9088751620363630236">Kumuha ng litato...</translation>
+<translation id="4250229828105606438">Screenshot</translation>
+<translation id="6332876390231524389">Kasalukuyang mga content ng tab</translation>
 <translation id="49269513399674318">Gamitin ang microphone</translation>
 <translation id="3895031624234442305">Mga custom na model</translation>
 <translation id="4572010449071015143">Magsimula ng bagong pag-uusap</translation>
 <translation id="345901077335355561">Bumalik sa aktibong pakikipag-usap</translation>
 <translation id="6287023598025162715">Bagong pag-uusap</translation>
+<translation id="8370801182970639038">Awtomatiko (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Na-enable ang mga search engine</translation>
+<translation id="5355776323718420036">Itago ang mga nangungunang site</translation>
+<translation id="6543799171249004861">Larawan ni <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Tanungin ang Brave Search</translation>
+<translation id="6851426306697017546">Ipakita ang orasan</translation>
+<translation id="4844370919312937270">Ipakita ang search widget sa sa mga bagong tab</translation>
+<translation id="5009354496127441090">Ipakita ang mga nangungunang site</translation>
+<translation id="4784802981241664605">MGA STAT</translation>
+<translation id="4290791698375397492">Naalis ang nangungunang site</translation>
+<translation id="1436784010935106834">Inalis</translation>
+<translation id="9030215177866748410">Iminumungkahi ang mga nangungunang site batay sa mga website na madalas mong binibisita.</translation>
 <translation id="6303294677342628402">Mga Shield</translation>
 <translation id="8458987127502506209">I-enable ang Shields ng Brave</translation>
 <translation id="7509914170164691086">NAKA-ON ang Shields <ph name="LINK_BEFORE"/>para sa<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">Posibleng makasira ng mga site ang pagbago ng mga setting na ito.</translation>
 <translation id="9204041448536398473">Mga pangkalahatang setting ng Shield</translation>
 <translation id="2108334320919763866">Mga global na default</translation>
+<translation id="7205939464631857223">I-clear ang lahat ng mga naka-block na element</translation>
 <translation id="3440043456924990296">Pinapamahalaan ng organisasyon ang mga setting</translation>
 <translation id="7053983685419859001">I-block</translation>
 <translation id="5716230673298034837">Payagan lahat</translation>

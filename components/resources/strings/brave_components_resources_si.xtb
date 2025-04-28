@@ -124,7 +124,6 @@
 <translation id="730042046912793465">මෙය</translation>
 <translation id="2055363275850890030">පෞද්ගලික කවුළුව</translation>
 <translation id="9133213713928851646">ඔබ පෞද්ගලික කවුළුවක කරන දෑ බ්‍රේව් රඳවා නොගනියි. ඔබ ගොඩවදින අඩවි ඉතිහාසයේ නොපෙන්වයි, ඔබ අහවර විට දත්තකඩ අතුරුදහන් වේ. කෙසේ වෙතත්, පෞද්ගලික කවුළු ඔබව මුළුමනින්ම නිර්නාමික නොකරයි.</translation>
-<translation id="4085423007106063912">ඔබ පෞද්ගලික කවුළුවක කරන දෑ බ්‍රෙව් කිසිවිට රඳවා නොගනියි. ඔබ ගොඩවදින අඩවි ඉතිහාසයේ නොපෙන්වයි. ඔබ කවුළුව වැසූ විට දත්තකඩ, ආකෘතිපත්‍ර දත්ත සහ අඩවි දත්ත අතුරුදහන් වේ.</translation>
 <translation id="1700746046668116047">ඔබගේ ක්‍රියාකාරකම් තවමත් අන්තර්ජාල සේවා සපයන්නට, නිෂ්ක්‍රීය ජාල නිරීක්ෂකයින්ට හෝ ඔබගේ සේවායෝජකයාට (ඔබ වැඩ යන්ත්‍රයක් හෝ ජාලයක් භාවිතා කරන්නේ නම්) දෘශ්‍යමාන විය හැකි බව සලකන්න. වැඩි පුද්ගලිකත්වය සඳහා, Tor පුද්ගලික කවුළුවක් විවෘත කරන්න.</translation>
 <translation id="8759753423332885148">තව දැනගන්න</translation>
 <translation id="8611976753572844841">ටෝර් සම්බන්ධතාව සහිත පෞද්ගලික කවුළුව</translation>
@@ -2030,10 +2029,6 @@
 <translation id="1167803637855350748">ලියෝ වෙත සබැඳීමේ ගැටලුවක් ඇත. ඔබගේ සම්බන්ධතාව පරීක්‍ෂා කර නැවත උත්සාහ කරන්න.</translation>
 <translation id="1996126325390835277">ඔබ ආධික්‍ය සීමාවට ළඟා වී ඇත. කරුණාකර පැය කිහිපයකින් නැවත උත්සාහ කරන්න.</translation>
 <translation id="8151638057146502721">වින්‍යාස කරන්න</translation>
-<translation id="4177458398826096846">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="COMPANY_NAME"/> වෙතින් <ph name="MODEL_NAME"/></translation>
 <translation id="963346402440669081">ආධික්‍ය</translation>
 <translation id="6187065185557150870">කතාබහ</translation>
 <translation id="4685048769603134644">පූර්ණ පිටුව අරින්න</translation>
@@ -2135,11 +2130,13 @@
 <translation id="6320643499534852464">සමාජ මාධ්‍ය</translation>
 <translation id="2370739752330685659">සමහර විට පසුව</translation>
 <translation id="983013125018250242">ලියෝ මෙවලම්</translation>
+<translation id="4250229828105606438">තිරරූපය</translation>
 <translation id="49269513399674318">ශබ්දවාහිනිය භාවිතා කරන්න</translation>
 <translation id="3895031624234442305">අභිරුචි ආකෘති</translation>
 <translation id="4572010449071015143">නව සංවාදයක් අරඹන්න</translation>
 <translation id="345901077335355561">සක්‍රිය සංවාදයට ආපසු යන්න</translation>
 <translation id="6287023598025162715">නව සංවාදය</translation>
+<translation id="4290791698375397492">ප්‍රචලිත අඩවිය ඉවත් කර ඇත</translation>
 <translation id="6303294677342628402">පලිහ</translation>
 <translation id="8458987127502506209">Brave පලිහ සබල කරන්න</translation>
 <translation id="7509914170164691086"><ph name="LINK_BEFORE"/>මෙයට<ph name="LINK_AFTER"/> පලිහ සක්‍රියයි</translation>

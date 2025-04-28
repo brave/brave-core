@@ -11,10 +11,12 @@
 <translation id="103269572468856066">Vymazat data i z těchto webů a aplikací?</translation>
 <translation id="1034259925032978114">Okno je otevřené</translation>
 <translation id="1036348656032585052">Vypnout</translation>
+<translation id="1045448422538531528">Přidat do skupiny</translation>
 <translation id="1045899828449635435">Vymazat data i z těchto webů?</translation>
 <translation id="1052842760770519282">Některá z vašich hesel nejsou přístupná</translation>
 <translation id="1058669287135776095">Jste offline. Zkontrolujte připojení k internetu a zkuste to znovu.</translation>
 <translation id="10614374240317010">Nikdy se neukládají</translation>
+<translation id="1070689840697074178">Tady si soubory PDF můžete stáhnout</translation>
 <translation id="107147699690128016">Pokud změníte příponu souboru, může se soubor otevřít v jiné aplikaci a potenciálně může být rizikem pro vaše zařízení.</translation>
 <translation id="1080365971383768617">Hesla ve všech vašich zařízeních</translation>
 <translation id="1087176310396019910">Možný spam</translation>
@@ -55,13 +57,11 @@
 <translation id="1206892813135768548">Zkopírovat text odkazu</translation>
 <translation id="1209206284964581585">Prozatím skrýt</translation>
 <translation id="1227058898775614466">Historie navigace</translation>
-<translation id="1231733316453485619">Zapnout synchronizaci?</translation>
 <translation id="123724288017357924">Obnovit stránku a ignorovat obsah v mezipaměti</translation>
 <translation id="1239792311949352652">Rychle tuto stránku sdílet. Tuto zkratku můžete upravit v Nastavení.</translation>
 <translation id="1240288207750131269">Načítání jazyka <ph name="LANG"/></translation>
 <translation id="124116460088058876">Další jazyky</translation>
 <translation id="4078574862195461280">Vaše hesla budou smazána ze Správce hesel Brave pro <ph name="CHROME_CHANNEL"/>. Soubor s hesly, který jste právě stáhli, vám zůstane.</translation>
-<translation id="1242883863226959074">zařízení</translation>
 <translation id="124678866338384709">Zavřít aktuální kartu</translation>
 <translation id="1246905108078336582">Odstranit návrh ze schránky?</translation>
 <translation id="1996480094660735607">Sváteční logo Brave: <ph name="DOODLE_DESCRIPTION"/></translation>
@@ -105,16 +105,12 @@ Další nastavení využití dat ke zlepšení prostředí v prohlížeči Brav
 <translation id="1407135791313364759">Otevřít vše</translation>
 <translation id="1409879593029778104">Stažení souboru <ph name="FILE_NAME"/> bylo zabráněno, protože soubor již existuje.</translation>
 <translation id="3219606989239049572">Ukládat data do účtu Brave</translation>
-<translation id="1853026300647876496">Kontaktování Googlu. Může to chvíli trvat…</translation>
 <translation id="1416550906796893042">Verze aplikace</translation>
-<translation id="1416582024052267068">Zachovejte si přístup k heslům</translation>
 <translation id="5171187478741797469">Restartovat Brave?</translation>
 <translation id="1428770807407000502">Vypnout synchronizaci?</translation>
 <translation id="1430915738399379752">Tisk</translation>
 <translation id="1435593198351412143">Soubory PDF automaticky otevřít</translation>
-<translation id="1436784010935106834">Odebráno</translation>
 <translation id="1437543266176261764">Spuštěno v aplikaci <ph name="APP_NAME"/></translation>
-<translation id="1448147069872048656">Ověřte svou totožnost, abyste na tomto zařízení měli přístup ke všem svým heslům</translation>
 <translation id="1448440926884431741">Sledované produkty můžete třídit v záložkách</translation>
 <translation id="1460751212339734034">Ušetřete čas, pište méně</translation>
 <translation id="5598889255595678761">Vyberte jazyk Chromu</translation>
@@ -147,6 +143,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="1851107663393500801">Když je tato možnost zapnutá, používají a ukládají se data ve vašem účtu Brave. Když je vypnutá, ukládají se data pouze do tohoto zařízení.</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Odstranit jednu vybranou položku}few{Odstranit # vybrané položky}many{Odstranit # vybrané položky}other{Odstranit # vybraných položek}}</translation>
 <translation id="9102838806351154392">{BOOKMARKS_COUNT,plural, =1{1 záložka a další položky jsou uložené jen na tomto zařízení. Pokud je chcete používat i na jiných zařízeních, uložte je do svého účtu Brave <ph name="ACCOUNT_EMAIL"/>.}few{# záložky a další položky jsou uložené jen na tomto zařízení. Pokud je chcete používat i na jiných zařízeních, uložte je do svého účtu Brave <ph name="ACCOUNT_EMAIL"/>.}many{# záložky a dalších položek je uloženo jen na tomto zařízení. Pokud je chcete používat i na jiných zařízeních, uložte je do svého účtu Brave <ph name="ACCOUNT_EMAIL"/>.}other{# záložek a dalších položek je uloženo jen na tomto zařízení. Pokud je chcete používat i na jiných zařízeních, uložte je do svého účtu Brave <ph name="ACCOUNT_EMAIL"/>.}}</translation>
+<translation id="1639239467298939599">Načítání</translation>
 <translation id="1641113438599504367">Bezpečné prohlížení</translation>
 <translation id="164269334534774161">Prohlížíte si offline kopii této stránky z <ph name="CREATION_TIME"/></translation>
 <translation id="1644574205037202324">Historie</translation>
@@ -238,7 +235,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2111511281910874386">Přejít na stránku</translation>
 <translation id="2119609734654412418">Zde najdete své záložky</translation>
 <translation id="2122601567107267586">Aplikaci nelze otevřít</translation>
-<translation id="2132122640199389833">Odstranit všechna propojená zařízení</translation>
 <translation id="213279576345780926">Karta <ph name="TAB_TITLE"/> byla zavřena.</translation>
 <translation id="2141396931810938595">Podle vašeho používání</translation>
 <translation id="5905359144499324202">Brave pravidelně kontroluje, zda je v prohlížeči vybráno nejbezpečnější nastavení. Pokud bude potřeba, abyste něco zkontrolovali, dáme vám vědět.</translation>
@@ -277,7 +273,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2321086116217818302">Příprava hesel…</translation>
 <translation id="2323763861024343754">Úložiště webů</translation>
 <translation id="2328474416100889417">Ke skupině karet <ph name="GROUP_NAME"/> všichni okamžitě ztratí přístup a všechny odkazy s pozvánkou se vypnou</translation>
-<translation id="2328985652426384049">Přihlášení se nezdařilo</translation>
 <translation id="2332515770639153015">Vylepšené Bezpečné prohlížení je zapnuté</translation>
 <translation id="233375395665273385">Vymazat a odhlásit se</translation>
 <translation id="2341410551640223969">Instalace balíčku <ph name="WEBAPK_NAME"/> se nezdařila.</translation>
@@ -288,6 +283,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2362083820973145409">Jste přihlášeni jako <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/> Otevře nastavení.</translation>
 <translation id="351551888962017708">Předběžně se načítá více stránek. Stránky, o které žádají jiné weby nebo aplikace, se mohou předběžně načíst prostřednictvím serverů Brave.</translation>
 <translation id="2366554533468315977">Historie cen na webu pro tuto možnost</translation>
+<translation id="2367818124433749493">Zkratky pro vývojáře</translation>
 <translation id="2385605401818128172">Můžete zkontrolovat weby, které odesílají velké množství oznámení, a zabránit jim v odesílání dalších</translation>
 <translation id="2386938421315164605">Skrýt a znovu zobrazit témata</translation>
 <translation id="2390510615457643724">Opravdu soubor <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>) chcete stáhnout znovu?</translation>
@@ -306,6 +302,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2453860139492968684">Dokončit</translation>
 <translation id="2461378706168271257">Vyhledat na kartách</translation>
 <translation id="2461822463642141190">Aktuální</translation>
+<translation id="2463770278804271243">STRÁNKA</translation>
 <translation id="2468444275314013497">Váš prohlížeč vypadá v pořádku</translation>
 <translation id="2542068854151299295">Pokud z Chromu chcete získat maximum, přihlaste se</translation>
 <translation id="247737702124049222">Popisy obrázků jsou zapnuté</translation>
@@ -324,7 +321,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2527209463677295330">Zahrnutím většího množství textu ze stránky můžete získat lepší výsledky</translation>
 <translation id="2527779675047087889">Skrýt obsah schránky</translation>
 <translation id="2532336938189706096">Webové zobrazení</translation>
-<translation id="2534155362429831547">Byly smazány položky (celkem <ph name="NUMBER_OF_ITEMS"/>)</translation>
 <translation id="253498598929009420">Web bude moci vidět obsah vaší obrazovky</translation>
 <translation id="2536728043171574184">Prohlížíte offline kopii stránky</translation>
 <translation id="2542548955756682219"><ph name="TAB_TITLE"/>, karta</translation>
@@ -363,7 +359,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2677748264148917807">Odejít</translation>
 <translation id="2687009626279857299">Na tomhle zařízení přestal fungovat</translation>
 <translation id="2702516483241149200">Nové: Sdílení odkazu, který obsah posune na tento text</translation>
-<translation id="2705073298859543115">Vytvořit souhrn</translation>
 <translation id="3769942772151914580">Proaktivní ochrana v reálném čase před nebezpečnými weby, soubory ke stažení a rozšířeními, která je založena na odesílání údajů o prohlížení do Googlu</translation>
 <translation id="2708226184420201102">Otevřít v prohlížeči <ph name="PRODUCT_NAME"/></translation>
 <translation id="271033894570825754">Nové</translation>
@@ -403,7 +398,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2883644600102358131">Hesla na tomto zařízení brzy přestanou fungovat. Pokud svá hesla chcete používat i nadále, aktualizujte služby Google Play.</translation>
 <translation id="8541922081612557424">O aplikaci Brave</translation>
 <translation id="2891154217021530873">Zastavit načítání stránky</translation>
-<translation id="4013614219085422040">Brave vaši historii může používat k personalizaci Vyhledávání a dalších služeb Brave</translation>
 <translation id="2894821468041866720">Nijak znatelně nezpomaluje prohlížeč ani zařízení.</translation>
 <translation id="2895521649038438824">Tuto stránku si můžete poslechnout</translation>
 <translation id="2899252057552912621">Hesla brzy přestanou fungovat, protože služby Google Play nejsou k dispozici. Můžete si vytvořit kopii uložených hesel, než přestanou fungovat.</translation>
@@ -430,7 +424,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="2981364137500752533">Můžete mít až 5 oken.</translation>
 <translation id="2983102365694924129">Na základě vaší aktivity na webu. Toto nastavení je vypnuté.</translation>
 <translation id="5948666439178419683">Při vyhledávání na Googlu zahrnovat okolní text</translation>
-<translation id="2988638966064514052">Zesilte svá hesla</translation>
 <translation id="2989523299700148168">Nedávno navštívené</translation>
 <translation id="2992473221983447149">Popisy obrázků</translation>
 <translation id="2996291259634659425">Vytvoření heslové fráze</translation>
@@ -457,7 +450,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3114507951000454849">Přečtěte si dnešní zprávy <ph name="NEWS_ICON"/></translation>
 <translation id="3122883569442693641">Další podrobnosti</translation>
 <translation id="3123734510202723619">Oznámení</translation>
-<translation id="3131961580615093332">Uživatel <ph name="GIVEN_NAME"/> změnil kartu „<ph name="TAB_NAME"/>“</translation>
 <translation id="3148237711805373460">Přejít</translation>
 <translation id="5063487983358782016">Domovská stránka Chromu</translation>
 <translation id="3158667104057012316">Ruční řazení</translation>
@@ -482,7 +474,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3250563604907490871">Práce s popisy obrázků bude pokračovat, až se připojíte k Wi-Fi</translation>
 <translation id="3254409185687681395">Přidat stránku do záložek</translation>
 <translation id="3259831549858767975">Zmenšit veškerý obsah stránky</translation>
-<translation id="3262666254864194397">Adresní řádek <ph name="BEGIN_NEW"/>Nové<ph name="END_NEW"/></translation>
 <translation id="3265093782546847662">Všechny stránky domény <ph name="DOMAIN"/></translation>
 <translation id="3269093882174072735">Načíst obrázek</translation>
 <translation id="327204079441056603">Změnili jsme způsob ukládání hesel na tomto zařízení</translation>
@@ -510,7 +501,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3398320232533725830">Otevřít správce záložek</translation>
 <translation id="3414952576877147120">Velikost:</translation>
 <translation id="3421726884497337397">Zvolte, kdy chcete blokovat soubory cookie třetích stran</translation>
-<translation id="342220687432920852">{HOURS,plural, =1{před # h}few{před # h}many{před # h}other{před # h}}</translation>
 <translation id="3430670036890315772">Vypnutím zámku profilu odstraníte uložené informace</translation>
 <translation id="3435465986463792564">Otevřeli jste si víc oken? Tady je můžete spravovat</translation>
 <translation id="4114256890962999877">Pokud chcete zachovat přístup ke svým heslům, exportujte je, aktualizujte Služby Google Play a poté je importujte zpět do Správce hesel Brave. <ph name="BEGIN_LINK"/>Zobrazit úplné pokyny<ph name="END_LINK"/></translation>
@@ -518,6 +508,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3439276997620616816">Zde najdete své nedávno zavřené karty</translation>
 <translation id="3443221991560634068">Znovu načíst aktuální stránku</translation>
 <translation id="3444179773590444986">Poskytnout zpětnou vazbu k tmavému motivu pro weby?</translation>
+<translation id="3448874648066942074">Shrnout stránku pomocí AI</translation>
 <translation id="7384339501748168186">Aby Brave chránil vaše soukromí, nebude do tohoto pole automaticky vyplňovat heslo.</translation>
 <translation id="3467081767799433066">S měřením reklam jsou mezi weby sdíleny omezené typy dat, aby weby mohly měřit výkon reklam (například aby mohly zjistit, zda jste po návštěvě webu uskutečnili nákup).</translation>
 <translation id="3474624961160222204">Pokračovat jako <ph name="NAME"/></translation>
@@ -535,6 +526,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3513704683820682405">Rozšířená realita</translation>
 <translation id="3516053221628030540">Přejít na Google Play</translation>
 <translation id="3518985090088779359">PŘIJMOUT A POKRAČOVAT</translation>
+<translation id="351952459507671940">Přidat do nové skupiny</translation>
 <translation id="3521388823983121502">S <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> nelze pokračovat</translation>
 <translation id="3522247891732774234">K dispozici je aktualizace. Další možnosti</translation>
 <translation id="3888465267851728698">Synchronizaci můžete v nastavení kdykoli zastavit. Brave může personalizovat Vyhledávání a další služby na základě vaší historie.</translation>
@@ -547,8 +539,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3557336313807607643">Přidat do kontaktů</translation>
 <translation id="3563767357928833671">Obsah schránky je zobrazen</translation>
 <translation id="3566639033325271639">Aktualizovat nastavení</translation>
-<translation id="3568945271227339929">Nebyla nalezena žádná prolomená hesla</translation>
-<translation id="357465026686164600">Telefon jako bezpečnostní klíč</translation>
 <translation id="3575464060651642446">Kontrola hesel na zařízení…</translation>
 <translation id="3577473026931028326">Došlo k chybě. Zkuste to znovu.</translation>
 <translation id="3577558748185201054">Spravujte své zájmy a preference</translation>
@@ -581,10 +571,10 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3710560693796335511">Spolupráce</translation>
 <translation id="3714981814255182093">Otevřít lištu Najít</translation>
 <translation id="7305861879874805497">Můžete vidět historii z jiných aplikací, které otevírají odkazy v Chromu.</translation>
-<translation id="3720422586473670527">Ne, děkuji</translation>
 <translation id="8397843425685839889">Vy a Brave</translation>
 <translation id="3737319253362202215">Nastavení překladu</translation>
 <translation id="3738139272394829648">Vyhledání klepnutím</translation>
+<translation id="4890062597702688591">V účtu Brave nemáte žádná prolomená hesla</translation>
 <translation id="3739899004075612870">Přidáno do záložek (<ph name="PRODUCT_NAME"/>)</translation>
 <translation id="3740525748616366977">Hlasové vyhledávání není v tomto zařízení k dispozici</translation>
 <translation id="376561056759077985">Některá data ještě nejsou uložena</translation>
@@ -635,6 +625,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="3985215325736559418">Opravdu soubor <ph name="FILE_NAME"/> chcete stáhnout znovu?</translation>
 <translation id="3987993985790029246">Kopírovat odkaz</translation>
 <translation id="4000212216660919741">Offline domovská stránka</translation>
+<translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{V účtu Brave máte 1 prolomené heslo}few{V účtu Brave máte # prolomená hesla}many{V účtu Brave máte # prolomeného hesla}other{V účtu Brave máte # prolomených hesel}}</translation>
 <translation id="4016425174436051808">Sledování nelze zapnout. Něco se pokazilo.</translation>
 <translation id="4024768890073681126">Tvůj prohlížeč spravují rodiče</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# h}few{# h}many{# h}other{# h}}</translation>
@@ -673,6 +664,7 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="4195643157523330669">Otevřít na nové kartě</translation>
 <translation id="4197828496439691735">{NUM_TABS,plural, =1{1 karta na tomto zařízení}few{# karty na tomto zařízení}many{# karty na tomto zařízení}other{# karet na tomto zařízení}}</translation>
 <translation id="4198423547019359126">Nejsou k dispozici žádná umístění stažených souborů</translation>
+<translation id="4209029522667123437"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> • Použili jste na tomhle webu</translation>
 <translation id="1675646381334855139">Pokud máte povolené soubory cookie, může je Brave používat k předběžnému načítání.</translation>
 <translation id="4216511743389425832">Poslechnout si tuto stránku</translation>
 <translation id="4225725533026049334">Sledováno</translation>
@@ -689,7 +681,9 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="4269820728363426813">Zkopírovat adresu odkazu</translation>
 <translation id="4270730597186910506">Začít nebo přestat sledovat produkt.</translation>
 <translation id="4277529130885813215">Použít jiné zařízení</translation>
+<translation id="427987768447457592">Nová skupina karet</translation>
 <translation id="6553929648301062677">Účet, ke kterému jste přihlášeni, a možné způsoby používání prohlížeče Brave spravuje organizace <ph name="MANAGED_DOMAIN"/>. Váš administrátor může nastavit nebo omezit určité funkce.</translation>
+<translation id="4285498937028063278">Odepnout</translation>
 <translation id="4285846616383034558">Soubory cookie, mezipaměť a další data webů</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Zapněte v nastavení systému Android zámek obrazovky<ph name="END_LINK"/></translation>
 <translation id="4298388696830689168">Propojené weby</translation>
@@ -724,7 +718,6 @@ Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslo
 <translation id="4452411734226507615">Zavřít kartu <ph name="TAB_TITLE"/></translation>
 <translation id="4452548195519783679">Záložka přidána do složky <ph name="FOLDER_NAME"/></translation>
 <translation id="4460861538906892109">{ITEMS_COUNT,plural, =1{1 záložka}few{# záložky}many{# záložky}other{# záložek}}</translation>
-<translation id="4461614516424362539">Když jiné zařízení propojíte pomocí QR kódu, můžete tento telefon používat jako bezpečnostní klíč. Pokud ho odstraníte, k opětovnému propojení bude potřeba znovu naskenovat QR kód.</translation>
 <translation id="4478161224666880173">Na tomto webu můžete použít účet <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>. Pokud chcete pokračovat, přihlaste se k účtu <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
 <translation id="3133489217401741157">Instalace modulu <ph name="MODULE"/> pro Brave…</translation>
 <translation id="4481181637083926190">{BOOKMARK_COUNT,plural, =1{Záložka byla uložena do „<ph name="FOLDER_NAME"/>“. Je uložena pouze na tomto zařízení.}few{Záložky byly uloženy do složky „<ph name="FOLDER_NAME"/>“. Jsou uloženy pouze na tomto zařízení.}many{Záložky byly uloženy do složky „<ph name="FOLDER_NAME"/>“. Jsou uloženy pouze na tomto zařízení.}other{Záložky byly uloženy do složky „<ph name="FOLDER_NAME"/>“. Jsou uloženy pouze na tomto zařízení.}}</translation>
@@ -775,6 +768,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="4698061626562952596">Tady najdete své neaktivní karty</translation>
 <translation id="4699172675775169585">Obrázky a soubory v mezipaměti</translation>
 <translation id="4710167854527459075">Seřadit od nejnovějších</translation>
+<translation id="4718044610319080485">Vyvolá AI asistenta</translation>
 <translation id="4719927025381752090">Nabízet překlad</translation>
 <translation id="4720556299488643018">Odhlásit odběr</translation>
 <translation id="4732120983431207637">Rozbalovač zásobníku</translation>
@@ -806,7 +800,6 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
 <translation id="4807098396393229769">Jméno na kartě</translation>
 <translation id="480990236307250886">Otevřít domovskou stránku</translation>
-<translation id="481574578487123132">Propojená zařízení</translation>
 <translation id="4822710610088666676">Skupina karet <ph name="TAB_GROUP_TITLE"/> byla zavřena a uložena</translation>
 <translation id="4826163340425232009">Spodní tabulka s přihlášením.</translation>
 <translation id="4834250788637067901">Platební metody, nabídky a adresy z Google Pay</translation>
@@ -814,6 +807,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="483742037940503070">{TAB_COUNT,plural, =1{Obnovit skupinu karet s <ph name="TAB_COUNT_ONE"/> kartou v barvě <ph name="COLOR_NAME"/> jako novou skupinu karet na pozadí.}few{Obnovit skupinu karet se <ph name="TAB_COUNT_MANY"/> kartami v barvě <ph name="COLOR_NAME"/> jako novou skupinu karet na pozadí.}many{Obnovit skupinu karet s <ph name="TAB_COUNT_MANY"/> karty v barvě <ph name="COLOR_NAME"/> jako novou skupinu karet na pozadí.}other{Obnovit skupinu karet s <ph name="TAB_COUNT_MANY"/> kartami v barvě <ph name="COLOR_NAME"/> jako novou skupinu karet na pozadí.}}</translation>
 <translation id="4837753911714442426">Otevřít možnosti tisku stránky</translation>
 <translation id="6195403640086187022">Za účelem zvýšení zabezpečení zašifrovat hesla v zařízení před uložením do Správce hesel Brave</translation>
+<translation id="4849731766219625109">Použít účet <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="4850886885716139402">Zobrazit</translation>
 <translation id="4852014461738377247">Přihlašování…</translation>
 <translation id="4860895144060829044">Volat</translation>
@@ -826,21 +820,18 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="4881695831933465202">Otevřít</translation>
 <translation id="488187801263602086">Přejmenovat soubor</translation>
 <translation id="1248710015876067820">Nepodporovaný počet instancí Chromu.</translation>
+<translation id="8743324804589176795">V účtu Brave nemáte uložená žádná hesla</translation>
 <translation id="4905823827770127520">Zahrnout odkaz na stránku</translation>
 <translation id="3217997482476578430">Kanál Objevit od Googlu</translation>
 <translation id="4910889077668685004">Platební aplikace</translation>
 <translation id="4912413785358399818">Přesunout kartu</translation>
 <translation id="4913169188695071480">Zastavit obnovování</translation>
-<translation id="4913841543356834596">Získejte přístup ke všem svým heslům</translation>
-<translation id="4918086044614829423">Přijmout</translation>
 <translation id="4925120120285606924">Snímek obrazovky <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">Vaše hesla budou exportována a stažena jako textový soubor. Uvidí je každý uživatel a všechny aplikace s přístupem k cílové složce.</translation>
 <translation id="4926901776383726965">Obrázky a soubory si můžete uložit k prohlížení offline nebo sdílení v jiných aplikacích</translation>
 <translation id="1955495299630319741">Protože se odhlašujete z účtu spravovaného doménou <ph name="DOMAIN_NAME"/>, vaše data prohlížeče Brave z tohoto zařízení budou smazána. Ve vašem účtu Brave zůstanou.</translation>
 <translation id="4943703118917034429">Virtuální realita</translation>
 <translation id="4943872375798546930">Žádné výsledky</translation>
-<translation id="5742837711075932301">Když jste přihlášeni ke stejnému účtu Brave, jiná zařízení tento telefon mohou používat jako bezpečnostní klíč.</translation>
-<translation id="4953833914914492602">Skupina karet „<ph name="TAB_GROUP_NAME"/>“ už není k dispozici</translation>
 <translation id="4957722034734105353">Další informace...</translation>
 <translation id="4961107849584082341">Nechte si tuto stránku přeložit do libovolného jazyka</translation>
 <translation id="6785504257633294906">Brave vás varuje před nebezpečnými weby a soubory ke stažení</translation>
@@ -890,6 +881,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5174700554036517242">Karta má opět původní výšku</translation>
 <translation id="5180063720319462041">Stránka byla přeložena do jazyka <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="5191251636205085390">Další informace o správa nových technologií, které mají za cíl nahradit soubory cookie třetích stran</translation>
+<translation id="5197649123261764478">Snadný přístup k záložkám</translation>
 <translation id="5204967432542742771">Zadejte heslo</translation>
 <translation id="5206168361184759344">{FILE_COUNT,plural, =1{Stahování souboru…}few{Stahování # souborů…}many{Stahování # souboru…}other{Stahování # souborů…}}</translation>
 <translation id="5210286577605176222">Přejít na předchozí kartu</translation>
@@ -915,9 +907,11 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5317780077021120954">Uložit</translation>
 <translation id="989239400026154074">Brave doporučuje prohlížeč Brave</translation>
 <translation id="5326246328175179736">Pomocí tohoto účtu se přihlásit nemůžete</translation>
+<translation id="5327248766486351172">Jméno</translation>
 <translation id="5328542107300944283">Použít na webu <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="5342314432463739672">Žádosti o oprávnění</translation>
 <translation id="534580735623577507">Žádné weby z <ph name="TIME_PERIOD"/></translation>
+<translation id="5354716139000094027">Shrnout pomocí AI</translation>
 <translation id="5355191726083956201">Je zapnutá vylepšená ochrana</translation>
 <translation id="5375374982898812658">Ke skupině karet „<ph name="GROUP_NAME"/>“ okamžitě ztratíte přístup a bude smazána ze všech vašich zařízení</translation>
 <translation id="5375577065097716013">Vyhledat obrázek pomocí Google Lens <ph name="BEGIN_NEW"/>Novinka<ph name="END_NEW"/></translation>
@@ -926,6 +920,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="539881862970320163">Bylo navrženo silné heslo. Klávesnice je skrytá.</translation>
 <translation id="5409881200985013443">Odeslat v klientu <ph name="CLIENT_NAME"/> kód <ph name="ONE_TIME_CODE"/>?</translation>
 <translation id="5410300144953132176"><ph name="OWNER_FULL_NAME"/> (<ph name="OWNER_EMAIL"/>) vás zve do skupiny karet. Kdokoli s odkazem může upravovat všechny karty, proto si to dobře rozmyslete. Platnost odkazu vyprší za 48 hodin.</translation>
+<translation id="5412388166586147626">AI asistenta se nepodařilo otevřít. Zkuste to znovu.</translation>
 <translation id="5414836363063783498">Ověřování…</translation>
 <translation id="5415871492522952905">Svou historii a karty budete mít na všech svých zařízeních, abyste mohli pokračovat v tom, co jste dělali</translation>
 <translation id="542073632571549028"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>) hned přijde o přístup ke skupině karet <ph name="GROUP_NAME"/></translation>
@@ -945,6 +940,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5456381639095306749">Stáhnout stránku</translation>
 <translation id="5458366071038729214">Zde najdete weby, které sledujete</translation>
 <translation id="5468068603361015296">Chcete soubor <ph name="FILE_NAME"/> přesto stáhnout?</translation>
+<translation id="5471273988133666918">Kartu <ph name="TAB_TITLE"/> nelze přesunout</translation>
 <translation id="548278423535722844">Otevřít v mapové aplikaci</translation>
 <translation id="5492637351392383067">Šifrování v zařízení</translation>
 <translation id="549660026907543296">Přidat se jako <ph name="MEMBER_FULL_NAME"/></translation>
@@ -953,19 +949,17 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5517095782334947753">Máte záložky, historii, hesla a další nastavení z účtu <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5517326820028369152">Spodní panel s nedávnou aktivitou</translation>
 <translation id="5526281268548144413">Nelze zavřít ve více oknech</translation>
-<translation id="5528925345478618296">{MINUTES,plural, =1{před # min}few{před # min}many{před # min}other{před # min}}</translation>
 <translation id="5548606607480005320">Bezpečnostní kontrola</translation>
-<translation id="5551564597369878730">Uživatel <ph name="GIVEN_NAME"/> se připojil ke skupině karet „<ph name="TAB_GROUP_NAME"/>“.</translation>
 <translation id="4362225295386962644">Když použijete heslo, Brave vás upozorní, pokud bylo zveřejněno online. Vaše hesla a uživatelská jména jsou při tom šifrována, takže je nemůže nikdo zobrazit (ani Brave).</translation>
 <translation id="5555525474779371165">Zvolte si stupeň Bezpečného prohlížení</translation>
 <translation id="5556459405103347317">Načíst znovu</translation>
 <translation id="555671485580955310">Synchronizovat historii a karty</translation>
 <translation id="555816257274242153">Sledování ceny bylo ukončeno</translation>
+<translation id="5561445479436807659">Spuštění zábavné dinosauří hry</translation>
 <translation id="5561549206367097665">Čekání na síť…</translation>
 <translation id="5568069709869097550">Nepodařilo se přihlásit</translation>
 <translation id="557018954714092179">Vytvořit novou složku</translation>
 <translation id="5578795271662203820">Hledat obrázek pomocí <ph name="SEARCH_ENGINE"/></translation>
-<translation id="5581519193887989363">Synchronizované položky můžete kdykoliv vybrat v <ph name="BEGIN_LINK1"/>nastavení<ph name="END_LINK1"/>.</translation>
 <translation id="5596627076506792578">Další možnosti</translation>
 <translation id="6894318537270274409">Další nastavení využití dat ke zlepšení prostředí v prohlížeči Brave najdete v sekci <ph name="BEGIN_LINK"/>Služby Brave<ph name="END_LINK"/>.</translation>
 <translation id="5611398002774823980">Uložit do účtu</translation>
@@ -990,6 +984,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="2320748512701464301">Brave vás pomáhá chránit před porušeními zabezpečení údajů, nebezpečnými weby a dalšími hrozbami</translation>
 <translation id="5698878456427040674">Zkontrolujte, zda je vybraný účet podporován.</translation>
 <translation id="570347048394355941">Přepnout na kartu</translation>
+<translation id="5709213329446699338">Web <ph name="SITE"/> se chce připojit k sériovému portu</translation>
 <translation id="5715150588940290235">Vymazat uložené bezpečnostní kódy?</translation>
 <translation id="8926436246118281502">Vaše záložky, historie a další data v Chromu se už nebudou synchronizovat do vašeho účtu Brave</translation>
 <translation id="572328651809341494">Nedávno použité karty</translation>
@@ -1047,7 +1042,6 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5958275228015807058">Najděte stažené soubory a stránky</translation>
 <translation id="5958994127112619898">Zjednodušit stránku</translation>
 <translation id="5962718611393537961">Klepnutím sbalíte</translation>
-<translation id="5964180026566797835">Hesla nelze zkontrolovat</translation>
 <translation id="5964869237734432770">Nezobrazovat popisy obrázků</translation>
 <translation id="5977976211062815271">V tomto zařízení</translation>
 <translation id="5978661847409534366">{ITEMS_COUNT,plural, =1{1 stránka ve vašem seznamu četby}few{# stránky ve vašem seznamu četby}many{# stránky ve vašem seznamu četby}other{# stránek ve vašem seznamu četby}}</translation>
@@ -1056,7 +1050,6 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5995726099713306770">Stáhnout stránku znovu?</translation>
 <translation id="6456271171669383967">Ponechat Brave</translation>
 <translation id="6000203700195075278">Znovu sledovat</translation>
-<translation id="6002122790816966947">Vaše zařízení</translation>
 <translation id="6011308810877101166">Vylepšovat návrhy ve vyhledávání</translation>
 <translation id="6013305291643746595">Řazení od nejstarších</translation>
 <translation id="296137235951584143">Přizpůsobte si Brave</translation>
@@ -1069,6 +1062,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="605721222689873409">RR</translation>
 <translation id="6059830886158432458">Zde můžete ovládat své příběhy a aktivity</translation>
 <translation id="4701065218405772222">Pokud chcete zkontrolovat, zda nedošlo k prolomení hesel, přihlaste se k účtu Brave</translation>
+<translation id="6078323886959318429">Přidat zástupce</translation>
 <translation id="6085886413119427067">Určuje způsob připojení k webům přes zabezpečené připojení</translation>
 <translation id="6087286598828478206">Zablokovat a opustit skupinu?</translation>
 <translation id="60923314841986378">Zbývá: <ph name="HOURS"/> h</translation>
@@ -1104,6 +1098,7 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="6210748933810148297">Nejste <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Zobrazování náhledu této stránky</translation>
 <translation id="6221633008163990886">Chcete-li exportovat hesla, odemkněte zařízení</translation>
+<translation id="6225572914528673855">Adresní řádek</translation>
 <translation id="6232535412751077445">Pokud povolíte požadavek Do Not Track, bude připojován k datům provozu prohlížení. Účinek tohoto požadavku závisí na tom, zda na něj budou webové stránky reagovat a jak jej budou interpretovat.
 
 Některé weby mohou například na tento požadavek reagovat tak, že vám zobrazí reklamy, které nejsou založeny na ostatních navštívených webových stránkách. Řada webů bude i nadále shromažďovat vaše údaje o prohlížení a používat je například ke zlepšení zabezpečení, poskytování obsahu, reklam a doporučení a ke generování statistik pro přehledy.</translation>
@@ -1120,7 +1115,9 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="6295158916970320988">Všechny weby</translation>
 <translation id="6296366034485697675">Exportovat a smazat</translation>
 <translation id="629730747756840877">Účet</translation>
+<translation id="6301526076346731664">Otevřít Nástroje pro vývojáře</translation>
 <translation id="6303969859164067831">Odhlásit a vypnout synchronizaci</translation>
+<translation id="6307241780749477694">Pokud na tomhle zařízení chcete mít všechna svá hesla, ověřte svou totožnost</translation>
 <translation id="6312687380483398334">Webové aplikace (tiché)</translation>
 <translation id="6315386555979018699">Vymazat a pokračovat</translation>
 <translation id="6316139424528454185">Nepodporovaná verze Androidu</translation>
@@ -1168,14 +1165,12 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="387105482057676379">Propojte Brave a další služby Brave pro personalizaci a další účely</translation>
 <translation id="6482749332252372425">Stažení souboru <ph name="FILE_NAME"/> se nezdařilo z důvodu nedostatku místa v úložišti.</translation>
 <translation id="6486420406192123355">Tento soubor PDF pochází z webu, který používá nezabezpečené připojení</translation>
-<translation id="6495590690749880440">Otevřít skupinu karet?</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{Byl stažen jeden soubor}few{Byly staženy # soubory}many{Bylo staženo # souboru}other{Bylo staženo # souborů}}</translation>
 <translation id="3960299545138990065">Restartujte Brave</translation>
 <translation id="6518133107902771759">Ověřit</translation>
 <translation id="6527303717912515753">Sdílet</translation>
 <translation id="3700405816184340252">Historie Chromu</translation>
 <translation id="708829030563435351">Weby navštívené v Chromu se nebudou zobrazovat. Všechny časovače webů budou smazány.</translation>
-<translation id="7723158744459952869">Odpověď Googlu trvala příliš dlouho</translation>
 <translation id="6539092367496845964">Něco se pokazilo. Zkuste to později.</translation>
 <translation id="6541983376925655882">{NUM_HOURS,plural, =1{Zkontrolováno před hodinou}few{Zkontrolováno před # hodinami}many{Zkontrolováno před # hodiny}other{Zkontrolováno před # hodinami}}</translation>
 <translation id="6545017243486555795">Vymazat všechna data</translation>
@@ -1187,7 +1182,6 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="971059121491380239">Zařízení Android může obsahovat podobné nastavení. Pokud máte v Chromu a v zařízení Android zapnuté měření reklam, mohou společnosti měřit efektivitu reklamy na webech, které navštěvujete, a v aplikacích, které používáte.</translation>
 <translation id="6565959834589222080">Síť Wi-Fi se použije, když bude k dispozici</translation>
 <translation id="4480935821314799946">Když od teď otevřete novou kartu, budou se zobrazovat články z webu <ph name="SITE_NAME"/>. Weby, které sledujete, se ukládají do vašeho účtu Brave. Můžete je spravovat v nastavení funkce Objevit.</translation>
-<translation id="6570116402456758630">Shrnutí stránky</translation>
 <translation id="657177046675873214">Pokud své záložky chcete mít na všech svých zařízeních, zapněte v nastavení možnost Záložky</translation>
 <translation id="6573096386450695060">Vždy povolit</translation>
 <translation id="5157964048453367290">Zde se objeví karty, které jste otevřeli v Chromu ve svých ostatních zařízeních.</translation>
@@ -1206,7 +1200,6 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="7939692063031538305">Za účelem vylepšování aplikace odesílá Brave do Googlu údaje o využití a selháních. <ph name="BEGIN_UMA_LINK"/>Spravovat<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Blokovat vždy</translation>
 <translation id="6641780377503683465">Odstranit zájem <ph name="INTEREST"/></translation>
-<translation id="6645629752388991326">Určete, která zařízení se mohou přihlásit s použitím tohoto zařízení jako bezpečnostního klíče.</translation>
 <translation id="7556503430569358637">Navštívené adresy URL se odesílají do Googlu, aby mohl předvídat, které weby byste mohli navštívit jako další</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> další}few{<ph name="CONTACT_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> další}many{<ph name="CONTACT_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> dalšího}other{<ph name="CONTACT_PREVIEW"/> a <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> dalších}}</translation>
 <translation id="6649642165559792194">Zobrazit náhled obrázku <ph name="BEGIN_NEW"/>Nové<ph name="END_NEW"/></translation>
@@ -1263,7 +1256,6 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="686490460830618322">Panel filtrování podle aplikace</translation>
 <translation id="6865313869410766144">Automatické vyplňování formulářů</translation>
 <translation id="1565666992559765293">Adresy se nešifrují pomocí vaší heslové fráze. Můžete je tak používat v jiných službách Brave.</translation>
-<translation id="6869056123412990582">počítač</translation>
 <translation id="687838958001010630">Kdokoli s odkazem může upravovat všechny karty</translation>
 <translation id="6880903702195291049">Oprávnění vypadají v pořádku</translation>
 <translation id="6883204995689174413">Sdílení</translation>
@@ -1305,7 +1297,6 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="6983306615164277634">Pozici můžete změnit také podržením adresního řádku.</translation>
 <translation id="4436469586880564451">Vaše hesla se stáhnou jako soubor CSV. Budou viditelná pro každého, kdo k souboru bude mít přístup, včetně aplikací. Exportovaná hesla se z Chromu smažou.</translation>
 <translation id="6996145122199359148">Stáhnout tuto stránku</translation>
-<translation id="2971862257346039617">Ověřte svou totožnost, abyste měli přístup k heslům v účtu Brave</translation>
 <translation id="7013762323294215682">Tento přístupový klíč bude uložen do vašeho správce hesel. Bude ho moci použít kdokoli, kdo k němu bude mít přístup.</translation>
 <translation id="7020741890149022655">Přidat do seznamu četby <ph name="BEGIN_NEW"/>Nové<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Otevřít v prohlížeči</translation>
@@ -1322,12 +1313,10 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="4947532681094581238">Vymazat data prohlížeče Brave také z tohoto zařízení</translation>
 <translation id="5499149312981370855">Zvolte, zda pro lépe personalizované prostředí ve službách Brave chcete zahrnout historii Chromu</translation>
 <translation id="8208853227947884571">Brave je aktuální</translation>
-<translation id="7102843846294013537">Některá z vašich hesel nejsou na tomto zařízení k dispozici</translation>
 <translation id="7106762743910369165">Váš prohlížeč je spravován vaší organizací</translation>
 <translation id="144902786838571419">Brave vám dává větší kontrolu nad reklamami, které se vám zobrazují, a omezuje, co se o vás weby mohou dozvědět, když vám zobrazují personalizované reklamy.</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Byla zkontrolována oprávnění 1 webu}few{Byla zkontrolována oprávnění # webů}many{Byla zkontrolována oprávnění # webu}other{Byla zkontrolována oprávnění # webů}}</translation>
 <translation id="7138678301420049075">Ostatní</translation>
-<translation id="7139479418357139965">Můžete kontaktovat odesílatele a požádat ho o nový odkaz.</translation>
 <translation id="7140829094791862589">Seřadit ručně</translation>
 <translation id="7146622961999026732">Tyto weby a aplikace jsou pro vás zřejmě důležité:</translation>
 <translation id="7148400116894863598"><ph name="BEGIN_LINK"/>Požádejte o další informace<ph name="END_LINK"/> od poskytovatele <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
@@ -1335,7 +1324,6 @@ Některé weby mohou například na tento požadavek reagovat tak, že vám zobr
 <translation id="1206376179559420424">Šifrování pomocí heslové fráze se nevztahuje na platební metody a adresy z Google Pay.
 
 Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohlížeče Brave ve svém účtu<ph name="END_LINK"/>.</translation>
-<translation id="7161230316646448869">Vaše hesla, historie a další údaje na všech zařízeních</translation>
 <translation id="7168323970702333693">Jste přihlášeni jako <ph name="USER_NAME"/>. Otevře nastavení.</translation>
 <translation id="7173114856073700355">Otevřít nastavení</translation>
 <translation id="7173338713290252554">Historie cen na webu</translation>
@@ -1381,6 +1369,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="7359002509206457351">Poskytnout přístup k platební metodám</translation>
 <translation id="7363349185727752629">Průvodce možnostmi ochrany soukromí</translation>
 <translation id="7364103838544876661">Další možnosti smazání údajů o prohlížení</translation>
+<translation id="5640892076695177498">Pokud chcete začít ukládat a používat hesla pomocí Správce hesel Brave, aktualizujte služby Google Play</translation>
 <translation id="7375125077091615385">Typ:</translation>
 <translation id="7376560087009844242">Zahrnutím většího množství textu ze stránky můžete pomocí Vyhledání klepnutím získat lepší výsledky. Tuto možnost můžete v <ph name="BEGIN_LINK"/>nastavení<ph name="END_LINK"/> kdykoliv změnit.</translation>
 <translation id="7379900596734708416">Pro weby je k dispozici tmavý motiv</translation>
@@ -1389,7 +1378,6 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="7400418766976504921">Adresa URL</translation>
 <translation id="724102042129299115">První spuštění Chromu</translation>
 <translation id="5341476184053934779">Uživatel účtu Brave</translation>
-<translation id="741204030948306876">Ano</translation>
 <translation id="7419565702166471774">Vždy používat zabezpečená připojení</translation>
 <translation id="7421293530411019405">Opustit skupinu karet?</translation>
 <translation id="7431991332293347422">Nastavte, jak se má vaše historie prohlížení používat k personalizaci Vyhledávání a dalších služeb</translation>
@@ -1452,17 +1440,18 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="7656721520530864426">Žádné weby</translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="7663320421139257046">Aby bylo možné pokračovat, bude <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> s tímto webem sdílet tyto vaše údaje: <ph name="FIELDS_STRING"/>. Přečtěte si <ph name="BEGIN_LINK1"/>zásady ochrany soukromí<ph name="END_LINK1"/> tohoto webu.</translation>
-<translation id="7665369617277396874">Přidat účet</translation>
 <translation id="766587987807204883">Zde se zobrazují články, které si můžete číst i offline</translation>
 <translation id="7666185984446444960">Zavřeno: <ph name="TAB_GROUPS_AND_TABS_PART"/></translation>
 <translation id="7682724950699840886">Vyzkoušejte tyto tipy: Zajistěte, aby v zařízení byl dostatek místa a zkuste export zopakovat.</translation>
 <translation id="7686086654630106285">Další informace o reklamách navrhovaných weby</translation>
 <translation id="7795837497684113327">Vaše zařízení nemohlo Brave otevřít. Tento problém vyřešíte stažením nejnovější aktualizace Chromu z obchodu s aplikacemi.</translation>
 <translation id="7691043218961417207">Objevte obsah ke sledování</translation>
+<translation id="7692761875510935111">Rychle otevřít v prohlížeči. Pokud tuhle zkratku chcete upravit, podržte ji.</translation>
 <translation id="7697383401610880082">Úchyt pro přetažení</translation>
 <translation id="7698359219371678927">Vytvořit e-mail v aplikaci <ph name="APP_NAME"/></translation>
 <translation id="7702420606070050505">Spodní panel s nedávnou aktivitou je otevřený na celou výšku</translation>
 <translation id="7707922173985738739">Bude používat mobilní data</translation>
+<translation id="7708994397325774423">Získejte všechna svá hesla</translation>
 <translation id="7733878270780732638">V zařízení není dost místa</translation>
 <translation id="5321611925570577577">Správce hesel Brave přestane na tomto zařízení fungovat</translation>
 <translation id="774876555279732384">Služby automatického vyplňování se spravují také v <ph name="BEGIN_LINK"/>Nastavení Androidu<ph name="END_LINK"/>.</translation>
@@ -1503,6 +1492,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="7913993612870913335">{FILE_COUNT,plural, =1{Vaše organizace 1 zablokovala}few{Vaše organizace # zablokovala}many{Vaše organizace # zablokovala}other{Vaše organizace # zablokovala}}</translation>
 <translation id="7914399737746719723">Aplikace byla nainstalována</translation>
 <translation id="7919123827536834358">Tyto jazyky překládat automaticky</translation>
+<translation id="7921782882718083488">Shrnout stránku</translation>
 <translation id="7926975587469166629">Přezdívka karty</translation>
 <translation id="7929962904089429003">Otevřít nabídku</translation>
 <translation id="7934668619883965330">Soubor nelze stáhnout. Formát souboru není podporován.</translation>
@@ -1526,12 +1516,10 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="8004582292198964060">Prohlížeč</translation>
 <translation id="8014210850410408071">V dalším kroku hesla importujte</translation>
 <translation id="8015452622527143194">Vrátit veškerý obsah stránky na původní velikost</translation>
-<translation id="8017431260099661477">Zvací odkaz se nepodařilo otevřít</translation>
 <translation id="8026238112629815203">Změnili jsme způsob ukládání hesel na tomto zařízení</translation>
 <translation id="8027395186860110042">Hesla mohou brzy přestat fungovat</translation>
 <translation id="8027863900915310177">Vyberte cíl stahování</translation>
 <translation id="8030852056903932865">Schválit</translation>
-<translation id="4662093674527201215">Pokud chcete začít ukládat a používat hesla pomocí Správce hesel Brave, aktualizujte služby Google Play.</translation>
 <translation id="8032569120109842252">Sledováno</translation>
 <translation id="8037750541064988519">Zbývá: <ph name="DAYS"/> d</translation>
 <translation id="8037801708772278989">Zkontrolováno právě teď</translation>
@@ -1545,6 +1533,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="8073388330009372546">Otevřít na nové kartě</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="8078096376109663956">Sdílet pouze text</translation>
+<translation id="8078348702936632821">Připnout tuto zkratku</translation>
 <translation id="8084114998886531721">Uložené heslo</translation>
 <translation id="1718138320251931534">Spravovat data v účtu Brave</translation>
 <translation id="6213630783726251371">Část vaší historie se zde nemusí zobrazovat. Pokud chcete zobrazit celou historii Chromu, otevřete celou historii Chromu. Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici také další druhy historie prohlížení zaznamenané ve vašem účtu Brave.</translation>
@@ -1599,10 +1588,10 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="8282297628636750033">Pokud je to možné, použít pro weby tmavý motiv</translation>
 <translation id="8282950411412455249">Přejít do nastavení zabezpečení</translation>
 <translation id="8306751933352925837">Hesla na tomto zařízení brzy přestanou fungovat. Pokud svá hesla chcete používat i nadále, aktualizujte služby Google Play. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
-<translation id="8307517230426267469">Uživatel <ph name="GIVEN_NAME"/> odstranil kartu „<ph name="TAB_NAME"/>“</translation>
 <translation id="8310451567823644042">Hesla brzy přestanou fungovat</translation>
 <translation id="831192587911042850">Tento web bude přidán na seznam sledovaných.</translation>
 <translation id="8320212361750431956">Nedávná aktivita</translation>
+<translation id="832514020744584629"><ph name="PREF_TITLE"/>  <ph name="BEGIN_NEW"/>Nové<ph name="END_NEW"/></translation>
 <translation id="7174809333940729365">Brave vás bude informovat o webech, které odesílají příliš mnoho oznámení</translation>
 <translation id="834313815369870491">Weby nikdy nepřekládat</translation>
 <translation id="8348430946834215779">Používejte HTTPS, kdykoli je to možné, a nechte se upozornit, než načtete web, který tento protokol nepodporuje</translation>
@@ -1621,7 +1610,6 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="8419244640277402268">Zahrnout</translation>
 <translation id="8422250855136581222">Na tomto zařízení nejsou žádné karty</translation>
 <translation id="78656282836782594">Bezpečnostní nástroje prohlížeče Brave</translation>
-<translation id="5735840612282428689">Stránka byla odeslána. Zobrazte ji v Chromu v zařízení <ph name="DEVICE_TYPE"/></translation>
 <translation id="8427875596167638501">Karta náhledu je otevřená na půlce</translation>
 <translation id="8428213095426709021">Nastavení</translation>
 <translation id="8430824733382774043">Sdílet pouze snímek obrazovky</translation>
@@ -1658,6 +1646,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="8540136935098276800">Zadejte správně formátovanou adresu URL</translation>
 <translation id="854522910157234410">Otevřít tuto stránku</translation>
 <translation id="8547025137714087639">{ARCHIVED_TAB_COUNT,plural, =1{Neaktivní karta (1)}few{Neaktivní karty (#)}many{Neaktivní karty (#)}other{Neaktivní karty (#)}}</translation>
+<translation id="8547466829003330976">Zkontrolovat PDF pomocí AI</translation>
 <translation id="5503308854539525011">Brave omezuje celkové množství dat, které mohou weby prostřednictvím prohlížeče sdílet za účelem měření výkonu reklam.</translation>
 <translation id="8559990750235505898">Nabízet překlad stránek v jiných jazycích</translation>
 <translation id="8560602726703398413">Seznam četby naleznete v záložkách</translation>
@@ -1675,7 +1664,6 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="8611922158252451755">Kdokoli s odkazem může upravovat všechny karty, proto sdílejte s rozmyslem. Platnost odkazu vyprší za 48 hodin.</translation>
 <translation id="5784514951651328424">Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave.</translation>
 <translation id="8617240290563765734">Otevřít navrhovanou adresu URL uvedenou ve staženém obsahu?</translation>
-<translation id="8621068256433641644">telefon</translation>
 <translation id="8635399646025169806">Zachovat skupinu karet?</translation>
 <translation id="8636825310635137004">Chcete-li získat přístup ke kartám ze svých ostatních zařízení, zapněte synchronizaci.</translation>
 <translation id="864544049772947936">Spravovat okna (<ph name="INSTANCE_COUNTS"/>)</translation>
@@ -1688,6 +1676,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="869891660844655955">Datum konce platnosti</translation>
 <translation id="8699120352855309748">Nenabízet překlad do těchto jazyků</translation>
 <translation id="8712637175834984815">Hotovo</translation>
+<translation id="6146670726156522332">Zesilte hesla ve svém účtu Brave</translation>
 <translation id="8723453889042591629">Nechte si tuto stránku rychle přeložit. Pokud tuto zkratku chcete upravit, podržte ji.</translation>
 <translation id="8725066075913043281">Zkusit znovu</translation>
 <translation id="8731268612289859741">Bezpečnostní kód</translation>
@@ -1730,6 +1719,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="1174893863889683998">Odstranit vaši aktivitu v Chromu z digitální rovnováhy?</translation>
 <translation id="8942627711005830162">Otevřít v jiném okně</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> – Tento jazyk se nepodařilo stáhnout. Zkuste to znovu později.</translation>
+<translation id="8946759102391960088">Nepřijděte o svá hesla</translation>
 <translation id="85151160756468368">Pokud chcete zachovat přístup ke svým heslům, exportujte je a poté je importujte do preferovaného správce hesel. Správce hesel Brave přestal fungovat, protože služby Google Play nejsou k dispozici.</translation>
 <translation id="8963117664422609631">Přejít do nastavení webu</translation>
 <translation id="8965591936373831584">nevyřízeno</translation>
@@ -1748,6 +1738,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="9022871169049522985">Weby a inzerenti mohou měřit výkon svých reklam</translation>
 <translation id="9035378196785279980">Přesunout do\u2026</translation>
 <translation id="9042893549633094279">Ochrana soukromí a zabezpečení</translation>
+<translation id="1612219807314383628">Rychlé zahájení vyhledávání v Chromu</translation>
 <translation id="9050666287014529139">Heslová fráze</translation>
 <translation id="9055497320631373736">Web byl přidán zpět mezi potenciální weby</translation>
 <translation id="9057030985451135243">Další informace o sdílených skupinách karet</translation>
@@ -1808,6 +1799,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="970715775301869095">Zbývá: <ph name="MINUTES"/> min</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="983192555821071799">Zavřít všechny karty</translation>
+<translation id="5022280646675126732">Hesla ve vašem účtu Brave nelze zkontrolovat</translation>
 <translation id="987264212798334818">Všeobecné</translation>
 <translation id="992745192656291733">Počet karet: <ph name="TAB_COUNT"/></translation>
 <translation id="996149300115483134">Nabídka karty informačních kanálů je zavřená</translation>
@@ -1815,6 +1807,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="79269250264141507">Když zadáváte text do adresního řádku nebo vyhledávacího pole, Brave zasílá vámi psaný text do vašeho výchozího vyhledávače, aby byla zobrazena lepší doporučení. To je v soukromém režimu vypnuto.</translation>
 <translation id="5711390076756601471">Zamknout soukromé záložky při opuštění prohlížeče Brave</translation>
 <translation id="1014490034578104945">Použít zámek obrazovky pro zobrazení otevřených soukromých záložek</translation>
+<translation id="383007806262310953">Zobrazit lištu záložek</translation>
 <translation id="5722020415664104421">Blokovat při používání soukromého režimu</translation>
 <translation id="8915136961932734044">V soukromém režimu nemohou weby využívat soubory cookie ke sledování vaší aktivity při procházení různých webů, například k přizpůsobení reklam. Funkce některých webů mohou přestat fungovat.</translation>
 <translation id="2589970573128789862">Soukromé Brave</translation>
@@ -1841,6 +1834,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, soukromá karta</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/>, vybraná soukromá karta</translation>
 <translation id="2280910239864711607">Otevřít novou kartu v soukromém režimu</translation>
+<translation id="1203189419326478388">Zobrazit nebo skrýt záložky</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> anonymní záložka}
           other {<ph name="TAB_COUNT_NORMAL"/> anonymní záložky}}</translation>
@@ -1858,6 +1852,7 @@ Pokud toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohl
 <translation id="7096147642287317420">Dotkněte se a podržte pro zrušení režimu Soukromé</translation>
 <translation id="2331163878318921124">Dvojitě klepněte a podržte pro zrušení režimu Soukromé</translation>
 <translation id="3947065058794437451">Anonymní procházení není na tomto zařízení dostupné</translation>
+<translation id="5270319788820204019">Vyhledávání pomocí klávesnice, hlasu, soukromého režimu nebo fotoaparátu</translation>
 <translation id="3095878721037212218">Budete moci snadno spravovat ovládání médií, soukromé relace, stahování a další funkce.</translation>
 <translation id="5129323533070334129">Uložit heslo mimo soukromé?</translation>
 <translation id="4325212706000356062">Prohledat soukromé karty</translation>

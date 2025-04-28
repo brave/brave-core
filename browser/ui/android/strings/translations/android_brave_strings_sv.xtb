@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Visa webbläsarförslag</translation>
 <translation id="8982438328166986164">Visa förslag på webbplatser baserat på dina bokmärken och webbhistorik.</translation>
 <translation id="924029461438529367">Visa sök förslag</translation>
-<translation id="1571106259128580884">Visa förslag på bästa webbplatser</translation>
+<translation id="5989135139219497991">Visa bästa förslag</translation>
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="412411722208944922">Snabba sökmotorer</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Hjälp Brave Sök att växa</translation>
 <translation id="7044431516245362795">Gå in på Web Discovery Project för att hjälpa till att utöka indexet och förbättra sökresultaten. <ph name="LEARN_MORE_START"/>Läs mer.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Ok, jag hjälper till.</translation>
-<translation id="2877653791257935258">Ange ett webbplatsnamn eller URL</translation>
-<translation id="5329830149661250028">Se Brave-skillnaden: Inga annonser. Inga spårare. Mycket snabbare hämtning av sidor.</translation>
-<translation id="3941792073703079607">Se den modiga skillnaden: Blockera annonser. Spara data. Streama snabbare.</translation>
 <translation id="3545804467215833536">Tryck för att visa Brave Shields</translation>
 <translation id="1724327820822194498">Se alla dåliga saker som Brave har blockerat, på varje sida, med Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> och <ph name="TRACKER"/> andra annonser och spårare har blockerats</translation>
@@ -504,6 +501,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5299848999918506028">Tack!</translation>
 <translation id="76550953340008122">Tack för att du lät Braves utvecklare veta att något är fel på denna webbplats. Vi ska göra vårt bästa för att fixa det!</translation>
 <translation id="650318023204990401">Avancerade kontroller</translation>
+<translation id="7205939464631857223">Rensa alla blockerade element</translation>
 <translation id="5370478469168390143">Spara data online</translation>
 <translation id="1118508688433541158">Surfa snabbare och blocka annonser med Brave</translation>
 <translation id="7427391215172269363">Varje dag sparar jag data genom att surfa på webben med Brave.</translation>
@@ -1029,7 +1027,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5888208462949095139">Sök med <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Startskärmswidget</translation>
 <translation id="703185154752046151">Widget tillagd på startskärmen</translation>
-<translation id="3290805388004282161">Prova Braves sökwidget</translation>
+<translation id="4635094429202343515">Prova Brave Sök-widget</translation>
 <translation id="4809681171446727314">Få tillgång till privat, oberoende sökning direkt från din startskärm.</translation>
 <translation id="7751715172931488388">Lägg till widget</translation>
 <translation id="7285167584112910782">Brave-snabbsökning</translation>
@@ -1096,6 +1094,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1179407411385015942">Leo är en AI-driven smart assistent som är inbyggd direkt i webbläsaren</translation>
 <translation id="5781842473834867765">Spara min konversationshistorik</translation>
 <translation id="4109670531935487117">Visa textförslag i adressfältet</translation>
+<translation id="4983005227524068187">Visa i fältet för snabbsökningsmotorer</translation>
+<translation id="8514910864411336826">Aktiverar en genväg för att starta Leo från fältet för snabbsökningsmotorer.</translation>
 <translation id="6106701981952170121">Ta bort alla konversationsdata från Leo AI</translation>
 <translation id="423600389315522551">Återställning av Leo AI kommer att kräva att du väljer att använda Brave Leo AI i framtiden och kommer också att rensa din chatthistorik. Om du rensar din chatthistorik raderas alla dina tidigare konversationer med Brave Leo AI. Denna åtgärd kan inte ångras.</translation>
 <translation id="6742599753610126012">Rensa chatthistorik</translation>
@@ -1218,11 +1218,12 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6891382640886173702">Slå samman fönster</translation>
 <translation id="2912247081180973411">Stäng fönster</translation>
 <translation id="4010699428656610296">Slå samman andra flikar till ett annat Brave-fönster.</translation>
-<translation id="208634871997892083">VPN alltid aktiv</translation>
+<translation id="4306918392910017801">Automatiskt återanslut VPN</translation>
 <translation id="1599073346542156922">Så här aktiverar du:</translation>
 <translation id="7001163334415463127">1. Öppna enhetens inställningar från applistan eller tryck på knappen nedan.</translation>
 <translation id="887443138775437899">2. Leta upp Brave VPN och tryck på ikonen för inställningarna till höger.</translation>
-<translation id="3776051499611941773">3. Växla till <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN alltid aktiv<ph name="ALWAYS_ON_TUTORIAL_END"/> för att aktivera den.</translation>
+<translation id="7546805138087561624">3. Växla till <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN alltid aktiv<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> för att aktivera den.</translation>
+<translation id="2446001600399646984">Observera att "Blockera anslutningar utan VPN" inte fungerar som förväntat på grund av Android-begränsningar. <ph name="LEARN_MORE_START"/>Läs mer.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Öppna Android-inställningarna</translation>
 <translation id="2728518864712716830">Uppdateringen har laddats ned.</translation>
 <translation id="8403338849301491865">Filterlistan har uppdaterats</translation>
@@ -1232,4 +1233,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chatthistorik</translation>
 <translation id="6859935199732075666">Visa fel i Säker surfning</translation>
+<translation id="2735247450315842119">Tillåt skärmdumpar i privata flikar</translation>
+<translation id="8420414929552321089">Om det är tillåtet kommer privata flikar även att vara synliga när flera appar är öppna.</translation>
 </translationbundle>

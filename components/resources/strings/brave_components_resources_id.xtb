@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Ini adalah</translation>
 <translation id="2055363275850890030">Jendela Pribadi</translation>
 <translation id="9133213713928851646">Brave tidak mengingat apa yang Anda lakukan di Jendela Pribadi. Situs-situs yang Anda kunjungi tidak akan muncul di riwayat, dan kuki menghilang saat Anda selesai. Namun Jendela Pribadi tidak menjadikan Anda sepenuhnya anonim saat daring.</translation>
-<translation id="4085423007106063912">Brave tidak pernah mengingat hal yang Anda lakukan di Jendela Privat. Situs yang Anda kunjungi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan lenyap saat Anda menutup jendela.</translation>
+<translation id="4491905831789757331">Brave tidak pernah mengingat hal yang Anda lakukan di Jendela Privat. Situs yang dikunjungi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan lenyap saat Anda menutup semua jendela privat yang terbuka.</translation>
 <translation id="1700746046668116047">Perhatikan bahwa aktivitas Anda tetap dapat diketahui oleh penyedia layanan internet Anda, pengamat jaringan pasif, atau atasan Anda (jika Anda menggunakan mesin atau jaringan di kantor). Untuk mendapatkan privasi yang lebih baik, bukalah jendela privat dengan menggunakan Tor.</translation>
 <translation id="8759753423332885148">Pelajari lebih lanjut.</translation>
 <translation id="8611976753572844841">Jendela Privat dengan konektivitas Tor</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Tampilkan riwayat</translation>
 <translation id="5030659775136592441">Tampilkan pengelola markah</translation>
 <translation id="6919203766034706175">Impor pengaturan</translation>
+<translation id="290553639533591736">Focus Gemini Live</translation>
 <translation id="6159704524780747483">Buka Obrolan AI</translation>
 <translation id="1199430163665775722">Sunting mesin pencarian</translation>
 <translation id="4276265845501430443">Tampilkan bantuan</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Ringkas video ini</translation>
 <translation id="7921782882718083488">Ringkas halaman ini</translation>
 <translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
+<translation id="8743383817154663379">Terjadi kesalahan saat memproses permintaan Anda. Coba lagi nanti.</translation>
 <translation id="2712650703044366764">Model ini punya titik akhir yang tidak valid. Cek konfigurasi dan coba lagi.</translation>
 <translation id="1167803637855350748">Terdapat masalah jaringan untuk terhubung dengan Leo, periksa kembali koneksi Anda dan coba lagi.</translation>
 <translation id="1996126325390835277">Anda telah mencapai batas tingkat premium. Silakan coba lagi dalam beberapa jam.</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">Kunci API yang dikonfigurasi untuk model ini tidak valid. Periksa konfigurasi Anda dan coba lagi.</translation>
 <translation id="7905602379229309187">Bagian titik akhir saat ini kelebihan beban. Coba lagi nanti.</translation>
 <translation id="8151638057146502721">Konfigurasi</translation>
-<translation id="4177458398826096846">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Hai, saya Leo. Saya asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berkinerja dan bisa dipakai di segala situasi. <ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Mixtral 8x7B, model yang dibuat AI Mistral untuk menangani tugas-tugas lanjutan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Hai, saya Leo, saya diproksikan oleh Brave dan didukung oleh Claude Instant, model yang dibuat Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. <ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Sonnet, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. <ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> oleh <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Mixtral 8x7B, model yang diciptakan oleh Mistral AI untuk menangani tugas-tugas tingkat lanjut. Mixtral dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Instant, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Instant dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Haiku dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Sonnet, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Sonnet dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama Vision, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama Vision dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Obrolan</translation>
 <translation id="4685048769603134644">Buka halaman penuh</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">Berhenti menjawab</translation>
 <translation id="8712637175834984815">Mengerti</translation>
 <translation id="1093419424466417703">Halaman ini terlalu panjang untuk Leo. Sebagian konteksnya mungkin hilang dari percakapan. Leo mampu membaca <ph name="PERCENTAGE"/> dari isi halaman.</translation>
+<translation id="4592293425457329338">Beberapa konteks dapat hilang dalam percakapan. Leo dapat mempertahankan <ph name="PERCENTAGE"/> pokok bahasan yang terkait dalam percakapan.</translation>
 <translation id="2186990448773134544">Konten halaman telah disempurnakan dengan mengekstraksi informasi yang paling relevan dari halaman tersebut karena terlalu panjang untuk Leo.</translation>
 <translation id="5140068729857132378">Menemukan bagian yang relevan dari halaman web...</translation>
 <translation id="4370698775470316661">Percakapan ini terlalu panjang dan tidak dapat dilanjutkan. Mungkin ada model lain yang tersedia yang memungkinkan Leo untuk menjaga akurasi percakapan yang lebih panjang.</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">Obrolan secepat kilat</translation>
 <translation id="2836330653441111204">Kecepatan yang seimbang dengan kecerdasan</translation>
 <translation id="6695329447007213917">Obrolan umum, koding, dan lainnya</translation>
+<translation id="5051668914970329839">Visi tujuan umum</translation>
 <translation id="3965507912994218570">Pengaturan Leo</translation>
 <translation id="1037324977127422019">Hai, saya Leo!</translation>
 <translation id="8930348081963284873">Asisten cerdas yang didukung AI, dibangun langsung ke dalam Brave.</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">Media sosial</translation>
 <translation id="2370739752330685659">Mungkin nanti</translation>
 <translation id="983013125018250242">Alat Leo</translation>
+<translation id="7623223587478473368">Lampiran</translation>
+<translation id="3777121685517940177">Unggah file...</translation>
+<translation id="9088751620363630236">Ambil gambar...</translation>
+<translation id="4250229828105606438">Tangkapan layar</translation>
+<translation id="6332876390231524389">Isi tab saat ini</translation>
 <translation id="49269513399674318">Gunakan mikrofon</translation>
 <translation id="3895031624234442305">Model khusus</translation>
 <translation id="4572010449071015143">Memulai percakapan baru</translation>
 <translation id="345901077335355561">Kembali ke percakapan aktif</translation>
 <translation id="6287023598025162715">Percakapan baru</translation>
+<translation id="8370801182970639038">Otomatis (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Mesin penelusuran diaktifkan</translation>
+<translation id="5355776323718420036">Sembunyikan situs teratas</translation>
+<translation id="6543799171249004861">Foto oleh <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Tanya Brave Penelusuran</translation>
+<translation id="6851426306697017546">Tampilkan jam</translation>
+<translation id="4844370919312937270">Tampilkan widget penelusuran di tab baru</translation>
+<translation id="5009354496127441090">Tampilkan situs teratas</translation>
+<translation id="4784802981241664605">STAT</translation>
+<translation id="4290791698375397492">Situs teratas dihapus</translation>
+<translation id="1436784010935106834">Dihapus</translation>
+<translation id="9030215177866748410">Situs teratas diusulkan berdasarkan situs web yang sering Anda kunjungi.</translation>
 <translation id="6303294677342628402">Pelindung</translation>
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
 <translation id="7509914170164691086">Perisai sedang AKTIF <ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">Mengubah pengaturan ini dapat merusak situs.</translation>
 <translation id="9204041448536398473">Pengaturan Shield Global</translation>
 <translation id="2108334320919763866">Bawaan global</translation>
+<translation id="7205939464631857223">Hapus semua elemen yang diblokir</translation>
 <translation id="3440043456924990296">Pengaturan yang dikelola organisasi</translation>
 <translation id="7053983685419859001">Blokir</translation>
 <translation id="5716230673298034837">Izinkan semua</translation>

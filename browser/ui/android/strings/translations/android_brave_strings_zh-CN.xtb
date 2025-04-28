@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">显示浏览器建议</translation>
 <translation id="8982438328166986164">根据您的书签和浏览历史显示网站建议。</translation>
 <translation id="924029461438529367">显示搜索建议</translation>
-<translation id="1571106259128580884">显示顶级网站建议</translation>
+<translation id="5989135139219497991">显示热门建议</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="412411722208944922">快速搜索引擎</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">帮助 Brave 搜索不断进步</translation>
 <translation id="7044431516245362795">选择加入网络发现项目，帮助我们增加索引并优化搜索结果。<ph name="LEARN_MORE_START"/>了解更多。<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">没问题，我愿意协助</translation>
-<translation id="2877653791257935258">输入网站名称或 URL</translation>
-<translation id="5329830149661250028">看到 Brave 的不同之处：没有广告、没有跟踪器，而且页面加载速度更快。</translation>
-<translation id="3941792073703079607">查看 Brave 会有什么不同：可屏蔽广告、保存数据，且流速更快。</translation>
 <translation id="3545804467215833536">轻击以查看 Brave 防护盾</translation>
 <translation id="1724327820822194498">使用防护盾可在每一个页面上查看 Brave 阻止的所有不良内容。</translation>
 <translation id="5386259141409498372">已阻止 <ph name="BIG_TECH"/> 和其他 <ph name="TRACKER"/> 个广告和跟踪器</translation>
@@ -504,6 +501,7 @@
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
 <translation id="650318023204990401">高级控制</translation>
+<translation id="7205939464631857223">清除所有已屏蔽的元素</translation>
 <translation id="5370478469168390143">在线保存数据</translation>
 <translation id="1118508688433541158">利用 Brave 更快速的流量并能拦截广告</translation>
 <translation id="7427391215172269363">我每天都用 Brave 浏览网页，节省数据。</translation>
@@ -1029,7 +1027,7 @@
 <translation id="5888208462949095139">用<ph name="DEFAULT_SEARCH_ENGINE"/>查找</translation>
 <translation id="5456039738087398178">主屏幕小部件</translation>
 <translation id="703185154752046151">添加到主屏幕的小部件</translation>
-<translation id="3290805388004282161">尝试 Brave 搜索小部件</translation>
+<translation id="4635094429202343515">尝试 Brave 搜索小部件</translation>
 <translation id="4809681171446727314">从您的主屏幕访问私人、独立搜索的权利。</translation>
 <translation id="7751715172931488388">添加小部件</translation>
 <translation id="7285167584112910782">Brave 快捷搜索</translation>
@@ -1096,6 +1094,8 @@
 <translation id="1179407411385015942">Leo 是采用 AI 技术的智慧助理，内置于浏览器中。</translation>
 <translation id="5781842473834867765">保存我的对话记录</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
+<translation id="4983005227524068187">在快速搜索引擎栏显示</translation>
+<translation id="8514910864411336826">启用快捷方式，从快速搜索引擎栏启动 Leo。</translation>
 <translation id="6106701981952170121">删除所有 Leo AI 对话数据</translation>
 <translation id="423600389315522551">重置 Leo AI 将要求您选择在未来使用 Brave
 Leo AI，并清除您的聊天记录。清除您的
@@ -1221,11 +1221,12 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="6891382640886173702">合并窗口</translation>
 <translation id="2912247081180973411">关闭窗口</translation>
 <translation id="4010699428656610296">请将其他标签页合并至另一个 Brave 窗口。</translation>
-<translation id="208634871997892083">总是打开 VPN</translation>
+<translation id="4306918392910017801">自动重新连接 VPN</translation>
 <translation id="1599073346542156922">如何打开此功能：</translation>
 <translation id="7001163334415463127">1. 从应用程序抽屉开始设备的设置，或点击下列按钮。</translation>
 <translation id="887443138775437899">2. 找到 Brave VPN，点击右侧的设置图标。</translation>
-<translation id="3776051499611941773">3. 切换 <ph name="ALWAYS_ON_TUTORIAL_START"/>总是打开 VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> 以启用此选项。</translation>
+<translation id="7546805138087561624">3. 切换 <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>总是打开 VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> 以启用此选项。</translation>
+<translation id="2446001600399646984">请注意，由于 Android 的限制，“在没有 VPN 的情况下阻止连接 ”无法正常工作。 <ph name="LEARN_MORE_START"/>了解更多信息。<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">打开 Android 设置</translation>
 <translation id="2728518864712716830">已下载更新。</translation>
 <translation id="8403338849301491865">筛选器列表更新成功</translation>
@@ -1235,4 +1236,6 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="2361906291514218784">Leo 人工智能</translation>
 <translation id="7942415993090181327">聊天记录</translation>
 <translation id="6859935199732075666">显示安全浏览时出错</translation>
+<translation id="2735247450315842119">允许在无痕标签页中截图</translation>
+<translation id="8420414929552321089">如果允许，在打开多个应用程序时，无痕标签页也将可见。</translation>
 </translationbundle>

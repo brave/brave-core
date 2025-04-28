@@ -31,10 +31,10 @@
 <translation id="1055184225775184556">&amp;Anuliuoti pridėjimą</translation>
 <translation id="1056898198331236512">Įspėjimas</translation>
 <translation id="1248991947169346185"><ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite žaisti žaidimą „Dino Run“ naršyklėje „Brave“.</translation>
-<translation id="1058479211578257048">Išsaugomos kortelės...</translation>
 <translation id="1060136083665017312">Žaidimų sistemos ir pultai</translation>
 <translation id="1060320201901229167">„Kaku 5“ vokas</translation>
 <translation id="1062407476771304334">Pakeisti</translation>
+<translation id="1063822554756965137">Failai sėkmingai ištrinti</translation>
 <translation id="1064054731605354900">A3x5</translation>
 <translation id="1067029985695494416">Išsami paieškos variklio informacija</translation>
 <translation id="1068672505746868501">Niekada neversti puslapių, parašytų <ph name="SOURCE_LANGUAGE"/></translation>
@@ -53,7 +53,6 @@
 <translation id="1090629319939036170">VR meniu</translation>
 <translation id="1091463901118115503">Skaityti toliau</translation>
 <translation id="1091779689406092804">ekrano kopijas</translation>
-<translation id="1094777233105318927">Informacija apie jūsų naršyklę, OS, įrenginį, įdiegtą programinę įrangą ir failus</translation>
 <translation id="1096545575934602868">Šiame lauke negali būti daugiau nei <ph name="MAX_ITEMS_LIMIT"/> įraš. Visi šį apribojimą viršijantys įrašai bus atmesti.</translation>
 <translation id="1097803577928227769">Regioniniai parkai ir sodai</translation>
 <translation id="1099928364755383720">automatinis vaizdas vaizde</translation>
@@ -71,7 +70,6 @@
 <translation id="1122714970786750095">Elektronikos ir elektros prekės</translation>
 <translation id="1123753900084781868">Subtitrų realiuoju laiku funkcija dabar nepasiekiama</translation>
 <translation id="1125453215844207206">Nepažymėtas grafinis elementas. Tekstas išskiriamas pagal „Brave“ DI</translation>
-<translation id="1125573121925420732">Kol atnaujinami svetainių saugos nustatymai, gali būti dažnai rodomi įspėjimai. Netrukus tai turėtų būti išspręsta.</translation>
 <translation id="112840717907525620">Gera politikos talpykla</translation>
 <translation id="1131264053432022307">Nukopijuotas vaizdas</translation>
 <translation id="1138458427267715730">Gaukite įspėjimus, kai kaina sumažės bet kurioje žiniatinklio svetainėje</translation>
@@ -115,6 +113,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1195073053842921378">Šis adresas bus ištrintas iš šio įrenginio</translation>
 <translation id="1195558154361252544">Pranešimai automatiškai blokuojami visose svetainėse, išskyrus svetaines, kuriose leidote rodyti</translation>
 <translation id="1197088940767939838">Oranžinė</translation>
+<translation id="1198412233443148072"><ph name="MEMBER_FIRST_NAME"/> pašalino skirtuką „<ph name="WEBSITE_TITLE"/>“</translation>
 <translation id="1201402288615127009">Kitas</translation>
 <translation id="1201895884277373915">Daugiau iš šios svetainės</translation>
 <translation id="1202892408424955784">Stebimi produktai</translation>
@@ -137,6 +136,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1230244617745022071"><ph name="SOURCE"/> (aptikta automatiškai)</translation>
 <translation id="1232569758102978740">Be pavadinimo</translation>
 <translation id="1236081509407217141">Leisti VR?</translation>
+<translation id="1236689197410206751">AfterPay</translation>
 <translation id="1240347957665416060">Įrenginio pavadinimas</translation>
 <translation id="124116460088058876">Daugiau kalbų</translation>
 <translation id="1243027604378859286">Autorius:</translation>
@@ -145,6 +145,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1253846494229886276">Išsaugoma ekrano kopija</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (sinchronizuota)</translation>
 <translation id="1255086252236620440">Maisto maišytuvai</translation>
+<translation id="1255931290436977164">Pasas</translation>
 <translation id="1256368399071562588">&lt;p&gt;Jei bandote apsilankyti svetainėje, bet nepavyksta jos atidaryti, pirma pabandykite ištaisyti klaidą atlikdami toliau nurodytus trikčių šalinimo veiksmus.&lt;/p&gt;
     &lt;ol&gt;
     &lt;li&gt;Patikrinkite, ar žiniatinklio adrese nėra rašybos klaidų.&lt;/li&gt;
@@ -157,6 +158,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1264309058268477500">Alternatyvus</translation>
 <translation id="1264974993859112054">Sportas</translation>
 <translation id="1268480293435976622">Nr. 7 kinietiškas vokas</translation>
+<translation id="1269045546668906972">Įjunkite automatinį pildymą naudojant DI, kad automatiškai užpildytumėte daugiau laukų</translation>
 <translation id="53564677632020212">Greitai sukurkite naują svetainę „Brave“ svetainėse</translation>
 <translation id="1270328905573953738">Persikraustymas</translation>
 <translation id="1270502636509132238">Paėmimo metodas</translation>
@@ -219,7 +221,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1363028406613469049">Takelis</translation>
 <translation id="1364822246244961190">Ši politika blokuojama, jos vertės bus nepaisoma.</translation>
 <translation id="1368318639262510626">Dinozauro žaidimas. Pikseliais atvaizduotas dinozauras bėga per dykynę ir bando išvengti kaktusų ir pterodaktilių. Išgirdę garsinį signalą, paspauskite tarpo klavišą, kad peršoktumėte per kliūtis.</translation>
-<translation id="1369735141991626842">Laukų užpildymas naudojant DI</translation>
 <translation id="1374468813861204354">pasiūlymai</translation>
 <translation id="1375198122581997741">Apie versiją</translation>
 <translation id="1375293861397106342">Visos parinktys paprastai <ph name="LOW_PRICE"/>–<ph name="HIGH_PRICE"/></translation>
@@ -294,7 +295,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1492194039220927094">Politikos gavimas:</translation>
 <translation id="1495677929897281669">Atgal į skirtuką</translation>
 <translation id="1500286806237135498">Fotoaparatai (<ph name="CAMERAS_COUNT"/>)</translation>
-<translation id="1812569385220097122">Rodyti korteles iš „Brave“ paskyros</translation>
 <translation id="1504042622576912555">Kaneliūra</translation>
 <translation id="1507202001669085618">&lt;p&gt;Ši klaida rodoma, jei naudojate „Wi-Fi“ portalą, prie kurio reikia prisijungti, kad galėtumėte naudotis internetu.&lt;/p&gt;
     &lt;p&gt;Kad ištaisytumėte šią klaidą, puslapyje, kurį bandote atidaryti, spustelėkite &lt;strong&gt;Prisijungti&lt;/strong&gt;.&lt;/p&gt;</translation>
@@ -312,7 +312,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1532118530259321453">Šiame puslapyje nurodyta:</translation>
 <translation id="1533966801397200693">Profilis, prie kurio esate prisijungę, yra tvarkomas profilis. Administratorius gali nuotoliniu būdu keisti profilio nustatymus, analizuoti informaciją apie naršyklę pateikdamas ataskaitas ir atlikti kitas reikiamas užduotis. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="1536390784834419204">Versti puslapį</translation>
-<translation id="1538295100801850685">Numatymo patobulinimai</translation>
 <translation id="1539840569003678498">Ataskaita išsiųsta:</translation>
 <translation id="1542105669288201090">Verslo studijos</translation>
 <translation id="1545757265410828525">Kainų istorija</translation>
@@ -384,6 +383,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1644574205037202324">Istorija</translation>
 <translation id="1645004815457365098">Nežinomas šaltinis</translation>
 <translation id="1645368109819982629">Nepalaikomas protokolas</translation>
+<translation id="1647550855876293003"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_OWNER"/></translation>
 <translation id="1995056549836388472">Tvarkykite „Brave“ nustatymus</translation>
 <translation id="1652415888492971589">JIS B8</translation>
 <translation id="3549478477646243075">Jei norite naudoti Slaptažodžių tvarkyklę su „macOS Keychain“, iš naujo paleiskite „Brave“ ir leiskite „Keychain“ prieigą. Paleidus iš naujo skirtukai bus atidaryti iš naujo.</translation>
@@ -406,7 +406,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1689333818294560261">Slapyvardis</translation>
 <translation id="1692622044604477956">Filmų sąrašai ir kino teatrų repertuaras</translation>
 <translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Kaip galite tvarkyti savo duomenis:<ph name="END_BOLD"/> „Brave“ automatiškai ištrina senesnes nei keturių savaičių temas. Jums naršant toliau, tema gali būti vėl rodoma sąraše. Taip pat galite blokuoti temas, kurių „Brave“ neturėtų bendrinti su svetainėmis, ir bet kuriuo metu išjungti skelbimų temas „Brave“ nustatymuose.</translation>
-<translation id="1697532407822776718">Viskas nustatyta!</translation>
 <translation id="4030336595318918117">Dabar galite naudoti adresus iš „Brave“ paskyros</translation>
 <translation id="1700542542921501212">Galite naudoti „<ph name="SEARCH_ENGINE_NAME"/>“, jei norite ieškoti žiniatinklyje.</translation>
 <translation id="1702815194757674443">ROC 16K</translation>
@@ -440,7 +439,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1734878702283171397">Pabandykite susisiekti su sistemos administratoriumi.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, „<ph name="CARD_NETWORK_NAME"/>“, <ph name="CARD_LAST_FOUR_DIGITS"/>, galioja iki <ph name="CARD_EXPIRATION"/></translation>
 <translation id="1736420071277903564">Kompiuteris</translation>
-<translation id="1739422091279046802">slinkimas ir mastelio keitimas</translation>
 <translation id="1741613555002899862">Kai „DnsOverHttpsMode“ yra „<ph name="SECURE_DNS_MODE_SECURE"/>“, turi būti nurodyta ir tinkama eilutė.</translation>
 <translation id="1743393865165844832">Patalynė ir lovų audiniai</translation>
 <translation id="1743892871127720056">Palyginimo lentelės pavadinimas, redaguoti tekstą</translation>
@@ -503,6 +501,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1846432862466000825">Plastikas (archyvinis)</translation>
 <translation id="1848640291751752317">atsisiuntimus</translation>
 <translation id="1848982255014129637">Fotopopierius (itin blizgus)</translation>
+<translation id="1849438148665368129">Pirkinio vertė turi būti mažesnė nei <ph name="CHECKOUT_AMOUNT_MAXIMUM"/></translation>
 <translation id="1853392626017747777">Virtualiosios kortelės registracijos langas uždarytas</translation>
 <translation id="1854180393107901205">Sustabdyti perdavimą</translation>
 <translation id="1855370856221982654">Boksas</translation>
@@ -536,7 +535,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1919526244108283799">400 x 600 mm</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Nėra}=1{1 svetainė}one{# svetainė}few{# svetainės}many{# svetainės}other{# svetainių}}</translation>
 <translation id="192095259937375524">Mygtukas „Bendrinti šį skirtuką“; suaktyvinkite, jei norite bendrinti šį skirtuką bendrindami nuorodą, sukurdami QR kodą, perduodami turinį ir kt.</translation>
-<translation id="1921479021518565778">Pasiūlymai įkelti</translation>
 <translation id="1924727005275031552">Naujas</translation>
 <translation id="1927439846988093361">Plaukų priežiūra</translation>
 <translation id="1935353813610900265">Siųsti atsiliepimus apie DI teikiamą istorijos paiešką</translation>
@@ -567,6 +565,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="1975584088563498795">10 pašto dėžutė</translation>
 <translation id="1978555033938440688">Programinės aparatinės įrangos versija</translation>
 <translation id="1979156660928743046">Medijos informacija</translation>
+<translation id="8152900367508796729">Jūsų paieškos, geriausios atitiktys ir jų puslapių turinys siunčiami „Brave“. Tikrinantys žmonės šių duomenų nenaudos DI tobulinti. Organizacija gali bet kada pakeisti šiuos nustatymus.</translation>
 <translation id="1988881251331415125">Jei parašyta tinkamai, <ph name="BEGIN_LINK"/>pabandykite paleisti ryšio diagnostiką<ph name="END_LINK"/>.</translation>
 <translation id="1992331125980284532">JIS B3</translation>
 <translation id="1997484222658892567"><ph name="URL"/> prašo leidimo nuolat saugoti daug duomenų vietiniame kompiuteryje</translation>
@@ -600,6 +599,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2040894699575719559">Vietovė užblokuota</translation>
 <translation id="2041788246978549610">Naudoti pasiekiamus mikrofonus (<ph name="MICS_COUNT"/>)</translation>
 <translation id="2042213636306070719">7 dėklas</translation>
+<translation id="2043896419861982462">Jei norite paslėpti mokėjimo per tam tikrą laiką parinktis, eikite į <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/></translation>
 <translation id="2045871135676061132">Asmeninis vokas</translation>
 <translation id="2046951263634619614">Knygų mažmenininkai</translation>
 <translation id="2048261947532620704">Verčiamas puslapis</translation>
@@ -624,6 +624,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2082238445998314030">Rezultatų: <ph name="RESULT_NUMBER"/> iš <ph name="TOTAL_RESULTS"/></translation>
 <translation id="2083256696566019397">Leisti per kiekvieną apsilankymą</translation>
 <translation id="2085876078937250610">Išsaugoti…</translation>
+<translation id="2090451897496479509">Jei reikia daugiau informacijos, susisiekite su teikėju</translation>
 <translation id="2091887806945687916">Garsas</translation>
 <translation id="4871965986998315786">„Brave“ bando išjungti „Windows Hello“ slaptažodžiams užpildyti.</translation>
 <translation id="2094505752054353250">Domeno neatitikimas</translation>
@@ -690,7 +691,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2187317261103489799">Aptikti (numatytoji parinktis)</translation>
 <translation id="2188375229972301266">Kelios skylės apačioje</translation>
 <translation id="2194856509914051091">Į ką reikėtų atsižvelgti</translation>
-<translation id="2198071643181968308">Sužinokite daugiau apie „<ph name="BNPL_ISSUER_NAME"/>“</translation>
 <translation id="2200678913752027654">Mygtukas „Nepatinka“; paspauskite „Enter“, kad atidarytumėte formą ir pateiktumėte išsamų atsiliepimą apie tai, kodėl jums nepatinka šis pasiūlymas</translation>
 <translation id="2202627062836089804">užpakalinėje kortelės dalyje</translation>
 <translation id="2204482073374652408">Atnaujinimas baigtas!</translation>
@@ -756,9 +756,12 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2293443924986248631">Įjungus svetainės negalės naudoti slapukų, kurie stebi jūsų veiklą žiniatinklyje. Funkcijos gali neveikti tam tikrose svetainėse.</translation>
 <translation id="2295831393422400053">Įjunkite nustatymą „Tobulinti paieškas ir naršymą“, kad galėtumėte naudoti funkciją „Padėkite man rašyti“</translation>
 <translation id="2296244067976588032">Prieigos raktas • „iCloud Keychain“</translation>
+<translation id="2296331629987861142">Mokėkite nedidelėmis dalimis (taikomi tinkamumo kriterijai ir mokesčiai)</translation>
 <translation id="2300306941146563769">Neįkelta</translation>
 <translation id="2301098101308036335">Kokiose svetainėse lankomasi ir kada.</translation>
+<translation id="2305294852062272447">Išsaugoti vairuotojo pažymėjimą?</translation>
 <translation id="2306124309679506798">Leisti įtraukiančią patirtį?</translation>
+<translation id="2139786916734654358">Jūsų namų ir darbo adresai dabar pasiekiami naršyklėje „Brave“</translation>
 <translation id="2312234273148520048">Prieskoniai ir padažai</translation>
 <translation id="2316087952091171402">Mažiau nei <ph name="UPPER_ESTIMATE"/>. Per kitą apsilankymą kai kurios svetainės gali būti įkeltos gerokai lėčiau.</translation>
 <translation id="2316159751672436664">Suasmeninkite pritaikomumo įrankius „Brave“ OS nustatymuose</translation>
@@ -766,6 +769,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2317259163369394535"><ph name="DOMAIN"/> būtina įvesti naudotojo vardą ir slaptažodį.</translation>
 <translation id="2318594867107319532">Paskutinė politikos laiko žymė:</translation>
 <translation id="2320564945062300737">Veido priežiūros produktai</translation>
+<translation id="2321291402658100099">Tvarkyti informaciją</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{vieno lango}one{# lango}few{# langų}many{# lango}other{# langų}}</translation>
 <translation id="2328651992442742497">Leidžiama (numatytasis nustatymas)</translation>
 <translation id="2328955282645810595">Statyba ir elektriniai įrankiai</translation>
@@ -812,6 +816,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2395840535409704129">Vandens sportas</translation>
 <translation id="2396249848217231973">&amp;Anuliuoti ištrynimą</translation>
 <translation id="4124760202519850347">Šis IBAN išsaugotas jūsų „Brave“ paskyroje, kad galėtumėte jį naudoti „Brave“ paslaugose.</translation>
+<translation id="2400263725572336749">Paso pridėjimas</translation>
 <translation id="2400600116338235695">Gali būti prašoma prisijungti prie nuosekliųjų prievadų</translation>
 <translation id="2404884497378469141">Pabandykite dar kartą nukopijuoti failus</translation>
 <translation id="2413155254802890957">Senas</translation>
@@ -869,7 +874,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2518584823165598232">Ši kortelė nepasiekiama. Susisiekite su kortelę išdavusia įstaiga.</translation>
 <translation id="2521385132275182522">Sankabėlė apačioje dešinėje</translation>
 <translation id="2521736961081452453">Sukurti formą</translation>
-<translation id="2523886232349826891">Išsaugota tik šiame įrenginyje</translation>
 <translation id="2524461107774643265">Daugiau informacijos pridėjimas</translation>
 <translation id="2526062290525841862">Jei norite paleisti šią programą, iš naujo įgalinkite izoliuotos žiniatinklio programos kūrėjo režimą</translation>
 <translation id="5151177152796946073">Išsaugotus adresus galite naudoti „Brave“ produktuose. Šis adresas bus išsaugotas jūsų „Brave“ paskyroje (<ph name="ACCOUNT"/>).</translation>
@@ -883,6 +887,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3140033400151786080">Kiti šį įrenginį naudojantys žmonės nematys jūsų veiklos, todėl galėsite naršyti daugiau privačiai. Tai nepakeis, kaip lankomos svetainės ir naudojamos paslaugos, įskaitant „Brave“, renka duomenis. Atsisiuntimai ir žymės bus išsaugoti.</translation>
 <translation id="2539524384386349900">Aptikti</translation>
 <translation id="2542106216580219892">Banglenčių sportas</translation>
+<translation id="2543236854123609690"><ph name="ORIGIN"/> – jei norite išeiti iš viso ekrano režimo, paspauskite ir palaikykite |<ph name="ACCELERATOR"/>|</translation>
 <translation id="2544546346215446551">Administratorius iš naujo paleido jūsų įrenginį</translation>
 <translation id="2544644783021658368">Vienas dokumentas</translation>
 <translation id="5342827302598046226">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
@@ -955,6 +960,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2688186765492306706">500 x 760 mm</translation>
 <translation id="2688969097326701645">Taip, tęsti</translation>
 <translation id="2690699652723742414">Pastarosios 30 dienų</translation>
+<translation id="2691385045260836588">Modelis</translation>
 <translation id="2691924980723297736">Saugos įspėjimas</translation>
 <translation id="2697248912349197812">Paklauskite „<ph name="KEYWORD_SHORT_NAME"/>“</translation>
 <translation id="2699273987028089219">Pasiekiamas submeniu: norėdami naršyti papildomas parinktis, naudokite <ph name="SHORTCUT"/>.</translation>
@@ -990,6 +996,8 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2742128390261873684">Namų įrenginių automatizavimas</translation>
 <translation id="2742870351467570537">Pašalinti pasirinktus elementus</translation>
 <translation id="2743512410823092182">Muzikos renginių ir laidų vedėjams skirti ištekliai ir įranga</translation>
+<translation id="2743934314332613923">Atnaujinti vairuotojo pažymėjimą?</translation>
+<translation id="2759299890026163685">Prieš bandydami dar kartą įsitikinkite, kad interneto ryšys stabilus</translation>
 <translation id="2759825833388495838">užpildyti „<ph name="APP_NAME"/>“ slaptažodį</translation>
 <translation id="2764001903315068341">Komiksai</translation>
 <translation id="2765217105034171413">Mažas</translation>
@@ -1001,6 +1009,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2775884851269838147">Pirmas spausdinamas lapas</translation>
 <translation id="2781185443919227679">Paplūdimiai ir salos</translation>
 <translation id="2781692009645368755">Google Pay</translation>
+<translation id="2781799097551205934">Ruošiamasi atsiskaityti</translation>
 <translation id="2782088940970074970">Automobilių nuoma</translation>
 <translation id="278436560439594386">Namų apyvokos prietaisai</translation>
 <translation id="2784474685437057136">B5 Extra</translation>
@@ -1028,6 +1037,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2859383374160668142">Galite bet kada peržiūrėti sumažintas stebimų produktų kainas.</translation>
 <translation id="2859806420264540918">Šioje svetainėje rodomi nepageidaujami arba klaidinantys skelbimai.</translation>
 <translation id="28618371182701850">Elektra varomos ir įkraunamos transporto priemonės</translation>
+<translation id="287387905105155974">Pagalbos debesėlis</translation>
 <translation id="28761159517501904">Filmai</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>; paspauskite tabuliavimo klavišą, tada „Enter“, jei norite tvarkyti Saugaus naršymo ir kitus duomenis „Brave“ nustatymuose</translation>
 <translation id="2878197950673342043">Perlenkimas į keturias dalis</translation>
@@ -1038,6 +1048,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2882949212241984732">Perlenkimas viduryje su dviem atvartais</translation>
 <translation id="2893773853358652045">Ketvirtas ritinėlis</translation>
 <translation id="2894137550885451583">Tai yra produkto „<ph name="PRODUCT"/>“ <ph name="CURRENCY"/> kainos</translation>
+<translation id="2894233157216554317">Atnaujinti pasą?</translation>
 <translation id="2900528713135656174">Sukurti įvykį</translation>
 <translation id="2902312830803030883">Daugiau veiksmų</translation>
 <translation id="2903493209154104877">Adresai</translation>
@@ -1083,6 +1094,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2959274854674276289">Vegetariška virtuvė</translation>
 <translation id="2961809451460302960">Gyvybės draudimas</translation>
 <translation id="2962073860865348475">12 x 18 col.</translation>
+<translation id="2965779286557330949">Dar kelios sekundės...</translation>
 <translation id="2967082089043584472">Pridėta prie „<ph name="SET"/>“</translation>
 <translation id="2470357430970446202">išsaugokite „Brave“ paskyroje</translation>
 <translation id="297173220375858963">Stalinė leidyba</translation>
@@ -1108,6 +1120,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3005723025932146533">Rodyti išsaugotą kopiją</translation>
 <translation id="300580149047131921">Neseniai naudota</translation>
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite tabuliavimo klavišą, kad naršytumėte pasiekiamus veiksmus, tada paspauskite „Enter“, kad atliktumėte pasirinktą veiksmą.</translation>
+<translation id="3010991137650052245">Jei norite naudoti <ph name="PERMISSION"/> šioje svetainėje, suteikite „<ph name="SHORT_PRODUCT_NAME"/>“ prieigą</translation>
 <translation id="3013711734159931232">Namų ūkio reikmenys</translation>
 <translation id="3014553260345122294">Verslo naujienos</translation>
 <translation id="3014726756341138577">Išplėstinės spausdintuvo funkcijos</translation>
@@ -1118,6 +1131,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3023165109041533893">Svetainių siūlomi skelbimai padeda apsaugoti jūsų naršymo istoriją bei tapatybę, leisdami svetainėms rodyti jums aktualius skelbimus. Atsižvelgiant į jūsų veiklą, jums naršant toliau svetainė, kurioje lankėtės, gali siūlyti susijusius skelbimus. Galite peržiūrėti šių svetainių sąrašą ir užblokuoti nepageidaujamas svetaines nustatymuose.</translation>
 <translation id="3024663005179499861">Netinkamas politikos tipas</translation>
 <translation id="3030331669969285614">Šios žymos užkerta kelią gedimą sukeliančiam pakeitimui arba jį panaikina ir yra pasiekiamos tik ribotą laiką.</translation>
+<translation id="3030542417256082866">Išsaugoti transporto priemonę?</translation>
 <translation id="3034526003882782781">Slinkimas ir mastelio keitimas leidžiamas</translation>
 <translation id="3036894576201005614">Buitinės valymo priemonės</translation>
 <translation id="3037177537145227281">Kaina stebima</translation>
@@ -1130,7 +1144,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="2396578282884469363">Paprastai saugiai prisijungiate prie svetainių, bet šį kartą „Brave“ nepavyko naudoti saugaus ryšio. Atakos vykdytojas gali bandyti stebėti arba keisti tinklo ryšį. <ph name="BEGIN_LEARN_MORE_LINK"/>Sužinokite daugiau apie šį perspėjimą<ph name="END_LEARN_MORE_LINK"/>.</translation>
 <translation id="3052964831964880138">„<ph name="PRODUCT_NAME"/>“ <ph name="PRICE_DROP"/> kainos sumažėjimas</translation>
 <translation id="3061707000357573562">Pataisos paslauga</translation>
-<translation id="306198082577913404">Įjunkite numatymų patobulinimus</translation>
 <translation id="3062655045399308513">Ištrinti naršymo duomenis...</translation>
 <translation id="3063453392496098461">Nepavyko įdiegti VPN foninių paslaugų.</translation>
 <translation id="306573536155379004">Žaidimas prasidėjo.</translation>
@@ -1146,10 +1159,12 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3090667236485488075">Stiklas</translation>
 <translation id="3095940652251934233">Ataskaita</translation>
 <translation id="3098513225387949945">Nepaisoma, nes išjungimo sąraše yra šablonas, lygus „*“, kuris atitinka politikos išjungimą.</translation>
+<translation id="3098944373717628099">Vietiniai failai bus ištrinti po valandos</translation>
 <translation id="3099619114405539473">Naudoti pasiekiamas vaizdo kameras (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="3102312643185441063">Taupomoji sąskaita</translation>
 <translation id="3103188521861412364">Akcijos ir obligacijos</translation>
 <translation id="3103535543639438037">Panašių produktų palyginimas</translation>
+<translation id="3103993932858740905">Kai mokate dalimis, užpildomas vienkartinis virtualios kortelės numeris. Šis numeris taikomas tik šiam pirkiniui.</translation>
 <translation id="3105172416063519923">Ištekliaus ID:</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Patikrinti saugios DNS konfigūraciją<ph name="END_LINK"/></translation>
 <translation id="3108943290502734357">Vidurinis dėklas</translation>
@@ -1240,6 +1255,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="323107829343500871">Įveskite „<ph name="CREDIT_CARD"/>“ kortelės saugos kodą (CVC)</translation>
 <translation id="3234666976984236645">Visada aptikti svarbų turinį šioje svetainėje</translation>
 <translation id="323585066388831737">Šviesiai raudona</translation>
+<translation id="3235902901585019063">Vietiniai failai bus ištrinti <ph name="DATE_TIME"/>. Įsitikinkite, kad visi svarbūs verslo ar asmens duomenys saugomi išorėje.</translation>
 <translation id="3236212803136366317">Kortelės privilegijos</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>; paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite tinkinti naršyklės išvaizdą</translation>
 <translation id="3240791268468473923">Saugaus mokėjimo prisijungimo duomenų lapas, informuojantis, kad atitinkančių prisijungimo duomenų nerasta, atidarytas</translation>
@@ -1283,6 +1299,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="33073482541490531">Slaptažodis, kurį ką tik naudojote, buvo rastas duomenų saugos pažeidime. Slaptažodžių tvarkyklė rekomenduoja pakeisti šį slaptažodį dabar.</translation>
 <translation id="4731386748664539266">Mygtukas „Tinkinti „Brave“; suaktyvinkite, kad tinkintumėte naršyklės išvaizdą</translation>
 <translation id="3308006649705061278">Organizacinis vienetas (angl. „Organizational Unit“) (OU)</translation>
+<translation id="3317077846337994567">Šiuo metu galimybė mokėti per tam tikrą laiką nepasiekiama. Vėliau bandykite dar kartą.</translation>
 <translation id="3318016344440038475">TV komedijos</translation>
 <translation id="3324687287337751929">4 x 6 col.</translation>
 <translation id="3324983252691184275">Tamsiai raudona</translation>
@@ -1309,9 +1326,9 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3360306038446926262">Windows</translation>
 <translation id="3362968246557010467">Ši politika automatiškai nukopijuota iš nebenaudojamos politikos „<ph name="OLD_POLICY"/>“. Turėtumėte naudoti šią politiką vietoj senosios.</translation>
 <translation id="3364869320075768271"><ph name="URL"/> nori naudoti jūsų virtualiosios realybės įrenginį ir duomenis</translation>
-<translation id="3366477098757335611">Peržiūrėti korteles</translation>
 <translation id="3369192424181595722">Laikrodžio klaida</translation>
 <translation id="2273851479262317744">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
+<translation id="3371186787117738282">Pridėta: <ph name="ATTRIBUTE_NAME"/></translation>
 <translation id="337363190475750230">Teikimas nutrauktas</translation>
 <translation id="3377144306166885718">Serveryje naudojama pasenusios versijos TLS.</translation>
 <translation id="3377188786107721145">Politikos analizės klaida</translation>
@@ -1321,6 +1338,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3380864720620200369">Kliento ID:</translation>
 <translation id="3381668585148405088">Pirkinio patvirtinimas</translation>
 <translation id="3383566085871012386">Dabartinė pirmenybės tvarka</translation>
+<translation id="3383713837163550889">Vietiniai failai bus ištrinti po minutės</translation>
 <translation id="3384522979010096022">Jūsų organizacija neleidžia peržiūrėti šios svetainės</translation>
 <translation id="3391030046425686457">Pristatymo adresas</translation>
 <translation id="3391482648489541560">failo redagavimas</translation>
@@ -1375,6 +1393,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3478033058537426179">Pagal grupę</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
 <translation id="3484861421501147767">Priminimas: yra išsaugotas akcijos kodas</translation>
+<translation id="3569096371291033687">Jei norite naudoti slaptažodžius ir kt. duomenis, išsaugotus „Brave“ paskyroje, patvirtinkite savo tapatybę</translation>
 <translation id="3486406746948052912">Antiperspirantai, dezodorantai ir kūno purškikliai</translation>
 <translation id="3487845404393360112">4 dėklas</translation>
 <translation id="3493660662684070951">Sunkvežimiai, furgonai ir padidinto pravažumo automobiliai</translation>
@@ -1419,6 +1438,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3558573058928565255">Dienos metas</translation>
 <translation id="3559897352860026926">Paprašykite administratoriaus patvirtinti „<ph name="CLOUD_PROVIDER"/>“ konfigūracijos nustatymus.</translation>
 <translation id="3560824484345057728">Žr. susijusias svetaines</translation>
+<translation id="356359327498380603">Atnaujinti transporto priemonę?</translation>
 <translation id="3566021033012934673">Jūsų ryšys nėra privatus</translation>
 <translation id="3566336457819493938">215 x 315 mm</translation>
 <translation id="3566649245868131295">Su sveikata ir medicina susiję darbai</translation>
@@ -1445,9 +1465,11 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3586931643579894722">Slėpti išsamią informaciją</translation>
 <translation id="3587725436724465984">Organizacija nustatė, kad svetainėje <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> galbūt pažeidžiamos politikos nuostatos. <ph name="BEGIN_LEARN_MORE_LINK"/>Sužinokite daugiau apie šį perspėjimą<ph name="END_LEARN_MORE_LINK"/>.</translation>
 <translation id="3587738293690942763">Vidurys</translation>
+<translation id="3596918995172292499">Numerio lentelės būsena</translation>
 <translation id="3600106876108433070">Sužinokite apie palyginimo lenteles</translation>
 <translation id="3600246354004376029">„<ph name="TITLE"/>“, <ph name="DOMAIN"/>, <ph name="TIME"/></translation>
 <translation id="8476504968862670676">Mygtukas „Tvarkyti „Brave“ privatumo nustatymus“; suaktyvinkite, kad apsilankytumėte „Brave“ paskyros privatumo nustatymų skiltyje</translation>
+<translation id="3602695245205338770">Pasirinkite mokėjimo per tam tikrą laiką psalaugos teikėją</translation>
 <translation id="3603507503523709">Programą užblokavo administratorius</translation>
 <translation id="3605899229568538311">5 x 5 col.</translation>
 <translation id="3606917451836803637">TV laidos ir programos</translation>
@@ -1491,6 +1513,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3664782872746246217">Raktiniai žodžiai:</translation>
 <translation id="3665100783276035932">Dauguma svetainių turėtų veikti, kaip numatyta</translation>
 <translation id="3665806835792525231"><ph name="BEGIN_LINK1"/>Sužinokite daugiau<ph name="LINK_END1"/></translation>
+<translation id="3670030362669914947">Numeris</translation>
 <translation id="3670229581627177274">Įjungti „Bluetooth“</translation>
 <translation id="3671117652518853176">Kai išjungta, retkarčiais gali būti paprašyta patvirtinti saugos tikslais</translation>
 <translation id="3671540257457995106">Leisti keisti dydį?</translation>
@@ -1504,7 +1527,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3681007416295224113">Sertifikato informacija</translation>
 <translation id="2659564324969662497">„Brave“ nustato dominančias temas pagal jūsų naujausią naršymo istoriją.</translation>
 <translation id="3682094733650754138">Pasirinkta adreso užpildymo parinktis</translation>
-<translation id="3687493962714153124">Automatinio pildymo naudojant DI tvarkymas</translation>
 <translation id="3687920599421452763">Autobusiukai ir mikroautobusiukai</translation>
 <translation id="3693327506115126094">Pasirinkite, kaip norite patvirtinti savo tapatybę</translation>
 <translation id="3698353241727597930">Administratorius sukonfigūravo išsaugoti <ph name="FILES"/> jūsų įmonės tvarkomoje <ph name="CLOUD_STORAGE"/> saugykloje. Šie failai gali būti stebimi, tikrinami ir saugomi, kai juos ištrinate.</translation>
@@ -1531,6 +1553,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3715016660240337709">{0,plural, =1{Failas užblokuotas, kad nebūtų galima įkelti}one{<ph name="FILE_COUNT"/> failas užblokuotas, kad nebūtų galima įkelti}few{<ph name="FILE_COUNT"/> failai užblokuoti, kad nebūtų galima įkelti}many{<ph name="FILE_COUNT"/> failo užblokuota, kad nebūtų galima įkelti}other{<ph name="FILE_COUNT"/> failų užblokuota, kad nebūtų galima įkelti}}</translation>
 <translation id="3715597595485130451">Prisijungimas prie „Wi-Fi“</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Patikrinti tarpinio serverio, užkardos ir DNS konfigūraciją<ph name="END_LINK"/></translation>
+<translation id="3723316892512143176">IBAN</translation>
 <translation id="3723663469265383848">Atnaujindami negalėsite naudoti įrenginio iki dešimt minučių.</translation>
 <translation id="372429172604983730">Ši klaida galėjo įvykti dėl antivirusinės, užkardos ar žiniatinklio filtravimo programos arba tarpinio serverio programinės įrangos.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite greitai sukurti naują „Brave“ pristatymą Skaidrėse</translation>
@@ -1613,6 +1636,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3858027520442213535">Atnaujinti datą ir laiką</translation>
 <translation id="3858860766373142691">Pavadinimas</translation>
 <translation id="3865339060090354361">Žr. čia pateiktas „<ph name="CREDIT_CARD_NAME"/>“ sąlygas</translation>
+<translation id="3869939189466884821">Vietiniai failai bus ištrinti po <ph name="MINUTES"/> min.</translation>
 <translation id="3872834068356954457">Mokslas</translation>
 <translation id="3875783148670536197">Peržiūrėti, kaip tai padaryti</translation>
 <translation id="3879748587602334249">Atsisiuntimų tvarkytuvė</translation>
@@ -1656,12 +1680,15 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3950820424414687140">Prisijungti</translation>
 <translation id="3953505489397572035">Tai yra įprasta kaina</translation>
 <translation id="3958057596965527988">4 x 4 col.</translation>
+<translation id="3959969108528118741">Savininkas</translation>
 <translation id="3961148744525529027">Mokėjimo doroklės lapas atidarytas iki pusės ekrano</translation>
 <translation id="3962859241508114581">Ankstesnis takelis</translation>
 <translation id="3963721102035795474">Skaitytojo režimas</translation>
 <translation id="3964661563329879394">{COUNT,plural, =0{Nėra}=1{Iš 1 svetainės }one{Iš # svetainės }few{Iš # svetainių }many{Iš # svetainės }other{Iš # svetainių }}</translation>
 <translation id="3965672182149944205">Išsaugoti adresą?</translation>
 <translation id="3966044442021752214">Produkto sauga</translation>
+<translation id="3969869202926863008">Vietinio tinklo pasiekiamumas</translation>
+<translation id="3970239200223030389">Išdavimo data</translation>
 <translation id="397105322502079400">Skaičiuojama...</translation>
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> užblokuota.</translation>
 <translation id="3975852104434126461">Automobilių pramonė</translation>
@@ -1699,6 +1726,8 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4031179711345676612">Mikrofonas leidžiamas</translation>
 <translation id="4036753017940930924">Sklypai ir žemė</translation>
 <translation id="4039506337798853114">Jei norite, kad būtų rodomas žymeklis, paspauskite |<ph name="ACCELERATOR"/>|</translation>
+<translation id="4045226534284799755">Prieš bandydami dar kartą, prisijunkite prie „Microsoft“ paskyros</translation>
+<translation id="4045441967987592849">Atidaryti iš naujo</translation>
 <translation id="4047351652147966654">18 x 24 col.</translation>
 <translation id="404831776305217138">Plėtinio (ID: <ph name="EXTENSION_ID"/>) atnaujinimo URL yra netinkamas arba naudojama nepalaikoma schema. Palaikomos schemos: <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> ir <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">Galėsite jį naudoti „Brave“ produktuose</translation>
@@ -1718,6 +1747,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4073797364926776829">Peržiūrėti kortelę</translation>
 <translation id="4075732493274867456">Kliento programa ir serveris nepalaiko įprasto SSL protokolo versijos ar šifruotojo programų komplekto.</translation>
 <translation id="4079302484614802869">Įgaliotojo serverio konfigūracijoje nustatyta naudoti .pac scenarijaus URL, o ne fiksuotus įgaliotuosius serverius.</translation>
+<translation id="4080855220442581440">slinkimas bendrinamais skirtukais ir jų mastelio keitimas</translation>
 <translation id="4082333119419111506">Popierius (iš anksto atspausdintas)</translation>
 <translation id="4082393374666368382">Nustatymai – valdymas</translation>
 <translation id="4084219288110917128">C1 vokas</translation>
@@ -1748,6 +1778,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4116701314593212016">JIS B7</translation>
 <translation id="4116798170070772848">RA2</translation>
 <translation id="4117700440116928470">Politikos aprėptis nepalaikoma.</translation>
+<translation id="411918202192379658">Automatinis pildymas dabar dar geresnis</translation>
 <translation id="4121428309786185360">Galiojimo laikas baigiasi</translation>
 <translation id="4123572138124678573">Trys skylės apačioje</translation>
 <translation id="412601465078863288">Baigėsi įkėlimo skirtasis laikas</translation>
@@ -1766,10 +1797,12 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4150099059797363385">Nr. 4 kinietiškas vokas</translation>
 <translation id="4151403195736952345">Naudoti visuotinį numatytąjį nustatymą (nustatyti)</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{1 psl.}one{{COUNT} psl.}few{{COUNT} psl.}many{{COUNT} psl.}other{{COUNT} psl}}</translation>
+<translation id="4152670763139331043">{NUM_TABS,plural, =1{1 skirtukas}one{# skirtukas}few{# skirtukai}many{# skirtuko}other{# skirtukų}}</translation>
 <translation id="6923879007831202776">Dabar „Brave“ patvirtins jūsų tapatybę prieš užpildydama mokėjimo metodus. Tai galite bet kada atnaujintI <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/>.</translation>
 <translation id="415440494507469262">Pridėti skirtuką prie palyginimo lentelės</translation>
 <translation id="4159784952369912983">Violetinė</translation>
 <translation id="4165422751765527461">Atidaromas pagalbos centro straipsnis naujame skirtuke</translation>
+<translation id="4165584779486830267">Dabar galite mokėti per tam tikrą laiką naudodami „Affirm“ arba „Zip“.</translation>
 <translation id="4165986682804962316">Svetainės nustatymai</translation>
 <translation id="4169535189173047238">Neleisti</translation>
 <translation id="4171400957073367226">Netinkamas patvirtinimo parašas</translation>
@@ -1839,11 +1872,11 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4282280603030594840">Transporto priemonių pirkimas</translation>
 <translation id="4282346679996504092">Šio produkto įspėjimai išjungti ir žymė pašalinta</translation>
 <translation id="4285498937028063278">Atsegti</translation>
-<translation id="8314946990939758167">{NUM_CARDS,plural, =1{Ši kortelė išsaugota jūsų „Brave“ paskyroje}one{Šios kortelės išsaugotos jūsų „Brave“ paskyroje}few{Šios kortelės išsaugotos jūsų „Brave“ paskyroje}many{Šios kortelės išsaugotos jūsų „Brave“ paskyroje}other{Šios kortelės išsaugotos jūsų „Brave“ paskyroje}}</translation>
 <translation id="2820825061680010514">Patobulintas su skelbimais susijęs privatumas naršyklėje „Brave“</translation>
 <translation id="4290920330097335010">Niekada neleisti</translation>
 <translation id="4296207570293932800">Dabar pasiekiama nauja skelbimų privatumo funkcija</translation>
 <translation id="4297502707443874121"><ph name="THUMBNAIL_PAGE"/> puslapio miniatiūra</translation>
+<translation id="4297937944457164390">Atnaujinta: <ph name="ATTRIBUTE_NAME"/></translation>
 <translation id="4298000214066716287">Investavimas</translation>
 <translation id="42981349822642051">Išskleisti</translation>
 <translation id="4300675098767811073">Kelios skylės dešinėje</translation>
@@ -1859,7 +1892,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4312866146174492540">Užblokuoti (numatytoji parinktis)</translation>
 <translation id="4314815835985389558">Sinchronizavimo tvarkymas</translation>
 <translation id="4316057107946726368">Įveskite pateisinimo pranešimą, sudarytą daugiausia iš <ph name="MAX_CHAR_COUNT"/> simb. Naudojama simbolių: <ph name="ACTUAL_CHAR_COUNT"/> iš <ph name="MAX_CHAR_COUNT"/>.</translation>
-<translation id="431740489189220419">Įkeliami pasiūlymai</translation>
 <translation id="4318213823155573975">Galvos apdangalas</translation>
 <translation id="4318312030194671742">Piešinio peržiūros rengyklės paslauga</translation>
 <translation id="4318566738941496689">Įrenginio pavadinimas ir tinklo adresas</translation>
@@ -1892,17 +1924,19 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4358461427845829800">Tvarkyti mokėjimo metodus...</translation>
 <translation id="4363222835916186793">Šio produkto įspėjimai išjungti</translation>
 <translation id="4366943895537458493">Plokštelė</translation>
+<translation id="4369179505195332608">Vairuotojo pažymėjimo redagavimas</translation>
 <translation id="437040971055499437">Įvyksta saugos įvykis</translation>
 <translation id="4371591986692297148">Neaktyvus</translation>
 <translation id="4372948949327679948">Numatyta „<ph name="VALUE_TYPE"/>“ vertė.</translation>
 <translation id="437620492464254965">Durys ir langai</translation>
 <translation id="4377125064752653719">Bandėte pasiekti svetainę „<ph name="DOMAIN"/>“, bet sertifikatą, kurį pateikė serveris, anuliavo jo išdavėjas. Tai reiškia, kad saugos kredencialais, kuriuos pateikė serveris, visiškai negalima pasitikėti. Galbūt bendraujate su užpuoliku.</translation>
 <translation id="4378154925671717803">Telefonas</translation>
+<translation id="4382833368532556056">Nuo dabar saugokite failus saugykloje debesyje</translation>
 <translation id="4384395682990721132">A4x3</translation>
 <translation id="4387692837058041921">Failo įkėlimas į „Microsoft OneDrive“ pristabdytas</translation>
-<translation id="4389931020843542579">Įkeliama skirtukų grupė</translation>
 <translation id="4390472908992056574">Kraštas</translation>
 <translation id="4395550503472021297">Ši politika valdo numatytąją toliau nurodytų politikos nuostatų elgeseną: <ph name="POLICIES"/></translation>
+<translation id="4396554829965096368">Vairuotojo pažymėjimas</translation>
 <translation id="4397978002248035985">Banko svetainėje atidaromas iššokantysis langas, kuriame reikia patvirtinti</translation>
 <translation id="4406883609789734330">Subtitrai realiuoju laiku</translation>
 <translation id="4406896451731180161">paieškos rezultatai</translation>
@@ -1961,6 +1995,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4521280267704259211">„Monarch“ vokas</translation>
 <translation id="4521916730539354575">Kairysis dėklas</translation>
 <translation id="4522570452068850558">Išsami informacija</translation>
+<translation id="4523580145196408446">Susieta</translation>
 <translation id="4523643381056109546">Iškabos</translation>
 <translation id="4524138615196389145">Nuo šiol patvirtinkite korteles greičiau su „WebAuthn“</translation>
 <translation id="45243788195988825">Blokuoti temą „<ph name="TOPIC"/>“</translation>
@@ -1981,7 +2016,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4569155249847375786">Patvirtinta</translation>
 <translation id="457875822857220463">Pristatymas</translation>
 <translation id="4579699065574932398">Bankininkystė</translation>
-<translation id="4582204425268416675">Pašalinti kortelę</translation>
 <translation id="4582595824823167856">Gaukite teksto pranešimą</translation>
 <translation id="4586607503179159908">Mokėjimo metodas patvirtintas</translation>
 <translation id="459089498662672729">Įklijuoti iš <ph name="ORIGIN_NAME"/> į šią vietą nerekomenduojama pagal administratoriaus politiką</translation>
@@ -1995,6 +2029,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="460848736049414407">Užblokavo administratorius</translation>
 <translation id="4610279718074907952">Ši svetainė yra grupėje (nustatytoje <ph name="SET_OWNER"/>), kuri gali peržiūrėti jūsų veiklą</translation>
 <translation id="46128681529823442">Futbolo įranga</translation>
+<translation id="4612904677925722054">Šioje svetainėje gali būti suaugusiesiems skirto turinio. Vienas iš tėvų ar globėjų turi patvirtinti, kad galite apsilankyti šioje svetainėje.</translation>
 <translation id="4619564267100705184">Patvirtinti tapatybę</translation>
 <translation id="4622292761762557753">Vis tiek perkelti</translation>
 <translation id="4622647778991854660">Įgalinkite pranešimus pranešimų centre. Atidaryti <ph name="LINK"/>.</translation>
@@ -2100,6 +2135,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4796594887379589189">Užduoties paskyros ID</translation>
 <translation id="4798269756263412078">Gaukite įspėjimus, jei kaina bus sumažinta bet kurioje svetainėje. Įspėjimai bus siunčiami jūsų el. pašto adresu.</translation>
 <translation id="4800132727771399293">Patikrinkite kortelės galiojimo pabaigos datą bei saugos kodą (CVC) ir bandykite dar kart</translation>
+<translation id="4800546479758254481">AR leidžiama</translation>
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="4809079943450490359">Įrenginio administratoriaus instrukcijos:</translation>
 <translation id="4811450222531576619">Sužinokite apie jo šaltinį ir temą</translation>
@@ -2109,6 +2145,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4819347708020428563">Redaguoti komentarus numatytajame rodinyje?</translation>
 <translation id="4822493756793346865">Informacija apie įprastas kainas teikiama atsižvelgiant į parduotuves žiniatinklyje per pastarąsias 90 dienų.</translation>
 <translation id="4822922322149719535">Peržiūrėti klaidų žurnalą</translation>
+<translation id="4823699521959851389">„<ph name="SHORT_PRODUCT_NAME"/>“ reikia prieigos prie įrenginio <ph name="PERMISSION"/></translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite greitai sukurti naują „Brave“ skaičiuoklę</translation>
 <translation id="4826588772550366629">fotoaparatas ir mikrofonas</translation>
 <translation id="4827283332383516812">Ištrinti kortelę</translation>
@@ -2119,6 +2156,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="4834250788637067901">Mokėjimo metodai, pasiūlymai ir adresai naudojant „Google Pay“</translation>
 <translation id="246176083348620700">Peržiūrėti „Brave“ istoriją</translation>
 <translation id="484462545196658690">Automatiškai</translation>
+<translation id="4844937814014739139">Slinkimas bendrinamais skirtukais ir jų mastelio keitimas</translation>
 <translation id="484671803914931257">Gaukite nuolaidą iš „<ph name="MERCHANT_NAME"/>“ ir kt.</translation>
 <translation id="484988093836683706">Naudoti įrenginio atrakinimo funkciją</translation>
 <translation id="4850886885716139402">Žiūrėti</translation>
@@ -2213,6 +2251,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5001526427543320409">Trečiųjų šalių slapukai</translation>
 <translation id="3676215163710610678">Jei šis nustatymas įgalintas, „Brave“ saugos kortelės kopiją šiame įrenginyje, kad būtų galima greičiau užpildyti formas.</translation>
 <translation id="5007392906805964215">Peržiūrėti</translation>
+<translation id="5010599530303458903">Mokėkite kas mėnesį arba keturias įmokas be palūkanų (atsižvelgiant į tinkamumą)</translation>
 <translation id="5011561501798487822">Aptikta kalba</translation>
 <translation id="5015510746216210676">Įrenginio pavadinimas:</translation>
 <translation id="5017554619425969104">Nukopijuotas tekstas</translation>
@@ -2257,13 +2296,13 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5087286274860437796">Šiuo metu serverio sertifikatas negalioja.</translation>
 <translation id="5087580092889165836">Pridėti kortelę</translation>
 <translation id="5088142053160410913">Pranešimas operatoriui</translation>
+<translation id="5089810972385038852">Valstija</translation>
 <translation id="5090647584136241764">Pridėkite skirtukų su panašiais produktais, kad galėtumėte lengvai palyginti jums svarbią informaciją</translation>
 <translation id="5093232627742069661">Z formos perlenkimas</translation>
 <translation id="4906192414477726331">Šiam serveriui nepavyko patvirtinti, kad tai yra <ph name="DOMAIN"/>; jo saugos sertifikatas nėra patikimas „Brave“. Taip gali nutikti dėl netinkamos konfigūracijos ar dėl ryšį pertraukusio užgrobėjo.</translation>
 <translation id="5097099694988056070">Įrenginio statistika, pvz., centrinio procesoriaus / laisvosios prieigos atminties naudojimas</translation>
 <translation id="5097468150760963273">27 x 39 col.</translation>
 <translation id="5097501891273180634">A2</translation>
-<translation id="1643886086471238725">„Brave“ reikia prieigos prie įrenginio <ph name="PERMISSION"/></translation>
 <translation id="510644072453496781">Kartonas (užbaigimas)</translation>
 <translation id="5106648964679263509">Virtuali kortelė („<ph name="BNPL_ISSUER_NAME"/>“) užpildyta</translation>
 <translation id="5108881358339761672">Svetainė nėra saugi</translation>
@@ -2302,6 +2341,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5158275234811857234">Viršelis</translation>
 <translation id="5161334686036120870">Tema:</translation>
 <translation id="5161506081086828129">9 dėtuvė</translation>
+<translation id="5164537320435517152">Ištrinti failus po <ph name="MINUTES"/> min.</translation>
 <translation id="5164798890604758545">Įvestas tekstas</translation>
 <translation id="5507530832404660443">Šis eksperimentinis DI įrankis ne visada veiks tinkamai. Siekiant jį patobulinti, turinys siunčiamas į sistemą „Brave“.
     <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
@@ -2329,6 +2369,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5217759126664161410">Netinkamas protokolo formatas.</translation>
 <translation id="5221377878828867877">Slaptažodžio pakartotinį naudojimą stebi jūsų organizacija</translation>
 <translation id="5222812217790122047">Būtina nurodyti el. paštą</translation>
+<translation id="5225215474235602477">Išsaugoti pasą?</translation>
 <translation id="5228269245420405804">Nuotolinis mokymasis</translation>
 <translation id="5230733896359313003">Pristatymo adresas</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -2354,6 +2395,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5255771248404149177">Kortelės teikėjas nori įsitikinti, kad tai jūs</translation>
 <translation id="5255833070095767006">350 x 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Pagal administratoriaus politikos nuostatas nerekomenduojama kopijuoti šio failo į <ph name="DESTINATION_NAME"/>}one{Pagal administratoriaus politikos nuostatas nerekomenduojama kopijuoti šių failų į <ph name="DESTINATION_NAME"/>}few{Pagal administratoriaus politikos nuostatas nerekomenduojama kopijuoti šių failų į <ph name="DESTINATION_NAME"/>}many{Pagal administratoriaus politikos nuostatas nerekomenduojama kopijuoti šių failų į <ph name="DESTINATION_NAME"/>}other{Pagal administratoriaus politikos nuostatas nerekomenduojama kopijuoti šių failų į <ph name="DESTINATION_NAME"/>}}</translation>
+<translation id="5258473597674772367">Skirtukų grupė „<ph name="GROUP_NAME"/>“ nebepasiekiama</translation>
 <translation id="5263867360296733198">Prieš įkeliant reikia peržiūrėti</translation>
 <translation id="5266128565379329178">Įrišimas viršuje</translation>
 <translation id="5269225904387178860">Keturios skylės apačioje</translation>
@@ -2390,6 +2432,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5319366980180850702">Klasikiniai literatūros kūriniai</translation>
 <translation id="5323043727018853753">Įterptas turinys leidžiamas</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="MATCH_POSITION"/> iš <ph name="NUM_MATCHES"/></translation>
+<translation id="5327248766486351172">Pavadinimas</translation>
 <translation id="5329858041417644019">Jūsų naršyklė nėra tvarkoma</translation>
 <translation id="5331585574693522196">Nustatyti kaip numatytąjį</translation>
 <translation id="5332219387342487447">Pristatymo metodas</translation>
@@ -2402,6 +2445,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5344522958567249764">Tvarkyti su skelbimais susijusį privatumą</translation>
 <translation id="5344579389779391559">Šiame puslapyje gali būti bandoma jus apmokestinti</translation>
 <translation id="5345249337934847112">Popierius (dengtas standusis)</translation>
+<translation id="5348330584842140856">Šis failas nebuvo perkeltas, nes jo nebėra</translation>
 <translation id="5349543692327946794">Etiketės (rašalinės)</translation>
 <translation id="5351548097010183514">Statybinės medžiagos ir prekės</translation>
 <translation id="5354143049423063163">Rizikos draudimo fondai</translation>
@@ -2418,6 +2462,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5379618281582508161">Jei norite gauti šį slaptažodį visuose įrenginiuose, patvirtinkite savo tapatybę</translation>
 <translation id="5380953781541843508">didėjimo tvarka</translation>
 <translation id="5381318171304904246">Jei tęsite, būsite nukreipti į banko svetainę. Kai patvirtinsite, būsite automatiškai grąžinti ir galėsite užbaigti pirkimą.</translation>
+<translation id="5381952079334035181"><ph name="MEMBER_FIRST_NAME"/> atnaujino skirtuką „<ph name="WEBSITE_TITLE"/>“</translation>
 <translation id="5383478552402031184">Grindų taisymas</translation>
 <translation id="5385857628869214740">Humoras</translation>
 <translation id="5385966243497224160">Negalima peržiūrėti ne HTTPS URL</translation>
@@ -2456,8 +2501,8 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
           <ph name="LIST_ITEM"/>formose įvestos informacijos.
         <ph name="END_LIST"/></translation>
 <translation id="5443468954631487277">Atvirkštine tvarka, gerąja puse į viršų</translation>
-<translation id="5445340838622821110">Kai mokate dalimis, užpildomas vienkartinis virtualios kortelės numeris. Šis numeris taikomas tik šiam pirkiniui. <ph name="IDS_AUTOFILL_BNPL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5447235695608032700">Leisti <ph name="SITE"/> naudoti informaciją apie jus, kurią išsaugojo</translation>
+<translation id="6108397422772394696">Kai saugos įvykius pažymi „Brave“, atitinkami įvykių duomenys išsiunčiami administratoriui. Tai gali būti naršyklėje „Brave“ lankomų puslapių URL, puslapių, iš kurių nukopijavote duomenis, URL, failų pavadinimai ar metaduomenys, IP adresai, naršyklės ar skirtukų strigtys ir naudotojo vardas, kurį naudodami prisijungiate prie žiniatinklio programų, įrenginio ir „Brave“.</translation>
 <translation id="5452270690849572955">Nepavyksta rasti šio <ph name="HOST_NAME"/> puslapio</translation>
 <translation id="5452923259299906094">Mokėkite naudodami el. piniginę ir „Pix“</translation>
 <translation id="5455374756549232013">Bloga politikos laiko žymė</translation>
@@ -2535,6 +2580,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5570825185877910964">Apsaugoti paskyrą</translation>
 <translation id="5571083550517324815">Negalima paimti šiuo adresu. Pasirinkite kitą adresą.</translation>
 <translation id="5572434905385510939">22 x 28 col.</translation>
+<translation id="5573641252776268565">Paso redagavimas</translation>
 <translation id="5578606540385219379">Paslaugų teikėjai</translation>
 <translation id="5580958916614886209">Patikrinkite galiojimo pabaigos mėnesį ir bandykite dar kartą</translation>
 <translation id="5583442610070676234">Daugiau veiksmų, susijusių su lentele „<ph name="COMPARE_SET_NAME"/>“</translation>
@@ -2582,6 +2628,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5660122698869360728">Naujas išmanusis aplankas, kurį naudodami galite išsaugoti visus apsipirkimo puslapius vienoje vietoje ir automatiškai stebėti kainas, gauti kainų įžvalgų ir kt.</translation>
 <translation id="5663955426505430495">Šio įrenginio administratorius įdiegė papildomų funkcijų plėtinių. Naudojant plėtinius galima pasiekti kai kuriuos jūsų duomenis.</translation>
 <translation id="5667827081946850877">Garsinės knygos</translation>
+<translation id="5674082555327905359">Gali būti prašoma prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
 <translation id="5675650730144413517">Šis puslapis neveikia</translation>
 <translation id="5675809467256309336">Šokių ir elektroninė muzika</translation>
 <translation id="5675959228867414813">Rodyti pagal datą</translation>
@@ -2598,7 +2645,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="569000877158168851">„DnsOverHttpsTemplates“ vertė neaktuali ir nebus naudojama, jei „DnsOverHttpsMode“ politika nenustatyta kaip „<ph name="SECURE_DNS_MODE_AUTOMATIC"/>“ arba „<ph name="SECURE_DNS_MODE_SECURE"/>“.</translation>
 <translation id="5691848789297492617">Išsaugota kortelė atidaryta per visą ekrano aukštį.</translation>
 <translation id="5695542892312572833">Naudoti „Windows Hello“ pirkimo procesui patvirtinti ir užbaigti?</translation>
-<translation id="8473265600797831709">Išsaugota informacija ir šis puslapis siunčiami „Brave“, kad būtų galima patikrinti, ar automatinis pildymas gali padėti užpildyti šią formą. Siekiant tobulinti šią funkciją, duomenis gali peržiūrėti tikrinantys žmonės.</translation>
 <translation id="5699628521141772782">Pieno produktai ir kiaušiniai</translation>
 <translation id="5700761515355162635">Trečiųjų šalių slapukai leidžiami</translation>
 <translation id="5701381305118179107">Centre</translation>
@@ -2622,7 +2668,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="3006790309890592320">„Brave“ rekomenduoja iš naujo nustatyti slaptažodį, jei naudojate jį kitose svetainėse.</translation>
 <translation id="5732392974455271431">Jūsų tėvai gali atblokuoti ją už jus</translation>
 <translation id="5110141686029759199">Mygtukas „Sukurti formą“; suaktyvinkite, jei norite sparčiai sukurti naują formą „Brave“ formose</translation>
-<translation id="5576538372759072019">{NUM_CARDS,plural, =1{Išsaugokite kortelę „Brave“ paskyroje}one{Išsaugokite korteles „Brave“ paskyroje}few{Išsaugokite korteles „Brave“ paskyroje}many{Išsaugokite korteles „Brave“ paskyroje}other{Išsaugokite korteles „Brave“ paskyroje}}</translation>
 <translation id="5738385766833540397">Tvarkykite, kaip gausite įspėjimus apie sumažintas stebimų produktų kainas</translation>
 <translation id="573974402615125334">Jei norite bendrinti, prisijungti ir bendradarbiauti skirtukų grupėse, sinchronizuokite istoriją ir skirtukus</translation>
 <translation id="5740911612628596808">C9 vokas</translation>
@@ -2662,6 +2707,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5826507051599432481">Bendrasis vardas (angl. „Common Name“) (CN)</translation>
 <translation id="5830698870816298009">vaizdo kameros naudojimas ir judinimas</translation>
 <translation id="583281660410589416">Nežinoma</translation>
+<translation id="5837220895135257862">Prieš bandydami dar kartą, atlaisvinkite vietos sistemoje „<ph name="CLOUD_PROVIDER"/>“</translation>
 <translation id="5838278095973806738">Šioje svetainėje neturėtumėte pateikti neskelbtinos informacijos (pvz., slaptažodžių ar kredito kortelių numerių), nes ją gali pavogti užpuolikai.</translation>
 <translation id="5838732667866024867">Naudodami rodyklę kairėn ir dešinėn galite peržiūrėti kainų pakeitimus diagramoje</translation>
 <translation id="7336369644051575343">„Brave“ paskyroje, <ph name="ACCOUNT"/></translation>
@@ -2701,6 +2747,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5910140988253729859">Anuliuoti automatinį pildymą</translation>
 <translation id="5911020115933784199">Renginiai ir sąrašai</translation>
 <translation id="5911110632211230665">Užblokuotas atidarymas</translation>
+<translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> pridėjo šį skirtuką</translation>
 <translation id="5915189366813702112">Lanksčios darbo sąlygos</translation>
 <translation id="59174027418879706">Įjungta</translation>
 <translation id="5918373444239520146">Programėlės ir nešiojamieji elektronikos prietaisai</translation>
@@ -2710,7 +2757,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5921185718311485855">Įjungta</translation>
 <translation id="2687595201721621314">Išsaugoti kortelę „Brave“ paskyroje?</translation>
 <translation id="5921952831792678223">Pikapai</translation>
-<translation id="5922853866070715753">Beveik atlikta</translation>
 <translation id="5923492272538889093">Naudoti įrenginio atrakinimo funkciją vietoje kortelės saugos kodo (CVC)?</translation>
 <translation id="5924510104057992926">Prieš atidarant reikia peržiūrėti</translation>
 <translation id="5924782825030413055">Paskutinio sutikimo atnaujinimo šaltinis:</translation>
@@ -2727,6 +2773,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="5944297261866530437">Audinys (itin blizgus)</translation>
 <translation id="5950901984834744590">Skustuvai ir skutimosi priemonės</translation>
 <translation id="5951495562196540101">Nepavyko prisiregistruoti su kliento paskyra (galima įsigyti licencijos paketą).</translation>
+<translation id="5952076224478208938">Gamintojas</translation>
 <translation id="5953516610448771166">Subtitrų realiuoju laiku funkcija šioje medijoje nepasiekiama. Jei norite gauti subtitrų, užblokuokite šios svetainės <ph name="CONTENT_SETTINGS"/>.</translation>
 <translation id="595873925609605681">Jei svetainės funkcijos neveikia, <ph name="BEGIN_LINK"/>pabandykite laikinai leisti trečiųjų šalių slapukus<ph name="END_LINK"/>.</translation>
 <translation id="5960795367348889467">Patvirtinimas</translation>
@@ -2766,6 +2813,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6015796118275082299">Metai</translation>
 <translation id="6017514345406065928">Žalia</translation>
 <translation id="818107217016701700">Ištrinti naršymo istoriją, slapukus, talpyklos duomenis ir kt. „Brave“ nustatymuose</translation>
+<translation id="6023810427609440412">VIN (angl. „vehicle identification number“, transporto priemonės identifikavimo numeris)</translation>
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/> (sinchronizuota)</translation>
 <translation id="6028591542479806248">Tvarkykite pranešimus mobiliuosiuose ir el. pašte</translation>
 <translation id="6028833024483927901">Pasaulio virtuvė</translation>
@@ -2781,6 +2829,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="604124094241169006">Automatinis</translation>
 <translation id="6041777658117377052">Kameros temperatūra</translation>
 <translation id="6042308850641462728">Daugiau</translation>
+<translation id="6043357981274314628">Atlikta!</translation>
 <translation id="6044573915096792553">Dydis: 12</translation>
 <translation id="6045164183059402045">Paskyrimo šablonas</translation>
 <translation id="6047927260846328439">Šiuo turiniu gali būti bandoma apgaule priversti jus įdiegti programinę įrangą arba atskleisti asmens informaciją. <ph name="BEGIN_LINK"/>Rodyti vis tiek<ph name="END_LINK"/></translation>
@@ -2797,19 +2846,19 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6055982527635883756">Vokas (archyvinis)</translation>
 <translation id="6057177372083677067">Vaizdo įrašas prisijungus</translation>
 <translation id="6058646026409894363">Statybos inžinerija</translation>
-<translation id="6058977677006700226">Naudojate korteles visuose įrenginiuose?</translation>
 <translation id="6059925163896151826">USB įrenginiai</translation>
 <translation id="6060009363608157444">Netinkamas „DnsOverHttps“ režimas.</translation>
 <translation id="6061154937977953833">Imtynės</translation>
+<translation id="6062405040252994646">Įrankis</translation>
 <translation id="6062937464449575061">Nebestebėti kainų</translation>
 <translation id="6063415549109819824">Namų finansinė apskaita</translation>
 <translation id="6070432475334343308">Vienas ar daugiau failų neįkelti į „<ph name="FOLDER_NAME"/>“ sistemoje „<ph name="CLOUD_PROVIDER"/>“</translation>
-<translation id="6080696365213338172">Pasiekėte turinį naudodami administratoriaus pateiktą sertifikatą. Duomenys, kuriuos pateikiate <ph name="DOMAIN"/>, gali būti perimti administratoriaus.</translation>
 <translation id="6085149458302186532">Etiketės (spalvotos)</translation>
 <translation id="6087312102907839798">Susijusios paieškos</translation>
 <translation id="7851017866080575588">Skirtukai, kuriuos ištrinate iš „Brave“ istorijos, vis tiek bus rodomi palyginimo lentelėse</translation>
 <translation id="6093599771645355227">1 geltona</translation>
 <translation id="6093795393556121384">Kortelė patvirtinta</translation>
+<translation id="6094253940069566294">Transporto priemonės redagavimas</translation>
 <translation id="6094273045989040137">Komentuoti</translation>
 <translation id="6094290315941448991">Remiantis administratoriaus politika, negalima įrašyti ekrano vaizdo, jei matomas konfidencialus turinys</translation>
 <translation id="6099269767116481177">22 x 29,5 col.</translation>
@@ -2829,6 +2878,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6116338172782435947">Peržiūrėti tekstą ir vaizdus, nukopijuotus į iškarpinę</translation>
 <translation id="6117833587752089929">Fotopopierius (atlasinis)</translation>
 <translation id="6118782133429281336">Kilmės sąrašas tuščias.</translation>
+<translation id="6120950591512958208">Naudokite šį kodą atsiskaitydami.</translation>
 <translation id="612178891608320683">Veganiška virtuvė</translation>
 <translation id="6122181661879998141">priekinėje kortelės dalyje</translation>
 <translation id="6124058285696691147">Atsisiųsti priedą</translation>
@@ -2854,6 +2904,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6159908896951210943">Formalus</translation>
 <translation id="6160391204859821737">Skelbimų privatumo funkcijos įjungimas</translation>
 <translation id="6162403104168428984">Atnaujinti adresą?</translation>
+<translation id="6164605812717770913">Vienas iš tėvų ar globėjų nurodė, kad negalite apsilankyti šioje svetainėje. Galite paprašyti ją atblokuoti.</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="6167577165590485365">Paskutinis bandymas gauti:</translation>
 <translation id="1057223975912338979">„Brave“ bando patvirtinti jūsų tapatybę, kad galėtų užpildyti mokėjimo informaciją.</translation>
@@ -2899,6 +2950,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6241121617266208201">Slėpti pasiūlymus</translation>
 <translation id="624499991300733384">Spausdinimo rengyklės paslauga</translation>
 <translation id="6246316216123107851">prieš <ph name="NUM_DAYS"/> d.</translation>
+<translation id="6246382863801034910">Transporto priemonė</translation>
 <translation id="6246868321321344665">Jūsų organizacija gali peržiūrėti naršymo duomenis, pvz., slaptažodžius ir istoriją, tiek darbo, tiek asmeniniuose profiliuose</translation>
 <translation id="6250932670816326647">Vonios ir kūno priežiūros produktai</translation>
 <translation id="6251906504834538140">{0,plural, =1{Failas užblokuotas, kad nebūtų galima perkelti}one{<ph name="FILE_COUNT"/> failas užblokuotas, kad nebūtų galima perkelti}few{<ph name="FILE_COUNT"/> failai užblokuoti, kad nebūtų galima perkelti}many{<ph name="FILE_COUNT"/> failo užblokuota, kad nebūtų galima perkelti}other{<ph name="FILE_COUNT"/> failų užblokuota, kad nebūtų galima perkelti}}</translation>
@@ -2945,12 +2997,14 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6321917430147971392">Patikrinkite DNS nustatymus</translation>
 <translation id="6322182122604171028">Nepavyko naudoti „Windows Hello“</translation>
 <translation id="7962450223988560278">Nustatyti „Brave“ kaip numatytąją sistemos naršyklę „iOS“ nustatymuose</translation>
+<translation id="6327065120806001832">vietinio tinklo pasiekiamumas</translation>
 <translation id="6328639280570009161">Bandykite neleisti tinklo numatymo</translation>
-<translation id="6328784461820205019">„Ryšys nėra privatus“, „&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;“, „&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;“, „&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;“, „&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;“ arba „SSL sertifikato klaida“</translation>
 <translation id="6335029926534404762">Sportiniai bateliai</translation>
+<translation id="6336948221660696475">VR neleidžiama</translation>
 <translation id="6337133576188860026">Atlaisvina mažiau nei <ph name="SIZE"/>. Per kitą jūsų apsilankymą kai kurios svetainės gali būti įkeliamos lėčiau.</translation>
 <translation id="6337534724793800597">Filtruoti politiką pagal pavadinimą</translation>
 <translation id="633770708279464947">„<ph name="SECURE_DNS_SALT"/>“ vertė yra netinkama ir nebus naudojama.</translation>
+<translation id="6738574149680202366">Slaptažodis • „Brave“ slaptažodžių tvarkyklė</translation>
 <translation id="6340739886198108203">Pagal administratoriaus politikos nuostatas nerekomenduojama daryti ekrano kopijų arba įrašyti, kai matomas konfidencialus turinys.</translation>
 <translation id="6341434961864773665">{0,plural, =1{Pagal administratoriaus politikos nuostatas nerekomenduojama perkelti šio failo į <ph name="DESTINATION_NAME"/>}one{Pagal administratoriaus politikos nuostatas nerekomenduojama perkelti šių failų į <ph name="DESTINATION_NAME"/>}few{Pagal administratoriaus politikos nuostatas nerekomenduojama perkelti šių failų į <ph name="DESTINATION_NAME"/>}many{Pagal administratoriaus politikos nuostatas nerekomenduojama perkelti šių failų į <ph name="DESTINATION_NAME"/>}other{Pagal administratoriaus politikos nuostatas nerekomenduojama perkelti šių failų į <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="6342069812937806050">Ką tik</translation>
@@ -2989,6 +3043,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6391700400718590966">Saugaus mokėjimo prisijungimo duomenų lapas, informuojantis, kad atitinkančių prisijungimo duomenų nerasta, uždarytas</translation>
 <translation id="6392799395081100092">Popierius („Vellum“)</translation>
 <translation id="6393156038355142111">Siūlyti sudėtingą slaptažodį</translation>
+<translation id="6393310910507376797">Nepalaiko prekybininkas</translation>
 <translation id="6393956493820063117">Pagal administratoriaus politiką galimybė įklijuoti iš <ph name="ORIGIN_NAME"/> į šią vietą blokuojama</translation>
 <translation id="6394852772105848029">Ši svetainė nori atidaryti programą „<ph name="APP_NAME"/>“</translation>
 <translation id="639673288733510393">Motoroleriai ir mopedai</translation>
@@ -3003,9 +3058,11 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6405181733356710802">Eiti toliau į „<ph name="APP_NAME"/>“?</translation>
 <translation id="6410264514553301377">įveskite „<ph name="CREDIT_CARD"/>“ galiojimo pabaigos datą ir kortelės saugos kodą (CVC)</translation>
 <translation id="6411107829285739505">A4x8</translation>
+<translation id="6412543105195503444">Tėvų patvirtinimo dialogo langas</translation>
 <translation id="6414010576370319452">Odos ir nagų priežiūra</translation>
 <translation id="6416877227920300343">EDP</translation>
 <translation id="641811520997304166">Atlyginimo išmokėjimo paslaugos</translation>
+<translation id="6418199314628742460">Įsitikinkite, kad visi svarbūs verslo ar asmens duomenys saugomi išorėje.</translation>
 <translation id="6424600253695044005">Saugykla debesyje</translation>
 <translation id="6425092077175753609">Trimačiai objektai</translation>
 <translation id="6427730057873428458">Du atvartai</translation>
@@ -3022,6 +3079,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6440503408713884761">Nepaisoma</translation>
 <translation id="6443406338865242315">Kuriuos plėtinius ir papildinius įdiegėte</translation>
 <translation id="6444329331928531170">Atsistatydinimas ir pensija</translation>
+<translation id="6445051938772793705">Šalis</translation>
 <translation id="6446608382365791566">Daugiau informacijos pridėjimas</translation>
 <translation id="6447842834002726250">Slapukai</translation>
 <translation id="6448371595882710519">Sužinokite daugiau apie duomenų valdiklius</translation>
@@ -3067,6 +3125,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6519885440226079262">Gali paprašyti stebėti jūsų rankas</translation>
 <translation id="6520026037299163656">Žiniatinklio programos ir internetiniai įrankiai</translation>
 <translation id="65203098586853226">Verčiama iš <ph name="SOURCE"/> į <ph name="TARGET"/></translation>
+<translation id="6520509611422418552"><ph name="MEMBER_FIRST_NAME"/> prisijungė prie skirtukų grupės „<ph name="GROUP_NAME"/>“</translation>
 <translation id="6521745193039995384">Neaktyvi</translation>
 <translation id="6522682797352430154">Klasikinė muzika</translation>
 <translation id="7379829935006425840">Mygtukas „Tvarkyti pritaikomumo nustatymus“; suaktyvinkite, kad suasmenintumėte pritaikomumo įrankius „Brave“ nustatymuose</translation>
@@ -3139,6 +3198,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6665553082534466207">Trys skylės dešinėje</translation>
 <translation id="6668389483194953109">Rastas popieriaus dydžio pavadinimas „custom“, bet ypatybės „custom_size“ laukas tuščias arba netinkamas.</translation>
 <translation id="6671169470640320959">Lėšos automobiliams</translation>
+<translation id="6675846980676550611">AR neleidžiama</translation>
 <translation id="6677351035258626477">Greitasis maistas</translation>
 <translation id="7691784300114873847">„Brave“ naršyklė bando užpildyti jūsų slaptažodį programoje „<ph name="APP_NAME"/>“.</translation>
 <translation id="6681790815630918386">CVC išsaugotas</translation>
@@ -3165,6 +3225,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6706005862292023715">Užuolaidos ir langų apdaila</translation>
 <translation id="6706210727756204531">Taikymo sritis</translation>
 <translation id="1162411425302454249">Šio IBAN nepavyko išsaugoti jūsų „Brave“ paskyroje. Vietoje to jis išsaugotas naršyklėje „Brave“ šiame įrenginyje.</translation>
+<translation id="6707388108229299854">Jei norite gauti šį adresą visuose įrenginiuose, patvirtinkite savo tapatybę</translation>
 <translation id="6709133671862442373">Naujienos</translation>
 <translation id="6710213216561001401">Ankstesnė</translation>
 <translation id="6710594484020273272">&lt;Įveskite paieškos terminą&gt;</translation>
@@ -3174,6 +3235,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6716039223770814796">Palyginti: <ph name="COMPARE_SET_NAME"/> · <ph name="ITEMS"/> element.</translation>
 <translation id="6716672519412350405"><ph name="URL"/> nori kurti jūsų aplinkos 3D žemėlapį ir stebėti kameros padėtį</translation>
 <translation id="6717692133381953670">Skirtukas išsiųstas iš „<ph name="DEVICE_NAME"/>“</translation>
+<translation id="6718524733720986924">Išsaugokite informaciją, kad automatinio pildymo funkcija kitą kartą galėtų užpildyti daugiau laukų</translation>
 <translation id="6718612893943028815">Naudoti fotoaparatą?</translation>
 <translation id="6721164594124191969">Etiketės (blizgios)</translation>
 <translation id="6726832600570791992">(32 bitų emuliacija)</translation>
@@ -3244,6 +3306,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="6871813064737840684">Šios parinkties kainų istorija žiniatinklyje</translation>
 <translation id="6873456682041376666">Viršutinis dėklas</translation>
 <translation id="6874604403660855544">&amp;Pridėti dar kartą</translation>
+<translation id="6875894866901426843"><ph name="DATE_TIME"/> administratorius ištrins vietinius failus, įskaitant visus šiukšliadėžėje esančius failus.</translation>
 <translation id="6880941331070119097">Didelės kainos parinktis</translation>
 <translation id="5856252669085142737">Greitai sukurkite naują „Brave“ dokumentą</translation>
 <translation id="6882210908253838664">Jei svetainė neveikia, galite pabandyti suteikti jai laikiną leidimą naudoti trečiųjų šalių slapukus. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
@@ -3339,6 +3402,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="7023765275461720661">Susieti paskyrą ir mokėti naudojantis „<ph name="BNPL_ISSUER_NAME"/>“ paslaugomis?</translation>
 <translation id="7029809446516969842">Slaptažodžiai</translation>
 <translation id="7030164307377592766">keisti mokėjimo metodų pildymo nustatymus</translation>
+<translation id="7031110846419387930">Informacija apie jūsų naršyklę, OS, įrenginį, įdiegtą programinę įrangą, failus ir IP adresus</translation>
 <translation id="7031646650991750659">Kurias „Google Play“ programas įdiegėte</translation>
 <translation id="7035705295266423040">Bankas nori patvirtinti jūsų tapatybę</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>; paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite tvarkyti „Brave“ paskyros privatumo nustatymus.</translation>
@@ -3348,7 +3412,6 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="704738887031336226">Rodyti <ph name="PAY_OVER_TIME_HELP_LINK_BEGIN"/>mokėjimo per tam tikrą laiką<ph name="PAY_OVER_TIME_HELP_LINK_END"/> parinktis atsiskaitant</translation>
 <translation id="7048095965575426564">European Fanfold</translation>
 <translation id="7050187094878475250">Bandėte pasiekti <ph name="DOMAIN"/>, bet serveris pateikė sertifikatą, kurio galiojimo laikotarpis per ilgas, kad būtų patikimas.</translation>
-<translation id="705310974202322020">{NUM_CARDS,plural, =1{Šiuo metu šios kortelės išsaugoti negalima}one{Šiuo metu šių kortelių išsaugoti negalima}few{Šiuo metu šių kortelių išsaugoti negalima}many{Šiuo metu šių kortelių išsaugoti negalima}other{Šiuo metu šių kortelių išsaugoti negalima}}</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
 <translation id="7054717457611655239">Nuo dabar saugokite failus sistemoje „<ph name="CLOUD_PROVIDER"/>“.</translation>
 <translation id="7058163556978339998">„<ph name="BROWSER"/>“ patvirtino, kad „<ph name="ISSUER"/>“ išdavė šios svetainės sertifikatą.</translation>
@@ -3446,6 +3509,7 @@ Kitu atveju tai bus užblokuota pagal jūsų privatumo nustatymus. Taip turinys,
 <translation id="7220786058474068424">Apdorojama</translation>
 <translation id="7221855153210829124">Rodyti pranešimus</translation>
 <translation id="7227293336683593977">Kainų istorija</translation>
+<translation id="7228306718910595403">ES kvalifikuota būsena</translation>
 <translation id="7232352818707016189">Daugiau veiksmų su palyginimo lentele</translation>
 <translation id="7233592378249864828">Spausdinti patvirtinimo lapą</translation>
 <translation id="7234112195906418665">Kelionės ir transportas</translation>
@@ -3476,6 +3540,7 @@ Papildoma išsami informacija:
 <translation id="7275334191706090484">Tvarkomos žymės</translation>
 <translation id="7275808129217605899">Sveika mityba</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite pakeisti „Brave“ paskyros slaptažodį</translation>
+<translation id="7291578327729322058">Vairuotojo pažymėjimo pridėjimas</translation>
 <translation id="7292031607255951991">Gavėjo vardas</translation>
 <translation id="7298195798382681320">Rekomenduojama</translation>
 <translation id="7299471494012161875">Pridėti vaizdo išoriniai įrenginiai</translation>
@@ -3492,7 +3557,6 @@ Papildoma išsami informacija:
 <translation id="7316521168101843192">Failas išsaugomas sistemoje „Microsoft OneDrive“</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Su ryšiu susijusi pagalba</translation>
-<translation id="7321111802407017850">Išsaugokite informaciją, kad būtų galima automatiškai užpildyti</translation>
 <translation id="7323804146520582233">Slėpti skiltį „<ph name="SECTION"/>“</translation>
 <translation id="733354035281974745">Įrenginio vietos paskyros nepaisymas</translation>
 <translation id="7334320624316649418">&amp;Pertvarkyti dar kartą</translation>
@@ -3617,6 +3681,7 @@ Papildoma išsami informacija:
 <translation id="7512685745044087310">Šios politikos negalima nustatyti kaip „Tiesa“ ir ji negali būti privaloma, todėl ji pakeista į rekomenduojamą.</translation>
 <translation id="7514365320538308">Atsisiųsti</translation>
 <translation id="7515998400212163428">Android</translation>
+<translation id="7516123895971374904">VR leidžiama šį kartą</translation>
 <translation id="7517201160922869406">Visureigiai</translation>
 <translation id="7517414872996418597">C10 vokas</translation>
 <translation id="7518003948725431193">Nerasta nė vieno tinklalapio šiuo žiniatinklio adresu: <ph name="URL"/></translation>
@@ -3655,6 +3720,7 @@ Papildoma išsami informacija:
 <translation id="7569983096843329377">Juoda</translation>
 <translation id="7574998639136359461">Žiemos sporto įranga</translation>
 <translation id="7575207903026901870">Pašalinkite pasiūlymo mygtuką, paspauskite „Enter“, kad pašalintumėte šį pasiūlymą</translation>
+<translation id="7575800019233204241">„Ryšys nėra privatus“, „&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;“, „&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;“, „&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;“ arba „SSL sertifikato klaida“</translation>
 <translation id="7575887283389198269">Mobilieji telefonai</translation>
 <translation id="405970181812690156">Greitai mokėkite svetainėse ir programose įvairiuose įrenginiuose naudodami korteles, kurias išsaugojote „Brave“.</translation>
 <translation id="7579442726219254162">Nežinomas kintamasis „<ph name="VARIABLE"/>“ valdomoje „<ph name="APPLICATION_ID"/>“ konfigūracijoje.</translation>
@@ -3732,7 +3798,6 @@ Papildoma išsami informacija:
 <translation id="7690647519407127574">„Oufuku Hagaki“ atvirukas</translation>
 <translation id="7693583928066320343">Puslapių tvarka gauta</translation>
 <translation id="769424100851389104">Dabar pradėti atnaujinimą</translation>
-<translation id="769721561045429135">Šiuo metu turite kortelių, kurias galima naudoti tik šiuo įrenginiu. Jei norite peržiūrėti korteles, spustelėkite „Tęsti“.</translation>
 <translation id="7697837508203274589">Sporto įvykiai tiesiogiai</translation>
 <translation id="7698864304447945242">Atnaujinti „Google Play“ paslaugas, skirtas AR?</translation>
 <translation id="7701040980221191251">Nėra</translation>
@@ -3826,12 +3891,15 @@ Papildoma išsami informacija:
 <translation id="5478215009057706238">Prisijunkite prie „Brave“, kad galėtumėte bendrinti skirtukų grupes ir prie jų prisijungti bei kartu kurti idėjas</translation>
 <translation id="7877007680666472091">apsaugoto turinio ID</translation>
 <translation id="7878562273885520351">Jūsų slaptažodis gali būti pažeistas</translation>
+<translation id="7881044256965445977">Ieškoti ir prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
 <translation id="7882421473871500483">Ruda</translation>
 <translation id="7886897188117641322">Pasirinkite, kurias plačias temų kategorijas galima naudoti skelbimams suasmeninti</translation>
 <translation id="7887683347370398519">Patikrinkite kortelės saugos kodą (CVC) ir bandykite dar kartą</translation>
 <translation id="7887885240995164102">Įeiti į vaizdo vaizde režimą</translation>
 <translation id="7888575728750733395">Spausdinimo pateikimo tikslas</translation>
 <translation id="7890748547282909375">Prisijunkite prie „Microsoft OneDrive“, kad išsaugotumėte ekrano kopiją</translation>
+<translation id="7892431309448524994"><ph name="ORIGIN"/> – jei norite, kad būtų rodomas žymeklis, paspauskite |<ph name="ACCELERATOR"/>|</translation>
+<translation id="7892865709991296481">mokėjimo nustatymus</translation>
 <translation id="7894280532028510793">Jei parašyta tinkamai, <ph name="BEGIN_LINK"/>pabandykite paleisti tinklo diagnostiką<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">7 x 9 col. vokas</translation>
 <translation id="4362225295386962644">Kai naudojate slaptažodį, „Brave“ įspėja jus, jei jis paskelbtas internete. Tai atliekant, slaptažodžiai ir naudotojų vardai užšifruojami, kad niekas negalėtų jų perskaityti, įskaitant „Brave“.</translation>
@@ -3888,6 +3956,7 @@ Papildoma išsami informacija:
 <translation id="799149739215780103">Įrišimas</translation>
 <translation id="7992044431894087211">Ekrano bendrinimas su „<ph name="APPLICATION_TITLE"/>“ tęsiamas</translation>
 <translation id="7995512525968007366">Nenurodytas</translation>
+<translation id="7997855386298213183">bendrinami skirtukai</translation>
 <translation id="800218591365569300">Pabandykite uždaryti skirtukus arba kitas programas, kad atlaisvintumėte atminties.</translation>
 <translation id="8002230960325005199">Žr. susijusias svetaines naujame skirtuke</translation>
 <translation id="8003046808285812021">„<ph name="SEARCH_TERMS"/>“</translation>
@@ -3896,9 +3965,7 @@ Papildoma išsami informacija:
 <translation id="8009225694047762179">Tvarkyti slaptažodžius</translation>
 <translation id="8009460986924589054"><ph name="BEGIN_LINK"/>Pabandykite ištrinti slapukus<ph name="END_LINK"/></translation>
 <translation id="8009843239480947060">10 x 11 col.</translation>
-<translation id="8012116502927253373">{NUM_CARDS,plural, =1{Ši kortelė ir jos atsiskaitymo adresas bus išsaugoti. Ją galėsite naudoti prisijungę prie <ph name="USER_EMAIL"/>.}one{Šios kortelės ir jų atsiskaitymo adresai bus išsaugoti. Jas galėsite naudoti prisijungę prie <ph name="USER_EMAIL"/>.}few{Šios kortelės ir jų atsiskaitymo adresai bus išsaugoti. Jas galėsite naudoti prisijungę prie <ph name="USER_EMAIL"/>.}many{Šios kortelės ir jų atsiskaitymo adresai bus išsaugoti. Jas galėsite naudoti prisijungę prie <ph name="USER_EMAIL"/>.}other{Šios kortelės ir jų atsiskaitymo adresai bus išsaugoti. Jas galėsite naudoti prisijungę prie <ph name="USER_EMAIL"/>.}}</translation>
 <translation id="8012647001091218357">Šiuo metu nepavyko susisiekti su jūsų tėvais. Bandykite dar kartą.</translation>
-<translation id="8019861005170389898"><ph name="TRADITIONAL_TEXT"/> (<ph name="ADDITIONAL_TEXT"/>)</translation>
 <translation id="8022542098135319050">Kelionių agentūros ir paslaugos</translation>
 <translation id="1625114571336329891"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>; paspauskite tabuliavimo klavišą, tada „Enter“, kad nustatytumėte „Brave“ kaip numatytąją sistemos naršyklę</translation>
 <translation id="8027077570865220386">Penkioliktas dėklas</translation>
@@ -3954,7 +4021,6 @@ Papildoma išsami informacija:
 <translation id="8094917007353911263">Naudojant šį tinklą gali būti prašoma apsilankyti <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
 <translation id="8098855213644561659">A3 Extra</translation>
 <translation id="809898108652741896">A6</translation>
-<translation id="8100588592594801589">Netinkamos kortelės pašalintos</translation>
 <translation id="8103161714697287722">Mokėjimo metodas</translation>
 <translation id="8103643211515685474">Vis tiek spausdinti</translation>
 <translation id="8105368624971345109">Išjungti</translation>
@@ -3962,14 +4028,15 @@ Papildoma išsami informacija:
 <translation id="8116925261070264013">Išjungta</translation>
 <translation id="8118489163946903409">Mokėjimo metodas</translation>
 <translation id="8118506371121007279">Pateikti atsiliepimą</translation>
+<translation id="812020627659652807">Dabar ištrinti failus</translation>
 <translation id="8120720167840853945">Ši politika nevaldo numatytosios kitų politikos nuostatų elgsenos.</translation>
 <translation id="8127301229239896662">„<ph name="SOFTWARE_NAME"/>“ nebuvo tinkamai įdiegta kompiuteryje ar tinkle. Kreipkitės į IT administratorių, kad ši problema būtų išspręsta.</translation>
+<translation id="8130113808541743942">Perkelti į...</translation>
 <translation id="8131740175452115882">Patvirtinti</translation>
 <translation id="8133495915926741232">Pasirinkite, kurias plačias temų kategorijas galima naudoti skelbimams suasmeninti. Išjungus platesnę kategoriją taip pat bus užblokuotos su ja susijusios temos. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="8134058435519644366">Komplektavimas ir personalo poreikiai</translation>
 <translation id="8135546115396015134">kairįjį klavišą</translation>
 <translation id="8137456439814903304">Energija ir komunalinės paslaugos</translation>
-<translation id="6906657311453248688">Jei norite naudoti <ph name="PERMISSION"/> šioje svetainėje, suteikite „Brave“ prieigą</translation>
 <translation id="8148608574971654810">PDF versija:</translation>
 <translation id="8149426793427495338">Įjungta kompiuterio miego būsena.</translation>
 <translation id="8150722005171944719"><ph name="URL"/> nurodyto failo negalima skaityti. Gali būti, kad jis pašalintas, perkeltas arba neleidžiama prieiga prie jo dėl failo leidimų.</translation>
@@ -4047,6 +4114,7 @@ Papildoma išsami informacija:
 <translation id="8278544367771164040">Komercinės paskolos</translation>
 <translation id="8279290844152565425">Koncertai ir muzikos festivaliai</translation>
 <translation id="2164614088382669062">„Brave“ pranešimai turi būti įjungti. Juos galite įjungti skiltyje <ph name="BEGIN_LINK"/>„<ph name="NOTIFICATION_SETTINGS"/>“<ph name="END_LINK"/>.</translation>
+<translation id="8280569545097027381">Ištrinti failus po <ph name="HOURS"/> val.</translation>
 <translation id="8280630997017109758">Vienuoliktas dėklas</translation>
 <translation id="8281730697546299650">Dabar pasiekiamos kitos skelbimų privatumo funkcijos</translation>
 <translation id="8281886186245836920">Praleisti</translation>
@@ -4162,7 +4230,6 @@ Papildoma išsami informacija:
 <translation id="8473626140772740486">300 x 450 mm</translation>
 <translation id="8473863474539038330">Adresai ir dar daugiau</translation>
 <translation id="8474910779563686872">Rodyti išsamią kūrėjo informaciją</translation>
-<translation id="8476959635632921417">Jei norite išsaugoti ir naudoti šį adresą visuose įrenginiuose, patvirtinkite savo tapatybę</translation>
 <translation id="8479754468255770962">Sankabėlė apačioje kairėje</translation>
 <translation id="8714154125294613524">Šis adresas bus ištrintas iš jūsų „Brave“ paskyros (<ph name="ACCOUNT"/>)</translation>
 <translation id="8488350697529856933">Taikoma</translation>
@@ -4270,6 +4337,7 @@ Papildoma išsami informacija:
 <translation id="8687429322371626002">Jūsų įrenginį ir paskyrą valdo <ph name="MANAGER"/>.</translation>
 <translation id="8688672835843460752">Galima</translation>
 <translation id="868922510921656628">Puslapių skaičius rinkinyje</translation>
+<translation id="8694684557210599098">Transporto priemonės pridėjimas</translation>
 <translation id="8695996513186494922">Palyginti skirtukus?</translation>
 <translation id="7816186261184837626">„Brave“ integruotos saugos funkcijos, skirtos apsaugoti jus, kai naršote, pvz., „Brave“ saugaus naršymo funkcija, kurią naudojant neseniai <ph name="BEGIN_LINK"/>buvo rasta žalinga programinė įranga<ph name="END_LINK"/> svetainėje, kurioje bandėte apsilankyti.</translation>
 <translation id="869891660844655955">Galiojimo data</translation>
@@ -4394,7 +4462,6 @@ Papildoma išsami informacija:
 <translation id="8919895429178014996">Slėpti visus elementus</translation>
 <translation id="8922013791253848639">Visada leisti skelbimus šioje svetainėje</translation>
 <translation id="8922734931659847428">Ribotas puslapių, kuriuose lankotės ir kuriuose vyksta <ph name="BEGIN_LINK"/>įvykiai, susiję su pasenusiomis technologijomis<ph name="END_LINK"/>, URL sąrašas</translation>
-<translation id="3689838371654876064">Kai saugos įvykius pažymi „Brave“, atitinkami įvykių duomenys išsiunčiami administratoriui. Tai gali būti naršyklėje „Brave“ lankomų puslapių URL, puslapių, iš kurių nukopijavote duomenis, URL, failų pavadinimai ar metaduomenys, naršyklės ar skirtukų strigtys ir naudotojo vardas, kurį naudodami prisijungiate prie žiniatinklio programų, įrenginio ir „Brave“.</translation>
 <translation id="892588693504540538">Skylė viršuje dešinėje</translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="8932102934695377596">Jūsų laikrodis atsilieka</translation>
@@ -4411,6 +4478,7 @@ Papildoma išsami informacija:
 <translation id="8959288490306482616">3 gelsvai ruda</translation>
 <translation id="8963117664422609631">Eiti į svetainės nustatymus</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Pasiūlymai:<ph name="MARKUP_2"/>įsitikinkite, kad veikia duomenų ryšys;<ph name="MARKUP_3"/>vėliau iš naujo įkelkite šį tinklalapį;<ph name="MARKUP_4"/>patikrinkite įvestą adresą<ph name="MARKUP_5"/></translation>
+<translation id="8963969435440878110">Vietiniai failai bus ištrinti po <ph name="HOURS"/> val.</translation>
 <translation id="8968766641738584599">Išsaugoti kortelę</translation>
 <translation id="8970887620466824814">Kažkas ne taip.</translation>
 <translation id="8971063699422889582">Baigėsi serverio sertifikato galiojimo laikas.</translation>
@@ -4461,6 +4529,7 @@ Papildoma išsami informacija:
 <translation id="9051072642122229460">Kavos ir espreso gaminimo aparatai</translation>
 <translation id="104719866786855422">Pristatome naują skelbimų privatumo funkciją, vadinamą skelbimų vertinimu. „Brave“ bendrina tik labai ribotą informaciją svetainėse, pvz., kada skelbimas buvo rodomas, kad padėtų svetainėms įvertinti skelbimų našumą.</translation>
 <translation id="9053955920216300738">Kuriuose URL lankotės</translation>
+<translation id="90542379288189611">Valstybinio numerio lentelė</translation>
 <translation id="9054288282721240609">Leidžiama stebėti rankas</translation>
 <translation id="9056953843249698117">Parduotuvė</translation>
 <translation id="9062620674789239642">Galbūt jis buvo perkeltas, redaguotas ar ištrintas.</translation>
@@ -4509,6 +4578,7 @@ Papildoma išsami informacija:
 <translation id="9139318394846604261">Apsipirkimas</translation>
 <translation id="5130929741967388676">„Brave“ naršyklė norėtų naudoti piršto atspaudą automatiškai užpildant slaptažodžius</translation>
 <translation id="9141013498910525015">Tvarkyti adresus</translation>
+<translation id="9141672681283222114">AR leidžiama šį kartą</translation>
 <translation id="9143898823728499852">Galite automatiškai užpildyti šią kortelę, nes „<ph name="CARD_ISSUER_NAME"/>“ paskyra yra susieta su „Google Pay“</translation>
 <translation id="9144951720726881238">Galiojimo data:</translation>
 <translation id="9145910032514306808"><ph name="BEGIN_LINK"/>Prisijunkite<ph name="END_LINK"/> 
@@ -4522,6 +4592,7 @@ Papildoma išsami informacija:
 <translation id="9155646082713385498">Žurnalai</translation>
 <translation id="9157595877708044936">Nustatoma...</translation>
 <translation id="9161794544616754735">{0,plural, =1{Faile „<ph name="FILE_NAME"/>“ gali būti neskelbtino turinio}one{<ph name="FILE_COUNT"/> faile gali būti neskelbtino turinio}few{<ph name="FILE_COUNT"/> failuose gali būti neskelbtino turinio}many{<ph name="FILE_COUNT"/> failo gali būti neskelbtino turinio}other{<ph name="FILE_COUNT"/> failų gali būti neskelbtino turinio}}</translation>
+<translation id="9162097962559874470"><ph name="ORIGIN"/> – jei norite išeiti iš viso ekrano režimo, paspauskite |<ph name="ACCELERATOR"/>|</translation>
 <translation id="9165305804774426672">Svetainės, kuriose lankotės, taip pat gali nustatyti, kas jums patinka, pagal jūsų veiklą toje svetainėje. Pavyzdžiui, jei lankotės svetainėje, kurioje parduodami ilgo nuotolio bėgimo bateliai, ji gali nuspręsti, kad jus domina bėgimo maratonai.</translation>
 <translation id="9166851138617700776">Daugiau apie svetainių siūlomus skelbimus ir skelbimų vertinimą</translation>
 <translation id="9167054383925257837">Naršyklės ir įrenginio OS informacija (pvz., naršyklės ir OS versijos)</translation>
@@ -4542,6 +4613,7 @@ Papildoma išsami informacija:
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> naudojamas nepalaikomas protokolas.</translation>
 <translation id="918454845714257218">Patikrinkite kodą, pateiktą <ph name="SIDE_OF_CARD"/>, ir bandykite dar kartą</translation>
 <translation id="7202091195027070644">Mygtukas „Nustatyti „Brave“ kaip numatytąją naršyklę“; suaktyvinkite, kad nustatytumėte „Brave“ kaip numatytąją sistemos naršyklę</translation>
+<translation id="9189468832660648522"><ph name="MEMBER_FIRST_NAME"/> pakeitė šį skirtuką</translation>
 <translation id="9189789270972826888">Jei kortelė nebuvo užpildyta, spustelėkite išsamią kortelės informaciją toliau, kad nukopijuotumėte ir įklijuotumėte. <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="9190557999028587593">Senesnės nei keturių savaičių temos ištrinamos automatiškai</translation>
 <translation id="9191834167571392248">Skylė apačioje kairėje</translation>
@@ -4565,6 +4637,7 @@ Papildoma išsami informacija:
 <translation id="142389341645668510">Tinkinti „Brave“</translation>
 <translation id="9222403027701923763">Pradinis ir vidurinis išsilavinimas (K-12)</translation>
 <translation id="93020190163435405">Stažuotės</translation>
+<translation id="931598121743515856">Pirkinio vertė turi būti didesnė nei <ph name="CHECKOUT_AMOUNT_MINIMUM"/></translation>
 <translation id="933712198907837967">Diners Club</translation>
 <translation id="934634059306213385">Leisti programai „<ph name="APP_NAME"/>“ nustatyti „Wi-Fi“ tinklus?</translation>
 <translation id="7486559383537872796">Galite prarasti prieigą prie „Brave“ paskyros. „Brave“ rekomenduoja pakeisti slaptažodį dabar. Bus prašoma prisijungti.</translation>
@@ -4574,13 +4647,14 @@ Papildoma išsami informacija:
 <translation id="940524522703752213">Failų įkėlimas į „<ph name="CLOUD_PROVIDER"/>“ bus pradėtas po <ph name="MINUTES"/> min.</translation>
 <translation id="944578681290094302">Atsiskaitant parodyti, kokios premijos ir privilegijos pasiekiamos kortelėms. <ph name="CARD_BENEFIT_HELP_LINK_BEGIN"/>Sužinokite apie kortelių privilegijas<ph name="CARD_BENEFIT_HELP_LINK_END"/></translation>
 <translation id="5444457503062019851">„Brave“ neleidžia svetainėms naudoti trečiųjų šalių slapukų, siekiant jus stebėti, kai naršote.</translation>
-<translation id="945855313015696284">Patikrinkite toliau pateiktą informaciją ir ištrinkite visas netinkamas korteles</translation>
 <translation id="94613679163347541">Palyginti „<ph name="CATEGORY"/>“?</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paspauskite tabuliavimo klavišą, tada – „Enter“, jei norite greitai sukurti naują svetainę „Brave“ svetainėse</translation>
 <translation id="7776043919629791284">{COUNT,plural, =0{„Brave“ šiandien vėl apribos slapukus}=1{„Brave“ rytoj vėl apribos slapukus}one{Liko # diena, kol „Brave“ vėl apribos slapukus}few{Liko # dienos, kol „Brave“ vėl apribos slapukus}many{Liko # dienos, kol „Brave“ vėl apribos slapukus}other{Liko # dienų, kol „Brave“ vėl apribos slapukus}}</translation>
+<translation id="949026252328034572"><ph name="MEMBER_COUNT"/> nar. prisijungė prie skirtukų grupės „<ph name="GROUP_NAME"/>“</translation>
 <translation id="949314938206378263">Prašėte leidimo apsilankyti šioje svetainėje. Vienas iš tėvų gali atsakyti programoje „Family Link“.</translation>
 <translation id="950736567201356821">Trys skylės viršuje</translation>
 <translation id="1762533279914543867">Prieigos raktas • „Brave“ slaptažodžių tvarkyklė</translation>
+<translation id="955429569736351433">VR leidžiama</translation>
 <translation id="95721182352849470">2 geltona</translation>
 <translation id="961663415146723894">Įrišimas apačioje</translation>
 <translation id="961856697154696964">Ištrinti naršymo duomenis</translation>

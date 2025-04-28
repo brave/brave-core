@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Browser-Empfehlungen anzeigen</translation>
 <translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
 <translation id="924029461438529367">Suchvorschläge anzeigen</translation>
-<translation id="1571106259128580884">Empfehlungen für Top-Seiten anzeigen</translation>
+<translation id="5989135139219497991">Top-Vorschläge anzeigen</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="412411722208944922">Schnelle Suchmaschinen</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Hilf Brave Search zu wachsen</translation>
 <translation id="7044431516245362795">Melde dich für das Web Discovery Project an, um das Wachstum von Brave Search zu unterstützen und die Suchergebnisse zu verbessern. <ph name="LEARN_MORE_START"/>Erfahre mehr.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Klar, ich helfe gerne.</translation>
-<translation id="2877653791257935258">Geben Sie einen Namen einer Website oder eine URL ein.</translation>
-<translation id="5329830149661250028">Entdecken Sie den Unterschied mit Brave: Keine Werbung. Keine Tracker. Viel schnelleres Laden von Websites.</translation>
-<translation id="3941792073703079607">Sehen Sie sich den Unterschied mit Brave an: Anzeigen blockieren. Daten speichern. Schneller streamen.</translation>
 <translation id="3545804467215833536">Tippen, um Brave Schutz anzuzeigen</translation>
 <translation id="1724327820822194498">Sehen Sie all die fiesen Dinge, die Brave auf jeder Website mit Schutz blockiert hat.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> und <ph name="TRACKER"/> andere Tracker blockiert</translation>
@@ -504,6 +501,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
+<translation id="7205939464631857223">Alle blockierten Elemente löschen</translation>
 <translation id="5370478469168390143">Daten online speichern</translation>
 <translation id="1118508688433541158">Browsen Sie schneller und blockieren Sie Anzeigen mit Brave</translation>
 <translation id="7427391215172269363">Ich spare jeden Tag Daten, indem ich mit Brave im Internet surfe.</translation>
@@ -1029,7 +1027,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5888208462949095139">Mit <ph name="DEFAULT_SEARCH_ENGINE"/> suchen</translation>
 <translation id="5456039738087398178">Startbildschirm-Widget</translation>
 <translation id="703185154752046151">Widget zum Startbildschirm hinzugefügt</translation>
-<translation id="3290805388004282161">Testen Sie das Brave-Suchwidget</translation>
+<translation id="4635094429202343515">Probiere das Brave Search-Widget aus</translation>
 <translation id="4809681171446727314">Greifen Sie direkt über Ihren Startbildschirm auf eine private, unabhängige Suche zu.</translation>
 <translation id="7751715172931488388">Widget hinzufügen</translation>
 <translation id="7285167584112910782">Brave-Schnellaktionssuche</translation>
@@ -1096,6 +1094,8 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1179407411385015942">Leo ist ein intelligenter KI-Assistent, der direkt in den Browser integriert ist</translation>
 <translation id="5781842473834867765">Meinen Konversationsverlauf speichern</translation>
 <translation id="4109670531935487117">Vorschläge zur Autovervollständigung in der Adressleiste anzeigen</translation>
+<translation id="4983005227524068187">In der Schnell-Suchmaschinenleiste anzeigen</translation>
+<translation id="8514910864411336826">Ermöglicht eine Verknüpfung, um Leo aus der Schnell-Suchmaschinenleiste zu starten.</translation>
 <translation id="6106701981952170121">Alle Leo AI-Konversationsdaten löschen</translation>
 <translation id="423600389315522551">Wenn du Leo AI zurücksetzt, musst du dich für die künftige Verwendung von Brave Leo AI entscheiden und dein Chat-Verlauf wird gelöscht. Durch das Löschen deines Chat-Verlaufs werden alle deine früheren Unterhaltungen mit Brave Leo AI gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="6742599753610126012">Chat-Verlauf löschen</translation>
@@ -1218,11 +1218,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6891382640886173702">In ein Fenster zusammenführen</translation>
 <translation id="2912247081180973411">Fenster schließen</translation>
 <translation id="4010699428656610296">Bitte führen Sie andere Tabs in einem anderen Brave-Fenster zusammen.</translation>
-<translation id="208634871997892083">Ständig aktives VPN</translation>
+<translation id="4306918392910017801">VPN automatisch wieder verbinden</translation>
 <translation id="1599073346542156922">So schalten Sie das ein:</translation>
 <translation id="7001163334415463127">1. Öffnen Sie im App-Drawer oder indem Sie auf die Schaltfläche unten tippen die Einstellungen Ihres Geräts.</translation>
 <translation id="887443138775437899">2. Suchen Sie nach Brave VPN und tippen Sie auf das Einstellungssymbol rechts daneben.</translation>
-<translation id="3776051499611941773">3. Aktivieren Sie <ph name="ALWAYS_ON_TUTORIAL_START"/>Ständig aktives VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>.</translation>
+<translation id="7546805138087561624">3. Aktivieren Sie <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Ständig aktives VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
+<translation id="2446001600399646984">Beachte, dass aufgrund von Android-Beschränkungen die Funktion 'Verbindungen ohne VPN blockieren' nicht wie erwartet funktioniert.<ph name="LEARN_MORE_START"/>Mehr erfahren<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Android-Einstellungen öffnen</translation>
 <translation id="2728518864712716830">Update wurde heruntergeladen.</translation>
 <translation id="8403338849301491865">Die Filterliste wurde erfolgreich aktualisiert</translation>
@@ -1232,4 +1233,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2361906291514218784">Leo-KI</translation>
 <translation id="7942415993090181327">Chat-Verlauf</translation>
 <translation id="6859935199732075666">Safe Browsing-Fehler anzeigen</translation>
+<translation id="2735247450315842119">Screenshots in privaten Tabs erlauben</translation>
+<translation id="8420414929552321089">Wenn erlaubt, sind private Tabs auch sichtbar, wenn mehrere Apps geöffnet sind.</translation>
 </translationbundle>

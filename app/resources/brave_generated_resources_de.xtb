@@ -317,6 +317,18 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Eine eingebettete Seite unter <ph name="SITE"/> will speichern</translation>
 <translation id="7700010743463174379">Diese Seite möchte Folgendes speichern:</translation>
 <translation id="6774238875569752630">Eine eingebettete Seite auf dieser Seite möchte Folgendes speichern:</translation>
+<translation id="1233913566967531780">Tab-Fokus</translation>
+<translation id="4034992002364254340">Alle zugehörigen Tabs in neuem Fenster öffnen</translation>
+<translation id="8012125596344613514">Vorgeschlagene Themen</translation>
+<translation id="7529120186020617755">Thema eingeben, auf das du dich konzentrieren möchtest...</translation>
+<translation id="6847541693235449912">Aufrufen</translation>
+<translation id="2079545284768500474">Rückgängig machen</translation>
+<translation id="1533980864758658574">Neues Browserfenster geöffnet für <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Diese Funktion sendet Daten über deine offenen Tabs an Leo, den KI-gestützten Browser-Assistenten von Brave.</translation>
+<translation id="6165508094623778733">Weitere Informationen</translation>
+<translation id="7557539689487606886">Jetzt Premium sichern</translation>
+<translation id="1035309871698658326">Beim Öffnen werden automatisch die Titel und Ursprünge aller nicht-privaten Tabs an Leo gesendet, um sie zu klassifizieren.</translation>
+<translation id="3435896845095436175">Aktivieren</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -353,7 +365,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2396127686705429331">Lesezeichen-Schaltfläche anzeigen</translation>
 <translation id="2814998458708016836">Breite Adressleiste verwenden</translation>
 <translation id="4109670531935487117">Vorschläge zur Autovervollständigung in der Adressleiste anzeigen</translation>
-<translation id="2858138569776157458">Top-Websites</translation>
+<translation id="3405901785709583668">Top-Vorschläge</translation>
 <translation id="7859704718976024901">Browserverlauf</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
 <translation id="4144468798716165316">Kurzbefehle</translation>
@@ -462,7 +474,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7791141927430186653">Eingebettete Tweets von X (ehemals Twitter) erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
 <translation id="8792121506918889955">WebRTC-IP-Nutzungsrichtlinien</translation>
-<translation id="6165508094623778733">Weitere Informationen</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
@@ -498,6 +509,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1389601498324964367">Speicher mit Kontingentverwaltung</translation>
 <translation id="814018970995616154">Überprüft URLs anhand einer Liste mit unsicheren Seiten, die in Brave gespeichert ist.</translation>
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
+<translation id="4905744245455598930">Schützt vor Websites, Downloads und Erweiterungen, die als gefährlich bekannt sind.</translation>
 <translation id="5570470519803062774">Website- und Schutzeinstellungen</translation>
 <translation id="410351446219883937">Automatische Wiedergabe</translation>
 <translation id="3512883292907992390">Automatische Wiedergabe von Videos durch Websites erlauben</translation>
@@ -589,6 +601,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4908081302669157000">Telefonnummern, E-Mail-Adressen und Anschriften</translation>
 <translation id="294985549514492876">Webanwendungen (PWA)</translation>
 <translation id="7029809446516969842">Passwörter</translation>
+<translation id="6011308810877101166">Suchvorschläge verbessern</translation>
+<translation id="2332576387809612040">Wenn diese Option aktiviert ist, sendet Brave das, was du in die Adressleiste oder das Suchfeld eingibst, an deine Standardsuchmaschine, um bessere Vorschläge zu erhalten. Wenn sie deaktiviert ist, zeigt Brave nur Vorschläge an, die auf deinem Gerät generiert werden. In privaten Fenstern ist diese Funktion immer deaktiviert.</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="5522403133543437426">In der Adressleiste verwendete Suchmaschine.</translation>
@@ -671,6 +685,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1561541094377237745">Solana-Netzwerke</translation>
 <translation id="7141438739990875547">Bitcoin-Netzwerke</translation>
 <translation id="1077567586443625607">Zcash-Netzwerke</translation>
+<translation id="1177180573354712438">Cardano-Netzwerke</translation>
 <translation id="3159419679550543837">Testnetzwerke anzeigen</translation>
 <translation id="3215569562674795548">Bearbeiten oder neues Netzwerk hinzufügen</translation>
 <translation id="4418993400653250511">Die ID der Kette</translation>
@@ -709,6 +724,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2751872555001636931">Leo-Symbol in der Seitenleiste anzeigen</translation>
 <translation id="8055509865174199683">Leo im Kontextmenü auf Websites anzeigen</translation>
 <translation id="1529674267267221673">Leo erscheint im Kontextmenü, wenn Sie auf einer Website mit rechts klicken. Dadurch wird Kontext von der aktuellen Webseite an Leo gesendet.</translation>
+<translation id="5226020406479918122">Tab-Fokus-Modus</translation>
+<translation id="3705539672403311123">Tab-Organisation auf der Tab-Suchseite aktivieren. Beim Öffnen werden die Titel und Ursprünge aller nicht-privaten Tabs automatisch an Leo zur Klassifizierung gesendet. <ph name="BEGIN_LINK"/>Mehr erfahren<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Vorgeschlagene Befehle im Gespräch anzeigen</translation>
 <translation id="5781842473834867765">Meinen Gesprächsverlauf speichern</translation>
 <translation id="1082960401708055995">Durch die Deaktivierung der Konversationsspeicherung werden alle zuvor gespeicherten Konversationen dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
@@ -719,6 +736,9 @@ Chat-Verlaufs werden alle deine früheren Unterhaltungen mit Brave
 Leo AI. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="5574059574002819179">Vorschläge für die automatische Vervollständigung anpassen</translation>
 <translation id="7942415993090181327">Chat-Verlauf</translation>
+<translation id="5385064007245738696">Über Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo bietet datenschutzorientierten KI-Chat und andere KI-gesteuerte Schnittstellen im Browser. Leo lernt niemals aus deinen Daten oder nutzt sie für das Training von Modellen. Alle Anfragen werden über einen anonymisierenden Server weitergeleitet.</translation>
+<translation id="6458721693611638005">Erfahre mehr darüber, wie Brave deinen Einsatz von KI in Leos Datenschutzrichtlinie schützt. <ph name="BEGIN_LINK"/>Mehr erfahren.<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standardmodell für neue Unterhaltungen</translation>
 <translation id="8826914609353373601">Premium-Abonnement verwalten</translation>
 <translation id="235457946228076038">Bringen Sie Ihr eigenes Modell mit</translation>
@@ -729,6 +749,8 @@ Leo AI. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="3553035516792776805">Modellanfragenname</translation>
 <translation id="7634775528597575156">Server-Endpunkt</translation>
 <translation id="6374563306438145841">API-Schlüssel</translation>
+<translation id="3295756655687327124">Visuelle Unterstützung</translation>
+<translation id="1415432774589088566">Wenn dieses Modell Bilder als Eingabe akzeptiert, z. B. Llama 3.2b Vision.</translation>
 <translation id="8008271349880309090">Der Name des Modells, der im Menü für die Modellauswahl angezeigt wird</translation>
 <translation id="1355326130503900056">Der Name des Modells, wie er in der Anfrage an das Serving-Framework erscheinen soll, z. B. phi-3 (beachten Sie, dass die Integration nicht funktioniert, wenn dieser Name nicht genau dem entspricht, was das Serving-Framework erwartet)</translation>
 <translation id="3213787232304349732">Die URL, unter der dein Serving-Framework auf Anfragen wartet. Wenn du dir nicht sicher bist, sieh in der Dokumentation des Serving-Frameworks nach. Für Ollama ist dies zum Beispiel immer http://localhost:11434/v1/chat/completions</translation>
@@ -746,6 +768,7 @@ Leo AI. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="7265212806651512211">Sie haben noch kein Modell hinzugefügt.</translation>
 <translation id="7304802428852949897">Ihre Modelle</translation>
 <translation id="7435587476558117990">Verbinden Sie Ihr selbst oder von Dritten gehostetes LLM mit Leo und nutzen Sie es im Browser.</translation>
+<translation id="8137606697798069075">Verwende ein beliebiges OpenAI-Chat-Protokoll-kompatibles Framework wie Ollama. <ph name="BEGIN_LINK"/>Mehr erfahren<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Modell speichern</translation>
 <translation id="6304169450064541679">System-Eingabeaufforderung</translation>
 <translation id="3081947790648024460">Benutzerdefinierte Anweisungen und/oder Kontext, die dem Modell gegeben werden, um seine Antworten in eine bestimmte Richtung oder einen bestimmten Stil zu lenken. Verwende %datetime%, wenn du das aktuelle Datum und die Uhrzeit einfügen möchtest.</translation>

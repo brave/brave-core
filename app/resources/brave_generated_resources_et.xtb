@@ -317,6 +317,18 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8813509417421129632">Lehel <ph name="SITE"/> olev manustatud leht soovib salvestada</translation>
 <translation id="7700010743463174379">See leht soovib salvestada</translation>
 <translation id="6774238875569752630">Sellel lehel olev manustatud leht soovib salvestada</translation>
+<translation id="1233913566967531780">Vahelehed: fookus</translation>
+<translation id="4034992002364254340">Koondage kõik seotud vahelehed ühte aknasse</translation>
+<translation id="8012125596344613514">Soovitatavad teemad</translation>
+<translation id="7529120186020617755">Sisestage teema, millele keskenduda...</translation>
+<translation id="6847541693235449912">Mine</translation>
+<translation id="2079545284768500474">Võta tagasi</translation>
+<translation id="1533980864758658574">Uus aken on loodud <ph name="TOPIC"/>jaoks</translation>
+<translation id="7985042437720138349">See funktsioon saadab andmed teie avatud vahekaartide kohta Brave'i tehisintellektipõhisele brauseri assistendile Leo.</translation>
+<translation id="6165508094623778733">Loe lisaks</translation>
+<translation id="7557539689487606886">Telli Premium</translation>
+<translation id="1035309871698658326">Kui see on avatud, saadab see automaatselt kõigi mitte-privaatsete vahekaartide pealkirjad ja päritolu Leole, et neid klassifitseerida.</translation>
+<translation id="3435896845095436175">Luba</translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
 <translation id="7179921470347911571">Taaskäivita kohe</translation>
 <translation id="1426410128494586442">Jah</translation>
@@ -353,7 +365,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="2396127686705429331">Kuva järjehoidjate nupp</translation>
 <translation id="2814998458708016836">Kasuta laia aadressiriba</translation>
 <translation id="4109670531935487117">Näita aadressiribal automaatse täitmise soovitusi</translation>
-<translation id="2858138569776157458">Popid saidid</translation>
+<translation id="3405901785709583668">Peamised soovitused</translation>
 <translation id="7859704718976024901">Lehitsemisajalugu</translation>
 <translation id="8820817407110198400">Järjehoidjad</translation>
 <translation id="4144468798716165316">Kiirkäsklused</translation>
@@ -462,7 +474,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="7791141927430186653">Lubage X-i (varem Twitteri) manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
 <translation id="8792121506918889955">WebRTC IP lahendamise kord</translation>
-<translation id="6165508094623778733">Loe lisaks</translation>
 <translation id="8798099450830957504">Vaikimisi</translation>
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
@@ -713,6 +724,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="2751872555001636931">Kuva külgribal Leo ikooni</translation>
 <translation id="8055509865174199683">Näita Leod kontekstimenüüdes veebisaitidel</translation>
 <translation id="1529674267267221673">Leo ilmub kontekstmenüüsse, kui teete veebisaidil paremklõpsu. See saadab praeguse veebisaidi konteksti Leole.</translation>
+<translation id="5226020406479918122">Vahelehtede fookusrežiim</translation>
+<translation id="3705539672403311123">Lubage vahekaartide organiseerimine vahekaartide otsingu lehel. Kui see on avatud, saadab see automaatselt kõigi mitte-privaatsete vahekaartide pealkirjad ja päritolu Leole, et neid klassifitseerida. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Kuva vestluses soovitatud viibad</translation>
 <translation id="5781842473834867765">Salvesta minu vestluste ajalugu</translation>
 <translation id="1082960401708055995">Vestluste salvestamise keelamine kustutab lõplikult kõik varem salvestatud vestlused. Seda toimingut ei saa tühistada.</translation>
@@ -723,6 +736,9 @@ et kõik eelnevad Brave Leoga peetud vestlused kustutatakse.
 Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="5574059574002819179">Automaatteksti soovituste kohandamine</translation>
 <translation id="7942415993090181327">Vestluse ajalugu</translation>
+<translation id="5385064007245738696">Leo tutvustus</translation>
+<translation id="5084498230659987096">Brave Leo pakub privaatsust tagavat AI-vestluskaaslast ja muid AI-võimelisi kasutajaliideseid brauseris. Leo ei kasuta teie andmeid õppimiseks ega mudelite treenimiseks. Kõik päringud edastatakse anonüümse serveri kaudu.</translation>
+<translation id="6458721693611638005">Lisateavet selle kohta, kuidas Brave kaitseb teie tehisintellekti kasutamist, leiate Leo privaatsuspoliitikast. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Uute vestluste vaikemudel</translation>
 <translation id="8826914609353373601">Hallake premium-tellimust</translation>
 <translation id="235457946228076038">Tooge oma mudel</translation>
@@ -733,6 +749,8 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="3553035516792776805">Mudeli taotluse nimi</translation>
 <translation id="7634775528597575156">Serveri lõpp-punkt</translation>
 <translation id="6374563306438145841">API võti</translation>
+<translation id="3295756655687327124">Vision Support</translation>
+<translation id="1415432774589088566">Kui see mudel võtab sisendiks pildi, nt laama 3.2b nägemine</translation>
 <translation id="8008271349880309090">Mudeli nimi, nagu see kuvatakse mudeli valimise menüüs.</translation>
 <translation id="1355326130503900056">Mudeli nimi sellisena, nagu see peaks olema teenindavale raamistikule esitatavas päringus, nt phi-3 (arvestage, et kui see nimi ei ole täpselt selline, nagu teenindav raamistik ootab, siis integratsioon ei toimi).</translation>
 <translation id="3213787232304349732">URL, kus teie teenindav raamistik ootab taotluseid. Kui te ei ole kindel, vaadake teenindava raamistiku dokumentatsiooni. Näiteks Ollama puhul on see alati http://localhost:11434/v1/chat/completions</translation>

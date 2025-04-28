@@ -31,10 +31,10 @@
 <translation id="1055184225775184556">&amp; Нэмэх үйлдлийг буцаах</translation>
 <translation id="1056898198331236512">Анхааруулга</translation>
 <translation id="1248991947169346185"><ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave-д Dino Run тоглоомыг тоглохын тулд tab, дараа нь Enter дээр дарна уу</translation>
-<translation id="1058479211578257048">Картыг хадгалж байна...</translation>
 <translation id="1060136083665017312">Тоглоомын систем болон консолууд</translation>
 <translation id="1060320201901229167">Каку дугтуй 5</translation>
 <translation id="1062407476771304334">Солих</translation>
+<translation id="1063822554756965137">Файлуудыг амжилттай устгасан</translation>
 <translation id="1064054731605354900">A3x5</translation>
 <translation id="1067029985695494416">Хайлтын системийн дэлгэрэнгүй</translation>
 <translation id="1068672505746868501"><ph name="SOURCE_LANGUAGE"/> хэл дээрх хуудсыг хэзээ ч орчуулахгүй</translation>
@@ -53,7 +53,6 @@
 <translation id="1090629319939036170">VR-н цэс</translation>
 <translation id="1091463901118115503">Үргэлжлүүлэн унших</translation>
 <translation id="1091779689406092804">дэлгэцийн агшин</translation>
-<translation id="1094777233105318927">Таны хөтөч, OS, төхөөрөмж, суулгасан программ хангамж болон файлуудын талаарх мэдээлэл</translation>
 <translation id="1096545575934602868">Энэ талбар нь <ph name="MAX_ITEMS_LIMIT"/>-с илүү оролттой байж болохгүй. Цаашдын бүх оролтыг устгах болно.</translation>
 <translation id="1097803577928227769">Бүс нутгийн цэцэрлэг, цэцэрлэгт хүрээлэн</translation>
 <translation id="1099928364755383720">автомат дэлгэц доторх дэлгэц</translation>
@@ -71,7 +70,6 @@
 <translation id="1122714970786750095">Электрон болон цахилгаан төхөөрөмж</translation>
 <translation id="1123753900084781868">Шууд тайлбар яг одоо боломжгүй байна</translation>
 <translation id="1125453215844207206">Шошголоогүй график. Текстийг задалж байна. Brave AI-аар дэмжигдсэн</translation>
-<translation id="1125573121925420732">Вебсайт аюулгүй байдлаа шинэчлэх үед анхааруулга гарч ирж болзошгүй. Үүнийг удахгүй сайжруулах болно.</translation>
 <translation id="112840717907525620">Тохиргооны кэш болж байна</translation>
 <translation id="1131264053432022307">Таны хуулсан зураг</translation>
 <translation id="1138458427267715730">Веб дээрх аливаа сайт дээр үнэ буурах үед дохио аваарай</translation>
@@ -115,6 +113,7 @@
 <translation id="1195073053842921378">Энэ хаягийг энэ төхөөрөмжөөс устгана</translation>
 <translation id="1195558154361252544">Таны зөвшөөрөх сайтаас бусад бүх сайтын мэдэгдлийг автоматаар хориглоно</translation>
 <translation id="1197088940767939838">Улбар шар</translation>
+<translation id="1198412233443148072"><ph name="MEMBER_FIRST_NAME"/> “<ph name="WEBSITE_TITLE"/>” табыг хассан</translation>
 <translation id="1201402288615127009">Дараагийнх</translation>
 <translation id="1201895884277373915">Энэ сайтаас илүү ихийг</translation>
 <translation id="1202892408424955784">Хянаж буй бүтээгдэхүүнүүд</translation>
@@ -137,6 +136,7 @@
 <translation id="1230244617745022071"><ph name="SOURCE"/> (автоматаар илрүүлсэн)</translation>
 <translation id="1232569758102978740">Гарчиггүй</translation>
 <translation id="1236081509407217141">Виртуал Орчин (VR)-ыг зөвшөөрөх үү?</translation>
+<translation id="1236689197410206751">AfterPay</translation>
 <translation id="1240347957665416060">Таны төхөөрөмжийн нэр</translation>
 <translation id="124116460088058876">Бусад хэл</translation>
 <translation id="1243027604378859286">Зохиогч:</translation>
@@ -145,6 +145,7 @@
 <translation id="1253846494229886276">Дэлгэцийн агшныг хадгалж байна</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (синк хийсэн)</translation>
 <translation id="1255086252236620440">Хүнсний холигчид</translation>
+<translation id="1255931290436977164">Паспорт</translation>
 <translation id="1256368399071562588">&lt;p&gt;Хэрэв та вебсайтад зочлохоор оролдох үед нээгдэхгүй байвал асуудал шийдэх эдгээр алхмыг дагаж алдааг засахаар оролдоно уу:&lt;/p&gt;
     &lt;ol&gt;
     &lt;li&gt;Вебийн хаягийг буруу бичсэн эсэхийг шалгана уу.&lt;/li&gt;
@@ -157,6 +158,7 @@
 <translation id="1264309058268477500">Өөр</translation>
 <translation id="1264974993859112054">Спорт</translation>
 <translation id="1268480293435976622">Хятад дугтуй #7</translation>
+<translation id="1269045546668906972">Илүү олон талбарыг автоматаар бөглөхийн тулд ХОУ-аар автоматаар бөглөхийг асаагаарай</translation>
 <translation id="53564677632020212">Brave Сайтуудад шинэ сайт шуурхай үүсгээрэй</translation>
 <translation id="1270328905573953738">Нүүх ба шилжүүлэх</translation>
 <translation id="1270502636509132238">Авах төрөл</translation>
@@ -220,7 +222,6 @@
 <translation id="1363028406613469049">Бичлэг</translation>
 <translation id="1364822246244961190">Энэ удирдамжийг хориглосон тул үүний утгыг үл хэрэгсэнэ.</translation>
 <translation id="1368318639262510626">Дино тоглоом. Пикселжүүлсэн үлэг гүрвэл зэлүүд газраар гүйх зуураа кактус болон птеродактилиас бултана. Та аудио дохио сонсох үедээ саадыг даван үсрэхийн тулд зай авах товчийг дарна уу.</translation>
-<translation id="1369735141991626842">ХОУ-аар талбарыг бөглөнө үү</translation>
 <translation id="1374468813861204354">Зөвлөмж</translation>
 <translation id="1375198122581997741">Хувилбарын тухай</translation>
 <translation id="1375293861397106342">Бүх сонголт дунджаар <ph name="LOW_PRICE"/> - <ph name="HIGH_PRICE"/></translation>
@@ -295,7 +296,6 @@
 <translation id="1492194039220927094">Удирдамжийн хэрэгжүүлэлт:</translation>
 <translation id="1495677929897281669">Таб руу буцах</translation>
 <translation id="1500286806237135498">Камерууд - <ph name="CAMERAS_COUNT"/></translation>
-<translation id="1812569385220097122">Brave Бүртгэлээсээ карт харуулах</translation>
 <translation id="1504042622576912555">Атираат зузаалаг</translation>
 <translation id="1507202001669085618">&lt;p&gt;Хэрэв та онлайн болохоосоо өмнө нэвтрэх шаардлагатай Wi-Fi портал ашиглаж байгаа бол тус алдааг харах болно.&lt;/p&gt;
     &lt;p&gt;Алдааг засахын тулд нээхийг оролдож буй нүүр хуудасны &lt;strong&gt;Холбогдох&lt;/strong&gt; гэснийг товшино уу.&lt;/p&gt;</translation>
@@ -313,7 +313,6 @@
 <translation id="1532118530259321453">Энэ хуудас хэлэхдээ</translation>
 <translation id="1533966801397200693">Таны нэвтэрсэн профайл хяналттай профайл байна. Танай администратор профайлын тань тохиргоонд зайнаас өөрчлөлт хийх, тайлангаар дамжуулан хөтчийн талаарх мэдээллийг задлан шинжлэх, бусад шаардлагатай ажлыг гүйцэтгэх боломжтой. <ph name="BEGIN_LINK"/>Нэмэлт мэдээлэл авах<ph name="END_LINK"/></translation>
 <translation id="1536390784834419204">Хуудсыг орчуулах</translation>
-<translation id="1538295100801850685">Таамаглалын сайжруулалт</translation>
 <translation id="1539840569003678498">Тайланг илгээсэн:</translation>
 <translation id="1542105669288201090">Бизнесийн боловсрол</translation>
 <translation id="1545757265410828525">Үнийн түүх</translation>
@@ -385,6 +384,7 @@
 <translation id="1644574205037202324">Түүх</translation>
 <translation id="1645004815457365098">Тодорхойгүй эх сурвалж</translation>
 <translation id="1645368109819982629">Дэмжигдээгүй протокол</translation>
+<translation id="1647550855876293003"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_OWNER"/></translation>
 <translation id="1995056549836388472">Brave-н тохиргоогоо удирдана уу</translation>
 <translation id="1652415888492971589">JIS B8</translation>
 <translation id="3549478477646243075">Нууц үгний менежерийг macOS Keychain-тэй ашиглахын тулд Brave-г дахин ачаалж, Keychain-н хандалтыг зөвшөөрнө үү. Дахин ачаалсны дараа таны табуудыг дахин нээнэ.</translation>
@@ -407,7 +407,6 @@
 <translation id="1689333818294560261">Хоч</translation>
 <translation id="1692622044604477956">Киноны жагсаалт, театрын үзвэрийн хуваариуд</translation>
 <translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Та өгөгдлөө хэрхэн удирдах боломжтой вэ?:<ph name="END_BOLD"/> Brave 4 долоо хоногоос дээш удсан сэдвүүдийг автоматаар устгадаг. Таныг үргэлжлүүлэн үзэх явцад жагсаалтад ямар нэг сэдэв дахин гарч ирж магадгүй. Та мөн Brave-н тохиргоонд хүссэн үедээ Brave-г сайтуудтай хуваалцахыг хүсэхгүй байгаа сэдвүүдээ блоклож, зарын сэдвүүдийг унтраах боломжтой.</translation>
-<translation id="1697532407822776718">Тохируулга дууссан</translation>
 <translation id="4030336595318918117">Та одоо Brave Бүртгэлээсээ хаягууд ашиглах боломжтой</translation>
 <translation id="1700542542921501212">Та <ph name="SEARCH_ENGINE_NAME"/>-г вебээс хайхад ашиглах боломжтой.</translation>
 <translation id="1702815194757674443">ROC 16K</translation>
@@ -441,7 +440,6 @@
 <translation id="1734878702283171397">Системийн админтай холбоо барина уу.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, <ph name="CARD_NETWORK_NAME"/>, <ph name="CARD_LAST_FOUR_DIGITS"/>, хугацаа нь <ph name="CARD_EXPIRATION"/>-д дуусна</translation>
 <translation id="1736420071277903564">Компьютер</translation>
-<translation id="1739422091279046802">гүйлгэж, томруулах</translation>
 <translation id="1741613555002899862">DnsOverHttpsMode-г <ph name="SECURE_DNS_MODE_SECURE"/> байх үед тодорхойлогдсон бөгөөд хүчинтэй стринг байх ёстой.</translation>
 <translation id="1743393865165844832">Орны хэрэгсэл болон орны цагаан хэрэгслүүд</translation>
 <translation id="1743892871127720056">Хүснэгтийн нэрийг харьцуулах, текстийг засах</translation>
@@ -504,6 +502,7 @@
 <translation id="1846432862466000825">Хуванцар (архивын)</translation>
 <translation id="1848640291751752317">татаж авсан файл</translation>
 <translation id="1848982255014129637">Гэрэл зураг (маш гялгар)</translation>
+<translation id="1849438148665368129">Худалдан авалтын дүн <ph name="CHECKOUT_AMOUNT_MAXIMUM"/>-с доош байх ёстой</translation>
 <translation id="1853392626017747777">Виртуал картын бүртгэлийг хаасан</translation>
 <translation id="1854180393107901205">Каст хийхийг зогсоох</translation>
 <translation id="1855370856221982654">Бокс</translation>
@@ -537,7 +536,6 @@
 <translation id="1919526244108283799">400 x 600 мм</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Байхгүй}=1{1 сайт}other{# сайт}}</translation>
 <translation id="192095259937375524">Энэ табыг хуваалцах товчлуур, холбоос хуваалцаж, QR код үүсгэж, дамжуулж мөн бусад зүйлийг хийж энэ табыг хуваалцахын тулд идэвхжүүлнэ үү</translation>
-<translation id="1921479021518565778">Зөвлөмжийг ачаалсан</translation>
 <translation id="1924727005275031552">Шинэ</translation>
 <translation id="1927439846988093361">Үс арчилгаа</translation>
 <translation id="1935353813610900265">ХОУ-аар дэмжсэн түүхийн хайлтад зориулж санал хүсэлт илгээнэ үү</translation>
@@ -568,6 +566,7 @@
 <translation id="1975584088563498795">Шуудангийн хайрцаг 10</translation>
 <translation id="1978555033938440688">Жижиг программын хувилбар</translation>
 <translation id="1979156660928743046">Медиагийн мэдээлэл</translation>
+<translation id="8152900367508796729">Таны хайлт, хамгийн сайн таарах илэрц, хуудасных нь агуулгыг Brave-д илгээдэг. Үүнийг ХОУ-ыг сайжруулахын тулд хянагч хүн ашиглахгүй. Танай байгууллага хүссэн үедээ эдгээр тохиргоог өөрчилж болзошгүй.</translation>
 <translation id="1988881251331415125">Хэрэв алдаагүй, зөв бичсэн бол <ph name="BEGIN_LINK"/>Холболтын оношилгоог ажиллуулж үзнэ үү<ph name="END_LINK"/>.</translation>
 <translation id="1992331125980284532">JIS B3</translation>
 <translation id="1997484222658892567"><ph name="URL"/> таны дотоод компьютерт том хэмжээний өгөгдлийг бүрмөсөн хадгалах хүсэлтэй байна</translation>
@@ -601,6 +600,7 @@
 <translation id="2040894699575719559">Байршлыг блоклосон</translation>
 <translation id="2041788246978549610">Боломжтой микрофоныг (<ph name="MICS_COUNT"/>) ашиглах</translation>
 <translation id="2042213636306070719">Гарах цаасны тавиур 7</translation>
+<translation id="2043896419861982462">Цагийн явцад төлөх сонголтуудыг нуухын тулд <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/> руу очно уу</translation>
 <translation id="2045871135676061132">Хувийн дугтуй</translation>
 <translation id="2046951263634619614">Номын жижиглэн борлуулагчид</translation>
 <translation id="2048261947532620704">Хуудсыг орчуулж байна</translation>
@@ -625,6 +625,7 @@
 <translation id="2082238445998314030"><ph name="TOTAL_RESULTS"/>-ын <ph name="RESULT_NUMBER"/> илэрц байна</translation>
 <translation id="2083256696566019397">Зочлох бүрд зөвшөөрөх</translation>
 <translation id="2085876078937250610">Хадгалах…</translation>
+<translation id="2090451897496479509">Үйлчилгээ үзүүлэгчтэй холбогдож нэмэлт мэдээлэл авна уу</translation>
 <translation id="2091887806945687916">Дуу</translation>
 <translation id="4871965986998315786">Brave нууц үгийг бөглөхөд Windows Hello-г унтраахаар оролдож байна.</translation>
 <translation id="2094505752054353250">Домэйн нэр нийцэхгүй байна</translation>
@@ -691,7 +692,6 @@
 <translation id="2187317261103489799">Илрүүлэх (өгөгдмөл)</translation>
 <translation id="2188375229972301266">Доод буланд олон нүх цоолох</translation>
 <translation id="2194856509914051091">Анхаарч үзэх зүйлс</translation>
-<translation id="2198071643181968308"><ph name="BNPL_ISSUER_NAME"/>-н талаар нэмэлт мэдээлэл авах</translation>
 <translation id="2200678913752027654">"Муу" товч, танд энэ зөвлөмж яагаад таалагдаагүй талаар нарийвчилсан санал хүсэлт илгээхэд зориулсан маягтыг нээхийн тулд Enter дээр дарна уу</translation>
 <translation id="2202627062836089804">таны картын ар тал</translation>
 <translation id="2204482073374652408">Шинэчилж дууслаа!</translation>
@@ -757,10 +757,13 @@
 <translation id="2293443924986248631">Асаасан үед сайтууд нь таныг веб дээр хянадаг күүкиг ашиглах боломжгүй байна. Зарим сайтын онцлогууд ажиллахгүй байж болзошгүй.</translation>
 <translation id="2295831393422400053">Надад бичихэд тусал онцлогийг ашиглахын тулд Хайлт болон үзэх явцыг сайжруулах тохиргоог асаана уу</translation>
 <translation id="2296244067976588032">Нэвтрэх түлхүүр • iCloud Keychain</translation>
+<translation id="2296331629987861142">Хялбархан хэсэгчлэн төлөх (зохих эрхтэй тохиолдолд, хураамжтай)</translation>
 <translation id="2300306941146563769">Байршуулаагүй</translation>
 <translation id="2301098101308036335">Аль вебсайтад хэзээ зочилсон болох.</translation>
 <translation id="6702454076107580912">Нууцлалтай цонхыг нээх товчлуур, хувиараа үзэхээр шинэ нууцлалтай цонхыг нээхийн тулд идэвхжүүлнэ үү</translation>
+<translation id="2305294852062272447">Жолооны үнэмлэхийг хадгалах уу?</translation>
 <translation id="2306124309679506798">Илүү бодит мэдрэмж авахыг зөвшөөрөх үү?</translation>
+<translation id="2139786916734654358">Та одоо гэр, ажлын хаягаа Brave-д ашиглах боломжтой</translation>
 <translation id="2312234273148520048">Амтлагч болон сүмснүүд</translation>
 <translation id="2316087952091171402"><ph name="UPPER_ESTIMATE"/>-с бага байна. Таныг дараагийн удаа зочлоход зарим сайт илүү удаан ачаалж магадгүй.</translation>
 <translation id="2316159751672436664">ChromeOS-н тохиргоонд хандалтын хэрэгслээ хувийн болгоно уу</translation>
@@ -768,6 +771,7 @@
 <translation id="2317259163369394535"><ph name="DOMAIN"/> хэрэглэгчийн нэр, нууц үгийг шаардаж байна.</translation>
 <translation id="2318594867107319532">Бодлогын сүүлийн хугацаа тэмдэглэгч:</translation>
 <translation id="2320564945062300737">Нүүрний арчилгааны бүтээгдэхүүнүүд</translation>
+<translation id="2321291402658100099">Мэдээллийг удирдах</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{1 цонх}other{# цонх}}</translation>
 <translation id="2328651992442742497">Зөвшөөрсөн (өгөгдмөл)</translation>
 <translation id="2328955282645810595">Барилга болон цахилгааны багажууд</translation>
@@ -815,6 +819,7 @@
 <translation id="2395840535409704129">Усан спортууд</translation>
 <translation id="2396249848217231973">Устгах үйлдлийг буцаах</translation>
 <translation id="4124760202519850347">Энэ IBAN дугаарыг таны Brave Бүртгэлд хадгалсан бөгөөд ингэснээр та тус дугаарыг Brave-н үйлчилгээнд ашиглах боломжтой.</translation>
+<translation id="2400263725572336749">Паспорт нэмэх</translation>
 <translation id="2400600116338235695">Цуваа портуудад холбогдохыг хүсэх боломжтой</translation>
 <translation id="2404884497378469141">Файлуудаа дахин хуулж үзнэ үү</translation>
 <translation id="2413155254802890957">Хуучин</translation>
@@ -872,7 +877,6 @@
 <translation id="2518584823165598232">Энэ карт боломжгүй байна. Карт олгогчтойгоо холбогдоно уу.</translation>
 <translation id="2521385132275182522">Баруун доод буланд үдэх</translation>
 <translation id="2521736961081452453">Маягт үүсгэх</translation>
-<translation id="2523886232349826891">Зөвхөн энэ төхөөрөмж дээр хадгалсан</translation>
 <translation id="2524461107774643265">Дэлгэрэнгүй мэдээлэл нэмэх</translation>
 <translation id="2526062290525841862">Энэ аппыг ажиллуулахын тулд Тусгаарласан веб аппын хөгжүүлэгч горимыг дахин идэвхжүүлнэ үү</translation>
 <translation id="5151177152796946073">Та Brave-н бүтээгдэхүүнүүдэд хадгалсан хаягуудыг ашиглах боломжтой. Энэ хаягийг таны <ph name="ACCOUNT"/> Brave Бүртгэлд хадгална.</translation>
@@ -888,6 +892,7 @@
 <translation id="2539524384386349900">Илрүүлэх</translation>
 <translation id="375424491626359494">Таныг бүх Нууцлалтай табаа хаасны дараагаар таны Нууцлалтай табуудад үзсэн хуудаснууд таны хөтчийн түүх, күүкиний дэлгүүр эсвэл хайлтын түүхэд үлдэхгүй. Таны татсан аливаа файл эсвэл үүсгэсэн хавчуургыг хадгална.</translation>
 <translation id="2542106216580219892">Сөрфинг</translation>
+<translation id="2543236854123609690"><ph name="ORIGIN"/> – Бүтэн дэлгэцээс гарахын тулд |<ph name="ACCELERATOR"/>| дээр удаан дарна уу</translation>
 <translation id="2544546346215446551">Таны администратор таны төхөөрөмжийг дахин эхлүүлсэн</translation>
 <translation id="2544644783021658368">Дан документ</translation>
 <translation id="5342827302598046226">Brave-ийг стандарт веб хөтөч болго</translation>
@@ -960,6 +965,7 @@
 <translation id="2688186765492306706">500 x 760 мм</translation>
 <translation id="2688969097326701645">Тийм, үргэлжлүүлье</translation>
 <translation id="2690699652723742414">Сүүлийн 30 хоног</translation>
+<translation id="2691385045260836588">Загвар</translation>
 <translation id="2691924980723297736">Аюулгүй байдлын анхааруулга</translation>
 <translation id="2697248912349197812"><ph name="KEYWORD_SHORT_NAME"/>-с асуух</translation>
 <translation id="2699273987028089219">Дэд цэс боломжтой, нэмэлт сонголтууд руу шилжихийн тулд <ph name="SHORTCUT"/>-г ашиглана уу.</translation>
@@ -995,6 +1001,8 @@
 <translation id="2742128390261873684">Гэрийн автоматжуулалт</translation>
 <translation id="2742870351467570537">Сонгосон зүйлсийг устга</translation>
 <translation id="2743512410823092182">DJ-н нөөц болон тоног төхөөрөмж</translation>
+<translation id="2743934314332613923">Жолооны үнэмлэхийг шинэчлэх үү?</translation>
+<translation id="2759299890026163685">Та дахин оролдохоосоо өмнө тогтвортой интернэт холболттой эсэхээ нягтална уу</translation>
 <translation id="2759825833388495838"><ph name="APP_NAME"/> дээр нууц үгээ оруулна уу</translation>
 <translation id="2764001903315068341">Комик</translation>
 <translation id="2765217105034171413">Жижиг</translation>
@@ -1006,6 +1014,7 @@
 <translation id="2775884851269838147">Эхний хуудсыг хэвлэх</translation>
 <translation id="2781185443919227679">Далайн эрэг, арлууд</translation>
 <translation id="2781692009645368755">Google Pay</translation>
+<translation id="2781799097551205934">Тооцоо хийхэд бэлдэж байна</translation>
 <translation id="2782088940970074970">Автомашины түрээсүүд</translation>
 <translation id="278436560439594386">Гэр ахуйн цахилгаан хэрэгслүүд</translation>
 <translation id="2784474685437057136">B5 Нэмэлт</translation>
@@ -1033,6 +1042,7 @@
 <translation id="2859383374160668142">Та хянадаг бүтээгдэхүүнийхээ үнийн бууралтыг хүссэн үедээ харах боломжтой.</translation>
 <translation id="2859806420264540918">Энэ сайт төвөгтэй эсвэл хуурамч зар харуулдаг.</translation>
 <translation id="28618371182701850">Цахилгаан болон залгаж цэнэглэдэг тээврийн хэрэгслүүд</translation>
+<translation id="287387905105155974">Тусламжийн бөмбөлөг</translation>
 <translation id="28761159517501904">Кино</translation>
 <translation id="6934396344327597525">Гадны аппликэйшнээр төлбөр төлөхийн тулд Нууцлалтай горимоос гарч байна. Үргэлжлүүлэх үү?</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Brave-н тохиргоонд Аюулгүй үзэх болон бусад тохиргоогоо удирдахын тулд Tab, дараа нь Enter дээр дарна уу</translation>
@@ -1044,6 +1054,7 @@
 <translation id="2882949212241984732">Давхар хаалган нугалаа</translation>
 <translation id="2893773853358652045">Дөрөв дэх хуйлмал</translation>
 <translation id="2894137550885451583">Эдгээр нь <ph name="PRODUCT"/> бүтээгдэхүүний <ph name="CURRENCY"/>-н үнэ юм</translation>
+<translation id="2894233157216554317">Паспортыг шинэчлэх үү?</translation>
 <translation id="2900528713135656174">Арга хэмжээ үүсгэх</translation>
 <translation id="2902312830803030883">Бусад үйлдэл</translation>
 <translation id="2903493209154104877">Хаягууд</translation>
@@ -1090,6 +1101,7 @@
 <translation id="2959274854674276289">Цагаан хоол</translation>
 <translation id="2961809451460302960">Амь насны даатгал</translation>
 <translation id="2962073860865348475">12 x 18 инч</translation>
+<translation id="2965779286557330949">Ердөө дахин хэдхэн секунд...</translation>
 <translation id="2967082089043584472"><ph name="SET"/>-д нэмсэн</translation>
 <translation id="2470357430970446202">үүнийг Brave Бүртгэлдээ хадгалах</translation>
 <translation id="297173220375858963">Компьютероор нийтлэх</translation>
@@ -1116,6 +1128,7 @@
 <translation id="3005723025932146533">Хадгалагдсан хуулбарыг харуулах</translation>
 <translation id="300580149047131921">Саяхан ашигласан</translation>
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>, боломжтой үйлдлүүдийг харахын тулд Tab, дараа нь сонгосон үйдлийг гүйцэтгэхийн тулд Enter дарна уу.</translation>
+<translation id="3010991137650052245">Та энэ сайт дээр өөрийн <ph name="PERMISSION"/>-г ашиглахын тулд <ph name="SHORT_PRODUCT_NAME"/>-д хандах эрх өгнө үү</translation>
 <translation id="3013711734159931232">Гэр ахуйн хангамж хэрэгслүүд</translation>
 <translation id="3014553260345122294">Бизнес мэдээ</translation>
 <translation id="3014726756341138577">Хэвлэгчийн дэвшилтэт онцлогууд</translation>
@@ -1126,6 +1139,7 @@
 <translation id="3023165109041533893">Сайтын санал болгосон зар нь сайтуудад танд хамааралтай зар харуулах боломж олгохын зэрэгцээ хөтчийн түүх болон таниулбарыг хамгаалахад тусалдаг. Таны үйл ажиллагаанд тулгуурлан зочилсон сайт тань таныг тасралтгүй үзэх явцад холбоотой зар санал болгох боломжтой. Та эдгээр сайтын жагсаалтыг харах, хүсэхгүй байгаа сайтуудаа тохиргоонд блоклох боломжтой.</translation>
 <translation id="3024663005179499861">Буруу журмын төрөл</translation>
 <translation id="3030331669969285614">Эдгээр дарцаг огцом өөрчлөлтөөс сэргийлэх эсвэл түүнийг буцаах бөгөөд зөвхөн хязгаарлагдмал хугацааны турш боломжтой байх болно.</translation>
+<translation id="3030542417256082866">Тээврийн хэрэгслийг хадгалах уу?</translation>
 <translation id="3034526003882782781">Гүйлгэж, томруулахыг зөвшөөрсөн</translation>
 <translation id="3036894576201005614">Өрхийн цэвэрлэгээний хэрэгслүүд</translation>
 <translation id="3037177537145227281">Үнийг хянаж байна</translation>
@@ -1138,7 +1152,6 @@
 <translation id="2396578282884469363">Та сайтуудад ихэвчлэн аюулгүй холбогддог ч Brave энэ удаад аюулгүй холболт ашиглаж чадсангүй. Халдагч таны сүлжээний холболтыг чагнах эсвэл өөрчлөхөөр оролдож байж магадгүй. <ph name="BEGIN_LEARN_MORE_LINK"/>Энэ сануулгын талаар нэмэлт мэдээлэл авах<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/>-н үнэ <ph name="PRICE_DROP"/>-р буурсан</translation>
 <translation id="3061707000357573562">Patch үйлчилгээ</translation>
-<translation id="306198082577913404">Таамаглалын сайжруулалтыг асаах</translation>
 <translation id="3062655045399308513">Интернэтээр үзсэн өгөгдлийг устгах...</translation>
 <translation id="3063453392496098461">VPN-н дэвсгэрийн үйлчилгээг суулгаж чадсангүй.</translation>
 <translation id="306573536155379004">Тоглоом эхэллээ.</translation>
@@ -1154,10 +1167,12 @@
 <translation id="3090667236485488075">Шил</translation>
 <translation id="3095940652251934233">Мэдэгдэл</translation>
 <translation id="3098513225387949945">Идэвхгүй болгох жагсаалтад '*'-тай тэнцүү хээ агуулж байгаа бөгөөд энэ нь бодлогыг идэвхгүй болгохтой тэнцүү тул үл хэрэгссэн.</translation>
+<translation id="3098944373717628099">Таны дотоод файлуудыг 1 цагийн дараа устгана</translation>
 <translation id="3099619114405539473">Боломжтой камерыг (<ph name="CAMERAS_COUNT"/>) ашиглах</translation>
 <translation id="3102312643185441063">Хадгаламж</translation>
 <translation id="3103188521861412364">Хувьцаа, бондууд</translation>
 <translation id="3103535543639438037">Төстэй бүтээгдэхүүнүүдийг зэрэгцүүлэн харьцуулах</translation>
+<translation id="3103993932858740905">Таныг цаг хугацааны явцад төлөхөд нэг удаагийн виртуал картын дугаарыг бөглөдөг. Энэ дугаар нь зөвхөн уг худалдан авалтад зориулагдсан.</translation>
 <translation id="3105172416063519923">Хөрөнгийн ID:</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Аюулгүй DNS тохируулгыг шалгах<ph name="END_LINK"/></translation>
 <translation id="3108943290502734357">Дунд талын тавиур</translation>
@@ -1213,7 +1228,7 @@
 <translation id="3180358318770512945">Хүүхэд өсгөх</translation>
 <translation id="3182185041786697613">Аюулгүй байдлын кодыг хадгалах уу?</translation>
 <translation id="3185635157430775689">Компьютерын эд анги</translation>
-<translation id="3187472288455401631">Зарын хэмжигдэхүүн</translation>
+<translation id="3187472288455401631">Зарын хэмжилт</translation>
 <translation id="3190736958609431397">Хянахаа болих</translation>
 <translation id="3194737229810486521"><ph name="URL"/> таны төхөөрөмжид өгөгдлийг бүрмөсөн хадгалах хүсэлтэй байна</translation>
 <translation id="3195213714973468956"><ph name="SERVER_NAME"/> дээрх <ph name="PRINTER_NAME"/></translation>
@@ -1248,6 +1263,7 @@
 <translation id="323107829343500871"><ph name="CREDIT_CARD"/>-н карт баталгаажуулалтын кодыг оруулна уу</translation>
 <translation id="3234666976984236645">Чухал агуулга бүхий мэдээллийг үргэлж илрүүлэх</translation>
 <translation id="323585066388831737">Цайвар улаан</translation>
+<translation id="3235902901585019063">Дотоод файлыг <ph name="DATE_TIME"/>-нд устгана. Бизнесийн эсвэл хувийн чухал өгөгдлийг гадна хадгалсан эсэхийг нягтална уу.</translation>
 <translation id="3236212803136366317">Картын үр өгөөж</translation>
 <translation id="2977472760057091832">Холбоосыг нууцлалтай цонхонд нээх</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Хөтчийнхөө харагдах байдлыг өөрчлөхийн тулд tab, дараа нь Enter дээр дарна уу</translation>
@@ -1292,6 +1308,7 @@
 <translation id="33073482541490531">Таны дөнгөж сая ашигласан нууц үгийг өгөгдлийн зөрчлөөс оллоо. Нууц үгний менежер энэ нууц үгийг одоо өөрчлөхийг зөвлөж байна.</translation>
 <translation id="4731386748664539266">Brave-г өөрчлөх товчлуур, хөтчийнхөө харагдах байдлыг өөрчлөхийн тулд идэвхжүүлнэ үү</translation>
 <translation id="3308006649705061278">Байгууллагын нэгж (БН)</translation>
+<translation id="3317077846337994567">Цагийн явцад төлөх онцлогийг яг одоо ашиглах боломжгүй байна. Дараа дахин оролдоно уу.</translation>
 <translation id="3318016344440038475">ТВ-ийн хошин шогууд</translation>
 <translation id="3324687287337751929">4 x 6 инч</translation>
 <translation id="3324983252691184275">Улаан хүрэн</translation>
@@ -1318,9 +1335,9 @@
 <translation id="3360306038446926262">Windows</translation>
 <translation id="3362968246557010467">Энэ удирдамжийг зогсоосон <ph name="OLD_POLICY"/> удирдамжаас автоматаар хуулсан байна. Та оронд нь энэ удирдамжийг ашиглавал зохино.</translation>
 <translation id="3364869320075768271"><ph name="URL"/> нь таны виртуал бодит байдлын төхөөрөмж болон өгөгдлийг ашиглах хүсэлтэй байна</translation>
-<translation id="3366477098757335611">Картыг харах</translation>
 <translation id="3369192424181595722">Цагийн тохиргооны алдаа</translation>
 <translation id="2273851479262317744">Brave-г өгөгдмөл хөтөч болгон тохируулах</translation>
+<translation id="3371186787117738282"><ph name="ATTRIBUTE_NAME"/>-г нэмсэн</translation>
 <translation id="337363190475750230">Хадгалагдаагүй</translation>
 <translation id="3377144306166885718">Сервер TLS-н хуучирсан хувилбарыг ашигласан.</translation>
 <translation id="3377188786107721145">Тохиргооны задаргааны алдаа</translation>
@@ -1330,6 +1347,7 @@
 <translation id="3380864720620200369">Хэрэглэгчийн ID:</translation>
 <translation id="3381668585148405088">Худалдан авалтаа баталгаажуулах</translation>
 <translation id="3383566085871012386">Одоогийн давуу эрхтэй дараалал</translation>
+<translation id="3383713837163550889">Таны дотоод файлуудыг 1 минутын дараа устгана</translation>
 <translation id="3384522979010096022">Танай байгууллага танд энэ сайтыг харахыг зөвшөөрдөггүй</translation>
 <translation id="3391030046425686457">Хүргэлтийн хаяг</translation>
 <translation id="3391482648489541560">файл засах</translation>
@@ -1385,6 +1403,7 @@
 <translation id="3478033058537426179">Бүлгээр</translation>
 <translation id="3479552764303398839">Одоо биш</translation>
 <translation id="3484861421501147767">Сануулагч: Хадгалсан урамшууллын код боломжтой</translation>
+<translation id="3569096371291033687">Brave Бүртгэлдээ хадгалсан нууц үг болон бусад зүйлийг ашиглахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
 <translation id="3486406746948052912">Хөлс дарагч, үнэр дарагч болон сүрчгүүд</translation>
 <translation id="3487845404393360112">Гарах цаасны тавиур 4</translation>
 <translation id="3493660662684070951">Ачааны машин, битүү ачааны машин, жийп машин</translation>
@@ -1429,6 +1448,7 @@
 <translation id="3558573058928565255">Өдөр цаг</translation>
 <translation id="3559897352860026926">Администратораасаа <ph name="CLOUD_PROVIDER"/>-н тохируулгын тохиргоогоо баталгаажуулахыг хүснэ үү.</translation>
 <translation id="3560824484345057728">Холбоотой сайтуудыг харах</translation>
+<translation id="356359327498380603">Тээврийн хэрэгслийг шинэчлэх үү?</translation>
 <translation id="3566021033012934673">Таны холболт хаалттай бус байна</translation>
 <translation id="3566336457819493938">215 x 315 мм</translation>
 <translation id="3566649245868131295">Эрүүл мэнд, эмнэлгийн ажлын байрууд</translation>
@@ -1455,9 +1475,11 @@
 <translation id="3586931643579894722">Дэлгэрэнгүй мэдээлийг нуух</translation>
 <translation id="3587725436724465984">Танай байгууллага  <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>-г бодлого зөрчиж магадгүй сайт гэж тодорхойлсон. <ph name="BEGIN_LEARN_MORE_LINK"/>Энэ сануулгын талаар нэмэлт мэдээлэл авах<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3587738293690942763">Дунд</translation>
+<translation id="3596918995172292499">Улсын бүртгэлийн дугаар олголтын төлөв</translation>
 <translation id="3600106876108433070">Харьцуулалтын хүснэгтийн талаар мэдэж авах</translation>
 <translation id="3600246354004376029"><ph name="TITLE"/>, <ph name="DOMAIN"/>, <ph name="TIME"/></translation>
 <translation id="8476504968862670676">Brave-н нууцлалын тохиргоог удирдах товчлуур, Brave Бүртгэлийнхээ нууцлалын тохиргоонд зочлохын тулд идэвхжүүлнэ үү</translation>
+<translation id="3602695245205338770">Цагийн явцад төлөх үйлчилгээ үзүүлэгч сонгоно уу</translation>
 <translation id="3603507503523709">Администратор аппликэйшнийг блоклосон</translation>
 <translation id="3605899229568538311">5 x 5 инч</translation>
 <translation id="3606917451836803637">ТВ шоу, хөтөлбөрүүд</translation>
@@ -1501,6 +1523,7 @@
 <translation id="3664782872746246217">Түлхүүр үг:</translation>
 <translation id="3665100783276035932">Ихэнх сайт тооцоолсны дагуу ажиллах ёстой</translation>
 <translation id="3665806835792525231"><ph name="BEGIN_LINK1"/>Нэмэлт мэдээлэл авах<ph name="LINK_END1"/></translation>
+<translation id="3670030362669914947">Тоо</translation>
 <translation id="3670229581627177274">Bluetooth асаах</translation>
 <translation id="3671117652518853176">Унтраасан үед танаас аюулгүй байдлын зорилгоор үе үе баталгаажуулахыг хүсэж магадгүй</translation>
 <translation id="3671540257457995106">Хэмжээг өөрчлөхийг зөвшөөрөх үү?</translation>
@@ -1515,7 +1538,6 @@
 <translation id="3681007416295224113">Гэрчилгээний мэдээлэл</translation>
 <translation id="2659564324969662497">Brave таны саяхны хөтчийн түүхэд тулгуурлан сонирхсон сэдвүүдийг тэмдэглэдэг.</translation>
 <translation id="3682094733650754138">Хаягийг бөглөх сонголтыг сонгосон</translation>
-<translation id="3687493962714153124">ХОУ-аар автоматаар бөглөхийг удирдах</translation>
 <translation id="3687920599421452763">Бүхээгтэй тэрэг, гэр бүлийн бүхээгтэй тэрэгнүүд</translation>
 <translation id="3693327506115126094">Та өөрийгөө мөн болохыг хэрхэн баталгаажуулахаа сонгоно уу</translation>
 <translation id="3698353241727597930">Танай администратор <ph name="FILES"/>-г танай байгууллагын удирддаг <ph name="CLOUD_STORAGE"/>-н хадгалах санд хадгалахаар тохируулсан. Таныг эдгээр файлыг устгах үед хянаж, аудит хийж, хадгалж магадгүй.</translation>
@@ -1542,6 +1564,7 @@
 <translation id="3715016660240337709">{0,plural, =1{Файлыг байршуулахыг блоклосон}other{<ph name="FILE_COUNT"/> файлыг байршуулахыг блоклосон}}</translation>
 <translation id="3715597595485130451">Wi-Fi-д холбогдох</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Прокси, галт хана болон DNS оновчилгоог шалгаж байна<ph name="END_LINK"/></translation>
+<translation id="3723316892512143176">Iban</translation>
 <translation id="3723663469265383848">Шинэчлэлтийн үеэр та төхөөрөмжөө 10 хүртэлх минут ашиглах боломжгүй болно.</translation>
 <translation id="372429172604983730">Энэ алдааг антивирус, галт хана, веб шүүлтүүр эсвэл прокси программ хангамж зэрэг апп үүсгэх боломжтой.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Үзүүлэнд шинэ Brave үзүүлэн шуурхай үүсгэхийн тулд эхлээд Tab, дараа нь Enter дээр дарна уу</translation>
@@ -1624,6 +1647,7 @@
 <translation id="3858027520442213535">Огноо болон цагийг шинэчлэх</translation>
 <translation id="3858860766373142691">Нэр</translation>
 <translation id="3865339060090354361"><ph name="CREDIT_CARD_NAME"/>-н нөхцөлүүдийг эндээс харна уу</translation>
+<translation id="3869939189466884821">Таны дотоод файлуудыг <ph name="MINUTES"/> минутын дараа устгана</translation>
 <translation id="3872834068356954457">Шинжлэх ухаан</translation>
 <translation id="3875783148670536197">Надад хэрхэн хийхийг харуулна уу</translation>
 <translation id="3879748587602334249">Таталтын менежер</translation>
@@ -1667,12 +1691,15 @@
 <translation id="3950820424414687140">Нэвтрэх</translation>
 <translation id="3953505489397572035">Энэ нь дундаж үнэ юм</translation>
 <translation id="3958057596965527988">4 x 4 инч</translation>
+<translation id="3959969108528118741">Өмчлөгч</translation>
 <translation id="3961148744525529027">Төлбөр хариуцагчийн хүснэгт хагас нээлттэй байна</translation>
 <translation id="3962859241508114581">Өмнөх бичлэг</translation>
 <translation id="3963721102035795474">Уншигчийн горим</translation>
 <translation id="3964661563329879394">{COUNT,plural, =0{Байхгүй}=1{1 сайтаас }other{# сайтаас }}</translation>
 <translation id="3965672182149944205">Хаягийг хадгалах уу?</translation>
 <translation id="3966044442021752214">Бүтээгдэхүүний аюулгүй байдал</translation>
+<translation id="3969869202926863008">Дотоод сүлжээний хандалт</translation>
+<translation id="3970239200223030389">Олгосон огноо</translation>
 <translation id="397105322502079400">Тооцоолж байна ...</translation>
 <translation id="3973234410852337861"><ph name="HOST_NAME"/>-г блоклосон байна</translation>
 <translation id="3975852104434126461">Автомашины салбар</translation>
@@ -1710,6 +1737,8 @@
 <translation id="4031179711345676612">Микрофоныг зөвшөөрсөн</translation>
 <translation id="4036753017940930924">Талбай, газар</translation>
 <translation id="4039506337798853114">Курсороо харуулахын тулд |<ph name="ACCELERATOR"/>|-г дарна уу</translation>
+<translation id="4045226534284799755">Дахин оролдохоосоо өмнө Microsoft бүртгэлдээ нэвтэрнэ үү</translation>
+<translation id="4045441967987592849">Дахин нээх</translation>
 <translation id="4047351652147966654">18 x 24 инч</translation>
 <translation id="404831776305217138">"<ph name="EXTENSION_ID"/>" ID-тай өргөтгөлийн шинэчлэлтийн URL буруу эсвэл дэмжигдээгүй схем ашиглаж байна. Дэмжигдсэн схемүүд нь: <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> болон <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">Та үүнийг Brave-н бүтээгдэхүүнүүдэд ашиглах боломжтой болно</translation>
@@ -1729,6 +1758,7 @@
 <translation id="4073797364926776829">Картыг харах</translation>
 <translation id="4075732493274867456">Үйлчлүүлэгч болон сервер нь SSL протоколын нийтлэг хувилбар, эсвэл шифрийн бүрдлийг дэмждэггүй.</translation>
 <translation id="4079302484614802869">Прокси нь .pac бичвэрийн холбоосыг ашиглахаар тохируулагдсан ба прокси серверүүд нь тогтмол бус.</translation>
+<translation id="4080855220442581440">хуваалцсан табыг гүйлгэх, томруулах</translation>
 <translation id="4082333119419111506">Цаас (урьдчилж хэвлэсэн)</translation>
 <translation id="4082393374666368382">Тохиргоо - Удирдлага</translation>
 <translation id="4084219288110917128">Дугтуй C1</translation>
@@ -1759,6 +1789,7 @@
 <translation id="4116701314593212016">JIS B7</translation>
 <translation id="4116798170070772848">RA2</translation>
 <translation id="4117700440116928470">Журмын хамрах хүрээг дэмждэггүй.</translation>
+<translation id="411918202192379658">Автоматаар бөглөх онцлог илүү сайн боллоо</translation>
 <translation id="4121428309786185360">-д хугацаа нь дуусна</translation>
 <translation id="4123572138124678573">Доод буланд гурван нүх цоолох</translation>
 <translation id="412601465078863288">Байршуулах үйлдэл завсарласан</translation>
@@ -1777,10 +1808,12 @@
 <translation id="4150099059797363385">Хятад дугтуй #4</translation>
 <translation id="4151403195736952345">Global default-г ашиглах (Илрүүлэх)</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{Хуудас 1}other{Хуудас {COUNT}}}</translation>
+<translation id="4152670763139331043">{NUM_TABS,plural, =1{1 цонх}other{# цонх}}</translation>
 <translation id="6923879007831202776">Brave одоо төлбөрийн хэрэгслийг бөглөхөөс өмнө таныг мөн болохыг баталгаажуулна. Та үүнийг хүссэн үедээ <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/>-д шинэчлэх боломжтой.</translation>
 <translation id="415440494507469262">Харьцуулалтын хүснэгтэд таб нэмэх</translation>
 <translation id="4159784952369912983">Нил ягаан</translation>
 <translation id="4165422751765527461">Тусламжийн төвийн нийтлэлийг шинэ табд нээнэ</translation>
+<translation id="4165584779486830267">Одоо та Affirm, Zip-г ашиглан цагийн явцад төлж болно.</translation>
 <translation id="4165986682804962316">Сайтын тохиргоо</translation>
 <translation id="4169535189173047238">Зөвшөөрөхгүй</translation>
 <translation id="4171400957073367226">Баталгаажуулалт хийхэд ашигласан гарын үсэг хангалтгүй байна</translation>
@@ -1868,11 +1901,11 @@
 <translation id="4282280603030594840">Тээврийн хэрэгслийн худалдаа</translation>
 <translation id="4282346679996504092">Энэ бүтээгдэхүүний сэрэмжлүүлгийг унтраасан бөгөөд хавчуургыг хассан</translation>
 <translation id="4285498937028063278">Сонголтоос гаргах</translation>
-<translation id="8314946990939758167">{NUM_CARDS,plural, =1{Энэ картыг таны Brave Бүртгэлд хадгаллаа}other{Эдгээр картыг таны Brave Бүртгэлд хадгаллаа}}</translation>
 <translation id="2820825061680010514">Brave дээр зарын нууцлалыг сайжруулсан</translation>
 <translation id="4290920330097335010">Хэзээ ч бүү зөвшөөр</translation>
 <translation id="4296207570293932800">Одоо зарын нууцлалын шинэ онцлог боломжтой</translation>
 <translation id="4297502707443874121"><ph name="THUMBNAIL_PAGE"/> хуудасны өнгөц зураг</translation>
+<translation id="4297937944457164390"><ph name="ATTRIBUTE_NAME"/>-г шинэчилсэн</translation>
 <translation id="4298000214066716287">Хөрөнгө оруулалт</translation>
 <translation id="42981349822642051">Өргөтгөх</translation>
 <translation id="4300675098767811073">Баруун ирмэг дагуу олон нүх цоолох</translation>
@@ -1888,7 +1921,6 @@
 <translation id="4312866146174492540">Блоклох (өгөгдмөл)</translation>
 <translation id="4314815835985389558">Синк хийхийг удирдах</translation>
 <translation id="4316057107946726368">Хамгийн ихдээ <ph name="MAX_CHAR_COUNT"/> тэмдэгттэй үндэслэлийн мессеж оруулна уу. <ph name="MAX_CHAR_COUNT"/>-с <ph name="ACTUAL_CHAR_COUNT"/> тэмдэгт ашигласан.</translation>
-<translation id="431740489189220419">Зөвлөмжийг ачаалж байна</translation>
 <translation id="4318213823155573975">Толгойн өмсгөл</translation>
 <translation id="4318312030194671742">Paint Preview нэгтгэгчийн үйлчилгээ</translation>
 <translation id="4318566738941496689">Таны төхөөрөмжийн нэр болон сүлжээний хаяг</translation>
@@ -1921,17 +1953,19 @@
 <translation id="4358461427845829800">Төлбөрийн хэрэгслийг удирдах...</translation>
 <translation id="4363222835916186793">Энэ бүтээгдэхүүний сэрэмжлүүлгийг унтраасан</translation>
 <translation id="4366943895537458493">Хавтан</translation>
+<translation id="4369179505195332608">Жолооны үнэмлэхийг засах</translation>
 <translation id="437040971055499437">Аюулгүй байдлын үйлдэл тохиолдсон</translation>
 <translation id="4371591986692297148">Идэвхгүй</translation>
 <translation id="4372948949327679948">Хүлээгдэж буй <ph name="VALUE_TYPE"/> утга.</translation>
 <translation id="437620492464254965">Хаалга болон цонхнууд</translation>
 <translation id="4377125064752653719">Та <ph name="DOMAIN"/>-тай холбогдох оролдлого хийсэн хэдий ч Серверээс өгсөн гэрчилгээг гаргагч этгээдээс цуцалсан байна. Энэ нь серверийн аюулгүй байдлын найдвартай эсэхэд огт итгэх хэрэггүй гэсэн үг юм. Та халдагчтай харилцаж байж болно.</translation>
 <translation id="4378154925671717803">Утас</translation>
+<translation id="4382833368532556056">Одооноос файлаа үүлэн хадгалах санд хадгална уу</translation>
 <translation id="4384395682990721132">A4x3</translation>
 <translation id="4387692837058041921">Microsoft OneDrive-т файл байршуулахыг түр зогсоосон</translation>
-<translation id="4389931020843542579">Табын бүлгийг ачаалж байна</translation>
 <translation id="4390472908992056574">Хүрээ</translation>
 <translation id="4395550503472021297">Энэ бодлого дараах бодлогуудын өгөгдмөл үйлдлийг хянаж байна: <ph name="POLICIES"/></translation>
+<translation id="4396554829965096368">Жолооны үнэмлэх</translation>
 <translation id="4397978002248035985">Таны банкны вебсайт дээр баталгаажуулах попапыг нээнэ</translation>
 <translation id="4406883609789734330">Шууд тайлбар</translation>
 <translation id="4406896451731180161">Хайлтын үр дүн</translation>
@@ -1990,6 +2024,7 @@
 <translation id="4521280267704259211">Хаан дугтуй</translation>
 <translation id="4521916730539354575">Зүүн талын тавиур</translation>
 <translation id="4522570452068850558">дэлгэрэнгүй мэдээлэл</translation>
+<translation id="4523580145196408446">Холбосон</translation>
 <translation id="4523643381056109546">Пайз</translation>
 <translation id="4524138615196389145">Одооноос WebAuthn ашиглан картуудаа илүү хурдан баталгаажуулаарай</translation>
 <translation id="45243788195988825"><ph name="TOPIC"/>-г блоклох</translation>
@@ -2010,7 +2045,6 @@
 <translation id="4569155249847375786">Баталгаажсан</translation>
 <translation id="457875822857220463">Хүргэлт</translation>
 <translation id="4579699065574932398">Банк</translation>
-<translation id="4582204425268416675">Картыг устгах</translation>
 <translation id="4582595824823167856">Мессеж авах</translation>
 <translation id="4586607503179159908">Төлбөрийн хэрэгслийг баталгаажуулсан</translation>
 <translation id="459089498662672729"><ph name="ORIGIN_NAME"/>-с энэ байршилд буулгахыг администраторын бодлогоор санал болгодоггүй</translation>
@@ -2024,6 +2058,7 @@
 <translation id="460848736049414407">Админ блоклосон</translation>
 <translation id="4610279718074907952">Энэ сайт <ph name="SET_OWNER"/>-с тодорхойлсон бүлэгт байгаа бөгөөд таны үйл ажиллагааг харах боломжтой</translation>
 <translation id="46128681529823442">Хөлбөмбөгийн хэрэгсэл</translation>
+<translation id="4612904677925722054">Энэ сайт насанд хүрэгчдийн контенттой байж болзошгүй. Эцэг эх, асран хамгаалагч таныг энэ вебсайтад зочилж БОЛНО гэж хэлэх ёстой.</translation>
 <translation id="4619564267100705184">Өөрийгөө мөн болохыг бататгах</translation>
 <translation id="4622292761762557753">Ямартай ч шилжүүлэх</translation>
 <translation id="4622647778991854660">Мэдэгдлийн төвд мэдэгдлүүдийг идэвхжүүлнэ үү. <ph name="LINK"/>-г нээнэ үү.</translation>
@@ -2130,6 +2165,7 @@
 <translation id="4796594887379589189">Ажилтай холбоотой бүртгэлийн ID</translation>
 <translation id="4798269756263412078">Аль нэг сайт дээр үнэ буурсан тохиолдолд сэрэмжлүүлэг аваарай. Сэрэмжлүүлгийг таны имэйл рүү илгээнэ.</translation>
 <translation id="4800132727771399293">Дуусах хугацаа болон CVC-гээ шалгаад дахин оролдож үзнэ үү</translation>
+<translation id="4800546479758254481">AR-г ашиглахыг зөвшөөрсөн</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="4809079943450490359">Таны төхөөрөмжийн администраторын зааварчилгаа:</translation>
 <translation id="4811450222531576619">Үүний эх сурвалж болон сэдвийн талаар мэдэж авах</translation>
@@ -2139,6 +2175,7 @@
 <translation id="4819347708020428563">Тэмдэглэгээг өгөгдмөлөөр харахаар засах уу?</translation>
 <translation id="4822493756793346865">Ердийн үнийг сүүлийн 90 хоногийн хугацаанд веб дээрх дэлгүүрүүдэд тулгуурласан.</translation>
 <translation id="4822922322149719535">Алдааны логийг хянах</translation>
+<translation id="4823699521959851389"><ph name="SHORT_PRODUCT_NAME"/>-д таны төхөөрөмжийн <ph name="PERMISSION"/>-д хандах эрх шаардлагатай</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Шинэ Brave Хүснэгт шуурхай үүсгэхийн тулд эхлээд Tab, дараа нь Enter дээр дарна уу</translation>
 <translation id="4826588772550366629">камер, микрофон</translation>
 <translation id="4827283332383516812">Картыг устгах</translation>
@@ -2149,6 +2186,7 @@
 <translation id="4834250788637067901">Google Pay-г ашиглаж буй төлбөрийн хэрэгсэл, санал болон хаяг</translation>
 <translation id="246176083348620700">Brave-н түүхээ үзэх</translation>
 <translation id="484462545196658690">Автомат</translation>
+<translation id="4844937814014739139">Хуваалцсан табыг гүйлгэх, томруулах</translation>
 <translation id="484671803914931257"><ph name="MERCHANT_NAME"/> болон бусад худалдаачны хөнгөлөлт аваарай</translation>
 <translation id="484988093836683706">Төхөөрөмжийн түгжээг тайлахыг ашиглах</translation>
 <translation id="4850886885716139402">Харах</translation>
@@ -2243,6 +2281,7 @@
 <translation id="5001526427543320409">Гуравдагч талын күүки</translation>
 <translation id="3676215163710610678">Идэвхжсэн тохиолдолд Brave нь таны энэ төхөөрөмж дэх картын хуулбарыг маягт хурдан бөглөхийн тулд хадгалах болно.</translation>
 <translation id="5007392906805964215">Шалгах</translation>
+<translation id="5010599530303458903">Сар тутам эсвэл хүүгүй 4 хуваасан төлөлтөөр төлөх (зохих эрхтэй тохиолдолд)</translation>
 <translation id="5011561501798487822">Илэрсэн хэл</translation>
 <translation id="5015510746216210676">Машины нэр:</translation>
 <translation id="5017554619425969104">Таны хуулсан текст</translation>
@@ -2287,13 +2326,13 @@
 <translation id="5087286274860437796">Серверийн гэрчилгээ нь oдоогоор хүчин төгөлдөр бус байна.</translation>
 <translation id="5087580092889165836">Карт нэмэх</translation>
 <translation id="5088142053160410913">Операторт илгээх мессеж</translation>
+<translation id="5089810972385038852">Муж</translation>
 <translation id="5090647584136241764">Танд чухал деталийг хялбархан харьцуулахын тулд төстэй бүтээгдэхүүнүүдтэй табуудыг нэмээрэй</translation>
 <translation id="5093232627742069661">Z-нугалаа</translation>
 <translation id="4906192414477726331">Энэ сервер нь <ph name="DOMAIN"/>-аа баталж чадсангүй; учир нь энэхүү сертификатыг Brave хүлээн зөвшөөрдөггүй. Энэ нь тохиргоо буруу хийгдсэнээс эсвэл халдагч таны холболтонд саад учруулж байгаагаас шалтгаалж болох юм.</translation>
 <translation id="5097099694988056070">CPU/RAM-н ашиглалт зэрэг төхөөрөмжийн статистик</translation>
 <translation id="5097468150760963273">27 x 39 инч</translation>
 <translation id="5097501891273180634">A2</translation>
-<translation id="1643886086471238725">Brave-д таны төхөөрөмжийн <ph name="PERMISSION"/>-д хандах эрх шаардлагатай</translation>
 <translation id="510644072453496781">Цаасан хайрцаг (ирмэгийн)</translation>
 <translation id="5106648964679263509"><ph name="BNPL_ISSUER_NAME"/>-н виртуал картыг бөглөсөн</translation>
 <translation id="5108881358339761672">Сайт аюултай байна</translation>
@@ -2333,6 +2372,7 @@
 <translation id="4075123085690634698">Хуудсыг шинэ Нууцлалтай цонхонд нээх (⇧⌘N)</translation>
 <translation id="5161334686036120870">Гарчиг:</translation>
 <translation id="5161506081086828129">Гарах цаасыг зэрэгцүүлэх тавцан 9</translation>
+<translation id="5164537320435517152">Файлуудыг <ph name="MINUTES"/> минутын дараа устгана</translation>
 <translation id="5164798890604758545">Текстийг оруулдаг</translation>
 <translation id="5507530832404660443">Энэ ХОУ-ы туршилтын хэрэгсэл нь үргэлж зөв хийхгүй. Үүнийг сайжруулахын тулд таны контентыг Brave-д илгээдэг.
     <ph name="BEGIN_LINK"/>Нэмэлт мэдээлэл авах<ph name="END_LINK"/></translation>
@@ -2360,6 +2400,7 @@
 <translation id="5217759126664161410">Протоколын формат буруу байна.</translation>
 <translation id="5221377878828867877">Нууц үгний дахин ашиглалтыг танай байгууллага хянадаг</translation>
 <translation id="5222812217790122047">Имэйл шаардлагатай</translation>
+<translation id="5225215474235602477">Паспортыг хадгалах уу?</translation>
 <translation id="5228269245420405804">Алсын зайн сургалт</translation>
 <translation id="5230733896359313003">Хүргэлтийн хаяг</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -2385,6 +2426,7 @@
 <translation id="5255771248404149177">Таны карт олгогч таныг мөн эсэхийг нягтлахыг хүсэж байна</translation>
 <translation id="5255833070095767006">350 x 460 мм</translation>
 <translation id="5257739419779698609">{0,plural, =1{Администраторын бодлого нь энэ файлыг <ph name="DESTINATION_NAME"/> руу хуулахыг санал болгодоггүй}other{Администраторын бодлого нь эдгээр файлыг <ph name="DESTINATION_NAME"/> руу хуулахыг санал болгодоггүй}}</translation>
+<translation id="5258473597674772367">"<ph name="GROUP_NAME"/>" табын бүлэг цаашид боломжгүй болсон</translation>
 <translation id="5263867360296733198">Байршуулахаас өмнө шалгах шаардлагатай</translation>
 <translation id="5266128565379329178">Дээд булан дагуу үдэж хавтаслах</translation>
 <translation id="5269225904387178860">Доод буланд дөрвөн нүх цоолох</translation>
@@ -2421,6 +2463,7 @@
 <translation id="5319366980180850702">Уран зохиолын сонгодгууд</translation>
 <translation id="5323043727018853753">Оруулсан контентыг зөвшөөрдөг</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="NUM_MATCHES"/>-с <ph name="MATCH_POSITION"/></translation>
+<translation id="5327248766486351172">Нэр</translation>
 <translation id="5329858041417644019">Таны хөтчийг удирдаагүй байна</translation>
 <translation id="5331585574693522196">Өгөгдмөлөөр тохируулах</translation>
 <translation id="5332219387342487447">Хүргэлтийн арга</translation>
@@ -2433,6 +2476,7 @@
 <translation id="5344522958567249764">Зарын нууцлалыг удирдах</translation>
 <translation id="5344579389779391559">Энэ хуудас танд төлбөр ногдуулахаар оролдож болзошгүй</translation>
 <translation id="5345249337934847112">Цаас (зузаан бүрсэн)</translation>
+<translation id="5348330584842140856">Энэ файл байхаа больсон тул зөөгөөгүй</translation>
 <translation id="5349543692327946794">Шошго (бэхэн)</translation>
 <translation id="5351548097010183514">Барилгын материал болон хангамжууд</translation>
 <translation id="5354143049423063163">Хедж сангууд</translation>
@@ -2449,6 +2493,7 @@
 <translation id="5379618281582508161">Энэ нууц үгийг бүх төхөөрөмж дээрээ авахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
 <translation id="5380953781541843508">өсөх дарааллаар</translation>
 <translation id="5381318171304904246">Та үргэлжлүүлэх үед таныг банкны тань вебсайт руу аваачна. Таныг баталгаажуулсны дараа худалдан авалтыг тань дуусгахаар автоматаар буцаана.</translation>
+<translation id="5381952079334035181"><ph name="MEMBER_FIRST_NAME"/> “<ph name="WEBSITE_TITLE"/>” табыг шинэчилсэн</translation>
 <translation id="5383478552402031184">Шал тавих үйлчилгээ</translation>
 <translation id="5385857628869214740">Хошигнол</translation>
 <translation id="5385966243497224160">HTTPS бус URL-г урьдчилан үзэх боломжгүй</translation>
@@ -2487,8 +2532,8 @@
             <ph name="LIST_ITEM"/>Маягтуудад оруулсан мэдээлэл
           <ph name="END_LIST"/></translation>
 <translation id="5443468954631487277">Нүүрээр нь дээш харуулж, хуудасны урвуу дарааллаар</translation>
-<translation id="5445340838622821110">Таныг цаг хугацааны явцад төлөхөд нэг удаагийн виртуал картын дугаарыг бөглөдөг. Энэ дугаар нь зөвхөн уг худалдан авалтад зориулагдсан. <ph name="IDS_AUTOFILL_BNPL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5447235695608032700"><ph name="SITE"/>-д таны талаар хадгалсан мэдээллээ ашиглахыг зөвшөөрнө үү</translation>
+<translation id="6108397422772394696">Аюулгүй байдлын үйлдлийг Brave-с дарцагласан үед тухайн үйлдлийн талаарх хамааралтай өгөгдлийг танай администраторт илгээдэг. Үүнд таны Brave-д зочилсон хуудасны URL, таны өгөгдөл хуулсан хуудасны URL, файлын нэр, мета өгөгдөл, IP хаяг, хөтөч, табын гэмтэл, таны вебд суурилсан аппликейшн, өөрийн төхөөрөмж, Brave-д нэвтрэхдээ ашигладаг хэрэглэгчийн нэр багтаж болно.</translation>
 <translation id="5452270690849572955">Энэ <ph name="HOST_NAME"/> хуудас олдсонгүй</translation>
 <translation id="5452923259299906094">Цахим хэтэвч, Pix-р төлөх</translation>
 <translation id="5455374756549232013">Журмын кодлол сул байна</translation>
@@ -2568,6 +2613,7 @@
 <translation id="5570825185877910964">Бүртгэлийг хамгаалах</translation>
 <translation id="5571083550517324815">Энэ хаягаас авах боломжгүй тул өөр хаяг сонгоно уу.</translation>
 <translation id="5572434905385510939">22 x 28 инч</translation>
+<translation id="5573641252776268565">Паспортыг засах</translation>
 <translation id="5578606540385219379">Үйлчилгээ үзүүлэгчид</translation>
 <translation id="5580958916614886209">Хүчингүй болох сарыг шалгаад дахин оролдоно уу</translation>
 <translation id="5583442610070676234"><ph name="COMPARE_SET_NAME"/> харьцуулалтын хүснэгтэд зориулсан бусад үйлдэл</translation>
@@ -2615,6 +2661,7 @@
 <translation id="5660122698869360728">Танд авах зүйлийн бүх хуудсаа нэг дор хадгалах, үнийг автоматаар хянах, үнийн статистик авах болон бусад зүйлийг хийхэд тусалдаг шинэ ухаалаг фолдер.</translation>
 <translation id="5663955426505430495">Энэ төхөөрөмжийн админ нэмэлт функцийн өргөтгөлүүдийг суулгасан байна. Өргөтгөлүүд нь таны зарим өгөгдөлд хандах эрхтэй.</translation>
 <translation id="5667827081946850877">Аудио номууд</translation>
+<translation id="5674082555327905359">Таны дотоод сүлжээн дээрх ямар нэг төхөөрөмжид холбогдохыг хүсэх боломжтой</translation>
 <translation id="5675650730144413517">Энэ хуудас ажиллахгүй байна</translation>
 <translation id="5675809467256309336">Бүжиг, электрон хөгжим</translation>
 <translation id="5675959228867414813">Огноогоор харуулах</translation>
@@ -2631,7 +2678,6 @@
 <translation id="569000877158168851">DnsOverHttpsTemplates-н утга нь хамааралгүй байгаа бөгөөд DnsOverHttpsMode удирдамжийг <ph name="SECURE_DNS_MODE_AUTOMATIC"/> эсвэл <ph name="SECURE_DNS_MODE_SECURE"/> болгож тохируулахгүй бол түүнийг ашиглахгүй.</translation>
 <translation id="5691848789297492617">Бүтэн өндрөөр нь нээсэн картыг хадгална уу.</translation>
 <translation id="5695542892312572833">Та худалдан авалтаа бататгах болон дуусгахын тулд Windows Hello-г ашиглах уу?</translation>
-<translation id="8473265600797831709">Автоматаар бөглөх хэсэг энэ маягтыг бөглөхөд туслах боломжтой эсэхийг харахын тулд таны хадгалсан мэдээлэл болон энэ хуудсыг Brave-д илгээдэг. Энэ онцлогийг сайжруулахын тулд өгөгдлийг хянагч хүмүүс харж магадгүй.</translation>
 <translation id="5699628521141772782">Сүүн бүтээгдэхүүн болон өндөгнүүд</translation>
 <translation id="5700761515355162635">Гуравдагч талын күүкинүүдийг зөвшөөрсөн</translation>
 <translation id="5701381305118179107">Төв</translation>
@@ -2655,7 +2701,6 @@
 <translation id="3006790309890592320">Хэрэв та нууц үгээ бусад сайтад дахин ашигласан бол Brave-с үүнийг шинэчлэхийг зөвлөж байна.</translation>
 <translation id="5732392974455271431">Таны эцэг эх үүнийг блокоос гаргах боломжтой</translation>
 <translation id="5110141686029759199">Маягт үүсгэх товчлуур, Brave Маягтад шинэ маягт шуурхай үүсгэхийн тулд идэвхжүүлнэ үү</translation>
-<translation id="5576538372759072019">{NUM_CARDS,plural, =1{Brave Бүртгэлдээ карт хадгалах}other{Brave Бүртгэлдээ карт хадгалах}}</translation>
 <translation id="5738385766833540397">Та хянаж буй бүтээгдэхүүнүүдийнхээ үнэ хямдарсан талаарх сэрэмжлүүлгийг хэрхэн хүлээн авахаа удирдана уу</translation>
 <translation id="573974402615125334">Табын бүлэг хуваалцах, нэгдэх, хамтран ажиллахын тулд түүх, табаа синк хийнэ үү</translation>
 <translation id="5740911612628596808">Дугтуй C9</translation>
@@ -2695,6 +2740,7 @@
 <translation id="5826507051599432481">Түгээмэл нэр (CN)</translation>
 <translation id="5830698870816298009">камерын ашиглалт болон хөдөлгөөн</translation>
 <translation id="583281660410589416">Үл мэдэгдэх</translation>
+<translation id="5837220895135257862">Дахин оролдохоосоо өмнө <ph name="CLOUD_PROVIDER"/>-д сул зай гаргана уу</translation>
 <translation id="5838278095973806738">Энэ сайтын мэдээллийг халдагч этгээд хулгайлж болзошгүй тул чухал мэдээллээ бүү оруулна уу (жишээ нь нууц үг, кредит карт зэрэг).</translation>
 <translation id="5838732667866024867">Та графикийн үнийн өөрчлөлтүүдийг хянахын тулд зүүн/баруун сумыг ашиглах боломжтой</translation>
 <translation id="7336369644051575343">Таны <ph name="ACCOUNT"/> Brave Бүртгэлд</translation>
@@ -2734,6 +2780,7 @@
 <translation id="5910140988253729859">Автоматаар бөглөх хэсгийг болих</translation>
 <translation id="5911020115933784199">Арга хэмжээ болон жагсаалтууд</translation>
 <translation id="5911110632211230665">Нээхийг блоклосон</translation>
+<translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> энэ табыг нэмсэн</translation>
 <translation id="5915189366813702112">Уян хатан ажлын цаг</translation>
 <translation id="59174027418879706">Идэвхжсэн</translation>
 <translation id="5918373444239520146">Гаджет болон зөөврийн цахилгаан багаж</translation>
@@ -2743,7 +2790,6 @@
 <translation id="5921185718311485855">Асаалттай</translation>
 <translation id="2687595201721621314">Картыг Brave sync chain-д хадгалах уу?</translation>
 <translation id="5921952831792678223">Пикап ачааны машинууд</translation>
-<translation id="5922853866070715753">Бараг дууслаа</translation>
 <translation id="5923492272538889093">CVC-н оронд төхөөрөмжийн түгжээг тайлахыг ашиглах уу?</translation>
 <translation id="5924510104057992926">Нээхээс өмнө шалгах шаардлагатай</translation>
 <translation id="5924782825030413055">Зөвшөөрлийн сүүлийн шинэчлэлтийн эх сурвалж:</translation>
@@ -2760,6 +2806,7 @@
 <translation id="5944297261866530437">Даавуу (маш гялгар)</translation>
 <translation id="5950901984834744590">Сахлын хутга, сахлын машинууд</translation>
 <translation id="5951495562196540101">Хэрэглэгчийн бүртгэлээр бүртгүүлэх боломжгүй (багцалсан лиценз боломжтой).</translation>
+<translation id="5952076224478208938">Үйлдвэрлэгч</translation>
 <translation id="5953516610448771166">Энэ медиад Шууд тайлбар боломжгүй байна. Тайлбар авахын тулд энэ сайтад <ph name="CONTENT_SETTINGS"/>-г блоклоно уу.</translation>
 <translation id="595873925609605681">Хэрэв сайтын онцлогууд ажиллахгүй байвал <ph name="BEGIN_LINK"/>гуравдагч талын күүкинүүдийг түр зуур зөвшөөрч үзнэ үү<ph name="END_LINK"/>.</translation>
 <translation id="5960795367348889467">Баталгаажуулалт</translation>
@@ -2799,6 +2846,7 @@
 <translation id="6015796118275082299">Жил</translation>
 <translation id="6017514345406065928">Ногоон</translation>
 <translation id="818107217016701700">Brave тохиргооноос өөрийн хөтчийн түүх, күүки, завсрын санах ой ба бусдыг устгах</translation>
+<translation id="6023810427609440412">ТХТД (тээврийн хэрэгслийн таних дугаар)</translation>
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/> (синк хийсэн)</translation>
 <translation id="6028591542479806248">Мобайл болон имэйл мэдэгдлийг удирдах</translation>
 <translation id="6028833024483927901">Олон улсын хоол</translation>
@@ -2814,6 +2862,7 @@
 <translation id="604124094241169006">Автомат</translation>
 <translation id="6041777658117377052">Танхимын температур</translation>
 <translation id="6042308850641462728">Илүү их</translation>
+<translation id="6043357981274314628">Дууссан!</translation>
 <translation id="6044573915096792553">Хэмжээ12</translation>
 <translation id="6045164183059402045">Байршуулах загвар</translation>
 <translation id="6047927260846328439">Энэ агуулга танаар программ суулгуулах эсвэл таны хувийн мэдээллийг авах зорилгоор таныг мэхэлж болзошгүй. <ph name="BEGIN_LINK"/>Ямартай ч харуулна уу<ph name="END_LINK"/></translation>
@@ -2830,19 +2879,19 @@
 <translation id="6055982527635883756">Дугтуй (архивын)</translation>
 <translation id="6057177372083677067">Онлайн видео</translation>
 <translation id="6058646026409894363">Барилгын инженерчлэл</translation>
-<translation id="6058977677006700226">Картаа бүх төхөөрөмж дээрээ ашиглах уу?</translation>
 <translation id="6059925163896151826">USB төхөөрөмж</translation>
 <translation id="6060009363608157444">DnsOverHttps горим буруу байна.</translation>
 <translation id="6061154937977953833">Бөх</translation>
+<translation id="6062405040252994646">Хэрэгсэл</translation>
 <translation id="6062937464449575061">Үнэ хянахаа болих</translation>
 <translation id="6063415549109819824">Орон сууцны санхүүжилт</translation>
 <translation id="6070432475334343308">Нэг эсвэл түүнээс олон файлыг <ph name="CLOUD_PROVIDER"/> дээрх <ph name="FOLDER_NAME"/>-д байршуулаагүй</translation>
-<translation id="6080696365213338172">Та админ-аас өгсөн гэрчилгээг ашиглан контент руу нэвтэрсэн байна. Таны <ph name="DOMAIN"/> руу оруулсан өгөгдлийг админаас хориглож болно.</translation>
 <translation id="6085149458302186532">Шошго (өнгөтэй)</translation>
 <translation id="6087312102907839798">Холбоотой хайлтууд</translation>
 <translation id="7851017866080575588">Таны Brave-н түүхээс устгасан табууд харьцуулалтын хүснэгтэд тань харагдсан хэвээр байх болно</translation>
 <translation id="6093599771645355227">Шар 1</translation>
 <translation id="6093795393556121384">Таны картыг баталгаажууллаа</translation>
+<translation id="6094253940069566294">Тээврийн хэрэгслийг засах</translation>
 <translation id="6094273045989040137">Тэмдэглэгээ хийх</translation>
 <translation id="6094290315941448991">Администраторын бодлого нь нууцлалтай контентыг харагдаж байх үед дэлгэцийн үйлдэл бичихийг идэвхгүй болгодог</translation>
 <translation id="6099269767116481177">22 x 29.5 инч</translation>
@@ -2862,6 +2911,7 @@
 <translation id="6116338172782435947">Түр санах ойд хуулсан текст, зургийг харах</translation>
 <translation id="6117833587752089929">Гэрэл зураг (сатин)</translation>
 <translation id="6118782133429281336">Эхийн жагсаалт хоосон байна.</translation>
+<translation id="6120950591512958208">Тооцоо хийхэд энэ кодыг ашиглана уу.</translation>
 <translation id="612178891608320683">Веган хоол</translation>
 <translation id="6122181661879998141">таны картын урд тал</translation>
 <translation id="6124058285696691147">Хавсралтыг татах</translation>
@@ -2886,6 +2936,7 @@
 <translation id="6159908896951210943">Албан ёсны</translation>
 <translation id="6160391204859821737">Зарын нууцлалын онцлогийг асаах</translation>
 <translation id="6162403104168428984">Хаягийг шинэчлэх үү?</translation>
+<translation id="6164605812717770913">Эцэг эх, асран хамгаалагч таныг энэ сайтад зочилж БОЛОХГҮЙ гэж хэлсэн. Та эцэг эх, асран хамгаалагчаасаа үүнийг блокоос гаргахыг хүсэж болно.</translation>
 <translation id="6165508094623778733">Нэмэлт мэдээлэл авах</translation>
 <translation id="6167577165590485365">Сүүлд дуудахаар оролдсон:</translation>
 <translation id="1057223975912338979">Brave таны төлбөрийн мэдээллийг бөглөх боломжтой болохын тулд таныг мөн болохыг баталгаажуулахаар оролдож байна.</translation>
@@ -2931,6 +2982,7 @@
 <translation id="6241121617266208201">Зөвлөмжийг нуух</translation>
 <translation id="624499991300733384">Хэвлэлийг нэгтгэгч үйлчилгээ</translation>
 <translation id="6246316216123107851"><ph name="NUM_DAYS"/> хоногийн өмнө</translation>
+<translation id="6246382863801034910">Тээврийн хэрэгсэл</translation>
 <translation id="6246868321321344665">Танай байгууллага ажлын болон хувийн профайл дахь нууц үг, түүх зэрэг интернэтээр үзсэн өгөгдлийг харах боломжтой</translation>
 <translation id="6250932670816326647">Усанд орох, биеийн бүтээгдэхүүнүүд</translation>
 <translation id="6251906504834538140">{0,plural, =1{Файлыг зөөхийг блоклосон}other{<ph name="FILE_COUNT"/> файлыг зөөхийг блоклосон}}</translation>
@@ -2977,12 +3029,14 @@
 <translation id="6321917430147971392">DNS тохиргоогоо шалгана уу</translation>
 <translation id="6322182122604171028">Windows Hello-г ашиглаж чадсангүй</translation>
 <translation id="7962450223988560278">iOS-н тохиргоонд Brave-г системийн өгөгдмөл хөтөч болгон тохируулна уу</translation>
+<translation id="6327065120806001832">дотоод сүлжээний хандалт</translation>
 <translation id="6328639280570009161">Сүлжээний таамаглалыг идэвхгүй болгох гээд үзээрэй</translation>
-<translation id="6328784461820205019">"Таны холболт хувийн биш" эсвэл "&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;" эсвэл "&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;" эсвэл "&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;" эсвэл "&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;" эсвэл "SSL гэрчилгээний алдаа"</translation>
 <translation id="6335029926534404762">Биеийн тамирын гутал</translation>
+<translation id="6336948221660696475">VR-г ашиглахыг зөвшөөрөөгүй</translation>
 <translation id="6337133576188860026"><ph name="SIZE"/>-с бага зай гаргана. Зарим сайтад зочлох үед удаан ачаалж болзошгүй.</translation>
 <translation id="6337534724793800597">Журмуудыг нэрээр нь шүү</translation>
 <translation id="633770708279464947"><ph name="SECURE_DNS_SALT"/>-н утга буруу тул ашиглахгүй.</translation>
+<translation id="6738574149680202366">Нууц үг • Brave Нууц үгний менежер</translation>
 <translation id="6340739886198108203">Администраторын бодлого нь нууцлалтай контент харагдаж байх үед дэлгэцийн агшин авах эсвэл бичлэг хийхийг санал болгодоггүй:</translation>
 <translation id="6341434961864773665">{0,plural, =1{Администраторын бодлого нь энэ файлыг <ph name="DESTINATION_NAME"/>-д байршуулахыг санал болгодоггүй}other{Администраторын бодлого нь эдгээр файлыг <ph name="DESTINATION_NAME"/>-д байршуулахыг санал болгодоггүй}}</translation>
 <translation id="6342069812937806050">Яг одоо</translation>
@@ -3021,6 +3075,7 @@
 <translation id="6391700400718590966">Тохирох мандат үнэмлэхгүй аюулгүй төлбөрийн мандат үнэмлэхийн хүснэгтийг хаасан</translation>
 <translation id="6392799395081100092">Цаас (илгэн)</translation>
 <translation id="6393156038355142111">Сайн нууц үг санал болгох</translation>
+<translation id="6393310910507376797">Худалдаачин дэмжээгүй</translation>
 <translation id="6393956493820063117">Администраторын бодлогын дагуу <ph name="ORIGIN_NAME"/>-с энэ байршил руу буулгахыг блоклосон</translation>
 <translation id="6394852772105848029">Энэ сайт <ph name="APP_NAME"/> аппыг нээхийг хүсэж байна</translation>
 <translation id="639673288733510393">Скүтэр, мопедууд</translation>
@@ -3035,9 +3090,11 @@
 <translation id="6405181733356710802"><ph name="APP_NAME"/> руу үргэлжлүүлэх үү?</translation>
 <translation id="6410264514553301377"><ph name="CREDIT_CARD"/>-н дуусах огноо, карт баталгаажуулалтын кодыг оруулна уу</translation>
 <translation id="6411107829285739505">A4x8</translation>
+<translation id="6412543105195503444">Эцэг эхийн зөвшөөрлийн харилцах цонх</translation>
 <translation id="6414010576370319452">Арьс болон хувцас арчилгаа</translation>
 <translation id="6416877227920300343">EDP</translation>
 <translation id="641811520997304166">Цалингийн сангийн үйлчилгээнүүд</translation>
+<translation id="6418199314628742460">Бизнес, хувийн чухал өгөгдлийг гадна хадгалсан эсэхийг нягтална уу.</translation>
 <translation id="6424600253695044005">Үүлэн хадгалах сан</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Дээд доод хэсгийг нь дотогш нугалж эвхэх брошюрын нугалаа</translation>
@@ -3054,6 +3111,7 @@
 <translation id="6440503408713884761">Хаагдсан</translation>
 <translation id="6443406338865242315">Таны ямар өргөтгөл болон залгаасыг суулгасан болох</translation>
 <translation id="6444329331928531170">Тэтгэвэр, тэтгэмж</translation>
+<translation id="6445051938772793705">Улс</translation>
 <translation id="6446608382365791566">Дэлгэрэнгүй мэдээлэл нэмэх</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6448371595882710519">Өгөгдлийн тохиргооны талаар нэмэлт мэдээлэл авна уу</translation>
@@ -3099,6 +3157,7 @@
 <translation id="6519885440226079262">Таны гарыг хянахыг хүсэх боломжтой</translation>
 <translation id="6520026037299163656">Веб апп, онлайн хэрэгслүүд</translation>
 <translation id="65203098586853226"><ph name="SOURCE"/>-с <ph name="TARGET"/> руу орчуулж байна</translation>
+<translation id="6520509611422418552"><ph name="MEMBER_FIRST_NAME"/> "<ph name="GROUP_NAME"/>" табын бүлэгт нэгдсэн</translation>
 <translation id="6521745193039995384">Идэвхгүй</translation>
 <translation id="6522682797352430154">Сонгодог хөгжим</translation>
 <translation id="7379829935006425840">Хандалтын тохиргоог удирдах товчлуур, Brave-н тохиргоонд хандалтын хэрэгслээ хувийн болгохын тулд идэвхжүүлнэ үү</translation>
@@ -3171,6 +3230,7 @@
 <translation id="6665553082534466207">Баруун ирмэг дагуу гурван нүх цоолох</translation>
 <translation id="6668389483194953109">"Custom" нэртэй хуудасны хэмжээ олсон ч "custom_size" шинж чанар хоосон эсвэл буруу байна.</translation>
 <translation id="6671169470640320959">Автомашины санхүүжүүлэлт</translation>
+<translation id="6675846980676550611">AR-г ашиглахыг зөвшөөрөөгүй</translation>
 <translation id="6677351035258626477">Түргэн хоол</translation>
 <translation id="7691784300114873847">Brave хөтөч таны нууц үгийг <ph name="APP_NAME"/> дээр бөглөхөөр оролдож байна.</translation>
 <translation id="6681790815630918386">Карт баталгаажуулалтын кодыг хадгалсан</translation>
@@ -3197,6 +3257,7 @@
 <translation id="6706005862292023715">Хөшиг болон цонхны хаалт</translation>
 <translation id="6706210727756204531">Хамрах хүрээ</translation>
 <translation id="1162411425302454249">Энэ IBAN дугаарыг таны Brave Бүртгэлд хадгалж чадсангүй. Оронд нь тус дугаарыг энэ төхөөрөмж дээр Brave-д хадгалсан.</translation>
+<translation id="6707388108229299854">Энэ хаягийг бүх төхөөрөмж дээрээ авахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
 <translation id="6709133671862442373">Мэдээ</translation>
 <translation id="6710213216561001401">Өмнөх</translation>
 <translation id="6710594484020273272">&lt;Хайх зүйлээ шивнэ үү&gt;</translation>
@@ -3206,6 +3267,7 @@
 <translation id="6716039223770814796"><ph name="COMPARE_SET_NAME"/> · <ph name="ITEMS"/> зүйлийг харьцуулах</translation>
 <translation id="6716672519412350405"><ph name="URL"/> нь таны эргэн тойрны 3D газрын зургийг үүсгэж, камерын хөдөлгөөнийг хянахыг хүсэж байна</translation>
 <translation id="6717692133381953670">Табыг <ph name="DEVICE_NAME"/>-с илгээсэн</translation>
+<translation id="6718524733720986924">Мэдээллээ хадгална уу. Ингэснээр дараагийн удаа автоматаар бөглөх онцлог танд зориулж илүү олон талбарыг бөглөх боломжтой</translation>
 <translation id="6718612893943028815">Камер ашиглах уу?</translation>
 <translation id="6721164594124191969">Шошго (гялгар)</translation>
 <translation id="6726832600570791992">(32-bit emulated)</translation>
@@ -3276,6 +3338,7 @@
 <translation id="6871813064737840684">Энэ сонголтод зориулсан веб дээрх үнийн түүх</translation>
 <translation id="6873456682041376666">Дээд талын тавиур</translation>
 <translation id="6874604403660855544">&amp; Нэмэх үйлдлийг дахин хийх</translation>
+<translation id="6875894866901426843">Танай администратор <ph name="DATE_TIME"/>-нд Хогийн саван дахь аливаа файл зэрэг таны дотоод файлуудыг устгана.</translation>
 <translation id="6880941331070119097">Өндөр үнэтэй сонголт</translation>
 <translation id="5856252669085142737">Шинэ Brave Док шуурхай үүсгээрэй</translation>
 <translation id="6882210908253838664">Хэрэв сайт ажиллахгүй байвал та түүнд гуравдагч талын күүкинүүдийг ашиглах түр зуурын зөвшөөрлийг өгч үзэх боломжтой. <ph name="BEGIN_LINK"/>Нэмэлт мэдээлэл авах<ph name="END_LINK"/></translation>
@@ -3371,6 +3434,7 @@
 <translation id="7023765275461720661">Бүртгэл холбоод, <ph name="BNPL_ISSUER_NAME"/>-р төлбөр төлөх үү?</translation>
 <translation id="7029809446516969842">Нууц үг</translation>
 <translation id="7030164307377592766">төлбөрийн хэрэгсэл бөглөх тохиргоог өөрчлөх</translation>
+<translation id="7031110846419387930">Таны хөтөч, OS, төхөөрөмж, суулгасан программ хангамж, файл, IP хаягийн талаарх мэдээлэл</translation>
 <translation id="7031646650991750659">Таны Google Play-н ямар апп суулгасан болох</translation>
 <translation id="7035705295266423040">Таны банк таныг мөн болохыг баталгаажуулахыг хүсэж байна</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave Бүртгэлийнхээ нууцлалын тохиргоог удирдахын тулд Tab, дараа нь Enter дээр дарна уу.</translation>
@@ -3380,7 +3444,6 @@
 <translation id="704738887031336226">Тооцоо хийхэд <ph name="PAY_OVER_TIME_HELP_LINK_BEGIN"/>цагийн явцад төлөх<ph name="PAY_OVER_TIME_HELP_LINK_END"/> сонголтуудыг харуулах</translation>
 <translation id="7048095965575426564">Европын Фанфолд</translation>
 <translation id="7050187094878475250">Та <ph name="DOMAIN"/>-д хандах оролдлого хийсэн боловч серверээс таны оруулсан гэрчилгээний хугацаа хүчин төгөлдөр гэж үзэх хугацаанаас хэтэрхий урт хугацаанд хүчинтэй байна гэж үзсэн байна.</translation>
-<translation id="705310974202322020">{NUM_CARDS,plural, =1{Энэ картыг одоогоор хадгалах боломжгүй байна}other{Эдгээр картыг одоогоор хадгалах боломжгүй байна}}</translation>
 <translation id="7053983685419859001">Блоклох</translation>
 <translation id="7054717457611655239">Одооноос файлуудаа <ph name="CLOUD_PROVIDER"/>-д хадгална уу.</translation>
 <translation id="7058163556978339998"><ph name="BROWSER"/> <ph name="ISSUER"/>-г энэ веб сайтын гэрчилгээг олгосон болохыг баталгаажуулсан.</translation>
@@ -3481,6 +3544,7 @@
 <translation id="7221855153210829124">Мэдэгдэл харуулах</translation>
 <translation id="8326104954595890674">Шинэ Нууцлалтай таб</translation>
 <translation id="7227293336683593977">Үнийн түүх</translation>
+<translation id="7228306718910595403">ЕХ-ны шаардлага хангасан төлөв</translation>
 <translation id="7232352818707016189">Хүснэгтийг харьцуулахад зориулсан бусад үйлдэл</translation>
 <translation id="7233592378249864828">Хэвлэхийг баталгаажуулсан хүснэгт</translation>
 <translation id="7234112195906418665">Аялал, тээвэр</translation>
@@ -3511,6 +3575,7 @@
 <translation id="7275334191706090484">Ажилласан хайлтын жагсаалтууд</translation>
 <translation id="7275808129217605899">Эрүүл хооллолт</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave Бүртгэлийнхээ нууц үгийг өөрчлөхийн тулд эхлээд Tab, дараа нь Enter дээр дарна уу</translation>
+<translation id="7291578327729322058">Жолооны үнэмлэх нэмнэ үү</translation>
 <translation id="7292031607255951991">Хүлээн авагчийн нэр</translation>
 <translation id="7298195798382681320">Санал болгосон</translation>
 <translation id="7299471494012161875">Дэлгэцийн нэмэлт төхөөрөмжүүдийг хавсаргасан</translation>
@@ -3527,7 +3592,6 @@
 <translation id="7316521168101843192">Microsoft OneDrive-т файл хадгалж байна</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Холболтын тусламж</translation>
-<translation id="7321111802407017850">Автоматаар бөглөх мэдээллээ хадгална уу</translation>
 <translation id="7323804146520582233">"<ph name="SECTION"/>" хэсгийг нуух</translation>
 <translation id="733354035281974745">Төхөөрөмжийн дотоод бүртгэлийг дарж бичих</translation>
 <translation id="7334320624316649418">&amp; Дахин эрэмбэлэх үйлдлийг дахин хийх</translation>
@@ -3653,6 +3717,7 @@
 <translation id="7512685745044087310">Энэ бодлогыг "Үнэн" гэж тохируулсан байхад заавал шаардах боломжгүй тул санал болгосон гэж өөрчилсөн.</translation>
 <translation id="7514365320538308">Татаж авах</translation>
 <translation id="7515998400212163428">Android</translation>
+<translation id="7516123895971374904">VR-г энэ удаад зөвшөөрсөн</translation>
 <translation id="7517201160922869406">Бартаат замын тээврийн хэрэгслүүд</translation>
 <translation id="7517414872996418597">Дугтуй C10</translation>
 <translation id="7518003948725431193">Энэ веб хаягаар хайхад тохирох хуудас олдсонгүй: <ph name="URL"/></translation>
@@ -3691,6 +3756,7 @@
 <translation id="7569983096843329377">Хар</translation>
 <translation id="7574998639136359461">Өвлийн спортын тоног төхөөрөмжүүд</translation>
 <translation id="7575207903026901870">Зөвлөмж устгах товчлуур, энэ зөвлөмжийг устгахын тулд Enter дээр дарна уу</translation>
+<translation id="7575800019233204241">"Таны холболт хувийнх биш" эсвэл "&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;" эсвэл "&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;" эсвэл "&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;" эсвэл "SSL сертификатын алдаа"</translation>
 <translation id="7575887283389198269">Гар утаснууд</translation>
 <translation id="405970181812690156">Brave-д хадгалсан карт ашиглан төхөөрөмжөөс апп, сайтад төлбөрөө цаг алдалгүйгээр төлөөрэй.</translation>
 <translation id="7579442726219254162">"<ph name="APPLICATION_ID"/>"-н удирдаж буй тохиргоонд үл мэдэгдэх хувьсагч "<ph name="VARIABLE"/>".</translation>
@@ -3769,7 +3835,6 @@
 <translation id="7690647519407127574">Оүфүкү Хагаки ил захидал</translation>
 <translation id="7693583928066320343">Хүлээн авсан хуудасны дараалал</translation>
 <translation id="769424100851389104">Одоо шинэчилж эхлэх</translation>
-<translation id="769721561045429135">Одоогоор танд зөвхөн энэ төхөөрөмж дээр ашиглах боломжтой карт байна. Картыг шалгахын тулд Үргэлжлүүлэх сонголтыг дарна уу.</translation>
 <translation id="7697837508203274589">Спортын шууд арга хэмжээнүүд</translation>
 <translation id="7698864304447945242">Google Play Services for AR-г шинэчлэх үү?</translation>
 <translation id="7701040980221191251">Тодорхойгүй</translation>
@@ -3863,12 +3928,15 @@
 <translation id="5478215009057706238">Табын бүлэг хуваалцах, нэгдэхийн тулд Brave-д нэвтэрч, санаан дээр хамтран ажиллаарай</translation>
 <translation id="7877007680666472091">хамгаалалттай content ID</translation>
 <translation id="7878562273885520351">Таны нууц үгийг хулгайлсан байна</translation>
+<translation id="7881044256965445977">Таны дотоод сүлжээнд холбогдсон дурын төхөөрөмжийг хайж, холбогдох</translation>
 <translation id="7882421473871500483">Бор</translation>
 <translation id="7886897188117641322">Зарыг хувийн болгоход туслахын тулд ямар сэдвүүдийн өргөн хүрээтэй ангиллыг ашиглаж болохыг сонгоно уу</translation>
 <translation id="7887683347370398519">CVC-гээ шалгаад дахин оролдоно уу</translation>
 <translation id="7887885240995164102">Дэлгэц доторх дэлгэц горимд орох</translation>
 <translation id="7888575728750733395">Хэвлэхэд өнгө буулгах тодорхойлолт</translation>
 <translation id="7890748547282909375">Дэлгэцийн агшныг хадгалахын тулд Microsoft OneDrive-д нэвтэрнэ үү</translation>
+<translation id="7892431309448524994"><ph name="ORIGIN"/> – Курсороо харуулахын тулд |<ph name="ACCELERATOR"/>| дээр дарна уу</translation>
+<translation id="7892865709991296481">төлбөрийн тохиргоо</translation>
 <translation id="7894280532028510793">Хэрэв алдаагүй, зөв бичсэн бол <ph name="BEGIN_LINK"/>Сүлжээний оношилгоог ажиллуулж үзнэ үү<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">Дугтуй 7 x 9 инч</translation>
 <translation id="4362225295386962644">Таныг нууц үг ашиглах үед үүнийг онлайнд нийтэлсэн тохиолдолд Brave танд сануулна. Үүнийг хийх үед таны нууц үг болон хэрэглэгчийн нэрийг шифрлэх бөгөөд ингэснээр Brave-г оруулаад хэн ч тэдгээрийг унших боломжгүй.</translation>
@@ -3925,6 +3993,7 @@
 <translation id="799149739215780103">Үдэж хавтаслах</translation>
 <translation id="7992044431894087211"><ph name="APPLICATION_TITLE"/>-тай дэлгэц хуваалцахыг үргэлжлүүлсэн</translation>
 <translation id="7995512525968007366">Зааж өгөөгүй</translation>
+<translation id="7997855386298213183">хуваалцсан таб</translation>
 <translation id="800218591365569300">Санах ойн багтаамжийг нэмэгдүүлэхийн тулд бусад таб, эсвэл программыг хаана уу.</translation>
 <translation id="8002230960325005199">Холбоотой сайтуудыг шинэ табд харна уу</translation>
 <translation id="8003046808285812021">“<ph name="SEARCH_TERMS"/>”</translation>
@@ -3933,9 +4002,7 @@
 <translation id="8009225694047762179">Нууц үгийг удирдах</translation>
 <translation id="8009460986924589054"><ph name="BEGIN_LINK"/>Күүкинүүдээ устгаж үзэх<ph name="END_LINK"/></translation>
 <translation id="8009843239480947060">10 x 11 инч</translation>
-<translation id="8012116502927253373">{NUM_CARDS,plural, =1{Энэ карт болон үүний тооцооны хаягийг хадгална. Та үүнийг <ph name="USER_EMAIL"/>-д нэвтэрсэн үедээ ашиглах боломжтой болно.}other{Эдгээр карт болон эдгээрийн тооцооны хаягийг хадгална. Та эдгээрийг <ph name="USER_EMAIL"/>-д нэвтэрсэн үедээ ашиглах боломжтой болно.}}</translation>
 <translation id="8012647001091218357">Бид таны эцэг, эхтэй холбоо тогтоох боломжгүй байна. Та дахин хандаж үзнэ үү.</translation>
-<translation id="8019861005170389898"><ph name="TRADITIONAL_TEXT"/> (<ph name="ADDITIONAL_TEXT"/>)</translation>
 <translation id="8022542098135319050">Аяллын агентлаг болон үйлчилгээнүүд</translation>
 <translation id="1625114571336329891"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave-г системийн өгөгдмөл хөтөч болгон тохируулахын тулд tab, дараа нь Enter дээр дарна уу</translation>
 <translation id="8027077570865220386">Тавиур 15</translation>
@@ -3991,7 +4058,6 @@
 <translation id="8094917007353911263">Таны ашиглаж буй сүлжээ таныг <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>-д нэвтрэхийг шаардах магадлалтай.</translation>
 <translation id="8098855213644561659">A3 Нэмэлт</translation>
 <translation id="809898108652741896">A6</translation>
-<translation id="8100588592594801589">Хүчингүй картыг устгалаа</translation>
 <translation id="8103161714697287722">Төлбөрийн хэрэгсэл</translation>
 <translation id="8103643211515685474">Ямартай ч хэвлэх</translation>
 <translation id="8105368624971345109">Унтраах</translation>
@@ -3999,14 +4065,15 @@
 <translation id="8116925261070264013">Дууг хаасан</translation>
 <translation id="8118489163946903409">Төлбөрийн хэрэгсэл</translation>
 <translation id="8118506371121007279">Санал хүсэлт өгөх</translation>
+<translation id="812020627659652807">Файлуудыг одоо устгана</translation>
 <translation id="8120720167840853945">Энэ бодлого дараах бодлогуудын өгөгдмөл үйлдлийг хянахгүй байна.</translation>
 <translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>"-г таны компьютер эсвэл сүлжээнд зөв суулгаагүй байна. Энэ асуудлыг шийдвэрлэхийн тулд админтайгаа холбогдоно уу.</translation>
+<translation id="8130113808541743942">Дараах руу зөөх...</translation>
 <translation id="8131740175452115882">Батлах</translation>
 <translation id="8133495915926741232">Зарыг хувийн болгоход туслахын тулд ямар сэдвүүдийн өргөн хүрээтэй ангиллыг ашиглаж болохыг сонгоно уу. Өргөн хүрээтэй ангиллыг унтраах нь мөн түүний холбоотой сэдвүүдийг блоклоно. <ph name="BEGIN_LINK"/>Нэмэлт мэдээлэл авах<ph name="END_LINK"/></translation>
 <translation id="8134058435519644366">Ажилд авах болон боловсон хүчин</translation>
 <translation id="8135546115396015134">зүүн суман товч</translation>
 <translation id="8137456439814903304">Эрчим хүч, эрчим хүч нийлүүлэгчид</translation>
-<translation id="6906657311453248688">Та энэ сайт дээр өөрийн <ph name="PERMISSION"/>-г ашиглахын тулд Brave-д хандах эрх өгнө үү</translation>
 <translation id="8148608574971654810">PDF хувилбар:</translation>
 <translation id="8149426793427495338">Таны компьютер идэвхгүй болсон байна.</translation>
 <translation id="8150722005171944719"><ph name="URL"/> дахь файлыг унших боломжгүй байна. Энэ файл нь устгагдсан, шилжигдсэн, эсвэл хандалтыг хазгаарласан байж болно.</translation>
@@ -4085,6 +4152,7 @@
 <translation id="8278544367771164040">Арилжааны зээл</translation>
 <translation id="8279290844152565425">Тоглолт, хөгжмийн наадмууд</translation>
 <translation id="2164614088382669062">Brave-н мэдэгдэл асаалттай байх ёстой. Та тэдгээрийг <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>-д асаах боломжтой.</translation>
+<translation id="8280569545097027381">Файлуудыг <ph name="HOURS"/> цагийн дараа устгана</translation>
 <translation id="8280630997017109758">Тавиур 11</translation>
 <translation id="8281730697546299650">Зарын нууцлалын бусад онцлог одоо боломжтой боллоо</translation>
 <translation id="8281886186245836920">Алгасах</translation>
@@ -4200,7 +4268,6 @@
 <translation id="8473626140772740486">300 x 450 мм</translation>
 <translation id="8473863474539038330">Хаяг болон бусад</translation>
 <translation id="8474910779563686872">Хөгжүүлэгчийн дэлгэрэнгүй мэдээллийг харуулах</translation>
-<translation id="8476959635632921417">Энэ хаягийг бүх төхөөрөмж дээрээ хадгалж, ашиглахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
 <translation id="8479754468255770962">Зүүн доод буланд үдэх</translation>
 <translation id="8714154125294613524">Энэ хаягийг таны Brave Бүртгэл болох <ph name="ACCOUNT"/>-с устгана</translation>
 <translation id="8488350697529856933">руу тохируулах</translation>
@@ -4307,6 +4374,7 @@
 <translation id="8687429322371626002">Таны төхөөрөмж болон бүртгэлийг <ph name="MANAGER"/> удирддаг.</translation>
 <translation id="8688672835843460752">Боломжтой</translation>
 <translation id="868922510921656628">Багц бүрийн хуудас</translation>
+<translation id="8694684557210599098">Тээврийн хэрэгсэл нэмэх</translation>
 <translation id="8695996513186494922">Табуудыг харьцуулах уу?</translation>
 <translation id="7816186261184837626">Brave-д Brave-н аюулгүй хөтөч зэрэг таныг үзэж байхад хамгаалах аюулгүй байдлын бүрэлдэхүүн онцлогууд байдаг бөгөөд эдгээр онцлог таны зочлохоор оролдсон сайт дээрээс саяхан <ph name="BEGIN_LINK"/>аюултай программ хангамж олсон<ph name="END_LINK"/>.</translation>
 <translation id="869891660844655955">Дуусах хугацаа</translation>
@@ -4434,7 +4502,6 @@
 <translation id="8919895429178014996">Бүх зүйлийг нуух</translation>
 <translation id="8922013791253848639">Энэ сайтад зарыг үргэлж зөвшөөрөх</translation>
 <translation id="8922734931659847428"><ph name="BEGIN_LINK"/>Уламжлалт технологийн үйл явдлууд<ph name="END_LINK"/> тохиолдож буй таны зочилсон хуудаснуудын URL-н хязгаарлагдмал жагсаалт</translation>
-<translation id="3689838371654876064">Аюулгүй байдлын үйлдлүүдийг Brave-с дарцагласан үед үйлдлүүдийн талаарх хамааралтай өгөгдлийг танай администратор луу илгээдэг. Үүнд таны Brave-д зочилсон хуудаснуудын URL, таны өгөгдөл хуулсан хуудаснуудын URL, файлын нэр эсвэл мета өгөгдөл, хөтөч, табын гэмтэл, таны вебд суурилсан аппликэйшн, өөрийн төхөөрөмж болон Brave-д нэвтрэхдээ ашигладаг хэрэглэгчийн нэр багтах боломжтой.</translation>
 <translation id="892588693504540538">Баруун дээд буланд нэг нүх цоолох</translation>
 <translation id="8926389886865778422">Дахиж бүү асуу</translation>
 <translation id="8932102934695377596">Таны цаг хоцорч байна</translation>
@@ -4451,6 +4518,7 @@
 <translation id="8959288490306482616">Бор шаргал 3</translation>
 <translation id="8963117664422609631">Сайтын тохиргоо руу очих</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Зөвлөмж:<ph name="MARKUP_2"/>Ta датанд холбогдсон эсэхээ шалгана уу<ph name="MARKUP_3"/>Энэ вэв хуудсыг дараа дахин ачаална уу<ph name="MARKUP_4"/>Оруулсан хаягаа шалгана уу<ph name="MARKUP_5"/></translation>
+<translation id="8963969435440878110">Таны дотоод файлуудыг <ph name="HOURS"/> цагийн дараа устгана</translation>
 <translation id="8968766641738584599">Картыг хадгалах</translation>
 <translation id="8970887620466824814">Алдаа гарлаа.</translation>
 <translation id="8971063699422889582">Серверийн сертификатын хугацаа дууссан байна.</translation>
@@ -4501,6 +4569,7 @@
 <translation id="9051072642122229460">Кофе болон эспрессо хийгчид</translation>
 <translation id="104719866786855422">Бид зарын хэмжилт нэртэй зарын нууцлалын шинэ онцлогийг эхлүүлж байна. Brave сайтуудад зарын гүйцэтгэлийг хэмжихэд туслахын тулд зарыг танд хэзээ харуулсан зэрэг зөвхөн маш хязгаарлагдмал мэдээллийг сайтуудын хооронд хуваалцана.</translation>
 <translation id="9053955920216300738">Таны зочилдог URL-ууд</translation>
+<translation id="90542379288189611">Тээврийн хэрэгслийн улсын бүртгэлийн дугаар</translation>
 <translation id="9054288282721240609">Гар хянахыг зөвшөөрсөн</translation>
 <translation id="9056953843249698117">Дэлгүүр</translation>
 <translation id="9062620674789239642">Үүнийг зөөсөн, зассан эсвэл устгасан байж болзошгүй.</translation>
@@ -4549,6 +4618,7 @@
 <translation id="9139318394846604261">Дэлгүүр</translation>
 <translation id="5130929741967388676">Brave хөтөч нууц үгнүүдийг автоматаар бөглөхийн тулд хурууны хээ ашиглахыг хүсэж байна</translation>
 <translation id="9141013498910525015">Хаяг удирдах</translation>
+<translation id="9141672681283222114">AR-г ашиглахыг энэ удаад зөвшөөрсөн</translation>
 <translation id="9143898823728499852">Таны <ph name="CARD_ISSUER_NAME"/> дансыг Google Pay-д холбосон тул та энэ картыг автоматаар бөглөх боломжтой.</translation>
 <translation id="9144951720726881238">Хүчинтэй хугацаа:</translation>
 <translation id="9145910032514306808">Бичих тусламж 
@@ -4562,6 +4632,7 @@
 <translation id="9155646082713385498">Сэтгүүлүүд</translation>
 <translation id="9157595877708044936">Тохиргоог хийж байна ...</translation>
 <translation id="9161794544616754735">{0,plural, =1{<ph name="FILE_NAME"/> эмзэг контент агуулж байж магадгүй}other{<ph name="FILE_COUNT"/> файл эмзэг контент агуулж байж магадгүй}}</translation>
+<translation id="9162097962559874470"><ph name="ORIGIN"/> – Бүтэн дэлгэцээс гарахын тулд |<ph name="ACCELERATOR"/>| дээр дарна уу</translation>
 <translation id="9165305804774426672">Таны зочилсон сайтууд мөн сайт дээрх үйл ажиллагаанд тань тулгуурлан таны юунд дуртайг тодорхойлох боломжтой. Жишээ нь, хэрэв та холын зайн гүйлтийн гутал зардаг сайтад зочилсон бол тухайн сайт таныг марафонд гүйх сонирхолтой гэж үзэж болох юм.</translation>
 <translation id="9166851138617700776">Сайтын санал болгосон зар болон зарын хэмжигдэхүүний тухай дэлгэрэнгүй</translation>
 <translation id="9167054383925257837">Хөтөч болон төхөөрөмжийн OS-н мэдээлэл (хөтөч, OS-н хувилбар гэх мэт)</translation>
@@ -4582,6 +4653,7 @@
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> нь дэмжигдээгүй протоколыг ашигладаг.</translation>
 <translation id="918454845714257218"><ph name="SIDE_OF_CARD"/> дээрх кодыг шалгаад, дахин оролдоно уу</translation>
 <translation id="7202091195027070644">Brave-г өгөгдмөл хөтөч болгон тохируулах товчлуур, Brave-г системийн өгөгдмөл хөтөч болгон тохируулахын тулд идэвхжүүлнэ үү</translation>
+<translation id="9189468832660648522"><ph name="MEMBER_FIRST_NAME"/> энэ табыг өөрчилсөн</translation>
 <translation id="9189789270972826888">Хэрэв картыг бөглөөгүй бол доорх картын дэлгэрэнгүй мэдээллийг товшиж, хуулаад буулгана уу. <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="9190557999028587593">4 долоо хоногоос дээш болсон сэдвүүдийг автоматаар устгадаг</translation>
 <translation id="9191834167571392248">Зүүн доод буланд нэг нүх цоолох</translation>
@@ -4605,6 +4677,7 @@
 <translation id="142389341645668510">Brave-г өөрчлөх</translation>
 <translation id="9222403027701923763">Бага болон дунд сургууль (K-12)</translation>
 <translation id="93020190163435405">Дадлага</translation>
+<translation id="931598121743515856">Худалдан авалтын дүн <ph name="CHECKOUT_AMOUNT_MINIMUM"/>-с дээш байх ёстой</translation>
 <translation id="933712198907837967">Diners Club</translation>
 <translation id="934634059306213385"><ph name="APP_NAME"/> аппад Wi-Fi сүлжээнүүдийг тохируулахыг зөвшөөрөх үү?</translation>
 <translation id="7486559383537872796">Та Brave Бүртгэлийнхээ хандалтыг алдаж болзошгүй. Brave таныг нууц үгээ одоо солихыг зөвлөж байна. Танаас нэвтрэхийг шаардана.</translation>
@@ -4614,13 +4687,14 @@
 <translation id="940524522703752213">Таны файлуудыг <ph name="CLOUD_PROVIDER"/>-д <ph name="MINUTES"/> минутын дараа байршуулж эхэлнэ</translation>
 <translation id="944578681290094302">Тооцоо хийхэд таны картуудад ямар урамшуулал, үр өгөөж боломжтойг харуулна.<ph name="CARD_BENEFIT_HELP_LINK_BEGIN"/>Картын үр өгөөжийн тухай мэдэж авах<ph name="CARD_BENEFIT_HELP_LINK_END"/></translation>
 <translation id="5444457503062019851">Brave сайтуудыг таныг үзэхэд хянах гуравдагч талын күүкинүүдийг ашиглахыг блоклоно.</translation>
-<translation id="945855313015696284">Доорх мэдээллийг шалгаад хүчингүй бүх картыг устгана уу</translation>
 <translation id="94613679163347541"><ph name="CATEGORY"/>-г харьцуулах уу?</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave Сайтад шинэ сайт шуурхай үүсгэхийн тулд эхлээд Tab, дараа нь Enter дээр дарна уу</translation>
 <translation id="7776043919629791284">{COUNT,plural, =0{Brave күүкинүүдийг өнөөдөр дахин хязгаарлана}=1{Brave күүкинүүдийг өнөөдөр дахин хязгаарлана}other{Brave күүкинүүдийг дахин хязгаарлах хүртэл # хоног үлдсэн}}</translation>
+<translation id="949026252328034572"><ph name="MEMBER_COUNT"/> гишүүн "<ph name="GROUP_NAME"/>" табын бүлэгт нэгдсэн</translation>
 <translation id="949314938206378263">Та энэ сайтад зочлохыг хүссэн. Таны эцэг эх Family Link-д хариу бичих боломжтой.</translation>
 <translation id="950736567201356821">Баруун дээд буланд гурван нүх цоолох</translation>
 <translation id="1762533279914543867">Нэвтрэх түлхүүр • Brave Нууц үгний менежер</translation>
+<translation id="955429569736351433">VR-г ашиглахыг зөвшөөрсөн</translation>
 <translation id="95721182352849470">Шар 2</translation>
 <translation id="961663415146723894">Доод булан дагуу үдэж хавтаслах</translation>
 <translation id="961856697154696964">Интернэтээр үзсэн өгөгдлийг устгах</translation>
