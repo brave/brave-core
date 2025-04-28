@@ -37,9 +37,15 @@ group("ui_public_dependencies") {
     ":brave_tab_features",
     ":brave_tab_prefs",
     "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/containers/buildflags",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
   ]
+}
+
+group("browser_navigator_params_headers_public_dependencies") {
+  visibility = [ "//chrome/browser/ui:browser_navigator_params_headers" ]
+  public_deps = [ "//brave/components/containers/buildflags" ]
 }
 
 source_set("ui") {
@@ -1380,6 +1386,7 @@ source_set("ui") {
 
   if (enable_containers) {
     deps += [
+      "//brave/components/containers/content/browser",
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
       "//brave/components/containers/core/mojom",
