@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createStore } from '../lib/store'
-import { AppModel, defaultState } from '../models/app_model'
+import { AppModel, AppState, defaultState } from '../models/app_model'
 import { initializeNewTab } from './sb_new_tab'
 import { initializeBackgrounds } from './sb_backgrounds'
 import { initializeSearch } from './sb_search'
@@ -12,10 +12,9 @@ import { initializeTopSites } from './sb_top_sites'
 import { initializeRewards } from './sb_rewards'
 import { initializeVPN } from './sb_vpn'
 
-export function createAppModel(): AppModel {
+export function createAppModel(state: Partial<AppState> = {}): AppModel {
   const store = createStore(defaultState())
-
-  return {
+  const model = {
     getState: store.getState,
     addListener: store.addListener,
 
@@ -26,4 +25,6 @@ export function createAppModel(): AppModel {
     ...initializeRewards(store),
     ...initializeVPN(store)
   }
+  store.update(state)
+  return model
 }
