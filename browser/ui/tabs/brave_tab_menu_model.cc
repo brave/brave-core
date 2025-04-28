@@ -100,6 +100,15 @@ void BraveTabMenuModel::Build(Browser* browser,
   auto mute_site_index =
       GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted);
 
+  auto move_tab_to_new_window_index =
+      GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow);
+  if (move_tab_to_new_window_index) {
+    InsertItemAt(move_tab_to_new_window_index.value(), CommandIsolateTab1,
+                 u"Isolate Tab 🏠");
+    InsertItemAt(move_tab_to_new_window_index.value() + 1, CommandIsolateTab2,
+                 u"Isolate Tab 🏢");
+  }
+
   auto toggle_tab_mute_label = l10n_util::GetPluralStringFUTF16(
       all_muted() ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
                   : IDS_TAB_CXMENU_SOUND_MUTE_TAB,

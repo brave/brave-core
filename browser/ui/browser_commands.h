@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -128,6 +129,10 @@ void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
 void SwapTabsInTile(Browser* browser);
+
+void IsolateTab(Browser* browser,
+                std::optional<tabs::TabHandle> tab,
+                const std::string& partition_id);
 
 }  // namespace brave
 
