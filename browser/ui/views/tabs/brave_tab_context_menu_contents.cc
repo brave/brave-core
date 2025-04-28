@@ -23,6 +23,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -38,6 +39,10 @@
 #include "components/sessions/core/tab_restore_service.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/controls/menu/menu_runner.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/utils.h"
+#endif
 
 BraveTabContextMenuContents::BraveTabContextMenuContents(
     Tab* tab,
@@ -159,23 +164,41 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTabContextMenuContents::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
-  // Should open selected tabs in the specified container.
-  // TODO(sko) Uncomment this when the containers feature is ready.
-  // auto* tab_strip_model =
-  //     static_cast<BraveTabStripModel*>(controller_->model());
-  // for (auto index : tab_strip_model->GetTabIndicesForCommandAt(tab_index_)) {
-  //   auto* tab = tab_strip_model->GetTabAtIndex(index);
-  //   brave::IsolateTab(browser_, tab->GetHandle(),
-  //                     container->id);
-  // }
-  NOTIMPLEMENTED();
+  auto* tab_strip_model =
+      static_cast<BraveTabStripModel*>(controller_->model());
+  for (auto index : tab_strip_model->GetTabIndicesForCommandAt(tab_index_)) {
+    auto* tab = tab_strip_model->GetTabAtIndex(index);
+    brave::IsolateTab(browser_, tab->GetHandle(), container);
+  }
 }
 
 base::flat_set<std::string>
 BraveTabContextMenuContents::GetCurrentContainerIds() {
-  // TODO(sko) Fill the set with container ids of tabs selected.
-  NOTIMPLEMENTED();
-  return {};
+  base::flat_set<std::string> container_ids;
+  auto* tab_strip_model =
+      static_cast<BraveTabStripModel*>(controller_->model());
+  for (auto index : tab_strip_model->GetTabIndicesForCommandAt(tab_index_)) {
+    auto* tab = tab_strip_model->GetTabAtIndex(index);
+    if (!tab) {
+      continue;
+    }
+
+    auto* contents = tab->GetContents();
+    if (!contents) {
+      continue;
+    }
+
+    auto storage_partition_config =
+        containers::GetContainersStoragePartition(contents);
+    if (!storage_partition_config) {
+      continue;
+    }
+
+    container_ids.insert(containers::GetContainerIdFromStoragePartitionConfig(
+        *storage_partition_config));
+  }
+
+  return container_ids;
 }
 
 Browser* BraveTabContextMenuContents::GetBrowserToOpenSettings() {

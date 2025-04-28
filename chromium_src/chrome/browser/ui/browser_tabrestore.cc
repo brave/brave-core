@@ -3,10 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/browser_tabrestore.h"
+
 #include <optional>
 
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "chrome/browser/ui/browser_tabrestore.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/storage_partition_session_info_handler.h"
+#endif
+
+#include "chrome/browser/tab_contents/tab_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/extensions/brave_component_loader.h"
@@ -17,8 +25,21 @@
 #endif
 
 #define AddRestoredTab AddRestoredTab_ChromiumImpl
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#define GetSiteInstanceForNewTab(...)                  \
+  GetSiteInstanceForNewTab(                            \
+      __VA_ARGS__,                                     \
+      containers::StoragePartitionSessionInfoHandler:: \
+          GetStoragePartitionConfigToRestore(browser->profile(), navigations))
+#endif
+
 #include "src/chrome/browser/ui/browser_tabrestore.cc"
+
 #undef AddRestoredTab
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#undef GetSiteInstanceForNewTab
+#endif
 
 namespace {
 
