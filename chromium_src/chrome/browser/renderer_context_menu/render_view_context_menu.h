@@ -49,7 +49,7 @@ class BraveRenderViewContextMenu
     : public RenderViewContextMenu_Chromium
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-      public containers::ContainersMenuModelDelegate
+      public containers::ContainersMenuModel::Delegate
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
  public:

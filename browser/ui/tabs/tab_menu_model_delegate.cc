@@ -10,8 +10,3 @@
 bool TabMenuModelDelegate::ShouldShowBraveVerticalTab() {
   NOTREACHED();
 }
-
-containers::ContainersMenuModelDelegate*
-TabMenuModelDelegate::GetContainersMenuModelDelegate() {
-  NOTREACHED();
-}

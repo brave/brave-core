@@ -11,7 +11,7 @@ namespace containers::test {
 
 // static
 ContainersMenuModel ContainersMenuModelTestApi::CreateContainersMenuModel(
-    ContainersMenuModelDelegate& delegate,
+    ContainersMenuModel::Delegate& delegate,
     std::vector<ContainerModel> containers) {
   return ContainersMenuModel(delegate, std::move(containers));
 }
