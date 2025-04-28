@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Šis ir</translation>
 <translation id="2055363275850890030">Inkognito logs</translation>
 <translation id="9133213713928851646">Brave nesaglabā informāciju par to, ko jūs darāt inkognito logā. Vietnes, ko apmeklējat, neparādīsies jūsu pārlūkošanas vēsturē, un sīkfaili pazudīs, kad iziesiet no pārlūka. Taču inkognito logi nepadara jūs pilnīgi anonīmu tiešsaistē.</translation>
-<translation id="4085423007106063912">Brave nekad nesaglabā atmiņā jūsu darbības inkognito logā. Jūsu apmeklētās vietnes vēsturē netiks parādītas. Pēc loga aizvēršanas pazūd sīkfaili, veidlapu dati un vietņu dati.</translation>
+<translation id="4491905831789757331">Brave nesaglabā jūsu veiktās darbības Inkognito logos, un jūsu apmeklētās vietnes neparādīsies jūsu pārlūkošanas vēsturē. Pēc inkognito logu aizvēršanas sīkfaili, ievadītie dati veidlapās un vietņu dati tiek dzēsti.</translation>
 <translation id="1700746046668116047">Ņemiet vērā, ka jūsu aktivitāte joprojām var būt redzama jūsu interneta pakalpojumu sniedzējam, pasīvajiem tīkla novērotājiem vai darba devējam (ja izmantojat darba ierīci vai tīklu). Lai uzlabotu privātumu, atveriet inkognito logu, izmantojot Tor.</translation>
 <translation id="8759753423332885148">Uzzināt vairāk.</translation>
 <translation id="8611976753572844841">Privāts logs ar Tor savienojamību</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">Rādīt vēsturi</translation>
 <translation id="5030659775136592441">Rādīt grāmatzīmju pārvaldnieku</translation>
 <translation id="6919203766034706175">Importēt iestatījumus</translation>
+<translation id="290553639533591736">Fokusēties uz tēmu "Gemini Live"</translation>
 <translation id="6159704524780747483">Atvērt tērzēšanu ar MI</translation>
 <translation id="1199430163665775722">Rediģēt meklētājprogrammas</translation>
 <translation id="4276265845501430443">Rādīt palīdzību</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">Apkopot informāciju šajā video</translation>
 <translation id="7921782882718083488">Apkopot informāciju šajā lapā</translation>
 <translation id="7932221068776853847">Atvienoties, lai pārtrauktu sūtīt šīs lapas saturu Leo, un sākt jaunu sarunu</translation>
+<translation id="8743383817154663379">Apstrādājot jūsu pieprasījumu, kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="2712650703044366764">Šī modeļa galapunkts ir nederīgs. Pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
 <translation id="1167803637855350748">Pievienojoties Leo, radās tīkla problēma, pārbaudiet savu savienojumu un mēģiniet vēlreiz.</translation>
 <translation id="1996126325390835277">Esat sasniedzis augstākās likmes ierobežojumu. Lūdzu, mēģiniet vēlreiz pēc dažām stundām.</translation>
@@ -2111,14 +2113,13 @@
 <translation id="7692501701960747469">Šim modelim konfigurētā API atslēga nav derīga. Lūdzu, pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
 <translation id="7905602379229309187">Galapunkts pašlaik ir pārslogots. Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
 <translation id="8151638057146502721">Konfigurēt</translation>
-<translation id="4177458398826096846">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 3.1 8B, kas ir Meta radīts modelis izmantošanai dažādās situācijās. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Qwen 14B – Alibaba Cloud izstrādāts modelis dažādu uzdevumu risināšanai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Sveiki! Es esmu Leo, pilnībā mitināts Brave mākslīgā intelekta asistents. Manas darbības pamatā ir Mixtral 8x7B — MIstral MI izveidots modelis sarežģītu uzdevumu risināšanai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Sveiki! Es esmu Leo. Brave nodrošina manu starpniekserveri, bet manas darbības pamatā ir Claude Instant — Anthropic izveidots modelis sarunu un teksta apstrādes funkciju veikšanai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Sveiki, es esmu Leo. Brave uztur manu starpniekserveri, bet sarunu un teksta apstrādes uzdevumus veic Anthropic izveidotais modelis Claude Haiku. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Sveiki, es esmu Leo. Brave uztur manu starpniekserveri, bet sarunu un teksta apstrādes uzdevumus veic Anthropic izveidotais modelis Claude Sonnet. 
-<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> no <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 3.1 8B – Meta izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Llama modeli savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Qwen 14B – Alibaba Cloud izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Qwen modeli savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Mixtral 8x7B – Mistral AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Mixtral modeli savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Instant" dažādu uzdevumu risināšanai. Brave mitina modeli "Claude Instant" savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Haiku" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Haiku" savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Sveiki! Mani sauc Leo. Brave uztur manu starpniekserveri, bet manu darbību nodrošina Anthropic izstrādātais modelis "Claude Sonnet" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Sonnet" savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Meta izstrādātais modelis "Llama VIsion" dažādu uzdevumu risināšanai. Brave mitina modeli "Llama Vision" savā, drošā infrastruktūrā. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Tērzēt</translation>
 <translation id="4685048769603134644">Atvērt pilnā lapā</translation>
@@ -2181,6 +2182,7 @@
 <translation id="8650874793377330048">Apturēt atbildes ģenerēšanu</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="1093419424466417703">Lapa Leo ir pārāk gara. Sarunā var trūkt nedaudz konteksta. Leo spēja nolasīt <ph name="PERCENTAGE"/> lapas satura.</translation>
+<translation id="4592293425457329338">Iespējams, sarunā trūkst konteksts. Leo izdevās saglabāt <ph name="PERCENTAGE"/> ar sarunu saistītā satura.</translation>
 <translation id="2186990448773134544">Lapas saturs ir saīsināts, izvelkot svarīgāko lapas informāciju, jo teksts Leo bija par garu.</translation>
 <translation id="5140068729857132378">Meklē tīmekļa lapas atbilstošās daļas...</translation>
 <translation id="4370698775470316661">Šī saruna ir pārāk gara, un tā nevar turpināties. Iespējams, ir citi modeļi, kuros Leo spēj nodrošināt precizitāti garākās sarunās.</translation>
@@ -2202,6 +2204,7 @@
 <translation id="7979673624064378842">Īpaši ātrā tērzēšana</translation>
 <translation id="2836330653441111204">Līdzsvarots ātrums un inteliģence</translation>
 <translation id="6695329447007213917">Vispārīga tērzēšana, palīdzība kodēšanā un citas funkcijas</translation>
+<translation id="5051668914970329839">Vispārīgs vizuālās apstrādes atbalsts</translation>
 <translation id="3965507912994218570">Leo iestatījumi</translation>
 <translation id="1037324977127422019">Sveiki! Mani sauc Leo!</translation>
 <translation id="8930348081963284873">Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents.</translation>
@@ -2237,11 +2240,28 @@
 <translation id="6320643499534852464">Sociālie tīkli</translation>
 <translation id="2370739752330685659">Varbūt vēlāk</translation>
 <translation id="983013125018250242">Leo rīki</translation>
+<translation id="7623223587478473368">Pielikums</translation>
+<translation id="3777121685517940177">Augšupielādēt failu...</translation>
+<translation id="9088751620363630236">Uzņemt fotoattēlu...</translation>
+<translation id="4250229828105606438">Ekrānuzņēmums</translation>
+<translation id="6332876390231524389">Pašreizējās cilnes saturs</translation>
 <translation id="49269513399674318">Izmantot mikrofonu</translation>
 <translation id="3895031624234442305">Pielāgoti modeļi</translation>
 <translation id="4572010449071015143">Sākt jaunu sarunu</translation>
 <translation id="345901077335355561">Atgriezties pie esošās sarunas</translation>
 <translation id="6287023598025162715">Jauna saruna</translation>
+<translation id="8370801182970639038">Automātiski (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Iespējotās meklētājprogrammas</translation>
+<translation id="5355776323718420036">Paslēpt populārākās vietnes</translation>
+<translation id="6543799171249004861">Fotografēja <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Jautāt ar funkciju Brave meklēšana</translation>
+<translation id="6851426306697017546">Rādīt pulksteni</translation>
+<translation id="4844370919312937270">Rādīt meklēšanas logrīku jaunās cilnēs</translation>
+<translation id="5009354496127441090">Rādīt populārākās vietnes</translation>
+<translation id="4784802981241664605">STATISTIKA</translation>
+<translation id="4290791698375397492">Augšējā vietne ir noņemta</translation>
+<translation id="1436784010935106834">Noņemts</translation>
+<translation id="9030215177866748410">Populārākās vietnes tiek ieteiktas, pamatojoties uz jūsu bieži apmeklētām tīmekļa vietnēm.</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
 <translation id="8458987127502506209">Iespējot Brave aizsargus</translation>
 <translation id="7509914170164691086">Šo funkciju aizsargi ir <ph name="LINK_BEFORE"/>AKTIVIZĒTI<ph name="LINK_AFTER"/></translation>
@@ -2254,6 +2274,7 @@
 <translation id="5799940914270080805">Šo iestatījumu maiņa var radīt vietņu darbības traucējumus.</translation>
 <translation id="9204041448536398473">Globālie aizsarga iestatījumi</translation>
 <translation id="2108334320919763866">Globālie noklusējuma iestatījumi</translation>
+<translation id="7205939464631857223">Notīrīt visus bloķētos elementus</translation>
 <translation id="3440043456924990296">Organizācijas pārvaldītie iestatījumi</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="5716230673298034837">Atļaut visus</translation>

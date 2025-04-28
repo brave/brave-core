@@ -316,6 +316,18 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Strona osadzona pod adresem <ph name="SITE"/> chce się zapisać</translation>
 <translation id="7700010743463174379">Ta strona chce się zapisać</translation>
 <translation id="6774238875569752630">Strona osadzona na tej stronie chce się zapisać</translation>
+<translation id="1233913566967531780">Tryb skupienia</translation>
+<translation id="4034992002364254340">Zbierz wszystkie powiązane karty w nowym oknie</translation>
+<translation id="8012125596344613514">Sugerowane tematy</translation>
+<translation id="7529120186020617755">Podaj temat, na jakim chcesz się skupić…</translation>
+<translation id="6847541693235449912">Otwórz</translation>
+<translation id="2079545284768500474">Cofnij</translation>
+<translation id="1533980864758658574">Nowe okno stworzone dla tematu <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Ta funkcja wysyła dane o otwartych zakładkach do Leo, asystenta opartego na SI.</translation>
+<translation id="6165508094623778733">Więcej informacji</translation>
+<translation id="7557539689487606886">Przejdź do Premium</translation>
+<translation id="1035309871698658326">Po otwarciu automatycznie wyśle tytuły i pochodzenie wszystkich nieprywatnych kart do Leo, aby je sklasyfikować.</translation>
+<translation id="3435896845095436175">Włącz</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
 <translation id="7179921470347911571">Uruchom ponownie teraz</translation>
 <translation id="1426410128494586442">Tak</translation>
@@ -352,7 +364,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2396127686705429331">Pokaż przycisk zakładek</translation>
 <translation id="2814998458708016836">Korzystaj z szerokiego paska adresu</translation>
 <translation id="4109670531935487117">Pokaż sugestie automatycznego uzupełniana na pasku adresu</translation>
-<translation id="2858138569776157458">Popularne</translation>
+<translation id="3405901785709583668">Najlepsze podpowiedzi</translation>
 <translation id="7859704718976024901">Historia przeglądania</translation>
 <translation id="8820817407110198400">Zakładki</translation>
 <translation id="4144468798716165316">Skróty klawiszowe</translation>
@@ -461,7 +473,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7791141927430186653">Zezwalaj serwisowi X (wcześniej Twitter) na osadzone tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="8792121506918889955">Zasady obsługi IP WebRTC IP</translation>
-<translation id="6165508094623778733">Więcej informacji</translation>
 <translation id="8798099450830957504">Domyślny</translation>
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
 <translation id="5825943197137337319">Tylko domyślny interfejs publiczny</translation>
@@ -712,6 +723,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2751872555001636931">Pokaż ikonę Leo w pasku bocznym</translation>
 <translation id="8055509865174199683">Pokaż ikonę Leo w menu kontekstowym w odwiedzanych witrynach</translation>
 <translation id="1529674267267221673">Ikona Leo będzie widoczna w menu kontekstowym po kliknięciu prawym przyciskiem myszy w witrynie. To działanie umożliwi przesłanie kontekstu treści odwiedzanej witryny do Leo.</translation>
+<translation id="5226020406479918122">Tryb skupienia kart</translation>
+<translation id="3705539672403311123">Włącz organizację kart na stronie wyszukiwania kart. Po otwarciu automatycznie wyśle tytuły i pochodzenie wszystkich nieprywatnych kart do Leo, aby je sklasyfikować. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Pokaż sugerowane podpowiedzi w rozmowie</translation>
 <translation id="5781842473834867765">Zapisuj historię rozmów</translation>
 <translation id="1082960401708055995">Wyłączenie zapisywania rozmów spowoduje trwałe usunięcie wszystkich wcześniej przechowywanych rozmów. Tego działania nie można cofnąć.</translation>
@@ -721,6 +734,9 @@ historii czatu. Wyczyszczenie historii czatu oznacza usunięcie wszystkich
 poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</translation>
 <translation id="5574059574002819179">Dostosuj sugestie autouzupełniania</translation>
 <translation id="7942415993090181327">Historia czatu</translation>
+<translation id="5385064007245738696">O sztucznej inteligencji Leo</translation>
+<translation id="5084498230659987096">Brave Leo to zorientowany na prywatności czat SI i inne zasilane sztuczną inteligencją interfejsy w przeglądarce. Leo nigdy nie uczy się na Twoich danych ani nie wykorzystuje ich do szkolenia modeli. Wszystkie żądania są przesyłane przez anonimowy serwer.</translation>
+<translation id="6458721693611638005">Przeczytaj o tym, jak Brave chroni Cię podczas korzystania ze sztucznej inteligencji w polityce prywatności Leo. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Domyślny model dla nowych rozmów</translation>
 <translation id="8826914609353373601">Zarządzaj subskrypcją w wersji premium</translation>
 <translation id="235457946228076038">Użyj własnego modelu</translation>
@@ -731,6 +747,8 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="3553035516792776805">Nazwa prośby modelu</translation>
 <translation id="7634775528597575156">Punkt końcowy serwera</translation>
 <translation id="6374563306438145841">Klucz interfejsu API</translation>
+<translation id="3295756655687327124">Wspracie dla Vision</translation>
+<translation id="1415432774589088566">Jeśli ten model przyjmuje obraz jako dane wejściowe, np. llama 3.2b vision</translation>
 <translation id="8008271349880309090">Taka nazwa modelu, jaką pokazano w menu wyboru modelu</translation>
 <translation id="1355326130503900056">Taka nazwa modelu, jaka powinna być użyta w prośbie obsługującej struktury, np. phi-3 (należy pamiętać, że jeśli ta nazwa nie pasuje dokładnie do wymogu obsługującej struktury, integracja nie zadziała)</translation>
 <translation id="3213787232304349732">Adres URL, pod którym platforma obsługujące odbiera przesyłane prośby. Jeśli nie masz pewności, sprawdź dokumentację obsługującej struktury. Przykładowo w przypadku Ollama jest to zawsze http://localhost:11434/v1/chat/completions</translation>

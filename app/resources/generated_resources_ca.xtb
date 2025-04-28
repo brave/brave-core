@@ -8,6 +8,7 @@
 <translation id="100323615638474026">Dispositiu USB (<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>)</translation>
 <translation id="1003917207516838287">Historial de baixades recents</translation>
 <translation id="1004218526896219317">Accés al lloc web</translation>
+<translation id="1005230401424685968">AAAA</translation>
 <translation id="1005274289863221750">Utilitzar el micròfon i la càmera</translation>
 <translation id="1005333234656240382">Vols activar la depuració d'ADB?</translation>
 <translation id="1005671386794704751">Rosa</translation>
@@ -70,7 +71,6 @@
 <translation id="1042248468362992359">Connecta't a les dades mòbils per utilitzar el punt d'accés Wi‐Fi. <ph name="BEGIN_LINK_LEARN_MORE"/>Més informació<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1043505821207197890">S'ha produït un error. És possible que Linux només s'hagi actualitzat parcialment. Consulta els registres per obtenir més informació. S'han desat a Fitxers &gt; Els meus fitxers &gt; <ph name="LOG_FILE"/>.</translation>
 <translation id="104385770822424034">Afegeix una acció</translation>
-<translation id="104419033123549300">Estil del mapa de teclat</translation>
 <translation id="4141377378685217435">No cal que recordis la contrasenya, ja que se't desa al gestor de contrasenyes de Brave</translation>
 <translation id="1046521327593783388">{NUM_PASSWORDS,plural, =1{S'ha importat 1 contrasenya a <ph name="BRAND"/> en aquest dispositiu}other{S'han importat {NUM_PASSWORDS} contrasenyes a <ph name="BRAND"/> en aquest dispositiu}}</translation>
 <translation id="1046572983040892965">La finestra s'ha mogut cap amunt i cap a l'esquerra</translation>
@@ -167,6 +167,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1110155001042129815">Espera</translation>
 <translation id="1110965959145884739">Tria quins idiomes vols instal·lar en aquest dispositiu. Els fitxers d'idioma es comparteixen entre els usuaris per estalviar espai de disc. <ph name="BEGIN_LINK_LEARN_MORE"/>Més informació<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1111932478203988717">El teu fill o filla pot utilitzar aquest PIN per iniciar la sessió al seu dispositiu</translation>
+<translation id="1112227834592480032">Selecciona el botó de Google Lens i, a continuació, fes clic i arrossega sobre un problema</translation>
 <translation id="1112420131909513020">Una pestanya de fons utilitza el Bluetooth</translation>
 <translation id="1112998165730922436">L'emissió s'ha posat en pausa</translation>
 <translation id="1114102982691049955"><ph name="PRINTER_MANUFACTURER"/> <ph name="PRINTER_MODEL"/> (USB)</translation>
@@ -265,6 +266,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1175572348579024023">Desplaça</translation>
 <translation id="1175914831232945926">Dígits</translation>
 <translation id="1176471985365269981">Sense permís per editar els fitxers o les carpetes del dispositiu</translation>
+<translation id="1176864681932214421">Crea imatges amb IA</translation>
 <translation id="1177073277575830464">La configuració ràpida d'Android ha finalitzat. Continua amb la configuració al teu dispositiu (<ph name="DEVICE_TYPE"/>).</translation>
 <translation id="1177440945615690056">Pots connectar-te a qualsevol xarxa mòbil apta a Configuració</translation>
 <translation id="1177548198167638471">No m'ho tornis a preguntar</translation>
@@ -280,6 +282,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1183237619868651138">No es pot instal·lar <ph name="EXTERNAL_CRX_FILE"/> a la memòria cau local.</translation>
 <translation id="1184037892196730210">No es pot emetre la pantalla</translation>
 <translation id="1185924365081634987">També podeu provar de <ph name="GUEST_SIGNIN_LINK_START"/>navegar com a convidat<ph name="GUEST_SIGNIN_LINK_END"/> per corregir aquest error de la xarxa.</translation>
+<translation id="1187214683155615962">Alerta de problema de rendiment</translation>
 <translation id="1187722533808055681">Activacions en estat de repòs</translation>
 <translation id="1188807932851744811">El registre no s'ha penjat.</translation>
 <translation id="1190086046506744802">Molt separat</translation>
@@ -299,7 +302,6 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1197088940767939838">Taronja</translation>
 <translation id="11978075283960463">Dades emmagatzemades a l'aplicació: <ph name="APP_SIZE"/></translation>
 <translation id="1198066799963193307">Eines de text a parla per a persones amb poca visió</translation>
-<translation id="1198412233443148072"><ph name="MEMBER_FIRST_NAME"/> ha suprimit la pestanya "<ph name="WEBSITE_TITLE"/>"</translation>
 <translation id="119944043368869598">Esborra-ho tot</translation>
 <translation id="1199814941632954229">S'estan proporcionant certificats per a aquests perfils de certificat</translation>
 <translation id="120069043972472860">No es pot mirar</translation>
@@ -373,7 +375,6 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1244265436519979884">Hi ha una restauració de Linux en curs</translation>
 <translation id="1244303850296295656">Error d'extensió</translation>
 <translation id="1244917379075403655">Fes clic a Configuració</translation>
-<translation id="1245041875932187638">Suprimeix totes les dades que utilitza Emplenament automàtic amb IA</translation>
 <translation id="1245331638296910488">Els fitxers es mouran a OneDrive en obrir-los a Microsoft 365</translation>
 <translation id="1245628370644070008">Recuperació de dades locals</translation>
 <translation id="1246863218384630739">No s'ha pogut instal·lar <ph name="VM_NAME"/>: l'URL de la imatge ha tornat el codi d'error <ph name="HTTP_ERROR"/>. Contacta amb l'administrador.</translation>
@@ -403,6 +404,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1264956950255940376">Entretanca l'ull esquerre</translation>
 <translation id="1265094893042958831">S'estan generant suggeriments per a aquesta pàgina…</translation>
 <translation id="1220306721041152328">Les teves aplicacions i opcions de configuració se sincronitzaran en tots els dispositius amb Chrome OS Flex en què tinguis la sessió iniciada amb el teu Compte de Brave. Per accedir a les opcions de sincronització del navegador, ves a la <ph name="LINK_BEGIN"/>configuració de Brave<ph name="LINK_END"/>.</translation>
+<translation id="1267081565119405990">Després de fer una captura de pantalla o una cerca a la pantalla, mostra més accions, com ara afegir-la a Calendar, crear documents de Brave i més.</translation>
 <translation id="126710816202626562">Idioma de traducció:</translation>
 <translation id="1267649802567297774">Imatge generada <ph name="INDEX"/> de <ph name="SUBJECT"/>, d'estil <ph name="STYLE"/>, amb un estat d'ànim <ph name="MOOD"/>.</translation>
 <translation id="126768002343224824">16x</translation>
@@ -467,6 +469,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="131112695174432497">Se suprimiran les dades que afecten la personalització d'anuncis</translation>
 <translation id="1311294419381837540">Estàs emetent una pestanya. Pots posar en pausa l'emissió o aturar-la en qualsevol moment.</translation>
 <translation id="1092870157695460112">Descobreix la protecció millorada per obtenir el màxim nivell de seguretat de Brave per a les baixades</translation>
+<translation id="1312298796781107732">{NUM_TABS,plural, =1{Corregeix la pestanya que està alentint el navegador}other{Corregeix les pestanyes que estan alentint el navegador}}</translation>
 <translation id="1312721752506309252">La protecció millorada està activada</translation>
 <translation id="1312811472299082263">Crea a partir d'un manual d'Ansible o d'un fitxer de còpia de seguretat de Crostini</translation>
 <translation id="13130607084115184">Les contrasenyes desades es mostraran aquí. Per importar contrasenyes a <ph name="BRAND"/> en aquest dispositiu, <ph name="BEGIN_LINK"/>selecciona un fitxer CSV<ph name="END_LINK"/>.</translation>
@@ -615,7 +618,6 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="142655739075382478">L'aplicació <ph name="APP_NAME"/> està bloquejada</translation>
 <translation id="1427179946227469514">To de text a parla</translation>
 <translation id="1427269577154060167">País</translation>
-<translation id="1427506552622340174">Fes clic amb el botó dret per escriure amb més confiança, resumir contingut, obtenir definicions i més. En aquests moments té una disponibilitat limitada.</translation>
 <translation id="142765311413773645">La llicència de l'aplicació <ph name="APP_NAME"/> ha caducat</translation>
 <translation id="1428373049397869723">Amb aquesta aplicació pots obrir i editar fitxers admesos des del Finder o des d'altres aplicacions. Si vols controlar quins fitxers s'obren amb aquesta aplicació de manera predeterminada, <ph name="BEGIN_LINK"/>obtén més informació sobre com pots establir aplicacions predeterminades al dispositiu<ph name="END_LINK"/>.</translation>
 <translation id="1428657116642077141">Has desat una nota sobre una contrasenya d'aquest lloc web. Per veure-la, selecciona Gestiona les teves contrasenyes a la barra de cerca i d'adreces.</translation>
@@ -623,6 +625,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1430915738399379752">Imprimeix</translation>
 <translation id="1431188203598586230">Darrera actualització de programari</translation>
 <translation id="1432581352905426595">Gestiona els motors de cerca</translation>
+<translation id="1432650420699700107">Els llocs web poden demanar permís per connectar-se a qualsevol dispositiu de la teva xarxa local</translation>
 <translation id="1433478348197382180">Mode de lectura</translation>
 <translation id="1433980411933182122">Arrencada</translation>
 <translation id="1434696352799406980">Aquesta funció restablirà la pàgina d'arrencada, la pàgina Pestanya nova, el motor de cerca i les pestanyes fixades que tingueu configurades. També desactivarà totes les extensions i esborrarà les dades temporals, com ara les galetes. Les adreces d'interès, l'historial i les contrasenyes desades no s'esborraran.</translation>
@@ -706,7 +709,6 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1484176899013802755">Pintura a l'oli brillant que representa un prat banyat pel sol.</translation>
 <translation id="1484979925941077974">El lloc web està utilitzant el Bluetooth</translation>
 <translation id="1485015260175968628">Ara pot:</translation>
-<translation id="1485141095922496924">Versió <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="1485197926103629489">Microsoft 365 requereix que els fitxers s'emmagatzemin a OneDrive. Els fitxers locals es mouran i els que siguin d'altres ubicacions es copiaran. Trobaràs els fitxers a la carpeta Microsoft OneDrive de l'aplicació Fitxers.</translation>
 <translation id="4562406559168301360">Quan fas preguntes, l'Assistent de Brave ofereix respostes personalitzades en funció de la pantalla</translation>
 <translation id="1486096554574027028">Cerca contrasenyes</translation>
@@ -980,6 +982,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1657937299377480641">Per tornar a iniciar la sessió per accedir als recursos educatius, has de demanar permís als teus pares</translation>
 <translation id="1658424621194652532">Aquesta pàgina té accés al micròfon.</translation>
 <translation id="1660763353352708040">Problema amb l'adaptador de corrent</translation>
+<translation id="1661996889489595105">{NUM_TABS,plural, =1{Corregeix la pestanya que està alentint el navegador}other{Corregeix les pestanyes que estan alentint el navegador}}</translation>
 <translation id="16620462294541761">No s'ha pogut verificar la teva contrasenya. Torna-ho a provar.</translation>
 <translation id="166278006618318542">Algoritme de clau pública del subjecte</translation>
 <translation id="1662801900924515589">S'ha instal·lat <ph name="APP"/></translation>
@@ -1315,6 +1318,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1910736334623230603">No es poden cercar diverses imatges. Afegeix una imatge cada cop.</translation>
 <translation id="2675239977494524649">La versió <ph name="BROWSER_VERSION"/> de Brave for Testing només serveix per fer proves automatitzades. Per navegar de la manera habitual, utilitza una versió estàndard de Brave que s'actualitzi automàticament.</translation>
 <translation id="1912867150686509584">Fes que es mostrin més reunions al teu Calendar</translation>
+<translation id="1913734973620799732">{NUM_TABS,plural, =1{Posa en pausa la pestanya que està alentint el navegador}other{Posa en pausa les pestanyes que estan alentint el navegador}}</translation>
 <translation id="1913749768968678106">Emet, desa i comparteix</translation>
 <translation id="1915073950770830761">canary</translation>
 <translation id="1915307458270490472">Penja</translation>
@@ -1325,6 +1329,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1918127774159128277">Actualitza les capacitats de Wi-Fi Direct</translation>
 <translation id="1918141783557917887">&amp;Més petit</translation>
 <translation id="1918281588461452432">A mesura que navegues pels llocs web, el contingut de les pàgines s'encripta i es desa al dispositiu</translation>
+<translation id="1919096511823372013">Insereix enllaços, emojis i més. També pots obtenir ajuda per crear imatges i escriure amb la IA de Brave.</translation>
 <translation id="1919872106782726755">Per configurar una impremta digital, fes que el teu fill toqui el sensor d'empremtes digitals que hi ha a l'extrem superior dret del teclat, al costat del botó d'engegada. Les dades de l'empremta digital del teu fill s'emmagatzemen de manera segura i no surten mai del <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="192015196730532810">Pots crear el teu propi grup de pestanyes.</translation>
 <translation id="1920314570001095522">No hi ha cap pestanya similar per organitzar, però pot ser que t'agradin aquests grups</translation>
@@ -1357,6 +1362,7 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="193565226207940518">Eina d'assistència</translation>
 <translation id="1935995810530254458">Copia igualment</translation>
 <translation id="1936157145127842922">Mostra a la carpeta</translation>
+<translation id="1936344977780165685">{PAGES,plural, =1{La pàgina s'ha afegit a la llista de lectura}other{Les pàgines s'han afegit a la llista de lectura}}</translation>
 <translation id="1936931585862840749">Utilitza un número per indicar quantes còpies vols imprimir (entre 1 i <ph name="MAX_COPIES"/>).</translation>
 <translation id="1937774647013465102">No es pot importar el tipus d'arquitectura de contenidors<ph name="ARCHITECTURE_CONTAINER"/> amb aquest dispositiu, que és <ph name="ARCHITECTURE_DEVICE"/>. Pots provar de restaurar el contenidor en un altre dispositiu o accedir als fitxers que inclou la imatge del contenidor obrint l'aplicació Fitxers.</translation>
 <translation id="1938351510777341717">Ordre externa</translation>
@@ -1396,7 +1402,6 @@ Comprova les contrasenyes sempre que vulguis al <ph name="GOOGLE_PASSWORD_MANAGE
 <translation id="1969011864782743497"><ph name="DEVICE_NAME"/> (USB)</translation>
 <translation id="1969550816138571473">S'està preparant</translation>
 <translation id="1969654639948595766">Registres de text de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
-<translation id="1971694696800660479">Se'n suprimiran totes les dades. Aquesta acció no es pot desfer.</translation>
 <translation id="1972313920920745320">Els llocs web que afegeixis estaran sempre actius i no se n'alliberarà memòria. <ph name="BEGIN_LINK"/>Més informació sobre com pots mantenir actius llocs web específics<ph name="END_LINK"/></translation>
 <translation id="1972325230031091483">Navegaràs més de pressa perquè el contingut es carrega de forma proactiva en funció de la pàgina web que estiguis visitant</translation>
 <translation id="197288927597451399">Conserva</translation>
@@ -1515,6 +1520,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="204622017488417136">Es restablirà la versió de Brave que hi havia instal·lada anteriorment al dispositiu. S'eliminaran tots els comptes d'usuari i les dades desades al dispositiu. Aquesta acció no es pot desfer.</translation>
 <translation id="2046702855113914483">Ramen</translation>
 <translation id="204706822916043810">S'està consultant la màquina virtual</translation>
+<translation id="2047279909708154872">{NUM_TABS,plural, =1{Posa en pausa la pestanya que està alentint el navegador}other{Posa en pausa les pestanyes que estan alentint el navegador}}</translation>
 <translation id="2048182445208425546">Accedir al trànsit de xarxa</translation>
 <translation id="2048254245884707305">S'està cercant programari maliciós...</translation>
 <translation id="2048554637254265991">Hi ha hagut un error en iniciar el gestor de contenidors. Torna-ho a provar.</translation>
@@ -1555,9 +1561,9 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2081816110395725788">Inactiu mentre utilitza la bateria</translation>
 <translation id="2082187087049518845">Agrupa la pestanya</translation>
 <translation id="2082510809738716738">Tria un color de tema</translation>
-<translation id="208547068587548667">Inicia la sessió a <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="208586643495776849">Torna-ho a provar</translation>
 <translation id="208634871997892083">VPN sempre activada</translation>
+<translation id="208654914566977272">Accions suggerides en fer una cerca a la pantalla</translation>
 <translation id="2087822576218954668">Impressió: <ph name="PRINT_NAME"/></translation>
 <translation id="2088092308059522196">La inscripció només s'admet després que instal·lis <ph name="DEVICE_OS"/>.</translation>
 <translation id="2088564884469682888">TrackPoint integrat</translation>
@@ -1587,6 +1593,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
       <ph name="BR"/>
       <ph name="BR"/>
       <ph name="BEGIN_BOLD"/>Nota<ph name="END_BOLD"/>: el sistema es reiniciarà durant el procés.</translation>
+<translation id="209423774103268003">S'està accedint als teus lectors de targetes intel·ligents</translation>
 <translation id="2095774564753225041">Tipus de fitxer compatibles</translation>
 <translation id="2096716221239095980">Suprimeix totes les dades</translation>
 <translation id="2097950021134740304">Cancel·la per oblidar la subscripció</translation>
@@ -1865,6 +1872,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2300214399009193026">PCIe</translation>
 <translation id="2300332192655962933">El fitxer no estava disponible al lloc web</translation>
 <translation id="2300383962156589922">Personalitza i controla <ph name="APP_NAME"/></translation>
+<translation id="2301064673700597535">Declaracions de certificats qualificats</translation>
 <translation id="2301382460326681002">El directori arrel de l'extensió no és vàlid.</translation>
 <translation id="2301402091755573488">Pestanya compartida</translation>
 <translation id="2302342861452486996"><ph name="BEGIN_H3"/>Funcions de depuració<ph name="END_H3"/>
@@ -1990,6 +1998,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2373666622366160481">Ajusta al paper</translation>
 <translation id="2375406435414127095">Connecta't al telèfon</translation>
 <translation id="2376056713414548745">Llegeix en veu alta</translation>
+<translation id="2376122016044804363">Confirmacions de Copia al porta-retalls</translation>
 <translation id="2377667304966270281">Errors greus</translation>
 <translation id="237828693408258535">Vols traduir aquesta pàgina?</translation>
 <translation id="2378602615417849384">{NUM_EXTENSIONS,plural, =1{És possible que aquesta extensió es deixi d'admetre aviat}other{És possible que aquestes extensions es deixin d'admetre aviat}}</translation>
@@ -2204,6 +2213,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
         Pots gestionar la configuració des del menú de la targeta o veure més opcions a Personalitza Brave.</translation>
 <translation id="2514326558286966059">Desbloqueja el dispositiu més ràpidament amb l'empremta digital</translation>
 <translation id="2514465118223423406">Quan es connecti un ratolí</translation>
+<translation id="2514938842036917377">Amb aquesta acció se suprimiran <ph name="TOTAL_USAGE"/> de dades emmagatzemades per <ph name="SITE_NAME"/>, pels llocs web relacionats i per les aplicacions instal·lades</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="251722524540674480">Confirma el teu nom d'usuari</translation>
 <translation id="2517472476991765520">Escaneja</translation>
@@ -2226,7 +2236,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2530166226437958497">Resolució de problemes</translation>
 <translation id="2531530485656743109"><ph name="BEGIN_PARAGRAPH1"/>S'ha produït un error i no s'ha pogut instal·lar <ph name="DEVICE_OS"/>.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Per obtenir més ajuda, ves a g.co/flex/InstallErrors.<ph name="END_PARAGRAPH2"/></translation>
-<translation id="2532117279786409580">Obtén més informació</translation>
 <translation id="2532144599248877204">Mantén la bateria al voltant del 80% per augmentar-ne la durada. La bateria es carregarà completament abans del moment en què l'acostumes a desconnectar de l'alimentació.</translation>
 <translation id="2532146950330687938">S'està preparant el dispositiu...</translation>
 <translation id="2532198298278778531">Gestiona el DNS segur a la configuració de ChromeOS Flex</translation>
@@ -2264,6 +2273,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2553440850688409052">Amaga aquest connector</translation>
 <translation id="2554553592469060349">El fitxer seleccionat és massa gran (mida màxima: 3 MB).</translation>
 <translation id="2555802059188792472"><ph name="NUM_ALLOWED_APPS"/> de <ph name="TOTAL_NUM_APPS"/> aplicacions poden enviar notificacions</translation>
+<translation id="2555855727505718984">Emplenament automàtic no disposarà d'aquesta informació en aquest dispositiu per ajudar-te a emplenar formularis</translation>
 <translation id="25568951186001797">Marc delimitat: <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="2559889124253841528">Desa al dispositiu</translation>
 <translation id="2561211427862644160">Consulta totes les teves adreces d'interès aquí</translation>
@@ -2273,6 +2283,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="256517381556987641">La sincronització de fitxers ha trobat <ph name="ITEMS_FOUND"/> fitxers fins ara i encara està comprovant l'espai d'emmagatzematge. Prova de tornar a activar la sincronització de fitxers d'aquí a uns quants minuts.</translation>
 <translation id="2565214867520763227">Activa el lector de pantalla</translation>
 <translation id="2566146433999774844">Uneix-te al grup de pestanyes amb <ph name="OWNER_FIRST_NAME"/> i <ph name="NUM_OTHER_MEMBERS"/> persones més</translation>
+<translation id="256726287944589768">Mostra el peu de pàgina a la pàgina Pestanya nova</translation>
 <translation id="2568774940984945469">Contenidor de la barra d'informació</translation>
 <translation id="2569972178052279830">Nom del comerç al detall</translation>
 <translation id="257088987046510401">Temes</translation>
@@ -2321,7 +2332,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2606568927909309675">Crea subtítols automàticament per a àudios i vídeos en anglès. L'àudio i els subtítols no surten mai del dispositiu.</translation>
 <translation id="2606890864830643943">S'estan exportant les dades de diagnòstic</translation>
 <translation id="2607101320794533334">Informació de clau pública del subjecte</translation>
-<translation id="2608837922830967145">No tornis a mostrar aquest missatge</translation>
 <translation id="2609896558069604090">Crea dreceres...</translation>
 <translation id="2609980095400624569">No s'ha pogut establir la connexió</translation>
 <translation id="2610157865375787051">Repòs</translation>
@@ -2540,6 +2550,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2751454300227269244">Mou la boca cap a la dreta</translation>
 <translation id="2751883373055093745"><ph name="WEBSITE"/> vol saber el número d'identificador de la teva clau de seguretat. El lloc web sabrà quina clau de seguretat estàs fent servir exactament.</translation>
 <translation id="275213133112113418">La targeta s'ha desat</translation>
+<translation id="2752805177271551234">Utilitza l'historial d'entrada</translation>
 <translation id="2754226775788136540">S'estan cercant els dispositius amb Vinculació ràpida desats a <ph name="PRIMARY_EMAIL"/></translation>
 <translation id="2754825024506485820">Troba a Google Play Store les aplicacions que necessites, des de solucions de productivitat fins a aplicacions d'entreteniment. Pots instal·lar-les en qualsevol moment.</translation>
 <translation id="2755349111255270002">Restableix aquest dispositiu <ph name="DEVICE_TYPE"/></translation>
@@ -2571,7 +2582,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2771816809568414714">Formatge</translation>
 <translation id="2772936498786524345">Ninja</translation>
 <translation id="2773288106548584039">Compatibilitat amb el navegador heretat</translation>
-<translation id="2773621783913034737">Desactiva les pestanyes</translation>
 <translation id="2774876860084746535">Intel·lectual</translation>
 <translation id="2775047284666165174">La carpeta <ph name="LOCAL_FOLDER"/> només es desa en aquest dispositiu. Si mous aquesta carpeta a <ph name="LOCAL_FOLDER"/>, ja no hi podràs accedir des dels teus altres dispositius.</translation>
 <translation id="2775104091073479743">Edita les empremtes digitals</translation>
@@ -2597,6 +2607,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2790112944253231361">Ha canviat aquesta pestanya</translation>
 <translation id="2790750268015892264">Les aplicacions web aïllades no poden controlar els lectors de targetes intel·ligents. Aquestes aplicacions no tindran accés a cap targeta intel·ligent.</translation>
 <translation id="2791529110887957050">Suprimeix Linux</translation>
+<translation id="279182647442890396">Vols suprimir la informació?</translation>
 <translation id="2791952154587244007">S'ha produït un error. L'aplicació de quiosc no es podrà iniciar automàticament en aquest dispositiu.</translation>
 <translation id="8362529892310367860">Activa l'opció Sincronització de Brave per consultar les pestanyes de Brave més recents des del teu telèfon</translation>
 <translation id="2792697226874849938">Imatge de restricció</translation>
@@ -2680,7 +2691,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2849936225196189499">Crítica</translation>
 <translation id="285033512555869047">tancat</translation>
 <translation id="2850541429955027218">Afegeix el tema</translation>
-<translation id="2850672011315104382">Estil de puntuació</translation>
 <translation id="285237063405807022">(s'està carregant)</translation>
 <translation id="2853121255651601031">S'ha desat la contrasenya</translation>
 <translation id="2855243985454069333">Suprimeix l'historial de tots els dispositius sincronitzats</translation>
@@ -2953,6 +2963,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3045447014237878114">Aquest lloc web ha baixat diversos fitxers automàticament</translation>
 <translation id="3046178388369461825">Queda molt poc espai de disc de Linux</translation>
 <translation id="304644035656848980">Previsualització del micròfon</translation>
+<translation id="3046892784550338476">Versió <ph name="PRODUCT_VERSION"/><ph name="PRODUCT_VERSION_SUFFIX"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3046910703532196514">Pàgina web completa</translation>
 <translation id="304747341537320566">Motors de parla</translation>
 <translation id="3047678109605649715">No hi ha cap veu en <ph name="LANGUAGE"/> al teu dispositiu. Allibera espai al dispositiu i torna-ho a provar.</translation>
@@ -3027,7 +3038,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3108957152224931571">Color de marcatge</translation>
 <translation id="3109206895301430738">Grups de pestanyes desats</translation>
 <translation id="3109724472072898302">Reduït</translation>
-<translation id="310979712355504754">Suprimeix-ho tot</translation>
 <translation id="3112292765614504292">Mida de l'aplicació: <ph name="APP_SIZE"/></translation>
 <translation id="311347022006935575">Ha afegit aquesta pestanya</translation>
 <translation id="311394601889664316">No permetis que els llocs web editin fitxers o carpetes al dispositiu</translation>
@@ -3046,6 +3056,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3122883569442693641">Més detalls</translation>
 <translation id="3124111068741548686">Controls d'USUARI</translation>
 <translation id="10925962326134232">Personalitza Brave per renovar l'aspecte del navegador</translation>
+<translation id="3125816458150005808">Pots deixar de fixar-la i obrir-la des del menú</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="3127860049873093642">Per evitar problemes de càrrega i de rendiment, fes servir un adaptador de corrent de DELL o USB tipus C compatible.</translation>
 <translation id="3127862849166875294">Canvi de mida del disc de Linux</translation>
@@ -3131,6 +3142,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="1289921851739337479">Descriu el problema detalladament. Els comentaris s'envien a Brave per sotmetre's a una revisió humana i es poden utilitzar per millorar o desenvolupar els productes i serveis de Brave.</translation>
 <translation id="3192947282887913208">Fitxers d'àudio</translation>
 <translation id="3193695589337931419">Utilitats per a senyals del sistema</translation>
+<translation id="3194095220941877499">Mostra una confirmació quan copies enllaços, imatges o vídeos</translation>
 <translation id="3196912927885212665">Per fer la configuració amb el telèfon Android, el Bluetooth del Chromebook ha d'estar activat</translation>
 <translation id="3197453258332670132">Si mantens el text premut o hi fas clic amb el botó dret, es mostrarà informació relacionada amb el text seleccionat</translation>
 <translation id="3199127022143353223">Servidors</translation>
@@ -3145,7 +3157,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         Pots gestionar la configuració d'aquesta targeta en qualsevol moment o veure més opcions a Personalitza Brave.</translation>
-<translation id="6372219095475330346">Quan emplenes un formulari, la teva informació i la pàgina de què prové s'envien a Brave per generar suggeriments</translation>
 <translation id="3207960819495026254">S'ha afegit a les adreces d'interès.</translation>
 <translation id="3208584281581115441">Comprova ara</translation>
 <translation id="3208703785962634733">No confirmat</translation>
@@ -3169,11 +3180,13 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3226487301970807183">Commuta el tauler lateral alineat a l'esquerra</translation>
 <translation id="322708765617468434">Sempre pots afegir una altra persona al dispositiu després de la configuració. Cada persona pot personalitzar la seva experiència i mantenir la privadesa de les dades.</translation>
 <translation id="3227137524299004712">Micròfon</translation>
+<translation id="3229254977651514276">Comprova la data</translation>
 <translation id="3230539834943294477">Consulta els articles d'ajuda o cerca assistència per a dispositius</translation>
 <translation id="3232168089952388105">Vols compartir informació sobre el dispositiu?</translation>
 <translation id="3232368113895801406">Les teves preferències de seguretat no permeten la instal·lació d'aplicacions aïllades. <ph name="CHANGE_PREFERENCE"/>.</translation>
 <translation id="323251815203765852">Creatiu</translation>
 <translation id="3232558119926886907">Alinea a la dreta</translation>
+<translation id="323262942975422760">Més opcions per editar o suprimir <ph name="ENTITY_INSTANCE_LABEL"/>, <ph name="ENTITY_INSTANCE_SUBLABEL"/></translation>
 <translation id="3232754137068452469">Aplicació web</translation>
 <translation id="3233271424239923319">Crea una còpia de seguretat dels fitxers i de les aplicacions de Linux</translation>
 <translation id="3234251228180563751">El nom d'usuari té més de 1.000 caràcters</translation>
@@ -3189,6 +3202,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3242289508736283383">L'aplicació amb l'atribut del fitxer de manifest "kiosk_only" s'ha d'instal·lar en mode quiosc a Chrome OS</translation>
 <translation id="3243017971870859287">Llegir els números de sèrie del component i del dispositiu ChromeOS Flex</translation>
 <translation id="324366796737464147">Cancel·lació de soroll</translation>
+<translation id="3244271242291266297">MM</translation>
 <translation id="3244294424315804309">Continua silenciant el so</translation>
 <translation id="3247006341013237647">Vols organitzar les pestanyes?</translation>
 <translation id="3247649647204519958">Aquí pots veure i gestionar els permisos d'extensions del lloc web que estàs visitant</translation>
@@ -3551,6 +3565,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3503995387997205657">Pots restaurar les aplicacions anteriors</translation>
 <translation id="3505100368357440862">Suggeriments de compra</translation>
 <translation id="3507132249039706973">La protecció estàndard està activada</translation>
+<translation id="3507650052590605702">Gestiona la contrasenya</translation>
 <translation id="3507888235492474624">Torna a cercar dispositius Bluetooth</translation>
 <translation id="3508492320654304609">Les dades d'inici de sessió no s'han pogut suprimir</translation>
 <translation id="3508920295779105875">Trieu una altra carpeta...</translation>
@@ -3652,6 +3667,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3582057310199111521">S'ha introduït en un lloc web enganyós i s'ha trobat en una violació de les dades</translation>
 <translation id="3582299299336701326">Enfosqueix les pantalles clares i il·lumina'n les fosques. Prem Cerca+Ctrl+H per activar i desactivar la inversió de colors.</translation>
 <translation id="3584169441612580296">Accedeix a fotos, a música i a altres fitxers multimèdia de l'ordinador i modifica'ls</translation>
+<translation id="3586741240886978899">L'has utilitzat en aquest lloc web</translation>
 <translation id="3586806079541226322">No es pot obrir aquest fitxer</translation>
 <translation id="3586931643579894722">Oculta els detalls</translation>
 <translation id="3587279952965197737">Ha de tenir <ph name="MAX_CHARACTER_COUNT"/> caràcters o menys</translation>
@@ -3925,9 +3941,11 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3757733214359997190">No s'ha trobat cap lloc web</translation>
 <translation id="375841316537350618">S'està baixant l'script de servidor intermediari...</translation>
 <translation id="3758887577462995665">Consell:</translation>
+<translation id="375962596908891207">Mes de la <ph name="DROPDOWN_NAME"/></translation>
 <translation id="2624625863458105774">Per suprimir les dades de navegació de tots els dispositius sincronitzats i del teu Compte de Brave, <ph name="BEGIN_LINK"/>introdueix la frase de contrasenya<ph name="END_LINK"/>.</translation>
 <translation id="3759933321830434300">Bloquejar elements de pàgines web</translation>
 <translation id="3760460896538743390">Inspecciona la &amp;pàgina de fons</translation>
+<translation id="3760788800962452192">Dia de la <ph name="DROPDOWN_NAME"/></translation>
 <translation id="3761556954875533505">Vols permetre que el lloc web editi els fitxers?</translation>
 <translation id="3761560059647741692">Paisatge</translation>
 <translation id="3761733456040768239">Més accions per a <ph name="CARD_DESCRIPTION"/>, CVC desat</translation>
@@ -3959,7 +3977,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3778740492972734840">Eines per a &amp;desenvolupadors</translation>
 <translation id="3778868487658107119">Fes-li preguntes o demana-li que faci coses. És el teu Brave personal, sempre a punt per ajudar-te.</translation>
 <translation id="3779221255357533293">{BROWSING_HISTORY_COUNT,plural, =1{l'historial de navegació d’# lloc web}other{l'historial de navegació de # llocs web}}</translation>
-<translation id="3779244863011082655">Utilitza un altre compte de <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="3780542776224651912"><ph name="BRAND"/> no pot comprovar les teves contrasenyes per detectar violacions de les dades. Torna-ho a provar més tard.</translation>
 <translation id="3781742599892759500">Accés al micròfon de Linux</translation>
 <translation id="3783640748446814672">alt</translation>
@@ -3990,6 +4007,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3798632811625902122">El dispositiu Bluetooth <ph name="DEVICE"/> sol·licita permís per vincular-se.</translation>
 <translation id="3798670284305777884">Altaveu (intern)</translation>
 <translation id="3799128412641261490">Configuració d'Accés amb interruptors</translation>
+<translation id="3800764353337460026">Estil de símbols</translation>
 <translation id="3800828618615365228">Condicions addicionals de Brave i Chrome OS</translation>
 <translation id="3800898876950197674">Per permetre aquesta extensió, introdueix la contrasenya.</translation>
 <translation id="3801449494961771207">Veu del text a parla del sistema</translation>
@@ -4024,9 +4042,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
     <ph name="BEGIN_PARAGRAPH2"/>Pots iniciar o aturar l'enviament d'aquests informes en qualsevol moment a la configuració del dispositiu Brave. Si ets l'administrador d'un domini, pots canviar aquesta opció de configuració a la consola d'administració.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3817879349291136992">Aurora boreal de nit, sobre una masia petita.</translation>
 <translation id="3818102823568165369">Certificats locals que el sistema operatiu o l'administrador han afegit.</translation>
-<translation id="3818662907126913619">Per utilitzar el dispositiu amb el perfil de <ph name="DOMAIN"/>, la teva organització necessita informació del dispositiu,
-
-que pot incloure dades del programari instal·lat, de fitxers, del navegador i del sistema operatiu.</translation>
 <translation id="3819164369574292143">Amplia perquè els elements de la pantalla siguin més grans. Fes servir Cerca+Ctrl+M per activar i desactivar la lupa. Fes servir Ctrl+Alt+tecles de fletxa per moure't quan la pantalla estigui ampliada.</translation>
 <translation id="3819257035322786455">Còpia de seguretat</translation>
 <translation id="3819261658055281761">El sistema no ha pogut emmagatzemar el testimoni d'accés a l'API de llarg termini per a aquest dispositiu.</translation>
@@ -4035,12 +4050,13 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="3820749202859700794">Corba el·líptica secp521r1 d'SECG (també coneguda com a NIST P-521)</translation>
 <translation id="3821074617718452587">Notificacions d'El meu telèfon</translation>
 <translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{S'ha aprovat una extensió}other{S'han aprovat # extensions}}</translation>
+<translation id="3822426549715448461">DD</translation>
 <translation id="3823019343150397277">IBAN</translation>
 <translation id="3823310065043511710">Es recomana tenir almenys <ph name="INSTALL_SIZE"/> d'espai lliure per a Linux.</translation>
-<translation id="3824203811509979971">Resumeix contingut o fes preguntes</translation>
 <translation id="3824621460022590830">El testimoni d'inscripció de dispositius no és vàlid. Contacta amb el propietari o l'administrador del dispositiu. Codi d'error: <ph name="ERROR_CODE"/>.</translation>
 <translation id="3824757763656550700">Inicia la sessió per veure les pestanyes d'altres dispositius</translation>
 <translation id="3825041664272812989">{FILE_TYPE_COUNT,plural, =1{Recorda la meva selecció per a aquest tipus de fitxer: <ph name="FILE_TYPES"/>}other{Recorda la meva selecció per a aquests tipus de fitxers: <ph name="FILE_TYPES"/>}}</translation>
+<translation id="3825235932371054736">{NUM_TABS,plural, =1{Corregeix aquesta pestanya}other{Corregeix aquestes pestanyes}}</translation>
 <translation id="3825512074963838982">Veure</translation>
 <translation id="3825635794653163640">Mostra el punt a la icona de l'aplicació per a les alertes d'aplicacions</translation>
 <translation id="3826071569074535339">Amb permís per utilitzar sensors de moviment</translation>
@@ -4341,9 +4357,6 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4031527940632463547">Sensors bloquejats</translation>
 <translation id="4033471457476425443">Afegeix una carpeta nova</translation>
 <translation id="4033963223187371752">Els llocs web segurs poden inserir contingut com ara imatges o marcs web que no siguin segurs</translation>
-<translation id="4034706080855851454">Per utilitzar el dispositiu amb el perfil de l'organització, la teva organització necessita informació sobre el dispositiu,
-
-que pot incloure dades del programari instal·lat, de fitxers, del navegador i del sistema operatiu.</translation>
 <translation id="4034824040120875894">Impressora</translation>
 <translation id="4035758313003622889">Gestor de &amp;tasques</translation>
 <translation id="4035877632587724847">No permetis</translation>
@@ -4362,7 +4375,6 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="404493185430269859">Motor de cerca predeterminat</translation>
 <translation id="4044964245574571633">Utilitza l'emmagatzematge de Microsoft OneDrive</translation>
 <translation id="4045196801416070837">Sons del dispositiu</translation>
-<translation id="4045441967987592849">Torna a obrir</translation>
 <translation id="4046013316139505482">Aquestes extensions no necessiten veure ni modificar la informació d'aquest lloc web.</translation>
 <translation id="4046123991198612571">Pista següent</translation>
 <translation id="4046655456159965535">Vols suprimir les dades mostrades?</translation>
@@ -4564,6 +4576,7 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4203769790323223880">No està permès utilitzar la càmera</translation>
 <translation id="4204415812590935863">No es pot crear cap tema en aquests moments.</translation>
 <translation id="4205157409548006256">Hi ha hagut un error en configurar Linux.</translation>
+<translation id="4897435863569400974">Per oferir suggeriments, els llocs web que visites i el contingut de les pàgines es comparteixen amb Brave</translation>
 <translation id="4206144641569145248">Extraterrestre</translation>
 <translation id="4206323443866416204">Informe de suggeriments</translation>
 <translation id="4206585797409671301">Amb permís per mostrar sol·licituds</translation>
@@ -4790,6 +4803,7 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4364830672918311045">Mostra les notificacions</translation>
 <translation id="4367971618859387374">Nom de visualització</translation>
 <translation id="4368960422722232719">Mostra l'ús de memòria a la targeta de previsualització que apareix en passar el cursor per sobre d'una pestanya</translation>
+<translation id="4369151461324628035">No permetis que els llocs web es connectin a cap dispositiu de la teva xarxa local</translation>
 <translation id="4369215744064167350">Sol·licitud de lloc web aprovada</translation>
 <translation id="4369233657762989723">Dictat activat/desactivat</translation>
 <translation id="436926121798828366">Pots canviar-ho en qualsevol moment a <ph name="SETTINGS_LINK"/></translation>
@@ -4870,6 +4884,7 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4415748029120993980">Corba el·líptica secp384r1 d'SECG (també coneguda com a NIST P-384)</translation>
 <translation id="4415815425191869676">Mantén aquests llocs web sempre actius</translation>
 <translation id="4416582610654027550">Escriu un URL vàlid</translation>
+<translation id="4417555042033340400">{NUM_TABS,plural, =1{Posa en pausa aquesta pestanya}other{Posa en pausa aquestes pestanyes}}</translation>
 <translation id="4421932172707401417">Els suggeriments d'escriptura es basen en les teves indicacions i en el contingut de la pàgina web.</translation>
 <translation id="4421932782753506458">Gatet</translation>
 <translation id="4423376891418188461">Restaura la configuració</translation>
@@ -4991,7 +5006,6 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4515872537870654449">Contacta amb Dell per obtenir assistència tècnica. La base s'apagarà si el ventilador no funciona.</translation>
 <translation id="4515942088136451195">La teva organització limita el que pots desar</translation>
 <translation id="4516395361210407049">S'han restablert els botons de la barra d'eines</translation>
-<translation id="4518840066030486079">Estil del mode de la tecla Maj</translation>
 <translation id="4519331665958994620">Els llocs web poden demanar permís per utilitzar la càmera</translation>
 <translation id="4519605771716872386">La sincronització de fitxers s'ha activat</translation>
 <translation id="4519935350946509010">Error de connexió</translation>
@@ -5188,6 +5202,7 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4653116291358041820">Ombra petita</translation>
 <translation id="4653405415038586100">Hi ha hagut un error en configurar Linux</translation>
 <translation id="4654236001025007561">Comparteix fitxers amb dispositius Chromebook i Android a prop teu</translation>
+<translation id="4657810666108475055">Cerca de pestanyes</translation>
 <translation id="4657914796247705218">Velocitat del TrackPoint</translation>
 <translation id="4658285806588491142">Mantén la pantalla en privat</translation>
 <translation id="4658648180588730283">L'aplicació <ph name="APPLICATION_NAME"/> no està disponible sense connexió.</translation>
@@ -5280,6 +5295,7 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="4723140812774948886">Canvia pel següent</translation>
 <translation id="4724450788351008910">Ha canviat l'afiliació</translation>
 <translation id="4725511304875193254">Corgi</translation>
+<translation id="4725762702191453794">La funció Cerca de pestanyes s'ha fixat a la barra d'eines</translation>
 <translation id="4726710355753484204">Fes servir Ctrl+Alt+augmenta la brillantor per ampliar.
 Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="4726710629007580002">S'han produït advertiments en provar d'instal·lar aquesta extensió:</translation>
@@ -5294,6 +5310,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="4735506354605317060">Punter amb cercle</translation>
 <translation id="4735793370946506039">Obtén més informació sobre la funció Navegació segura millorada.</translation>
 <translation id="4735803855089279419">El sistema no ha pogut determinar els identificadors d'aquest dispositiu.</translation>
+<translation id="4735819417216076266">Estil d'introducció d'espais</translation>
 <translation id="4735846817388402006">Fes clic per permetre "<ph name="EXTENSIONS_REQUESTING_ACCESS"/>" a <ph name="ORIGIN"/></translation>
 <translation id="473775607612524610">Actualitza</translation>
 <translation id="473936925429402449">Seleccionat, contingut addicional, <ph name="CURRENT_ELEMENT"/> de <ph name="TOTAL_ELEMENTS"/></translation>
@@ -5339,6 +5356,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="4772914216048388646">Ordenat</translation>
 <translation id="4773112038801431077">Actualitza Linux</translation>
 <translation id="4773122030389014189">Comparteix el grup de pestanyes "<ph name="GROUP_NAME"/>"</translation>
+<translation id="4773253008034797668">Amb permís per connectar-se a qualsevol dispositiu de la teva xarxa local</translation>
 <translation id="477548766361111120">Permet que l'extensió llegeixi i canviï aquest lloc web</translation>
 <translation id="4776311127346151860">S'ha connectat <ph name="DEVICE_NAME"/></translation>
 <translation id="4776594120007763294">Si vols afegir una pàgina per llegir-la més tard, fes clic al botó</translation>
@@ -5455,6 +5473,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="9059376008425695864">"Ok Brave" de l'Assistent de Brave</translation>
 <translation id="4849286518551984791">Temps universal coordinat (UTC/GMT)</translation>
 <translation id="4849517651082200438">No instal·lis</translation>
+<translation id="4849731766219625109">Utilitza el teu compte de <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="485053257961878904">No s'ha pogut configurar la sincronització de notificacions</translation>
 <translation id="4850548109381269495">Als dos dispositius, comprova la connexió a Internet i activa el Bluetooth. Després, torna-ho a provar.</translation>
 <translation id="4850669014075537160">Desplaçament</translation>
@@ -5466,6 +5485,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="4853020600495124913">Obre en una &amp;finestra nova</translation>
 <translation id="4854317507773910281">Tria un compte parental per a l'aprovació</translation>
 <translation id="485480310608090163">Més opcions de configuració i permisos</translation>
+<translation id="4857304314344645169">Consulta una explicació pas a pas de qualsevol problema</translation>
 <translation id="485806788160414322">Reprodueix o posa en pausa el contingut multimèdia</translation>
 <translation id="4858913220355269194">Pilota</translation>
 <translation id="4860114370595561279">La informació desada s'emmagatzema al dispositiu</translation>
@@ -5641,6 +5661,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="4979510648199782334">Configuració de Microsoft 365 completada</translation>
 <translation id="4980805016576257426">Aquesta extensió conté programari maliciós.</translation>
 <translation id="8231468153901265517">La contrasenya no s'ha compartit. Comprova la connexió a Internet i assegura't que tens la sessió iniciada a Brave. Després, torna-ho a provar.</translation>
+<translation id="498624032394115435">Tothom que tingui l'enllaç pot editar totes les pestanyes.</translation>
 <translation id="6814280300414171363">Sempre pots anar a la configuració per decidir què vols sincronitzar. És possible que Brave personalitzi la Cerca i altres serveis en funció del teu historial.</translation>
 <translation id="4986728572522335985">Amb aquesta acció se suprimiran totes les dades de la clau de seguretat, inclòs el PIN</translation>
 <translation id="4987944280765486504">El Chromebook es reiniciarà un cop s'hagi completat la baixada i podràs continuar amb la configuració.</translation>
@@ -5717,7 +5738,6 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="5045550434625856497">Contrasenya incorrecta</translation>
 <translation id="504561833207953641">S'està obrint a la sessió actual del navegador.</translation>
 <translation id="504953514574706691">La pestanya s'ha exclòs del grup suggerit</translation>
-<translation id="5049614114599109018">Utilitza l'historial d'entrades</translation>
 <translation id="5050330054928994520">TTS</translation>
 <translation id="5051461727068120271">Baixa el fitxer no verificat</translation>
 <translation id="5051836348807686060">El corrector ortogràfic no és compatible amb els idiomes que has seleccionat</translation>
@@ -5836,7 +5856,6 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="512642543295077915">Cerca+retrocés</translation>
 <translation id="5126611267288187364">Mostra els canvis</translation>
 <translation id="5127620150973591153">Identificador de connexió segura: <ph name="TOKEN"/></translation>
-<translation id="5127780364354669658">Resumeix contingut o fes preguntes.</translation>
 <translation id="5127881134400491887">Gestionar les connexions de xarxa</translation>
 <translation id="5127934926273826089">Flors</translation>
 <translation id="5127986747308934633">El teu administrador controla el dispositiu</translation>
@@ -5982,6 +6001,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="5228704301508740018">{GROUP_COUNT,plural, =1{Vols desagrupar el grup de pestanyes?}other{Vols desagrupar els grups de pestanyes?}}</translation>
 <translation id="5230190638672215545">Escriu "uow" per obtenir "ươ"</translation>
 <translation id="5230516054153933099">Finestra</translation>
+<translation id="5232714764496316200">Obtén ajuda per fer els deures amb Google Lens</translation>
 <translation id="5233019165164992427">Port de depuració NaCI</translation>
 <translation id="5233231016133573565">ID de procés</translation>
 <translation id="5233638681132016545">Pestanya nova</translation>
@@ -6019,7 +6039,6 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="5256174546894739043">Preguntar quan un lloc web vol fer un seguiment de les teves mans</translation>
 <translation id="52566111838498928">S'estan carregant els tipus de lletra...</translation>
 <translation id="5256861893479663409">En tots els llocs web</translation>
-<translation id="5258473597674772367">El grup de pestanyes "<ph name="GROUP_NAME"/>" ja no està disponible</translation>
 <translation id="5258992782919386492">Instal·la en aquest dispositiu</translation>
 <translation id="5260334392110301220">Cometes intel·ligents</translation>
 <translation id="5260508466980570042">No s'ha pogut verificar el correu electrònic o la contrasenya. Torna-ho a provar.</translation>
@@ -6038,7 +6057,6 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="5267572070504076962">Activa Navegació segura per obtenir protecció contra llocs web perillosos</translation>
 <translation id="5269977353971873915">Error d'impressió</translation>
 <translation id="5271578170655641944">Vols suprimir l'accés a Google Drive?</translation>
-<translation id="5271782684896713035">És possible que revisors humans vegin les dades per millorar aquesta funció</translation>
 <translation id="5273806377963980154">Edita l'URL del lloc web</translation>
 <translation id="5275084684151588738">Diccionaris de l'usuari</translation>
 <translation id="5275338516105640560">Botó de grup de pestanyes desat</translation>
@@ -6452,6 +6470,7 @@ Pots assignar diferents interruptors a aquesta acció.</translation>
 <translation id="5575528586625653441">S'ha produït un problema amb la sol·licitud per registrar la demostració.</translation>
 <translation id="557722062034137776">Si restabliu el dispositiu, no es produirà cap canvi als vostres comptes de Brave ni a les dades sincronitzades en aquests comptes. No obstant això, se suprimiran tots els fitxers desats localment al dispositiu.</translation>
 <translation id="5578059481725149024">Inici de sessió automàtic</translation>
+<translation id="5578387000057347457">Introdueix una indicació personalitzada o marca text per crear una imatge</translation>
 <translation id="5581134892342029705">Traducció a <ph name="LANGUAGE"/> completa</translation>
 <translation id="558170650521898289">Verificació de programes de control de maquinari de Microsoft Windows</translation>
 <translation id="5581972110672966454">No es pot connectar el dispositiu al domini. Torna-ho a provar o contacta amb el propietari o l'administrador del dispositiu. Codi d'error: <ph name="ERROR_CODE"/>.</translation>
@@ -6546,10 +6565,8 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5642508497713047">Signant de CRL</translation>
 <translation id="5643191124441701136">El codi de seguretat és a l'anvers de la targeta</translation>
 <translation id="5643321261065707929">Xarxa d'ús mesurat</translation>
-<translation id="5643717184207603910">Mantén un rendiment ràpid</translation>
 <translation id="5646376287012673985">Ubicació</translation>
 <translation id="5646558797914161501">Home de negocis</translation>
-<translation id="5646994841348250879">Tria un compte per iniciar la sessió a <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="5648021990716966815">Connector per al micròfon</translation>
 <translation id="5648166631817621825">7 darrers dies</translation>
 <translation id="5651308944918885595">Visibilitat de Compartició Nearby</translation>
@@ -6630,7 +6647,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="571222594670061844">Els llocs web poden mostrar sol·licituds d'inici de sessió procedents de serveis d'identitat</translation>
 <translation id="5713033452812927234">S'estan obrint les finestres del teu dispositiu anterior</translation>
 <translation id="5713158217420111469">Connectat a <ph name="DEVICE"/></translation>
-<translation id="5713960379473463904">Estil d'introducció d'espais</translation>
 <translation id="5714100381896040477">Limita el moviment a la pantalla</translation>
 <translation id="5715711091495208045">Agent de connectors: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719854774000914513">Els llocs web poden demanar permís per connectar-se a dispositius HID</translation>
@@ -6652,7 +6668,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5734362860645681824">Comunicacions</translation>
 <translation id="5734697361979786483">Afegeix compartició de fitxers</translation>
 <translation id="573520097779121706">Utilitza les tecles 7, 8, 9, U, O, J, K i L per moure el cursor</translation>
-<translation id="5735513236153491131">Optimitza ara</translation>
 <translation id="5736092224453113618">{NUM_FILES,plural, =0{Aquestes dades o el dispositiu no compleixen algunes de les polítiques de seguretat de la teva organització. Consulta al teu administrador què cal corregir.}=1{Aquest fitxer o el dispositiu no compleixen algunes de les polítiques de seguretat de la teva organització. Consulta al teu administrador què cal corregir.}other{Aquests fitxers no compleixen algunes de les polítiques de seguretat de la teva organització. Consulta al teu administrador què cal corregir.}}</translation>
 <translation id="5738093759615225354">Necessites aquesta clau d'accés per iniciar la sessió a l'ordinador</translation>
 <translation id="5739017626473506901">Inicia la sessió per ajudar <ph name="USER_NAME"/> a afegir un compte de centre educatiu</translation>
@@ -6841,6 +6856,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> aviat es posarà en pausa</translation>
 <translation id="586567932979200359">Esteu executant <ph name="PRODUCT_NAME"/> des de la imatge de disc. Si instal·leu l'aplicació a l'equip, podreu executar-la sense la imatge de disc i es mantindrà actualitzada.</translation>
 <translation id="6538479075382111079">Envia automàticament a Brave estadístiques d'ús i informes d'error</translation>
+<translation id="5866363217037791319">Finalitza la tasca</translation>
 <translation id="5868434909835797817">El micròfon està desactivat al dispositiu</translation>
 <translation id="5868479397518301468">S'ha esgotat el temps d'espera per iniciar la sessió</translation>
 <translation id="5868822853313956582">Segueix els colors del dispositiu</translation>
@@ -6897,7 +6913,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5911533659001334206">Visualitzador de dreceres</translation>
 <translation id="5911545422157959623">Les adreces d'interès no estan disponibles en mode de convidat</translation>
 <translation id="5914016309240354769">Natura</translation>
-<translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> ha afegit aquesta pestanya</translation>
 <translation id="5914724413750400082">Mòdul (<ph name="MODULUS_NUM_BITS"/> bits):
   <ph name="MODULUS_HEX_DUMP"/>
 
@@ -6907,6 +6922,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5916655001090539219">Lectura automàtica</translation>
 <translation id="5916664084637901428">Activat</translation>
 <translation id="59174027418879706">Activat</translation>
+<translation id="5919305207330938913">Totes les dades recollides s'utilitzaran d'acord amb la <ph name="BEGIN_LINK"/>política de privadesa<ph name="END_LINK"/> de Brave.</translation>
 <translation id="5920543303088087579">L'administrador ha desactivat la possibilitat de connectar-se a aquesta xarxa</translation>
 <translation id="5922963926582976524">Desconnecta la xarxa del punt d'accés instantani</translation>
 <translation id="5924047253200400718">Obtén ajuda <ph name="SCANNING_STATUS"/></translation>
@@ -7371,7 +7387,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6254892857036829079">Perfecta</translation>
 <translation id="6257131917452817589">canvi de contrasenya automatitzat</translation>
 <translation id="6257602895346497974">Activa la sincronització...</translation>
-<translation id="6257614441619555296"><ph name="KEY"/>: <ph name="VALUE"/></translation>
 <translation id="625827534921607067">Aquesta xarxa tindrà preferència si hi ha disponible més d'una xarxa configurada o a la qual t'hagis connectat anteriorment</translation>
 <translation id="6259776178973198997">Actualitza la informació dels propietaris directes de la Wi‐Fi</translation>
 <translation id="6262371516389954471">Les còpies de seguretat es pengen a Brave i s'encripten amb la contrasenya del teu Compte de Brave.</translation>
@@ -7414,6 +7429,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6283438600881103103">Se't tancarà la sessió automàticament ara mateix.
 <ph name="DOMAIN"/> requereix que mantinguis la targeta intel·ligent inserida.</translation>
 <translation id="628352644014831790">4 segons</translation>
+<translation id="6283823201263716145">Els dispositius en mode de demostració envien automàticament informes d'error i dades de diagnòstic i d'ús a Brave per ajudar a millorar les funcions i el rendiment.</translation>
 <translation id="6285120108426285413"><ph name="FILE_NAME"/> no se sol baixar i podria ser perillós.</translation>
 <translation id="6285770818046456882">El dispositiu que està compartint contingut amb tu ha cancel·lat la transferència</translation>
 <translation id="628699625505156622">Utilitza la ubicació. Permet que les aplicacions, els llocs web i els serveis de ChromeOS i d'Android que tinguin permís d'accés a la ubicació utilitzin la ubicació d'aquest dispositiu. La precisió de la ubicació proporciona una ubicació més precisa a les aplicacions i als serveis d'Android. Per fer-ho, Brave tracta periòdicament informació sobre els sensors i els senyals sense fil d'aquest dispositiu a fi d'obtenir col·lectivament les ubicacions dels senyals sense fil. Aquestes dades s'utilitzen sense identificar a cap persona a fi de millorar la precisió de la ubicació i els serveis basats en la ubicació. També s'utilitzen per millorar, proporcionar i mantenir els serveis de Brave segons els interessos legítims de Brave i de tercers a fi de satisfer les necessitats dels usuaris. <ph name="BEGIN_LINK1"/>Més informació sobre com s'utilitza la ubicació<ph name="END_LINK1"/></translation>
@@ -7712,7 +7728,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6519689855001245063">S'està comprovant si compleixes els requisits</translation>
 <translation id="7978371405408781051">Al gestor de contrasenyes de Brave, pots veure i gestionar les teves contrasenyes desades</translation>
 <translation id="3268749830200917889"><ph name="SITE"/> vol verificar la teva identitat. Introdueix un PIN alfanumèric per al gestor de contrasenyes de Brave.</translation>
-<translation id="6520509611422418552"><ph name="MEMBER_FIRST_NAME"/> s'ha unit al grup de pestanyes "<ph name="GROUP_NAME"/>"</translation>
 <translation id="6520876759015997832">Resultat de cerca <ph name="LIST_POSITION"/> de <ph name="LIST_SIZE"/>: <ph name="SEARCH_RESULT_TEXT"/>. Prem Retorn per navegar a la secció.</translation>
 <translation id="6521214596282732365">Els llocs web solen utilitzar els teus tipus de lletra perquè puguis crear continguts d'alta fidelitat amb eines de disseny i de gràfics en línia</translation>
 <translation id="4840871051102187982">El gestor de contrasenyes de Brave no ha pogut desar aquestes contrasenyes al teu Compte de Brave. Pots desar-les en aquest dispositiu.</translation>
@@ -7780,6 +7795,8 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6563002009564846727">Mostra els certificats importats de Windows</translation>
 <translation id="6563055593659435495">No es pot mantenir la connexió amb el teu telèfon. Comprova que el telèfon sigui a prop teu, que estigui desbloquejat i que tingui el Bluetooth i la Wi-Fi activats.</translation>
 <translation id="9133043124325375321">Quan fas una cerca a l'historial de navegació, les cerques a l'historial, el contingut de les pàgines de les millors coincidències i les sortides del model generades s'envien a Brave i és possible que els revisors humans els vegin per millorar aquesta funció.</translation>
+<translation id="6565144332292237355">Els llocs web poden utilitzar aquesta funció per cercar qualsevol dispositiu a la teva xarxa local i connectar-s'hi</translation>
+<translation id="6568283005472142698">Cerca de pestanyes</translation>
 <translation id="6569931898053264308">Estalvi mitjà</translation>
 <translation id="6570622975915850879">Utilitza un dispositiu diferent</translation>
 <translation id="65711204837946324">Necessita permís per poder baixar-lo</translation>
@@ -7794,6 +7811,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6577097667107110805">Amb permís per cercar i utilitzar les impressores a què el dispositiu pot accedir</translation>
 <translation id="6577284282025554716">Baixada cancel·lada: <ph name="FILE_NAME"/></translation>
 <translation id="6577777689940373106">Hi ha una aplicació en espera</translation>
+<translation id="657803812022791004">S'estan generant suggeriments…</translation>
 <translation id="657866106756413002">Instantània de l'estat de la xarxa</translation>
 <translation id="6579369886355986318">Mostra tots els &amp;controls</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/>: el contingut de l'escriptori es comparteix</translation>
@@ -7846,7 +7864,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6611972847767394631">Aquí trobaràs les teves pestanyes</translation>
 <translation id="661266467055912436">Millora la seguretat per a tu i per a tots els usuaris del web.</translation>
 <translation id="6613267708691765962">S'està cercant programari maliciós...</translation>
-<translation id="6614172284067813496">La pàgina s'ha afegit a la llista de lectura</translation>
 <translation id="6615455863669487791">Mostra-m'ho</translation>
 <translation id="6619058681307408113">Protocol Line Printer Daemon (LPD)</translation>
 <translation id="661907246513853610">El lloc web pot fer un seguiment de la teva ubicació</translation>
@@ -7866,6 +7883,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6628328486509726751">Data i hora de la pujada: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
 <translation id="6629951648264770593"><ph name="MODIFIER"/>+<ph name="KEY"/></translation>
 <translation id="6630117778953264026">Més seguretat</translation>
+<translation id="6630452975878488444">Drecera de selecció</translation>
 <translation id="6630752851777525409">L'extensió <ph name="EXTENSION_NAME"/> vol tenir accés permanent a un certificat per autenticar-se en nom vostre.</translation>
 <translation id="6633847349217844732">{NUM_GROUPS,plural, =1{Surt del grup}other{Surt dels grups}}</translation>
 <translation id="6635362468090274700">Ningú no pot compartir contingut amb tu fins que no et facis visible.<ph name="BR"/><ph name="BR"/>Per fer-te visible temporalment, obre l'àrea d'estat i, després, activa Visibilitat Nearby.</translation>
@@ -7971,7 +7989,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6702859741546259407">Per utilitzar <ph name="FEATURE_NAME"/>, activa el Bluetooth i la Wi‑Fi</translation>
 <translation id="6703109186846420472">,</translation>
 <translation id="6703254819490889819">Restaura la còpia de seguretat</translation>
-<translation id="6703613667804166784">Aquest fitxer pot malmetre els teus comptes personals i de xarxes socials, inclòs <ph name="USER_EMAIL"/></translation>
 <translation id="6707122714992751648">Executar proves diagnòstiques de ChromeOS</translation>
 <translation id="6707389671160270963">Certificat de client SSL</translation>
 <translation id="6707671917294473995">Els llocs web no tenen permís per utilitzar la càmera</translation>
@@ -8168,6 +8185,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6831043979455480757">Tradueix</translation>
 <translation id="6832218595502288407">Alinea a l'esquerra</translation>
 <translation id="6832815922179448173">{MULTI_GROUP_TAB_COUNT,plural, =0{Vols suprimir la pestanya i el grup?}=1{Vols suprimir la pestanya i el grup?}other{Vols suprimir les pestanyes i els grups?}}</translation>
+<translation id="6833103209700200188">Peu</translation>
 <translation id="6833479554815567477">La pestanya s'ha suprimit del grup <ph name="GROUP_NAME"/>: <ph name="GROUP_CONTENTS"/></translation>
 <translation id="6833753236242482566">Equilibrat (opció recomanada)</translation>
 <translation id="6835762382653651563">Connecteu-vos a Internet per actualitzar el dispositiu <ph name="DEVICE_TYPE"/>.</translation>
@@ -8192,7 +8210,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6846178040388691741">"<ph name="EXTENSION_NAME"/>" vol imprimir <ph name="FILE_NAME"/> amb <ph name="PRINTER_NAME"/>.</translation>
 <translation id="6846843854964504403">Restabliment de seguretat</translation>
 <translation id="6847125920277401289">Allibera espai per continuar</translation>
-<translation id="6848388270925200958">En aquest moment tens targetes que només es poden fer servir en aquest dispositiu</translation>
 <translation id="6848716236260083778">Per configurar una impremta digital, fes que el teu fill toqui el sensor d'empremtes digitals. Les dades de l'empremta digital del teu fill s'emmagatzemen de manera segura i no surten mai del dispositiu <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="6850286078059909152">Color del text</translation>
 <translation id="6850925512806464982">Tothom perdrà immediatament l'accés a aquest grup de pestanyes i se suprimirà de tots els dispositius</translation>
@@ -8201,6 +8218,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6852290167968069627">ChromeOS no pot reprendre la teva sessió anterior a causa d'un problema de xarxa. Connecta't a una xarxa estable i torna-ho a provar.</translation>
 <translation id="6852529053326738838">Pregunta- a la teva organització si el teu compte és apte o inscriu-te amb el correu electrònic de la feina per comprovar-ho.</translation>
 <translation id="6853029310037965825"><ph name="APP_TYPE"/> s'ha instal·lat des de: <ph name="BEGIN_LINK"/><ph name="INSTALL_SOURCE"/><ph name="END_LINK"/></translation>
+<translation id="6853767770825049629">Any de la <ph name="DROPDOWN_NAME"/></translation>
 <translation id="68541483639528434">Tanca les altres pestanyes</translation>
 <translation id="6855892664589459354">Còpia de seguretat i restauració de Crostini</translation>
 <translation id="6856348640027512653">Sense permís per utilitzar dades o dispositius de realitat virtual</translation>
@@ -8231,7 +8249,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6873571253135628430">Canvia els permisos del lloc web</translation>
 <translation id="6876155724392614295">Bicicleta</translation>
 <translation id="6876469544038980967">No és útil</translation>
-<translation id="687838958001010630">Tothom que tingui l'enllaç pot editar totes les pestanyes</translation>
 <translation id="6878422606530379992">Sensors permesos</translation>
 <translation id="6878862640969460273">Horitzontal</translation>
 <translation id="6880587130513028875">S'han bloquejat imatges en aquesta pàgina.</translation>
@@ -8539,6 +8556,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="710640343305609397">Obre la configuració de la xarxa</translation>
 <translation id="7107609441453408294">Reprodueix el mateix àudio en tots els altaveus</translation>
 <translation id="7108338896283013870">Amaga</translation>
+<translation id="7108419148561505648">Emplena com a mínim un camp abans de desar</translation>
 <translation id="7108668606237948702">retorn</translation>
 <translation id="7108933416628942903">Bloqueja ara</translation>
 <translation id="7109543803214225826">S'ha suprimit la drecera</translation>
@@ -8551,7 +8569,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7114054701490058191">Les contrasenyes no coincideixen</translation>
 <translation id="7114648273807173152">Per utilitzar Smart Lock per iniciar la sessió al Compte de Brave, ves a Configuració &gt; Dispositius connectats &gt; El teu telèfon &gt; Smart Lock.</translation>
 <translation id="7115361495406486998">No hi ha cap contacte a l'abast</translation>
-<translation id="7115731767122970828">Optimitza ara</translation>
 <translation id="7116554090938189816">El certificat SSL de la impressora ha caducat. Reinicia la impressora i torna-ho a provar.</translation>
 <translation id="7117228822971127758">Torna-ho a provar més tard</translation>
 <translation id="7118268675952955085">captura de pantalla</translation>
@@ -8577,6 +8594,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="713122686776214250">Afegeix la pà&amp;gina...</translation>
 <translation id="7131431455372521159">S'han desconnectat tots els ratolins de botó</translation>
 <translation id="7131896909366247105"><ph name="APP_NAME"/>, s'està esperant</translation>
+<translation id="5639710699305791127">Utilitza la IA de Brave a fi d'obtenir ajuda per llegir, escriure i crear</translation>
 <translation id="7134098520442464001">Fa el text més petit</translation>
 <translation id="7134951043985383439">S'ha baixat el fitxer perillós</translation>
 <translation id="7135729336746831607">Vols activar el Bluetooth?</translation>
@@ -8661,6 +8679,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7199452998289813782">Posa en pausa l'emissió a <ph name="DEVICE_NAME"/></translation>
 <translation id="720110658997053098">Activa permanentment el mode quiosc en aquest dispositiu</translation>
 <translation id="7201118060536064622">S'ha suprimit <ph name="DELETED_ITEM_NAME"/></translation>
+<translation id="7201336084980086208">Emplenament automàtic pot oferir-te desar informació quan envies formularis, com ara el número del permís de conduir o del passaport</translation>
 <translation id="7201420661433230412">Visualitza els fitxers</translation>
 <translation id="7201432510117121839">L'emissió d'àudio de l'escriptori no és compatible amb aquest dispositiu</translation>
 <translation id="7201535955609308429">Espera mentre la verificació està en curs</translation>
@@ -8717,7 +8736,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7243092385765551741">Vols suprimir la clau d'accés?</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (millor resolució)</translation>
 <translation id="7246230585855757313">Torna a inserir la clau de seguretat i torna-ho a provar</translation>
-<translation id="7248802599439396696">Desactiva les pestanyes</translation>
 <translation id="7249197363678284330">Canvia aquesta configuració a la barra d'adreces.</translation>
 <translation id="7249764475759804559">Inclou aquesta aplicació com a opció a l'hora d'obrir fitxers</translation>
 <translation id="7250616558727237648">El dispositiu amb què estàs compartint el fitxer no ha respost. Torna-ho a provar.</translation>
@@ -8726,7 +8744,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7253521419891527137">&amp;Més informació</translation>
 <translation id="7254951428499890870">Confirmes que vols iniciar "<ph name="APP_NAME"/>" en mode de diagnòstic?</translation>
 <translation id="725497546968438223">Botó de carpetes d'adreces d'interès</translation>
-<translation id="7255002516883565667">En aquest moment tens una targeta que només es pot utilitzar en aquest dispositiu</translation>
 <translation id="7255935316994522020">Aplica</translation>
 <translation id="7256069762010468647">El lloc web està utilitzant la càmera</translation>
 <translation id="7256634071279256947">Micròfon posterior</translation>
@@ -8897,6 +8914,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="737728204345822099">La clau de seguretat pot conservar un registre de la teva visita a aquest lloc web.</translation>
 <translation id="7377451353532943397">Continua bloquejant l'accés als sensors</translation>
 <translation id="7377481913241237033">Connecta't amb un codi</translation>
+<translation id="7379178796923433598">{NUM_TASKS,plural, =0{<ph name="TASK_ROW"/>}=1{<ph name="TASK_ROW"/>. Hi ha una altra tasca al mateix grup de tasques: <ph name="OTHER_TASKS"/>.}other{<ph name="TASK_ROW"/>. Hi ha # tasques més al mateix grup de tasques: <ph name="OTHER_TASKS"/>}}</translation>
 <translation id="7380272457268061606">Vols desactivar la recuperació de dades locals?</translation>
 <translation id="7380459290951585794">Comprova que el telèfon sigui a prop teu, que estigui desbloquejat i que tingui el Bluetooth i la Wi‑Fi activats</translation>
 <translation id="7380622428988553498">El nom del dispositiu conté caràcters que no són vàlids</translation>
@@ -9002,6 +9020,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6470635120107893736">Accedeix a les contrasenyes sempre que tinguis la sessió iniciada al Compte de Brave</translation>
 <translation id="7444176988908839653">{COUNT,plural, =0{Les galetes es tornaran a bloquejar avui}=1{Les galetes es tornaran a bloquejar demà}other{# dies perquè es tornin a bloquejar les galetes}}</translation>
 <translation id="7444983668544353857">Desactiva <ph name="NETWORKDEVICE"/></translation>
+<translation id="7446716846072322308">Amb aquesta acció se suprimiran <ph name="TOTAL_USAGE"/> de dades emmagatzemades per <ph name="SITE_NAME"/> i pels llocs web relacionats</translation>
 <translation id="7448430327655618736">Instal·lar aplicacions automàticament.</translation>
 <translation id="7448664748118305024">Suprimeix les dades que els llocs web desin al dispositiu quan tanquis totes les finestres</translation>
 <translation id="7450761244949417357">S'està obrint a <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
@@ -9028,6 +9047,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7465777686629334728">Suprimeix l'entorn de desenvolupament gestionat (<ph name="SPECIFIC_NAME"/>)</translation>
 <translation id="7465778193084373987">URL de revocació de certificats de Netscape</translation>
 <translation id="7466431077154602932">Visualització compacta</translation>
+<translation id="7466861475611330213">Estil de puntuació</translation>
 <translation id="746861123368584540">L'extensió s'ha carregat</translation>
 <translation id="7469612367552312334">Activat • Utilitza llenguatge quotidià per fer cerques al teu historial de navegació i trobar llocs web que has visitat</translation>
 <translation id="7470131554696493512">Impedeix que els accessoris Thunderbolt o USB4 accedeixin a la memòria (RAM) i la comparteixin</translation>
@@ -9233,7 +9253,6 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7625025537587898155">Afegeix un perfil nou</translation>
 <translation id="7625568159987162309">Mostra els permisos i les dades emmagatzemades als llocs web</translation>
 <translation id="7625823789272218216">Pestanya nova a l'esquerra</translation>
-<translation id="7628392600831846024">Estil de símbols</translation>
 <translation id="7628927569678398026"><ph name="LOCALE"/> (<ph name="VARIANT"/>), de grau <ph name="GRADE"/></translation>
 <translation id="762917478230183172">Selecciona una acció per a cada clau</translation>
 <translation id="7629206210984165492">Apagat</translation>
@@ -9260,6 +9279,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7641720519047586765">Aquesta clau d'accés s'ha suprimit d'aquest lloc web</translation>
 <translation id="764178579712141045">S'ha afegit <ph name="USER_EMAIL"/></translation>
 <translation id="7642778300616172920">Amaga el contingut sensible</translation>
+<translation id="7643117827468520640">Consulta aquestes condicions</translation>
 <translation id="7643842463591647490">{0,plural, =1{# finestra oberta}other{# finestres obertes}}</translation>
 <translation id="7643932971554933646">Vols permetre que el lloc web vegi els fitxers?</translation>
 <translation id="7644953783774050577">No seleccionis res</translation>
@@ -9269,12 +9289,14 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7646772052135772216">La sincronització de contrasenyes no funciona</translation>
 <translation id="7647403192093989392">No hi ha cap activitat recent</translation>
 <translation id="3350442560878669560">Brave està verificant el paquet d'instal·lació</translation>
+<translation id="7648048654005891115">Estil del mapa de tecles</translation>
 <translation id="7649070708921625228">Ajuda</translation>
 <translation id="7650141368285545431">Utilitza la clau d'accés d'un altre dispositiu</translation>
 <translation id="7650178491875594325">Restaura les dades locals</translation>
 <translation id="7650582458329409456">{COUNT,plural, =1{Configuració d'1 empremta digital}other{Configuració de {COUNT} empremtes digitals}}</translation>
 <translation id="7650677314924139716">L'opció de configuració d'ús de dades actual és només Wi-Fi</translation>
 <translation id="7650920359639954963">No activada: <ph name="REASON"/></translation>
+<translation id="7651182181030187705">Per obtenir aquesta adreça d'interès en tots els dispositius, verifica la teva identitat</translation>
 <translation id="7651400349472467012">Punt d'accés Wi‐Fi instantani disponible</translation>
 <translation id="7651784568388208829">Continuació de tasques a El meu telèfon</translation>
 <translation id="765293928828334535">No es poden afegir aplicacions, extensions ni scripts d'usuari des d'aquest lloc web</translation>
@@ -9312,6 +9334,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7670434942695515800">Per obtenir el millor rendiment, actualitza a la darrera versió. Es recomana crear una còpia de seguretat dels fitxers per si l'actualització no es pot completar. Un cop comenci l'actualització, Linux s'apagarà. Desa els fitxers oberts abans de continuar. <ph name="LINK_START"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="7670483791111801022">Subtítols</translation>
 <translation id="7671130400130574146">Utilitza la barra del títol i els límits del sistema</translation>
+<translation id="7671139479636735732">Fes clic amb el botó dret per visualitzar les teves idees fàcilment</translation>
 <translation id="767127784612208024">Toca per confirmar el restabliment</translation>
 <translation id="7671472752213333268">"<ph name="EXTENSION_NAME"/>" vol escanejar des de "<ph name="SCANNER_NAME"/>".</translation>
 <translation id="7672504401554182757">Tria quin dispositiu té la clau d'accés per a <ph name="APP_NAME"/></translation>
@@ -9331,6 +9354,9 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7680416688940118410">Calibratge de la pantalla tàctil</translation>
 <translation id="7681095912841365527">El lloc web pot utilitzar el Bluetooth</translation>
 <translation id="7681597159868843240">Els llocs web solen utilitzar els sensors de moviment del dispositiu per a funcions com ara la realitat virtual o el seguiment de fitnes</translation>
+<translation id="7681757571815416227">Per utilitzar el dispositiu amb el perfil de <ph name="DOMAIN"/>, la teva organització necessita informació del dispositiu,
+
+que pot incloure dades del programari instal·lat, de fitxers, del navegador, del sistema operatiu i de les adreces IP.</translation>
 <translation id="7683373461016844951">Per continuar, fes clic a D'acord i, a continuació, a Afegeix una persona per crear un perfil per a la teva adreça electrònica del domini <ph name="DOMAIN"/>.</translation>
 <translation id="7683834360226457448">Eines de visualització per a persones amb poca visió</translation>
 <translation id="7684212569183643648">Extensió instal·lada per l'administrador</translation>
@@ -9396,6 +9422,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="7724603315864178912">Retalla</translation>
 <translation id="7726391492136714301">Mostra les notificacions i aplicacions del telèfon</translation>
 <translation id="7727898923446098954">S'ha amagat la pestanya</translation>
+<translation id="7728089752992902596">{NUM_TABS,plural, =1{Posa en pausa aquesta pestanya}other{Posa en pausa aquestes pestanyes}}</translation>
 <translation id="7728465250249629478">Canvia l'idioma del dispositiu</translation>
 <translation id="7728570244950051353">Bloqueja la pantalla des del mode de repòs</translation>
 <translation id="7728668285692163452">El canvi de canal s'aplicarà més tard</translation>
@@ -9786,6 +9813,7 @@ Prem un interruptor o una tecla assignats per suprimir una assignació.</transla
 <translation id="7990863024647916394">Veu en <ph name="DISPLAY_NAME"/> <ph name="COUNT"/></translation>
 <translation id="7990958035181555539">Transfereix la Wi-Fi automàticament des del teu telèfon Android</translation>
 <translation id="7991296728590311172">Configuració d'accés amb interruptors</translation>
+<translation id="7992080146463834191">Resumeix contingut, simplifica el llenguatge complex o fes preguntes.</translation>
 <translation id="7992203134935383159">Síntesi de veu</translation>
 <translation id="7997826902155442747">Prioritat del procés</translation>
 <translation id="7997828719430450286">Correcte.</translation>
@@ -10108,6 +10136,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8217399928341212914">Continua bloquejant les baixades automàtiques de diversos fitxers</translation>
 <translation id="8219785583603399823">Consulta les puntuacions d'aquesta botiga</translation>
 <translation id="822050276545350872">A partir d'ara, ja no hauràs d'esperar més</translation>
+<translation id="8221942262855134126">Gestiona la contrasenya</translation>
 <translation id="8222112516148944758">Els grups de pestanyes es desen i s'actualitzen automàticament en tots els teus dispositius</translation>
 <translation id="8222674561049363989">El fitxer no és un document vàlid</translation>
 <translation id="822347941086490485">S'estan cercant dispositius d'interfície humana...</translation>
@@ -10157,6 +10186,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="825238165904109940">Mostra sempre els URL complets</translation>
 <translation id="8252569384384439529">S'està penjant...</translation>
 <translation id="8253198102038551905">Feu clic a "+" per consultar les propietats de la xarxa</translation>
+<translation id="8254871563792426806">Aquest lloc web està accedint als lectors de targetes intel·ligents connectats al teu dispositiu i, possiblement, a les targetes intel·ligents que aquests lectors tenen disponibles</translation>
 <translation id="8255212965098517578">Fotos, notificacions i aplicacions recents</translation>
 <translation id="8255927332875030912">Cerca+<ph name="KEY"/></translation>
 <translation id="8256319818471787266">Gosset</translation>
@@ -10240,6 +10270,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8309458809024885768">El certificat ja existeix</translation>
 <translation id="8310409247509201074"><ph name="NUM"/> pestanyes</translation>
 <translation id="831207808878314375">Definició</translation>
+<translation id="8312841338723044391">EN DIRECTE</translation>
 <translation id="8314089908545021657">Vincula amb un altre telèfon</translation>
 <translation id="8314381333424235892">Falta una extensió o està desinstal·lada</translation>
 <translation id="831440797644402910">No es pot obrir aquesta carpeta</translation>
@@ -10418,6 +10449,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8434109185104929038">Racó de lectura</translation>
 <translation id="8434480141477525001">Port de depuració NaCI</translation>
 <translation id="8434837876193928924">Detalls del grup de pestanyes</translation>
+<translation id="8435951291982398331">{NUM_TABS,plural, =1{Corregeix aquesta pestanya}other{Corregeix aquestes pestanyes}}</translation>
 <translation id="1720111858957434186">Crea un PIN de recuperació alfanumèric per al gestor de contrasenyes de Brave</translation>
 <translation id="8437209419043462667">Nord-americà</translation>
 <translation id="8438518537545182071">Les opcions del teu pare o mare ara et protegiran més en línia</translation>
@@ -10441,7 +10473,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8452105022015742247">S'està transferint la informació del Compte de Brave des del teu telèfon Android</translation>
 <translation id="8455775311562941553">Connectat a <ph name="HOST_DEVICE_NAME"/></translation>
 <translation id="8456067150616457342">Estableix el navegador predeterminat</translation>
-<translation id="4347143520862488790">Utilitza la IA de Brave a fi d'obtenir ajuda per llegir i escriure</translation>
 <translation id="845702320058262034">No es pot establir la connexió. Comprova que el Bluetooth del telèfon estigui activat.</translation>
 <translation id="8457251154056341970">No tornaràs a veure <ph name="MODULE_NAME"/> en aquesta pàgina</translation>
 <translation id="8457451314607652708">Importa les adreces d'interès</translation>
@@ -10468,7 +10499,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8466052016039127321">No es pot reprendre la sessió anterior</translation>
 <translation id="8467326454809944210">Tria un altre idioma</translation>
 <translation id="8468087214092422866">Sense permís per cercar dispositius Bluetooth</translation>
-<translation id="8469863130477774813">Optimització de rendiment disponible</translation>
 <translation id="8470513973197838199">Contrasenyes desades per a <ph name="ORIGIN"/></translation>
 <translation id="8471525937465764768">Els llocs web solen connectar-se a dispositius USB per a funcions com ara desar dades en un dispositiu d'emmagatzematge o imprimir un document</translation>
 <translation id="8472563193954285009">{COUNT,plural, =0{Les teves contrasenyes són úniques}=1{{COUNT} contrasenya reutilitzada}other{{COUNT} contrasenyes reutilitzades}}</translation>
@@ -10536,12 +10566,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8523493869875972733">Mantén els canvis</translation>
 <translation id="8523849605371521713">Afegida per la política</translation>
 <translation id="8524594273111932386">Cerca+fletxa avall</translation>
-<translation id="4483547786985740455">Desa targetes al Compte de Brave</translation>
 <translation id="8524817717332153865">La càmera i el micròfon estan desactivats a la configuració del sistema de Mac</translation>
 <translation id="8524841856047224176">Personalitza els fons de la càmera per a videotrucades i més</translation>
 <translation id="8525306231823319788">Pantalla completa</translation>
 <translation id="8525461909394569609">Aquesta aplicació inclou contingut web de</translation>
-<translation id="8526313996927074827">Insereix enllaços, emojis i més. També pots obtenir ajuda per escriure amb la IA de Brave.</translation>
 <translation id="8526813720153458066">SSH</translation>
 <translation id="8527228059738193856">Altaveus</translation>
 <translation id="8527257351549797148">És possible que la teva organització requereixi que t'inscriguis per poder accedir a aplicacions, extensions i més. Això també permet a la teva organització gestionar aspectes com la configuració del dispositiu i la seguretat.</translation>
@@ -10893,6 +10921,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8767069439158587614">Mostra totes les cerques per a <ph name="QUERY_CLUSTER_NAME"/></translation>
 <translation id="4570609078116869893">Actualitza Brave automàticament per a tots els usuaris</translation>
 <translation id="8768049274922835860">Tothom</translation>
+<translation id="8769047324653576116">Per utilitzar el dispositiu amb el perfil de l'organització, la teva organització necessita informació sobre el dispositiu,
+
+que pot incloure dades del programari instal·lat, de fitxers, del navegador, del sistema operatiu i de les adreces IP.</translation>
 <translation id="876956356450740926">Executa les eines per a desenvolupadors, els IDE i els editors. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="8770406935328356739">Directori arrel de l'extensió</translation>
 <translation id="8773535891252326047">L'enllaç s'ha copiat al text marcat</translation>
@@ -10991,19 +11022,20 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="883924185304953854">Cerca per imatge</translation>
 <translation id="3740206403750675781">La contrasenya només s'ha desat en aquest dispositiu. Per desar contrasenyes noves al teu Compte de Brave, actualitza Serveis de Google Play.</translation>
 <translation id="8841843049738266382">Llegir i canviar els usuaris de la llista d'accés permès</translation>
+<translation id="8841884135319684422">Finalitza la tasca</translation>
 <translation id="8842594465773264717">Suprimeix aquesta empremta digital</translation>
 <translation id="8845001906332463065">Obteniu ajuda</translation>
 <translation id="8846132060409673887">Consultar el fabricant i el model d'aquest ordinador</translation>
 <translation id="8846163936679269230">Restableix els perfils eSIM</translation>
 <translation id="8846239054091760429">Àudio mono, inici, subtítols instantanis, etc.</translation>
 <translation id="8847988622838149491">USB</translation>
+<translation id="8848709220963126773">Canvi de mode amb la tecla Maj</translation>
 <translation id="8849001918648564819">Amagat</translation>
 <translation id="8849219423513870962">Cancel·la la supressió del perfil d'eSIM anomenat <ph name="PROFILE_NAME"/></translation>
 <translation id="8849262417389398097"><ph name="CHECKED"/> de <ph name="CHECKING"/></translation>
 <translation id="8850251000316748990">Mostra'n més...</translation>
 <translation id="885246833287407341">Arguments de les funcions de l'API</translation>
 <translation id="8853586775156634952">Aquesta targeta només es desarà en aquest dispositiu</translation>
-<translation id="8854745870658584490">Drecera de selecció</translation>
 <translation id="8855242995793521265">No redueix significativament la velocitat del navegador ni del dispositiu.</translation>
 <translation id="8855977033756560989">Aquest dispositiu Chromebook Enterprise inclou una Llicència de Brave Enterprise. Per treure partit de les capacitats per a empreses, inscriu el dispositiu amb un compte d'administrador de Brave.</translation>
 <translation id="8856028055086294840">Restaura les aplicacions i les pàgines</translation>
@@ -11040,6 +11072,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8874448314264883207">S'ha desactivat "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="8874647982044395866">Orgànic</translation>
 <translation id="8874790741333031443">Prova de permetre temporalment les galetes de tercers. Això implica menys protecció de navegació, però és més probable que les funcions del lloc web funcionin de la manera prevista.</translation>
+<translation id="8875221558267407626">Resumeix contingut, simplifica el llenguatge complex o fes preguntes</translation>
 <translation id="8875520811099717934">Actualització de Linux</translation>
 <translation id="8875736897340638404">Tria la teva visibilitat</translation>
 <translation id="8876307312329369159">Aquesta opció de configuració no es pot canviar durant una sessió de demostració.</translation>
@@ -11326,7 +11359,6 @@ Obtén informació sobre les dades que Brave recull i sobre el motiu pel qual ho
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9074836595010225693">Ratolí USB connectat</translation>
 <translation id="9075413375877487220">Navegació segura millorada no confia en aquesta extensió.</translation>
-<translation id="9075985558450420812">Introdueix una indicació personalitzada o marca text per crear una imatge.</translation>
 <translation id="9076523132036239772">No s'ha pogut verificar el correu electrònic o la contrasenya. Prova de connectar-te primer a una xarxa.</translation>
 <translation id="9076821103818989526">Tauler lateral</translation>
 <translation id="9076977315710973122">Fitxers compartits de PIME</translation>
@@ -11460,6 +11492,7 @@ Obtén informació sobre les dades que Brave recull i sobre el motiu pel qual ho
       <ph name="LIST_ITEM"/>Executa Diagnòstic de connectivitat de Brave.
     <ph name="END_LIST"/></translation>
 <translation id="9161172953291434881">Confies en aquest lloc web perquè accedeixi a les teves dades?</translation>
+<translation id="9164418710391288146">Sense permís per connectar-se a cap dispositiu de la teva xarxa local</translation>
 <translation id="9165856803582999927">Escaneja aquest codi QR amb la càmera del dispositiu en què vulguis crear i desar la clau d'accés per a <ph name="APP_NAME"/></translation>
 <translation id="916607977885256133">Imatge sobre imatge</translation>
 <translation id="9166253503936244008">Escaneja aquest codi QR amb el dispositiu que té la clau d'accés que vols utilitzar per a <ph name="APP_NAME"/></translation>
@@ -11490,7 +11523,6 @@ Obtén informació sobre les dades que Brave recull i sobre el motiu pel qual ho
 <translation id="918352324374649435">{COUNT,plural, =1{Aplicació}other{# aplicacions}}</translation>
 <translation id="9186963452600581158">Inicia la sessió amb el Compte de Brave d'un nen</translation>
 <translation id="9187967020623675250">Les tecles no coincideixen. Prem qualsevol tecla per <ph name="RESPONSE"/>.</translation>
-<translation id="9189468832660648522"><ph name="MEMBER_FIRST_NAME"/> ha canviat aquesta pestanya</translation>
 <translation id="9192019773545828776">Escolta avisos de veu per poder utilitzar el dispositiu sense mirar la pantalla. Els avisos en braille estan disponibles amb un dispositiu connectat. Utilitza Ctrl+Alt+Z per activar i desactivar ChromeVox. Fes servir Cerca+fletxa esquerra o dreta per navegar. Utilitza Cerca+barra espaiadora per seleccionar (activar).</translation>
 <translation id="6436745840109002184">Si la teva organització limita el que pots desar al teu Compte de Brave, no podràs compartir grups de pestanyes ni unir-t'hi</translation>
 <translation id="919686179725692564">Més informació sobre com es crea una còpia de seguretat de les aplicacions</translation>
@@ -11574,6 +11606,7 @@ Obtén informació sobre les dades que Brave recull i sobre el motiu pel qual ho
 <translation id="953434574221655299">Amb permís per saber quan estàs utilitzant el dispositiu de manera activa</translation>
 <translation id="954705236478705408">Configura un perfil nou</translation>
 <translation id="954749761428814584">Idioma i mètode d'introducció de text</translation>
+<translation id="956013912698841780">Fes clic amb el botó dret per resumir contingut, obtenir definicions, escriure amb més confiança, crear imatges i més. En aquests moments té una disponibilitat limitada.</translation>
 <translation id="956500788634395331">Tens protecció contra les extensions potencialment perjudicials</translation>
 <translation id="957179356621191750">6 punts</translation>
 <translation id="957960681186851048">Aquest lloc web ha provat de baixar diversos fitxers automàticament</translation>

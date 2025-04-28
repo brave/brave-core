@@ -317,6 +317,18 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Một trang nhúng tại <ph name="SITE"/> muốn lưu</translation>
 <translation id="7700010743463174379">Trang này muốn lưu</translation>
 <translation id="6774238875569752630">Một trang nhúng trên trang này muốn lưu</translation>
+<translation id="1233913566967531780">Tập trung thẻ</translation>
+<translation id="4034992002364254340">Tập trung tất cả thẻ liên quan ở một cửa sổ mới</translation>
+<translation id="8012125596344613514">Chủ đề được đề xuất</translation>
+<translation id="7529120186020617755">Nhập chủ đề cần tập trung...</translation>
+<translation id="6847541693235449912">Truy cập</translation>
+<translation id="2079545284768500474">Hoàn tác</translation>
+<translation id="1533980864758658574">Cửa sổ mới đã được tạo cho <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Tính năng này gửi dữ liệu về các thẻ đang mở của bạn đến Leo, trợ lý AI của trình duyệt Brave.</translation>
+<translation id="6165508094623778733">Tìm hiểu thêm</translation>
+<translation id="7557539689487606886">Lên Premium</translation>
+<translation id="1035309871698658326">Khi mở, tính năng này sẽ tự động gửi tiêu đề và nguồn gốc của tất cả thẻ không riêng tư đến Leo để phân loại.</translation>
+<translation id="3435896845095436175">Bật</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="1426410128494586442">Có</translation>
@@ -353,7 +365,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2396127686705429331">Hiển thị nút dấu trang</translation>
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
 <translation id="4109670531935487117">Hiển thị các đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
-<translation id="2858138569776157458">Trang web hàng đầu</translation>
+<translation id="3405901785709583668">Đề xuất hàng đầu</translation>
 <translation id="7859704718976024901">Lịch sử duyệt web</translation>
 <translation id="8820817407110198400">Dấu trang</translation>
 <translation id="4144468798716165316">Lệnh nhanh</translation>
@@ -462,7 +474,6 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7791141927430186653">Cho phép nhúng các tweet X (trước đây là Twitter)</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
 <translation id="8792121506918889955">Chính sách xử lý IP của WebRTC</translation>
-<translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8798099450830957504">Mặc định</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
@@ -713,6 +724,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2751872555001636931">Hiển thị biểu tượng Leo trong thanh bên</translation>
 <translation id="8055509865174199683">Hiển thị Leo trong menu ngữ cảnh trên trang web</translation>
 <translation id="1529674267267221673">Leo sẽ xuất hiện trong menu ngữ cảnh khi bạn nhấp chuột phải vào trang web. Thao tác này sẽ gửi ngữ cảnh từ trang web hiện tại tới Leo.</translation>
+<translation id="5226020406479918122">Chế độ Tập trung thẻ</translation>
+<translation id="3705539672403311123">Bật sắp xếp thẻ trong trang Tìm kiếm thẻ. Khi mở, tính năng này sẽ tự động gửi tiêu đề và nguồn gốc của tất cả thẻ không riêng tư đến Leo để phân loại. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Hiển thị lời nhắc được đề xuất trong cuộc trò chuyện</translation>
 <translation id="5781842473834867765">Lưu lịch sử trò chuyện</translation>
 <translation id="1082960401708055995">Tắt tùy chọn lưu lịch sử trò chuyện sẽ xóa vĩnh viễn tất cả cuộc trò chuyện đã được lưu. Hành động này không thể được hoàn tác.</translation>
@@ -723,6 +736,9 @@ trò chuyện của bạn sẽ xóa tất cả các cuộc trò chuyện trướ
 Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="5574059574002819179">Điều chỉnh đề xuất tự động hoàn thành</translation>
 <translation id="7942415993090181327">Lịch sử trò chuyện</translation>
+<translation id="5385064007245738696">Về Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo cung cấp tính năng trò chuyện AI tôn trọng quyền riêng tư và các giao diện tích hợp AI khác trong trình duyệt. Leo không bao giờ học từ dữ liệu của bạn hoặc sử dụng dữ liệu đó để đào tạo mô hình. Tất cả yêu cầu đều được chuyển tiếp qua máy chủ ẩn danh.</translation>
+<translation id="6458721693611638005">Đọc thêm về cách Brave bảo vệ việc bạn sử dụng AI trong chính sách quyền riêng tư của Leo. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Mô hình mặc định cho các cuộc trò chuyện mới</translation>
 <translation id="8826914609353373601">Quản lý đăng ký trả phí</translation>
 <translation id="235457946228076038">Mang theo mô hình của riêng bạn</translation>
@@ -733,6 +749,8 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="3553035516792776805">Tên yêu cầu mô hình</translation>
 <translation id="7634775528597575156">Điểm cuối máy chủ</translation>
 <translation id="6374563306438145841">Khóa API</translation>
+<translation id="3295756655687327124">Hỗ trợ Hình ảnh</translation>
+<translation id="1415432774589088566">Nếu mô hình này chấp nhận đầu vào là hình ảnh, ví dụ như llama 3.2b vision</translation>
 <translation id="8008271349880309090">Tên của mô hình sẽ xuất hiện trong menu chọn mô hình</translation>
 <translation id="1355326130503900056">Tên của mô hình khi sẽ xuất hiện trong yêu cầu tới khung phục vụ, ví dụ phi-3 (lưu ý rằng nếu tên này không khớp chính xác với những gì khung phục vụ mong đợi thì sẽ không tích hợp được)</translation>
 <translation id="3213787232304349732">URL nơi khung phục vụ của bạn đang lắng nghe các yêu cầu. Nếu bạn không chắc chắn thì hãy kiểm tra tài liệu về khung phục vụ. Ví dụ: đối với Ollama, đây luôn là http://localhost:11434/v1/chat/completions</translation>

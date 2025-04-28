@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">브라우저 추천 항목 표시</translation>
 <translation id="8982438328166986164">북마크 및 인터넷 사용 기록을 기반으로 한 추천 웹사이트를 표시합니다.</translation>
 <translation id="924029461438529367">추천 검색어 표시</translation>
-<translation id="1571106259128580884">인기 사이트 추천 항목 표시</translation>
+<translation id="5989135139219497991">인기 추천 항목 표시</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="412411722208944922">빠른 검색 엔진</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Brave 검색 성장 지원</translation>
 <translation id="7044431516245362795">웹 디스커버리 프로젝트에 참여하여 Brave가 인덱스를 확장하고 검색 결과를 향상할 수 있도록 도와주세요. <ph name="LEARN_MORE_START"/>자세히 알아보기.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">좋아요, 도울게요</translation>
-<translation id="2877653791257935258">웹사이트 이름 또는 URL 입력</translation>
-<translation id="5329830149661250028">Brave의 차별점: 광고 없음. 트래커 없음. 더욱 빠른 페이지 로드.</translation>
-<translation id="3941792073703079607">Brave의 특장점: 광고 차단. 데이터 절약. 더 빠른 스트리밍.</translation>
 <translation id="3545804467215833536">탭하여 Brave Shields 보기</translation>
 <translation id="1724327820822194498">모든 페이지에서 Brave가 Shields로 차단한 모든 나쁜 것들을 확인합니다.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> 포함, <ph name="TRACKER"/>개의 광고 및 트래커 차단됨</translation>
@@ -504,6 +501,7 @@
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
+<translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
 <translation id="5370478469168390143">데이터 온라인 저장</translation>
 <translation id="1118508688433541158">Brave 사용으로 더 빠른 검색 및 광고 차단</translation>
 <translation id="7427391215172269363">매일 Brave로 웹 브라우징을 하여 데이터를 절약하고 있어요.</translation>
@@ -1029,7 +1027,7 @@
 <translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/>(으)로 검색</translation>
 <translation id="5456039738087398178">홈 화면 위젯</translation>
 <translation id="703185154752046151">홈 화면에 위젯 추가됨</translation>
-<translation id="3290805388004282161">Brave 검색 위젯을 사용해보세요</translation>
+<translation id="4635094429202343515">Brave 검색 위젯을 사용해 보세요</translation>
 <translation id="4809681171446727314">프라이버시가 보호되는 독립적인 검색을 홈 화면에서 바로 이용할 수 있습니다.</translation>
 <translation id="7751715172931488388">위젯 추가</translation>
 <translation id="7285167584112910782">Brave 퀵 액션 검색</translation>
@@ -1096,6 +1094,8 @@
 <translation id="1179407411385015942">브라우저에 바로 통합된 AI 기반 스마트 어시스턴트, 레오</translation>
 <translation id="5781842473834867765">대화 기록 저장</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
+<translation id="4983005227524068187">빠른 검색 엔진 표시줄에 표시</translation>
+<translation id="8514910864411336826">빠른 검색 엔진 표시줄에서 레오를 실행하는 바로 가기를 활성화합니다.</translation>
 <translation id="6106701981952170121">모든 레오 AI 대화 데이터 삭제</translation>
 <translation id="423600389315522551">레오 AI를 초기화하면 나중에 Brave 레오 AI 사용에 다시 동의해야 하며 채팅 기록이 지워집니다. 채팅 기록을 지우면 Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
 <translation id="6742599753610126012">채팅 기록 지우기</translation>
@@ -1218,11 +1218,12 @@
 <translation id="6891382640886173702">창 병합</translation>
 <translation id="2912247081180973411">창 닫기</translation>
 <translation id="4010699428656610296">다른 탭을 다른 Brave 창으로 병합하세요.</translation>
-<translation id="208634871997892083">올웨이즈온 VPN</translation>
+<translation id="4306918392910017801">VPN 자동 재연결</translation>
 <translation id="1599073346542156922">켜는 방법:</translation>
 <translation id="7001163334415463127">1. 앱 서랍에서 디바이스 설정을 열거나 아래 버튼을 탭합니다.</translation>
 <translation id="887443138775437899">2. Brave VPN을 찾아 오른쪽 설정 아이콘을 탭합니다.</translation>
-<translation id="3776051499611941773">3. <ph name="ALWAYS_ON_TUTORIAL_START"/>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>(올웨이즈온 VPN)을 토글하여 활성화합니다.</translation>
+<translation id="7546805138087561624">3. <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Always-on VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>(올웨이즈온 VPN)을 토글하여 활성화합니다.</translation>
+<translation id="2446001600399646984">Android 제한으로 인해 "VPN 없이 연결 차단"이 예상대로 작동하지 않습니다. <ph name="LEARN_MORE_START"/>자세히 알아보기.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Android 설정 열기</translation>
 <translation id="2728518864712716830">업데이트가 다운로드되었습니다.</translation>
 <translation id="8403338849301491865">필터 목록 업데이트 성공</translation>
@@ -1232,4 +1233,6 @@
 <translation id="2361906291514218784">레오 AI</translation>
 <translation id="7942415993090181327">대화 기록</translation>
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
+<translation id="2735247450315842119">비공개 탭에서 스크린샷 허용</translation>
+<translation id="8420414929552321089">이 기능을 허용하면 앱이 여러 개 열려 있을 때 비공개 탭도 표시됩니다.</translation>
 </translationbundle>

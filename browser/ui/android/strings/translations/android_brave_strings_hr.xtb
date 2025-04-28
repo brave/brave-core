@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Pokaži prijedloge preglednika</translation>
 <translation id="8982438328166986164">Prikazuju se prijedlozi mrežnih mjesta na temelju vaših oznaka i povijesti pregledavanja.</translation>
 <translation id="924029461438529367">Prikaži prijedloge za pretraživanje</translation>
-<translation id="1571106259128580884">Pokaži prijedloge najpopularnijih mrežnih mjesta</translation>
+<translation id="5989135139219497991">Pokaži top prijedloge</translation>
 <translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
 <translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
 <translation id="412411722208944922">Brze tražilice</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Pomozite razvoju tražilice Brave</translation>
 <translation id="7044431516245362795">Pridružite se projektu Web Discovery Project i pomozite povećati indeks te poboljšati rezultate pretraživanja. <ph name="LEARN_MORE_START"/>Doznajte više.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">U redu, pomoći ću</translation>
-<translation id="2877653791257935258">Upišite naziv ili URL mrežnog mjesta</translation>
-<translation id="5329830149661250028">Pogledajte po čemu se Brave razlikuje: Bez oglasa. Bez elemenata za praćenje. Mnogo brže učitavanje stranice.</translation>
-<translation id="3941792073703079607">Pogledajte razliku za preglednik Brave: blokirajte oglase. Uštedite podatke. Brže strujite.</translation>
 <translation id="3545804467215833536">Dodirnite za prikaz štitova Brave</translation>
 <translation id="1724327820822194498">Pogledajte sve loše stvari koje je Brave blokirao štitovima na svakoj stranici.</translation>
 <translation id="5386259141409498372">Blokirani su oglasi <ph name="BIG_TECH"/> i <ph name="TRACKER"/> ostalih oglasa i elemenata za praćenje</translation>
@@ -504,6 +501,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="5299848999918506028">Hvala vam!</translation>
 <translation id="76550953340008122">Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!</translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
+<translation id="7205939464631857223">Očisti sve blokirane elemente</translation>
 <translation id="5370478469168390143">Spremi podatke na mreži</translation>
 <translation id="1118508688433541158">Pregledavajte brže i blokirajte oglase u pregledniku Brave</translation>
 <translation id="7427391215172269363">Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.</translation>
@@ -1034,7 +1032,7 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="5888208462949095139">Pretražujte pomoću <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Spravica za početni zaslon</translation>
 <translation id="703185154752046151">Spravica dodana na početni zaslon</translation>
-<translation id="3290805388004282161">Isprobajte spravicu za pretraživanje preglednikom Brave</translation>
+<translation id="4635094429202343515">Isprobajte miniaplikaciju pretraživača Brave</translation>
 <translation id="4809681171446727314">Pristupite privatnom, neovisnom pretraživanju izravno s početnog zaslona.</translation>
 <translation id="7751715172931488388">Dodaj spravicu</translation>
 <translation id="7285167584112910782">Brza akcijska pretraga Brave</translation>
@@ -1101,6 +1099,8 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="1179407411385015942">Leo je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) ugrađen izravno u preglednik</translation>
 <translation id="5781842473834867765">Spremi povijest mog razgovora</translation>
 <translation id="4109670531935487117">Prikaži prijedloge automatskog završavanja u adresnoj traci</translation>
+<translation id="4983005227524068187">Pokaži u traci brzih pretraživača</translation>
+<translation id="8514910864411336826">Aktivira prečac za pokretanje Lea iz trake brzih pretraživača.</translation>
 <translation id="6106701981952170121">Izbriši sve podatke o razgovorima s asistentom Leo AI</translation>
 <translation id="423600389315522551">Za resetiranje asistenta Leo AI trebat ćete u budućnosti aktivirati korištenje asistenta Brave Leo AI, a izbrisat će se i povijest čavrljanja. Brisanjem povijesti čavrljanja izbrisat ćete sve svoje prethodne razgovore s asistentom Brave Leo AI. Ova se radnja ne može opozvati.</translation>
 <translation id="6742599753610126012">Izbriši povijest čavljanja</translation>
@@ -1223,11 +1223,12 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="6891382640886173702">Spoji prozore</translation>
 <translation id="2912247081180973411">Zatvori prozore</translation>
 <translation id="4010699428656610296">Spojite druge kartice u drugi prozor preglednika Brave.</translation>
-<translation id="208634871997892083">Uvijek uključen VPN</translation>
+<translation id="4306918392910017801">Automatsko ponovno povezivanje na VPN</translation>
 <translation id="1599073346542156922">Kako uključiti:</translation>
 <translation id="7001163334415463127">1. Otvorite postavke svog uređaja iz ladice s aplikacijama ili dodirom na tipku u nastavku.</translation>
 <translation id="887443138775437899">2. Pronađite VPN Brave i dodirnite ikonu postavki na desnoj strani.</translation>
-<translation id="3776051499611941773">3. Prebacite <ph name="ALWAYS_ON_TUTORIAL_START"/>Uvijek uključen VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> kako biste ga omogućili.</translation>
+<translation id="7546805138087561624">3. Prebacite <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Uvijek uključen VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> kako biste ga omogućili.</translation>
+<translation id="2446001600399646984">Napominjemo da zbog ograničenja Androida, funkcionalnost „Blokiraj veze bez VPN-a” ne radi u skladu s očekivanjima. <ph name="LEARN_MORE_START"/>Doznajte više.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Otvori postavke Androida</translation>
 <translation id="2728518864712716830">Preuzeto je ažuriranje.</translation>
 <translation id="8403338849301491865">Uspješno je ažuriran popis filtara</translation>
@@ -1237,4 +1238,6 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="2361906291514218784">Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)</translation>
 <translation id="7942415993090181327">Povijest čavrljanja</translation>
 <translation id="6859935199732075666">Pokaži greške priliko sigurnog pregledavanja</translation>
+<translation id="2735247450315842119">Omogući snimke zaslona u privatnim karticama</translation>
+<translation id="8420414929552321089">Ako je omogućeno, privatne tablice bit će vidljive kad je otvoreno više aplikacija.</translation>
 </translationbundle>

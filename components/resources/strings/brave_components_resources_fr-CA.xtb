@@ -124,7 +124,6 @@
 <translation id="730042046912793465">Voici un</translation>
 <translation id="2055363275850890030">Fenêtre privée</translation>
 <translation id="9133213713928851646">Brave n'enregistre pas vos activités dans les fenêtres privées. Les sites que vous visitez n'apparaîtront pas dans votre historique et vos témoins de connexion disparaîtront quand vous aurez fini. La navigation privée ne vous rend pas tout à fait anonyme par contre.</translation>
-<translation id="4085423007106063912">Brave ne se souvient jamais de ce que vous faites dans une fenêtre privée. Les sites que vous consultez n'apparaissent pas dans votre historique. Les témoins, les données de formulaire et les données de site disparaissent lorsque vous fermez la fenêtre.</translation>
 <translation id="1700746046668116047">Notez que votre activité pourrait toujours être visible par votre fournisseur d'accès à Internet, les observateurs passifs du réseau ou votre employeur (si vous utilisez une machine ou un réseau professionnel). Pour plus de confidentialité, ouvrez une fenêtre privée avec Tor.</translation>
 <translation id="8759753423332885148">En savoir plus.</translation>
 <translation id="8611976753572844841">Fenêtre privée avec la connectivité Tor</translation>
@@ -2111,13 +2110,6 @@
 <translation id="7692501701960747469">La clé API configurée pour ce modèle est invalide. Veuillez vérifier votre configuration et réessayer.</translation>
 <translation id="7905602379229309187">Le point de terminaison est actuellement surchargé. Veuillez réessayer plus tard.</translation>
 <translation id="8151638057146502721">Configurer</translation>
-<translation id="4177458398826096846">Bonjour, je m'appelle Leo. Je suis un assistant IA entièrement hébergé proposé par Brave. Je suis basé sur Llama 3.1 8B, un modèle créé par Meta pour être performant et applicable à de nombreux cas d'utilisation. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Bonjour, je suis Leo, un assistant IA hébergé et fourni par Brave. Basé sur Qwen 14B, un modèle développé par Alibaba Cloud, je suis conçu pour vous offrir des performances optimales et vous assister dans diverses tâches. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Bonjour, je suis Leo, assistant IA entièrement hébergé par Brave. Je suis alimenté par Mixtral 8x7B, un modèle créé par Mistral AI pour gérer les tâches avancées. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Bonjour, je suis Leo. Je suis mandaté par Brave et alimenté par Claude Instant, un modèle créé par Anthropic pour effectuer des tâches liées aux conversations et au traitement de texte. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Bonjour, je suis Leo. Je suis mandaté par Brave et alimenté par Claude Haiku, un modèle créé par Anthropic pour effectuer des tâches conversationnelles et de traitement de texte. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Bonjour, je suis Leo. Je suis mandaté par Brave et alimenté par Claude Sonnet, un modèle créé par Anthropic pour effectuer des tâches conversationnelles et de traitement de texte. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> par <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Clavardage</translation>
 <translation id="4685048769603134644">Ouvrir la page entière</translation>
@@ -2241,6 +2233,9 @@
 <translation id="4572010449071015143">Démarrer une nouvelle conversation</translation>
 <translation id="345901077335355561">Revenir à la conversation en cours</translation>
 <translation id="6287023598025162715">Nouvelle conversation</translation>
+<translation id="6543799171249004861">Photo de <ph name="AUTHOR"/></translation>
+<translation id="4290791698375397492">Site principal retiré</translation>
+<translation id="9030215177866748410">Les sites populaires sont suggérés en fonction des sites que vous visitez souvent.</translation>
 <translation id="6303294677342628402">Boucliers</translation>
 <translation id="8458987127502506209">Activer les boucliers Brave</translation>
 <translation id="7509914170164691086">Boucliers activés <ph name="LINK_BEFORE"/>pour<ph name="LINK_AFTER"/></translation>

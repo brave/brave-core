@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Zobrazit návrhy prohlížeče</translation>
 <translation id="8982438328166986164">Zobrazuje návrhy webových stránek na základě vašich záložek a historie procházení.</translation>
 <translation id="924029461438529367">Zobrazit návrhy vyhledávání</translation>
-<translation id="1571106259128580884">Zobrazit návrhy nejlepších webů</translation>
+<translation id="5989135139219497991">Zobrazit nejlepší návrhy</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="412411722208944922">Rychlé vyhledávače</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Pomozte vyhledávači Brave růst</translation>
 <translation id="7044431516245362795">Přihlaste se do projektu Projektu sdílení údajů o prohlížení a pomozte tak rozšiřovat index a zlepšovat výsledky vyhledávání. <ph name="LEARN_MORE_START"/>Zjistěte více.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Jistě, pomohu vám</translation>
-<translation id="2877653791257935258">Napište název nebo adresu URL webové stránky.</translation>
-<translation id="5329830149661250028">Brave je jiný: Žádné reklamy. Žádné trackery. Výrazně rychlejší načítání stránek.</translation>
-<translation id="3941792073703079607">Podívejte se na rozdíl Brave: Blokování reklam. Zabezpečení dat. Rychlejší streamování.</translation>
 <translation id="3545804467215833536">Klepnutím zobrazíte štíty Brave</translation>
 <translation id="1724327820822194498">Podívejte se na nekalosti, které prohlížeč Brave s pomocí štítů zablokoval na všech navštívených stránkách.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> a <ph name="TRACKER"/> reklamy a trackery, které byly zablokovány</translation>
@@ -504,6 +501,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5299848999918506028">Děkujeme!</translation>
 <translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
+<translation id="7205939464631857223">Vymazat všechny zablokované prvky</translation>
 <translation id="5370478469168390143">Uložit data online</translation>
 <translation id="1118508688433541158">Prohlížejte rychleji a blokujte reklamy pomocí Brave</translation>
 <translation id="7427391215172269363">Každý den ukládám data procházením webu přes prohlížeč Brave.</translation>
@@ -1029,7 +1027,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="5888208462949095139">Hledat vyhledávací službou <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget na domovské obrazovce</translation>
 <translation id="703185154752046151">Widget byl přidán na domovskou obrazovku</translation>
-<translation id="3290805388004282161">Vyzkoušejte Brave widget pro vyhledávání</translation>
+<translation id="4635094429202343515">Vyzkoušet widget Hrobového hledání</translation>
 <translation id="4809681171446727314">Přístup k soukromí respektujícímu a nezávislému vyhledávání přímo z domovské obrazovky.</translation>
 <translation id="7751715172931488388">Přidat widget</translation>
 <translation id="7285167584112910782">Rychlé vyhledávání Brave</translation>
@@ -1096,6 +1094,8 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1179407411385015942">Leo je chytrý asistent využívající technologie umělé inteligence a je zabudovaný přímo v prohlížeči.</translation>
 <translation id="5781842473834867765">Uložit historii mých konverzací</translation>
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
+<translation id="4983005227524068187">Zobrazit v panelu rychlého vyhledávání</translation>
+<translation id="8514910864411336826">Umožňuje spustit Lea zkratkou z panelu rychlého vyhledávání.</translation>
 <translation id="6106701981952170121">Odstranit všechna Leo AI konverzace</translation>
 <translation id="423600389315522551">Resetování Leo AI bude vyžadovat přihlášení k používání Brave Leo AI
 v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů odstraní všechny vaše p ředchozí konverzace s Brave Leo AI. Tuto akci nelze vrátit zpět.</translation>
@@ -1219,11 +1219,12 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="6891382640886173702">Sloučit okna</translation>
 <translation id="2912247081180973411">Zavřít okna</translation>
 <translation id="4010699428656610296">Slučte prosím ostatní karty do jiného okna Brave.</translation>
-<translation id="208634871997892083">Vždy zapnutá VPN</translation>
+<translation id="4306918392910017801">Automaticky znovu připojit VPN</translation>
 <translation id="1599073346542156922">Postup zapnutí:</translation>
 <translation id="7001163334415463127">1. Otevřít nastavení vašeho zařízení z vaší zásuvky aplikace nebo klepnout na tlačítko níže.</translation>
 <translation id="887443138775437899">2. Najít VPN Brave a klepnout na ikonu nastavení vpravo.</translation>
-<translation id="3776051499611941773">3. K povolení přepněte <ph name="ALWAYS_ON_TUTORIAL_START"/>Vždy zapnutá VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>.</translation>
+<translation id="7546805138087561624">3. K povolení přepněte <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Vždy zapnutá VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
+<translation id="2446001600399646984">Upozorňujeme, že kvůli omezení systému Android funkce „Blokovat připojení bez VPN“ nefunguje podle očekávání. <ph name="LEARN_MORE_START"/>Learn more.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Otevřít nastavení systému Android</translation>
 <translation id="2728518864712716830">Aktualizace je stažena.</translation>
 <translation id="8403338849301491865">Seznam filtrů byl úspěšně aktualizován</translation>
@@ -1233,4 +1234,6 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="2361906291514218784">Umělá inteligence Leo</translation>
 <translation id="7942415993090181327">Historie chatů</translation>
 <translation id="6859935199732075666">Zobrazit chyby bezpečného procházení</translation>
+<translation id="2735247450315842119">Povolit snímky obrazovky na soukromých kartách</translation>
+<translation id="8420414929552321089">Pokud je tato funkce povolena, soukromé karty budou viditelné i při otevření několika aplikací.</translation>
 </translationbundle>
