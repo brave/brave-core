@@ -1,0 +1,12 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  enable_partitioned_tabs = true
+}
+
+# Enable partitioned tabs on mobile platforms in read-only mode to detect
+# partitioned tabs in sync service and prevent them from being restored.
+partitioned_tabs_read_only = is_android || is_ios

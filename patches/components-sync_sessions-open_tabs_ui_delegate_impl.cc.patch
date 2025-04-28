@@ -1,0 +1,31 @@
+diff --git a/components/sync_sessions/open_tabs_ui_delegate_impl.cc b/components/sync_sessions/open_tabs_ui_delegate_impl.cc
+index 16538a3fca0944cf733fb80373de7b608b72aa31..a6326e0296eec2ded605f339eea56d7c90561b83 100644
+--- a/components/sync_sessions/open_tabs_ui_delegate_impl.cc
++++ b/components/sync_sessions/open_tabs_ui_delegate_impl.cc
+@@ -11,6 +11,12 @@
+ #include "components/sync_sessions/sync_sessions_client.h"
+ #include "components/sync_sessions/synced_session_tracker.h"
+ 
++#include "brave/components/partitioned_tabs/buildflags/buildflags.h"
++
++#if BUILDFLAG(ENABLE_PARTITIONED_TABS)
++#include "brave/components/partitioned_tabs/browser/partitioned_tabs_handler_registry.h"
++#endif
++
+ namespace sync_sessions {
+ 
+ OpenTabsUIDelegateImpl::OpenTabsUIDelegateImpl(
+@@ -67,6 +73,13 @@ bool OpenTabsUIDelegateImpl::GetForeignSessionTabs(
+       if (!sessions_client_->ShouldSyncURL(current_navigation.virtual_url())) {
+         continue;
+       }
++#if BUILDFLAG(ENABLE_PARTITIONED_TABS)
++      if (!partitioned_tabs::PartitionedTabsHandlerRegistry::GetInstance()
++               .ShouldRestoreForeignTabFromSync(
++                   current_navigation.extended_info_map())) {
++        continue;
++      }
++#endif
+       tabs->push_back(tab.get());
+     }
+   }
