@@ -1109,6 +1109,10 @@ test("brave_browser_tests") {
     deps += [ "//chrome/app/theme:chrome_unscaled_resources_grit" ]
   }
 
+  if (enable_containers) {
+    deps += [ "//brave/browser/containers:browser_tests" ]
+  }
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   if (toolkit_views) {
