@@ -43,11 +43,13 @@
   li {
     margin: var(--leo-spacing-l) 0 0 0;
   }
-  hr{
+
+  hr {
     margin: var(--leo-spacing-2xl) 0;
   }
-  strong{
-    font-weight:600;
+
+  strong {
+    font-weight: 600;
   }
 
   // Markdown elements have a margin which introduces additional space to the message layout.
