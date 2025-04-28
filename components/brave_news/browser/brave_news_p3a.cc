@@ -225,6 +225,8 @@ void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
 
 void NewsMetrics::RecordFeatureEnabledChange() {
   bool enabled = pref_manager_->IsEnabled();
+  UMA_HISTOGRAM_BOOLEAN(kEnabledSettingHistogramName, enabled);
+
   bool was_ever_enabled = prefs_->GetBoolean(prefs::kBraveNewsWasEverEnabled);
   if (!enabled && !was_ever_enabled) {
     // If the user clicked "no thanks" on the NTP, then we don't want to record
@@ -239,6 +241,9 @@ void NewsMetrics::RecordFeatureEnabledChange() {
 
 void NewsMetrics::RecordAtInit() {
   DVLOG(1) << __FUNCTION__;
+
+  UMA_HISTOGRAM_BOOLEAN(kEnabledSettingHistogramName,
+                        pref_manager_->IsEnabled());
 
   RecordLastUsageTime();
   RecordNewUserReturning();
