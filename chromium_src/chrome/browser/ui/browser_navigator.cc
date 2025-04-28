@@ -5,6 +5,8 @@
 
 #include <string_view>
 
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
@@ -22,5 +24,16 @@ void UpdateBraveScheme(NavigateParams* params) {
 }  // namespace
 
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#define GetSiteInstanceForNewTab(...) \
+  GetSiteInstanceForNewTab(__VA_ARGS__, params.storage_partition_config)
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 #include <chrome/browser/ui/browser_navigator.cc>
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#undef GetSiteInstanceForNewTab
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
