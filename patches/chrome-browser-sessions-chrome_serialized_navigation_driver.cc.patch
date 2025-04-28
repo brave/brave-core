@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sessions/chrome_serialized_navigation_driver.cc b/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
+index 95c5badf975dc645de72da6951126fc6528f9bde..d8c075e8bde05718586aa2dce08e5ea62e820999 100644
+--- a/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
++++ b/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
+@@ -49,6 +49,7 @@ ChromeSerializedNavigationDriver::GetInstance() {
+ 
+ void ChromeSerializedNavigationDriver::Sanitize(
+     sessions::SerializedNavigationEntry* navigation) const {
++  ContentSerializedNavigationDriver::Sanitize(navigation);
+   content::Referrer old_referrer(
+       navigation->referrer_url(),
+       content::Referrer::ConvertToPolicy(navigation->referrer_policy()));

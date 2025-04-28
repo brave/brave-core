@@ -188,6 +188,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   bool IsWindowsRecallDisabled() override;
 
+  bool ShouldInheritStoragePartition(
+      const content::StoragePartitionConfig& partition_config) const override;
+
   bool AllowSignedExchange(content::BrowserContext* context) override;
 
  private:

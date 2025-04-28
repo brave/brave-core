@@ -370,6 +370,7 @@ if (enable_ai_chat && is_android) {
 
 if (enable_containers) {
   brave_chrome_browser_deps += [
+    "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
   ]

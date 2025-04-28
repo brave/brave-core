@@ -37,6 +37,8 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -52,6 +54,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -120,6 +123,12 @@
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler.h"
+#include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
 using content::WebContents;
@@ -1094,5 +1103,46 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   CHECK(split_id.has_value());
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void IsolateTab(Browser* browser,
+                tabs::TabHandle tab,
+                const containers::mojom::ContainerPtr& container) {
+  const auto* tab_ptr = tab.Get();
+  if (!tab_ptr) {
+    return;
+  }
+
+  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+  if (!url.is_valid()) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      container->id, browser->profile()->IsOffTheRecord());
+  Navigate(&params);
+}
+
+void IsolateUrl(Browser* browser,
+                const GURL& url,
+                const containers::mojom::ContainerPtr& container) {
+  if (!url.is_valid()) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      container->id, browser->profile()->IsOffTheRecord());
+
+  Navigate(&params);
+}
+#endif
 
 }  // namespace brave

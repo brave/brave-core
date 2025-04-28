@@ -1,0 +1,46 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+assert(enable_containers)
+
+component("browser") {
+  defines = [ "IS_CONTAINERS_CONTENT_BROWSER_IMPL" ]
+
+  sources = [
+    "contained_tab_handler.h",
+    "contained_tab_handler_registry.cc",
+    "contained_tab_handler_registry.h",
+  ]
+
+  public_deps = [ "//brave/components/containers/buildflags" ]
+
+  deps = [
+    "//base",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    # "contained_tab_handler_unittest.cc",
+    # "contained_tab_handler_registry_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//components/sync_preferences:test_support",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

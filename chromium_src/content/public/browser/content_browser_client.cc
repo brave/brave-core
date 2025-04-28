@@ -53,4 +53,9 @@ bool ContentBrowserClient::IsWindowsRecallDisabled() {
   return false;
 }
 
+bool ContentBrowserClient::ShouldInheritStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+  return false;
+}
+
 }  // namespace content
