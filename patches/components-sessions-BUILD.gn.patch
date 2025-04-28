@@ -1,0 +1,12 @@
+diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
+index ae3dde7d1e639cb7a3fbdf8022bfb5a7e816f937..95d8c33bc47a9767e26e0f3b3231d46631bd5dd1 100644
+--- a/components/sessions/BUILD.gn
++++ b/components/sessions/BUILD.gn
+@@ -44,6 +44,7 @@ if (!is_ios) {
+       "//ui/base",
+       "//url",
+     ]
++    import("//brave/components/sessions/sources.gni") deps += brave_components_sessions_deps
+   }
+ } else {
+   source_set("sessions") {
