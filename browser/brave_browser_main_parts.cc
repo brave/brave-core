@@ -18,6 +18,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -68,6 +69,10 @@
 #include "brave/components/ipfs/ipfs_component_cleaner.h"
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/storage_partition_session_info_handler.h"
+#endif
+
 ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
                                                StartupData* startup_data)
     : ChromeBrowserMainParts_ChromiumImpl(is_integration_test, startup_data) {}
@@ -83,14 +88,17 @@ int ChromeBrowserMainParts::PreMainMessageLoopRun() {
 }
 
 void ChromeBrowserMainParts::PreBrowserStart() {
+  DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to
   // ContentSerializedNavigationBuilder::ToNavigationEntries()
   //
   // TODO(keur): Can we DCHECK the latter condition?
-  DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  containers::StoragePartitionSessionInfoHandler::Register();
 #endif
 
   ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();

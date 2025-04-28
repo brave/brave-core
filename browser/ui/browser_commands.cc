@@ -53,6 +53,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -117,6 +118,10 @@
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/utils.h"
 #endif
 
 using content::WebContents;
@@ -1280,5 +1285,46 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   CHECK(split_id.has_value());
   tab_strip_model->ReverseTabsInSplit(*split_id);
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void IsolateTab(Browser* browser,
+                std::optional<tabs::TabHandle> tab,
+                const containers::mojom::ContainerPtr& container) {
+  if (!tab) {
+    tab = GetActiveTabHandle(browser);
+  }
+
+  if (!tab) {
+    return;
+  }
+
+  const GURL& url = tab->Get()->GetContents()->GetLastCommittedURL();
+  if (!url.is_valid()) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config =
+      containers::CreateContainersStoragePartition(
+          tab->Get()->GetContents()->GetBrowserContext(), container);
+  Navigate(&params);
+}
+
+void IsolateUrl(Browser* browser,
+                const GURL& url,
+                const containers::mojom::ContainerPtr& container) {
+  if (!url.is_valid()) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config =
+      containers::CreateContainersStoragePartition(browser->profile(),
+                                                   container);
+  Navigate(&params);
+}
+#endif
 
 }  // namespace brave

@@ -5,5 +5,8 @@ include_rules += [
   "+chrome/browser/ui",
   "+brave/components/vector_icons",
   "+brave/components/query_filter",
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
+  "+brave/components/containers/core",
   "+brave/components/text_recognition/common/buildflags",
 ]
