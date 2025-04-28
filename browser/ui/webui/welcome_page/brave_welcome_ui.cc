@@ -23,6 +23,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/settings/privacy_sandbox_handler.h"
@@ -118,8 +119,11 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
 
   Profile* profile = Profile::FromWebUI(web_ui);
   // added to allow front end to read/modify default search engine
-  web_ui->AddMessageHandler(
-      std::make_unique<settings::BraveSearchEnginesHandler>(profile));
+  web_ui->AddMessageHandler(std::make_unique<
+                            settings::BraveSearchEnginesHandler>(
+      profile,
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          profile)));
 
   // Open additional page in Japanese region
   country_codes::CountryId country_id =

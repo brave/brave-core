@@ -27,7 +27,6 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
@@ -38,8 +37,10 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/url_data_source.h"
@@ -59,15 +60,16 @@ using ntp_background_images::NTPCustomImagesSource;
 
 namespace {
 
-std::string GetSearchWidgetDefaultHost(PrefService* local_state) {
+std::string GetSearchWidgetDefaultHost(
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities) {
   constexpr char kBraveSearchHost[] = "search.brave.com";
   constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
-  if (!local_state) {
-    CHECK_IS_TEST();
-    return kBraveSearchHost;
-  }
 
-  if (brave_l10n::GetCountryCode(local_state) == "JP") {
+  regional_capabilities::CountryIdHolder country_id =
+      regional_capabilities->GetCountryId();
+  regional_capabilities::CountryIdHolder japan_country_id(
+      country_codes::CountryId("JP"));
+  if (country_id == japan_country_id) {
     return kYahooSearchHost;
   }
 
@@ -81,11 +83,12 @@ BraveNewTabUI::BraveNewTabUI(
     const std::string& name,
     brave_ads::AdsService* ads_service,
     ntp_background_images::ViewCounterService* view_counter_service,
-    PrefService* local_state)
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities)
     : ui::MojoWebUIController(
           web_ui,
           true /* Needed for legacy non-mojom message handler */),
-      page_factory_receiver_(this) {
+      page_factory_receiver_(this),
+      regional_capabilities_(regional_capabilities) {
   content::WebContents* web_contents = web_ui->GetWebContents();
   CHECK(web_contents);
 
@@ -143,7 +146,7 @@ BraveNewTabUI::BraveNewTabUI(
       "featureFlagSearchWidget",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
   source->AddString("searchWidgetDefaultHost",
-                    GetSearchWidgetDefaultHost(local_state));
+                    GetSearchWidgetDefaultHost(regional_capabilities_));
 
   source->AddString("newTabTakeoverLearnMoreLinkUrl",
                     ntp_background_images::kNewTabTakeoverLearnMoreLinkUrl);

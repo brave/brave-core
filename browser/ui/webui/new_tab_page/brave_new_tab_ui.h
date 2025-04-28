@@ -9,10 +9,12 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -23,8 +25,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
-class PrefService;
 
 namespace brave_ads {
 class AdsService;
@@ -44,7 +44,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
                 const std::string& name,
                 brave_ads::AdsService* ads_service,
                 ntp_background_images::ViewCounterService* view_counter_service,
-                PrefService* local_state);
+                regional_capabilities::RegionalCapabilitiesService*
+                    regional_capabilities);
   ~BraveNewTabUI() override;
   BraveNewTabUI(const BraveNewTabUI&) = delete;
   BraveNewTabUI& operator=(const BraveNewTabUI&) = delete;
@@ -84,6 +85,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       page_factory_receiver_;
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
       rich_media_ad_event_handler_;
+  raw_ptr<regional_capabilities::RegionalCapabilitiesService>
+      regional_capabilities_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
