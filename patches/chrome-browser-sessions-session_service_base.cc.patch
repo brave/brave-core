@@ -1,0 +1,52 @@
+diff --git a/chrome/browser/sessions/session_service_base.cc b/chrome/browser/sessions/session_service_base.cc
+index cb4b5fc926b9184fb050f87ec4524be11548f347..1f96df8c3a3c736825f7fb68eaf09f7e9f0b3792 100644
+--- a/chrome/browser/sessions/session_service_base.cc
++++ b/chrome/browser/sessions/session_service_base.cc
+@@ -249,6 +249,23 @@ void SessionServiceBase::TabInserted(WebContents* contents) {
+                          session_tab_helper->session_id(), app_id);
+   }
+ 
++  LOG(ERROR) << "TabInserted: " << session_tab_helper->session_id();
++  if (auto* site_instance = contents->GetSiteInstance()) {
++    auto storage_partition_config = site_instance->GetStoragePartitionConfig();
++    if (!storage_partition_config.is_default()) {
++      LOG(ERROR) << "TabInserted partition config: "
++                 << storage_partition_config;
++      ScheduleCommand(
++          sessions::CreateAddTabExtraDataCommand(
++              session_tab_helper->session_id(), "storage_partition_domain",
++              storage_partition_config.partition_domain()));
++      ScheduleCommand(
++          sessions::CreateAddTabExtraDataCommand(
++              session_tab_helper->session_id(), "storage_partition_name",
++              storage_partition_config.partition_name()));
++    }
++  }
++
+   // Record the association between the SessionStorageNamespace and the
+   // tab.
+   //
+@@ -615,6 +632,23 @@ void SessionServiceBase::BuildCommandsForTab(
+         sessions::CreatePinnedStateCommand(session_id, true));
+   }
+ 
++  LOG(ERROR) << "BuildCommandsForTab: " << session_id;
++  if (auto* site_instance = tab->GetSiteInstance()) {
++    auto storage_partition_config = site_instance->GetStoragePartitionConfig();
++    if (!storage_partition_config.is_default()) {
++      LOG(ERROR) << "BuildCommandsForTab partition config: "
++                 << storage_partition_config;
++      ScheduleCommand(
++          sessions::CreateAddTabExtraDataCommand(
++              session_id, "storage_partition_domain",
++              storage_partition_config.partition_domain()));
++      ScheduleCommand(
++          sessions::CreateAddTabExtraDataCommand(
++              session_id, "storage_partition_name",
++              storage_partition_config.partition_name()));
++    }
++  }
++
+   // Record the association between the sessionStorage namespace and the tab.
+   content::SessionStorageNamespace* session_storage_namespace =
+       tab->GetController().GetDefaultSessionStorageNamespace();

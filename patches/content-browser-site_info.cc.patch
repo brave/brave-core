@@ -1,0 +1,21 @@
+diff --git a/content/browser/site_info.cc b/content/browser/site_info.cc
+index a8b49ab2508b03124705d7c3c921fa3f64511348..5217ca58dc44cda89e144599ed66087c5131b865 100644
+--- a/content/browser/site_info.cc
++++ b/content/browser/site_info.cc
+@@ -9,6 +9,7 @@
+ #include "base/command_line.h"
+ #include "base/containers/contains.h"
+ #include "base/debug/dump_without_crashing.h"
++#include "base/debug/stack_trace.h"
+ #include "base/strings/string_split.h"
+ #include "base/strings/stringprintf.h"
+ #include "content/browser/child_process_security_policy_impl.h"
+@@ -437,6 +438,8 @@ SiteInfo::SiteInfo(
+         cross_origin_isolation_key->common_coi_origin,
+         cross_origin_isolation_key.value());
+   }
++  LOG(ERROR) << "SiteInfo: " << site_url.spec();
++  // base::debug::StackTrace().Print();
+ }
+ SiteInfo::SiteInfo(const SiteInfo& rhs) = default;
+ 

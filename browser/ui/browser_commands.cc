@@ -47,6 +47,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -1160,6 +1161,49 @@ void SwapTabsInTile(Browser* browser) {
   model->MoveWebContentsAt(model->GetIndexOfTab(tile.second.Get()),
                            model->GetIndexOfTab(tile.first.Get()),
                            /*select_after_move*/ false);
+}
+
+void IsolateTab(Browser* browser,
+                std::optional<tabs::TabHandle> tab,
+                const std::string& partition_id) {
+  if (!tab) {
+    tab = GetActiveTabHandle(browser);
+  }
+
+  if (!tab) {
+    return;
+  }
+
+  const GURL& url = tab->Get()->GetContents()->GetLastCommittedURL();
+  if (!url.is_valid()) {
+    return;
+  }
+
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      tab->Get()->GetContents()->GetBrowserContext(), partition_id, "",
+      tab->Get()->GetContents()->GetBrowserContext()->IsOffTheRecord());
+  Navigate(&params);
+
+  // auto* model = browser->tab_strip_model();
+
+  // const int tab_index = model->GetIndexOfTab(tab->Get());
+  // const int new_tab_index = model->IsTabPinned(tab_index)
+  //                               ? model->IndexOfFirstNonPinnedTab()
+  //                               : tab_index + 1;
+
+  // if (!url.is_valid()) {
+  //   chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
+  //                    /*foreground*/ true);
+  // } else {
+  //   chrome::AddTabAt(browser, url, new_tab_index,
+  //                    /*foreground*/ true);
+  // }
+
+  // split_view_data->TileTabs(
+  //     {.first = model->GetTabAtIndex(tab_index)->GetHandle(),
+  //      .second = model->GetTabAtIndex(new_tab_index)->GetHandle()});
 }
 
 }  // namespace brave

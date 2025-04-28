@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/tab_contents/tab_util.h b/chrome/browser/tab_contents/tab_util.h
+index 5555eafc8197427fcffca31367945c88bcaccbeb..807d8e697c0a49bf616773f86b5cf7b96f48abfe 100644
+--- a/chrome/browser/tab_contents/tab_util.h
++++ b/chrome/browser/tab_contents/tab_util.h
+@@ -6,6 +6,7 @@
+ #define CHROME_BROWSER_TAB_CONTENTS_TAB_UTIL_H_
+ 
+ #include "content/public/browser/site_instance.h"
++#include "content/public/browser/storage_partition_config.h"
+ #include "url/gurl.h"
+ 
+ class Profile;
+@@ -13,8 +14,10 @@ class Profile;
+ namespace tab_util {
+ 
+ // Returns a new SiteInstance for WebUI and app URLs. Returns NULL otherwise.
+-scoped_refptr<content::SiteInstance> GetSiteInstanceForNewTab(Profile* profile,
+-                                                              GURL url);
++scoped_refptr<content::SiteInstance> GetSiteInstanceForNewTab(
++    Profile* profile,
++    GURL url,
++    std::optional<content::StoragePartitionConfig> storage_partition_config);
+ 
+ }  // namespace tab_util
+ 

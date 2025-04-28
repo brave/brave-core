@@ -455,10 +455,10 @@ BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   return main_parts;
 }
 
-bool BraveContentBrowserClient::AreIsolatedWebAppsEnabled(
-    content::BrowserContext* browser_context) {
-  return false;
-}
+// bool BraveContentBrowserClient::AreIsolatedWebAppsEnabled(
+//     content::BrowserContext* browser_context) {
+//   return false;
+// }
 
 void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
@@ -659,6 +659,25 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
   }
 
   return es_tab_helper->GetEphemeralStorageToken(origin);
+}
+
+std::optional<content::StoragePartitionConfig>
+BraveContentBrowserClient::GetStoragePartitionConfig(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& origin) {
+  DCHECK(render_frame_host);
+  auto* wc = content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!wc) {
+    return std::nullopt;
+  }
+
+  auto* es_tab_helper =
+      ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(wc);
+  if (!es_tab_helper) {
+    return std::nullopt;
+  }
+
+  return es_tab_helper->GetStoragePartitionConfig(origin);
 }
 
 bool BraveContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
@@ -913,9 +932,10 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     const base::CommandLine& browser_command_line =
         *base::CommandLine::ForCurrentProcess();
     if (!browser_command_line.HasSwitch(switches::kTestType)) {
-      if (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
-        command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
-      }
+      // if
+      // (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
+      //   command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
+      // }
     }
 
     // Switches to pass to render processes.

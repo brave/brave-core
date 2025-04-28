@@ -1,8 +1,28 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index cefd4bc59943ad8c003ca40f25af97e6f61d625c..d0785fb806783c069e109a82ec9948ddcb873e52 100644
+index cefd4bc59943ad8c003ca40f25af97e6f61d625c..275250d73a61816b66cb7952e690defa123755d5 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -637,6 +637,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -521,10 +521,18 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+   // subsequent navigation is cross-process (i.e. cross-SiteInstance), then it
+   // will stay in the same BrowsingInstance (creating frame proxies as needed)
+   // preserving the requested opener relationship along the way.
++  std::optional<content::StoragePartitionConfig> storage_partition_config =
++      params.storage_partition_config;
++  if (!storage_partition_config && params.source_site_instance &&
++      !params.source_site_instance->GetStoragePartitionConfig().is_default()) {
++    storage_partition_config =
++        params.source_site_instance->GetStoragePartitionConfig();
++  }
+   scoped_refptr<content::SiteInstance> initial_site_instance_for_new_contents =
+       params.opener
+           ? params.opener->GetSiteInstance()
+-          : tab_util::GetSiteInstanceForNewTab(params.browser->profile(), url);
++          : tab_util::GetSiteInstanceForNewTab(params.browser->profile(), url,
++                                               storage_partition_config);
+ 
+   WebContents::CreateParams create_params(
+       params.browser->profile(), initial_site_instance_for_new_contents);
+@@ -637,6 +645,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
        return nullptr;
      }
    }
@@ -10,7 +30,7 @@ index cefd4bc59943ad8c003ca40f25af97e6f61d625c..d0785fb806783c069e109a82ec9948dd
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/40136163): Remove this code after we integrate with intent
-@@ -1023,6 +1024,7 @@ bool IsURLAllowedInIncognito(const GURL& url) {
+@@ -1023,6 +1032,7 @@ bool IsURLAllowedInIncognito(const GURL& url) {
      }
      return stripped_url.is_valid() && IsURLAllowedInIncognito(stripped_url);
    }

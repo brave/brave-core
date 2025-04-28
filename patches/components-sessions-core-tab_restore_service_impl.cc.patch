@@ -1,0 +1,22 @@
+diff --git a/components/sessions/core/tab_restore_service_impl.cc b/components/sessions/core/tab_restore_service_impl.cc
+index 971e5273f1b05307bc30d1efac4f0a9b5babc8d7..edd24609a010b7e5cd435bae851c8d96d5a93c7e 100644
+--- a/components/sessions/core/tab_restore_service_impl.cc
++++ b/components/sessions/core/tab_restore_service_impl.cc
+@@ -1446,6 +1446,7 @@ bool TabRestoreServiceImpl::PersistenceDelegate::ConvertSessionWindowToWindow(
+     groups[group_id] = std::move(group);
+   }
+ 
++  LOG(ERROR) << "ConvertSessionWindowToWindow tabs: " << session_window->tabs.size();
+   for (auto& i : session_window->tabs) {
+     if (i->navigations.empty()) {
+       continue;
+@@ -1464,6 +1465,9 @@ bool TabRestoreServiceImpl::PersistenceDelegate::ConvertSessionWindowToWindow(
+     tab.current_navigation_index = i->current_navigation_index;
+     tab.extension_app_id = i->extension_app_id;
+     tab.extra_data = std::move(i->extra_data);
++    for (const auto& [key, value] : tab.extra_data) {
++      LOG(ERROR) << "ConvertSessionWindowToWindow extra data: " << key << " " << value;
++    }
+     tab.timestamp = base::Time();
+   }
+ 

@@ -28,6 +28,13 @@ ContentBrowserClient::GetEphemeralStorageToken(
   return std::nullopt;
 }
 
+std::optional<content::StoragePartitionConfig>
+ContentBrowserClient::GetStoragePartitionConfig(
+    RenderFrameHost* render_frame_host,
+    const url::Origin& origin) {
+  return std::nullopt;
+}
+
 bool ContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
     BrowserContext* browser_context,
     const url::Origin& origin) {

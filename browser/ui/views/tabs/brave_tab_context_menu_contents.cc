@@ -155,6 +155,9 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
   CHECK(IsValidContextMenu());
 
   switch (command_id) {
+    case BraveTabMenuModel::CommandIsolateTab1:
+    case BraveTabMenuModel::CommandIsolateTab2:
+      return true;
     case BraveTabMenuModel::CommandRestoreTab:
       return restore_service_ && (!restore_service_->IsLoaded() ||
                                   !restore_service_->entries().empty());
@@ -195,6 +198,10 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
   CHECK(IsValidContextMenu());
 
   switch (command_id) {
+    case BraveTabMenuModel::CommandIsolateTab1:
+    case BraveTabMenuModel::CommandIsolateTab2:
+      IsolateTab(command_id);
+      return;
     case BraveTabMenuModel::CommandRestoreTab:
       chrome::RestoreTab(browser_);
       return;
@@ -260,6 +267,15 @@ bool BraveTabContextMenuContents::IsValidContextMenu() const {
 
 void BraveTabContextMenuContents::OnMenuClosed() {
   menu_closed_ = true;
+}
+
+void BraveTabContextMenuContents::IsolateTab(int command_id) {
+  auto* model = browser_->tab_strip_model();
+  auto* tab = model->GetTabAtIndex(tab_index_);
+  brave::IsolateTab(browser_, tab->GetHandle(),
+                    command_id == BraveTabMenuModel::CommandIsolateTab1
+                        ? "partition1"
+                        : "partition2");
 }
 
 void BraveTabContextMenuContents::NewSplitView() {

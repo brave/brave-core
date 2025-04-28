@@ -58,6 +58,17 @@ EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
   return std::nullopt;
 }
 
+std::optional<content::StoragePartitionConfig>
+EphemeralStorageTabHelper::GetStoragePartitionConfig(
+    const url::Origin& origin) {
+  if (origin.host() == "example.com") {
+    return content::StoragePartitionConfig::Create(
+        web_contents()->GetBrowserContext(), "test1", "",
+        web_contents()->GetBrowserContext()->IsOffTheRecord());
+  }
+  return std::nullopt;
+}
+
 void EphemeralStorageTabHelper::WebContentsDestroyed() {}
 
 void EphemeralStorageTabHelper::DidStartNavigation(

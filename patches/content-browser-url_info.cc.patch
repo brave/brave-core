@@ -1,0 +1,23 @@
+diff --git a/content/browser/url_info.cc b/content/browser/url_info.cc
+index 333fa8a0ef5b73633e322f05340590e1b3683369..dc99378dff98f8b7c74aff8503f2d77858317797 100644
+--- a/content/browser/url_info.cc
++++ b/content/browser/url_info.cc
+@@ -4,6 +4,8 @@
+ 
+ #include "content/browser/url_info.h"
+ 
++#include "base/debug/stack_trace.h"
++#include "base/logging.h"
+ #include "content/browser/isolation_context.h"
+ 
+ namespace content {
+@@ -38,6 +40,9 @@ UrlInfo::UrlInfo(const UrlInfoInit& init)
+          requests_origin_agent_cluster_by_header());
+   DCHECK(init.is_sandboxed_ ||
+          init.unique_sandbox_id_ == kInvalidUniqueSandboxId);
++
++  LOG(ERROR) << "UrlInfo: " << url.spec();
++  // base::debug::StackTrace().Print();
+ }
+ 
+ UrlInfo::~UrlInfo() = default;

@@ -43,8 +43,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   // Overridden from ChromeContentBrowserClient:
   std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
       bool is_integration_test) override;
-  bool AreIsolatedWebAppsEnabled(
-      content::BrowserContext* browser_context) override;
+  //   bool AreIsolatedWebAppsEnabled(
+  //       content::BrowserContext* browser_context) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
   void RenderProcessWillLaunch(content::RenderProcessHost* host) override;
   void RegisterAssociatedInterfaceBindersForRenderFrameHost(
@@ -71,6 +71,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       override;
 
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
+      content::RenderFrameHost* render_frame_host,
+      const url::Origin& origin) override;
+
+  std::optional<content::StoragePartitionConfig> GetStoragePartitionConfig(
       content::RenderFrameHost* render_frame_host,
       const url::Origin& origin) override;
 

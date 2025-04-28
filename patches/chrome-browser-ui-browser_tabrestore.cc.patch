@@ -1,0 +1,41 @@
+diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
+index 73e9e6c7784fc9e7e2f48acf65fb7fa66f37e46b..ef325c281b3f52ef22e3f423e3985fb5198a7cc4 100644
+--- a/chrome/browser/ui/browser_tabrestore.cc
++++ b/chrome/browser/ui/browser_tabrestore.cc
+@@ -8,6 +8,7 @@
+ #include <memory>
+ #include <utility>
+ 
++#include "base/debug/stack_trace.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/apps/app_service/web_contents_app_id_utils.h"
+ #include "chrome/browser/profiles/profile.h"
+@@ -60,12 +61,27 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+   // SessionStorageNamespace objects. Also remove the
+   // session_storage_namespace.h include since we only need that to assign
+   // into the map.
++  LOG(ERROR) << "CreateRestoredTab extra data: " << extra_data.size();
++  base::debug::StackTrace().Print();
+   content::SessionStorageNamespaceMap session_storage_namespace_map =
+       content::CreateMapWithDefaultSessionStorageNamespace(
+           browser->profile(), session_storage_namespace);
++  for (const auto& [key, value] : extra_data) {
++    LOG(ERROR) << "CreateRestoredTab extra data: " << key << " " << value;
++  }
++  std::optional<content::StoragePartitionConfig> storage_partition_config;
++  auto storage_partition_domain = extra_data.find("storage_partition_domain");
++  auto storage_partition_name = extra_data.find("storage_partition_name");
++  if (storage_partition_domain != extra_data.end() &&
++      storage_partition_name != extra_data.end()) {
++    storage_partition_config = content::StoragePartitionConfig::Create(
++        browser->profile(), storage_partition_domain->second,
++        storage_partition_name->second, false);
++  }
+   WebContents::CreateParams create_params(
+       browser->profile(),
+-      tab_util::GetSiteInstanceForNewTab(browser->profile(), restore_url));
++      tab_util::GetSiteInstanceForNewTab(browser->profile(), restore_url,
++                                         storage_partition_config));
+   create_params.initially_hidden = initially_hidden;
+   create_params.desired_renderer_state =
+       WebContents::CreateParams::kNoRendererProcess;

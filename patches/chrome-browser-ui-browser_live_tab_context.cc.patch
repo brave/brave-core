@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
+index 4e9544e113eb3cf69f01a02ce0925f8b560a2eb3..c0d59dd0529d904a3e54b9392dd2355d707505a1 100644
+--- a/chrome/browser/ui/browser_live_tab_context.cc
++++ b/chrome/browser/ui/browser_live_tab_context.cc
+@@ -123,7 +123,22 @@ sessions::LiveTab* BrowserLiveTabContext::GetActiveLiveTab() const {
+ 
+ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
+     int index) const {
+-  return std::map<std::string, std::string>();
++  std::map<std::string, std::string> extra_data;
++  WebContents* web_contents =
++      browser_->tab_strip_model()->GetWebContentsAt(index);
++  if (web_contents) {
++    if (auto* site_instance = web_contents->GetSiteInstance()) {
++      auto storage_partition_config =
++          site_instance->GetStoragePartitionConfig();
++      if (!storage_partition_config.is_default()) {
++        extra_data["storage_partition_domain"] =
++            storage_partition_config.partition_domain();
++        extra_data["storage_partition_name"] =
++            storage_partition_config.partition_name();
++      }
++    }
++  }
++  return extra_data;
+ }
+ 
+ std::map<std::string, std::string>

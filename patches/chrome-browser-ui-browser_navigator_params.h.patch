@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_navigator_params.h b/chrome/browser/ui/browser_navigator_params.h
+index e1fe374ffdfa936869087e7c4397440dfdaf383b..a05dee0a9114a6f1c1ac96278f5d4f74187552d2 100644
+--- a/chrome/browser/ui/browser_navigator_params.h
++++ b/chrome/browser/ui/browser_navigator_params.h
+@@ -375,6 +375,8 @@ struct NavigateParams {
+   // the behaviors listed in that document.
+   bool pwa_navigation_capturing_force_off = false;
+ 
++  std::optional<content::StoragePartitionConfig> storage_partition_config;
++
+  private:
+   NavigateParams();
+ };

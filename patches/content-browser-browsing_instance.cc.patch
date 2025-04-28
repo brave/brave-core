@@ -1,0 +1,21 @@
+diff --git a/content/browser/browsing_instance.cc b/content/browser/browsing_instance.cc
+index 88a4025b0147955e8bf73adb2714aaede4eb9ef0..1aa70a41b74f820af4dab08b289dff8468557bc4 100644
+--- a/content/browser/browsing_instance.cc
++++ b/content/browser/browsing_instance.cc
+@@ -7,6 +7,7 @@
+ #include "base/check_op.h"
+ #include "base/command_line.h"
+ #include "base/containers/contains.h"
++#include "base/debug/stack_trace.h"
+ #include "content/browser/child_process_security_policy_impl.h"
+ #include "content/browser/origin_agent_cluster_isolation_state.h"
+ #include "content/browser/security/coop/coop_related_group.h"
+@@ -191,6 +192,8 @@ void BrowsingInstance::RegisterSiteInstance(SiteInstanceImpl* site_instance) {
+   // BrowsingInstance's StoragePartitionConfig if it already has one.
+   const StoragePartitionConfig& storage_partition_config =
+       site_instance->GetSiteInfo().storage_partition_config();
++  LOG(ERROR) << "RegisterSiteInstance: " << storage_partition_config;
++  // base::debug::StackTrace().Print();
+   if (storage_partition_config_.has_value()) {
+     // We should only use a single StoragePartition within a BrowsingInstance.
+     // If we're attempting to use multiple, something has gone wrong with the

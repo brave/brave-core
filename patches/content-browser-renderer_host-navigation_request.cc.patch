@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 29740121f137118836c6ace05f302cc8aa671d90..7fb4f943416e547c19d24f54ddb70c6e1bb79615 100644
+index 29740121f137118836c6ace05f302cc8aa671d90..b56b33b035a43e4cee76e5e45ea6cf55635a891f 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
 @@ -3551,6 +3551,7 @@ void NavigationRequest::OnRequestRedirected(
@@ -10,7 +10,22 @@ index 29740121f137118836c6ace05f302cc8aa671d90..7fb4f943416e547c19d24f54ddb70c6e
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -5359,6 +5360,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -4115,6 +4116,14 @@ UrlInfo NavigationRequest::GetUrlInfo() {
+         current_instance->GetStoragePartitionConfig());
+   }
+ 
++  // достать StoragePartitionConfig откуда-то сверху, типа из вкладки?
++  // if (auto partition_config =
++  //         GetContentClient()->browser()->GetStoragePartitionConfig(
++  //             frame_tree_node_->current_frame_host(),
++  //             url::Origin::Create(GetURL()))) {
++  //   url_info_init.WithStoragePartitionConfig(partition_config.value());
++  // }
++
+   // Child frames (including fenced frames) should always use the
+   // same StoragePartition as their parent.
+   RenderFrameHostImpl* parent = GetParentFrameOrOuterDocument();
+@@ -5359,6 +5368,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  

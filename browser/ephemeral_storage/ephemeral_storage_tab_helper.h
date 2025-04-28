@@ -17,6 +17,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/session_storage_namespace.h"
+#include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -40,6 +41,8 @@ class EphemeralStorageTabHelper
   ~EphemeralStorageTabHelper() override;
 
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
+      const url::Origin& origin);
+  std::optional<content::StoragePartitionConfig> GetStoragePartitionConfig(
       const url::Origin& origin);
 
  private:
