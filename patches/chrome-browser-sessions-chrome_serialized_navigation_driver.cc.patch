@@ -1,0 +1,59 @@
+diff --git a/chrome/browser/sessions/chrome_serialized_navigation_driver.cc b/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
+index 290c47db8ab9380b8d093453ba411cc244bcd8dc..5364bba374f21683e823519863ba4e0941e9ba00 100644
+--- a/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
++++ b/chrome/browser/sessions/chrome_serialized_navigation_driver.cc
+@@ -5,10 +5,12 @@
+ #include "chrome/browser/sessions/chrome_serialized_navigation_driver.h"
+ 
+ #include "base/memory/singleton.h"
++#include "brave/components/partitioned_tabs/browser/partitioned_tabs_handler_registry.h"
+ #include "build/build_config.h"
+ #include "chrome/common/url_constants.h"
+ #include "components/sessions/core/serialized_navigation_entry.h"
+ #include "content/public/common/referrer.h"
++#include "third_party/blink/public/common/page_state/page_state.h"
+ 
+ #if BUILDFLAG(IS_ANDROID)
+ #include "content/public/common/content_features.h"
+@@ -66,6 +68,19 @@ void ChromeSerializedNavigationDriver::Sanitize(
+         driver->StripReferrerFromPageState(navigation->encoded_page_state()));
+   }
+ 
++  LOG(ERROR) << "Sanitize: " << navigation->virtual_url();
++  if (navigation->virtual_url().scheme_piece().starts_with(
++          "partitioned-tabs-")) {
++    blink::PageState page_state_obj = blink::PageState::CreateFromEncodedData(
++        navigation->encoded_page_state());
++    std::vector<std::string> prefixes =
++        partitioned_tabs::PartitionedTabsHandlerRegistry::GetInstance()
++            .GetPartitionURLPrefixes();
++    std::string page_state =
++        page_state_obj.RemoveAnyPrefixFromURL(prefixes).ToEncodedData();
++    navigation->set_encoded_page_state(page_state);
++  }
++
+ #if BUILDFLAG(IS_ANDROID)
+   // Rewrite the old new tab URL to the new NTP URL.
+   if (navigation->virtual_url().SchemeIs(content::kChromeUIScheme) &&
+@@ -76,3 +91,21 @@ void ChromeSerializedNavigationDriver::Sanitize(
+ }
+ 
+ ChromeSerializedNavigationDriver::ChromeSerializedNavigationDriver() = default;
++
++std::string ChromeSerializedNavigationDriver::GetSanitizedPageStateForPickle(
++    const sessions::SerializedNavigationEntry* navigation) const {
++  std::string page_state =
++      ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle(
++          navigation);
++  LOG(ERROR) << "GetSanitizedPageStateForPickle: " << navigation->virtual_url();
++  if (navigation->virtual_url().scheme_piece().starts_with(
++          "partitioned-tabs-")) {
++    blink::PageState page_state_obj =
++        blink::PageState::CreateFromEncodedData(page_state);
++    page_state =
++        page_state_obj
++            .PrefixURL(std::string(navigation->virtual_url().scheme_piece()))
++            .ToEncodedData();
++  }
++  return page_state;
++}

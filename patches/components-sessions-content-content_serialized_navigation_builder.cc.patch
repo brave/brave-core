@@ -1,0 +1,33 @@
+diff --git a/components/sessions/content/content_serialized_navigation_builder.cc b/components/sessions/content/content_serialized_navigation_builder.cc
+index 3fc8de8b88f3dec5424a7ebceab8342fae61ffb9..b1a4800f4937d545a56c45729aefa3d1b66f6668 100644
+--- a/components/sessions/content/content_serialized_navigation_builder.cc
++++ b/components/sessions/content/content_serialized_navigation_builder.cc
+@@ -7,6 +7,9 @@
+ #include <string>
+ 
+ #include "base/check_op.h"
++#include "base/containers/map_util.h"
++#include "brave/components/partitioned_tabs/browser/partitioned_tabs_handler_registry.h"
++#include "brave/components/partitioned_tabs/browser/session_info_utils.h"
+ #include "components/sessions/content/content_record_password_state.h"
+ #include "components/sessions/content/content_serialized_navigation_driver.h"
+ #include "components/sessions/content/extended_info_handler.h"
+@@ -64,6 +67,18 @@ ContentSerializedNavigationBuilder::FromNavigationEntry(
+       navigation.extended_info_map_[handler_entry.first] = value;
+   }
+ 
++  const auto* storage_partition_info =
++      base::FindOrNull(navigation.extended_info_map_,
++                       partitioned_tabs::kStoragePartitionSessionInfoKey);
++  if (storage_partition_info) {
++    if (auto storage_partition_config =
++            partitioned_tabs::PartitionedTabsHandlerRegistry::GetInstance()
++                .MaybeAlterSyncNavigationVirtualUrl(navigation.virtual_url_,
++                                                    *storage_partition_info)) {
++      navigation.virtual_url_ = GURL(*storage_partition_config);
++    }
++  }
++
+   return navigation;
+ }
+ 
