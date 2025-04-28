@@ -193,18 +193,23 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                                 ? Utils.toHex(filTxData.value)
                                                 : ""
                                         : isBtcTransaction
-                                                ? String.valueOf(btcTxData.amount) :
-                                            isZecTransaction ? String.valueOf(zecTxData.amount)
-                                                : txData != null ? txData.baseData.value : "";
+                                                ? String.valueOf(btcTxData.amount)
+                                                : isZecTransaction
+                                                        ? String.valueOf(zecTxData.amount)
+                                                        : txData != null
+                                                                ? txData.baseData.value
+                                                                : "";
 
         String to =
                 isSolTransaction
                         ? solTxData != null ? solTxData.toWalletAddress : ""
                         : isFilTransaction
                                 ? filTxData.to
-                                : isBtcTransaction ? btcTxData.to :
-                                    isZecTransaction ? zecTxData.to :
-                                            txData != null ? txData.baseData.to : "";
+                                : isBtcTransaction
+                                        ? btcTxData.to
+                                        : isZecTransaction
+                                                ? zecTxData.to
+                                                : txData != null ? txData.baseData.to : "";
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
         AccountInfo account = Utils.findAccount(accounts, txInfo.fromAccountId);
@@ -222,9 +227,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         final double accountTokenBalance =
                 Utils.getOrDefault(
                         Utils.getOrDefault(
-                                blockchainTokensBalances,
-                                accountAddressLower,
-                                new HashMap<>()),
+                                blockchainTokensBalances, accountAddressLower, new HashMap<>()),
                         Utils.tokenToString(token),
                         0.0d);
 
@@ -500,9 +503,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final double sellTokenBalance =
                     Utils.getOrDefault(
                             Utils.getOrDefault(
-                                    blockchainTokensBalances,
-                                    accountAddressLower,
-                                    new HashMap<>()),
+                                    blockchainTokensBalances, accountAddressLower, new HashMap<>()),
                             Utils.tokenToString(sellToken),
                             0.0d);
 

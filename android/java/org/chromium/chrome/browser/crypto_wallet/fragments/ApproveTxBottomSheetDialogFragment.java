@@ -79,8 +79,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
     private TransactionConfirmationListener mTransactionConfirmationListener;
     private List<TransactionInfo> mTransactionInfos;
     private Button mRejectAllTx;
-    @CoinType.EnumType
-    private int mCoinType;
+    @CoinType.EnumType private int mCoinType;
     private long mSolanaEstimatedTxFee;
     private WalletModel mWalletModel;
     private NetworkInfo mTxNetwork;

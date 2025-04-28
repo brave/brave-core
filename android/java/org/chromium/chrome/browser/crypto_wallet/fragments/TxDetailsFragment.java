@@ -30,10 +30,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.Locale;
 
 public class TxDetailsFragment extends Fragment {
-    @NonNull
-    private final TransactionInfo mTxInfo;
-    @Nullable
-    private final TxData1559 mTxData1559;
+    @NonNull private final TransactionInfo mTxInfo;
+    @Nullable private final TxData1559 mTxData1559;
 
     public static TxDetailsFragment newInstance(@NonNull final TransactionInfo txInfo) {
         return new TxDetailsFragment(txInfo);
@@ -69,8 +67,8 @@ public class TxDetailsFragment extends Fragment {
 
             return;
         }
-        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0) &&
-                (mTxData1559 == null || mTxData1559.baseData.data.length == 0)) {
+        if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0)
+                && (mTxData1559 == null || mTxData1559.baseData.data.length == 0)) {
             return;
         }
         assert mTxInfo.txParams.length == mTxInfo.txArgs.length;
@@ -128,10 +126,13 @@ public class TxDetailsFragment extends Fragment {
     private String extractZecDetails(@NonNull final ZecTxData zecTxData) {
         final StringBuilder stringBuilder = new StringBuilder();
         for (ZecTxInput input : zecTxData.inputs) {
-            stringBuilder.append(String.format(Locale.ENGLISH, "input-%d-%s\n\n", input.value, input.address));
+            stringBuilder.append(
+                    String.format(Locale.ENGLISH, "input-%d-%s\n\n", input.value, input.address));
         }
         for (ZecTxOutput output : zecTxData.outputs) {
-            stringBuilder.append(String.format(Locale.ENGLISH, "output-%d-%s\n\n", output.value, output.address));
+            stringBuilder.append(
+                    String.format(
+                            Locale.ENGLISH, "output-%d-%s\n\n", output.value, output.address));
         }
         return stringBuilder.toString();
     }
