@@ -43,9 +43,7 @@ class WebcompatReporterUIConfig
 
 class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  public:
-  explicit WebcompatReporterDOMHandler(
-      Profile* profile,
-      content::RenderWidgetHostView* render_widget_host_view);
+  explicit WebcompatReporterDOMHandler(Profile* profile);
   WebcompatReporterDOMHandler(const WebcompatReporterDOMHandler&) = delete;
   WebcompatReporterDOMHandler& operator=(const WebcompatReporterDOMHandler&) =
       delete;
@@ -74,7 +72,6 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
-  raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
 
   mojom::ReportInfoPtr pending_report_;

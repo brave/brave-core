@@ -135,13 +135,10 @@ const std::optional<int> GetDlgMaxHeight(content::WebUI* web_ui,
 
 }  // namespace
 
-WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(
-    Profile* profile,
-    content::RenderWidgetHostView* render_widget_host_view)
+WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
     : reporter_service_(
           WebcompatReporterServiceFactory::GetServiceForContext(profile)),
       pref_service_(profile->GetPrefs()),
-      render_widget_host_view_(render_widget_host_view),
       ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
       pending_report_(mojom::ReportInfo::New()) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -207,12 +204,16 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
 
 void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     const base::Value::List& args) {
-  CHECK(render_widget_host_view_);
   CHECK_EQ(args.size(), 1u);
+  auto* const render_widget_host_view = GetRenderWidgetHostViewForActiveTab();
+  if (!render_widget_host_view) {
+    RejectJavascriptCallback(args[0], {});
+    return;
+  }
 
   AllowJavascript();
 
-  auto output_size = render_widget_host_view_->GetVisibleViewportSize();
+  auto output_size = render_widget_host_view->GetVisibleViewportSize();
   auto original_area = output_size.GetArea();
 
   if (original_area > kMaxScreenshotPixelCount) {
@@ -222,7 +223,7 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     output_size = gfx::ScaleToRoundedSize(output_size, output_scale);
   }
 
-  render_widget_host_view_->CopyFromSurface(
+  render_widget_host_view->CopyFromSurface(
       {}, output_size,
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
@@ -355,8 +356,7 @@ WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
   auto* profile = Profile::FromWebUI(web_ui);
 
   auto webcompat_reporter_handler =
-      std::make_unique<WebcompatReporterDOMHandler>(
-          profile, GetRenderWidgetHostViewForActiveTab());
+      std::make_unique<WebcompatReporterDOMHandler>(profile);
 
   webcompat_reporter_handler_ = webcompat_reporter_handler->AsWeekPtr();
 
