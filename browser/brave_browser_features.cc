@@ -57,8 +57,6 @@ BASE_FEATURE(kNewAndroidOnboarding,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
-BASE_FEATURE(kEmailAliases, "EmailAliases", base::FEATURE_DISABLED_BY_DEFAULT);
-
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.
 const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     &kBraveDayZeroExperiment,

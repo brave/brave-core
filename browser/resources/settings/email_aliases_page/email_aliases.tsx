@@ -5,14 +5,15 @@
 
 import { Alias, MappingService, ViewState } from './content/types'
 import { AliasList } from './content/email_aliases_list'
-import { color, spacing, font, radius, typography } from '@brave/leo/tokens/css/variables'
+import { color, spacing, font, radius, typography } from
+  '@brave/leo/tokens/css/variables'
 import { createRoot } from 'react-dom/client';
 import { EmailAliasModal } from './content/email_aliases_modal';
 import { getLocale } from '$web-common/locale'
 import { MainEmailEntryForm } from './content/email_aliases_signin_page'
 import { RemoteMappingService } from './content/remote_mapping_service'
 import * as React from 'react'
-import BraveIconCircle from './content/styles/BraveIconCircle'
+import BraveIconCircle from './content/styles/brave_icon_circle'
 import Button from '@brave/leo/react/button'
 import Card from './content/styles/Card'
 import Col from './content/styles/Col'
@@ -87,14 +88,21 @@ const Introduction = () =>
       </div>
   </SectionTitle>
 
-const MainEmailDisplay = ({ email, onLogout }: { email: string, onLogout: () => void }) =>
+const MainEmailDisplay = ({ email, onLogout }:
+  { email: string, onLogout: () => void }) =>
   <Card>
     <AccountRow>
       <Row>
         <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
         <MainEmailTextContainer>
-          <MainEmail>{email === '' ? getLocale('emailAliasesConnectingToBraveAccount') : email}</MainEmail>
-          <MainEmailDescription>{getLocale('emailAliasesBraveAccount')}</MainEmailDescription>
+          <MainEmail>
+            {email === ''
+              ? getLocale('emailAliasesConnectingToBraveAccount')
+              : email}
+          </MainEmail>
+          <MainEmailDescription>
+            {getLocale('emailAliasesBraveAccount')}
+          </MainEmailDescription>
         </MainEmailTextContainer>
       </Row>
       <Button
@@ -145,7 +153,8 @@ export const ManagePage = ({ mappingService }:
   {
     mappingService: MappingService
   }) => {
-  const [viewState, setViewState] = React.useState<ViewState>({ mode: 'Startup' })
+  const [viewState, setViewState] = React.useState<ViewState>(
+    { mode: 'Startup' })
   const [mainEmail, setMainEmail] = React.useState<string>('')
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
   const onEmailChange = async () => {

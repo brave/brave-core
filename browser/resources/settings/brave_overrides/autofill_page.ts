@@ -16,9 +16,11 @@ RegisterPolymerComponentReplacement(
 
 RegisterPolymerTemplateModifications({
   'settings-autofill-page': (templateContent) => {
-    const isEmailAliasesFeatureEnabled = loadTimeData.getBoolean('isEmailAliasesFeatureEnabled')
+    const isEmailAliasesFeatureEnabled = loadTimeData.getBoolean(
+      'isEmailAliasesFeatureEnabled')
     if (isEmailAliasesFeatureEnabled) {
-      const parentManagerButton = templateContent.getElementById('paymentManagerButton')
+      const parentManagerButton = templateContent.getElementById(
+        'paymentManagerButton')
       if (!parentManagerButton) {
         console.error('[overrides]: Couldn\'t find payment manager button')
       } else {
@@ -27,7 +29,8 @@ RegisterPolymerTemplateModifications({
             start-icon="email-shield"
             label="${loadTimeData.getString('emailAliasesLabel')}"
             on-click="onEmailAliasesClicked_"
-            role-description="${loadTimeData.getString('subpageArrowRoleDescription')}"></cr-link-row>
+            role-description="${loadTimeData.getString(
+              'subpageArrowRoleDescription')}"></cr-link-row>
       `, parentManagerButton)
       }
     }
@@ -35,7 +38,8 @@ RegisterPolymerTemplateModifications({
         <settings-toggle-button
           class="hr"
           label="${loadTimeData.getString('autofillInPrivateSettingLabel')}"
-          sub-label="${loadTimeData.getString('autofillInPrivateSettingDesc')}"
+          sub-label="${loadTimeData.getString(
+            'autofillInPrivateSettingDesc')}"
           id="autofill-private-profies"
           pref="{{prefs.brave.autofill_private_windows}}"
           hidden=[[!isAutofillPage_]]
@@ -51,8 +55,10 @@ RegisterPolymerTemplateModifications({
           <settings-subpage
             associated-control="[[$$('#paymentManagerButton')]]"
             page-title="${loadTimeData.getString('emailAliasesLabel')}"
-            learn-more-url="${loadTimeData.getString('addressesAndPaymentMethodsLearnMoreURL')}">
-          <settings-email-aliases-page id="emailAliasesSection" prefs="{{prefs}}" />
+            learn-more-url="${loadTimeData.getString(
+              'addressesAndPaymentMethodsLearnMoreURL')}">
+          <settings-email-aliases-page id="emailAliasesSection"
+            prefs="{{prefs}}" />
           </settings-subpage>
         </template>`)
       }

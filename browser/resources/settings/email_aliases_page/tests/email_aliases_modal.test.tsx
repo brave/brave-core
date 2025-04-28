@@ -37,7 +37,8 @@ describe('EmailAliasModal', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockMappingService.getAccountEmail = jest.fn().mockResolvedValue(mockEmail)
-    mockMappingService.generateAlias = jest.fn().mockResolvedValue('generated@brave.com')
+    mockMappingService.generateAlias = jest.fn()
+      .mockResolvedValue('generated@brave.com')
   })
 
   it('renders create mode correctly', async () => {
@@ -51,7 +52,8 @@ describe('EmailAliasModal', () => {
     )
 
     // Check title and description
-    expect(screen.getByText(localeRegex('emailAliasesCreateAliasTitle'))).toBeInTheDocument()
+    expect(screen.getByText(localeRegex('emailAliasesCreateAliasTitle')))
+      .toBeInTheDocument()
 
     // Check that generate alias was called
     await waitFor(() => {
@@ -79,11 +81,13 @@ describe('EmailAliasModal', () => {
     )
 
     // Check title
-    expect(screen.getByText(localeRegex('emailAliasesEditAliasTitle'))).toBeInTheDocument()
+    expect(screen.getByText(localeRegex('emailAliasesEditAliasTitle')))
+      .toBeInTheDocument()
 
     // Check that existing alias is displayed
     expect(screen.getByText(/existing@brave\.com/)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(localeRegex('emailAliasesEditNotePlaceholder'))).toHaveValue('Existing Alias')
+    expect(screen.getByPlaceholderText(localeRegex(
+      'emailAliasesEditNotePlaceholder'))).toHaveValue('Existing Alias')
   })
 
   it('handles alias creation', async () => {
@@ -103,14 +107,17 @@ describe('EmailAliasModal', () => {
 
     // Wait for loading to complete and alias to be generated
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(localeRegex('emailAliasesEditNotePlaceholder'))).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(localeRegex(
+        'emailAliasesEditNotePlaceholder'))).toBeInTheDocument()
       expect(screen.queryByTestId('loading-icon')).not.toBeInTheDocument()
-      const generatedEmailContainer = screen.getByText(localeRegex('emailAliasesAliasLabel')).closest('div')?.nextElementSibling
+      const generatedEmailContainer = screen.getByText(localeRegex(
+        'emailAliasesAliasLabel')).closest('div')?.nextElementSibling
       expect(generatedEmailContainer).toHaveTextContent('generated@brave.com')
     })
 
     // Ensure the save button is enabled
-    const saveButton = screen.getByText(localeRegex('emailAliasesCreateAliasButton'))
+    const saveButton = screen.getByText(localeRegex(
+      'emailAliasesCreateAliasButton'))
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
     // Click save button
@@ -136,7 +143,8 @@ describe('EmailAliasModal', () => {
     // Wait for initial generation
     await waitFor(() => {
       expect(mockMappingService.generateAlias).toHaveBeenCalled()
-      expect(screen.getByTitle('emailAliasesRefreshButtonTitle')).toBeInTheDocument()
+      expect(screen.getByTitle('emailAliasesRefreshButtonTitle'))
+        .toBeInTheDocument()
     })
 
     // Click regenerate button
@@ -150,7 +158,8 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows limit reached message in bubble mode', async () => {
-    mockMappingService.getAliases = jest.fn().mockResolvedValue(Array(10).fill(null))
+    mockMappingService.getAliases = jest.fn().mockResolvedValue(Array(10)
+                                      .fill(null))
 
     render(
       <EmailAliasModal
@@ -164,14 +173,16 @@ describe('EmailAliasModal', () => {
 
     // Wait for limit check
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesBubbleLimitReached'))).toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesBubbleLimitReached')))
+        .toBeInTheDocument()
     })
   })
 
   it('shows loading state while generating alias', async () => {
     // Mock generateAlias to take some time
     mockMappingService.generateAlias = jest.fn().mockImplementation(() => {
-      return new Promise(resolve => setTimeout(() => resolve('new@brave.com'), 100))
+      return new Promise(
+        resolve => setTimeout(() => resolve('new@brave.com'), 100))
     })
 
     render(
@@ -186,13 +197,15 @@ describe('EmailAliasModal', () => {
     // Initially should show loading state but not the button
     const loadingIcon = document.querySelector('[name="loading-spinner"]')
     expect(loadingIcon).toBeInTheDocument()
-    const regenerateButton = screen.queryByTitle('emailAliasesRefreshButtonTitle')
+    const regenerateButton = screen.queryByTitle(
+      'emailAliasesRefreshButtonTitle')
     expect(regenerateButton).not.toBeInTheDocument()
 
     // Wait for generation to complete. Should now show the button
     await waitFor(() => {
       expect(loadingIcon).not.toBeInTheDocument()
-      const regenerateButton = screen.queryByTitle('emailAliasesRefreshButtonTitle')
+      const regenerateButton = screen.queryByTitle(
+        'emailAliasesRefreshButtonTitle')
       expect(regenerateButton).toBeInTheDocument()
     })
   })
@@ -219,11 +232,13 @@ describe('EmailAliasModal', () => {
     // Wait for initial state to be set
     await waitFor(() => {
       expect(screen.getByText(/existing@brave\.com/)).toBeInTheDocument()
-      expect(screen.getByPlaceholderText(localeRegex('emailAliasesEditNotePlaceholder'))).toHaveValue('Existing Alias')
+      expect(screen.getByPlaceholderText(localeRegex(
+        'emailAliasesEditNotePlaceholder'))).toHaveValue('Existing Alias')
     })
 
     // Ensure the save button is enabled
-    const saveButton = screen.getByText(localeRegex('emailAliasesSaveAliasButton'))
+    const saveButton = screen.getByText(localeRegex(
+      'emailAliasesSaveAliasButton'))
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
     // Click save button

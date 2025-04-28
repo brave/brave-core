@@ -9,6 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/resources/settings/email_aliases_page/features.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -106,7 +107,7 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
   data_source->AddBoolean(
       "isEmailAliasesFeatureEnabled",
-      base::FeatureList::IsEnabled(features::kEmailAliases));
+      base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
 }
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(

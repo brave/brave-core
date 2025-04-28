@@ -86,7 +86,8 @@ describe('AliasList', () => {
     fireEvent.click(copyButtons[0])
 
     // Check if clipboard API was called
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('test1@brave.com')
+    expect(navigator.clipboard.writeText)
+      .toHaveBeenCalledWith('test1@brave.com')
   })
 
   it('copies email when clicking alias label', () => {
@@ -104,7 +105,8 @@ describe('AliasList', () => {
     fireEvent.click(aliasLabel)
 
     // Check if clipboard API was called
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('test1@brave.com')
+    expect(navigator.clipboard.writeText)
+      .toHaveBeenCalledWith('test1@brave.com')
   })
 
   it('disables create button when max aliases reached', () => {
@@ -124,8 +126,10 @@ describe('AliasList', () => {
     )
 
     // Check if create button is disabled
-    const createButton = screen.getByText(getLocale('emailAliasesCreateAliasLabel'))
-    expect(createButton.closest('leo-button')).toHaveAttribute('isdisabled', 'true')
+    const createButton = screen.getByText(getLocale(
+      'emailAliasesCreateAliasLabel'))
+    expect(createButton.closest('leo-button'))
+      .toHaveAttribute('isdisabled', 'true')
   })
 
   it('handles delete functionality', async () => {
@@ -146,7 +150,8 @@ describe('AliasList', () => {
     await Promise.resolve()
 
     // Check if service was called
-    expect(mockMappingService.deleteAlias).toHaveBeenCalledWith('test1@brave.com')
+    expect(mockMappingService.deleteAlias)
+      .toHaveBeenCalledWith('test1@brave.com')
     expect(mockOnListChange).toHaveBeenCalled()
   })
 

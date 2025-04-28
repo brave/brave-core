@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { onEnterKeyForDiv, onEnterKeyForInput } from '../content/onEnterKey'
+import { onEnterKeyForDiv, onEnterKeyForInput } from '../content/on_enter_key'
 import { KeyboardEvent } from 'react'
 
 describe('onEnterKey', () => {
-  const testKeyPress = (handler: (e: any) => void, key: string, shouldCall: boolean) => {
+  const testKeyPress = (handler: (e: any) => void,
+                        key: string, shouldCall: boolean) => {
     let called = false
     const wrappedHandler = onEnterKeyForDiv(() => { called = true })
     wrappedHandler({ key } as KeyboardEvent<HTMLDivElement>)
     expect(called).toBe(shouldCall)
   }
 
-  const testInputKeyPress = (handler: (e: any) => void, key: string, shouldCall: boolean) => {
+  const testInputKeyPress = (handler: (e: any) => void,
+                             key: string, shouldCall: boolean) => {
     let called = false
     const wrappedHandler = onEnterKeyForInput(() => { called = true })
     wrappedHandler({ innerEvent: { key } } as any)
