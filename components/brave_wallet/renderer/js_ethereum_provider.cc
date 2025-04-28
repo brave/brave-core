@@ -133,6 +133,9 @@ void JSEthereumProvider::DidFinishLoad() {
     return;
   }
 
+  // These used to be called synchronously by `JSEthereumProvider::Install`
+  // which appeared to cause rare crashes with certain extensions' behavior. See
+  // https://github.com/brave/brave-browser/issues/45694 for details.
   BindRequestProviderListener();
   AnnounceProvider();
 }
