@@ -21,15 +21,18 @@ export class RemoteMappingService implements MappingService {
   async getAliases (): Promise<Alias[]> {
     // TODO: remove this once we have a real implementation
     return Promise.resolve([
-      { email: "mock-alias1@sandbox.bravealias.com", note: "Mock Alias 1", status: true },
-      { email: "mock-alias2@sandbox.bravealias.com", note: "Mock Alias 2", status: false }
+      { email: "mock-alias1@sandbox.bravealias.com", note: "Mock Alias 1",
+        status: true },
+      { email: "mock-alias2@sandbox.bravealias.com", note: "Mock Alias 2",
+        status: false }
     ])
   }
   async createAlias (_email: string, _note: string): Promise<void> {
     // TODO: remove this once we have a real implementation
     return Promise.resolve()
   }
-  async updateAlias (_email: string, _note: string, _status: boolean): Promise<void> {
+  async updateAlias (_email: string, _note: string, _status: boolean):
+    Promise<void> {
     // TODO: remove this once we have a real implementation
     return Promise.resolve()
   }
@@ -39,7 +42,8 @@ export class RemoteMappingService implements MappingService {
   }
   generateAlias (): Promise<string> {
     // TODO: remove this once we have a real implementation
-    return Promise.resolve("mock-" + Math.random().toString().slice(2,6) + "@sandbox.bravealias.com")
+    return Promise.resolve(
+      "mock-" + Math.random().toString().slice(2,6) + "@sandbox.bravealias.com")
   }
   async onAccountReady(): Promise<boolean> {
     return Promise.resolve(true)

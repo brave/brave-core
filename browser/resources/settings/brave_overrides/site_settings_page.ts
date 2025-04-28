@@ -177,7 +177,8 @@ RegisterPolymerComponentReplacement(
               }
               lists.permissionsAdvanced.splice(currentIndex, 0, solanaItem)
             }
-            const isEmailAliasesEnabled = loadTimeData.getBoolean('isEmailAliasesFeatureEnabled')
+            const isEmailAliasesEnabled = loadTimeData.getBoolean(
+              'isEmailAliasesFeatureEnabled')
             if (isEmailAliasesEnabled) {
               currentIndex++
               const emailAliasesItem = {

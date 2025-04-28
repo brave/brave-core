@@ -14,7 +14,10 @@ type AccountState = 'NoAccount' | 'AccountReady' | 'AwaitingAccount'
 
 provideStrings({
   emailAliasesShortDescription: 'Keep your personal email address private',
-  emailAliasesDescription: 'Create unique, random addresses that forward to your Brave account email and can be deleted at any time. Keep your actual email address from being disclosed or used by advertisers.',
+  emailAliasesDescription:
+    'Create unique, random addresses that forward to your Brave account ' +
+    'email and can be deleted at any time. Keep your actual email address ' +
+    'from being disclosed or used by advertisers.',
   emailAliasesLearnMore: 'Learn More',
   emailAliasesSignOut: 'Sign Out',
   emailAliasesSignOutTitle: 'Sign Out of Email Aliases',
@@ -25,7 +28,8 @@ provideStrings({
   emailAliasesUsedBy: 'Used by $1',
   emailAliasesEdit: 'Edit',
   emailAliasesDelete: 'Delete',
-  emailAliasesCreateDescription: 'Create up to 5 free email aliases to protect your real email address.',
+  emailAliasesCreateDescription: 'Create up to 5 free email aliases to ' +
+    'protect your real email address.',
   emailAliasesListTitle: 'Your Email aliases',
   emailAliasesCreateAliasTitle: 'New email alias',
   emailAliasesCreateAliasLabel: 'New alias',
@@ -40,15 +44,23 @@ provideStrings({
   emailAliasesEditAliasTitle: 'Edit email alias',
   emailAliasesCreateAliasButton: 'Create alias',
   emailAliasesSaveAliasButton: 'Save',
-  emailAliasesSignInOrCreateAccount: 'To get started, sign in or create a Brave account',
-  emailAliasesEnterEmailToGetLoginLink: 'Enter your email address to get a secure login link sent to your email. Clicking this link will either create or access a Brave Account and let you use the free Email Aliases service.',
+  emailAliasesSignInOrCreateAccount: 'To get started, sign in or create a ' +
+    'Brave account',
+  emailAliasesEnterEmailToGetLoginLink: 'Enter your email address to get a ' +
+    'secure login link sent to your email. Clicking this link will either ' +
+    'create or access a Brave Account and let you use the free Email Aliases ' +
+    'service.',
   emailAliasesGetLoginLinkButton: 'Get login link',
   emailAliasesEmailAddressPlaceholder: 'Email address',
   emailAliasesLoginEmailOnTheWay: 'A login email is on the way to $1',
-  emailAliasesClickOnSecureLogin: 'Click on the secure login link in the email to access your account.',
-  emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder or $1try again$2.',
-  emailAliasesBubbleDescription: 'Create a random email address that forwards to your inbox while keeping your personal email private.',
-  emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.',
+  emailAliasesClickOnSecureLogin: 'Click on the secure login link in the ' +
+    'email to access your account.',
+  emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder ' +
+    'or $1try again$2.',
+  emailAliasesBubbleDescription: 'Create a random email address that ' +
+    'forwards to your inbox while keeping your personal email private.',
+  emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free ' +
+    'email aliases. Click "Manage" to re-use or delete an alias.',
 })
 
 export default {
@@ -109,7 +121,8 @@ class MockMappingService implements MappingService {
   async generateAlias () {
     let generated: string = ''
     do {
-      generated = "mock-" + Math.random().toString().slice(2,6) + "@bravealias.com"
+      generated = "mock-" + Math.random().toString().slice(2,6) +
+        "@bravealias.com"
     } while (this.aliases.has(generated))
     await new Promise(resolve => setTimeout(resolve, 1000))
     return generated
@@ -156,18 +169,22 @@ class MockMappingService implements MappingService {
   }
 }
 
-const mockMappingServiceNoAccountInstance = new MockMappingService('NoAccount', '')
-const mockMappingServiceAccountReadyInstance = new MockMappingService('AccountReady', demoData.email)
+const mockMappingServiceNoAccountInstance =
+  new MockMappingService('NoAccount', '')
+const mockMappingServiceAccountReadyInstance =
+  new MockMappingService('AccountReady', demoData.email)
 
 export const SignInPage = () => {
   return (
-    <ManagePage mappingService={mockMappingServiceNoAccountInstance}></ManagePage>
+    <ManagePage mappingService={mockMappingServiceNoAccountInstance}>
+    </ManagePage>
   )
 }
 
 export const SettingsPage = () => {
   return (
-    <ManagePage mappingService={mockMappingServiceAccountReadyInstance}></ManagePage>
+    <ManagePage mappingService={mockMappingServiceAccountReadyInstance}>
+    </ManagePage>
   )
 }
 

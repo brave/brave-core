@@ -20,3 +20,12 @@ pack_web_resources("generated_resources") {
       "$root_gen_dir/brave/browser/resources/settings/email_aliases_page"
   deps = [ ":email_aliases_ui" ]
 }
+
+static_library("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//base" ]
+}

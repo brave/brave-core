@@ -33,8 +33,10 @@ describe('ManagePage', () => {
 
   it('shows loading state initially', () => {
     render(<ManagePage mappingService={mockMappingService} />)
-    expect(document.querySelector('[name="loading-spinner"]')).toBeInTheDocument()
-    expect(screen.getByText(localeRegex('emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
+    expect(document.querySelector('[name="loading-spinner"]'))
+      .toBeInTheDocument()
+    expect(screen.getByText(localeRegex(
+      'emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
   })
 
   it('shows sign up form when no email is available', async () => {
@@ -45,8 +47,10 @@ describe('ManagePage', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount'))).toBeInTheDocument()
-      expect(screen.getByPlaceholderText(localeRegex('emailAliasesEmailAddressPlaceholder'))).toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount')))
+        .toBeInTheDocument()
+      expect(screen.getByPlaceholderText(localeRegex(
+        'emailAliasesEmailAddressPlaceholder'))).toBeInTheDocument()
     })
   })
 
@@ -89,7 +93,8 @@ describe('ManagePage', () => {
       const submitButton = document.querySelector('leo-button')
       expect(emailInput).toBeInTheDocument()
       expect(submitButton).toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount'))).toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount')))
+        .toBeInTheDocument()
     })
 
     // Enter email and submit
@@ -108,13 +113,15 @@ describe('ManagePage', () => {
 
     // Click submit button
     await act(async () => {
-      const submitButton = screen.getByText(localeRegex('emailAliasesGetLoginLinkButton'))
+      const submitButton =
+        screen.getByText(localeRegex('emailAliasesGetLoginLinkButton'))
       submitButton.shadowRoot?.querySelector('button')?.click()
     })
 
     // Wait for main view to be shown
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
+      expect(screen.getByText(localeRegex(
+        'emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
     })
   })
 
@@ -143,7 +150,8 @@ describe('ManagePage', () => {
 
     // Check that we're back to sign up form
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount'))).toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount')))
+        .toBeInTheDocument()
     })
   })
 })

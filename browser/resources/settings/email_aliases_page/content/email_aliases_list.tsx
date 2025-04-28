@@ -8,7 +8,7 @@ import { color, spacing } from '@brave/leo/tokens/css/variables'
 import { font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import { MAX_ALIASES } from './constant'
-import { onEnterKeyForDiv } from './onEnterKey'
+import { onEnterKeyForDiv } from './on_enter_key'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
@@ -73,7 +73,8 @@ const AliasMenuItem = ({ onClick, iconName, text }:
     </AliasMenuItemContent>
   </leo-menu-item>
 
-const CopyToast = ({ text, tabIndex, children }: { text: string, tabIndex?: number, children: React.ReactNode }) => {
+const CopyToast = ({ text, tabIndex, children }:
+  { text: string, tabIndex?: number, children: React.ReactNode }) => {
   const [copied, setCopied] = React.useState<boolean>(false)
   const copy = () => {
     navigator.clipboard.writeText(text)
@@ -85,13 +86,15 @@ const CopyToast = ({ text, tabIndex, children }: { text: string, tabIndex?: numb
     data-testid="copy-toast"
     onKeyDown={onEnterKeyForDiv(copy)}
     onClick={copy}>
-    <Tooltip text={copied ? getLocale('emailAliasesCopiedToClipboard') : ''} mode="mini" visible={copied}>
+    <Tooltip text={copied ? getLocale('emailAliasesCopiedToClipboard') : ''}
+             mode="mini" visible={copied}>
       {children}
     </Tooltip>
   </div>
 }
 
-const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: () => void, onDelete: () => void }) =>
+const AliasItem = ({ alias, onEdit, onDelete }:
+  { alias: Alias, onEdit: () => void, onDelete: () => void }) =>
   <AliasItemRow>
     <Col>
       <CopyToast text={alias.email}>
@@ -140,7 +143,8 @@ const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: () => vo
       </AliasControls>
     </AliasItemRow>
 
-export const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: {
+export const AliasList = ({
+  aliases, onViewChange, onListChange,mappingService }: {
     mappingService: MappingService,
     aliases: Alias[],
     onViewChange: (viewState: ViewState) => void,
@@ -150,7 +154,9 @@ export const AliasList = ({ aliases, onViewChange, onListChange, mappingService 
     <AliasListIntro>
       <Col>
         <h4>{getLocale('emailAliasesListTitle')}</h4>
-        <Description>{getLocale('emailAliasesCreateDescription')}</Description>
+        <Description>
+          {getLocale('emailAliasesCreateDescription')}
+        </Description>
       </Col>
       <Button
         isDisabled={aliases.length >= MAX_ALIASES}
