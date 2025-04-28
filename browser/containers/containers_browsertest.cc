@@ -33,6 +33,8 @@
 
 namespace containers {
 
+constexpr char kTestContainerId[] = "test-container-id";
+
 class ContainersBrowserTest : public InProcessBrowserTest {
  public:
   ContainersBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
@@ -47,6 +49,11 @@ class ContainersBrowserTest : public InProcessBrowserTest {
   }
 
   ~ContainersBrowserTest() override = default;
+
+  void SetUp() override {
+    set_open_about_blank_on_browser_launch(false);
+    InProcessBrowserTest::SetUp();
+  }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -333,6 +340,73 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_StoragePersistenceAcrossSessions) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to the page
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Set persistent storage data
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetCookieJS("persistent_cookie", "persistent_value")));
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetLocalStorageJS("persistent_key", "persistent_value")));
+
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetIndexedDBJS("persistent_key", "persistent_value")));
+
+  // Verify data is set
+  content::EvalJsResult cookie_result =
+      content::EvalJs(web_contents, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "persistent_cookie=persistent_value") != std::string::npos);
+
+  EXPECT_EQ("persistent_value",
+            content::EvalJs(web_contents, GetLocalStorageJS("persistent_key")));
+  EXPECT_EQ("persistent_value",
+            content::EvalJs(web_contents, GetIndexedDBJS("persistent_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       StoragePersistenceAcrossSessions) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to the page
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents_reloaded =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_reloaded);
+
+  // Verify persistent data is still available after reload
+  content::EvalJsResult cookie_result_reloaded =
+      content::EvalJs(web_contents_reloaded, GetCookiesJS());
+  EXPECT_TRUE(cookie_result_reloaded.ExtractString().find(
+                  "persistent_cookie=persistent_value") != std::string::npos);
+
+  EXPECT_EQ("persistent_value",
+            content::EvalJs(web_contents_reloaded,
+                            GetLocalStorageJS("persistent_key")));
+  EXPECT_EQ(
+      "persistent_value",
+      content::EvalJs(web_contents_reloaded, GetIndexedDBJS("persistent_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        LinkNavigationInheritsContainerStoragePartition) {
   const GURL url("https://a.test/simple.html");
 
@@ -340,8 +414,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain,
-      "container-for-links", browser()->profile()->IsOffTheRecord());
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* container_web_contents =
@@ -384,6 +458,13 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Verify the new tab is on the correct URL
   EXPECT_EQ(url, new_tab_contents->GetLastCommittedURL());
+
+  content::StoragePartition* storage_partition =
+      new_tab_contents->GetPrimaryMainFrame()->GetStoragePartition();
+  ASSERT_TRUE(storage_partition);
+  EXPECT_EQ(kContainersStoragePartitionDomain,
+            storage_partition->GetConfig().partition_domain());
+  EXPECT_EQ(kTestContainerId, storage_partition->GetConfig().partition_name());
 
   // Verify the new tab has access to the same container storage partition
   content::EvalJsResult cookie_result =
@@ -897,6 +978,72 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ShouldShowTabAccent) {
 
   tab_in_container->SetBounds(0, 0, 30, 30);
   EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_ServiceWorkerPersistenceAcrossSessions) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const GURL worker_url("https://a.test/containers/container_worker.js");
+  const std::string scope = "https://a.test/containers/";
+
+  // Navigate to the page with a container
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Register service worker
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, RegisterServiceWorkerJS(worker_url.spec(), scope)));
+
+  // Verify service worker is registered
+  EXPECT_EQ(
+      "registered",
+      content::EvalJs(web_contents, CheckServiceWorkerRegisteredJS(scope)));
+
+  // Set some persistent storage data that the service worker might use
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetLocalStorageJS("sw_data", "persistent_value")));
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              SetCookieJS("sw_cookie", "persistent_cookie")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       ServiceWorkerPersistenceAcrossSessions) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const std::string scope = "https://a.test/containers/";
+
+  // Navigate to the page with the same container
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents_reloaded =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_reloaded);
+
+  // Verify service worker is still registered after browser restart
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_reloaded,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify persistent storage data is still available
+  EXPECT_EQ("persistent_value", content::EvalJs(web_contents_reloaded,
+                                                GetLocalStorageJS("sw_data")));
+
+  content::EvalJsResult cookie_result =
+      content::EvalJs(web_contents_reloaded, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "sw_cookie=persistent_cookie") != std::string::npos);
 }
 
 }  // namespace containers

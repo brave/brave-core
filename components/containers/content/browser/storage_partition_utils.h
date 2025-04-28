@@ -20,15 +20,24 @@ class WebContents;
 namespace containers {
 
 // The partition domain identifier used for all containers storage partitions.
-inline constexpr char kContainersStoragePartitionDomain[] =
-    "containers-default";
+inline constexpr char kContainersStoragePartitionDomain[] = "containers";
 
 // Checks whether a given StoragePartitionConfig belongs to Containers.
-// Partition domain should match kContainersStoragePartitionDomain and partition
-// name should be non-empty.
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 bool IsContainersStoragePartition(
     const content::StoragePartitionConfig& partition_config);
+
+// Checks whether a given StoragePartitionConfig partition domain and name
+// belongs to Containers.
+COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
+bool IsContainersStoragePartitionKey(std::string_view partition_domain,
+                                     std::string_view partition_name);
+
+// Checks whether a storage partition key component is not empty and contains
+// only valid characters for Containers storage partitions. Valid characters are
+// ASCII alphanumeric characters and '-'.
+COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
+bool IsValidStoragePartitionKeyComponent(std::string_view component);
 
 // Returns the StoragePartitionConfig if it is a Containers storage partition,
 // otherwise returns std::nullopt. Used to conditionally inherit

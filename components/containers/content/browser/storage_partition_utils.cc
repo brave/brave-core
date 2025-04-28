@@ -5,6 +5,9 @@
 
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 
+#include <algorithm>
+
+#include "base/strings/string_util.h"
 #include "brave/components/containers/core/common/features.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
@@ -15,9 +18,23 @@ namespace containers {
 bool IsContainersStoragePartition(
     const content::StoragePartitionConfig& partition_config) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  return partition_config.partition_domain() ==
-             kContainersStoragePartitionDomain &&
-         !partition_config.partition_name().empty();
+  return IsContainersStoragePartitionKey(partition_config.partition_domain(),
+                                         partition_config.partition_name());
+}
+
+bool IsContainersStoragePartitionKey(std::string_view partition_domain,
+                                     std::string_view partition_name) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  return partition_domain == kContainersStoragePartitionDomain &&
+         IsValidStoragePartitionKeyComponent(partition_name);
+}
+
+bool IsValidStoragePartitionKeyComponent(std::string_view component) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  return !component.empty() &&
+         std::ranges::all_of(component, [](const char& c) {
+           return base::IsAsciiAlphaNumeric(c) || c == '-';
+         });
 }
 
 std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
@@ -33,6 +50,7 @@ std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
 }
 
 std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
   if (!web_contents) {
     return std::string();
   }
