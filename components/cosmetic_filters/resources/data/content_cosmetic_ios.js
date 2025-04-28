@@ -1228,6 +1228,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
         }
       }
     }
+    // update stylesheet for procedural actions
+    setRulesOnStylesheetThrottled();
   };
 
   const waitForBody = () => {
