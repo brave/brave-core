@@ -6,18 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_BROWSER_TAB_MENU_MODEL_DELEGATE_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_BROWSER_TAB_MENU_MODEL_DELEGATE_H_
 
-#include <string>
-
-#include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_tab_menu_model_delegate.h"
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/browser/ui/containers/containers_menu_model.h"
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-class Browser;
 class BrowserWindowInterface;
 class Profile;
 
@@ -27,12 +18,7 @@ namespace brave {
 // BrowserTabMenuModelDelegate to provide Brave-specific functionality for tab
 // context menus.
 class BraveBrowserTabMenuModelDelegate
-    : public chrome::BrowserTabMenuModelDelegate
-#if BUILDFLAG(ENABLE_CONTAINERS)
-    ,
-      public containers::ContainersMenuModelDelegate
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-{
+    : public chrome::BrowserTabMenuModelDelegate {
  public:
   BraveBrowserTabMenuModelDelegate(
       SessionID session_id,
@@ -49,16 +35,6 @@ class BraveBrowserTabMenuModelDelegate
 
   // TabMenuModelDelegate overrides for Brave-specific functionality:
   bool ShouldShowBraveVerticalTab() override;
-  ContainersMenuModelDelegate* GetContainersMenuModelDelegate() override;
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  // containers::ContainersMenuModelDelegate overrides:
-  void OnContainerSelected(
-      const containers::mojom::ContainerPtr& container) override;
-  base::flat_set<std::string> GetCurrentContainerIds() override;
-  Browser* GetBrowserToOpenSettings() override;
-  float GetScaleFactor() override;
-#endif
 
  private:
   raw_ptr<BrowserWindowInterface> browser_window_ = nullptr;

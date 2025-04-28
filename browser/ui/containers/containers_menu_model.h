@@ -24,20 +24,6 @@ namespace test {
 class ContainersMenuModelTestApi;
 }  // namespace test
 
-class ContainersMenuModelDelegate {
- public:
-  ContainersMenuModelDelegate() = default;
-  ContainersMenuModelDelegate(const ContainersMenuModelDelegate&) = delete;
-  ContainersMenuModelDelegate& operator=(const ContainersMenuModelDelegate&) =
-      delete;
-  virtual ~ContainersMenuModelDelegate() = default;
-
-  virtual void OnContainerSelected(const mojom::ContainerPtr& container) = 0;
-  virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
-  virtual Browser* GetBrowserToOpenSettings() = 0;
-  virtual float GetScaleFactor() = 0;
-};
-
 // A menu model that represents a list of Containers. This menu can be used in
 // various UI components, such as renderer context menus, tab context menus,
 // etc. Not only containers, but also a command to open the settings page for
@@ -45,8 +31,17 @@ class ContainersMenuModelDelegate {
 class ContainersMenuModel : public ui::SimpleMenuModel,
                             public ui::SimpleMenuModel::Delegate {
  public:
-  ContainersMenuModel(ContainersMenuModelDelegate& delegate,
-                      const PrefService& prefs);
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    virtual void OnContainerSelected(const mojom::ContainerPtr& container) = 0;
+    virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
+    virtual Browser* GetBrowserToOpenSettings() = 0;
+    virtual float GetScaleFactor() = 0;
+  };
+
+  ContainersMenuModel(Delegate& delegate, const PrefService& prefs);
   ~ContainersMenuModel() override;
 
   // ui::SimpleMenuModel::Delegate:
@@ -57,8 +52,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
  private:
   friend class test::ContainersMenuModelTestApi;
 
-  ContainersMenuModel(ContainersMenuModelDelegate& delegate,
-                      std::vector<ContainerModel> items);
+  ContainersMenuModel(Delegate& delegate, std::vector<ContainerModel> items);
 
   void OpenContainerSettingsPage();
   void ContainerSelected(int command_id);
@@ -66,9 +60,9 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   int CommandIdToItemIndex(int command_id) const;
   int ItemIndexToCommandId(int item_index) const;
 
-  base::raw_ref<ContainersMenuModelDelegate> delegate_;
-
+  base::raw_ref<Delegate> delegate_;
   std::vector<ContainerModel> items_;
+  base::flat_set<std::string> current_container_ids_;
 };
 
 }  // namespace containers

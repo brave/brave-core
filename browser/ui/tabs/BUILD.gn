@@ -85,7 +85,16 @@ source_set("tab_menu") {
   ]
 
   if (enable_containers) {
-    deps += [ "//brave/browser/ui/containers" ]
+    sources += [
+      "containers_tab_menu_model_delegate.cc",
+      "containers_tab_menu_model_delegate.h",
+    ]
+    deps += [
+      "//brave/browser/ui/containers",
+      "//brave/components/containers/core/browser",
+      "//brave/components/containers/core/common",
+      "//components/tabs:public",
+    ]
   }
 }
 
