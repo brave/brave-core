@@ -124,7 +124,6 @@
 <translation id="730042046912793465">Ovo je</translation>
 <translation id="2055363275850890030">Privatni prozor</translation>
 <translation id="9133213713928851646">Brave ne pamti šta radite u privatnom prozoru. Sajtovi koje posećujete neće se pojaviti u vašoj istoriji, a kolačići nestaju kada završite. Imajte u vidu da vas privatni prozori ne čine potpuno anonimnim onlajn.</translation>
-<translation id="4085423007106063912">Brave nikada ne pamti šta radite u privatnom prozoru. Sajtovi koje posećujete neće se pojaviti u vašoj istoriji. Kolačići, podaci iz obrazaca i podaci sa sajtova nestaju kada zatvorite prozor.</translation>
 <translation id="1700746046668116047">Imajte u vidu da vaša aktivnost i dalje može biti vidljiva vašem internet provajderu, pasivnim posmatračima mreže ili poslodavcu (ako koristite poslovnu mašinu ili mrežu). Za više privatnosti otvorite privatni prozor pomoću Tor pregledača.</translation>
 <translation id="8759753423332885148">Saznajte više.</translation>
 <translation id="8611976753572844841">Privatni prozor uz povezivanje sa Tor pregledačem</translation>
@@ -2089,12 +2088,6 @@
 <translation id="7692501701960747469">API ključ konfigurisan za ovaj model je nevažeći. Proverite konfiguraciju i probajte ponovo.</translation>
 <translation id="7905602379229309187">Kraja tačka je trenutno preopterećena. Probajte ponovo kasnije.</translation>
 <translation id="8151638057146502721">Konfiguriši</translation>
-<translation id="4177458398826096846">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Llama 3.1 8B, model koji je kreirala kompanija Meta kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Mixtral 8x7B, model koji je kreirala kompanije Mistral AI za obavljanje naprednih zadataka. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Instant, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Haiku, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Sonnet, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> od strane kompanije <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premijum</translation>
 <translation id="6187065185557150870">Ćaskanje</translation>
 <translation id="4685048769603134644">Otvori kompletnu stranicu</translation>
@@ -2212,6 +2205,9 @@
 <translation id="4572010449071015143">Započnite novi razgovor</translation>
 <translation id="345901077335355561">Vrati na aktivni razgovor</translation>
 <translation id="6287023598025162715">Novi razgovor</translation>
+<translation id="6543799171249004861">Autor fotografije: <ph name="AUTHOR"/></translation>
+<translation id="4290791698375397492">Omiljeni sajt je ulonjen</translation>
+<translation id="9030215177866748410">Omiljeni sajtovi su predloženi na osnovu veb-sajtova koje često posećujete.</translation>
 <translation id="6303294677342628402">Štitovi</translation>
 <translation id="8458987127502506209">Aktiviraj Brave štitove</translation>
 <translation id="7509914170164691086">Štitovi su UKLJUČENI <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>

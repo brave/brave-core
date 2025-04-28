@@ -317,6 +317,18 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8813509417421129632">A <ph name="SITE"/> oldalon lévő beágyazott oldal menteni szeretne</translation>
 <translation id="7700010743463174379">Ez az oldal menteni szeretne</translation>
 <translation id="6774238875569752630">Az ezen az oldalon beágyazott oldal menteni szeretne</translation>
+<translation id="1233913566967531780">Aktív böngészőlap</translation>
+<translation id="4034992002364254340">Csoportosítsa a hasonló lapokat egy új ablakba</translation>
+<translation id="8012125596344613514">Javasolt témák</translation>
+<translation id="7529120186020617755">Adjon meg egy kategóriát...</translation>
+<translation id="6847541693235449912">Ugrás</translation>
+<translation id="2079545284768500474">Visszavonás</translation>
+<translation id="1533980864758658574">Új ablak létrehozása a <ph name="TOPIC"/>számára.</translation>
+<translation id="7985042437720138349">Ez a funkció adatokat küld a megnyitott lapokról a Leónak, a Brave mesterséges intelligenciával rendelkező böngészőasszisztensének.</translation>
+<translation id="6165508094623778733">Tudj meg többet</translation>
+<translation id="7557539689487606886">Váltás Premiumra</translation>
+<translation id="1035309871698658326">Az összes nem privát lap nevét és forrását automatikusan elküldi a Leónak kategorizálás céljából.</translation>
+<translation id="3435896845095436175">Engedélyezés</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="7179921470347911571">Indítsd újra most</translation>
 <translation id="1426410128494586442">Igen</translation>
@@ -353,7 +365,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2396127686705429331">Könyvjelzők gomb megjelenítése</translation>
 <translation id="2814998458708016836">Használj széles címsort</translation>
 <translation id="4109670531935487117">Mutassa az automatikus kiegészítési javaslatokat a címsorban</translation>
-<translation id="2858138569776157458">Népszerűek</translation>
+<translation id="3405901785709583668">Legnépszerűbb javaslatok</translation>
 <translation id="7859704718976024901">Böngészési előzmények</translation>
 <translation id="8820817407110198400">Könyvjelzők</translation>
 <translation id="4144468798716165316">Gyorsparancsok</translation>
@@ -462,7 +474,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="7791141927430186653">X (korábban: Twitter) beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
 <translation id="8792121506918889955">WebRTC IP kezelési szabályzat</translation>
-<translation id="6165508094623778733">Tudj meg többet</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
 <translation id="1822560017823072927">Alapértelmezett publikus és privát interfészek</translation>
 <translation id="5825943197137337319">Kizárólag alapértelmezett publikus interfész</translation>
@@ -713,6 +724,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2751872555001636931">Leo ikon mutatása az oldalsávban</translation>
 <translation id="8055509865174199683">Leo megjelenítése a weboldalak kontextusmenüjében</translation>
 <translation id="1529674267267221673">A Leo meg fog jelenni a kontextusmenüben, ha jobb egérgombbal kattint egy weboldalon. Ez el fogja küldeni a kontextust az aktuális weboldalról a Leónak.</translation>
+<translation id="5226020406479918122">Aktuális lap használata</translation>
+<translation id="3705539672403311123">Böngészőlapok rendezésének engedélyezése a a Böngészőlap keresés oldalon. Az összes nem privát lap nevét és forrását automatikusan elküldi a Leónak kategorizálás céljából. <ph name="BEGIN_LINK"/>Tidjon meg többet<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Ajánlott kérdések megjelenítése a beszélgetésben</translation>
 <translation id="5781842473834867765">Beszélgetési előzmények tárolása</translation>
 <translation id="1082960401708055995">A beszélgetések tárolásának letiltása véglegesen törli az összes korábban tárolt beszélgetést. Ezt a műveletet nem lehet visszacsinálni.</translation>
@@ -723,6 +736,10 @@ csevegési előzményeinek törlése törli az Ön összes korábbi beszélgeté
 Leóval. Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="5574059574002819179">Az automatikus kiegészítési javaslatok módosítása</translation>
 <translation id="7942415993090181327">Csevegési előzmények</translation>
+<translation id="5385064007245738696">Tudnivalók a Leo AI-ról</translation>
+<translation id="5084498230659987096">A Brave Leo egy adatvédelemre épülő, mesterséges intelligenciával támogatott csevegőfelület, amely integráltan működik a böngészőben. A Leo nem gyűjt adatokat, nem tárol személyes információkat, és nem használja az Ön lekérdezéseit a modell betanítására.
+Valamennyi kérés egy anonim proxy szerveren keresztül kerül továbbításra, biztosítva az Ön adatainak védelmét és a teljes névtelenséget.</translation>
+<translation id="6458721693611638005">További információ arról, hogy a Brave hogyan védi az AI-használatát, a Leo adatvédelmi szabályzatában olvasható. <ph name="BEGIN_LINK"/>További információk<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Alapértelmezett modell az új beszélgetésekhez</translation>
 <translation id="8826914609353373601">Prémium előfizetés kezelése</translation>
 <translation id="235457946228076038">Hozza el saját modelljét</translation>
@@ -733,6 +750,8 @@ Leóval. Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="3553035516792776805">Modellkérés neve</translation>
 <translation id="7634775528597575156">Kiszolgálói végpont</translation>
 <translation id="6374563306438145841">API-kulcs</translation>
+<translation id="3295756655687327124">Vizuális információk kezelése</translation>
+<translation id="1415432774589088566">Ez a modell képfeldolgozásra is képes, pl. Llama 3.2 vision</translation>
 <translation id="8008271349880309090">A modell neve a modellkiválasztó menüben megjelenő formában.</translation>
 <translation id="1355326130503900056">A modell neve abban a formában, ahogyan a kiszolgáló keretrendszerhez küldött kérésben meg kell jelennie, pl. phi-3 (vegye figyelembe, hogy ha ez a név nem egyezik meg pontosan azzal, amit a kiszolgáló keretrendszer elvár, az integráció nem fog működni).</translation>
 <translation id="3213787232304349732">Az az url, ahol az Ön kiszolgáló keretrendszere figyeli a kéréseket. Ha nem biztos benne, nézze meg a kiszolgáló keretrendszer dokumentációját. Például az Ollama esetében ez mindig a http://localhost:11434/v1/chat/completions.</translation>

@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">A böngésző javaslatainak megjelenítése</translation>
 <translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
 <translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
-<translation id="1571106259128580884">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
+<translation id="5989135139219497991">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
 <translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
 <translation id="412411722208944922">Gyorskeresők</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Segítsen a Brave kereső fejlesztésében</translation>
 <translation id="7044431516245362795">Csatlakozzon a Web Discovery Projecthez, hogy segíts a keresési rendszer fejlesztésében és a keresési eredmények javításában. <ph name="LEARN_MORE_START"/>Tudjon meg többet.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Igen, segítek</translation>
-<translation id="2877653791257935258">Adja meg a weboldal nevét vagy URL-jét</translation>
-<translation id="5329830149661250028">A Brave-vel más: Nincsenek reklámok. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.</translation>
-<translation id="3941792073703079607">A Brave-vel a különbség szembeötlő: blokkolja a hirdetéseket, csökkenti az adatforgalmat és felgyorsítja a streamelést.</translation>
 <translation id="3545804467215833536">Koppintson a Brave pajzsok megtekintéséhez</translation>
 <translation id="1724327820822194498">Nézze meg, oldalanként mi mindent blokkolt a Brave a pajzsok segítségével.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> és további <ph name="TRACKER"/> reklám és nyomkövető blokkolva</translation>
@@ -504,6 +501,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5299848999918506028">Köszönjük!</translation>
 <translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
+<translation id="7205939464631857223">Az összes letiltott elem törlése</translation>
 <translation id="5370478469168390143">Adatok mentése online</translation>
 <translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
 <translation id="7427391215172269363">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
@@ -1029,7 +1027,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="5888208462949095139">Keresés a következővel: <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Kezdőképernyős modul</translation>
 <translation id="703185154752046151">Modul hozzáadva a kezdőképernyőhöz</translation>
-<translation id="3290805388004282161">Próbálja ki a Brave keresési modulját</translation>
+<translation id="4635094429202343515">Próbálja ki a Brave keresési modulját</translation>
 <translation id="4809681171446727314">Hozzáférés egy privát, független keresőhöz egyenesen a kezdőképernyőjén.</translation>
 <translation id="7751715172931488388">Modul hozzáadása</translation>
 <translation id="7285167584112910782">Brave gyorskereső</translation>
@@ -1096,6 +1094,8 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1179407411385015942">A Leo egy mesterséges intelligencián alapuló, intelligens asszisztens, közvetlenül a böngészőbe építve</translation>
 <translation id="5781842473834867765">Beszélgetési előzmények tárolása</translation>
 <translation id="4109670531935487117">Mutassa az automatikus kiegészítési javaslatokat a címsorban</translation>
+<translation id="4983005227524068187">Megjelenítés a gyorskereső sávjában</translation>
+<translation id="8514910864411336826">Aktiváljon egy parancsikont a Leo gyorskereső sávból történő elindításához.</translation>
 <translation id="6106701981952170121">Leo AI összes csevegési adatának törlése</translation>
 <translation id="423600389315522551">A Leo AI visszaállítása esetén a jövőben újra engedélyeznie kell a Brave Leo AI használatát, és a csevegési előzményei is törlődnek. Az előzmények törlése az összes korábbi beszélgetésének végleges eltávolítását jelenti a Brave Leo AI-val. Ez a művelet nem vonható vissza.</translation>
 <translation id="6742599753610126012">Csevegési előzmények törlése</translation>
@@ -1218,11 +1218,12 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6891382640886173702">Ablakok összevonása</translation>
 <translation id="2912247081180973411">Ablakok bezárása</translation>
 <translation id="4010699428656610296">Kérjük, vonja össze a többi fület egy másik Brave-ablakban.</translation>
-<translation id="208634871997892083">Mindig üzemelő VPN</translation>
+<translation id="4306918392910017801">Automatikus újracsatlakozás VPN</translation>
 <translation id="1599073346542156922">A bekapcsolás módja:</translation>
 <translation id="7001163334415463127">1. Nyissa meg az eszköze beállításait az alkalmazásfiókban, vagy az alábbi gombra koppintva.</translation>
 <translation id="887443138775437899">2. Keresse meg a Brave VPN-t, és koppintson a beállítások ikonjára a jobb oldalon.</translation>
-<translation id="3776051499611941773">3. Kapcsolja be a<ph name="ALWAYS_ON_TUTORIAL_START"/>Mindig üzemelő VPN-t<ph name="ALWAYS_ON_TUTORIAL_END"/> az engedélyezéshez.</translation>
+<translation id="7546805138087561624">3. Kapcsolja be a<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Mindig üzemelő VPN-t<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> az engedélyezéshez.</translation>
+<translation id="2446001600399646984">Az Android korlátozza a „VPN nélküli kapcsolatok letiltása” opció helyes működését. <ph name="LEARN_MORE_START"/>Tudjon meg többet.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Android-beállítások megnyitása</translation>
 <translation id="2728518864712716830">A frissítés le lett töltve.</translation>
 <translation id="8403338849301491865">A szűrőlista sikeresen frissült</translation>
@@ -1232,4 +1233,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="7942415993090181327">Csevegési előzmények</translation>
 <translation id="6859935199732075666">Biztonságos böngészés hibáinak megjelenítése</translation>
+<translation id="2735247450315842119">Képernyőképek engedélyezése privát lapokon</translation>
+<translation id="8420414929552321089">Ha engedélyezi, a privát lapok akkor is láthatóak lesznek, ha több alkalmazás van megnyitva.</translation>
 </translationbundle>

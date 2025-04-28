@@ -280,6 +280,10 @@
 <translation id="6453210454707928697">ለመክፈት አልተሳካም</translation>
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ጊዜው ያለፈበት ሊሆን ይችላል። መልሰው ማግኘት ይፈልጋሉ?</translation>
 <translation id="6155018868740116868">መልሰህ አግኝ</translation>
+<translation id="2079545284768500474">ቀልብስ</translation>
+<translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
+<translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
+<translation id="3435896845095436175">አንቃ</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="1426410128494586442">አዎ</translation>
@@ -314,7 +318,6 @@
 <translation id="2396127686705429331">የዕልባቶች አዝራር አሳይ</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
-<translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
 <translation id="7859704718976024901">የፍለጋ ታሪክ</translation>
 <translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="4144468798716165316">ፈጣን ትዕዛዞች</translation>
@@ -405,7 +408,6 @@
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
 <translation id="8792121506918889955">የ WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
-<translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
 <translation id="8798099450830957504">ዲፎልት</translation>
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>

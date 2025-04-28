@@ -124,7 +124,7 @@
 <translation id="730042046912793465">這是一個</translation>
 <translation id="2055363275850890030">隱私視窗</translation>
 <translation id="9133213713928851646">Brave 不會記得您在隱私視窗做了哪些事情。您造訪的網站將不會顯示在您的歷史紀錄中，而當您結束瀏覽後，cookies 就會消失。不過，隱私視窗仍無法讓您完全匿名上網。</translation>
-<translation id="4085423007106063912">Brave 永遠不會記住您在無痕視窗下的操作。您造訪過的網站不會出現在您的歷史記錄中。Cookie、表單資料和網站資料將在關閉視窗時消失。</translation>
+<translation id="4491905831789757331">Brave 永遠不會記住您在無痕視窗下的操作。您造訪過的網站不會出現在您的歷史紀錄中。一旦您關閉所有開啟的無痕視窗，Cookie、表單資料和網站資料就會消失。</translation>
 <translation id="1700746046668116047">請注意，您的網路業者、被動網路觀察員或您的僱主（如果您正在使用工作機器或網路）仍然可以看到您的活動。為增強隱私保護，請開啟 Tor 無痕視窗。</translation>
 <translation id="8759753423332885148">深入瞭解。</translation>
 <translation id="8611976753572844841">用 Tor 連線的私密視窗</translation>
@@ -1967,6 +1967,7 @@
 <translation id="8652827551752428289">顯示歷史記錄</translation>
 <translation id="5030659775136592441">顯示書籤管理員</translation>
 <translation id="6919203766034706175">匯入設定</translation>
+<translation id="290553639533591736">聚焦 Gemini 即時</translation>
 <translation id="6159704524780747483">開啟 AI 聊天</translation>
 <translation id="1199430163665775722">編輯搜尋引擎</translation>
 <translation id="4276265845501430443">顯示說明</translation>
@@ -2104,6 +2105,7 @@
 <translation id="4567071417854988869">總結此影片</translation>
 <translation id="7921782882718083488">總結此頁面</translation>
 <translation id="7932221068776853847">中斷連線以停止傳送此頁面內容給 Leo，並開始新的對話</translation>
+<translation id="8743383817154663379">處理您的請求時發生錯誤。請稍後再試。</translation>
 <translation id="2712650703044366764">此模型的端點無效。請檢查您的設定並重試。</translation>
 <translation id="1167803637855350748">連線至 Leo 時發生網路問題，請檢查連線狀態並再試一次。</translation>
 <translation id="1996126325390835277">您已達到  premium 速率限制。請在幾小時候重試。</translation>
@@ -2111,13 +2113,13 @@
 <translation id="7692501701960747469">為此模型設定的 API 金鑰無效。請檢查您的設定並重試。</translation>
 <translation id="7905602379229309187">端點目前已超載。請稍後再試。</translation>
 <translation id="8151638057146502721">設定</translation>
-<translation id="4177458398826096846">您好，我是 Leo。我是完全託管於 Brave 的 AI 助理，由 Meta 建立的模型 Llama 3.1 8B 提供技術支援，效能強大，可適用於許多使用案例。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">您好，我是 Leo。我是 Brave 的完全託管型人工智慧助理。我由 Qwen 14B 提供技術支援，它是由阿里雲建立的模型，效能卓越且適用於許多使用案例。<ph name="LINK_BEFORE"/>進一步了解<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">您好，我是 Leo。我是由 Brave 完全管理的 AI 助手。我的技術支援來自 Mixtral 8x7B，這是由 Mistral AI 建立的模型，適用於處理進階工作。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">您好，我是 Leo。我是由 Brave 代理並由 Claude Instant 提供技術支援，Claude Instant 是 Anthropic 建立的模型，用於為會話和文字處理任務提供技術支援。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Haiku 模型提供技術支援，可勝任對話與文字處理工作。<ph name="LINK_BEFORE"/>進一步了解<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude Sonnet 提供技術支援，可勝任對話和文字處理工作。<ph name="LINK_BEFORE"/>進一步了解<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="COMPANY_NAME"/> 的 <ph name="MODEL_NAME"/></translation>
+<translation id="3282183392203936979">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama 3.1 8B 提供技術支援，效能強大，可適用於許多使用案例。Llama 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 14B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Mistral AI 建立的模型 Mixtral 8x7B 提供技術支援，可處理進階工作。Mixtral 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">嗨，我是 Leo。我是由 Brave 代理並由 Claude Instant 提供技術支援，Claude Instant 是 Anthropic 建立的模型，用來執行會話與文字處理工作。Claude Instant 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">嗨，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Haiku 模型提供技術支援，可勝任對話與文字處理工作。Claude Haiku 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">嗨，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Sonnet 模型提供技術支援，可勝任對話與文字處理工作。Claude Sonnet 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Meta 建立的模型 Llama Vision 提供技術支援，效能強大，可適用於許多使用案例。Llama Vision 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">聊天</translation>
 <translation id="4685048769603134644">開啟完整頁面</translation>
@@ -2180,6 +2182,7 @@
 <translation id="8650874793377330048">停止回答</translation>
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="1093419424466417703">對 Leo 而言，此頁面過於冗長。對話可能遺漏某些內容。因此 Leo 無法讀取該頁面內容的 <ph name="PERCENTAGE"/> 。</translation>
+<translation id="4592293425457329338">對話中可能遺漏了一些上下文。Leo 能夠保留 <ph name="PERCENTAGE"/> 對話的相關內容。</translation>
 <translation id="2186990448773134544">由於頁面對 Leo 來說過長，因此已從中擷取最相關的資訊，以精簡頁面內容。</translation>
 <translation id="5140068729857132378">正在尋找網頁的相關部分...…</translation>
 <translation id="4370698775470316661">此對話太長，無法繼續。 Leo 可能還可以使用其他模型，以維持更長時間對話的準確性。</translation>
@@ -2201,6 +2204,7 @@
 <translation id="7979673624064378842">快速流暢的聊天</translation>
 <translation id="2836330653441111204">兼顧速度與智慧</translation>
 <translation id="6695329447007213917">一般用途的聊天、編碼等</translation>
+<translation id="5051668914970329839">一般目的視覺</translation>
 <translation id="3965507912994218570">Leo 設定</translation>
 <translation id="1037324977127422019">您好，我是 Leo！</translation>
 <translation id="8930348081963284873">內建於 Brave，由人工智慧驅動的智能助理。</translation>
@@ -2236,11 +2240,28 @@
 <translation id="6320643499534852464">社群媒體</translation>
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="983013125018250242">Leo 工具</translation>
+<translation id="7623223587478473368">附件</translation>
+<translation id="3777121685517940177">上傳檔案...</translation>
+<translation id="9088751620363630236">拍攝照片...</translation>
+<translation id="4250229828105606438">螢幕截圖</translation>
+<translation id="6332876390231524389">目前的標籤頁內容</translation>
 <translation id="49269513399674318">使用麥克風</translation>
 <translation id="3895031624234442305">自訂模型</translation>
 <translation id="4572010449071015143">開啟新對話</translation>
 <translation id="345901077335355561">回到活躍對話</translation>
 <translation id="6287023598025162715">新對話</translation>
+<translation id="8370801182970639038">自動 (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">啟用搜尋引擎</translation>
+<translation id="5355776323718420036">隱藏熱門網站</translation>
+<translation id="6543799171249004861">攝影者：<ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">詢問 Brave 搜尋</translation>
+<translation id="6851426306697017546">顯示時鐘</translation>
+<translation id="4844370919312937270">在新標籤頁中顯示搜尋小工具</translation>
+<translation id="5009354496127441090">顯示熱門網站</translation>
+<translation id="4784802981241664605">統計</translation>
+<translation id="4290791698375397492">熱門網站已移除</translation>
+<translation id="1436784010935106834">已移除</translation>
+<translation id="9030215177866748410">根據您常造訪之網站推薦熱門網站.</translation>
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="8458987127502506209">啟用 Brave 防護</translation>
 <translation id="7509914170164691086">Shields 已<ph name="LINK_BEFORE"/>啟用<ph name="LINK_AFTER"/>：</translation>
@@ -2253,6 +2274,7 @@
 <translation id="5799940914270080805">變更這些設定可能會使網站無法正常運作。</translation>
 <translation id="9204041448536398473">全域防護設定</translation>
 <translation id="2108334320919763866">全域預設值</translation>
+<translation id="7205939464631857223">清除所有攔截元件</translation>
 <translation id="3440043456924990296">由組織管理的設定</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="5716230673298034837">全部允許</translation>
