@@ -194,7 +194,8 @@ class ViewCounterServiceTest : public testing::Test {
     RegisterLocalStatePrefs(local_state_.registry());
     metrics::MetricsService::RegisterPrefs(local_state_.registry());
 
-    local_state_.SetTime(metrics::prefs::kInstallDate, base::Time::Now());
+    local_state_.SetInt64(metrics::prefs::kInstallDate,
+                          base::Time::Now().InSecondsFSinceUnixEpoch());
 
     host_content_settings_map_ = new HostContentSettingsMap(
         &prefs_, /* is_off_the_record=*/false, /*store_last_modified=*/false,
