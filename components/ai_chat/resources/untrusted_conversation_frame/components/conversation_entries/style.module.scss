@@ -80,7 +80,10 @@
 }
 
 .uploadedImages {
-  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 240px;
   overflow-y: auto;
-  gap: var(--leo-spacing-m);
+  gap: var(--leo-spacing-s);
 }
