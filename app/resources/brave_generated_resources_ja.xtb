@@ -317,6 +317,18 @@
 <translation id="8813509417421129632"><ph name="SITE"/> に埋め込まれたページが保存を要求しています</translation>
 <translation id="7700010743463174379">このページが次の保存を要求しています:</translation>
 <translation id="6774238875569752630">このページに埋め込まれたページが次の保存を要求しています</translation>
+<translation id="1233913566967531780">タブのグループ化</translation>
+<translation id="4034992002364254340">関連するすべてのタブを、新しいウィンドウにまとめる</translation>
+<translation id="8012125596344613514">トピックのサジェスチョン</translation>
+<translation id="7529120186020617755">...に関するトピックを入力</translation>
+<translation id="6847541693235449912">開く</translation>
+<translation id="2079545284768500474">取り消す</translation>
+<translation id="1533980864758658574"><ph name="TOPIC"/>の新しいウィンドウが作成されました。</translation>
+<translation id="7985042437720138349">この機能は、開いているタブに関するデータをBraveのブラウザAIアシスタント、Leoに送信します。</translation>
+<translation id="6165508094623778733">詳しく知る</translation>
+<translation id="7557539689487606886">プレミアムプラン</translation>
+<translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
+<translation id="3435896845095436175">有効にする</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -353,7 +365,7 @@
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
-<translation id="2858138569776157458">トップサイトをサイト候補に含める</translation>
+<translation id="3405901785709583668">トップサジェスチョン</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="4144468798716165316">クイックコマンド</translation>
@@ -462,7 +474,6 @@
 <translation id="7791141927430186653">X (旧Twitter) の埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
-<translation id="6165508094623778733">詳しく知る</translation>
 <translation id="8798099450830957504">既定</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
@@ -713,6 +724,8 @@
 <translation id="2751872555001636931">サイドバーにLeoアイコンを表示</translation>
 <translation id="8055509865174199683">ウェブサイトのコンテキストメニューにLeoを表示</translation>
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>
+<translation id="5226020406479918122">タブのグループ化モード</translation>
+<translation id="3705539672403311123">タブ検索ページでタブのグループ化を有効にします。 開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。 <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
 <translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="1082960401708055995">会話ストレージを無効にすると、以前に保存された会話はすべて永久に消去されます。この操作を元に戻すことはできません。</translation>
@@ -721,6 +734,9 @@
 チャット履歴の消去は、以前のBrave Leo AIとの会話をすべて削除します。この操作を元に戻すことはできません。</translation>
 <translation id="5574059574002819179">オートコンプリートの候補を調整する</translation>
 <translation id="7942415993090181327">チャット履歴</translation>
+<translation id="5385064007245738696">Leo AI について</translation>
+<translation id="5084498230659987096">Brave Leoは、プライバシーファーストのAIチャットをはじめ、AIを搭載したインターフェースをブラウザ内で提供します。Leoがあなたのデータから学習したり、モデルのトレーニングに使用したりすることはありません。すべてのリクエストは匿名化サーバーを経由してプロキシされます。</translation>
+<translation id="6458721693611638005">BraveがあなたのAI使用をどのように保護するかについては、Leoのプライバシーポリシーをお読みください。 <ph name="BEGIN_LINK"/>詳細はこちら<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
 <translation id="8826914609353373601">プレミアムサブスクリプションを管理</translation>
 <translation id="235457946228076038">モデルを自由にカスタマイズ</translation>
@@ -731,6 +747,8 @@
 <translation id="3553035516792776805">モデルのリクエスト名</translation>
 <translation id="7634775528597575156">サーバーのエンドポイント</translation>
 <translation id="6374563306438145841">APIキー</translation>
+<translation id="3295756655687327124">Visionサポート</translation>
+<translation id="1415432774589088566">このモデルが画像を入力とする場合。例: Llama 3.2b vision</translation>
 <translation id="8008271349880309090">モデル名はモデル選択メニューに表示されます。</translation>
 <translation id="1355326130503900056">サービングフレームワークへのリクエストで表示されるモデル名。例: phi-3 (この名前がサービングフレームワークでの想定値と正確に一致しない場合、統合が機能しないためご注意ください)</translation>
 <translation id="3213787232304349732">サービングフレームワークがリクエストをリッスンする URL。不明点がある場合は、サービングフレームワークのドキュメントを確認してください。例えばOllama の場合は、常に「http://localhost:11434/v1/chat/completions」となります。</translation>

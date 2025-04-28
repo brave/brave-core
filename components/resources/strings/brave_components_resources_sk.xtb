@@ -124,7 +124,7 @@
 <translation id="730042046912793465">Toto je</translation>
 <translation id="2055363275850890030">Súkromné okno</translation>
 <translation id="9133213713928851646">Brave si nepamätá, čo robíte v súkromnom okne. Stránky, ktoré navštívite, sa neukážu vo vašej histórii a súbory cookies zmiznú, keď skončíte. Avšak súkromné okná vám nezaručia úplnú anonymitu v online prostredí.</translation>
-<translation id="4085423007106063912">Brave si nikdy nepamätá, čo robíte v režime Inkognito. Stránky, ktoré navštívite, sa zobrazia vo vašej histórii. Súbory cookie, údaje formulárov a údaje o stránke zmiznú, keď zatvoríte okno.</translation>
+<translation id="4491905831789757331">Brave si nikdy nepamätá, čo robíte v režime Inkognito. Stránky, ktoré navštívite, sa nezobrazia vo vašej histórii. Súbory cookie, údaje z formulárov a údaje o stránke zmiznú, keď zatvoríte všetky otvorené súkromné okná.</translation>
 <translation id="1700746046668116047">Upozorňujeme, že vaša aktivita môže byť stále viditeľná pre poskytovateľa internetových služieb, pasívnych pozorovateľov siete alebo vášho zamestnávateľa (ak používate pracovný počítač alebo sieť). Ak chcete získať viac súkromia, otvorte si súkromné okno pomocou aplikácie Tor.</translation>
 <translation id="8759753423332885148">Dozvedieť sa viac.</translation>
 <translation id="8611976753572844841">Súkromné okno s pripojením Tor</translation>
@@ -1964,6 +1964,7 @@
 <translation id="8652827551752428289">Zobraziť históriu</translation>
 <translation id="5030659775136592441">Zobraziť správcu záložiek</translation>
 <translation id="6919203766034706175">Nastavenia importu</translation>
+<translation id="290553639533591736">Focus Gemini Live</translation>
 <translation id="6159704524780747483">Otvoriť AI chat</translation>
 <translation id="1199430163665775722">Upraviť vyhľadávače</translation>
 <translation id="4276265845501430443">Zobraziť pomocníka</translation>
@@ -2101,6 +2102,7 @@
 <translation id="4567071417854988869">Zosumarizovať toto video</translation>
 <translation id="7921782882718083488">Zosumarizovať túto stránku</translation>
 <translation id="7932221068776853847">Odpojením zastavíte odosielanie obsahu tejto stránky Leovi a začnete novú konverzáciu.</translation>
+<translation id="8743383817154663379">Pri spracovaní vašej žiadosti došlo k chybe. Skúste to prosím neskôr.</translation>
 <translation id="2712650703044366764">Tento model má neplatný koncový bod. Skontrolujte prosím svoju konfiguráciu a skúste to znova.</translation>
 <translation id="1167803637855350748">Pri pripájaní k Leovi došlo k sieťovému problému, skontrolujte pripojenie a skúste to znova.</translation>
 <translation id="1996126325390835277">Dosiahli ste limit odozvy pre Premium. Skúste to znova o niekoľko hodín.</translation>
@@ -2108,13 +2110,13 @@
 <translation id="7692501701960747469">Kľúč API nakonfigurovaný pre tento model je neplatný. Skontrolujte prosím svoju konfiguráciu a skúste to znova.</translation>
 <translation id="7905602379229309187">Koncový bod je v súčasnosti preťažený. Skúste to prosím neskôr.</translation>
 <translation id="8151638057146502721">Konfigurovať</translation>
-<translation id="4177458398826096846">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3.1 8B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch použitia. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="5252251845674154807">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Poháňa ma model Qwen 14B vytvorený spoločnosťou Alibaba Cloud, ktorý má za cieľ byť výkonný a použiteľný v mnohých situáciách. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="6500567629965936637">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Mixtral 8x7B vytvoreným spoločnosťou Mistral AI na zvládanie pokročilých úloh. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="4590776109659811206">Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Instant vytvoreným spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="2001874998841390450">Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude Haiku, model vytvorený spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="3408745502133272006">Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude Sonnet, model vytvorený spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="6206029817087805290"><ph name="MODEL_NAME"/> spoločnosťou <ph name="COMPANY_NAME"/></translation>
+<translation id="3282183392203936979">Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3.1 8B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Llama prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 14B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Mixtral 8x7B vytvoreným spoločnosťou Mistral AI na zvládanie pokročilých úloh. Model Mixtral prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Instant vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Instant prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Haiku vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Haiku prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Sonnet vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Sonnet prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama Vision vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch. Llama Vision prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Otvoriť celú stránku</translation>
@@ -2177,6 +2179,7 @@
 <translation id="8650874793377330048">Zastaviť odpovede</translation>
 <translation id="8712637175834984815">Dobre</translation>
 <translation id="1093419424466417703">Stránka je pre Lea príliš dlhá. V konverzácii môže chýbať určitý kontext. Z obsahu stránky prečítal Leo<ph name="PERCENTAGE"/>.</translation>
+<translation id="4592293425457329338">V rozhovore by mohli chýbať niektoré súvislosti. Leovi sa podarilo zachovať <ph name="PERCENTAGE"/> obsahu súvisiaceho s konverzáciou.</translation>
 <translation id="2186990448773134544">Obsah stránky bol vylepšený vyňatím najdôležitejších informácií zo stránky, pretože pre Lea bol príliš dlhý.</translation>
 <translation id="5140068729857132378">Vyhľadávajú sa príslušné časti z webovej stránky…</translation>
 <translation id="4370698775470316661">Táto konverzácia je príliš dlhá a nemôže pokračovať. Dostupné môžu byť aj iné modely, s ktorými je Leo schopný zachovať presnosť pri dlhších konverzáciách.</translation>
@@ -2198,6 +2201,7 @@
 <translation id="7979673624064378842">Chat s bleskovou rýchlosťou</translation>
 <translation id="2836330653441111204">Vyvážená rýchlosť a inteligencia</translation>
 <translation id="6695329447007213917">Všeobecný chat, programovanie a ďalšie</translation>
+<translation id="5051668914970329839">Všeobecné videnie</translation>
 <translation id="3965507912994218570">Nastavenia Lea</translation>
 <translation id="1037324977127422019">Zdravím, som Leo!</translation>
 <translation id="8930348081963284873">Inteligentný asistent s umelou inteligenciou zabudovaný priamo do aplikácie Brave.</translation>
@@ -2233,11 +2237,28 @@
 <translation id="6320643499534852464">Sociálne média</translation>
 <translation id="2370739752330685659">Možno neskôr</translation>
 <translation id="983013125018250242">Nástroje Leo</translation>
+<translation id="7623223587478473368">Príloha</translation>
+<translation id="3777121685517940177">Nahrať súbor...</translation>
+<translation id="9088751620363630236">Odfotiť...</translation>
+<translation id="4250229828105606438">Snímka obrazovky</translation>
+<translation id="6332876390231524389">Obsah aktuálnej karty</translation>
 <translation id="49269513399674318">Použiť mikrofón</translation>
 <translation id="3895031624234442305">Vlastné modely</translation>
 <translation id="4572010449071015143">Začať novú konverzáciu</translation>
 <translation id="345901077335355561">Vrátiť sa k aktívnej konverzácii</translation>
 <translation id="6287023598025162715">Nová konverzácia</translation>
+<translation id="8370801182970639038">Automaticky (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Povolené vyhľadávače</translation>
+<translation id="5355776323718420036">Skryť top stránky</translation>
+<translation id="6543799171249004861">Fotografia od <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Opýtajte sa Vyhľadávania Brave</translation>
+<translation id="6851426306697017546">Zobraziť hodiny</translation>
+<translation id="4844370919312937270">Zobrazenie widgetu vyhľadávania na nových kartách</translation>
+<translation id="5009354496127441090">Zobraziť top stránky</translation>
+<translation id="4784802981241664605">ŠTATISTIKY</translation>
+<translation id="4290791698375397492">Top lokalita bola odstránená</translation>
+<translation id="1436784010935106834">Odstránené</translation>
+<translation id="9030215177866748410">Top stránky sú navrhnuté na základe webov, ktoré často navštevujete.</translation>
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="8458987127502506209">Zapnúť štíty Brave</translation>
 <translation id="7509914170164691086">Štíty sú aktívne <ph name="LINK_BEFORE"/>pre<ph name="LINK_AFTER"/></translation>
@@ -2250,6 +2271,7 @@
 <translation id="5799940914270080805">Zmena týchto nastavení môže poškodiť webové stránky.</translation>
 <translation id="9204041448536398473">Nastavenia globálnych štítov</translation>
 <translation id="2108334320919763866">Globálne predvolené nastavenia</translation>
+<translation id="7205939464631857223">Vymazať všetky blokované prvky</translation>
 <translation id="3440043456924990296">Nastavenia spravuje organizácia</translation>
 <translation id="7053983685419859001">Blokovať</translation>
 <translation id="5716230673298034837">Povoliť všetky</translation>

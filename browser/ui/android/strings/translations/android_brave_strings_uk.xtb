@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Показувати пропозиції браузера</translation>
 <translation id="8982438328166986164">Показ рекомендованих вебсайтів на основі ваших закладок та історії перегляду.</translation>
 <translation id="924029461438529367">Показувати пошукові підказки</translation>
-<translation id="1571106259128580884">Пропонувати найпопулярніші сайти</translation>
+<translation id="5989135139219497991">Пропонувати найпопулярніші сайти</translation>
 <translation id="6285118765755298263">Індексувати інші пошукові системи</translation>
 <translation id="919715748352669592">Автоматичне індексування вебсайтів, що відповідають специфікації OpenSearch.</translation>
 <translation id="412411722208944922">Швидкі пошукові системи</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Долучіться до покращення Пошуку Brave</translation>
 <translation id="7044431516245362795">Приєднуйтесь до проекту Web Discovery, щоб допомогти розширити індекс та покращити результати пошуку. <ph name="LEARN_MORE_START"/>Дізнатися більше.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Звісно, я допоможу</translation>
-<translation id="2877653791257935258">Введіть назву або URL-адресу вебсайту</translation>
-<translation id="5329830149661250028">Оцініть переваги Brave: без реклами, без стеження, швидше завантаження сторінок.</translation>
-<translation id="3941792073703079607">Відчуйте переваги Brave. Блокуйте рекламу, заощаджуйте дані, транслюйте швидше.</translation>
 <translation id="3545804467215833536">Торкніться, щоб переглянути щити Brave</translation>
 <translation id="1724327820822194498">Перегляньте всю зайву інформацію, яку блокує Brave на кожній сторінці за допомогою щитів.</translation>
 <translation id="5386259141409498372">Заблоковано <ph name="BIG_TECH"/>, а також інше стеження й рекламу <ph name="TRACKER"/></translation>
@@ -504,6 +501,7 @@
 <translation id="5299848999918506028">Дякуємо!</translation>
 <translation id="76550953340008122">Дякуємо за повідомлення розробникам Brave щодо проблеми із цим сайтом. Ми постараємося її виправити!</translation>
 <translation id="650318023204990401">Розширені налаштування</translation>
+<translation id="7205939464631857223">Очистити всі заблоковані елементи</translation>
 <translation id="5370478469168390143">Зберігайте дані онлайн</translation>
 <translation id="1118508688433541158">Переглядайте сторінки швидше та блокуйте рекламу із Brave</translation>
 <translation id="7427391215172269363">Кожного дня я заощаджую дані, переглядаючи вебсторінки за допомогою Brave.</translation>
@@ -1029,7 +1027,7 @@
 <translation id="5888208462949095139">Пошук у <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Віджет на головний екран</translation>
 <translation id="703185154752046151">Віджет додано на головний екран</translation>
-<translation id="3290805388004282161">Спробуйте віджет для пошуку Brave</translation>
+<translation id="4635094429202343515">Спробуйте віджет для Пошуку Brave</translation>
 <translation id="4809681171446727314">Отримуйте доступ до незалежного та приватного пошуку просто на головному екрані.</translation>
 <translation id="7751715172931488388">Додати віджет</translation>
 <translation id="7285167584112910782">Швидкий пошук дій Brave</translation>
@@ -1096,6 +1094,8 @@
 <translation id="1179407411385015942">Leo — це розумний асистент на базі ШІ, вбудований безпосередньо в браузер</translation>
 <translation id="5781842473834867765">Зберігати історію чату</translation>
 <translation id="4109670531935487117">Показувати пропозиції автозавершення в панелі адреси</translation>
+<translation id="4983005227524068187">Показати в рядку швидкого пошуку</translation>
+<translation id="8514910864411336826">Дозволяє запустити Leo з панелі швидкого пошуку за допомогою ярлика.</translation>
 <translation id="6106701981952170121">Видаліть усі дані розмов помічника Leo</translation>
 <translation id="423600389315522551">Скинувши параметри помічника Leo, вашу історію чата буде очищено, а в майбутньому вам доведеться повторно погодитися з умовами використання Leo. Очищення історії чата призведе до видалення попередніх розмов із Leo від Brave. Цю дію неможливо скасувати.</translation>
 <translation id="6742599753610126012">Очистити історію чату</translation>
@@ -1218,11 +1218,12 @@
 <translation id="6891382640886173702">Об’єднати вікна</translation>
 <translation id="2912247081180973411">Закрити вікна</translation>
 <translation id="4010699428656610296">Об’єднайте інші вкладки в іншому вікні Brave.</translation>
-<translation id="208634871997892083">Постійно ввімкнений VPN</translation>
+<translation id="4306918392910017801">Автоматичне перепідключення VPN</translation>
 <translation id="1599073346542156922">Як увімкнути:</translation>
 <translation id="7001163334415463127">1. Відкрийте налаштування вашого пристрою з панелі застосунків або торкнувшись кнопки нижче.</translation>
 <translation id="887443138775437899">2. Знайдіть Brave VPN і торкніться значка налаштувань праворуч.</translation>
-<translation id="3776051499611941773">3. Виберіть пункт<ph name="ALWAYS_ON_TUTORIAL_START"/>Постійно ввімкнений VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>, щоб увімкнути його.</translation>
+<translation id="7546805138087561624">3. Виберіть пункт<ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Постійно ввімкнений VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>, щоб увімкнути його.</translation>
+<translation id="2446001600399646984">Зверніть увагу, що через обмеження Android функція "Блокувати з'єднання без VPN" не працює належним чином. <ph name="LEARN_MORE_START"/>Дізнайтеся більше.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Відкрити налаштування Android</translation>
 <translation id="2728518864712716830">Оновлення завантажено.</translation>
 <translation id="8403338849301491865">Список фільтрів оновлено</translation>
@@ -1232,4 +1233,6 @@
 <translation id="2361906291514218784">ШІ Leo</translation>
 <translation id="7942415993090181327">Історія чату</translation>
 <translation id="6859935199732075666">Показати помилки безпечного перегляду</translation>
+<translation id="2735247450315842119">Дозволити скріншоти в приватних вкладках</translation>
+<translation id="8420414929552321089">Якщо дозволено, приватні вкладки також буде видно під час відкриття кількох додатків.</translation>
 </translationbundle>

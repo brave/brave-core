@@ -317,6 +317,18 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">En inbäddad sida på <ph name="SITE"/> vill spara</translation>
 <translation id="7700010743463174379">Denna sida vill spara</translation>
 <translation id="6774238875569752630">En inbäddad sida på den här sidan vill spara</translation>
+<translation id="1233913566967531780">Flikfokus</translation>
+<translation id="4034992002364254340">Samla alla relaterade flikar i ett nytt fönster</translation>
+<translation id="8012125596344613514">Föreslagna ämnen</translation>
+<translation id="7529120186020617755">Ange ett ämne att fokusera på ...</translation>
+<translation id="6847541693235449912">Öppna</translation>
+<translation id="2079545284768500474">Ångra</translation>
+<translation id="1533980864758658574">Nytt fönster skapat för <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Den här funktionen skickar data om dina öppna flikar till Leo, Braves AI-drivna webbläsarassistent.</translation>
+<translation id="6165508094623778733">Lär dig mer</translation>
+<translation id="7557539689487606886">Välj Premium</translation>
+<translation id="1035309871698658326">När den öppnas kommer detta automatiskt att skicka titlar och ursprung för alla icke-privata flikar till Leo för att klassificera dem.</translation>
+<translation id="3435896845095436175">Aktivera</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -353,7 +365,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2396127686705429331">Visa bokmärkesknapp</translation>
 <translation id="2814998458708016836">Använd brett adressfält</translation>
 <translation id="4109670531935487117">Visa textförslag i adressfältet</translation>
-<translation id="2858138569776157458">Populärt</translation>
+<translation id="3405901785709583668">Toppförslag</translation>
 <translation id="7859704718976024901">Webbhistorik</translation>
 <translation id="8820817407110198400">Bokmärkesfältet</translation>
 <translation id="4144468798716165316">Snabbkommandon</translation>
@@ -462,7 +474,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7791141927430186653">Tillåt inbäddade tweets från X (tidigare Twitter)</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
 <translation id="8792121506918889955">WebRTC IP-hanteringspolicy</translation>
-<translation id="6165508094623778733">Lär dig mer</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
@@ -713,6 +724,8 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="2751872555001636931">Visa Leo-ikonen i sidofältet</translation>
 <translation id="8055509865174199683">Visa Leo i snabbmenyn på webbplatser</translation>
 <translation id="1529674267267221673">Leo visas i snabbmenyn när du högerklickar på en webbplats. Detta kommer att skicka kontext från den aktuella webbsidan till Leo.</translation>
+<translation id="5226020406479918122">Fliken Fokusläge</translation>
+<translation id="3705539672403311123">Aktivera flikorganisation i fliksöksidan. När den öppnas skickar detta automatiskt titlar och ursprung till alla icke-privata flikar till Leo för att klassificera dem. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Visa föreslagna uppmaningar i konversationen</translation>
 <translation id="5781842473834867765">Spara min konversationshistorik</translation>
 <translation id="1082960401708055995">Om du avaktiverar lagring av konversationer raderas alla tidigare lagrade konversationer permanent. Denna åtgärd kan inte ångras.</translation>
@@ -723,6 +736,9 @@ chatthistorik kommer alla dina tidigare konversationer med Brave
 Leo AI att raderas. Denna åtgärd kan inte ångras.</translation>
 <translation id="5574059574002819179">Justera autokompletteringsförslag</translation>
 <translation id="7942415993090181327">Chatthistorik</translation>
+<translation id="5385064007245738696">Om Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo tillhandahåller AI-chatt med integritet i första hand samt andra AI-drivna gränssnitt i webbläsaren. Leo lär sig aldrig från dina data eller använder dem för modellträning. Alla förfrågningar skickas via en anonymiserande server.</translation>
+<translation id="6458721693611638005">Läs mer om hur Brave skyddar din användning av AI i Leos integritetspolicy. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standardmodell för nya konversationer</translation>
 <translation id="8826914609353373601">Hantera Premium-prenumeration</translation>
 <translation id="235457946228076038">Ta med din egen modell</translation>
@@ -733,6 +749,8 @@ Leo AI att raderas. Denna åtgärd kan inte ångras.</translation>
 <translation id="3553035516792776805">Namn på modellbegäran</translation>
 <translation id="7634775528597575156">Serverslutpunkt</translation>
 <translation id="6374563306438145841">API-nyckel</translation>
+<translation id="3295756655687327124">Stöd för vision</translation>
+<translation id="1415432774589088566">Om denna modell tar bilden som input, t.ex. llama 3.2b vision</translation>
 <translation id="8008271349880309090">Modellens namn som det kommer att visas i menyn för val av modell</translation>
 <translation id="1355326130503900056">Namnet på modellen så som det ska visas i begäran till serverramverket, t.ex. phi-3 (observera att om detta namn inte matchar exakt vad som förväntas av serverramverket kommer integrationen inte att fungera)</translation>
 <translation id="3213787232304349732">Webbadress där ditt serverramverk lyssnar efter förfrågningar. Om du är osäker kan du kontrollera dokumentationen för serverramverket. För Ollama är detta t.ex. alltid http://localhost:11434/v1/chat/completions</translation>

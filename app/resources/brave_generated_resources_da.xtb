@@ -318,6 +318,18 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8813509417421129632">En indlejret side på <ph name="SITE"/> vil gerne gemme</translation>
 <translation id="7700010743463174379">Denne side vil gerne gemme</translation>
 <translation id="6774238875569752630">En indlejret side på denne side vil gerne gemme</translation>
+<translation id="1233913566967531780">Fanefokus</translation>
+<translation id="4034992002364254340">Saml alle relaterede faner i et nyt vindue</translation>
+<translation id="8012125596344613514">Foreslåede emner</translation>
+<translation id="7529120186020617755">Indtast et emne, der skal fokuseres på ...</translation>
+<translation id="6847541693235449912">Gå</translation>
+<translation id="2079545284768500474">Fortryd</translation>
+<translation id="1533980864758658574">Nyt vindue oprettet til <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Denne funktion sender data om dine åbne faner til Leo, Braves AI-drevne browserassistent.</translation>
+<translation id="6165508094623778733">Lær mere</translation>
+<translation id="7557539689487606886">Vælg Premium</translation>
+<translation id="1035309871698658326">Når den åbnes, sender den automatisk titlerne og oprindelsen på alle ikke-private faner til Leo for at klassificere dem.</translation>
+<translation id="3435896845095436175">Aktivér</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -354,7 +366,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2396127686705429331">Vis bogmærkeknap</translation>
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="4109670531935487117">Vis autofuldførelsesforslag i adressefeltet</translation>
-<translation id="2858138569776157458">Topwebsites</translation>
+<translation id="3405901785709583668">Mest populære forslag</translation>
 <translation id="7859704718976024901">Browsinghistorik</translation>
 <translation id="8820817407110198400">Bogmærker</translation>
 <translation id="4144468798716165316">Lynkommandoer</translation>
@@ -463,7 +475,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7791141927430186653">Tillad X (tidligere Twitter) indlejrede tweets</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
 <translation id="8792121506918889955">WebRTC IP-håndteringspolitik</translation>
-<translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
@@ -714,6 +725,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2751872555001636931">Vis Leo-ikon i sidebjælken</translation>
 <translation id="8055509865174199683">Vis Leo i kontekstmenuen på hjemmesider</translation>
 <translation id="1529674267267221673">Leo vil blive vist i kontekstmenuen, når du højreklikker på en hjemmeside. Dette vil sende konteksten fra den aktuelle hjemmeside til Leo.</translation>
+<translation id="5226020406479918122">Fanefokus-tilstand</translation>
+<translation id="3705539672403311123">Aktivér organisering af faner på siden Fanesøgning. Når den åbnes, sender den automatisk titlerne og oprindelserne på alle ikke-private faner til Leo for at klassificere dem. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Vis anbefalede forespørgsler i samtalen</translation>
 <translation id="5781842473834867765">Gem min samtalehistorik</translation>
 <translation id="1082960401708055995">Hvis du deaktiverer lagring af samtaler, slettes alle tidligere gemte samtaler permanent. Denne handling kan ikke fortrydes.</translation>
@@ -722,6 +735,9 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du sletter din chathistorik, slettes alle dine tidligere samtaler med Brave Leo AI. Denne handling kan ikke fortrydes.</translation>
 <translation id="5574059574002819179">Justér automatiske forslag</translation>
 <translation id="7942415993090181327">Chathistorik</translation>
+<translation id="5385064007245738696">Om Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo leverer en AI-chat og andre AI-drevne grænseflader i browseren, der prioriterer privatlivets fred. Leo lærer aldrig af dine data eller bruger dem til modeltræning. Alle anmodninger sendes gennem en anonymiserende server.</translation>
+<translation id="6458721693611638005">Læs mere om, hvordan Brave beskytter din brug af AI i Leos privatlivspolitik. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standardmodel for nye samtaler</translation>
 <translation id="8826914609353373601">Administrer premium-abonnement</translation>
 <translation id="235457946228076038">Medbring din egen model</translation>
@@ -732,6 +748,8 @@ Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du slett
 <translation id="3553035516792776805">Navn på modelanmodning</translation>
 <translation id="7634775528597575156">Serverslutpunkt</translation>
 <translation id="6374563306438145841">API-nøgle</translation>
+<translation id="3295756655687327124">Vision Support</translation>
+<translation id="1415432774589088566">Hvis denne model tager et billede som input, f.eks. llama 3.2b vision</translation>
 <translation id="8008271349880309090">Navnet på modellen, som det vil blive vist i menuen til valg af model</translation>
 <translation id="1355326130503900056">Navnet på modellen, som den skal vises i anmodningen til serverrammen, f.eks. phi-3 (bemærk, at hvis dette navn ikke passer præcist til det, der forventes af serveringsrammen, fungerer integrationen ikke).</translation>
 <translation id="3213787232304349732">Den URL, hvor dit serversystem lytter efter anmodninger. Hvis du ikke er sikker, så tjek dokumentationen for serversystemet. For Ollama er det f.eks. altid http://localhost:11434/v1/chat/completions</translation>

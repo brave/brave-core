@@ -109,7 +109,7 @@
 <translation id="7304425663107214334">Tampilkan saran peramban</translation>
 <translation id="8982438328166986164">Menampilkan usulan situs web berdasarkan markah dan riwayat penelusuran Anda.</translation>
 <translation id="924029461438529367">Tampilkan saran pencarian</translation>
-<translation id="1571106259128580884">Tampilkan saran situs teratas</translation>
+<translation id="5989135139219497991">Tampilkan saran teratas</translation>
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Susun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="412411722208944922">Mesin pencarian cepat</translation>
@@ -245,9 +245,6 @@
 <translation id="2888496576732880897">Bantu Brave Penelusuran berkembang</translation>
 <translation id="7044431516245362795">Ikut serta dalam Web Discovery Project buat bantu mengembangkan indeks dan menyempurnakan hasil pencarian. <ph name="LEARN_MORE_START"/>Pelajari selengkapnya.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Tentu saja saya akan membantu</translation>
-<translation id="2877653791257935258">Ketik nama atau URL situs web</translation>
-<translation id="5329830149661250028">Lihatlah perbedaan Brave: Tanpa iklan. Tanpa pelacak. Pemuatan halaman yang jauh lebih cepat.</translation>
-<translation id="3941792073703079607">Lihat perbedaan Brave: Memblokir iklan. Menyimpan data. Aliran lebih cepat.</translation>
 <translation id="3545804467215833536">Ketuk untuk melihat Perisai Brave</translation>
 <translation id="1724327820822194498">Lihatlah semua hal buruk yang diblokir Brave, pada setiap halaman, dengan Perisai.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> serta <ph name="TRACKER"/> iklan &amp; pelacak lain telah diblokir</translation>
@@ -504,6 +501,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
+<translation id="7205939464631857223">Hapus semua elemen yang diblokir</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
 <translation id="1118508688433541158">Ramban lebih cepat dan blokir iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menghemat data dengan menelusuri web menggunakan Brave.</translation>
@@ -1029,7 +1027,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5888208462949095139">Mencari dengan <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget layar beranda</translation>
 <translation id="703185154752046151">Widget ditambahkan ke layar beranda</translation>
-<translation id="3290805388004282161">Cobalah widget pencarian Brave</translation>
+<translation id="4635094429202343515">Coba widget Brave Penelusuran</translation>
 <translation id="4809681171446727314">Mengakses pencarian privat dan independen cukup dari layar beranda Anda.</translation>
 <translation id="7751715172931488388">Tambahkan widget</translation>
 <translation id="7285167584112910782">Pencarian aksi cepat Brave</translation>
@@ -1096,6 +1094,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1179407411385015942">Leo adalah asisten pintar yang didukung AI, dan dibangun tepat di dalam peramban</translation>
 <translation id="5781842473834867765">Simpan riwayat percakapan saya</translation>
 <translation id="4109670531935487117">Tampilkan usulan penyelesaian otomatis pada bilah alamat</translation>
+<translation id="4983005227524068187">Tampilkan di bilah mesin penelusuran cepat</translation>
+<translation id="8514910864411336826">Aktifkan pintasan untuk meluncurkan Leo dari bilah mesin penelusuran cepat.</translation>
 <translation id="6106701981952170121">Hapus semua data percakapan Leo AI</translation>
 <translation id="423600389315522551">Mereset Leo AI buat Anda memilih pakai Leo AI di masa mendatang dan riwayat obrolan Anda juga terhapus. Menghapus riwayat obrolan juga akan hapus semua percakapan sebelumnya dengan Leo AI. Tidak bisa diurungkan.</translation>
 <translation id="6742599753610126012">Hapus riwayat obrolan</translation>
@@ -1218,11 +1218,12 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6891382640886173702">Gabungkan jendela</translation>
 <translation id="2912247081180973411">Tutup jendela</translation>
 <translation id="4010699428656610296">Silakan gabungkan tab lain ke jendela Brave yang lain.</translation>
-<translation id="208634871997892083">VPN yang selalu aktif</translation>
+<translation id="4306918392910017801">Rekoneksi VPN secara otomatis</translation>
 <translation id="1599073346542156922">Cara mengaktifkan:</translation>
 <translation id="7001163334415463127">1. Buka pengaturan perangkat Anda dari laci aplikasi Anda atau ketuk tombol di bawah ini.</translation>
 <translation id="887443138775437899">2. Temukan VPN Brave dan ketuk ikon pengaturan kw sebelah kanan.</translation>
-<translation id="3776051499611941773">3. Pilih <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN Selalu Aktif<ph name="ALWAYS_ON_TUTORIAL_END"/> untuk mengaktifkannya.</translation>
+<translation id="7546805138087561624">3. Pilih <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN Selalu Aktif<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> untuk mengaktifkannya.</translation>
+<translation id="2446001600399646984">Ingat, karena keterbatasan Android, "Blokir koneksi tanpa VPN" tidak berfungsi seperti yang diharapkan. <ph name="LEARN_MORE_START"/>Pelajari selengkapnya.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Buka setelan Android</translation>
 <translation id="2728518864712716830">Pembaruan diunduh.</translation>
 <translation id="8403338849301491865">Daftar filter telah berhasil diperbarui</translation>
@@ -1232,4 +1233,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="7942415993090181327">Riwayat obrolan</translation>
 <translation id="6859935199732075666">Tampilkan kesalahan dari Safe Browsing</translation>
+<translation id="2735247450315842119">Izinkan tangkapan layar di tab pribadi</translation>
+<translation id="8420414929552321089">Jika diizinkan, tab pribadi juga akan terlihat ketika beberapa aplikasi terbuka.</translation>
 </translationbundle>

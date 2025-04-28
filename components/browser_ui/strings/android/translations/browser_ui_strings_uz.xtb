@@ -20,6 +20,7 @@
 <translation id="129382876167171263">Saytlardan saqlangan fayllar shu yerda chiqadi</translation>
 <translation id="131112695174432497">Reklamani moslashtirishga aloqador axborot oʻchirildi</translation>
 <translation id="1317194122196776028">Bu saytni olib tashlash</translation>
+<translation id="1333965224356556482">Saytlarga joylashuvingiz axborotini koʻrishni taqiqlash</translation>
 <translation id="1343356790768851700">Bu sayt sizga qiziq narsalarni aniqlashi va boshqa saytlarga taklif qilishi mumkin</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> sayti qo‘shildi</translation>
 <translation id="1371239764779356792">Sayt maʼlumotlarni qurilmangizda saqlashiga ruxsat berish</translation>
@@ -30,31 +31,41 @@
 <translation id="1415402041810619267">URL manzil qisqartirildi</translation>
 <translation id="1741136041592162279">Qurilmadagi ilovalar roʻyxati va qidiruv natijalarida oxirgi varaqlar chiqishi uchun Brave ularni qurilmaga ulashishiga ruxsat bering. Buni Brave sozlamalarida faolsizlantirish mumkin.</translation>
 <translation id="1448064542941920355">Kichiklashtirish</translation>
+<translation id="1464044141348608623">Saytlarning qurilmadan foydalanish axborotidan foydalanishini taqiqlash</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> ta sayt}other{<ph name="SITE_COUNT"/> ta sayt}}</translation>
 <translation id="1500473259453106018">Varaqlarda narx pasayishi bildirgisini berkitish</translation>
+<translation id="1508931164824684991">Saytlar JavasSript ishlatishi mumkin</translation>
 <translation id="1510341833810331442">Saytlar maʼlumotlarni qurilmangizga saqlay olmaydi</translation>
 <translation id="1538031354170655462">Saytlar odatda givohnomani skanerlash yoki kontaktsiz toʻlov kabi atrofdagi teglar yoki qurilmalar bilan ishlashda yaqindagi simsiz aloqadan (NFC) foydalanadi</translation>
 <translation id="1547123415014299762">Tashqi cookie fayllariga ruxsat berilgan</translation>
 <translation id="1593426485665524382">Yangi amallar ekranning yuqoriroq qismida joylashgan</translation>
+<translation id="1615755956145364867">Saytlar himoyalangan kontent ijrosi uchun ruxsat soʻray oladi</translation>
 <translation id="1620510694547887537">Kamera</translation>
+<translation id="1621729191093924223">Mikrofon ishlatadigan funksiyalar ishlamaydi</translation>
 <translation id="1633720957382884102">Aloqador saytlar</translation>
 <translation id="1644574205037202324">Tarix</translation>
 <translation id="1652197001188145583">Yoqilsa, saytlar NFC qurilmalardan foydalanishni soʻrashi mumkin. Oʻchirilsa, bunday qurilmalardan foydalana olmaydi.</translation>
 <translation id="1660204651932907780">Saytlarga ovoz ijro etish uchun ruxsat berish (tavsiya etiladi)</translation>
 <translation id="1677097821151855053">Saytga kirish uchun yoki reklamani moslashtirish uchun ishlatiladigan cookie fayllari va boshqa sayt maʼlumotlari. Barcha saytlar uchun cookie fayllarni boshqarish uchun <ph name="BEGIN_LINK"/>Cookie sozlamalari<ph name="END_LINK"/> sahifasini oching.</translation>
+<translation id="1679305402657584804">Saytlar NFC qurilmalardan foydalanishga ruxsat soʻrashi mumkin</translation>
 <translation id="1686785653877010442">Odatda, saytlar muhim yangiliklar yoki chat xabarlari haqida sizga bildirish uchun bildirishnomalar yuboradi.</translation>
 <translation id="169515064810179024">Saytlarga harakat sensorlaridan foydalanishni taqiqlash</translation>
+<translation id="1703666494654169921">Saytlarga virtual reallik qurilmalari yoki maʼlumotlardan foydalanishni taqiqlash</translation>
+<translation id="1704230497453185209">Saytlarga tovush ijro qilishni taqiqlash</translation>
 <translation id="1717218214683051432">Harakat sensorlari</translation>
 <translation id="1743802530341753419">Saytlar qurilmaga ulanishiga ruxsat so‘ralsin (tavsiya etiladi)</translation>
 <translation id="1779089405699405702">Tasvir dekoderi</translation>
 <translation id="1785415724048343560">Nuqsonlarsiz ishlashi uchun tavsiya etiladi</translation>
+<translation id="1796588414813960292">Ovozdan foydalanadigan funksiyalar ishlamaydi</translation>
 <translation id="7401204338724669842">Brave maslahatlari</translation>
 <translation id="6704867734300244173">Yoqilsa, Brave tezroq ishlaydi va JavaScript ishlatadigan funksiyalar bexato ishlaydi. Yoqilmasa, unumdorlik pasayadi, ammo V8 hujumlarga yaxshiroq qarshilik qiladi.</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> AR ishlatishi uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali kamerani yoqing.</translation>
 <translation id="1887786770086287077">Bu qurilmada Joylashuvni aniqlash xizmati yoqilmagan, uni <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali yoqing.</translation>
+<translation id="1906181697255754968">Saytlar odatda yopilmagan ishlaringizni saqlash maqsadida qurilmangizdagi fayllar va jildlar bilan ishlaydi</translation>
 <translation id="1915307458270490472">Tugatish</translation>
 <translation id="1919950603503897840">Kontaktlarni tanlash</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="1954597385941141174">Saytlar USB qurilmalarga ulanishga ruxsat soʻray oladi</translation>
 <translation id="1979673356880165407">Ochilgan barcha saytlar uchun matn va rasmlarni kattalashtiring yoki kichiklashtiring</translation>
 <translation id="1984937141057606926">Tashqi saytlardan tashqarilarga ruxsat berilgan</translation>
 <translation id="1985247341569771101">Yoqilsa, saytlar qurilmangiz harakat sensoridan foydalana oladi. Oʻchirilsa, foydalana olmaydi.</translation>
@@ -63,10 +74,12 @@
 <translation id="1994173015038366702">Sayt URL manzili</translation>
 <translation id="2004697686368036666">Ayrim saytlardagi funksiyalar ishlamay qolishi mumkin.</translation>
 <translation id="2025115093177348061">Boyitilgan reallik</translation>
+<translation id="2028449514182362831">Harakat sensori ishlatadigan funksiyalar ishlamaydi</translation>
 <translation id="2030769033451695672"><ph name="URL_OF_THE_CURRENT_TAB"/> sahifasiga qaytish uchun bosing</translation>
 <translation id="2079545284768500474">Bekor qilish</translation>
 <translation id="2091887806945687916">Tovush</translation>
 <translation id="2096716221239095980">Hammasini oʻchirish</translation>
+<translation id="2102396546234652240">Saytlarga mikrofondan foydalanishni taqiqlash</translation>
 <translation id="2117655453726830283">Keyingi slayd</translation>
 <translation id="2146263598007866206">Saytlar vaqtingizni tejash maqsadida tegishli fayllarni avtomatik ravishda birga yuklab olishi mumkin</translation>
 <translation id="2148716181193084225">Bugun</translation>
@@ -76,7 +89,9 @@
 <translation id="2185965788978862351">Bunda saytlar maʼlumotlari, cookie fayllar va bosh ekrandagi ilovalar egallagan <ph name="DATASIZE"/> joy oʻchirib tashlanadi.</translation>
 <translation id="2194856509914051091">Bularni hisobga olish kerak</translation>
 <translation id="2215727959747642672">Fayllarni tahrirlash</translation>
+<translation id="2218389616572918761">Saytlar mikrofondan foydalanishga ruxsat soʻrashi mumkin</translation>
 <translation id="2228071138934252756"><ph name="APP_NAME"/> kameradan foydalanishiga ruxsat berish uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali kamerani yoqing.</translation>
+<translation id="2231160360698766265">Saytlarga himoyalangan kontentni ijro etishga ruxsat berish</translation>
 <translation id="2235344399760031203">Tashqi cookie fayllar bloklandi</translation>
 <translation id="2238944249568001759">Oxirgi varaq asosida tavsiya etiladigan qidiruvlar</translation>
 <translation id="2241587408274973373">Yangi varaq sahifasi bildirgilari</translation>
@@ -94,9 +109,9 @@
 <translation id="2410940059315936967">Siz kirgan sayt boshqa saytlardagi kontentni, masalan, rasmlar, reklamalar va matnlarni joylashtirishi mumkin. Ushbu boshqa saytlar belgilaydigan cookie fayllar tashqi cookie fayllar hisoblanadi.</translation>
 <translation id="2434158240863470628">Yuklab olindi: <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="2438120137003069591">Siz bu saytga tashqi cookie fayllaridan foydalanishga vaqtincha ruxsat berdingiz, bu esa kuzatuvdan himoyani kamaytiradi, lekin sayt funksiyalari kutilganidek ishlaydi. <ph name="BEGIN_LINK"/>Fikr-mulohaza<ph name="END_LINK"/></translation>
-<translation id="20460146243579445">Ayrim saytlardagi funksiyalar Inkognito rejimida ishlamasligi mumkin</translation>
 <translation id="2442870161001914531">Har doim kompyuter versiyasi ochilsin</translation>
 <translation id="1736696984974511795">Endi Brave qurilmangizga oxirgi varaqlarni ulashadi. Ular qurilmadagi ilovalar roʻyxati va qidiruv natijalarida chiqadi. Buni istalgan vaqt Brave sozlamalarida faolsizlantirishingiz mumkin.</translation>
+<translation id="245322989586167203">Saytlar odatda tarmoqni sozlash va axborot uzatish maqsadida seriyali portlarga ulanadi</translation>
 <translation id="2469312991797799607"><ph name="ORIGIN"/> sayti va unga aloqador saytlar tomonidan saqlangan barcha maʼlumotlar va cookie fayllari oʻchirib tashlanadi.</translation>
 <translation id="2482878487686419369">Bildirishnomalar</translation>
 <translation id="2485422356828889247">O‘chirib tashlash</translation>
@@ -114,6 +129,7 @@
 <translation id="2621115761605608342">Ko‘rsatilgan saytga JavaScript ishga tushirishga ruxsat berish.</translation>
 <translation id="2626708220538466178">Birlamchi brauzer quyi ekrani yopildi</translation>
 <translation id="2653659639078652383">Yuborish</translation>
+<translation id="2670403088701171361">Saytlarga vaqtinchalik xotiradagi matn yoki rasmlarni koʻrishni taqiqlash</translation>
 <translation id="2677748264148917807">Tark etish</translation>
 <translation id="2682367912565197520">Saqlangan zum darajasini oʻchirish</translation>
 <translation id="2683434792633810741">Oʻchirib, tiklansinmi?</translation>
@@ -123,8 +139,10 @@
 <translation id="8181634240306014548">Braveni fokusdagi omniboks bilan ishga tushirish, arzon qurilmalarda ishga tushirish vaqtini kamaytiradi.</translation>
 <translation id="2750481671343847896">Saytlar shaxsni tasdiqlash xizmatlariga kirish oynalarini chiqarishi mumkin</translation>
 <translation id="2787357173144933081">Omniboksdan boshlash</translation>
+<translation id="2789132527330338807">Sites atrofingiz 3D xaritasini yaratish yoki kamera holatini kuzatish uchun ruxsat soʻrashi mumkin</translation>
 <translation id="2790501146643349491">Yoqilsa, yaqinda yopilgan saytlar axborot yuborish va qabul qilishni toʻxtatishi mumkin. Oʻchirilsa, toʻxtata olmaydi.</translation>
 <translation id="2795716239552913152">Saytlar odatda mahalliy yangiliklar yoki atrofdagi doʻkonlar kabi tegishli funksiya yoki axborotlar uchun joylashuvingizdan foydalanadi</translation>
+<translation id="2802908157808345702">Saytlarga qalqib chiquvchi oynalar ochish yoki tashrifni yoʻnaltirish taqiqlansin</translation>
 <translation id="5801312978029568377">Brave endi oxirgi varaqlarni qurilmadagi ilovalar roʻyxati va qidiruv natijalarida chiqaradi. Buni istalgan vaqt Brave sozlamalarida faolsizlantirishingiz mumkin.</translation>
 <translation id="2822354292072154809"><ph name="CHOSEN_OBJECT_NAME"/> uchun barcha sayt ruxsatnomalari ilk holatga qaytarilsinmi?</translation>
 <translation id="2850913818900871965">Mobil versiyani ochish</translation>
@@ -138,12 +156,15 @@
 <translation id="2939338015096024043">Yoniq boʻlsa, saytlar kamerangiz joylashuvini kuzatish va atrofingiz haqida bilishni soʻrashi mumkin. Oʻchirilsa, kuzata olmaydi va atrofingizdagi narsalarni bila olmaydi.</translation>
 <translation id="2968755619301702150">Sertifikatlarni ko‘rish vositasi</translation>
 <translation id="2979365474350987274">Tashqi cookie fayllar cheklangan</translation>
+<translation id="2990583317361835189">Saytlarga harakat sensorlaridan foydalanishni taqiqlash</translation>
 <translation id="3008272652534848354">Ruxsatlarni qasliga qaytarish</translation>
 <translation id="301521992641321250">Avtomatik bloklangan</translation>
+<translation id="3064871050034234884">Saytlar ovoz chiqarishi mumkin</translation>
 <translation id="3069226013421428034">Muayyan sayt uchun tashqi xizmatga kirishga ruxsat bering.</translation>
 <translation id="310297983047869047">Avvalgi slaydi</translation>
 <translation id="3109724472072898302">Yig‘ilgan</translation>
 <translation id="310979712355504754">Hammasini oʻchirish</translation>
+<translation id="311394601889664316">Saytlarga qurilmadagi fayl yoki jildlarni tahrirlashni taqiqlash</translation>
 <translation id="3114012059975132928">Video pleyer</translation>
 <translation id="3115898365077584848">Ma’lumotlarni ko‘rsatish</translation>
 <translation id="3123473560110926937">Ayrim saytlarda bloklangan</translation>
@@ -177,23 +198,25 @@
 <translation id="3532312529397438268">Saytlar V8 optimizer ishlata olmaydi</translation>
 <translation id="3536227077203206203">Shu safar ruxsat berildi</translation>
 <translation id="3538390592868664640">Saytlarni atrofingizning 3D xaritasini yaratish yoki kamera joylashuvini aniqlashdan bloklash</translation>
-<translation id="1593610935874634135">Kompaniya saytlar guruhini jamlashi va cookielar yordamida guruhdagi faoliyatni ulashishi mumkin. Inkognito rejimidan chiqish.</translation>
-<translation id="8157212814767579028">Inkognito rejimi tark etilsinmi?</translation>
 <translation id="3586500876634962664">Kamera va mikrofonni ishlatish</translation>
 <translation id="358794129225322306">Saytga birdaniga bir nechta fayl yuklab olishga ruxsat berish.</translation>
 <translation id="3594780231884063836">Video ovozini oʻchirish</translation>
 <translation id="3600792891314830896">Saytlardagi ovozni o‘chirib qo‘yish</translation>
 <translation id="3602290021589620013">Razm solish</translation>
+<translation id="3611658447322220736">Yaqinda yopilgan saytlar axborot yuborishi va qabul qilishi mumkin</translation>
 <translation id="3628308229821498208">Tavsiya etilgan qidiruvlar</translation>
+<translation id="3641456520301071208">Saytlar joylashuv axborotingizni talab qilishi mumkin</translation>
 <translation id="3658847490588580244">Birlamchi brauzer quyi ekrani</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_OWNER"/> saytlar guruhidagi <ph name="RWS_MEMBERS_COUNT"/> ta sayt guruhdagi faoliyatingizni kuzatishi mumkin}other{<ph name="RWS_OWNER"/> saytlar guruhidagi <ph name="RWS_MEMBERS_COUNT"/> ta sayt guruhdagi faoliyatingizni kuzatishi mumkin}}</translation>
 <translation id="3676777756440746804">Saytlarga saqlangan shaxsiy maʼlumotlardan foydalanishga ruxsat soʻrash taqiqlanadi</translation>
 <translation id="3697164069658504920">Yoqilsa, saytlar USB qurilmalardan foydalanishni soʻrashi mumkin. Oʻchirilsa, bunday qurilmalardan foydalana olmaydi.</translation>
 <translation id="2697264242676904869">Siz ochadigan sayt Brave orqali real foydalanuvchi ekaningizni tasdiqlovchi axborotni saqlashi mumkin.</translation>
+<translation id="3708684582558000260">Yopilgan saytlarga maʼlumotlarni oxirigacha yuborish yoki qabul qilishni taqiqlash</translation>
 <translation id="3709818294139939629">Saytning faylga ruxsati yopildi</translation>
 <translation id="3721953990244350188">Yopish va keyingi mavjud amalni koʻrsatish</translation>
 <translation id="3744111561329211289">Orqa fonda sinxronlash</translation>
 <translation id="3763247130972274048">10 soniya oʻtkazish uchun chap yoki oʻng tomoniga ikki marta bosing</translation>
+<translation id="3776508619697147021">Saytlar birdaniga bir nechta fayl yuklab olishga ruxsat soʻrashi mumkin</translation>
 <translation id="3779154269823594982">Parollarni yangilash</translation>
 <translation id="3797520601150691162">Maxsus saytlar uchun tungi mavzu tatbiq etilmaydi</translation>
 <translation id="3803367742635802571">Siz tashrif buyurgan saytlar toʻgʻri ishlamay qolishi mumkin</translation>
@@ -204,14 +227,14 @@
 <translation id="1799795508209440035">Brave cookie fayllarni bugundan yana bloklaydi</translation>
 <translation id="385051799172605136">Orqaga</translation>
 <translation id="3859306556332390985">Oldinga surish</translation>
+<translation id="389521680295183045">Saytlarga qurilmadan foydalanishga oid axborotlarni soʻrashga ruxsat berish</translation>
 <translation id="3895926599014793903">Hajmni majburiy o‘zgartirish funksiyasini yoqish</translation>
 <translation id="3905475044299942653">Koʻp bildirishnomalar kelishini toʻxtatadi</translation>
-<translation id="6642913673024345959">Inkognito rejimidagi tashqi cookie fayllarni taqiqlash</translation>
-<translation id="3913461097001554748"><ph name="DOMAIN_URL"/>, <ph name="SEPARATOR1"/> (<ph name="DEVICE_NAME"/>)</translation>
 <translation id="3918378745482005425">Ayrim funksiyalar ishlamasligi mumkin. Tegishli saytlar tashqi cookie fayllaridan foydalanishda davom etishi mumkin.</translation>
 <translation id="3922092564198021702">Telefonda sozlamalarni oching</translation>
 <translation id="3933121352599513978">Keraksiz soʻrovlarni yigʻish (tavsiya etiladi)</translation>
 <translation id="3955193568934677022">Saytlarga himoyalangan kontentni ijro qilish uchun ruxsat berish (tavsiya etiladi)</translation>
+<translation id="3955321697524543127">Saytlarga USB qurilmalarga ulanishni taqiqlash</translation>
 <translation id="3965467402665811906">Saytlar shaxsiy maʼlumotlaringizdan foydalanishga ruxsat soʻrashi mumkin</translation>
 <translation id="3967822245660637423">Yuklab olindi</translation>
 <translation id="3981465354637804599">Saytlar odatda bepul kontent yoki xizmatlar taqdim qilish maqsadida reklama chiqaradi. Lekin ayrim saytlarda yoqimsiz yoki befoyda reklamalar chiqishi ham mumkin.</translation>
@@ -234,14 +257,17 @@
 <translation id="4259722352634471385">Sahifa bloklandi: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Odatda saytlar yopilganda ular rasmni yuklash yoki chat xabarini yuborish kabi amallarni yakunlash uchun sinxronlashda davom etadi</translation>
 <translation id="4278390842282768270">Berilgan ruxsatnomalar</translation>
+<translation id="4290791284969893584">Sahifani yopgandan keyin siz boshlagan vazifalar tamomlanmasligi mumkin</translation>
 <translation id="429312253194641664">Saytda media-fayl ijro etilmoqda</translation>
 <translation id="42981349822642051">Kengaytirish</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Muddati ertaga tugaydi}other{# kundan keyin muddati tugaydi}}</translation>
 <translation id="8601682686806697614">Brave cookie fayllarni bugun yana cheklaydi</translation>
 <translation id="4338831206024587507">Barcha saytlar <ph name="DOMAIN"/> ostida</translation>
+<translation id="4340799661701629185">Saytlarga bildirishnoma yuborishni taqiqlash</translation>
 <translation id="4402755511846832236">Bu qurilmadan foydalanish axborotlarini saytlar bilishini taqiqlash</translation>
 <translation id="4412992751769744546">Tashqi saytlarga cookie fayllarni saqlashga ruxsat berish</translation>
 <translation id="1675197434085185531">Brave saytlarni kezishda sizni kuzatish uchun tashqi cookie fayllardan foydalanuvchi saytlarni bloklaydi. Sozlamalar orqali <ph name="BEGIN_LINK"/>tashqi cookie fayllariga ruxsatni boshqarish mumkin<ph name="END_LINK"/>.</translation>
+<translation id="443121186588148776">Ketma-ket port</translation>
 <translation id="4434045419905280838">Qalquvchi oyna va yo‘naltirishlar</translation>
 <translation id="443552056913301231">Bunda qurilmadagi cookie fayllar kabi barcha maʼlumotlar oʻchib ketadi va <ph name="ORIGIN"/> saytining barcha ruxsatlari tiklanadi</translation>
 <translation id="4468959413250150279">Muayyan saytdagi ovozni o‘chirish.</translation>
@@ -252,9 +278,8 @@
 <translation id="4534723447064627427"><ph name="APP_NAME"/> mikrofondan foydalanishiga ruxsat berish uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali mikrofonni yoqing.</translation>
 <translation id="4566417217121906555">Mikrofonni ovozsiz qilish</translation>
 <translation id="4570913071927164677">Tafsilotlar</translation>
-<translation id="8877838532507724268">Inkognito rejimida saytlar hatto aloqador saytlarda ham cookie fayllar yordamida harakatlaringizni kuzata olmaydi. Brauzer faoliyati haqidagi maʼlumotlar, masalan, moslashtirilgan reklamalarni koʻrsatish uchun ishlatilmaydi. Ayrim saytlardagi funksiyalar ishlamay qolishi mumkin.</translation>
 <translation id="461356340001513807">Saytlarda hisobga mavjud shaxsni tasdiqlash usuli bilan kirish imkonini beradi</translation>
-<translation id="4619615317237390068">Boshqa qurilmalardan sinxronlangan varaqlar</translation>
+<translation id="4635969503923889910">Saytlarga NFC qurilmalardan foydalanish taqiqlansin</translation>
 <translation id="4644713492825682049">Oʻchirish va tiklash</translation>
 <translation id="4645575059429386691">Ota-onangiz tomonidan boshqariladi</translation>
 <translation id="4670064810192446073">Virtual reallik</translation>
@@ -276,17 +301,16 @@
 <translation id="4945443401464700059"><ph name="SITE"/> shaxsiy maʼlumotlaringizdan foydalanishi bloklangan</translation>
 <translation id="4953688446973710931">Yoqilsa, saytlar avtomat tarzda bir nechta fayl yuklab olish uchun ruxsat soʻrashi mumkin Oʻchirilsa, yuklay olmaydi.</translation>
 <translation id="4962975101802056554">Qurilma uchun barcha ruxsatnomalarni bekor qilish</translation>
+<translation id="4972737347717125191">Saytlar virtual reallik qurilmalari va axborotlardan foydalanishga ruxsat soʻray oladi</translation>
 <translation id="497421865427891073">Oldinga</translation>
 <translation id="4976702386844183910">Oxirgi tashrif: <ph name="DATE"/></translation>
 <translation id="4994033804516042629">Hech qanday kontakt topilmadi</translation>
 <translation id="4996978546172906250">Yuborish usuli</translation>
 <translation id="5001526427543320409">Tashqi cookie fayllar</translation>
 <translation id="5007392906805964215">Tekshirish</translation>
-<translation id="5014182796621173645">Oxirgi tashrifingiz: <ph name="RECENCY"/></translation>
 <translation id="5039804452771397117">Ruxsat berish</translation>
 <translation id="5048398596102334565">Saytlarga harakat sensorlaridan foydalanish uchun ruxsat berish (tavsiya etiladi)</translation>
 <translation id="5048841907079026162">Brauzer maʼlumotlarini boshqaring</translation>
-<translation id="8623552597614912461">Bu sayt inkognito oynasidan tashqaridagi ilova bilan axborot ulashmoqchi.</translation>
 <translation id="5063480226653192405">Sarfi</translation>
 <translation id="5068293087784369013">Yangi varaq sahifasini sozlang</translation>
 <translation id="5091013926750941408">Mobil sayt</translation>
@@ -335,12 +359,13 @@
 <translation id="5690795753582697420">Kamera Android sozlamalarida yoqilmagan</translation>
 <translation id="5700761515355162635">Tashqi cookie fayllarga ruxsat berilgan</translation>
 <translation id="5706552988683188916"><ph name="WEBSITE"/> uchun cookie fayllar va sayt maʼlumotlarini oʻchiradi</translation>
-<translation id="6105125042109106861">Inkognito rejimida tashqi cookie fayllariga ruxsat berilmaydi</translation>
 <translation id="5740126560802162366">Saytlar maʼlumotlarni qurilmangizda saqlashi mumkin</translation>
 <translation id="5750869797196646528">Qoʻllar holatini kuzatish</translation>
 <translation id="5771720122942595109">Bloklandi: <ph name="PERMISSION_1"/></translation>
 <translation id="5804241973901381774">Ruxsatlar</translation>
 <translation id="5822675474983796325">Yangi varaq sahifasini moslash quyi ekrani toʻliq hajmda ochildi</translation>
+<translation id="5833899990800318936">Saytlarga JavaScript ishlatishni taqiqlash</translation>
+<translation id="583673505367439042">Saytlar qurilmangizdagi fayl yoki jildlarni tahrirlash uchun ruxsat soʻray oladi</translation>
 <translation id="5844448279347999754">Yoqilsa, saytlar klipborddagi rasm va matnlarni koʻrishga ruxsat soʻrashi mumkin. Oʻchirilsa, bunday fayllarni koʻra olmaydi.</translation>
 <translation id="5853982612236235577">Yoqilsa, saytlar bildirishnoma yuborishni soʻrashi mumkin. Oʻchirilsa, bildirishnoma yubora olmaydi.</translation>
 <translation id="5860033963881614850">O‘chiq</translation>
@@ -349,6 +374,7 @@
 <translation id="5877248419911025165">Barcha soʻrovlarni yigʻish</translation>
 <translation id="5884085660368669834">Sayt sozlamasi</translation>
 <translation id="5887687176710214216">Oxirgi tashrif: kecha</translation>
+<translation id="5908617755156109052">Saytlarga atrofingiz 3D xaritasini yaratish yoki kamera holatini kuzatish taqiqlansin</translation>
 <translation id="5916664084637901428">Yoniq</translation>
 <translation id="5922853908706496913">Ekran namoyish qilinmoqda</translation>
 <translation id="5922967540311291836">Tashqi cookie fayllarni bloklash:</translation>
@@ -406,6 +432,7 @@
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Himoyalangan kontent</translation>
 <translation id="662080504995468778">Qolaman</translation>
+<translation id="6635327442719709864">Yoqilsa, saytlar seriyali portlardan foydalanishni soʻrashi mumkin. Yoqilmasa, saytlar seriyali port ishlata olmaydi.</translation>
 <translation id="6653342741369270081">To‘liq ekran rejimidan chiqish uchun orqaga tugmasini bosing.</translation>
 <translation id="6683865262523156564">Bu sayt guruhga kiradi va u guruhdagi faoliyatni koʻra oladi. Guruh <ph name="RWS_OWNER"/> tomonidan belgilangan</translation>
 <translation id="6689172468748959065">Profil rasmlari</translation>
@@ -463,6 +490,7 @@
 <translation id="7423098979219808738">Avval so‘ralsin</translation>
 <translation id="7423538860840206698">Klipborddan o‘qish taqiqlangan</translation>
 <translation id="7425915948813553151">Saytlar uchun tungi mavzu</translation>
+<translation id="7478658909253570368">Saytlarga seriyali portlarga ulanishni taqiqlash</translation>
 <translation id="7488573225650545859">Ilovalar roʻyxatida varaqlarni ochish panelini berkitish</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7547989957535180761">Yoqilsa, saytlar kirish soʻrovlarini koʻrsatishi mumkin. Oʻchirilsa, koʻrsata olmaydi.</translation>
@@ -474,6 +502,7 @@
 <translation id="7594634374516752650">Bluetooth qurilmaga ulandi</translation>
 <translation id="7617547684249261169">Tarix, cookie fayllar, sayt maʼlumotlarini toʻliq yoki qisman oʻchirishingiz mumkin</translation>
 <translation id="7649070708921625228">Yordam</translation>
+<translation id="7655411746932645568">Saytlar seriyali portlarga ulanishga ruxsat soʻray oladi</translation>
 <translation id="7658239707568436148">Bekor qilish</translation>
 <translation id="7667547420449112975">Oz mamlakati sehrgari</translation>
 <translation id="7681597159868843240">Saytlar odatda virtual reallik yoki qadam sanash kabi funksiyalar uchun qurilmadagi harakat sensorlaridan foydalanadi</translation>
@@ -491,14 +520,17 @@
 <translation id="7846076177841592234">Belgilashni bekor qilish</translation>
 <translation id="2353409725922994861">Brave aksariyat saytlarga tashqi cookie fayllaridan foydalanishni cheklaydi. Lekin bu saytda tashqi cookie fayllarga ruxsat berilgan, chunki u asosiy xizmatlarni taqdim etishda ularga tayanadi.\n\nSozlamalar orqali <ph name="BEGIN_LINK"/>tashqi cookie fayllariga ruxsatni boshqarish mumkin<ph name="END_LINK"/>.</translation>
 <translation id="7882806643839505685">Muayyan saytga ovoz ijro etish uchun ruxsat berish.</translation>
-<translation id="1856888821396498049">Inkognito rejimidagi tashqi cookie fayllarni taqiqlash:</translation>
+<translation id="789722939441020330">Saytlarga bir nechta faylni avtomatik yuklashni taqiqlash</translation>
 <translation id="7940722705963108451">Menga eslatilsin</translation>
+<translation id="7948081750384205628"><ph name="SETTING_TITLE"/> haqida batafsil</translation>
+<translation id="7952708427581814389">Saytlar klipborddagi rasm va matnlarni koʻrishga ruxsat soʻray oladi</translation>
 <translation id="7986741934819883144">Kontaktni tanlang</translation>
 <translation id="7990211076305263060">Yoqilsa, saytlar mikrofondan foydalanishni soʻrashi mumkin. Oʻchirilsa, mikrofondan foydalana olmaydi.</translation>
 <translation id="8007176423574883786">Ushbu qurilma uchun o‘chirilgan</translation>
 <translation id="8010630645305864042">{TILE_COUNT,plural, =1{Shu varaqda davom etish bildirgisini berkitish}other{Shu varaqlarda davom etish bildirgisini berkitish}}</translation>
 <translation id="802154636333426148">Yuklab olib bo‘lmadi</translation>
 <translation id="8042586301629853791">Saralash:</translation>
+<translation id="8051193500142930381">Kamera ishlatadigan funksiyalar ishlamaydi</translation>
 <translation id="8067883171444229417">Videoni ijro qilish</translation>
 <translation id="8068648041423924542">Sertifikatni tanlab bo‘lmadi.</translation>
 <translation id="8077120325605624147">Siz ochgan har qanday sayt istalgan reklamani koʻrsatishi mumkin</translation>
@@ -518,6 +550,7 @@
 <translation id="8200772114523450471">Davom ettirish</translation>
 <translation id="8206354486702514201">Bu parametr administrator tomonidan yoqilgan.</translation>
 <translation id="8211406090763984747">Bu ulanish xavfsiz</translation>
+<translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8249310407154411074">Tepaga siljitish</translation>
 <translation id="8261506727792406068">O‘chirish</translation>
 <translation id="8284326494547611709">Taglavhalar</translation>
@@ -538,6 +571,7 @@
 <translation id="8473055640493819707">“<ph name="APP_NAME"/>” eskirgan. Ilovani qayta oʻrnating.</translation>
 <translation id="8487700953926739672">Internetsiz foydalanish mumkin</translation>
 <translation id="848952951823693243">Har doim mobil versiya ochilsin</translation>
+<translation id="8492822722330266509">Saytlar oynalarni qalqib chiqarishi va sahifalarni yoʻnaltirishi mumkin</translation>
 <translation id="8499083585497694743">Mikrofon ovozini yoqish</translation>
 <translation id="8514955299594277296">Saytlarga maʼlumotlarni qurilmangizga saqlashga ruxsat bermang (tavsiya etilmaydi)</translation>
 <translation id="851751545965956758">Saytlarga qurilmalarga ulanishni taqiqlash</translation>
@@ -555,6 +589,7 @@
 <translation id="8676374126336081632">Tozalash</translation>
 <translation id="8681886425883659911">Yoqimsiz yoki befoyda reklamalar chiqadigan saytlarda reklamalar bloklanadi</translation>
 <translation id="868929229000858085">Kontaktlarni qidirish</translation>
+<translation id="8707904142362025782">Saytlar kameradan foydalanishga ruxsat soʻrashi mumkin</translation>
 <translation id="8712637175834984815">Tushunarli</translation>
 <translation id="8715862698998036666">Butun ekrandan chiqish uchun tepadan pastga tortib, ekran chetini chapga yoki oʻngga suring.</translation>
 <translation id="8719283222052720129"><ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali <ph name="APP_NAME"/> uchun ruxsatnomani yoqing.</translation>
@@ -579,11 +614,13 @@
 <translation id="8926666909099850184">Telefonda NFC yoqilmagan. Uni <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali yoqing.</translation>
 <translation id="8928445016601307354">Saytlarga NFC qurilmalarni koʻrish va ulardagi axborotni oʻzgartirishni taqiqlash</translation>
 <translation id="8944485226638699751">Cheklangan</translation>
+<translation id="895054485242522631">Saytlar harakat sensorlaridan foydalanishi mumkin</translation>
 <translation id="8959122750345127698">Sahifa topilmadi: <ph name="URL"/></translation>
 <translation id="8990043154272859344">Barcha saytlardagi hisobingizdan chiqib ketasiz</translation>
 <translation id="8993853206419610596">Barcha soʻrovlarni kengaytirish</translation>
 <translation id="9002538116239926534">Yoqilsa, saytlar maʼlumotlarni qurilmangizga saqlashi mumkin. Oʻchirilsa, saqlay olmaydi.</translation>
 <translation id="9011903857143958461">Ruxsat berildi: <ph name="SITE_NAME"/></translation>
+<translation id="9017522656123387064">Tanlov rejimi tark etildi</translation>
 <translation id="9019902583201351841">Ota-onangiz tomonidan boshqariladi</translation>
 <translation id="902236149563113779">Saytlar odatda oʻyinlar yoki mashrut ogohlantiruvlari kabi AR funksiyalar uchun kamerangiz joylashuvini kuzatadi</translation>
 <translation id="9039697262778250930">Bu saytlar sizdan hisobingizga qayta kirishingizni talab qilishi mumkin.</translation>
@@ -594,9 +631,18 @@
 <translation id="9138217887606523162">Joriy zum: <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Brave oxirgi varaqlarni qurilmadagi ilovalar roʻyxati va qidiruv natijalarida chiqarishiga ruxsat bering. Buni istalgan vaqt Brave sozlamalarida faolsizlantirishingiz mumkin.</translation>
 <translation id="9162462602695099906">Bu sahifa xavfli</translation>
+<translation id="9182556968660520230">Saytlarga himoyalangan kontentni ijro qilishni taqiqlash</translation>
 <translation id="947156494302904893">Siz ochadigan va real odam ekaningiz haqidagi axborotni tekshirishi mumkin saytlar</translation>
 <translation id="959682366969460160">Ishni tashkillash</translation>
 <translation id="967624055006145463">Ishlatilgan joy</translation>
 <translation id="969975166333045662">Sayt V8 optimizer ishlatishini taqiqlash.</translation>
 <translation id="3110967157686007724">Maxfiy varaq</translation>
+<translation id="8623552597614912461">Bu sayt axborotlaringizni Maxfiy rejim tashqarisidagi ilovaga ulashadi.</translation>
+<translation id="8157212814767579028">Maxfiy rejimdan chiqilsinmi?</translation>
+<translation id="6105125042109106861">Tashqi cookie-fayllar Maxfiy rejimda bloklanadi</translation>
+<translation id="6642913673024345959">Maxfiy rejimda tashqi cookie-fayllarni bloklash</translation>
+<translation id="20460146243579445">Ayrim saytlardagi funksiyalar Maxfiy rejimda ishlamasligi mumkin</translation>
+<translation id="8877838532507724268">Maxfiy rejimda saytlardagi, hatto aloqador saytlardagi xatti-harakatlaringizni kuzatish uchun ham saytlar cookie-fayllardan foydalana olmaydi. Brauzerdan foydalanish xatti-harakatlaringiz reklamalarni moslash kabilar uchun ishlatilmaydi. Ayrim saytlardagi funksiyalar ishlamasligi mumkin.</translation>
+<translation id="1856888821396498049">Maxfiy rejimda tashqi cookie-fayllarni bloklash:</translation>
+<translation id="1593610935874634135">Kompaniya muayyan saytlar guruhidagi xatti-harakatlaringizni ulashish uchun cookie-fayllardan foydalana oladigan saytlar guruhini belgilashi mumkin. Bu funksiya Maxfiy rejimda faolsizlantiriladi.</translation>
 </translationbundle>

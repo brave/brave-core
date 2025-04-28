@@ -317,6 +317,18 @@
 <translation id="8813509417421129632"><ph name="SITE"/>에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="7700010743463174379">이 페이지가 다음을 저장하려고 함</translation>
 <translation id="6774238875569752630">이 페이지상에 임베드된 페이지가 다음을 저장하려고 함</translation>
+<translation id="1233913566967531780">탭 포커스</translation>
+<translation id="4034992002364254340">모든 관련 탭을 새 창에 모읍니다</translation>
+<translation id="8012125596344613514">추천 주제</translation>
+<translation id="7529120186020617755">집중할 주제를 입력하세요...</translation>
+<translation id="6847541693235449912">이동</translation>
+<translation id="2079545284768500474">원상태로 돌리기</translation>
+<translation id="1533980864758658574"><ph name="TOPIC"/>에 대한 새 창을 만들었습니다</translation>
+<translation id="7985042437720138349">이 기능은 열려 있는 탭에 관한 데이터를 Brave의 AI 기반 브라우저 어시스턴트인 레오로 전송합니다.</translation>
+<translation id="6165508094623778733">더 알아보기</translation>
+<translation id="7557539689487606886">프리미엄 가입</translation>
+<translation id="1035309871698658326">탭을 열면 비공개 탭이 아닌 모든 탭의 제목과 출처가 자동으로 레오로 전송되어 분류됩니다.</translation>
+<translation id="3435896845095436175">사용</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="1426410128494586442">예</translation>
@@ -353,7 +365,7 @@
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
-<translation id="2858138569776157458">인기 사이트</translation>
+<translation id="3405901785709583668">인기 추천 항목</translation>
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="4144468798716165316">빠른 명령</translation>
@@ -462,7 +474,6 @@
 <translation id="7791141927430186653">X(구 Twitter) 임베디드 트윗 허용</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
-<translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8798099450830957504">기본값</translation>
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
@@ -713,6 +724,8 @@
 <translation id="2751872555001636931">사이드바에 레오 아이콘 표시</translation>
 <translation id="8055509865174199683">웹사이트의 컨텍스트 메뉴에 레오 표시</translation>
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>
+<translation id="5226020406479918122">탭 포커스 모드</translation>
+<translation id="3705539672403311123">탭 검색 페이지의 탭 정리를 활성화합니다. 탭을 열면 비공개가 아닌 모든 탭의 제목과 출처가 자동으로 레오에 전송되어 분류됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">대화 내에 추천 프롬프트 표시</translation>
 <translation id="5781842473834867765">대화 기록 저장</translation>
 <translation id="1082960401708055995">대화 저장을 비활성화하면 이전에 저장된 모든 대화가 영구적으로 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
@@ -723,6 +736,9 @@ Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다.
 이 작업은 번복할 수 없습니다.</translation>
 <translation id="5574059574002819179">자동 완성 제안 조정</translation>
 <translation id="7942415993090181327">대화 기록</translation>
+<translation id="5385064007245738696">레오 AI 소개</translation>
+<translation id="5084498230659987096">Brave 레오는 브라우저 환경에서 개인 정보 보호를 최우선으로 하는 AI 채팅과 다양한 AI 기반 기능을 제공합니다. 레오는 사용자의 데이터를 학습에 활용하지 않으며, 사용자 데이터를 모델 학습에 사용하지 않습니다. 모든 요청은 익명화 서버를 거쳐 프록시 처리됩니다.</translation>
+<translation id="6458721693611638005">레오의 개인정보 처리방침에서 Brave가 사용자의 AI 사용을 보호하는 방법을 자세히 알아보세요. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
 <translation id="8826914609353373601">프리미엄 구독 관리</translation>
 <translation id="235457946228076038">소유한 모델 가져오기</translation>
@@ -733,6 +749,8 @@ Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다.
 <translation id="3553035516792776805">모델 요청 이름</translation>
 <translation id="7634775528597575156">서버 엔드포인트</translation>
 <translation id="6374563306438145841">API 키</translation>
+<translation id="3295756655687327124">비전 지원</translation>
+<translation id="1415432774589088566">이 모델이 이미지를 입력으로 사용하는 경우(예: llama 3.2b 비전)</translation>
 <translation id="8008271349880309090">모델 선택 메뉴에 표시되는 모델의 이름</translation>
 <translation id="1355326130503900056">서버 측 프레임워크로의 요청에 표시되는 모델의 이름. 예: phi-3 (이 이름이 서버 측 프레임워크에서 기대하는 것과 정확하게 일치하지 않으면 통합이 작동하지 않음)</translation>
 <translation id="3213787232304349732">서버 측 프레임워크가 요청을 수신하는 URL입니다. 잘 모르겠으면 서버 측 프레임워크 문서를 확인하시기 바랍니다. 예를 들어, Ollama의 경우 항상 http://localhost:11434/v1/chat/completions입니다.</translation>

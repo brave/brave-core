@@ -317,6 +317,18 @@
 <translation id="8813509417421129632">在 <ph name="SITE"/> 頁面中的嵌入頁面要求儲存</translation>
 <translation id="7700010743463174379">此頁面要求儲存</translation>
 <translation id="6774238875569752630">此頁面中的嵌入頁面要求儲存</translation>
+<translation id="1233913566967531780">標籤頁焦點</translation>
+<translation id="4034992002364254340">將所有相關標籤頁匯集到新視窗中</translation>
+<translation id="8012125596344613514">建議的主題</translation>
+<translation id="7529120186020617755">輸入要聚焦的主題...</translation>
+<translation id="6847541693235449912">立即前往</translation>
+<translation id="2079545284768500474">復原</translation>
+<translation id="1533980864758658574">為 <ph name="TOPIC"/> 建立新視窗</translation>
+<translation id="7985042437720138349">此功能會將您開啟的標籤頁資料傳送給 Brave 的 AI 驅動瀏覽器助理 Leo。</translation>
+<translation id="6165508094623778733">深入瞭解</translation>
+<translation id="7557539689487606886">訂閱 Premium</translation>
+<translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
+<translation id="3435896845095436175">啟用</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -353,7 +365,7 @@
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
-<translation id="2858138569776157458">熱門網站</translation>
+<translation id="3405901785709583668">熱門建議</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
 <translation id="4144468798716165316">快速指令</translation>
@@ -462,7 +474,6 @@
 <translation id="7791141927430186653">允許 X (原為 Twitter) 嵌入的推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="8792121506918889955">WebRTC IP 處理政策</translation>
-<translation id="6165508094623778733">深入瞭解</translation>
 <translation id="8798099450830957504">預設</translation>
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
@@ -714,6 +725,8 @@
 <translation id="2751872555001636931">在側邊欄顯示 Leo 圖示</translation>
 <translation id="8055509865174199683">在網站的內容選單中顯示 Leo</translation>
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
+<translation id="5226020406479918122">標籤頁焦點模式</translation>
+<translation id="3705539672403311123">在「標籤頁搜尋」頁啟用標籤頁組織。開啟後，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo 進行分類。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="1082960401708055995">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>
@@ -721,6 +734,9 @@
 <translation id="1335414530428321716">如果重設 Leo AI，日後必須重新選擇加入才能再次使用 Brave Leo AI，您的聊天紀錄也會一併清除。清除聊天紀錄會刪除您先前與 Brave Leo AI 的對話。此動作無法復原。</translation>
 <translation id="5574059574002819179">調整自動完成建議</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
+<translation id="5385064007245738696">關於 Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo 在瀏覽器中提供隱私優先的 AI 聊天和其他 AI 驅動的介面。Leo 絕不會學習您的資料或將其使用於模型訓練。所有要求都會透過匿名伺服器代理。</translation>
+<translation id="6458721693611638005">閱讀更多有關 Brave 如何在 Leo 的隱私政策中保護您使用 AI 的資訊。 &amp;lt<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
 <translation id="8826914609353373601">管理付費訂閱</translation>
 <translation id="235457946228076038">使用自己的模型</translation>
@@ -731,6 +747,8 @@
 <translation id="3553035516792776805">模型要求名稱</translation>
 <translation id="7634775528597575156">伺服器端點</translation>
 <translation id="6374563306438145841">API 金鑰</translation>
+<translation id="3295756655687327124">視覺支援</translation>
+<translation id="1415432774589088566">如果此模型以影像作為輸入，例如 llama 3.2b vision</translation>
 <translation id="8008271349880309090">模型名稱，這會顯示於選取模型選單</translation>
 <translation id="1355326130503900056">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
 <translation id="3213787232304349732">您的服務架構會以此 URL 聆聽要求。如果您不確定，請查閱服務架構的說明文件。例如，對 Ollama 而言，這個 URL 永遠是 http://localhost:11434/v1/chat/completions</translation>

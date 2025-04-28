@@ -317,6 +317,18 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Gustong mag-save ng embededed page sa <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Gustong i-save ng page na ito</translation>
 <translation id="6774238875569752630">Isang naka-embed na page sa page na it ay gustong i-save</translation>
+<translation id="1233913566967531780">Focus ng tab</translation>
+<translation id="4034992002364254340">Kunin ang lahat ng mga nauugnay na tab sa isang bagong window</translation>
+<translation id="8012125596344613514">Mga iminumungkahing paksa</translation>
+<translation id="7529120186020617755">Maglagay ng paksa kung saan magpopokus...</translation>
+<translation id="6847541693235449912">Go</translation>
+<translation id="2079545284768500474">I-undo</translation>
+<translation id="1533980864758658574">Gumawa ng bagong window para sa <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Nagpapadala ng data tungkol sa mga nakabukas mong tab ang feature na ito sa Leo, ang AI-powered na browser assistant ng Brave.</translation>
+<translation id="6165508094623778733">Matuto pa</translation>
+<translation id="7557539689487606886">Mag-Premium</translation>
+<translation id="1035309871698658326">Kapag binuksan, awtomatiko nitong ipapadala ang mga titulo at pinagmulan ng lahat ng mga non-private tab sa Leo para i-classify ang mga ito.</translation>
+<translation id="3435896845095436175">I-enable</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="1426410128494586442">Oo</translation>
@@ -353,7 +365,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2396127686705429331">Ipakita ang bookmarks button</translation>
 <translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
 <translation id="4109670531935487117">Ipakita ang mga suhestyon sa autocomplete sa address bar</translation>
-<translation id="2858138569776157458">Top na sites</translation>
+<translation id="3405901785709583668">Mga Nangungunang Suhestyon</translation>
 <translation id="7859704718976024901">History ng Pagba-browse</translation>
 <translation id="8820817407110198400">Bar ng Mga Bookmark</translation>
 <translation id="4144468798716165316">Mga mabilisang command</translation>
@@ -462,7 +474,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7791141927430186653">Pahintulutan ang mga naka-embed na tweet ng X (dating Twitter)</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
 <translation id="8792121506918889955">Patakaran sa pangangasiwa ng IP ng WebRTC</translation>
-<translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Default na pampubliko at pampribadong interface</translation>
 <translation id="5825943197137337319">Default na pampublikong interface lang</translation>
@@ -713,6 +724,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2751872555001636931">Ipakita ang icon ng Leo sa sidebar</translation>
 <translation id="8055509865174199683">Ipakita si Leo sa menu ng konteksto sa mga website</translation>
 <translation id="1529674267267221673">Magpapakita si Leo sa menu ng konteksto kapag nag-right click ka sa website. Ipapadala nito ang konteksto mula sa kasalukuyang pahina ng web kay Leo.</translation>
+<translation id="5226020406479918122">Tab Focus Mode</translation>
+<translation id="3705539672403311123">I-enable ang tab organization sa page na Tab Search. Kapag binuksan, awtomatiko itong magpapadala ng mga titulo at pinagmulan ng lahat ng mga non-private tab sa Leo para i-classify ang mga ito. <ph name="BEGIN_LINK"/>Alamin ang higit pa<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Ipakita ang mga iminumungkahing prompt sa conversation</translation>
 <translation id="5781842473834867765">I-store ang aking history ng pakikipag-usap</translation>
 <translation id="1082960401708055995">Kapag na-disable ang storage ng pakikipag-usap, tuluyan nang mabubura ang lahat ng dating naka-store na mga pakikipag-usap. Hindi puwedeng i-undo ang aksyong ito.</translation>
@@ -723,6 +736,9 @@ history ng, made-delete ang lahat ng iyong naunang mga pakikipag-usap sa Brave
 Leo AI. Hindi puwedeng ma-undo ang aksyong ito.</translation>
 <translation id="5574059574002819179">I-adjust ang mga autocomplete na suhestyon</translation>
 <translation id="7942415993090181327">History ng chat</translation>
+<translation id="5385064007245738696">Tungkol sa Leo AI</translation>
+<translation id="5084498230659987096">Nagbibigay ang Brave Leo ng privacy-first AI chat at iba pang AI-powered na mga interface sa browser. Hindi natututo ang Leo sa iyong data o ginagamit iyon para sa model training. Naka-proxy ang lahat ng mga request sa pamamagitan ng anonymizing server.</translation>
+<translation id="6458721693611638005">Basahin ang higit pa tungkol sa kung paano pinoprotektahan ng Brave ang iyong paggamit ng AI sa patakaran sa privacy ng Leo. <ph name="BEGIN_LINK"/>Alamin ang higit pa<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Default na model para sa mga bagong pag-uusap</translation>
 <translation id="8826914609353373601">Pamahalaan ang premium subscription</translation>
 <translation id="235457946228076038">Dalhin ang sarili mong model</translation>
@@ -733,6 +749,8 @@ Leo AI. Hindi puwedeng ma-undo ang aksyong ito.</translation>
 <translation id="3553035516792776805">Pangalan ng ni-request na model</translation>
 <translation id="7634775528597575156">Dulo ng server</translation>
 <translation id="6374563306438145841">API Key</translation>
+<translation id="3295756655687327124">Vision Support</translation>
+<translation id="1415432774589088566">Kung ginagamit ng model na ito ang larawan bilang input, hal. llama 3.2b vision</translation>
 <translation id="8008271349880309090">Pangalan ng model tulad ng kung paano it lumilitaw sa menu ng pagpili ng model</translation>
 <translation id="1355326130503900056">Ang pangalan ng model ayon sa kung paano dapat ito lumitaw sa kahilingan sa serving framework, hal. phi-3 (tandaang kung hindi tumutugma nang eksakto ang pangalang inaasahan ng serving framework, hindi gagana ang integration)</translation>
 <translation id="3213787232304349732">Ang URL kung saan nakikinig ang serving framework mo sa mga request. Kung hindi ka sigurado, suriin ang dokumentasyon ng serving framework, Hal. para sa Ollama, lagi itong http://localhost:11434/v1/chat/completions</translation>

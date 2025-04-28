@@ -317,6 +317,18 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8813509417421129632">Een ingesloten pagina op <ph name="SITE"/> wil iets opslaan</translation>
 <translation id="7700010743463174379">Deze pagina wil iets opslaan</translation>
 <translation id="6774238875569752630">Een ingesloten pagina op deze pagina wil iets opslaan</translation>
+<translation id="1233913566967531780">Tabbladfocus</translation>
+<translation id="4034992002364254340">Verzamel alle gerelateerde tabbladen in een nieuw venster</translation>
+<translation id="8012125596344613514">Voorgestelde onderwerpen</translation>
+<translation id="7529120186020617755">Voer een onderwerp in waarop je je wilt focussen...</translation>
+<translation id="6847541693235449912">Ga</translation>
+<translation id="2079545284768500474">Ongedaan maken</translation>
+<translation id="1533980864758658574">Nieuw venster gemaakt voor <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Deze functie stuurt gegevens over open tabbladen naar Leo, de AI-assistent van Brave Browser.</translation>
+<translation id="6165508094623778733">Meer Leren</translation>
+<translation id="7557539689487606886">Neem Premium</translation>
+<translation id="1035309871698658326">Wanneer dit wordt geopend, worden de titels en de oorsprong van alle niet-privétabbladen automatisch naar Leo gestuurd om ze te classificeren.</translation>
+<translation id="3435896845095436175">Inschakelen</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -353,7 +365,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2396127686705429331">Bladwijzerknop weergeven</translation>
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
-<translation id="2858138569776157458">Topsites</translation>
+<translation id="3405901785709583668">Topsuggesties</translation>
 <translation id="7859704718976024901">Browsegeschiedenis</translation>
 <translation id="8820817407110198400">Bladwijzers</translation>
 <translation id="4144468798716165316">Snelle opdrachten</translation>
@@ -462,7 +474,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="7791141927430186653">Ingesloten tweets van X (voorheen Twitter) toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
-<translation id="6165508094623778733">Meer Leren</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
@@ -713,6 +724,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2751872555001636931">Leo-pictogram weergeven in de zijbalk</translation>
 <translation id="8055509865174199683">Leo weergeven in het contextmenu op websites</translation>
 <translation id="1529674267267221673">Leo wordt weergegeven in het contextmenu wanneer u met de rechtermuisknop op een website klikt. Hiermee wordt de context van de huidige webpagina naar Leo verstuurd.</translation>
+<translation id="5226020406479918122">Modus Tabbladfocus</translation>
+<translation id="3705539672403311123">Schakel de organisatie van tabbladen in bij het zoeken op tabbladen. Wanneer dit wordt geopend, worden de titels en de oorsprong van alle niet-privétabbladen automatisch naar Leo gestuurd om ze te classificeren. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Voorgestelde prompts in het gesprek weergeven</translation>
 <translation id="5781842473834867765">Mijn gespreksgeschiedenis opslaan</translation>
 <translation id="1082960401708055995">Als je je gesprekken niet meer opslaat, worden alle eerder opgeslagen gesprekken ook definitief gewist. Deze actie kan niet ongedaan worden gemaakt.</translation>
@@ -723,6 +736,9 @@ Door je chatgeschiedenis te wissen, verwijder je al je eerdere
 gesprekken met Brave Leo AI. Deze actie kun je niet ongedaan maken.</translation>
 <translation id="5574059574002819179">Suggesties voor automatisch aanvullen aanpassen</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
+<translation id="5385064007245738696">Over Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo biedt privacygerichte AI-chat en andere AI-functies direct in je browser. Leo leert nooit van jouw data en gebruikt die niet voor de training van modellen. Alle verzoeken gaan via een anonieme server.</translation>
+<translation id="6458721693611638005">Lees in het Privacybeleid van Leo meer over hoe Brave je gebruik van AI beschermt. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Standaardmodel voor nieuwe gesprekken</translation>
 <translation id="8826914609353373601">Premium-abonnement beheren</translation>
 <translation id="235457946228076038">Gebruik je eigen model</translation>
@@ -733,6 +749,8 @@ gesprekken met Brave Leo AI. Deze actie kun je niet ongedaan maken.</translation
 <translation id="3553035516792776805">Naam van verzoek van model</translation>
 <translation id="7634775528597575156">Eindpunt server</translation>
 <translation id="6374563306438145841">API-sleutel</translation>
+<translation id="3295756655687327124">Beeldondersteuning</translation>
+<translation id="1415432774589088566">Als dit model een beeld als invoer neemt, zoals lama 3.2b vision</translation>
 <translation id="8008271349880309090">De naam van het model zoals die wordt weergegeven in het menu voor de selectie van het model</translation>
 <translation id="1355326130503900056">De naam van het model zoals die moet worden weergegeven in het verzoek aan het server framework, bijv. phi-3 (als deze naam niet precies overeenkomt met wat verwacht wordt door het server framework, zal de integratie niet werken)</translation>
 <translation id="3213787232304349732">De URL waar je server framework luistert naar verzoeken. Als je het niet zeker weet, controleer dan de documentatie van het server framework. Voor Ollama is dit bijvoorbeeld altijd http://localhost:11434/v1/chat/completions</translation>
