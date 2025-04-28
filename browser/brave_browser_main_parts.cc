@@ -11,6 +11,7 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+#include "brave/browser/containers/storage_partition_session_info_handler.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -82,15 +83,16 @@ int ChromeBrowserMainParts::PreMainMessageLoopRun() {
 }
 
 void ChromeBrowserMainParts::PreBrowserStart() {
+  DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Register() must be called after the SerializedNavigationDriver is
   // initialized, but before any calls to
   // ContentSerializedNavigationBuilder::ToNavigationEntries()
   //
   // TODO(keur): Can we DCHECK the latter condition?
-  DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
+  containers::StoragePartitionSessionInfoHandler::Register();
 
   ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
 }
