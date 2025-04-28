@@ -1,0 +1,465 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/containers/core/common/features.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/network_switches.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
+
+namespace containers {
+
+class ContainersBrowserTest : public InProcessBrowserTest {
+ public:
+  ContainersBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitAndEnableFeature(features::kContainers);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+
+    // Register a request handler for serving test HTML content
+    https_server_.AddDefaultHandlers(
+        base::FilePath(FILE_PATH_LITERAL("brave/test/data")));
+
+    EXPECT_TRUE(https_server_.Start());
+  }
+
+  ~ContainersBrowserTest() override = default;
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        absl::StrFormat("MAP *:443 127.0.0.1:%d", https_server_.port()));
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+  }
+
+  // JavaScript helper to set a cookie
+  std::string SetCookieJS(const std::string& name, const std::string& value) {
+    return absl::StrFormat(
+        "document.cookie = `%s=%s; path=/; SameSite=None; Secure; expires=Wed "
+        "Jan 01 2038 00:00:00 GMT`; "
+        "document.cookie;",
+        name, value);
+  }
+
+  // JavaScript helper to get all cookies
+  std::string GetCookiesJS() { return "document.cookie;"; }
+
+  // JavaScript helper to set localStorage item
+  std::string SetLocalStorageJS(const std::string& key,
+                                const std::string& value) {
+    return content::JsReplace(
+        "localStorage.setItem($1, $2); "
+        "localStorage.getItem($1);",
+        key, value);
+  }
+
+  // JavaScript helper to get localStorage item
+  std::string GetLocalStorageJS(const std::string& key) {
+    return content::JsReplace("localStorage.getItem($1);", key);
+  }
+
+  // JavaScript helper to set sessionStorage item
+  std::string SetSessionStorageJS(const std::string& key,
+                                  const std::string& value) {
+    return content::JsReplace(
+        "sessionStorage.setItem($1, $2); "
+        "sessionStorage.getItem($1);",
+        key, value);
+  }
+
+  // JavaScript helper to get sessionStorage item
+  std::string GetSessionStorageJS(const std::string& key) {
+    return content::JsReplace("sessionStorage.getItem($1);", key);
+  }
+
+  // JavaScript helper to set IndexedDB item
+  std::string SetIndexedDBJS(const std::string& key, const std::string& value) {
+    return content::JsReplace(
+        "new Promise((resolve, reject) => {"
+        "  const request = indexedDB.open('testDB', 1);"
+        "  request.onerror = (e) => reject(e.target.error);"
+        "  request.onsuccess = () => {"
+        "    const db = request.result;"
+        "    const transaction = db.transaction(['testStore'], 'readwrite');"
+        "    const store = transaction.objectStore('testStore');"
+        "    const putRequest = store.put($1, $2);"
+        "    putRequest.onsuccess = () => resolve(true);"
+        "    putRequest.onerror = (e) => reject(e.target.error);"
+        "  };"
+        "  request.onupgradeneeded = () => {"
+        "    const db = request.result;"
+        "    if (!db.objectStoreNames.contains('testStore')) {"
+        "      db.createObjectStore('testStore');"
+        "    }"
+        "  };"
+        "});",
+        value, key);
+  }
+
+  // JavaScript helper to get IndexedDB item
+  std::string GetIndexedDBJS(const std::string& key) {
+    return content::JsReplace(
+        "new Promise((resolve, reject) => {"
+        "  const request = indexedDB.open('testDB', 1);"
+        "  request.onerror = (e) => reject(e.target.error);"
+        "  request.onsuccess = () => {"
+        "    const db = request.result;"
+        "    const transaction = db.transaction(['testStore'], 'readonly');"
+        "    const store = transaction.objectStore('testStore');"
+        "    const getRequest = store.get($1);"
+        "    getRequest.onsuccess = () => resolve(getRequest.result || null);"
+        "    getRequest.onerror = (e) => reject(e.target.error);"
+        "  };"
+        "  request.onupgradeneeded = () => {"
+        "    const db = request.result;"
+        "    if (!db.objectStoreNames.contains('testStore')) {"
+        "      db.createObjectStore('testStore');"
+        "    }"
+        "  };"
+        "});",
+        key);
+  }
+
+  // JavaScript helper to clear all storage
+  std::string ClearAllStorageJS() {
+    return "localStorage.clear(); sessionStorage.clear(); 'cleared';";
+  }
+
+  // JavaScript helper to register a service worker
+  std::string RegisterServiceWorkerJS(const std::string& script_url,
+                                      const std::string& scope) {
+    return content::JsReplace(
+        "new Promise((resolve, reject) => {"
+        "  navigator.serviceWorker.register($1, {scope: $2})"
+        "    .then(registration => {"
+        "      console.log('Service worker registered:', registration);"
+        "      resolve('registered');"
+        "    })"
+        "    .catch(error => {"
+        "      console.error('Service worker registration failed:', error);"
+        "      reject(error.toString());"
+        "    });"
+        "});",
+        script_url, scope);
+  }
+
+  // JavaScript helper to check if a service worker is registered
+  std::string CheckServiceWorkerRegisteredJS(const std::string& scope) {
+    return content::JsReplace(
+        "new Promise((resolve) => {"
+        "  navigator.serviceWorker.getRegistrations().then(registrations => {"
+        "    const matching = registrations.filter(reg => reg.scope === $1);"
+        "    resolve(matching.length > 0 ? 'registered' : 'not_registered');"
+        "  });"
+        "});",
+        scope);
+  }
+
+  // JavaScript helper to get service worker registration count
+  std::string GetServiceWorkerRegistrationCountJS() {
+    return "new Promise((resolve) => {"
+           "  navigator.serviceWorker.getRegistrations().then(registrations => "
+           "{"
+           "    resolve(registrations.length);"
+           "  });"
+           "});";
+  }
+
+  // JavaScript helper to unregister all service workers
+  std::string UnregisterAllServiceWorkersJS() {
+    return "new Promise((resolve) => {"
+           "  navigator.serviceWorker.getRegistrations().then(registrations => "
+           "{"
+           "    const promises = registrations.map(reg => reg.unregister());"
+           "    Promise.all(promises).then(() => resolve('unregistered'));"
+           "  });"
+           "});";
+  }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_;
+  net::EmbeddedTestServer https_server_;
+};
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to URL without container
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents_default =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_default);
+
+  // Set storage data in the default storage partition
+  EXPECT_TRUE(content::ExecJs(web_contents_default,
+                              SetCookieJS("test_cookie", "value_a")));
+  EXPECT_TRUE(content::ExecJs(web_contents_default,
+                              SetLocalStorageJS("test_key", "value_a")));
+  EXPECT_TRUE(content::ExecJs(web_contents_default,
+                              SetSessionStorageJS("test_key", "value_a")));
+
+  // Set IndexedDB data in the default storage partition
+  EXPECT_TRUE(content::ExecJs(web_contents_default,
+                              SetIndexedDBJS("test_key", "value_a")));
+
+  // Verify storage data is set correctly in the default storage partition
+  content::EvalJsResult cookie_result =
+      content::EvalJs(web_contents_default, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find("test_cookie=value_a") !=
+              std::string::npos);
+
+  EXPECT_EQ("value_a", content::EvalJs(web_contents_default,
+                                       GetLocalStorageJS("test_key")));
+  EXPECT_EQ("value_a", content::EvalJs(web_contents_default,
+                                       GetSessionStorageJS("test_key")));
+  EXPECT_EQ("value_a",
+            content::EvalJs(web_contents_default, GetIndexedDBJS("test_key")));
+
+  // Open a new tab with a different storage partition
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), "default", "container-a",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents_container_a =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_container_a);
+
+  // Verify that the new container doesn't have access to the first container's
+  // storage
+  content::EvalJsResult cookie_result_a =
+      content::EvalJs(web_contents_container_a, GetCookiesJS());
+  EXPECT_TRUE(cookie_result_a.ExtractString().find("test_cookie=value_a") ==
+              std::string::npos);
+
+  EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_a,
+                                           GetLocalStorageJS("test_key")));
+  EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_a,
+                                           GetSessionStorageJS("test_key")));
+  EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_a,
+                                           GetIndexedDBJS("test_key")));
+
+  // Set different storage data in the container
+  EXPECT_TRUE(content::ExecJs(web_contents_container_a,
+                              SetCookieJS("test_cookie", "value_b")));
+  EXPECT_TRUE(content::ExecJs(web_contents_container_a,
+                              SetLocalStorageJS("test_key", "value_b")));
+  EXPECT_TRUE(content::ExecJs(web_contents_container_a,
+                              SetSessionStorageJS("test_key", "value_b")));
+  EXPECT_TRUE(content::ExecJs(web_contents_container_a,
+                              SetIndexedDBJS("test_key", "value_b")));
+
+  // Verify container has its own data
+  cookie_result_a = content::EvalJs(web_contents_container_a, GetCookiesJS());
+  EXPECT_TRUE(cookie_result_a.ExtractString().find("test_cookie=value_b") !=
+              std::string::npos);
+  EXPECT_EQ("value_b", content::EvalJs(web_contents_container_a,
+                                       GetLocalStorageJS("test_key")));
+  EXPECT_EQ("value_b", content::EvalJs(web_contents_container_a,
+                                       GetSessionStorageJS("test_key")));
+  EXPECT_EQ("value_b", content::EvalJs(web_contents_container_a,
+                                       GetIndexedDBJS("test_key")));
+
+  // Check the data in default tab to container and verify its data is unchanged
+  content::EvalJsResult cookie_result_default =
+      content::EvalJs(web_contents_default, GetCookiesJS());
+  EXPECT_TRUE(cookie_result_default.ExtractString().find(
+                  "test_cookie=value_a") != std::string::npos);
+  EXPECT_EQ("value_a", content::EvalJs(web_contents_default,
+                                       GetLocalStorageJS("test_key")));
+  EXPECT_EQ("value_a", content::EvalJs(web_contents_default,
+                                       GetSessionStorageJS("test_key")));
+  EXPECT_EQ("value_a",
+            content::EvalJs(web_contents_default, GetIndexedDBJS("test_key")));
+
+  // Verify default storage partition doesn't have access to container's data
+  EXPECT_TRUE(cookie_result_default.ExtractString().find(
+                  "test_cookie=value_b") == std::string::npos);
+
+  // Open a new tab with a different storage partition
+  NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_b.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), "default", "container-b",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params_b);
+
+  content::WebContents* web_contents_container_b =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_container_b);
+
+  // Verify that the new container doesn't have access to the first container's
+  // storage
+  content::EvalJsResult cookie_result_b =
+      content::EvalJs(web_contents_container_b, GetCookiesJS());
+  EXPECT_TRUE(cookie_result_b.ExtractString().find("test_cookie=value_a") ==
+              std::string::npos);
+  EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_b,
+                                           GetLocalStorageJS("test_key")));
+  EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_b,
+                                           GetSessionStorageJS("test_key")));
+  EXPECT_EQ(base::Value(), content::EvalJs(web_contents_container_b,
+                                           GetIndexedDBJS("test_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const GURL worker_url("https://a.test/containers/container_worker.js");
+  const std::string scope = "https://a.test/containers/";
+
+  // Navigate to URL without container
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents_default =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_default);
+
+  // Register service worker in default storage partition
+  EXPECT_TRUE(content::ExecJs(
+      web_contents_default, RegisterServiceWorkerJS(worker_url.spec(), scope)));
+
+  // Verify service worker is registered in default partition
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_default,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify we have exactly 1 service worker registration
+  EXPECT_EQ(1, content::EvalJs(web_contents_default,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Open a new tab with a different storage partition (container-a)
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), "default", "container-a",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents_container_a =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_container_a);
+
+  // Verify that the container doesn't see the service worker from default
+  // partition
+  EXPECT_EQ("not_registered",
+            content::EvalJs(web_contents_container_a,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify container has 0 service worker registrations
+  EXPECT_EQ(0, content::EvalJs(web_contents_container_a,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Register a different service worker in the container
+  EXPECT_TRUE(
+      content::ExecJs(web_contents_container_a,
+                      RegisterServiceWorkerJS(worker_url.spec(), scope)));
+
+  // Verify service worker is registered in container partition
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_container_a,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify container has exactly 1 service worker registration
+  EXPECT_EQ(1, content::EvalJs(web_contents_container_a,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Verify default partition still has its service worker
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_default,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify default partition still has exactly 1 service worker registration
+  EXPECT_EQ(1, content::EvalJs(web_contents_default,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Open another container (container-b)
+  NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_b.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), "default", "container-b",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params_b);
+
+  content::WebContents* web_contents_container_b =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_container_b);
+
+  // Verify that container_b doesn't see service workers from other partitions
+  EXPECT_EQ("not_registered",
+            content::EvalJs(web_contents_container_b,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify container_b has 0 service worker registrations
+  EXPECT_EQ(0, content::EvalJs(web_contents_container_b,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Register service worker in container_b
+  EXPECT_TRUE(
+      content::ExecJs(web_contents_container_b,
+                      RegisterServiceWorkerJS(worker_url.spec(), scope)));
+
+  // Verify service worker is registered in container_b partition
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_container_b,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify container_b has exactly 1 service worker registration
+  EXPECT_EQ(1, content::EvalJs(web_contents_container_b,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Verify other partitions are unaffected
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_default,
+                            CheckServiceWorkerRegisteredJS(scope)));
+  EXPECT_EQ(1, content::EvalJs(web_contents_default,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_container_a,
+                            CheckServiceWorkerRegisteredJS(scope)));
+  EXPECT_EQ(1, content::EvalJs(web_contents_container_a,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Test unregistering service worker in one container doesn't affect others
+  EXPECT_TRUE(content::ExecJs(web_contents_container_a,
+                              UnregisterAllServiceWorkersJS()));
+
+  // Verify container_a no longer has service workers
+  EXPECT_EQ("not_registered",
+            content::EvalJs(web_contents_container_a,
+                            CheckServiceWorkerRegisteredJS(scope)));
+  EXPECT_EQ(0, content::EvalJs(web_contents_container_a,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  // Verify other partitions still have their service workers
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_default,
+                            CheckServiceWorkerRegisteredJS(scope)));
+  EXPECT_EQ(1, content::EvalJs(web_contents_default,
+                               GetServiceWorkerRegistrationCountJS()));
+
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_container_b,
+                            CheckServiceWorkerRegisteredJS(scope)));
+  EXPECT_EQ(1, content::EvalJs(web_contents_container_b,
+                               GetServiceWorkerRegistrationCountJS()));
+}
+
+}  // namespace containers

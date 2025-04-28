@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Container Service Worker Test</title>
+  </head>
+  <body>
+    <h1>Container Service Worker Test Page</h1>
+    <p>This page is used to test service worker isolation in containers.</p>
+    <div id="status">Loading...</div>
+
+    <script>
+      // Display current page info
+      document.getElementById('status').textContent =
+        'Page loaded at: ' + new Date().toISOString()
+    </script>
+  </body>
+</html>
