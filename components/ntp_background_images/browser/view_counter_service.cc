@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
@@ -375,8 +376,7 @@ void ViewCounterService::ResetModel() {
   model_.Reset();
 
   model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
-  model_.set_show_wallpaper(
-      prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage));
+  model_.set_show_wallpaper(IsShowBackgroundImageOptedIn());
 
   if (const NTPSponsoredImagesData* const images_data =
           GetSponsoredImagesData()) {
@@ -493,52 +493,75 @@ NTPP3AHelper* ViewCounterService::GetP3AHelper() const {
   return ntp_p3a_helper_.get();
 }
 
+base::Time ViewCounterService::GracePeriodEndAt(
+    base::TimeDelta grace_period) const {
+  const base::Time install_date = base::Time::FromSecondsSinceUnixEpoch(
+      local_state_->GetInt64(metrics::prefs::kInstallDate));
+  return install_date + grace_period;
+}
+
+bool ViewCounterService::HasGracePeriodEnded(
+    const NTPSponsoredImagesData* images_data) const {
+  if (brave_rewards::RewardsFlags::ForCurrentProcess().debug) {
+    // If debug mode is enabled, consider it ended.
+    return true;
+  }
+
+  if (!images_data->grace_period ||
+      !local_state_->FindPreference(metrics::prefs::kInstallDate)) {
+    // If no grace period is set, consider it ended.
+    return true;
+  }
+
+  const base::Time grace_period_end_at =
+      GracePeriodEndAt(*images_data->grace_period);
+  if (base::Time::Now() >= grace_period_end_at) {
+    // If the current time is past the grace period end time, it has ended.
+    return true;
+  }
+
+  // Otherwise, the grace period is still active.
+  VLOG(1) << "Sponsored images not shown: Grace period after installation is "
+             "still active until "
+          << grace_period_end_at;
+  return false;
+}
+
 bool ViewCounterService::CanShowSponsoredImages() const {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
     return false;
   }
 
-  // We show SR regardless of ntp background images option because SR works
-  // like theme.
   if (images_data->IsSuperReferral() && IsSuperReferralWallpaperOptedIn()) {
+    // Super referral is always shown if opted in.
     return true;
   }
 
-  // We don't show SI if user disables bg image.
-  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
+  if (!IsShowBackgroundImageOptedIn()) {
     return false;
   }
 
-  if (images_data->grace_period &&
-      local_state_->FindPreference(metrics::prefs::kInstallDate)) {
-    const base::Time install_date = base::Time::FromSecondsSinceUnixEpoch(
-        local_state_->GetInt64(metrics::prefs::kInstallDate));
-    const base::Time grace_period_ends_at =
-        install_date + *images_data->grace_period;
-
-    if (base::Time::Now() < grace_period_ends_at) {
-      // We don't show sponsored images if the user has installed Brave within
-      // the grace period.
-      VLOG(1) << "Sponsored images not shown: Grace period after "
-                 "installation is still active until "
-              << grace_period_ends_at;
-      return false;
-    }
+  if (!IsSponsoredImagesWallpaperOptedIn()) {
+    return false;
   }
 
-  return IsSponsoredImagesWallpaperOptedIn();
+  return HasGracePeriodEnded(images_data);
 }
 
 bool ViewCounterService::CanShowBackgroundImages() const {
 #if !BUILDFLAG(IS_ANDROID)
-  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
+  if (!IsShowBackgroundImageOptedIn()) {
     return false;
   }
 #endif
 
   return !!background_images_service_->GetBackgroundImagesData() ||
          ShouldShowCustomBackgroundImages();
+}
+
+bool ViewCounterService::IsShowBackgroundImageOptedIn() const {
+  return prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage);
 }
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
