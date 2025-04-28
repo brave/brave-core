@@ -292,7 +292,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
     <init>(...);
-    *** mBottomControlsHeight;
     *** mModel;
     *** mBottomControlsStacker;
 }

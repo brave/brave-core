@@ -2032,10 +2032,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
-                        "mBottomControlsHeight"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                         "mModel"));
         Assert.assertTrue(
                 fieldExists(
