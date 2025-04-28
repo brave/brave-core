@@ -200,7 +200,8 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 {getLocale('attachScreenshotLabel')}
               </CheckboxLabel>
             </FieldCtr>
-            {!!this.state.attachScreenshot && !this.state.hideViewScreenshotLink &&
+            {!!this.state.attachScreenshot &&
+              !this.state.hideViewScreenshotLink &&
               <ScreenshotLink onClick={this.handleViewScreenshot}>
                 {getLocale('viewScreenshotLabel')}
               </ScreenshotLink>
