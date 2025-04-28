@@ -372,7 +372,12 @@ const util = {
       let brandingFileName = 'BRANDING'
       if (config.channel)
         brandingFileName = brandingFileName + '.' + config.channel
-      const brandingSource = path.join(braveAppDir, 'theme', 'brave', brandingFileName)
+      const brandingSource = path.join(
+        braveAppDir,
+        'theme',
+        'brave',
+        brandingFileName
+      )
       const brandingDest = path.join(chromeAppDir, 'theme', 'brave', 'BRANDING')
       explicitSourceFiles[brandingDest] = brandingSource
     }
@@ -395,8 +400,11 @@ const util = {
       for (let sourceFile of sourceFiles) {
         const destinationFile = path.join(output, path.relative(source, sourceFile))
         sourceFile = explicitSourceFiles[destinationFile] || sourceFile
-        if (!fs.existsSync(destinationFile) ||
-            util.calculateFileChecksum(sourceFile) !== util.calculateFileChecksum(destinationFile)) {
+        if (
+          !fs.existsSync(destinationFile) ||
+          util.calculateFileChecksum(sourceFile) !==
+            util.calculateFileChecksum(destinationFile)
+        ) {
           fs.copySync(sourceFile, destinationFile)
           console.log(sourceFile + ' copied to ' + destinationFile)
         }
@@ -514,7 +522,11 @@ const util = {
         for (const destPath of destPaths) {
           for (const androidSourceFile of androidSourceFiles) {
             let destinationFile = path.join(destPath, path.relative(sourcePath, androidSourceFile))
-            if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) !== util.calculateFileChecksum(destinationFile)) {
+            if (
+              !fs.existsSync(destinationFile) ||
+              util.calculateFileChecksum(androidSourceFile) !==
+                util.calculateFileChecksum(destinationFile)
+            ) {
               fs.copySync(androidSourceFile, destinationFile)
             }
             braveOverwrittenFiles.add(destinationFile);
@@ -865,7 +877,11 @@ const util = {
   massRename: (options = {}) => {
     let cmdOptions = config.defaultOptions
     cmdOptions.cwd = config.braveCoreDir
-    util.run('python3', [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')], cmdOptions)
+    util.run(
+      'python3',
+      [path.join(config.srcDir, 'tools', 'git', 'mass-rename.py')],
+      cmdOptions
+    )
   },
 
   runGClient: (args, options = {}, gClientFile = config.gClientFile) => {

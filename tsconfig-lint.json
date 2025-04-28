@@ -3,7 +3,7 @@
   "include": [
     "./components/**/*",
     "./chromium_src/**/*",
-    "./build/commands/**/*",
+    "./build/commands/**/*"
   ],
   "exclude": []
 }

@@ -79,11 +79,26 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
   let userDataDir
   if (options.userDataDir_name) {
     if (process.platform === 'darwin') {
-      userDataDir = path.join(process.env.HOME, 'Library', 'Application\\ Support', 'BraveSoftware', options.userDataDir_name)
+      userDataDir = path.join(
+        process.env.HOME,
+        'Library',
+        'Application\\ Support',
+        'BraveSoftware',
+        options.userDataDir_name
+      )
     } else if (process.platform === 'win32') {
-      userDataDir = path.join(process.env.LocalAppData, 'BraveSoftware', options.userDataDir_name)
+      userDataDir = path.join(
+        process.env.LocalAppData,
+        'BraveSoftware',
+        options.userDataDir_name
+      )
     } else {
-      userDataDir = path.join(process.env.HOME, '.config', 'BraveSoftware', options.userDataDir_name)
+      userDataDir = path.join(
+        process.env.HOME,
+        '.config',
+        'BraveSoftware',
+        options.userDataDir_name
+      )
     }
     braveArgs.push('--user-data-dir=' + userDataDir);
   }

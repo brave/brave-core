@@ -88,7 +88,10 @@ program
 
     config.update(options)
     const currentLink = options.symlink_dir
-    if (!path.isAbsolute(currentLink) && !path.relative(currentLink, config.srcDir).startsWith('..')) {
+    if (
+      !path.isAbsolute(currentLink) &&
+      !path.relative(currentLink, config.srcDir).startsWith('..')
+    ) {
       console.error('Symlink must be an absolute path in src')
       process.exit(1)
     }
