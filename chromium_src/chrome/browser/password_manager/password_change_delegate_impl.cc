@@ -4,11 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "chrome/browser/tab_contents/tab_util.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "chrome/browser/tab_contents/tab_util.h"
+#include "content/public/browser/web_contents.h"
+
 #define GetSiteInstanceForNewTab(profile, url) \
-  GetSiteInstanceForNewTab(profile, url, std::nullopt)
+  GetSiteInstanceForNewTab(                    \
+      profile, url,                            \
+      containers::MaybeInheritStoragePartition(originator.get()))
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/password_manager/password_change_delegate_impl.cc>

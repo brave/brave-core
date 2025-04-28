@@ -7,26 +7,22 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 
 assert(enable_containers)
 
-static_library("browser") {
+component("browser") {
+  defines = [ "IS_CONTAINERS_CONTENT_BROWSER_IMPL" ]
+
   sources = [
-    "containers_settings_handler.cc",
-    "containers_settings_handler.h",
-    "pref_names.h",
-    "prefs.cc",
-    "prefs.h",
+    "session_utils.cc",
+    "session_utils.h",
+    "storage_partition_utils.cc",
+    "storage_partition_utils.h",
   ]
 
-  public_deps = [ "//brave/components/containers/core/mojom" ]
+  public_deps = [ "//brave/components/containers/buildflags" ]
 
   deps = [
     "//base",
     "//brave/components/containers/core/common",
-    "//components/pref_registry",
-    "//components/prefs",
-    "//components/user_prefs",
-    "//net/base/registry_controlled_domains",
-    "//services/network/public/cpp",
-    "//third_party/re2",
+    "//content/public/browser",
     "//url",
   ]
 }
@@ -34,15 +30,14 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "containers_settings_handler_unittest.cc",
-    "prefs_unittest.cc",
+    # "contained_tab_handler_unittest.cc",
+    # "contained_tab_handler_registry_unittest.cc",
   ]
 
   deps = [
     ":browser",
     "//base",
     "//base/test:test_support",
-    "//brave/components/containers/core/common",
     "//components/sync_preferences:test_support",
     "//mojo/public/cpp/bindings",
     "//testing/gmock",

@@ -8,7 +8,6 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

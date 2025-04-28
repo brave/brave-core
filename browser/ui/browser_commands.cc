@@ -126,7 +126,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/storage_partition_constants.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 

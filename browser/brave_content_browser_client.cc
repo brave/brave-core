@@ -225,6 +225,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
@@ -1531,6 +1532,18 @@ bool BraveContentBrowserClient::IsWindowsRecallDisabled() {
 #else
   return false;
 #endif
+}
+
+bool BraveContentBrowserClient::ShouldInheritStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return containers::IsContainersStoragePartition(partition_config);
+  }
+  return false;
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveContentBrowserClient::AllowSignedExchange(
