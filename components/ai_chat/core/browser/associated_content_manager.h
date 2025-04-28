@@ -11,9 +11,9 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/one_shot_event.h"
 #include "base/scoped_multi_source_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
-#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -31,7 +31,7 @@ class AssociatedContentManager
   explicit AssociatedContentManager(ConversationHandler* conversation);
   ~AssociatedContentManager() override;
 
-  // Sets the content driver for the current conversation (replacing any other
+  // Sets the content delegate for the current conversation (replacing any other
   // content).
   void SetContent(ConversationHandler::AssociatedContentDelegate* delegate);
 
@@ -45,12 +45,12 @@ class AssociatedContentManager
                          std::string text_content,
                          bool is_video);
 
-  // Adds a content driver to the list of content drivers.
-  void AddContent(ConversationHandler::AssociatedContentDelegate* driver,
+  // Adds a content delegate to the list of content delegates.
+  void AddContent(ConversationHandler::AssociatedContentDelegate* delegate,
                   bool notify_updated = true);
 
-  // Removes a content driver from the list of content drivers.
-  void RemoveContent(ConversationHandler::AssociatedContentDelegate* driver,
+  // Removes a content delegate from the list of content delegates.
+  void RemoveContent(ConversationHandler::AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
 
   void GetContent(base::OnceClosure callback);

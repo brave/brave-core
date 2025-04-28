@@ -172,18 +172,18 @@ AssociatedContentManager::GetAssociatedContent() const {
   uint32_t total_consumed_chars = 0;
 
   std::vector<mojom::AssociatedContentPtr> result;
-  for (auto* driver : content_delegates_) {
+  for (auto* delegate : content_delegates_) {
     mojom::AssociatedContentPtr content = mojom::AssociatedContent::New();
-    content->uuid = driver->uuid();
-    content->content_id = driver->GetContentId();
-    content->url = driver->GetURL();
-    content->title = base::UTF16ToUTF8(driver->GetTitle());
-    content->content_type = driver->GetCachedIsVideo()
+    content->uuid = delegate->uuid();
+    content->content_id = delegate->GetContentId();
+    content->url = delegate->GetURL();
+    content->title = base::UTF16ToUTF8(delegate->GetTitle());
+    content->content_type = delegate->GetCachedIsVideo()
                                 ? mojom::ContentType::VideoTranscript
                                 : mojom::ContentType::PageContent;
 
     const uint32_t content_length =
-        driver->GetCachedTextContent().length() + kAdditionalCharsPerContent;
+        delegate->GetCachedTextContent().length() + kAdditionalCharsPerContent;
     if (total_consumed_chars + content_length <=
         max_associated_content_length) {
       content->content_used_percentage = 100;
@@ -300,15 +300,15 @@ void AssociatedContentManager::GetTopSimilarityWithPromptTilContextLimit(
     const std::string& text,
     uint32_t context_limit,
     TextEmbedder::TopSimilarityCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/45731): Remove this
+  // function
   DVLOG(1) << __func__;
 
   if (content_delegates_.size() != 1) {
-    // TODO(@fallaciousreasoning): Ask @petemill if this is correct.
-    std::move(callback).Run(base::unexpected("No content driver"));
+    std::move(callback).Run(base::unexpected("No content delegate"));
     return;
   }
 
-  // TODO(@fallaciousreasoning): Ask @petemill if this is correct.
   content_delegates_[0]->GetTopSimilarityWithPromptTilContextLimit(
       prompt, text, context_limit, std::move(callback));
 }
@@ -318,7 +318,7 @@ std::string AssociatedContentManager::GetCachedTextContent() const {
 
   auto cached_content = GetCachedContent();
 
-  // If we only have one content driver directly return the content.
+  // If we only have one content delegate directly return the content.
   // Otherwise, wrap each content in <page> tags.
   if (cached_content.size() == 1) {
     return std::string(cached_content[0]);
