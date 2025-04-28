@@ -5,10 +5,27 @@
 
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
+#include <utility>
+
+#include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
+
+namespace {
+// Prefix is added a public key to calculate
+// blake2b hash.
+constexpr char kSs58HashPrefix[] = "SS58PRE";
+constexpr size_t kSs58HashPrefixSize = 7u;
+constexpr size_t kSs58HashChecksumSize = 2u;
+}  // namespace
+
+Ss58Address::Ss58Address() = default;
+Ss58Address::~Ss58Address() = default;
+Ss58Address::Ss58Address(Ss58Address&& addr) = default;
+Ss58Address& Ss58Address::operator=(Ss58Address&& addr) = default;
 
 std::string Base58EncodeWithCheck(const std::vector<uint8_t>& bytes) {
   auto with_checksum = bytes;
@@ -40,6 +57,102 @@ std::optional<std::vector<uint8_t>> Base58Decode(const std::string& str,
 
 std::string Base58Encode(base::span<const uint8_t> bytes) {
   return EncodeBase58(bytes);
+}
+
+// Reference implementation
+// https://github.com/gear-tech/gear/blob/7d481fed39e7b0633ca9afeed8ce1b3cbb636f3e/utils/ss58/src/lib.rs#L295
+std::optional<std::string> Ss58Encode(const Ss58Address& addr) {
+  uint16_t prefix = addr.prefix;
+  if (prefix > 16383) {
+    return std::nullopt;
+  }
+
+  std::vector<uint8_t> buff;
+  size_t offset = prefix < 64 ? 1 : 2;
+  buff.resize(offset + kSs58PublicKeySize + kSs58HashChecksumSize);
+  auto output_span_writer = base::SpanWriter(base::span(buff));
+
+  if (offset == 1) {
+    output_span_writer.WriteU8BigEndian(prefix);
+  } else {
+    output_span_writer.WriteU8BigEndian(((prefix & 0b11111100) >> 2) |
+                                        0b01000000);
+    output_span_writer.WriteU8BigEndian((prefix >> 8) | ((prefix & 0b11) << 6));
+  }
+
+  output_span_writer.Write(base::span(addr.public_key));
+  DCHECK_EQ(output_span_writer.remaining(), kSs58HashChecksumSize);
+  DCHECK_EQ(buff.size(), offset + kSs58PublicKeySize + kSs58HashChecksumSize);
+
+  std::vector<uint8_t> hash_input;
+  hash_input.resize(kSs58HashPrefixSize + offset + kSs58PublicKeySize);
+  auto hash_input_writer = base::SpanWriter(base::span(hash_input));
+  hash_input_writer.Write(base::byte_span_from_cstring(kSs58HashPrefix));
+  hash_input_writer.Write(base::span(buff).first(offset + kSs58PublicKeySize));
+  DCHECK_EQ(hash_input_writer.remaining(), 0u);
+  auto hash = Blake2bHash<64>(base::span(hash_input));
+
+  output_span_writer.Write(base::span(hash).first(kSs58HashChecksumSize));
+
+  return Base58Encode(buff);
+}
+
+// Reference implementation
+// https://github.com/gear-tech/gear/blob/7d481fed39e7b0633ca9afeed8ce1b3cbb636f3e/utils/ss58/src/lib.rs#L243
+std::optional<Ss58Address> Ss58Decode(const std::string& str) {
+  auto result =
+      Base58Decode(str, kSs58HashChecksumSize + kSs58PublicKeySize + 2, false);
+  if (!result ||
+      result->size() < kSs58HashChecksumSize + kSs58PublicKeySize + 1) {
+    return std::nullopt;
+  }
+  uint8_t offset = 0;
+  uint8_t address_type = (*result)[0];
+  uint16_t prefix = 0;
+  if (address_type < 64) {
+    offset = 1;
+    prefix = address_type;
+  } else if (address_type < 128) {
+    offset = 2;
+    uint8_t address_type_1 = (*result)[1];
+    uint8_t lower = ((address_type << 2) | (address_type_1 >> 6)) & 0b11111111;
+    uint8_t upper = address_type_1 & 0b00111111;
+    prefix = lower | (upper << 8);
+  } else {
+    return std::nullopt;
+  }
+
+  if (result->size() != offset + kSs58PublicKeySize + kSs58HashChecksumSize) {
+    return std::nullopt;
+  }
+
+  // Prepare input to calculate checksum
+  std::vector<uint8_t> hash_input(kSs58HashPrefixSize + offset +
+                                  kSs58PublicKeySize);
+  auto hash_input_writer = base::SpanWriter(base::span(hash_input));
+  hash_input_writer.Write(base::byte_span_from_cstring(kSs58HashPrefix));
+  hash_input_writer.Write(
+      base::span(*result).first(offset + kSs58PublicKeySize));
+  DCHECK_EQ(hash_input_writer.remaining(), 0u);
+  auto hash = Blake2bHash<64>(base::span(hash_input));
+
+  // Verify checksum
+  for (size_t i = 0; i < kSs58HashChecksumSize; i++) {
+    // Checking last 2 bytes
+    if (hash[i] != (*result)[offset + kSs58PublicKeySize + i]) {
+      return std::nullopt;
+    }
+  }
+
+  // Prepare output
+  Ss58Address result_addr;
+  result_addr.prefix = prefix;
+  auto public_key_span_writer =
+      base::SpanWriter(base::span(result_addr.public_key));
+  public_key_span_writer.Write(
+      base::span(*result).subspan(offset, kSs58PublicKeySize));
+  DCHECK_EQ(public_key_span_writer.remaining(), 0u);
+  return std::move(result_addr);
 }
 
 }  // namespace brave_wallet
