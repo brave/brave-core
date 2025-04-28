@@ -9,11 +9,15 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <variant>
+#include <vector>
 
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -41,6 +45,7 @@
 #include "printing/units.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/gfx/codec/png_codec.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "base/feature_list.h"
@@ -54,6 +59,9 @@ using printing::PrintCompositeClient;
 using printing::mojom::PrintPreviewUI;
 
 namespace ai_chat {
+
+using ExtractCallback = PrintPreviewExtractor::ExtractCallback;
+using CapturePdfCallback = PrintPreviewExtractor::CapturePdfCallback;
 
 namespace {
 
@@ -80,8 +88,14 @@ content::RenderFrameHost* GetRenderFrameHostToUse(
 
 class PreviewPageTextExtractor {
  public:
+  using TextCallback =
+      AIChatTabHelper::PrintPreviewExtractionDelegate::ExtractCallback;
+  using ImageCallback =
+      AIChatTabHelper::PrintPreviewExtractionDelegate::CapturePdfCallback;
+  using CallbackVariant = std::variant<TextCallback, ImageCallback>;
+
   PreviewPageTextExtractor(base::ReadOnlySharedMemoryRegion pdf_region,
-                           base::OnceCallback<void(std::string)> callback,
+                           CallbackVariant callback,
                            std::optional<bool> pdf_use_skia_renderer_enabled)
       : pdf_region_(std::move(pdf_region)), callback_(std::move(callback)) {
     DCHECK(!pdf_to_bitmap_converter_.is_bound());
@@ -106,7 +120,8 @@ class PreviewPageTextExtractor {
   void ScheduleNextPageOrComplete() {
     DCHECK_GT(total_page_count_, 0u);
     if (current_page_index_ < total_page_count_) {
-      if (current_page_index_) {
+      if (current_page_index_ &&
+          std::holds_alternative<TextCallback>(callback_)) {
         base::StrAppend(&preview_text_, {"\n"});
       }
       pdf_to_bitmap_converter_->GetBitmap(
@@ -114,13 +129,21 @@ class PreviewPageTextExtractor {
           base::BindOnce(&PreviewPageTextExtractor::OnGetBitmap,
                          base::Unretained(this)));
     } else {
-      std::move(callback_).Run(preview_text_);
+      if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
+        std::move(*text_cb).Run(base::ok(preview_text_));
+      } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
+        std::move(*image_cb).Run(base::ok(std::move(pdf_pages_image_data_)));
+      }
     }
   }
 
   void OnGetPageCount(std::optional<uint32_t> page_count) {
     if (!page_count.has_value() || !page_count.value()) {
-      std::move(callback_).Run("");
+      if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
+        std::move(*text_cb).Run(base::unexpected("Failed to get page count"));
+      } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
+        std::move(*image_cb).Run(base::unexpected("Failed to get page count"));
+      }
       return;
     }
     total_page_count_ = page_count.value();
@@ -129,37 +152,71 @@ class PreviewPageTextExtractor {
 
   void OnGetBitmap(const SkBitmap& bitmap) {
     if (bitmap.drawsNothing()) {
-      std::move(callback_).Run(preview_text_);
+      if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
+        std::move(*text_cb).Run(base::unexpected("Invalid bitmap"));
+      } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
+        std::move(*image_cb).Run(base::unexpected("Invalid bitmap"));
+      }
       return;
     }
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-    GetOCRText(bitmap,
-               base::BindOnce(&PreviewPageTextExtractor::OnGetTextFromImage,
-                              weak_ptr_factory_.GetWeakPtr()));
-#else
-    std::move(callback_).Run("");
-#endif
-  }
 
-  void BitmapConverterDisconnected() {
-    DLOG(ERROR) << __func__;
-    if (callback_) {
-      std::move(callback_).Run(preview_text_);
+    if (std::holds_alternative<ImageCallback>(callback_)) {
+      ProcessNextBitmapPage(bitmap);
+    } else if (std::holds_alternative<TextCallback>(callback_)) {
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+      GetOCRText(bitmap,
+                 base::BindOnce(&PreviewPageTextExtractor::ProcessNextTextPage,
+                                weak_ptr_factory_.GetWeakPtr()));
+#else
+      auto* text_cb = std::get_if<TextCallback>(&callback_);
+      std::move(*text_cb).Run(base::ok(""));
+#endif
     }
   }
 
-  void OnGetTextFromImage(std::string page_content) {
+  void ProcessNextTextPage(std::string page_content) {
+    auto* text_cb = std::get_if<TextCallback>(&callback_);
+    DCHECK(text_cb);
     VLOG(4) << "Page index(" << current_page_index_
             << ") content: " << page_content;
     base::StrAppend(&preview_text_, {page_content});
-    // Stop processing if we have reached the maximum number of pages or the
-    // maximum length of the content
+
+    // Stop processing if we have reached the maximum number of pages
     if (current_page_index_ + 1 >= kMaxPreviewPages) {
-      std::move(callback_).Run(preview_text_);
+      std::move(*text_cb).Run(base::ok(preview_text_));
       return;
     }
+
     ++current_page_index_;
     ScheduleNextPageOrComplete();
+  }
+
+  void ProcessNextBitmapPage(const SkBitmap& bitmap) {
+    auto* image_cb = std::get_if<ImageCallback>(&callback_);
+    DCHECK(image_cb);
+
+    // Encode bitmap to PNG for capture
+    auto png_data =
+        gfx::PNGCodec::EncodeBGRASkBitmap(ScaleDownBitmap(bitmap), false);
+    if (!png_data) {
+      std::move(*image_cb).Run(base::unexpected("Failed to encode the bitmap"));
+      return;
+    } else {
+      pdf_pages_image_data_.push_back(*png_data);
+    }
+
+    ++current_page_index_;
+    ScheduleNextPageOrComplete();
+  }
+
+  void BitmapConverterDisconnected() {
+    if (auto* text_cb = std::get_if<TextCallback>(&callback_)) {
+      std::move(*text_cb).Run(
+          base::unexpected("Bitmap converter disconnected"));
+    } else if (auto* image_cb = std::get_if<ImageCallback>(&callback_)) {
+      std::move(*image_cb).Run(
+          base::unexpected("Bitmap converter disconnected"));
+    }
   }
 
  private:
@@ -167,7 +224,9 @@ class PreviewPageTextExtractor {
   size_t current_page_index_ = 0;
   size_t total_page_count_ = 0;
   base::ReadOnlySharedMemoryRegion pdf_region_;
-  base::OnceCallback<void(std::string)> callback_;
+  CallbackVariant callback_;
+  // raw bytes data of captured pdf pages
+  std::vector<std::vector<uint8_t>> pdf_pages_image_data_;
   mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
   base::WeakPtrFactory<PreviewPageTextExtractor> weak_ptr_factory_{this};
 };
@@ -175,11 +234,12 @@ class PreviewPageTextExtractor {
 class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
                                       public printing::mojom::PrintPreviewUI {
  public:
-  PrintPreviewExtractorInternal(
-      content::WebContents* web_contents,
-      Profile* profile,
-      bool is_pdf,
-      AIChatTabHelper::PrintPreviewExtractionDelegate::ExtractCallback callback)
+  using CallbackVariant = std::variant<ExtractCallback, CapturePdfCallback>;
+
+  PrintPreviewExtractorInternal(content::WebContents* web_contents,
+                                Profile* profile,
+                                bool is_pdf,
+                                CallbackVariant callback)
       : web_contents_(web_contents),
         profile_(profile),
         is_pdf_(is_pdf),
@@ -195,7 +255,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
   void CreatePrintPreview() override {
     if (profile_->GetPrefs()->GetBoolean(::prefs::kPrintPreviewDisabled)) {
-      SendResult("");
+      SendError("Print preview is disabled");
       return;
     }
     content::RenderFrameHost* rfh = GetRenderFrameHostToUse(web_contents_);
@@ -262,10 +322,13 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
     }
   }
 
- private:
-  void SendResult(std::string result) {
+  void SendError(const std::string& error) {
     PreviewCleanup();
-    std::move(callback_).Run(std::move(result));
+    if (auto* text_cb = std::get_if<ExtractCallback>(&callback_)) {
+      std::move(*text_cb).Run(base::unexpected(error));
+    } else if (auto* image_cb = std::get_if<CapturePdfCallback>(&callback_)) {
+      std::move(*image_cb).Run(base::unexpected(error));
+    }
   }
 
   // printing::mojom::PrintPreviewUI:
@@ -497,13 +560,12 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
         &data);
     if (!data.get()) {
       DLOG(ERROR) << "no data from preview id: " << *print_preview_ui_id_;
-      SendResult("");
+      SendError("Failed to get preview data");
       return;
     }
     auto pdf_region = base::ReadOnlySharedMemoryRegion::Create(data->size());
     if (!pdf_region.IsValid()) {
-      DLOG(ERROR) << "Failed allocate memory for PDF file";
-      SendResult("");
+      SendError("Failed to allocate memory for PDF file");
       return;
     }
     memcpy(pdf_region.mapping.memory(), data->data(), data->size());
@@ -514,20 +576,52 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       pdf_use_skia_renderer_enabled =
           prefs->GetBoolean(::prefs::kPdfUseSkiaRendererEnabled);
     }
+
+    // Create the appropriate callback based on the variant type
+    PreviewPageTextExtractor::CallbackVariant callback;
+    if (std::holds_alternative<ExtractCallback>(callback_)) {
+      callback = base::BindOnce(&PrintPreviewExtractorInternal::OnGetOCRResult,
+                                weak_ptr_factory_.GetWeakPtr());
+    } else if (std::holds_alternative<CapturePdfCallback>(callback_)) {
+      callback =
+          base::BindOnce(&PrintPreviewExtractorInternal::OnCaptureBitmapResult,
+                         weak_ptr_factory_.GetWeakPtr());
+    }
+
     preview_page_text_extractor_ = std::make_unique<PreviewPageTextExtractor>(
-        std::move(pdf_region.region),
-        base::BindOnce(&PrintPreviewExtractorInternal::OnGetOCRResult,
-                       weak_ptr_factory_.GetWeakPtr()),
+        std::move(pdf_region.region), std::move(callback),
         pdf_use_skia_renderer_enabled);
     preview_page_text_extractor_->StartExtract();
   }
 
-  void OnGetOCRResult(std::string text) { SendResult(std::move(text)); }
+  void OnGetOCRResult(base::expected<std::string, std::string> result) {
+    if (result.has_value()) {
+      PreviewCleanup();
+      if (auto* text_cb = std::get_if<ExtractCallback>(&callback_)) {
+        std::move(*text_cb).Run(std::move(result));
+      }
+    } else {
+      SendError(result.error());
+    }
+  }
 
+  void OnCaptureBitmapResult(
+      base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
+    if (result.has_value()) {
+      PreviewCleanup();
+      if (auto* image_cb = std::get_if<CapturePdfCallback>(&callback_)) {
+        std::move(*image_cb).Run(std::move(result));
+      }
+    } else {
+      SendError(result.error());
+    }
+  }
+
+ private:
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   bool is_pdf_ = false;
-  PrintPreviewExtractor::ExtractCallback callback_;
+  CallbackVariant callback_;
   // unique id to avoid conflicts with other print preview UIs
   std::optional<int32_t> print_preview_ui_id_;
   mojo::AssociatedReceiver<PrintPreviewUI> print_preview_ui_receiver_{this};
@@ -546,21 +640,41 @@ PrintPreviewExtractor::PrintPreviewExtractor(content::WebContents* web_contents)
 
 PrintPreviewExtractor::~PrintPreviewExtractor() = default;
 
-void PrintPreviewExtractor::Extract(bool is_pdf, ExtractCallback callback) {
+void PrintPreviewExtractor::Extract(ExtractCallback callback) {
   // Overwrite any existing extraction in progress, cancelling the operation.
   // If AIChatTabHelper for this WebContents is asking for a new extraction
   // then it has navigated, or the previous extraction failed to report itself
   // somehow.
   extractor_ = std::make_unique<PrintPreviewExtractorInternal>(
       web_contents_,
-      Profile::FromBrowserContext(web_contents_->GetBrowserContext()), is_pdf,
-      base::BindOnce(&PrintPreviewExtractor::OnExtractionComplete,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext()),
+      IsPdf(web_contents_),
+      PrintPreviewExtractorInternal::CallbackVariant(base::BindOnce(
+          &PrintPreviewExtractor::OnComplete<ExtractCallback, std::string>,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
   extractor_->CreatePrintPreview();
 }
 
-void PrintPreviewExtractor::OnExtractionComplete(ExtractCallback callback,
-                                                 std::string result) {
+void PrintPreviewExtractor::CapturePdf(CapturePdfCallback callback) {
+  if (!IsPdf(web_contents_)) {
+    std::move(callback).Run(base::unexpected("Not pdf content"));
+    return;
+  }
+  // Overwrite any existing extraction in progress, cancelling the operation.
+  extractor_ = std::make_unique<PrintPreviewExtractorInternal>(
+      web_contents_,
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext()), true,
+      PrintPreviewExtractorInternal::CallbackVariant(base::BindOnce(
+          &PrintPreviewExtractor::OnComplete<CapturePdfCallback,
+                                             std::vector<std::vector<uint8_t>>>,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+  extractor_->CreatePrintPreview();
+}
+
+template <typename CallbackType, typename ResultType>
+void PrintPreviewExtractor::OnComplete(
+    CallbackType callback,
+    base::expected<ResultType, std::string> result) {
   extractor_.reset();
   std::move(callback).Run(std::move(result));
 }

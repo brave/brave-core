@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//printing/buildflags/buildflags.gni")
+
 if (!is_android) {
   source_set("ai_chat") {
     sources = [
@@ -21,6 +23,10 @@ if (!is_android) {
 source_set("unit_tests") {
   testonly = true
   sources = [ "ai_chat_tab_helper_unittest.cc" ]
+
+  if (enable_print_preview) {
+    sources += [ "print_preview_extractor_unittest.cc" ]
+  }
 
   deps = [
     "//base/test:test_support",

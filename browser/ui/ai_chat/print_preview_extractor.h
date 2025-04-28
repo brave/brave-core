@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -30,7 +31,9 @@ class PrintPreviewExtractor
   PrintPreviewExtractor(const PrintPreviewExtractor&) = delete;
   PrintPreviewExtractor& operator=(const PrintPreviewExtractor&) = delete;
 
-  void Extract(bool is_pdf, ExtractCallback callback) override;
+  void Extract(ExtractCallback callback) override;
+
+  void CapturePdf(CapturePdfCallback callback) override;
 
   // Performs the print preview extraction. Used only for a single operation.
   class Extractor {
@@ -40,7 +43,9 @@ class PrintPreviewExtractor
   };
 
  private:
-  void OnExtractionComplete(ExtractCallback callback, std::string result);
+  template <typename CallbackType, typename ResultType>
+  void OnComplete(CallbackType callback,
+                  base::expected<ResultType, std::string> result);
 
   std::unique_ptr<Extractor> extractor_;
   raw_ptr<content::WebContents> web_contents_;
