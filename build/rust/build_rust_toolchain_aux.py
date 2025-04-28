@@ -99,12 +99,15 @@ def create_archive():
     with brave_chromium_utils.sys_path(TOOLS_RUST):
         import build_rust
         target_triple = build_rust.RustTargetTriple()
+        stage0_output_path = os.path.join(build_rust.RUST_BUILD_DIR,
+                                          target_triple, 'stage0', 'lib',
+                                          'rustlib')
         stage1_output_path = os.path.join(build_rust.RUST_BUILD_DIR,
                                           target_triple, 'stage1', 'lib',
                                           'rustlib')
 
         with tarfile.open(package_name(), 'w:xz') as tar:
-            tar.add(os.path.join(stage1_output_path, target_triple, 'bin',
+            tar.add(os.path.join(stage0_output_path, target_triple, 'bin',
                                  RUST_LLD),
                     arcname=RUST_LLD)
             tar.add(os.path.join(stage1_output_path, WASM32_UNKNOWN_UNKNOWN),
