@@ -1,4 +1,7 @@
 {
+  "//chrome/app/vector_icons/account_add_chrome_refresh.icon": "leo_user_add",
+  "//chrome/app/vector_icons/account_box.icon": "leo_user_picture",
+  "//chrome/app/vector_icons/account_manage_chrome_refresh.icon": "leo_settings",
   "//chrome/app/vector_icons/battery_saver.icon": "leo_energy_saver",
   "//chrome/app/vector_icons/bookmarks_side_panel_refresh.icon": "leo_product_bookmarks",
   "//chrome/app/vector_icons/bookmarks_side_panel.icon": "leo_product_bookmarks",
