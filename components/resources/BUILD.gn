@@ -149,13 +149,6 @@ repack("resources") {
     sources += [ "$root_gen_dir/brave/components/playlist/browser/resources/playlist_generated.pak" ]
   }
 
-  if (!is_android && !is_ios) {
-    deps += [
-      "//brave/browser/resources/settings/shortcuts_page:generated_resources",
-    ]
-    sources += [ "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak" ]
-  }
-
   output = "$root_gen_dir/components/brave_components_resources.pak"
 }
 

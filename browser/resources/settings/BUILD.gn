@@ -63,6 +63,11 @@ generate_grd("build_grd") {
   input_files_base_dir = rebase_path(".", "//")
 
   deps = [ ":preprocess" ]
+
+  if (!is_android) {
+    grdp_files = [ "$root_gen_dir/brave/web-ui-commands/commands.grdp" ]
+    deps += [ "shortcuts_page:commands_ui" ]
+  }
 }
 
 # Move brave files to the place where chromium settings page is compiled from.

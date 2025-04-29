@@ -1307,7 +1307,6 @@ source_set("ui") {
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
-      "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/brave_wallet/browser:permission_utils",
