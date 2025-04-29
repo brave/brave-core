@@ -3,22 +3,40 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// TODO(petemill): Stop using this script and use Chromium's generate_grd.{gni,py} instead
+
 const path = require('path')
 const fs = require('mz/fs')
+const program = require('commander')
+
+program
+  .option('--static_files', 'Extra files to include in the GRD')
+  .option('--static_files_base_path', 'Base directory path for static files in order to calculate resource path')
+  .parse(process.argv)
+
+function getIncludeString (filePath, relativePath) {
+  const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
+  const resourcePath = resourcePathPrefix
+    // Note: We want to use forwardslash regardless of platform.
+    ? path.posix.join(resourcePathPrefix, relativePath)
+    : relativePath
+  return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
+}
 
 /**
  * @param {string[]} fileList
  * @returns {string}
  */
-function getIncludesString (fileList) {
+function getIncludesString (fileList, basePath) {
+  if (!fileList || fileList.length === 0) {
+    return ''
+  }
+  if (!basePath) {
+    throw new Error('basePath is required')
+  }
   return fileList.map(filePath => {
-    const relativePath = filePath.replace(targetDir, '')
-    const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
-    const resourcePath = resourcePathPrefix
-      // Note: We want to use forwardslash regardless of platform.
-      ? path.posix.join(resourcePathPrefix, relativePath)
-      : relativePath
-    return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
+    const relativePath = filePath.replace(basePath, '')
+    return getIncludeString(filePath, relativePath)
   }).join('\n')
 }
 
@@ -27,7 +45,7 @@ function getIncludesString (fileList) {
  * @param {string[]} fileList
  * @returns {string}
  */
-function getGrdString (name, fileList) {
+function getGrdString (name, includes) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1">
   <outputs>
@@ -40,7 +58,7 @@ function getGrdString (name, fileList) {
   </outputs>
   <release seq="1">
     <includes>
-      ${getIncludesString(fileList)}
+      ${includes}
     </includes>
   </release>
 </grit>
@@ -52,10 +70,10 @@ function getGrdString (name, fileList) {
  * @param {string[]} fileList The list of files to include
  * @returns {string} The contents of a GRDP file containing |fileList|
  */
-function getGrdpString(fileList) {
+function getGrdpString(includes) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  ${getIncludesString(fileList)}
+  ${includes}
 </grit-part>
 `
 }
@@ -86,17 +104,26 @@ async function getFileListDeep (dirPath) {
   )
 }
 
-async function createDynamicGDR () {
-  const gdrPath = path.join(targetDir, grdName)
+async function createDynamicGDR (program) {
+  const staticFiles = program.staticFiles?.split(',') ?? []
+  const staticFilesBasePath = program.staticFilesBasePath
+
   // remove previously generated file
   try {
     await fs.unlink(gdrPath)
   } catch (e) {}
+
   // build file list from target dir
   const filePaths = await getFileListDeep(targetDir)
+
+  const includes =
+    getIncludesString(staticFiles, staticFilesBasePath) + '\n' +
+    getIncludesString(filePaths, targetDir)
+
   const contents = gdrPath.endsWith('.grdp')
-    ? getGrdpString(filePaths)
-    : getGrdString(resourceName, filePaths)
+  ? getGrdpString(includes)
+  : getGrdString(resourceName, includes)
+
   await fs.writeFile(gdrPath, contents, { encoding: 'utf8' })
 }
 
@@ -104,7 +131,7 @@ async function createDynamicGDR () {
 const resourceName = process.env.RESOURCE_NAME
 const idPrefix = process.env.ID_PREFIX
 let targetDir = process.env.TARGET_DIR
-const grdName = process.env.GRD_NAME
+const grdPath = process.env.GRD_PATH
 const resourcePathPrefix = process.env.RESOURCE_PATH_PREFIX
 
 if (!targetDir) {
@@ -125,7 +152,7 @@ if (!grdName) {
 }
 
 // main
-createDynamicGDR()
+createDynamicGDR(program)
 .catch(err => {
   console.error(err)
   process.exit(1)

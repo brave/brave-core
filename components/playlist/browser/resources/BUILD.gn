@@ -27,9 +27,3 @@ transpile_web_ui("playlist_ui") {
 
   resource_name = "playlist"
 }
-
-pack_web_resources("generated_resources") {
-  resource_name = "playlist"
-  output_dir = "$root_gen_dir/brave/components/playlist/browser/resources"
-  deps = [ ":playlist_ui" ]
-}

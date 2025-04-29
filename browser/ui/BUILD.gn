@@ -1101,7 +1101,7 @@ source_set("ui") {
       "//brave/components/brave_rewards/content",
       "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",
       "//brave/components/brave_rewards/resources/tip_panel:tip_panel_generated",
-      "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
+      "//brave/components/brave_shields/resources/cookie_list_opt_in:resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
@@ -1307,7 +1307,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
-      "//brave/browser/resources/settings/shortcuts_page:generated_resources",
+      "//brave/browser/resources/settings/shortcuts_page:resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/brave_wallet/browser:permission_utils",
@@ -1359,7 +1359,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/browser/ethereum_remote_client",
-      "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated",
+      "//brave/browser/ui/webui/ethereum_remote_client:resources",
     ]
   }
 

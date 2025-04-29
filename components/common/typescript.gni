@@ -58,13 +58,18 @@ brave_common_web_compile_inputs = [
 #     ]
 #   resource_name
 #     Unique name for output which is used for:
-#       - output directory part
 #       - grd name, e.g. resourcename.grd
 #       - intended pak name, e.g. resourcename_generated.pak
 #       - generated resource map, e.g. resourcename_generated_map.h
-#       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
+#       - resource ID prefix (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
+#   static_files
+#     Optional list of static files to include in the package
+#   static_files_base_path
+#     The base path for static files, used to generate the relative path
+#     for hosting the files and generating their IDs.
+#     Required when static_files is specified.
 #   output_dir
-#     Optional custom path for compiled output
+#     Optional custom location for output
 #   generate_grdp
 #     Optionally generate a Grit Part file instead of a grit file.
 #   resource_path_prefix
@@ -93,6 +98,26 @@ brave_common_web_compile_inputs = [
 #   no_iife
 #     If true, the resulting bundle will not be wrapped in an IIFE.
 template("transpile_web_ui") {
+  js_bundle_target_name = "${target_name}"
+  resource_name = invoker.resource_name
+  # Allow target to define custom path
+  # (may not be root_gen_dir relative)
+  if (defined(invoker.output_dir)) {
+    output_path = invoker.output_dir
+  } else {
+    output_path = target_gen_dir
+  }
+  bundle_path = "$output_path/webui_bundle"
+
+  # Output is a GRD that includes all the resources, and a bundle for each
+  # entry point or a GRDP file that includes all the resources.
+  grd_name = "$resource_name.grd"
+  if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
+    grd_name = "$resource_name.grdp"
+  }
+
+  grd_path = "$output_path/$grd_name"
+
   if (defined(invoker.rust_packages)) {
     rust_to_wasm("build_rust_packages") {
       forward_variables_from(invoker, [ "inputs" ])
@@ -100,7 +125,7 @@ template("transpile_web_ui") {
     }
   }
 
-  action(target_name) {
+  action(js_bundle_target_name) {
     script = "//brave/script/transpile-web-ui.py"
 
     # make sure rebuilds when common files change
@@ -137,26 +162,9 @@ template("transpile_web_ui") {
     # https://ninja-build.org/manual.html#_depfile
     # https://gn.googlesource.com/gn/+/master/docs/reference.md#var_depfile
     # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
-    depfile = "${target_gen_dir}/${target_name}.d"
+    depfile = "$output_path/$target_name.d"
 
-    resource_name = invoker.resource_name
-
-    # Allow target to define custom path
-    # (may not be root_gen_dir relative)
-    if (defined(invoker.output_dir)) {
-      gen_output_dir = invoker.output_dir
-    } else {
-      gen_output_dir = "$root_gen_dir/brave/web-ui-$resource_name"
-    }
-
-    # Output is a GRD that includes all the resources, and a bundle for each
-    # entry point or a GRDP file that includes all the resources.
-    grd_name = "$resource_name.grd"
-    if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
-      grd_name = "$resource_name.grdp"
-    }
-
-    outputs = [ "$gen_output_dir/$grd_name" ]
+    outputs = [ grd_path ]
 
     # Base script arguments:
     #  - resource (compiled) output destination
@@ -166,9 +174,11 @@ template("transpile_web_ui") {
     args = [
       # output_path arg must be relative to root_build_dir so that
       # depfile header format is correct (see docs above).
-      "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
+      "--output_path=" + rebase_path(bundle_path, root_build_dir),
       "--root_gen_dir=" + rebase_path(root_gen_dir),
-      "--grd_name=$grd_name",
+      # TODO(petemill): Use upstream's generate_grd template and generate a manifest to
+      # pass to it.
+      "--grd_path=" + rebase_path(grd_path),
       "--resource_name=$resource_name",
       "--depfile_path=" + rebase_path(depfile),
     ]
@@ -221,6 +231,15 @@ template("transpile_web_ui") {
       args += [ "--no_iife" ]
     }
 
+    if (defined(invoker.static_files)) {
+      inputs += invoker.static_files
+      args += [
+                "--static_files_base_path",
+                invoker.static_files_base_path,
+                "--static_files"
+              ] + invoker.static_files
+    }
+
     forward_variables_from(invoker,
                            [
                              "public_deps",
@@ -228,52 +247,25 @@ template("transpile_web_ui") {
                              "visibility",
                            ])
   }
-}
 
-# Runs grit for a specified GRD file generated from
-# a `:transpile_web_ui` target
-#
-# Argument
-#   resource_name
-#     Unique name for output which is used for:
-#       - grd name, e.g. resourcename.grd
-#       - intended pak name, e.g. resourcename_generated.pak
-#       - generated resource map, e.g. resourcename_generated_map.h
-#       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
-#   output_dir
-#     Directory in which to place the output .pak file
-#   generated_dir
-#     Optional custom path for compiled output
-#
-template("pack_web_resources") {
-  brave_grit(target_name) {
-    resource_name = invoker.resource_name
+  if (!defined(invoker.generate_grdp) || !invoker.generate_grdp) {
+    brave_grit("resources") {
+      deps = [ ":${js_bundle_target_name}" ]
 
-    if (defined(invoker.generated_dir)) {
-      generated_dir = invoker.generated_dir
-    } else {
-      generated_dir = "$root_gen_dir/brave/web-ui-$resource_name"
+      # The target contains references to generated files.
+      enable_input_discovery_for_gn_analyze = false
+
+      source = grd_path
+
+      outputs = [
+        "grit/${resource_name}_generated.h",
+        "grit/${resource_name}_generated_map.cc",
+        "grit/${resource_name}_generated_map.h",
+        "${resource_name}_generated.pak",
+      ]
+
+      output_dir = output_path
+      print("pack_web_resources: $output_dir/${resource_name}_generated.pak")
     }
-    source = "$generated_dir/$resource_name.grd"
-
-    # The target contains references to generated files.
-    enable_input_discovery_for_gn_analyze = false
-
-    outputs = [
-      "grit/$resource_name" + "_generated.h",
-      "grit/$resource_name" + "_generated_map.cc",
-      "grit/$resource_name" + "_generated_map.h",
-      resource_name + "_generated.pak",
-    ]
-
-    output_dir = invoker.output_dir
-
-    forward_variables_from(invoker,
-                           [
-                             "deps",
-                             "public_deps",
-                             "testonly",
-                             "visibility",
-                           ])
   }
 }

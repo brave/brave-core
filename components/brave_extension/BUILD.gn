@@ -6,14 +6,6 @@ import("//tools/grit/repack.gni")
 
 assert(enable_extensions)
 
-pack_web_resources("generated_resources") {
-  resource_name = "brave_extension"
-  output_dir = "$root_gen_dir/brave/components/brave_extension"
-
-  # need wepack and GRD generation first
-  deps = [ "extension/brave_extension" ]
-}
-
 action("web_discovery_project_resources") {
   script = "//brave/script/web_discovery_project.py"
 
@@ -64,12 +56,12 @@ brave_grit("static_resources") {
 
 repack("resources") {
   deps = [
-    ":generated_resources",
+    "extension/brave_extension:resources",
     ":static_resources",
   ]
 
   sources = [
-    "$root_gen_dir/brave/components/brave_extension/brave_extension_generated.pak",
+    "$root_gen_dir/brave/components/brave_extension/extension/brave_extension/brave_extension_generated.pak",
     "$root_gen_dir/brave/components/brave_extension/brave_extension_static.pak",
   ]
 

@@ -13,9 +13,3 @@ transpile_web_ui("ai_rewriter_ui") {
       ] ]
   deps = [ "//brave/components/ai_rewriter/common/mojom:mojom_js" ]
 }
-
-pack_web_resources("generated_resources") {
-  resource_name = "ai_rewriter_ui"
-  output_dir = "$root_gen_dir/brave/components/ai_rewriter/resources/page"
-  deps = [ ":ai_rewriter_ui" ]
-}

@@ -7,11 +7,3 @@ transpile_web_ui("brave_welcome_ui") {
 
   resource_name = "brave_welcome"
 }
-
-pack_web_resources("generated_resources") {
-  resource_name = "brave_welcome"
-  output_dir = "$root_gen_dir/brave/components/brave_welcome/resources"
-  deps = [
-    ":brave_welcome_ui"
-  ]
-}

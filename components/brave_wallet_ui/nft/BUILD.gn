@@ -21,9 +21,3 @@ transpile_web_ui("nft_display_ui") {
     "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
 }
-
-pack_web_resources("nft_display_generated") {
-  resource_name = "nft_display"
-  output_dir = "$root_gen_dir/brave/components/nft_display/resources"
-  deps = [ ":nft_display_ui" ]
-}

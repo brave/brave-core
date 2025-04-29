@@ -19,10 +19,13 @@ transpile_web_ui("ai_chat_ui") {
     ],
   ]
   deps = [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]
-}
 
-pack_web_resources("resources") {
-  resource_name = "ai_chat_ui"
-  output_dir = "$root_gen_dir/brave/components/ai_chat/resources"
-  deps = [ ":ai_chat_ui" ]
+  static_files = [
+    rebase_path("page/ai_chat_ui.html"),
+    rebase_path("page/styles.css"),
+    rebase_path("untrusted_conversation_frame/untrusted_conversation_frame.html"),
+    rebase_path("page/manifest.webmanifest"),
+    rebase_path("page/pwa_icon.svg"),
+  ]
+  static_files_base_path = rebase_path(".", "//")
 }

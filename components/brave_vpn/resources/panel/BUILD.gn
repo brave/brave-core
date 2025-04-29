@@ -19,18 +19,3 @@ transpile_web_ui("brave_vpn_panel_ui") {
     "//brave/components/brave_vpn/common/mojom:preprocess_mojo",
   ]
 }
-
-pack_web_resources("brave_vpn_panel_generated") {
-  resource_name = "brave_vpn_panel"
-  output_dir = "$root_gen_dir/brave/components/brave_vpn/resources/panel"
-  deps = [ ":brave_vpn_panel_ui" ]
-}
-
-repack("resources") {
-  sources = [ "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak" ]
-
-  deps = [ ":brave_vpn_panel_generated" ]
-
-  output =
-      "$root_gen_dir/brave/components/brave_vpn/brave_vpn_panel_resources.pak"
-}

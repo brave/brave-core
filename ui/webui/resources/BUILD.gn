@@ -74,14 +74,14 @@ if (include_polymer) {
 
 leo_static_files = [ "css/variables.css" ]
 
-static_files = [
+brave_static_files = [
   "css/md_colors.css",
   "css/text_defaults_md.css",
   "css/reset.css",
 ]
 
 if (include_polymer) {
-  static_files += [
+  brave_static_files += [
     "page_specific/history/history_loading_shim.css",
     "page_specific/downloads/downloads_loading_shim.css",
     "page_specific/settings/settings_loading_shim.css",
@@ -129,7 +129,7 @@ generate_grd("static_grdp") {
   grd_prefix = "brave_webui"
   resource_path_prefix = "brave"
   out_grd = "$brave_resources_extra_grdps_path/brave_static_resources.grdp"
-  input_files = static_files + rebase_path(leo_static_files, ".", "leo") + [
+  input_files = brave_static_files + rebase_path(leo_static_files, ".", "leo") + [
                   # TODO(petemill): ethereum_remote_client_page.html does not need to be served from chrome://resources
                   # and should be put in to it's own resource package.
                   "ethereum_remote_client_page.html",
@@ -554,7 +554,7 @@ generate_grd("icons_grdp") {
 
 # Static files should be put relative to //ui/webui/resources main resources GRD
 copy("static_copy") {
-  sources = static_files
+  sources = brave_static_files
   outputs = [ "$brave_resources_extra_grdps_path/{{source_target_relative}}" ]
 }
 

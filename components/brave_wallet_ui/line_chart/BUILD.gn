@@ -21,9 +21,3 @@ transpile_web_ui("line_chart_display_ui") {
     "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
 }
-
-pack_web_resources("line_chart_display_generated") {
-  resource_name = "line_chart_display"
-  output_dir = "$root_gen_dir/brave/components/line_chart_display/resources"
-  deps = [ ":line_chart_display_ui" ]
-}

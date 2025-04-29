@@ -30,9 +30,3 @@ transpile_web_ui("creator_detection") {
   ]
   resource_name = "creator_detection"
 }
-
-pack_web_resources("creator_detection_generated") {
-  resource_name = "creator_detection"
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
-  deps = [ ":creator_detection" ]
-}
