@@ -7,6 +7,7 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "extensions/browser/extension_registry.h"
 
 namespace misc_metrics {
@@ -75,6 +76,11 @@ void ExtensionMetrics::OnExtensionLoaded(
     manifest_v2_extensions_loaded_.insert(extension->id());
   }
 
+  // Check if this is a pre-configured Manifest V2 extension
+  if (kPreconfiguredManifestV2Extensions.contains(extension->id())) {
+    select_manifest_v2_extensions_loaded_.insert(extension->id());
+  }
+
   ScheduleMetricsReport();
 }
 
@@ -91,6 +97,11 @@ void ExtensionMetrics::OnExtensionUninstalled(
     manifest_v2_extensions_loaded_.erase(extension->id());
   }
 
+  // Check if this is a pre-configured Manifest V2 extension
+  if (kPreconfiguredManifestV2Extensions.contains(extension->id())) {
+    select_manifest_v2_extensions_loaded_.erase(extension->id());
+  }
+
   ScheduleMetricsReport();
 }
 
@@ -105,6 +116,8 @@ void ExtensionMetrics::ReportMetrics() {
                         !adblock_extensions_loaded_.empty());
   UMA_HISTOGRAM_BOOLEAN(kManifestV2ExtensionsHistogramName,
                         !manifest_v2_extensions_loaded_.empty());
+  UMA_HISTOGRAM_BOOLEAN(kSelectManifestV2ExtensionsHistogramName,
+                        !select_manifest_v2_extensions_loaded_.empty());
 }
 
 }  // namespace misc_metrics
