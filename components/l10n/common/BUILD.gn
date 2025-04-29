@@ -20,6 +20,7 @@ static_library("common") {
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a",
     "//brave/components/sidebar/browser",
+    "//brave/ios/browser/api/ads",
     "//brave/test:*",
     "//chrome/browser",
   ]
