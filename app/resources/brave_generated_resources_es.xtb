@@ -317,9 +317,17 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="8813509417421129632">Una página incrustada en <ph name="SITE"/> desea guardar</translation>
 <translation id="7700010743463174379">Esta página desea guardar</translation>
 <translation id="6774238875569752630">Una página incrustada en esta página desea guardar</translation>
+<translation id="1233913566967531780">Enfoque de pestaña</translation>
+<translation id="4034992002364254340">Reunir todas las pestañas relacionadas en una nueva ventana</translation>
+<translation id="8012125596344613514">Temas sugeridos</translation>
+<translation id="7529120186020617755">Introduce un tema en el que concentrarte...</translation>
+<translation id="6847541693235449912">Ir</translation>
 <translation id="2079545284768500474">Deshacer</translation>
+<translation id="1533980864758658574">Nueva ventana creada para <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Esta función envía datos sobre tus pestañas abiertas a Leo, el asistente del navegador con tecnología de IA de Brave.</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="7557539689487606886">Hazte Premium</translation>
+<translation id="1035309871698658326">Cuando se abre, esto enviará automáticamente los títulos y el origen de todas las pestañas que no son de incógnito a Leo para clasificarlas.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
 <translation id="9156965752763025780">Tus cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar Ahora</translation>
@@ -357,6 +365,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2396127686705429331">Mostrar botón de marcadores</translation>
 <translation id="2814998458708016836">Usar la barra de direcciones extendida</translation>
 <translation id="4109670531935487117">Mostrar sugerencias autocompletadas en la barra de direcciones</translation>
+<translation id="3405901785709583668">Principales sugerencias</translation>
 <translation id="7859704718976024901">Historial de Navegación</translation>
 <translation id="8820817407110198400">Marcadores</translation>
 <translation id="4144468798716165316">Comandos rápidos</translation>
@@ -715,6 +724,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="2751872555001636931">Mostrar el icono de Leo en la barra lateral</translation>
 <translation id="8055509865174199683">Mostrar Leo en el menú contextual en sitios web</translation>
 <translation id="1529674267267221673">Leo aparecerá en el menú contextual cuando hagas clic con el botón derecho en un sitio web. Al hacerlo, Leo recibirá el contexto de la página web en cuestión.</translation>
+<translation id="5226020406479918122">Modo de enfoque de pestaña</translation>
+<translation id="3705539672403311123">Habilitar la organización de pestañas en la página de Búsqueda de pestañas. Cuando se abre, esto enviará automáticamente los títulos y orígenes de todas las pestañas que no son de incógnito a Leo para clasificarlas. <ph name="BEGIN_LINK"/>Saber más<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar sugerencias en la conversación</translation>
 <translation id="5781842473834867765">Guardar mi historial de conversaciones</translation>
 <translation id="1082960401708055995">Desactivar el almacenamiento de conversaciones borrará permanentemente todas las conversaciones guardadas previamente. Esta acción no se puede deshacer.</translation>
@@ -722,6 +733,9 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="1335414530428321716">Si restableces el asistente Leo, tendrás que habilitarIo de nuevo para poder usarlo en el futuro y se borrará el historial de chats. Esto significa que se eliminarán todas las conversaciones que hayas mantenido con Leo AI de forma irreversible.</translation>
 <translation id="5574059574002819179">Ajustar sugerencias de autocompletar</translation>
 <translation id="7942415993090181327">Historial del chat</translation>
+<translation id="5385064007245738696">Acerca de Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo ofrece chat con IA que prioriza la privacidad y otras interfaces con tecnología de IA en el navegador. Leo nunca aprende de tus datos ni los utiliza para entrenar modelos. Todas las solicitudes se proxy a través de un servidor anonimizado.</translation>
+<translation id="6458721693611638005">Lee más sobre cómo Brave protege el uso de la IA en la política de privacidad de Leo. <ph name="BEGIN_LINK"/>Saber más<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modelo predeterminado para conversaciones nuevas</translation>
 <translation id="8826914609353373601">Gestionar suscripción Premium</translation>
 <translation id="235457946228076038">Use su propio modelo</translation>
@@ -732,6 +746,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="3553035516792776805">Nombre de solicitud de modelo</translation>
 <translation id="7634775528597575156">Terminal de servidor</translation>
 <translation id="6374563306438145841">Clave de API</translation>
+<translation id="3295756655687327124">Soporte de visión</translation>
+<translation id="1415432774589088566">Si este modelo toma una imagen como entrada, p.ej. llama 3.2b visión</translation>
 <translation id="8008271349880309090">El nombre del modelo tal y como aparece en el menú de selección de modelos</translation>
 <translation id="1355326130503900056">El nombre del modelo tal y como debe aparecer en la solicitud al marco de servicio, es decir, phi-3. Cabe recalcar que si este nombre no coincide exactamente con el que espera el marco servidor, la integración no se llevará a cabo.</translation>
 <translation id="3213787232304349732">La URL en la que su marco servidor atiende peticiones. Si no estás seguro, consulta la documentación del marco servidor. Por ejemplo, para Ollama, es siempre http://localhost:11434/v1/chat/completions</translation>
