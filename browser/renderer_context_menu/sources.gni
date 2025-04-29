@@ -14,7 +14,6 @@ if (is_win || is_linux) {
 
   brave_browser_renderer_context_menu_deps += [
     "//base",
-    "//brave/components/l10n/common",
     "//chrome/app:command_ids",
     "//chrome/app:generated_resources",
     "//components/renderer_context_menu",

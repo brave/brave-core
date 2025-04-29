@@ -27,7 +27,6 @@ component("browser") {
     ]
 
     deps += [
-      "//brave/components/l10n/common",
       "//services/shape_detection:lib",
       "//services/shape_detection/public/mojom",
     ]
