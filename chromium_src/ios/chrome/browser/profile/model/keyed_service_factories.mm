@@ -16,6 +16,7 @@
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_sync_service_factory.h"
 #include "ios/chrome/browser/browsing_data/model/browsing_data_remover_factory.h"
+#include "ios/chrome/browser/commerce/model/shopping_service_factory.h"
 #include "ios/chrome/browser/consent_auditor/model/consent_auditor_factory.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
@@ -86,6 +87,7 @@
 void EnsureProfileKeyedServiceFactoriesBuilt() {
   autofill::AutofillLogRouterFactory::GetInstance();
   autofill::PersonalDataManagerFactory::GetInstance();
+  commerce::ShoppingServiceFactory::GetInstance();
   data_sharing::DataSharingServiceFactory::GetInstance();
   ios::AccountBookmarkSyncServiceFactory::GetInstance();
   ios::AccountConsistencyServiceFactory::GetInstance();
