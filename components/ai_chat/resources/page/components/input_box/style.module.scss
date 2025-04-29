@@ -125,9 +125,16 @@
 }
 
 .attachmentWrapper {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: var(--leo-spacing-m) var(--leo-spacing-m) 0px var(--leo-spacing-m);
-  max-height: 300px;
+  max-height: 240px;
   overflow-y: auto;
-  gap: var(--leo-spacing-m);
+  gap: var(--leo-spacing-s);
+}
+
+.attachmentWrapperScrollStyles {
+  padding: var(--leo-spacing-m);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
 }

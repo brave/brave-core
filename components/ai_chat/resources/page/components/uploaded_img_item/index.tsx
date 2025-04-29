@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // Types
 import * as Mojom from '../../../common/mojom'
@@ -43,8 +44,6 @@ export default function UploadedImgItem(props: Props) {
     return `${bytes.toFixed(2)} ${units[index]}`
   }, [props.uploadedImage.filesize])
 
-  const filenameParts = props.uploadedImage.filename.split('.')
-
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
@@ -53,12 +52,16 @@ export default function UploadedImgItem(props: Props) {
           src={dataUrl}
         />
         <div className={styles.imageInfo}>
-          <div className={styles.nameAndExtensionRow}>
+          <Tooltip
+            mode='mini'
+            text={props.uploadedImage.filename}
+          >
             <div className={styles.forEllipsis}>
-              <span className={styles.nameText}>{filenameParts[0]}</span>
+              <span className={styles.nameText}>
+                {props.uploadedImage.filename}
+              </span>
             </div>
-            <span className={styles.extensionText}>.{filenameParts[1]}</span>
-          </div>
+          </Tooltip>
           <span className={styles.sizeText}>{filesize}</span>
         </div>
       </div>

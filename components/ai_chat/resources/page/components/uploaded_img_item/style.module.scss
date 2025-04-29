@@ -18,7 +18,8 @@
 
 .image {
   width: 48px;
-  height: auto;
+  height: 48px;
+  object-fit: none;
   border-radius: var(--leo-radius-m);
   box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px
       var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)),
@@ -39,28 +40,17 @@
   align-items: flex-start;
 }
 
-.nameAndExtensionRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
 .forEllipsis {
   display: grid;
 }
 
 .nameText {
+  cursor: pointer;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.extensionText {
-  font: var(--leo-font-default-regular);
-  color: var(--leo-color-text-primary);
 }
 
 .sizeText {
@@ -69,5 +59,6 @@
 }
 
 .removeButton {
+  --leo-icon-color: var(--leo-color-icon-secondary);
   flex-grow: 0;
 }
