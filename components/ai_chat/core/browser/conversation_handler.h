@@ -391,7 +391,8 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   bool is_video = false,
                                   std::string invalidation_token = "");
   void SetAPIError(const mojom::APIError& error);
-  void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
+  void UpdateOrCreateLastAssistantEntry(
+      EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration(std::string page_content,
                                  bool is_video,
@@ -421,7 +422,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::string page_content,
       bool is_video,
       base::expected<std::string, std::string> refined_page_content);
-  void OnEngineCompletionDataReceived(mojom::ConversationEntryEventPtr result);
+  void OnEngineCompletionDataReceived(
+      EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);

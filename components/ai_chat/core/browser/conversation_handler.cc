@@ -683,7 +683,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_files), false);
+      std::move(uploaded_files), false, std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -805,7 +805,7 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
         turn->character_type, turn->action_type, trimmed_input,
         std::nullopt /* prompt */, std::nullopt /* selected_text */,
         std::move(events), base::Time::Now(), std::nullopt /* edits */,
-        std::nullopt, false);
+        std::nullopt, false, turn->model_key);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -839,7 +839,8 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
       base::Uuid::GenerateRandomV4().AsLowercaseString(), turn->character_type,
       turn->action_type, sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, std::nullopt, false);
+      base::Time::Now(), std::nullopt /* edits */, std::nullopt, false,
+      turn->model_key);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -874,7 +875,7 @@ void ConversationHandler::SubmitSummarizationRequest() {
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, false);
+      std::nullopt /* uploaded_images */, false, std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -900,7 +901,7 @@ void ConversationHandler::SubmitSuggestion(
       std::nullopt, CharacterType::HUMAN, suggestion.action_type,
       suggestion.title, suggestion.prompt, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt, false);
+      std::nullopt, false, std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -1088,7 +1089,7 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false);
+      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -1127,7 +1128,7 @@ void ConversationHandler::AddSubmitSelectedTextError(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false);
+      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -1194,9 +1195,10 @@ void ConversationHandler::PerformAssistantGeneration(
         last_entry->prompt.value_or(last_entry->text), page_content,
         max_content_length, std::move(refined_content_callback));
 
-    UpdateOrCreateLastAssistantEntry(
+    UpdateOrCreateLastAssistantEntry(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-            mojom::PageContentRefineEvent::New()));
+            mojom::PageContentRefineEvent::New()),
+        std::nullopt /* model_key */));
     return;
   } else if (is_content_refined_) {
     // If we previously refined content but we're not anymore (perhaps the
@@ -1221,7 +1223,7 @@ void ConversationHandler::SetAPIError(const mojom::APIError& error) {
 }
 
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
-    mojom::ConversationEntryEventPtr event) {
+    EngineConsumer::GenerationResultData result) {
   if (chat_history_.empty() ||
       chat_history_.back()->character_type != CharacterType::ASSISTANT) {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
@@ -1229,12 +1231,12 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, std::nullopt, false);
+        std::nullopt, std::nullopt, false, result.model_key);
     chat_history_.push_back(std::move(entry));
   }
 
   auto& entry = chat_history_.back();
-
+  auto& event = result.event;
   if (event->is_completion_event()) {
     if (!engine_->SupportsDeltaTextResponses() || entry->events->size() == 0 ||
         !entry->events->back()->is_completion_event()) {
@@ -1413,7 +1415,8 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::HUMAN, mojom::ActionType::QUERY, entry.query,
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
-        base::Time::Now(), std::nullopt, std::nullopt, true));
+        base::Time::Now(), std::nullopt, std::nullopt, true,
+        std::nullopt /* model_key */));
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1423,7 +1426,8 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, entry.summary,
         std::nullopt /* prompt */, std::nullopt, std::move(events),
-        base::Time::Now(), std::nullopt, std::nullopt, true));
+        base::Time::Now(), std::nullopt, std::nullopt, true,
+        std::nullopt /* model_key */));
     OnConversationEntryAdded(chat_history_.back());
   }
 }
@@ -1508,7 +1512,7 @@ void ConversationHandler::OnGetRefinedPageContent(
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
-    mojom::ConversationEntryEventPtr result) {
+    EngineConsumer::GenerationResultData result) {
   UpdateOrCreateLastAssistantEntry(std::move(result));
 }
 
@@ -1520,10 +1524,9 @@ void ConversationHandler::OnEngineCompletionComplete(
     DVLOG(2) << __func__ << ": With value";
     // Handle success, which might mean do nothing much since all
     // data was passed in the streaming "received" callback.
-    if (!result->empty()) {
-      UpdateOrCreateLastAssistantEntry(
-          mojom::ConversationEntryEvent::NewCompletionEvent(
-              mojom::CompletionEvent::New(*result)));
+    if (result->event && result->event->is_completion_event() &&
+        !result->event->get_completion_event()->completion.empty()) {
+      UpdateOrCreateLastAssistantEntry(std::move(*result));
       OnConversationEntryAdded(chat_history_.back());
     } else {
       auto& last_entry = chat_history_.back();

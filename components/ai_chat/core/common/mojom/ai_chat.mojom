@@ -261,6 +261,12 @@ struct ConversationTurn {
 
   // Whether the turn was generated from Brave Search SERP.
   bool from_brave_search_SERP = false;
+
+  // Null in BYOM conversations.
+  // In assistant turns, it indicates which model generated this turn.
+  // In human turns, it indicates which model to be used for regenerating
+  // answers.
+  string? model_key;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a

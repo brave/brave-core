@@ -15,7 +15,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 template <class T>
@@ -37,7 +36,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
  public:
   explicit EngineConsumerOAIRemote(
       const mojom::CustomModelOptions& model_options,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ModelService* model_service);
   EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
   EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;
   ~EngineConsumerOAIRemote() override;

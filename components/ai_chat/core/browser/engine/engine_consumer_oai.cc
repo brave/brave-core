@@ -158,7 +158,9 @@ base::Value::List BuildMessages(
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
     const mojom::CustomModelOptions& model_options,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    ModelService* model_service)
+    : EngineConsumer(model_service) {
   model_options_ = model_options;
   max_associated_content_length_ = model_options.max_associated_content_length;
 
@@ -253,13 +255,21 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
 void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
     GenerationResult result) {
-  if (!result.has_value() || result->empty()) {
+  if (!result.has_value()) {
     // Query resulted in error
     std::move(callback).Run(base::unexpected(std::move(result.error())));
     return;
   }
 
-  base::StringTokenizer tokenizer(*result, "</>");
+  if (!result->event || !result->event->is_completion_event() ||
+      result->event->get_completion_event()->completion.empty()) {
+    // No questions were generated
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  base::StringTokenizer tokenizer(
+      result->event->get_completion_event()->completion, "</>");
   tokenizer.set_options(base::StringTokenizer::RETURN_DELIMS);
 
   std::vector<std::string> questions;

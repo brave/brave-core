@@ -53,7 +53,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       base::android::ConvertJavaStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
-      false);
+      false, std::nullopt /* model_key */);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 
   content::OpenURLParams params(

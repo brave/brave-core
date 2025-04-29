@@ -46,11 +46,14 @@ constexpr char kArrayPattern[] = R"((\[.*?\]))";
 EngineConsumerConversationAPI::EngineConsumerConversationAPI(
     const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    AIChatCredentialManager* credential_manager) {
+    AIChatCredentialManager* credential_manager,
+    ModelService* model_service)
+    : EngineConsumer(model_service) {
   DCHECK(!model_options.name.empty());
   model_name_ = model_options.name;
   api_ = std::make_unique<ConversationAPIClient>(
-      model_options.name, url_loader_factory, credential_manager);
+      model_options.name, url_loader_factory, credential_manager,
+      model_service);
   max_associated_content_length_ = model_options.max_associated_content_length;
 }
 
@@ -86,12 +89,14 @@ EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
     }
 
     // Skip empty results.
-    if (result->empty()) {
+    if (!result->event || !result->event->is_completion_event() ||
+        result->event->get_completion_event()->completion.empty()) {
       continue;
     }
 
     std::string strArr = "";
-    if (!RE2::PartialMatch(*result, kArrayPattern, &strArr)) {
+    if (!RE2::PartialMatch(result->event->get_completion_event()->completion,
+                           kArrayPattern, &strArr)) {
       continue;
     }
     auto value = base::JSONReader::Read(strArr, base::JSON_PARSE_RFC);
@@ -163,15 +168,23 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
 void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
     GenerationResult result) {
-  if (!result.has_value() || result->empty()) {
+  if (!result.has_value()) {
     // Query resulted in error
     std::move(callback).Run(base::unexpected(std::move(result.error())));
     return;
   }
 
+  if (!result->event || !result->event->is_completion_event() ||
+      result->event->get_completion_event()->completion.empty()) {
+    // No questions were generated
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   // Success
   std::vector<std::string> questions =
-      base::SplitString(*result, "|", base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitString(result->event->get_completion_event()->completion, "|",
+                        base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
   std::move(callback).Run(std::move(questions));
 }
@@ -293,7 +306,8 @@ void EngineConsumerConversationAPI::DedupeTopics(
           [](GetSuggestedTopicsCallback callback,
              EngineConsumer::GenerationResult result) {
             // Return deduped topics from the response.
-            std::vector<EngineConsumer::GenerationResult> results = {result};
+            std::vector<EngineConsumer::GenerationResult> results;
+            results.emplace_back(std::move(result));
             std::move(callback).Run(
                 EngineConsumerConversationAPI::
                     GetStrArrFromTabOrganizationResponses(results));

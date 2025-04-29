@@ -198,12 +198,13 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
     ConversationHandler::GeneratedTextCallback callback) {
   return base::BindRepeating(
       [](ConversationHandler::GeneratedTextCallback callback,
-         mojom::ConversationEntryEventPtr rewrite_event) {
+         EngineConsumer::GenerationResultData result_data) {
         // TODO(petemill): This probably should exist at the EngineConsumer
         // level and possibly only for the OAI engine since the others use
         // stop sequences to exclude the ending tag.
         constexpr char kResponseTagPattern[] =
             "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
+        auto& rewrite_event = result_data.event;
         if (!rewrite_event->is_completion_event()) {
           return;
         }
