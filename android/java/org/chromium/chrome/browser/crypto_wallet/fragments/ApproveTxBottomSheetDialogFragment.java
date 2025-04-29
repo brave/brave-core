@@ -220,14 +220,14 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         }
         mCoinType = TransactionUtils.getCoinFromTxDataUnion(mTxInfo.txDataUnion);
         if (mWalletModel != null) {
-            final NetworkInfo mTxNetwork =
+            final NetworkInfo txNetwork =
                     mWalletModel.getNetworkModel().getNetwork(mTxInfo.chainId);
-            networkName.setText(mTxNetwork.chainName);
+            networkName.setText(txNetwork.chainName);
             keyringService.getAllAccounts(
                     allAccounts -> {
                         AccountInfo[] accounts =
                                 AssetUtils.filterAccountsByNetwork(
-                                        allAccounts.accounts, mTxNetwork.coin, mTxNetwork.chainId);
+                                        allAccounts.accounts, txNetwork.coin, txNetwork.chainId);
 
                         AccountInfo txAccountInfo =
                                 Utils.findAccount(accounts, mTxInfo.fromAccountId);
@@ -243,7 +243,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                         TokenUtils.getAllTokensFiltered(
                                 getBraveWalletService(),
                                 getBlockchainRegistry(),
-                                mTxNetwork,
+                                txNetwork,
                                 TokenUtils.TokenType.ALL,
                                 tokenList -> {
                                     SolanaTransactionsGasHelper solanaTransactionsGasHelper =
@@ -264,7 +264,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                                 ParsedTransaction parsedTx =
                                                         fillAssetDependentControls(
                                                                 view,
-                                                                mTxNetwork,
+                                                                txNetwork,
                                                                 txAccountInfo,
                                                                 accounts,
                                                                 new HashMap<>(),
@@ -277,7 +277,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                                 List<BlockchainToken> tokens = new ArrayList<>();
                                                 tokens.add(
                                                         Utils.makeNetworkAsset(
-                                                                mTxNetwork)); // Always add native
+                                                                txNetwork)); // Always add native
                                                 // asset
                                                 if (parsedTx.getIsSwap()) {
                                                     tokens.add(parsedTx.getSellToken());
@@ -290,7 +290,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
 
                                                 fetchTxBalanceAndUpdateUi(
                                                         view,
-                                                        mTxNetwork,
+                                                        txNetwork,
                                                         txAccountInfo,
                                                         accounts,
                                                         filterByTokens);
