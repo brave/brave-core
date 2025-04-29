@@ -9,10 +9,11 @@
 #include <optional>
 #include <string>
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
+
+class GURL;
 
 namespace base {
 class FilePath;
@@ -22,23 +23,20 @@ namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
 
-// This serves background image data.
-class NTPSponsoredImageSource : public content::URLDataSource {
+// This class is responsible for provided sponsored image content from the file
+// system to the new tab page.
+
+class NTPSponsoredImageSource final : public content::URLDataSource {
  public:
   explicit NTPSponsoredImageSource(
       NTPBackgroundImagesService* background_images_service);
 
-  ~NTPSponsoredImageSource() override;
-
   NTPSponsoredImageSource(const NTPSponsoredImageSource&) = delete;
   NTPSponsoredImageSource& operator=(const NTPSponsoredImageSource&) = delete;
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, SponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
-                           BasicSuperReferralDataTest);
+  ~NTPSponsoredImageSource() override;
 
-  // content::URLDataSource overrides:
+  // content::URLDataSource:
   std::string GetSource() override;
   void StartDataRequest(const GURL& url,
                         const content::WebContents::Getter& wc_getter,
@@ -46,15 +44,15 @@ class NTPSponsoredImageSource : public content::URLDataSource {
   std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
 
-  base::FilePath GetLocalFilePathFor(const std::string& path);
-  void GetImageFile(const base::FilePath& image_file_path,
-                    GotDataCallback callback);
-  void OnGotImageFile(GotDataCallback callback,
-                      std::optional<std::string> input);
-  bool IsValidPath(const std::string& path) const;
+ private:
+  void ReadFileCallback(GotDataCallback callback,
+                        std::optional<std::string> input);
 
-  raw_ptr<NTPBackgroundImagesService> background_images_service_ =
-      nullptr;  // Not owned.
+  void AllowAccess(const base::FilePath& file_path, GotDataCallback callback);
+  void DenyAccess(GotDataCallback callback);
+
+  const raw_ptr<NTPBackgroundImagesService>
+      background_images_service_;  // Not owned.
 
   base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_{this};
 };

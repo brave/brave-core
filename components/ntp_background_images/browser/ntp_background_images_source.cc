@@ -27,7 +27,7 @@ namespace {
 std::optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
-    return std::optional<std::string>();
+    return std::nullopt;
   }
   return contents;
 }
