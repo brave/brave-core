@@ -157,6 +157,16 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
                             report_info->block_scripts.value() == kStringTrue);
   }
 
+  if (report_info->webcompat_reporter_errors &&
+      !report_info->webcompat_reporter_errors->empty()) {
+    base::Value::List errors_list;
+    for (const auto& error : report_info->webcompat_reporter_errors.value()) {
+      errors_list.Append(error);
+    }
+    report_details_dict.Set(kWebcompatReportErrorsField,
+                            std::move(errors_list));
+  }
+
   report_details_dict.Set(kApiKeyField, base::Value(api_key));
 
   std::string report_details_json;

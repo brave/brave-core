@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
@@ -133,6 +134,17 @@ const std::optional<int> GetDlgMaxHeight(content::WebUI* web_ui,
   return browser_wnd_bounds.bottom() - modal_dlg_bounds->y();
 }
 
+void AddWebcompatReporterError(
+    webcompat_reporter::mojom::ReportInfoPtr& pending_report,
+    const std::string& error) {
+  if (!pending_report->webcompat_reporter_errors) {
+    pending_report->webcompat_reporter_errors =
+        std::vector<std::string>({error});
+  } else {
+    pending_report->webcompat_reporter_errors->push_back({error});
+  }
+}
+
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
@@ -206,8 +218,12 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1u);
   auto* const render_widget_host_view = GetRenderWidgetHostViewForActiveTab();
-  if (!render_widget_host_view) {
+  if (render_widget_host_view) {
     RejectJavascriptCallback(args[0], {});
+    AddWebcompatReporterError(
+        pending_report_,
+        "Could not create screenshot, RenderWidgetHostView unavailable");
+    base::debug::DumpWithoutCrashing();
     return;
   }
 
