@@ -50,6 +50,7 @@ import {
 interface Props {
   onToggleEditGas?: () => void
   onToggleAdvancedTransactionSettings?: () => void
+  showEditGas: boolean
   feeDisplayMode?: 'fiat' | 'crypto'
   showNetworkLogo?: boolean
 }
@@ -57,6 +58,7 @@ interface Props {
 export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
   onToggleAdvancedTransactionSettings,
   onToggleEditGas,
+  showEditGas,
   feeDisplayMode = 'fiat',
   showNetworkLogo
 }) => {
@@ -140,9 +142,11 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
           ) : (
             <LoadingSkeleton width={38} />
           )}
-          <EditButton onClick={onToggleEditGas}>
-            {getLocale('braveWalletAllowSpendEditButton')}
-          </EditButton>
+          {showEditGas && (
+            <EditButton onClick={onToggleEditGas}>
+              {getLocale('braveWalletAllowSpendEditButton')}
+            </EditButton>
+          )}
         </NetworkFeeValue>
       </NetworkFeeContainer>
 

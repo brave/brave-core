@@ -54,7 +54,10 @@ export function ConfirmSwapTransaction() {
     insufficientFundsError,
     insufficientFundsForGasError,
     onConfirm,
-    onReject
+    onReject,
+    isZCashTransaction,
+    isBitcoinTransaction,
+    isSolanaTransaction
   } = usePendingTransactions()
 
   // queries
@@ -137,6 +140,9 @@ export function ConfirmSwapTransaction() {
           onToggleAdvancedTransactionSettings
         }
         onToggleEditGas={onToggleEditGas}
+        showEditGas={
+          !isZCashTransaction && !isBitcoinTransaction && !isSolanaTransaction
+        }
       />
 
       <Column

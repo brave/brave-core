@@ -87,6 +87,8 @@ export const ConfirmSimulatedTransactionPanel = ({
   // custom hooks
   const {
     isSolanaTransaction,
+    isZCashTransaction,
+    isBitcoinTransaction,
     onEditAllowanceSave,
     transactionDetails,
     transactionsNetwork,
@@ -363,6 +365,11 @@ export const ConfirmSimulatedTransactionPanel = ({
             <NetworkFeeRow>
               <PendingTransactionNetworkFeeAndSettings
                 onToggleEditGas={onToggleEditGas}
+                showEditGas={
+                  !isZCashTransaction &&
+                  !isBitcoinTransaction &&
+                  !isSolanaTransaction
+                }
                 feeDisplayMode='fiat'
               />
             </NetworkFeeRow>
