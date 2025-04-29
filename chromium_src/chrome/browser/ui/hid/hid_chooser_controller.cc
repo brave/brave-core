@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/chooser_controller/title_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -15,8 +15,7 @@
 namespace {
 
 std::u16string BraveCreateTitleLabel() {
-  auto wallet_title =
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_WALLET);
+  auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
   return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT, wallet_title);
 }
 

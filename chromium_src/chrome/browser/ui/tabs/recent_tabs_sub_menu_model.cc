@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/l10n/common/localization_util.h"
+#include "base/l10n/l10n_util.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/sync_sessions/open_tabs_ui_delegate.h"
 
@@ -20,8 +20,8 @@ constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
     if (!stub_tab_.get()) {                                                 \
       stub_tab_.reset(new sessions::SessionTab());                          \
       sessions::SerializedNavigationEntry stub_nav_entry;                   \
-      stub_nav_entry.set_title(brave_l10n::GetLocalizedResourceUTF16String( \
-          IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS));                           \
+      stub_nav_entry.set_title(                                             \
+          l10n_util::GetStringUTF16(IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS)); \
       stub_nav_entry.set_virtual_url(GURL(kBraveSyncedTabsUrl));            \
       stub_tab_->navigations.push_back(stub_nav_entry);                     \
       stub_tab_->tab_id = SessionID::NewUnique();                           \

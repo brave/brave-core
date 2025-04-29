@@ -8,9 +8,9 @@
 #include <memory>
 #include <string>
 
+#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -57,8 +57,7 @@ bool BraveAutoplayContentSettingBubbleModel::settings_changed() const {
 }
 
 void BraveAutoplayContentSettingBubbleModel::SetTitle() {
-  set_title(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_BLOCKED_AUTOPLAY_TITLE));
+  set_title(l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_TITLE));
 }
 
 void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
@@ -78,8 +77,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   std::u16string radio_allow_label =
       l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);
   std::u16string radio_block_label =
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BLOCKED_AUTOPLAY_NO_ACTION);
+      l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_NO_ACTION);
   radio_group.radio_items.push_back(radio_allow_label);
   radio_group.radio_items.push_back(radio_block_label);
 

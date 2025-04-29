@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/l10n/common/localization_util.h"
+#include "base/l10n/l10n_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/grit/generated_resources.h"
@@ -37,7 +37,7 @@ void CustomImageChooser::ShowDialog(ShowDialogCallback callback) {
       {{FILE_PATH_LITERAL("jpg"), FILE_PATH_LITERAL("jpeg"),
         FILE_PATH_LITERAL("png"), FILE_PATH_LITERAL("gif")}});
   file_types.extension_description_overrides.push_back(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_UPLOAD_IMAGE_FORMAT));
+      l10n_util::GetStringUTF16(IDS_UPLOAD_IMAGE_FORMAT));
 
   dialog_->SelectFile(ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE,
                       std::u16string(), profile_->last_selected_directory(),

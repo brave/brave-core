@@ -7,10 +7,10 @@
 
 #include <string>
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/browser_resources.h"
@@ -30,8 +30,7 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kUntrustedMarketURL);
 
   for (const auto& str : brave_wallet::kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     untrusted_source->AddString(str.name, l10n_str);
   }
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);

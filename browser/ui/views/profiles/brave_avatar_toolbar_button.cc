@@ -10,11 +10,11 @@
 #include <string>
 #include <utility>
 
+#include "base/l10n/l10n_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button_delegate.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -92,8 +92,8 @@ void BraveAvatarToolbarButton::SetHighlight(
     std::optional<SkColor> highlight_color) {
   std::u16string revised_highlight_text;
   if (browser_->profile()->IsTor()) {
-    revised_highlight_text = brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_TOR_AVATAR_BUTTON_LABEL);
+    revised_highlight_text =
+        l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
 
     if (delegate_->GetWindowCount() > 1) {
       revised_highlight_text = l10n_util::GetStringFUTF16(

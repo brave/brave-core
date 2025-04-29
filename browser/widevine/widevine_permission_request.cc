@@ -5,9 +5,9 @@
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -54,7 +54,7 @@ WidevinePermissionRequest::GetDialogAnnotatedMessageText(
 }
 #else
 std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
-  return brave_l10n::GetLocalizedResourceUTF16String(
+  return l10n_util::GetStringUTF16(
       GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
 }
 #endif
@@ -95,6 +95,5 @@ void WidevinePermissionRequest::DeleteRequest() {
 }
 
 std::u16string WidevinePermissionRequest::GetExplanatoryMessageText() const {
-  return brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_WIDEVINE_INSTALL_MESSAGE);
+  return l10n_util::GetStringUTF16(IDS_WIDEVINE_INSTALL_MESSAGE);
 }

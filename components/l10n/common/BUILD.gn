@@ -55,7 +55,6 @@ static_library("common") {
   public = [
     "country_code_util.h",
     "locale_util.h",
-    "localization_util.h",
     "ofac_sanction_util.h",
     "prefs.h",
     "un_m49_code_util.h",
@@ -73,8 +72,6 @@ static_library("common") {
     "locale_subtag_parser_util.h",
     "locale_util.cc",
     "locale_util.h",
-    "localization_util.cc",
-    "localization_util.h",
     "ofac_sanction_util.cc",
     "ofac_sanction_util.h",
     "ofac_sanctioned_iso_3166_1_country_code_constants.h",
@@ -114,7 +111,6 @@ source_set("unit_tests") {
     "country_code_util_unittest.cc",
     "locale_subtag_parser_util_unittest.cc",
     "locale_util_unittest.cc",
-    "localization_util_unittest.cc",
     "ofac_sanction_util_unittest.cc",
     "un_m49_code_util_unittest.cc",
   ]

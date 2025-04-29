@@ -11,10 +11,10 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_request.h"
@@ -53,19 +53,19 @@ std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
 
   if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
     options.emplace_back(
-        brave_l10n::GetLocalizedResourceUTF16String(
+        l10n_util::GetStringUTF16(
             IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
         base::TimeDelta());
   }
-  options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
+  options.emplace_back(l10n_util::GetStringUTF16(
                            IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
                        base::Hours(24));
-  options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
-                           IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION),
-                       base::Days(7));
-  options.emplace_back(brave_l10n::GetLocalizedResourceUTF16String(
-                           IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
-                       std::nullopt);
+  options.emplace_back(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION),
+      base::Days(7));
+  options.emplace_back(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
+      std::nullopt);
   DCHECK_LE(options.size(), kOptionsCount);
 
   // This is strictly for manual testing.

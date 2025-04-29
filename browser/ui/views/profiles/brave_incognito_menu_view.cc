@@ -9,7 +9,7 @@
 #include <optional>
 #include <utility>
 
-#include "brave/components/l10n/common/localization_util.h"
+#include "base/l10n/l10n_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -54,7 +54,7 @@ void BraveIncognitoMenuView::BuildMenu() {
   AddTorButton();
 
   AddFeatureButton(
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           GetProfileMenuCloseButtonTextId(browser()->profile())),
       base::BindRepeating(&BraveIncognitoMenuView::OnExitButtonClicked,
                           base::Unretained(this)),
@@ -78,8 +78,7 @@ void BraveIncognitoMenuView::AddedToWidget() {
       /*edit_button_params=*/std::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
       ui::ImageModel(),
-      brave_l10n::GetLocalizedResourceUTF16String(
-          GetProfileMenuTitleId(browser()->profile())),
+      l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
                        : std::u16string());
@@ -88,8 +87,7 @@ void BraveIncognitoMenuView::AddedToWidget() {
 void BraveIncognitoMenuView::AddTorButton() {
   if (ShouldShowTorProfileButton(browser()->profile())) {
     AddFeatureButton(
-        brave_l10n::GetLocalizedResourceUTF16String(
-            IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON),
+        l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON),
         base::BindRepeating(&BraveIncognitoMenuView::OnTorProfileButtonClicked,
                             base::Unretained(this)),
         vector_icons::kLaunchIcon);
@@ -102,7 +100,7 @@ void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
 
 std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
   return browser()->profile()->IsTor()
-             ? brave_l10n::GetLocalizedResourceUTF16String(IDS_TOR_PROFILE_NAME)
+             ? l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME)
              : IncognitoMenuView::GetAccessibleWindowTitle();
 }
 

@@ -11,9 +11,9 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -87,8 +87,8 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
       tab_helper->wayback_state() == WaybackState::kNeedToCheck;
 
   // Header label.
-  auto* label = AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
+  auto* label =
+      AddChildView(std::make_unique<views::Label>(l10n_util::GetStringUTF16(
           need_checking
               ? IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT
               : IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT)));
@@ -96,11 +96,9 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   // Contents label.
-  label = AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          need_checking
-              ? IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT
-              : IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT)));
+  label = AddChildView(std::make_unique<views::Label>(l10n_util::GetStringUTF16(
+      need_checking ? IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT
+                    : IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT)));
   label->SetFontList(GetFont(/*font_size*/ 14, gfx::Font::Weight::SEMIBOLD));
   label->SetMultiLine(true);
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
@@ -114,10 +112,10 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk) |
              static_cast<int>(ui::mojom::DialogButton::kCancel));
   SetButtonLabel(ui::mojom::DialogButton::kOk,
-                 brave_l10n::GetLocalizedResourceUTF16String(
+                 l10n_util::GetStringUTF16(
                      IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT));
   SetButtonLabel(ui::mojom::DialogButton::kCancel,
-                 brave_l10n::GetLocalizedResourceUTF16String(
+                 l10n_util::GetStringUTF16(
                      IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT));
 
   // Unretained is safe beaause this button is owned by this class.

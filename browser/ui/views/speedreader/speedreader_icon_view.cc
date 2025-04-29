@@ -7,10 +7,10 @@
 
 #include <string>
 
+#include "base/l10n/l10n_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -95,7 +95,7 @@ std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {
   const int id = (speedreader::DistillStates::IsDistilled(state))
                      ? IDS_SPEEDREADER_ICON_TURN_OFF_READER_MODE
                      : IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE;
-  return brave_l10n::GetLocalizedResourceUTF16String(id);
+  return l10n_util::GetStringUTF16(id);
 }
 
 void SpeedreaderIconView::OnExecuting(

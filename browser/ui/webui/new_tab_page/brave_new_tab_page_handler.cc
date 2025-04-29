@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
@@ -22,7 +23,6 @@
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -141,7 +141,7 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("png"));
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("gif"));
   file_types.extension_description_overrides.push_back(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_UPLOAD_IMAGE_FORMAT));
+      l10n_util::GetStringUTF16(IDS_UPLOAD_IMAGE_FORMAT));
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),
       profile_->last_selected_directory(), &file_types, 0,

@@ -9,13 +9,13 @@
 
 #include "base/check_is_test.h"
 #include "base/command_line.h"
+#include "base/l10n/l10n_util.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/channel_info.h"
@@ -183,23 +183,21 @@ base::Value::List GetBraveDarkModeTypeList() {
     system_type.Set(
         "value",
         static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT));
-    system_type.Set("name", brave_l10n::GetLocalizedResourceUTF16String(
-                                IDS_BRAVE_THEME_TYPE_SYSTEM));
+    system_type.Set("name",
+                    l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_SYSTEM));
     list.Append(std::move(system_type));
   }
 
   base::Value::Dict dark_type;
   dark_type.Set("value",
                 static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK));
-  dark_type.Set("name", brave_l10n::GetLocalizedResourceUTF16String(
-                            IDS_BRAVE_THEME_TYPE_DARK));
+  dark_type.Set("name", l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_DARK));
   list.Append(std::move(dark_type));
 
   base::Value::Dict light_type;
   light_type.Set(
       "value", static_cast<int>(BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT));
-  light_type.Set("name", brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_BRAVE_THEME_TYPE_LIGHT));
+  light_type.Set("name", l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_LIGHT));
   list.Append(std::move(light_type));
 
   return list;

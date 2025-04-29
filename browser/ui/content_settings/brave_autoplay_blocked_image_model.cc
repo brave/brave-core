@@ -7,8 +7,8 @@
 
 #include <memory>
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -35,8 +35,7 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
 
   SetIcon(ContentSettingsType::AUTOPLAY, /*blocked=*/true);
   set_explanatory_string_id(IDS_BLOCKED_AUTOPLAY_TITLE);
-  set_tooltip(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_BLOCKED_AUTOPLAY_TITLE));
+  set_tooltip(l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_TITLE));
   return true;
 }
 

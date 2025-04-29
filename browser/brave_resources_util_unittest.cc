@@ -11,8 +11,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(IS_WIN)
+#include "base/l10n/l10n_util.h"
 #include "brave/common/resource_bundle_helper.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/grit/branded_strings.h"
 #endif
 
@@ -42,38 +42,25 @@ TEST(BraveResourcesWinTest, CheckStringsForInstaller) {
   // duplicate resources
   // brave::InitializeResourceBundle();
 
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SXS_SHORTCUT_NAME).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_BETA).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_DEV).empty());
   EXPECT_FALSE(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_SXS_SHORTCUT_NAME)
+      l10n_util::GetStringUTF16(IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_BETA).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_CANARY).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_DEV).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA)
+                   .empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY)
           .empty());
   EXPECT_FALSE(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_SHORTCUT_NAME_BETA)
-          .empty());
-  EXPECT_FALSE(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_SHORTCUT_NAME_DEV)
-          .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_INBOUND_MDNS_RULE_NAME_BETA)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_INBOUND_MDNS_RULE_NAME_CANARY)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_INBOUND_MDNS_RULE_NAME_DEV)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY)
-                   .empty());
-  EXPECT_FALSE(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV)
-                   .empty());
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV).empty());
 }
 #endif

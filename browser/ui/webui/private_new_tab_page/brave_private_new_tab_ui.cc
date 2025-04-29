@@ -7,12 +7,12 @@
 
 #include <utility>
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_handler.h"
 #include "brave/components/brave_private_new_tab/resources/page/grit/brave_private_new_tab_generated_map.h"
 #include "brave/components/brave_private_new_tab_ui/common/constants.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
@@ -30,16 +30,14 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui, false) {
   Profile* profile = Profile::FromWebUI(web_ui);
 
-  web_ui->OverrideTitle(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_INCOGNITO_TAB_TITLE));
+  web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_INCOGNITO_TAB_TITLE));
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, chrome::kChromeUINewTabHost, kBravePrivateNewTabGenerated,
       IDR_BRAVE_PRIVATE_NEW_TAB_HTML);
 
   for (const auto& str : brave_private_new_tab::kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     source->AddString(str.name, l10n_str);
   }
 

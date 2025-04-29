@@ -11,13 +11,13 @@
 
 #include "base/check_deref.h"
 #include "base/check_is_test.h"
+#include "base/l10n/l10n_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -87,8 +87,7 @@ BraveShieldsActionView::BraveShieldsActionView(
         ->AddObserver(this);
   }
 
-  SetAccessibleName(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS));
+  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetProperty(views::kElementIdentifierKey, kShieldsActionIcon);
   tab_strip_model_->AddObserver(this);
@@ -292,7 +291,7 @@ std::u16string BraveShieldsActionView::GetRenderedTooltipText(
     }
   }
 
-  return brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS);
+  return l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS);
 }
 
 void BraveShieldsActionView::OnThemeChanged() {

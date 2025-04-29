@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -80,8 +80,7 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
   views::Label::CustomFont header_font = {
       GetFont(16, gfx::Font::Weight::NORMAL)};
   auto* header = AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_EDIT_ITEM_BUBBLE_HEADER),
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_EDIT_ITEM_BUBBLE_HEADER),
       header_font));
   const ui::ColorProvider* color_provider =
       BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider();
@@ -98,8 +97,7 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
   views::Label::CustomFont title_font = {
       GetFont(13, gfx::Font::Weight::NORMAL)};
   auto* title = title_part->AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_EDIT_ITEM_BUBBLE_TITLE),
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_EDIT_ITEM_BUBBLE_TITLE),
       title_font));
   title->SetEnabledColor(
       color_provider->GetColor(kColorSidebarAddBubbleHeaderText));
@@ -110,7 +108,7 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
   title_tf_->SetController(this);
   title_tf_->SetText(target_item_.title);
   title_tf_->SelectAll(true);
-  title_tf_->SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
+  title_tf_->SetAccessibleName(l10n_util::GetStringUTF16(
       IDS_SIDEBAR_EDIT_ITEM_BUBBLE_AX_TITLE_EDITOR_LABEL));
 
   auto* url_part = AddChildView(std::make_unique<views::View>());
@@ -118,9 +116,7 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
       views::BoxLayout::Orientation::kVertical, gfx::Insets(),
       /* between_child_spacing = */ 4));
   auto* url = url_part->AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_EDIT_ITEM_BUBBLE_URL),
-      title_font));
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_EDIT_ITEM_BUBBLE_URL), title_font));
   url->SetEnabledColor(
       color_provider->GetColor(kColorSidebarAddBubbleHeaderText));
   url->SetAutoColorReadabilityEnabled(false);
@@ -130,7 +126,7 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
   url_tf_->SetController(this);
   url_tf_->SetText(base::UTF8ToUTF16(target_item_.url.spec()));
   url_tf_->SelectAll(true);
-  url_tf_->SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
+  url_tf_->SetAccessibleName(l10n_util::GetStringUTF16(
       IDS_SIDEBAR_EDIT_ITEM_BUBBLE_AX_URL_EDITOR_LABEL));
 
   UpdateOKButtonEnabledState();

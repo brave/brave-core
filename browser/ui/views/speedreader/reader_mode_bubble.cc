@@ -9,9 +9,9 @@
 #include <string>
 #include <utility>
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "components/grit/brave_components_strings.h"
@@ -110,7 +110,7 @@ void ReaderModeBubble::Init() {
     }
 
     auto label = std::make_unique<views::Label>();
-    label->SetText(brave_l10n::GetLocalizedResourceUTF16String(ids));
+    label->SetText(l10n_util::GetStringUTF16(ids));
     label->SetFontList(font);
     label->SetLineHeight(kToggleLineHeight);
     label->SetMultiLine(true);
@@ -120,8 +120,7 @@ void ReaderModeBubble::Init() {
     layout->set_main_axis_alignment(views::BoxLayout::MainAxisAlignment::kEnd);
 
     auto toggle = std::make_unique<views::ToggleButton>();
-    toggle->SetAccessibleName(
-        brave_l10n::GetLocalizedResourceUTF16String(acc_ids));
+    toggle->SetAccessibleName(l10n_util::GetStringUTF16(acc_ids));
     return box->AddChildView(std::move(toggle));
   };
 
@@ -175,8 +174,7 @@ void ReaderModeBubble::Init() {
         font.DeriveWithSizeDelta(std::abs(kNotesFontSize - font.GetFontSize()));
 
     auto label = std::make_unique<views::Label>();
-    label->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_READER_MODE_NOTE_LABEL));
+    label->SetText(l10n_util::GetStringUTF16(IDS_READER_MODE_NOTE_LABEL));
     label->SetFontList(font);
     label->SetMultiLine(true);
     label->SetLineHeight(kNotesLineHeight);

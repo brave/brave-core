@@ -8,13 +8,13 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/l10n/l10n_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
@@ -130,8 +130,7 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
                    // already shows a panel on click
       prefs_(profile->GetPrefs()),
       backup_anchor_view_(backup_anchor_view) {
-  SetTooltipText(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_TOOLTIP_WALLET));
+  SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WALLET));
 
   // The MenuButtonController makes sure the panel closes when clicked if the
   // panel is already open.

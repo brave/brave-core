@@ -12,7 +12,7 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "brave/components/l10n/common/localization_util.h"
+#include "base/l10n/l10n_util.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
@@ -35,7 +35,7 @@ void SetLifetimeOptions(const base::android::JavaRef<jobject>& j_delegate) {
   Java_BravePermissionDialogDelegate_setLifetimeOptionsText(
       env, j_delegate,
       base::android::ConvertUTF16ToJavaString(
-          env, brave_l10n::GetLocalizedResourceUTF16String(
+          env, l10n_util::GetStringUTF16(
                    IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL)));
 
   std::vector<PermissionLifetimeOption> lifetime_options =

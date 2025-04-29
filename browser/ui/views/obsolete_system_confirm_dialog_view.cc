@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "base/functional/callback.h"
+#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
@@ -50,8 +50,8 @@ ObsoleteSystemConfirmDialogView::ObsoleteSystemConfirmDialogView(
   auto* label = AddChildView(std::make_unique<views::Label>());
   label->SetMultiLine(true);
   label->SetMaximumWidth(330);
-  label->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT));
+  label->SetText(
+      l10n_util::GetStringUTF16(IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT));
   const int size_diff = 14 - views::Label::GetDefaultFontList().GetFontSize();
   label->SetFontList(views::Label::GetDefaultFontList()
                          .DeriveWithSizeDelta(size_diff)

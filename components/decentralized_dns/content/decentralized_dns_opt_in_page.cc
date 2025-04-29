@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -17,7 +18,6 @@
 #include "base/values.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/net/decentralized_dns/constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -80,64 +80,62 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
   const std::u16string eth_domain = base::ASCIIToUTF16(std::string(kEthDomain));
 
   if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
-    load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+    load_time_data.Set("tabTitle", l10n_util::GetStringUTF16(
                                        IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
-    load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+    load_time_data.Set("heading", l10n_util::GetStringUTF16(
                                       IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
 
     load_time_data.Set(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
-            brave_l10n::GetLocalizedResourceUTF16String(
+            l10n_util::GetStringUTF16(
                 IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
             {infura, base::ASCIIToUTF16(GetUnstoppableDomainSuffixFullList()),
-             brave_l10n::GetLocalizedResourceUTF16String(
-                 IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE),
+             l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE),
              infura_tou, infura_privacy_policy},
             nullptr));
   } else if (IsENSTLD(request_url_.host_piece())) {
-    load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_ENS_OPT_IN_TITLE));
-    load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
-                                      IDS_ENS_OPT_IN_HEADING));
+    load_time_data.Set("tabTitle",
+                       l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_TITLE));
+    load_time_data.Set("heading",
+                       l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_HEADING));
     load_time_data.Set(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
-            brave_l10n::GetLocalizedResourceUTF16String(
+            l10n_util::GetStringUTF16(
                 IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
             {infura, eth_domain,
-             brave_l10n::GetLocalizedResourceUTF16String(
-                 IDS_ENS_DOMAIN_PROVIDER_NAME),
+             l10n_util::GetStringUTF16(IDS_ENS_DOMAIN_PROVIDER_NAME),
              infura_tou, infura_privacy_policy},
             nullptr));
   } else if (IsSnsTLD(request_url_.host_piece())) {
-    load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_SNS_OPT_IN_TITLE));
-    load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
-                                      IDS_SNS_OPT_IN_HEADING));
-    load_time_data.Set("primaryParagraph",
-                       base::ReplaceStringPlaceholders(
-                           brave_l10n::GetLocalizedResourceUTF16String(
-                               IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
-                           {sol_domain, sns_wiki_link}, nullptr));
+    load_time_data.Set("tabTitle",
+                       l10n_util::GetStringUTF16(IDS_SNS_OPT_IN_TITLE));
+    load_time_data.Set("heading",
+                       l10n_util::GetStringUTF16(IDS_SNS_OPT_IN_HEADING));
+    load_time_data.Set(
+        "primaryParagraph",
+        base::ReplaceStringPlaceholders(
+            l10n_util::GetStringUTF16(IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
+            {sol_domain, sns_wiki_link}, nullptr));
   } else {
     NOTREACHED();
   }
 
   if (IsSnsTLD(request_url_.host_piece())) {
     load_time_data.Set("primaryButtonText",
-                       brave_l10n::GetLocalizedResourceUTF16String(
+                       l10n_util::GetStringUTF16(
                            IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SNS_BUTTON));
   } else {
     load_time_data.Set(
         "primaryButtonText",
         base::ReplaceStringPlaceholders(
-            brave_l10n::GetLocalizedResourceUTF16String(
+            l10n_util::GetStringUTF16(
                 IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_PROVIDER_BUTTON),
             infura, nullptr));
   }
   load_time_data.Set("dontProceedButtonText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
+                     l10n_util::GetStringUTF16(
                          IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
   load_time_data.Set("finalParagraph", std::u16string());
 }

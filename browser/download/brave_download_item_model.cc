@@ -7,9 +7,9 @@
 
 #include <string>
 
+#include "base/l10n/l10n_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "components/download/public/common/download_item.h"
 #include "components/strings/grit/components_strings.h"
@@ -37,8 +37,7 @@ std::u16string BraveDownloadItemModel::GetTooltipText() {
   if (!origin_url.empty()) {
     tooltip += u"\n";
     if (!is_secure) {
-      tooltip += brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_NOT_SECURE_VERBOSE_STATE) +
+      tooltip += l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE) +
                  char16_t(' ');
     }
     tooltip += origin_url;

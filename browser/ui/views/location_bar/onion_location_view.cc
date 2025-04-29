@@ -7,11 +7,11 @@
 
 #include <string>
 
+#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -69,8 +69,7 @@ void OnionLocationView::UpdateImpl() {
           kOnionButtonBackgound, kOnionButtonCornerRadius));
 
       label()->SetVisible(true);
-      SetLabel(brave_l10n::GetLocalizedResourceUTF16String(
-                   IDS_LOCATION_BAR_ONION_AVAILABLE),
+      SetLabel(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE),
                l10n_util::GetStringFUTF16(
                    IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT,
                    onion_location_text));

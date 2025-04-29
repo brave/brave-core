@@ -5,7 +5,7 @@
 
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 
-#include "brave/components/l10n/common/localization_util.h"
+#include "base/l10n/l10n_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/renderer_context_menu/render_view_context_menu_proxy.h"
@@ -50,19 +50,19 @@ void BraveSpellingOptionsSubMenuObserver::InitMenu(
     // pointer and instead flattens the menu into a vector in AddSubmenuItem,
     // which means we need to update the proxy manually.
     proxy_->RemoveMenuItem(IDC_SPELLCHECK_MENU);
-    proxy_->AddSubMenu(IDC_SPELLCHECK_MENU,
-                       brave_l10n::GetLocalizedResourceUTF16String(
-                           IDS_CONTENT_CONTEXT_SPELLCHECK_MENU),
-                       &submenu_model_);
+    proxy_->AddSubMenu(
+        IDC_SPELLCHECK_MENU,
+        l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_SPELLCHECK_MENU),
+        &submenu_model_);
   }
 
   // If somehow we ended up with an empty submenu then disable it.
   if (!submenu_model_.GetItemCount())
-    proxy_->UpdateMenuItem(IDC_SPELLCHECK_MENU,
-                           false,  // enabled
-                           false,  // hidden
-                           brave_l10n::GetLocalizedResourceUTF16String(
-                               IDS_CONTENT_CONTEXT_SPELLCHECK_MENU));
+    proxy_->UpdateMenuItem(
+        IDC_SPELLCHECK_MENU,
+        false,  // enabled
+        false,  // hidden
+        l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_SPELLCHECK_MENU));
 }
 
 void BraveSpellingOptionsSubMenuObserver::SetGtestMode(

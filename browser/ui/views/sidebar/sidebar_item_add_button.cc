@@ -9,10 +9,10 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/l10n/l10n_util.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/metadata/metadata_impl_macros.h"

@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
@@ -27,7 +28,6 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
@@ -98,8 +98,7 @@ BraveNewTabUI::BraveNewTabUI(
       navigation_entry ? navigation_entry->IsRestored() : false;
 
   Profile* profile = Profile::FromWebUI(web_ui);
-  web_ui->OverrideTitle(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
+  web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
     content::WebUIDataSource* source =

@@ -9,10 +9,10 @@
 #include <string>
 #include <utility>
 
+#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -77,8 +77,7 @@ void SyncCannotRunInfoBarDelegate::InfoBarDismissed() {
 }
 
 std::u16string SyncCannotRunInfoBarDelegate::GetMessageText() const {
-  return brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_MESSAGE);
+  return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_MESSAGE);
 }
 
 int SyncCannotRunInfoBarDelegate::GetButtons() const {
@@ -88,13 +87,13 @@ int SyncCannotRunInfoBarDelegate::GetButtons() const {
 std::u16string SyncCannotRunInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   if (button == BUTTON_CANCEL) {
-    return brave_l10n::GetLocalizedResourceUTF16String(
+    return l10n_util::GetStringUTF16(
         IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_DONT_SHOW_BUTTON);
   }
 
   DCHECK(button == BUTTON_OK);
 
-  return brave_l10n::GetLocalizedResourceUTF16String(
+  return l10n_util::GetStringUTF16(
       IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_CHECK_DETAILS_BUTTON);
 }
 

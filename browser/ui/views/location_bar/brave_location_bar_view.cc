@@ -10,6 +10,7 @@
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/l10n/l10n_util.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -22,7 +23,6 @@
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"

@@ -7,13 +7,13 @@
 
 #include <utility>
 
+#include "base/l10n/l10n_util.h"
 #include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_result_view.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -190,9 +190,8 @@ class CloseButton : public views::ImageButton {
     // Although this appears visually as a button, expose as a list box option
     // so that it matches the other options within its list box container.
     GetViewAccessibility().SetRole(ax::mojom::Role::kListBoxOption);
-    GetViewAccessibility().SetRoleDescription(
-        brave_l10n::GetLocalizedResourceUTF16String(
-            IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
+    GetViewAccessibility().SetRoleDescription(l10n_util::GetStringUTF16(
+        IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
   }
   CloseButton(const CloseButton&) = delete;
   CloseButton& operator=(const CloseButton&) = delete;
@@ -421,8 +420,7 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   // Setup banner contents.
   // We don't use titile for banner type A.
   const std::u16string title_label =
-      brave_l10n::GetLocalizedResourceUTF16String(
-          GetBannerTypeTitleStringResourceId());
+      l10n_util::GetStringUTF16(GetBannerTypeTitleStringResourceId());
   views::Label::CustomFont title_font = {
       GetFont(16, gfx::Font::Weight::SEMIBOLD)};
   auto* banner_title = banner_contents->AddChildView(
@@ -434,8 +432,8 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   banner_title->SetAutoColorReadabilityEnabled(false);
   banner_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
-  const std::u16string desc_label = brave_l10n::GetLocalizedResourceUTF16String(
-      GetBannerTypeDescStringResourceId());
+  const std::u16string desc_label =
+      l10n_util::GetStringUTF16(GetBannerTypeDescStringResourceId());
   views::Label::CustomFont desc_font = {GetFont(14, gfx::Font::Weight::NORMAL)};
   banner_type_description_ = banner_contents->AddChildView(
       std::make_unique<views::Label>(desc_label, desc_font));
@@ -475,7 +473,7 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   views::FocusRing::Install(close_button);
   close_button->SetProperty(views::kMarginsKey,
                             gfx::Insets(kBannerTypeCloseButtonMargin));
-  close_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+  close_button->SetTooltipText(l10n_util::GetStringUTF16(
       IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP));
 }
 
@@ -490,10 +488,10 @@ BraveSearchConversionPromotionView::GetPrimaryButton() {
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred));
-  primary_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+  primary_button->SetText(l10n_util::GetStringUTF16(
       UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_SET_AS_DEFAULT_BUTTON_LABEL
                : IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
-  primary_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+  primary_button->SetTooltipText(l10n_util::GetStringUTF16(
       UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_SET_AS_DEFAULT_BUTTON_LABEL
                : IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
   primary_button->SetFontSize(13);
@@ -513,13 +511,13 @@ BraveSearchConversionPromotionView::GetSecondaryButton() {
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred));
-  secondary_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+  secondary_button->SetText(l10n_util::GetStringUTF16(
       UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL
                : IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_LABEL));
   secondary_button->SetFontSize(13);
   secondary_button->SetProperty(views::kMarginsKey,
                                 gfx::Insets::TLBR(0, 13, 0, 0));
-  secondary_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+  secondary_button->SetTooltipText(l10n_util::GetStringUTF16(
       UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL
                : IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_TOOLTIP));
   return secondary_button;

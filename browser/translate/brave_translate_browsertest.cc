@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "base/files/file_path.h"
+#include "base/l10n/l10n_util.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
@@ -14,7 +15,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/translate/chrome_translate_client.h"
@@ -269,9 +269,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   // Check that the we see the translation bubble (not about the extension
   // installation).
-  ASSERT_EQ(bubble->GetWindowTitle(),
-            brave_l10n::GetLocalizedResourceUTF16String(
-                IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
+  ASSERT_EQ(
+      bubble->GetWindowTitle(),
+      l10n_util::GetStringUTF16(IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
 
   // Translate the page. Note: the event onTranslateElementLoad() is
   // called from main.js (see SetupTestScriptExpectations()).
@@ -333,9 +333,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, NoAutoTranslate) {
   ASSERT_TRUE(bubble);
 
   // Check that the we see BEFORE translation bubble (not in-progress bubble).
-  ASSERT_EQ(bubble->GetWindowTitle(),
-            brave_l10n::GetLocalizedResourceUTF16String(
-                IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
+  ASSERT_EQ(
+      bubble->GetWindowTitle(),
+      l10n_util::GetStringUTF16(IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
 }
 
 class BraveTranslateBrowserGoogleRedirectTest

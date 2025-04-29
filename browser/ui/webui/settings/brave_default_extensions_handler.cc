@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -22,7 +23,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -71,17 +71,16 @@ base::Value::Dict MakeSelectValue(T value, const std::u16string& name) {
 
 base::Value::List GetResolveMethodList() {
   base::Value::List list;
-  list.Append(MakeSelectValue(ResolveMethodTypes::ASK,
-                              brave_l10n::GetLocalizedResourceUTF16String(
-                                  IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
+  list.Append(MakeSelectValue(
+      ResolveMethodTypes::ASK,
+      l10n_util::GetStringUTF16(IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
   list.Append(
       MakeSelectValue(ResolveMethodTypes::DISABLED,
-                      brave_l10n::GetLocalizedResourceUTF16String(
+                      l10n_util::GetStringUTF16(
                           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED)));
-  list.Append(
-      MakeSelectValue(ResolveMethodTypes::ENABLED,
-                      brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ENABLED)));
+  list.Append(MakeSelectValue(
+      ResolveMethodTypes::ENABLED,
+      l10n_util::GetStringUTF16(IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ENABLED)));
 
   return list;
 }
@@ -90,15 +89,15 @@ base::Value::List GetEnsOffchainResolveMethodList() {
   base::Value::List list;
   list.Append(MakeSelectValue(
       EnsOffchainResolveMethod::kAsk,
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ASK)));
   list.Append(MakeSelectValue(
       EnsOffchainResolveMethod::kDisabled,
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_DISABLED)));
   list.Append(MakeSelectValue(
       EnsOffchainResolveMethod::kEnabled,
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_ENS_OFFCHAIN_RESOLVE_OPTION_ENABLED)));
 
   return list;

@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/apple/foundation_util.h"
+#include "base/l10n/l10n_util.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
@@ -17,7 +18,6 @@
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/mac_features.h"
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -187,8 +187,7 @@ void SparkleVersionUpdater::UpdateStatus(NSDictionary* dictionary) {
         message += u"<br/><br/>";
       }
 
-      message += brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_UPGRADE_ERROR_DETAILS);
+      message += l10n_util::GetStringUTF16(IDS_UPGRADE_ERROR_DETAILS);
       message += u"<br/><pre>";
       message += base::UTF8ToUTF16(base::EscapeForHTML(error_messages));
       message += u"</pre>";

@@ -7,9 +7,9 @@
 
 #include <array>
 
+#include "base/l10n/l10n_util.h"
 #include "base/values.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
@@ -210,10 +210,10 @@ base::Value::Dict GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
   gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
       fill_color, stroke_color, kAvatarIconSize);
   size_t index = profiles::GetPlaceholderAvatarIndex();
-  return GetAvatarIconAndLabelDict(webui::GetBitmapDataUrl(icon.AsBitmap()),
-                                   brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
-                                   index, selected, /*is_gaia_avatar=*/false);
+  return GetAvatarIconAndLabelDict(
+      webui::GetBitmapDataUrl(icon.AsBitmap()),
+      l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER), index,
+      selected, /*is_gaia_avatar=*/false);
 }
 base::Value::Dict GetDefaultProfileAvatarIconAndLabel_Brave(
     SkColor fill_color,

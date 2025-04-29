@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/i18n/case_conversion.h"
+#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -30,7 +31,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -185,14 +185,11 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     icon_color = color_provider->GetColor(kColorSidebarButtonBase);
   }
   context_menu_model_->AddItemWithIcon(
-      kItemEdit,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
+      kItemEdit, l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
       ui::ImageModel::FromVectorIcon(kSidebarEditIcon, icon_color, 14));
   context_menu_model_->AddItemWithIcon(
       kItemRemove,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
       ui::ImageModel::FromVectorIcon(kSidebarTrashIcon, icon_color));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU,

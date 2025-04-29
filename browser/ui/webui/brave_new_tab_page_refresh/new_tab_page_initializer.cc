@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
@@ -18,7 +19,6 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
@@ -69,8 +69,7 @@ void NewTabPageInitializer::Initialize() {
   AddSanitizedImageDataSource();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  web_ui_->OverrideTitle(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
+  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 }
 
 Profile* NewTabPageInitializer::GetProfile() {

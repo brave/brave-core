@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -16,7 +17,6 @@
 #include "base/values.h"
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
@@ -70,22 +70,22 @@ void EnsOffchainLookupOptInPage::PopulateInterstitialStrings(
   std::u16string learn_more_link =
       u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
 
-  load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
+  load_time_data.Set("tabTitle", l10n_util::GetStringUTF16(
                                      IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_TITLE));
-  load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
+  load_time_data.Set("heading", l10n_util::GetStringUTF16(
                                     IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_HEADING));
   load_time_data.Set("primaryParagraph",
                      base::ReplaceStringPlaceholders(
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PRIMARY_PARAGRAPH),
                          learn_more_link, nullptr));
 
-  load_time_data.Set("primaryButtonText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PROCEED));
-  load_time_data.Set("dontProceedButtonText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_DONT_PROCEED));
+  load_time_data.Set(
+      "primaryButtonText",
+      l10n_util::GetStringUTF16(IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PROCEED));
+  load_time_data.Set(
+      "dontProceedButtonText",
+      l10n_util::GetStringUTF16(IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_DONT_PROCEED));
   load_time_data.Set("finalParagraph", std::u16string());
 }
 

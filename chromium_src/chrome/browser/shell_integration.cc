@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/l10n/l10n_util.h"
 #include "build/build_config.h"
-
-#include "brave/components/l10n/common/localization_util.h"
 
 #if !BUILDFLAG(IS_WIN)
 #include "chrome/grit/generated_resources.h"
@@ -43,7 +42,7 @@ std::u16string GetAppShortcutsSubdirName() {
       NOTREACHED() << "All possible channels are handled above.";
   }
 
-  return brave_l10n::GetLocalizedResourceUTF16String(id);
+  return l10n_util::GetStringUTF16(id);
 }
 }  // namespace shell_integration
 #endif  // !BUILDFLAG(IS_WIN)

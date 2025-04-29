@@ -8,10 +8,10 @@
 #include <algorithm>
 
 #include "base/i18n/rtl.h"
+#include "base/l10n/l10n_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -66,7 +66,7 @@
   // After calculating all controls' proper height based on |contentsWidth|,
   // window's height will be calculated.
   std::u16string headerString =
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT);
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_HEADER_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&headerString);
   NSTextField* headerLabel =
       [NSTextField labelWithString:base::SysUTF16ToNSString(headerString)];
@@ -79,8 +79,8 @@
   [headerLabel
       setFrame:NSMakeRect(0, 0, preferredSize.width, preferredSize.height)];
 
-  std::u16string contentsString = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
+  std::u16string contentsString =
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&contentsString);
   NSTextField* contentsLabel =
       [NSTextField labelWithString:base::SysUTF16ToNSString(contentsString)];
@@ -93,8 +93,7 @@
       setFrame:NSMakeRect(0, 0, preferredSize.width, preferredSize.height)];
 
   std::u16string dockCheckboxString =
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT);
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT);
   base::i18n::AdjustStringForLocaleDirection(&dockCheckboxString);
   _dockCheckbox = [[NSButton alloc] init];
   [_dockCheckbox setButtonType:NSButtonTypeSwitch];
