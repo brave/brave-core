@@ -37,7 +37,7 @@ class AccountActivityStoreTests: XCTestCase {
       assetTimeframeChange: "-57.23"
     ),
     .init(
-      fromAsset: BraveWallet.BlockchainToken.mockZECToken.assetRatioId.lowercased(),
+      fromAsset: BraveWallet.BlockchainToken.mockZecToken.assetRatioId.lowercased(),
       toAsset: "usd",
       price: "$31.10",
       assetTimeframeChange: "0.12"
@@ -790,7 +790,7 @@ class AccountActivityStoreTests: XCTestCase {
       formatter.weiString(
         from: mockZecDecimalBalance,
         radix: .decimal,
-        decimals: Int(BraveWallet.BlockchainToken.mockZECToken.decimals)
+        decimals: Int(BraveWallet.BlockchainToken.mockZecToken.decimals)
       ) ?? ""
 
     let (

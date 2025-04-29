@@ -70,6 +70,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   /// If we are currently resolving an SNS or ENS address
   @Published private(set) var isResolvingAddress: Bool = false
   /// The address returned from SNS / ENS
+  var test = 0
   @Published private(set) var resolvedAddress: String?
   /// If the current `sendAddress` needs to be resolved offchain
   @Published private(set) var isOffchainResolveRequired: Bool = false
@@ -93,6 +94,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     case udError(domain: String)
     case notFilAddress
     case notBtcAddress
+    case zcashAddressError(errorDescription: String)
 
     var errorDescription: String? {
       switch self {
@@ -127,6 +129,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         return Strings.Wallet.sendErrorInvalidRecipientAddress
       case .notBtcAddress:
         return Strings.Wallet.sendErrorBtcAddressNotValid
+      case .zcashAddressError(let errorDescription):
+        return errorDescription
       }
     }
 
@@ -456,7 +460,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       case .btc:
         validateBitcoinSendAddress(fromAccount: selectedAccount)
       case .zec:
-        break
+        validateZcashSendAddress(
+          fromAccount: selectedAccount,
+          recipient: sendAddress
+        )
       case .ada:
         break
       @unknown default:
@@ -574,6 +581,25 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     addressError = sendAddress.isBTCAddress(isMainnet: isMainnet) ? nil : .notBtcAddress
   }
 
+  private func validateZcashSendAddress(
+    fromAccount: BraveWallet.AccountInfo,
+    recipient: String
+  ) {
+    Task { @MainActor in
+      let (_, zcashAddressError) = await zcashWalletService.transactionType(
+        accountId: fromAccount.accountId,
+        testnet: false,
+        useShieldedPool: false,
+        recipient: recipient
+      )
+      if zcashAddressError != .noError {
+        addressError = .zcashAddressError(
+          errorDescription: zcashAddressError.errorDescription ?? ""
+        )
+      }
+    }
+  }
+
   public func enableENSOffchainLookup() {
     Task { @MainActor in
       rpcService.setEnsOffchainLookupResolveMethod(.enabled)
@@ -679,6 +705,13 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         )
       case .btc:
         self.sendTokenOnBtc(
+          amount: amount,
+          token: token,
+          from: selectedAccount.accountId,
+          completion: completion
+        )
+      case .zec:
+        self.sendTokenOnZec(
           amount: amount,
           token: token,
           from: selectedAccount.accountId,
@@ -964,6 +997,42 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     )
     self.txService.addUnapprovedBitcoinTransaction(
       params: params
+    ) { success, txMetaId, errorMessage in
+      self.isMakingTx = false
+      completion(success, errorMessage)
+    }
+  }
+
+  private func sendTokenOnZec(
+    amount: String,
+    token: BraveWallet.BlockchainToken,
+    from fromAccountId: BraveWallet.AccountId,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    guard
+      let amountInSatoshi = WalletAmountFormatter.decimalToAmount(
+        amount.normalizedDecimals,
+        tokenDecimals: Int(token.decimals)
+      )
+    else {
+      isMakingTx = false
+      completion(false, Strings.Wallet.internalErrorMessage)
+      return
+    }
+    let zecTxData: BraveWallet.ZecTxData = .init(
+      useShieldedPool: false,
+      to: sendAddress,
+      sendingMaxAmount: isSendingMaxValue,
+      memo: nil,
+      amount: amountInSatoshi,
+      fee: 0,
+      inputs: [],
+      outputs: []
+    )
+    self.txService.addUnapprovedTransaction(
+      txDataUnion: BraveWallet.TxDataUnion(zecTxData: zecTxData),
+      chainId: token.chainId,
+      from: fromAccountId
     ) { success, txMetaId, errorMessage in
       self.isMakingTx = false
       completion(success, errorMessage)

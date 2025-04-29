@@ -39,6 +39,7 @@ extension BraveWallet.TransactionInfo {
     case .other:
       // Filecoin or Bitcoin send
       return txDataUnion.filTxData != nil || txDataUnion.btcTxData != nil
+        || txDataUnion.zecTxData != nil
     case .erc20Approve,
       .ethSwap,
       .solanaSwap:
@@ -185,7 +186,7 @@ extension BraveWallet.AccountInfo {
   }
 
   /// Displays as `Account Name (truncated address)`, ex `Ethereum Account 1 (0x1234...5678)`
-  /// or `Account Name` for Bitcoin.
+  /// or `Account Name` for Bitcoin and Zcash.
   var accountNameDisplay: String {
     if coin == .btc || coin == .zec {
       return name
@@ -385,13 +386,17 @@ extension BraveWallet.NetworkInfo {
 
   /// Generate the link for a submitted transaction with given transaction hash and coin type.
   func txBlockExplorerLink(txHash: String, for coin: BraveWallet.CoinType) -> URL? {
-    if coin != .fil,
-      let baseURL = blockExplorerUrls.first.map(URL.init(string:))
+    if coin == .fil,
+      var urlComps = blockExplorerUrls.first.map(URLComponents.init(string:))
     {
-      return baseURL?.appendingPathComponent("tx/\(txHash)")
-    } else if var urlComps = blockExplorerUrls.first.map(URLComponents.init(string:)) {
       urlComps?.queryItems = [URLQueryItem(name: "cid", value: txHash)]
       return urlComps?.url
+    } else if let baseURL = blockExplorerUrls.first.map(URL.init(string:)) {
+      if coin == .zec {
+        return baseURL?.appendingPathComponent("\(txHash)")
+      } else {
+        return baseURL?.appendingPathComponent("tx/\(txHash)")
+      }
     }
     return nil
   }
@@ -817,6 +822,27 @@ extension BraveWallet.TransactionType {
       return Strings.Wallet.txFunctionTypeSignDappTransaction
     @unknown default:
       return Strings.Wallet.txFunctionTypeOther
+    }
+  }
+}
+
+extension BraveWallet.ZCashAddressError {
+  var errorDescription: String? {
+    switch self {
+    case .noError:
+      return nil
+    case .invalidTransparentAddress:
+      return Strings.Wallet.sendErrorZecAddressWrongTransparentAddress
+    case .invalidUnifiedAddress:
+      return Strings.Wallet.sendErrorZecAddressWrongUnifiedAddress
+    case .invalidUnifiedAddressMissingTransparentPart:
+      return Strings.Wallet.sendErrorZecAddressTransparentPartMissing
+    case .invalidUnifiedAddressMissingOrchardPart:
+      return Strings.Wallet.sendErrorZecAddressOrchardPartMissing
+    case .invalidAddressNetworkMismatch:
+      return Strings.Wallet.sendErrorZecAddressNetworkMissmatch
+    @unknown default:
+      return Strings.Wallet.unknownError
     }
   }
 }

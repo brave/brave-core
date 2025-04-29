@@ -593,6 +593,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )
