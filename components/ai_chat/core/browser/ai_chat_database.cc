@@ -79,6 +79,14 @@ bool MigrateFrom3to4(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom4to5(sql::Database* db) {
+  static constexpr char kAddModelKeyColumnQuery[] =
+      "ALTER TABLE conversation_entry ADD COLUMN model_key TEXT DEFAULT NULL";
+  sql::Statement statement(db->GetUniqueStatement(kAddModelKeyColumnQuery));
+
+  return statement.is_valid() && statement.Run();
+}
+
 void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
                               store::WebSourcesEventProto* proto_event) {
   proto_event->clear_sources();
@@ -135,7 +143,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 1;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 4;
+constexpr int kCurrentDatabaseVersion = 5;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -223,6 +231,16 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 4;
     }
+    if (migration_success && current_version == 4) {
+      migration_success = MigrateFrom4to5(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(5);
+      }
+      current_version = 5;
+    }
+
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
       if (db_.Raze()) {
@@ -343,7 +361,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   static constexpr char kEntriesQuery[] =
       "SELECT uuid, date, entry_text, prompt, character_type, "
       "editing_entry_uuid, "
-      "action_type, selected_text"
+      "action_type, selected_text, model_key"
       " FROM conversation_entry"
       " WHERE conversation_uuid=?"
       " ORDER BY date ASC";
@@ -374,10 +392,11 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     auto action_type =
         static_cast<mojom::ActionType>(statement.ColumnInt(index++));
     auto selected_text = DecryptOptionalColumnToString(statement, index++);
+    auto model_key = GetOptionalString(statement, index++);
 
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
-        std::nullopt, date, std::nullopt, std::nullopt, false);
+        std::nullopt, date, std::nullopt, std::nullopt, false, model_key);
 
     // events
     struct Event {
@@ -737,15 +756,16 @@ bool AIChatDatabase::AddConversationEntry(
     static constexpr char kInsertEditingConversationEntryQuery[] =
         "INSERT INTO conversation_entry(editing_entry_uuid, uuid,"
         " conversation_uuid, date, entry_text, prompt,"
-        " character_type, action_type, selected_text)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " character_type, action_type, selected_text, model_key)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
     static constexpr char kInsertConversationEntryQuery[] =
         "INSERT INTO conversation_entry(uuid, conversation_uuid, date,"
-        " entry_text, prompt, character_type, action_type, selected_text)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        " entry_text, prompt, character_type, action_type, selected_text,"
+        " model_key)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertConversationEntryQuery));
   }
@@ -768,6 +788,8 @@ bool AIChatDatabase::AddConversationEntry(
       index++, base::to_underlying(entry->action_type));
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->selected_text);
+  BindOptionalString(insert_conversation_entry_statement, index++,
+                     entry->model_key);
 
   if (!insert_conversation_entry_statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation_entry' insert statement: "
@@ -1335,7 +1357,8 @@ bool AIChatDatabase::CreateSchema() {
       "editing_entry_uuid TEXT,"
       "action_type INTEGER,"
       // Encrypted selected text
-      "selected_text BLOB)";
+      "selected_text BLOB,"
+      "model_key TEXT)";
   // TODO(petemill): Forking can be achieved by associating each
   // ConversationEntry with a parent ConversationEntry.
   // TODO(petemill): Store a model name with each entry to know when

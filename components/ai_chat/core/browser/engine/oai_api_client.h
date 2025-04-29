@@ -35,11 +35,10 @@ class CustomModelOptions;
 // Performs remote request to the OAI format APIs.
 class OAIAPIClient {
  public:
-  using GenerationResult = base::expected<std::string, mojom::APIError>;
-  using GenerationDataCallback =
-      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
+  using GenerationResult = EngineConsumer::GenerationResult;
+  using GenerationDataCallback = EngineConsumer::GenerationDataCallback;
   using GenerationCompletedCallback =
-      base::OnceCallback<void(GenerationResult)>;
+      EngineConsumer::GenerationCompletedCallback;
 
   explicit OAIAPIClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);

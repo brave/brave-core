@@ -72,7 +72,10 @@
   <message name="IDS_CHAT_UI_MODIFY_CONFIGURATION_LABEL" desc="A button label to configure custom models">
      Configure
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the default model">
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_AUTOMATIC" desc="AI Chat intro message for the default model">
+    Model changes dynamically to use the best one for the task.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the basic model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model">
@@ -258,6 +261,12 @@
   <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer">
     Edit answer
   </message>
+  <message name="IDS_CHAT_UI_REGENERATE_ANSWER_BUTTON_LABEL" desc="Button title to regenerate AI agent answer">
+    Regenerate
+  </message>
+  <message name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TITLE" desc="Title of menu to regenerate AI agent answer">
+    Change model for answer
+  </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
     Not helpful
   </message>
@@ -416,6 +425,9 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model">
     Reasoning model
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE" desc="A description for automatic model">
+    Model changes dynamically to use the best one for the task
   </message>
   <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
     Leo settings

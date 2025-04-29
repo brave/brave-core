@@ -7,7 +7,7 @@
 
 namespace ai_chat {
 
-MockEngineConsumer::MockEngineConsumer() = default;
+MockEngineConsumer::MockEngineConsumer() : EngineConsumer(nullptr) {}
 MockEngineConsumer::~MockEngineConsumer() = default;
 
 }  // namespace ai_chat

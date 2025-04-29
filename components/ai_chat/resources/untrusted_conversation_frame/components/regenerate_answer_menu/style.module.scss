@@ -1,0 +1,69 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.buttonMenu {
+  leo-menu-item {
+    --leo-icon-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-xl);
+    padding: var(--leo-spacing-m);
+    min-width: 200px;
+  }
+}
+
+.menuHeader {
+  display: flex;
+  background-color: var(--leo-color-container-highlight);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-components-label);
+  text-transform: uppercase;
+  position: absolute;
+  border-radius: 8px 8px 0px 0px;
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  border-left: 1px solid var(--leo-color-divider-subtle);
+  border-right: 1px solid var(--leo-color-divider-subtle);
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headerGap {
+  min-height: 33px;
+}
+
+.anchorButton {
+  display: flex;
+  color: var(--leo-color-neutral-30);
+  flex: 0;
+}
+
+.footerGap {
+  min-height: 53px;
+}
+
+.menuFooter {
+  display: flex;
+  width: 100%;
+  padding: var(--leo-spacing-s);
+  border: 1px solid var(--leo-color-divider-subtle);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--leo-color-container-background);
+  border-radius: 0px 0px 8px 8px;
+  leo-menu-item {
+    justify-content: flex-start;
+    border-radius: var(--leo-radius-s);
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+  }
+}
+
