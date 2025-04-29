@@ -46,9 +46,10 @@ void BraveExternalProcessImporterHost::LaunchImportIfReady() {
       extensions_importer_ =
           std::make_unique<extensions_import::ExtensionsImporter>(
               source_profile_.source_path, profile_);
-      return extensions_importer_->Prepare(base::BindOnce(
+      extensions_importer_->Prepare(base::BindOnce(
           &BraveExternalProcessImporterHost::OnExtensionsImportReady,
           weak_ptr_factory_.GetWeakPtr()));
+      return;
     }
   }
 #endif

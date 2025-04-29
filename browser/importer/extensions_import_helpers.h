@@ -79,7 +79,7 @@ class ExtensionsImporter {
                                    OnOneExtensionImported on_extension,
                                    bool success);
 
-  base::FilePath source_profile_;
+  const base::FilePath source_profile_;
   raw_ptr<Profile> target_profile_ = nullptr;
 
   std::vector<ImportingExtension> extensions_;
