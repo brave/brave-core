@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/feature_list.h"
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"

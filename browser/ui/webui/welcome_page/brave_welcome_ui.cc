@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/feature_list.h"
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
@@ -38,6 +37,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 

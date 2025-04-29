@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button_delegate.h"
 
-#include "base/l10n/l10n_util.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -14,6 +13,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_provider.h"
 

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_handler.h"
 #include "brave/components/brave_private_new_tab/resources/page/grit/brave_private_new_tab_generated_map.h"
@@ -18,6 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
 
 bool BravePrivateNewTabUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {

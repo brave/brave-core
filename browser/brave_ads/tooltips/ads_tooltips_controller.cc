@@ -8,11 +8,11 @@
 #include <memory>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "brave/browser/brave_ads/tooltips/ads_captcha_tooltip.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_popup_handler.h"
 #include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_ads {
 

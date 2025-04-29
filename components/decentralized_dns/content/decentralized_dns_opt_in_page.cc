@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -22,6 +21,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace decentralized_dns {
 

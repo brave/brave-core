@@ -13,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
@@ -34,6 +33,7 @@
 #include "ios/web/public/webui/web_ui_ios_message_handler.h"
 #include "ui/base/clipboard/clipboard_ios.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
 

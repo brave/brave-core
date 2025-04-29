@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/device_chooser_content_view.h"
 
-#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/views/dialog_footnote_utils.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"

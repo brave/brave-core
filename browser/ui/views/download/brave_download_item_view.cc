@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/auto_reset.h"
-#include "base/l10n/l10n_util.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/download/download_item_mode.h"
@@ -18,6 +17,7 @@
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/common/origin_util.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider.h"

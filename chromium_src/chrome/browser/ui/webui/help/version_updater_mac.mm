@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/apple/foundation_util.h"
-#include "base/l10n/l10n_util.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"

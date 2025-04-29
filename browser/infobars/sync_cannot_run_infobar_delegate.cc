@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -19,6 +18,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
 namespace {

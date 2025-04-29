@@ -8,7 +8,6 @@
 #import <AppKit/AppKit.h>
 
 #include "base/functional/bind.h"
-#include "base/l10n/l10n_util.h"
 #include "base/values.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
@@ -19,6 +18,7 @@
 #include "chrome/common/importer/importer_data_types.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_ui.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/ui_base_types.h"
 #include "url/gurl.h"
 

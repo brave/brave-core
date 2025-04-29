@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
@@ -16,6 +15,7 @@
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace brave_shields {

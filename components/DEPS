@@ -5,12 +5,13 @@ include_rules = [
   "+components",
   "+net",
   "+mojo/public",
+  "+ui/base",
 
   # Components that wish to use the content API or IPC must explicitly declare
   # these dependencies; see /components/README.
   "-ipc",
 
-  # Deprecated
+  # Deprecated - use ui/base/l10n
   "-brave/components/l10n",
 ]
 

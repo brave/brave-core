@@ -5,10 +5,10 @@
 
 #include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"
 
-#include "base/l10n/l10n_util.h"
 #include "base/no_destructor.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_vpn {

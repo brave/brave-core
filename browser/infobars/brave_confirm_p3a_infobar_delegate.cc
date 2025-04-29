@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/p3a/pref_names.h"
@@ -19,6 +18,7 @@
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
 // static

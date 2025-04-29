@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"

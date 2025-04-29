@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/i18n/rtl.h"
-#include "base/l10n/l10n_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/browser/brave_shell_integration.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
@@ -16,6 +15,7 @@
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 #import "third_party/google_toolbox_for_mac/src/AppKit/GTMUILocalizerAndLayoutTweaker.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 #include "ui/color/color_provider_key.h"
 

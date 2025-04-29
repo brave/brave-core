@@ -11,7 +11,6 @@
 
 #include "base/check_deref.h"
 #include "base/check_is_test.h"
-#include "base/l10n/l10n_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"

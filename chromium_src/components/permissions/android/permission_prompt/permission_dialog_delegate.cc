@@ -12,7 +12,6 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "base/l10n/l10n_util.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
@@ -22,6 +21,7 @@
 #include "components/permissions/features.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace permissions {
 namespace {

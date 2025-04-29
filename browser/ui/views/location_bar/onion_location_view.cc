@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/tor/tor_profile_manager.h"

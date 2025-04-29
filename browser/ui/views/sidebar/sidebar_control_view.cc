@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 
-#include "base/l10n/l10n_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"

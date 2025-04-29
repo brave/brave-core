@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -19,6 +18,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/views/controls/label.h"

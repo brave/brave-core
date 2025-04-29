@@ -8,7 +8,6 @@
 #include <ostream>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
@@ -19,6 +18,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace request_otr {

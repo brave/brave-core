@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/views/infobars/brave_sync_account_deleted_infobar.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"

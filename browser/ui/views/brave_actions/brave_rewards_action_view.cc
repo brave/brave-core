@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -34,6 +33,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/constants.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"

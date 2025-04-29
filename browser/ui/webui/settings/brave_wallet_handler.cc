@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"

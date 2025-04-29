@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
-#include "base/l10n/l10n_util.h"
 #include "base/values.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
@@ -30,6 +29,7 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_util.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 

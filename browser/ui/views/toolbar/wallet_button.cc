@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -27,6 +26,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/geometry/rect_f.h"

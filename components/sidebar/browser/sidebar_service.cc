@@ -15,7 +15,6 @@
 #include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
-#include "base/l10n/l10n_util.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"

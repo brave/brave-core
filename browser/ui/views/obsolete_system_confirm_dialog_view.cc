@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/functional/callback.h"
-#include "base/l10n/l10n_util.h"
 #include "base/notreached.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -17,6 +16,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/label.h"
 

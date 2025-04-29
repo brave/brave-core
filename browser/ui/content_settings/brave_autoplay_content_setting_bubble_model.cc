@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -22,6 +21,7 @@
 #include "components/url_formatter/elide_url.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using content_settings::SettingInfo;
 using content_settings::SettingSource;

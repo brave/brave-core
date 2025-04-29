@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"

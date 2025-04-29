@@ -5,8 +5,8 @@
 
 #include "chrome/browser/extensions/extension_install_prompt.h"
 
-#include "base/l10n/l10n_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #define GetDialogTitle GetDialogTitle_ChromiumImpl
 #include "src/chrome/browser/extensions/extension_install_prompt.cc"

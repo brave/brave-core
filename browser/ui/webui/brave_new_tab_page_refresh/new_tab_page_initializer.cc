@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/l10n/l10n_util.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
@@ -34,6 +33,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

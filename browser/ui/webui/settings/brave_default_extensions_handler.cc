@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/functional/bind.h"
-#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -46,6 +45,7 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/feature_switch.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

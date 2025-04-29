@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/l10n/l10n_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/bind_post_task.h"
@@ -23,6 +22,7 @@
 #include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
 #include "ui/base/mojom/dialog_button.mojom.h"

@@ -8,7 +8,6 @@
 #include <string_view>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"

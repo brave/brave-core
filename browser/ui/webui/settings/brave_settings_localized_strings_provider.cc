@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/l10n/l10n_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"

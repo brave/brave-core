@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -20,6 +19,7 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "ui/base/l10n/l10n_util.h"
 
 BASE_FEATURE(kExtensionsManifestV2,
              "ExtensionsManifestV2",

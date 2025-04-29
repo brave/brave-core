@@ -7,12 +7,12 @@
 
 #include <memory>
 
-#include "base/l10n/l10n_util.h"
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using content::WebContents;
 

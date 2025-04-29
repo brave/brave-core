@@ -10,7 +10,6 @@
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
-#include "base/l10n/l10n_util.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -37,6 +36,7 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/compositor/layer.h"

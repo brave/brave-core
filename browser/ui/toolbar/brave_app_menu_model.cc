@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-#include "base/l10n/l10n_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
@@ -24,6 +23,7 @@
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/button_menu_item_model.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/ui_base_features.h"

@@ -9,7 +9,6 @@
 
 #include "base/check_is_test.h"
 #include "base/command_line.h"
-#include "base/l10n/l10n_util.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -23,6 +22,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace {
