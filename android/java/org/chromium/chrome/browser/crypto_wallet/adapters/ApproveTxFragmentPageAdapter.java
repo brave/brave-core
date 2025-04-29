@@ -36,8 +36,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private AccountInfo[] mAccounts;
     private HashMap<String, Double> mAssetPrices;
     private BlockchainToken[] mFullTokenList;
-    private HashMap<String, Double> mNativeAssetsBalances;
-    private HashMap<String, HashMap<String, Double>> mBlockchainTokensBalances;
     private boolean mUpdateTxObjectManually;
     private long mSolanaEstimatedTxFee;
     private Context mContext;
@@ -50,8 +48,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             Activity activity,
             boolean updateTxObjectManually,
             long solanaEstimatedTxFee) {
@@ -61,8 +57,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         mAccounts = accounts;
         mAssetPrices = assetPrices;
         mFullTokenList = fullTokenList;
-        mNativeAssetsBalances = nativeAssetsBalances;
-        mBlockchainTokensBalances = blockchainTokensBalances;
         mContext = activity;
         mTitles =
                 new ArrayList<>(
@@ -83,8 +77,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
                     mAccounts,
                     mAssetPrices,
                     mFullTokenList,
-                    mNativeAssetsBalances,
-                    mBlockchainTokensBalances,
                     mUpdateTxObjectManually,
                     mSolanaEstimatedTxFee);
         } else {

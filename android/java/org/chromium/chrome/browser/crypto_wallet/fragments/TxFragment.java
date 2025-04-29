@@ -53,8 +53,6 @@ public class TxFragment extends Fragment {
     private AccountInfo[] mAccounts;
     private HashMap<String, Double> mAssetPrices;
     private BlockchainToken[] mFullTokenList;
-    private HashMap<String, Double> mNativeAssetsBalances;
-    private HashMap<String, HashMap<String, Double>> mBlockchainTokensBalances;
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
     private long mSolanaEstimatedTxFee;
@@ -73,8 +71,6 @@ public class TxFragment extends Fragment {
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             boolean updateTxObjectManually,
             long solanaEstimatedTxFee) {
         return new TxFragment(
@@ -83,8 +79,6 @@ public class TxFragment extends Fragment {
                 accounts,
                 assetPrices,
                 fullTokenList,
-                nativeAssetsBalances,
-                blockchainTokensBalances,
                 updateTxObjectManually,
                 solanaEstimatedTxFee);
     }
@@ -103,8 +97,6 @@ public class TxFragment extends Fragment {
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             boolean updateTxObjectManually,
             long solanaEstimatedTxFee) {
         mTxInfo = txInfo;
@@ -112,8 +104,6 @@ public class TxFragment extends Fragment {
         mAccounts = accounts;
         mAssetPrices = assetPrices;
         mFullTokenList = fullTokenList;
-        mNativeAssetsBalances = nativeAssetsBalances;
-        mBlockchainTokensBalances = blockchainTokensBalances;
         mCheckedPriorityId = -1;
         mPreviousCheckedPriorityId = -1;
         mUpdateTxObjectManually = updateTxObjectManually;

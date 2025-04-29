@@ -269,8 +269,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                                                 accounts,
                                                                 new HashMap<>(),
                                                                 tokenList,
-                                                                new HashMap<>(),
-                                                                new HashMap<>(),
                                                                 mSolanaEstimatedTxFee);
 
                                                 // Get tokens involved in this transaction
@@ -376,8 +374,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                         accounts,
                                         assetPrices,
                                         fullTokenList,
-                                        nativeAssetsBalances,
-                                        blockchainTokensBalances,
                                         mSolanaEstimatedTxFee);
                             });
                 });
@@ -400,8 +396,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             long solanaEstimatedTxFee) {
         ParsedTransaction parsedTx =
                 ParsedTransaction.parseTransaction(
@@ -474,14 +468,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                             "",
                             ""));
         }
-        setupPager(
-                view,
-                txNetwork,
-                accounts,
-                assetPrices,
-                fullTokenList,
-                nativeAssetsBalances,
-                blockchainTokensBalances);
+        setupPager(view, txNetwork, accounts, assetPrices, fullTokenList);
         return parsedTx;
     }
 
@@ -490,9 +477,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             NetworkInfo txNetwork,
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
-            BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+            BlockchainToken[] fullTokenList) {
         ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
         ApproveTxFragmentPageAdapter adapter =
                 new ApproveTxFragmentPageAdapter(
@@ -502,8 +487,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                         accounts,
                         assetPrices,
                         fullTokenList,
-                        nativeAssetsBalances,
-                        blockchainTokensBalances,
                         requireActivity(),
                         mTransactionConfirmationListener == null,
                         mSolanaEstimatedTxFee);
