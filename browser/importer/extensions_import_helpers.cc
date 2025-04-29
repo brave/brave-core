@@ -108,6 +108,8 @@ bool ImportLocalExtensionSettings(const std::string& extension_id,
   auto target_store_factory =
       base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(target_profile);
 
+  // First delete the settings in the target profile because we are going to
+  // overwrite them from the source profile.
   extensions::value_store_util::DeleteValueStore(
       extensions::settings_namespace::LOCAL,
       extensions::value_store_util::ModelType::EXTENSION, extension_id,
@@ -225,7 +227,8 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
         weak_factory_.GetWeakPtr(), on_extension);
 
     ++in_progress_count_;
-    if (auto installer = GetExtensionInstallerForTesting()) {
+    auto& installer = GetExtensionInstallerForTesting();  // IN-TEST
+    if (installer) {
       const auto status = installer.Run(extension.id);
       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE,
@@ -288,13 +291,12 @@ void ExtensionsImporter::OnExtensionInstalled(
   if (!success) {
     return std::move(on_extension)
         .Run(extension->id, ExtensionImportStatus::kFailedToInstall);
-  } else if (!extension->has_local_settings) {
+  }
+
+  if (!extension->has_local_settings) {
     return std::move(on_extension)
         .Run(extension->id, ExtensionImportStatus::kOk);
   }
-
-  CHECK(extension->has_local_settings);
-
   auto* service =
       extensions::ExtensionSystem::Get(target_profile_)->extension_service();
   service->DisableExtension(extension->id,

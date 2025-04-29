@@ -45,7 +45,6 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   // ExternalProcessImporterHost overrides:
   void NotifyImportEnded() override;
   void LaunchImportIfReady() override;
-  bool do_not_launch_import_for_testing_ = false;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   bool NeedToImportExtensions() const;
@@ -57,6 +56,8 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 
   std::unique_ptr<extensions_import::ExtensionsImporter> extensions_importer_;
 #endif
+
+  bool do_not_launch_import_for_testing_ = false;
   // Vends weak pointers for the importer to call us back.
   base::WeakPtrFactory<BraveExternalProcessImporterHost> weak_ptr_factory_;
 };
