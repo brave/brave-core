@@ -16,6 +16,7 @@
 
 @interface NTPSponsoredImageData ()
 @property(nonatomic, copy) NSArray<NTPSponsoredImageCampaign*>* campaigns;
+@property(nonatomic, nullable) NSNumber* gracePeriod;
 @property(nonatomic) BOOL isSuperReferral;
 @property(nonatomic, copy, nullable) NSString* themeName;
 @property(nonatomic, copy, nullable)
@@ -26,11 +27,13 @@
 
 - (instancetype)
     initWithCampaigns:(NSArray<NTPSponsoredImageCampaign*>*)campaigns
+          gracePeriod:(nullable NSNumber*)gracePeriod
       isSuperReferral:(BOOL)isSuperReferral
             themeName:(nullable NSString*)themeName
              topSites:(nullable NSArray<NTPSponsoredImageTopSite*>*)topSites {
   if ((self = [super init])) {
     self.campaigns = campaigns;
+    self.gracePeriod = gracePeriod;
     self.isSuperReferral = isSuperReferral;
     self.themeName = themeName;
     self.topSites = topSites;
@@ -45,6 +48,10 @@
     [campaigns addObject:[[NTPSponsoredImageCampaign alloc]
                              initWithCampaign:campaign]];
   }
+  NSNumber* gracePeriod = nil;
+  if (data.grace_period) {
+    gracePeriod = [NSNumber numberWithFloat:data.grace_period->InSecondsF()];
+  }
   auto isSuperReferral = data.IsSuperReferral();
   NSString* themeName = nil;
   NSMutableArray<NTPSponsoredImageTopSite*>* topSites = nil;
@@ -57,6 +64,7 @@
     }
   }
   return [self initWithCampaigns:campaigns
+                     gracePeriod:gracePeriod
                  isSuperReferral:isSuperReferral
                        themeName:themeName
                         topSites:topSites];
