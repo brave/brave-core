@@ -2333,6 +2333,46 @@ extension Strings {
       comment:
         "An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address."
     )
+    public static let sendErrorZecAddressWrongTransparentAddress = NSLocalizedString(
+      "wallet.sendErrorZecAddressWrongTransparentAddress",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Wrong transparent address",
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash address error - wrong transparent address."
+    )
+    public static let sendErrorZecAddressWrongUnifiedAddress = NSLocalizedString(
+      "wallet.sendErrorZecAddressWrongUnifiedAddress",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Wrong unified address format",
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address."
+    )
+    public static let sendErrorZecAddressTransparentPartMissing = NSLocalizedString(
+      "wallet.sendErrorZecAddressTransparentPartMissing",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transparent part is missing",
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - transparent part missing."
+    )
+    public static let sendErrorZecAddressOrchardPartMissing = NSLocalizedString(
+      "wallet.sendErrorZecAddressOrchardPartMissing",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Orchard part is missing",
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - orchard part missing."
+    )
+    public static let sendErrorZecAddressNetworkMissmatch = NSLocalizedString(
+      "wallet.sendErrorZecAddressNetworkMissmatch",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Network mismatch",
+      comment:
+        "An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - network mismatch."
+    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",

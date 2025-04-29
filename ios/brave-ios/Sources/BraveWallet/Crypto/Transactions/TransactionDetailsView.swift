@@ -300,7 +300,8 @@ private struct TransactionDetailsSendContent: View {
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
       .solSplTokenTransfer(let details),
-      .btcSend(let details):
+      .btcSend(let details),
+      .zecSend(let details):
       if let fromToken = details.fromToken {
         if fromToken.isNft || fromToken.isErc721 || fromToken.isErc1155 {
           return fromToken.name
