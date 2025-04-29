@@ -410,9 +410,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                         accounts,
                         assetPrices,
                         solanaEstimatedTxFee,
-                        fullTokenList,
-                        nativeAssetsBalances,
-                        blockchainTokensBalances);
+                        fullTokenList);
         TextView txType = view.findViewById(R.id.tx_type);
         if (parsedTx.getType() == TransactionType.ERC20_APPROVE) {
             txType.setText(

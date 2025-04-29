@@ -1135,7 +1135,7 @@ public class Utils {
     }
 
     /** Make a unique token title string in lower case. */
-    public static String tokenToString(BlockchainToken token) {
+    public static String tokenToString(@Nullable BlockchainToken token) {
         if (token == null) return "";
 
         final String symbolLowerCase = token.symbol.toLowerCase(Locale.ENGLISH);

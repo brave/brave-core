@@ -589,9 +589,7 @@ public class TxFragment extends Fragment {
                         mAccounts,
                         mAssetPrices,
                         mSolanaEstimatedTxFee,
-                        mFullTokenList,
-                        mNativeAssetsBalances,
-                        mBlockchainTokensBalances);
+                        mFullTokenList);
 
         if (mIsSolanaInstruction) {
             TextView gasTxTv = view.findViewById(R.id.frag_tx_tv_gas);
