@@ -88,12 +88,11 @@ repack("resources") {
 
   if (!is_android && !is_ios) {
     deps += [
-      "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
-      "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
+      "//brave/components/brave_shields/resources/cookie_list_opt_in:resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/speedreader/resources/panel:generated_resources",
@@ -101,7 +100,6 @@ repack("resources") {
     ]
 
     sources += [
-      "$root_gen_dir/brave/browser/resources/brave_new_tab_page_refresh/brave_new_tab_page_refresh_generated.pak",
       "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
@@ -132,28 +130,14 @@ repack("resources") {
   if (enable_brave_vpn_panel) {
     deps += [ "//brave/components/brave_vpn/resources/panel:resources" ]
     sources += [
-      "$root_gen_dir/brave/components/brave_vpn/brave_vpn_panel_resources.pak",
+      "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak",
     ]
-  }
-
-  if (ethereum_remote_client_enabled) {
-    if (!is_android && !is_ios) {
-      sources += [ "$root_gen_dir/brave/components/ethereum_remote_client_page/resources/ethereum_remote_client_page_generated.pak" ]
-      deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
-    }
   }
 
   if (enable_playlist_webui) {
     deps +=
         [ "//brave/components/playlist/browser/resources:generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/playlist/browser/resources/playlist_generated.pak" ]
-  }
-
-  if (!is_android && !is_ios) {
-    deps += [
-      "//brave/browser/resources/settings/shortcuts_page:generated_resources",
-    ]
-    sources += [ "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"

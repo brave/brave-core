@@ -13,10 +13,3 @@ transpile_web_ui("ethereum_remote_client_page_ui") {
       ] ]
   resource_name = "ethereum_remote_client_page"
 }
-
-pack_web_resources("ethereum_remote_client_page_generated") {
-  resource_name = "ethereum_remote_client_page"
-  output_dir =
-      "$root_gen_dir/brave/components/ethereum_remote_client_page/resources"
-  deps = [ ":ethereum_remote_client_page_ui" ]
-}

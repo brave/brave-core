@@ -15,9 +15,3 @@ transpile_web_ui("ui") {
 
   resource_name = "webcompat_reporter"
 }
-
-pack_web_resources("generated_resources") {
-  resource_name = "webcompat_reporter"
-  output_dir = "$root_gen_dir/brave/components/webcompat_reporter/resources"
-  deps = [ ":ui" ]
-}

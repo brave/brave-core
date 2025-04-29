@@ -20,9 +20,3 @@ transpile_web_ui("new_tab_takeover_ui") {
     "//mojo/public/mojom/base",
   ]
 }
-
-pack_web_resources("new_tab_takeover_generated_resources") {
-  resource_name = "new_tab_takeover"
-  output_dir = "$root_gen_dir/brave/components/new_tab_takeover"
-  deps = [ ":new_tab_takeover_ui" ]
-}

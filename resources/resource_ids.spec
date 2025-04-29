@@ -197,7 +197,7 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [34580]
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/components/ai_chat/resources/ai_chat_ui/ai_chat_ui.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [34600],
   },

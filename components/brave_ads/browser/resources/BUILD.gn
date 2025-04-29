@@ -18,9 +18,3 @@ transpile_web_ui("ads_internals_ui") {
 
   resource_name = "ads_internals"
 }
-
-pack_web_resources("generated_resources") {
-  resource_name = "ads_internals"
-  output_dir = "$root_gen_dir/brave/components/brave_ads/browser/resources"
-  deps = [ ":ads_internals_ui" ]
-}

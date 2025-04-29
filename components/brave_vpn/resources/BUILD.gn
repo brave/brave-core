@@ -7,5 +7,5 @@ group("panel_resources") {
   # panel is not used on android.
   assert(!is_android)
 
-  public_deps = [ "panel:brave_vpn_panel_generated" ]
+  public_deps = [ "panel:resources" ]
 }

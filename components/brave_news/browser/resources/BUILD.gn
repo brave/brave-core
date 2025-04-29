@@ -19,10 +19,3 @@ transpile_web_ui("brave_news_internals") {
 
   resource_name = "brave_news_internals"
 }
-
-pack_web_resources("generated_resources") {
-  resource_name = "brave_news_internals"
-
-  output_dir = "$root_gen_dir/brave/components/brave_news/browser/resources"
-  deps = [ ":brave_news_internals" ]
-}

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
@@ -60,6 +61,7 @@ template("brave_extra_paks") {
 
     if (!is_android) {
       sources += [
+        "$root_gen_dir/brave/browser/resources/brave_new_tab_page_refresh/brave_new_tab_page_refresh_generated.pak",
         "$root_gen_dir/brave/brave_education_resources.pak",
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
@@ -68,6 +70,7 @@ template("brave_extra_paks") {
     }
 
     deps = [
+      "//brave/browser/resources/brave_new_tab_page_refresh:resources",
       "//brave/components/brave_rewards/resources",
       "//brave/components/resources",
     ]
@@ -101,6 +104,18 @@ template("brave_extra_paks") {
       deps += [
         "//brave/common/extensions/api",
         "//brave/components/brave_extension:resources",
+      ]
+    }
+
+    if (ethereum_remote_client_enabled && !is_android) {
+      sources += [ "$root_gen_dir/brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_page_generated.pak" ]
+      deps += [ "//brave/browser/ui/webui/ethereum_remote_client:resources" ]
+    }
+
+    if (!is_android) {
+      sources += [ "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak" ]
+      deps += [
+        "//brave/browser/resources/settings/shortcuts_page:resources",
       ]
     }
 

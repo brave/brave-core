@@ -45,8 +45,8 @@ def main():
                              sync_wasm=args.sync_wasm,
                              no_iife=args.no_iife)
     transpile_web_uis(transpile_options)
-    generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
-                 resource_path_prefix)
+    generate_grd(output_path_absolute, args.grd_path[0], args.resource_name[0],
+                 resource_path_prefix, args.static_files, args.static_files_base_path)
 
 
 def parse_args():
@@ -61,7 +61,7 @@ def parse_args():
     parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
-    parser.add_argument('--grd_name', nargs=1)
+    parser.add_argument('--grd_path', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--public_asset_path', nargs='?')
     parser.add_argument('--webpack_alias',
@@ -81,6 +81,8 @@ def parse_args():
                         default=[])
     parser.add_argument('--sync_wasm', action='store_true')
     parser.add_argument('--no_iife', action='store_true')
+    parser.add_argument('--static_files', nargs='*')
+    parser.add_argument('--static_files_base_path', nargs='?')
 
     args = parser.parse_args()
     # validate args
@@ -149,14 +151,18 @@ def transpile_web_uis(options):
         execute_stdout(args, env)
 
 
-def generate_grd(target_include_dir, grd_name, resource_name,
-                 resource_path_prefix):
+def generate_grd(target_include_dir, grd_path, resource_name,
+                 resource_path_prefix, static_files, static_files_base_path):
     env = os.environ.copy()
 
-    args = [NPM, 'run', 'web-ui-gen-grd']
+    args = [NPM, 'run', 'web-ui-gen-grd', "--"]
+
+    if static_files != None and static_files_base_path != None:
+        args.append("--static_files=" + ",".join(static_files))
+        args.append("--static_files_base_path=" + static_files_base_path)
 
     env["RESOURCE_NAME"] = resource_name
-    env["GRD_NAME"] = grd_name
+    env["GRD_PATH"] = grd_path
     env["ID_PREFIX"] = "IDR_" + resource_name.upper() + '_'
     env["TARGET_DIR"] = target_include_dir
 
