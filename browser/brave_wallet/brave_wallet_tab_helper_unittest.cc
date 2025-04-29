@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/l10n/l10n_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"
