@@ -18,20 +18,6 @@ namespace {
 constexpr char kFallbackLanguageCode[] = "en";
 constexpr char kFallbackCountryCode[] = "US";
 
-// Returns an uppercase two-letter ISO 3166-1 alpha-2 country code or UN M.49
-// code for the given locale, falling back to "US" if the locale does not
-// contain a country code. See
-// https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 or
-// https://en.wikipedia.org/wiki/UN_M49.
-std::string GetISOCountryCode(std::string_view locale) {
-  std::string country = ParseLocaleSubtags(locale).country;
-  if (country.empty()) {
-    return kFallbackCountryCode;
-  }
-
-  return country;
-}
-
 }  // namespace
 
 const std::string& GetDefaultLocaleString() {
@@ -49,6 +35,15 @@ std::string GetISOLanguageCode(std::string_view locale) {
 
 std::string GetDefaultISOLanguageCodeString() {
   return GetISOLanguageCode(GetDefaultLocaleString());
+}
+
+std::string GetISOCountryCode(std::string_view locale) {
+  std::string country = ParseLocaleSubtags(locale).country;
+  if (country.empty()) {
+    return kFallbackCountryCode;
+  }
+
+  return country;
 }
 
 std::string GetDefaultISOCountryCodeString() {

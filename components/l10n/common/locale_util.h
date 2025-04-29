@@ -30,6 +30,13 @@ std::string GetISOLanguageCode(std::string_view locale);
 std::string GetDefaultISOLanguageCodeString();
 
 // Returns an uppercase two-letter ISO 3166-1 alpha-2 country code or UN M.49
+// code for the given locale, falling back to "US" if the locale does not
+// contain a country code. See
+// https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 or
+// https://en.wikipedia.org/wiki/UN_M49.
+std::string GetISOCountryCode(std::string_view locale);
+
+// Returns an uppercase two-letter ISO 3166-1 alpha-2 country code or UN M.49
 // code for the current default locale of the device as a string, falling back
 // to "US" if the locale does not contain a country code. See
 // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 or
