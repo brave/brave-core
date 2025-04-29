@@ -20,10 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -32,6 +31,8 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaSendTransactionOptions;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
@@ -46,24 +47,26 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import java.util.HashMap;
 import java.util.Locale;
 
+@NullMarked
 public class TxFragment extends Fragment {
-    private TransactionInfo mTxInfo;
+    private static final String TAG = "TxFragment";
+    private final TransactionInfo mTxInfo;
     private ParsedTransaction mParsedTx;
-    private NetworkInfo mTxNetwork;
-    private AccountInfo[] mAccounts;
-    private HashMap<String, Double> mAssetPrices;
-    private BlockchainToken[] mFullTokenList;
+    private final NetworkInfo mTxNetwork;
+    private final AccountInfo[] mAccounts;
+    private final HashMap<String, Double> mAssetPrices;
+    private final BlockchainToken[] mFullTokenList;
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
-    private long mSolanaEstimatedTxFee;
+    private final long mSolanaEstimatedTxFee;
 
     // mUpdateTxObjectManually is used to detect do we need to update dialog values
     // manually after we change gas for example or do we have it updated automatically
     // using observers. We use observers on DApps related executions, but wallet screens
     // don't use them. It would be good to eventually migrate to observers everywhere.
-    private boolean mUpdateTxObjectManually;
+    private final boolean mUpdateTxObjectManually;
     public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
-    private boolean mIsSolanaInstruction;
+    private final boolean mIsSolanaInstruction;
 
     public static TxFragment newInstance(
             TransactionInfo txInfo,
@@ -83,6 +86,7 @@ public class TxFragment extends Fragment {
                 solanaEstimatedTxFee);
     }
 
+    @Nullable
     private EthTxManagerProxy getEthTxManagerProxy() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletBaseActivity) {
@@ -119,7 +123,7 @@ public class TxFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
+            LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_transaction, container, false);
@@ -147,357 +151,298 @@ public class TxFragment extends Fragment {
         TextView editGasFee = view.findViewById(R.id.edit_gas_fee);
         editGasFee.setVisibility(isEditTxEnabled(mTxNetwork) ? View.VISIBLE : View.INVISIBLE);
         editGasFee.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final Dialog dialog = new Dialog(getActivity());
-                        dialog.setContentView(R.layout.brave_wallet_edit_gas);
-                        dialog.show();
-                        mPreviousCheckedPriorityId = mCheckedPriorityId;
+                v -> {
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.brave_wallet_edit_gas);
+                    dialog.show();
+                    mPreviousCheckedPriorityId = mCheckedPriorityId;
 
-                        LinearLayout gasPriceLayout = dialog.findViewById(R.id.gas_price_layout);
-                        LinearLayout gasLimitLayout = dialog.findViewById(R.id.gas_limit_layout);
-                        if (!mParsedTx.getIsEIP1559Transaction()) {
-                            EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
-                            gasFeeEdit.setText(
-                                    String.format(
-                                            Locale.getDefault(),
-                                            "%.0f",
-                                            Utils.fromHexWei(mParsedTx.getGasPrice(), 9)));
+                    LinearLayout gasPriceLayout = dialog.findViewById(R.id.gas_price_layout);
+                    LinearLayout gasLimitLayout = dialog.findViewById(R.id.gas_limit_layout);
+                    if (!mParsedTx.getIsEIP1559Transaction()) {
+                        EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
+                        gasFeeEdit.setText(
+                                String.format(
+                                        Locale.getDefault(),
+                                        "%.0f",
+                                        Utils.fromHexWei(mParsedTx.getGasPrice(), 9)));
 
-                            EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
-                            gasLimitEdit.setText(
-                                    String.format(
-                                            Locale.getDefault(),
-                                            "%.0f",
-                                            Utils.fromHexGWeiToGWEI(mParsedTx.getGasLimit())));
-                        } else {
-                            TextView dialogTitle = dialog.findViewById(R.id.edit_gas_dialog_title);
-                            dialogTitle.setText(
-                                    getResources()
-                                            .getString(R.string.wallet_max_priority_fee_title));
-                            gasPriceLayout.setVisibility(View.GONE);
-                            gasLimitLayout.setVisibility(View.GONE);
-                            dialog.findViewById(R.id.max_priority_fee_msg)
-                                    .setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.max_priority_radio_group)
-                                    .setVisibility(View.VISIBLE);
-                            RadioGroup radioGroup =
-                                    dialog.findViewById(R.id.max_priority_radio_group);
-                            radioGroup.clearCheck();
-                            radioGroup.setOnCheckedChangeListener(
-                                    (group, checkedId) -> {
-                                        EthTxManagerProxy ethTxManagerProxy =
-                                                getEthTxManagerProxy();
-                                        assert ethTxManagerProxy != null;
-                                        ethTxManagerProxy.getGasEstimation1559(
-                                                mTxInfo.chainId,
-                                                estimation -> {
-                                                    mTxInfo.txDataUnion.getEthTxData1559()
-                                                                    .gasEstimation =
-                                                            estimation;
-                                                    mCheckedPriorityId = checkedId;
-                                                    String maxPriorityFeePerGas =
-                                                            mParsedTx.getMaxPriorityFeePerGas();
-                                                    String maxFeePerGas =
-                                                            mParsedTx.getMaxFeePerGas();
-                                                    TextView currentBaseFeeMsg =
+                        EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
+                        gasLimitEdit.setText(
+                                String.format(
+                                        Locale.getDefault(),
+                                        "%.0f",
+                                        Utils.fromHexGWeiToGWEI(mParsedTx.getGasLimit())));
+                    } else {
+                        TextView dialogTitle = dialog.findViewById(R.id.edit_gas_dialog_title);
+                        dialogTitle.setText(
+                                getResources().getString(R.string.wallet_max_priority_fee_title));
+                        gasPriceLayout.setVisibility(View.GONE);
+                        gasLimitLayout.setVisibility(View.GONE);
+                        dialog.findViewById(R.id.max_priority_fee_msg).setVisibility(View.VISIBLE);
+                        dialog.findViewById(R.id.max_priority_radio_group)
+                                .setVisibility(View.VISIBLE);
+                        RadioGroup radioGroup = dialog.findViewById(R.id.max_priority_radio_group);
+                        radioGroup.clearCheck();
+                        radioGroup.setOnCheckedChangeListener(
+                                (group, checkedId) -> {
+                                    EthTxManagerProxy ethTxManagerProxy = getEthTxManagerProxy();
+                                    assert ethTxManagerProxy != null;
+                                    ethTxManagerProxy.getGasEstimation1559(
+                                            mTxInfo.chainId,
+                                            estimation -> {
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                                .gasEstimation =
+                                                        estimation;
+                                                mCheckedPriorityId = checkedId;
+                                                String maxPriorityFeePerGas =
+                                                        mParsedTx.getMaxPriorityFeePerGas();
+                                                String maxFeePerGas = mParsedTx.getMaxFeePerGas();
+                                                TextView currentBaseFeeMsg =
+                                                        dialog.findViewById(
+                                                                R.id.current_base_fee_msg);
+                                                currentBaseFeeMsg.setVisibility(View.GONE);
+                                                LinearLayout gasAmountLimitLayout =
+                                                        dialog.findViewById(
+                                                                R.id.gas_amount_limit_layout);
+                                                gasAmountLimitLayout.setVisibility(View.GONE);
+                                                LinearLayout perGasTipLimitLayout =
+                                                        dialog.findViewById(
+                                                                R.id.per_gas_tip_limit_layout);
+                                                perGasTipLimitLayout.setVisibility(View.GONE);
+                                                LinearLayout perGasPriceLimitLayout =
+                                                        dialog.findViewById(
+                                                                R.id.per_gas_price_limit_layout);
+                                                perGasPriceLimitLayout.setVisibility(View.GONE);
+                                                if (mCheckedPriorityId == R.id.radio_low) {
+                                                    maxFeePerGas =
+                                                            mTxInfo.txDataUnion.getEthTxData1559()
+                                                                    .gasEstimation
+                                                                    .slowMaxFeePerGas;
+                                                } else if (mCheckedPriorityId
+                                                        == R.id.radio_optimal) {
+                                                    maxFeePerGas =
+                                                            mTxInfo.txDataUnion.getEthTxData1559()
+                                                                    .gasEstimation
+                                                                    .avgMaxFeePerGas;
+                                                } else if (mCheckedPriorityId == R.id.radio_high) {
+                                                    maxFeePerGas =
+                                                            mTxInfo.txDataUnion.getEthTxData1559()
+                                                                    .gasEstimation
+                                                                    .fastMaxFeePerGas;
+                                                } else if (mCheckedPriorityId
+                                                        == R.id.radio_custom) {
+                                                    currentBaseFeeMsg.setVisibility(View.VISIBLE);
+                                                    currentBaseFeeMsg.setText(
+                                                            String.format(
+                                                                    getResources()
+                                                                            .getString(
+                                                                                    R.string
+                                                                                            .wallet_current_base_fee),
+                                                                    String.format(
+                                                                            Locale.getDefault(),
+                                                                            "%.0f",
+                                                                            Utils.fromHexWei(
+                                                                                    mTxInfo
+                                                                                            .txDataUnion
+                                                                                            .getEthTxData1559()
+                                                                                            .gasEstimation
+                                                                                            .baseFeePerGas,
+                                                                                    9))));
+                                                    gasAmountLimitLayout.setVisibility(
+                                                            View.VISIBLE);
+                                                    EditText gasAmountLimitEdit =
                                                             dialog.findViewById(
-                                                                    R.id.current_base_fee_msg);
-                                                    currentBaseFeeMsg.setVisibility(View.GONE);
-                                                    LinearLayout gasAmountLimitLayout =
+                                                                    R.id.gas_amount_limit_edit);
+                                                    gasAmountLimitEdit.setText(
+                                                            String.format(
+                                                                    Locale.getDefault(),
+                                                                    "%.0f",
+                                                                    Utils.fromHexGWeiToGWEI(
+                                                                            mParsedTx
+                                                                                    .getGasLimit())));
+                                                    perGasTipLimitLayout.setVisibility(
+                                                            View.VISIBLE);
+                                                    EditText perGasTipLimitEdit =
                                                             dialog.findViewById(
-                                                                    R.id.gas_amount_limit_layout);
-                                                    gasAmountLimitLayout.setVisibility(View.GONE);
-                                                    LinearLayout perGasTipLimitLayout =
+                                                                    R.id.per_gas_tip_limit_edit);
+                                                    perGasTipLimitEdit.setText(
+                                                            String.format(
+                                                                    Locale.getDefault(),
+                                                                    "%.0f",
+                                                                    Utils.fromHexWei(
+                                                                            maxPriorityFeePerGas,
+                                                                            9)));
+                                                    perGasPriceLimitLayout.setVisibility(
+                                                            View.VISIBLE);
+                                                    EditText perGasPriceLimitEdit =
                                                             dialog.findViewById(
-                                                                    R.id.per_gas_tip_limit_layout);
-                                                    perGasTipLimitLayout.setVisibility(View.GONE);
-                                                    LinearLayout perGasPriceLimitLayout =
-                                                            dialog.findViewById(
-                                                                    R.id
-                                                                            .per_gas_price_limit_layout);
-                                                    perGasPriceLimitLayout.setVisibility(View.GONE);
-                                                    if (mCheckedPriorityId == R.id.radio_low) {
-                                                        maxPriorityFeePerGas =
-                                                                mTxInfo.txDataUnion
-                                                                        .getEthTxData1559()
-                                                                        .gasEstimation
-                                                                        .slowMaxPriorityFeePerGas;
-                                                        maxFeePerGas =
-                                                                mTxInfo.txDataUnion
-                                                                        .getEthTxData1559()
-                                                                        .gasEstimation
-                                                                        .slowMaxFeePerGas;
-                                                    } else if (mCheckedPriorityId
-                                                            == R.id.radio_optimal) {
-                                                        maxPriorityFeePerGas =
-                                                                mTxInfo.txDataUnion
-                                                                        .getEthTxData1559()
-                                                                        .gasEstimation
-                                                                        .avgMaxPriorityFeePerGas;
-                                                        maxFeePerGas =
-                                                                mTxInfo.txDataUnion
-                                                                        .getEthTxData1559()
-                                                                        .gasEstimation
-                                                                        .avgMaxFeePerGas;
-                                                    } else if (mCheckedPriorityId
-                                                            == R.id.radio_high) {
-                                                        maxPriorityFeePerGas =
-                                                                mTxInfo.txDataUnion
-                                                                        .getEthTxData1559()
-                                                                        .gasEstimation
-                                                                        .fastMaxPriorityFeePerGas;
-                                                        maxFeePerGas =
-                                                                mTxInfo.txDataUnion
-                                                                        .getEthTxData1559()
-                                                                        .gasEstimation
-                                                                        .fastMaxFeePerGas;
-                                                    } else if (mCheckedPriorityId
-                                                            == R.id.radio_custom) {
-                                                        currentBaseFeeMsg.setVisibility(
-                                                                View.VISIBLE);
-                                                        currentBaseFeeMsg.setText(
-                                                                String.format(
-                                                                        getResources()
-                                                                                .getString(
-                                                                                        R.string
-                                                                                                .wallet_current_base_fee),
-                                                                        String.format(
-                                                                                Locale.getDefault(),
-                                                                                "%.0f",
-                                                                                Utils.fromHexWei(
-                                                                                        mTxInfo
-                                                                                                .txDataUnion
-                                                                                                .getEthTxData1559()
-                                                                                                .gasEstimation
-                                                                                                .baseFeePerGas,
-                                                                                        9))));
-                                                        gasAmountLimitLayout.setVisibility(
-                                                                View.VISIBLE);
-                                                        EditText gasAmountLimitEdit =
-                                                                dialog.findViewById(
-                                                                        R.id.gas_amount_limit_edit);
-                                                        gasAmountLimitEdit.setText(
-                                                                String.format(
-                                                                        Locale.getDefault(),
-                                                                        "%.0f",
-                                                                        Utils.fromHexGWeiToGWEI(
-                                                                                mParsedTx
-                                                                                        .getGasLimit())));
-                                                        perGasTipLimitLayout.setVisibility(
-                                                                View.VISIBLE);
-                                                        EditText perGasTipLimitEdit =
-                                                                dialog.findViewById(
-                                                                        R.id
-                                                                                .per_gas_tip_limit_edit);
-                                                        perGasTipLimitEdit.setText(
-                                                                String.format(
-                                                                        Locale.getDefault(),
-                                                                        "%.0f",
-                                                                        Utils.fromHexWei(
-                                                                                maxPriorityFeePerGas,
-                                                                                9)));
-                                                        perGasPriceLimitLayout.setVisibility(
-                                                                View.VISIBLE);
-                                                        EditText perGasPriceLimitEdit =
-                                                                dialog.findViewById(
-                                                                        R.id
-                                                                                .per_gas_price_limit_edit);
-                                                        perGasPriceLimitEdit.setText(
-                                                                String.format(
-                                                                        Locale.getDefault(),
-                                                                        "%.0f",
-                                                                        Utils.fromHexWei(
-                                                                                maxFeePerGas, 9)));
-                                                        filterEIP1559TextWatcher.setDialog(
-                                                                dialog,
-                                                                String.format(
-                                                                        Locale.getDefault(),
-                                                                        "%.0f",
-                                                                        Utils.fromHexWei(
-                                                                                mTxInfo.txDataUnion
-                                                                                        .getEthTxData1559()
-                                                                                        .gasEstimation
-                                                                                        .baseFeePerGas,
-                                                                                9)));
-                                                        gasAmountLimitEdit.addTextChangedListener(
-                                                                filterEIP1559TextWatcher);
-                                                        perGasTipLimitEdit.addTextChangedListener(
-                                                                filterEIP1559TextWatcher);
-                                                        perGasPriceLimitEdit.addTextChangedListener(
-                                                                filterEIP1559TextWatcher);
-                                                    }
-                                                    fillMaxFee(
-                                                            dialog.findViewById(
-                                                                    R.id.maximum_fee_msg),
-                                                            mParsedTx.getGasLimit(),
-                                                            maxFeePerGas);
-                                                });
-                                    });
-                            if (mCheckedPriorityId == -1) {
-                                mCheckedPriorityId = R.id.radio_optimal;
-                            }
-                            radioGroup.check(mCheckedPriorityId);
-                            dialog.findViewById(R.id.maximum_fee_msg).setVisibility(View.VISIBLE);
+                                                                    R.id.per_gas_price_limit_edit);
+                                                    perGasPriceLimitEdit.setText(
+                                                            String.format(
+                                                                    Locale.getDefault(),
+                                                                    "%.0f",
+                                                                    Utils.fromHexWei(
+                                                                            maxFeePerGas, 9)));
+                                                    filterEIP1559TextWatcher.setDialog(
+                                                            dialog,
+                                                            String.format(
+                                                                    Locale.getDefault(),
+                                                                    "%.0f",
+                                                                    Utils.fromHexWei(
+                                                                            mTxInfo.txDataUnion
+                                                                                    .getEthTxData1559()
+                                                                                    .gasEstimation
+                                                                                    .baseFeePerGas,
+                                                                            9)));
+                                                    gasAmountLimitEdit.addTextChangedListener(
+                                                            filterEIP1559TextWatcher);
+                                                    perGasTipLimitEdit.addTextChangedListener(
+                                                            filterEIP1559TextWatcher);
+                                                    perGasPriceLimitEdit.addTextChangedListener(
+                                                            filterEIP1559TextWatcher);
+                                                }
+                                                fillMaxFee(
+                                                        dialog.findViewById(R.id.maximum_fee_msg),
+                                                        mParsedTx.getGasLimit(),
+                                                        maxFeePerGas);
+                                            });
+                                });
+                        if (mCheckedPriorityId == -1) {
+                            mCheckedPriorityId = R.id.radio_optimal;
                         }
-
-                        Button cancel = dialog.findViewById(R.id.cancel);
-                        cancel.setOnClickListener(
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mCheckedPriorityId = mPreviousCheckedPriorityId;
-                                        dialog.dismiss();
-                                    }
-                                });
-                        Button ok = dialog.findViewById(R.id.ok);
-                        ok.setOnClickListener(
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mPreviousCheckedPriorityId = mCheckedPriorityId;
-                                        EthTxManagerProxy ethTxManagerProxy =
-                                                getEthTxManagerProxy();
-                                        assert ethTxManagerProxy != null;
-                                        if (ethTxManagerProxy == null) {
-                                            dialog.dismiss();
-
-                                            return;
-                                        }
-                                        if (!mParsedTx.getIsEIP1559Transaction()) {
-                                            EditText gasLimitEdit =
-                                                    dialog.findViewById(R.id.gas_limit_edit);
-                                            mTxInfo.txDataUnion.getEthTxData1559()
-                                                            .baseData
-                                                            .gasLimit =
-                                                    Utils.toHexGWeiFromGWEI(
-                                                            gasLimitEdit.getText().toString());
-                                            EditText gasFeeEdit =
-                                                    dialog.findViewById(R.id.gas_fee_edit);
-                                            mTxInfo.txDataUnion.getEthTxData1559()
-                                                            .baseData
-                                                            .gasPrice =
-                                                    Utils.toHexWei(
-                                                            gasFeeEdit.getText().toString(), 9);
-                                            ethTxManagerProxy
-                                                    .setGasPriceAndLimitForUnapprovedTransaction(
-                                                            mTxInfo.chainId,
-                                                            mTxInfo.id,
-                                                            mTxInfo.txDataUnion.getEthTxData1559()
-                                                                    .baseData
-                                                                    .gasPrice,
-                                                            mTxInfo.txDataUnion.getEthTxData1559()
-                                                                    .baseData
-                                                                    .gasLimit,
-                                                            success -> {
-                                                                if (!success) {
-                                                                    return;
-                                                                }
-                                                                if (mUpdateTxObjectManually) {
-                                                                    setupView(view);
-                                                                }
-                                                                dialog.dismiss();
-                                                            });
-                                        } else {
-                                            String gasLimit = mParsedTx.getGasLimit();
-                                            String maxPriorityFeePerGas =
-                                                    mParsedTx.getMaxPriorityFeePerGas();
-                                            String maxFeePerGas = mParsedTx.getMaxFeePerGas();
-                                            if (mCheckedPriorityId == R.id.radio_low) {
-                                                maxPriorityFeePerGas =
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .gasEstimation
-                                                                .slowMaxPriorityFeePerGas;
-                                                maxFeePerGas =
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .gasEstimation
-                                                                .slowMaxFeePerGas;
-                                            } else if (mCheckedPriorityId == R.id.radio_optimal) {
-                                                maxPriorityFeePerGas =
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .gasEstimation
-                                                                .avgMaxPriorityFeePerGas;
-                                                maxFeePerGas =
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .gasEstimation
-                                                                .avgMaxFeePerGas;
-                                            } else if (mCheckedPriorityId == R.id.radio_high) {
-                                                maxPriorityFeePerGas =
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .gasEstimation
-                                                                .fastMaxPriorityFeePerGas;
-                                                maxFeePerGas =
-                                                        mTxInfo.txDataUnion.getEthTxData1559()
-                                                                .gasEstimation
-                                                                .fastMaxFeePerGas;
-                                            } else if (mCheckedPriorityId == R.id.radio_custom) {
-                                                EditText gasAmountLimitEdit =
-                                                        dialog.findViewById(
-                                                                R.id.gas_amount_limit_edit);
-                                                EditText perGasTipLimitEdit =
-                                                        dialog.findViewById(
-                                                                R.id.per_gas_tip_limit_edit);
-                                                EditText perGasPriceLimitEdit =
-                                                        dialog.findViewById(
-                                                                R.id.per_gas_price_limit_edit);
-                                                gasLimit =
-                                                        Utils.toHexGWeiFromGWEI(
-                                                                gasAmountLimitEdit
-                                                                        .getText()
-                                                                        .toString());
-                                                maxPriorityFeePerGas =
-                                                        Utils.toHexWei(
-                                                                perGasTipLimitEdit
-                                                                        .getText()
-                                                                        .toString(),
-                                                                9);
-                                                maxFeePerGas =
-                                                        Utils.toHexWei(
-                                                                perGasPriceLimitEdit
-                                                                        .getText()
-                                                                        .toString(),
-                                                                9);
-                                            }
-                                            mTxInfo.txDataUnion.getEthTxData1559()
-                                                            .baseData
-                                                            .gasLimit =
-                                                    gasLimit;
-                                            mTxInfo.txDataUnion.getEthTxData1559()
-                                                            .maxPriorityFeePerGas =
-                                                    maxPriorityFeePerGas;
-                                            mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas =
-                                                    maxFeePerGas;
-                                            ethTxManagerProxy
-                                                    .setGasFeeAndLimitForUnapprovedTransaction(
-                                                            mTxInfo.chainId,
-                                                            mTxInfo.id,
-                                                            maxPriorityFeePerGas,
-                                                            maxFeePerGas,
-                                                            gasLimit,
-                                                            success -> {
-                                                                if (!success) {
-                                                                    return;
-                                                                }
-                                                                if (mUpdateTxObjectManually) {
-                                                                    setupView(view);
-                                                                }
-                                                                dialog.dismiss();
-                                                            });
-                                        }
-                                    }
-                                });
+                        radioGroup.check(mCheckedPriorityId);
+                        dialog.findViewById(R.id.maximum_fee_msg).setVisibility(View.VISIBLE);
                     }
+
+                    Button cancel = dialog.findViewById(R.id.cancel);
+                    cancel.setOnClickListener(
+                            v1 -> {
+                                mCheckedPriorityId = mPreviousCheckedPriorityId;
+                                dialog.dismiss();
+                            });
+                    Button ok = dialog.findViewById(R.id.ok);
+                    ok.setOnClickListener(
+                            v2 -> {
+                                mPreviousCheckedPriorityId = mCheckedPriorityId;
+                                EthTxManagerProxy ethTxManagerProxy = getEthTxManagerProxy();
+                                assert ethTxManagerProxy != null;
+                                if (!mParsedTx.getIsEIP1559Transaction()) {
+                                    EditText gasLimitEdit =
+                                            dialog.findViewById(R.id.gas_limit_edit);
+                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit =
+                                            Utils.toHexGWeiFromGWEI(
+                                                    gasLimitEdit.getText().toString());
+                                    EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
+                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice =
+                                            Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
+                                    ethTxManagerProxy.setGasPriceAndLimitForUnapprovedTransaction(
+                                            mTxInfo.chainId,
+                                            mTxInfo.id,
+                                            mTxInfo.txDataUnion.getEthTxData1559()
+                                                    .baseData
+                                                    .gasPrice,
+                                            mTxInfo.txDataUnion.getEthTxData1559()
+                                                    .baseData
+                                                    .gasLimit,
+                                            success -> {
+                                                if (!success) {
+                                                    return;
+                                                }
+                                                if (mUpdateTxObjectManually) {
+                                                    setupView(view);
+                                                }
+                                                dialog.dismiss();
+                                            });
+                                } else {
+                                    String gasLimit = mParsedTx.getGasLimit();
+                                    String maxPriorityFeePerGas =
+                                            mParsedTx.getMaxPriorityFeePerGas();
+                                    String maxFeePerGas = mParsedTx.getMaxFeePerGas();
+                                    if (mCheckedPriorityId == R.id.radio_low
+                                            && mTxInfo.txDataUnion.getEthTxData1559().gasEstimation
+                                                    != null) {
+                                        maxPriorityFeePerGas =
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                        .gasEstimation
+                                                        .slowMaxPriorityFeePerGas;
+                                        maxFeePerGas =
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                        .gasEstimation
+                                                        .slowMaxFeePerGas;
+                                    } else if (mCheckedPriorityId == R.id.radio_optimal
+                                            && mTxInfo.txDataUnion.getEthTxData1559().gasEstimation
+                                                    != null) {
+                                        maxPriorityFeePerGas =
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                        .gasEstimation
+                                                        .avgMaxPriorityFeePerGas;
+                                        maxFeePerGas =
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                        .gasEstimation
+                                                        .avgMaxFeePerGas;
+                                    } else if (mCheckedPriorityId == R.id.radio_high
+                                            && mTxInfo.txDataUnion.getEthTxData1559().gasEstimation
+                                                    != null) {
+                                        maxPriorityFeePerGas =
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                        .gasEstimation
+                                                        .fastMaxPriorityFeePerGas;
+                                        maxFeePerGas =
+                                                mTxInfo.txDataUnion.getEthTxData1559()
+                                                        .gasEstimation
+                                                        .fastMaxFeePerGas;
+                                    } else if (mCheckedPriorityId == R.id.radio_custom) {
+                                        EditText gasAmountLimitEdit =
+                                                dialog.findViewById(R.id.gas_amount_limit_edit);
+                                        EditText perGasTipLimitEdit =
+                                                dialog.findViewById(R.id.per_gas_tip_limit_edit);
+                                        EditText perGasPriceLimitEdit =
+                                                dialog.findViewById(R.id.per_gas_price_limit_edit);
+                                        gasLimit =
+                                                Utils.toHexGWeiFromGWEI(
+                                                        gasAmountLimitEdit.getText().toString());
+                                        maxPriorityFeePerGas =
+                                                Utils.toHexWei(
+                                                        perGasTipLimitEdit.getText().toString(), 9);
+                                        maxFeePerGas =
+                                                Utils.toHexWei(
+                                                        perGasPriceLimitEdit.getText().toString(),
+                                                        9);
+                                    }
+                                    mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit =
+                                            gasLimit;
+                                    mTxInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas =
+                                            maxPriorityFeePerGas;
+                                    mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas =
+                                            maxFeePerGas;
+                                    ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
+                                            mTxInfo.chainId,
+                                            mTxInfo.id,
+                                            maxPriorityFeePerGas,
+                                            maxFeePerGas,
+                                            gasLimit,
+                                            success -> {
+                                                if (!success) {
+                                                    return;
+                                                }
+                                                if (mUpdateTxObjectManually) {
+                                                    setupView(view);
+                                                }
+                                                dialog.dismiss();
+                                            });
+                                }
+                            });
                 });
 
         return view;
     }
 
-    private TextWatcherImpl filterEIP1559TextWatcher = new TextWatcherImpl();
+    private final TextWatcherImpl filterEIP1559TextWatcher = new TextWatcherImpl();
 
     private class TextWatcherImpl implements TextWatcher {
-        Dialog mDialog;
-        String mBaseFeePerGas;
+        @Nullable Dialog mDialog;
+        String mBaseFeePerGas = "0";
         boolean mIgnoreChange;
 
         public void setDialog(Dialog dialog, String baseFeePerGas) {
@@ -510,7 +455,9 @@ public class TxFragment extends Fragment {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (mIgnoreChange) {
                 mIgnoreChange = false;
-
+                return;
+            }
+            if (mDialog == null) {
                 return;
             }
             EditText gasAmountLimitEdit = mDialog.findViewById(R.id.gas_amount_limit_edit);
@@ -524,11 +471,12 @@ public class TxFragment extends Fragment {
                             String.format(
                                     Locale.getDefault(),
                                     "%.0f",
-                                    Double.valueOf(perGasTipLimit)
-                                            + Double.valueOf(mBaseFeePerGas));
+                                    Double.parseDouble(perGasTipLimit)
+                                            + Double.parseDouble(mBaseFeePerGas));
                     mIgnoreChange = true;
                     perGasPriceLimitEdit.setText(perGasPriceLimit);
-                } catch (NumberFormatException exc) {
+                } catch (NumberFormatException exception) {
+                    Log.e(TAG, "Error while parsing gas price limit.", exception);
                 }
             }
             if (gasAmountLimitEdit.hasFocus()
@@ -653,13 +601,16 @@ public class TxFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == START_ADVANCE_SETTING_ACTIVITY_CODE
-                && resultCode == Activity.RESULT_OK) {
+                && resultCode == Activity.RESULT_OK
+                && data != null) {
             String nonce =
                     data.getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE);
-            if (mParsedTx.getIsEIP1559Transaction()) {
-                mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce = nonce;
-            } else {
-                mTxInfo.txDataUnion.getEthTxData().nonce = nonce;
+            if (nonce != null) {
+                if (mParsedTx.getIsEIP1559Transaction()) {
+                    mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce = nonce;
+                } else {
+                    mTxInfo.txDataUnion.getEthTxData().nonce = nonce;
+                }
             }
         }
     }

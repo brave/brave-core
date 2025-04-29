@@ -40,8 +40,7 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private final boolean mUpdateTxObjectManually;
     private final long mSolanaEstimatedTxFee;
     private final Context mContext;
-    @Nullable
-    private Fragment mDetailsFragment;
+    @Nullable private Fragment mDetailsFragment;
 
     public ApproveTxFragmentPageAdapter(
             FragmentManager fm,
