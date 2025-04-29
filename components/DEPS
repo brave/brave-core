@@ -11,7 +11,7 @@ include_rules = [
   # these dependencies; see /components/README.
   "-ipc",
 
-  # Deprecated - use ui/base/l10n
+  # In most cases you want l10n_util - see comments in the source
   "-brave/components/l10n",
 ]
 

@@ -29,7 +29,7 @@ static_library("content") {
     "//components/user_prefs",
     "//content/public/browser",
     "//net",
-    "//url",
     "//ui/base",
+    "//url",
   ]
 }

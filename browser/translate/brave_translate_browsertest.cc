@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "base/files/file_path.h"
-#include "base/l10n/l10n_util.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
@@ -44,6 +43,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 using ::testing::_;

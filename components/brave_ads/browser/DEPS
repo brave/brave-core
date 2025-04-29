@@ -11,7 +11,7 @@ include_rules = [
 
 specific_include_rules = {
   "ads_service_impl\.cc": [
-    "!brave/components/l10n/common/country_code_util.h",
+    "+brave/components/l10n/common/country_code_util.h",
     "!brave/components/l10n/common/prefs.h",
   ],
 }

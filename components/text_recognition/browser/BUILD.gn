@@ -29,6 +29,7 @@ component("browser") {
     deps += [
       "//services/shape_detection:lib",
       "//services/shape_detection/public/mojom",
+      "//ui/base",
     ]
   }
 
