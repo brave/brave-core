@@ -15,6 +15,15 @@ const getTestBinary = (suite) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
+const getChromiumUnitTestsSuites = () => {
+  return [
+    'components_unittests',
+    'content_unittests',
+    'net_unittests',
+    'unit_tests',
+  ]
+}
+
 const getTestsToRun = (config, suite) => {
   let testsToRun = [suite]
   if (suite === 'brave_unit_tests') {
@@ -23,6 +32,8 @@ const getTestsToRun = (config, suite) => {
     }
   } else if (suite === 'brave_java_unit_tests') {
     testsToRun = ['bin/run_brave_java_unit_tests']
+  } else if (suite === 'chromium_unit_tests') {
+    testsToRun = getChromiumUnitTestsSuites()
   }
   return testsToRun
 }
@@ -76,6 +87,8 @@ const buildTests = async (suite, buildConfig = config.defaultBuildConfig, option
   ]
   if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
+  } else if (suite === 'chromium_unit_tests') {
+    config.buildTargets = getChromiumUnitTestsSuites()
   } else {
     config.buildTargets = [suite]
   }
@@ -127,20 +140,6 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   braveArgs = braveArgs.concat(passthroughArgs)
 
-  // Filter out upstream tests that are known to fail for Brave
-  let upstreamTestSuites = [
-    'unit_tests',
-    'browser_tests',
-  ]
-  if (upstreamTestSuites.includes(suite)) {
-    let filterFilePaths = getApplicableFilters(suite)
-    if (filterFilePaths.length > 0)
-      braveArgs.push(`--test-launcher-filter-file="${filterFilePaths.join(';')}"`)
-    if (config.isTeamcity) {
-      braveArgs.push('--test-launcher-teamcity-reporter-ignore-preliminary-failures')
-    }
-  }
-
   if (
     suite === 'brave_unit_tests' &&
     config.isTeamcity &&
@@ -157,10 +156,40 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       path.join(config.outputDir, `${suite}.app/PlugIns/${suite}_module.xctest`)
     ], config.defaultOptions)
   } else {
+    const upstreamTestSuites = [
+      'browser_tests',
+       ...getChromiumUnitTestsSuites()
+    ]
     // Run the tests
     getTestsToRun(config, suite).every((testSuite) => {
+      // Filter out upstream tests that are known to fail for Brave
+      if (upstreamTestSuites.includes(testSuite)) {
+        const previousFilters = braveArgs.findIndex((arg) => {
+            return arg.startsWith('--test-launcher-filter-file=')
+        })
+        if (previousFilters !== -1) {
+            braveArgs.splice(previousFilters, 1)
+        }
+        const filterFilePaths = getApplicableFilters(testSuite)
+        if (filterFilePaths.length > 0) {
+          braveArgs.push(
+              `--test-launcher-filter-file="${filterFilePaths.join(';')}"`)
+        }
+        if (config.isTeamcity) {
+          const ignorePreliminaryFailures =
+            '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
+          if (braveArgs.indexOf(ignorePreliminaryFailures) === -1) {
+            braveArgs.push(ignorePreliminaryFailures)
+          }
+        }
+      }
       if (options.output) {
-        braveArgs.splice(braveArgs.indexOf('--gtest_output=xml:' + options.output), 1)
+        const previousOutput = braveArgs.findIndex((arg) => {
+            return arg.startsWith('--gtest_output=xml:')
+        })
+        if (previousOutput !== -1) {
+            braveArgs.splice(previousOutput, 1)
+        }
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
       if (config.targetOS === 'android') {
