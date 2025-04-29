@@ -32,7 +32,7 @@ SplitViewTabTileData::SplitViewTabTileData(
 SplitViewTabTileData::~SplitViewTabTileData() {
   // base::ObserverList is safe to be mutated during iteration.
   for (auto& observer : observers_) {
-    observer.OnWillDeleteBrowserData();
+    observer.OnWillDeleteTabTileData();
   }
 }
 

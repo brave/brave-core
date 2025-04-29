@@ -16,7 +16,7 @@ class SplitViewTabTileDataObserver : public base::CheckedObserver {
   virtual void OnWillBreakTile(const TabTile& tile) {}
   virtual void OnDidBreakTile(const TabTile& tile) {}
   virtual void OnSwapTabsInTile(const TabTile& tile) {}
-  virtual void OnWillDeleteBrowserData() {}
+  virtual void OnWillDeleteTabTileData() {}
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_OBSERVER_H_

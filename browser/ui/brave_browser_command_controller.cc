@@ -151,7 +151,7 @@ void BraveBrowserCommandController::OnWillBreakTile(const TabTile& tile) {
   UpdateCommandForSplitView();
 }
 
-void BraveBrowserCommandController::OnWillDeleteBrowserData() {
+void BraveBrowserCommandController::OnWillDeleteTabTileData() {
   split_view_tab_tile_data_observation_.Reset();
 }
 
