@@ -80,7 +80,6 @@
 TEST(FeatureDefaultsTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
-      &kOutlineSilhouetteIcon,
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
 #if BUILDFLAG(IS_ANDROID)
       &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
