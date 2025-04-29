@@ -22,7 +22,7 @@ std::string GetPrefixedProtobuf(const std::string& serialized_proto) {
   std::string result(kGrpcHeaderSize, 0);
   result[0] = kNoCompression;
   base::as_writable_byte_span(result).subspan<1u, 4u>().copy_from(
-      base::numerics::U32ToBigEndian(serialized_proto.size()));
+      base::U32ToBigEndian(serialized_proto.size()));
   result.append(serialized_proto);
   return result;
 }
@@ -36,7 +36,7 @@ std::optional<std::string> ResolveSerializedMessage(
     // Compression is not supported yet
     return std::nullopt;
   }
-  uint32_t size = base::numerics::U32FromBigEndian(
+  uint32_t size = base::U32FromBigEndian(
       base::as_byte_span(grpc_response_body).subspan<1, 4u>());
 
   if (grpc_response_body.size() != size + kGrpcHeaderSize) {
