@@ -51,10 +51,6 @@ export class RemoteMappingService implements MappingService {
   cancelAccountRequest(): Promise<void> {
     return Promise.resolve()
   }
-  async closeBubble(): Promise<void> {
-    // TODO: remove this once we have a real implementation
-    return Promise.resolve()
-  }
   async fillField(_fieldValue: string): Promise<void> {
     // TODO: remove this once we have a real implementation
     return Promise.resolve()

@@ -245,20 +245,4 @@ export const mount = (at: HTMLElement) => {
   )
 }
 
-export const mountModal = (at: HTMLElement) => {
-  const root = createRoot(at);
-  const mappingService = new RemoteMappingService()
-  root.render(
-    <StyleSheetManager target={at}>
-      <EmailAliasModal
-        onReturnToMain={mappingService.closeBubble}
-        bubble
-        viewState={{ mode: 'Create' }}
-        email='test@test.com'
-        mappingService={mappingService} />
-    </StyleSheetManager>
-  )
-}
-
   ; (window as any).mountEmailAliases = mount
-  ; (window as any).mountEmailAliasesModal = mountModal
