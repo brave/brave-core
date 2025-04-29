@@ -99,11 +99,16 @@ include_rules += [
   "+brave/components/search_engines",
   "+brave/components/webcompat_reporter/common",
   "+brave/components/sidebar/browser",
-  "+brave/components/l10n/common",
 ]
 
 specific_include_rules = {
   "brave_browser_main_parts\.h": [
     "+src/chrome/browser/chrome_browser_main.h",
-  ]
+  ],
+  "brave_local_state_prefs\.cc": [
+    "!brave/components/l10n/common/prefs.h",
+  ],
+  ".*test.*\.cc": [
+    "!brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
 }
