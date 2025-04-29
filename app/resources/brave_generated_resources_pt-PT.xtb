@@ -317,10 +317,17 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8813509417421129632">Uma página incorporada em <ph name="SITE"/> quer guardar</translation>
 <translation id="7700010743463174379">Esta página quer guardar</translation>
 <translation id="6774238875569752630">Uma página incorporada nesta página quer guardar</translation>
+<translation id="1233913566967531780">Foco no separador</translation>
+<translation id="4034992002364254340">Reúna todos os separadores relacionados numa nova janela</translation>
+<translation id="8012125596344613514">Tópicos sugeridos</translation>
+<translation id="7529120186020617755">Introduza um tópico para se concentrar...</translation>
 <translation id="6847541693235449912">Abrir</translation>
 <translation id="2079545284768500474">Anular</translation>
+<translation id="1533980864758658574">Nova janela criada para <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Esta funcionalidade envia dados sobre os seus separadores abertos para o Leo, o assistente de navegação AI do Brave.</translation>
 <translation id="6165508094623778733">Saiba mais</translation>
 <translation id="7557539689487606886">Atualizar para Premium</translation>
+<translation id="1035309871698658326">Ao abrir, isto enviará automaticamente os títulos e a origem de todos os separadores não privados para o Leo, para que ele os classifique.</translation>
 <translation id="3435896845095436175">Ativar</translation>
 <translation id="9156965752763025780">As alterações serão aplicadas da próxima vez que reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Relançar Agora</translation>
@@ -358,6 +365,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2396127686705429331">Mostrar botão de marcadores</translation>
 <translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="4109670531935487117">Exibir sugestões de preenchimento automático na barra de endereço</translation>
+<translation id="3405901785709583668">Sugestões principais</translation>
 <translation id="7859704718976024901">Histórico de navegação</translation>
 <translation id="8820817407110198400">Barra de marcadores</translation>
 <translation id="4144468798716165316">Comandos rápidos</translation>
@@ -715,6 +723,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2751872555001636931">Mostrar o ícone Leo na barra lateral</translation>
 <translation id="8055509865174199683">Mostrar o Leo no menu de contexto em sites</translation>
 <translation id="1529674267267221673">O Leo aparecerá no menu de contexto quando clicar com o botão direito do rato num site. Isto irá enviar o contexto da página web em que se encontra para o Leo.</translation>
+<translation id="5226020406479918122">Modo de Foco no Separador</translation>
+<translation id="3705539672403311123">Ativar a organização de separadores na página de Pesquisa de Separadores. Ao abrir, isto enviará automaticamente os títulos e as origens de todos os separadores não privados para o Leo, para que ele os classifique. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar sugestões na conversa</translation>
 <translation id="5781842473834867765">Guardar o meu histórico de conversas</translation>
 <translation id="1082960401708055995">Desativar o armazenamento de conversas irá eliminar permanentemente todas as conversas anteriormente guardadas. Esta ação não pode ser revertida.</translation>
@@ -723,6 +733,9 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="5574059574002819179">Ajustar sugestões de preenchimento automático</translation>
 <translation id="7942415993090181327">Histórico de conversas</translation>
+<translation id="5385064007245738696">Sobre o Leo AI</translation>
+<translation id="5084498230659987096">O Brave Leo oferece chat AI com prioridade para a privacidade e outras interfaces AI integradas no navegador. O Leo nunca aprende com os seus dados ou os utiliza para treinar modelos. Todos os pedidos são encaminhados através de um servidor anónimo.</translation>
+<translation id="6458721693611638005">Leia mais sobre como o Brave protege o seu uso de AI na política de privacidade do Leo. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modelo predefinido para novas conversas</translation>
 <translation id="8826914609353373601">Gerir assinatura premium</translation>
 <translation id="235457946228076038">Insira o seu próprio modelo</translation>
@@ -733,6 +746,8 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="3553035516792776805">Nome da solicitação do modelo</translation>
 <translation id="7634775528597575156">Ponto final do servidor</translation>
 <translation id="6374563306438145841">Chave de API</translation>
+<translation id="3295756655687327124">Apoio de Visão</translation>
+<translation id="1415432774589088566">Se este modelo utilizar imagem como entrada, por exemplo, llama 3.2b vision</translation>
 <translation id="8008271349880309090">O nome do modelo como será exibido no menu de seleção de modelos</translation>
 <translation id="1355326130503900056">O nome do modelo tal como deve aparecer no pedido à estrutura de serviço, por exemplo, phi-3 (note que se este nome não corresponder exatamente ao que é esperado pela estrutura de serviço, a integração não funcionará)</translation>
 <translation id="3213787232304349732">O URL onde o seu framework de serviço está a aguardar solicitações. Se não tiver a certeza, consulte a documentação do framework de serviço. Por exemplo, para Ollama, é sempre http://localhost:11434/v1/chat/completions</translation>
