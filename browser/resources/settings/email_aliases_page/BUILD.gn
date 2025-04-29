@@ -6,19 +6,14 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("email_aliases_ui") {
+  generate_grdp = true
+
   entry_points = [ [
         "email_aliases",
         rebase_path("email_aliases.tsx"),
       ] ]
 
   resource_name = "email_aliases"
-}
-
-pack_web_resources("generated_resources") {
-  resource_name = "email_aliases"
-  output_dir =
-      "$root_gen_dir/brave/browser/resources/settings/email_aliases_page"
-  deps = [ ":email_aliases_ui" ]
 }
 
 static_library("features") {
