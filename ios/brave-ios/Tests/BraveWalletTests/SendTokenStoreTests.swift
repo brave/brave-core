@@ -133,6 +133,18 @@ class SendTokenStoreTests: XCTestCase {
     }
 
     let zcashWalletService = BraveWallet.TestZCashWalletService()
+    zcashWalletService._balance = { _, _, completion in
+      completion(
+        .init(
+          totalBalance: 1_000_000,
+          transparentBalance: 1_000_000,
+          shieldedBalance: 0,
+          shieldedPendingBalance: 0,
+          balances: [:]
+        ),
+        nil
+      )
+    }
 
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getUserAssets = { _, _ in
@@ -705,6 +717,37 @@ class SendTokenStoreTests: XCTestCase {
     store.selectedSendToken = .mockBTCToken
     let ex = expectation(description: "send-btc-transaction")
     store.sendToken(amount: "0.0005") { success, _ in
+      defer { ex.fulfill() }
+      XCTAssertTrue(success)
+    }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+
+  func testMakeSendZecTransaction() {
+    let (
+      keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
+      bitcoinWalletService, zcashWalletService, mockAssetManager
+    ) = setupServices(selectedAccount: .mockZcashAccount)
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      assetRatioService: MockAssetRatioService(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
+      prefilledToken: .mockZecToken,
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
+    )
+    store.selectedSendToken = .mockZecToken
+    let ex = expectation(description: "send-zec-transaction")
+    store.sendToken(amount: "0.0001") { success, _ in
       defer { ex.fulfill() }
       XCTAssertTrue(success)
     }
