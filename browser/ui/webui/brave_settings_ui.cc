@@ -16,7 +16,6 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
-#include "brave/browser/resources/settings/shortcuts_page/grit/commands_generated_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -123,15 +122,6 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
   html_source->AddResourcePaths(kBraveSettingsResources);
-
-  // These resource files are generated from the files in
-  // brave/browser/resources/settings/shortcuts_page
-  // They are generated separately so they can use React and our Leo
-  // components, and the React DOM is mounted inside a Web Component, so it
-  // doesn't interfere with the Polymer tree/styles.
-  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    html_source->AddResourcePaths(kCommandsGenerated);
-  }
 
   html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
   html_source->AddString(
