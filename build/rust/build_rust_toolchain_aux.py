@@ -8,7 +8,6 @@ import argparse
 import os
 from pathlib import Path
 import platform
-import re
 import subprocess
 import sys
 import tarfile
@@ -18,7 +17,8 @@ import brave_chromium_utils
 CONFIG_TOML_TEMPLATE = 'config.toml.template'
 TOOLS_RUST = '//tools/rust'
 
-RUST_LLD = 'rust-lld' + ('.exe' if sys.platform == 'win32' else '')
+LLD = 'lld' + ('.exe' if sys.platform == 'win32' else '')
+RUST_LLD = f'rust-{LLD}'
 WASM32_UNKNOWN_UNKNOWN = 'wasm32-unknown-unknown'
 
 def restore_config_toml_template():
@@ -31,34 +31,10 @@ def restore_config_toml_template():
     subprocess.check_call(args)
 
 
-# In config.toml.template, replace
-# ...
-# [rust]
-# ...
-# with
-# ...
-# [target.wasm32-unknown-unknown]
-# profiler = false
-# [rust]
-# lld = true
-# ...
-# that is:
-# - disable the profiler for the wasm32-unknown-unknown target
-# - enable building rust-lld
+# Disable the profiler for the wasm32-unknown-unknown target.
 def edit_config_toml_template():
-    with open(CONFIG_TOML_TEMPLATE, 'r+') as file:
-        rust_header = '[rust]'
-        updated, count = re.subn(
-            fr'^({re.escape(rust_header)})$',
-            r'[target.wasm32-unknown-unknown]\nprofiler = false\n\1\nlld = true',
-            file.read(),
-            flags=re.MULTILINE)
-        if count != 1:
-            raise RuntimeError(
-                f"Couldn't find the {rust_header} header in {CONFIG_TOML_TEMPLATE}!"
-            )
-        file.seek(0)
-        file.write(updated)
+    with open(CONFIG_TOML_TEMPLATE, 'a') as file:
+        file.write('\n[target.wasm32-unknown-unknown]\nprofiler = false\n')
 
 
 def prepare_run_xpy():
@@ -104,8 +80,8 @@ def create_archive():
                                           'rustlib')
 
         with tarfile.open(package_name(), 'w:xz') as tar:
-            tar.add(os.path.join(stage1_output_path, target_triple, 'bin',
-                                 RUST_LLD),
+            tar.add(os.path.join(build_rust.RUST_HOST_LLVM_INSTALL_DIR, 'bin',
+                                 LLD),
                     arcname=RUST_LLD)
             tar.add(os.path.join(stage1_output_path, WASM32_UNKNOWN_UNKNOWN),
                     arcname=WASM32_UNKNOWN_UNKNOWN)
