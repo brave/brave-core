@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <!-- supplemental strings for the upstream app_management strings -->
+  <message name="IDS_APP_MANAGEMENT_OPEN_MODE" desc="Label for changing open mode.">
+    Open mode
+  </message>
+  <message name="IDS_APP_MANAGEMENT_TABBED_WINDOW" desc="Label for opening the PWA in a new tabbed PWA window.">
+    Open as tabbed window
+  </message>
+  <message name="IDS_APP_MANAGEMENT_BROWSER" desc="Label for opening the PWA in a new browser tab.">
+    Open in browser
+  </message>
+</grit-part>

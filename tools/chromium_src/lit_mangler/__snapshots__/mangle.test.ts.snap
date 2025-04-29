@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/app_settings/window_mode_item.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/app_settings/window_mode_item.html.ts
++++ gen/chrome/browser/resources/app_settings/preprocessed/window_mode_item.html.ts
+@@ -3,11 +3,16 @@
+ import type {WindowModeItemElement} from './window_mode_item.js';
+ 
+ export function getHtml(this: WindowModeItemElement) {
+   return html\`<!--_html_template_start_-->
+-<app-management-toggle-row
+-    id=\\"toggle-row\\"
+-    label=\\"\${this.windowModeLabel}\\"
+-    ?value=\\"\${this.getValue_()}\\">
+-</app-management-toggle-row>
++<div ?hidden=\\"\${this.app.hideWindowMode}\\">
++    <div class=\\"permission-section-header\\">
++      <div class=\\"header-text\\">$i18n{appManagementOpenModeLabel}</div>
++    </div>
++    <div class=\\"permission-list indented-permission-block\\">
++      \${this.windowModes.map(mode => html\`<leo-radiobutton class=\\"subpermission-row\\" name=\\"window-mode\\" @change=\\"\${this.onChange}\\" value=\\"\${mode.value}\\" currentvalue=\\"\${this.app.windowMode}\\">
++        \${mode.label}
++      </leo-radiobutton>\`)}
++    </div>
++  </div>
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/detail_view.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts

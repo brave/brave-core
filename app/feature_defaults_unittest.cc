@@ -266,6 +266,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
       &features::kCertificateTransparencyAskBeforeEnabling,
+      &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
