@@ -1044,7 +1044,18 @@ void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
                                  GetFocusTabsCallback callback) {
   GetEngineForTabOrganization(base::BindOnce(
       &AIChatService::GetFocusTabsWithEngine, weak_ptr_factory_.GetWeakPtr(),
-      tabs, topic, std::move(callback)));
+      tabs, topic,
+      base::BindOnce(&AIChatService::OnGetFocusTabs,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+}
+
+void AIChatService::OnGetFocusTabs(
+    GetFocusTabsCallback callback,
+    base::expected<std::vector<std::string>, mojom::APIError> result) {
+  if (ai_chat_metrics_ && result.has_value() && !result->empty()) {
+    ai_chat_metrics_->tab_focus_metrics()->RecordUsage(result.value().size());
+  }
+  std::move(callback).Run(std::move(result));
 }
 
 void AIChatService::GetEngineForTabOrganization(base::OnceClosure callback) {

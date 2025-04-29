@@ -16,8 +16,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -515,10 +515,16 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   if (item_model.open_in_panel) {
     if (item_model.built_in_item_type ==
         sidebar::SidebarItem::BuiltInItemType::kChatUI) {
-      ai_chat::AIChatMetrics* metrics =
-          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
-      CHECK(metrics);
-      metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kSidebar);
+      auto* profile_metrics =
+          misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+              browser_->profile());
+      if (profile_metrics) {
+        auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+        if (ai_chat_metrics) {
+          ai_chat_metrics->HandleOpenViaEntryPoint(
+              ai_chat::EntryPoint::kSidebar);
+        }
+      }
     }
     controller->ActivatePanelItem(item_model.built_in_item_type);
     return;

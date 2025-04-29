@@ -5,10 +5,12 @@
 
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 
+#include <string>
+
 #include "base/check_is_test.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -75,12 +77,12 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
   // Record initial search count p3a value.
   RecordSearchEventP3A();
 
-  if (g_brave_browser_process->process_misc_metrics()) {
-    ai_chat_metrics_ =
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  if (profile_metrics) {
+    ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
     CHECK(ai_chat_metrics_);
-  } else {
-    CHECK_IS_TEST();
   }
 
   pref_change_registrar_.Init(profile_->GetPrefs());

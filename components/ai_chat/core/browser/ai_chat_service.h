@@ -283,6 +283,9 @@ class AIChatService : public KeyedService,
   void OnSuggestedTopicsReceived(
       GetSuggestedTopicsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> topics);
+  void OnGetFocusTabs(
+      GetFocusTabsCallback callback,
+      base::expected<std::vector<std::string>, mojom::APIError> result);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
