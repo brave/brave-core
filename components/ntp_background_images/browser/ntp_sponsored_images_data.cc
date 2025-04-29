@@ -155,8 +155,8 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     grace_period = base::TimeDeltaFromString(*value);
   }
 
-  if (const base::Value::List* campaigns_value = dict.FindList(kCampaignsKey)) {
-    ParseCampaigns(*campaigns_value, installed_dir);
+  if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {
+    ParseCampaigns(*value, installed_dir);
   }
 
   ParseSuperReferrals(dict, installed_dir);

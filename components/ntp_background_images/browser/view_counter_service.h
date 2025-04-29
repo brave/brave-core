@@ -31,6 +31,11 @@ class PrefService;
 
 class GURL;
 
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
+
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
@@ -181,8 +186,12 @@ class ViewCounterService : public KeyedService,
   void ParseAndSaveNewTabPageAdsCallback(bool success);
 
   void ResetNotificationState();
+  bool IsShowBackgroundImageOptedIn() const;
   bool IsSponsoredImagesWallpaperOptedIn() const;
   bool IsSuperReferralWallpaperOptedIn() const;
+
+  base::Time GracePeriodEndAt(base::TimeDelta grace_period) const;
+  bool HasGracePeriodEnded(const NTPSponsoredImagesData* images_data) const;
 
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
