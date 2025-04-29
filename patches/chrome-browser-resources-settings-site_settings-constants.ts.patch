@@ -6,7 +6,7 @@ index fdf37b444421e034e0c234b9c74debcc29a28a36..2be4dfdbc205ebd75f36a4d200447fd4
    PDF_DOCUMENTS = 'pdfDocuments',
    SITE_DATA = 'site-data',
    OFFER_WRITING_HELP = 'offer-writing-help',
-+  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', BRAVE_SHIELDS = 'braveShields', GOOGLE_SIGN_IN = 'googleSignIn', LOCALHOST_ACCESS = 'localhostAccess', BRAVE_OPEN_AI_CHAT = 'braveOpenAIChat'
++  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', BRAVE_SHIELDS = 'braveShields', GOOGLE_SIGN_IN = 'googleSignIn', LOCALHOST_ACCESS = 'localhostAccess', BRAVE_OPEN_AI_CHAT = 'braveOpenAIChat', EMAIL_ALIASES = 'emailAliases'
  }
  
  /**

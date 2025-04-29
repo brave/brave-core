@@ -183,6 +183,7 @@ RegisterPolymerComponentReplacement(
               currentIndex++
               const emailAliasesItem = {
                 route: routes.EMAIL_ALIASES,
+                id: ContentSettingsTypes.EMAIL_ALIASES,
                 label: 'siteSettingsEmailAliases',
                 icon: 'product-email-aliases',
                 enabledLabel: 'siteSettingsEmailAliasesAsk',
