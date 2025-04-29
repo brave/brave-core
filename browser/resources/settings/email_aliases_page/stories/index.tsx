@@ -156,10 +156,6 @@ class MockMappingService implements MappingService {
     this.accountState = 'NoAccount'
   }
 
-  async closeBubble () {
-    console.log("closeBubble")
-  }
-
   async fillField (fieldValue: string) {
     console.log("fillField", fieldValue)
   }

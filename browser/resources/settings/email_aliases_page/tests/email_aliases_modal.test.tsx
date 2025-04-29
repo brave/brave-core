@@ -25,7 +25,6 @@ const mockMappingService: MappingService = {
   generateAlias: jest.fn(),
   onAccountReady: jest.fn(),
   cancelAccountRequest: jest.fn(),
-  closeBubble: jest.fn(),
   fillField: jest.fn(),
   showSettingsPage: jest.fn()
 }

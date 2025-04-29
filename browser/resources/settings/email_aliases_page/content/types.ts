@@ -34,7 +34,6 @@ export interface MappingService {
   onAccountReady (): Promise<boolean>
   cancelAccountRequest (): Promise<void>
   logout (): Promise<void>
-  closeBubble (): Promise<void>
   fillField(fieldValue: string): Promise<void>
   showSettingsPage(): Promise<void>
 }
