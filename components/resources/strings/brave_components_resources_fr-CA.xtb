@@ -124,6 +124,7 @@
 <translation id="730042046912793465">Voici un</translation>
 <translation id="2055363275850890030">Fenêtre privée</translation>
 <translation id="9133213713928851646">Brave n'enregistre pas vos activités dans les fenêtres privées. Les sites que vous visitez n'apparaîtront pas dans votre historique et vos témoins de connexion disparaîtront quand vous aurez fini. La navigation privée ne vous rend pas tout à fait anonyme par contre.</translation>
+<translation id="4491905831789757331">Brave ne se souvient jamais de ce que vous faites dans une fenêtre de navigation privée. Les sites que vous consultez n’apparaîtront pas dans votre historique. Les cookies, les données de formulaire et les données de site disparaissent lorsque vous fermez toutes les fenêtres de navigation privée.</translation>
 <translation id="1700746046668116047">Notez que votre activité pourrait toujours être visible par votre fournisseur d'accès à Internet, les observateurs passifs du réseau ou votre employeur (si vous utilisez une machine ou un réseau professionnel). Pour plus de confidentialité, ouvrez une fenêtre privée avec Tor.</translation>
 <translation id="8759753423332885148">En savoir plus.</translation>
 <translation id="8611976753572844841">Fenêtre privée avec la connectivité Tor</translation>
@@ -2103,6 +2104,7 @@
 <translation id="4567071417854988869">Résumer cette vidéo</translation>
 <translation id="7921782882718083488">Résumer cette page</translation>
 <translation id="7932221068776853847">Se déconnecter pour ne plus envoyer le contenu de cette page à Leo et entamer une nouvelle conversation</translation>
+<translation id="8743383817154663379">Un problème est survenu lors du traitement de votre demande. Veuillez réessayer.</translation>
 <translation id="2712650703044366764">Ce modèle a un point de terminaison invalide. Veuillez vérifier votre configuration et réessayer.</translation>
 <translation id="1167803637855350748">Un problème réseau s'est produit lors de la connexion à Leo. Vérifiez votre connexion et réessayez.</translation>
 <translation id="1996126325390835277">Vous avez atteint la limite de taux premium. Veuillez réessayer dans quelques heures.</translation>
@@ -2110,6 +2112,13 @@
 <translation id="7692501701960747469">La clé API configurée pour ce modèle est invalide. Veuillez vérifier votre configuration et réessayer.</translation>
 <translation id="7905602379229309187">Le point de terminaison est actuellement surchargé. Veuillez réessayer plus tard.</translation>
 <translation id="8151638057146502721">Configurer</translation>
+<translation id="3282183392203936979">Bonjour, je suis Leo, un assistant IA hébergé et fourni par Brave. Basé sur Llama 3.1 8B, un modèle développé par Meta, je suis conçu pour vous offrir des performances optimales et vous assister dans diverses tâches. Le modèle Llama est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">Bonjour, je suis Leo, un assistant IA hébergé et fourni par Brave. Basé sur Qwen 14B, un modèle développé par Alibaba Cloud, je suis conçu pour vous offrir des performances optimales et vous assister dans diverses tâches. Le modèle Qwen est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">Bonjour, je suis Leo, un assistant IA hébergé et fourni par Brave. Basé sur Mixtral 8x7B, un modèle développé par Mistral AI, je suis conçu pour vous assister dans des tâches complexes. Le modèle Mixtral est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/>.</translation>
+<translation id="2575216739207798060">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte hébergé par Brave et basé sur Claude Instant, un modèle créé par Anthropic. Le modèle Claude Instant est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte hébergé par Brave et basé sur Claude Haiku, un modèle créé par Anthropic. Le modèle Claude Haiku est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte hébergé par Brave et basé sur Claude Sonnet, un modèle créé par Anthropic. Le modèle Claude Sonnet est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">Bonjour, je suis Leo, un assistant IA hébergé et fourni par Brave. Basé sur Llama Vision, un modèle développé par Meta, je suis conçu pour vous offrir des performances optimales et vous assister dans diverses tâches. Le modèle Llama Vision est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Clavardage</translation>
 <translation id="4685048769603134644">Ouvrir la page entière</translation>
@@ -2172,6 +2181,7 @@
 <translation id="8650874793377330048">Arrêter de répondre</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="1093419424466417703">Cette page est trop longue pour Leo. Certaines données contextuelles risquent de ne pas avoir été prises en compte. Leo est parvenu à lire <ph name="PERCENTAGE"/> du contenu de la page.</translation>
+<translation id="4592293425457329338">Certaines informations contextuelles risquent de ne pas avoir été prises en compte. Leo est parvenu à lire <ph name="PERCENTAGE"/> du contenu de la page associé à la conversation.</translation>
 <translation id="2186990448773134544">Le contenu de la page a été affiné en extrayant les renseignements les plus pertinents de la page, car il était trop long pour Leo.</translation>
 <translation id="5140068729857132378">Recherche des parties pertinentes de la page Web…</translation>
 <translation id="4370698775470316661">Cette conversation est trop longue et ne peut pas se poursuivre. Il est possible qu'il existe d'autres modèles avec lesquels Leo peut maintenir l'exactitude pendant des conversations plus longues.</translation>
@@ -2193,6 +2203,7 @@
 <translation id="7979673624064378842">Discussion ultra-rapide</translation>
 <translation id="2836330653441111204">L'équilibre parfait entre vitesse et intelligence</translation>
 <translation id="6695329447007213917">Discussions générales, codage, etc.</translation>
+<translation id="5051668914970329839">Analyse d'images</translation>
 <translation id="3965507912994218570">Paramètres de Leo</translation>
 <translation id="1037324977127422019">Bonjour, je m'appelle Leo!</translation>
 <translation id="8930348081963284873">Un assistant intelligent optimisé par l'IA, directement intégré à Brave.</translation>
@@ -2228,13 +2239,27 @@
 <translation id="6320643499534852464">Réseaux sociaux</translation>
 <translation id="2370739752330685659">Peut-être plus tard</translation>
 <translation id="983013125018250242">Outils Leo</translation>
+<translation id="7623223587478473368">Pièce jointe</translation>
+<translation id="3777121685517940177">Importer un fichier…</translation>
+<translation id="9088751620363630236">Prendre une photo…</translation>
+<translation id="4250229828105606438">Capture d'écran</translation>
+<translation id="6332876390231524389">Contenu de l'onglet actuel</translation>
 <translation id="49269513399674318">Utiliser le micro</translation>
 <translation id="3895031624234442305">Modèles personnalisés</translation>
 <translation id="4572010449071015143">Démarrer une nouvelle conversation</translation>
 <translation id="345901077335355561">Revenir à la conversation en cours</translation>
 <translation id="6287023598025162715">Nouvelle conversation</translation>
+<translation id="8370801182970639038">Automatique (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Moteurs de recherche activés</translation>
+<translation id="5355776323718420036">Masquer mes sites</translation>
 <translation id="6543799171249004861">Photo de <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">Recherchez avec Brave</translation>
+<translation id="6851426306697017546">Afficher l'horloge</translation>
+<translation id="4844370919312937270">Afficher le widget du moteur de recherche dans les nouveaux onglets</translation>
+<translation id="5009354496127441090">Afficher mes sites</translation>
+<translation id="4784802981241664605">Statistiques</translation>
 <translation id="4290791698375397492">Site principal retiré</translation>
+<translation id="1436784010935106834">Supprimé</translation>
 <translation id="9030215177866748410">Les sites populaires sont suggérés en fonction des sites que vous visitez souvent.</translation>
 <translation id="6303294677342628402">Boucliers</translation>
 <translation id="8458987127502506209">Activer les boucliers Brave</translation>
@@ -2248,6 +2273,7 @@
 <translation id="5799940914270080805">La modification de ces paramètres peut empêcher certains sites de fonctionner.</translation>
 <translation id="9204041448536398473">Paramètres globaux des boucliers</translation>
 <translation id="2108334320919763866">Réglages par défaut globaux</translation>
+<translation id="7205939464631857223">Effacer tous les éléments bloqués</translation>
 <translation id="3440043456924990296">Paramètres gérés par l'organisation</translation>
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="5716230673298034837">Autoriser tous</translation>

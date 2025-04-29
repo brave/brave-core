@@ -246,7 +246,6 @@ Samo neko ko ima pristupnu frazu može da čita šifrovane podatke. Pristupna fr
 <translation id="2172905120685242547">Želite da zatvorite prozor?</translation>
 <translation id="2173302385160625112">Proverite internet vezu</translation>
 <translation id="2175927920773552910">QR kôd</translation>
-<translation id="1203189419326478388">Prikažite ili sakrijte traku sa obeleživačima</translation>
 <translation id="2184272387334793084">Prijavite se da biste pristupali lozinkama i drugom sadržaju na svim uređajima</translation>
 <translation id="218608176142494674">Deljenje</translation>
 <translation id="219283042927675668">Kartice u grupi</translation>
@@ -265,7 +264,6 @@ Samo neko ko ima pristupnu frazu može da čita šifrovane podatke. Pristupna fr
 <translation id="2259659629660284697">Izvezi lozinke…</translation>
 <translation id="781982477617612877">Prijavite se na Brave nalog da biste proverili lozinke</translation>
 <translation id="2278052315791335171">Brisanjem ove lozinke nećete izbrisati nalog na <ph name="SITE"/></translation>
-<translation id="1315014485411054095"><ph name="TAB_TITLE"/>, izabrana kartica bez arhiviranja</translation>
 <translation id="2286841657746966508">Adresa za naplatu</translation>
 <translation id="228704530595896923">Lista opcija za deljenje.</translation>
 <translation id="2287421207599770907">{NUMBER_OF_TABS,plural, =1{Prikaži <ph name="TABS_COUNT_ONE"/> karticu}one{Prikaži <ph name="TABS_COUNT_MANY"/> karticu}few{Prikaži <ph name="TABS_COUNT_MANY"/> kartice}other{Prikaži <ph name="TABS_COUNT_MANY"/> kartica}}</translation>
@@ -516,7 +514,6 @@ Samo neko ko ima pristupnu frazu može da čita šifrovane podatke. Pristupna fr
 <translation id="3474624961160222204">Nastavi kao <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Možete da odaberete pretraživač</translation>
 <translation id="3479552764303398839">Ne sada</translation>
-<translation id="5270319788820204019">Pretražujte pomoću tastature, glasa, bez arhiviranja ili kamerom</translation>
 <translation id="6165882953768534820">Izvezeni fajl može da bude dostupan drugima, uključujući aplikacije. Kada ih izvezete, lozinke se brišu iz Brave-a.</translation>
 <translation id="3488199663160411179">ime</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o predloženom sadržaju</translation>
@@ -1806,7 +1803,6 @@ Da biste promenili ovo podešavanje, <ph name="BEGIN_LINK"/>izbrišite Brave pod
 <translation id="987264212798334818">Opšte</translation>
 <translation id="992745192656291733"><ph name="TAB_COUNT"/> kartice/a</translation>
 <translation id="996149300115483134">Meni kartice fida je zatvoren</translation>
-<translation id="4639461638460276789"><ph name="TAB_TITLE"/>, kartica bez arhiviranja</translation>
 <translation id="5186185447130319458">Privatni režim</translation>
 <translation id="79269250264141507">Kada kucate u traku za adresu ili polje za pretragu, Brave šalje to što unosite u vaš podrazumevani pretraživač da biste dobili bolje predloge. To je isključeno u privatnom režimu.</translation>
 <translation id="5711390076756601471">Zaključajte privatne kartice kada zatvorite Brave</translation>
@@ -1835,7 +1831,10 @@ Da biste promenili ovo podešavanje, <ph name="BEGIN_LINK"/>izbrišite Brave pod
 <translation id="4968908871398201967">Privatni režim</translation>
 <translation id="8448127664493413656">Otvori privatni režim</translation>
 <translation id="6484416399492735324">Zatvori privatni režim</translation>
+<translation id="4639461638460276789"><ph name="TAB_TITLE"/>, privatna kartica</translation>
+<translation id="1315014485411054095"><ph name="TAB_TITLE"/>, odabrana privatna kartica</translation>
 <translation id="2280910239864711607">Otvori novu karticu u privatnom režimu</translation>
+<translation id="1203189419326478388">Prikaži ili sakrij obeleživače</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {privatnih kartica: <ph name="TAB_COUNT_ONE"/>}
           other {privatnih kartica: <ph name="TAB_COUNT_NORMAL"/>}}</translation>
@@ -1853,6 +1852,7 @@ Da biste promenili ovo podešavanje, <ph name="BEGIN_LINK"/>izbrišite Brave pod
 <translation id="7096147642287317420">Dodirnite i zadržite da biste izašli iz privatnog režima</translation>
 <translation id="2331163878318921124">Dvaput dodirnite i zadržite da biste izašli iz privatnog režima</translation>
 <translation id="3947065058794437451">Privatni režim nije dostupan na ovom uređaju</translation>
+<translation id="5270319788820204019">Pretražujte pomoću tastature, glasa, privatnog režima ili kamere</translation>
 <translation id="3095878721037212218">Moći ćete lako da upravljate kontrolama medija, privatnim sesijama, preuzimanjima i drugim funkcijama</translation>
 <translation id="5129323533070334129">Želite li da sačuvate pristupni ključ van privatnog režima?</translation>
 <translation id="4325212706000356062">Pretražite privatne kartice</translation>
