@@ -1967,7 +1967,6 @@
 <translation id="8652827551752428289">Afficher l'historique</translation>
 <translation id="5030659775136592441">Afficher le gestionnaire de favoris</translation>
 <translation id="6919203766034706175">Importer les paramètres</translation>
-<translation id="290553639533591736">Gemini Live</translation>
 <translation id="6159704524780747483">Ouvrir le chat IA</translation>
 <translation id="1199430163665775722">Modifier les moteurs de recherche</translation>
 <translation id="4276265845501430443">Afficher l'aide</translation>
@@ -2298,7 +2297,7 @@
 <translation id="8366221601425141146">Empreinte digitale bloquée</translation>
 <translation id="6531019308847917584">Bloquer la capture d'empreinte numérique</translation>
 <translation id="1899608006846124237">Bloquer la capture d'empreinte numérique (agressif)</translation>
-<translation id="8034285923190068220">Autoriser la prise d'empreintes</translation>
+<translation id="8034285923190068220">Autoriser le fingerprinting</translation>
 <translation id="7638541189782135885">Ne pas mettre à niveau les connexions HTTP</translation>
 <translation id="2570787596946026998">Se connecter uniquement avec HTTPS</translation>
 <translation id="1992750560347846445">Signaler le site</translation>
@@ -2312,9 +2311,9 @@
 <translation id="5032505924781383272">Les protections appliquées n'indiquent pas nécessairement que cette page Web essaie de prendre l'empreinte numérique de votre navigateur.</translation>
 <translation id="1905384713982899903">Empreintes numériques bloquées</translation>
 <translation id="314364527871618241">Empreintes numériques autorisées</translation>
-<translation id="264682546981571963">Fatigué des avis de consentement aux cookies ?</translation>
-<translation id="4986297793092101884">Brave bloque déjà les cookies de tiers. Nous pouvons également bloquer les avis de consentement aux cookies.</translation>
-<translation id="535688588637568715">Oui, bloquer les avis de consentement aux cookies</translation>
+<translation id="264682546981571963">Marre de voir des fenêtres de consentement aux cookies ?</translation>
+<translation id="4986297793092101884">Brave bloque déjà les cookies de tiers. Nous pouvons également bloquer les fenêtres de consentement aux cookies.</translation>
+<translation id="535688588637568715">Oui, bloquer les fenêtres de consentement aux cookies</translation>
 <translation id="2808175374672429053">Les caractères de remplacement ne sont pas autorisés pour les boucliers Brave.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Les boucliers Brave ont bloqué 1 traqueur sur <ph name="SITE_URL"/>}

@@ -42,13 +42,13 @@
 <translation id="3259723213051400722">Veuillez réessayer.</translation>
 <translation id="5298965408768377685">Ce créateur s'est inscrit sur Brave et peut recevoir des contributions de la part d'utilisateurs du programme de récompenses Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7466579932043491502">Les récompenses Brave peuvent ne pas fonctionner lorsque les notifications sont désactivées.</translation>
-<translation id="6112331814131703370">Bloquer les avis « Changer d'app »</translation>
+<translation id="6112331814131703370">Bloquer les demandes d'installation d'applications</translation>
 <translation id="4744921452903670666">Dites-nous ce que vous pensez !</translation>
 <translation id="2524310205387880526">Évaluer Brave</translation>
 <translation id="4104400246019119780">Merci !</translation>
 <translation id="5202255382948179481">Ajoutez vos suggestions</translation>
 <translation id="7759809451544302770">Facultatif</translation>
-<translation id="4748689412569009273">Avec un simple Emoji, que pensez-vous de votre expérience avec Brave ?</translation>
+<translation id="4748689412569009273">Que pensez-vous de votre expérience sur Brave ?</translation>
 <translation id="7335142069363686805">Évaluer maintenant</translation>
 <translation id="6681362094306959654">Vous appréciez Brave ?</translation>
 <translation id="8041093619605951337">Heureux</translation>
@@ -90,7 +90,7 @@
 <translation id="5152595963250646670">Bloquer les éléments de YouTube qui empêchent de se concentrer</translation>
 <translation id="2998960761270772157">Bloque les éléments de connexion, le menu, les commentaires et les informations sur la vidéo sur youtube.com.</translation>
 <translation id="8531835121131500698">Bloquer les shorts YouTube</translation>
-<translation id="2167271714269158912">Bloquez les shorts sur la page d'accueil, la page des tendances et les résultats de recherche sur youtube.com.</translation>
+<translation id="2167271714269158912">Bloque les shorts sur la page d'accueil, la page des tendances et les résultats de recherche sur youtube.com.</translation>
 <translation id="6052725679982758334">Blocage des réseaux sociaux</translation>
 <translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
@@ -118,7 +118,7 @@
 <translation id="1052991798173010693">Moteurs de recherches actuellement utilisés</translation>
 <translation id="335303688425891752">Appui long pour modifier l'ordre</translation>
 <translation id="9148058034647219655">Quitter</translation>
-<translation id="8047754398610073499">Bloquer les avis de consentement aux cookies</translation>
+<translation id="8047754398610073499">Bloquer les fenêtres de consentement aux cookies</translation>
 <translation id="2621893359845808115">Bloquer les fenêtres surgissantes de sites Web qui vous demandent d'accepter ou de refuser les cookies sur leur site</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrage du contenu</translation>
@@ -190,7 +190,7 @@
 <translation id="1025207378813960343">Assurez-vous que les connexions aux sites web sont sécurisées.</translation>
 <translation id="3570081523466826008">Mettre à niveau les connexions vers HTTPS</translation>
 <translation id="6686219838158572786">Exiger que toutes les connexions utilisent HTTPS (strict)</translation>
-<translation id="4221284400051835823">Mettre à niveau vers HTTPS dès que possible (défaut)</translation>
+<translation id="4221284400051835823">Mettre à niveau vers HTTPS chaque fois que possible (défaut)</translation>
 <translation id="4690906712010847708">Ne pas mettre à niveau les connexions vers HTTPS (désactivé)</translation>
 <translation id="693506469193748756">M'oublier quand je ferme ce site</translation>
 <translation id="6975864539539353406">Efface les cookies et autres données de site lorsque vous fermez un site</translation>
@@ -230,7 +230,7 @@
 <translation id="6961369821791548622">Autoriser (Relancer maintenant)</translation>
 <translation id="2433507940547922241">Apparence</translation>
 <translation id="9040069796107003510">Icône des récompenses Brave</translation>
-<translation id="6333347122924254968">Afficher l'icône des récompenses Brave dans la barre d'adresse</translation>
+<translation id="6333347122924254968">Affiche l'icône des récompenses Brave dans la barre d'adresse</translation>
 <translation id="8495235435594442882">Activer la barre d'outils inférieure</translation>
 <translation id="6587448235155023666">Vos changements prendront effet la prochaine fois que vous relancerez Brave</translation>
 <translation id="8701563696941209024">RELANCER MAINTENANT</translation>
@@ -363,7 +363,7 @@
 <translation id="5321518976657560663">Erreur de réinitialisation</translation>
 <translation id="4114170343590425996">Il y a eu une erreur de réinitialisation des données associées aux récompenses Brave. Relancez Brave et réessayez.</translation>
 <translation id="6417420737057016607">Publicités Brave</translation>
-<translation id="5611966874859284786">Afficher les annonces sous forme de notification lorsque Brave n'est pas utilisé</translation>
+<translation id="5611966874859284786">Affiche des annonces sous forme de notification lorsque Brave n'est pas utilisé</translation>
 <translation id="6606319453795180219">Cette opération supprimera vos récompenses Brave et réinitialisera toutes les données relatives à celles-ci.</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Réinitialiser les données liées aux récompenses Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Effacer les données liées aux publicités Brave…<ph name="END_LINK1"/></translation>
@@ -427,8 +427,8 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="8643377320501056697">Afficher mes sites</translation>
 <translation id="7275773481201277457">Afficher les statistiques de Brave</translation>
 <translation id="8297488609722895137">Photo de <ph name="PHOTO_BY"/></translation>
-<translation id="2898634658146274982">Ouvrir les liens externes dans Brave.</translation>
-<translation id="5616508928556767259">Ouvre les liens d'autres applications sur un écran Brave. Remarque : Brave doit être configuré comme navigateur par défaut.</translation>
+<translation id="2898634658146274982">Ouvrir les liens externes dans Brave</translation>
+<translation id="5616508928556767259">Ouvre les liens d'autres applications sur Brave. Remarque : Brave doit être configuré comme navigateur par défaut.</translation>
 <translation id="2394961582378297792">Déconnecté</translation>
 <translation id="5308380583665731573">Se connecter</translation>
 <translation id="3368922792935385530">Connecté</translation>
@@ -465,9 +465,9 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="1876882294512858963">Toujours rester en mode privé</translation>
 <translation id="554464532999080267">Demander avant d'activer le mode privé (standard)</translation>
 <translation id="926857659063503456">Ne jamais utiliser le mode privé</translation>
-<translation id="3895527457258986253">Bloquer la prise d'empreintes digitales</translation>
+<translation id="3895527457258986253">Bloquer le fingerprinting</translation>
 <translation id="7854108565842971747">Paramètres par défaut des boucliers pour les nouveaux sites. La modification de ces paramètres n'affectera pas ceux que vous avez déjà définis pour certains sites.</translation>
-<translation id="218587021686734263">Empêcher la prise d'empreintes digitales via les paramètres linguistiques</translation>
+<translation id="218587021686734263">Bloquer le fingerprinting via les paramètres linguistiques</translation>
 <translation id="1706099589708266367">Réduit la quantité de renseignements que les sites Web peuvent obtenir sur vous en fonction des paramètres linguistiques de votre navigateur.</translation>
 <translation id="6486971767955110687">Enregistrer les informations de contact pour d'éventuels signalements futurs</translation>
 <translation id="4085787265464238844">Si vous fournissez vos informations de contact, celles-ci seront conservées pour d'éventuels futurs signalements de problèmes avec certains sites.</translation>
@@ -541,15 +541,15 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et pubs avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en visualisant des annonces respectueuses de la vie privée et soutenez vos sites web préférés.</translation>
-<translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
-<translation id="1390943217516275883">Permettre à Brave de montrer vos statistiques privées</translation>
-<translation id="1763352720905582220">Envoi un rapport de confidentialité chaque semaine</translation>
-<translation id="1811691435325545066">Supprimer toutes les données des rapports de confidentialité</translation>
-<translation id="5966003059662780423">Effacer les données en quittant</translation>
+<translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de protection</translation>
+<translation id="1390943217516275883">Autorise Brave à afficher vos statistiques de confidentialité</translation>
+<translation id="1763352720905582220">Envoie un rapport de protection chaque semaine</translation>
+<translation id="1811691435325545066">Supprimer toutes les données des rapports de protection</translation>
+<translation id="5966003059662780423">Effacer les données lors de la fermeture</translation>
 <translation id="3980704343258720102">Efface toutes les données de navigation</translation>
-<translation id="8089997572759938512">Réinitialise vos rapports sur la protection des renseignements personnels</translation>
-<translation id="2718046830255553131">Les données des rapports sur la protection des renseignements personnels ont été supprimées.</translation>
-<translation id="8376263745431603066">Activer le « Mode Nuit » (Expérimental)</translation>
+<translation id="8089997572759938512">Réinitialise vos rapports de protection</translation>
+<translation id="2718046830255553131">Les données de vos rapports de protection ont été supprimées.</translation>
+<translation id="8376263745431603066">Activer le mode sombre (expérimental)</translation>
 <translation id="1383876407941801731">Recherche</translation>
 <translation id="13296465911709339">Votre texte a été copié dans le presse-papiers.</translation>
 <translation id="2735834606413553397">L'adresse publique a été copiée dans le presse-papiers.</translation>
@@ -1212,7 +1212,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4049035689681585146">Nous avons mis à jour les conditions générales d'utilisation du programme de récompenses Brave. Nous avons effectué ces mises à jour pour clarifier nos conditions et garantir qu'elles prennent en compte les nouvelles fonctionnalités. SI vous continuez à utiliser le programme de récompenses Brave, vous acceptez les nouvelles conditions générales d'utilisation. Si vous refusez, vous pouvez <ph name="RESET_START"/>réinitialiser<ph name="RESET_END"/> les récompenses Brave, et donc désactiver cette fonctionnalité.</translation>
 <translation id="2165953574528546737">Consultez les <ph name="TOS_START"/>conditions générales d'utilisation du programme de récompenses Brave<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Activer les fenêtres multiples</translation>
-<translation id="6167344249617630304">Ouvrez jusqu'à 5 fenêtres à la fois et déplacez vos onglets d'une fenêtre à l'autre</translation>
+<translation id="6167344249617630304">Permet d'ouvrir jusqu'à 5 fenêtres à la fois et de déplacer vos onglets d'une fenêtre à l'autre</translation>
 <translation id="1063948063403254568">Fenêtres multiples détectées</translation>
 <translation id="4661882208707630158">Avant de désactiver la fonctionnalité Fenêtres multiples, assurez-vous de regrouper vos onglets dans une autre fenêtre Brave ou de fermer les autres fenêtres Brave.</translation>
 <translation id="6891382640886173702">Regrouper les fenêtres</translation>

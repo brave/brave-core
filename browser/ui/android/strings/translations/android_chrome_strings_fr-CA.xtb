@@ -246,7 +246,6 @@ Seule une personne connaissant votre phrase de passe peut lire vos données chif
 <translation id="2172905120685242547">Fermer la fenêtre?</translation>
 <translation id="2173302385160625112">Vérifiez votre connexion Internet</translation>
 <translation id="2175927920773552910">Code QR</translation>
-<translation id="1203189419326478388">Afficher ou masquer la barre de favoris</translation>
 <translation id="2184272387334793084">Connectez-vous pour accéder à vos mots de passe et plus encore sur tous vos appareils</translation>
 <translation id="218608176142494674">Partage</translation>
 <translation id="219283042927675668">Onglets dans le groupe</translation>
@@ -515,7 +514,6 @@ Seule une personne connaissant votre phrase de passe peut lire vos données chif
 <translation id="3474624961160222204">Contin. comme <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Vous pouvez choisir votre moteur de recherche</translation>
 <translation id="3479552764303398839">Pas maintenant</translation>
-<translation id="5270319788820204019">Recherchez à l'aide du clavier, de votre voix, du mode Navigation privée ou de l'appareil photo</translation>
 <translation id="6165882953768534820">Le fichier exporté peut être accessible à d'autres parties, y compris à des applis. Une fois exportés, vos mots de passe sont supprimés de Brave.</translation>
 <translation id="3488199663160411179">nom</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur le contenu suggéré</translation>
@@ -1836,6 +1834,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>supprimez les données Brave
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, Onglet privé</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/>, Onglet privé sélectionné</translation>
 <translation id="2280910239864711607">Ouvrir un nouvel onglet en mode de nav. privée</translation>
+<translation id="1203189419326478388">Afficher ou masquer les signets</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> onglet privé}
           other {<ph name="TAB_COUNT_NORMAL"/> onglets privés}}</translation>
@@ -1853,6 +1852,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>supprimez les données Brave
 <translation id="7096147642287317420">Appuyez longtemps sur l'écran pour quitter le mode Privé</translation>
 <translation id="2331163878318921124">Appuyez deux fois et appuyez longtemps sur l'écran pour quitter le mode Privé</translation>
 <translation id="3947065058794437451">La navigation privée n'est pas offerte sur cet appareil</translation>
+<translation id="5270319788820204019">Recherche en utilisant le clavier, la voix, Privé ou la caméra</translation>
 <translation id="3095878721037212218">Vous pourrez facilement gérer les commandes des contenus multimédias, les sessions de navigation privée, les téléchargements, etc.</translation>
 <translation id="5129323533070334129">Enregistrer la clé d'accès hors de la navigation privée?</translation>
 <translation id="4325212706000356062">Rechercher dans vos onglets privés</translation>

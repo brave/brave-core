@@ -246,7 +246,6 @@ Só alguém com a sua frase de acesso pode ler os dados encriptados. A Brave nã
 <translation id="2172905120685242547">Quer fechar a janela?</translation>
 <translation id="2173302385160625112">Verifique a ligação à Internet</translation>
 <translation id="2175927920773552910">Código QR</translation>
-<translation id="1203189419326478388">Mostrar ou ocultar a barra de marcadores</translation>
 <translation id="2184272387334793084">Inicie sessão para ter os seus marcadores, palavras-passe e muito mais em todos os seus dispositivos</translation>
 <translation id="218608176142494674">Partilha</translation>
 <translation id="219283042927675668">Separadores no grupo</translation>
@@ -515,7 +514,6 @@ Só alguém com a sua frase de acesso pode ler os dados encriptados. A Brave nã
 <translation id="3474624961160222204">Continuar como <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Pode escolher o seu motor de pesquisa.</translation>
 <translation id="3479552764303398839">Agora não</translation>
-<translation id="5270319788820204019">Pesquise com o teclado, a voz, a Navegação anónima ou a câmara</translation>
 <translation id="6165882953768534820">O ficheiro exportado pode ser acedido por outras pessoas, incluindo apps. Depois de exportar, as suas palavras-passe são eliminadas do Brave.</translation>
 <translation id="3488199663160411179">nome</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> acerca do conteúdo sugerido</translation>
@@ -1836,6 +1834,7 @@ Para alterar esta definição, <ph name="BEGIN_LINK"/>elimine os dados do Brave 
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/> Separador Privado</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/> Separador Privado Selecionado</translation>
 <translation id="2280910239864711607">Abrir uma nova aba em modo Privado</translation>
+<translation id="1203189419326478388">Mostrar ou ocultar os favoritos</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> separador privado}
           other {<ph name="TAB_COUNT_NORMAL"/> separadores privados}}</translation>
@@ -1853,6 +1852,7 @@ Para alterar esta definição, <ph name="BEGIN_LINK"/>elimine os dados do Brave 
 <translation id="7096147642287317420">Mantenha premido para sair do modo Privado</translation>
 <translation id="2331163878318921124">Toque duas vezes e mantenha premido para sair do modo Privado</translation>
 <translation id="3947065058794437451">O modo Privado não está disponível neste dispositivo</translation>
+<translation id="5270319788820204019">Pesquisar usando teclado, voz, privado, ou câmera</translation>
 <translation id="3095878721037212218">Poderá gerir com facilidade controlos de multimédia, sessões privadas, transferências e mais</translation>
 <translation id="5129323533070334129">Guardar chave de acesso fora do modo privado?</translation>
 <translation id="4325212706000356062">Pesquise nos separadores privados</translation>
