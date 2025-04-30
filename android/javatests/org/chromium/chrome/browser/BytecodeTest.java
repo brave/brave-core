@@ -1851,14 +1851,16 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat", // presubmit: ignore-long-line
                         Activity.class,
                         ObservableSupplier.class,
-                        boolean.class));
+                        boolean.class,
+                        MultiWindowModeStateDispatcher.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy", // presubmit: ignore-long-line
                         Activity.class,
                         ObservableSupplier.class,
-                        boolean.class));
+                        boolean.class,
+                        MultiWindowModeStateDispatcher.class));
     }
 
     @Test
