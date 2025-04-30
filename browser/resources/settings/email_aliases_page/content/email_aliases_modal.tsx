@@ -5,14 +5,13 @@
 
 import { color, font, radius, spacing, typography } from
   "@brave/leo/tokens/css/variables"
-import { getLocale } from '$web-common/locale'
+import { formatLocale, getLocale } from '$web-common/locale'
 import { MAX_ALIASES } from "./constant"
 import { onEnterKeyForInput } from "./on_enter_key"
 import { ViewState, MappingService } from "./types"
 import * as React from 'react'
 import Button from "@brave/leo/react/button"
 import Col from "./styles/Col"
-import formatMessage from '$web-common/formatMessage'
 import Icon from "@brave/leo/react/icon"
 import Input from "@brave/leo/react/input"
 import Row from "./styles/Row"
@@ -191,8 +190,7 @@ export const EmailAliasModal = (
                                 waiting={awaitingProposedAlias} />}
               </GeneratedEmailContainer>
               <ModalDetails>
-                {formatMessage(getLocale('emailAliasesEmailsWillBeForwardedTo'),
-                  { placeholders: { $1: mainEmail } })}
+                {formatLocale('emailAliasesEmailsWillBeForwardedTo', { $1: mainEmail })}
               </ModalDetails>
             </ModalSectionCol>
             <ModalSectionCol>
@@ -207,9 +205,7 @@ export const EmailAliasModal = (
               </NoteInput>
               {viewState.mode === 'Edit' && viewState?.alias?.domains &&
                 <div>
-                {formatMessage(getLocale('emailAliasesUsedBy'),
-                  { placeholders:
-                    { $1: viewState?.alias?.domains?.join(', ') } })}
+                {formatLocale('emailAliasesUsedBy', { $1: viewState?.alias?.domains?.join(', ') })}
                 </div>}
             </ModalSectionCol>
           </ModalCol>
