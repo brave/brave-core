@@ -50,20 +50,16 @@ function modifyYtcfgFlags() {
   }
 }
 
-// Define a guard flag to track the script injection.
-if (!window._pipScriptInjected) {
-  window._pipScriptInjected = true;
-  if (window.ytcfg) {
-    modifyYtcfgFlags();
-  } else {
-    document.addEventListener('load', (event) => {
-      const target = event.target;
-      if (target.tagName === 'SCRIPT' && window.ytcfg) {
-        // Check and modify flags when a new script is added.
-        modifyYtcfgFlags();
-      }
-    }, true);
-  }
+if (window.ytcfg) {
+  modifyYtcfgFlags();
+} else {
+  document.addEventListener('load', (event) => {
+    const target = event.target;
+    if (target.tagName === 'SCRIPT' && window.ytcfg) {
+      // Check and modify flags when a new script is added.
+      modifyYtcfgFlags();
+    }
+  }, true);
 }
 )";
 
