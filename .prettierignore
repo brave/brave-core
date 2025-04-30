@@ -81,3 +81,50 @@ chromium_presubmit_config.json5
 
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
+
+# Ignore components folders with a lot of formatting issues
+/components/ai_chat/
+/components/ai_rewriter/
+/components/brave_new_tab_ui/
+/components/brave_rewards/
+/components/brave_wallet_ui/
+/components/brave_shields/
+/components/brave_vpn/
+/components/brave_news/
+/components/web-components/
+/components/brave_welcome_ui/
+/components/brave_adblock_ui/
+/components/brave_ads/
+/components/brave_extension/
+/components/brave_perf_predictor/
+/components/brave_private_new_tab_ui/
+/components/policy/resources/templates/
+/components/playlist/
+/components/speedreader/
+/components/brave_webtorrent/
+/components/common/
+/components/cosmetic_filters/
+/components/definitions/
+/components/new_tab_takeover/
+/components/skus/
+/components/tor/
+/components/webcompat_reporter/
+/components/webpack/
+/components/browser_ui/
+/components/decentralized_dns/
+/components/embedder_support/
+/components/flags_ui/
+/components/permissions/
+/components/request_otr/
+/components/safe_browsing/
+/components/security_interstitials/
+/components/signin/
+/components/test/
+/components/translate/
+/components/variations/
+
+# Ignore other files
+.eslintrc.js
+/.storybook/
+jest.config.js
+snapcraft.yaml
