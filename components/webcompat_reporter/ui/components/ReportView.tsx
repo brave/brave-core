@@ -92,9 +92,11 @@ export default class ReportView extends React.PureComponent<Props, State> {
     try {
       await captureScreenshot()
     } catch {
-      this.setState({ attachScreenshot: true,
+      this.setState({
+        attachScreenshot: true,
         screenshotObjectUrl: null,
-        hideViewScreenshotLink: true })
+        hideViewScreenshotLink: true
+      })
         clearScreenshot()
         return
     }
