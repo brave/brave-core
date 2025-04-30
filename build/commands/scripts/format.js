@@ -26,8 +26,13 @@ const runFormat = async (options = {}) => {
   args.push('--python')
   args.push('--no-rust-fmt')
 
-  if (options.full) args.push('--full')
-  if (options.diff) args.push('--diff')
+  if (options.full) {
+    args.push('--full')
+  }
+
+  if (options.diff) {
+    args.push('--diff')
+  }
 
   const clFormatResult = util
     .run(cmd, args, {
@@ -36,7 +41,7 @@ const runFormat = async (options = {}) => {
     })
     .stdout.toString()
 
-  const changedFiles = util.getChangedFiles(options)
+  const changedFiles = util.getChangedFiles(config.braveCoreDir, options.base)
   const prettierResult = await runPrettier(changedFiles, options.diff)
 
   if (options.diff) {
@@ -61,9 +66,14 @@ const runFormat = async (options = {}) => {
 const runPrettier = async (files, diff) => {
   const result = []
   const options = require(path.join(config.braveCoreDir, '.prettierrc'))
+  const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
+  if (!fs.existsSync(ignorePath)) {
+    throw new RuntimeError('prettierignore file not found')
+  }
+
   for (const file of files) {
     const fileInfo = await prettier.getFileInfo(file, {
-      ignorePath: path.join(config.braveCoreDir, '.prettierignore'),
+      ignorePath: ignorePath,
       withNodeModules: false
     })
 
@@ -71,17 +81,17 @@ const runPrettier = async (files, diff) => {
       continue
     }
 
-    const content = fs.readFileSync(file, { encoding: 'utf-8' })
+    const content = await fs.readFile(file, { encoding: 'utf-8' })
     const formatted = await prettier.format(content, {
       ...options,
       parser: fileInfo.inferredParser
     })
-    if (diff) {
-      if (content !== formatted) {
+    if (content !== formatted) {
+      if (diff) {
         result.push(`${file} is not formatted`)
+      } else {
+        await fs.writeFile(file, formatted)
       }
-    } else {
-      fs.writeFileSync(file, formatted)
     }
   }
   return result
