@@ -824,14 +824,14 @@ const util = {
   },
 
   // Get the files that have been changed in the current diff with base branch.
-  getChangedFiles: (options = {}) => {
-    const upstreamCommit = util.runGit(config.braveCoreDir, [
+  getChangedFiles: (repoDir, base) => {
+    const upstreamCommit = util.runGit(repoDir, [
       'merge-base',
       'HEAD',
-      options.base
+      base
     ])
 
-    return util.runGit(config.braveCoreDir, [
+    return util.runGit(repoDir, [
       'diff',
       '--name-only',
       '--diff-filter=d',
