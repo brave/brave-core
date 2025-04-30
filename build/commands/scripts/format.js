@@ -11,10 +11,6 @@ const program = require('commander')
 const config = require('../lib/config')
 const util = require('../lib/util')
 
-const mergeWithDefault = (options) => {
-  return Object.assign({}, config.defaultOptions, options)
-}
-
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
 const runFormat = async (options = {}) => {
@@ -23,7 +19,7 @@ const runFormat = async (options = {}) => {
   }
   let cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
-  cmdOptions = mergeWithDefault(cmdOptions)
+  cmdOptions = util.mergeWithDefault(cmdOptions)
   cmd = 'git'
   args = ['cl', 'format', '--upstream=' + options.base]
 

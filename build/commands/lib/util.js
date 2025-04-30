@@ -20,10 +20,6 @@ const ActionGuard = require('./actionGuard')
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0);
 
-const mergeWithDefault = (options) => {
-  return Object.assign({}, config.defaultOptions, options)
-}
-
 async function applyPatches(printPatchFailuresInJson) {
   const GitPatcher = require('./gitPatcher')
   Log.progressStart('apply patches')
@@ -618,6 +614,10 @@ const util = {
     }
   },
 
+  mergeWithDefault: (options) => {
+    return Object.assign({}, config.defaultOptions, options)
+  },
+
   buildNativeRedirectCC: async () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
@@ -643,7 +643,7 @@ const util = {
     util.runGnGen(config.nativeRedirectCCDir, buildArgs, [
       '--root-target=//brave/tools/redirect_cc'
     ])
-    await util.buildTargets(['brave/tools/redirect_cc'], mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
+    await util.buildTargets(['brave/tools/redirect_cc'], util.mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
     Log.progressFinish('build redirect_cc')
   },
 
@@ -821,12 +821,10 @@ const util = {
 
   // Get the files that have been changed in the current diff with base branch.
   getChangedFiles: (options = {}) => {
-    const base = options.base || 'origin/master'
-
     const upstreamCommit = util.runGit(config.braveCoreDir, [
       'merge-base',
       'HEAD',
-      base
+      options.base
     ])
 
     return util.runGit(config.braveCoreDir, [
@@ -847,7 +845,7 @@ const util = {
         config.braveCoreDir, ['config', '--unset-all', 'gerrit.host'], true)
     let cmdOptions = config.defaultOptions
     cmdOptions.cwd = config.braveCoreDir
-    cmdOptions = mergeWithDefault(cmdOptions)
+    cmdOptions = util.mergeWithDefault(cmdOptions)
     cmd = 'git'
     // --upload mode is similar to `git cl upload`. Non-upload mode covers less
     // checks.
@@ -886,7 +884,7 @@ const util = {
       args.push('--verbose')
     }
     options.cwd = options.cwd || config.rootDir
-    options = mergeWithDefault(options)
+    options = util.mergeWithDefault(options)
     options.env.GCLIENT_FILE = gClientFile
     util.run('gclient', args, options)
   },
