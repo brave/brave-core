@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const l10nUtil = require('./l10nUtil')

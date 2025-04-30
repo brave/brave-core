@@ -132,7 +132,7 @@ function buildChromiumRelease(buildOptions = {}) {
   config.update(buildOptions)
 
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
-  if (chromiumConfig == undefined)
+  if (!chromiumConfig)
     throw Error(`${config.getTargetOS()} is unsupported`)
 
   depotTools.installDepotTools()
@@ -150,7 +150,7 @@ function buildChromiumRelease(buildOptions = {}) {
     util.runGClient(['runhooks'])
   })
 
-  if (chromiumConfig.extraHooks != undefined) {
+  if (chromiumConfig.extraHooks) {
     chromiumConfig.extraHooks()
   }
 

@@ -95,7 +95,7 @@ const braveAndroidQuickSearchEnginesStringsPath = path.resolve(path.join(srcDir,
 function getGrdPartsFromGrd(path) {
   const grd = new JSDOM(fs.readFileSync(path, 'utf8'))
   const partTags = grd.window.document.getElementsByTagName("part")
-  let parts = new Array()
+  let parts = []
   for (const partTag of partTags) {
     parts.push(partTag.getAttribute('file'));
   }
