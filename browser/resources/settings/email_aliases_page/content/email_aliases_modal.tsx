@@ -63,12 +63,12 @@ const GeneratedEmailContainer = styled(Row)`
 `
 
 const ButtonWrapper = styled.div`
+  --leo-button-color: ${color.icon.default};
   display: flex;
   justify-content: center;
   align-items: center;
   width: ${spacing["4Xl"]};
   height: 100%;
-  --leo-button-color: ${color.icon.default};
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

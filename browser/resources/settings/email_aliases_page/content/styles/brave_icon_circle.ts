@@ -8,6 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
 
 const BraveIconCircle = styled(Icon)`
+  --leo-icon-size: 24px;
   align-items: center;
   border-radius: 100px;
   border: ${color.divider.subtle} 1px solid;
@@ -16,7 +17,6 @@ const BraveIconCircle = styled(Icon)`
   min-height: 40px;
   min-width: 40px;
   flex-grow: 0;
-  --leo-icon-size: 24px;
 `
 
 export default BraveIconCircle
