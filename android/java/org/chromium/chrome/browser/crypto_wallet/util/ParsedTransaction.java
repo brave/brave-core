@@ -175,9 +175,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
         AccountInfo account = Utils.findAccount(accounts, txInfo.fromAccountId);
-        if (account == null) {
-            throw new IllegalStateException("Account not found from transaction info account ID.");
-        }
+        final String sender = account != null ? account.address : "";
+        assert account != null;
         final BlockchainToken token =
                 isSPLTransaction
                         ? findToken(fullTokenList, solTxData != null ? solTxData.tokenAddress : "")
@@ -193,7 +192,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
-        parsedTransaction.sender = account.address;
+        parsedTransaction.sender = sender;
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
         parsedTransaction.marketPrice = networkSpotPrice;
