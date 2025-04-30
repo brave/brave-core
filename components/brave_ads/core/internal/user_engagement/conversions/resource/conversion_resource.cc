@@ -62,15 +62,13 @@ void ConversionResource::Load() {
 }
 
 void ConversionResource::LoadCallback(
-    ResourceComponentParsingErrorOr<ConversionResourceInfo> result) {
-  if (!result.has_value()) {
+    std::optional<ConversionResourceInfo> resource) {
+  if (!resource) {
     return BLOG(0, "Failed to load and parse " << kConversionResourceId
-                                               << " conversion resource ("
-                                               << result.error() << ")");
+                                               << " conversion resource");
   }
-  ConversionResourceInfo& resource = result.value();
 
-  if (!resource.version) {
+  if (!resource->version) {
     return BLOG(1,
                 kConversionResourceId << " conversion resource is unavailable");
   }

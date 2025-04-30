@@ -426,7 +426,6 @@ static_library("internal") {
     "common/resources/country_components.h",
     "common/resources/language_components.cc",
     "common/resources/language_components.h",
-    "common/resources/resource_parsing_error_or.h",
     "common/resources/resource_util.h",
     "common/resources/resource_util_impl.h",
     "common/search_engine/search_engine_constants.cc",

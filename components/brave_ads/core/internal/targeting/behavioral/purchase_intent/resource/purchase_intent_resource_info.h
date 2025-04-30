@@ -7,9 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_RESOURCE_INFO_H_
 
 #include <optional>
-#include <string>
 
-#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_funnel_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_funnel_keyphrase_info.h"
@@ -29,8 +27,8 @@ struct PurchaseIntentResourceInfo final {
 
   ~PurchaseIntentResourceInfo();
 
-  static base::expected<PurchaseIntentResourceInfo, std::string>
-  CreateFromValue(base::Value::Dict dict);
+  static std::optional<PurchaseIntentResourceInfo> CreateFromValue(
+      base::Value::Dict dict);
 
   std::optional<int> version;
   PurchaseIntentSegmentKeyphraseList segment_keyphrases;

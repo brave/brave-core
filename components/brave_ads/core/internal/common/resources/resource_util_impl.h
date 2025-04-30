@@ -15,7 +15,6 @@
 #include "base/json/json_reader.h"
 #include "base/location.h"
 #include "base/task/thread_pool.h"
-#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_util.h"
@@ -28,10 +27,10 @@ class File;
 namespace brave_ads {
 
 template <typename T>
-base::expected<T, std::string> LoadAndParseResourceComponentOnBackgroundThread(
+std::optional<T> LoadAndParseResourceComponentOnBackgroundThread(
     base::File file) {
   if (!file.IsValid()) {
-    return base::ok(T{});
+    return std::nullopt;
   }
 
   std::optional<base::Value::Dict> dict;
@@ -42,12 +41,12 @@ base::expected<T, std::string> LoadAndParseResourceComponentOnBackgroundThread(
     std::string content;
     const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
     if (!base::ReadStreamToString(&*scoped_file, &content)) {
-      return base::unexpected("Failed to read file");
+      return std::nullopt;
     }
 
     dict = base::JSONReader::ReadDict(content);
     if (!dict) {
-      return base::unexpected("Malformed JSON");
+      return std::nullopt;
     }
   }
 
