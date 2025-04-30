@@ -37,6 +37,8 @@ type Props = Pick<
   | 'removeImage'
   | 'conversationHistory'
   | 'associatedContentInfo'
+  | 'shouldSendPageContents'
+  | 'updateShouldSendPageContents'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -207,6 +209,8 @@ function InputBox(props: InputBoxProps) {
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}
             isMobile={props.context.isMobile}
+            shouldSendPageContents={props.context.shouldSendPageContents}
+            updateShouldSendPageContents={props.context.updateShouldSendPageContents}
           />
         </div>
         <div>
