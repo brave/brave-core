@@ -14,7 +14,7 @@ import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Col from './styles/Col'
 import Description from './styles/Description'
-import formatMessage from '$web-common/formatMessage'
+import { formatLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Row from './styles/Row'
 import styled from 'styled-components'
@@ -106,8 +106,8 @@ const AliasItem = ({ alias, onEdit, onDelete }:
           <AliasAnnotation>
             {alias.note}
             {alias.domains && alias.note && <span>. </span>}
-            {alias.domains && formatMessage(getLocale('emailAliasesUsedBy'),
-              { placeholders: { $1: alias.domains?.join(", ") } })}
+            {alias.domains && formatLocale('emailAliasesUsedBy',
+              { $1: alias.domains?.join(", ") })}
           </AliasAnnotation>}
         </Col>
       <AliasControls>

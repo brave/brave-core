@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getLocale } from "$web-common/locale";
+import { formatLocale, getLocale } from "$web-common/locale";
 import { onEnterKeyForInput } from "./on_enter_key"
 import { ViewState } from "./types"
 import * as React from 'react'
@@ -11,7 +11,6 @@ import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
 import Card from "./styles/Card"
 import Col from "./styles/Col"
-import formatMessage from '$web-common/formatMessage'
 import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
@@ -68,13 +67,11 @@ const AfterSendingEmailMessage = ({ mainEmail, tryAgain }:
     tryAgain()
   }
   return <SpacedCol>
-    <h4>{formatMessage(getLocale('emailAliasesLoginEmailOnTheWay'),
-         { placeholders: { $1: mainEmail } })}</h4>
+    <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: mainEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div>
-      {formatMessage(getLocale('emailAliasesDontSeeEmail'),
-       { tags: { $1: (content) => <a href='#'
-                                     onClick={onClick}>{content}</a> } })}
+      {formatLocale('emailAliasesDontSeeEmail', { $1: (content) => <a href='#'
+                                     onClick={onClick}>{content}</a> })}
     </div>
   </SpacedCol>
 }
