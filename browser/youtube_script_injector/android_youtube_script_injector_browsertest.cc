@@ -18,7 +18,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 namespace {
-constexpr char kPipScriptInjected[] = "window._pipScriptInjected === true";
+constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
 }  // namespace
 
 class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
@@ -76,20 +76,18 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        TestInjectionMatch) {
-  const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
+  const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
-  EXPECT_TRUE(
-      content::EvalJs(web_contents(), kPipScriptInjected).ExtractBool());
+  EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        TestInjectionNoMatch) {
-  const GURL url = https_server_.GetURL("youtub.com", "/simple.html");
+  const GURL url = https_server_.GetURL("youtub.com", "/ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
-  EXPECT_FALSE(
-      content::EvalJs(web_contents(), kPipScriptInjected).ExtractBool());
+  EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
