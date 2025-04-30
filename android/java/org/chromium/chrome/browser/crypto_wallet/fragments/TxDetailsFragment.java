@@ -33,6 +33,7 @@ import java.util.Locale;
 public class TxDetailsFragment extends Fragment {
     private final TransactionInfo mTxInfo;
     @Nullable private final TxData1559 mTxData1559;
+    @Nullable private final ZecTxData mZecTxData;
 
     public static TxDetailsFragment newInstance(final TransactionInfo txInfo) {
         return new TxDetailsFragment(txInfo);
@@ -43,6 +44,10 @@ public class TxDetailsFragment extends Fragment {
         mTxData1559 =
                 mTxInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
                         ? mTxInfo.txDataUnion.getEthTxData1559()
+                        : null;
+        mZecTxData =
+                mTxInfo.txDataUnion.which() == TxDataUnion.Tag.ZecTxData
+                        ? mTxInfo.txDataUnion.getZecTxData()
                         : null;
     }
 
@@ -61,10 +66,10 @@ public class TxDetailsFragment extends Fragment {
     public void setupView(final View view) {
         TextView functionTypeWidget = view.findViewById(R.id.function_type);
         TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
-        if (mTxInfo.txDataUnion.getZecTxData() != null) {
+        if (mZecTxData != null) {
             functionTypeWidget.setVisibility(View.GONE);
             detailsParam1Widget.setVisibility(View.VISIBLE);
-            detailsParam1Widget.setText(extractZecDetails(mTxInfo.txDataUnion.getZecTxData()));
+            detailsParam1Widget.setText(extractZecDetails(mZecTxData));
 
             return;
         }
