@@ -1,32 +1,7 @@
-# Ignored files identified within .gitignore:
-/vendor/*
-/components/brave_new_tab_ui/data/LICENSE
-/components/brave_webtorrent/extension/out/
-/components/brave_rewards/resources/extension/brave_rewards/out/
-/components/third_party/adblock/LICENSE
-/components/third_party/local_data/LICENSE
-/dist/
-/out/
-node_modules/
-/third_party/
-.vs/
-.vscode/
-.npmrc
-.env
-cmake-build-debug/
-coverage/
-/build/rustup/
-venv/
-.storybook-out
-
-# Ignore version control files
-**/.git
-**/.svn
-**/.hg
-
-# Ignore node_modules
-**/node_modules
-
+# Don't add paths that are already ignored in .gitignore:
+# npm run format/presubmit does it automatically.
+# For manual run use :
+# npx prettier --ignore-path .prettierignore --ignore-path .gitignore .
 
 # Ignore HTML Files - incompatable with presubmit rules
 *.html
@@ -48,9 +23,7 @@ venv/
 /installer
 /ios
 /mojo
-/mojo/brave_ast_patcher
 /net
-/node_modules
 /patches
 /renderer
 /resources
@@ -64,8 +37,8 @@ venv/
 /utility
 /v8
 /vector_icons
-/vendor
 /win_build_output
+/.storybook/
 
 # Ignore github .yml files:
 .github/**/*.yml
@@ -78,6 +51,8 @@ README.md
 # Ignored top-level files:
 .clang-tidy
 chromium_presubmit_config.json5
+jest.config.js
+snapcraft.yaml
 
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
@@ -122,9 +97,3 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/test/
 /components/translate/
 /components/variations/
-
-# Ignore other files
-.eslintrc.js
-/.storybook/
-jest.config.js
-snapcraft.yaml
