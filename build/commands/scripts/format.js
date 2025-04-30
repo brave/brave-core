@@ -11,6 +11,16 @@ const program = require('commander')
 const config = require('../lib/config')
 const util = require('../lib/util')
 
+program
+  .option('--base <base branch>', 'set the destination branch for the PR')
+  .option(
+    '--full',
+    'format all lines in changed files instead of only the changed lines'
+  )
+  .option('--diff', 'print diff to stdout rather than modifying files')
+  .parse(process.argv)
+
+
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
 const runFormat = async (options = {}) => {
@@ -97,13 +107,4 @@ const runPrettier = async (files, diff) => {
   return result
 }
 
-program
-  .option('--base <base branch>', 'set the destination branch for the PR')
-  .option(
-    '--full',
-    'format all lines in changed files instead of only the changed lines'
-  )
-  .option('--diff', 'print diff to stdout rather than modifying files')
-  .action(runFormat)
-
-program.parse(process.argv)
+runFormat(program.opts())
