@@ -51,7 +51,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
 
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryAccessor {
  public:
-  PsstRuleRegistryAccessor();
   PsstRuleRegistryAccessor(const PsstRuleRegistryAccessor&) = delete;
   PsstRuleRegistryAccessor& operator=(const PsstRuleRegistryAccessor&) = delete;
   ~PsstRuleRegistryAccessor();
@@ -61,9 +60,12 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryAccessor {
   PsstRuleRegistry* Registry();
 
  private:
+  PsstRuleRegistryAccessor();
+
   friend class PsstTabHelperBrowserTest;
   friend class PsstRuleRegistryUnitTest;
   friend class PsstScriptsHandlerUnitTest;
+  friend struct base::DefaultSingletonTraits<PsstRuleRegistryAccessor>;
 
   void SetRegistryForTesting(std::unique_ptr<PsstRuleRegistry> new_inst);
 
