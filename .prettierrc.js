@@ -19,7 +19,6 @@ module.exports = {
   'htmlWhitespaceSensitivity': 'css',
   'insertPragma': false,
   'plugins': [],
-  'pluginSearchDirs': false,
   'printWidth': 80,
   'proseWrap': 'always',
   'rangeEnd': Infinity,
