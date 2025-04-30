@@ -15,15 +15,54 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
 type Props = {
-  uploadedImage: Mojom.UploadedFile
-  // removeImage is optional here so we can also reuse
+  thumbnailUrl: string
+
+  title: string
+  subtitle: string
+
+  // remove is optional here so we can also reuse
   // this component in the conversation thread where remove
   // is not needed.
-  removeImage?: () => void
+  remove?: () => void
 }
 
-export default function UploadedImgItem(props: Props) {
-  // Memos
+export function AttachmentItem(props: Props) {
+  return (
+    <div className={styles.itemWrapper}>
+      <div className={styles.leftSide}>
+        <img
+          className={styles.image}
+          src={props.thumbnailUrl}
+        />
+        <div className={styles.imageInfo}>
+          <Tooltip
+            mode='mini'
+            text={props.title}
+          >
+            <div className={styles.forEllipsis}>
+              <span className={styles.nameText}>
+                {props.title}
+              </span>
+            </div>
+          </Tooltip>
+          <span className={styles.sizeText}>{props.subtitle}</span>
+        </div>
+      </div>
+      {props.remove && (
+        <Button
+          fab
+          kind='plain-faint'
+          className={styles.removeButton}
+          onClick={props.remove}
+        >
+          <Icon name='close' />
+        </Button>
+      )}
+    </div>
+  )
+}
+
+export function AttachmentImageItem(props: { remove?: () => void, uploadedImage: Mojom.UploadedFile }) {
   const dataUrl = React.useMemo(() => {
     const blob = new Blob([new Uint8Array(props.uploadedImage.data)], {
       type: 'image/*'
@@ -44,37 +83,5 @@ export default function UploadedImgItem(props: Props) {
     return `${bytes.toFixed(2)} ${units[index]}`
   }, [props.uploadedImage.filesize])
 
-  return (
-    <div className={styles.itemWrapper}>
-      <div className={styles.leftSide}>
-        <img
-          className={styles.image}
-          src={dataUrl}
-        />
-        <div className={styles.imageInfo}>
-          <Tooltip
-            mode='mini'
-            text={props.uploadedImage.filename}
-          >
-            <div className={styles.forEllipsis}>
-              <span className={styles.nameText}>
-                {props.uploadedImage.filename}
-              </span>
-            </div>
-          </Tooltip>
-          <span className={styles.sizeText}>{filesize}</span>
-        </div>
-      </div>
-      {props.removeImage && (
-        <Button
-          fab
-          kind='plain-faint'
-          className={styles.removeButton}
-          onClick={props.removeImage}
-        >
-          <Icon name='close' />
-        </Button>
-      )}
-    </div>
-  )
+  return <AttachmentItem thumbnailUrl={dataUrl} title={props.uploadedImage.filename} subtitle={filesize} remove={props.remove} />
 }

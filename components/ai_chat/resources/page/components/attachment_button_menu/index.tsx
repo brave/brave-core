@@ -21,7 +21,9 @@ import styles from './style.module.scss'
 type Props = Pick<ConversationContext, 'uploadImage' | 'getScreenshots' |
   'conversationHistory' | 'associatedContentInfo' | 'shouldSendPageContents'
   | 'updateShouldSendPageContents'> &
-  Pick<AIChatContext, 'isMobile'>
+  Pick<AIChatContext, 'isMobile'> & {
+    conversationStarted: boolean
+  }
 
 export default function AttachmentButtonMenu(props: Props) {
   const totalUploadedImages = props.conversationHistory.reduce(
@@ -81,13 +83,13 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         }
-        {canAttachPageContents && !props.shouldSendPageContents && <leo-menu-item onClick={() => props.updateShouldSendPageContents(true)}>
+        {canAttachPageContents && !props.shouldSendPageContents && !props.conversationStarted && <leo-menu-item onClick={() => props.updateShouldSendPageContents(true)}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
               name='window-tab'
             />
-            {getLocale('associatedContentButtonLabel')}
+            {getLocale('currentTabContentsButtonLabel')}
           </div>
         </leo-menu-item>}
       </ButtonMenu>
