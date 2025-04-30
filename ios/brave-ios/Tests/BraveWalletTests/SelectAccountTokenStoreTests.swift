@@ -11,6 +11,10 @@ import XCTest
 @testable import BraveWallet
 
 class SelectAccountTokenStoreTests: XCTestCase {
+  
+  override func tearDown() {
+    cancellables.removeAll()
+  }
 
   private var cancellables: Set<AnyCancellable> = .init()
 
