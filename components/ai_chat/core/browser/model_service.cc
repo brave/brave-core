@@ -96,6 +96,23 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
     std::vector<mojom::ModelPtr> models;
     {
       auto options = mojom::LeoModelOptions::New();
+      options->name = "automatic";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = kFreemiumAccess;
+      options->max_associated_content_length = 180000;
+      options->long_conversation_warning_character_limit = 320000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-automatic";
+      model->display_name = "Automatic";
+      model->vision_support = true;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+      models.push_back(std::move(model));
+    }
+
+    {
+      auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Mistral AI";
       options->name = "mixtral-8x7b-instruct";
       options->category = mojom::ModelCategory::CHAT;
