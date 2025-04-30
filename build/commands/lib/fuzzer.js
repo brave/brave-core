@@ -22,13 +22,16 @@ const buildFuzzer = (fuzzerTestTarget, options) => {
 }
 
 const getBinary = (suite) => {
-  return (process.platform === 'win32') ? `${suite}.exe` : suite
+  return process.platform === 'win32' ? `${suite}.exe` : suite
 }
 
 const unzip = (zipFile, outdir) => {
   fs.readFile(zipFile, (err, data) => {
-    if (err) throw err
-    jszip.loadAsync(data).then((zip) => { // Sensitive
+    if (err) {
+      throw err
+    }
+    jszip.loadAsync(data).then((zip) => {
+      // Sensitive
       zip.forEach((relativePath, zipEntry) => {
         const resolvedPath = path.join(outdir, zipEntry.name)
         if (!zip.file(zipEntry.name)) {
@@ -36,12 +39,15 @@ const unzip = (zipFile, outdir) => {
             fs.mkdirSync(resolvedPath)
           }
         } else {
-          zip.file(zipEntry.name).async('nodebuffer').then((content) => {
-            if (!fs.existsSync(resolvedPath)) {
-              fs.mkdirSync(path.dirname(resolvedPath))
-            }
-            fs.writeFileSync(resolvedPath, content)
-          })
+          zip
+            .file(zipEntry.name)
+            .async('nodebuffer')
+            .then((content) => {
+              if (!fs.existsSync(resolvedPath)) {
+                fs.mkdirSync(path.dirname(resolvedPath))
+              }
+              fs.writeFileSync(resolvedPath, content)
+            })
         }
       })
     })
@@ -59,8 +65,7 @@ const runFuzzer = (passthroughArgs, suite) => {
     fuzzerArgs.push('-dict=' + dictFile)
   }
 
-  const seedCorpusFile =
-    path.join(config.outputDir, suite + '_seed_corpus.zip')
+  const seedCorpusFile = path.join(config.outputDir, suite + '_seed_corpus.zip')
 
   if (fs.existsSync(seedCorpusFile)) {
     const seedCorpus = path.join(config.outputDir, suite)
@@ -73,7 +78,7 @@ const runFuzzer = (passthroughArgs, suite) => {
   console.log('Running ' + getBinary(suite) + ' ' + fuzzerArgs)
 
   spawn(path.join(config.outputDir, getBinary(suite)), fuzzerArgs, {
-    stdio: "inherit"
+    stdio: 'inherit'
   })
 }
 

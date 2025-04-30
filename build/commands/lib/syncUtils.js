@@ -118,12 +118,7 @@ function syncChromium(program) {
   const gclientWithoutRevision = program.with_issue_44921
 
   const requiredChromiumRef = config.getProjectRef('chrome')
-  let args = [
-    'sync',
-    '--nohooks',
-    '--reset',
-    '--upstream'
-  ]
+  let args = ['sync', '--nohooks', '--reset', '--upstream']
 
   if (!gclientWithoutRevision) {
     args.push('--revision')
@@ -190,15 +185,22 @@ function syncChromium(program) {
     }
   }
 
-  if ((gclientWithoutRevision && (syncWithForce || chromiumNeedsUpdate)) &&
-      fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))) {
+  if (
+    gclientWithoutRevision &&
+    (syncWithForce || chromiumNeedsUpdate) &&
+    fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))
+  ) {
     // Checking out chromium manually if necessary, as no `--revsion` flag is
     // being passed to gclient.
-    if (util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true) ==
-        null) {
-      util.runGit(
-          config.srcDir,
-          ['fetch', 'origin', requiredChromiumRef + ':' + requiredChromiumRef])
+    if (
+      util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true) ==
+      null
+    ) {
+      util.runGit(config.srcDir, [
+        'fetch',
+        'origin',
+        requiredChromiumRef + ':' + requiredChromiumRef
+      ])
     }
     util.runGit(config.srcDir, ['reset', '--hard', requiredChromiumRef])
   }

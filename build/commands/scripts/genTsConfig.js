@@ -5,8 +5,7 @@
 
 const genTsConfig = require('../lib/genTsConfig')
 
-genTsConfig()
-.catch(err => {
+genTsConfig().catch((err) => {
   console.error(err)
   process.exit(1)
 })

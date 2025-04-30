@@ -37,7 +37,6 @@ venv/
 /base
 /brave_domains
 /browser
-/build
 /chromium_src
 /common
 /content

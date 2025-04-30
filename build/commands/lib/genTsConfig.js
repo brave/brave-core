@@ -18,12 +18,14 @@ const Config = require('./config')
  * @param {*} extendsFrom full path of tsconfig to extend
  * @returns full path to created tsconfig file
  */
-module.exports = async function createGenTsConfig(genPath = process.env.ROOT_GEN_DIR, name = 'tsconfig-webpack.json', atPath = genPath, extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json')) {
+module.exports = async function createGenTsConfig(
+  genPath = process.env.ROOT_GEN_DIR,
+  name = 'tsconfig-webpack.json',
+  atPath = genPath,
+  extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json')
+) {
   const pathMap = require('../../../components/webpack/path-map')(genPath)
-  const configExtendsFrom = path.relative(
-    atPath,
-    extendsFrom
-  )
+  const configExtendsFrom = path.relative(atPath, extendsFrom)
   const tsConfigPath = path.join(atPath, name)
   // Even though ts-loader will get the paths from webpack for module resolution
   // that does not help some issues where chromium both generates ts definitions
@@ -37,7 +39,7 @@ module.exports = async function createGenTsConfig(genPath = process.env.ROOT_GEN
   // both compile and design time.
   const paths = {}
   for (const path in pathMap) {
-    paths[path] = [ pathMap[path] ]
+    paths[path] = [pathMap[path]]
     paths[`${path}/*`] = [`${pathMap[path]}/*`]
   }
   const config = {

@@ -20,41 +20,42 @@ const extraArchitectures = ['arm64', 'x86']
 // This uses environment variables as there is currently no way to pass custom
 // arguments to the |storybook build| cli.
 config.update({
-    target_arch: process.env.TARGET_ARCH,
-    target_os: process.env.TARGET_OS,
-    target_environment: process.env.TARGET_ENVIRONMENT,
-    target: process.env.TARGET,
-    build_config: process.env.BUILD_CONFIG
+  target_arch: process.env.TARGET_ARCH,
+  target_os: process.env.TARGET_OS,
+  target_environment: process.env.TARGET_ENVIRONMENT,
+  target: process.env.TARGET,
+  build_config: process.env.BUILD_CONFIG
 })
 
 let outputPath = config.outputDir
 
 function getBuildOutputPathList() {
-    return buildConfigs.flatMap((config) => [
-        path.resolve(__dirname, `../../out/${config}`),
-        ...extraArchitectures.map((arch) =>
-            path.resolve(
-                __dirname,
-                `../../out/${config}_${arch}`
-            )
-        )
-    ])
+  return buildConfigs.flatMap((config) => [
+    path.resolve(__dirname, `../../out/${config}`),
+    ...extraArchitectures.map((arch) =>
+      path.resolve(__dirname, `../../out/${config}_${arch}`)
+    )
+  ])
 }
 
 if (fs.existsSync(outputPath)) {
-    console.log('Assuming precompiled dependencies can be found at the existing path found from brave-core configuration: ' + outputPath)
+  console.log(
+    'Assuming precompiled dependencies can be found at the existing path found from brave-core configuration: ' +
+      outputPath
+  )
 } else {
-    const outDirectories = getBuildOutputPathList()
-        .filter(a => fs.existsSync(a))
-        .sort((a, b) => fs.statSync(b).mtime.getTime() - fs.statSync(a).mtime.getTime())
-    if (!outDirectories.length) {
-        throw new Error('Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?')
-    }
-    outputPath = outDirectories[0]
+  const outDirectories = getBuildOutputPathList()
+    .filter((a) => fs.existsSync(a))
+    .sort(
+      (a, b) => fs.statSync(b).mtime.getTime() - fs.statSync(a).mtime.getTime()
+    )
+  if (!outDirectories.length) {
+    throw new Error(
+      'Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?'
+    )
+  }
+  outputPath = outDirectories[0]
 }
 
 const genPath = path.join(outputPath, 'gen')
-export {
-    outputPath,
-    genPath
-}
+export { outputPath, genPath }

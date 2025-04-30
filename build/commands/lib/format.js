@@ -9,7 +9,6 @@ const prettier = require('prettier')
 const config = require('./config')
 const util = require('./util')
 
-
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
@@ -29,10 +28,12 @@ const runFormat = async (options = {}) => {
   args.push('--python')
   args.push('--no-rust-fmt')
 
-  if (options.full)
+  if (options.full) {
     args.push('--full')
-  if (options.diff)
+  }
+  if (options.diff) {
     args.push('--diff')
+  }
 
   const clFormatResult = util
     .run(cmd, args, {
@@ -92,5 +93,5 @@ const runPrettier = async (files, diff) => {
 }
 
 module.exports = {
-  runFormat,
+  runFormat
 }

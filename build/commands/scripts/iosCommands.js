@@ -18,7 +18,14 @@ const bootstrap = (options = {}) => {
   util.run('python3', bootstrapArgs, utilConfig)
   if (options.open_xcodeproj) {
     const args = [
-      path.join(config.srcDir, 'brave', 'ios', 'brave-ios', 'App', 'Client.xcodeproj')
+      path.join(
+        config.srcDir,
+        'brave',
+        'ios',
+        'brave-ios',
+        'App',
+        'Client.xcodeproj'
+      )
     ]
     util.run('open', args)
   }
@@ -30,5 +37,4 @@ program
   .option('--force', 'Always rewrite the symlink/directory entirely')
   .action(bootstrap)
 
-program
-  .parse(process.argv)
+program.parse(process.argv)
