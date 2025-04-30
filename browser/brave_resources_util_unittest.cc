@@ -11,9 +11,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "base/l10n/l10n_util.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "chrome/grit/branded_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #endif
 
 TEST(BraveResourcesUtil, CheckIds) {
