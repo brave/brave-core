@@ -81,6 +81,42 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
   EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_ontimeupdate=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_onresize=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_document_fullscreen=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_standard_api=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_logging_onresize=false\")")
+          .ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
