@@ -42,6 +42,8 @@
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-xl);
+
+  overflow: hidden;
 }
 
 .info {

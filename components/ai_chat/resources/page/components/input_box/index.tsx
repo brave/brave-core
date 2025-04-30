@@ -115,6 +115,8 @@ function InputBox(props: InputBoxProps) {
     }
   }, [props.context.pendingMessageImages])
 
+  console.log(props.context.associatedContentInfo)
+
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -126,8 +128,8 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(props.context.pendingMessageImages.length > 0 ||
-        props.context.isUploadingFiles) && (
+      {((props.context.pendingMessageImages.length > 0 ||
+        props.context.isUploadingFiles) || !!props.context.associatedContentInfo) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -136,10 +138,13 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {props.context.isUploadingFiles && (
-            <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
-          )}
-          {props.context.pendingMessageImages?.map((img, i) => (
+          {props.context.associatedContentInfo && props.context.shouldSendPageContents && !props.conversationStarted && <AttachmentItem
+            thumbnailUrl={`chrome://favicon2?size=256&pageUrl=${encodeURIComponent(props.context.associatedContentInfo.url.url)}`}
+            title={props.context.associatedContentInfo.title}
+            subtitle={props.context.associatedContentInfo.url.url}
+            remove={() => props.context.updateShouldSendPageContents(false)}
+          />}
+          {props.context.pendingMessageImages.map((img, i) => (
             <AttachmentImageItem
               key={img.filename}
               uploadedImage={img}
@@ -181,12 +186,11 @@ function InputBox(props: InputBoxProps) {
             fab
             kind='plain-faint'
             size='large'
-            onClick={(e) =>
-              {
-                e.preventDefault()
-                e.stopPropagation()
-                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-              }
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }
             }
             title={getLocale('toolsMenuButtonLabel')}
           >
@@ -216,6 +220,7 @@ function InputBox(props: InputBoxProps) {
             isMobile={props.context.isMobile}
             shouldSendPageContents={props.context.shouldSendPageContents}
             updateShouldSendPageContents={props.context.updateShouldSendPageContents}
+            conversationStarted={props.conversationStarted}
           />
         </div>
         <div>
