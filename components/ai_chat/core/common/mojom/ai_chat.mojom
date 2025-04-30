@@ -556,6 +556,9 @@ interface UntrustedConversationHandler {
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
   ModifyConversation(uint32 turn_index, string new_text);
+
+  // Regenerate answer using specified model.
+  RegenerateAnswer(string turn_uuid, string model_key);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying

@@ -861,6 +861,48 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
   SubmitHumanConversationEntry(std::move(new_turn));
 }
 
+void ConversationHandler::RegenerateAnswer(const std::string& turn_uuid,
+                                           const std::string& model_key) {
+  // Find the turn with the given UUID.
+  auto turn_it = std::ranges::find_if(
+      chat_history_,
+      [&turn_uuid](const auto& turn) { return turn->uuid == turn_uuid; });
+  auto turn_pos = std::distance(chat_history_.begin(), turn_it);
+
+  // Validate that we found a valid position, it's not the first turn, and it's
+  // an assistant turn.
+  if (turn_it == chat_history_.end() || turn_pos == 0 ||
+      (*turn_it)->character_type != CharacterType::ASSISTANT) {
+    return;
+  }
+
+  // The question is at the position before the found turn.
+  size_t question_pos = turn_pos - 1;
+
+  // Create a span from the question turn to the end.
+  auto turns_to_erase = base::span(chat_history_).subspan(question_pos);
+
+  // Collect the UUIDs of turns that will be erased.
+  std::vector<std::optional<std::string>> erased_turn_ids;
+  std::ranges::transform(
+      turns_to_erase, std::back_inserter(erased_turn_ids),
+      [](const mojom::ConversationTurnPtr& turn) { return turn->uuid; });
+
+  auto question_turn = std::move(turns_to_erase.front());
+  // Specify model key to be used for generating the answer.
+  question_turn->model_key = model_key;
+
+  // Erase the question turn in history and everything after it.
+  chat_history_.erase(chat_history_.begin() + question_pos,
+                      chat_history_.end());
+  for (const auto& uuid : erased_turn_ids) {
+    OnConversationEntryRemoved(uuid);
+  }
+
+  // Submit the question turn to generate a new answer.
+  SubmitHumanConversationEntry(std::move(question_turn));
+}
+
 void ConversationHandler::SubmitSummarizationRequest() {
   // This is a special case for the pre-optin UI which has a specific button
   // to summarize the page if we're associatable with content.

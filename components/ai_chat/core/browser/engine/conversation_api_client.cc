@@ -219,24 +219,26 @@ void ConversationAPIClient::PerformRequest(
     const std::vector<ConversationEvent>& conversation,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback) {
+    GenerationCompletedCallback completed_callback,
+    const std::optional<std::string>& model_name) {
   // Get credentials and then perform request
-  auto callback =
-      base::BindOnce(&ConversationAPIClient::PerformRequestWithCredentials,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
-                     selected_language, std::move(data_received_callback),
-                     std::move(completed_callback));
+  auto callback = base::BindOnce(
+      &ConversationAPIClient::PerformRequestWithCredentials,
+      weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
+      selected_language, model_name, std::move(data_received_callback),
+      std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
     const std::vector<ConversationEvent>& conversation,
     const std::string& selected_language,
+    const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
   dict.Set("events", ConversationEventsToList(conversation));
-  dict.Set("model", model_name_);
+  dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("selected_language", selected_language);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
@@ -255,7 +257,8 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 
 void ConversationAPIClient::PerformRequestWithCredentials(
     const std::vector<ConversationEvent>& conversation,
-    const std::string selected_language,
+    const std::string& selected_language,
+    const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
@@ -275,7 +278,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(conversation), selected_language, is_sse_enabled);
+      std::move(conversation), selected_language, model_name, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);

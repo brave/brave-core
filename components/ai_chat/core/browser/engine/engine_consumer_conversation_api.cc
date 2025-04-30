@@ -27,6 +27,7 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -253,9 +254,16 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     conversation.push_back(std::move(event));
   }
 
+  // Override model_name to be used if model_key existed, used when
+  // regenerating answer.
+  std::optional<std::string> model_name = std::nullopt;
+  if (conversation_history.back()->model_key) {
+    model_name = model_service_->GetLeoModelNameByKey(
+        *conversation_history.back()->model_key);
+  }
   api_->PerformRequest(std::move(conversation), selected_language,
                        std::move(data_received_callback),
-                       std::move(completed_callback));
+                       std::move(completed_callback), model_name);
 }
 
 void EngineConsumerConversationAPI::SanitizeInput(std::string& input) {

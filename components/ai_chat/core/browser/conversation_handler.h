@@ -269,6 +269,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       mojom::ActionType action_type) override;
   void ModifyConversation(uint32_t turn_index,
                           const std::string& new_text) override;
+  void RegenerateAnswer(const std::string& turn_uuid,
+                        const std::string& model_key) override;
   void SubmitSummarizationRequest() override;
   void SubmitSuggestion(const std::string& suggestion_title) override;
   std::vector<std::string> GetSuggestedQuestionsForTest();
