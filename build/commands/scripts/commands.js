@@ -10,7 +10,6 @@ const program = require('commander');
 const path = require('path')
 const fs = require('fs-extra')
 const config = require('../lib/config')
-const format = require('../lib/format')
 const util = require('../lib/util')
 const build = require('../lib/build')
 const buildChromiumRelease = require('../lib/buildChromiumRelease')
@@ -250,13 +249,6 @@ program
   .option('--fix', 'try to fix found issues automatically')
   .option('--json <output>', 'An output file for a JSON report')
   .action(util.presubmit)
-
-program
-  .command('format')
-  .option('--base <base branch>', 'set the destination branch for the PR')
-  .option('--full', 'format all lines in changed files instead of only the changed lines')
-  .option('--diff', 'print diff to stdout rather than modifying files')
-  .action(format.runFormat)
 
 program
   .command('mass_rename')

@@ -54,8 +54,7 @@ def CheckLeoVariables(input_api, output_api):
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
     cmd = [
-        'build/commands/scripts/commands.js',
-        'format',
+        'build/commands/scripts/format.js',
     ]
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--diff')
