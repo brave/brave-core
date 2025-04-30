@@ -46,7 +46,7 @@ const runFormat = async (options = {}) => {
 
   if (options.diff) {
     let result = true
-    if (clFormatResult != '') {
+    if (clFormatResult !== '') {
       console.error(clFormatResult)
       console.error('git cl format failed')
       result = false
