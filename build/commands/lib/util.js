@@ -16,6 +16,7 @@ const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
 const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
+const prettier = require('prettier')
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0);
@@ -819,6 +820,53 @@ const util = {
     util.runGnGen(config.outputDir + "_Xcode", config.buildArgs(), genArgs)
   },
 
+  getChangedFiles: (options = {}) => {
+    const base = options.base || 'origin/master'
+
+    const upstreamCommit = util.runGit(config.braveCoreDir, [
+      'merge-base',
+      'HEAD',
+      base
+    ])
+
+    // TODO: support options.files?
+    return util.runGit(config.braveCoreDir, [
+      'diff',
+      '--name-only',
+      '--diff-filter=d',
+      upstreamCommit
+    ]).split('\n')
+  },
+
+  runPrettier: async (files, diff) => {
+    const result = []
+    const options = require(path.join(config.braveCoreDir, '.prettierrc'))
+    for (const file of files) {
+      const fileInfo = await prettier.getFileInfo(file, {
+        ignorePath: path.join(config.braveCoreDir, '.prettierignore'),
+        withNodeModules: false
+      })
+
+      if (fileInfo.ignored || !fileInfo.inferredParser) {
+        continue
+      }
+
+      const content = fs.readFileSync(file, { encoding: 'utf-8' })
+      const formatted = await prettier.format(content, {
+        ...options,
+        parser: fileInfo.inferredParser
+      })
+      if (diff) {
+        if (content !== formatted) {
+          result.push(`${file} is not formatted`)
+        }
+      } else {
+        fs.writeFileSync(file, formatted)
+      }
+    }
+    return result
+  },
+
   presubmit: (options = {}) => {
     if (!options.base) {
       options.base = 'origin/master'
@@ -852,7 +900,7 @@ const util = {
     util.run(cmd, args, cmdOptions)
   },
 
-  format: (options = {}) => {
+  format: async (options = {}) => {
     if (!options.base) {
       options.base = 'origin/master'
     }
@@ -871,7 +919,32 @@ const util = {
     if (options.diff)
       args.push('--diff')
 
-    util.run(cmd, args, cmdOptions)
+    const clFormatResult = util
+      .run(cmd, args, {
+        ...cmdOptions,
+        stdio: 'pipe'
+      })
+      .stdout.toString()
+
+    const changedFiles = util.getChangedFiles(options)
+    const prettierResult = await util.runPrettier(changedFiles, options.diff)
+
+    if (options.diff) {
+      let result = true
+      if (clFormatResult != '') {
+        console.error(clFormatResult)
+        console.error('git cl format failed')
+        result = false
+      }
+
+      if (prettierResult.length > 0) {
+        console.error(prettierResult.join('\n'))
+        console.error('Prettier check failed')
+        result = false
+      }
+
+      process.exit(result ? 0 : 1)
+    }
   },
 
   massRename: (options = {}) => {
