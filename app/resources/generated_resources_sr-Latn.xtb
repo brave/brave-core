@@ -195,7 +195,6 @@ Proverite lozinke u bilo kom trenutku u: <ph name="GOOGLE_PASSWORD_MANAGER"/>.</
 <translation id="1129348283834595293">Sajberpank</translation>
 <translation id="1129420403709586868">da pregleda slike i medijski sadržaj sa telefona</translation>
 <translation id="1129850422003387628">Upravljajte aplikacijama</translation>
-<translation id="5749925632993910318">{0,plural, =1{Zatvori prozor bez arhiviranja}one{Zatvori prozore bez arhiviranja (# prozor)}few{Zatvori prozore bez arhiviranja (# prozora)}other{Zatvori prozore bez arhiviranja (# prozora)}}</translation>
 <translation id="113050636487300043">Odaberite ime i temu boja da biste razlikovali profile</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> – deo grupe <ph name="GROUP_NAME"/></translation>
 <translation id="1130676589211693127">Nivo napunjenosti baterije za desnu <ph name="PERCENTAGE"/>%.</translation>
@@ -11752,6 +11751,10 @@ To može da obuhvata informacije o instaliranom softveru, fajlovima, pregledaču
       other {Privatno (#)}
     }</translation>
 <translation id="4304377874648098617">Trenutno ste u privatnom režimu</translation>
+<translation id="5749925632993910318">{0, plural,
+      =1 {Zatvori privatni prozor}
+      other {Zatvori privatne prozore (#)}
+    }</translation>
 <translation id="7253003527666031200">Nađite još alatki za olakšan pristup u veb-prodavnici</translation>
 <translation id="5832813618714645810">Profili</translation>
 <translation id="3707212204259470604">Upravljanje drugim profilima</translation>

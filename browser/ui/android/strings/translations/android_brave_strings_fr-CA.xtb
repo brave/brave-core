@@ -109,6 +109,7 @@
 <translation id="7304425663107214334">Afficher les suggestions du navigateur</translation>
 <translation id="8982438328166986164">Affiche des sites suggérés en fonction de vos favoris et de votre historique de navigation.</translation>
 <translation id="924029461438529367">Afficher les suggestions de recherche</translation>
+<translation id="5989135139219497991">Afficher les suggestions principales</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
 <translation id="412411722208944922">Moteurs de recherches rapides</translation>
@@ -500,6 +501,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="5299848999918506028">Merci!</translation>
 <translation id="76550953340008122">Merci de faire savoir aux développeurs de Brave qu'il y a quelque chose qui ne va pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
 <translation id="650318023204990401">Contrôles avancés</translation>
+<translation id="7205939464631857223">Effacer tous les éléments bloqués</translation>
 <translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
 <translation id="1118508688433541158">Naviguez plus rapidement et bloquez les publicités avec Brave</translation>
 <translation id="7427391215172269363">Chaque jour, j'économise des données en naviguant sur Internet avec Brave.</translation>
@@ -1025,6 +1027,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="5888208462949095139">Rechercher avec <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Gadget logiciel sur l'écran d'accueil</translation>
 <translation id="703185154752046151">Gadget logiciel ajouté à l'écran d'accueil</translation>
+<translation id="4635094429202343515">Essayez le widget de recherche Brave</translation>
 <translation id="4809681171446727314">Utilisez un moteur de recherche indépendant et protégeant votre vie privée directement depuis votre écran d'accueil.</translation>
 <translation id="7751715172931488388">Ajouter le gadget logiciel</translation>
 <translation id="7285167584112910782">recherche d'action rapide Brave</translation>
@@ -1091,6 +1094,8 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1179407411385015942">Leo est un assistant intelligent exécuté par l'IA, directement intégré à votre navigateur</translation>
 <translation id="5781842473834867765">Conserver l'historique des conversations</translation>
 <translation id="4109670531935487117">Afficher les suggestions semi-automatiques dans la barre d'adresse</translation>
+<translation id="4983005227524068187">Afficher dans la barre de moteurs de recherche rapide</translation>
+<translation id="8514910864411336826">Permet un raccourci pour lancer Leo depuis la barre de moteurs de recherche rapide.</translation>
 <translation id="6106701981952170121">Supprimer toutes les données de conversation avec l'IA Leo</translation>
 <translation id="423600389315522551">La réinitialisation de l'IA Leo requiert que vous choisissiez d'utiliser Brave
 Leo à l'avenir et effacera également votre historique de clavardage. L'effacement de votre historique de clavardage supprimera toutes vos conversations précédentes avec Brave Leo. Cette action est définitive.</translation>
@@ -1214,10 +1219,12 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="6891382640886173702">Regrouper les fenêtres</translation>
 <translation id="2912247081180973411">Fermer les fenêtres</translation>
 <translation id="4010699428656610296">Regroupez les autres onglets dans une autre fenêtre Brave.</translation>
+<translation id="4306918392910017801">Reconnecter automatiquement VPN</translation>
 <translation id="1599073346542156922">Comment l'activer :</translation>
 <translation id="7001163334415463127">1. Ouvrez les paramètres de votre appareil depuis le menu ou en appuyant sur le bouton ci-dessous.</translation>
 <translation id="887443138775437899">2. Repérez la section VPN Brave et appuyez sur l'icône des paramètres à droite.</translation>
 <translation id="7546805138087561624">3. Activez l'option <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>VPN toujours actif<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/>.</translation>
+<translation id="2446001600399646984">Notez qu'à cause des limitations d'Android, "Bloquer les connexions sans VPN" ne fonctionne pas comme prévu. <ph name="LEARN_MORE_START"/>En savoir plus.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Ouvrir les paramètres Android</translation>
 <translation id="2728518864712716830">La mise à jour a été téléchargée.</translation>
 <translation id="8403338849301491865">La liste des filtres a bien été mise à jour</translation>
@@ -1227,4 +1234,6 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="2361906291514218784">IA Leo</translation>
 <translation id="7942415993090181327">Historique des conversations</translation>
 <translation id="6859935199732075666">Afficher les erreurs de navigation sécurisée</translation>
+<translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets privés</translation>
+<translation id="8420414929552321089">Si autorisé, les onglets privés seront également visibles lorsque plusieurs applications sont ouvertes.</translation>
 </translationbundle>

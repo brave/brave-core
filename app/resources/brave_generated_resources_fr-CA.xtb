@@ -317,9 +317,17 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8813509417421129632">Une page intégrée à <ph name="SITE"/> tente d'enregistrer</translation>
 <translation id="7700010743463174379">Cette page tente d'enregistrer</translation>
 <translation id="6774238875569752630">Une page intégrée à celle-ci tente d'enregistrer</translation>
+<translation id="1233913566967531780">Focus</translation>
+<translation id="4034992002364254340">Regroupez tous vos onglets similaires dans une nouvelle fenêtre</translation>
+<translation id="8012125596344613514">Catégories recommandées</translation>
+<translation id="7529120186020617755">Saisissez une catégorie…</translation>
+<translation id="6847541693235449912">OK</translation>
 <translation id="2079545284768500474">Annuler</translation>
+<translation id="1533980864758658574">Nouvelle fenêtre créée pour <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Cette fonctionnalité envoie des données sur vos onglets ouverts à Leo, l'assistant de navigation de Brave basé sur l'IA.</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="7557539689487606886">Passer à la version Premium</translation>
+<translation id="1035309871698658326">Les noms et les noms de domaine de tous les onglets (hors ceux ouverts en navigation privée) seront automatiquement envoyés à Leo afin de les catégoriser.</translation>
 <translation id="3435896845095436175">Activer</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="7179921470347911571">Relancer maintenant</translation>
@@ -357,6 +365,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="2396127686705429331">Afficher le bouton des favoris</translation>
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
 <translation id="4109670531935487117">Afficher les suggestions semi-automatiques dans la barre d'adresse</translation>
+<translation id="3405901785709583668">Suggestions recommandées</translation>
 <translation id="7859704718976024901">Historique de navigation</translation>
 <translation id="8820817407110198400">Signets</translation>
 <translation id="4144468798716165316">Commandes rapides</translation>
@@ -715,6 +724,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="2751872555001636931">Afficher l'icône Leo sur la barre latérale</translation>
 <translation id="8055509865174199683">Afficher Leo dans le menu contextuel sur les sites Web</translation>
 <translation id="1529674267267221673">Leo sera affiché dans le menu contextuel lorsque vous faites un clic droit sur un site Web. Cette action enverra le contexte de la page Web actuelle à Leo.</translation>
+<translation id="5226020406479918122">Mode Focus</translation>
+<translation id="3705539672403311123">Active le classement des onglets dans la page de recherche d'onglets. Les noms et les noms de domaine de tous les onglets (hors ceux ouverts en navigation privée) seront automatiquement envoyés à Leo afin de les catégoriser. <ph name="BEGIN_LINK"/>En savoir plus.<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Afficher les invites suggérées dans la conversation</translation>
 <translation id="5781842473834867765">Conserver l'historique des conversations</translation>
 <translation id="1082960401708055995">Désactiver l'enregistrement des conversations effacera définitivement toutes les conversations précédemment enregistrées. Cette action ne peut pas être annulée.</translation>
@@ -723,6 +734,9 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 Leo à l'avenir et effacera également votre historique de clavardage. L'effacement de votre historique de clavardage supprimera toutes vos conversations précédentes avec Brave Leo. Cette action est définitive.</translation>
 <translation id="5574059574002819179">Ajuster les suggestions semi-automatiques</translation>
 <translation id="7942415993090181327">Historique des conversations</translation>
+<translation id="5385064007245738696">À propos de Leo</translation>
+<translation id="5084498230659987096">Brave Leo met l'IA au cœur de votre navigation avec un service de chat et d'interfaces intelligentes, tout en protégeant vos données personnelles. Leo n'utilise jamais vos données pour s'entraîner, ni pour améliorer les modèles d'IA. Toutes les requêtes passent par un serveur anonyme.</translation>
+<translation id="6458721693611638005">Pour mieux comprendre comment Brave sécurise votre usage de l'IA, consultez la politique de confidentialité de Leo. <ph name="BEGIN_LINK"/>En savoir plus.<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Modèle par défaut pour les nouvelles conversations</translation>
 <translation id="8826914609353373601">Gérer l'abonnement Premium</translation>
 <translation id="235457946228076038">Apportez votre propre modèle</translation>
@@ -733,6 +747,8 @@ Leo à l'avenir et effacera également votre historique de clavardage. L'effacem
 <translation id="3553035516792776805">Nom de la demande de modèle</translation>
 <translation id="7634775528597575156">Point de terminaison du serveur</translation>
 <translation id="6374563306438145841">Clé API</translation>
+<translation id="3295756655687327124">Analyse d'images</translation>
+<translation id="1415432774589088566">Dans le cas où ce modèle peut analyser les images (Llama 3.2B Vision, par exemple)</translation>
 <translation id="8008271349880309090">Le nom du modèle tel qu'il apparaîtra dans le menu de sélection du modèle</translation>
 <translation id="1355326130503900056">Le nom du modèle tel qu'il doit apparaître dans la demande adressée au serveur, par exemple phi-3 (si ce nom ne correspond pas exactement à ce qui est attendu par le serveur, l'intégration ne fonctionnera pas).</translation>
 <translation id="3213787232304349732">L'URL sur laquelle votre cadre de service reçoit des requêtes. Si vous avez un doute, consultez la documentation du cadre de service. Par exemple, pour Ollama, il s'agit toujours de http://localhost:11434/v1/chat/completions</translation>

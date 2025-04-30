@@ -317,9 +317,17 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="8813509417421129632">Ugrađena stranica na: <ph name="SITE"/> želi da sačuva fajl</translation>
 <translation id="7700010743463174379">Ova stranica želi da sačuva fajl</translation>
 <translation id="6774238875569752630">Ugrađena stranica na ovoj stranici želi da sačuva fajl</translation>
+<translation id="1233913566967531780">Fokus kartica</translation>
+<translation id="4034992002364254340">Skupite sve povezane kartice u jedan prozor</translation>
+<translation id="8012125596344613514">Predložene teme</translation>
+<translation id="7529120186020617755">Unesite temu na koju ćete se fokusirati...</translation>
+<translation id="6847541693235449912">Idemo</translation>
 <translation id="2079545284768500474">Poništi</translation>
+<translation id="1533980864758658574">Novi prozor kreiran za: <ph name="TOPIC"/></translation>
+<translation id="7985042437720138349">Ova funkcija šalje podatke o vašim otvorenim karticama Brave-ovom asistentu Leo kojeg pokreće veštačka inteligencija.</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="7557539689487606886">Pređite na Premium</translation>
+<translation id="1035309871698658326">Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje.</translation>
 <translation id="3435896845095436175">Aktiviraj</translation>
 <translation id="9156965752763025780">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
@@ -357,6 +365,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="2396127686705429331">Prikaži dugme za obeleživače</translation>
 <translation id="2814998458708016836">Prikaži široku traku za adresu</translation>
 <translation id="4109670531935487117">Prikaži predloge za automatsko popunjavanje na traci za adresu</translation>
+<translation id="3405901785709583668">Glavni predlozi</translation>
 <translation id="7859704718976024901">Istorija pregledanja veba</translation>
 <translation id="8820817407110198400">Obeleživači</translation>
 <translation id="4144468798716165316">Brze komande</translation>
@@ -500,6 +509,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="1389601498324964367">Skladištenje uređeno kvotama</translation>
 <translation id="814018970995616154">Proverava URL-ove na listi nebezbednih sajtova sačuvanoj u Brave-u.</translation>
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb-sajtova, preuzimanja i dodataka.</translation>
+<translation id="4905744245455598930">Štiti od sajtova, preuzimanja i dodataka za koje se zna da su opasni.</translation>
 <translation id="5570470519803062774">Podešavanja sajtova i štitova</translation>
 <translation id="410351446219883937">Automatsko puštanje</translation>
 <translation id="3512883292907992390">Dozvoli automatsko puštanje video sadržaja na sajtovima</translation>
@@ -590,6 +600,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="4908081302669157000">Brojevi telefona, imejlovi i adrese</translation>
 <translation id="294985549514492876">Veb-aplikacije (PWA)</translation>
 <translation id="7029809446516969842">Lozinke</translation>
+<translation id="6011308810877101166">Poboljšaj predloge za pretragu</translation>
+<translation id="2332576387809612040">Kada je uključeno, Brave šalje ono što unesete u traku za adresu ili polje za pretragu vašem podrazumevanom pretraživaču da biste dobili bolje predloge. Kada je isključeno, Brave prikazuje samo predloge generisane na vašem uređaju. Ova opcija je uvek isključena u privatnim prozorima.</translation>
 <translation id="6285118765755298263">Indeksiraj ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji prate specifikacije softvera OpenSearch.</translation>
 <translation id="5522403133543437426">Pretraživač koji se koristi u traci za adresu.</translation>
@@ -672,6 +684,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1561541094377237745">Solana mreže</translation>
 <translation id="7141438739990875547">Bitcoin mreže</translation>
 <translation id="1077567586443625607">Zcash mreže</translation>
+<translation id="1177180573354712438">Cardano mreže</translation>
 <translation id="3159419679550543837">Prikaži mreže za test</translation>
 <translation id="3215569562674795548">Izmenite ili dodajte novu mrežu</translation>
 <translation id="4418993400653250511">Identifikacioni broj lanca</translation>
@@ -710,6 +723,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="2751872555001636931">Prikaži Leo ikonu na bočnoj traci</translation>
 <translation id="8055509865174199683">Prikaži asistenta Leo u kontekstualnom meniju na veb-sajtovima</translation>
 <translation id="1529674267267221673">Leo će se pojaviti u kontekstualnom meniju kada kliknete desnim tasterom miša na veb-sajt. Time će se poslati kontekst sa trenutne veb stranice na asistenta Leo.</translation>
+<translation id="5226020406479918122">Režim za fokus kartica</translation>
+<translation id="3705539672403311123">Aktivirajte organizaciju kartica na stranici za pretragu kartica. Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje. <ph name="BEGIN_LINK"/> Saznajte više<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Prikaži predložene upite u razgovoru</translation>
 <translation id="5781842473834867765">Sačuvaj moju istoriju razgovora</translation>
 <translation id="1082960401708055995">Ako isključite čuvanje razgovora, trajno će se izbrisati svi prethodno sačuvani razgovori. Ova radnja se ne može opozvati.</translation>
@@ -717,6 +732,9 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1335414530428321716">Za resetovanje asistenta Leo AI biće potrebno da aktivirate korišćenje asistenta Brave Leo AI u budućnosti i takođe će se izbrisati istorija ćaskanja. Brisanjem istorije ćaskanja izbrisaćete sve svoje prethodne razgovore sa asistentom Brave Leo AI. Ova radnja se ne može opozvati.</translation>
 <translation id="5574059574002819179">Prilagodite predloge za automatsko popunjavanje</translation>
 <translation id="7942415993090181327">Istorija ćaskanja</translation>
+<translation id="5385064007245738696">O asistentu Leo AI</translation>
+<translation id="5084498230659987096">Brave Leo pruža ćaskanje zasnovano na veštačkoj inteligenciji kojem je prioritet privatnost, kao i druge interfejse zasnovane na veštačkoj inteligenciji u pregledaču. Leo nikada ne uči iz vaših podataka niti ih koristi za obuku modela. Svi zahtevi se šalju preko anonimizujućeg servera.</translation>
+<translation id="6458721693611638005">Pročitajte više o tome kako Brave štiti vaše korišćenje veštačke inteligencije u Pravilima za zaštitu privatnosti u asistentu Leo. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">Podrazumevani model za nove razgovore</translation>
 <translation id="8826914609353373601">Upravljanje premijum pretplatama</translation>
 <translation id="235457946228076038">Donesite svoj model</translation>
@@ -727,6 +745,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="3553035516792776805">Naziv zahteva modela</translation>
 <translation id="7634775528597575156">Krajnja tačka servera</translation>
 <translation id="6374563306438145841">API ključ</translation>
+<translation id="3295756655687327124">Podrška za Vision</translation>
+<translation id="1415432774589088566">Ako ovaj model koristi sliku kao ulazni podatak, npr. llama 3.2b Vision</translation>
 <translation id="8008271349880309090">Naziv modela onako kako će se pojaviti u meniju za odabir modela</translation>
 <translation id="1355326130503900056">Naziv modela koji bi trebalo da se pojavi u zahtevu za okvir za implementaciju, npr. phi-3 (imajte u vidu da integracija neće raditi ako ovaj naziv ne odgovara tačno onome što se očekuje u okviru za implementaciju)</translation>
 <translation id="3213787232304349732">URL adresa na kojoj vaš okvir za implementaciju sluša zahteve. Ako niste sigurni, proverite dokumentaciju okvira za implementaciju. Npr. kod modela Ollama, to je uvek http://localhost:11434/v1/chat/completions</translation>
@@ -744,6 +764,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="7265212806651512211">Još uvek niste povezali model.</translation>
 <translation id="7304802428852949897">Vaši modeli</translation>
 <translation id="7435587476558117990">Povežite vaš LLM koji sami hostujete ili koji hostuje treća strana sa asistentom Leo i koristite ga unutar pregledača.</translation>
+<translation id="8137606697798069075">Koristite okvir koji je kompatibilan sa protokolom za ćaskanje OpenAI, kao što je Ollama. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Sačuvaj model</translation>
 <translation id="6304169450064541679">Sistemsko obaveštenje</translation>
 <translation id="3081947790648024460">Prilagođena uputstva i/ili kontekst dati modelu kako bi vodili njegove odgovore u određenom smeru ili stilu. Koristite %datetime% gde želite da se umetnu trenutni datum i vreme.</translation>
