@@ -9,8 +9,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-m)
-    var(--leo-spacing-m);
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-m) var(--leo-spacing-m);
   border-radius: var(--leo-radius-m);
   border: 1px solid var(--leo-color-divider-subtle);
   background-color: var(--leo-color-container-background);
@@ -22,6 +21,24 @@
   object-fit: contain;
   border-radius: var(--leo-radius-m);
   box-shadow: var(--leo-effect-elevation-01);
+}
+
+.favicon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--leo-radius-m);
+  box-shadow: var(--leo-effect-elevation-01);
+
+  padding: 10px;
+  margin: 2px;
+
+  flex-shrink: 0;
+
+  & img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .loadingContainer {
@@ -42,6 +59,8 @@
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-xl);
+
+  overflow: hidden;
 }
 
 .info {
@@ -49,6 +68,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  overflow: hidden;
 }
 
 .forEllipsis {
@@ -70,8 +90,24 @@
 }
 
 .subtitle {
+  --leo-icon-size: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
+
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.subtitleText {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .removeButton {

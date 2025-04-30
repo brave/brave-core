@@ -14,18 +14,20 @@ import * as Mojom from '../../../common/mojom'
 
 // Styles
 import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
 
 type Props = {
   icon: React.ReactNode
   title: string
-  subtitle: string
+  subtitle: React.ReactNode
+
   // remove is optional here so we can also reuse
   // this component in the conversation thread where remove
   // is not needed.
   remove?: () => void
 }
 
-export function AttachmentItem(props: Props) {
+function AttachmentItem(props: Props) {
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
@@ -114,4 +116,24 @@ export function AttachmentSpinnerItem(props: { title: string }) {
       subtitle={''}
     />
   )
+}
+
+export function AttachmentPageItem(props: { title: string, url: string, remove?: () => void }) {
+  // We don't display the scheme in the subtitle.
+  const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
+
+  return <AttachmentItem
+    icon={<div className={styles.favicon}>
+      <img src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`} />
+    </div>}
+    title={props.title}
+    subtitle={<>
+      {props.remove && <Tooltip mode='mini' text={getLocale('pageAttachmentTooltipInfo')}>
+        <Icon name='info-outline' />
+      </Tooltip>}
+      <span className={styles.subtitleText}>
+        {sansSchemeUrl}
+      </span>
+    </>}
+    remove={props.remove} />
 }

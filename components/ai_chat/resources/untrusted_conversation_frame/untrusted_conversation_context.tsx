@@ -19,7 +19,7 @@ export type UntrustedConversationContext = ConversationEntriesUIState & {
   parentUiFrame?: Mojom.ParentUIFrameRemote
 }
 
-const defaultContext: UntrustedConversationContext = {
+export const defaultContext: UntrustedConversationContext = {
   ...defaultConversationEntriesUIState
 }
 

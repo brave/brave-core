@@ -32,10 +32,8 @@ import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
-import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
-import SiteTitle from '../site_title'
 import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_question'
 import ToolsMenu from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
@@ -82,15 +80,6 @@ function Main() {
     aiChatContext.canShowPremiumPrompt &&
     conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
-
-
-  const isLastTurnBraveSearchSERPSummary =
-    conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
-
-  const showContextToggle =
-    (conversationContext.conversationHistory.length === 0 ||
-      isLastTurnBraveSearchSERPSummary) &&
-    !!conversationContext.associatedContentInfo.length
 
   const showAttachments = useSupportsAttachments()
     && conversationContext.showAttachments
@@ -249,12 +238,6 @@ function Main() {
                   </div>
                 )}
 
-                {conversationContext.associatedContentInfo && conversationContext.shouldSendPageContents && (
-                  <div className={styles.siteTitleContainer}>
-                    <SiteTitle size='default' />
-                  </div>
-                )}
-
                 <div ref={scrollAnchor}>
                   {!!conversationContext.conversationUuid &&
                     <aiChatContext.conversationEntriesComponent
@@ -345,11 +328,6 @@ function Main() {
             <Attachments />
           </div>)}
         <div className={styles.input}>
-          {showContextToggle && (
-            <div className={styles.toggleContainer}>
-              <PageContextToggle />
-            </div>
-          )}
           <ToolsMenu
             isOpen={conversationContext.isToolsMenuOpen}
             setIsOpen={conversationContext.setIsToolsMenuOpen}

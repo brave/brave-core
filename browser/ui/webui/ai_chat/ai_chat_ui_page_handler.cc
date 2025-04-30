@@ -308,7 +308,9 @@ void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
-  chat_ui_->OnNewDefaultConversation();
+
+  // TODO: This is giving the old content_id, not the new one.
+  chat_ui_->OnNewDefaultConversation(active_chat_tab_helper_->GetContentId());
 }
 
 void AIChatUIPageHandler::OnFilesSelected() {
@@ -327,6 +329,11 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
   std::move(callback).Run(active_chat_tab_helper_ == nullptr);
+
+  // TODO: Should be optional
+  if (active_chat_tab_helper_) {
+    chat_ui_->OnNewDefaultConversation(active_chat_tab_helper_->GetContentId());
+  }
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(

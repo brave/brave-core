@@ -244,14 +244,14 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
 }
 
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
-  AssociatedContentDelegate::OnNewPage(navigation_id);
-
   // Reset state for next navigated Page
   current_navigation_id_ = navigation_id;
   cached_text_content_.clear();
   content_invalidation_token_.clear();
   is_video_ = false;
   api_request_helper_.reset();
+
+  AssociatedContentDelegate::OnNewPage(navigation_id);
 }
 
 }  // namespace ai_chat

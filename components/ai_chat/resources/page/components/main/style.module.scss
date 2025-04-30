@@ -29,6 +29,7 @@
   flex-direction: column;
   width: 100%;
   min-height: fit-content;
+  min-width: 0;
   max-width: var(--conversation-content-max-width);
   margin: 0 auto;
   padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
