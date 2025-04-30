@@ -6,9 +6,10 @@
 const path = require('path')
 const fs = require('fs-extra')
 const prettier = require('prettier')
-const config = require('./config')
-const util = require('./util')
+const program = require('commander')
 
+const config = require('../lib/config')
+const util = require('../lib/util')
 
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
@@ -29,10 +30,8 @@ const runFormat = async (options = {}) => {
   args.push('--python')
   args.push('--no-rust-fmt')
 
-  if (options.full)
-    args.push('--full')
-  if (options.diff)
-    args.push('--diff')
+  if (options.full) args.push('--full')
+  if (options.diff) args.push('--diff')
 
   const clFormatResult = util
     .run(cmd, args, {
@@ -57,8 +56,9 @@ const runFormat = async (options = {}) => {
       console.error('Prettier check failed')
       result = false
     }
-
-    process.exit(result ? 0 : 1)
+    if (!result) {
+      process.exit(1)
+    }
   }
 }
 
@@ -91,6 +91,13 @@ const runPrettier = async (files, diff) => {
   return result
 }
 
-module.exports = {
-  runFormat,
-}
+program
+  .option('--base <base branch>', 'set the destination branch for the PR')
+  .option(
+    '--full',
+    'format all lines in changed files instead of only the changed lines'
+  )
+  .option('--diff', 'print diff to stdout rather than modifying files')
+  .action(runFormat)
+
+program.parse(process.argv)
