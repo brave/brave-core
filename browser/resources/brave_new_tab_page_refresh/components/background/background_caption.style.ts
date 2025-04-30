@@ -16,12 +16,14 @@ export const style = scoped.css`
     color: ${color.white};
     font: ${font.xSmall.regular};
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.10);
+    white-space: nowrap;
     opacity: .5;
   }
 
   .sponsored-logo {
     --leo-icon-size: 20px;
 
+    width: min-content;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -33,7 +35,7 @@ export const style = scoped.css`
     }
 
     img {
-      margin: 2px 20px 0 20px;
+      margin-top: 2px;
       width: 170px;
       height: auto;
     }
