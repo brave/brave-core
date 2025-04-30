@@ -11,6 +11,7 @@ import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
 import Card from "./styles/Card"
 import Col from "./styles/Col"
+import formatMessage from '$web-common/formatMessage'
 import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
@@ -70,8 +71,9 @@ const AfterSendingEmailMessage = ({ mainEmail, tryAgain }:
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: mainEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div>
-      {formatLocale('emailAliasesDontSeeEmail', { $1: (content) => <a href='#'
-                                     onClick={onClick}>{content}</a> })}
+      {formatMessage(getLocale('emailAliasesDontSeeEmail'),
+       { tags: { $1: (content) => <a href='#'
+                                     onClick={onClick}>{content}</a> } })}
     </div>
   </SpacedCol>
 }
