@@ -256,7 +256,9 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
         from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
       )
 
-      if message.hasNoTranslate {
+      // The page cannot be translated because it has "noTranslate" flag set,
+      // Or because the detected language code isn't valid.
+      if message.hasNoTranslate || !Locale.availableIdentifiers.contains(message.htmlLang) {
         translateHelper.currentLanguageInfo.pageLanguage = nil
       } else {
         translateHelper.currentLanguageInfo.pageLanguage =
