@@ -258,6 +258,12 @@
   <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer">
     Edit answer
   </message>
+  <message name="IDS_CHAT_UI_REGENERATE_ANSWER_BUTTON_LABEL" desc="Button title to regenerate AI agent answer">
+    Regenerate
+  </message>
+  <message name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TITLE" desc="Title of menu to regenerate AI agent answer">
+    Change model for answer
+  </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
     Not helpful
   </message>

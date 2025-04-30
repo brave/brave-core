@@ -1,0 +1,83 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.menuContainer {
+  display: flex;
+  width: 230px;
+  flex-direction: column;
+  align-items: flex-start;
+
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: var(--leo-color-container-background);
+  box-shadow: var(--leo-effect-elevation-03);
+}
+
+.menuHeader {
+  display: flex;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  align-self: stretch;
+  background: var(--leo-color-container-highlight);
+}
+
+.menuTitle {
+  min-height: 16px;
+  flex: 1 0 0;
+
+  color: var(--leo-color-text-secondary);
+  font-feature-settings: 'case' on, 'cpsp' on, 'ss03' on, 'cv08' on;
+
+  /* ⚙️ Components/Label */
+  font-family: var(--Family-Default, "Inter Variable");
+  font-size: var(--Size-Label, 10px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: var(--Line-height-Label, 10px); /* 100% */
+  letter-spacing: var(--Letter-spacing-Small, 0px);
+  text-transform: uppercase;
+}
+
+.modelList {
+  display: flex;
+  padding: var(--leo-spacing-m);
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  align-self: stretch;
+  flex-direction: column;
+  align-items: stretch;
+
+  leo-menu-item {
+    border-radius: var(--leo-radius-s);
+
+    &[aria-selected="true"] {
+      background: var(--leo-color-container-interactive);
+    }
+  }
+}
+
+.modelName {
+  align-self: stretch;
+  color: var(--leo-color-text-primary);
+  font-feature-settings: 'ss03' on;
+
+  // font-family: var(--Family-Default, "Inter Variable");
+  // font-size: var(--Size-Default, 14px);
+  // font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0px;
+}
+
+.menuFooter {
+  display: flex;
+  padding: var(--leo-spacing-m);
+  // align-items: center;
+  gap: var(--leo-spacing-m);
+  align-self: stretch;
+
+  border-radius: var(--leo-radius-s);
+}

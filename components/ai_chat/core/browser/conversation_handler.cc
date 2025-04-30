@@ -1777,11 +1777,18 @@ ConversationHandler::GetStateForConversationEntries() {
   auto& model = GetCurrentModel();
   bool is_leo_model = model.options->is_leo_model_options();
 
+  const auto& models = model_service_->GetModels();
+  std::vector<mojom::ModelPtr> models_copy(models.size());
+  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
+                 [](auto& model) { return model.Clone(); });
+
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
   entries_state->is_generating = IsRequestInProgress();
   entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
+  entries_state->all_models = std::move(models_copy);
+  entries_state->current_model_key = model.key;
   entries_state->total_tokens = metadata_->total_tokens;
   entries_state->trimmed_tokens = metadata_->trimmed_tokens;
   entries_state->content_used_percentage =
