@@ -19,8 +19,11 @@ import { getLocale } from '$web-common/locale'
 import styles from './style.module.scss'
 
 type Props = Pick<ConversationContext, 'uploadImage' | 'getScreenshots' |
-  'conversationHistory' | 'associatedContentInfo'> &
-  Pick<AIChatContext, 'isMobile'>
+  'conversationHistory' | 'associatedContentInfo'
+  | 'associateDefaultContent'> &
+  Pick<AIChatContext, 'isMobile'> & {
+    conversationStarted: boolean
+  }
 
 export default function AttachmentButtonMenu(props: Props) {
   const totalUploadedImages = props.conversationHistory.reduce(
@@ -30,6 +33,12 @@ export default function AttachmentButtonMenu(props: Props) {
   )
 
   const isMenuDisabled = totalUploadedImages >= MAX_IMAGES
+
+  const hasAssociatedContent = !!props.associatedContentInfo
+  const isLastTurnBraveSearchSERPSummary = props.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
+  const canAttachPageContents = (props.conversationHistory.length === 0 ||
+    isLastTurnBraveSearchSERPSummary) &&
+    hasAssociatedContent
 
   return (
     <>
@@ -53,17 +62,16 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale('uploadFileButtonLabel')}
           </div>
         </leo-menu-item>
-        {!!props.associatedContentInfo &&
+        {hasAssociatedContent &&
           <leo-menu-item onClick={() => props.getScreenshots()}>
-             <div className={styles.buttonContent}>
-               <Icon
-                 className={styles.buttonIcon}
-                 name='screenshot'
-               />
-               {getLocale('screenshotButtonLabel')}
-             </div>
-          </leo-menu-item>
-       }
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='screenshot'
+              />
+              {getLocale('screenshotButtonLabel')}
+            </div>
+          </leo-menu-item>}
         {props.isMobile &&
           <leo-menu-item onClick={() => props.uploadImage(true)}>
             <div className={styles.buttonContent}>
@@ -75,6 +83,15 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         }
+        {canAttachPageContents && !props.conversationStarted && props.associateDefaultContent && <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='window-tab'
+            />
+            {getLocale('currentTabContentsButtonLabel')}
+          </div>
+        </leo-menu-item>}
       </ButtonMenu>
     </>
   )

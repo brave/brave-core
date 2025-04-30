@@ -815,7 +815,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     handleRateMessage: () => Promise.resolve(),
     setTemporary: (temporary: boolean) => {
       setArgs({ isTemporaryChat: temporary })
-    }
+    },
+    disassociateContent: () => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
@@ -829,7 +830,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile,
     allModels: MODELS,
-    currentModelKey: currentModel?.key ?? ''
+    currentModelKey: currentModel?.key ?? '',
+    associatedContent: [associatedContent],
   }
 
   return (
