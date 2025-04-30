@@ -16,7 +16,6 @@ const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
 const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
-const prettier = require('prettier')
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0);
