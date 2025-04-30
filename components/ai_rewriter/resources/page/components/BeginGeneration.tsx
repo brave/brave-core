@@ -60,7 +60,10 @@ export default function BeginGeneration() {
           associatedContentInfo: [],
           conversationHistory: [],
           pendingMessageImages: [],
-          isUploadingFiles: false,
+          isUploadingFiles: false,,
+          shouldSendPageContents: false,
+          updateShouldSendPageContents: () => {},
+          associatedContentInfo: undefined
         }} />
     </FiltersContainer>
     <NoContent />
