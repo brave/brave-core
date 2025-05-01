@@ -302,10 +302,7 @@ class ChromiumTabState: TabState, TabStateImpl {
     }
   }
   var serverTrust: SecTrust? {
-    guard let certRef = webView?.visibleSSLStatus?.certificate?.certificateRef else { return nil }
-    var trust: SecTrust?
-    SecTrustCreateWithCertificates(certRef, nil, &trust)
-    return trust
+    return webView?.visibleSSLStatus?.certificate?.createServerTrust()
   }
   var favicon: Favicon?
   var url: URL? {
