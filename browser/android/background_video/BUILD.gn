@@ -33,3 +33,18 @@ source_set("features") {
 
   public_deps = [ "//base" ]
 }
+
+source_set("test_support") {
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  testonly = true
+  sources = [ "background_video_playback_tab_helper_browsertest.cc" ]
+
+  deps = [
+    ":background_video",
+    ":features",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  public_deps = [ "//base" ]
+}
