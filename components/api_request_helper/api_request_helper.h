@@ -197,7 +197,7 @@ class APIRequestHelper {
   // into string before validating the response. For these purposes
   // conversion_callback is added which receives raw response and can perform
   // necessary conversions.
-  Ticket Request(
+  virtual Ticket Request(
       const std::string& method,
       const GURL& url,
       const std::string& payload,

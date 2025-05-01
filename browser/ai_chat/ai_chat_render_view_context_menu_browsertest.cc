@@ -142,9 +142,23 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
                       auto event =
                           mojom::ConversationEntryEvent::NewCompletionEvent(
                               mojom::CompletionEvent::New(data));
-                      data_callback.Run(std::move(event));
+                      data_callback.Run(EngineConsumer::GenerationResultData(
+                          std::move(event), std::nullopt /* model_key */));
                     }
-                    std::move(callback).Run(completed_result);
+
+                    if (completed_result.has_value()) {
+                      auto event =
+                          mojom::ConversationEntryEvent::NewCompletionEvent(
+                              mojom::CompletionEvent::New(
+                                  completed_result.value()));
+                      std::move(callback).Run(
+                          base::ok(EngineConsumer::GenerationResultData(
+                              std::move(event), std::nullopt /* model_key */)));
+                    } else {
+                      std::move(callback).Run(
+                          base::unexpected(completed_result.error()));
+                    }
+
                     run_loop.Quit();
                   });
           base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(

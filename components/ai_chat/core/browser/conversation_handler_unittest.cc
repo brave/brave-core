@@ -294,7 +294,8 @@ class ConversationHandlerUnitTest : public testing::Test {
           std::nullopt /* selected_text */, std::move(events),
           base::Time::Now(), std::nullopt /* edits */,
           std::nullopt /* uploaed_images */,
-          entries[i].second /* from_brave_search_SERP */);
+          entries[i].second /* from_brave_search_SERP */,
+          std::nullopt /* model_key */);
       expected_history.push_back(entry.Clone());
       history.push_back(std::move(entry));
     }
@@ -366,7 +367,8 @@ MATCHER_P(TurnEq, expected_turn, "") {
          arg->events == expected_turn->events &&
          arg->edits == expected_turn->edits &&
          arg->uploaded_files == expected_turn->uploaded_files &&
-         arg->from_brave_search_SERP == expected_turn->from_brave_search_SERP;
+         arg->from_brave_search_SERP == expected_turn->from_brave_search_SERP &&
+         arg->model_key == expected_turn->model_key;
 }
 
 TEST_F(ConversationHandlerUnitTest, GetState) {
@@ -422,10 +424,15 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
                                         StrEq(""), _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(expected_response))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+                  mojom::CompletionEvent::New(expected_response)),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
 
   EXPECT_FALSE(conversation_handler_->HasAnyHistory());
 
@@ -448,7 +455,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false));
+      std::nullopt, std::nullopt, false, std::nullopt /* model_key */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -457,7 +464,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, false));
+      std::nullopt, false, std::nullopt /* model_key */));
 
   // Should never ask for page content
   EXPECT_CALL(*associated_content_, GetContent).Times(0);
@@ -525,10 +532,15 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
                                         StrEq(""), _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(expected_response))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+                  mojom::CompletionEvent::New(expected_response)),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
 
   ON_CALL(*associated_content_, GetURL)
       .WillByDefault(testing::Return(GURL("https://www.brave.com")));
@@ -548,7 +560,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false));
+      std::nullopt, std::nullopt, false, std::nullopt /* model_key */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -557,7 +569,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, false));
+      std::nullopt, false, std::nullopt /* model_key */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -613,9 +625,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
   {
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New("This"));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("This")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -629,9 +643,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
   }
   {
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(" is "));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" is ")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -645,9 +661,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
   }
   {
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New("successful."));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -675,9 +693,11 @@ TEST_F(ConversationHandlerUnitTest,
   // In addition, add a non-completion event (e.g. search) and verify it's
   // not removed.
   {
-    auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
-        mojom::SearchStatusEvent::New());
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewSearchStatusEvent(
+            mojom::SearchStatusEvent::New()),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
     EXPECT_EQ(history.size(), 1u);
@@ -686,9 +706,11 @@ TEST_F(ConversationHandlerUnitTest,
   }
   {
     // Leading space on the first message should be removed
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(" This is"));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -703,9 +725,11 @@ TEST_F(ConversationHandlerUnitTest,
   }
   {
     // Leading space on subsequent message should be kept
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(" successful."));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -732,9 +756,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
   {
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New("This"));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("This")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -749,9 +775,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
   }
   {
     // Leading space should be removed for every partial message
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(" This is "));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is ")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -765,9 +793,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
   }
   {
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New("This is successful."));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("This is successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -795,9 +825,11 @@ TEST_F(ConversationHandlerUnitTest,
   // In addition, add a non-completion event (e.g. search) and verify it's
   // not removed.
   {
-    auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
-        mojom::SearchStatusEvent::New());
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewSearchStatusEvent(
+            mojom::SearchStatusEvent::New()),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
     EXPECT_EQ(history.size(), 1u);
@@ -806,9 +838,11 @@ TEST_F(ConversationHandlerUnitTest,
   }
   {
     // Leading space should be removed for every partial message
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(" This is "));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(" This is ")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -822,9 +856,11 @@ TEST_F(ConversationHandlerUnitTest,
     EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is ");
   }
   {
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New("This is successful."));
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    auto result = EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("This is successful.")),
+        std::nullopt /* model_key */);
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -859,9 +895,15 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
                                                  LastTurnHasText("prompt2"),
                                                  StrEq(""), _, _))
       // Mock the response from the engine
-      .WillOnce(::testing::DoAll(base::test::RunOnceCallback<4>(
-                                     expected_new_completion_event->Clone()),
-                                 base::test::RunOnceCallback<5>(base::ok(""))));
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+              expected_new_completion_event->Clone(),
+              "chat-basic" /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  "chat-basic" /* model_key */)))));
   testing::NiceMock<MockConversationHandlerObserver> observer;
   // Verify both entries are removed
   EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
@@ -914,9 +956,15 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
                                                  LastTurnHasText("prompt3"),
                                                  StrEq(""), _, _))
       // Mock the response from the engine
-      .WillOnce(::testing::DoAll(base::test::RunOnceCallback<4>(
-                                     expected_new_completion_event->Clone()),
-                                 base::test::RunOnceCallback<5>(base::ok(""))));
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+              expected_new_completion_event->Clone(),
+              "chat-basic" /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  "chat-basic" /* model_key */)))));
 
   conversation_handler_->ModifyConversation(0, "prompt3");
 
@@ -961,6 +1009,123 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation) {
             conversation_history[1]->created_time);
 }
 
+TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
+  conversation_handler_->SetShouldSendPageContents(false);
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Setup history with 4 turns: human1, assistant1, human2, assistant2
+  std::vector<mojom::ConversationTurnPtr> history = CreateSampleChatHistory(2);
+  conversation_handler_->SetChatHistoryForTesting(CloneHistory(history));
+
+  NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // Add mock client to track API request progress
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+
+  // Setup expectations
+  const std::string new_model_key = "new_model_key";
+  const std::string assistant_turn_uuid = history[1]->uuid.value();
+  const std::string human_turn_uuid = history[0]->uuid.value();
+
+  // We should call GenerateAssistantResponse with the human question
+  // that came before the assistant turn we're regenerating
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           false, StrEq(""), LastTurnHasText(history[0]->text),
+                           StrEq(""), _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("regenerated answer")),
+              new_model_key)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  new_model_key)))));
+
+  // Verify all four entries are removed (the target assistant turn and all
+  // turns after it)
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   human_turn_uuid))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   assistant_turn_uuid))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   history[2]->uuid.value()))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   history[3]->uuid.value()))
+      .Times(1);
+
+  // Verify the human question and new assistant answer are added back
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .Times(2);
+
+  // Call RegenerateAnswer with the assistant turn UUID and new model key
+  conversation_handler_->RegenerateAnswer(assistant_turn_uuid, new_model_key);
+
+  // Add a RunLoop to wait for async operations to complete
+  base::RunLoop run_loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+  run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Get the updated conversation history
+  const auto& conversation_history =
+      conversation_handler_->GetConversationHistory();
+
+  // Verify the conversation has only 2 entries now (original question + new
+  // answer)
+  EXPECT_EQ(conversation_history.size(), 2u);
+
+  // Verify the human entry model_key was set correctly
+  EXPECT_EQ(conversation_history[0]->model_key.value_or(""), new_model_key);
+
+  // Verify the assistant entry has the new model_key
+  EXPECT_EQ(conversation_history[1]->model_key.value(), new_model_key);
+
+  // Verify the answer content
+  EXPECT_EQ(conversation_history[1]->text, "regenerated answer");
+
+  // Verify edge cases
+  // Invalid UUID should not modify history
+  conversation_handler_->RegenerateAnswer("invalid_uuid", new_model_key);
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(),
+            2u);  // Should not change
+
+  // Can't regenerate a human entry
+  conversation_handler_->RegenerateAnswer(human_turn_uuid, new_model_key);
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(),
+            2u);  // Should not change
+
+  // Test regenerating a conversation with just a single assistant entry
+  std::vector<mojom::ConversationTurnPtr> single_entry_history;
+  single_entry_history.push_back(mojom::ConversationTurn::New(
+      "assistant_uuid", mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "original answer", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false, std::nullopt /* model_key */));
+
+  conversation_handler_->SetChatHistoryForTesting(
+      std::move(single_entry_history));
+
+  // Should not regenerate an assistant entry at position 0 (no human question
+  // to use)
+  conversation_handler_->RegenerateAnswer("assistant_uuid", new_model_key);
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(),
+            1u);  // Should not change
+}
+
 TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearContentStagedConversation) {
   // Fetch with result should update the conversation history and call
@@ -998,14 +1163,15 @@ TEST_F(ConversationHandlerUnitTest,
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, true));
+      std::nullopt, std::nullopt, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
-      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true));
+      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true,
+      std::nullopt /* model_key */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
     expected_history[i]->created_time = history[i]->created_time;
@@ -1064,26 +1230,28 @@ TEST_F(ConversationHandlerUnitTest,
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, true));
+      std::nullopt, std::nullopt, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
-      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true));
+      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true,
+      std::nullopt /* model_key */));
 
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query2", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, true));
+      std::nullopt, std::nullopt, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events2;
   events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary2")));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary2", std::nullopt, std::nullopt,
-      std::move(events2), base::Time::Now(), std::nullopt, std::nullopt, true));
+      std::move(events2), base::Time::Now(), std::nullopt, std::nullopt, true,
+      std::nullopt /* model_key */));
 
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -1104,10 +1272,15 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("new answer"))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+                  mojom::CompletionEvent::New("new answer")),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
 
   EXPECT_CALL(observer, OnConversationEntryAdded).Times(6);
   EXPECT_CALL(client, OnConversationHistoryUpdate(
@@ -1119,7 +1292,8 @@ TEST_F(ConversationHandlerUnitTest,
   auto expected_turn = mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "new answer", std::nullopt, std::nullopt,
-      std::move(events3), base::Time::Now(), std::nullopt, std::nullopt, false);
+      std::move(events3), base::Time::Now(), std::nullopt, std::nullopt, false,
+      std::nullopt /* model_key */);
   EXPECT_CALL(client, OnConversationHistoryUpdate(TurnEq(expected_turn.get())))
       .Times(2);
 
@@ -1314,13 +1488,42 @@ TEST_F(ConversationHandlerUnitTest,
 
 TEST_F(ConversationHandlerUnitTest, UploadFile) {
   conversation_handler_->SetShouldSendPageContents(false);
-  constexpr char kTestPrompt[] = "What is this?";
+
+  // Switch to a model without vision support.
+  base::RunLoop loop_for_change_model;
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
+                                           &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel("chat-basic");
+  loop_for_change_model.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  // Re-setting a mock engine because it was replaced due to ChangeModel call.
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
-  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  constexpr char kTestPrompt[] = "What is this?";
+  // NiceMock<MockConversationHandlerClient>
+  // client(conversation_handler_.get());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillRepeatedly(base::test::RunOnceCallbackRepeatedly<5>(
-          base::ok("This is a lion.")));
+      .WillRepeatedly(testing::Invoke(
+          [](bool send_page_contents, const std::string& page_contents,
+             const std::vector<mojom::ConversationTurnPtr>& history,
+             const std::string& selected_language,
+             base::RepeatingCallback<void(EngineConsumer::GenerationResultData)>
+                 callback,
+             base::OnceCallback<void(
+                 base::expected<EngineConsumer::GenerationResultData,
+                                mojom::APIError>)> done_callback) {
+            std::move(done_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("This is a lion.")),
+                    std::nullopt /* model_key */)));
+          }));
   ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
   // No uploaded files
@@ -1636,14 +1839,20 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
                            StrEq(""), _, _))
       .Times(1)
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Tis but a scratch."))),
-          base::test::RunOnceCallback<4>(
+                  mojom::CompletionEvent::New("Tis but a scratch.")),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
                   mojom::SelectedLanguageEvent::New(
-                      expected_selected_language))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+                      expected_selected_language)),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
 
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
 
@@ -1660,10 +1869,15 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
                            false, StrEq(""), LastTurnHasText(expected_input2),
                            StrEq(expected_selected_language), _, _))
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("No, it isn't."))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+                  mojom::CompletionEvent::New("No, it isn't.")),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
 
   base::RunLoop loop2;
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
@@ -1718,15 +1932,21 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
                            LastTurnHasText(expected_input), StrEq(""), _, _))
       .Times(1)
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(
-                      "That may be your way, but it's not mine."))),
-          base::test::RunOnceCallback<4>(
+                      "That may be your way, but it's not mine.")),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<4>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewContentReceiptEvent(
                   mojom::ContentReceiptEvent::New(expected_total_tokens,
-                                                  expected_trimmed_tokens))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+                                                  expected_trimmed_tokens)),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<5>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
 
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
 
@@ -1895,7 +2115,8 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
         test_case.prompt, std::nullopt /* prompt */,
         std::nullopt /* selected_text */, std::nullopt /* events */,
         base::Time::Now(), std::nullopt /* edits */,
-        std::nullopt /* uploaded_images */, false));
+        std::nullopt /* uploaded_images */, false,
+        std::nullopt /* model_key */));
     conversation_handler_->SetChatHistoryForTesting(std::move(history));
 
     conversation_handler_->PerformAssistantGeneration(test_case.page_content,
@@ -1996,7 +2217,8 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
         test_prompt, std::nullopt /* prompt */,
         std::nullopt /* selected_text */, std::nullopt /* events */,
         base::Time::Now(), std::nullopt /* edits */,
-        std::nullopt /* uploaded_images */, false));
+        std::nullopt /* uploaded_images */, false,
+        std::nullopt /* model_key */));
     conversation_handler_->SetChatHistoryForTesting(std::move(history));
 
     conversation_handler_->PerformAssistantGeneration(test_page_content, false,

@@ -45,6 +45,8 @@ class EngineConsumer {
     GenerationResultData(const GenerationResultData&) = delete;
     GenerationResultData& operator=(const GenerationResultData&) = delete;
 
+    bool operator==(const GenerationResultData&) const = default;
+
     mojom::ConversationEntryEventPtr event;
     std::optional<std::string> model_key;
   };
