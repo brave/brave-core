@@ -22,10 +22,9 @@ class SplitViewTabStripModelAdapter;
 class TabTileModelObserver;
 
 // TabTile represents two tabs tied together like tile in tab strip UI.
-// Split view shows tab tile's two tabs at once.
-// Split view will put |first| tab first(left-side) and |second| one next.
-// Two tabs in tile are located in adjacently and tab index of |first| is
-// smaller thatn |second|.
+// As two tabs in a tab tile are located in adjacently, |first| tab is placed
+// first in a tab strip and |second| is next. So, |second| tab's tab index is 1
+// bigger than |first| one.
 struct TabTile {
   tabs::TabHandle first;
   tabs::TabHandle second;
@@ -43,8 +42,9 @@ struct TabTile {
   }
 };
 
-// Handles tab tile operations such as create and break tab tile.
-// Observe this to know about tab tile state changes.
+// Represents tab tile state of current browser window.
+// Client can ask tile create/break or swap tab's position in a tab tile.
+// Observe this model to know about each tab tile state changes.
 class TabTileModel {
  public:
   explicit TabTileModel(BrowserWindowInterface* browser_window_interface);
