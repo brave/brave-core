@@ -222,7 +222,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
 
   private func updateLastVisitedFolder(_ folder: Bookmarkv2?) {
-    Preferences.Chromium.lastBookmarksFolderNodeId.value = folder?.objectID ?? -1
+    Preferences.Chromium.lastBookmarksFolderNodeId.value = folder?.id ?? -1
   }
 
   private func updateEmptyPanelState() {
@@ -397,7 +397,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
 
     guard let item = fetchedBookmarkItem else { return }
-    cell.tag = item.objectID
+    cell.tag = item.id
 
     // See if the cell holds the same bookmark. If yes, we do not have to recreate its image view
     // This makes scrolling through bookmarks better if there's many bookmarks with the same url
@@ -742,7 +742,8 @@ extension BookmarksViewController {
         return
       }
 
-      if let children = item.children, !children.isEmpty {
+      let children = item.children
+      if !children.isEmpty {
         let alert = UIAlertController(
           title: Strings.deleteBookmarksFolderAlertTitle,
           message: Strings.deleteBookmarksFolderAlertMessage,
