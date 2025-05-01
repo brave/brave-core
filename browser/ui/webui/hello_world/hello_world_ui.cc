@@ -9,6 +9,8 @@
 #include "base/version_info/version_info.h"
 #include "brave/components/hello_world/resources/grit/hello_world_resources.h"
 #include "brave/components/hello_world/resources/grit/hello_world_resources_map.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_dialogs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -26,3 +28,54 @@ HelloWorldUI::HelloWorldUI(content::WebUI* web_ui)
 }
 
 HelloWorldUI::~HelloWorldUI() = default;
+
+HelloWorldDialog::HelloWorldDialog() = default;
+
+void HelloWorldDialog::Show(content::WebUI* web_ui) {
+  chrome::ShowWebDialog(web_ui->GetWebContents()->GetNativeView(),
+                        Profile::FromWebUI(web_ui), new HelloWorldDialog());
+}
+
+ui::mojom::ModalType HelloWorldDialog::GetDialogModalType() const {
+  return ui::mojom::ModalType::kWindow;
+}
+
+std::u16string HelloWorldDialog::GetDialogTitle() const {
+  return u"Hello world";
+}
+
+GURL HelloWorldDialog::GetDialogContentURL() const {
+  return GURL(kChromeUIHelloWorldURL);
+}
+
+void HelloWorldDialog::GetWebUIMessageHandlers(
+    std::vector<content::WebUIMessageHandler*>* handlers) {}
+
+void HelloWorldDialog::GetDialogSize(gfx::Size* size) const {
+  const int kDefaultWidth = 544;
+  const int kDefaultHeight = 628;
+  size->SetSize(kDefaultWidth, kDefaultHeight);
+}
+
+std::string HelloWorldDialog::GetDialogArgs() const {
+  return "";
+}
+
+void HelloWorldDialog::OnDialogShown(content::WebUI* webui) {
+  webui_ = webui;
+}
+
+void HelloWorldDialog::OnDialogClosed(const std::string& json_retval) {
+  delete this;
+}
+
+void HelloWorldDialog::OnCloseContents(content::WebContents* source,
+                                       bool* out_close_dialog) {
+  *out_close_dialog = true;
+}
+
+bool HelloWorldDialog::ShouldShowDialogTitle() const {
+  return true;
+}
+
+HelloWorldDialog::~HelloWorldDialog() = default;

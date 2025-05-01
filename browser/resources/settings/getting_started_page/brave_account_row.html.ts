@@ -32,9 +32,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
       </div>
       <leo-button kind=${this.signedIn ? 'outline' : 'filled'}
                   size="small"
-                  @click=${this.signedIn
-                    ? () => this.signedIn = false
-                    : () => this.dialog = Dialog.ENTRY}>
+                  @click=${this.onButtonClicked}>
         ${this.signedIn
           ? '$i18n{braveAccountManageAccountButtonLabel}'
           : '$i18n{braveAccountGetStartedButtonLabel}'

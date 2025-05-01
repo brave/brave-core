@@ -5,6 +5,10 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl
+} from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
@@ -36,6 +40,10 @@ export class SettingsBraveAccountRow extends CrLitElement {
     }
   }
 
+  protected onButtonClicked() {
+    this.browserProxy.handler.openDialog()
+  }
+
   protected onBackButtonClicked() {
     switch (this.dialog) {
       case Dialog.CREATE:
@@ -50,6 +58,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
     }
   }
 
+  private browserProxy: BraveAccountBrowserProxy = BraveAccountBrowserProxyImpl.getInstance()
   protected dialog: Dialog = Dialog.NONE
   protected signedIn: boolean = false
 }
