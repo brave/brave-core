@@ -123,10 +123,9 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
 // This test simply loads an extension that sets a newtab override.
 // It checks to make sure the newtab override is used as the newtab page.
 IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
-  InstallExtensionSilently(extension_service(),
-      test_data_dir.AppendASCII("new_tab_override.crx"));
+  InstallExtensionSilently("new_tab_override.crx",
+                           "deaepmnbldlmgdkaikodbcfofphhkndk");
+
 
   content::WebContents* web_contents = GetActiveWebContents();
   SimulateOpenNewTabAndWaitForLoad(web_contents);

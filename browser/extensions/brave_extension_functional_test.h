@@ -15,9 +15,14 @@ namespace extensions {
 class ExtensionFunctionalTest : public ExtensionBrowserTest {
  public:
   scoped_refptr<const Extension> InstallExtensionSilently(
-      ExtensionService* service,
-      const base::FilePath& path);
+      const char* filename,
+      const char* extension_id);
+
+  // content::BrowserTestBase:
   void SetUp() override;
+  void SetUpOnMainThread() override;
+
+ private:
   void InitEmbeddedTestServer();
   void GetTestDataDir(base::FilePath* test_data_dir);
 };
