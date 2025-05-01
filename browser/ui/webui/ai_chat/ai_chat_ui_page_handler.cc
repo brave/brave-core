@@ -362,7 +362,8 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
 
                       AIChatServiceFactory::GetForBrowserContext(
                           contents->GetBrowserContext())
-                          ->AssociateContent(tab_helper, conversation_uuid);
+                          ->MaybeAssociateContent(tab_helper,
+                                                  conversation_uuid);
                     },
                     conversation_uuid));
 }

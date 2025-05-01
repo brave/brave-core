@@ -96,11 +96,6 @@ void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
     text_embedder_->CancelAllTasks();
     text_embedder_.reset();
   }
-
-  // Once the page has navigated we need to archive the content from this tab.
-  for (auto& observer : observers_) {
-    observer.OnRequestArchive(this);
-  }
 }
 
 void AssociatedContentDelegate::GetStagedEntriesFromContent(
@@ -184,12 +179,6 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
 void AssociatedContentDelegate::OnTitleChanged() {
   for (auto& observer : observers_) {
     observer.OnTitleChanged(this);
-  }
-}
-
-void AssociatedContentDelegate::OnContentChanged() {
-  for (auto& observer : observers_) {
-    observer.OnContentChanged(this);
   }
 }
 
@@ -422,11 +411,6 @@ void ConversationHandler::InitEngine() {
       !associated_content_manager_->GetCachedContent().empty()) {
     OnAssociatedContentUpdated();
   }
-}
-
-void ConversationHandler::SetAssociatedContentDelegate(
-    base::WeakPtr<AssociatedContentDelegate> delegate) {
-  associated_content_manager_->SetContent(delegate.get());
 }
 
 const mojom::Model& ConversationHandler::GetCurrentModel() {
@@ -692,7 +676,11 @@ void ConversationHandler::SubmitHumanConversationEntry(
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
     suggestions_.clear();
-    associated_content_manager_->SetContent(nullptr);
+
+    // Reset the content to be empty.
+    associated_content_manager_->AddContent(nullptr, /*notify_updated=*/true,
+                                            /*detach_existing_content=*/true);
+
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
     PerformAssistantGeneration();

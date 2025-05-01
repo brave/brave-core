@@ -31,10 +31,6 @@ class AssociatedContentManager
   explicit AssociatedContentManager(ConversationHandler* conversation);
   ~AssociatedContentManager() override;
 
-  // Sets the content delegate for the current conversation (replacing any other
-  // content).
-  void SetContent(ConversationHandler::AssociatedContentDelegate* delegate);
-
   // Sets the content from the conversation archive.
   void LoadArchivedContent(
       const mojom::Conversation* metadata,
@@ -46,8 +42,13 @@ class AssociatedContentManager
                          bool is_video);
 
   // Adds a content delegate to the list of content delegates.
+  // If |notify_updated| is true, the conversation will be notified that the
+  // content has been updated.
+  // If |detach_existing_content| is true, the current content will be detached
+  // and the new content will be set as the only content for this conversation.
   void AddContent(ConversationHandler::AssociatedContentDelegate* delegate,
-                  bool notify_updated = true);
+                  bool notify_updated = true,
+                  bool detach_existing_content = false);
 
   // Removes a content delegate from the list of content delegates.
   void RemoveContent(ConversationHandler::AssociatedContentDelegate* delegate,
@@ -82,11 +83,9 @@ class AssociatedContentManager
   bool IsVideo() const;
 
   // ConversationHandler::AssociatedContentDelegate::Observer
-  void OnRequestArchive(
+  void OnNavigated(
       ConversationHandler::AssociatedContentDelegate* delegate) override;
   void OnTitleChanged(
-      ConversationHandler::AssociatedContentDelegate* delegate) override;
-  void OnContentChanged(
       ConversationHandler::AssociatedContentDelegate* delegate) override;
 
   bool should_send() const { return should_send_; }

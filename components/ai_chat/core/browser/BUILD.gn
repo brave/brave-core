@@ -190,6 +190,8 @@ source_set("test_support") {
     "engine/mock_engine_consumer.h",
     "mock_conversation_handler_observer.cc",
     "mock_conversation_handler_observer.h",
+    "test/mock_associated_content.cc",
+    "test/mock_associated_content.h",
     "test_utils.cc",
     "test_utils.h",
   ]

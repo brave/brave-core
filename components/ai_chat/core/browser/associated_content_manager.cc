@@ -34,25 +34,6 @@ AssociatedContentManager::~AssociatedContentManager() {
   DetachContent();
 }
 
-void AssociatedContentManager::SetContent(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
-  DVLOG(1) << __func__;
-
-  DetachContent();
-
-  if (delegate) {
-    AddContent(delegate, /*notify_updated=*/false);
-  }
-
-  // Default to send page contents when we have a valid contents.
-  // This class should only be provided with a delegate when
-  // it is allowed to use it (e.g. not internal WebUI content).
-  // The user can toggle this via the UI.
-  should_send_ =
-      features::IsPageContextEnabledInitially() && HasAssociatedContent();
-  conversation_->OnAssociatedContentUpdated();
-}
-
 void AssociatedContentManager::LoadArchivedContent(
     const mojom::Conversation* metadata,
     const mojom::ConversationArchivePtr& archive) {
@@ -116,14 +97,26 @@ void AssociatedContentManager::SetArchiveContent(int content_id,
 
 void AssociatedContentManager::AddContent(
     ConversationHandler::AssociatedContentDelegate* delegate,
-    bool notify_updated) {
+    bool notify_updated,
+    bool detach_existing_content) {
   DVLOG(1) << __func__;
 
-  // If we're adding content, we probably want to send it.
-  should_send_ = true;
+  // Optionally, we can set |delegate| as the only content for this
+  // conversation.
+  if (detach_existing_content) {
+    DetachContent();
+  }
 
-  content_delegates_.push_back(delegate);
-  content_observations_.AddObservation(delegate);
+  if (delegate) {
+    content_delegates_.push_back(delegate);
+    content_observations_.AddObservation(delegate);
+  }
+
+  // If we're adding content, we probably want to send it, otherwise, set
+  // |should_send_| to the default value.
+  should_send_ =
+      !detach_existing_content ||
+      (features::IsPageContextEnabledInitially() && HasAssociatedContent());
 
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
@@ -377,7 +370,7 @@ void AssociatedContentManager::SetShouldSend(bool value) {
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::OnRequestArchive(
+void AssociatedContentManager::OnNavigated(
     ConversationHandler::AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
   SetArchiveContent(delegate->GetContentId(),
@@ -389,13 +382,6 @@ void AssociatedContentManager::OnRequestArchive(
 }
 
 void AssociatedContentManager::OnTitleChanged(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
-  DVLOG(1) << __func__;
-
-  conversation_->OnAssociatedContentUpdated();
-}
-
-void AssociatedContentManager::OnContentChanged(
     ConversationHandler::AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
 

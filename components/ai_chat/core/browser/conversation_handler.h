@@ -94,9 +94,7 @@ class ConversationHandler : public mojom::ConversationHandler,
      public:
       ~Observer() override {}
       virtual void OnNavigated(AssociatedContentDelegate* delegate) {}
-      virtual void OnRequestArchive(AssociatedContentDelegate* delegate) {}
       virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
-      virtual void OnContentChanged(AssociatedContentDelegate* delegate) {}
     };
 
     AssociatedContentDelegate();
@@ -146,7 +144,6 @@ class ConversationHandler : public mojom::ConversationHandler,
     }
 
     virtual void OnTitleChanged();
-    virtual void OnContentChanged();
 
     void AddObserver(Observer* observer);
     void RemoveObserver(Observer* observer);
@@ -250,10 +247,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Returns true if the conversation has associated content that is non-archive
   bool IsAssociatedContentAlive();
 
-  // This can be called multiple times, e.g. when the user navigates back to
-  // content, this conversation can be reunited with the delegate.
-  void SetAssociatedContentDelegate(
-      base::WeakPtr<AssociatedContentDelegate> delegate);
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 

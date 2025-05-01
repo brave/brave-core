@@ -39,6 +39,7 @@
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -65,12 +66,6 @@ using ::testing::NiceMock;
 namespace ai_chat {
 
 namespace {
-
-void WaitForAssociatedContentFetch(AssociatedContentManager* manager) {
-  base::RunLoop run_loop;
-  manager->GetContent(run_loop.QuitClosure());
-  run_loop.Run();
-}
 
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
@@ -154,46 +149,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;
-};
-
-class MockAssociatedContent
-    : public ConversationHandler::AssociatedContentDelegate {
- public:
-  MockAssociatedContent() = default;
-  ~MockAssociatedContent() override {
-    // Let observers know this content is gone.
-    OnNewPage(-1);
-  }
-
-  int GetContentId() const override { return content_id_; }
-
-  void SetContentId(int id) { content_id_ = id; }
-
-  void GetContent(
-      ConversationHandler::GetPageContentCallback callback) override {
-    cached_text_content_ = GetTextContent();
-    std::move(callback).Run(GetTextContent(), GetCachedIsVideo(), "");
-  }
-
-  std::string_view GetCachedTextContent() const override {
-    return cached_text_content_;
-  }
-
-  MOCK_METHOD(GURL, GetURL, (), (const, override));
-  MOCK_METHOD(std::u16string, GetTitle, (), (const, override));
-  MOCK_METHOD(bool, GetCachedIsVideo, (), (const, override));
-
-  MOCK_METHOD(std::string, GetTextContent, (), (const));
-
-  MOCK_METHOD(void,
-              GetStagedEntriesFromContent,
-              (ConversationHandler::GetStagedEntriesCallback),
-              (override));
-  MOCK_METHOD(bool, HasOpenAIChatPermission, (), (const, override));
-
- private:
-  int content_id_ = 0;
-  std::string cached_text_content_;
 };
 
 }  // namespace
@@ -484,7 +439,10 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   // the content is destroyed.
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
   ExpectVisibleConversationsSize(FROM_HERE, 1u);
-  conversation_with_content->associated_content_manager()->SetContent(nullptr);
+
+  // Reset the content to be empty.
+  conversation_with_content->associated_content_manager()->AddContent(
+      nullptr, /*notify_updated=*/true, /*detach_existing_content=*/true);
 
   if (IsAIChatHistoryEnabled()) {
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
@@ -695,217 +653,6 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
   testing::Mock::VerifyAndClearExpectations(&associated_content);
 }
 
-TEST_P(AIChatServiceUnitTest, MultiContentConversation_AddContent) {
-  NiceMock<MockAssociatedContent> associated_content1{};
-  associated_content1.SetContentId(1);
-  ON_CALL(associated_content1, GetTextContent)
-      .WillByDefault(testing::Return("Content 1"));
-
-  NiceMock<MockAssociatedContent> associated_content2{};
-  associated_content2.SetContentId(2);
-  ON_CALL(associated_content2, GetTextContent)
-      .WillByDefault(testing::Return("Content 2"));
-
-  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
-  conversation->associated_content_manager()->AddContent(&associated_content1);
-  EXPECT_EQ(
-      conversation->associated_content_manager()->GetAssociatedContent().size(),
-      1u);
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-
-  conversation->associated_content_manager()->AddContent(&associated_content2);
-  EXPECT_EQ(
-      conversation->associated_content_manager()->GetAssociatedContent().size(),
-      2u);
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "<page>Content 1</page><page>Content 2</page>");
-}
-
-TEST_P(AIChatServiceUnitTest, MultiContentConversation_RemoveContent) {
-  NiceMock<MockAssociatedContent> associated_content1{};
-  associated_content1.SetContentId(1);
-  ON_CALL(associated_content1, GetTextContent)
-      .WillByDefault(testing::Return("Content 1"));
-
-  NiceMock<MockAssociatedContent> associated_content2{};
-  associated_content2.SetContentId(2);
-  ON_CALL(associated_content2, GetTextContent)
-      .WillByDefault(testing::Return("Content 2"));
-
-  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
-
-  conversation->associated_content_manager()->AddContent(&associated_content1);
-  EXPECT_EQ(
-      conversation->associated_content_manager()->GetAssociatedContent().size(),
-      1u);
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-
-  conversation->associated_content_manager()->AddContent(&associated_content2);
-  EXPECT_EQ(
-      conversation->associated_content_manager()->GetAssociatedContent().size(),
-      2u);
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "<page>Content 1</page><page>Content 2</page>");
-
-  conversation->associated_content_manager()->RemoveContent(
-      &associated_content1);
-  EXPECT_EQ(
-      conversation->associated_content_manager()->GetAssociatedContent().size(),
-      1u);
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "Content 2");
-}
-
-TEST_P(AIChatServiceUnitTest,
-       MultiContentConversation_AddingContentSetsShouldSend) {
-  NiceMock<MockAssociatedContent> associated_content1{};
-  associated_content1.SetContentId(1);
-  ON_CALL(associated_content1, GetTextContent)
-      .WillByDefault(testing::Return("Content 1"));
-
-  NiceMock<MockAssociatedContent> associated_content2{};
-  associated_content2.SetContentId(2);
-  ON_CALL(associated_content2, GetTextContent)
-      .WillByDefault(testing::Return("Content 2"));
-
-  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
-
-  // We create a client to keep the conversation alive.
-  auto client = CreateConversationClient(conversation);
-
-  conversation->associated_content_manager()->SetShouldSend(false);
-  conversation->associated_content_manager()->AddContent(&associated_content1);
-  EXPECT_TRUE(conversation->associated_content_manager()->should_send());
-
-  conversation->associated_content_manager()->SetShouldSend(false);
-  conversation->associated_content_manager()->AddContent(&associated_content2);
-  EXPECT_TRUE(conversation->associated_content_manager()->should_send());
-}
-
-TEST_P(
-    AIChatServiceUnitTest,
-    MultiContentConversation_RemovingContentShouldSetShouldSendIfHasAssociatedContent) {
-  NiceMock<MockAssociatedContent> associated_content1{};
-  associated_content1.SetContentId(1);
-  ON_CALL(associated_content1, GetTextContent)
-      .WillByDefault(testing::Return("Content 1"));
-
-  NiceMock<MockAssociatedContent> associated_content2{};
-  associated_content2.SetContentId(2);
-  ON_CALL(associated_content2, GetTextContent)
-      .WillByDefault(testing::Return("Content 2"));
-
-  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
-  // We create a client to keep the conversation alive.
-  auto client = CreateConversationClient(conversation);
-
-  conversation->associated_content_manager()->SetShouldSend(false);
-  conversation->associated_content_manager()->AddContent(&associated_content1);
-  conversation->associated_content_manager()->AddContent(&associated_content2);
-
-  conversation->associated_content_manager()->SetShouldSend(false);
-
-  conversation->associated_content_manager()->RemoveContent(
-      &associated_content1);
-  EXPECT_TRUE(conversation->associated_content_manager()->should_send());
-
-  conversation->associated_content_manager()->RemoveContent(
-      &associated_content2);
-  EXPECT_FALSE(conversation->associated_content_manager()->should_send());
-}
-
-TEST_P(AIChatServiceUnitTest, MultiContentConversation_ArchiveContent) {
-  NiceMock<MockAssociatedContent> associated_content1{};
-  associated_content1.SetContentId(1);
-  ON_CALL(associated_content1, GetTextContent)
-      .WillByDefault(testing::Return("Content 1"));
-
-  NiceMock<MockAssociatedContent> associated_content2{};
-  associated_content2.SetContentId(2);
-  ON_CALL(associated_content2, GetTextContent)
-      .WillByDefault(testing::Return("Content 2"));
-
-  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
-  // We create a client to keep the conversation alive.
-  auto client = CreateConversationClient(conversation);
-
-  conversation->associated_content_manager()->AddContent(&associated_content1);
-  conversation->associated_content_manager()->AddContent(&associated_content2);
-
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "<page>Content 1</page><page>Content 2</page>");
-
-  conversation->associated_content_manager()->OnRequestArchive(
-      &associated_content1);
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "<page>Content 1</page><page>Content 2</page>");
-
-  conversation->associated_content_manager()->OnRequestArchive(
-      &associated_content2);
-  // Everything should be archived now
-  EXPECT_FALSE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "<page>Content 1</page><page>Content 2</page>");
-}
-
-TEST_P(AIChatServiceUnitTest, MultiContentConversation_LoadArchivedContent) {
-  auto metadata = mojom::Conversation::New();
-  metadata->associated_content.push_back(mojom::AssociatedContent::New(
-      "1", mojom::ContentType::PageContent, "Content 1", 1,
-      GURL("https://one.com"), 100, false));
-  metadata->associated_content.push_back(mojom::AssociatedContent::New(
-      "2", mojom::ContentType::PageContent, "Content 2", 2,
-      GURL("https://two.com"), 100, false));
-
-  auto conversation_archive = mojom::ConversationArchive::New();
-  conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of one"));
-  conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of two"));
-
-  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
-  conversation->associated_content_manager()->LoadArchivedContent(
-      metadata.get(), conversation_archive);
-
-  EXPECT_EQ(
-      conversation->associated_content_manager()->GetAssociatedContent().size(),
-      2u);
-  WaitForAssociatedContentFetch(conversation->associated_content_manager());
-  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
-            "<page>The content of one</page><page>The content of two</page>");
-}
-
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   NiceMock<MockAssociatedContent> associated_content{};
   ConversationHandler* conversation =
@@ -1064,9 +811,9 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
   }
 
   // Archive content for conversations 2 and 3
-  data[1].conversation_handler->associated_content_manager()->OnRequestArchive(
+  data[1].conversation_handler->associated_content_manager()->OnNavigated(
       &data[1].associated_content);
-  data[2].conversation_handler->associated_content_manager()->OnRequestArchive(
+  data[2].conversation_handler->associated_content_manager()->OnNavigated(
       &data[2].associated_content);
 
   // Delete associated content from conversations between 1 hours ago and 3
