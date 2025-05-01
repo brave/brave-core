@@ -219,5 +219,5 @@ void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
         pending_receiver) {
   brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
-      std::move(pending_receiver));
+      web_ui(), std::move(pending_receiver));
 }
