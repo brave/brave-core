@@ -125,8 +125,8 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
       content::EvalJs(
           web_contents(),
           "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
-          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
-          "another_flag_for_testing=true\")")
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"another_"
+          "flag_for_testing=true\")")
           .ExtractBool());
 }
 
@@ -172,4 +172,64 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
           .ExtractBool());
   // Verify that nothing is injected if `ytcfg` is not present.
   EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+                       TestInjectionReducedFlags) {
+  const GURL url =
+      https_server_.GetURL("youtube.com", "/ytcfg_mock_reduced_flags.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+  // Assert that some flags were missing by checking
+  // `serializedExperimentFlags.includes` returns `false`.
+  ASSERT_FALSE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_document_fullscreen\")")
+          .ExtractBool());
+  ASSERT_FALSE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_standard_api\")")
+          .ExtractBool());
+  ASSERT_FALSE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_logging_onresize\")")
+          .ExtractBool());
+
+  // Verify the replace method was called exactly 5 times.
+  EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+
+  // Verify the remaining flags were properly set to `false`.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_ontimeupdate=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_onresize=false\")")
+          .ExtractBool());
+
+  // Verify the other flags were not modified.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"another_"
+          "flag_for_testing=true\")")
+          .ExtractBool());
 }
