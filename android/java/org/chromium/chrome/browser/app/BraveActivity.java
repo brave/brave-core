@@ -236,6 +236,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
+@SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
 public abstract class BraveActivity extends ChromeActivity
         implements BrowsingDataBridge.OnClearBrowsingDataListener,
                 BraveVpnObserver,
