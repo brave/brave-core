@@ -21,12 +21,12 @@ namespace {
 constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
 }  // namespace
 
-class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
+class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
  public:
-  AndroidYouTubeScriptInjectorBrowserTest()
+  AndroidBackgroundVideoPlaybackBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  ~AndroidYouTubeScriptInjectorBrowserTest() override = default;
+  ~AndroidBackgroundVideoPlaybackBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);
@@ -74,7 +74,7 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
 
 // TESTS
 
-IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
                        TestInjectionMatch) {
   const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
 
@@ -119,7 +119,7 @@ IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
           .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
                        TestInjectionNoMatch) {
   const GURL url = https_server_.GetURL("youtub.com", "/ytcfg_mock.html");
 

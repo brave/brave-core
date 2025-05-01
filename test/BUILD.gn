@@ -1231,6 +1231,8 @@ test("brave_browser_tests") {
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     ]
 
+    # android only tests
+    deps += [ "//brave/browser/android/background_video:browser_tests" ]
     deps -= android_test_exception_deps
     deps += android_only_test_deps
     sources -= android_test_exception_sources
