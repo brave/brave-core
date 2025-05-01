@@ -11,8 +11,7 @@
 namespace ui {
 
 COMPONENT_EXPORT(UI_BASE)
-void BraveLoadMainAndroidPackFile(const char* path_within_apk,
-                                  const base::FilePath& disk_file_path);
+void BraveLoadAdditionalAndroidPackFiles();
 }
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_BASE_RESOURCE_RESOURCE_BUNDLE_ANDROID_H_
