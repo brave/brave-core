@@ -8,15 +8,17 @@ import { color, font, radius, spacing, typography } from
 import { formatLocale, getLocale } from '$web-common/locale'
 import { MAX_ALIASES } from "./constant"
 import { onEnterKeyForInput } from "./on_enter_key"
-import { ViewState, MappingService } from "./types"
+import { ViewState } from "./types"
 import * as React from 'react'
 import Button from "@brave/leo/react/button"
 import Col from "./styles/Col"
 import Icon from "@brave/leo/react/icon"
 import Input from "@brave/leo/react/input"
+import ProgressRing from "@brave/leo/react/progressRing"
 import Row from "./styles/Row"
 import styled from "styled-components"
-import LoadingIcon from "./LoadingIcon"
+import { EmailAliasesServiceInterface }
+  from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const ModalCol = styled(Col)`
   row-gap: ${spacing["2Xl"]};
@@ -46,13 +48,13 @@ const ModalLabel = styled.div`
 `
 
 const GeneratedEmailContainer = styled(Row)`
-  font: ${font.default.regular};
+  align-items: center;
   background-color: ${color.neutralVariant[10]};
   border-radius: ${radius.m};
-  padding: 0 ${spacing.m};
+  font: ${font.default.regular};
+  height: 44px;
   justify-content: space-between;
-  align-items: center;
-  transform: scale(1);
+  padding: 0 ${spacing.m};
   & div {
     padding: 0 ${spacing.s};
   }
@@ -105,11 +107,16 @@ const ButtonRow = styled(Row)<{ bubble?: boolean }>`
   }
 `
 
+const LoadingIcon = styled(ProgressRing)`
+  --leo-progressring-color: ${color.icon.default};
+  --leo-progressring-size: 24px;
+`
+
 const RefreshButton = ({ onClick, waiting }:
   { onClick: () => Promise<void>, waiting: boolean }) => {
   return <ButtonWrapper>
     {waiting
-      ? <LoadingIcon data-testid='loading-icon'/>
+      ? <LoadingIcon/>
       : <Button title={getLocale('emailAliasesRefreshButtonTitle')}
         onClick={onClick}
         kind="plain" >
@@ -119,17 +126,18 @@ const RefreshButton = ({ onClick, waiting }:
 }
 
 export const EmailAliasModal = (
-  { onReturnToMain, viewState, email, mappingService, bubble }:
+  { onReturnToMain, viewState, mainEmail, aliasCount, emailAliasesService,
+    bubble }:
     {
       onReturnToMain: () => void,
       viewState: ViewState,
       bubble?: boolean,
-      email: string,
-      mappingService: MappingService
+      mainEmail: string,
+      aliasCount: number,
+      emailAliasesService: EmailAliasesServiceInterface
     }
 ) => {
   const [limitReached, setLimitReached] = React.useState<boolean>(false)
-  const [mainEmail, setMainEmail] = React.useState<string>(email)
   const [proposedAlias, setProposedAlias] = React.useState<string>(
     viewState?.alias?.email ?? '')
   const [proposedNote, setProposedNote] = React.useState<string>(
@@ -138,30 +146,21 @@ export const EmailAliasModal = (
     React.useState<boolean>(true)
   const createOrSave = async () => {
     if (proposedAlias) {
-      if (viewState.mode === 'Create') {
-        await mappingService.createAlias(proposedAlias, proposedNote)
-        await mappingService.fillField(proposedAlias)
-      } else {
-        await mappingService.updateAlias(proposedAlias, proposedNote, true)
-      }
+      emailAliasesService.updateAlias(proposedAlias, proposedNote)
       onReturnToMain()
     }
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
-    const newEmailAlias = await mappingService.generateAlias()
+    const { alias } = await emailAliasesService.generateAlias()
     if (viewState.mode === 'Create' || viewState.mode === 'Edit') {
-      setProposedAlias(newEmailAlias)
+      setProposedAlias(alias)
       setAwaitingProposedAlias(false)
     }
   }
   React.useEffect(() => {
-    mappingService.getAccountEmail().then(email => setMainEmail(email ?? ''))
     if (bubble) {
-      mappingService.getAliases().then(aliases => {
-        setLimitReached(aliases.length >= MAX_ALIASES)
-      })
-      return
+      setLimitReached(aliasCount >= MAX_ALIASES)
     }
     if (viewState.mode === 'Create') {
       regenerateAlias()
@@ -183,14 +182,15 @@ export const EmailAliasModal = (
             <ModalSectionCol>
               <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
               <GeneratedEmailContainer>
-                <div>{proposedAlias}</div>
+                <div className='generated-email'>{proposedAlias}</div>
                 {viewState.mode === 'Create' &&
                  <RefreshButton data-testid='regenerate-button'
                                 onClick={regenerateAlias}
                                 waiting={awaitingProposedAlias} />}
               </GeneratedEmailContainer>
               <ModalDetails>
-                {formatLocale('emailAliasesEmailsWillBeForwardedTo', { $1: mainEmail })}
+                {formatLocale('emailAliasesEmailsWillBeForwardedTo',
+                  { $1: mainEmail })}
               </ModalDetails>
             </ModalSectionCol>
             <ModalSectionCol>
@@ -205,7 +205,8 @@ export const EmailAliasModal = (
               </NoteInput>
               {viewState.mode === 'Edit' && viewState?.alias?.domains &&
                 <div>
-                {formatLocale('emailAliasesUsedBy', { $1: viewState?.alias?.domains?.join(', ') })}
+                {formatLocale('emailAliasesUsedBy',
+                              { $1: viewState?.alias?.domains?.join(', ') })}
                 </div>}
             </ModalSectionCol>
           </ModalCol>
@@ -213,7 +214,7 @@ export const EmailAliasModal = (
       <ButtonRow bubble={bubble}>
         <span>
           {bubble && <Button kind='plain-faint'
-                        onClick={mappingService.showSettingsPage}>
+                        onClick={emailAliasesService.showSettingsPage}>
             {getLocale('emailAliasesManageButton')}
           </Button>}
         </span>

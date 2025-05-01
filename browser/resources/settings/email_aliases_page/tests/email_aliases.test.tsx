@@ -6,43 +6,86 @@
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { ManagePage } from '../email_aliases'
-import { MappingService } from '../content/types'
-import { localeRegex } from './test_utils'
+import { localeRegex, clickLeoButton } from './test_utils'
+import {
+  EmailAliasesServiceInterface,
+  EmailAliasesServiceObserverInterface
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-// Mock the mapping service
-const mockMappingService: MappingService = {
-  getAccountEmail: jest.fn(),
-  logout: jest.fn(),
-  requestAccount: jest.fn(),
-  getAliases: jest.fn(),
-  createAlias: jest.fn(),
-  updateAlias: jest.fn(),
-  deleteAlias: jest.fn(),
-  generateAlias: jest.fn(),
-  onAccountReady: jest.fn(),
-  cancelAccountRequest: jest.fn(),
-  fillField: jest.fn(),
-  showSettingsPage: jest.fn()
+jest.mock('$web-common/locale', () => ({
+  getLocale: (key: string) => {
+    return key
+  },
+  formatMessage: (key: string, params: Record<string, string>) => {
+    return key
+  },
+  formatLocale: (key: string, params: Record<string, string>) => {
+    return key
+  }
+}))
+
+// Mock the email aliases service
+class MockEmailAliasesServiceInterface extends EmailAliasesServiceInterface {
+  private observerInit?:
+    (observer: EmailAliasesServiceObserverInterface) => void
+  constructor(observerInit?:
+    (observer: EmailAliasesServiceObserverInterface) => void) {
+    super()
+    this.observerInit = observerInit
+  }
+
+  addObserver(observer: EmailAliasesServiceObserverInterface) {
+    this.observerInit?.(observer)
+  }
+  removeObserver(observer: EmailAliasesServiceObserverInterface) {}
+
+  generateAlias = jest.fn()
+  updateAlias = jest.fn()
+  deleteAlias = jest.fn()
+  requestPrimaryEmailVerification = jest.fn()
+  cancelPrimaryEmailVerification = jest.fn()
+  logout = jest.fn()
+  showSettingsPage = jest.fn()
 }
+
+const createBindObserver =
+  (emailAliasesService: MockEmailAliasesServiceInterface) =>
+  (observer: EmailAliasesServiceObserverInterface) => {
+    emailAliasesService.addObserver(observer)
+    return () => {
+      emailAliasesService.removeObserver(observer)
+    }
+  }
 
 describe('ManagePage', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it('shows loading state initially', () => {
-    render(<ManagePage mappingService={mockMappingService} />)
-    expect(document.querySelector('[name="loading-spinner"]'))
+  it('shows loading state initially', async () => {
+    const mockEmailAliasesService = new MockEmailAliasesServiceInterface()
+    await act(async () => {
+      render(<ManagePage
+               emailAliasesService={mockEmailAliasesService}
+               bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+    expect(document.querySelector('leo-progressring'))
       .toBeInTheDocument()
     expect(screen.getByText(localeRegex(
       'emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
   })
 
   it('shows sign up form when no email is available', async () => {
-    mockMappingService.getAccountEmail = jest.fn().mockResolvedValue(null)
-
+    const mockEmailAliasesService =
+      new MockEmailAliasesServiceInterface((observer) => {
+      observer.onLoggedOut()
+    })
     await act(async () => {
-      render(<ManagePage mappingService={mockMappingService} />)
+      render(<ManagePage
+               emailAliasesService={mockEmailAliasesService}
+               bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
     })
 
     await waitFor(() => {
@@ -59,13 +102,19 @@ describe('ManagePage', () => {
       {
         email: 'alias1@brave.com',
         note: 'Test Alias 1',
+        domains: undefined,
       }
     ]
-    mockMappingService.getAccountEmail = jest.fn().mockResolvedValue(mockEmail)
-    mockMappingService.getAliases = jest.fn().mockResolvedValue(mockAliases)
+    const mockEmailAliasesService =
+      new MockEmailAliasesServiceInterface((observer) => {
+      observer.onLoggedIn(mockEmail)
+      observer.onAliasesUpdated(mockAliases)
+    })
 
     await act(async () => {
-      render(<ManagePage mappingService={mockMappingService} />)
+      render(<ManagePage emailAliasesService={mockEmailAliasesService}
+            bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
     })
 
     await waitFor(() => {
@@ -75,82 +124,50 @@ describe('ManagePage', () => {
     })
   })
 
-  it('handles sign up flow', async () => {
+  it('shows verification pending view', async () => {
     const mockEmail = 'test@brave.com'
-    mockMappingService.getAccountEmail = jest.fn().mockResolvedValue(null)
-    mockMappingService.requestAccount = jest.fn()
-    mockMappingService.onAccountReady = jest.fn().mockResolvedValue(true)
-    mockMappingService.getAliases = jest.fn().mockResolvedValue([])
-
-    await act(async () => {
-      render(<ManagePage mappingService={mockMappingService} />)
+    const mockEmailAliasesService =
+      new MockEmailAliasesServiceInterface((observer) => {
+      observer.onVerificationPending(mockEmail)
     })
 
-    // Wait for sign up form to be ready
+    await act(async () => {
+      render(<ManagePage emailAliasesService={mockEmailAliasesService}
+            bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
     await waitFor(() => {
-      const emailInput = document.querySelector('leo-input')
-      const submitButton = document.querySelector('leo-button')
-      expect(emailInput).toBeInTheDocument()
-      expect(submitButton).toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount')))
+      expect(screen.getByText(localeRegex('emailAliasesLoginEmailOnTheWay')))
         .toBeInTheDocument()
-    })
-
-    // Enter email and submit
-    await act(async () => {
-      const emailInput = document.querySelector('leo-input')
-      if (emailInput) {
-        emailInput.setAttribute('value', mockEmail)
-      }
-    })
-
-    // Wait for the value to be set and stable
-    await waitFor(() => {
-      const emailInput = document.querySelector('leo-input')
-      expect(emailInput).toHaveAttribute('value', mockEmail)
-    })
-
-    // Click submit button
-    await act(async () => {
-      const submitButton =
-        screen.getByText(localeRegex('emailAliasesGetLoginLinkButton'))
-      submitButton.shadowRoot?.querySelector('button')?.click()
-    })
-
-    // Wait for main view to be shown
-    await waitFor(() => {
-      expect(screen.getByText(localeRegex(
-        'emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
-    })
-  })
-
-  it('handles logout', async () => {
-    const mockEmail = 'test@brave.com'
-    mockMappingService.getAccountEmail = jest.fn().mockResolvedValue(mockEmail)
-    mockMappingService.getAliases = jest.fn().mockResolvedValue([])
-
-    await act(async () => {
-      render(<ManagePage mappingService={mockMappingService} />)
-    })
-
-    // Wait for main view
-    await waitFor(() => {
-      expect(screen.getByText(mockEmail)).toBeInTheDocument()
-    })
-
-    // Click logout button
-    const logoutButton = screen.getByText(localeRegex('emailAliasesSignOut'))
-    await act(async () => {
-      fireEvent.click(logoutButton)
-    })
-
-    // Check that logout was called
-    expect(mockMappingService.logout).toHaveBeenCalled()
-
-    // Check that we're back to sign up form
-    await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount')))
+      expect(screen.getByText(localeRegex('emailAliasesClickOnSecureLogin')))
+        .toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesDontSeeEmail')))
         .toBeInTheDocument()
     })
   })
+
+  it('triggers logout when sign out button is clicked', async () => {
+    const mockEmail = 'test@brave.com'
+    const mockEmailAliasesService =
+      new MockEmailAliasesServiceInterface((observer) => {
+      observer.onLoggedIn(mockEmail)
+    })
+
+    await act(async () => {
+      render(<ManagePage emailAliasesService={mockEmailAliasesService}
+            bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText(localeRegex('emailAliasesSignOut')))
+        .toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByText(localeRegex('emailAliasesSignOut')))
+
+    expect(mockEmailAliasesService.logout).toHaveBeenCalled()
+  })
+
 })

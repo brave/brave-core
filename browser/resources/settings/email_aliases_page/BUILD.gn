@@ -14,6 +14,8 @@ transpile_web_ui("email_aliases_ui") {
       ] ]
 
   resource_name = "email_aliases"
+
+  deps = [ "//brave/components/email_aliases:mojom_js" ]
 }
 
 static_library("features") {

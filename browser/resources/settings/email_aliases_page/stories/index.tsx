@@ -6,8 +6,12 @@
 import * as React from 'react'
 import { ManagePage } from '../email_aliases'
 import { EmailAliasModal } from '../content/email_aliases_modal'
-import { Alias, MappingService } from '../content/types'
-
+import {
+  Alias,
+  EmailAliasesServiceInterface,
+  EmailAliasesServiceObserverInterface,
+  EmailAliasesServiceObserverRemote
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { provideStrings } from '../../../../../.storybook/locale'
 
 type AccountState = 'NoAccount' | 'AccountReady' | 'AwaitingAccount'
@@ -73,6 +77,7 @@ const demoData = {
     {
       email: 'horse.radish.record57@bravealias.com',
       note: 'Alias for all my newsletters',
+      domains: undefined
     },
     {
       email: 'start.plane.division.laser42@bravealias.com',
@@ -81,41 +86,65 @@ const demoData = {
     },
     {
       email: 'racoon.pencil.test14@bravealias.com',
-      note: 'Marketplace email for Facebook'
+      note: 'Marketplace email for Facebook',
+      domains: undefined
     }
   ]
 } satisfies { email: string, aliases: Alias[] }
 
-class MockMappingService implements MappingService {
+class MockEmailAliasesService implements EmailAliasesServiceInterface {
   accountEmail: string
   aliases: Map<string, Alias>
   accountState: AccountState
   accountRequestId: number
+  observers: Set<EmailAliasesServiceObserverRemote |
+                 EmailAliasesServiceObserverInterface>
   constructor(accountState: AccountState, accountEmail: string) {
     this.accountState = accountState
     this.accountEmail = accountEmail
+    this.observers = new Set<EmailAliasesServiceObserverRemote |
+                             EmailAliasesServiceObserverInterface>()
     this.aliases = new Map<string, Alias>();
     for (const alias of demoData.aliases) {
       this.aliases.set(alias.email, alias)
     }
   }
 
-  async createAlias (email: string, note: string) {
-    const alias = { email, note }
+  addObserver (observer: EmailAliasesServiceObserverRemote |
+                         EmailAliasesServiceObserverInterface) {
+    this.observers.add(observer)
+    switch (this.accountState) {
+      case 'NoAccount':
+        observer.onLoggedOut()
+        break
+      case 'AccountReady':
+        observer.onLoggedIn(this.accountEmail)
+        break
+      case 'AwaitingAccount':
+        observer.onVerificationPending(this.accountEmail)
+        break
+    }
+    observer.onAliasesUpdated([...this.aliases.values()])
+  }
+
+  removeObserver (observer: EmailAliasesServiceObserverRemote |
+                            EmailAliasesServiceObserverInterface) {
+    this.observers.delete(observer)
+  }
+
+  updateAlias (email: string, note: string) {
+    const alias = { email, note, domains: undefined }
     this.aliases.set(email, alias)
+    this.observers.forEach(observer => {
+      observer.onAliasesUpdated([...this.aliases.values()])
+    })
   }
 
-  async getAliases () {
-    return [...this.aliases.values()]
-  }
-
-  async updateAlias (email: string, note: string, status: boolean) {
-    const alias = { email, note }
-    this.aliases.set(email, alias)
-  }
-
-  async deleteAlias (email: string) {
+  deleteAlias (email: string) {
     this.aliases.delete(email)
+    this.observers.forEach(observer => {
+      observer.onAliasesUpdated([...this.aliases.values()])
+    })
   }
 
   async generateAlias () {
@@ -125,61 +154,74 @@ class MockMappingService implements MappingService {
         "@bravealias.com"
     } while (this.aliases.has(generated))
     await new Promise(resolve => setTimeout(resolve, 1000))
-    return generated
+    return { alias: generated }
   }
 
-  async getAccountEmail () {
-    return this.accountEmail
-  }
-
-  async requestAccount (accountEmail: string) {
-    this.accountState = 'AwaitingAccount'
+  requestPrimaryEmailVerification (email: string) {
+    this.observers.forEach(observer => {
+      observer.onVerificationPending(email)
+    })
     this.accountRequestId = window.setTimeout(() => {
-      this.accountEmail = accountEmail
-      this.accountState = 'AccountReady'
+      this.observers.forEach(observer => {
+        observer.onLoggedIn(email)
+      })
     }, 5000);
   }
 
-  async onAccountReady () {
-    while (this.accountState === 'AwaitingAccount') {
-      await new Promise(resolve => setTimeout(resolve, 250));
-    }
-    return this.accountState === 'AccountReady'
-  }
-
-  async cancelAccountRequest () {
-    this.accountState = 'NoAccount'
+  cancelPrimaryEmailVerification () {
     window.clearTimeout(this.accountRequestId)
+    this.observers.forEach(observer => {
+      observer.onLoggedOut()
+    })
   }
 
-  async logout () {
-    this.accountState = 'NoAccount'
+  logout () {
+    this.observers.forEach(observer => {
+      observer.onLoggedOut()
+    })
   }
 
-  async fillField (fieldValue: string) {
-    console.log("fillField", fieldValue)
+  showSettingsPage () {
+    // Do nothing in this mock implementation.
   }
 
-  async showSettingsPage () {
-    console.log("showSettingsPage")
-  }
 }
 
-const mockMappingServiceNoAccountInstance =
-  new MockMappingService('NoAccount', '')
-const mockMappingServiceAccountReadyInstance =
-  new MockMappingService('AccountReady', demoData.email)
+const mockEmailAliasesServiceNoAccountInstance =
+  new MockEmailAliasesService('NoAccount', '')
+
+const mockEmailAliasesServiceAccountReadyInstance =
+  new MockEmailAliasesService('AccountReady', demoData.email)
+
+const bindNoAccountObserver =
+  (observer: EmailAliasesServiceObserverInterface) => {
+    mockEmailAliasesServiceNoAccountInstance.addObserver(observer)
+    return () => {
+      mockEmailAliasesServiceNoAccountInstance.removeObserver(observer)
+    }
+  }
+
+const bindAccountReadyObserver =
+  (observer: EmailAliasesServiceObserverInterface) => {
+    mockEmailAliasesServiceAccountReadyInstance.addObserver(observer)
+    return () => {
+      mockEmailAliasesServiceAccountReadyInstance.removeObserver(observer)
+    }
+  }
 
 export const SignInPage = () => {
   return (
-    <ManagePage mappingService={mockMappingServiceNoAccountInstance}>
+    <ManagePage emailAliasesService={mockEmailAliasesServiceNoAccountInstance}
+                bindObserver={bindNoAccountObserver}>
     </ManagePage>
   )
 }
 
 export const SettingsPage = () => {
   return (
-    <ManagePage mappingService={mockMappingServiceAccountReadyInstance}>
+    <ManagePage
+      emailAliasesService={mockEmailAliasesServiceAccountReadyInstance}
+      bindObserver={bindAccountReadyObserver}>
     </ManagePage>
   )
 }
@@ -187,11 +229,12 @@ export const SettingsPage = () => {
 export const Bubble = () => {
   return (
     <EmailAliasModal
+      aliasCount={demoData.aliases.length}
       onReturnToMain={() => {}}
       viewState={{ mode: 'Create' }}
-      email={demoData.email}
+      mainEmail={demoData.email}
       bubble={true}
-      mappingService={mockMappingServiceAccountReadyInstance}
+      emailAliasesService={mockEmailAliasesServiceAccountReadyInstance}
     />
   )
 }

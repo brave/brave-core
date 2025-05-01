@@ -6,27 +6,35 @@
 import * as React from 'react'
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
 import { EmailAliasModal } from '../content/email_aliases_modal'
-import { MappingService, ViewState } from '../content/types'
-import { getLocale } from '$web-common/locale'
-import { clickLeoButton } from './test_utils'
+import { ViewState } from '../content/types'
 
-// Helper function to create a regex from a locale string
-const localeRegex = (key: string) => new RegExp(getLocale(key))
+import { clickLeoButton, localeRegex } from './test_utils'
+import { EmailAliasesServiceInterface }
+  from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
-// Mock the mapping service
-const mockMappingService: MappingService = {
-  getAccountEmail: jest.fn(),
+jest.mock('$web-common/locale', () => ({
+  getLocale: (key: string) => {
+    return key
+  },
+  formatMessage: (key: string, params: Record<string, string>) => {
+    return key
+  },
+  formatLocale: (key: string, params: Record<string, string>) => {
+    return key
+  }
+}))
+
+// Mock the email aliases service
+const mockEmailAliasesService: EmailAliasesServiceInterface = {
   logout: jest.fn(),
-  requestAccount: jest.fn(),
-  getAliases: jest.fn(),
-  createAlias: jest.fn(),
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
-  onAccountReady: jest.fn(),
-  cancelAccountRequest: jest.fn(),
-  fillField: jest.fn(),
-  showSettingsPage: jest.fn()
+  showSettingsPage: jest.fn(),
+  requestPrimaryEmailVerification: jest.fn(),
+  cancelPrimaryEmailVerification: jest.fn(),
+  addObserver: jest.fn(),
+  removeObserver: jest.fn()
 }
 
 describe('EmailAliasModal', () => {
@@ -35,18 +43,18 @@ describe('EmailAliasModal', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockMappingService.getAccountEmail = jest.fn().mockResolvedValue(mockEmail)
-    mockMappingService.generateAlias = jest.fn()
-      .mockResolvedValue('generated@brave.com')
+    mockEmailAliasesService.generateAlias = jest.fn()
+      .mockResolvedValue({ alias: 'generated@brave.com' })
   })
 
   it('renders create mode correctly', async () => {
     render(
       <EmailAliasModal
         viewState={{ mode: 'Create' }}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -56,7 +64,7 @@ describe('EmailAliasModal', () => {
 
     // Check that generate alias was called
     await waitFor(() => {
-      expect(mockMappingService.generateAlias).toHaveBeenCalled()
+      expect(mockEmailAliasesService.generateAlias).toHaveBeenCalled()
     })
   })
 
@@ -73,9 +81,10 @@ describe('EmailAliasModal', () => {
     render(
       <EmailAliasModal
         viewState={mockViewState}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -90,18 +99,21 @@ describe('EmailAliasModal', () => {
   })
 
   it('handles alias creation', async () => {
+
+    await act(async () => {
       render(
         <EmailAliasModal
         viewState={{ mode: 'Create' }}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
-      />
-    )
+        emailAliasesService={mockEmailAliasesService}
+      />)
+    })
 
     // Wait for generated alias
     await waitFor(() => {
-      expect(mockMappingService.generateAlias).toHaveBeenCalled()
+      expect(mockEmailAliasesService.generateAlias).toHaveBeenCalled()
     })
 
     // Wait for loading to complete and alias to be generated
@@ -122,9 +134,9 @@ describe('EmailAliasModal', () => {
     // Click save button
     clickLeoButton(saveButton)
 
-    // Check that createAlias was called
+    // Check that updateAlias was called
     await waitFor(() => {
-      expect(mockMappingService.createAlias).toHaveBeenCalled()
+      expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
       expect(mockOnReturnToMain).toHaveBeenCalled()
     })
   })
@@ -133,39 +145,40 @@ describe('EmailAliasModal', () => {
     render(
       <EmailAliasModal
         viewState={{ mode: 'Create' }}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
     // Wait for initial generation
     await waitFor(() => {
-      expect(mockMappingService.generateAlias).toHaveBeenCalled()
+      expect(mockEmailAliasesService.generateAlias).toHaveBeenCalled()
       expect(screen.getByTitle('emailAliasesRefreshButtonTitle'))
         .toBeInTheDocument()
     })
 
     // Click regenerate button
     const regenerateButton = screen.getByTitle('emailAliasesRefreshButtonTitle')
-    clickLeoButton(regenerateButton)
+    await act(async () => {
+      clickLeoButton(regenerateButton)
+    })
 
     // Check that generateAlias was called again
     await waitFor(() => {
-      expect(mockMappingService.generateAlias).toHaveBeenCalledTimes(2)
+      expect(mockEmailAliasesService.generateAlias).toHaveBeenCalledTimes(2)
     })
   })
 
   it('shows limit reached message in bubble mode', async () => {
-    mockMappingService.getAliases = jest.fn().mockResolvedValue(Array(10)
-                                      .fill(null))
-
     render(
       <EmailAliasModal
         viewState={{ mode: 'Create' }}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={5}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
         bubble={true}
       />
     )
@@ -179,7 +192,7 @@ describe('EmailAliasModal', () => {
 
   it('shows loading state while generating alias', async () => {
     // Mock generateAlias to take some time
-    mockMappingService.generateAlias = jest.fn().mockImplementation(() => {
+    mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(() => {
       return new Promise(
         resolve => setTimeout(() => resolve('new@brave.com'), 100))
     })
@@ -187,14 +200,15 @@ describe('EmailAliasModal', () => {
     render(
       <EmailAliasModal
         viewState={{ mode: 'Create' }}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
     // Initially should show loading state but not the button
-    const loadingIcon = document.querySelector('[name="loading-spinner"]')
+    const loadingIcon = document.querySelector('leo-progressring')
     expect(loadingIcon).toBeInTheDocument()
     const regenerateButton = screen.queryByTitle(
       'emailAliasesRefreshButtonTitle')
@@ -222,9 +236,10 @@ describe('EmailAliasModal', () => {
     render(
       <EmailAliasModal
         viewState={mockViewState}
-        email={mockEmail}
+        mainEmail={mockEmail}
+        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -245,10 +260,9 @@ describe('EmailAliasModal', () => {
 
     // Check that updateAlias was called
     await waitFor(() => {
-      expect(mockMappingService.updateAlias).toHaveBeenCalledWith(
+      expect(mockEmailAliasesService.updateAlias).toHaveBeenCalledWith(
         'existing@brave.com',
-        'Existing Alias',
-        true
+        'Existing Alias'
       )
       expect(mockOnReturnToMain).toHaveBeenCalled()
     })
