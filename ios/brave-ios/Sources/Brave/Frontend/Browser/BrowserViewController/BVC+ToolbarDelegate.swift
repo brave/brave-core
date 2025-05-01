@@ -344,6 +344,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "ads-internals",
       "credits",
       "sync-internals",
+      "account-dialogs",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
