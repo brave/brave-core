@@ -14,6 +14,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -64,6 +65,14 @@ class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
+  void ClickAndWaitForNavigation(const std::u16string& script) {
+    content::TestNavigationObserver observer(web_contents());
+    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
+    frame->ExecuteJavaScriptForTests(script, base::NullCallback(),
+                                     content::ISOLATED_WORLD_ID_GLOBAL);
+    observer.WaitForNavigationFinished();
+  }
+
  protected:
   // Must use HTTPS because `youtube.com` is in Chromium's HSTS preload list.
   net::EmbeddedTestServer https_server_;
@@ -81,6 +90,83 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
   // Verify the replace method was called exactly 5 times.
+  EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+
+  // Verify all the flags were properly set to `false`.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_ontimeupdate=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_onresize=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_document_fullscreen=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_standard_api=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_logging_onresize=false\")")
+          .ExtractBool());
+
+  // Verify the other flags were not modified.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"another_"
+          "flag_for_testing=true\")")
+          .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+                       TestSamePageNavigationInjection) {
+  const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+
+  ASSERT_TRUE(
+      content::EvalJs(web_contents(), "!!document.getElementById('link1')")
+          .ExtractBool());
+  ASSERT_TRUE(
+      content::EvalJs(web_contents(), "!!document.getElementById('link2')")
+          .ExtractBool());
+
+  // Click the first anchor link with `id=link1` to navigate to "#section1".
+  ClickAndWaitForNavigation(u"document.getElementById('link1').click();");
+
+  // Verify navigation to the same page with the appropriate hash.
+  EXPECT_EQ(web_contents()->GetVisibleURL().ref(), "section1");
+
+  // Click the second anchor link with `id=link2` to navigate to "#section2".
+  ClickAndWaitForNavigation(u"document.getElementById('link2').click();");
+
+  // Verify navigation.
+  EXPECT_EQ(web_contents()->GetVisibleURL().ref(), "section2");
+
+  // Verify the replace method was called exactly 5 times
+  // even if multiple same page navigations.
   EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 
   // Verify all the flags were properly set to `false`.
