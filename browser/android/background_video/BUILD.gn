@@ -42,6 +42,9 @@ source_set("test_support") {
   deps = [
     ":background_video",
     ":features",
+    "//brave/components/constants",
+    "//chrome/test:test_support",
+    "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
