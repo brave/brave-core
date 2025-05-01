@@ -112,6 +112,9 @@ function ConversationEntries() {
             }
           }
 
+          const imageFiles =
+            getImageFiles(latestTurn.uploadedFiles) || []
+
           return (
             <div
               key={id}
@@ -176,19 +179,16 @@ function ConversationEntries() {
                             </div>
                           )}
                         </div>
-                        <div className={styles.uploadedImages}>
-                          {(() => {
-                            const imageFiles =
-                              getImageFiles(latestTurn.uploadedFiles) || [];
-                            return imageFiles.length > 0 &&
-                              imageFiles.map((img) => (
-                                <UploadedImgItem
-                                  key={img.filename}
-                                  uploadedImage={img}
-                                />
-                              ));
-                          })()}
-                        </div>
+                        {imageFiles.length > 0 &&
+                          <div className={styles.uploadedImages}>
+                            {imageFiles.map((img) => (
+                              <UploadedImgItem
+                                key={img.filename}
+                                uploadedImage={img}
+                              />
+                            ))}
+                          </div>
+                        }
                       </div>
                     </>
                   )}
