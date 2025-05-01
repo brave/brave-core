@@ -161,10 +161,10 @@
     Payment methods
   </message>
   <message name="IDS_EXTENSIONS_IMPORTER_LOCK_TITLE" desc="Dialog title for importer lock dialog">
-    The source profile is in use.
+    Import profile still in use
   </message>
   <message name="IDS_EXTENSIONS_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the importer-lock dialog">
-    Please close all browser windows you want to import extensions from.
+    To import extensions or other settings, please first close the browser you're importing from.
   </message>
 
   <!-- Settings / Appearance -->
