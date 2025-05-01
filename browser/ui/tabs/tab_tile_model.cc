@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 
 #include <algorithm>
 
@@ -15,28 +15,27 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
-#include "brave/browser/ui/tabs/split_view_tab_tile_data_observer.h"
+#include "brave/browser/ui/tabs/tab_tile_model_observer.h"
 #include "brave/components/misc_metrics/split_view_metrics.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-SplitViewTabTileData::SplitViewTabTileData(
-    BrowserWindowInterface* browser_window_interface)
+TabTileModel::TabTileModel(BrowserWindowInterface* browser_window_interface)
     : tab_strip_model_adapter_(std::make_unique<SplitViewTabStripModelAdapter>(
           *this,
           browser_window_interface->GetTabStripModel())) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 }
 
-SplitViewTabTileData::~SplitViewTabTileData() {
+TabTileModel::~TabTileModel() {
   // base::ObserverList is safe to be mutated during iteration.
   for (auto& observer : observers_) {
-    observer.OnWillDeleteTabTileData();
+    observer.OnWillDeleteTabTileModel();
   }
 }
 
-void SplitViewTabTileData::TileTabs(const TabTile& tab_tile) {
+void TabTileModel::TileTabs(const TabTile& tab_tile) {
   CHECK(!IsTabTiled(tab_tile.first));
   CHECK(!IsTabTiled(tab_tile.second));
 
@@ -69,7 +68,7 @@ void SplitViewTabTileData::TileTabs(const TabTile& tab_tile) {
   }
 }
 
-void SplitViewTabTileData::BreakTile(const tabs::TabHandle& tab) {
+void TabTileModel::BreakTile(const tabs::TabHandle& tab) {
   if (auto iter = FindTabTile(tab); iter != tab_tiles_.end()) {
     auto tab_tile_to_break = *iter;
     for (auto& observer : observers_) {
@@ -95,7 +94,7 @@ void SplitViewTabTileData::BreakTile(const tabs::TabHandle& tab) {
   }
 }
 
-std::vector<TabTile>::iterator SplitViewTabTileData::FindTabTile(
+std::vector<TabTile>::iterator TabTileModel::FindTabTile(
     const tabs::TabHandle& tab) {
   if (IsTabTiled(tab)) {
     return tab_tiles_.begin() + tab_tile_index_for_tab_[tab];
@@ -104,23 +103,23 @@ std::vector<TabTile>::iterator SplitViewTabTileData::FindTabTile(
   return tab_tiles_.end();
 }
 
-std::vector<TabTile>::const_iterator SplitViewTabTileData::FindTabTile(
+std::vector<TabTile>::const_iterator TabTileModel::FindTabTile(
     const tabs::TabHandle& tab) const {
-  return const_cast<SplitViewTabTileData*>(this)->FindTabTile(tab);
+  return const_cast<TabTileModel*>(this)->FindTabTile(tab);
 }
 
-void SplitViewTabTileData::Transfer(SplitViewTabTileData* other,
-                                    std::vector<TabTile> tab_tiles) {
+void TabTileModel::Transfer(TabTileModel* other,
+                            std::vector<TabTile> tab_tiles) {
   for (const auto& tab_tile : tab_tiles) {
     other->TileTabs(tab_tile);
   }
 }
 
-bool SplitViewTabTileData::IsTabTiled(const tabs::TabHandle& tab) const {
+bool TabTileModel::IsTabTiled(const tabs::TabHandle& tab) const {
   return tab_tile_index_for_tab_.contains(tab);
 }
 
-void SplitViewTabTileData::SwapTabsInTile(const TabTile& tab_tile) {
+void TabTileModel::SwapTabsInTile(const TabTile& tab_tile) {
   auto iter = FindTabTile(tab_tile.first);
   std::swap(iter->first, iter->second);
 
@@ -129,8 +128,7 @@ void SplitViewTabTileData::SwapTabsInTile(const TabTile& tab_tile) {
   }
 }
 
-std::optional<TabTile> SplitViewTabTileData::GetTile(
-    const tabs::TabHandle& tab) const {
+std::optional<TabTile> TabTileModel::GetTile(const tabs::TabHandle& tab) const {
   auto iter = FindTabTile(tab);
   if (iter == tab_tiles_.end()) {
     return std::nullopt;
@@ -138,58 +136,56 @@ std::optional<TabTile> SplitViewTabTileData::GetTile(
   return *iter;
 }
 
-void SplitViewTabTileData::SetSizeDelta(const tabs::TabHandle& tab,
-                                        int size_delta) {
+void TabTileModel::SetSizeDelta(const tabs::TabHandle& tab, int size_delta) {
   auto iter = FindTabTile(tab);
   CHECK(iter != tab_tiles_.end());
 
   iter->split_view_size_delta = size_delta;
 }
 
-int SplitViewTabTileData::GetSizeDelta(const tabs::TabHandle& tab) {
+int TabTileModel::GetSizeDelta(const tabs::TabHandle& tab) {
   auto iter = FindTabTile(tab);
   CHECK(iter != tab_tiles_.end());
   return iter->split_view_size_delta;
 }
 
-void SplitViewTabTileData::AddObserver(SplitViewTabTileDataObserver* observer) {
+void TabTileModel::AddObserver(TabTileModelObserver* observer) {
   observers_.AddObserver(observer);
 }
 
-void SplitViewTabTileData::RemoveObserver(
-    SplitViewTabTileDataObserver* observer) {
+void TabTileModel::RemoveObserver(TabTileModelObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-SplitViewTabTileData::OnTabDragEndedClosure::OnTabDragEndedClosure() = default;
+TabTileModel::OnTabDragEndedClosure::OnTabDragEndedClosure() = default;
 
-SplitViewTabTileData::OnTabDragEndedClosure::OnTabDragEndedClosure(
-    SplitViewTabTileData* data,
+TabTileModel::OnTabDragEndedClosure::OnTabDragEndedClosure(
+    TabTileModel* data,
     base::OnceClosure closure)
     : data_(data), closure_(std::move(closure)) {
   CHECK(data_);
 }
 
-SplitViewTabTileData::OnTabDragEndedClosure::OnTabDragEndedClosure(
-    SplitViewTabTileData::OnTabDragEndedClosure&& other) noexcept {
+TabTileModel::OnTabDragEndedClosure::OnTabDragEndedClosure(
+    TabTileModel::OnTabDragEndedClosure&& other) noexcept {
   RunCurrentClosureIfNeededAndReplaceWith(std::move(other));
 }
 
-SplitViewTabTileData::OnTabDragEndedClosure&
-SplitViewTabTileData::OnTabDragEndedClosure::operator=(
-    SplitViewTabTileData::OnTabDragEndedClosure&& other) noexcept {
+TabTileModel::OnTabDragEndedClosure&
+TabTileModel::OnTabDragEndedClosure::operator=(
+    TabTileModel::OnTabDragEndedClosure&& other) noexcept {
   RunCurrentClosureIfNeededAndReplaceWith(std::move(other));
   return *this;
 }
 
-void SplitViewTabTileData::OnTabDragEndedClosure::RunAndReset() {
+void TabTileModel::OnTabDragEndedClosure::RunAndReset() {
   if (closure_) {
     closure_.RunAndReset();
   }
   data_ = nullptr;
 }
 
-void SplitViewTabTileData::OnTabDragEndedClosure::
+void TabTileModel::OnTabDragEndedClosure::
     RunCurrentClosureIfNeededAndReplaceWith(OnTabDragEndedClosure&& other) {
   if (data_.get() == other.data_.get()) {
     // In case |this| and |other| are pointing at the same |data_|, just discard
@@ -211,15 +207,14 @@ void SplitViewTabTileData::OnTabDragEndedClosure::
   std::swap(closure_, other.closure_);
 }
 
-SplitViewTabTileData::OnTabDragEndedClosure::~OnTabDragEndedClosure() = default;
+TabTileModel::OnTabDragEndedClosure::~OnTabDragEndedClosure() = default;
 
-SplitViewTabTileData::OnTabDragEndedClosure
-SplitViewTabTileData::TabDragStarted() {
+TabTileModel::OnTabDragEndedClosure TabTileModel::TabDragStarted() {
   tab_strip_model_adapter_->TabDragStarted();
 
   return OnTabDragEndedClosure(
       this, base::BindOnce(
-                [](base::WeakPtr<SplitViewTabTileData> data) {
+                [](base::WeakPtr<TabTileModel> data) {
                   if (data) {
                     data->tab_strip_model_adapter_->TabDragEnded();
                   }
@@ -227,7 +222,7 @@ SplitViewTabTileData::TabDragStarted() {
                 weak_ptr_factory_.GetWeakPtr()));
 }
 
-void SplitViewTabTileData::TabsWillBeAttachedToNewBrowser(
+void TabTileModel::TabsWillBeAttachedToNewBrowser(
     const std::vector<tabs::TabHandle>& tabs) {
   DCHECK(tab_tiles_to_be_attached_to_new_window_.empty());
 
@@ -251,7 +246,6 @@ void SplitViewTabTileData::TabsWillBeAttachedToNewBrowser(
   }
 }
 
-void SplitViewTabTileData::TabsAttachedToNewBrowser(
-    SplitViewTabTileData* target_data) {
+void TabTileModel::TabsAttachedToNewBrowser(TabTileModel* target_data) {
   Transfer(target_data, std::move(tab_tiles_to_be_attached_to_new_window_));
 }

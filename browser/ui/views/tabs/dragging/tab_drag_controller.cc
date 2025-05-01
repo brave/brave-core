@@ -13,7 +13,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -182,9 +182,8 @@ void TabDragController::DetachAndAttachToNewContext(
   auto* browser = BrowserView::GetBrowserViewForNativeWindow(
                       browser_widget->GetNativeWindow())
                       ->browser();
-  SplitViewTabTileData* old_split_view_browser_data =
-      browser->GetFeatures().split_view_tab_tile_data();
-  if (old_split_view_browser_data) {
+  TabTileModel* old_tab_tile_model = browser->GetFeatures().tab_tile_model();
+  if (old_tab_tile_model) {
     std::vector<tabs::TabHandle> tabs;
     auto* tab_strip_model = browser->tab_strip_model();
     DCHECK_EQ(tab_strip_model, attached_context_->GetTabStripModel());
@@ -196,19 +195,19 @@ void TabDragController::DetachAndAttachToNewContext(
                              data.contents))
                          ->GetHandle());
     }
-    old_split_view_browser_data->TabsWillBeAttachedToNewBrowser(tabs);
+    old_tab_tile_model->TabsWillBeAttachedToNewBrowser(tabs);
   }
 
   if (!is_showing_vertical_tabs_) {
     TabDragControllerChromium::DetachAndAttachToNewContext(release_capture,
                                                            target_context);
 
-    if (old_split_view_browser_data) {
+    if (old_tab_tile_model) {
       auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
                               GetAttachedBrowserWidget()->GetNativeWindow())
                               ->browser();
-      old_split_view_browser_data->TabsAttachedToNewBrowser(
-          new_browser->GetFeatures().split_view_tab_tile_data());
+      old_tab_tile_model->TabsAttachedToNewBrowser(
+          new_browser->GetFeatures().tab_tile_model());
     }
     return;
   }
@@ -256,12 +255,12 @@ void TabDragController::DetachAndAttachToNewContext(
       std::move(views), drag_data_.source_view_drag_data()->attached_view,
       GetCursorScreenPoint(), false);
 
-  if (old_split_view_browser_data) {
+  if (old_tab_tile_model) {
     auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
                             GetAttachedBrowserWidget()->GetNativeWindow())
                             ->browser();
-    old_split_view_browser_data->TabsAttachedToNewBrowser(
-        new_browser->GetFeatures().split_view_tab_tile_data());
+    old_tab_tile_model->TabsAttachedToNewBrowser(
+        new_browser->GetFeatures().tab_tile_model());
   }
 }
 
@@ -271,9 +270,8 @@ void TabDragController::DetachAndAttachToNewContext(
   auto* browser = BrowserView::GetBrowserViewForNativeWindow(
                       browser_widget->GetNativeWindow())
                       ->browser();
-  SplitViewTabTileData* split_view_browser_data =
-      browser->GetFeatures().split_view_tab_tile_data();
-  if (!split_view_browser_data) {
+  TabTileModel* tab_tile_model = browser->GetFeatures().tab_tile_model();
+  if (!tab_tile_model) {
     return TabDragControllerChromium::ContinueDragging(point_in_screen);
   }
 
@@ -295,7 +293,7 @@ void TabDragController::DetachAndAttachToNewContext(
 
   const bool is_dragging_tabs = current_state_ == DragState::kDraggingTabs;
   if (is_dragging_tabs) {
-    on_tab_drag_ended_closure_ = split_view_browser_data->TabDragStarted();
+    on_tab_drag_ended_closure_ = tab_tile_model->TabDragStarted();
   } else {
     // This is a case where tabs are detached into new window and enters.
     // Notifies that drag session ended to the old browser.

@@ -33,9 +33,9 @@ source_set("split_view") {
   sources = [
     "split_view_tab_strip_model_adapter.cc",
     "split_view_tab_strip_model_adapter.h",
-    "split_view_tab_tile_data.cc",
-    "split_view_tab_tile_data.h",
-    "split_view_tab_tile_data_observer.h",
+    "tab_tile_model.cc",
+    "tab_tile_model.h",
+    "tab_tile_model_observer.h",
   ]
 
   deps = [

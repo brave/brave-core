@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_H_
-#define BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_H_
+#ifndef BRAVE_BROWSER_UI_TABS_TAB_TILE_MODEL_H_
+#define BRAVE_BROWSER_UI_TABS_TAB_TILE_MODEL_H_
 
 #include <memory>
 #include <optional>
@@ -19,7 +19,7 @@
 
 class BrowserWindowInterface;
 class SplitViewTabStripModelAdapter;
-class SplitViewTabTileDataObserver;
+class TabTileModelObserver;
 
 // TabTile represents two tabs tied together like tile in tab strip UI.
 // Split view shows tab tile's two tabs at once.
@@ -45,11 +45,10 @@ struct TabTile {
 
 // Handles tab tile operations such as create and break tab tile.
 // Observe this to know about tab tile state changes.
-class SplitViewTabTileData {
+class TabTileModel {
  public:
-  explicit SplitViewTabTileData(
-      BrowserWindowInterface* browser_window_interface);
-  virtual ~SplitViewTabTileData();
+  explicit TabTileModel(BrowserWindowInterface* browser_window_interface);
+  virtual ~TabTileModel();
 
   // When calling this, make sure that |tile.first| has a smaller model index
   // than |tile.second| be persistent across the all tab strip model operations.
@@ -71,14 +70,13 @@ class SplitViewTabTileData {
   void SetSizeDelta(const tabs::TabHandle& tab, int size_delta);
   int GetSizeDelta(const tabs::TabHandle& tab);
 
-  void AddObserver(SplitViewTabTileDataObserver* observer);
-  void RemoveObserver(SplitViewTabTileDataObserver* observer);
+  void AddObserver(TabTileModelObserver* observer);
+  void RemoveObserver(TabTileModelObserver* observer);
 
   class OnTabDragEndedClosure {
    public:
     OnTabDragEndedClosure();
-    OnTabDragEndedClosure(SplitViewTabTileData* data,
-                          base::OnceClosure closure);
+    OnTabDragEndedClosure(TabTileModel* data, base::OnceClosure closure);
     OnTabDragEndedClosure(OnTabDragEndedClosure&& other) noexcept;
     OnTabDragEndedClosure& operator=(OnTabDragEndedClosure&& other) noexcept;
     ~OnTabDragEndedClosure();
@@ -88,24 +86,24 @@ class SplitViewTabTileData {
    private:
     void RunCurrentClosureIfNeededAndReplaceWith(OnTabDragEndedClosure&& other);
 
-    raw_ptr<SplitViewTabTileData> data_;
+    raw_ptr<TabTileModel> data_;
 
     base::ScopedClosureRunner closure_;
   };
   [[nodiscard]] OnTabDragEndedClosure TabDragStarted();
 
   void TabsWillBeAttachedToNewBrowser(const std::vector<tabs::TabHandle>& tabs);
-  void TabsAttachedToNewBrowser(SplitViewTabTileData* target_data);
+  void TabsAttachedToNewBrowser(TabTileModel* target_data);
 
  private:
-  friend class SplitViewTabTileDataBrowserTest;
+  friend class TabTileModelBrowserTest;
   friend class SplitViewTabStripModelAdapterBrowserTest;
 
-  FRIEND_TEST_ALL_PREFIXES(SplitViewTabTileDataBrowserTest,
+  FRIEND_TEST_ALL_PREFIXES(TabTileModelBrowserTest,
                            BreakTile_WithNonExistingTabIsError);
-  FRIEND_TEST_ALL_PREFIXES(SplitViewTabTileDataBrowserTest,
+  FRIEND_TEST_ALL_PREFIXES(TabTileModelBrowserTest,
                            TileTabs_WithAlreadyTiledTabIsError);
-  FRIEND_TEST_ALL_PREFIXES(SplitViewTabTileDataBrowserTest, FindTabTile);
+  FRIEND_TEST_ALL_PREFIXES(TabTileModelBrowserTest, FindTabTile);
 
   std::vector<TabTile>::iterator FindTabTile(const tabs::TabHandle& tab);
   std::vector<TabTile>::const_iterator FindTabTile(
@@ -113,7 +111,7 @@ class SplitViewTabTileData {
 
   // When tabs are attached to another browser window and they are tiled tabs,
   // create tab tiles to that browser by using |tab_tiles|.
-  void Transfer(SplitViewTabTileData* other, std::vector<TabTile> tab_tiles);
+  void Transfer(TabTileModel* other, std::vector<TabTile> tab_tiles);
 
   std::unique_ptr<SplitViewTabStripModelAdapter> tab_strip_model_adapter_;
 
@@ -124,11 +122,11 @@ class SplitViewTabTileData {
   // index for faster look up.
   base::flat_map<tabs::TabHandle, size_t> tab_tile_index_for_tab_;
 
-  base::ObserverList<SplitViewTabTileDataObserver> observers_;
+  base::ObserverList<TabTileModelObserver> observers_;
 
   raw_ptr<TabStripModel> tab_strip_model_for_testing_ = nullptr;
 
-  base::WeakPtrFactory<SplitViewTabTileData> weak_ptr_factory_{this};
+  base::WeakPtrFactory<TabTileModel> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_H_
+#endif  // BRAVE_BROWSER_UI_TABS_TAB_TILE_MODEL_H_

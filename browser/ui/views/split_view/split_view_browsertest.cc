@@ -11,7 +11,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
@@ -46,8 +46,8 @@ class SplitViewDisabledBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
                        SplitViewDisabledStateTest) {
-  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
-  EXPECT_FALSE(!!split_view_data);
+  auto* tab_tile_model = browser()->GetFeatures().tab_tile_model();
+  EXPECT_FALSE(!!tab_tile_model);
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
@@ -153,11 +153,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
   // When tiling tabs and one of them is the active tab,
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  auto* tab_tile_model = browser()->GetFeatures().tab_tile_model();
+  ASSERT_TRUE(tab_tile_model);
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
 
   // Secondary web view should become visible
@@ -168,16 +168,16 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
                        BreakingTileMakesSecondaryWebViewHidden) {
   // Given there were tiled tabs
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  auto* tab_tile_model = browser()->GetFeatures().tab_tile_model();
+  ASSERT_TRUE(tab_tile_model);
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
 
   // When breaking the tile
-  split_view_data->BreakTile(tab_strip_model().GetTabAtIndex(0)->GetHandle());
-  ASSERT_FALSE(split_view_data->IsTabTiled(
+  tab_tile_model->BreakTile(tab_strip_model().GetTabAtIndex(0)->GetHandle());
+  ASSERT_FALSE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
 
   // Then, the secondary web view should become hidden
@@ -188,11 +188,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
                        ActivateNonTiledTabShouldHideSecondaryWebView) {
   // Given there were tiled tabs and non tiled tab, and split view is visible
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  auto* tab_tile_model = browser()->GetFeatures().tab_tile_model();
+  ASSERT_TRUE(tab_tile_model);
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ false);
   ASSERT_TRUE(secondary_contents_container().GetVisible());
@@ -210,11 +210,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   // Given there were tiled tabs and non tiled tab, and the non tiled tab is the
   // active tab
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  auto* tab_tile_model = browser()->GetFeatures().tab_tile_model();
+  ASSERT_TRUE(tab_tile_model);
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   ASSERT_FALSE(secondary_contents_container().GetVisible());
@@ -231,15 +231,15 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
                        SecondaryWebViewShouldHoldNonActiveTiledTab) {
   // Given that two tabs are tiled
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_tab_tile_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  auto* tab_tile_model = browser()->GetFeatures().tab_tile_model();
+  ASSERT_TRUE(tab_tile_model);
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
+  ASSERT_TRUE(tab_tile_model->IsTabTiled(
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
   ASSERT_TRUE(secondary_contents_container().GetVisible());
-  auto tile = *split_view_data->GetTile(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle());
+  auto tile =
+      *tab_tile_model->GetTile(tab_strip_model().GetTabAtIndex(0)->GetHandle());
 
   // When the tile.first is active contents,
   tab_strip_model().ActivateTabAt(

@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_OBSERVER_H_
-#define BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_OBSERVER_H_
+#ifndef BRAVE_BROWSER_UI_TABS_TAB_TILE_MODEL_OBSERVER_H_
+#define BRAVE_BROWSER_UI_TABS_TAB_TILE_MODEL_OBSERVER_H_
 
 #include "base/observer_list_types.h"
 
 struct TabTile;
 
-class SplitViewTabTileDataObserver : public base::CheckedObserver {
+class TabTileModelObserver : public base::CheckedObserver {
  public:
   virtual void OnTileTabs(const TabTile& tile) {}
   virtual void OnWillBreakTile(const TabTile& tile) {}
   virtual void OnDidBreakTile(const TabTile& tile) {}
   virtual void OnSwapTabsInTile(const TabTile& tile) {}
-  virtual void OnWillDeleteTabTileData() {}
+  virtual void OnWillDeleteTabTileModel() {}
 };
 
-#endif  // BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_TAB_TILE_DATA_OBSERVER_H_
+#endif  // BRAVE_BROWSER_UI_TABS_TAB_TILE_MODEL_OBSERVER_H_

@@ -151,8 +151,8 @@ void BraveBrowserCommandController::OnWillBreakTile(const TabTile& tile) {
   UpdateCommandForSplitView();
 }
 
-void BraveBrowserCommandController::OnWillDeleteTabTileData() {
-  split_view_tab_tile_data_observation_.Reset();
+void BraveBrowserCommandController::OnWillDeleteTabTileModel() {
+  tab_tile_model_observation_.Reset();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
@@ -449,9 +449,9 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
-  if (!split_view_tab_tile_data_observation_.IsObserving()) {
-    split_view_tab_tile_data_observation_.Observe(
-        browser_->GetFeatures().split_view_tab_tile_data());
+  if (!tab_tile_model_observation_.IsObserving()) {
+    tab_tile_model_observation_.Observe(
+        browser_->GetFeatures().tab_tile_model());
   }
 
   UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(

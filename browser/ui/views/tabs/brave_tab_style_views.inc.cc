@@ -6,7 +6,7 @@
 // This file must be included inside tab_style_views.cc as classes here are
 // depending on what's defined in anonymous namespace of tab_style_views.cc
 
-#include "brave/browser/ui/tabs/split_view_tab_tile_data.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
@@ -472,7 +472,7 @@ bool BraveVerticalTabStyle::IsTabTiled(const Tab* tab) const {
   auto is_tab_tiled = false;
   if (auto* browser = const_cast<Browser*>(tab->controller()->GetBrowser())) {
     // browser can be null during tests.
-    if (auto* data = browser->GetFeatures().split_view_tab_tile_data();
+    if (auto* data = browser->GetFeatures().tab_tile_model();
         data && tab->controller()->IsTabTiled(tab)) {
       is_tab_tiled = true;
     }
