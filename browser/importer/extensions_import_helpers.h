@@ -66,16 +66,18 @@ class ExtensionsImporter {
       base::OnceCallback<void(const std::string& id,
                               ExtensionImportStatus status)>;
 
+  ImportingExtension* FindExtension(const std::string& id);
+
   void OnGetExtensionsForImport(OnReady on_ready, ExtensionsListResult result);
-  void OnExtensionInstalled(ImportingExtension* extension,
+  void OnExtensionInstalled(const std::string& extension_id,
                             OnOneExtensionImported on_extension,
                             bool success,
                             const std::string& error,
                             extensions::webstore_install::Result result);
 
-  void ImportExtensionSettings(ImportingExtension* extension,
+  void ImportExtensionSettings(const std::string& extension_id,
                                OnOneExtensionImported on_extension);
-  void OnExtensionSettingsImported(ImportingExtension* extension,
+  void OnExtensionSettingsImported(const std::string& extension_id,
                                    OnOneExtensionImported on_extension,
                                    bool success);
 

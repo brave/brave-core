@@ -233,7 +233,7 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE,
           base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
-                         weak_factory_.GetWeakPtr(), &extension,
+                         weak_factory_.GetWeakPtr(), extension.id,
                          std::move(wrapper),
                          status == ExtensionImportStatus::kOk, "",
                          extensions::webstore_install::Result::SUCCESS));
@@ -241,7 +241,7 @@ bool ExtensionsImporter::Import(OnExtensionImported on_extension) {
       extension.installer = base::MakeRefCounted<WebstoreInstallerForImporting>(
           extension.id, target_profile_, /*parent_window=*/gfx::NativeWindow(),
           base::BindOnce(&ExtensionsImporter::OnExtensionInstalled,
-                         weak_factory_.GetWeakPtr(), &extension,
+                         weak_factory_.GetWeakPtr(), extension.id,
                          std::move(wrapper)));
       extension.installer->BeginInstall();
     }
@@ -263,6 +263,14 @@ bool ExtensionsImporter::IsImportInProgress() const {
   return in_progress_count_ > 0;
 }
 
+ImportingExtension* ExtensionsImporter::FindExtension(const std::string& id) {
+  auto fnd = std::ranges::find(extensions_, id, &ImportingExtension::id);
+  if (fnd == extensions_.end()) {
+    return nullptr;
+  }
+  return &(*fnd);
+}
+
 void ExtensionsImporter::OnGetExtensionsForImport(OnReady on_ready,
                                                   ExtensionsListResult result) {
   if (!result.has_value()) {
@@ -280,11 +288,17 @@ void ExtensionsImporter::OnGetExtensionsForImport(OnReady on_ready,
 }
 
 void ExtensionsImporter::OnExtensionInstalled(
-    ImportingExtension* extension,
+    const std::string& extension_id,
     OnOneExtensionImported on_extension,
     bool success,
     const std::string& error,
     extensions::webstore_install::Result result) {
+  auto* extension = FindExtension(extension_id);
+  if (!extension) {
+    return std::move(on_extension)
+        .Run(extension_id, ExtensionImportStatus::kFailedToInstall);
+  }
+
   extension->is_installed = success;
   extension->installer.reset();
 
@@ -301,26 +315,36 @@ void ExtensionsImporter::OnExtensionInstalled(
       extensions::ExtensionSystem::Get(target_profile_)->extension_service();
   service->DisableExtension(extension->id,
                             extensions::disable_reason::DISABLE_RELOAD);
-  ImportExtensionSettings(extension, std::move(on_extension));
+  ImportExtensionSettings(extension->id, std::move(on_extension));
 }
 
 void ExtensionsImporter::ImportExtensionSettings(
-    ImportingExtension* extension,
+    const std::string& extension_id,
     OnOneExtensionImported on_extension) {
+  auto* extension = FindExtension(extension_id);
+  if (!extension) {
+    return std::move(on_extension)
+        .Run(extension->id, ExtensionImportStatus::kFailedToImportSettings);
+  }
   CHECK(extension->has_local_settings);
   extensions::GetExtensionFileTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&extensions_import::ImportExtensionSettings, extension->id,
                      source_profile_, target_profile_->GetPath()),
       base::BindOnce(&ExtensionsImporter::OnExtensionSettingsImported,
-                     weak_factory_.GetWeakPtr(), extension,
+                     weak_factory_.GetWeakPtr(), extension->id,
                      std::move(on_extension)));
 }
 
 void ExtensionsImporter::OnExtensionSettingsImported(
-    ImportingExtension* extension,
+    const std::string& extension_id,
     OnOneExtensionImported on_extension,
     bool success) {
+  auto* extension = FindExtension(extension_id);
+  if (!extension) {
+    return std::move(on_extension)
+        .Run(extension->id, ExtensionImportStatus::kFailedToImportSettings);
+  }
   auto* service =
       extensions::ExtensionSystem::Get(target_profile_)->extension_service();
   service->EnableExtension(extension->id);
