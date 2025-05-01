@@ -16,6 +16,8 @@ import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
 import { spacing } from "@brave/leo/tokens/css/variables";
+import { EmailAliasesServiceInterface }
+  from "gen/brave/components/email_aliases/email_aliases.mojom.m";
 
 const SignupRow = styled(Row)`
   justify-content: space-between;
@@ -40,8 +42,8 @@ const SpacedCol = styled(Col)`
   flex-grow: 1;
 `
 
-const BeforeSendingEmailForm = ({ initEmail, onSubmit }:
-  { initEmail: string, onSubmit: (email: string) => void }) => {
+const BeforeSendingEmailForm = ({ initEmail, emailAliasesService }:
+  { initEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
   const [email, setEmail] = React.useState<string>(initEmail)
   return <SpacedCol>
     <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>
@@ -49,23 +51,26 @@ const BeforeSendingEmailForm = ({ initEmail, onSubmit }:
     <LoginRow>
       <StretchyInput autofocus
         onChange={(detail) => setEmail(detail.value)}
-        onKeyDown={onEnterKeyForInput(() => onSubmit(email))}
+        onKeyDown={onEnterKeyForInput((value) =>
+                    emailAliasesService.requestPrimaryEmailVerification(value))}
         name='email'
         type='text'
         placeholder={getLocale('emailAliasesEmailAddressPlaceholder')}
         value={email} />
-      <Button onClick={() => onSubmit(email)} type='submit' kind='filled'>
+      <Button
+        onClick={() =>
+                  emailAliasesService.requestPrimaryEmailVerification(email)}
+        type='submit' kind='filled'>
         {getLocale('emailAliasesGetLoginLinkButton')}
       </Button>
     </LoginRow>
   </SpacedCol>
 }
 
-const AfterSendingEmailMessage = ({ mainEmail, tryAgain }:
-  { mainEmail: string, tryAgain: () => void }) => {
+const AfterSendingEmailMessage = ({ mainEmail, emailAliasesService }:
+  { mainEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    tryAgain()
+    emailAliasesService.cancelPrimaryEmailVerification()
   }
   return <SpacedCol>
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: mainEmail })}</h4>
@@ -79,15 +84,18 @@ const AfterSendingEmailMessage = ({ mainEmail, tryAgain }:
 }
 
 export const MainEmailEntryForm = (
-  { viewState, mainEmail, onEmailSubmitted, onRestart }:
+  { viewState, mainEmail, emailAliasesService }:
   { viewState: ViewState, mainEmail: string,
-    onEmailSubmitted: (email: string) => void, onRestart: () => void }) =>
+    emailAliasesService: EmailAliasesServiceInterface }) =>
   <Card>
     <SignupRow>
       <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
       {viewState.mode === 'SignUp' ?
-        <BeforeSendingEmailForm initEmail={mainEmail}
-                                onSubmit={onEmailSubmitted} /> :
-        <AfterSendingEmailMessage mainEmail={mainEmail} tryAgain={onRestart} />}
+        <BeforeSendingEmailForm
+          initEmail={mainEmail}
+          emailAliasesService={emailAliasesService} /> :
+        <AfterSendingEmailMessage
+          mainEmail={mainEmail}
+          emailAliasesService={emailAliasesService} />}
     </SignupRow>
   </Card>

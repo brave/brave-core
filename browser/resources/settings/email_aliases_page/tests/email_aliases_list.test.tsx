@@ -6,8 +6,23 @@
 import * as React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { AliasList } from '../content/email_aliases_list'
-import { Alias, MappingService } from '../content/types'
 import { getLocale } from '$web-common/locale'
+import {
+  Alias,
+  EmailAliasesServiceInterface
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+
+jest.mock('$web-common/locale', () => ({
+  getLocale: (key: string) => {
+    return key
+  },
+  formatMessage: (key: string, params: Record<string, string>) => {
+    return key
+  },
+  formatLocale: (key: string, params: Record<string, string>) => {
+    return key
+  }
+}))
 
 // Mock the clipboard API
 Object.assign(navigator, {
@@ -16,20 +31,17 @@ Object.assign(navigator, {
   },
 })
 
-// Mock the mapping service
-const mockMappingService: MappingService = {
-  getAccountEmail: jest.fn(),
+// Mock the email aliases service
+const mockEmailAliasesService: EmailAliasesServiceInterface = {
   logout: jest.fn(),
-  requestAccount: jest.fn(),
-  getAliases: jest.fn(),
-  createAlias: jest.fn(),
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
-  onAccountReady: jest.fn(),
-  cancelAccountRequest: jest.fn(),
-  fillField: jest.fn(),
-  showSettingsPage: jest.fn()
+  showSettingsPage: jest.fn(),
+  requestPrimaryEmailVerification: jest.fn(),
+  cancelPrimaryEmailVerification: jest.fn(),
+  addObserver: jest.fn(),
+  removeObserver: jest.fn()
 }
 
 describe('AliasList', () => {
@@ -47,7 +59,6 @@ describe('AliasList', () => {
   ]
 
   const mockOnViewChange = jest.fn()
-  const mockOnListChange = jest.fn()
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -58,8 +69,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={mockAliases}
         onViewChange={mockOnViewChange}
-        onListChange={mockOnListChange}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -75,8 +85,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={mockAliases}
         onViewChange={mockOnViewChange}
-        onListChange={mockOnListChange}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -94,8 +103,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={mockAliases}
         onViewChange={mockOnViewChange}
-        onListChange={mockOnListChange}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -119,8 +127,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={maxAliases}
         onViewChange={mockOnViewChange}
-        onListChange={mockOnListChange}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -136,8 +143,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={mockAliases}
         onViewChange={mockOnViewChange}
-        onListChange={mockOnListChange}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 
@@ -145,13 +151,9 @@ describe('AliasList', () => {
     const deleteButtons = screen.getAllByText(getLocale('emailAliasesDelete'))
     fireEvent.click(deleteButtons[0])
 
-    // Wait for the async operation to complete
-    await Promise.resolve()
-
     // Check if service was called
-    expect(mockMappingService.deleteAlias)
+    expect(mockEmailAliasesService.deleteAlias)
       .toHaveBeenCalledWith('test1@brave.com')
-    expect(mockOnListChange).toHaveBeenCalled()
   })
 
   it('handles edit functionality', () => {
@@ -159,8 +161,7 @@ describe('AliasList', () => {
       <AliasList
         aliases={mockAliases}
         onViewChange={mockOnViewChange}
-        onListChange={mockOnListChange}
-        mappingService={mockMappingService}
+        emailAliasesService={mockEmailAliasesService}
       />
     )
 

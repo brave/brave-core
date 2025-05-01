@@ -1,0 +1,62 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+module email_aliases.mojom;
+
+struct Alias {
+  string email;
+  string? note;
+  array<string>? domains;
+};
+
+// Observer for change in email aliases state
+interface EmailAliasesServiceObserver {
+
+  // Called when aliases have been updated.
+  OnAliasesUpdated(array<Alias> aliases);
+
+  // Called when user logs in to an account.
+  OnLoggedIn(string primaryEmail);
+
+  // Called when user has logged out of account.
+  OnLoggedOut();
+
+  // Called when account verification is pending.
+  OnVerificationPending(string pendingAccount);
+
+};
+
+// Interface for managing email aliases
+interface EmailAliasesService {
+
+  // Generate an proposed email alias
+  GenerateAlias() => (string alias);
+
+  // Create or Update an existing email alias
+  UpdateAlias(string alias, string? note);
+
+  // Delete an email alias
+  DeleteAlias(string alias);
+
+  // Initiate verification of the user's primary email.
+  RequestPrimaryEmailVerification(string email);
+
+  // Cancel pending verification of user's primary email.
+  CancelPrimaryEmailVerification();
+
+  // Sign out of account connected to user's primary email.
+  Logout();
+
+  // Add an email aliases observer.
+  AddObserver(pending_remote<EmailAliasesServiceObserver> observer);
+
+  // Remove an email aliases observer.
+  RemoveObserver(pending_remote<EmailAliasesServiceObserver> observer);
+
+  // Show the Email Aliases settings page.
+  ShowSettingsPage();
+
+};
+

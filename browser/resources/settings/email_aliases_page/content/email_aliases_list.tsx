@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { Alias, MappingService, ViewState } from './types'
+import { ViewState } from './types'
 import { color, spacing } from '@brave/leo/tokens/css/variables'
 import { font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
@@ -19,6 +19,8 @@ import Icon from '@brave/leo/react/icon'
 import Row from './styles/Row'
 import styled from 'styled-components'
 import Tooltip from '@brave/leo/react/tooltip'
+import { Alias, EmailAliasesServiceInterface }
+  from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const AliasItemRow = styled(Row)`
   font: ${font.default.regular};
@@ -127,8 +129,7 @@ const AliasItem = ({ alias, onEdit, onDelete }:
             slot='anchor-content'
             name='more'
             kind='plain-faint'
-            size="large"
-            onClick={() => {}}>
+            size="large">
             <Icon name="more-vertical" />
           </Button>
           <AliasMenuItem
@@ -144,11 +145,10 @@ const AliasItem = ({ alias, onEdit, onDelete }:
     </AliasItemRow>
 
 export const AliasList = ({
-  aliases, onViewChange, onListChange,mappingService }: {
-    mappingService: MappingService,
+  aliases, onViewChange, emailAliasesService }: {
+    emailAliasesService: EmailAliasesServiceInterface,
     aliases: Alias[],
-    onViewChange: (viewState: ViewState) => void,
-    onListChange: () => void
+    onViewChange: (viewState: ViewState) => void
   }) =>
   <DivWithTopDivider>
     <AliasListIntro>
@@ -173,12 +173,11 @@ export const AliasList = ({
       </Button>
     </AliasListIntro>
     {aliases.map(
-      alias => <AliasItem
-        key={alias.email}
-        alias={alias}
-        onEdit={() => onViewChange({ mode: 'Edit', alias: alias })}
-        onDelete={async () => {
-          await mappingService.deleteAlias(alias.email)
-          onListChange()
-        }}></AliasItem>)}
+      alias =>
+        <AliasItem
+          key={alias.email}
+          alias={alias}
+          onEdit={() => onViewChange({ mode: 'Edit', alias: alias })}
+          onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
+        </AliasItem>)}
   </DivWithTopDivider>

@@ -3,11 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export type Alias = {
-  email: string,
-  note?: string,
-  domains?: string[]
-}
+import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 export type ViewMode =
   | 'Startup'
@@ -23,7 +19,7 @@ export type ViewState = {
   alias?: Alias
 }
 
-export interface MappingService {
+export interface emailAliasesService {
   createAlias(email: string, note: string): Promise<void>
   getAliases(): Promise<Alias[]>
   updateAlias(email: string, note: string, status: boolean): Promise<void>
@@ -34,6 +30,5 @@ export interface MappingService {
   onAccountReady (): Promise<boolean>
   cancelAccountRequest (): Promise<void>
   logout (): Promise<void>
-  fillField(fieldValue: string): Promise<void>
   showSettingsPage(): Promise<void>
 }

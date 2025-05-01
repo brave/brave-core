@@ -12,9 +12,12 @@ const onEnterKeyForDiv = (onSubmit: () => void) => (e: KeyboardEvent) => {
   }
 }
 
-const onEnterKeyForInput = (onSubmit: () => void) => (e: InputEventDetail) => {
-  const innerEvent = e.innerEvent as unknown as KeyboardEvent;
-  return onEnterKeyForDiv(onSubmit)(innerEvent);
-}
+const onEnterKeyForInput =
+  (onSubmit: (value: string) => void) => (e: InputEventDetail) => {
+    const innerEvent = e.innerEvent as unknown as KeyboardEvent;
+    if (innerEvent.key === 'Enter') {
+      onSubmit(e.value);
+    }
+  }
 
 export { onEnterKeyForInput, onEnterKeyForDiv };

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { Alias, MappingService, ViewState } from './content/types'
+import { ViewState } from './content/types'
 import { AliasList } from './content/email_aliases_list'
 import { color, spacing, font, radius, typography } from
   '@brave/leo/tokens/css/variables'
@@ -11,7 +11,6 @@ import { createRoot } from 'react-dom/client';
 import { EmailAliasModal } from './content/email_aliases_modal';
 import { getLocale } from '$web-common/locale'
 import { MainEmailEntryForm } from './content/email_aliases_signin_page'
-import { RemoteMappingService } from './content/remote_mapping_service'
 import * as React from 'react'
 import BraveIconCircle from './content/styles/brave_icon_circle'
 import Button from '@brave/leo/react/button'
@@ -19,10 +18,17 @@ import Card from './content/styles/Card'
 import Col from './content/styles/Col'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
-import LoadingIcon from './content/LoadingIcon'
+import ProgressRing from '@brave/leo/react/progressRing'
 import Row from './content/styles/Row'
 import SecureLink from '$web-common/SecureLink'
 import styled, { StyleSheetManager } from 'styled-components'
+import {
+  Alias,
+  EmailAliasesServiceInterface,
+  EmailAliasesServiceRemote,
+  EmailAliasesServiceObserverRemote,
+  EmailAliasesServiceObserverInterface
+} from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const PageCol = styled(Col)`
   font: ${font.default.regular};
@@ -88,8 +94,8 @@ const Introduction = () =>
       </div>
   </SectionTitle>
 
-const MainEmailDisplay = ({ email, onLogout }:
-  { email: string, onLogout: () => void }) =>
+const MainEmailDisplay = ({ email, emailAliasesService }:
+  { email: string, emailAliasesService: EmailAliasesServiceInterface }) =>
   <Card>
     <AccountRow>
       <Row>
@@ -110,7 +116,7 @@ const MainEmailDisplay = ({ email, onLogout }:
         title={getLocale('emailAliasesSignOutTitle')}
         size='small'
         onClick={(e) => {
-          onLogout()
+          emailAliasesService.logout()
         }}>
         <Icon slot='icon-before' name="outside" />
         <span>{getLocale('emailAliasesSignOut')}</span>
@@ -126,81 +132,59 @@ const SpacedRow = styled(Row)`
 `
 
 const MainView = ({
-  viewState, mainEmail, onLogout, aliasesState, setViewState,
-  mappingService, onListChange
+  viewState, mainEmail, aliasesState, setViewState,
+  emailAliasesService
 }: {
   viewState: ViewState,
   mainEmail: string,
-  onLogout: () => void,
   aliasesState: Alias[],
   setViewState: (viewState: ViewState) => void,
-  mappingService: MappingService,
-  onListChange: () => void
+  emailAliasesService: EmailAliasesServiceInterface
 }) => (viewState.mode === 'Startup'
         ? <SpacedRow>
-            <LoadingIcon />
+            <ProgressRing />
             <div>{getLocale('emailAliasesConnectingToBraveAccount')}</div>
           </SpacedRow>
         : <span>
-            <MainEmailDisplay onLogout={onLogout} email={mainEmail} />
+            <MainEmailDisplay
+              email={mainEmail}
+              emailAliasesService={emailAliasesService} />
             <AliasList aliases={aliasesState}
               onViewChange={setViewState}
-              mappingService={mappingService}
-              onListChange={onListChange} />
+              emailAliasesService={emailAliasesService} />
           </span>)
 
-export const ManagePage = ({ mappingService }:
+export const ManagePage = ({ emailAliasesService, bindObserver }:
   {
-    mappingService: MappingService
+    emailAliasesService: EmailAliasesServiceInterface,
+    bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   }) => {
   const [viewState, setViewState] = React.useState<ViewState>(
     { mode: 'Startup' })
   const [mainEmail, setMainEmail] = React.useState<string>('')
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
-  const onEmailChange = async () => {
-    const email = await mappingService.getAccountEmail()
-    setMainEmail(email ?? '')
-    setViewState({ mode: email ? 'Main' : 'SignUp' })
-  }
-  const onListChange = async () => {
-    const aliases = await mappingService.getAliases()
-    setAliasesState(aliases)
-  }
-  const onMainEmailSubmitted = async (email: string) => {
-    setMainEmail(email)
-    await mappingService.requestAccount(email)
-    setViewState({ mode: 'AwaitingAuthorization' })
-    const accountReady = await mappingService.onAccountReady()
-    if (accountReady) {
-      setViewState({ mode: 'Main' })
-      await onListChange()
-    }
-  }
-  const onLogout = () => {
-    mappingService.logout()
-    setViewState({ mode: 'SignUp' })
-  }
-  const onRestart = async () => {
-    await mappingService.cancelAccountRequest()
-    setViewState({ mode: 'SignUp' })
-  }
   const onReturnToMain = () => {
     setViewState({ mode: 'Main' })
-    onListChange()
+  }
+  const observer : EmailAliasesServiceObserverInterface = {
+    onAliasesUpdated: (aliases: Alias[]) => {
+      setAliasesState(aliases)
+    },
+    onLoggedIn: (email: string) => {
+      setMainEmail(email)
+      setViewState({ mode: 'Main' })
+    },
+    onLoggedOut: () => {
+      setMainEmail('')
+      setViewState({ mode: 'SignUp' })
+    },
+    onVerificationPending: (email: string) => {
+      setViewState({ mode: 'AwaitingAuthorization' })
+      setMainEmail(email)
+    }
   }
   React.useEffect(() => {
-    onEmailChange();
-    onListChange();
-    const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        onEmailChange();
-        onListChange();
-      }
-    }
-    document.addEventListener('visibilitychange', onVisibilityChange)
-    return () => {
-      document.removeEventListener('visibilitychange', onVisibilityChange)
-    }
+    return bindObserver(observer)
   }, [] /* Only run at mount. */)
   return (
     <PageCol>
@@ -209,16 +193,13 @@ export const ManagePage = ({ mappingService }:
         ? <MainEmailEntryForm
             viewState={viewState}
             mainEmail={mainEmail}
-            onEmailSubmitted={onMainEmailSubmitted}
-            onRestart={onRestart} />
+            emailAliasesService={emailAliasesService} />
         : <MainView
             viewState={viewState}
             mainEmail={mainEmail}
-            onLogout={onLogout}
             aliasesState={aliasesState}
             setViewState={setViewState}
-            mappingService={mappingService}
-            onListChange={onListChange} />}
+            emailAliasesService={emailAliasesService} />}
       {(viewState.mode === 'Create' || viewState.mode === 'Edit') &&
       <AliasDialog
         isOpen
@@ -229,8 +210,9 @@ export const ManagePage = ({ mappingService }:
         <EmailAliasModal
           onReturnToMain={onReturnToMain}
             viewState={viewState}
-            email={mainEmail}
-            mappingService={mappingService} />
+            mainEmail={mainEmail}
+            aliasCount={aliasesState.length}
+            emailAliasesService={emailAliasesService} />
         </AliasDialog>}
     </PageCol>
   )
@@ -238,9 +220,19 @@ export const ManagePage = ({ mappingService }:
 
 export const mount = (at: HTMLElement) => {
   const root = createRoot(at);
+  const emailAliasesService = new EmailAliasesServiceRemote()
+  const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
+    emailAliasesService.addObserver(
+      new EmailAliasesServiceObserverRemote(observer))
+    return () => {
+      emailAliasesService.removeObserver(
+        new EmailAliasesServiceObserverRemote(observer))
+    }
+  }
   root.render(
     <StyleSheetManager target={at}>
-      <ManagePage mappingService={new RemoteMappingService()} />
+      <ManagePage emailAliasesService={emailAliasesService}
+                  bindObserver={bindObserver} />
     </StyleSheetManager>
   )
 }
