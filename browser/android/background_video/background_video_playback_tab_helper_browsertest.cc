@@ -80,8 +80,10 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+  // Verify the replace method was called exactly 5 times.
   EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 
+  // Verify all the flags were properly set to `false`.
   EXPECT_TRUE(
       content::EvalJs(
           web_contents(),
@@ -117,6 +119,15 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
           "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
           "picture_in_picture_logging_onresize=false\")")
           .ExtractBool());
+
+  // Verify the other flags were not modified.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "another_flag_for_testing=true\")")
+          .ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
@@ -125,6 +136,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+  // Verify nothing is injected when domain does not match.
   EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
 
@@ -135,14 +147,17 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
-  EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
-  EXPECT_TRUE(
+  // Assert that `serializedExperimentFlags` is not present.
+  ASSERT_TRUE(
       content::EvalJs(
           web_contents(),
           "typeof "
           "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
           "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags === 'undefined'")
           .ExtractBool());
+  // Verify that nothing is injected if `serializedExperimentFlags` is not
+  // present.
+  EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
@@ -151,8 +166,10 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
-  EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
-  EXPECT_TRUE(
+  // Assert that `ytcfg` is not present
+  ASSERT_TRUE(
       content::EvalJs(web_contents(), "typeof window.ytcfg === 'undefined'")
           .ExtractBool());
+  // Verify that nothing is injected if `ytcfg` is not present.
+  EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
