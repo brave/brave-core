@@ -16,4 +16,7 @@ specific_include_rules = {
   "direct_feed_fetcher_unittest\.cc": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
+  "publishers_controller\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
 }

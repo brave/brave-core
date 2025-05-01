@@ -27,7 +27,6 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
@@ -48,6 +47,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -98,8 +98,7 @@ BraveNewTabUI::BraveNewTabUI(
       navigation_entry ? navigation_entry->IsRestored() : false;
 
   Profile* profile = Profile::FromWebUI(web_ui);
-  web_ui->OverrideTitle(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
+  web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
     content::WebUIDataSource* source =

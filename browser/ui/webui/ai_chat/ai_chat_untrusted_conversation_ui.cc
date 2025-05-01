@@ -21,7 +21,6 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"
@@ -30,6 +29,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
 
@@ -158,8 +158,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                               IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name,
-                      brave_l10n::GetLocalizedResourceUTF16String(str.id));
+    source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
   }
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);

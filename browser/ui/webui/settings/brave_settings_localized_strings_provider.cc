@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -969,8 +968,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
           l10n_util::GetStringUTF8(
               IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
           {"%datetime%"}, nullptr));
-  auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
+  auto confirmation_phrase =
+      l10n_util::GetStringUTF16(IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
   auto confirmation_text = l10n_util::GetStringFUTF16(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION, confirmation_phrase);
@@ -1119,112 +1118,111 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   // We're reinstating these cookie-related settings that were deleted upstream
   html_source->AddString(
       "cacheStorageLastModified",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL));
   html_source->AddString("cacheStorageOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString(
       "cacheStorageSize",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddString(
       "cookieAccessibleToScript",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_COOKIE_ACCESSIBLE_TO_SCRIPT_LABEL));
-  html_source->AddString("cookieCacheStorage",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_CACHE_STORAGE));
-  html_source->AddString("cookieContent",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_CONTENT_LABEL));
-  html_source->AddString("cookieCreated",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_CREATED_LABEL));
-  html_source->AddString("cookieDatabaseStorage",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_DATABASE_STORAGE));
-  html_source->AddString("cookieDomain",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_DOMAIN_LABEL));
-  html_source->AddString("cookieExpires",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL));
-  html_source->AddString("cookieFileSystem",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_FILE_SYSTEM));
-  html_source->AddString("cookieFlashLso",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_FLASH_LSO));
-  html_source->AddString("cookieLocalStorage",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_LOCAL_STORAGE));
-  html_source->AddString("cookieName",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL));
-  html_source->AddString("cookiePath",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_PATH_LABEL));
-  html_source->AddString("cookieSendFor",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_COOKIE_SENDFOR_LABEL));
-  html_source->AddString("cookieServiceWorker",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_SERVICE_WORKER));
-  html_source->AddString("cookieSharedWorker",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_SHARED_WORKER));
-  html_source->AddString("cookieQuotaStorage",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_COOKIES_QUOTA_STORAGE));
+  html_source->AddString(
+      "cookieCacheStorage",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_CACHE_STORAGE));
+  html_source->AddString(
+      "cookieContent",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_CONTENT_LABEL));
+  html_source->AddString(
+      "cookieCreated",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_CREATED_LABEL));
+  html_source->AddString(
+      "cookieDatabaseStorage",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_DATABASE_STORAGE));
+  html_source->AddString(
+      "cookieDomain",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_DOMAIN_LABEL));
+  html_source->AddString(
+      "cookieExpires",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL));
+  html_source->AddString(
+      "cookieFileSystem",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_FILE_SYSTEM));
+  html_source->AddString("cookieFlashLso", l10n_util::GetStringUTF16(
+                                               IDS_SETTINGS_COOKIES_FLASH_LSO));
+  html_source->AddString(
+      "cookieLocalStorage",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_LOCAL_STORAGE));
+  html_source->AddString(
+      "cookieName",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL));
+  html_source->AddString(
+      "cookiePath",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_PATH_LABEL));
+  html_source->AddString(
+      "cookieSendFor",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_COOKIE_SENDFOR_LABEL));
+  html_source->AddString(
+      "cookieServiceWorker",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_SERVICE_WORKER));
+  html_source->AddString(
+      "cookieSharedWorker",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_SHARED_WORKER));
+  html_source->AddString(
+      "cookieQuotaStorage",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_COOKIES_QUOTA_STORAGE));
   html_source->AddString("databaseOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString("fileSystemOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString(
       "fileSystemPersistentUsage",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_FILE_SYSTEM_PERSISTENT_USAGE_LABEL));
   html_source->AddString(
       "fileSystemTemporaryUsage",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_FILE_SYSTEM_TEMPORARY_USAGE_LABEL));
   html_source->AddString(
       "indexedDbSize",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddString(
       "indexedDbLastModified",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL));
   html_source->AddString("indexedDbOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString(
       "localStorageLastModified",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_LAST_MODIFIED_LABEL));
   html_source->AddString("localStorageOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString(
       "localStorageSize",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddString("quotaOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString(
-      "quotaSize", brave_l10n::GetLocalizedResourceUTF16String(
+      "quotaSize", l10n_util::GetStringUTF16(
                        IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddString("serviceWorkerOrigin",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL));
   html_source->AddString(
       "serviceWorkerSize",
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -1233,14 +1231,14 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   // At this moment, the feature name is DNT.
   html_source->AddString("playlist", "Playlist");
 
-  html_source->AddString("bravePlaylistEnablePlaylistLabel",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL));
-  html_source->AddString("bravePlaylistCacheByDefaultLabel",
-                         brave_l10n::GetLocalizedResourceUTF16String(
-                             IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_LABEL));
+  html_source->AddString(
+      "bravePlaylistEnablePlaylistLabel",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL));
+  html_source->AddString(
+      "bravePlaylistCacheByDefaultLabel",
+      l10n_util::GetStringUTF16(IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_LABEL));
   html_source->AddString("bravePlaylistCacheByDefaultSubLabel",
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL));
 #endif
 }

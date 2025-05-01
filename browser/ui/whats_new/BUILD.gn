@@ -12,7 +12,6 @@ source_set("browser_test") {
   sources = [ "whats_new_browsertest.cc" ]
 
   deps = [
-    "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//chrome/browser",
     "//chrome/browser:browser_process",

@@ -50,7 +50,6 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_rewards/core/mojom:webui",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/l10n/common",
     "//brave/components/misc_metrics",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",

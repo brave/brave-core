@@ -20,4 +20,7 @@ specific_include_rules = {
   "star_randomness_points\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
+  "p3a_message\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
 }

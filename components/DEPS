@@ -5,10 +5,14 @@ include_rules = [
   "+components",
   "+net",
   "+mojo/public",
+  "+ui/base",
 
   # Components that wish to use the content API or IPC must explicitly declare
   # these dependencies; see /components/README.
   "-ipc",
+
+  # In most cases you want l10n_util - see comments in the source
+  "-brave/components/l10n",
 ]
 
 specific_include_rules = {
@@ -41,5 +45,8 @@ specific_include_rules = {
   "webcompat_exceptions_unittest\.cc": [
     "+chrome",
     "+content",
+  ],
+  ".*test.*\.cc": [
+    "!brave/components/l10n/common/test/scoped_default_locale.h",
   ],
 }

@@ -17,12 +17,12 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/views/text_recognition_dialog_tracker.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/text_recognition/browser/text_recognition.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -104,9 +104,9 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
                              base::Unretained(this))) {
   SetModalType(ui::mojom::ModalType::kChild);
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk));
-  SetButtonLabel(ui::mojom::DialogButton::kOk,
-                 brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_TEXT_RECOGNITION_DIALOG_CLOSE_BUTTON));
+  SetButtonLabel(
+      ui::mojom::DialogButton::kOk,
+      l10n_util::GetStringUTF16(IDS_TEXT_RECOGNITION_DIALOG_CLOSE_BUTTON));
   SetShowCloseButton(false);
 
   SetLayoutManager(std::make_unique<views::FlexLayout>())
@@ -168,7 +168,7 @@ void TextRecognitionDialogView::StartExtractingText(
     scroll_view_ = nullptr;
   }
 
-  header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+  header_label_->SetText(l10n_util::GetStringUTF16(
       IDS_TEXT_RECOGNITION_DIALOG_HEADER_IN_PROGRESS));
   AdjustWidgetSize();
 
@@ -229,13 +229,13 @@ void TextRecognitionDialogView::UpdateContents(
       << "Update when timer is fired or stopped.";
 
   if (text.empty()) {
-    header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_TEXT_RECOGNITION_DIALOG_HEADER_FAILED));
+    header_label_->SetText(
+        l10n_util::GetStringUTF16(IDS_TEXT_RECOGNITION_DIALOG_HEADER_FAILED));
     return;
   }
 
-  header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_TEXT_RECOGNITION_DIALOG_HEADER_COMPLETE));
+  header_label_->SetText(
+      l10n_util::GetStringUTF16(IDS_TEXT_RECOGNITION_DIALOG_HEADER_COMPLETE));
 
   // Treat each string in |text| as a separated line string.
   const auto unified_string = base::UTF8ToUTF16(base::JoinString(text, "\n"));

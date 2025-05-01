@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "whats_new_util\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
+}

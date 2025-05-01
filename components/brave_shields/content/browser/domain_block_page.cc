@@ -10,12 +10,12 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace brave_shields {
@@ -69,37 +69,36 @@ void DomainBlockPage::CommandReceived(const std::string& command) {
 
 void DomainBlockPage::PopulateInterstitialStrings(
     base::Value::Dict& load_time_data) {
-  load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_DOMAIN_BLOCK_TITLE));
-  load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
-                                    IDS_DOMAIN_BLOCK_HEADING));
+  load_time_data.Set("tabTitle",
+                     l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_TITLE));
+  load_time_data.Set("heading",
+                     l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_HEADING));
 
-  load_time_data.Set("primaryParagraph",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
+  load_time_data.Set(
+      "primaryParagraph",
+      l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
 
   url::Origin request_url_origin = url::Origin::Create(request_url());
   load_time_data.Set("domain", request_url_origin.Serialize());
 
   load_time_data.Set("explanationParagraph",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_DOMAIN_BLOCK_EXPLANATION));
+                     l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_EXPLANATION));
 
   // This needs to be set even if it's not shown.
-  load_time_data.Set("dontWarnAgainText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON));
+  load_time_data.Set(
+      "dontWarnAgainText",
+      l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON));
   // Hide "don't warn again" checkbox if in private browsing mode.
   // This checkbox adds a custom exception rule, which we shouldn't
   // do in private browsing mode.
   load_time_data.Set("showDontWarnAgainCheckbox",
                      !web_contents()->GetBrowserContext()->IsOffTheRecord());
 
-  load_time_data.Set("proceedAnywayText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_DOMAIN_BLOCK_PROCEED_ANYWAY_BUTTON));
-  load_time_data.Set("goBackText", brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_DOMAIN_BLOCK_GO_BACK_BUTTON));
+  load_time_data.Set(
+      "proceedAnywayText",
+      l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_PROCEED_ANYWAY_BUTTON));
+  load_time_data.Set(
+      "goBackText", l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_GO_BACK_BUTTON));
 }
 
 int DomainBlockPage::GetHTMLTemplateId() {

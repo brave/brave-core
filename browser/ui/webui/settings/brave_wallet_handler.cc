@@ -22,7 +22,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -149,16 +148,15 @@ void BraveWalletHandler::GetSolanaProviderOptions(
     const base::Value::List& args) {
   base::Value::List list;
   list.Append(MakeSelectValue(
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
       ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
-  list.Append(
-      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
-                      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
-  list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
-                                  IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
-                              ::brave_wallet::mojom::DefaultWallet::None));
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
+      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
+  list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
+      ::brave_wallet::mojom::DefaultWallet::None));
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], list);
@@ -168,16 +166,14 @@ void BraveWalletHandler::GetTransactionSimulationOptInStatusOptions(
     const base::Value::List& args) {
   base::Value::List list;
   list.Append(
-      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_SETTINGS_SELECT_VALUE_ASK),
+      MakeSelectValue(l10n_util::GetStringUTF16(IDS_SETTINGS_SELECT_VALUE_ASK),
                       ::brave_wallet::mojom::BlowfishOptInStatus::kUnset));
   list.Append(
-      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_SETTINGS_SELECT_VALUE_YES),
+      MakeSelectValue(l10n_util::GetStringUTF16(IDS_SETTINGS_SELECT_VALUE_YES),
                       ::brave_wallet::mojom::BlowfishOptInStatus::kAllowed));
-  list.Append(MakeSelectValue(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_SETTINGS_SELECT_VALUE_NO),
-      ::brave_wallet::mojom::BlowfishOptInStatus::kDenied));
+  list.Append(
+      MakeSelectValue(l10n_util::GetStringUTF16(IDS_SETTINGS_SELECT_VALUE_NO),
+                      ::brave_wallet::mojom::BlowfishOptInStatus::kDenied));
 
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();

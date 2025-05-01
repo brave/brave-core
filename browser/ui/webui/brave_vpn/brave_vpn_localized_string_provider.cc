@@ -6,9 +6,9 @@
 #include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"
 
 #include "base/no_destructor.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_vpn {
@@ -114,8 +114,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
   };
 
   for (const auto& str : kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     html_source->AddString(str.name, l10n_str);
   }
 }

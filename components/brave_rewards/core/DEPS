@@ -1,0 +1,6 @@
+specific_include_rules = {
+  "rewards_util\.cc": [
+    "+brave/components/l10n/common/locale_util.h",
+    "+brave/components/l10n/common/ofac_sanction_util.h",
+  ],
+}

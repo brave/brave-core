@@ -19,7 +19,6 @@ source_set("widevine") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/constants",
-    "//brave/components/l10n/common",
     "//brave/components/widevine:constants",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",

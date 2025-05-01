@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/view_ids.h"
@@ -16,6 +15,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/vector_icons.h"
 #include "components/strings/grit/components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
 
@@ -42,7 +42,7 @@ void BraveBookmarkButton::UpdateImageAndText() {
       ui::ImageModel::FromVectorIcon(icon, icon_color, GetIconSize()));
 
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
-  SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(tooltip_id));
+  SetTooltipText(l10n_util::GetStringUTF16(tooltip_id));
 }
 
 BEGIN_METADATA(BraveBookmarkButton)

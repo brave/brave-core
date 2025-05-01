@@ -8,5 +8,8 @@ specific_include_rules = {
   "ntp_widget_utils_region_unittest\.cc": [
     "!chrome/test/base/testing_browser_process.h",
     "!chrome/test/base/testing_profile.h",
-  ]
+  ],
+  "ntp_widget_utils_region\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
 }

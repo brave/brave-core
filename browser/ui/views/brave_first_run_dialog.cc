@@ -11,12 +11,12 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/first_run/first_run_dialog.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/branded_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/font.h"
@@ -47,8 +47,7 @@ class PinShortcutCheckbox : public views::Checkbox {
 
   PinShortcutCheckbox() {
     SetFontList();
-    SetText(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT));
+    SetText(l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT));
   }
   ~PinShortcutCheckbox() override = default;
   PinShortcutCheckbox(const PinShortcutCheckbox&) = delete;
@@ -101,11 +100,10 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
   SetTitle(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE);
 #endif
   SetButtonLabel(ui::mojom::DialogButton::kOk,
-                 brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL));
-  SetButtonLabel(ui::mojom::DialogButton::kCancel,
-                 brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL));
+                 l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL));
+  SetButtonLabel(
+      ui::mojom::DialogButton::kCancel,
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL));
 
   constexpr int kHeaderFontSize = 16;
   int size_diff =
@@ -115,8 +113,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)};
   auto* header_label = AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_FIRSTRUN_DLG_HEADER_TEXT),
-      header_font));
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_HEADER_TEXT), header_font));
   header_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   constexpr int kContentFontSize = 15;
@@ -127,8 +124,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::NORMAL)};
   auto* contents_label = AddChildView(std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_FIRSTRUN_DLG_CONTENTS_TEXT),
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CONTENTS_TEXT),
       contents_font));
   contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   contents_label->SetMultiLine(true);

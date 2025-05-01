@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -20,6 +19,7 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "ui/base/l10n/l10n_util.h"
 
 BASE_FEATURE(kExtensionsManifestV2,
              "ExtensionsManifestV2",
@@ -73,34 +73,34 @@ struct ExtensionManifestV2 {
 BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
   // NoScript
   extensions_.push_back({kNoScriptId,
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME),
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_DESC),
                          false});
 
   // uBlock Origin
   extensions_.push_back(
       {kUBlockId,
-       brave_l10n::GetLocalizedResourceUTF16String(
+       l10n_util::GetStringUTF16(
            IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME),
-       brave_l10n::GetLocalizedResourceUTF16String(
+       l10n_util::GetStringUTF16(
            IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_DESC),
        false});
 
   // uMatrix
   extensions_.push_back({kUMatrixId,
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME),
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_DESC),
                          false});
 
   // AdGuard
   extensions_.push_back({kAdGuardId,
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME),
-                         brave_l10n::GetLocalizedResourceUTF16String(
+                         l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC),
                          false});
 }

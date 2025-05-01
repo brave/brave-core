@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/check_op.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/request_otr/browser/request_otr_storage_tab_helper.h"
 #include "build/build_config.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"

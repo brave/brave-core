@@ -25,7 +25,6 @@ static_library("webui") {
     "//brave/components/brave_rewards/resources:static_resources",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
-    "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings_grit",
     "//brave/components/tor/buildflags",

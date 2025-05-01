@@ -12,9 +12,9 @@
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"
 #include "brave/browser/ui/views/brave_ads/padded_image_button.h"
 #include "brave/browser/ui/views/brave_ads/padded_image_view.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -97,8 +97,8 @@ void NotificationAdControlButtonsView::CreateCloseButton() {
       base::BindRepeating(&NotificationAdView::OnCloseButtonPressed,
                           base::Unretained(&*notification_ad_view_))));
 
-  close_button_->SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON));
+  close_button_->SetAccessibleName(
+      l10n_util::GetStringUTF16(IDS_BRAVE_ADS_NOTIFICATION_AD_CLOSE_BUTTON));
 }
 
 void NotificationAdControlButtonsView::UpdateCloseButton() {

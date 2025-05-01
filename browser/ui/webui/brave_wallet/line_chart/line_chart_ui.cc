@@ -9,13 +9,13 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/line_chart_display/resources/grit/line_chart_display_generated_map.h"
 #include "chrome/grit/browser_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 namespace line_chart {
@@ -26,8 +26,7 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLineChartURL);
 
   for (const auto& str : brave_wallet::kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     untrusted_source->AddString(str.name, l10n_str);
   }
 

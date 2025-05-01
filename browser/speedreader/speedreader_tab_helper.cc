@@ -24,7 +24,6 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
@@ -40,6 +39,7 @@
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -59,7 +59,7 @@ std::u16string GetSpeedreaderData(
   base::Value::Dict sr_data;
   sr_data.Set("ttsEnabled", kSpeedreaderTTS.Get());
   for (const auto& r : resources) {
-    sr_data.Set(r.first, brave_l10n::GetLocalizedResourceUTF16String(r.second));
+    sr_data.Set(r.first, l10n_util::GetStringUTF16(r.second));
   }
 
   return base::StrCat(

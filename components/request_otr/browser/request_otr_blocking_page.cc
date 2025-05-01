@@ -10,7 +10,6 @@
 
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/request_otr/browser/request_otr_controller_client.h"
 #include "brave/components/request_otr/browser/request_otr_p3a.h"
 #include "components/grit/brave_components_resources.h"
@@ -19,6 +18,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace request_otr {
@@ -83,36 +83,34 @@ void RequestOTRBlockingPage::CommandReceived(const std::string& command) {
 
 void RequestOTRBlockingPage::PopulateInterstitialStrings(
     base::Value::Dict& load_time_data) {
-  load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_REQUEST_OTR_TITLE));
-  load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
-                                    IDS_REQUEST_OTR_HEADING));
+  load_time_data.Set("tabTitle",
+                     l10n_util::GetStringUTF16(IDS_REQUEST_OTR_TITLE));
+  load_time_data.Set("heading",
+                     l10n_util::GetStringUTF16(IDS_REQUEST_OTR_HEADING));
 
-  load_time_data.Set("primaryParagraph",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_REQUEST_OTR_PRIMARY_PARAGRAPH));
+  load_time_data.Set(
+      "primaryParagraph",
+      l10n_util::GetStringUTF16(IDS_REQUEST_OTR_PRIMARY_PARAGRAPH));
 
   url::Origin request_url_origin = url::Origin::Create(request_url());
   load_time_data.Set("domain", request_url_origin.Serialize());
 
+  load_time_data.Set("explanationParagraph",
+                     l10n_util::GetStringUTF16(IDS_REQUEST_OTR_EXPLANATION));
+
   load_time_data.Set(
-      "explanationParagraph",
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_REQUEST_OTR_EXPLANATION));
+      "neverAskAgainText",
+      l10n_util::GetStringUTF16(IDS_REQUEST_OTR_NEVER_ASK_AGAIN_BUTTON));
 
-  load_time_data.Set("neverAskAgainText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_REQUEST_OTR_NEVER_ASK_AGAIN_BUTTON));
+  load_time_data.Set(
+      "neverAskAgainExplanationText",
+      l10n_util::GetStringUTF16(IDS_REQUEST_OTR_NEVER_ASK_AGAIN_EXPLANATION));
 
-  load_time_data.Set("neverAskAgainExplanationText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_REQUEST_OTR_NEVER_ASK_AGAIN_EXPLANATION));
+  load_time_data.Set("proceedOTRText", l10n_util::GetStringUTF16(
+                                           IDS_REQUEST_OTR_PROCEED_OTR_BUTTON));
 
-  load_time_data.Set("proceedOTRText",
-                     brave_l10n::GetLocalizedResourceUTF16String(
-                         IDS_REQUEST_OTR_PROCEED_OTR_BUTTON));
-
-  load_time_data.Set("proceedText", brave_l10n::GetLocalizedResourceUTF16String(
-                                        IDS_REQUEST_OTR_PROCEED_BUTTON));
+  load_time_data.Set("proceedText",
+                     l10n_util::GetStringUTF16(IDS_REQUEST_OTR_PROCEED_BUTTON));
 }
 
 int RequestOTRBlockingPage::GetHTMLTemplateId() {

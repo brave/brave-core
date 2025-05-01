@@ -26,7 +26,6 @@
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "brave/components/ai_rewriter/resources/page/grit/ai_rewriter_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -35,6 +34,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -53,8 +53,7 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
   DCHECK(source);
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name,
-                      brave_l10n::GetLocalizedResourceUTF16String(str.id));
+    source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
   }
 
   ai_engine_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)

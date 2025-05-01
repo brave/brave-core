@@ -20,7 +20,6 @@
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -34,6 +33,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/constants.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
@@ -211,8 +211,7 @@ BraveRewardsActionView::BraveRewardsActionView(
 
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetLayoutInsets(gfx::Insets(0));
-  SetAccessibleName(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_UI_BRAVE_REWARDS));
+  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_UI_BRAVE_REWARDS));
 
   auto* profile = browser_window_interface_->GetProfile();
 

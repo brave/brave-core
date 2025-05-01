@@ -14,7 +14,6 @@
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -25,6 +24,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "net/base/features.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 // Cache active Browser instance's TabStripModel to give
@@ -39,8 +39,7 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kShieldsPanelHost);
 
   for (const auto& str : brave_shields::kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     source->AddString(str.name, l10n_str);
   }
 
