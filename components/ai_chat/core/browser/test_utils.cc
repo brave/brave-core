@@ -8,10 +8,12 @@
 #include <string>
 #include <utility>
 
+#include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -270,6 +272,12 @@ std::vector<mojom::ConversationTurnPtr> CloneHistory(
     cloned_history.push_back(turn->Clone());
   }
   return cloned_history;
+}
+
+void WaitForAssociatedContentFetch(AssociatedContentManager* manager) {
+  base::RunLoop run_loop;
+  manager->GetContent(run_loop.QuitClosure());
+  run_loop.Run();
 }
 
 }  // namespace ai_chat

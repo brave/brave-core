@@ -40,6 +40,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -289,8 +290,8 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
     conversation = CreateConversation();
   }
   // Provide the content delegate, if allowed
-  MaybeAssociateContentWithConversation(conversation, associated_content_id,
-                                        associated_content);
+  MaybeAssociateContent(conversation, associated_content_id, associated_content,
+                        /*detach_existing_content=*/true);
 
   return conversation;
 }
@@ -301,8 +302,8 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
         associated_content) {
   ConversationHandler* conversation = CreateConversation();
   // Provide the content delegate, if allowed
-  MaybeAssociateContentWithConversation(conversation, associated_content_id,
-                                        associated_content);
+  MaybeAssociateContent(conversation, associated_content_id, associated_content,
+                        /*detach_existing_content=*/true);
 
   return conversation;
 }
@@ -556,14 +557,18 @@ void AIChatService::ReloadConversations(bool from_cancel) {
   }
 }
 
-void AIChatService::MaybeAssociateContentWithConversation(
+void AIChatService::MaybeAssociateContent(
     ConversationHandler* conversation,
     int associated_content_id,
     base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-        associated_content) {
+        associated_content,
+    bool detach_existing_content) {
   if (associated_content &&
       kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
-    conversation->SetAssociatedContentDelegate(associated_content);
+    conversation->associated_content_manager()->AddContent(
+        associated_content.get(),
+        /*notify_updated=*/true,
+        /*detach_existing_content=*/detach_existing_content);
   }
   // Record that this is the latest conversation for this content. Even
   // if we don't call SetAssociatedContentDelegate, the conversation still
@@ -1027,28 +1032,19 @@ void AIChatService::OpenConversationWithStagedEntries(
   conversation->MaybeFetchOrClearContentStagedConversation();
 }
 
-void AIChatService::AssociateContent(
+void AIChatService::MaybeAssociateContent(
     ConversationHandler::AssociatedContentDelegate* content,
     const std::string& conversation_uuid) {
   CHECK(content);
 
-  // Note: As we're using the non-async version of GetConversation, this will
-  // only work when the conversation is already loaded.
-  // If we ever need to associate content with a conversation that is not
-  // loaded, we'll need to use the async version of GetConversation.
   auto* conversation = GetConversation(conversation_uuid);
   if (!conversation) {
     return;
   }
 
-  conversation->associated_content_manager()->AddContent(content);
-
-  // Record that this is the latest conversation for this content. Even
-  // if we don't call SetAssociatedContentDelegate, the conversation still
-  // has a default Tab's navigation for which is is associated. The Conversation
-  // won't use that Tab's Page for context.
-  content_conversations_.insert_or_assign(
-      content->GetContentId(), conversation->get_conversation_uuid());
+  MaybeAssociateContent(conversation, content->GetContentId(),
+                        content->GetWeakPtr(),
+                        /*detach_existing_content=*/false);
 }
 
 void AIChatService::DisassociateContent(
@@ -1064,11 +1060,9 @@ void AIChatService::DisassociateContent(
 
   conversation->associated_content_manager()->RemoveContent(content);
 
-  // If there are no more conversations associated with this content, remove
-  // the pointer to this conversation from the cache.
-  if (conversation->associated_content_manager()
-          ->GetAssociatedContent()
-          .empty()) {
+  // If this conversation is the most recent one for the content, remove it from
+  // content_conversations_.
+  if (content_conversations_[content->GetContentId()] == conversation_uuid) {
     content_conversations_.erase(content->GetContentId());
   }
 }

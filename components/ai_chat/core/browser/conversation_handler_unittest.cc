@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
+#include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -124,45 +125,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
 };
 
-class MockAssociatedContent
-    : public ConversationHandler::AssociatedContentDelegate {
- public:
-  MockAssociatedContent() = default;
-  ~MockAssociatedContent() override = default;
-
-  int GetContentId() const override { return 0; }
-
-  std::string_view GetCachedTextContent() const override {
-    return cached_text_content_;
-  }
-
-  void GetContent(
-      ConversationHandler::GetPageContentCallback callback) override {
-    cached_text_content_ = GetTextContent();
-    std::move(callback).Run(cached_text_content_, GetCachedIsVideo(), "");
-  }
-
-  MOCK_METHOD(GURL, GetURL, (), (const, override));
-  MOCK_METHOD(std::u16string, GetTitle, (), (const, override));
-  MOCK_METHOD(bool, GetCachedIsVideo, (), (const, override));
-
-  MOCK_METHOD(std::string, GetTextContent, (), ());
-
-  MOCK_METHOD(void,
-              GetStagedEntriesFromContent,
-              (ConversationHandler::GetStagedEntriesCallback),
-              (override));
-
-  base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
-    return weak_ptr_factory_.GetWeakPtr();
-  }
-
- private:
-  std::string cached_text_content_;
-  base::WeakPtrFactory<ConversationHandler::AssociatedContentDelegate>
-      weak_ptr_factory_{this};
-};
-
 class MockTextEmbedder : public TextEmbedder {
  public:
   explicit MockTextEmbedder(
@@ -228,8 +190,9 @@ class ConversationHandlerUnitTest : public testing::Test {
     // Add associated content to conversation
     if (has_associated_content_) {
       associated_content_ = std::make_unique<NiceMock<MockAssociatedContent>>();
-      conversation_handler_->SetAssociatedContentDelegate(
-          associated_content_->GetWeakPtr());
+      conversation_handler_->associated_content_manager()->AddContent(
+          associated_content_.get(), /*notify_updated=*/true,
+          /*detach_existing_content=*/true);
     }
 
     if (is_opted_in_) {
@@ -539,7 +502,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   ON_CALL(*associated_content_, GetURL)
       .WillByDefault(testing::Return(GURL("https://www.brave.com")));
   EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillOnce(testing::Return(page_content));
+      .WillRepeatedly(testing::Return(page_content));
   conversation_handler_->SetShouldSendPageContents(true);
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](std::vector<mojom::AssociatedContentPtr> site_info,
@@ -606,6 +569,233 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   const auto& history = conversation_handler_->GetConversationHistory();
   ExpectConversationHistoryEquals(FROM_HERE, history, expected_history, false);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_AddContent) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  NiceMock<MockAssociatedContent> associated_content2{};
+  associated_content2.SetContentId(2);
+  ON_CALL(associated_content2, GetTextContent)
+      .WillByDefault(testing::Return("Content 2"));
+
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  conversation->associated_content_manager()->AddContent(&associated_content1);
+  EXPECT_EQ(
+      conversation->associated_content_manager()->GetAssociatedContent().size(),
+      1u);
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasNonArchiveContent());
+
+  conversation->associated_content_manager()->AddContent(&associated_content2);
+  EXPECT_EQ(
+      conversation->associated_content_manager()->GetAssociatedContent().size(),
+      2u);
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasNonArchiveContent());
+
+  WaitForAssociatedContentFetch(conversation->associated_content_manager());
+  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
+            "<page>Content 1</page><page>Content 2</page>");
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_RemoveContent) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  NiceMock<MockAssociatedContent> associated_content2{};
+  associated_content2.SetContentId(2);
+  ON_CALL(associated_content2, GetTextContent)
+      .WillByDefault(testing::Return("Content 2"));
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content1);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            1u);
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasAssociatedContent());
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasNonArchiveContent());
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content2);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            2u);
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasAssociatedContent());
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasNonArchiveContent());
+
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "<page>Content 1</page><page>Content 2</page>");
+
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &associated_content1);
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            1u);
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasAssociatedContent());
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasNonArchiveContent());
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "Content 2");
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_AddingContentSetsShouldSend) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  NiceMock<MockAssociatedContent> associated_content2{};
+  associated_content2.SetContentId(2);
+  ON_CALL(associated_content2, GetTextContent)
+      .WillByDefault(testing::Return("Content 2"));
+
+  conversation_handler_->associated_content_manager()->SetShouldSend(false);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content1);
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->should_send());
+
+  conversation_handler_->associated_content_manager()->SetShouldSend(false);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content2);
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->should_send());
+}
+
+TEST_F(
+    ConversationHandlerUnitTest_NoAssociatedContent,
+    MultiContentConversation_RemovingContentShouldSetShouldSendIfHasAssociatedContent) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  NiceMock<MockAssociatedContent> associated_content2{};
+  associated_content2.SetContentId(2);
+  ON_CALL(associated_content2, GetTextContent)
+      .WillByDefault(testing::Return("Content 2"));
+
+  conversation_handler_->associated_content_manager()->SetShouldSend(false);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content1);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content2);
+
+  conversation_handler_->associated_content_manager()->SetShouldSend(false);
+
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &associated_content1);
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->should_send());
+
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &associated_content2);
+  EXPECT_FALSE(
+      conversation_handler_->associated_content_manager()->should_send());
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_ArchiveContent) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  NiceMock<MockAssociatedContent> associated_content2{};
+  associated_content2.SetContentId(2);
+  ON_CALL(associated_content2, GetTextContent)
+      .WillByDefault(testing::Return("Content 2"));
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content1);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content2);
+
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasNonArchiveContent());
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "<page>Content 1</page><page>Content 2</page>");
+
+  conversation_handler_->associated_content_manager()->OnNavigated(
+      &associated_content1);
+  EXPECT_TRUE(conversation_handler_->associated_content_manager()
+                  ->HasNonArchiveContent());
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "<page>Content 1</page><page>Content 2</page>");
+
+  conversation_handler_->associated_content_manager()->OnNavigated(
+      &associated_content2);
+  // Everything should be archived now
+  EXPECT_FALSE(conversation_handler_->associated_content_manager()
+                   ->HasNonArchiveContent());
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "<page>Content 1</page><page>Content 2</page>");
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_LoadArchivedContent) {
+  auto metadata = mojom::Conversation::New();
+  metadata->associated_content.push_back(mojom::AssociatedContent::New(
+      "1", mojom::ContentType::PageContent, "Content 1", 1,
+      GURL("https://one.com"), 100, false));
+  metadata->associated_content.push_back(mojom::AssociatedContent::New(
+      "2", mojom::ContentType::PageContent, "Content 2", 2,
+      GURL("https://two.com"), 100, false));
+
+  auto conversation_archive = mojom::ConversationArchive::New();
+  conversation_archive->associated_content.push_back(
+      mojom::ContentArchive::New("1", "The content of one"));
+  conversation_archive->associated_content.push_back(
+      mojom::ContentArchive::New("1", "The content of two"));
+
+  conversation_handler_->associated_content_manager()->LoadArchivedContent(
+      metadata.get(), conversation_archive);
+
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetAssociatedContent()
+                .size(),
+            2u);
+  WaitForAssociatedContentFetch(
+      conversation_handler_->associated_content_manager());
+  EXPECT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedTextContent(),
+            "<page>The content of one</page><page>The content of two</page>");
 }
 
 TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
@@ -1106,7 +1296,7 @@ TEST_F(ConversationHandlerUnitTest,
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*associated_content_, GetTextContent)
-      .WillOnce(testing::Return("page content"));
+      .WillRepeatedly(testing::Return("page content"));
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
@@ -1712,7 +1902,9 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
       GURL("https://example.com"), "This is the way - page contents",
       u"The way",
       /*is_video=*/false, "my-uuid");
-  conversation_handler_->SetAssociatedContentDelegate(delegate->GetWeakPtr());
+  conversation_handler_->associated_content_manager()->AddContent(
+      delegate.get(), /*notify_updated=*/true,
+      /*detach_existing_content=*/true);
 
   std::string expected_input = "What is the way?";
   uint64_t expected_total_tokens = 1000;
@@ -1769,7 +1961,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
 
   // Remove content so we don't get a dangling pointer when we try and access
   // ArchiveContent during destruction.
-  conversation_handler_->SetAssociatedContentDelegate(nullptr);
+  conversation_handler_->associated_content_manager()->AddContent(
+      nullptr, /*notify_updated=*/true, /*detach_existing_content=*/true);
 }
 
 TEST_F(ConversationHandlerUnitTest, StopGenerationAndMaybeGetHumanEntry) {

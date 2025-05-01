@@ -623,7 +623,8 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   std::vector<std::string> expected_contents = {"First contents"};
 
   // Note: This is reused for all conversations, as it is moved into the
-  // conversation ptr.
+  // conversation ptr. std::move(associated_content) will reset
+  // |associated_content| to the empty vector.
   std::vector<mojom::AssociatedContentPtr> associated_content;
 
   // The times in the Conversation are irrelevant, only the times of the entries

@@ -152,8 +152,9 @@ class AIChatService : public KeyedService,
           associated_content,
       base::OnceClosure open_ai_chat);
 
-  void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
-                        const std::string& conversation_uuid);
+  void MaybeAssociateContent(
+      ConversationHandler::AssociatedContentDelegate* content,
+      const std::string& conversation_uuid);
   void DisassociateContent(
       ConversationHandler::AssociatedContentDelegate* content,
       const std::string& conversation_uuid);
@@ -244,11 +245,12 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(ConversationHandler*)> callback,
       mojom::ConversationArchivePtr data);
 
-  void MaybeAssociateContentWithConversation(
+  void MaybeAssociateContent(
       ConversationHandler* conversation,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-          associated_content);
+          associated_content,
+      bool detach_existing_content);
   void MaybeUnloadConversation(ConversationHandler* conversation);
   void HandleFirstEntry(ConversationHandler* handler,
                         mojom::ConversationTurnPtr& entry,
