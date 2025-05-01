@@ -123,6 +123,10 @@ public class NTPDataSource {
       let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
     else { return nil }
 
+    if !hasGracePeriodEnded(sponsoredImageData) {
+      return nil
+    }
+
     let isSponsoredVideoAllowed =
       Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
 
@@ -229,6 +233,22 @@ public class NTPDataSource {
     {
       replaceFavoritesIfNeeded?(superReferralImageData.topSites)
     }
+  }
+
+  private func hasGracePeriodEnded(_ sponsoredImageData: NTPSponsoredImageData) -> Bool {
+    if BraveRewards.Configuration.current().isDebug == true {
+      // If debug mode is enabled, consider it ended.
+      return true
+    }
+
+    guard let gracePeriod = sponsoredImageData.gracePeriod?.doubleValue,
+      let installDate = Preferences.P3A.installationDate.value
+    else {
+      // If either the grace period or install date is not set, consider it ended.
+      return true
+    }
+
+    return Date.now.timeIntervalSince(installDate) > gracePeriod
   }
 }
 
