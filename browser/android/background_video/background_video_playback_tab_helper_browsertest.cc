@@ -127,3 +127,20 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
                                                       true);
   EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
+
+IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+                       TestInjectionNoSerializedExperimentFlags) {
+  const GURL url =
+      https_server_.GetURL("youtube.com", "/ytcfg_mock_no_flags.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+  EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "typeof "
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags === 'undefined'")
+          .ExtractBool());
+}
