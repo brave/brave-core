@@ -41,6 +41,7 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
       IsBitcoinImportEnabled(), IsBitcoinLedgerEnabled(), IsZCashEnabled(),
       IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled(),
       IsZCashShieldedTransactionsEnabled(), IsCardanoEnabled(),
+      IsPolkadotEnabled(),
       GetEnabledCoins()));
 }
 

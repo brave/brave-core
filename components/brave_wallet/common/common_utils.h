@@ -26,6 +26,7 @@ bool IsCardanoEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
+bool IsPolkadotEnabled();
 
 bool IsAllowed(PrefService* prefs);
 
@@ -68,6 +69,9 @@ bool IsCardanoNetwork(const std::string& network_id);
 bool IsCardanoAccount(const mojom::AccountIdPtr& account_id);
 std::string GetNetworkForCardanoKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
+
+bool IsPolkadotSubstrateAccount(const mojom::AccountIdPtr& account_id);
+bool IsPolkadotSubstrateKeyring(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 

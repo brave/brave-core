@@ -12,6 +12,7 @@ export const CreateAccountOptions = (options: {
   isBitcoinEnabled: boolean
   isZCashEnabled: boolean
   isCardanoEnabled: boolean
+  isPolkadotEnabled: boolean
 }): CreateAccountOptionsType[] => {
   const isNetworkVisible = (coin: BraveWallet.CoinType, chaiId: string) => {
     return !!options.visibleNetworks.find(
@@ -133,6 +134,17 @@ export const CreateAccountOptions = (options: {
           chainIcons: ['ada-color']
         })
       }
+    }
+
+    if (options.isPolkadotEnabled) {
+      accounts.push({
+        description: getLocale('braveWalletCreateAccountPolkadotSubstrateDescription'),
+        name: 'Polkadot Substrate',
+        fixedNetwork: BraveWallet.POLKADOT_RELAY_CHAIN_ID,
+        coin: BraveWallet.CoinType.DOT,
+        icon: getNetworkLogo(BraveWallet.POLKADOT_RELAY_CHAIN_ID, 'DOT'),
+        chainIcons: ['ada-color']
+      })   
     }
   }
 

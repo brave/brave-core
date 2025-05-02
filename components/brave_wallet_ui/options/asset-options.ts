@@ -60,6 +60,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return ZECIcon
     case 'ADA':
       return CardanoIcon
+    case 'DOT':
+      return CardanoIcon
   }
 
   return ''

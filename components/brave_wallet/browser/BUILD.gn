@@ -447,6 +447,8 @@ source_set("hd_keyring") {
     "bitcoin/bitcoin_import_keyring.h",
     "cardano/cardano_hd_keyring.cc",
     "cardano/cardano_hd_keyring.h",
+    "polkadot/substrate_keyring.cc",
+    "polkadot/substrate_keyring.h",
     "ethereum_keyring.cc",
     "ethereum_keyring.h",
     "filecoin_keyring.cc",
