@@ -40,7 +40,6 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
-#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -288,10 +287,10 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
   if (!conversation) {
     // New conversation needed
     conversation = CreateConversation();
+    // Provide the content delegate, if allowed
+    MaybeAssociateContent(conversation, associated_content_id,
+                          associated_content);
   }
-  // Provide the content delegate, if allowed
-  MaybeAssociateContent(conversation, associated_content_id, associated_content,
-                        /*detach_existing_content=*/true);
 
   return conversation;
 }
@@ -302,8 +301,8 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
         associated_content) {
   ConversationHandler* conversation = CreateConversation();
   // Provide the content delegate, if allowed
-  MaybeAssociateContent(conversation, associated_content_id, associated_content,
-                        /*detach_existing_content=*/true);
+  MaybeAssociateContent(conversation, associated_content_id,
+                        associated_content);
 
   return conversation;
 }
@@ -561,14 +560,12 @@ void AIChatService::MaybeAssociateContent(
     ConversationHandler* conversation,
     int associated_content_id,
     base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-        associated_content,
-    bool detach_existing_content) {
+        associated_content) {
   if (associated_content &&
       kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
     conversation->associated_content_manager()->AddContent(
         associated_content.get(),
-        /*notify_updated=*/true,
-        /*detach_existing_content=*/detach_existing_content);
+        /*notify_updated=*/true);
   }
   // Record that this is the latest conversation for this content. Even
   // if we don't call SetAssociatedContentDelegate, the conversation still
@@ -1043,8 +1040,7 @@ void AIChatService::MaybeAssociateContent(
   }
 
   MaybeAssociateContent(conversation, content->GetContentId(),
-                        content->GetWeakPtr(),
-                        /*detach_existing_content=*/false);
+                        content->GetWeakPtr());
 }
 
 void AIChatService::DisassociateContent(
