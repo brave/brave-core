@@ -25,7 +25,6 @@ source_set("browser_tests") {
     sources += [
       "shared_pinned_tab_service_browsertest.cc",
       "shared_pinned_tab_service_browsertest.h",
-      "split_view_tab_strip_model_adapter_browsertest.cc",
       "tab_tile_model_browsertest.cc",
     ]
     deps += [

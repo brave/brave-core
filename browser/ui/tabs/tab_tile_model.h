@@ -16,9 +16,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
 class BrowserWindowInterface;
-class SplitViewTabStripModelAdapter;
 class TabTileModelObserver;
 
 // TabTile represents two tabs tied together like tile in tab strip UI.
@@ -45,10 +45,10 @@ struct TabTile {
 // Represents tab tile state of current browser window.
 // Client can ask tile create/break or swap tab's position in a tab tile.
 // Observe this model to know about each tab tile state changes.
-class TabTileModel {
+class TabTileModel : public TabStripModelObserver {
  public:
   explicit TabTileModel(BrowserWindowInterface* browser_window_interface);
-  virtual ~TabTileModel();
+  ~TabTileModel() override;
 
   // When calling this, make sure that |tile.first| has a smaller model index
   // than |tile.second| be persistent across the all tab strip model operations.
@@ -97,7 +97,6 @@ class TabTileModel {
 
  private:
   friend class TabTileModelBrowserTest;
-  friend class SplitViewTabStripModelAdapterBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(TabTileModelBrowserTest,
                            BreakTile_WithNonExistingTabIsError);
@@ -113,7 +112,44 @@ class TabTileModel {
   // create tab tiles to that browser by using |tab_tiles|.
   void Transfer(TabTileModel* other, std::vector<TabTile> tab_tiles);
 
-  std::unique_ptr<SplitViewTabStripModelAdapter> tab_strip_model_adapter_;
+  void MakeTiledTabsAdjacent(const TabTile& tile, bool move_right_tab = true);
+  bool SynchronizeGroupedState(const TabTile& tile,
+                               const tabs::TabHandle& source,
+                               std::optional<tab_groups::TabGroupId> group);
+  bool SynchronizePinnedState(const TabTile& tile,
+                              const tabs::TabHandle& source);
+
+  void TabDragEnded();
+  void OnTabInserted(const TabStripModelChange::Insert* insert);
+  void OnTabMoved(const TabStripModelChange::Move* move);
+  void OnTabRemoved(const TabStripModelChange::Remove* remove);
+
+  // TabStripModelObserver:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+  void OnTabWillBeRemoved(content::WebContents* contents, int index) override;
+  void TabPinnedStateChanged(TabStripModel* tab_strip_model,
+                             content::WebContents* contents,
+                             int index) override;
+  void TabGroupedStateChanged(TabStripModel* tab_strip_model,
+                              std::optional<tab_groups::TabGroupId> old_group,
+                              std::optional<tab_groups::TabGroupId> new_group,
+                              tabs::TabInterface* tab,
+                              int index) override;
+
+  // Filled up in OnTabWillBeRemoved() and revisited from OnTabRemoved().
+  // These are in pending state until we can decide what to do with them in
+  // OnTabRemoved() by looking into the reason.
+  std::vector<std::pair<content::WebContents*, content::WebContents*>>
+      tiled_tabs_scheduled_to_be_removed_;
+
+  raw_ref<TabStripModel> model_;
+
+  bool is_in_tab_dragging_ = false;
+
+  bool is_in_synch_grouped_state_ = false;
 
   std::vector<TabTile> tab_tiles_;
   std::vector<TabTile> tab_tiles_to_be_attached_to_new_window_;
