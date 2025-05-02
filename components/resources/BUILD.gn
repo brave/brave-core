@@ -58,6 +58,7 @@ repack("resources") {
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_ads/browser/resources:generated_resources",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
+    "//brave/components/hello_world/resources",
     "//brave/components/skus/browser/resources:generated_resources",
   ]
   sources = [
@@ -65,6 +66,7 @@ repack("resources") {
     "$root_gen_dir/brave/components/ai_chat/resources/custom_site_distiller_scripts/custom_site_distiller_scripts_generated.pak",
     "$root_gen_dir/brave/components/brave_ads/browser/resources/ads_internals_generated.pak",
     "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
+    "$root_gen_dir/brave/components/hello_world/resources/hello_world_resources.pak",
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
     "$root_gen_dir/components/brave_components_static.pak",
   ]
