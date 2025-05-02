@@ -25,9 +25,12 @@ struct Ss58Address {
   Ss58Address& operator=(const Ss58Address& addr) = delete;
   Ss58Address(Ss58Address&& addr);
   Ss58Address& operator=(Ss58Address&& addr);
-  uint16_t prefix;
+  uint16_t prefix = 0;
   // ed25519 or sr25519 public key.
-  std::array<uint8_t, kSs58PublicKeySize> public_key;
+  std::array<uint8_t, kSs58PublicKeySize> public_key = {};
+
+  std::optional<std::string> Encode();
+  static std::optional<Ss58Address> Decode(const std::string& str);
 };
 
 // A bridge function to call DecodeBase58 in bitcoin-core.
@@ -43,9 +46,6 @@ std::optional<std::vector<uint8_t>> Base58Decode(const std::string& str,
 // A bridge function to call EncodeBase58 in bitcoin-core.
 std::string Base58Encode(base::span<const uint8_t> bytes);
 std::string Base58EncodeWithCheck(const std::vector<uint8_t>& bytes);
-
-std::optional<std::string> Ss58Encode(const Ss58Address& addr);
-std::optional<Ss58Address> Ss58Decode(const std::string& str);
 
 }  // namespace brave_wallet
 

@@ -88,10 +88,10 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 0;
     EXPECT_EQ("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5",
-              Ss58Encode(addr).value());
+              addr.Encode().value());
 
     auto decoded =
-        Ss58Decode("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5");
+        Ss58Address::Decode("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5");
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 0u);
   }
@@ -103,10 +103,10 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 42;
     EXPECT_EQ("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-              Ss58Encode(addr).value());
+              addr.Encode().value());
 
     auto decoded =
-        Ss58Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
+        Ss58Address::Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 42u);
   }
@@ -118,10 +118,10 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 63;
     EXPECT_EQ("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba",
-              Ss58Encode(addr).value());
+              addr.Encode().value());
 
     auto decoded =
-        Ss58Decode("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba");
+        Ss58Address::Decode("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba");
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 63u);
   }
@@ -134,10 +134,10 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 64u;
     EXPECT_EQ("cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp",
-              Ss58Encode(addr).value());
+              addr.Encode().value());
 
-    auto decoded =
-        Ss58Decode("cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp");
+    auto decoded = Ss58Address::Decode(
+        "cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp");
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 64u);
   }
@@ -149,10 +149,10 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 200;
     EXPECT_EQ("sD4TrgAhf8c8tYheiyKQb19jvTWY5fGx3TD1nK1Ue61WHRnT4",
-              Ss58Encode(addr).value());
+              addr.Encode().value());
 
     auto decoded =
-        Ss58Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
+        Ss58Address::Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 42u);
   }
@@ -164,10 +164,10 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         base::span(addr.public_key)));
     addr.prefix = 16383;
     EXPECT_EQ("yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn",
-              Ss58Encode(addr).value());
+              addr.Encode().value());
 
-    auto decoded =
-        Ss58Decode("yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn");
+    auto decoded = Ss58Address::Decode(
+        "yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn");
     EXPECT_EQ(decoded->public_key, addr.public_key);
     EXPECT_EQ(decoded->prefix, 16383u);
   }
@@ -179,25 +179,25 @@ TEST(EncodingUtilsUnitTest, Ss58Encode) {
         "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
         base::span(addr.public_key)));
     addr.prefix = 16384u;
-    EXPECT_FALSE(Ss58Encode(addr));
+    EXPECT_FALSE(addr.Encode());
   }
 
   // Wrong prefix decode
   {
-    EXPECT_FALSE(
-        Ss58Decode("HHrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"));
+    EXPECT_FALSE(Ss58Address::Decode(
+        "HHrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"));
   }
 
   // Wrong addr size
   {
-    EXPECT_FALSE(
-        Ss58Decode("0Na8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn"));
+    EXPECT_FALSE(Ss58Address::Decode(
+        "0Na8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn"));
   }
 
   // Wrong checksum
   {
-    EXPECT_FALSE(
-        Ss58Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQa"));
+    EXPECT_FALSE(Ss58Address::Decode(
+        "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQa"));
   }
 }
 

@@ -32,7 +32,7 @@ constexpr uint32_t kV5VersionGroupId = 0x26A7270A;
 std::array<uint8_t, kZCashDigestSize> Blake2b256(
     base::span<const uint8_t> payload,
     base::span<const uint8_t, kBlake2bPersonalizerLength> personalizer) {
-  return Blake2bHash<kZCashDigestSize>(payload, personalizer);
+  return Blake2bHash<kZCashDigestSize>({payload}, personalizer);
 }
 
 void PushHeader(const ZCashTransaction& tx, BtcLikeSerializerStream& stream) {

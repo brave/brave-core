@@ -259,7 +259,7 @@ std::optional<std::string> FilecoinKeyring::SignTransaction(
     return std::nullopt;
   }
 
-  auto signature = hd_key->SignCompact(Blake2bHash<32>(*cid));
+  auto signature = hd_key->SignCompact(Blake2bHash<32>({*cid}));
   if (!signature) {
     return std::nullopt;
   }

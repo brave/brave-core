@@ -18,8 +18,10 @@ namespace {
 // Prefix is added a public key to calculate
 // blake2b hash.
 constexpr char kSs58HashPrefix[] = "SS58PRE";
-constexpr size_t kSs58HashPrefixSize = 7u;
 constexpr size_t kSs58HashChecksumSize = 2u;
+// Prefix may be 1 or 2 bytes size and first bit in every byte
+// points on prefix size, so 14 bits actually used for keeping prefix value.
+constexpr uint16_t kSs58MaxPrefixValue = 16383u;
 }  // namespace
 
 Ss58Address::Ss58Address() = default;
@@ -61,9 +63,8 @@ std::string Base58Encode(base::span<const uint8_t> bytes) {
 
 // Reference implementation
 // https://github.com/gear-tech/gear/blob/7d481fed39e7b0633ca9afeed8ce1b3cbb636f3e/utils/ss58/src/lib.rs#L295
-std::optional<std::string> Ss58Encode(const Ss58Address& addr) {
-  uint16_t prefix = addr.prefix;
-  if (prefix > 16383) {
+std::optional<std::string> Ss58Address::Encode() {
+  if (prefix > kSs58MaxPrefixValue) {
     return std::nullopt;
   }
 
@@ -80,17 +81,13 @@ std::optional<std::string> Ss58Encode(const Ss58Address& addr) {
     output_span_writer.WriteU8BigEndian((prefix >> 8) | ((prefix & 0b11) << 6));
   }
 
-  output_span_writer.Write(base::span(addr.public_key));
+  output_span_writer.Write(base::span(public_key));
   DCHECK_EQ(output_span_writer.remaining(), kSs58HashChecksumSize);
   DCHECK_EQ(buff.size(), offset + kSs58PublicKeySize + kSs58HashChecksumSize);
 
-  std::vector<uint8_t> hash_input;
-  hash_input.resize(kSs58HashPrefixSize + offset + kSs58PublicKeySize);
-  auto hash_input_writer = base::SpanWriter(base::span(hash_input));
-  hash_input_writer.Write(base::byte_span_from_cstring(kSs58HashPrefix));
-  hash_input_writer.Write(base::span(buff).first(offset + kSs58PublicKeySize));
-  DCHECK_EQ(hash_input_writer.remaining(), 0u);
-  auto hash = Blake2bHash<64>(base::span(hash_input));
+  auto hash_prefix = base::byte_span_from_cstring(kSs58HashPrefix);
+  auto hash = Blake2bHash<64>(
+      {hash_prefix, base::span(buff).first(offset + kSs58PublicKeySize)});
 
   output_span_writer.Write(base::span(hash).first(kSs58HashChecksumSize));
 
@@ -99,7 +96,8 @@ std::optional<std::string> Ss58Encode(const Ss58Address& addr) {
 
 // Reference implementation
 // https://github.com/gear-tech/gear/blob/7d481fed39e7b0633ca9afeed8ce1b3cbb636f3e/utils/ss58/src/lib.rs#L243
-std::optional<Ss58Address> Ss58Decode(const std::string& str) {
+// static
+std::optional<Ss58Address> Ss58Address::Decode(const std::string& str) {
   auto result =
       Base58Decode(str, kSs58HashChecksumSize + kSs58PublicKeySize + 2, false);
   if (!result ||
@@ -109,6 +107,7 @@ std::optional<Ss58Address> Ss58Decode(const std::string& str) {
   uint8_t offset = 0;
   uint8_t address_type = (*result)[0];
   uint16_t prefix = 0;
+  auto result_span = base::span(*result);
   if (address_type < 64) {
     offset = 1;
     prefix = address_type;
@@ -127,31 +126,21 @@ std::optional<Ss58Address> Ss58Decode(const std::string& str) {
   }
 
   // Prepare input to calculate checksum
-  std::vector<uint8_t> hash_input(kSs58HashPrefixSize + offset +
-                                  kSs58PublicKeySize);
-  auto hash_input_writer = base::SpanWriter(base::span(hash_input));
-  hash_input_writer.Write(base::byte_span_from_cstring(kSs58HashPrefix));
-  hash_input_writer.Write(
-      base::span(*result).first(offset + kSs58PublicKeySize));
-  DCHECK_EQ(hash_input_writer.remaining(), 0u);
-  auto hash = Blake2bHash<64>(base::span(hash_input));
+  auto hash_prefix = base::byte_span_from_cstring(kSs58HashPrefix);
+  auto hash = Blake2bHash<64>(
+      {hash_prefix, result_span.first(offset + kSs58PublicKeySize)});
 
   // Verify checksum
-  for (size_t i = 0; i < kSs58HashChecksumSize; i++) {
-    // Checking last 2 bytes
-    if (hash[i] != (*result)[offset + kSs58PublicKeySize + i]) {
-      return std::nullopt;
-    }
+  if (base::span(hash).first(kSs58HashChecksumSize) !=
+      result_span.last(kSs58HashChecksumSize)) {
+    return std::nullopt;
   }
 
   // Prepare output
   Ss58Address result_addr;
   result_addr.prefix = prefix;
-  auto public_key_span_writer =
-      base::SpanWriter(base::span(result_addr.public_key));
-  public_key_span_writer.Write(
-      base::span(*result).subspan(offset, kSs58PublicKeySize));
-  DCHECK_EQ(public_key_span_writer.remaining(), 0u);
+  base::span(result_addr.public_key)
+      .copy_from(result_span.subspan(offset, kSs58PublicKeySize));
   return std::move(result_addr);
 }
 

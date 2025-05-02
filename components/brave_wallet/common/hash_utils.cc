@@ -79,7 +79,7 @@ Ripemd160HashArray Hash160(base::span<const uint8_t> input) {
 }
 
 void Blake2bHash(
-    base::span<const uint8_t> payload,
+    std::initializer_list<base::span<const uint8_t>> payloads,
     base::span<uint8_t> hash_out,
     std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
         personalizer /* = std::nullopt */) {
@@ -96,7 +96,9 @@ void Blake2bHash(
 
   blake2b_state state = {};
   CHECK_EQ(0, blake2b_init_param(&state, &param));
-  CHECK_EQ(0, blake2b_update(&state, payload.data(), payload.size()));
+  for (const auto& payload : payloads) {
+    CHECK_EQ(0, blake2b_update(&state, payload.data(), payload.size()));
+  }
   CHECK_EQ(0, blake2b_final(&state, hash_out.data(), hash_out.size()));
 }
 
