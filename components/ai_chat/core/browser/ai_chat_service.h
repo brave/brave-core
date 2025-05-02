@@ -249,8 +249,7 @@ class AIChatService : public KeyedService,
       ConversationHandler* conversation,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-          associated_content,
-      bool detach_existing_content);
+          associated_content);
   void MaybeUnloadConversation(ConversationHandler* conversation);
   void HandleFirstEntry(ConversationHandler* handler,
                         mojom::ConversationTurnPtr& entry,
