@@ -819,6 +819,7 @@
       <if expr="enable_playlist">
         <part file="playlist_strings.grdp" />
       </if>
+      <part file="../hello_world/resources/brave_account_strings.grdp" />
     </messages>
   </release>
 </grit>

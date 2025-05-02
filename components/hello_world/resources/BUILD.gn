@@ -9,16 +9,34 @@ build_webui("build") {
   grd_prefix = "hello_world"
 
   static_files = [
-    "hello_world.css",
     "hello_world.html",
   ]
 
   non_web_component_files = [
-    "hello_world_app.html.ts",
-    "hello_world_app.ts",
+    "brave_account_common.ts",
+    "brave_account_create_dialog.html.ts",
+    "brave_account_create_dialog.ts",
+    "brave_account_dialog.html.ts",
+    "brave_account_dialog.ts",
+    "brave_account_entry_dialog.html.ts",
+    "brave_account_entry_dialog.ts",
+    "brave_account_forgot_password_dialog.html.ts",
+    "brave_account_forgot_password_dialog.ts",
+    "brave_account_row.html.ts",
+    "brave_account_row.ts",
+    "brave_account_sign_in_dialog.html.ts",
+    "brave_account_sign_in_dialog.ts",
   ]
 
-  css_files = [ "hello_world_app.css" ]
+  css_files = [
+    "brave_account_common.css",
+    "brave_account_create_dialog.css",
+    "brave_account_dialog.css",
+    "brave_account_entry_dialog.css",
+    "brave_account_forgot_password_dialog.css",
+    "brave_account_row.css",
+    "brave_account_sign_in_dialog.css",
+  ]
 
   webui_context_type = "trusted"
 
@@ -26,7 +44,11 @@ build_webui("build") {
   grit_output_dir = target_gen_dir
 
   ts_deps = [
+    "//chrome/browser/resources/settings_shared:build_ts",
+    "//brave/ui/webui/resources:build_ts",
     "//third_party/lit/v3_0:build_ts",
+    "//ui/webui/resources/cr_elements:build_ts",
     "//ui/webui/resources/js:build_ts",
+    "//ui/webui/resources/mojo:build_ts",
   ]
 }
