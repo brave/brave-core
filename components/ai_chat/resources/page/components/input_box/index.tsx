@@ -114,8 +114,6 @@ function InputBox(props: InputBoxProps) {
     }
   }, [props.context.pendingMessageImages])
 
-  console.log(props.context.associatedContentInfo)
-
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -137,6 +135,7 @@ function InputBox(props: InputBoxProps) {
           ref={attachmentWrapperRef}
         >
           {props.context.associatedContentInfo && props.context.shouldSendPageContents && !props.conversationStarted && <AttachmentItem
+            smallImage
             thumbnailUrl={`chrome://favicon2?size=256&pageUrl=${encodeURIComponent(props.context.associatedContentInfo.url.url)}`}
             title={props.context.associatedContentInfo.title}
             subtitle={props.context.associatedContentInfo.url.url}

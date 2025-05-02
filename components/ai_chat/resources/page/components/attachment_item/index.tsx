@@ -13,12 +13,15 @@ import * as Mojom from '../../../common/mojom'
 
 // Styles
 import styles from './style.module.scss'
+import classnames from '$web-common/classnames'
 
 type Props = {
   thumbnailUrl: string
 
   title: string
   subtitle: string
+
+  smallImage?: boolean
 
   // remove is optional here so we can also reuse
   // this component in the conversation thread where remove
@@ -31,7 +34,10 @@ export function AttachmentItem(props: Props) {
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
         <img
-          className={styles.image}
+          className={classnames({
+            [styles.image]: true,
+            [styles.smallImage]: props.smallImage
+          })}
           src={props.thumbnailUrl}
         />
         <div className={styles.imageInfo}>
@@ -40,12 +46,12 @@ export function AttachmentItem(props: Props) {
             text={props.title}
           >
             <div className={styles.forEllipsis}>
-              <span className={styles.nameText}>
+              <span className={styles.title}>
                 {props.title}
               </span>
             </div>
           </Tooltip>
-          <span className={styles.sizeText}>{props.subtitle}</span>
+          <span className={styles.subtitle}>{props.subtitle}</span>
         </div>
       </div>
       {props.remove && (

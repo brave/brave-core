@@ -27,15 +27,22 @@
       var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.1));
 }
 
+.smallImage {
+  height: 24px;
+
+  object-fit: contain;
+}
+
 .leftSide {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: var(--leo-spacing-xl);
 
   overflow: hidden;
 }
 
-.imageInfo {
+.info {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,7 +53,7 @@
   display: grid;
 }
 
-.nameText {
+.title {
   cursor: pointer;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
@@ -55,7 +62,7 @@
   text-overflow: ellipsis;
 }
 
-.sizeText {
+.subtitle {
   text-wrap: nowrap;
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
