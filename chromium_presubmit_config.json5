@@ -163,6 +163,8 @@
       "android/feed/core/java/src/org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator.java",
       "android/feed/core/java/src/org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator.java",
       "android/java/org/chromium/chrome/browser/BraveAppHooks.java",
+      "android/java/org/chromium/chrome/browser/app/BraveActivity.java",
+      "android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
       "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator.java",
       "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator.java",
       "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator.java",

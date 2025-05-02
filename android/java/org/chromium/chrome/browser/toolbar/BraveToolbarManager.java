@@ -89,6 +89,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
 
+@SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
 public class BraveToolbarManager extends ToolbarManager
         implements OnSharedPreferenceChangeListener {
     private static final String TAG = "BraveToolbarManager";
