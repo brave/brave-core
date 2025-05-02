@@ -28,14 +28,34 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     return getTemplate()
   }
 
-  private tabTooltipModes_ = [
-    { value: 1, name: this.i18n('appearanceSettingsTabHoverModeCard') },
-    {
-      value: 2,
-      name: this.i18n('appearanceSettingsTabHoverModeCardWithPreview')
-    },
-    { value: 0, name: this.i18n('appearanceSettingsTabHoverModeTooltip') }
-  ]
+  static get properties() {
+    return {
+      tabTooltipModes_: {
+        readyOnly: true,
+        type: Array,
+        value() {
+          return [
+            {
+              value: 1,
+              name: loadTimeData.getString('appearanceSettingsTabHoverModeCard')
+            },
+            {
+              value: 2,
+              name: loadTimeData.getString(
+                'appearanceSettingsTabHoverModeCardWithPreview')
+            },
+            {
+              value: 0,
+              name: loadTimeData.getString('appearanceSettingsTabHoverModeTooltip')
+            }
+          ]
+        }
+      }
+    }
+  }
+
+  declare private tabTooltipModes_:
+      Array<{value: number, name: string}>
 
   private isSharedPinnedTabsEnabled_() {
     return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')
