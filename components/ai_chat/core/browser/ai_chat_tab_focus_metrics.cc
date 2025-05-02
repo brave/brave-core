@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -19,7 +18,6 @@ namespace {
 
 constexpr int kSessionCountBuckets[] = {1, 5, 10, 20};
 constexpr int kTabCountBuckets[] = {5, 10, 25, 50};
-constexpr base::TimeDelta kReportInterval = base::Days(1);
 
 enum class EnabledStatus {
   kDisabled = 0,
@@ -44,11 +42,6 @@ AIChatTabFocusMetrics::AIChatTabFocusMetrics(PrefService* local_state,
       prefs::kBraveAIChatTabOrganizationEnabled,
       base::BindRepeating(&AIChatTabFocusMetrics::RecordEnabled,
                           base::Unretained(this)));
-  pref_change_registrar_.Add(
-      prefs::kLastAcceptedDisclaimer,
-      base::BindRepeating(&AIChatTabFocusMetrics::RecordEnabled,
-                          base::Unretained(this)));
-  ReportAllMetrics();
 }
 
 AIChatTabFocusMetrics::~AIChatTabFocusMetrics() = default;
@@ -71,9 +64,6 @@ void AIChatTabFocusMetrics::RecordUsage(size_t tab_count) {
 }
 
 void AIChatTabFocusMetrics::RecordEnabled() {
-  if (!ai_chat::HasUserOptedIn(profile_prefs_)) {
-    return;
-  }
   auto status = EnabledStatus::kDisabled;
   if (profile_prefs_->GetBoolean(prefs::kBraveAIChatTabOrganizationEnabled)) {
     status = delegate_->IsPremium() ? EnabledStatus::kEnabledPremium
@@ -114,10 +104,7 @@ void AIChatTabFocusMetrics::ReportLastUsageTime() {
 }
 
 void AIChatTabFocusMetrics::ReportAllMetrics() {
-  periodic_report_timer_.Start(
-      FROM_HERE, base::Time::Now() + kReportInterval,
-      base::BindOnce(&AIChatTabFocusMetrics::ReportAllMetrics,
-                     base::Unretained(this)));
+  RecordEnabled();
   ReportCountMetrics();
   ReportLastUsageTime();
 }
