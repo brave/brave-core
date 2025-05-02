@@ -188,6 +188,7 @@ function ConversationEntries() {
                         {imageFiles.length > 0 &&
                           <div className={styles.uploadedImages}>
                           {index === 0 && conversationContext.associatedContent.map(c => <AttachmentItem
+                            smallImage
                             subtitle={c.url.url}
                             thumbnailUrl={`//favicon2?size=256&pageUrl=${encodeURIComponent(c.url.url)}`}
                             title={c.title}

@@ -14,11 +14,13 @@ import * as Mojom from '../../../common/mojom'
 
 // Styles
 import styles from './style.module.scss'
+import classnames from '$web-common/classnames'
 
 type Props = {
   icon: React.ReactNode
   title: string
   subtitle: string
+
   // remove is optional here so we can also reuse
   // this component in the conversation thread where remove
   // is not needed.
