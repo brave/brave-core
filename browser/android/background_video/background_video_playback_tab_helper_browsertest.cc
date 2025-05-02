@@ -20,6 +20,7 @@
 
 namespace {
 constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
+
 }  // namespace
 
 class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
@@ -67,10 +68,14 @@ class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
 
   void ClickAndWaitForNavigation(const std::u16string& script) {
     content::TestNavigationObserver observer(web_contents());
+    InjectScript(script);
+    observer.WaitForNavigationFinished();
+  }
+
+  void InjectScript(const std::u16string& script) {
     content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(script, base::NullCallback(),
                                      content::ISOLATED_WORLD_ID_GLOBAL);
-    observer.WaitForNavigationFinished();
   }
 
  protected:
@@ -89,6 +94,68 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+  // Verify the replace method was called exactly 5 times.
+  EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+
+  // Verify all the flags were properly set to `false`.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_ontimeupdate=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_onresize=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_document_fullscreen=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_blocking_standard_api=false\")")
+          .ExtractBool());
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"html5_"
+          "picture_in_picture_logging_onresize=false\")")
+          .ExtractBool());
+
+  // Verify the other flags were not modified.
+  EXPECT_TRUE(
+      content::EvalJs(
+          web_contents(),
+          "window.ytcfg.get(\"WEB_PLAYER_CONTEXT_CONFIGS\").WEB_PLAYER_CONTEXT_"
+          "CONFIG_ID_MWEB_WATCH.serializedExperimentFlags.includes(\"another_"
+          "flag_for_testing=true\")")
+          .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+                       TestInjectionMatchLoad) {
+  const GURL url = https_server_.GetURL("youtube.com", "/load_ytcfg_mock.html");
+
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
+
+  InjectScript(u"window.simulateScriptLoadEvent();");
+
+  EXPECT_EQ(true,
+            content::EvalJs(web_contents(), "!!window.ytcfg").ExtractBool());
+
   // Verify the replace method was called exactly 5 times.
   EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 
