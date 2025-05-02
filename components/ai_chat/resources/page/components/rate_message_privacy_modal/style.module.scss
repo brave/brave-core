@@ -1,0 +1,42 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.dialog {
+  --leo-dialog-padding: var(--leo-spacing-2xl);
+}
+
+.dialogTitle {
+  font: var(--leo-font-heading-h3);
+  font-size: 20px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+  color: var(--leo-color-text-secondary);
+}
+
+.actionsRow {
+  justify-content: flex-end;
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: var(--leo-spacing-m);
+}
+
+.learnMoreLink {
+  cursor: pointer;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--leo-color-text-primary);
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}

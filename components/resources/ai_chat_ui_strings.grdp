@@ -213,9 +213,6 @@
   <message name="IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
     Dislike answer
   </message>
-  <message name="IDS_CHAT_UI_LIKE_DISLIKE_ANSWER_BUTTON_TITLE" desc="Button title for like and dislike menu items">
-    Sends rating, conversation, model, language, version, and premium status
-  </message>
   <message name="IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
     Provide Brave AI Feedback
   </message>
@@ -317,6 +314,15 @@
   </message>
   <message name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK_CHECKBOX_LABEL" desc="A checkbox label to open a link without asking me again">
     Open links without asking me again
+  </message>
+  <message name="IDS_CHAT_UI_SEND_BUTTON_LABEL" desc="A button label for sending a chat message rating">
+    Send
+  </message>
+  <message name="IDS_CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_TITLE" desc="A title for the rate message privacy modal">
+    Response Feedback
+  </message>
+  <message name="IDS_CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_DESCRIPTION" desc="A description for the rate message privacy modal">
+    Liking or disliking an answer will send rating, conversation, model, language, version, and premium status to Brave in order to improve Leo. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
   </message>
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message">
     Send message to Leo

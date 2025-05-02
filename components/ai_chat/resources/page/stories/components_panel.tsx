@@ -567,6 +567,7 @@ type CustomArgs = {
   showAttachments: boolean
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
+  ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
 }
 
 const args: CustomArgs = {
@@ -601,7 +602,8 @@ const args: CustomArgs = {
   isGenerating: false,
   showAttachments: true,
   isNewConversation: false,
-  generatedUrlToBeOpened: undefined
+  generatedUrlToBeOpened: undefined,
+  ratingTurnUuid: undefined
 }
 
 const meta: Meta<CustomArgs> = {
@@ -632,6 +634,10 @@ const meta: Meta<CustomArgs> = {
     },
     generatedUrlToBeOpened: {
       options: [{ url: 'https://www.example.com' }],
+      control: { type: 'select' }
+    },
+    ratingTurnUuid: {
+      options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
       control: { type: 'select' }
     }
   },
@@ -774,6 +780,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     inputTextCharCountDisplay: `${inputText.length} / 70`,
     pendingMessageImages: null,
     generatedUrlToBeOpened: options.args.generatedUrlToBeOpened,
+    ratingTurnUuid: options.args.ratingTurnUuid,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,
@@ -788,7 +795,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     handleActionTypeClick: () => { },
     setIsToolsMenuOpen: () => { },
     handleFeedbackFormCancel: () => { },
-    handleFeedbackFormSubmit: () => { },
+    handleFeedbackFormSubmit: () => Promise.resolve(),
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
     removeImage: () => {},
@@ -796,7 +803,10 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     getScreenshots: () => {},
     setGeneratedUrlToBeOpened:
       (url?: Url) => setArgs({ generatedUrlToBeOpened: url }),
-    setIgnoreExternalLinkWarning: () => { }
+    setIgnoreExternalLinkWarning: () => { },
+    handleCloseRateMessagePrivacyModal:
+      () => setArgs({ ratingTurnUuid: undefined }),
+    handleRateMessage: () => Promise.resolve()
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {

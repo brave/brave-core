@@ -30,6 +30,7 @@ import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
+import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
@@ -342,6 +343,7 @@ function Main() {
         </div>
         <DeleteConversationModal />
         <OpenExternalLinkModal />
+        <RateMessagePrivacyModal />
       </div>
     </main>
   )
