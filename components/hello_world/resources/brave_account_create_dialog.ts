@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 
 // import {
 //   BraveAccountBrowserProxy,
@@ -17,7 +16,7 @@ import { isEmailValid } from './brave_account_common.js'
 // @ts-ignore
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
 
-class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
+class PasswordStrengthMeter extends CrLitElement {
   static get is() {
     return 'password-strength-meter'
   }
@@ -76,7 +75,6 @@ class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
         <div class="strength" style="--strength: ${this.strength}"></div>
       </div>
       <div class="text">
-        ${this.i18n(`braveAccountPasswordStrengthMeter${this.category}`)}
       </div>
     `
   }
