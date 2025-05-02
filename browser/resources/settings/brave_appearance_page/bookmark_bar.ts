@@ -9,6 +9,7 @@ import '../settings_vars.css.js'
 import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {loadTimeData} from '../i18n_setup.js';
 
 import {getTemplate} from './bookmark_bar.html.js'
 
@@ -53,26 +54,35 @@ export class SettingsBraveAppearanceBookmarkBarElement
             value: BookmarkBarState.NTP
           }
         }
+      },
+
+      bookmarkBarShowOptions_: {
+        readyOnly: true,
+        type: Array,
+        value() {
+          return [
+            {
+              value: BookmarkBarState.ALWAYS,
+              name: loadTimeData.getString('appearanceSettingsBookmarBarAlways')
+            },
+            {
+              value: BookmarkBarState.NONE,
+              name: loadTimeData.getString('appearanceSettingsBookmarBarNever')
+            },
+            {
+              value: BookmarkBarState.NTP,
+              name: loadTimeData.getString('appearanceSettingsBookmarBarNTP')
+            }
+          ];
+        }
       }
     }
   }
 
   declare bookmarkBarStatePref_: chrome.settingsPrivate.PrefObject
 
-  private bookmarkBarShowOptions_ = [
-    {
-      value: BookmarkBarState.ALWAYS,
-      name: this.i18n('appearanceSettingsBookmarBarAlways')
-    },
-    {
-      value: BookmarkBarState.NONE,
-      name: this.i18n('appearanceSettingsBookmarBarNever')
-    },
-    {
-      value: BookmarkBarState.NTP,
-      name: this.i18n('appearanceSettingsBookmarBarNTP')
-    }
-  ]
+  declare private bookmarkBarShowOptions_ :
+      Array<{value: BookmarkBarState, name: string}>
   private bookmarkBarShowEnabledLabel_: string
 
   static get observers() {

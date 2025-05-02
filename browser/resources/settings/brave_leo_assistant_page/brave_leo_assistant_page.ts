@@ -49,7 +49,12 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           type: Boolean,
           value: false,
           computed: 'computeIsPremiumUser_(premiumStatus_)'
-        }
+        },
+        defaultModelKeyPrefValue_: String,
+        models_: {
+          readOnly: true,
+          type: Array,
+        },
       }
     }
 
@@ -60,8 +65,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     declare leoAssistantShowOnToolbarPref_: boolean
     declare selectedModelDisplayName_: string
-    defaultModelKeyPrefValue_: string
-    models_: ModelWithSubtitle[]
+    declare defaultModelKeyPrefValue_: string
+    declare models_: ModelWithSubtitle[]
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
