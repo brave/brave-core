@@ -23,16 +23,16 @@
     };
 
     // Mock `window.ytcfg` object without the following flags
-    // html5_picture_in_picture_blocking_document_fullscreen=false&
-    // html5_picture_in_picture_blocking_standard_api=false&
-    // html5_picture_in_picture_logging_onresize=false&
+    // html5_picture_in_picture_blocking_document_fullscreen=true&
+    // html5_picture_in_picture_blocking_standard_api=true&
+    // html5_picture_in_picture_logging_onresize=true&
     window.ytcfg = {
       data_: {
         WEB_PLAYER_CONTEXT_CONFIGS: {
           WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH: {
             serializedExperimentFlags: `
-              html5_picture_in_picture_blocking_ontimeupdate=false&
-              html5_picture_in_picture_blocking_onresize=false&
+              html5_picture_in_picture_blocking_ontimeupdate=true&
+              html5_picture_in_picture_blocking_onresize=true&
               another_flag_for_testing=true
             `
           }
