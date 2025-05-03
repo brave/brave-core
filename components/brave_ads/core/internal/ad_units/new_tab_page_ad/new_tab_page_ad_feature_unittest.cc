@@ -21,6 +21,12 @@ TEST(BraveAdsNewTabPageAdFeatureTest, ShouldSupportNewTabPageAdConfirmations) {
   EXPECT_FALSE(kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get());
 }
 
+TEST(BraveAdsNewTabPageAdFeatureTest,
+     ShouldFrequencyCapNewTabPageAdsForNonRewards) {
+  // Act & Assert
+  EXPECT_FALSE(kShouldFrequencyCapNewTabPageAdsForNonRewards.Get());
+}
+
 TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerHour) {
   // Act & Assert
   EXPECT_EQ(4U, kMaximumNewTabPageAdsPerHour.Get());

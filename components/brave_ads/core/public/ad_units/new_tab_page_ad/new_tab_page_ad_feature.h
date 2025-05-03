@@ -24,6 +24,11 @@ inline constexpr base::FeatureParam<bool>
         &kNewTabPageAdFeature, "should_support_confirmations_for_non_rewards",
         false};
 
+// Set to `true` to support frequency capping; otherwise, no capping.
+inline constexpr base::FeatureParam<bool>
+    kShouldFrequencyCapNewTabPageAdsForNonRewards{
+        &kNewTabPageAdFeature, "should_frequency_Cap_for_non_rewards", false};
+
 // Set to 0 to never cap.
 inline constexpr base::FeatureParam<size_t> kMaximumNewTabPageAdsPerHour{
     &kNewTabPageAdFeature, "maximum_ads_per_hour", 4};

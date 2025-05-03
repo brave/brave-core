@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
@@ -198,11 +199,11 @@ void EligibleNewTabPageAdsV2::FilterIneligibleCreativeAds(
 
   ApplyConditionMatcher(creative_ads);
 
-  if (UserHasJoinedBraveRewards()) {
+  if (kShouldFrequencyCapNewTabPageAdsForNonRewards.Get() ||
+      UserHasJoinedBraveRewards()) {
     NewTabPageAdExclusionRules exclusion_rules(
         ad_events, *subdivision_targeting_, *anti_targeting_resource_,
         site_history);
-
     ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
   }
 
