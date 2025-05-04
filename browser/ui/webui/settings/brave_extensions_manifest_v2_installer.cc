@@ -7,6 +7,7 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
@@ -18,11 +19,9 @@
 #include "chrome/browser/extensions/extension_install_prompt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/crx_file/crx_verifier.h"
-#include "components/update_client/protocol_parser_json.h"
 #include "components/update_client/update_query_params.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/crx_file_info.h"
-#include "extensions/browser/updater/safe_manifest_parser.h"
 #include "extensions/common/extension_urls.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -208,7 +207,7 @@ void ExtensionManifestV2Installer::OnInstalled(
                                     extensions::webstore_install::SUCCESS);
   }
 
-  std::move(callback_).Run(false, base::UTF16ToUTF8(result->message()),
+  std::move(callback_).Run(false, base::UTF16ToUTF8(error->message()),
                            extensions::webstore_install::OTHER_ERROR);
 }
 
