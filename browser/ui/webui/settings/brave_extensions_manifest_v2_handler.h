@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -21,19 +20,9 @@
 
 BASE_DECLARE_FEATURE(kExtensionsManifestV2);
 
-inline constexpr char kNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
-inline constexpr char kUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-inline constexpr char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-inline constexpr char kAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
-
-inline constexpr auto kPreconfiguredManifestV2Extensions =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 kUBlockId,
-                                                 kNoScriptId,
-                                                 kAdGuardId,
-                                                 kUMatrixId,
-                                             });
+namespace extensions_mv2 {
+class ExtensionManifestV2Installer;
+}
 
 class BraveExtensionsManifestV2Handler
     : public settings::SettingsPageUIHandler,
@@ -83,8 +72,8 @@ class BraveExtensionsManifestV2Handler
   base::ScopedObservation<extensions::ExtensionRegistry,
                           extensions::ExtensionRegistryObserver>
       observation_{this};
-  scoped_refptr<class ExtensionWebstoreInstaller> installer_;
 
+  std::unique_ptr<extensions_mv2::ExtensionManifestV2Installer> installer_;
   std::vector<struct ExtensionManifestV2> extensions_;
 
   base::WeakPtrFactory<BraveExtensionsManifestV2Handler> weak_factory_{this};

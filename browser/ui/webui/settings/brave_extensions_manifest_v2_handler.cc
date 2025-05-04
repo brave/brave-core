@@ -10,12 +10,10 @@
 #include <string>
 #include <utility>
 
-#include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_installer.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
-#include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
@@ -24,33 +22,6 @@
 BASE_FEATURE(kExtensionsManifestV2,
              "ExtensionsManifestV2",
              base::FEATURE_DISABLED_BY_DEFAULT);
-
-class ExtensionWebstoreInstaller final
-    : public extensions::WebstoreInstallWithPrompt {
- public:
-  ExtensionWebstoreInstaller(
-      const std::string& webstore_item_id,
-      Profile* profile,
-      content::WebContents* web_contents,
-      extensions::WebstoreInstallWithPrompt::Callback callback)
-      : extensions::WebstoreInstallWithPrompt(
-            webstore_item_id,
-            profile,
-            web_contents->GetTopLevelNativeWindow(),
-            std::move(callback)),
-        web_contents_(web_contents) {}
-
- private:
-  ~ExtensionWebstoreInstaller() final = default;
-
-  bool ShouldShowPostInstallUI() const final { return true; }
-
-  std::unique_ptr<ExtensionInstallPrompt> CreateInstallUI() final {
-    return std::make_unique<ExtensionInstallPrompt>(web_contents_);
-  }
-
-  const raw_ptr<content::WebContents> web_contents_ = nullptr;
-};
 
 struct ExtensionManifestV2 {
   std::string id;
@@ -72,7 +43,7 @@ struct ExtensionManifestV2 {
 
 BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
   // NoScript
-  extensions_.push_back({kNoScriptId,
+  extensions_.push_back({extensions_mv2::kNoScriptId,
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME),
                          l10n_util::GetStringUTF16(
@@ -81,7 +52,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
 
   // uBlock Origin
   extensions_.push_back(
-      {kUBlockId,
+      {extensions_mv2::kUBlockId,
        l10n_util::GetStringUTF16(
            IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME),
        l10n_util::GetStringUTF16(
@@ -89,7 +60,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
        false});
 
   // uMatrix
-  extensions_.push_back({kUMatrixId,
+  extensions_.push_back({extensions_mv2::kUMatrixId,
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME),
                          l10n_util::GetStringUTF16(
@@ -97,7 +68,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
                          false});
 
   // AdGuard
-  extensions_.push_back({kAdGuardId,
+  extensions_.push_back({extensions_mv2::kAdGuardId,
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME),
                          l10n_util::GetStringUTF16(
@@ -203,8 +174,9 @@ void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
 
   if (enable) {
     if (!installed) {
-      installer_ = base::MakeRefCounted<ExtensionWebstoreInstaller>(
-          id, profile, web_ui()->GetWebContents(),
+      installer_ = std::make_unique<
+          extensions_mv2::ExtensionManifestV2Installer>(
+          id, web_ui()->GetWebContents(),
           base::BindOnce(
               &BraveExtensionsManifestV2Handler::OnExtensionManifestV2Installed,
               weak_factory_.GetWeakPtr(), args[0].Clone()));
