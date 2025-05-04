@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
 
+#include <memory>
+#include <string>
+
 #include "base/containers/fixed_flat_set.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -35,10 +38,10 @@ inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
 inline constexpr auto kPreconfiguredManifestV2Extensions =
     base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
                                              {
-                                                 kUBlockId,
                                                  kNoScriptId,
                                                  kAdGuardId,
                                                  kUMatrixId,
+                                                 kUBlockId,
                                              });
 
 class ExtensionManifestV2Installer {

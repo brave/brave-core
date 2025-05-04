@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_installer.h"
 #include "content/public/test/browser_task_environment.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/uninstall_reason.h"
@@ -48,7 +48,7 @@ class ExtensionMetricsTest : public testing::Test {
             .SetManifestVersion(3)
             .Build();
     noscript_extension_ = extensions::ExtensionBuilder(kNoScriptExtensionName)
-                              .SetID(kNoScriptId)
+                              .SetID(extensions_mv2::kNoScriptId)
                               .SetManifestVersion(2)
                               .Build();
     extension_registry_ =
@@ -197,7 +197,7 @@ TEST_F(ExtensionMetricsTest, SelectManifestV2LoadedAtInit) {
   histogram_tester_.ExpectUniqueSample(kSelectManifestV2ExtensionsHistogramName,
                                        1, 1);
 
-  extension_registry_->RemoveEnabled(kNoScriptId);
+  extension_registry_->RemoveEnabled(extensions_mv2::kNoScriptId);
   extension_registry_->TriggerOnUninstalled(
       noscript_extension_.get(),
       extensions::UninstallReason::UNINSTALL_REASON_USER_INITIATED);
