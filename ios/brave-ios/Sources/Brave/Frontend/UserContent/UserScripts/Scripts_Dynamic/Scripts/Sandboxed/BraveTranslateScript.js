@@ -56,6 +56,13 @@ window.__firefox__.includeOnce("BraveTranslateScript", function($) {
           "frameId": __gCrWeb && __gCrWeb.message && __gCrWeb.message.getFrameId ? __gCrWeb.message.getFrameId() : "",
         });
       }),
+      "isPageTranslated": (function() {
+        const classList = document.documentElement.classList;
+        if (classList.contains('translated-ltr') || classList.contains('translated-rtl')) {
+          return true;
+        }
+        return false;
+      }),
       "loadTranslateScript": (function() {
         return new Promise((resolve, reject) => {
           if (translateScriptLoaded) {
