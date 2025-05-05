@@ -65,8 +65,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     declare leoAssistantShowOnToolbarPref_: boolean
     declare selectedModelDisplayName_: string
-    declare defaultModelKeyPrefValue_: string
-    declare models_: ModelWithSubtitle[]
+    defaultModelKeyPrefValue_: string
+    models_: ModelWithSubtitle[]
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
