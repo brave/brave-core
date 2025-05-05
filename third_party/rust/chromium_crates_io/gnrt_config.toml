@@ -115,9 +115,6 @@ license_files = ['LICENSE']
 [crate.arrayref]
 license_files = ['LICENSE']
 
-[crate.arrayvec]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/arrayvec-v0_7/LICENSE-APACHE']
-
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']

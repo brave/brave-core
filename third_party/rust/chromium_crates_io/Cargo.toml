@@ -98,10 +98,6 @@ package = "document-extractor"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/anstyle-v1"
 package = "anstyle"
 
-[patch.crates-io.arrayvec_v0_7]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/arrayvec-v0_7"
-package = "arrayvec"
-
 [patch.crates-io.anyhow_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-v1"
 package = "anyhow"
