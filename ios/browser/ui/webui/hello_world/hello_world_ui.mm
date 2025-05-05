@@ -124,6 +124,7 @@ HelloWorldUI::HelloWorldUI(web::WebUIIOS* web_ui, const GURL& url)
 
   AddStringResources(source);
   source->UseStringsJs();
+  source->EnableReplaceI18nInJS();
 
   source->AddResourcePath("full_brave_brand.svg", IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
   source->AddResourcePath("full_brave_brand_dark.svg", IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
