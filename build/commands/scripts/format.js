@@ -13,10 +13,10 @@ const util = require('../lib/util')
 
 program
   .description(
-    'Format changed code with git cl format and prettifier.\n' +
+    'Format changed code with git cl format and prettier.\n' +
       'The changed code is the difference between the current files on disk\n' +
       'and the base branch (origin/master by default).\n' +
-      'This script is also called as part of presubmit checks'
+      'This script is also called as part of presubmit checks.'
   )
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
@@ -69,7 +69,7 @@ const runFormat = async (options = {}) => {
       errors.push(
         diffResult.stdout.toString() + '\n' + 'git cl format checks failed'
       )
-    } else if (clFormatResult.status != 0) {
+    } else if (clFormatResult.status !== 0) {
       console.error('Fatal: git cl format internal error')
       process.exit(1)
     }
