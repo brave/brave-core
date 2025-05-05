@@ -277,7 +277,7 @@ inline constexpr char kTabGroupsLearnMoreURL[] = "https://support.brave.com/";
 
 // The URL for the Learn More page about policies and enterprise enrollment.
 inline constexpr char16_t kManagedUiLearnMoreUrl[] =
-    u"https://support.brave.com/";
+    u"https://support.brave.com/hc/en-us/articles/360039248271-Group-Policy";
 
 // The URL for the "Learn more" page for insecure download blocking.
 inline constexpr char kInsecureDownloadBlockingLearnMoreUrl[] =
