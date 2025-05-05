@@ -66,12 +66,6 @@ class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
-  void ClickAndWaitForNavigation(const std::u16string& script) {
-    content::TestNavigationObserver observer(web_contents());
-    InjectScript(script);
-    observer.WaitForNavigationFinished();
-  }
-
   void InjectScript(const std::u16string& script) {
     content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(script, base::NullCallback(),
@@ -220,20 +214,29 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
       content::EvalJs(web_contents(), "!!document.getElementById('link2')")
           .ExtractBool());
 
-  // Click the first anchor link with `id=link1` to navigate to "#section1".
-  ClickAndWaitForNavigation(u"document.getElementById('link1').click();");
+  // Verify the replace method was called exactly 5 times.
+  EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
+
+  // Navigate to "#section1".
+  const GURL url_link1 =
+      https_server_.GetURL("youtube.com#section1", "/ytcfg_mock.html");
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url_link1,
+                                                      1, true);
 
   // Verify navigation to the same page with the appropriate hash.
   EXPECT_EQ(web_contents()->GetVisibleURL().ref(), "section1");
 
-  // Click the second anchor link with `id=link2` to navigate to "#section2".
-  ClickAndWaitForNavigation(u"document.getElementById('link2').click();");
+  // Navigate to "#section2".
+  const GURL url_link2 =
+      https_server_.GetURL("youtube.com#section2", "/ytcfg_mock.html");
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url_link2,
+                                                      1, true);
 
   // Verify navigation.
   EXPECT_EQ(web_contents()->GetVisibleURL().ref(), "section2");
 
   // Verify the replace method was called exactly 5 times
-  // even if multiple same page navigations.
+  // even with multiple same page navigations.
   EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 
   // Verify all the flags were properly set to `false`.
