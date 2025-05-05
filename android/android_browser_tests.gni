@@ -108,7 +108,7 @@ android_only_test_sources = [
 android_only_test_deps = [
   ":test_support",
   "//android_webview/common",
-  "//brave/browser/android/background_video:test_support",
+  "//brave/browser/android/background_video:browser_tests",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
   "//brave/components/brave_wallet/browser:test_support",
   "//brave/components/cosmetic_filters/browser:browser",
