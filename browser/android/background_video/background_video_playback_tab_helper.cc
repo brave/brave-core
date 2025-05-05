@@ -100,21 +100,9 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
     return false;
   }
 
-  content::RenderFrameHost::AllowInjectingJavaScript();
-
   return true;
 }
 
-bool IsPictureInPictureForYouTubeVideosEnabled(content::WebContents* contents) {
-  if (!base::FeatureList::IsEnabled(
-          ::preferences::features::kBravePictureInPictureForYouTubeVideos)) {
-    return false;
-  }
-
-  content::RenderFrameHost::AllowInjectingJavaScript();
-
-  return true;
-}
 }  // namespace
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
@@ -131,11 +119,13 @@ void BackgroundVideoPlaybackTabHelper::PrimaryMainDocumentElementAvailable() {
   if (!IsYouTubeDomain(contents->GetLastCommittedURL())) {
     return;
   }
+  content::RenderFrameHost::AllowInjectingJavaScript();
   if (IsBackgroundVideoPlaybackEnabled(contents)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubeBackgroundPlayback, base::NullCallback());
   }
-  if (IsPictureInPictureForYouTubeVideosEnabled(contents)) {
+  if (base::FeatureList::IsEnabled(
+          ::preferences::features::kBravePictureInPictureForYouTubeVideos)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
