@@ -22,56 +22,56 @@ namespace {
 constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
     uR"(
 (function() {
-    if (document._addEventListener === undefined) {
-        document._addEventListener = document.addEventListener;
-        document.addEventListener = function(a, b, c) {
-            if (a != 'visibilitychange') {
-                document._addEventListener(a, b, c);
-            }
-        };
+  if (document._addEventListener === undefined) {
+    document._addEventListener = document.addEventListener;
+    document.addEventListener = function(a, b, c) {
+      if (a != 'visibilitychange') {
+        document._addEventListener(a, b, c);
+      }
+    };
+  }
+
+  // Function to modify the flags if the target object exists.
+  function modifyYtcfgFlags() {
+    const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")
+      ?.WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH
+    if (config && config.serializedExperimentFlags && typeof config
+      .serializedExperimentFlags === 'string') {
+      let flags = config.serializedExperimentFlags;
+
+      // Replace target flags.
+      flags = flags
+        .replace(
+          "html5_picture_in_picture_blocking_ontimeupdate=true",
+          "html5_picture_in_picture_blocking_ontimeupdate=false")
+        .replace("html5_picture_in_picture_blocking_onresize=true",
+          "html5_picture_in_picture_blocking_onresize=false")
+        .replace(
+          "html5_picture_in_picture_blocking_document_fullscreen=true",
+          "html5_picture_in_picture_blocking_document_fullscreen=false"
+        )
+        .replace(
+          "html5_picture_in_picture_blocking_standard_api=true",
+          "html5_picture_in_picture_blocking_standard_api=false")
+        .replace("html5_picture_in_picture_logging_onresize=true",
+          "html5_picture_in_picture_logging_onresize=false");
+
+      // Assign updated flags back to config.
+      config.serializedExperimentFlags = flags;
     }
+  }
 
-    // Function to modify the flags if the target object exists.
-    function modifyYtcfgFlags() {
-        const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")
-            ?.WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH
-        if (config && config.serializedExperimentFlags && typeof config
-            .serializedExperimentFlags === 'string') {
-            let flags = config.serializedExperimentFlags;
-
-            // Replace target flags.
-            flags = flags
-                .replace(
-                    "html5_picture_in_picture_blocking_ontimeupdate=true",
-                    "html5_picture_in_picture_blocking_ontimeupdate=false")
-                .replace("html5_picture_in_picture_blocking_onresize=true",
-                    "html5_picture_in_picture_blocking_onresize=false")
-                .replace(
-                    "html5_picture_in_picture_blocking_document_fullscreen=true",
-                    "html5_picture_in_picture_blocking_document_fullscreen=false"
-                    )
-                .replace(
-                    "html5_picture_in_picture_blocking_standard_api=true",
-                    "html5_picture_in_picture_blocking_standard_api=false")
-                .replace("html5_picture_in_picture_logging_onresize=true",
-                    "html5_picture_in_picture_logging_onresize=false");
-
-            // Assign updated flags back to config.
-            config.serializedExperimentFlags = flags;
-        }
-    }
-
-    if (window.ytcfg) {
+  if (window.ytcfg) {
+    modifyYtcfgFlags();
+  } else {
+    document.addEventListener('load', (event) => {
+      const target = event.target;
+      if (target.tagName === 'SCRIPT' && window.ytcfg) {
+        // Check and modify flags when a new script is added.
         modifyYtcfgFlags();
-    } else {
-        document.addEventListener('load', (event) => {
-            const target = event.target;
-            if (target.tagName === 'SCRIPT' && window.ytcfg) {
-                // Check and modify flags when a new script is added.
-                modifyYtcfgFlags();
-            }
-        }, true);
-    }
+      }
+    }, true);
+  }
 }());
 )";
 
