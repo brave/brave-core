@@ -153,6 +153,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.P2A.inline_content_ad.opportunities", {}},
     {"Brave.P2A.new_tab_page_ad.impressions", {}},
     {"Brave.P2A.new_tab_page_ad.opportunities", {}},
+    {"Brave.PermissionLifetime.7Days", MetricConfig{.ephemeral = true}},
     {"Brave.P3A.SentAnswersCount", {}},
     {"Brave.Playlist.FirstTimeOffset", MetricConfig{.ephemeral = true}},
     {"Brave.Playlist.NewUserReturning", {}},
@@ -267,6 +268,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .constellation_only = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kRef}
     }},
+    {"Brave.PermissionLifetime.24Hours", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.EnabledInstallationTime", MetricConfig{.ephemeral = true}},
     {"Brave.Search.BraveDaily", MetricConfig{.ephemeral = true}},
     {"Brave.Search.DefaultEngine.4", {}},
