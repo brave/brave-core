@@ -840,7 +840,7 @@ extension BraveWallet.ZCashAddressError {
     case .invalidUnifiedAddressMissingOrchardPart:
       return Strings.Wallet.sendErrorZecAddressOrchardPartMissing
     case .invalidAddressNetworkMismatch:
-      return Strings.Wallet.sendErrorZecAddressNetworkMissmatch
+      return Strings.Wallet.sendErrorZecAddressNetworkMismatch
     @unknown default:
       return Strings.Wallet.unknownError
     }

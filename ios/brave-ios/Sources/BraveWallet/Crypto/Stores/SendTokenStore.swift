@@ -588,7 +588,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     Task { @MainActor in
       let (_, zcashAddressError) = await zcashWalletService.transactionType(
         accountId: fromAccount.accountId,
-        testnet: false,
+        testnet: fromAccount.keyringId == BraveWallet.KeyringId.zCashTestnet,
         useShieldedPool: false,
         recipient: recipient
       )

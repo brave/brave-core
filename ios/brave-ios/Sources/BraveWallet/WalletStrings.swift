@@ -2365,8 +2365,8 @@ extension Strings {
       comment:
         "An error that appears below the send crypto address text field, when the input `To` address is an invalid recipient zcash unified address error - orchard part missing."
     )
-    public static let sendErrorZecAddressNetworkMissmatch = NSLocalizedString(
-      "wallet.sendErrorZecAddressNetworkMissmatch",
+    public static let sendErrorZecAddressNetworkMismatch = NSLocalizedString(
+      "wallet.sendErrorZecAddressNetworkMismatch",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Network mismatch",
