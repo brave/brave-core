@@ -28,13 +28,4 @@ module.exports = {
   'vueIndentScriptAndStyle': false,
   'jsxBracketSameLine': false,
   'singleAttributePerLine': true,
-  'overrides': [
-    {
-      // Allow longer lines in this file until we properly format it
-      files: 'build/commands/lib/utils.js',
-      options: {
-        printWidth: 160
-      }
-    }
-  ]
 }
