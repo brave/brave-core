@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
@@ -116,7 +117,14 @@ void NewTabPageHandler::GetSelectedBackground(
 
 void NewTabPageHandler::GetSponsoredImageBackground(
     GetSponsoredImageBackgroundCallback callback) {
-  std::move(callback).Run(background_facade_->GetSponsoredImageBackground());
+  auto sponsored_background = background_facade_->GetSponsoredImageBackground();
+  if (sponsored_background) {
+    if (auto* web_contents = tab_->GetContents()) {
+      ntp_background_images::NewTabTakeoverInfoBarDelegate::MaybeCreate(
+          web_contents, &pref_service_.get());
+    }
+  }
+  std::move(callback).Run(std::move(sponsored_background));
 }
 
 void NewTabPageHandler::SelectBackground(
