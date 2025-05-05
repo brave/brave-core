@@ -459,6 +459,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     do {
       let result = try await tab.evaluateJavaScript(
         functionName: """
+          typeof cr != 'undefined' && typeof cr.googleTranslate != 'undefined' && 
+          typeof cr.googleTranslate.translate == 'function' &&
           window.__firefox__.\(BraveTranslateScriptHandler.namespace).isPageTranslated()
           """,
         contentWorld: BraveTranslateScriptHandler.scriptSandbox,
