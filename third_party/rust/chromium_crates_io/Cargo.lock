@@ -111,7 +111,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "arrayvec"
-version = "0.7.6"
+version = "0.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "async-trait"
