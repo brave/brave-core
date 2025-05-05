@@ -104,11 +104,12 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     components.push_back(
         webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
     std::vector<uint8_t> screenshot{1, 2, 3, 4};
+    std::vector<std::string> webcompat_errors{"Could not create screenshot"};
     auto report_info = webcompat_reporter::mojom::ReportInfo::New(
         "channel", "brave_version", "https://abc.url/p1/p2", "true",
         "ad_block_setting", "fp_block_setting", "ad_block_list_names",
         "languages", "true", "true", "details", contact, "block", "true",
-        std::move(components), screenshot);
+        std::move(components), screenshot, webcompat_errors);
     EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
         .Times(1)
         .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
@@ -138,6 +139,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
 
           EXPECT_TRUE(report->screenshot_png);
           EXPECT_EQ(report->screenshot_png.value(), screenshot);
+          EXPECT_EQ(report->webcompat_reporter_errors.value(),
+                    webcompat_errors);
         });
     EXPECT_CALL(*delegate_, GetChannelName).Times(0);
     EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
