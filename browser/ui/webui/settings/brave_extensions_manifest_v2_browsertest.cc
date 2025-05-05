@@ -26,34 +26,34 @@
 
 namespace {
 
-constexpr char kExtensionId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
+constexpr char kExtensionId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";
 
 bool ClickExtensionToggle(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').click()")
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
       .value.is_none();
 }
 
 bool ClickExtensionRemove(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').querySelector('#"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').click()")
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').querySelector('#"
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
       .value.is_none();
 }
 
 bool IsExtensionToggled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').checked")
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').checked")
       .value.GetBool();
 }
 
 bool IsExtensionToggleEnabled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "!window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm')."
+                "bgkmgpgeempochogfoddiobpbhdfgkdi')."
                 "disabled")
       .value.GetBool();
 }
@@ -126,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest, InstallFail) {
       browser(), GURL("brave://settings/extensions/v2")));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   content::WebContentsConsoleObserver console_observer(web_contents);
-  console_observer.SetPattern("Could not fetch data from the Chrome Web Store");
+  console_observer.SetPattern("Failed to download extension.");
   ClickExtensionToggle(web_contents);
   ASSERT_TRUE(console_observer.Wait());
 
