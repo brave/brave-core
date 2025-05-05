@@ -38,6 +38,13 @@ private class BookmarkViewModel: ObservableObject {
   init(model: BookmarkModel, folder: Bookmarkv2?) {
     self.model = model
     self.folder = folder
+    
+    listener = model.addListener(.init({ event in
+      Task { [weak self] in
+        guard let self = self else { return }
+        await self.refresh(query: self.currentSearchQuery)
+      }
+    }))
   }
 
   deinit {
@@ -48,20 +55,8 @@ private class BookmarkViewModel: ObservableObject {
     await refresh(query: currentSearchQuery)
   }
 
+  @MainActor
   func refresh(query: String?) async {
-    if listener == nil {
-      listener = model.addListener(
-        BookmarkModelStateObserver { [weak self] event in
-          guard let self = self else { return }
-          if case .modelLoaded = event {
-            self.isBookmarksServiceLoaded = true
-          }
-
-          self.refresh(query: self.currentSearchQuery)
-        }
-      )
-    }
-
     isLoading = true
     currentSearchQuery = query
     items = await model.bookmarks(for: folder, query: query)

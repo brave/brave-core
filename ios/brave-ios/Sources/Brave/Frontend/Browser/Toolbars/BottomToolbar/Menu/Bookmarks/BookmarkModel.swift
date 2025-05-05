@@ -46,6 +46,10 @@ class BookmarkModel: NSObject, ObservableObject {
     self.isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
     super.init()
   }
+  
+  func addListener(_ listener: BookmarkModelStateObserver) -> BookmarkModelListener? {
+    return api?.add(listener)
+  }
 
   @MainActor
   func bookmarks(for folder: Bookmarkv2? = nil, query: String?) async -> [Bookmarkv2] {
