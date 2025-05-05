@@ -360,7 +360,8 @@ private struct TransactionDetailsSendContent: View {
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
       .solSplTokenTransfer(let details),
-      .btcSend(let details):
+      .btcSend(let details),
+      .zecSend(let details):
       return details.fromToken
     case .filSend(let details):
       return details.sendToken
