@@ -55,12 +55,13 @@ export function ClockPanel() {
       <div>
         <label>{getString('clockFormatLabel')}</label>
         <DropDown
-          value={formatOptionText(clockFormat)}
+          value={clockFormat}
           positionStrategy='fixed'
           onChange={(detail) => {
             actions.setClockFormat(detail.value as ClockFormat)
           }}
         >
+          <span slot='value'>{formatOptionText(clockFormat)}</span>
           {renderFormatOption('')}
           {renderFormatOption('h12')}
           {renderFormatOption('h24')}
