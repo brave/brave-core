@@ -9724,6 +9724,42 @@ extension Strings {
       value: "Redeem Promo Code",
       comment: "Button action text for redeem promo code"
     )
+    public static let startTrialTitle = NSLocalizedString(
+      "paywall.startTrialTitle",
+      bundle: .module,
+      value: "Start your free 7-day trial",
+      comment: "Text shown above buttons that give the user the option to start a trial"
+    )
+    public static let startTrialSubtitle = NSLocalizedString(
+      "paywall.startTrialSubtitle",
+      bundle: .module,
+      value: "Choose the checkout method that works for you:",
+      comment: "Text shown above buttons that give the user the option to choose a checkout option"
+    )
+    public static let appStoreCheckoutOptionTitle = NSLocalizedString(
+      "paywall.appStoreCheckoutOptionTitle",
+      bundle: .module,
+      value: "App Store",
+      comment: "The checkout option that lets the user use Apple's standard App Store puchase flow"
+    )
+    public static let appStoreCheckoutOptionSubtitle = NSLocalizedString(
+      "paywall.appStoreCheckoutOptionSubtitle",
+      bundle: .module,
+      value: "Full Price",
+      comment: "A subtitle shown on the checkout button that denotes that this checkout option is full price"
+    )
+    public static let braveAccountCheckoutOptionTitle = NSLocalizedString(
+      "paywall.braveAccountCheckoutOptionTitle",
+      bundle: .module,
+      value: "Brave Account",
+      comment: "The checkout option that lets the user use Brave's own purchase flow"
+    )
+    public static let braveAccountCheckoutOptionSubtitle = NSLocalizedString(
+      "paywall.braveAccountCheckoutOptionSubtitle",
+      bundle: .module,
+      value: "Code **%@** for %@ off",
+      comment: "A subtitle shown on the checkout button that denotes that this checkout option is discounted. The first `%@` is replaced with a promo code, the second `%@` is replaced by the discount percentage"
+    )
   }
 }
 

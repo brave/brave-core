@@ -9,7 +9,42 @@ import Lottie
 import Shared
 import UIKit
 
-public class BraveVPNInstallViewController: VPNSetupLoadingController {
+public class BraveVPNInstallViewController: UIViewController {
+
+  private var overlayView: UIView?
+
+  var isLoading: Bool = false {
+    didSet {
+      overlayView?.removeFromSuperview()
+
+      // Disable Action bar button while loading
+      navigationItem.rightBarButtonItem?.isEnabled = !isLoading
+
+      // Prevent dismissing the modal by swipe
+      navigationController?.isModalInPresentation = isLoading == true
+
+      if !isLoading { return }
+
+      let overlay = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        let activityIndicator = UIActivityIndicatorView().then {
+          $0.startAnimating()
+          $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+          $0.style = .large
+          $0.color = .white
+        }
+
+        $0.addSubview(activityIndicator)
+      }
+
+      view.addSubview(overlay)
+      overlay.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+
+      overlayView = overlay
+    }
+  }
 
   private var installVPNView: View {
     return view as! View
