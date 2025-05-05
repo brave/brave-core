@@ -5,8 +5,10 @@
 
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -79,4 +81,45 @@ IN_PROC_BROWSER_TEST_F(TabDragControllerTest,
       base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON, 0);
   std::ignore = tab_strip->ContinueDrag(tab_group_header, mouse_dragged_event);
   tab_strip->EndDrag(EndDragReason::END_DRAG_COMPLETE);
+}
+
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+// The test for the drag operation might be flaky.
+#define MAYBE_DragSplitViewToSeparateWindow \
+  DISABLED_DragSplitViewToSeparateWindow
+#else
+#define MAYBE_DragSplitViewToSeparateWindow DragSplitViewToSeparateWindow
+#endif
+
+IN_PROC_BROWSER_TEST_F(TabDragControllerTest,
+                       MAYBE_DragSplitViewToSeparateWindow) {
+  brave::NewSplitViewForTab(browser());
+  AppendTab(browser());
+  AppendTab(browser());
+
+  TabStrip* tab_strip = GetTabStripForBrowser(browser());
+  Tab* const tab_view = tab_strip->tab_at(0);
+
+  gfx::Point start_point = tab_view->GetBoundsInScreen().CenterPoint();
+
+  EXPECT_EQ(1ul, tab_strip->GetSelectionModel().size());
+
+  const ui::MouseEvent mouse_pressed_event(
+      ui::EventType::kMousePressed, start_point, start_point, base::TimeTicks(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+  tab_strip->StopAnimating(true);
+  tab_strip->MaybeStartDrag(tab_view, mouse_pressed_event,
+                            tab_strip->GetSelectionModel());
+
+  static constexpr int kDragDistance = 20;
+  gfx::Point tab_group_drag_point(tab_view->width() + kDragDistance,
+                                  tab_view->height() + kDragDistance);
+  ui::MouseEvent mouse_dragged_event(
+      ui::EventType::kMouseDragged, tab_group_drag_point, tab_group_drag_point,
+      base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON, 0);
+
+  std::ignore = tab_strip->ContinueDrag(tab_view, mouse_dragged_event);
+  tab_strip->EndDrag(EndDragReason::END_DRAG_COMPLETE);
+
+  EXPECT_EQ(2ul, tab_strip->GetSelectionModel().size());
 }
