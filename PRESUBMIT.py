@@ -53,11 +53,9 @@ def CheckLeoVariables(input_api, output_api):
 
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
-    cmd = [
-        'build/commands/scripts/format.js',
-    ]
+    cmd = ['build/commands/scripts/format.js', '--presubmit']
     if not input_api.PRESUBMIT_FIX:
-        cmd.append('--diff')
+        cmd.append('--dry-run')
     try:
         brave_node.RunNode(cmd)
         return []
