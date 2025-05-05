@@ -268,7 +268,9 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
         translateHelper.currentLanguageInfo.pageLanguage = nil
       } else {
         translateHelper.currentLanguageInfo.pageLanguage =
-          !message.htmlLang.isEmpty ? Locale.Language(identifier: message.htmlLang) : nil
+          !message.htmlLang.isEmpty
+          ? Locale.Language(identifier: message.htmlLang.replacingOccurrences(of: "-", with: "_"))
+          : nil
       }
 
       if translateHelper.currentLanguageInfo.currentLanguage
