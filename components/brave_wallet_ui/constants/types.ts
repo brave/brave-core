@@ -563,6 +563,7 @@ export enum WalletRoutes {
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
   PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionName',
+  PortfolioNFTCollectionsStart = '/crypto/portfolio/collections/',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
   PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
   PortfolioActivity = '/crypto/portfolio/activity',
@@ -586,6 +587,10 @@ export enum WalletRoutes {
 
   // panel connection screen
   Connections = '/crypto/connections',
+
+  // Roots
+  Root = '/',
+  CryptoRoot = '/crypto',
 
   // Hashes
   AccountsHash = '#accounts',

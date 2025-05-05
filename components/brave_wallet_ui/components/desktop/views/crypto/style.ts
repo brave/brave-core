@@ -10,16 +10,6 @@ import {
   layoutSmallWidth //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  position: relative;
-  height: 100%;
-`
-
 export const SegmentedControlsWrapperWeb3 = styled(Row)`
   padding: 24px 24px 14px 24px;
   @media screen and (max-width: ${layoutSmallWidth}px) {

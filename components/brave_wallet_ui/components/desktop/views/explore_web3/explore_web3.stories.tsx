@@ -17,7 +17,7 @@ import { PageTitleHeader } from '../../card-headers/page-title-header'
 import { ExploreWeb3View } from './explore_web3'
 
 // styles
-import { StyledWrapper } from '../crypto/style'
+import { DefaultPageWrapper } from '../../../shared/style'
 
 export const _ExploreWeb3View = {
   render: () => {
@@ -29,9 +29,9 @@ export const _ExploreWeb3View = {
             <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
           }
         >
-          <StyledWrapper>
+          <DefaultPageWrapper>
             <ExploreWeb3View />
-          </StyledWrapper>
+          </DefaultPageWrapper>
         </WalletPageWrapper>
       </WalletPageStory>
     )

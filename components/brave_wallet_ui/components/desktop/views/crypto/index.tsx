@@ -10,21 +10,8 @@ import { useSelector } from 'react-redux'
 // Options
 import { ExploreNavOptions } from '../../../../options/nav-options'
 
-// utils
-import { loadTimeData } from '../../../../../common/loadTimeData'
-import { getLocale } from '../../../../../common/locale'
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
-import { openWalletSettings } from '../../../../utils/routes-utils'
-import {
-  useGetDefaultEthereumWalletQuery,
-  useGetDefaultSolanaWalletQuery,
-  useGetIsMetaMaskInstalledQuery,
-  useGetIsWalletBackedUpQuery //
-} from '../../../../common/slices/api.slice'
-
 // types
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 import {
   AccountsTabState //
 } from '../../../../page/reducers/accounts-tab-reducer'
@@ -39,15 +26,12 @@ import {
 
 // style
 import {
-  StyledWrapper,
   SegmentedControlsWrapperMarket,
   SegmentedControlsWrapperWeb3
 } from './style'
-import { Column } from '../../../shared/style'
+import { DefaultPageWrapper } from '../../../shared/style'
 
 // components
-import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
-import { WalletBanner } from '../../wallet-banner/index'
 import { ExploreWeb3Header } from '../../card-headers/explorer_web3_header'
 import {
   EditVisibleAssetsModal //
@@ -66,24 +50,23 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import {
-  PortfolioOverviewHeader //
-} from '../../card-headers/portfolio-overview-header'
 import { MarketAsset } from '../market/market_asset'
 import { ExploreWeb3View } from '../explore_web3/explore_web3'
 import { NftCollection } from '../nfts/components/nft_collection'
 import {
   SegmentedControl //
 } from '../../../shared/segmented_control/segmented_control'
+import {
+  PageNotFound //
+} from '../../../../page/screens/page_not_found/page_not_found'
+import { Banners } from '../banners/banners'
+
 export interface Props {
   sessionRoute: string | undefined
 }
 
 export const CryptoView = ({ sessionRoute }: Props) => {
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
-
-  const isPanel = useSafeUISelector(UISelectors.isPanel)
-
+  // Selectors
   const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
     ({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab
   )
@@ -92,63 +75,17 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   const { visiblePortfolioNetworks } = usePortfolioVisibleNetworks()
   const { usersFilteredAccounts } = usePortfolioAccounts()
 
-  // queries
-  const {
-    data: isMetaMaskInstalled,
-    isLoading: isCheckingInstalledExtensions
-  } = useGetIsMetaMaskInstalledQuery()
-  const {
-    data: defaultEthereumWallet,
-    isLoading: isLoadingDefaultEthereumWallet
-  } = useGetDefaultEthereumWalletQuery()
-  const { data: defaultSolanaWallet, isLoading: isLoadingDefaultSolanaWallet } =
-    useGetDefaultSolanaWalletQuery()
-  const {
-    data: isWalletBackedUp = false,
-    isLoading: isCheckingWalletBackupStatus
-  } = useGetIsWalletBackedUpQuery()
-
-  // state
-  const [isBackupWarningDismissed, setDismissBackupWarning] =
-    React.useState<boolean>(isWalletBackedUp)
-  const [isDefaultWalletBannerDismissed, setDismissDefaultWalletBanner] =
-    React.useState<boolean>(false)
-
   // routing
   const history = useHistory()
 
   // methods
-  const onShowBackup = React.useCallback(() => {
-    if (isAndroid) {
-      getWalletPageApiProxy().pageHandler.showWalletBackupUI()
-      return
-    }
-
-    if (isPanel) {
-      chrome.tabs.create(
-        {
-          url: `chrome://wallet${WalletRoutes.Backup}`
-        },
-        () => {
-          if (chrome.runtime.lastError) {
-            console.error(
-              'tabs.create failed: ' + chrome.runtime.lastError.message
-            )
-          }
-        }
-      )
-      return
-    }
-    history.push(WalletRoutes.Backup)
-  }, [isAndroid, isPanel, history])
-
   const onShowVisibleAssetsModal = React.useCallback(
     (showModal: boolean) => {
       if (showModal) {
         history.push(WalletRoutes.AddAssetModal)
-      } else {
-        history.push(WalletRoutes.PortfolioAssets)
+        return
       }
+      history.push(WalletRoutes.PortfolioAssets)
     },
     [history]
   )
@@ -158,91 +95,40 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     [onShowVisibleAssetsModal]
   )
 
-  // computed
-  const isCheckingWallets =
-    isCheckingInstalledExtensions ||
-    isLoadingDefaultEthereumWallet ||
-    isLoadingDefaultSolanaWallet
-
-  const showBanner =
-    !isCheckingWallets &&
-    (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet ||
-      defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet) &&
-    (defaultEthereumWallet !==
-      BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
-      defaultSolanaWallet !==
-        BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
-      (defaultEthereumWallet ===
-        BraveWallet.DefaultWallet.BraveWalletPreferExtension &&
-        isMetaMaskInstalled)) &&
-    !isDefaultWalletBannerDismissed
-
-  // memos
-  const banners = React.useMemo(
-    () => (
-      <>
-        {showBanner && (
-          <WalletBanner
-            onDismiss={() => {
-              setDismissDefaultWalletBanner(true)
-            }}
-            onClick={openWalletSettings}
-            bannerType='warning'
-            buttonText={getLocale('braveWalletWalletPopupSettings')}
-            description={getLocale('braveWalletDefaultWalletBanner')}
-          />
-        )}
-        {!isCheckingWalletBackupStatus &&
-          !isWalletBackedUp &&
-          !isBackupWarningDismissed && (
-            <WalletBanner
-              onDismiss={() => {
-                setDismissBackupWarning(true)
-              }}
-              onClick={onShowBackup}
-              bannerType='error'
-              buttonText={getLocale('braveWalletBackupButton')}
-              description={getLocale('braveWalletBackupWarningText')}
-            />
-          )}
-      </>
-    ),
-    [
-      showBanner,
-      isCheckingWalletBackupStatus,
-      isWalletBackedUp,
-      onShowBackup,
-      isBackupWarningDismissed
-    ]
-  )
-
   // render
   return (
     <>
       <Switch>
         {/* Portfolio */}
         <Route
-          path={WalletRoutes.AddAssetModal}
+          path={WalletRoutes.Portfolio}
+          exact={true}
+          render={() => <Redirect to={WalletRoutes.PortfolioAssets} />}
+        />
+
+        <Route
+          path={WalletRoutes.PortfolioAssets}
           exact
         >
-          {/* Show portfolio overview in background */}
-          <WalletPageWrapper
-            wrapContentInBox={true}
-            noCardPadding={true}
-            cardHeader={<PortfolioOverviewHeader />}
-            useDarkBackground={isPanel}
-            isPortfolio={true}
-          >
-            <StyledWrapper>
-              <Column
-                fullWidth={true}
-                padding={isPanel ? '0px' : '20px 20px 0px 20px'}
-              >
-                {banners}
-              </Column>
-              <PortfolioOverview />
-            </StyledWrapper>
-          </WalletPageWrapper>
+          <PortfolioOverview />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioNFTs}
+          exact
+        >
+          <PortfolioOverview />
+        </Route>
+
+        <Route
+          path={WalletRoutes.PortfolioActivity}
+          exact
+        >
+          <PortfolioOverview />
+        </Route>
+
+        <Route path={WalletRoutes.AddAssetModal}>
+          <PortfolioOverview />
         </Route>
 
         <Route
@@ -269,34 +155,14 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           />
         </Route>
 
-        <Route path={WalletRoutes.Portfolio}>
-          <WalletPageWrapper
-            wrapContentInBox={true}
-            noCardPadding={true}
-            cardHeader={<PortfolioOverviewHeader />}
-            useDarkBackground={isPanel}
-            isPortfolio={true}
-          >
-            <StyledWrapper>
-              <Column
-                fullWidth={true}
-                padding={isPanel ? '0px' : '20px 20px 0px 20px'}
-              >
-                {banners}
-              </Column>
-              <PortfolioOverview />
-            </StyledWrapper>
-          </WalletPageWrapper>
-        </Route>
-
         {/* Accounts */}
         <Route path={WalletRoutes.AddAccountModal}>
           {/* Show accounts overview in background */}
           <WalletPageWrapper wrapContentInBox={true}>
-            <StyledWrapper>
-              {banners}
+            <DefaultPageWrapper>
+              <Banners />
               <Accounts />
-            </StyledWrapper>
+            </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
 
@@ -318,7 +184,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             cardHeader={<ExploreWeb3Header />}
             useCardInPanel={true}
           >
-            <StyledWrapper>
+            <DefaultPageWrapper>
               <SegmentedControlsWrapperMarket>
                 <SegmentedControl
                   maxWidth='384px'
@@ -326,7 +192,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
                 />
               </SegmentedControlsWrapperMarket>
               <MarketView />
-            </StyledWrapper>
+            </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
 
@@ -335,9 +201,9 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           exact={true}
         >
           <WalletPageWrapper wrapContentInBox={true}>
-            <StyledWrapper>
+            <DefaultPageWrapper>
               <MarketAsset />
-            </StyledWrapper>
+            </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
 
@@ -352,7 +218,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             useCardInPanel={true}
             noCardPadding
           >
-            <StyledWrapper>
+            <DefaultPageWrapper>
               <SegmentedControlsWrapperWeb3>
                 <SegmentedControl
                   maxWidth='384px'
@@ -360,7 +226,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
                 />
               </SegmentedControlsWrapperWeb3>
               <ExploreWeb3View />
-            </StyledWrapper>
+            </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
 
@@ -370,8 +236,10 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <Redirect to={WalletRoutes.Market} />
         </Route>
-
-        <Redirect to={sessionRoute || WalletRoutes.PortfolioAssets} />
+        <Route path='*'>
+          <PageNotFound />
+        </Route>
+        <Redirect to={sessionRoute ?? WalletRoutes.PortfolioAssets} />
       </Switch>
 
       {/* modals */}

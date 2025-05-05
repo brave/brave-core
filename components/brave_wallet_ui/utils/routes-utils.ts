@@ -29,24 +29,99 @@ export function isPersistableSessionRoute(
     return false
   }
   const isPersistableInPanel =
-    route.includes(WalletRoutes.Accounts) ||
+    /**
+     * Insure that the Accounts route is an exact match.
+     */
+    route === WalletRoutes.Accounts ||
+    /**
+     * or allow if it includes a trailing slash which is followed
+     * by an accountId query param.
+     */
+    route.includes(WalletRoutes.Accounts + '/') ||
+    /**
+     * The Backup route uses a query param to determine the step
+     * and can not be exact matched.
+     */
     route.includes(WalletRoutes.Backup) ||
-    route.includes(WalletRoutes.DepositFundsPageStart) ||
+    /**
+     * Insure that the Deposit Funds route is an exact match.
+     */
+    route === WalletRoutes.DepositFundsPageStart ||
+    /**
+     * or allow if it includes a trailing slash which is followed
+     * by a currencyCode query param.
+     */
+    route.includes(WalletRoutes.DepositFundsPageStart + '/') ||
+    /**
+     * Fund wallet route uses a query param to determine the asset
+     * and can not be exact matched.
+     */
     route.includes(WalletRoutes.FundWalletPageStart) ||
-    route.includes(WalletRoutes.PortfolioAssets) ||
-    route.includes(WalletRoutes.PortfolioNFTs) ||
-    route.includes(WalletRoutes.PortfolioNFTAsset) ||
+    /**
+     * Insure that the Portfolio Assets route is an exact match.
+     */
+    route === WalletRoutes.PortfolioAssets ||
+    /**
+     * or allow if it includes a trailing slash which is followed
+     * by a tokenId query param.
+     */
+    route.includes(WalletRoutes.PortfolioAssets + '/') ||
+    /**
+     * Insure that the Portfolio NFTs route is an exact match.
+     */
+    route === WalletRoutes.PortfolioNFTs ||
+    /**
+     * or allow if it includes a trailing slash which is followed
+     * by a tokenId query param.
+     */
+    route.includes(WalletRoutes.PortfolioNFTs + '/') ||
+    /**
+     * Portfolio Activity route uses a query param to determine the
+     * transactionId and can not be exact matched.
+     */
     route.includes(WalletRoutes.PortfolioActivity) ||
-    route.includes(WalletRoutes.Market) ||
-    route.includes(WalletRoutes.Explore) ||
-    route.includes(WalletRoutes.Connections)
+    /**
+     * Insure that the Market route is an exact match.
+     */
+    route === WalletRoutes.Market ||
+    /**
+     * or allow if it includes a trailing slash which is followed
+     * by a tokenId query param.
+     */
+    route.includes(WalletRoutes.Market + '/') ||
+    /**
+     * Web3 route uses a query param to determine the
+     * dappCategory and can not be exact matched.
+     */
+    route.includes(WalletRoutes.Web3) ||
+    /**
+     * Insure that the Connections route is an exact match.
+     */
+    route === WalletRoutes.Connections ||
+    /**
+     * NFT Collections route uses a query param to determine the
+     * collectionName and can not be exact matched.
+     */
+    route.includes(WalletRoutes.PortfolioNFTCollectionsStart)
   if (isPanel) {
     return isPersistableInPanel
   }
   return (
     isPersistableInPanel ||
+    /**
+     * The Swap route uses a query param to determine the
+     * fromToken and toToken and can not be exact matched.
+     */
     route.includes(WalletRoutes.Swap) ||
+    /**
+     * The Send route uses a query param to determine the
+     * asset and can not be exact matched.
+     */
     route.includes(WalletRoutes.Send) ||
+    /**
+     * The Bridge route uses a query param to determine the
+     * fromToken and toToken and can not be exact matched.
+     */
     route.includes(WalletRoutes.Bridge)
   )
 }
