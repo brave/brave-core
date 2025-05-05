@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
@@ -97,6 +98,25 @@ views::Widget* GetBrowserWidget() {
   return widget->GetPrimaryWindowWidget();
 }
 
+content::RenderWidgetHostView* GetRenderWidgetHostViewForActiveTab() {
+  const auto* browser = BrowserList::GetInstance()->GetLastActive();
+  if (!browser) {
+    return nullptr;
+  }
+
+  auto* last_active_tab = browser->tab_strip_model()->GetActiveTab();
+  if (!last_active_tab) {
+    return nullptr;
+  }
+
+  auto* active_webcontents = last_active_tab->GetContents();
+  if (!active_webcontents) {
+    return nullptr;
+  }
+
+  return active_webcontents->GetTopLevelRenderWidgetHostView();
+}
+
 const std::optional<int> GetDlgMaxHeight(content::WebUI* web_ui,
                                          const views::Widget* browser_widget) {
   DCHECK(browser_widget);
@@ -112,6 +132,17 @@ const std::optional<int> GetDlgMaxHeight(content::WebUI* web_ui,
       browser_widget->client_view()->GetBoundsInScreen();
 
   return browser_wnd_bounds.bottom() - modal_dlg_bounds->y();
+}
+
+void AddWebcompatReporterError(
+    webcompat_reporter::mojom::ReportInfoPtr& pending_report,
+    const std::string& error) {
+  if (!pending_report->webcompat_reporter_errors) {
+    pending_report->webcompat_reporter_errors =
+        std::vector<std::string>({error});
+  } else {
+    pending_report->webcompat_reporter_errors->push_back({error});
+  }
 }
 
 }  // namespace
@@ -185,10 +216,16 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
 
 void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     const base::Value::List& args) {
-  auto* render_widget_host_view =
-      web_ui()->GetWebContents()->GetTopLevelRenderWidgetHostView();
-  CHECK(render_widget_host_view);
   CHECK_EQ(args.size(), 1u);
+  auto* const render_widget_host_view = GetRenderWidgetHostViewForActiveTab();
+  if (render_widget_host_view) {
+    RejectJavascriptCallback(args[0], {});
+    AddWebcompatReporterError(
+        pending_report_,
+        "Could not create screenshot, RenderWidgetHostView unavailable");
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
 
   AllowJavascript();
 
