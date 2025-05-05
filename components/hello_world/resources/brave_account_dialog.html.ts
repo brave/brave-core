@@ -9,8 +9,8 @@ import { SettingsBraveAccountDialogElement } from './brave_account_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountDialogElement) {
   return html`<!--_html_template_start_-->
-    <leo-dialog id="dialog" show-on-attach>
-      <div slot="header">
+    <leo-dialog id="dialog" isopen modal>
+      <div class="header">
         <div class="buttons">
           ${this.showBackButton
             ? html`<leo-button kind="plain-faint"
@@ -26,7 +26,7 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
         </div>
         <div class="logo"></div>
       </div>
-      <div slot="body">
+      <div class="body">
         <div class="title-and-description">
           <div class="title">${this.dialogTitle}</div>
           <div class="description">${this.dialogDescription}</div>
@@ -37,7 +37,7 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
         <slot name="inputs"></slot>
         <slot name="buttons"></slot>
       </div>
-      <slot name="footer" slot="footer"></slot>
+      <slot name="footer"></slot>
     </leo-dialog>
   <!--_html_template_end_-->`
 }
