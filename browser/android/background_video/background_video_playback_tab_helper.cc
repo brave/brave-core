@@ -19,7 +19,7 @@
 #include "url/gurl.h"
 
 namespace {
-constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
+constexpr char16_t kYoutubeBackgroundPlayback[] =
     uR"(
 (function() {
   if (document._addEventListener === undefined) {
@@ -30,7 +30,12 @@ constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
       }
     };
   }
+}());
+)";
 
+constexpr char16_t kYoutubePictureInPictureSupport[] =
+    uR"(
+(function() {
   // Function to modify the flags if the target object exists.
   function modifyYtcfgFlags() {
     const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")
@@ -99,6 +104,17 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
   return true;
 }
+
+bool IsPictureInPictureForYouTubeVideosEnabled(content::WebContents* contents) {
+  if (!base::FeatureList::IsEnabled(
+          ::preferences::features::kBravePictureInPictureForYouTubeVideos)) {
+    return false;
+  }
+
+  content::RenderFrameHost::AllowInjectingJavaScript();
+
+  return true;
+}
 }  // namespace
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
@@ -117,7 +133,11 @@ void BackgroundVideoPlaybackTabHelper::PrimaryMainDocumentElementAvailable() {
   }
   if (IsBackgroundVideoPlaybackEnabled(contents)) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
-        kYoutubeBackgroundPlaybackAndPipScript, base::NullCallback());
+        kYoutubeBackgroundPlayback, base::NullCallback());
+  }
+  if (IsPictureInPictureForYouTubeVideosEnabled(contents)) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+        kYoutubePictureInPictureSupport, base::NullCallback());
   }
 }
 
