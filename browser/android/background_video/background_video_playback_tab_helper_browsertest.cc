@@ -83,7 +83,7 @@ class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
 // TESTS
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestInjectionMatch) {
+                       ReplaceExperimentalFlagValues) {
   const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -139,7 +139,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestInjectionMatchLoad) {
+                       ReplaceExperimentalFlagValuesInjectedBeforeOnLoad) {
   const GURL url = https_server_.GetURL("youtube.com", "/load_ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -201,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestSamePageNavigationInjection) {
+                       DontReplaceExperimentalFlagValuesForSamePageNavigation) {
   const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -287,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestInjectionNoMatch) {
+                       OnlyReplaceExperimentalFlagValuesForYouTubeDomains) {
   const GURL url = https_server_.GetURL("youtub.com", "/ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -297,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestInjectionNoSerializedExperimentFlags) {
+                       NoOpIfSerializedExperimentFlagsIsMissing) {
   const GURL url =
       https_server_.GetURL("youtube.com", "/ytcfg_mock_no_flags.html");
 
@@ -317,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestInjectionNoYtcfg) {
+                       NoOpIfYtcfgIsMissing) {
   const GURL url = https_server_.GetURL("youtube.com", "/no_ytcfg_mock.html");
 
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
@@ -331,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
-                       TestInjectionReducedFlags) {
+                       IgnoreMissingSerializedExperimentalFlags) {
   const GURL url =
       https_server_.GetURL("youtube.com", "/ytcfg_mock_reduced_flags.html");
 
