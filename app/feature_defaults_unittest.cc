@@ -68,7 +68,6 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
-#include "components/password_manager/core/common/password_manager_features.h"
 #else
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
@@ -225,10 +224,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
-#if BUILDFLAG(IS_ANDROID)
-      &password_manager::features::
-          kUnifiedPasswordManagerLocalPasswordsMigrationWarning,
-#endif
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
