@@ -1,10 +1,10 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 3119b6bd0607dea7bf52ecf27432fb245038fcf1..3528a619d4e3eb395b28f188bef524926505c668 100644
+index dd44c6ae6dd84ef5fb11a4c476964d34b01bef13..9702a4e643a9505600108d1497ad8af533f1199f 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
-@@ -52,6 +52,7 @@ grit("components_strings") {
+@@ -47,6 +47,7 @@ grit("components_strings") {
    if (is_android) {
-     outputs += android_components_strings_java_resources
+     create_android_resources = true
    }
 +  deps = [ "//brave/components/resources:strings" ]
  }

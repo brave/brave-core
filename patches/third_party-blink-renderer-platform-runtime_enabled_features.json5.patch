@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 9a0b22b1608dfbce07a8e20b0cdf92876f7a1d6a..78f44344498afcad823b820e9fdb8db0bcf4636a 100644
+index af12e01c420cf1ab4c53fd22629a19be7edcd1bf..51331016cf1b9e1c1a162d5aa820096f839f5814 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -2120,6 +2120,7 @@
+@@ -2154,6 +2154,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -10,7 +10,7 @@ index 9a0b22b1608dfbce07a8e20b0cdf92876f7a1d6a..78f44344498afcad823b820e9fdb8db0
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -2134,6 +2135,7 @@
+@@ -2168,6 +2169,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
        status: {"default": "stable"},
@@ -18,11 +18,11 @@ index 9a0b22b1608dfbce07a8e20b0cdf92876f7a1d6a..78f44344498afcad823b820e9fdb8db0
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2979,6 +2981,7 @@
+@@ -3073,6 +3075,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",
 +      base_feature: "none",
      },
+     // Killswitch for crbug.com/40062462 fix.
      {
-       name: "MobileLayoutTheme",

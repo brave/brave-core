@@ -1,10 +1,10 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index bcd29bff12183f9a136bc5e9f3141a73a63d988d..7d5dcb638e9dd76ed0efd867ec75bd278d6d11c1 100644
+index 476d661341f932231937095e579ee9df3e7735cf..200d7b098c34a9c5d6d6a6ad13a59205a6263975 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -107,6 +107,7 @@ grit("generated_resources") {
+@@ -93,6 +93,7 @@ grit("generated_resources") {
    if (is_android) {
-     outputs += android_generated_java_resources
+     create_android_resources = true
    }
 +  deps = [ "//brave/app:brave_generated_resources_grit" ]
  }

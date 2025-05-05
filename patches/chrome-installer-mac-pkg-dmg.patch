@@ -1,9 +1,9 @@
 diff --git a/chrome/installer/mac/pkg-dmg b/chrome/installer/mac/pkg-dmg
-index b4034bcb82a81566e666b2cab4a4bb29e9b57bd1..b0c94033f859f96a6f33db598d4eff8f3ae500fd 100755
+index 6807e3cd268a5a201b1dd4f933db4d1685b8971e..542e021b5e98fd06adb58662404017f6c8655e31 100755
 --- a/chrome/installer/mac/pkg-dmg
 +++ b/chrome/installer/mac/pkg-dmg
-@@ -420,6 +420,7 @@ else {
-   # Now, if someone wanted to document some of these private formats...
+@@ -331,6 +331,7 @@ my($ignore, $uname_r, $uname_s);
+ if($uname_s ne 'Darwin') {
    print STDERR ($0.": warning, not running on Mac OS X, ".
     "this could be interesting.\n");
 +  use File::Basename; use File::Spec; my $linux_script = dirname(File::Spec->rel2abs($0)); $linux_script =~ s|/src/.*|/src/brave/build/mac/cross_compile/pkg-dmg-linux.py|; exec($linux_script, @ARGV) or die "Failed to execute $linux_script: $!";

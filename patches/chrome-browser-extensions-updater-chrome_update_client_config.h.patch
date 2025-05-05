@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index 78ba7e6c730cec7258c8f308b8751a2f22e032e2..b3dfc360b122c5303aa5a13d4673caf92641dded 100644
+index 2018c66dc4c3042cbb37ed700a65a0c5ca1ae9fd..2e022fa813449a439e9a13fa6848c985c7602b6e 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
-@@ -89,6 +89,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
+@@ -86,6 +86,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
    update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
-   std::optional<base::FilePath> GetCrxCachePath() const override;
+   scoped_refptr<update_client::CrxCache> GetCrxCache() const override;
    bool IsConnectionMetered() const override;
 +  BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
  

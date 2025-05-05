@@ -1,11 +1,11 @@
 diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
-index 3d6b21301b7a9bbbd785d13715832d7800a2d214..5e8bf33b20a49231bd7ae44f4ad1afa99b66a3fa 100644
+index 4d7fb533d9fe556e1e3064f7f900e4ea32911edc..e5395b6532e9531a5601a2f333b582fa7292cce5 100644
 --- a/third_party/rust/regex_automata/v0_4/BUILD.gn
 +++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
-@@ -111,4 +111,6 @@ cargo_crate("lib") {
-   # //third_party/rust/chromium_crates_io/Cargo.toml to use
-   # it from first-party code.
-   visibility = [ "//third_party/rust/*" ]
+@@ -131,4 +131,6 @@ cargo_crate("lib") {
+   executable_configs += _configs_to_add
+   proc_macro_configs -= _configs_to_remove
+   proc_macro_configs += _configs_to_add
 +  features += [ "alloc", "dfa-onepass", "dfa-search", "hybrid", "meta", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary" ]
 +  deps = [ "//brave/third_party/rust/aho_corasick/v1:lib", "//brave/third_party/rust/regex_syntax/v0_8:lib", "//third_party/rust/memchr/v2:lib" ]
  }

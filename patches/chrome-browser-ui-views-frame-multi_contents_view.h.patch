@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.h b/chrome/browser/ui/views/frame/multi_contents_view.h
-index 8ad29b28fa93b5a85f3cf832dcbead7f845c2893..eb72fe3f967dc121ec085b5369e7867f738d1f91 100644
+index 1ca99fc6f5f6bb245916db95f6ad980b6cd59c1d..3eeed8e2210268c6710cbf392ebba595ef561c38 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.h
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.h
-@@ -17,7 +17,7 @@
+@@ -18,7 +18,7 @@
  
  class BrowserView;
  class ContentsWebView;
 -class MultiContentsResizeArea;
 +// class MultiContentsResizeArea;
+ class MultiContentsViewDropTargetController;
+ class MultiContentsViewMiniToolbar;
  
- namespace blink {
- class WebMouseEvent;
