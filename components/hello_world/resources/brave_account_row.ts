@@ -58,8 +58,13 @@ export class SettingsBraveAccountRow extends CrLitElement {
     }
   }
 
+  constructor() {
+    super()
+    this.dialog = Dialog.ENTRY
+  }
+
   // private browserProxy: BraveAccountBrowserProxy = BraveAccountBrowserProxyImpl.getInstance()
-  protected dialog: Dialog = Dialog.NONE
+  protected dialog: Dialog
   protected signedIn: boolean = false
 }
 

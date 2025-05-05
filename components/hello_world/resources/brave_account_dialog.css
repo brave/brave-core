@@ -8,14 +8,11 @@
  * #css_wrapper_metadata_end */
 
 :host {
-  --cr-dialog-body-border-bottom: 0px;
-  --cr-dialog-body-border-top: 0px;
-  --cr-dialog-border-radius: var(--leo-radius-xl);
-  --cr-dialog-top-container-min-height: 0px;
-  --cr-dialog-width: 500px;
+  --leo-dialog-padding: 0px;
+  --leo-dialog-width: 500px;
 }
 
-[slot=header] {
+.header {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -56,7 +53,7 @@ leo-icon {
   }
 }
 
-[slot=body] {
+.body {
   padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl);
 }
 
@@ -92,4 +89,12 @@ leo-icon {
 :host([horizontal-buttons]) ::slotted([slot=buttons]) {
   flex-direction: row;
   justify-content: flex-end;
+}
+
+:host ::slotted([slot=footer]) {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  border-top: 1px solid #dbdbdb;
+  margin: 0;
+  padding: 16px 20px;
 }
