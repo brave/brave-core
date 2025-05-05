@@ -28,6 +28,9 @@ struct AIChatPaywallView: View {
   @Environment(\.dismiss)
   private var dismiss
 
+  @Environment(\.allowExternalPurchaseLinks) private var allowExternalPurchaseLinks
+  @Environment(\.pixelLength) private var pixelLength
+
   @State
   private var selectedTierType: AIChatSubscriptionTier = .monthly
 
@@ -52,9 +55,6 @@ struct AIChatPaywallView: View {
   @State
   private var shouldDismiss: Bool = false
 
-  @State
-  private var shouldRefreshCredentials = false
-
   // Timer used for resetting the restore action to prevent infinite loading
   @State
   private var iapRestoreTimer: Task<Void, Error>?
@@ -62,10 +62,11 @@ struct AIChatPaywallView: View {
   var premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)?
 
   var refreshCredentials: (() -> Void)?
+  var openDirectCheckout: (() -> Void)?
 
   var body: some View {
     NavigationView {
-      VStack(spacing: 8.0) {
+      VStack(spacing: 0) {
         ScrollView {
           VStack(spacing: 16.0) {
             PremiumUpsellTitleView(
@@ -77,9 +78,18 @@ struct AIChatPaywallView: View {
               .padding(.bottom, 8.0)
             tierSelection
               .padding(.horizontal, 8.0)
-            AIChatRefreshCredentialsView(shouldRefreshCredentials: $shouldRefreshCredentials)
-              .padding(.bottom, 8.0)
+            VStack(spacing: 16) {
+              AIChatActionButton(
+                title: Strings.Paywall.alreadyPurchasedTitle,
+                label: Strings.Paywall.refreshCredentialsButtonTitle,
+                action: {
+                  dismiss()
+                  refreshCredentials?()
+                }
+              )
+            }
           }
+          .padding(.vertical, 16.0)
           .navigationTitle(Strings.AIChat.paywallViewTitle)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar {
@@ -123,8 +133,7 @@ struct AIChatPaywallView: View {
           }
         })
 
-        paywallActionView
-          .padding(.bottom, 16.0)
+        paywallActionContainerView
       }
       .background(
         Color(braveSystemName: .primitivePrimary10)
@@ -147,10 +156,6 @@ struct AIChatPaywallView: View {
         if shouldDismiss {
           dismiss()
         }
-      }
-      .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
-        dismiss()
-        refreshCredentials?()
       }
     }
     .navigationViewStyle(.stack)
@@ -195,56 +200,164 @@ struct AIChatPaywallView: View {
     }
   }
 
-  private var paywallActionView: some View {
-    VStack(spacing: 16.0) {
-      Rectangle()
-        .frame(height: 1.0)
-        .foregroundColor(Color(braveSystemName: .primitivePrimary25))
+  @ViewBuilder private var paywallActionContainerView: some View {
+    if allowExternalPurchaseLinks {
+      externalPurchasesAllowedActionView
+    } else {
+      standardPaywallActionView
+    }
+  }
 
-      Button(
-        action: {
+  private var externalPurchasesAllowedActionView: some View {
+    VStack(spacing: 16) {
+      VStack(spacing: 0) {
+        Text(Strings.Paywall.startTrialTitle)
+          .font(.callout.weight(.semibold))
+        Text(Strings.Paywall.startTrialSubtitle)
+          .font(.footnote)
+      }
+      .multilineTextAlignment(.center)
+      VStack {
+        Button {
           Task { await purchaseSubscription() }
-        },
-        label: {
+        } label: {
           HStack {
+            Text(Strings.Paywall.appStoreCheckoutOptionTitle)
+              .font(.callout.weight(.semibold))
+              .multilineTextAlignment(.leading)
+            Spacer()
+            Text(Strings.Paywall.appStoreCheckoutOptionSubtitle)
+              .font(.footnote)
+              .multilineTextAlignment(.trailing)
+          }
+          .opacity(paymentStatus == .ongoing ? 0 : 1)
+          .overlay {
             if paymentStatus == .ongoing {
               ProgressView()
                 .tint(Color.white)
                 .padding()
-            } else {
-              let isIntroOfferAvailable =
-                (selectedTierType == .monthly && isMonthlyIntroOfferAvailable)
-                || (selectedTierType == .yearly && isYearlyIntroOfferAvailable)
-
-              Text(
-                isIntroOfferAvailable
-                  ? Strings.AIChat.paywallPurchaseActionIntroOfferTitle
-                  : Strings.AIChat.paywallPurchaseActionTitle
-              )
-              .font(.headline)
-              .foregroundColor(Color(.white))
-              .padding()
             }
           }
           .frame(maxWidth: .infinity)
-          .contentShape(ContainerRelativeShape())
+          .padding(12)
+          .frame(minHeight: 52)
           .background(
-            LinearGradient(
-              gradient:
-                Gradient(colors: [
-                  Color(UIColor(rgb: 0xFF5500)),
-                  Color(UIColor(rgb: 0xFF006B)),
-                ]),
-              startPoint: .init(x: 0.0, y: 0.0),
-              endPoint: .init(x: 0.0, y: 1.0)
-            )
+            Color(braveSystemName: .primitiveBlurple35),
+            in: .rect(cornerRadius: 12, style: .continuous)
           )
         }
+        .disabled(paymentStatus == .ongoing)
+        Button {
+          dismiss()
+          openDirectCheckout?()
+        } label: {
+          HStack {
+            Text(Strings.Paywall.braveAccountCheckoutOptionTitle)
+              .font(.callout.weight(.semibold))
+              .multilineTextAlignment(.leading)
+            Spacer()
+            Text(
+              LocalizedStringKey(
+                String.localizedStringWithFormat(
+                  Strings.Paywall.braveAccountCheckoutOptionSubtitle,
+                  ExternalPurchaseLinksSupport.discountCode,
+                  ExternalPurchaseLinksSupport.discountAmount.formatted(.percent)
+                )
+              )
+            )
+            .multilineTextAlignment(.trailing)
+            .font(.footnote)
+          }
+          .fontWeight(.semibold)
+          .frame(maxWidth: .infinity)
+          .padding(12)
+          .frame(minHeight: 52)
+          .background(
+            LinearGradient(
+              colors: [
+                Color(braveSystemName: .primitiveBrandsRorange2),
+                Color(braveSystemName: .primitiveBrandsRorange3),
+              ],
+              startPoint: .top,
+              endPoint: .bottom
+            ),
+            in: .rect(cornerRadius: 12, style: .continuous)
+          )
+        }
+      }
+    }
+    .foregroundStyle(Color.white)
+    .frame(maxWidth: .infinity)
+    .padding(16)
+    .background(
+      LinearGradient(
+        colors: [
+          Color(braveSystemName: .primitiveBlurple20),
+          Color(braveSystemName: .primitiveBlurple10),
+        ],
+        startPoint: .top,
+        endPoint: .bottom
       )
-      .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-      .disabled(paymentStatus == .ongoing)
-      .buttonStyle(.plain)
-      .padding([.horizontal], 16.0)
+      .shadow(.drop(color: Color(braveSystemName: .primitiveBlurple5), radius: 16)),
+      in: .rect(
+        topLeadingRadius: 16,
+        bottomLeadingRadius: 0,
+        bottomTrailingRadius: 0,
+        topTrailingRadius: 16,
+        style: .continuous
+      )
+    )
+    .dynamicTypeSize(DynamicTypeSize.xSmall..<DynamicTypeSize.accessibility1)
+    .fixedSize(horizontal: false, vertical: true)
+  }
+
+  private var standardPaywallActionView: some View {
+    Button(
+      action: {
+        Task { await purchaseSubscription() }
+      },
+      label: {
+        HStack {
+          if paymentStatus == .ongoing {
+            ProgressView()
+              .tint(Color.white)
+              .padding()
+          } else {
+            let isIntroOfferAvailable =
+              (selectedTierType == .monthly && isMonthlyIntroOfferAvailable)
+              || (selectedTierType == .yearly && isYearlyIntroOfferAvailable)
+
+            Text(
+              isIntroOfferAvailable
+                ? Strings.AIChat.paywallPurchaseActionIntroOfferTitle
+                : Strings.AIChat.paywallPurchaseActionTitle
+            )
+            .font(.headline)
+            .foregroundColor(Color(.white))
+            .padding()
+          }
+        }
+        .frame(maxWidth: .infinity)
+        .contentShape(ContainerRelativeShape())
+        .background(
+          LinearGradient(
+            colors: [
+              Color(braveSystemName: .primitiveBrandsRorange2),
+              Color(braveSystemName: .primitiveBrandsRorange3),
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+          ),
+          in: .rect(cornerRadius: 12, style: .continuous)
+        )
+      }
+    )
+    .disabled(paymentStatus == .ongoing)
+    .buttonStyle(.plain)
+    .padding(16)
+    .overlay(alignment: .top) {
+      Color(braveSystemName: .primitivePrimary25)
+        .frame(height: pixelLength)
     }
   }
 
@@ -395,22 +508,23 @@ private struct AIChatPremiumTierSelectionView: View {
   }
 }
 
-private struct AIChatRefreshCredentialsView: View {
-  @Binding var shouldRefreshCredentials: Bool
+private struct AIChatActionButton: View {
+  var title: String
+  var label: String
+  var action: () -> Void
 
   var body: some View {
     VStack(spacing: 8) {
-      Text(Strings.Paywall.alreadyPurchasedTitle)
+      Text(title)
         .font(.callout.weight(.semibold))
         .foregroundColor(Color(braveSystemName: .primitivePrimary90))
+        .multilineTextAlignment(.center)
 
       Button(
-        action: {
-          shouldRefreshCredentials = true
-        },
+        action: action,
         label: {
           HStack {
-            Text(Strings.Paywall.refreshCredentialsButtonTitle)
+            Text(label)
               .font(.subheadline.weight(.semibold))
               .foregroundColor(Color(.white))
               .padding()
@@ -427,14 +541,19 @@ private struct AIChatRefreshCredentialsView: View {
           )
       )
       .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-      .padding([.horizontal], 16.0)
     }
+    .padding([.horizontal], 16.0)
   }
 }
 
 #if DEBUG
-#Preview("LeoPaywall") {
+#Preview("External Purchase") {
   AIChatPaywallView()
+    .environment(\.allowExternalPurchaseLinks, true)
+}
+#Preview("Standard Purchase") {
+  AIChatPaywallView()
+    .environment(\.allowExternalPurchaseLinks, false)
 }
 
 #Preview("LeoPremiumTier") {
