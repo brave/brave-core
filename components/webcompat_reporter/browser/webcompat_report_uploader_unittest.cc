@@ -104,11 +104,17 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   components.push_back(
       webcompat_reporter::mojom::ComponentInfo::New("name", "id", "version"));
 
+  std::vector<std::string> webcompat_errors{"Could not create screenshot"};
   auto report = webcompat_reporter::mojom::ReportInfo::New(
       "dev", "1.231.45", "https://abc.url/p1/p2", "true", "ad_block_setting",
       "fp_block_setting", "ad_block_list_names", "languages", "true", "true",
       "details", "contact", "block", "true", std::move(components),
-      std::nullopt);
+      std::nullopt, webcompat_errors);
+
+  base::Value::List errors_list;
+  for (const auto& error : webcompat_errors) {
+    errors_list.Append(error);
+  }
 
   auto report_copy = report->Clone();
 
@@ -132,7 +138,8 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   "languages": "%s",
   "shieldsEnabled": "%s",
   "url": "%s",
-  "version": "%s"
+  "version": "%s",
+  "webcompatReportErrors": %s
 })",
           R"([{"id": "id", "name": "name", "version": "version"}])",
           report_copy->ad_block_list_names->c_str(),
@@ -149,7 +156,7 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
           report_copy->languages->c_str(),
           report_copy->shields_enabled ? "true" : "false",
           GURL(report_copy->report_url.value()).spec().c_str(),
-          report_copy->brave_version->c_str()));
+          report_copy->brave_version->c_str(), errors_list.DebugString()));
 }
 
 }  // namespace webcompat_reporter
