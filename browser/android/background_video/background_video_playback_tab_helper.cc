@@ -30,7 +30,7 @@ constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
             }
         };
     }
-}());
+
 // Function to modify the flags if the target object exists.
 function modifyYtcfgFlags() {
   const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")?.WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH
@@ -61,6 +61,7 @@ if (window.ytcfg) {
     }
   }, true);
 }
+}());
 )";
 
 bool IsYouTubeDomain(const GURL& url) {
