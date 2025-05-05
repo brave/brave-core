@@ -28,11 +28,8 @@ export default function ContextActionsAssistant(
   const [currentRatingStatus, setCurrentRatingStatus] =
     React.useState<RatingStatus>('none')
 
-  const hasSentRating = currentRatingStatus !== 'none'
-
   function handleLikeOrDislikeAnswer(status: RatingStatus) {
     if (!props.turnUuid) return
-    if (hasSentRating) return
     setCurrentRatingStatus(status)
     conversationContext.parentUiFrame?.rateMessage(
       props.turnUuid,

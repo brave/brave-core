@@ -486,6 +486,7 @@ type CustomArgs = {
   isGenerating: boolean
   showAttachments: boolean
   isNewConversation: boolean
+  ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
 }
 
 const args: CustomArgs = {
@@ -520,6 +521,7 @@ const args: CustomArgs = {
   isGenerating: false,
   showAttachments: true,
   isNewConversation: false,
+  ratingTurnUuid: undefined
 }
 
 const meta: Meta<CustomArgs> = {
@@ -546,6 +548,10 @@ const meta: Meta<CustomArgs> = {
     },
     deletingConversationId: {
       options: CONVERSATIONS.map(conversation => conversation.uuid),
+      control: { type: 'select' }
+    },
+    ratingTurnUuid: {
+      options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
       control: { type: 'select' }
     }
   },
@@ -687,6 +693,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isCharLimitExceeded: inputText.length > 70,
     inputTextCharCountDisplay: `${inputText.length} / 70`,
     pendingMessageImages: null,
+    ratingTurnUuid: options.args.ratingTurnUuid,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,
@@ -701,11 +708,14 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     handleActionTypeClick: () => { },
     setIsToolsMenuOpen: () => { },
     handleFeedbackFormCancel: () => { },
-    handleFeedbackFormSubmit: () => { },
+    handleFeedbackFormSubmit: () => Promise.resolve(),
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
     removeImage: () => {},
-    uploadImage: (useMediaCapture: boolean) => {}
+    uploadImage: (useMediaCapture: boolean) => {},
+    handleCloseRateMessagePrivacyModal:
+      () => setArgs({ ratingTurnUuid: undefined }),
+    handleRateMessage: () => Promise.resolve()
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
