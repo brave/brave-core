@@ -218,8 +218,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
   EXPECT_EQ(5, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 
   // Navigate to "#section1".
-  const GURL url_link1 =
-      https_server_.GetURL("youtube.com#section1", "/ytcfg_mock.html");
+  const GURL url_link1(url.spec() + "#section1");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url_link1,
                                                       1, true);
 
@@ -227,8 +226,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
   EXPECT_EQ(web_contents()->GetVisibleURL().ref(), "section1");
 
   // Navigate to "#section2".
-  const GURL url_link2 =
-      https_server_.GetURL("youtube.com#section2", "/ytcfg_mock.html");
+  const GURL url_link2(url.spec() + "#section2");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url_link2,
                                                       1, true);
 
