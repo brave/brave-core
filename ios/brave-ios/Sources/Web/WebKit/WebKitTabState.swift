@@ -536,7 +536,7 @@ class WebKitTabState: TabState, TabStateImpl {
     _ functionBody: String,
     arguments: [String: Any],
     in frame: WKFrameInfo?,
-    in contentWorld: WKContentWorld
+    contentWorld: WKContentWorld
   ) async throws -> Any? {
     try await webView?.callAsyncJavaScript(
       functionBody,
