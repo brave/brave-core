@@ -35,6 +35,43 @@ GURL GetFirstPartyStorageURL(const std::string& ephemeral_domain) {
   return GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
 }
 
+base::Value GetFirstPartyStorageValueToCleanup(
+    const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config) {
+  if (storage_partition_config.is_default()) {
+    return base::Value(url.spec());
+  }
+  return base::Value(base::Value::Dict()
+                         .Set("u", url.spec())
+                         .Set("pd", storage_partition_config.partition_domain())
+                         .Set("pn", storage_partition_config.partition_name()));
+}
+
+std::optional<std::pair<GURL, content::StoragePartitionConfig>>
+GetFirstPartyStorageURLAndStoragePartitionConfig(
+    const base::Value& value,
+    content::BrowserContext* browser_context) {
+  if (value.is_string()) {
+    return std::make_pair(
+        GURL(value.GetString()),
+        content::StoragePartitionConfig::CreateDefault(browser_context));
+  }
+  if (!value.is_dict()) {
+    return std::nullopt;
+  }
+  const auto& dict = value.GetDict();
+  const std::string* url_spec = dict.FindString("u");
+  const std::string* partition_domain = dict.FindString("pd");
+  const std::string* partition_name = dict.FindString("pn");
+  if (!url_spec || !partition_domain || !partition_name) {
+    return std::nullopt;
+  }
+  return std::make_pair(
+      GURL(*url_spec),
+      content::StoragePartitionConfig::Create(
+          browser_context, *partition_domain, *partition_name, false));
+}
+
 }  // namespace
 
 EphemeralStorageService::EphemeralStorageService(
@@ -176,7 +213,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeCreated(
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   tld_ephemeral_areas_to_cleanup_.erase(key);
-  FirstPartyStorageAreaInUse(ephemeral_domain);
+  FirstPartyStorageAreaInUse(ephemeral_domain, storage_partition_config);
 }
 
 void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
@@ -187,8 +224,9 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area = !shields_disabled_on_one_of_hosts;
-  const bool cleanup_first_party_storage_area = FirstPartyStorageAreaNotInUse(
-      ephemeral_domain, shields_disabled_on_one_of_hosts);
+  const bool cleanup_first_party_storage_area =
+      FirstPartyStorageAreaNotInUse(ephemeral_domain, storage_partition_config,
+                                    shields_disabled_on_one_of_hosts);
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveEphemeralStorageKeepAlive)) {
@@ -217,7 +255,8 @@ void EphemeralStorageService::RemoveObserver(
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
-    const std::string& ephemeral_domain) {
+    const std::string& ephemeral_domain,
+    const content::StoragePartitionConfig& storage_partition_config) {
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage) &&
       !base::FeatureList::IsEnabled(
@@ -226,18 +265,22 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
   }
 
   if (!context_->IsOffTheRecord()) {
-    base::Value url_spec(GetFirstPartyStorageURL(ephemeral_domain).spec());
+    const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
+    const base::Value value_to_cleanup =
+        GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(url_spec);
+    pref_update->EraseValue(value_to_cleanup);
 
     // Make sure to cancel the scheduled cleanup for this area.
-    first_party_storage_areas_to_cleanup_on_startup_.EraseValue(url_spec);
+    first_party_storage_areas_to_cleanup_on_startup_.EraseValue(
+        value_to_cleanup);
   }
 }
 
 bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     const std::string& ephemeral_domain,
+    const content::StoragePartitionConfig& storage_partition_config,
     bool shields_disabled_on_one_of_hosts) {
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage) &&
@@ -268,7 +311,8 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
   if (!context_->IsOffTheRecord()) {
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->Append(base::Value(url.spec()));
+    pref_update->Append(
+        GetFirstPartyStorageValueToCleanup(url, storage_partition_config));
   }
   return true;
 }
@@ -293,7 +337,7 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
   }
   fpes_tokens_.erase(key.first);
   if (cleanup_first_party_storage_area) {
-    CleanupFirstPartyStorageArea(key.first);
+    CleanupFirstPartyStorageArea(key);
   }
   for (auto& observer : observer_list_) {
     observer.OnCleanupTLDEphemeralArea(key);
@@ -301,14 +345,15 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
 }
 
 void EphemeralStorageService::CleanupFirstPartyStorageArea(
-    const std::string& ephemeral_domain) {
-  DVLOG(1) << __func__ << " " << ephemeral_domain;
-  delegate_->CleanupFirstPartyStorageArea(ephemeral_domain);
+    const TLDEphemeralAreaKey& key) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
+  delegate_->CleanupFirstPartyStorageArea(key);
   if (!context_->IsOffTheRecord()) {
-    base::Value url_spec(GetFirstPartyStorageURL(ephemeral_domain).spec());
+    const base::Value value_to_cleanup = GetFirstPartyStorageValueToCleanup(
+        GetFirstPartyStorageURL(key.first), key.second);
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(url_spec);
+    pref_update->EraseValue(value_to_cleanup);
   }
 }
 
@@ -333,16 +378,20 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
   for (const auto& url_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup_) {
-    const auto* url_string = url_to_cleanup.GetIfString();
-    if (!url_string) {
+    const auto url_and_storage_partition_config =
+        GetFirstPartyStorageURLAndStoragePartitionConfig(url_to_cleanup,
+                                                         context_);
+    pref_update->EraseValue(url_to_cleanup);
+    if (!url_and_storage_partition_config) {
       continue;
     }
-    pref_update->EraseValue(url_to_cleanup);
-    const GURL url(*url_string);
+    const auto& [url, storage_partition_config] =
+        *url_and_storage_partition_config;
     if (!url.is_valid()) {
       continue;
     }
-    delegate_->CleanupFirstPartyStorageArea(url.host());
+    delegate_->CleanupFirstPartyStorageArea(
+        {url.host(), storage_partition_config});
   }
   first_party_storage_areas_to_cleanup_on_startup_.clear();
 }
