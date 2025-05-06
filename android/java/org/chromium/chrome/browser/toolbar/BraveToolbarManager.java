@@ -75,9 +75,11 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
 import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
@@ -443,6 +445,14 @@ public class BraveToolbarManager extends ToolbarManager
         if (isToolbarPhone() && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             mLocationBar.getContainerView().setAccessibilityTraversalBefore(R.id.bottom_toolbar);
             ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        ToolbarLayout toolbarLayout = mActivity.findViewById(R.id.toolbar);
+        assert toolbarLayout instanceof BraveToolbarLayoutImpl
+                : "Something has changed in the upstream!";
+        if (toolbarLayout instanceof BraveToolbarLayoutImpl) {
+            ((BraveToolbarLayoutImpl) toolbarLayout)
+                    .setTabModelSelector(mTabModelSelectorSupplier.get());
         }
     }
 
