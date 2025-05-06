@@ -69,25 +69,6 @@ export default function ContextActionsAssistant(
       >
         <Icon name='edit-pencil' />
       </Button>
-      {conversationContext.isLeoModel && props.turnModelKey && (isRegenerateAnswerMenuOpen ? (
-        <RegenerateAnswerMenu
-          onClose={() => setIsRegenerateAnswerMenuOpen(false)}
-          onRegenerate={handleRegenerateAnswer}
-          leoModels={leoModels}
-          turnModelKey={props.turnModelKey}
-        />
-      ): (
-       <Button
-          onClick={() => setIsRegenerateAnswerMenuOpen(true)}
-          fab
-          size='small'
-          kind='plain-faint'
-          title={getLocale('regenerateAnswerButtonLabel')}
-          className={styles.button}
-        >
-          <Icon name='refresh' />
-        </Button>
-      ))}
       <Button
         onClick={() => handleLikeOrDislikeAnswer('liked')}
         fab
@@ -118,6 +99,16 @@ export default function ContextActionsAssistant(
           })}
         />
       </Button>
+      {conversationContext.isLeoModel && props.turnModelKey &&(
+        <RegenerateAnswerMenu
+          isOpen={isRegenerateAnswerMenuOpen}
+          onOpen={() => setIsRegenerateAnswerMenuOpen(true)}
+          onClose={() => setIsRegenerateAnswerMenuOpen(false)}
+          onRegenerate={handleRegenerateAnswer}
+          leoModels={leoModels}
+          turnModelKey={props.turnModelKey}
+        />
+      )}
     </div>
   )
 }
