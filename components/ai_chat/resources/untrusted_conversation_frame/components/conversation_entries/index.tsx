@@ -121,6 +121,10 @@ function ConversationEntries() {
           const imageFiles =
             getImageFiles(latestTurn.uploadedFiles) || []
 
+          const hasImageAttachments = imageFiles.length > 0
+          const hasTabAttachments = index === 0 && conversationContext.associatedContent.length > 0
+          const hasAttachments = hasImageAttachments || hasTabAttachments
+
           return (
             <div
               key={index}
@@ -185,9 +189,10 @@ function ConversationEntries() {
                             </div>
                           )}
                         </div>
-                        {imageFiles.length > 0 &&
-                          <div className={styles.uploadedImages}>
-                          {index === 0 && conversationContext.associatedContent.map(c => <AttachmentItem
+                        {hasAttachments &&
+                          <div className={styles.attachmentsContainer}>
+                          {hasTabAttachments && conversationContext.associatedContent.map(c => <AttachmentItem
+                            key={c.contentId}
                             smallImage
                             subtitle={c.url.url}
                             thumbnailUrl={`//favicon2?size=256&pageUrl=${encodeURIComponent(c.url.url)}`}
