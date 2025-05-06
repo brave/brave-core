@@ -10,6 +10,7 @@
 
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
@@ -317,20 +318,22 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_VideoContent) {
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
-  constexpr char expected_text[] = "This is the way.";
+  constexpr char kExpectedText[] = "This is the way.";
   // A url that does by itself trigger print preview extraction.
-  NavigateTo(GURL("https://docs.google.com"));
-  if (is_print_preview_supported_) {
-    // PrintPreview always initiated on URL
-    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
-    EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
-  } else {
-    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text, false, ""));
+  for (const auto& host : kPrintPreviewRetrievalHosts) {
+    NavigateTo(GURL(base::StrCat({"https://", host})));
+    if (is_print_preview_supported_) {
+      // PrintPreview always initiated on URL
+      EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
+      EXPECT_CALL(*print_preview_extractor_, Extract)
+          .WillOnce(base::test::RunOnceCallback<1>(kExpectedText));
+    } else {
+      EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+          .WillOnce(base::test::RunOnceCallback<1>(kExpectedText, false, ""));
+    }
+    EXPECT_CALL(callback, Run(kExpectedText, false, ""));
+    GetPageContent(callback.Get(), "");
   }
-  EXPECT_CALL(callback, Run(expected_text, false, ""));
-  GetPageContent(callback.Get(), "");
 }
 
 TEST_P(AIChatTabHelperUnitTest,
