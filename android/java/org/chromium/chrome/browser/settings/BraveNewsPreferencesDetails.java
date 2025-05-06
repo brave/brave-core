@@ -154,9 +154,18 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
         // available for OTR profiles and we still want to control the feature
         // for original profile.
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(getProfile().getOriginalProfile(), this)
+                .getForProfile(getProfile().getOriginalProfile(), this)
                 .then(
                         braveNewsController -> {
+                            // If there are future cases where this could be
+                            // null for the original profile we need to adjust
+                            // the UI to hide all brave news related prefs
+                            assert braveNewsController != null
+                                    : "The service should always be available "
+                                            + "for original profile";
+                            if (braveNewsController == null) {
+                                return;
+                            }
                             mBraveNewsController = braveNewsController;
                             if (action != null) {
                                 action.run();

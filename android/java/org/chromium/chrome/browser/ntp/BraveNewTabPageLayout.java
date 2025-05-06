@@ -1538,9 +1538,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
 
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(mProfile, this)
+                .getForProfile(mProfile, this)
                 .then(
                         braveNewsController -> {
+                            if (braveNewsController == null) {
+                                return;
+                            }
                             mBraveNewsController = braveNewsController;
                             if (mNtpAdapter != null) {
                                 mNtpAdapter.setBraveNewsController(mBraveNewsController);

@@ -173,6 +173,8 @@
       "android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabRootUiCoordinator.java",
       "android/java/org/chromium/chrome/browser/firstrun/WelcomeOnboardingActivity.java",
       "android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
+      "android/java/org/chromium/chrome/browser/settings/BraveNewsPreferencesDetails.java",
+      "android/java/org/chromium/chrome/browser/settings/BraveNewsPreferencesV2.java",
       "android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase.java",
       "android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
       "android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java",
