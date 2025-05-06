@@ -12,6 +12,12 @@
 BraveURLDataSourceIOS::BraveURLDataSourceIOS() {}
 BraveURLDataSourceIOS::~BraveURLDataSourceIOS() = default;
 
+std::string BraveURLDataSourceIOS::GetContentSecurityPolicyBase() const {
+  // Default is kChromeURLContentSecurityPolicyHeaderBase
+  // Already handled by GetContentSecurityPolicy(ScriptSrc)
+  return std::string();
+}
+
 std::string BraveURLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
   std::string csp_header;
 
