@@ -45,7 +45,7 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
   auto background = mojom::SponsoredImageBackground::New();
 
   if (auto* type = data.FindString(kWallpaperTypeKey)) {
-    background->type = *type;
+    background->wallpaper_type = *type;
   }
 
   if (auto* creative_instance_id = data.FindString(kCreativeInstanceIDKey)) {

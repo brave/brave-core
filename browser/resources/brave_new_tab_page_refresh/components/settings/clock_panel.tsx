@@ -25,11 +25,11 @@ export function ClockPanel() {
 
   function formatOptionText(format: ClockFormat) {
     switch (format) {
-      case 'h12':
+      case ClockFormat.k12:
         return getString('clockFormatOption12HourText')
-      case 'h24':
+      case ClockFormat.k24:
         return getString('clockFormatOption24HourText')
-      case '':
+      default:
         return formatMessage(getString('clockFormatOptionAutomaticText'), [
           new Intl.DateTimeFormat(undefined).resolvedOptions().locale
         ]).join('')
@@ -38,7 +38,7 @@ export function ClockPanel() {
 
   function renderFormatOption(format: ClockFormat) {
     return (
-      <leo-option value={format}>{formatOptionText(format)}</leo-option>
+      <leo-option value={String(format)}>{formatOptionText(format)}</leo-option>
     )
   }
 
@@ -55,16 +55,16 @@ export function ClockPanel() {
       <div>
         <label>{getString('clockFormatLabel')}</label>
         <DropDown
-          value={clockFormat}
+          value={String(clockFormat)}
           positionStrategy='fixed'
           onChange={(detail) => {
-            actions.setClockFormat(detail.value as ClockFormat)
+            actions.setClockFormat(Number(detail.value) || 0 as ClockFormat)
           }}
         >
           <span slot='value'>{formatOptionText(clockFormat)}</span>
-          {renderFormatOption('')}
-          {renderFormatOption('h12')}
-          {renderFormatOption('h24')}
+          {renderFormatOption(ClockFormat.kAuto)}
+          {renderFormatOption(ClockFormat.k12)}
+          {renderFormatOption(ClockFormat.k24)}
         </DropDown>
       </div>
     </div>

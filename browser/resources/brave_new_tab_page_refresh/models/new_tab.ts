@@ -3,12 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export type ClockFormat = '' | 'h12' | 'h24'
+import { ShieldsStats, ClockFormat } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
-export interface ShieldsStats {
-  bandwidthSavedBytes: number
-  adsBlocked: number
-}
+export { ShieldsStats, ClockFormat }
 
 export interface NewTabState {
   showClock: boolean
@@ -21,7 +18,7 @@ export interface NewTabState {
 export function defaultNewTabState(): NewTabState {
   return {
     showClock: false,
-    clockFormat: '',
+    clockFormat: ClockFormat.kAuto,
     showShieldsStats: false,
     shieldsStats: null,
     showTalkWidget: true
