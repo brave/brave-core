@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
 import androidx.annotation.ColorInt;
@@ -18,17 +17,12 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
-import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
@@ -55,7 +49,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomControlsVisible;
     private ObservableSupplier<Integer> mConstraintsProxy;
-    private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private ToolbarControlContainer mControlContainer;
     private boolean mInTabSwitcherMode;
 
@@ -70,8 +63,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ThemeColorProvider normalThemeColorProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
-            ToggleTabStackButtonCoordinator tabSwitcerButtonCoordinator,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
+            ObservableSupplier<Integer> tabCountSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
@@ -99,8 +92,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 normalThemeColorProvider,
                 browsingModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier,
-                tabSwitcerButtonCoordinator,
-                tabModelSelectorSupplier,
+                tabSwitcherButtonCoordinator,
+                tabCountSupplier,
                 homepageEnabledSupplier,
                 resourceManagerSupplier,
                 historyDelegate,
@@ -120,7 +113,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
         mConstraintsProxy = constraintsSupplier;
-        mTabModelSelectorSupplier = tabModelSelectorSupplier;
         mControlContainer = controlContainer;
 
         if (isToolbarPhone()) {
@@ -189,38 +181,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     public ObservableSupplier<Integer> getConstraintsProxy() {
         return mConstraintsProxy;
-    }
-
-    @Override
-    public void initializeWithNative(
-            Profile profile,
-            Runnable layoutUpdater,
-            OnClickListener bookmarkClickHandler,
-            OnClickListener customTabsBackClickHandler,
-            LayoutManager layoutManager,
-            ObservableSupplier<Tab> tabSupplier,
-            BrowserControlsVisibilityManager browserControlsVisibilityManager,
-            TopUiThemeColorProvider topUiThemeColorProvider,
-            ObservableSupplier<Integer> bottomToolbarControlsOffsetSupplier,
-            ObservableSupplier<Boolean> suppressToolbarSceneLayerSupplier) {
-        super.initializeWithNative(
-                profile,
-                layoutUpdater,
-                bookmarkClickHandler,
-                customTabsBackClickHandler,
-                layoutManager,
-                tabSupplier,
-                browserControlsVisibilityManager,
-                topUiThemeColorProvider,
-                bottomToolbarControlsOffsetSupplier,
-                suppressToolbarSceneLayerSupplier);
-
-        assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
-                : "Something has changed in the upstream!";
-        if (mBraveToolbarLayout instanceof BraveToolbarLayoutImpl) {
-            ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
-                    .setTabModelSelector(mTabModelSelectorSupplier.get());
-        }
     }
 
     @Override
