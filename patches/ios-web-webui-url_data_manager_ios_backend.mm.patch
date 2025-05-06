@@ -1,0 +1,13 @@
+diff --git a/ios/web/webui/url_data_manager_ios_backend.mm b/ios/web/webui/url_data_manager_ios_backend.mm
+index 0e5afbd025206..6314b22e33599 100644
+--- a/ios/web/webui/url_data_manager_ios_backend.mm
++++ b/ios/web/webui/url_data_manager_ios_backend.mm
+@@ -45,7 +45,7 @@
+ 
+ const char kContentSecurityPolicy[] = "Content-Security-Policy";
+ const char kChromeURLContentSecurityPolicyHeaderBase[] =
+-    "script-src chrome://resources 'self'; ";
++    "";
+ 
+ const char kXFrameOptions[] = "X-Frame-Options";
+ const char kChromeURLXFrameOptionsHeader[] = "DENY";
