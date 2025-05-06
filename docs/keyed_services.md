@@ -74,7 +74,7 @@ Java
 
 brave/browser/fake/android/java/src/org/chromium/brave/browser/fake/FakeServiceFactory.java
 ```java
-public @Nullable fake::FakeService getForProfile(Profile profile,
+public @Nullable FakeService getForProfile(Profile profile,
         @Nullable ConnectionErrorHandler connectionErrorHandler) {
     long nativeHandle = FakeServiceFactoryJni.get().getForProfile(profile);
     MessagePipeHandle handle =
@@ -83,8 +83,8 @@ public @Nullable fake::FakeService getForProfile(Profile profile,
     if (!handle.isValid()) {
       return null;
     }
-    fake::FakeService fakeService =
-        fake::FakeService.MANAGER.attachProxy(handle, 0);
+    FakeService fakeService =
+        FakeService.MANAGER.attachProxy(handle, 0);
     if (connectionErrorHandler != null) {
         Handler handler = ((Interface.Proxy) fakeService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
