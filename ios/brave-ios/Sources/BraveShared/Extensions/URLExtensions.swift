@@ -221,10 +221,8 @@ extension URL {
   /// with the base private domain attached to the front. For example, for the
   /// URL www.bbc.co.uk, the base domain would be bbc.co.uk. The base domain
   /// includes the public suffix (co.uk) + one level down (bbc).
-  /// - parameter fallbackToHost: if it fallsback to host
-  ///   if the registry is empty
   /// - returns The base domain string for the given host name.
-  public func baseDomain(fallbackToHost: Bool) -> String? {
+  public var baseDomain: String? {
     guard !isIPv6, let host = host else { return nil }
 
     // If this is just a hostname and not a FQDN, use the entire hostname.
@@ -237,21 +235,8 @@ extension URL {
       return registry
     }
 
-    if fallbackToHost {
-      // fallback to host if domainAndRegistry is empty
-      return host
-    }
-    return nil
-  }
-
-  /// Returns the base domain from a given hostname unless URL is IPV6 or does not
-  /// contain a `.`. The base domain name is defined as the public domain suffix
-  /// with the base private domain attached to the front. For example, for the
-  /// URL www.bbc.co.uk, the base domain would be bbc.co.uk. The base domain
-  /// includes the public suffix (co.uk) + one level down (bbc).
-  /// - returns The base domain string for the given host name.
-  public var baseDomain: String? {
-    baseDomain(fallbackToHost: true)
+    // fallback to host if domainAndRegistry is empty
+    return host
   }
 
   /// Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
