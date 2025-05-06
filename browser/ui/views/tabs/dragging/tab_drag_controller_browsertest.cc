@@ -100,22 +100,24 @@ IN_PROC_BROWSER_TEST_F(TabDragControllerTest,
   TabStrip* tab_strip = GetTabStripForBrowser(browser());
   Tab* const tab_view = tab_strip->tab_at(0);
 
-  gfx::Point start_point = tab_view->GetBoundsInScreen().CenterPoint();
+  gfx::Point split_view_start_point =
+      tab_view->GetBoundsInScreen().CenterPoint();
 
   EXPECT_EQ(1ul, tab_strip->GetSelectionModel().size());
 
   const ui::MouseEvent mouse_pressed_event(
-      ui::EventType::kMousePressed, start_point, start_point, base::TimeTicks(),
-      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+      ui::EventType::kMousePressed, split_view_start_point,
+      split_view_start_point, base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON,
+      ui::EF_LEFT_MOUSE_BUTTON);
   tab_strip->StopAnimating(true);
   tab_strip->MaybeStartDrag(tab_view, mouse_pressed_event,
                             tab_strip->GetSelectionModel());
 
   static constexpr int kDragDistance = 20;
-  gfx::Point tab_group_drag_point(tab_view->width() + kDragDistance,
+  gfx::Point split_view_end_point(tab_view->width() + kDragDistance,
                                   tab_view->height() + kDragDistance);
   ui::MouseEvent mouse_dragged_event(
-      ui::EventType::kMouseDragged, tab_group_drag_point, tab_group_drag_point,
+      ui::EventType::kMouseDragged, split_view_end_point, split_view_end_point,
       base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON, 0);
 
   std::ignore = tab_strip->ContinueDrag(tab_view, mouse_dragged_event);
