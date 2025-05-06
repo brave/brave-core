@@ -19,6 +19,9 @@ static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
   auto pending =
       brave_news::BraveNewsControllerFactory::GetInstance()->GetRemoteService(
           profile);
+  if (!pending.is_valid()) {
+    return 0;
+  }
   auto passPipe = pending.PassPipe();
 
   return static_cast<jlong>(passPipe.release().value());

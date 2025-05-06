@@ -293,6 +293,9 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
                 .getBraveNewsController(getProfile().getOriginalProfile(), this)
                 .then(
                         braveNewsController -> {
+                            if (braveNewsController == null) {
+                                return;
+                            }
                             mBraveNewsController = braveNewsController;
                             if (action != null) {
                                 action.run();
