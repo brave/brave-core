@@ -248,7 +248,15 @@ public class NTPDataSource {
       return true
     }
 
-    return Date.now.timeIntervalSince(installDate) > gracePeriod
+    let gracePeriodEndAt = installDate + TimeInterval(gracePeriod)
+    if Date.now >= gracePeriodEndAt {
+      return true
+    }
+
+    Logger.module.info(
+      "Sponsored images not shown: Grace period after installation is still active until \(gracePeriodEndAt)"
+    )
+    return false
   }
 }
 
