@@ -40,7 +40,7 @@ export function AttachmentItem(props: Props) {
           })}
           src={props.thumbnailUrl}
         />
-        <div className={styles.imageInfo}>
+        <div className={styles.info}>
           <Tooltip
             mode='mini'
             text={props.title}
