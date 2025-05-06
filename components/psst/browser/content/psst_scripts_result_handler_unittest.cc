@@ -133,10 +133,7 @@ class MockPsstDialogDelegate : public PsstDialogDelegate {
  public:
   MockPsstDialogDelegate() = default;
   ~MockPsstDialogDelegate() override = default;
-  MOCK_METHOD(void,
-              ShowPsstConsentDialog,
-              (std::unique_ptr<ShowDialogData> & show_dialog_data),
-              (override));
+  MOCK_METHOD(void, Show, (), (override));
   MOCK_METHOD(void, SetProgressValue, (const double value), (override));
   MOCK_METHOD(void,
               SetCompletedView,
@@ -490,16 +487,15 @@ TEST_F(PsstScriptsHandlerUnitTest, HandleUserScriptResult) {
         EXPECT_CALL(handler, ResetContext()).Times(0);
         auto* delegate = static_cast<MockPsstDialogDelegate*>(
             handler.GetPsstDialogDelegate());
-        EXPECT_CALL(*delegate, ShowPsstConsentDialog)
+        EXPECT_CALL(*delegate, Show)
             .Times(1)
-            .WillOnce(testing::Invoke(
-                [](std::unique_ptr<MockPsstDialogDelegate::ShowDialogData>&
-                       show_dialog_data) {
-                  EXPECT_TRUE(show_dialog_data);
-                  EXPECT_EQ(false, show_dialog_data->is_new_version);
-                  EXPECT_EQ(kName, show_dialog_data->site_name);
-                  EXPECT_EQ(1u, show_dialog_data->request_infos.size());
-                }));
+            .WillOnce(testing::Invoke([delegate]() {
+              const auto* show_dialog_data = delegate->GetShowDialogData();
+              EXPECT_TRUE(show_dialog_data);
+              EXPECT_EQ(false, show_dialog_data->is_new_version);
+              EXPECT_EQ(kName, show_dialog_data->site_name);
+              EXPECT_EQ(1u, show_dialog_data->request_infos.size());
+            }));
       }));
   SetPsstSettings(kUserId, kName, PsstSettings{psst::kAllow, 0}, GetPrefs());
   ProcessUserScriptHandlerTest(
@@ -511,16 +507,15 @@ TEST_F(PsstScriptsHandlerUnitTest, HandleUserScriptResult) {
         EXPECT_CALL(handler, ResetContext()).Times(0);
         auto* delegate = static_cast<MockPsstDialogDelegate*>(
             handler.GetPsstDialogDelegate());
-        EXPECT_CALL(*delegate, ShowPsstConsentDialog)
+        EXPECT_CALL(*delegate, Show)
             .Times(1)
-            .WillOnce(testing::Invoke(
-                [](std::unique_ptr<MockPsstDialogDelegate::ShowDialogData>&
-                       show_dialog_data) {
-                  EXPECT_TRUE(show_dialog_data);
-                  EXPECT_EQ(true, show_dialog_data->is_new_version);
-                  EXPECT_EQ(kName, show_dialog_data->site_name);
-                  EXPECT_EQ(1u, show_dialog_data->request_infos.size());
-                }));
+            .WillOnce(testing::Invoke([delegate]() {
+              const auto* show_dialog_data = delegate->GetShowDialogData();
+              EXPECT_TRUE(show_dialog_data);
+              EXPECT_EQ(true, show_dialog_data->is_new_version);
+              EXPECT_EQ(kName, show_dialog_data->site_name);
+              EXPECT_EQ(1u, show_dialog_data->request_infos.size());
+            }));
       }));
 }
 
