@@ -16,8 +16,8 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
     ...defaultVPNState(),
     vpnFeatureEnabled: true,
     showVpnWidget: true,
-    vpnPurchased: true,
-    vpnConnectionState: 'connecting',
+    vpnPurchased: false,
+    vpnConnectionState: 'disconnected',
     vpnConnectionRegion: {
       country: 'Brazil',
       name: 'Rio de Janeiro'
@@ -29,6 +29,10 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
 
     setShowVpnWidget(showVpnWidget) {
       store.update({ showVpnWidget })
+    },
+
+    startVpnTrial() {
+      store.update({ vpnPurchased: true })
     },
 
     toggleVpnConnection() {

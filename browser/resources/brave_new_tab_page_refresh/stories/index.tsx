@@ -4,21 +4,27 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { Meta } from '@storybook/react'
 
+import { AppState } from '../models/app_model'
 import { LocaleContext } from '../components/context/locale_context'
 import { AppModelContext } from '../components/context/app_model_context'
 import { createAppModel } from './sb_app_model'
 import { createLocale } from './sb_locale'
 import { App } from '../components/app'
 
-export default {
-  title: 'New Tab/Refresh'
-}
-
-export function NTPRefresh() {
-  return (
+const meta: Meta<Partial<AppState>> = {
+  title: 'New Tab/Refresh',
+  component: App,
+  argTypes: {
+    vpnFeatureEnabled: {
+      control: 'boolean',
+      name: 'VPN Enabled'
+    }
+  },
+  render: ({ ...args }) => (
     <LocaleContext locale={createLocale()}>
-      <AppModelContext model={createAppModel()}>
+      <AppModelContext model={createAppModel(args)}>
         <div style={{ position: 'absolute', inset: 0 }}>
           <App />
         </div>
@@ -26,3 +32,7 @@ export function NTPRefresh() {
     </LocaleContext>
   )
 }
+
+export default meta
+
+export const NewTabPage = {}

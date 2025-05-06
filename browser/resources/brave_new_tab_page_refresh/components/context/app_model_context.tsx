@@ -38,6 +38,7 @@ export function useAppState<T>(map: (state: AppState) => T): T {
   const model = useAppModel()
   const [value, setValue] = React.useState(() => map(model.getState()))
   React.useEffect(() => {
+    setValue(map(model.getState()))
     return model.addListener((state) => { setValue(map(state)) })
   }, [model])
   return value
