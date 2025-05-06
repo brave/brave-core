@@ -15,9 +15,7 @@ transpile_web_ui("dialog") {
         rebase_path("ui/brave_psst_dialog.tsx"),
       ] ]
 
-  deps = [
-    "//brave/components/psst/browser/core:mojom_js",
-  ]
+  deps = [ "//brave/components/psst/browser/core:mojom_js" ]
 
   # what is the directory / pack name
   resource_name = "brave_psst_dialog"

@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_PSST_PSST_DIALOG_TAB_HELPER_DELEGATE_IMPL_H_
 
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 #include "content/public/browser/web_contents.h"

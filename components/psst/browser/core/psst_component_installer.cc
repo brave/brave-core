@@ -172,10 +172,6 @@ bool PsstComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-void OnRegistered(const std::string& component_id) {
-  // BraveOnDemandUpdater::GetInstance()->EnsureInstalled(kPsstComponentId);
-}
-
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
     PsstComponentInstallerPolicy::DeleteComponent();
@@ -187,7 +183,6 @@ void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   installer->Register(
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {
-        base::debug::TaskTrace().Print();
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
             ->EnsureInstalled(kPsstComponentId);
       }));
