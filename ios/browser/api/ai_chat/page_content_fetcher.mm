@@ -399,7 +399,7 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 
 PageContentFetcher::PageContentFetcher(web::WebState* web_state)
     : web_state_(web_state),
-      url_loader_factory_(web_state_->GetProfile()
+      url_loader_factory_(web_state_->GetBrowserState()
                               ->GetSharedURLLoaderFactory()) {}
 
 PageContentFetcher::~PageContentFetcher() = default;
@@ -407,17 +407,6 @@ PageContentFetcher::~PageContentFetcher() = default;
 void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
                                           FetchPageContentCallback callback) {
   VLOG(2) << __func__ << " Extracting page content from renderer...";
-
-  auto* primary_rfh = web_state_->GetPrimaryMainFrame();
-  DCHECK(primary_rfh->IsRenderFrameLive());
-
-  if (!primary_rfh) {
-    LOG(ERROR)
-        << "Content extraction request submitted for a WebContents without "
-           "a primary main frame";
-    std::move(callback).Run("", false, "");
-    return;
-  }
 
   if (web_state_->GetContentsMimeType() == "application/pdf") {
     // TODO: Extract PDF HERE

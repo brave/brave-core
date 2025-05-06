@@ -51,7 +51,7 @@ class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
   }
 
  private:
-  raw_ptr<web::WebState, DanglingUntriaged> web_state;
+  raw_ptr<web::WebState, DanglingUntriaged> web_state_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
 

@@ -47,7 +47,7 @@ namespace ai_chat {
 AIChatTabHelper::AIChatTabHelper(web::WebState* web_state)
 : web::WebStateObserver(),
 AssociatedContentDriverIOS(web_state->GetBrowserState()
-                           ->GetSharedURLLoaderFactory()),
+                           ->GetSharedURLLoaderFactory(), nil),
 page_content_fetcher_delegate_(
                                std::make_unique<PageContentFetcher>(web_state)) {
                                  web::WebStateUserData<AIChatTabHelper>::CreateForWebState(web_state);

@@ -13,7 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
-#include "brave/ios/browser/api/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"

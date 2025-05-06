@@ -17,7 +17,6 @@
 #include "brave/ios/browser/ui/webui/brave_webui_utils.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -49,6 +48,7 @@
 #include "base/strings/stringprintf.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -101,7 +101,7 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {
     source->AddString(str.name,
-                      brave_l10n::GetLocalizedResourceUTF16String(str.id));
+                      l10n_util::GetStringUTF8(str.id));
   }
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
