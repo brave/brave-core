@@ -328,7 +328,7 @@ public class BraveNewsUtils {
     public static void getBraveNewsSettingsDataPerProfile(Profile profile) {
         ThreadUtils.assertOnUiThread();
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(profile, null)
+                .getForProfile(profile, null)
                 .then(
                         braveNewsController -> {
                             if (braveNewsController == null) {

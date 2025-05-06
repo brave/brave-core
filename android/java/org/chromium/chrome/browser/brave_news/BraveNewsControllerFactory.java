@@ -42,7 +42,7 @@ public class BraveNewsControllerFactory {
         mTaskRunner = PostTask.createSequencedTaskRunner(TaskTraits.UI_DEFAULT);
     }
 
-    public Promise<@Nullable BraveNewsController> getBraveNewsController(
+    public Promise<@Nullable BraveNewsController> getForProfile(
             Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         final Promise<@Nullable BraveNewsController> promise = new Promise<>();
 
