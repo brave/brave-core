@@ -2,7 +2,7 @@
 
 Most features should be scoped to a Profile/BrowserContext and be BrowserContextKeyedServices per https://www.chromium.org/developers/design-documents/profile-architecture/. What this means is that all associated preferences and other locally stored state will be per-profile. A service may sometimes be shared between the regular and OTR profile (check with sec-team) and it may also be ununavailable for certain profile types. `ProfileKeyedServiceFactory/ProfileKeyedServiceFactoryIOS` with `ProfileSelections::Builder` is the preferred method to use for determining which (if any) profile should be used for the service.
 
-```c++
+```cpp
 MyServiceFactory::MyServiceFactory()
     : ProfileKeyedServiceFactory(
           "MyService",
@@ -13,7 +13,7 @@ MyServiceFactory::MyServiceFactory()
 
 If you have more complicated logic then use `BrowserContextKeyedServiceFactory::GetBrowserContextToUse` and return nullptr if the service is not available for the given `BrowserContext`.
 
-```c++
+```cpp
 content::BrowserContext* MyServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
@@ -31,7 +31,7 @@ Avoid adding wrapper classes around keyed services to implement mojo interfaces.
 C++
 
 brave/components/fake/fake_service_impl.cc
-```c++
+```cpp
 namespace fake {
 class FakeServiceImpl : public KeyedService, public mojom::FakeService {
 ...
@@ -40,7 +40,7 @@ class FakeServiceImpl : public KeyedService, public mojom::FakeService {
 ```
 
 brave/browser/fake/fake_service_factory.cc
-```c++
+```cpp
 mojo::PendingRemote<mojom::FakeService> FakeServiceFactory::GetRemoteForProfile(
     content::BrowserContext* context) {
   auto* instance = GetInstance()->GetServiceForBrowserContext(context, true);
@@ -102,7 +102,7 @@ IOS has separate factories because Profile subclasses `web::BrowserState` instea
 obj-c
 
 brave/ios/browser/fake/fake_service_factory.mm
-```objc
+```cpp
 mojo::PendingRemote<fake::mojom::FakeService> FakeServiceFactory::GetForProfile(
     ProfileIOS* profile) {
   auto* service = GetInstance()->GetServiceForProfileAs<fake::FakeServiceImpl>(
