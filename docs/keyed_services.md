@@ -26,36 +26,124 @@ Do not explicitly return null from other methods like `BuildServiceInstanceForBr
 
 #### Keyed Services and Mojo
 
-Avoid adding wrapper classes around keyed services to implement mojo interfaces. It's usually better to implement them directly in the service. Factories should implement `GetRemoteForProfile` to return a `mojo::PendingRemote` and `BindRemoteForProfile` when you are passing in a `mojo::PendingReceiver`. The keyed service should implement `MakeRemote()` to return the `mojo::PendingRemote`. Please always ensure that you check to make sure the service is not null before calling `MakeRemote()` and return an empty pending remote if it is `mojo::PendingRemote<mojom::MyService>()`.
+Avoid adding wrapper classes around keyed services to implement mojo interfaces. It's usually better to implement them directly in the service. Factories should implement `GetRemoteForProfile` to return a `mojo::PendingRemote` and `BindRemoteForProfile` when you are passing in a `mojo::PendingReceiver`. The keyed service should implement `MakeRemote()` to return the `mojo::PendingRemote`. Please always ensure that you check to make sure the service is not null before calling `MakeRemote()` and return an empty pending remote if it is `mojo::PendingRemote<mojom::FakeService>()`.
 
-Java code should should pass the Mojo remote using JNI.
+C++
 
+brave/components/fake/fake_service_impl.cc
 ```
-static jlong JNI_MyService_GetForProfile(
+namespace fake {
+class FakeServiceImpl : public KeyedService, public mojom::FakeService {
+...
+}
+}  // namespace fake
+```
+
+brave/browser/fake/fake_service_factory.cc
+```
+mojo::PendingRemote<mojom::FakeService> FakeServiceFactory::GetRemoteForProfile(
+    content::BrowserContext* context) {
+  auto* instance = GetInstance()->GetServiceForBrowserContext(context, true);
+  if (!instance) {
+    return mojo::PendingRemote<mojom::FakeService>();
+  }
+  return static_cast<fake::FakeServiceImpl*>(instance)->MakeRemote();
+}
+
+void FakeServiceFactory::BindRemoteForProfile(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<fake::mojom::FakeService> receiver) {
+  auto* service = static_cast<fake::FakeServiceImpl*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+  if (service) {
+    service->Bind(std::move(receiver));
+  }
+}
+
+static jlong JNI_FakeService_GetForProfile(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
-      MyServiceFactory::GetInstance()->GetRemoteService(profile);
+      FakeServiceFactory::GetInstance()->GetRemoteService(profile);
   return pending.PassPipe().release().value()
 }
 ```
 
+Java
+
+brave/browser/fake/android/java/src/org/chromium/brave/browser/fake/FakeServiceFactory.java
 ```
-public @Nullable MyService getForProfile(Profile profile,
+public @Nullable fake::FakeService getForProfile(Profile profile,
         @Nullable ConnectionErrorHandler connectionErrorHandler) {
-    long nativeHandle = MyServiceFactoryJni.get().getForProfile(profile);
+    long nativeHandle = FakeServiceFactoryJni.get().getForProfile(profile);
     MessagePipeHandle handle =
             CoreImpl.getInstance().acquireNativeHandle(nativeHandle).
             toMessagePipeHandle();
     if (!handle.isValid()) {
       return null;
     }
-    MyService myService = MyService.MANAGER.attachProxy(handle, 0);
+    fake::FakeService fakeService =
+        fake::FakeService.MANAGER.attachProxy(handle, 0);
     if (connectionErrorHandler != null) {
-        Handler handler = ((Interface.Proxy) myService).getProxyHandler();
+        Handler handler = ((Interface.Proxy) fakeService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
     }
-    return myService;
+    return fakeService;
 }
+```
+
+#### IOS
+
+IOS has separate factories because Profile subclasses `web::BrowserState` instead of `content::BrowserContext`, but the same principles apply to `ProfileKeyedServiceFactoryIOS`.
+
+#### IOS keyed services and mojo
+
+obj-c
+
+brave/ios/browser/fake/fake_service_factory.mm
+```
+mojo::PendingRemote<fake::mojom::FakeService> FakeServiceFactory::GetForProfile(
+    ProfileIOS* profile) {
+  auto* service = GetInstance()->GetServiceForProfileAs<fake::FakeServiceImpl>(
+      profile, true);
+  if (!service) {
+    return mojo::PendingRemote<fake::mojom::FakeService>();
+  }
+  return service->MakeRemote();
+}
+
+@implementation FakeFakeServiceFactory
++ (nullable id)getForProfile:(ProfileIOS*)profile {
+  auto* fake_service =
+      FakeServiceFactory::GetRemoteForProfile(profile);
+  if (!fake_service) {
+    return nil;
+  }
+  mojo::PendingRemote<fake::mojom::FakeService> pending_remote;
+  fake_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
+  return [[FakeFakeServiceMojoImpl alloc]
+      initWithFakeService:std::move(pending_remote)];
+}
+```
+
+brave/ios/browser/fake/fake_service_factory_wrapper.h
+```
+#import <Foundation/Foundation.h>
+#include "keyed_service_factory_wrapper.h"  // NOLINT
+
+@protocol FakeFakeService;
+
+OBJC_EXPORT
+NS_SWIFT_NAME(Fake.FakeServiceFactory)
+@interface FakeFakeServiceFactory
+    : KeyedServiceFactoryWrapper < id <FakeFakeService>
+> @end
+
+#endif  // BRAVE_IOS_BROWSER_SKUS_SKUS_SDK_FACTORY_WRAPPERS_H_
+```
+
+swift
+```
+FakeServiceFactory.get(privateMode: privateMode),
 ```
