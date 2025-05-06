@@ -218,7 +218,7 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1u);
   auto* const render_widget_host_view = GetRenderWidgetHostViewForActiveTab();
-  if (render_widget_host_view) {
+  if (!render_widget_host_view) {
     RejectJavascriptCallback(args[0], {});
     AddWebcompatReporterError(
         pending_report_,
