@@ -354,9 +354,7 @@ extension BrowserViewController {
   func presentDataImporter() {
     // DataImportView is typically presented from inside settings, so we need to:
     //   1. Set up a UINavigationController container
-    //   2. Dismiss ourselves in `onDismiss` since the SwiftUI `dismiss` will not work (since it
-    //      will only pop the nav)
-    //   3. Add a done button to the toolbar
+    //   2. Add a done button to the toolbar
     let controller = UIHostingController(
       rootView: DataImportView(
         openURL: { [unowned self] url in
@@ -367,11 +365,10 @@ extension BrowserViewController {
             isPrivileged: url.scheme == InternalURL.scheme
           )
         },
-        onDismiss: { [unowned self] in
-          if presentedViewController != nil {
-            dismiss(animated: true)
-          }
-        }
+        dismiss: { [unowned self] in
+          dismiss(animated: true)
+        },
+        onDismiss: {}
       )
     )
     controller.navigationItem.rightBarButtonItem = .init(

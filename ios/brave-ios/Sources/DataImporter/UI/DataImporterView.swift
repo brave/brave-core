@@ -16,10 +16,6 @@ private struct ImporterInfo {
 }
 
 public struct DataImportView: View {
-
-  @Environment(\.dismiss)
-  private var dismiss
-
   @State
   private var importerInfo = ImporterInfo(shouldShowFileImporter: false)
 
@@ -27,10 +23,16 @@ public struct DataImportView: View {
   private var model = DataImportModel()
 
   private var openURL: (URL) -> Void
+  private var dismiss: () -> Void
   private var onDismiss: () -> Void
 
-  public init(openURL: @escaping (URL) -> Void, onDismiss: @escaping () -> Void) {
+  public init(
+    openURL: @escaping (URL) -> Void,
+    dismiss: @escaping () -> Void,
+    onDismiss: @escaping () -> Void
+  ) {
     self.openURL = openURL
+    self.dismiss = dismiss
     self.onDismiss = onDismiss
   }
 
@@ -227,6 +229,6 @@ public struct DataImportView: View {
 
 #if DEBUG
 #Preview {
-  DataImportView(openURL: { _ in }, onDismiss: {})
+  DataImportView(openURL: { _ in }, dismiss: {}, onDismiss: {})
 }
 #endif
