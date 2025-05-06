@@ -67,7 +67,6 @@ provideStrings({
   copyButtonLabel: 'Copy',
   likeAnswerButtonLabel: 'Like answer',
   dislikeAnswerButtonLabel: 'Dislike answer',
-  likeDislikeAnswerButtonTitle: 'Sends rating, conversation, model, language, version, and premium status',
   provideFeedbackTitle: 'Provide Brave AI Feedback',
   selectFeedbackTopic: 'Select your feedback topic',
   feedbackCategoryLabel: 'Whats your feedback about?',
@@ -139,5 +138,11 @@ provideStrings({
   reasoningLabel: 'Reasoning...',
   reasoningCompleteLabel: 'Reasoning complete',
   hideDetailsButtonLabel: 'Hide details',
-  showDetailsButtonLabel: 'Show details'
+  showDetailsButtonLabel: 'Show details',
+  sendButtonLabel: 'Send',
+  rateMessagePrivacyModalTitle: 'Response Feedback',
+  rateMessagePrivacyModalDescription:
+    'Liking or disliking an answer will send rating, conversation, ' +
+    'model, language, version, and premium status to Brave in order ' +
+    'to improve Leo. $1Learn more$2'
 })
