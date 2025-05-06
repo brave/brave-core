@@ -261,6 +261,7 @@ components/skus/common/skus_utils.h @brave/sec-team
 build/dotfile_settings.gni @brave/brave-core-owners
 
 docs/gni_sources.md @bridiver
+docs/keyed_services.md @bridiver
 
 build/commands/lib/branding.js @bridiver
 
