@@ -5,8 +5,15 @@
 
 #include "ios/web/webui/url_data_manager_ios_backend.h"
 
+#import <set>
+
+// Override ShouldDenyXFrameOptions
+// to add our own CSP headers here:
+// https://source.chromium.org/chromium/chromium/src/+/main:ios/web/webui/url_data_manager_ios_backend.mm;l=292;drc=1379ddb0f0535ff846ce0fbad8ee49af303140c4?q=GetContentSecurityPolicyObjectSrc&ss=chromium%2Fchromium%2Fsrc
+
 #define ShouldDenyXFrameOptions ShouldDenyXFrameOptions());  \
   job->set_content_security_policy_frame_source(             \
+      source->source()->GetContentSecurityPolicyBase() +     \
       source->source()->GetContentSecurityPolicyFrameSrc()); \
         void(void
 
