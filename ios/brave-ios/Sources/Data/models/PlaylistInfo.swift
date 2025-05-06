@@ -9,18 +9,18 @@ import WebKit
 import os.log
 
 public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
-  public let name: String
-  public let src: String
-  public let pageSrc: String
-  public let pageTitle: String
-  public let mimeType: String
-  public let duration: TimeInterval
-  public let lastPlayedOffset: TimeInterval
-  public let detected: Bool
-  public let dateAdded: Date
-  public let tagId: String
-  public let order: Int32
-  public let isInvisible: Bool
+  public var name: String
+  public var src: String
+  public var pageSrc: String
+  public var pageTitle: String
+  public var mimeType: String
+  public var duration: TimeInterval
+  public var lastPlayedOffset: TimeInterval
+  public var detected: Bool
+  public var dateAdded: Date
+  public var tagId: String
+  public var order: Int32
+  public var isInvisible: Bool
 
   public var id: String {
     tagId

@@ -345,7 +345,7 @@ class PlayerModelTests: CoreDataTestCase {
     let item = try XCTUnwrap(PlaylistItem.getItems(parentFolder: folder).first)
     await withCheckedContinuation { continuation in
       item.lastPlayedOffset = 3
-      PlaylistItem.updateItem(.init(item: item)) {
+      PlaylistItem.updateItem(.init(item: item)) { _ in
         continuation.resume()
       }
     }
@@ -405,7 +405,7 @@ class PlayerModelTests: CoreDataTestCase {
     let items = PlaylistItem.getItems(parentFolder: folder)
     await withCheckedContinuation { continuation in
       items[0].lastPlayedOffset = 3
-      PlaylistItem.updateItem(.init(item: items[0])) {
+      PlaylistItem.updateItem(.init(item: items[0])) { _ in
         continuation.resume()
       }
     }
