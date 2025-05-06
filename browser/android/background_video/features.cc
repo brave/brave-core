@@ -15,5 +15,9 @@ BASE_FEATURE(kBraveBackgroundVideoPlayback,
              "BraveBackgroundVideoPlayback",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBravePictureInPictureForYouTubeVideos,
+             "BravePictureInPictureForYouTubeVideos",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace preferences
