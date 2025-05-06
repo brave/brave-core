@@ -16,7 +16,7 @@
 
 class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  public:
-  static web::WebUIIOSDataSource* Create(const std::string& source_name);
+  static BraveWebUIIOSDataSource* Create(const std::string& source_name);
 
   BraveWebUIIOSDataSource(const BraveWebUIIOSDataSource&) = delete;
   BraveWebUIIOSDataSource& operator=(const BraveWebUIIOSDataSource&) = delete;
