@@ -297,6 +297,9 @@ class SettingsViewController: TableViewController {
                   self.settingsDelegate?.settingsOpenURLInNewTab(url)
                   self.dismiss(animated: true)
                 },
+                dismiss: { [unowned self] in
+                  self.navigationController?.popViewController(animated: true)
+                },
                 onDismiss: { [weak self] in
                   self?.navigationController?.setNavigationBarHidden(false, animated: false)
                 }
