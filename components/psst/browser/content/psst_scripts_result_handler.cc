@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
@@ -29,20 +30,26 @@ bool IsPsstOperationContextValid(
 
 std::string GetScriptWithParams(const std::string& script,
                                 std::optional<base::Value> params) {
-  std::string result;
-  if (params) {
-    std::string params_str;
-    auto* params_json = params->GetIfDict();
-    base::JSONWriter::WriteWithOptions(
-        *params_json, base::JSONWriter::OPTIONS_PRETTY_PRINT, &params_str);
-
-    result = base::ReplaceStringPlaceholders("const params = $1;\n",
-                                             {params_str}, nullptr);
+  if (!params) {
+    return script;
   }
 
-  result.append(script);
+  const auto* params_dict = params->GetIfDict();
+  if (!params_dict) {
+    return script;
+  }
+
+  std::optional<std::string> params_json = base::WriteJsonWithOptions(
+      *params_dict, base::JSONWriter::OPTIONS_PRETTY_PRINT);
+  if (!params_json) {
+    return script;
+  }
+
+  std::string result =
+      base::StrCat({"const params = ", *params_json, ";\n", script});
   return result;
 }
+
 void PrepareParametersForPolicyExecution(
     std::optional<base::Value>& params,
     const std::vector<std::string>& disabled_checks,
@@ -55,10 +62,7 @@ void PrepareParametersForPolicyExecution(
     tasks->EraseIf([&](const base::Value& v) {
       const auto& item_dict = v.GetDict();
       const auto* url = item_dict.FindString("url");
-      return url && std::ranges::any_of(disabled_checks,
-                                        [&](const std::string& value) {
-                                          return *url == value;
-                                        });
+      return url && base::Contains(disabled_checks, *url);
     });
   }
 
@@ -68,7 +72,6 @@ void PrepareParametersForPolicyExecution(
 std::optional<std::vector<std::string>> ParseErrors(
     PsstDialogDelegate* delegate,
     const base::Value::Dict* errors) {
-  DCHECK(delegate);
   if (!errors || !delegate) {
     return std::nullopt;
   }
@@ -99,7 +102,6 @@ std::optional<std::vector<std::string>> ParseErrors(
 std::optional<std::vector<std::string>> ParseAppliedList(
     PsstDialogDelegate* delegate,
     const base::Value::List* applied) {
-  DCHECK(delegate);
   if (!applied || !delegate) {
     return std::nullopt;
   }
@@ -135,7 +137,9 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
       prefs_(prefs),
       render_frame_host_id_(render_frame_host->GetGlobalId()),
       web_contents_(web_contents),
-      world_id_(world_id) {}
+      world_id_(world_id) {
+  DCHECK(delegate_);
+}
 
 PsstScriptsHandlerImpl::~PsstScriptsHandlerImpl() = default;
 
@@ -161,7 +165,12 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(const MatchedRule& rule,
     return;
   }
 
-  auto* params = script_result.GetIfDict();
+  const auto* params = script_result.GetIfDict();
+  if (!params) {
+    ResetContext();
+    return;
+  }
+
   const std::string* user_id =
       params->FindString(kUserScriptResultUserPropName);
   if (!user_id) {
@@ -198,18 +207,19 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(const MatchedRule& rule,
     return;
   }
 
-  auto show_data = std::make_unique<PsstDialogDelegate::ShowDialogData>(
-      prompt_for_new_version, *site_name, tasks->Clone(),
-      base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
-                     weak_factory_.GetWeakPtr(), true, *user_id, rule,
-                     std::move(script_result), kAllow),
-      base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
-                     weak_factory_.GetWeakPtr(), true, *user_id, rule,
-                     std::nullopt /* no params needed */, kBlock),
-      base::BindOnce(&PsstScriptsHandlerImpl::DisablePsst,
-                     weak_factory_.GetWeakPtr()));
+  delegate_->SetShowDialogData(
+      std::make_unique<PsstDialogDelegate::ShowDialogData>(
+          prompt_for_new_version, *site_name, tasks->Clone(),
+          base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
+                         weak_factory_.GetWeakPtr(), true, *user_id, rule,
+                         std::move(script_result), kAllow),
+          base::BindOnce(&PsstScriptsHandlerImpl::OnUserDialogAction,
+                         weak_factory_.GetWeakPtr(), true, *user_id, rule,
+                         std::nullopt /* no params needed */, kBlock),
+          base::BindOnce(&PsstScriptsHandlerImpl::DisablePsst,
+                         weak_factory_.GetWeakPtr())));
 
-  delegate_->ShowPsstConsentDialog(show_data);
+  delegate_->Show();
 }
 
 void PsstScriptsHandlerImpl::OnUserDialogAction(

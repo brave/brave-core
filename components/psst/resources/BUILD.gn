@@ -17,7 +17,6 @@ transpile_web_ui("dialog") {
 
   deps = [
     "//brave/components/psst/browser/core:mojom_js",
-    #    "//mojo/public/mojom/base",
   ]
 
   # what is the directory / pack name

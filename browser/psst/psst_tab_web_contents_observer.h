@@ -39,8 +39,6 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                              std::unique_ptr<PsstDialogDelegate> delegate,
                              const int32_t world_id);
 
-  // friend class content::WebContentsUserData<PsstTabWebContentsObserver>;
-
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -49,9 +47,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   std::unique_ptr<PsstScriptsHandler> script_handler_;
   const raw_ptr<PrefService> prefs_;
   const raw_ptr<PsstRuleRegistry> psst_rule_registry_;
-  bool should_process_{false};
-
-  //     base::WeakPtrFactory<PsstTabHelper> weak_factory_{this};
+  bool should_process_ = false;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

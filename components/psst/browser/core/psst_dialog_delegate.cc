@@ -41,11 +41,6 @@ bool PsstDialogDelegate::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
-void PsstDialogDelegate::ShowPsstConsentDialog(
-    std::unique_ptr<ShowDialogData>& show_dialog_data) {
-  show_dialog_data_ = std::move(show_dialog_data);
-}
-
 void PsstDialogDelegate::SetProgressValue(const double value) {}
 
 PsstDialogDelegate::ShowDialogData* PsstDialogDelegate::GetShowDialogData() {
@@ -62,13 +57,18 @@ void PsstDialogDelegate::SetRequestDone(
 
 void PsstDialogDelegate::SetCompletedView(
     const std::optional<std::vector<std::string>>& applied_checks,
-    const std::optional<std::vector<std::string>>& errors
-    //  ShareCallback share_cb
-) {
+    const std::optional<std::vector<std::string>>& errors) {
   for (Observer& obs : observer_list_) {
     obs.OnSetCompleted(applied_checks, errors);
   }
 }
+
+void PsstDialogDelegate::SetShowDialogData(
+    std::unique_ptr<ShowDialogData> show_dialog_data) {
+  show_dialog_data_ = std::move(show_dialog_data);
+}
+
+void PsstDialogDelegate::Show() {}
 
 void PsstDialogDelegate::Close() {}
 

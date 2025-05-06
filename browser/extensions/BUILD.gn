@@ -14,6 +14,7 @@ import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 
 assert(toolkit_views)
 
@@ -162,8 +163,6 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/core",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/common",
-    "//brave/components/psst/buildflags:buildflags",
-    "//brave/components/psst/common:common",
     "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
@@ -249,6 +248,13 @@ source_set("extensions") {
       "brave_webtorrent_navigation_throttle.h",
     ]
     deps += [ "//brave/components/brave_webtorrent/browser" ]
+  }
+
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/buildflags:buildflags",
+      "//brave/components/psst/common:common",
+    ]
   }
 
   allow_circular_includes_from = [ ":brave_prefs_util_impl" ]

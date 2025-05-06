@@ -29,8 +29,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstOperationContext {
       const base::Value& user_script_result,
       const MatchedRule& rule);
 
-  std::string GetUserId() const;
-  std::string GetRuleName() const;
+  const std::string& GetUserId() const;
+  const std::string& GetRuleName() const;
 
   bool IsValid() const;
 

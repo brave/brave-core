@@ -23,10 +23,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnSetRequestDone(const std::string& url,
-                                  const std::optional<std::string>& error) = 0;
+                                  const std::optional<std::string>& error) {}
     virtual void OnSetCompleted(
         const std::optional<std::vector<std::string>>& applied_checks,
-        const std::optional<std::vector<std::string>>& errors) = 0;
+        const std::optional<std::vector<std::string>>& errors) {}
   };
 
   void AddObserver(Observer* obs);
@@ -56,16 +56,16 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
 
   PsstDialogDelegate();
   virtual ~PsstDialogDelegate();
-  virtual void ShowPsstConsentDialog(
-      std::unique_ptr<ShowDialogData>& show_dialog_data);
   virtual void SetProgressValue(const double value);
   virtual void SetRequestDone(const std::string& url,
                               const std::optional<std::string>& error);
   virtual void SetCompletedView(
       const std::optional<std::vector<std::string>>& applied_checks,
       const std::optional<std::vector<std::string>>& errors);
+  virtual void Show();
   virtual void Close();
 
+  void SetShowDialogData(std::unique_ptr<ShowDialogData> show_dialog_data);
   ShowDialogData* GetShowDialogData();
 
  private:

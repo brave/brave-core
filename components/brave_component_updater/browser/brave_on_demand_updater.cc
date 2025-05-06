@@ -16,7 +16,6 @@ namespace brave_component_updater {
 
 BraveOnDemandUpdater* BraveOnDemandUpdater::GetInstance() {
   static base::NoDestructor<BraveOnDemandUpdater> instance;
-  instance->IsValid();
   return instance.get();
 }
 bool BraveOnDemandUpdater::IsValid() {

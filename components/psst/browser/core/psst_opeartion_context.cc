@@ -42,10 +42,11 @@ PsstOperationContext::PsstOperationContext(const std::string& user_id,
                                            const MatchedRule& rule)
     : user_id_(user_id), rule_name_(rule.Name()) {}
 
-std::string PsstOperationContext::GetUserId() const {
+const std::string& PsstOperationContext::GetUserId() const {
   return user_id_;
 }
-std::string PsstOperationContext::GetRuleName() const {
+
+const std::string& PsstOperationContext::GetRuleName() const {
   return rule_name_;
 }
 

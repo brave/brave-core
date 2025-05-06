@@ -69,8 +69,7 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
   }
 
   // Make sure it gets reset.
-  if (const bool should_process = std::exchange(should_process_, false);
-      !should_process) {
+  if (!std::exchange(should_process_, false)) {
     return;
   }
 

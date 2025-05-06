@@ -10,6 +10,7 @@
 
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 
 namespace psst {
@@ -21,6 +22,7 @@ constexpr int kDialogMaxHeight = 700;
 constexpr int kDialogWidth = 475;
 
 }  // namespace
+
 class PsstWebDialogDelegate : public ui::WebDialogDelegate {
  public:
   PsstWebDialogDelegate();
@@ -43,6 +45,7 @@ PsstWebDialogDelegate::~PsstWebDialogDelegate() = default;
 GURL PsstWebDialogDelegate::GetDialogContentURL() const {
   return GURL(kBraveUIPsstURL);
 }
+
 void PsstWebDialogDelegate::OnDialogClosed(
     const std::string& /* json_retval */) {}
 
@@ -52,8 +55,8 @@ void PsstWebDialogDelegate::OnCloseContents(content::WebContents* /* source */,
 }
 
 void OpenPsstDialog(content::WebContents* initiator) {
-  gfx::Size min_size(kDialogWidth, kDialogMinHeight);
-  gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
+  const gfx::Size min_size(kDialogWidth, kDialogMinHeight);
+  const gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
   ShowConstrainedWebDialogWithAutoResize(
       initiator->GetBrowserContext(), std::make_unique<PsstWebDialogDelegate>(),
       initiator, min_size, max_size);

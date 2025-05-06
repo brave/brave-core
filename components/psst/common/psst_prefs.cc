@@ -22,10 +22,10 @@ namespace psst {
 
 namespace {
 
-inline constexpr char kConsentStatus[] = "consent_status";
-inline constexpr char kScriptVersion[] = "script_version";
-inline constexpr char kUrlsToSkip[] = "urls_to_skip";
-inline constexpr char kEnablePsstFlag[] = "enable_psst";
+constexpr char kConsentStatus[] = "consent_status";
+constexpr char kScriptVersion[] = "script_version";
+constexpr char kUrlsToSkip[] = "urls_to_skip";
+constexpr char kEnablePsstFlag[] = "enable_psst";
 
 }  // namespace
 
@@ -78,7 +78,6 @@ void SetEnablePsstFlag(PrefService* prefs, const bool val) {
   ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
   base::Value::Dict& pref = update.Get();
   pref.Set(kEnablePsstFlag, val);
-  //  update->Set(kEnablePsstFlag, val);
 }
 
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,

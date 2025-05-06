@@ -6,8 +6,6 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include <memory>
-#include <string>
-#include <string_view>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
@@ -25,8 +23,6 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -153,7 +149,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
   brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
       web_contents);
-
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif

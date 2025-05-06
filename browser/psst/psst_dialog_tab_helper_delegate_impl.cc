@@ -15,9 +15,7 @@ PsstDialogTabHelperDelegateImpl::PsstDialogTabHelperDelegateImpl(
 
 PsstDialogTabHelperDelegateImpl::~PsstDialogTabHelperDelegateImpl() = default;
 
-void PsstDialogTabHelperDelegateImpl::ShowPsstConsentDialog(
-    std::unique_ptr<ShowDialogData>& show_dialog_data) {
-  PsstDialogDelegate::ShowPsstConsentDialog(show_dialog_data);
+void PsstDialogTabHelperDelegateImpl::Show() {
   psst::OpenPsstDialog(web_contents_);
 }
 

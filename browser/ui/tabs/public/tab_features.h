@@ -17,9 +17,11 @@ namespace ai_chat {
 class TabDataWebContentsObserver;
 }
 
+#if BUILDFLAG(ENABLE_PSST)
 namespace psst {
 class PsstTabWebContentsObserver;
 }
+#endif
 
 namespace tabs {
 
@@ -43,7 +45,9 @@ class TabFeatures : public TabFeatures_Chromium {
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
+#if BUILDFLAG(ENABLE_PSST)
   std::unique_ptr<psst::PsstTabWebContentsObserver> psst_observer_;
+#endif
 };
 
 }  // namespace tabs

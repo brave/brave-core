@@ -16,7 +16,6 @@
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/psst/buildflags/buildflags.h"
-#include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,6 +31,10 @@
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/features.h"
 #endif
 
 BravePrivacyHandler::BravePrivacyHandler() {

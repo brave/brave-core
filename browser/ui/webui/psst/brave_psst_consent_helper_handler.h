@@ -57,8 +57,6 @@ class BravePsstConsentHelperHandler
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
-  // raw_ptr<ConstrainedWebDialogDelegate>
-  // constrained_web_dlg_delegate_{nullptr};
   raw_ptr<psst::PsstTabWebContentsObserver> active_tab_helper_{nullptr};
   raw_ptr<PsstDialogDelegate> psst_dialog_delegate_{nullptr};
   raw_ptr<BravePsstDialogUI> const dialog_ui_{nullptr};

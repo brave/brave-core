@@ -148,7 +148,6 @@ void BravePsstConsentHelperHandler::OnTabStripModelChanged(
         GetActivePsstTabHelperFromContext(selection.new_contents);
 
     psst_dialog_delegate_ = active_tab_helper_->GetPsstDialogDelegate();
-    ;
     if (!psst_dialog_delegate_) {
       return;
     }

@@ -181,10 +181,6 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   }
 
   psst::OpenPsstDialog(active_shields_data_controller_->web_contents());
-
-  // webcompat_reporter::OpenReporterDialog(
-  //   active_shields_data_controller_->web_contents(),
-  //   webcompat_reporter::UISource::kShieldsPanel);
 }
 
 void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(

@@ -13,7 +13,6 @@
 #undef RegisterComponentsForUpdate
 
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"

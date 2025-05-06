@@ -19,8 +19,7 @@ class PsstDialogTabHelperDelegateImpl : public PsstDialogDelegate {
   ~PsstDialogTabHelperDelegateImpl() override;
 
   // psst::PsstTabHelper::Delegate
-  void ShowPsstConsentDialog(
-      std::unique_ptr<ShowDialogData>& show_dialog_data) override;
+  void Show() override;
 
  private:
   raw_ptr<content::WebContents> web_contents_;

@@ -1374,13 +1374,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if> <!-- enable_playlist_webui -->
 
-      <message name="IDS_PSST_CONSENT_DIALOG_HEADER" desc="A header for a dialog to adjust PSST">
-        Psst! Want to try out the new Privacy Site Settings Tool?
-      </message>
-      <message name="IDS_PSST_CONSENT_COMPLETE_DIALOG_HEADER" desc="A header for PSST complete dialog">
-        Done!
-      </message>
-
       <!-- File select -->
       <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE" desc="">
         <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to open
@@ -1427,44 +1420,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for PSST complete dialog">
         Cancel
-      </message>
-
-
-      <message name="IDS_PSST_CONSENT_DIALOG_BODY_LIST_OF_CHANGES" desc="A body for a dialog to adjust PSST">
-        Here is what Brave will change:
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_BODY_NEW_VERSION" desc="New version text for dialog to adjust PSST">
-        We have new privacy settings for this website since you last tuned this site. Would you like to try them out?
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_OK" desc="Ok button's Text for a dialog to adjust PSST">
-        Yes, change privacy settings for this website
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN" desc="Never ask me button's Text for a dialog to adjust PSST">
-        Never ask me again
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for a dialog to adjust PSST">
-        Not for this website
-      </message>
-      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_SHARE" desc="Share your PSST expirience button's text for PSST complete dialog">
-        Share
-      </message>
-      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT" desc="Report button's Text for PSST complete dialog">
-        Report failures
-      </message>
-      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_APPLIED_LIST_TITLE" desc="The title for list of the applied operations on the complete consent dialog">
-        The following settings were changed:
-      </message>
-      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED_LIST_TITLE" desc="The title for list of the failed operations on the complete consent dialog">
-        Could not change:
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_TASK_STATUS_DONE" desc="Done task's status text for a PSST dialog">
-        Done
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_TASK_STATUS_FAILED" desc="Failed task's status text for a PSST dialog">
-        Failed
-      </message>
-      <message name="IDS_PSST_CONSENT_DIALOG_SHARE_MESSAGE_PRE_POPULATED_TEXT" desc="Prepopulated text which Brave proposes to share on social network">
-        Brave browser automatically opted me out of data sharing and other privacy-harmful settings on <ph name="COUNT">$1</ph>!
       </message>
 
       <!-- Tab Search -->

@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_PSST_BRAVE_PSST_DIALOG_H_
 #define BRAVE_BROWSER_PSST_BRAVE_PSST_DIALOG_H_
 
-#include "content/public/browser/web_contents.h"
+namespace content {
+class WebContents;
+}
 
 namespace psst {
 
