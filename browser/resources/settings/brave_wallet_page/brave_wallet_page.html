@@ -20,12 +20,6 @@
     .reset-transaction-info {
       cursor: pointer;
     }
-    settings-dropdown-menu.wide-drop-down {
-      --md-select-width: 260px;
-    }
-    settings-dropdown-menu.narrow-drop-down {
-      --md-select-width: 100px;
-    }
 
   #needsRestart {
     background-color: #fff;
@@ -74,7 +68,6 @@
   <div class="settings-box first">
     <div class="start">$i18n{defaultEthereumWalletDesc}</div>
     <settings-dropdown-menu id="defaultEthereumWalletType"
-                            class="wide-drop-down"
                             pref="{{prefs.brave.wallet.default_wallet2}}"
                             menu-options="[[ethereum_provider_options_]]">
     </settings-dropdown-menu>
@@ -82,7 +75,6 @@
   <div class="settings-box">
     <div class="start">$i18n{defaultSolanaWalletDesc}</div>
     <settings-dropdown-menu id="defaultSolanaWalletType"
-                            class="wide-drop-down"
                             pref="{{prefs.brave.wallet.default_solana_wallet}}"
                             menu-options="[[solana_provider_options_]]">
     </settings-dropdown-menu>
@@ -90,7 +82,6 @@
   <div class="settings-box">
     <div class="start">$i18n{defaultBaseCurrencyDesc}</div>
     <settings-dropdown-menu id="defaultBaseCurrencyType"
-                            class="narrow-drop-down"
                             pref="{{prefs.brave.wallet.default_base_currency}}"
                             menu-options="[[currency_list_]]">
     </settings-dropdown-menu>
@@ -98,7 +89,6 @@
   <div class="settings-box">
     <div class="start">$i18n{defaultBaseCryptocurrencyDesc}</div>
     <settings-dropdown-menu id="defaultBaseCryptocurrencyType"
-                            class="narrow-drop-down"
                             pref="{{prefs.brave.wallet.default_base_cryptocurrency}}"
                             menu-options="[[cryptocurrency_list_]]">
     </settings-dropdown-menu>
@@ -106,7 +96,6 @@
   <div class="settings-box" hidden="[[!isTransactionSimulationsFeatureEnabled]]">
     <div class="start">$i18nRaw{transactionSimulationDesc}</div>
       <settings-dropdown-menu id="transactionSimulationOptInStatus"
-        class="narrow-drop-down"
         pref="{{prefs.brave.wallet.transaction_simulation_opt_in_status}}"
         menu-options="[[transaction_simulation_opt_in_options_]]">
     </settings-dropdown-menu>
