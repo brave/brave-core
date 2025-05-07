@@ -19,7 +19,7 @@
 .image {
   width: 48px;
   height: 48px;
-  object-fit: none;
+  object-fit: contain;
   border-radius: var(--leo-radius-m);
   box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px
       var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)),
