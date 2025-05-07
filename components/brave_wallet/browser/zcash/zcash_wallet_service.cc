@@ -424,10 +424,12 @@ void ZCashWalletService::AddObserver(
 }
 
 base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
-ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
-                                       bool testnet,
+ZCashWalletService::GetTransactionType(const std::string& chain_id,
+                                       const mojom::AccountIdPtr& account_id,
                                        bool use_shielded_pool,
                                        const std::string& addr) {
+  bool testnet = chain_id == mojom::kZCashTestnet;
+
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     if (use_shielded_pool) {
@@ -456,13 +458,13 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
 }
 
 void ZCashWalletService::GetTransactionType(
+    const std::string& chain_id,
     mojom::AccountIdPtr account_id,
-    bool testnet,
     bool use_shielded_pool,
     const std::string& addr,
     GetTransactionTypeCallback callback) {
   auto result =
-      GetTransactionType(account_id, testnet, use_shielded_pool, addr);
+      GetTransactionType(chain_id, account_id, use_shielded_pool, addr);
   if (result.has_value()) {
     std::move(callback).Run(result.value(), mojom::ZCashAddressError::kNoError);
   } else {

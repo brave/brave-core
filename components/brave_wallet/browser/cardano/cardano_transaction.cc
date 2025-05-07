@@ -477,23 +477,19 @@ CardanoTransaction::TxOutput* CardanoTransaction::ChangeOutput() {
   return nullptr;
 }
 
-uint64_t CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
+bool CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
   auto* change = ChangeOutput();
-  if (!change) {
-    return 0;
-  }
+  CHECK(change);
   auto* target = TargetOutput();
   CHECK(target);
 
   auto total_input = TotalInputsAmount();
-  if (total_input > min_fee + target->amount) {
-    DCHECK_EQ(change->amount, 0u);
+  if (total_input >= min_fee + target->amount) {
     change->amount = total_input - (min_fee + target->amount);
     DCHECK_EQ(EffectiveFeeAmount(), min_fee);
-    return change->amount;
+    return true;
   }
-
-  return 0;
+  return false;
 }
 
 }  // namespace brave_wallet

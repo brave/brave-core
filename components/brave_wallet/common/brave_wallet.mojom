@@ -16,7 +16,7 @@ const int8 kAccountNameMaxCharacterLength = 30;
 // Used to notify the renderer of provider information for use in
 // window.ethereum events
 interface EventsListener {
-  // Fired when the current netowrk changes
+  // Fired when the current network changes
   ChainChangedEvent(string chain_id);
 
   // Fired when the accounts have changed such as when the wallet locked, the
@@ -141,12 +141,20 @@ enum ZCashProviderError {
   kMultipleTransactionsNotSupported
 };
 
+enum CardanoProviderError {
+  kSuccess = ProviderError.kSuccess,  // No error
+  kUnknown = ProviderError.kUnknown,
+  kInternalError = JsonRpcError.kInternalError,
+};
+
+
 union ProviderErrorUnion {
   ProviderError provider_error;
   SolanaProviderError solana_provider_error;
   FilecoinProviderError filecoin_provider_error;
   BitcoinProviderError bitcoin_provider_error;
   ZCashProviderError zcash_provider_error;
+  CardanoProviderError cardano_provider_error;
 };
 
 // There is one EthereumProvider per renderer, the renderer communicates
@@ -216,7 +224,7 @@ interface SolanaProvider {
 
   // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
   // connect and emit a connect event if the application is trusted.
-  // It will returns base58 encoded pu blic key when success
+  // It will returns base58 encoded public key when success
   Connect(mojo_base.mojom.DictionaryValue? arg)
     => (SolanaProviderError error, string error_message, string public_key);
   Disconnect();
@@ -1964,8 +1972,8 @@ interface ZCashWalletService {
       (ZCashAccountInfo? account_info);
   ShieldAllFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
-  GetTransactionType(AccountId account_id,
-                     bool testnet,
+  GetTransactionType(string chain_id,
+                     AccountId account_id,
                      bool use_shielded_pool,
                      string recipient) =>
       (ZCashTxType tx_type, ZCashAddressError error);
@@ -2063,6 +2071,27 @@ struct ZecTxData {
   array<ZecTxOutput> outputs;
 };
 
+struct CardanoTxInput {
+  string address;
+  string outpoint_txid;
+  uint32 outpoint_index;
+  uint64 value;
+};
+
+struct CardanoTxOutput {
+  string address;
+  uint64 value;
+};
+
+struct CardanoTxData {
+  string to;
+  uint64 amount;
+  bool sending_max_amount;
+  uint64 fee;
+  array<CardanoTxInput> inputs;
+  array<CardanoTxOutput> outputs;
+};
+
 union TxDataUnion {
   TxData eth_tx_data;
   TxData1559 eth_tx_data_1559;
@@ -2070,6 +2099,7 @@ union TxDataUnion {
   FilTxData fil_tx_data;
   BtcTxData btc_tx_data;
   ZecTxData zec_tx_data;
+  CardanoTxData cardano_tx_data;
 };
 
 struct SwapInfo {
@@ -2141,6 +2171,33 @@ struct NewEvmTransactionParams {
   array<uint8> data;
 };
 
+struct NewBitcoinTransactionParams {
+  string chain_id;
+  AccountId from;
+  string to;
+  uint64 amount;
+  bool sending_max_amount;
+};
+
+struct NewZCashTransactionParams {
+  string chain_id;
+  AccountId from;
+  string to;
+  uint64 amount;
+  bool sending_max_amount;
+  // Memo field should exist only for shielded output.
+  array<uint8>? memo;
+  bool use_shielded_pool;
+};
+
+struct NewCardanoTransactionParams {
+  string chain_id;
+  AccountId from;
+  string to;
+  uint64 amount;
+  bool sending_max_amount;
+};
+
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
@@ -2150,6 +2207,15 @@ interface TxService {
     => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
+    => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedBitcoinTransaction(NewBitcoinTransactionParams params)
+    => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedZCashTransaction(NewZCashTransactionParams params)
+    => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedCardanoTransaction(NewCardanoTransactionParams params)
     => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
@@ -2224,7 +2290,7 @@ interface EthTxManagerProxy {
 };
 
 interface SolanaTxManagerProxy {
-  // Get transaction data for transfering SOL.
+  // Get transaction data for transferring SOL.
   MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 
@@ -2236,7 +2302,7 @@ interface SolanaTxManagerProxy {
       SolanaSignature hw_signature)
       => (bool status, ProviderErrorUnion error_union, string error_message);
 
-  // Get transaction data for transfering SPL tokens from one associated token
+  // Get transaction data for transferring SPL tokens from one associated token
   // account to another.
   //
   // If the receiving associated token account exists on the chain, the created

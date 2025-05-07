@@ -69,7 +69,7 @@ class BitcoinTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), bitcoin_wallet_service_.get(), nullptr,
-        *keyring_service_, &prefs_, temp_dir_.GetPath(),
+        nullptr, *keyring_service_, &prefs_, temp_dir_.GetPath(),
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
@@ -134,16 +134,15 @@ class BitcoinTxManagerUnitTest : public testing::Test {
 TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
   const auto from_account = BtcAcc(0);
   std::string to_account = kMockBtcAddress;
-  auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
-                                       std::vector<mojom::BtcTxInputPtr>(),
-                                       std::vector<mojom::BtcTxOutputPtr>());
+  auto params = mojom::NewBitcoinTransactionParams::New(
+      mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
+      false);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
-  btc_tx_manager()->AddUnapprovedTransaction(
-      mojom::kBitcoinMainnet, mojom::TxDataUnion::NewBtcTxData(tx_data.Clone()),
-      from_account, std::nullopt, add_callback.Get());
+  btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
+                                                    add_callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&add_callback);
   EXPECT_TRUE(!meta_id.empty());
@@ -180,16 +179,16 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
 TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
   const auto from_account = BtcAcc(0);
   std::string to_account = kMockBtcAddress;
-  auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
-                                       std::vector<mojom::BtcTxInputPtr>(),
-                                       std::vector<mojom::BtcTxOutputPtr>());
+
+  auto params = mojom::NewBitcoinTransactionParams::New(
+      mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
+      false);
 
   base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
-  btc_tx_manager()->AddUnapprovedTransaction(
-      mojom::kBitcoinMainnet, mojom::TxDataUnion::NewBtcTxData(tx_data.Clone()),
-      from_account, std::nullopt, add_callback.Get());
+  btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
+                                                    add_callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&add_callback);
   EXPECT_TRUE(!meta_id.empty());

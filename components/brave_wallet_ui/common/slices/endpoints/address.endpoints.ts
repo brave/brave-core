@@ -26,7 +26,7 @@ interface GetFVMAddressArg {
 type GetFVMAddressResult = Record<string, string>
 
 type GetZCashTransactionTypeResult = {
-  txType: BraveWallet.ZCashTxType,
+  txType: BraveWallet.ZCashTxType
   error: BraveWallet.ZCashAddressError
 }
 
@@ -99,10 +99,10 @@ export const addressEndpoints = ({
     getZCashTransactionType: query<
       GetZCashTransactionTypeResult,
       {
-        accountId: BraveWallet.AccountId,
-        testnet: boolean,
-        use_shielded_pool: boolean,
-        address: string,
+        chainId: string
+        accountId: BraveWallet.AccountId
+        useShieldedPool: boolean
+        address: string
       }
     >({
       queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
@@ -110,10 +110,13 @@ export const addressEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { txType, error } =
             await api.zcashWalletService.getTransactionType(
+              arg.chainId,
               arg.accountId,
-              arg.testnet, arg.use_shielded_pool, arg.address)
+              arg.useShieldedPool,
+              arg.address
+            )
           return {
-            data : {
+            data: {
               txType: txType,
               error: error
             }

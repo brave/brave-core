@@ -43,12 +43,13 @@ import {
 import {
   isValidBtcAddress,
   isValidEVMAddress,
-  isValidFilAddress
+  isValidFilAddress,
+  isValidCardanoAddress
 } from '../../../../../utils/address-utils'
 
 // Messages
 import {
-  FEVMAddressConvertionMessage,
+  FEVMAddressConversionMessage,
   InvalidAddressMessage,
   HasNoDomainAddressMessage,
   AddressValidationMessages
@@ -219,7 +220,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       )
     }, [accountsByNetwork, searchValue])
 
-    const evmAddressesforFVMTranslation = React.useMemo(
+    const evmAddressesForFVMTranslation = React.useMemo(
       () =>
         accountsByNetwork
           .filter(
@@ -232,10 +233,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery(
       selectedNetwork &&
         selectedNetwork?.coin === BraveWallet.CoinType.FIL &&
-        evmAddressesforFVMTranslation.length
+        evmAddressesForFVMTranslation.length
         ? {
             coin: selectedNetwork.coin,
-            addresses: evmAddressesforFVMTranslation,
+            addresses: evmAddressesForFVMTranslation,
             isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
           }
         : skipToken
@@ -267,11 +268,13 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       }
     } = useGetZCashTransactionTypeQuery(
       fromAccountId &&
-      fromAccountId.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
+        selectedNetwork &&
+        fromAccountId.coin === BraveWallet.CoinType.ZEC &&
+        trimmedSearchValue
         ? {
+            chainId: selectedNetwork.chainId,
             accountId: fromAccountId,
-            testnet: selectedNetwork?.chainId === BraveWallet.Z_CASH_TESTNET,
-            use_shielded_pool: selectedAsset?.isShielded || false,
+            useShieldedPool: !!selectedAsset?.isShielded,
             address: trimmedSearchValue
           }
         : skipToken
@@ -504,7 +507,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                 addressMessageInformation?.type !== 'error' && (
                   <AddressButton onClick={() => onSelectAddress(searchValue)}>
                     <WalletIcon />
-                    <Column alignItems='flext-start'>
+                    <Column alignItems='flex-start'>
                       <AddressButtonText
                         textSize='14px'
                         isBold={true}
@@ -653,7 +656,7 @@ function getAddressMessageInfo({
 }): AddressMessageInfo | undefined {
   if (showFilecoinFEVMWarning) {
     return {
-      ...FEVMAddressConvertionMessage,
+      ...FEVMAddressConversionMessage,
       placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
     }
   }
@@ -723,8 +726,7 @@ const processZCashAddress = (
     return undefined
   }
   if (
-    zcashAddressError ===
-    BraveWallet.ZCashAddressError.kInvalidUnifiedAddress
+    zcashAddressError === BraveWallet.ZCashAddressError.kInvalidUnifiedAddress
   ) {
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressError
   }
@@ -738,15 +740,13 @@ const processZCashAddress = (
     zcashAddressError ===
     BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingTransparentPart
   ) {
-    return AddressMessageInfoIds.
-      zcashInvalidUnifiedAddressMissingTransparentPartError
+    return AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError
   }
   if (
     zcashAddressError ===
     BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingOrchardPart
   ) {
-    return AddressMessageInfoIds.
-      zcashInvalidUnifiedAddressMissingOrchardPartError
+    return AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError
   }
   if (
     zcashAddressError ===
@@ -785,6 +785,14 @@ const processSolanaAddress = (isBase58Encoded: boolean | undefined) => {
 
 const processBitcoinAddress = (addressOrUrl: string, testnet: boolean) => {
   if (!isValidBtcAddress(addressOrUrl, testnet)) {
+    return AddressMessageInfoIds.invalidAddressError
+  }
+
+  return undefined
+}
+
+const processCardanoAddress = (addressOrUrl: string, testnet: boolean) => {
+  if (!isValidCardanoAddress(addressOrUrl, testnet)) {
     return AddressMessageInfoIds.invalidAddressError
   }
 
@@ -900,6 +908,12 @@ function processAddressOrUrl({
     }
     case BraveWallet.CoinType.ZEC: {
       return processZCashAddress(zcashAddressError)
+    }
+    case BraveWallet.CoinType.ADA: {
+      return processCardanoAddress(
+        addressOrUrl,
+        token?.chainId === BraveWallet.CARDANO_TESTNET
+      )
     }
     default: {
       console.log(`Unknown coin ${coinType}`)

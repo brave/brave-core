@@ -37,7 +37,7 @@ export const MissingChecksumMessage: AddressMessageInfo = {
   id: AddressMessageInfoIds.missingChecksumWarning
 }
 
-export const FEVMAddressConvertionMessage: AddressMessageInfo = {
+export const FEVMAddressConversionMessage: AddressMessageInfo = {
   title: 'braveWalletFEVMAddressTranslationTitle',
   description: 'braveWalletFEVMAddressTranslationDescription',
   url: 'https://docs.filecoin.io/smart-contracts/filecoin-evm-runtime/address-types/',
@@ -88,38 +88,36 @@ export const ZCashInvalidUnifiedAddressErrorMessage: AddressMessageInfo = {
   id: AddressMessageInfoIds.zcashInvalidUnifiedAddressError
 }
 
-export const ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage:
-AddressMessageInfo = {
-  title: '',
-  description: 'braveWalletZCashInvalidUnifiedAddressMissingOrchardPart',
-  type: 'error',
-  id: AddressMessageInfoIds.
-    zcashInvalidUnifiedAddressMissingOrchardPartError
-}
+export const ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage: AddressMessageInfo =
+  {
+    title: '',
+    description: 'braveWalletZCashInvalidUnifiedAddressMissingOrchardPart',
+    type: 'error',
+    id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError
+  }
 
-export const ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage:
-AddressMessageInfo = {
-  title: '',
-  description: 'braveWalletZCashInvalidUnifiedAddressMissingTransparentPart',
-  type: 'error',
-  id: AddressMessageInfoIds.
-    zcashInvalidUnifiedAddressMissingTransparentPartError
-}
+export const ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage: AddressMessageInfo =
+  {
+    title: '',
+    description: 'braveWalletZCashInvalidUnifiedAddressMissingTransparentPart',
+    type: 'error',
+    id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError
+  }
 
-export const ZCashInvalidAddressNetworkMismatchErrorMessage:
-AddressMessageInfo = {
-  title: '',
-  description: 'braveWalletZCashInvalidAddressNetworkMismatch',
-  type: 'error',
-  id: AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
-}
+export const ZCashInvalidAddressNetworkMismatchErrorMessage: AddressMessageInfo =
+  {
+    title: '',
+    description: 'braveWalletZCashInvalidAddressNetworkMismatch',
+    type: 'error',
+    id: AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
+  }
 
 export const AddressValidationMessages = [
   ENSOffchainLookupMessage,
   HasNoDomainAddressMessage,
   FailedChecksumMessage,
   MissingChecksumMessage,
-  FEVMAddressConvertionMessage,
+  FEVMAddressConversionMessage,
   InvalidAddressMessage,
   SameAddressMessage,
   ContractAddressMessage,
