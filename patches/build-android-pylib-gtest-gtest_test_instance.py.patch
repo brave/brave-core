@@ -1,0 +1,12 @@
+diff --git a/build/android/pylib/gtest/gtest_test_instance.py b/build/android/pylib/gtest/gtest_test_instance.py
+index e4b76b321e4e1e4b630c37e779221bb9f0068c21..aa93f34c4892fc2da675d1ae6542cc226a3baa83 100644
+--- a/build/android/pylib/gtest/gtest_test_instance.py
++++ b/build/android/pylib/gtest/gtest_test_instance.py
+@@ -27,6 +27,7 @@ with host_paths.SysPath(host_paths.BUILD_UTIL_PATH):
+ BROWSER_TEST_SUITES = [
+     'android_browsertests',
+     'android_sync_integration_tests',
++    'brave_browser_tests',
+     'components_browsertests',
+     'content_browsertests',
+     'weblayer_browsertests',
