@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
 import Preferences
 import Shared
@@ -115,6 +116,49 @@ extension BraveSyncAPI {
     if Preferences.Chromium.syncOpenTabsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .TABS)
     }
+  }
+
+  /// Stores a token that is NOT backed up when the user backs up to iCloud
+  /// This lets us track whether the app's data has been restored and sync chain should be reset
+  /// Returns true if the user should reset their sync chain, as they restored from iCloud backup
+  /// Returns false if they should not reset their sync chain
+  @MainActor
+  func isSyncChainFromCloudRestoration() async throws -> Bool {
+    guard
+      var fileURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        .first?
+        .appendingPathComponent("restore_check.dat")
+    else {
+      return false
+    }
+
+    if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
+      // File exists, no restore has occurred
+      return false
+    }
+
+    let createTokenFile: () async throws -> Void = {
+      await AsyncFileManager.default.createUTF8File(
+        atPath: fileURL.path,
+        contents: UUID().uuidString
+      )
+
+      Preferences.Chromium.hasSyncDeviceRestorationToken.value = true
+
+      var resourceValues = URLResourceValues()
+      resourceValues.isExcludedFromBackup = true
+      try fileURL.setResourceValues(resourceValues)
+    }
+
+    if !Preferences.Chromium.hasSyncDeviceRestorationToken.value {
+      // First time, update the token
+      try await createTokenFile()
+      return false
+    }
+
+    // Restore has happened
+    try await createTokenFile()
+    return true
   }
 
   /// Method to add observer for SyncService for onStateChanged and onSyncShutdown
