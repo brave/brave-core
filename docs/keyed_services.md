@@ -22,7 +22,7 @@ content::BrowserContext* MyServiceFactory::GetBrowserContextToUse(
 }
 ```
 
-Do not explicitly return null from other methods like `BuildServiceInstanceForBrowserContext`, `GetForProfile`, etc... If you return nullptr from `GetBrowserContextToUse` or configure `ProfileSelections`, the service will already be null. Avoid using helper methods like `IsAllowedForProfile` to see if a service is available for a particular profile as these are often used incorrectly/inconsistently. The preferred method is just a null check on the service itself. Remember to prefer dependency injection https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity and pass in the services you require instead of calling the factory methods internally. This reduces dependencies on the factories and makes unit testing/mocking simpler.
+Do not explicitly return null from other methods like `BuildServiceInstanceForBrowserContext`, `GetForProfile`, etc... If you return nullptr from `GetBrowserContextToUse` or configure `ProfileSelections`, the service will already be null. Avoid using helper methods like `IsAllowedForProfile` to see if a service is available for a particular profile as these are often used incorrectly/inconsistently. The preferred method is just a null check on the service itself. Prefer dependency injection https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity and pass in the services you require instead of calling the factory methods internally. This reduces dependencies on the factories and makes unit testing/mocking simpler.
 
 #### Keyed Services and Mojo
 
@@ -96,6 +96,10 @@ public @Nullable FakeService getForProfile(Profile profile,
 #### IOS
 
 IOS has separate factories because Profile subclasses `web::BrowserState` instead of `content::BrowserContext`, but the same principles apply to `ProfileKeyedServiceFactoryIOS`.
+
+#### IOS and Desktop profile checks
+
+TODO - standardize a way to maintain consistency between `GetBrowserContextToUse` methods on desktop and android. Possibly using some constants like `kRegular`, `kIncognito`, `kTor` so the same code can be used to check both `Profile` and `ProfileIOS`
 
 #### IOS keyed services and mojo
 
