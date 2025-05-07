@@ -40,10 +40,18 @@ void BrowserManager::RemoveObserver(BrowserManagerObserver* const observer) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool BrowserManager::IsCurrentlyActive() const {
+  return is_active_.has_value() && *is_active_;
+}
+
 void BrowserManager::NotifyBrowserDidBecomeActive() const {
   for (BrowserManagerObserver& observer : observers_) {
     observer.OnBrowserDidBecomeActive();
   }
+}
+
+bool BrowserManager::IsCurrentlyInactive() const {
+  return is_active_.has_value() && !*is_active_;
 }
 
 void BrowserManager::NotifyBrowserDidResignActive() const {
@@ -56,10 +64,18 @@ void BrowserManager::LogBrowserActiveState() const {
   BLOG(1, "Browser did " << (IsActive() ? "become" : "resign") << " active");
 }
 
+bool BrowserManager::IsCurrentlyInForeground() const {
+  return is_in_foreground_.has_value() && *is_in_foreground_;
+}
+
 void BrowserManager::NotifyBrowserDidEnterForeground() const {
   for (BrowserManagerObserver& observer : observers_) {
     observer.OnBrowserDidEnterForeground();
   }
+}
+
+bool BrowserManager::IsCurrentlyInBackground() const {
+  return is_in_foreground_.has_value() && !*is_in_foreground_;
 }
 
 void BrowserManager::NotifyBrowserDidEnterBackground() const {
@@ -84,54 +100,42 @@ void BrowserManager::OnNotifyDidInitializeAds() {
 }
 
 void BrowserManager::OnNotifyBrowserDidBecomeActive() {
-  if (is_active_.has_value() && *is_active_) {
-    // Already active.
+  if (IsCurrentlyActive()) {
     return;
   }
 
   is_active_ = true;
-
   LogBrowserActiveState();
-
   NotifyBrowserDidBecomeActive();
 }
 
 void BrowserManager::OnNotifyBrowserDidResignActive() {
-  if (is_active_.has_value() && !*is_active_) {
-    // Already inactive.
+  if (IsCurrentlyInactive()) {
     return;
   }
 
   is_active_ = false;
-
   LogBrowserActiveState();
-
   NotifyBrowserDidResignActive();
 }
 
 void BrowserManager::OnNotifyBrowserDidEnterForeground() {
-  if (is_in_foreground_.has_value() && *is_in_foreground_) {
-    // Already in foreground.
+  if (IsCurrentlyInForeground()) {
     return;
   }
 
   is_in_foreground_ = true;
-
   LogBrowserBackgroundState();
-
   NotifyBrowserDidEnterForeground();
 }
 
 void BrowserManager::OnNotifyBrowserDidEnterBackground() {
-  if (is_in_foreground_.has_value() && !*is_in_foreground_) {
-    // Already in background.
+  if (IsCurrentlyInBackground()) {
     return;
   }
 
   is_in_foreground_ = false;
-
   LogBrowserBackgroundState();
-
   NotifyBrowserDidEnterBackground();
 }
 

@@ -33,11 +33,15 @@ class BrowserManager final : public AdsClientNotifierObserver {
   bool IsInForeground() const { return is_in_foreground_.value_or(false); }
 
  private:
+  bool IsCurrentlyActive() const;
   void NotifyBrowserDidBecomeActive() const;
+  bool IsCurrentlyInactive() const;
   void NotifyBrowserDidResignActive() const;
   void LogBrowserActiveState() const;
 
+  bool IsCurrentlyInForeground() const;
   void NotifyBrowserDidEnterForeground() const;
+  bool IsCurrentlyInBackground() const;
   void NotifyBrowserDidEnterBackground() const;
   void InitializeBrowserBackgroundState();
   void LogBrowserBackgroundState() const;

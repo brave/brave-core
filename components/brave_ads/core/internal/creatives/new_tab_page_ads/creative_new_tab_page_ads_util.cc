@@ -93,14 +93,23 @@ constexpr char kCreativeConditionMatchersKey[] = "conditionMatchers";
 constexpr char kCreativeConditionMatcherConditionKey[] = "condition";
 constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 
-void SaveCreativeSetConversionsCallback(ResultCallback callback, bool success) {
-  if (!success) {
-    BLOG(0, "Failed to save creative set conversions");
-    return std::move(callback).Run(/*success=*/false);
-  }
-  BLOG(0, "Successfully saved creative set conversions");
+void SaveCreativeSetConversions(
+    const CreativeSetConversionList& creative_set_conversions,
+    ResultCallback callback) {
+  database::table::CreativeSetConversions database_table;
+  database_table.Save(
+      creative_set_conversions,
+      base::BindOnce(
+          [](ResultCallback callback, bool success) {
+            if (!success) {
+              BLOG(0, "Failed to save creative set conversions");
+              return std::move(callback).Run(/*success=*/false);
+            }
+            BLOG(0, "Successfully saved creative set conversions");
 
-  std::move(callback).Run(/*success=*/true);
+            std::move(callback).Run(/*success=*/true);
+          },
+          std::move(callback)));
 }
 
 void SaveCreativeNewTabPageAdsCallback(
@@ -113,10 +122,7 @@ void SaveCreativeNewTabPageAdsCallback(
   }
   BLOG(0, "Successfully saved creative new tab page ads");
 
-  database::table::CreativeSetConversions database_table;
-  database_table.Save(
-      creative_set_conversions,
-      base::BindOnce(&SaveCreativeSetConversionsCallback, std::move(callback)));
+  SaveCreativeSetConversions(creative_set_conversions, std::move(callback));
 }
 
 }  // namespace
