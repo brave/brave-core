@@ -29,6 +29,8 @@ if (!is_android) {
   }
 }
 
+# TODO(https://github.com/brave/brave-browser/issues/45750):
+# Move this target to its own sub dir(ui/tabs/tab_tile)
 source_set("split_view") {
   sources = [
     "tab_tile_model.cc",
