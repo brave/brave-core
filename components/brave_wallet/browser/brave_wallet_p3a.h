@@ -19,6 +19,7 @@ class PrefService;
 
 namespace brave_wallet {
 
+// TODO(https://github.com/brave/brave-browser/issues/45278): Cardano P3A
 inline constexpr char kKeyringCreatedHistogramName[] =
     "Brave.Wallet.KeyringCreated";
 inline constexpr char kOnboardingConversionHistogramName[] =

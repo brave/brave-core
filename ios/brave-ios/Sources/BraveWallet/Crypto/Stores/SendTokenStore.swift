@@ -439,7 +439,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       case .sol:
         await validateSolanaSendAddress(fromAddress: selectedAccount.address)
       case .fil:
-        validateFilcoinSendAddress()
+        validateFilecoinSendAddress()
       case .btc:
         validateBitcoinSendAddress(fromAccount: selectedAccount)
       case .zec:
@@ -549,7 +549,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     addressError = nil
   }
 
-  private func validateFilcoinSendAddress() {
+  private func validateFilecoinSendAddress() {
     addressError = sendAddress.isFILAddress ? nil : .notFilAddress
   }
 
@@ -948,7 +948,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       inputs: [],
       outputs: []
     )
-    self.txService.addUnapprovedTransaction(
+    self.txService.addUnapprovedBitcoinTransaction(
       txDataUnion: BraveWallet.TxDataUnion(btcTxData: btcTxData),
       chainId: token.chainId,
       from: fromAccountId

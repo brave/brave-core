@@ -42,4 +42,9 @@ namespace cardano_rpc {
 
     UnspentOutputAsset[] amount;
   };
+
+  // https://docs.blockfrost.io/#tag/cardano--transactions/GET/txs/%7Bhash%7D
+  dictionary Transaction {
+    DOMString hash;
+  };
 };

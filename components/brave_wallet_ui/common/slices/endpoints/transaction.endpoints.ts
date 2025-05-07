@@ -17,6 +17,7 @@ import {
   SendFilTransactionParams,
   SendSolTransactionParams,
   SendZecTransactionParams,
+  SendCardanoTransactionParams,
   SerializableTransactionInfo,
   SPLTransferFromParams,
   TransactionInfoLookup
@@ -556,21 +557,16 @@ export const transactionEndpoints = ({
         try {
           const { txService } = baseQuery(undefined).data
 
-          const btcTxData: BraveWallet.BtcTxData = {
+          const params: BraveWallet.NewBitcoinTransactionParams = {
+            chainId: payload.network.chainId,
+            from: payload.fromAccount.accountId,
             to: payload.to,
             amount: BigInt(payload.value),
-            sendingMaxAmount: payload.sendingMaxValue,
-            fee: BigInt(0),
-            inputs: [],
-            outputs: []
+            sendingMaxAmount: payload.sendingMaxAmount
           }
 
           const { errorMessage, success } =
-            await txService.addUnapprovedTransaction(
-              toTxDataUnion({ btcTxData }),
-              payload.network.chainId,
-              payload.fromAccount.accountId
-            )
+            await txService.addUnapprovedBitcoinTransaction(params)
 
           if (!success && errorMessage) {
             throw new Error(errorMessage || 'unknown error')
@@ -602,23 +598,18 @@ export const transactionEndpoints = ({
         try {
           const { txService } = baseQuery(undefined).data
 
-          const zecTxData: BraveWallet.ZecTxData = {
-            useShieldedPool: payload.useShieldedPool,
+          const params: BraveWallet.NewZCashTransactionParams = {
+            chainId: payload.network.chainId,
+            from: payload.fromAccount.accountId,
             to: payload.to,
+            amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
             memo: payload.memo,
-            amount: BigInt(payload.value),
-            fee: BigInt(0),
-            inputs: [],
-            outputs: []
+            useShieldedPool: payload.useShieldedPool
           }
 
           const { errorMessage, success } =
-            await txService.addUnapprovedTransaction(
-              toTxDataUnion({ zecTxData }),
-              payload.network.chainId,
-              payload.fromAccount.accountId
-            )
+            await txService.addUnapprovedZCashTransaction(params)
 
           if (!success && errorMessage) {
             throw new Error(errorMessage || 'unknown error')
@@ -629,6 +620,47 @@ export const transactionEndpoints = ({
           }
         } catch (error) {
           return { error: 'Failed to send Zec transaction' }
+        }
+      },
+      invalidatesTags: (res, err, arg) =>
+        err
+          ? []
+          : TX_CACHE_TAGS.LISTS({
+              coin: arg.fromAccount.accountId.coin,
+              fromAccountId: arg.fromAccount.accountId,
+              chainId: null
+            })
+    }),
+
+    // Cardano
+    sendCardanoTransaction: mutation<
+      { success: boolean },
+      SendCardanoTransactionParams
+    >({
+      queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        try {
+          const { txService } = baseQuery(undefined).data
+
+          const params: BraveWallet.NewCardanoTransactionParams = {
+            chainId: payload.network.chainId,
+            from: payload.fromAccount.accountId,
+            to: payload.to,
+            amount: BigInt(payload.value),
+            sendingMaxAmount: payload.sendingMaxAmount
+          }
+
+          const { errorMessage, success } =
+            await txService.addUnapprovedCardanoTransaction(params)
+
+          if (!success && errorMessage) {
+            throw new Error(errorMessage || 'unknown error')
+          }
+
+          return {
+            data: { success }
+          }
+        } catch (error) {
+          return { error: 'Failed to send Btc transaction' }
         }
       },
       invalidatesTags: (res, err, arg) =>
