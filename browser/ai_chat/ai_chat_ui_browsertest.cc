@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -21,6 +22,7 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/pdf/pdf_extension_test_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -209,6 +211,15 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     return chat_tab_helper_->pending_get_page_content_callback_ ? true : false;
   }
 
+  std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>
+  GetScreenshotsSync() {
+    base::test::TestFuture<
+        std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
+        future;
+    chat_tab_helper_->GetScreenshots(future.GetCallback());
+    return future.Take();
+  }
+
  protected:
   net::test_server::EmbeddedTestServer https_server_;
   raw_ptr<ai_chat::AIChatTabHelper, DanglingUntriaged> chat_tab_helper_ =
@@ -383,4 +394,16 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
   FetchSearchQuerySummary(FROM_HERE, std::vector<ai_chat::SearchQuerySummary>(
                                          {{"test query", "test summary"},
                                           {"test query 2", "test summary 2"}}));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PdfScreenshot) {
+  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"));
+  ASSERT_TRUE(
+      pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
+
+  auto result = GetScreenshotsSync();
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->size(), 4u);
+  EXPECT_TRUE(std::ranges::any_of(
+      result.value(), [](const auto& entry) { return !entry->data.empty(); }));
 }
