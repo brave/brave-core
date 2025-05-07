@@ -695,15 +695,6 @@ class TabManager: NSObject {
     }
   }
 
-  func removePrivateWindows() {
-    if Preferences.Privacy.privateBrowsingOnly.value
-      || (privateBrowsingManager.isPrivateBrowsing
-        && !Preferences.Privacy.persistentPrivateBrowsing.value)
-    {
-      SessionWindow.deleteAllWindows(privateOnly: true)
-    }
-  }
-
   func saveAllTabs() {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
