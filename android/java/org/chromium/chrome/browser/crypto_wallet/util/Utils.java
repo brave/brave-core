@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,8 +35,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,13 +66,12 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
-import org.chromium.brave_wallet.mojom.TransactionInfo;
-import org.chromium.brave_wallet.mojom.TransactionStatus;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -102,6 +98,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@NullMarked
 public class Utils {
     private static final String TAG = "Utils";
 
@@ -115,7 +112,6 @@ public class Utils {
     public static final String COIN_TYPE = "coinType";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
     public static final String ASSET_SYMBOL = "assetSymbol";
-    public static final String ASSET_NAME = "assetName";
     public static final String ASSET_ID = "assetId";
     public static final String CHAIN_ID = "chainId";
 
@@ -128,8 +124,7 @@ public class Utils {
 
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
-    @NonNull
-    public static List<String> getRecoveryPhraseAsList(@NonNull final String recoveryPhrase) {
+    public static List<String> getRecoveryPhraseAsList(final String recoveryPhrase) {
         final String[] recoveryPhraseArray = recoveryPhrase.split(" ");
         return new ArrayList<>(Arrays.asList(recoveryPhraseArray));
     }
@@ -152,8 +147,8 @@ public class Utils {
      *     #CLEAR_CLIPBOARD_INTERVAL}.
      */
     public static void saveTextToClipboard(
-            @NonNull final Context context,
-            @NonNull final String textToCopy,
+            final Context context,
+            final String textToCopy,
             @StringRes final int textToShow,
             final boolean scheduleClear) {
         ClipboardManager clipboard =
@@ -190,7 +185,7 @@ public class Utils {
      * @param textToCompare Text to compare that will trigger the clipboard clearing in case of a
      *     match.
      */
-    public static void clearClipboard(@NonNull final String textToCompare) {
+    public static void clearClipboard(final String textToCompare) {
         String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
         if (textToCompare.equals(clipboardText)) {
             saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
@@ -214,7 +209,7 @@ public class Utils {
      *
      * @param activity Activity used to retrieve input method service.
      */
-    public static void hideKeyboard(@NonNull final Activity activity) {
+    public static void hideKeyboard(final Activity activity) {
         hideKeyboard(activity, null);
     }
 
@@ -225,8 +220,7 @@ public class Utils {
      * @param activity Activity used to retrieve input method service.
      * @param windowToken Token of the window that is making the request.
      */
-    public static void hideKeyboard(
-            @NonNull final Activity activity, @Nullable final IBinder windowToken) {
+    public static void hideKeyboard(final Activity activity, @Nullable final IBinder windowToken) {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (windowToken != null) {
@@ -337,7 +331,7 @@ public class Utils {
      *     <p><b>Note:</b>: Supposedly, when converting to Wei the result shall always end up with
      *     an integer.
      */
-    public static BigInteger multiplyByDecimals(@NonNull final String number, final int decimals)
+    public static BigInteger multiplyByDecimals(final String number, final int decimals)
             throws ParseException {
         NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
         ParsePosition parsePosition = new ParsePosition(0);
@@ -495,26 +489,6 @@ public class Utils {
         return res;
     }
 
-    public static String maybeHexStrToUpperCase(String value) {
-        if (value == null) {
-            return "";
-        }
-        String prefix = "0x";
-        boolean hasPrefix = false;
-        if (value.startsWith(prefix)) {
-            hasPrefix = true;
-            value = value.substring(2);
-        }
-
-        value = value.toUpperCase(Locale.getDefault());
-
-        if (hasPrefix) {
-            return prefix + value;
-        } else {
-            return value;
-        }
-    }
-
     public static String stripAccountAddress(String address) {
         return address;
         // TODO(serg): Let's leave it for now as it could be we still
@@ -561,10 +535,10 @@ public class Utils {
             ExecutorService executor,
             Handler handler,
             Context context,
-            String iconPath,
+            @Nullable String iconPath,
             int iconId,
-            ImageView iconImg,
-            TextView textView,
+            @Nullable ImageView iconImg,
+            @Nullable TextView textView,
             boolean drawCaratDown) {
         if (iconPath == null) {
             if (iconImg != null) {
@@ -606,7 +580,7 @@ public class Utils {
                                     }
                                 });
                     } catch (Exception exc) {
-                        org.chromium.base.Log.e("Utils", exc.getMessage());
+                        Log.e(TAG, "Error while setting Bitmap resource", exc);
                         if (textView != null) {
                             Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                             Bitmap bitmap =
@@ -641,47 +615,11 @@ public class Utils {
                 });
     }
 
-    public static void overlayBitmaps(
-            ExecutorService executor, Handler handler, String[] addresses, ImageView iconImg) {
-        if (addresses == null || addresses.length != 2) {
-            return;
-        }
-        executor.execute(
-                () -> {
-                    Bitmap bitmap1 = Blockies.createIcon(addresses[0], true, true);
-                    Bitmap bitmap2 =
-                            scaleDown(Blockies.createIcon(addresses[1], true, true), (float) 0.6);
-                    final Bitmap bitmap = overlayBitmapToCenter(bitmap1, bitmap2);
-                    handler.post(
-                            () -> {
-                                if (iconImg != null) {
-                                    iconImg.setImageBitmap(bitmap);
-                                }
-                            });
-                });
-    }
-
     public static Bitmap scaleDown(Bitmap realImage, float ratio) {
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
 
         return Bitmap.createScaledBitmap(realImage, width, height, true);
-    }
-
-    public static Bitmap overlayBitmapToCenter(Bitmap bitmap1, Bitmap bitmap2) {
-        int bitmap1Width = bitmap1.getWidth();
-        int bitmap1Height = bitmap1.getHeight();
-
-        float marginLeft = (float) (bitmap1Width * 0.6);
-        float marginTop = (float) (bitmap1Height * 0.2);
-
-        int newWidth = Math.round((float) (bitmap1Width * 1.4));
-        Bitmap overlayBitmap = Bitmap.createBitmap(newWidth, bitmap1Height, bitmap1.getConfig());
-        Canvas canvas = new Canvas(overlayBitmap);
-        canvas.drawBitmap(bitmap1, new Matrix(), null);
-        canvas.drawBitmap(bitmap2, marginLeft, marginTop, null);
-
-        return overlayBitmap;
     }
 
     public static void setBlockiesBitmapCustomAsset(
@@ -883,7 +821,7 @@ public class Utils {
 
     @DrawableRes
     public static int getNetworkIconDrawable(
-            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+            final String chainId, @CoinType.EnumType final int coin) {
         @DrawableRes int logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
@@ -932,6 +870,10 @@ public class Utils {
             case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
                 logo = R.drawable.ic_neon_color;
                 break;
+            case BraveWalletConstants.Z_CASH_MAINNET:
+            case BraveWalletConstants.Z_CASH_TESTNET:
+                logo = R.drawable.ic_zec_color;
+                break;
             default:
                 logo = -1;
         }
@@ -953,9 +895,10 @@ public class Utils {
         return logo;
     }
 
-    @NonNull
-    public static String getNetworkIconName(
-            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+    public static String getNetworkIconName(final NetworkInfo network) {
+        final String chainId = network.chainId;
+        final int coin = network.coin;
+
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
@@ -1004,6 +947,10 @@ public class Utils {
             case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
                 logo = "neon.png";
                 break;
+            case BraveWalletConstants.Z_CASH_MAINNET:
+            case BraveWalletConstants.Z_CASH_TESTNET:
+                logo = "zec.png";
+                break;
             default:
                 logo = "";
         }
@@ -1025,11 +972,7 @@ public class Utils {
         return logo;
     }
 
-    @NonNull
-    public static String getNetworkIconName(NetworkInfo network) {
-        return Utils.getNetworkIconName(network.chainId, network.coin);
-    }
-
+    @Nullable
     public static AccountInfo findAccountByAddress(AccountInfo[] accounts, String address) {
         for (AccountInfo acc : accounts) {
             if (acc.address
@@ -1038,17 +981,16 @@ public class Utils {
                 return acc;
             }
         }
-
         return null;
     }
 
+    @Nullable
     public static AccountInfo findAccount(AccountInfo[] accounts, AccountId accountId) {
         for (AccountInfo acc : accounts) {
             if (WalletUtils.accountIdsEqual(acc.accountId, accountId)) {
                 return acc;
             }
         }
-
         return null;
     }
 
@@ -1082,53 +1024,6 @@ public class Utils {
         TabUtils.openUrlInCustomTab(activity, blockExplorerUrl);
     }
 
-    public static void updateWalletCoinTransactionItem(
-            AccountSelectorItemModel item, TransactionInfo txInfo, Context context) {
-        item.setTransactionInfo(txInfo);
-        updateWalletCoinTransactionStatus(item, context, txInfo);
-    }
-
-    public static void updateWalletCoinTransactionStatus(
-            AccountSelectorItemModel itemModel, Context context, TransactionInfo txInfo) {
-        String txStatus = context.getResources().getString(R.string.wallet_tx_status_unapproved);
-        Bitmap txStatusBitmap = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(txStatusBitmap);
-        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        switch (txInfo.txStatus) {
-            case TransactionStatus.UNAPPROVED:
-                p.setColor(0xFF5E6175);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_unapproved);
-                break;
-            case TransactionStatus.APPROVED:
-                p.setColor(0xFF2AC194);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_approved);
-                break;
-            case TransactionStatus.REJECTED:
-                p.setColor(0xFFEE6374);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_rejected);
-                break;
-            case TransactionStatus.SUBMITTED:
-                p.setColor(0xFFFFD43B);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_submitted);
-                break;
-            case TransactionStatus.CONFIRMED:
-                p.setColor(0xFF2AC194);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_confirmed);
-                break;
-            case TransactionStatus.SIGNED:
-                p.setColor(0xFFFFD43B);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_signed);
-                break;
-            case TransactionStatus.ERROR:
-            default:
-                p.setColor(0xFFEE6374);
-                txStatus = context.getResources().getString(R.string.wallet_tx_status_error);
-        }
-        itemModel.setTxStatus(txStatus);
-        c.drawCircle(15, 15, 15, p);
-        itemModel.setTxStatusBitmap(txStatusBitmap);
-    }
-
     /**
      * This method should be used to make substring of a string clickable Example: This is <ph
      * name="START">%1$s</ph>Clickable<ph name="END">%2$s</ph> text.
@@ -1137,11 +1032,10 @@ public class Utils {
      * @param stringRes The id of resource string
      * @param onClickListener The callback when clickable substring is clicked.
      */
-    @NonNull
     public static SpannableString createSpanForSurroundedPhrase(
-            @NonNull Context context,
-            @StringRes int stringRes,
-            @NonNull View.OnClickListener onClickListener) {
+            final Context context,
+            @StringRes final int stringRes,
+            final View.OnClickListener onClickListener) {
         String htmlString =
                 String.format(context.getResources().getString(stringRes), "<a href=\"\">", "</a>");
         SpannableString spannable = new SpannableString(AndroidUtils.formatHTML(htmlString));
@@ -1165,9 +1059,9 @@ public class Utils {
     }
 
     @SuppressLint("MissingPermission")
-    public static boolean isBiometricSupported(@Nullable Context context) {
+    public static boolean isBiometricSupported(@Nullable final Context context) {
         // Only Android versions 9 and above are supported.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
+        if (context == null) {
             return false;
         }
 
@@ -1209,7 +1103,6 @@ public class Utils {
         return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
     }
 
-    @NonNull
     public static Profile getProfile(boolean isIncognito) {
         ChromeActivity chromeActivity = null;
         try {
@@ -1242,7 +1135,7 @@ public class Utils {
     }
 
     /** Make a unique token title string in lower case. */
-    public static String tokenToString(BlockchainToken token) {
+    public static String tokenToString(@Nullable BlockchainToken token) {
         if (token == null) return "";
 
         final String symbolLowerCase = token.symbol.toLowerCase(Locale.ENGLISH);
@@ -1368,7 +1261,7 @@ public class Utils {
     }
 
     /**
-     * Gets P3A networks (i.e. networks with chain Id contained in {@link
+     * Gets P3A networks (i.e. networks with chain Id contained in {@code
      * WalletConstants.KNOWN_TEST_CHAIN_IDS)} excluding testnet chains by default. Testnet chain
      * counting can be enabled using the switch `--p3a-count-wallet-test-networks`.
      *
@@ -1399,17 +1292,15 @@ public class Utils {
     }
 
     public static int getCoinIcon(int coinType) {
-        int drawableId = R.drawable.ic_eth;
+        int drawableId;
         switch (coinType) {
-            case CoinType.ETH:
-                drawableId = R.drawable.ic_eth;
-                break;
             case CoinType.SOL:
                 drawableId = R.drawable.ic_sol_asset_icon;
                 break;
             case CoinType.FIL:
                 drawableId = R.drawable.ic_fil_asset_icon;
                 break;
+            case CoinType.ETH:
             default:
                 drawableId = R.drawable.ic_eth;
                 break;
@@ -1421,15 +1312,13 @@ public class Utils {
     // TODO(sergz): Move getCoinIcon, getKeyringForEthOrSolOnly, getBalanceForCoinType
     // to some kind of a separate Utils file that is related to diff networks only
     public static double getBalanceForCoinType(int coinType, int decimals, String balance) {
-        double result = 0.0d;
+        double result;
         switch (coinType) {
-            case CoinType.ETH:
-                result = Utils.fromHexWei(balance, decimals);
-                break;
             case CoinType.SOL:
             case CoinType.FIL:
                 result = Utils.fromWei(balance, decimals);
                 break;
+            case CoinType.ETH:
             default:
                 result = Utils.fromHexWei(balance, decimals);
                 break;
@@ -1486,8 +1375,10 @@ public class Utils {
                             blockchainTokensBalancesResponses,
                             activeAddresses);
                     for (int coinType : P3ACoinTypes) {
-                        braveWalletP3A.recordActiveWalletCount(
-                                activeAddresses.get(coinType).size(), coinType);
+                        HashSet<String> active = activeAddresses.get(coinType);
+                        if (active != null) {
+                            braveWalletP3A.recordActiveWalletCount(active.size(), coinType);
+                        }
                     }
                 });
     }
@@ -1498,9 +1389,7 @@ public class Utils {
      * @param address full contract address
      * @return truncated address
      */
-    @NonNull
-    public static String getTruncatedAddress(@NonNull final String address) {
-
+    public static String getTruncatedAddress(final String address) {
         if (address.isEmpty()) {
             Log.w(TAG, "Empty contract address.");
             assert false;

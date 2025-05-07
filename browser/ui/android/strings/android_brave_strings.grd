@@ -2211,6 +2211,9 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
     </message>
+    <message name="IDS_BRAVE_WALLET_SHIELDING" desc="Shielding label">
+      Shielding
+    </message>
     <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
       Lock
     </message>
@@ -2647,42 +2650,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_SOLANA_DAPP_SIGN" desc="Title for solana dapp sign transaction function type">
       Solana Dapp Sign Transaction
-    </message>
-    <message name="IDS_WALLET_TX_INFO_SENT" desc="Brave wallet sent assets tx history">
-      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="CRYPTO_VALUE">%2$s<ex>0.0444</ex></ph> <ph name="ASSET">%3$s<ex>ETH</ex></ph> ($<ph name="FIAT_VALUE">%4$s<ex>10.00</ex></ph>) - <ph name="DATE">%5$s<ex>2021-11-12 08:38pm</ex></ph>
-    </message>
-    <message name="IDS_WALLET_TX_INFO_SENT_ERC721" desc="Brave wallet sent erc721 assets tx history">
-      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> sent <ph name="ASSET">%2$s<ex>CK</ex></ph> #<ph name="ASSET_ID">%3$s<ex>1</ex></ph> - <ph name="DATE">%4$s<ex>2021-11-12 08:38pm</ex></ph>
-    </message>
-    <message name="IDS_WALLET_TX_INFO_APPROVED" desc="Brave wallet approved assets tx history">
-      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> approved <ph name="ASSET">%2$s<ex>BAT</ex></ph> - <ph name="DATE">%3$s<ex>2021-11-12 08:38pm</ex></ph>
-    </message>
-    <message name="IDS_WALLET_TX_INFO_APPROVED_UNLIMITED" desc="Brave wallet approved unlimited assets tx history">
-      Approved Unlimited <ph name="ASSET">%1$s<ex>ETH</ex></ph> - <ph name="PROXY">%2$s<ex>0x Exchange Proxy</ex></ph>
-    </message>
-    <message name="IDS_WALLET_TX_INFO_SWAP" desc="Brave wallet swap assets tx history">
-      <ph name="ACCOUNT_NAME">%1$s<ex>Account1</ex></ph> swap - <ph name="DATE">%2$s<ex>2021-11-12 08:38pm</ex></ph>
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_UNAPPROVED" desc="Brave wallet tx status is unapproved">
-      Unapproved
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_APPROVED" desc="Brave wallet tx status is approved">
-      Approved
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_REJECTED" desc="Brave wallet tx status is rejected">
-      Rejected
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_SUBMITTED" desc="Brave wallet tx status is submitted">
-      Submitted
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_CONFIRMED" desc="Brave wallet tx status is confirmed">
-      Confirmed
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_SIGNED" desc="Brave wallet tx status is signed">
-      Signed
-    </message>
-    <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
-      Error
     </message>
     <message name="IDS_DORMANT_USERS_ENGAGEMENT_NOTIFICATION_TEXT_1" desc="Dormant users engagement notification text">
       Are you using the fastest web browser?

@@ -567,6 +567,7 @@ brave_java_resources = [
   "java/res/drawable/ic_widget_generic.xml",
   "java/res/drawable/ic_widget_generic_with_container.xml",
   "java/res/drawable/ic_youtube_skip_ads.xml",
+  "java/res/drawable/ic_zec_color.xml",
   "java/res/drawable/image_credit_rounded_shape.xml",
   "java/res/drawable/info_outline.xml",
   "java/res/drawable/leo_plan_active_bg.xml",

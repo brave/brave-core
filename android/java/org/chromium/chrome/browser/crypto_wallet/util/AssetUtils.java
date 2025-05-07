@@ -7,36 +7,35 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringId;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+@NullMarked
 public class AssetUtils {
     private static final String TAG = "AssetUtils";
 
-    public static class Filters {
-        public static boolean isSameToken(
-                BlockchainToken token, String symbol, String contractAddress, String chainId) {
-            return token.symbol.equals(symbol)
-                    && token.contractAddress.equalsIgnoreCase(contractAddress)
-                    && token.chainId.equals(chainId);
-        }
-    }
-
     public static @KeyringId.EnumType int getKeyring(
             @CoinType.EnumType int coinType, @Nullable String chainId) {
-        if (coinType == CoinType.FIL) {
+        if (coinType == CoinType.ZEC) {
+            if (BraveWalletConstants.Z_CASH_MAINNET.equals(chainId)) {
+                return KeyringId.Z_CASH_MAINNET;
+            }
+            if (BraveWalletConstants.Z_CASH_TESTNET.equals(chainId)) {
+                return KeyringId.Z_CASH_TESTNET;
+            }
+            throw new IllegalStateException(
+                    String.format("No ZCash keyring found for chain Id %s.", chainId));
+        } else if (coinType == CoinType.FIL) {
+            assert chainId != null;
             switch (chainId) {
                 case BraveWalletConstants.FILECOIN_MAINNET:
                 case BraveWalletConstants.LOCALHOST_CHAIN_ID:
@@ -77,8 +76,8 @@ public class AssetUtils {
      * Gets keyring Id only for coin types Ethereum and Solana.
      *
      * @param coinType Coin type Ethereum or Solana.
-     * @return Keyring Id for coin tpye. If coin type does not belong to Ethereum or Solana it
-     *     defaults to {@link BraveWalletConstants.DEFAULT_KEYRING_ID}.
+     * @return Keyring Id for coin type. If coin type does not belong to Ethereum or Solana it
+     *     defaults to {@code KeyringId.DEFAULT}.
      */
     public static @KeyringId.EnumType int getKeyringForEthOrSolOnly(
             @CoinType.EnumType int coinType) {
@@ -88,13 +87,8 @@ public class AssetUtils {
             case CoinType.SOL:
                 return KeyringId.SOLANA;
             case CoinType.FIL:
-                throw new IllegalArgumentException(
-                        "Keyring Id for Filecoin cannot be obtained by coin type. Consider using"
-                                + " the method \"AssetUtils.getKeyring(coinType, chainId)\".");
             case CoinType.BTC:
-                throw new IllegalArgumentException(
-                        "Keyring Id for Bitcoin cannot be obtained by coin type. Consider using the"
-                                + " method \"AssetUtils.getKeyring(coinType, chainId)\".");
+            case CoinType.ZEC:
             default:
                 Log.e(
                         TAG,
@@ -107,43 +101,7 @@ public class AssetUtils {
         }
     }
 
-    public static boolean isNativeToken(BlockchainToken token) {
-        List<String> nativeTokens = NATIVE_TOKENS_PER_CHAIN.get(token.chainId);
-        if (nativeTokens != null) {
-            return nativeTokens.contains(token.symbol.toLowerCase(Locale.ENGLISH));
-        }
-        return false;
-    }
-
-    public static boolean isBatToken(BlockchainToken token) {
-        String symbol = token.symbol;
-        return symbol.equalsIgnoreCase("bat")
-                || symbol.equalsIgnoreCase("wbat")
-                || symbol.equalsIgnoreCase("bat.e");
-    }
-
-    private static final Map<String, List<String>> NATIVE_TOKENS_PER_CHAIN =
-            Map.ofEntries(
-                    Map.entry(BraveWalletConstants.MAINNET_CHAIN_ID, List.of("eth")),
-                    Map.entry(BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID, List.of("eth")),
-                    Map.entry(BraveWalletConstants.AURORA_MAINNET_CHAIN_ID, List.of("eth")),
-                    Map.entry(BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID, List.of("matic")),
-                    Map.entry(BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, List.of("ftm")),
-                    Map.entry(BraveWalletConstants.CELO_MAINNET_CHAIN_ID, List.of("celo")),
-                    Map.entry(
-                            BraveWalletConstants.BNB_SMART_CHAIN_MAINNET_CHAIN_ID, List.of("bnb")),
-                    Map.entry(BraveWalletConstants.SOLANA_MAINNET, List.of("sol")),
-                    Map.entry(BraveWalletConstants.FILECOIN_MAINNET, List.of("fil")),
-                    Map.entry(
-                            BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID,
-                            Arrays.asList("avax", "avaxc")),
-                    // Testnets
-                    Map.entry(BraveWalletConstants.SEPOLIA_CHAIN_ID, List.of("eth")),
-                    Map.entry(BraveWalletConstants.SOLANA_TESTNET, List.of("sol")),
-                    Map.entry(BraveWalletConstants.SOLANA_DEVNET, List.of("sol")),
-                    Map.entry(BraveWalletConstants.FILECOIN_TESTNET, List.of("fil")));
-
-    public static String assetRatioId(@NonNull final BlockchainToken token) {
+    public static String assetRatioId(final BlockchainToken token) {
         if (!TextUtils.isEmpty(token.coingeckoId)) {
             return token.coingeckoId;
         }
