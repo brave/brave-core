@@ -202,7 +202,11 @@ private struct TranslationOptionsView: View {
   }
 
   private func languageName(for identifier: String) -> String {
-    if let languageName = Locale.current.localizedString(forIdentifier: identifier) {
+    let locale = Locale(identifier: identifier)
+    if let languageName = Locale.current.localizedString(
+      forIdentifier: locale.region != nil
+        ? locale.language.maximalIdentifier : locale.language.minimalIdentifier
+    ) {
       return languageName
     }
     return Strings.BraveTranslate.unknownLanguageTitle
