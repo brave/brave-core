@@ -48,6 +48,7 @@ interface State {
   contact: string
   attachScreenshot: boolean
   screenshotObjectUrl: string | null
+  hideViewScreenshotLink: boolean
 }
 
 const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web-compatibility-reports'
@@ -61,7 +62,8 @@ export default class ReportView extends React.PureComponent<Props, State> {
       details: '',
       contact: props.contactInfo,
       attachScreenshot: false,
-      screenshotObjectUrl: null
+      screenshotObjectUrl: null,
+      hideViewScreenshotLink: false
     }
     this.handleKeyPress = this._handleKeyPress.bind(this);
   }
@@ -87,7 +89,17 @@ export default class ReportView extends React.PureComponent<Props, State> {
       return
     }
 
-    await captureScreenshot()
+    try {
+      await captureScreenshot()
+    } catch {
+      this.setState({
+        attachScreenshot: true,
+        screenshotObjectUrl: null,
+        hideViewScreenshotLink: true
+      })
+        clearScreenshot()
+        return
+    }
     this.setState({ attachScreenshot: true, screenshotObjectUrl: null })
   }
 
@@ -191,6 +203,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
               </CheckboxLabel>
             </FieldCtr>
             {!!this.state.attachScreenshot &&
+              !this.state.hideViewScreenshotLink &&
               <ScreenshotLink onClick={this.handleViewScreenshot}>
                 {getLocale('viewScreenshotLabel')}
               </ScreenshotLink>
