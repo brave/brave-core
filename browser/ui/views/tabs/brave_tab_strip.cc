@@ -177,12 +177,14 @@ void BraveTabStrip::MaybeStartDrag(
       // together during drag and drop.
       auto* tab_strip_model = controller_->GetBrowser()->tab_strip_model();
       // Make sure both tiled tabs are in selection.
-      new_selection.AddIndexToSelection(
+      ui::ListSelectionModel drag_selection;
+      drag_selection.AddIndexToSelection(
           tab_strip_model->GetIndexOfTab(tile->first.Get()));
-      new_selection.AddIndexToSelection(
+      drag_selection.AddIndexToSelection(
           tab_strip_model->GetIndexOfTab(tile->second.Get()));
-      new_selection.set_active(tab_strip_model->active_index());
-      tab_strip_model->SetSelectionFromModel(new_selection);
+      drag_selection.set_active(tab_strip_model->active_index());
+      tab_strip_model->SetSelectionFromModel(drag_selection);
+      new_selection = drag_selection;
     }
   }
 
