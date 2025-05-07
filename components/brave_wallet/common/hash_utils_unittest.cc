@@ -106,6 +106,13 @@ TEST(HashUtilsUnitTest, Blake2bHash) {
   std::array<uint8_t, 4> result;
   Blake2bHash({base::byte_span_from_cstring("abc")}, result);
   EXPECT_EQ(base::HexEncode(result), "63906248");
+
+  auto span_abc = base::byte_span_from_cstring("abc");
+  auto span_a = span_abc.first(1u);
+  auto span_b = span_abc.subspan(1u, 1u);
+  auto span_c = span_abc.subspan(2u, 1u);
+  EXPECT_EQ(base::HexEncode(Blake2bHash<4>({span_a, span_b, span_c})),
+            "63906248");
 }
 
 }  // namespace brave_wallet

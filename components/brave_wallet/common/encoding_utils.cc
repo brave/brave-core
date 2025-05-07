@@ -68,9 +68,9 @@ std::optional<std::string> Ss58Address::Encode() {
     return std::nullopt;
   }
 
-  std::vector<uint8_t> buff;
   size_t offset = prefix < 64 ? 1 : 2;
-  buff.resize(offset + kSs58PublicKeySize + kSs58HashChecksumSize);
+  std::vector<uint8_t> buff(offset + kSs58PublicKeySize +
+                            kSs58HashChecksumSize);
   auto output_span_writer = base::SpanWriter(base::span(buff));
 
   if (offset == 1) {
@@ -81,9 +81,8 @@ std::optional<std::string> Ss58Address::Encode() {
     output_span_writer.WriteU8BigEndian((prefix >> 8) | ((prefix & 0b11) << 6));
   }
 
-  output_span_writer.Write(base::span(public_key));
+  output_span_writer.Write(public_key);
   DCHECK_EQ(output_span_writer.remaining(), kSs58HashChecksumSize);
-  DCHECK_EQ(buff.size(), offset + kSs58PublicKeySize + kSs58HashChecksumSize);
 
   auto hash_prefix = base::byte_span_from_cstring(kSs58HashPrefix);
   auto hash = Blake2bHash<64>(
@@ -105,16 +104,16 @@ std::optional<Ss58Address> Ss58Address::Decode(const std::string& str) {
     return std::nullopt;
   }
   uint8_t offset = 0;
-  uint8_t address_type = (*result)[0];
-  uint16_t prefix = 0;
   auto result_span = base::span(*result);
+  uint8_t address_type = result_span[0];
+  uint16_t prefix = 0;
   if (address_type < 64) {
     offset = 1;
     prefix = address_type;
   } else if (address_type < 128) {
     offset = 2;
-    uint8_t address_type_1 = (*result)[1];
-    uint8_t lower = ((address_type << 2) | (address_type_1 >> 6)) & 0b11111111;
+    uint8_t address_type_1 = result_span[1];
+    uint8_t lower = ((address_type << 2) | (address_type_1 >> 6));
     uint8_t upper = address_type_1 & 0b00111111;
     prefix = lower | (upper << 8);
   } else {
@@ -141,7 +140,7 @@ std::optional<Ss58Address> Ss58Address::Decode(const std::string& str) {
   result_addr.prefix = prefix;
   base::span(result_addr.public_key)
       .copy_from(result_span.subspan(offset, kSs58PublicKeySize));
-  return std::move(result_addr);
+  return result_addr;
 }
 
 }  // namespace brave_wallet

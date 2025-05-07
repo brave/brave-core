@@ -183,11 +183,11 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
   if (!fevm_address.IsValid()) {
     return FilAddress();
   }
-  std::vector<uint8_t> to_hash = {4, 10};
-  base::Extend(to_hash, fevm_address.bytes());
 
   auto payload = fevm_address.bytes();
-  base::Extend(payload, Blake2bHash<kChecksumSize>({to_hash}));
+  base::Extend(payload,
+               Blake2bHash<kChecksumSize>(
+                   {std::vector<uint8_t>({4, 10}), fevm_address.bytes()}));
 
   std::string encoded =
       base32::Base32Encode(payload, base32::Base32EncodePolicy::OMIT_PADDING);
