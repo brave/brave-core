@@ -43,7 +43,9 @@ public class BraveNewTabTakeoverInfobar {
                     tab.getWebContents(),
                     new SimpleConfirmInfoBarBuilder.Listener() {
                         @Override
-                        public void onInfoBarDismissed() {}
+                        public void onInfoBarDismissed() {
+                            suppressInfobar();
+                        }
 
                         @Override
                         public boolean onInfoBarButtonClicked(boolean isPrimary) {
