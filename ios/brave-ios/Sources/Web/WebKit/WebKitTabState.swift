@@ -342,9 +342,7 @@ class WebKitTabState: TabState, TabStateImpl {
 
     attachWebObservers()
 
-    observers.forEach {
-      $0.tabDidCreateWebView(self)
-    }
+    didCreateWebView()
   }
 
   func deleteWebView() {
@@ -584,6 +582,10 @@ class WebKitTabState: TabState, TabStateImpl {
 
   func clearBackForwardList() {
     webView?.backForwardList.clear()
+  }
+
+  func updateScripts() {
+    // Nothing to do
   }
 
   // MARK: - TabStateImpl

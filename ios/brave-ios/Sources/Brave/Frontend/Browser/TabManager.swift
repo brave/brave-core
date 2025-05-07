@@ -90,6 +90,7 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int = 0
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
+  private var braveCore: BraveCoreMain?
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
@@ -117,8 +118,7 @@ class TabManager: NSObject {
     windowId: UUID,
     prefs: Prefs,
     rewards: BraveRewards?,
-    tabGeneratorAPI: BraveTabGeneratorAPI?,
-    historyAPI: BraveHistoryAPI?,
+    braveCore: BraveCoreMain?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
@@ -126,13 +126,13 @@ class TabManager: NSObject {
     self.windowId = windowId
     self.prefs = prefs
     self.rewards = rewards
-    self.tabGeneratorAPI = tabGeneratorAPI
-    self.historyAPI = historyAPI
+    self.braveCore = braveCore
+    self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
+    self.historyAPI = braveCore?.historyAPI
     self.privateBrowsingManager = privateBrowsingManager
     super.init()
 
     Preferences.Shields.blockImages.observe(from: self)
-    Preferences.General.blockPopups.observe(from: self)
     Preferences.General.nightModeEnabled.observe(from: self)
 
     domainFrc.delegate = self
@@ -266,14 +266,13 @@ class TabManager: NSObject {
     }
   }
 
-  private static var defaultConfiguration = getNewConfiguration(isPrivate: false)
-  private static var privateConfiguration = getNewConfiguration(isPrivate: true)
+  private(set) static var defaultConfiguration = getNewConfiguration(isPrivate: false)
+  private(set) static var privateConfiguration = getNewConfiguration(isPrivate: true)
 
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
     let configuration: WKWebViewConfiguration = .init()
     configuration.processPool = WKProcessPool()
-    configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General
-      .blockPopups.value
+    configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
 
     // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
@@ -455,7 +454,7 @@ class TabManager: NSObject {
     let popup = TabStateFactory.create(
       with: .init(
         initialConfiguration: parentTab.configuration,
-        braveCore: nil
+        braveCore: braveCore
       )
     )
     configureTab(
@@ -549,7 +548,7 @@ class TabManager: NSObject {
         id: tabId,
         initialConfiguration: initialConfiguration,
         lastActiveTime: lastActiveTime,
-        braveCore: nil
+        braveCore: braveCore
       )
     )
     configureTab(
@@ -1531,12 +1530,6 @@ extension TabManagerDelegate {
 extension TabManager: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     switch key {
-    case Preferences.General.blockPopups.key:
-      let allowPopups = !Preferences.General.blockPopups.value
-      // Each tab may have its own configuration, so we should tell each of them in turn.
-      allTabs.forEach {
-        $0.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-      }
     case Preferences.General.nightModeEnabled.key:
       DarkReaderScriptHandler.set(
         tabManager: self,

@@ -55,7 +55,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     }
 
     let requestMediaPermissions: () -> Void = {
-      Task {
+      Task { @MainActor in
         let permission = await delegate.tab(tab, requestMediaCapturePermissionsFor: captureType)
         decisionHandler(.init(permission))
       }
@@ -80,7 +80,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
       completionHandler()
       return
     }
-    Task {
+    Task { @MainActor in
       await delegate.tab(tab, runJavaScriptAlertPanelWithMessage: message, pageURL: url)
       completionHandler()
     }
@@ -96,7 +96,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
       completionHandler(false)
       return
     }
-    Task {
+    Task { @MainActor in
       let result = await delegate.tab(
         tab,
         runJavaScriptConfirmPanelWithMessage: message,
@@ -117,7 +117,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
       completionHandler(nil)
       return
     }
-    Task {
+    Task { @MainActor in
       let result = await delegate.tab(
         tab,
         runJavaScriptConfirmPanelWithPrompt: prompt,

@@ -32,6 +32,19 @@ CWV_EXPORT
 /// Reloads the page with a specific user agent type
 - (void)reloadWithUserAgentType:(CWVUserAgentType)userAgentType;
 
+/// Return the last committed navigation's original URL request
+///
+/// This is the same as WebKit's back/forward list current item `initialURL`
+/// property.
+@property(readonly, nullable)
+    NSURL* originalRequestURLForLastCommitedNavigation;
+
+/// The MIME type for the contents currently loaded in the web view
+@property(readonly) NSString* contentsMIMEType;
+
+/// The last time that the web view was active
+@property(readonly) NSDate* lastActiveTime;
+
 #pragma mark -
 
 /// Creates a PDF of the current page
@@ -74,12 +87,6 @@ CWV_EXPORT
 /// This is only available for `use_blink=false` builds and be used for WebKit
 /// specific paths.
 @property(readonly, nullable) WKWebView* internalWebView;
-
-/// The underlying WKWebViewConfiguration for this CWVWebView
-///
-/// This is only available for `use_blink=false` builds and be used for WebKit
-/// specific paths.
-@property(readonly) WKWebViewConfiguration* WKConfiguration;
 
 @end
 

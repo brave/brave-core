@@ -40,8 +40,11 @@ extension TabPolicyDecider {
   }
 }
 
-class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
+class AnyTabPolicyDecider: TabPolicyDecider, Hashable, CustomDebugStringConvertible {
   var id: ObjectIdentifier
+  #if DEBUG
+  let objectName: String
+  #endif
 
   private let _shouldAllowRequest:
     (any TabState, URLRequest, WebRequestInfo) async -> WebPolicyDecision
@@ -50,12 +53,23 @@ class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
 
   init(_ policyDecider: some TabPolicyDecider) {
     id = ObjectIdentifier(policyDecider)
+    #if DEBUG
+    objectName = String(describing: policyDecider)
+    #endif
     _shouldAllowRequest = { [weak policyDecider] in
       await policyDecider?.tab($0, shouldAllowRequest: $1, requestInfo: $2) ?? .allow
     }
     _shouldAllowResponse = { [weak policyDecider] in
       await policyDecider?.tab($0, shouldAllowResponse: $1, responseInfo: $2) ?? .allow
     }
+  }
+
+  var debugDescription: String {
+    #if DEBUG
+    return "AnyTabPolicyDecider: \(objectName)"
+    #else
+    return "AnyTabPolicyDecider: \(id)"
+    #endif
   }
 
   func tab(

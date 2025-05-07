@@ -229,6 +229,20 @@ extension SessionTab {
     }
   }
 
+  public static func purgeSessionData() {
+    DataController.performOnMainContext { context in
+      for tab in Self.all() {
+        tab.interactionState = Data()
+      }
+
+      do {
+        try context.save()
+      } catch {
+        Logger.module.error("Error: SessionTabs not saved!")
+      }
+    }
+  }
+
   public static func createIfNeeded(
     windowId: UUID,
     tabId: UUID,

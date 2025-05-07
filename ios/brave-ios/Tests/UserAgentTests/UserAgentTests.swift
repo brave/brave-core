@@ -12,11 +12,6 @@ import XCTest
 
 class UserAgentTests: XCTestCase {
 
-  override func setUp() {
-    super.setUp()
-    Preferences.UserAgent.alwaysRequestDesktopSite.reset()
-  }
-
   let desktopUARegex: (String) -> Bool = { ua in
     let range = ua.range(
       of:
@@ -49,7 +44,7 @@ class UserAgentTests: XCTestCase {
     let expectation = self.expectation(description: "Found Firefox user agent")
 
     let webView = WKWebView(frame: .zero)
-    webView.customUserAgent = UserAgent.userAgentForIdiom()
+    webView.customUserAgent = UserAgent.mobile
 
     webView.evaluateJavaScript("navigator.userAgent") { result, error in
       let userAgent = result as! String
@@ -95,28 +90,5 @@ class UserAgentTests: XCTestCase {
     }
 
     waitForExpectations(timeout: 60, handler: nil)
-  }
-
-  func testDesktopUserAgentOnPad() {
-    Preferences.UserAgent.alwaysRequestDesktopSite.value = true
-
-    XCTAssertTrue(desktopUARegex(UserAgent.desktop), "User agent computes correctly.")
-
-    let userAgent = UserAgent.userAgentForIdiom(.pad)
-
-    if self.mobileUARegex(userAgent) || !self.desktopUARegex(userAgent) {
-      XCTFail("User agent did not match expected pattern! \(userAgent)")
-    }
-  }
-
-  func testMobileUserAgentOnPad() {
-    Preferences.UserAgent.alwaysRequestDesktopSite.value = false
-
-    XCTAssertTrue(mobileUARegex(UserAgent.mobile), "User agent computes correctly.")
-    let userAgent = UserAgent.userAgentForIdiom(.pad)
-
-    if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
-      XCTFail("User agent did not match expected pattern! \(userAgent)")
-    }
   }
 }

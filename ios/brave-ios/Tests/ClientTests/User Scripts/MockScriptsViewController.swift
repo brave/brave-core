@@ -5,6 +5,7 @@
 
 import CryptoKit
 import UIKit
+import Web
 import WebKit
 import XCTest
 
@@ -31,9 +32,14 @@ class MockScriptsViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    let tab = TabStateFactory.create(with: .init())
 
     // Will load some base scripts into this webview
-    userScriptManager.loadScripts(into: webView.configuration.userContentController, scripts: [])
+    userScriptManager.loadScripts(
+      into: webView.configuration.userContentController,
+      scripts: [],
+      tab: tab
+    )
 
     self.view.addSubview(webView)
     webView.snp.makeConstraints { make in

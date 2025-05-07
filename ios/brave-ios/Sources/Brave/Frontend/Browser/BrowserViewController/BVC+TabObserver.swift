@@ -317,7 +317,10 @@ extension BrowserViewController: TabObserver {
         return
       }
 
-      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inTab: tab)
+      if !FeatureList.kUseChromiumWebViews.enabled {
+        // Only handle error pages ourselves for legacy web views
+        ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inTab: tab)
+      }
     }
   }
 

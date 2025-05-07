@@ -23,6 +23,9 @@ OBJC_EXPORT
 /// The default page mode in which pages should be loaded.
 @property(nonatomic) DefaultPageMode defaultPageMode;
 
+/// Whether or not popups are allowed by default
+@property(nonatomic) BOOL popupsAllowed;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -33,4 +33,16 @@
                                                 : CONTENT_SETTING_BLOCK);
 }
 
+- (BOOL)popupsAllowed {
+  auto setting = _settingsMap->GetDefaultContentSetting(
+      ContentSettingsType::POPUPS, nullptr);
+  return setting == CONTENT_SETTING_ALLOW;
+}
+
+- (void)setPopupsAllowed:(BOOL)popupsAllowed {
+  _settingsMap->SetDefaultContentSetting(
+      ContentSettingsType::POPUPS,
+      popupsAllowed ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+}
+
 @end

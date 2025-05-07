@@ -522,26 +522,40 @@ class SettingsViewController: TableViewController {
       ]
     )
 
+    let defaultHostContentSettings = braveCore.defaultHostContentSettings
     if UIDevice.isIpad {
+      let defaultPageModeSwitch = SwitchAccessoryView(
+        initialValue: defaultHostContentSettings.defaultPageMode == .desktop,
+        valueChange: { value in
+          defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+        }
+      )
       general.rows.append(
-        .boolRow(
-          title: Strings.alwaysRequestDesktopSite,
-          option: Preferences.UserAgent.alwaysRequestDesktopSite,
-          image: UIImage(braveSystemNamed: "leo.window.cursor")
+        Row(
+          text: Strings.alwaysRequestDesktopSite,
+          image: UIImage(braveSystemNamed: "leo.window.cursor"),
+          cellClass: MultilineSubtitleCell.self
         )
       )
     }
 
+    let blockPopupsSwitch = SwitchAccessoryView(
+      initialValue: !defaultHostContentSettings.popupsAllowed,
+      valueChange: { value in
+        defaultHostContentSettings.popupsAllowed = !value
+      }
+    )
     general.rows.append(contentsOf: [
       .boolRow(
         title: Strings.enablePullToRefresh,
         option: Preferences.General.enablePullToRefresh,
         image: UIImage(braveSystemNamed: "leo.browser.refresh")
       ),
-      .boolRow(
-        title: Strings.blockPopups,
-        option: Preferences.General.blockPopups,
-        image: UIImage(braveSystemNamed: "leo.shield.block")
+      Row(
+        text: Strings.blockPopups,
+        image: UIImage(braveSystemNamed: "leo.shield.block"),
+        accessory: .view(blockPopupsSwitch),
+        cellClass: MultilineSubtitleCell.self
       ),
     ])
 
