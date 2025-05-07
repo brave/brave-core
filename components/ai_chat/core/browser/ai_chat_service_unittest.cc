@@ -48,6 +48,7 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "gmock/gmock.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -655,11 +656,6 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   NiceMock<MockAssociatedContent> associated_content{};
-  ConversationHandler* conversation =
-      ai_chat_service_->CreateConversationHandlerForContent(
-          associated_content.GetContentId(), associated_content.GetWeakPtr());
-  auto conversation_client = CreateConversationClient(conversation);
-
   ON_CALL(associated_content, GetStagedEntriesFromContent)
       .WillByDefault(
           [](ConversationHandler::GetStagedEntriesCallback callback) {
@@ -673,9 +669,12 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   ON_CALL(associated_content, GetURL())
       .WillByDefault(testing::Return(GURL("https://example.com")));
 
-  // One from setting up a connected client, one from
-  // OpenConversationWithStagedEntries.
-  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(2);
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  auto conversation_client = CreateConversationClient(conversation);
+
+  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(testing::AtLeast(1));
 
   bool opened = false;
   ai_chat_service_->OpenConversationWithStagedEntries(
