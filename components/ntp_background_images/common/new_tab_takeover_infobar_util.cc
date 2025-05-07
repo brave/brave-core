@@ -6,6 +6,7 @@
 #include "brave/components/ntp_background_images/common/new_tab_takeover_infobar_util.h"
 
 #include "base/check.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -23,6 +24,10 @@ int GetNewTabTakeoverInfobarShowCountThreshold() {
 
 bool ShouldShowNewTabTakeoverInfobar(const PrefService* prefs) {
   CHECK(prefs);
+
+  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
+    return false;
+  }
 
   return prefs->GetInteger(prefs::kNewTabTakeoverInfobarShowCount) > 0;
 }
