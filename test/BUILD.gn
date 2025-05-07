@@ -969,7 +969,6 @@ test("brave_browser_tests") {
     "//components/policy/core/common:test_support",
     "//components/prefs",
     "//components/privacy_sandbox",
-    "//components/reading_list/features:flags",
     "//components/renderer_context_menu",
     "//components/safe_browsing/content/browser/web_ui",
     "//components/safe_browsing/core/common",
