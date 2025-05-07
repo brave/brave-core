@@ -12,6 +12,10 @@ import XCTest
 
 class SelectAccountTokenStoreTests: XCTestCase {
 
+  override func tearDown() {
+    cancellables.removeAll()
+  }
+
   private var cancellables: Set<AnyCancellable> = .init()
 
   private let allUserAssets: [BraveWallet.BlockchainToken] = [
