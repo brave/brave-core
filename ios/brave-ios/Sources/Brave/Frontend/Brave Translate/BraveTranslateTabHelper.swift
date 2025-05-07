@@ -105,8 +105,9 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         throw BraveTranslateError.otherError
       }
 
-      guard let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
-        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier,
+      guard
+        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier(.alpha2),
+        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier(.alpha2),
         currentLanguage != pageLanguage
       else {
         throw BraveTranslateError.invalidLanguage
