@@ -10,19 +10,20 @@ export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
-    gap: 16px;
   }
 
-  .toggle-row {
-    display: flex;
-    align-items: center;
+  label .subtext {
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
 
-    label {
-      flex: 1 1 auto;
+    a {
+      color: inherit;
     }
   }
 
   .background-options {
+    padding: 16px;
+    margin-bottom: 8px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -46,6 +47,7 @@ export const style = scoped.css`
 
   .background-option {
     position: relative;
+    text-align: center;
 
     &:hover .remove-image {
       visibility: visible;
@@ -86,15 +88,19 @@ export const style = scoped.css`
     font: ${font.small.regular};
   }
 
-  h4 button {
-    --leo-icon-size: 20px;
+  h4 {
+    padding: 16px 16px 0;
 
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    button {
+      --leo-icon-size: 20px;
 
-    &:hover {
-      color: ${color.text.interactive};
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      &:hover {
+        color: ${color.text.interactive};
+      }
     }
   }
 `

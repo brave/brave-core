@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color } from '@brave/leo/tokens/css/variables'
+import { color, effect } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
@@ -16,25 +16,34 @@ export const style = scoped.css`
   }
 
   h3 {
-    margin: 24px 24px 16px;
+    padding: 24px;
+    border-bottom: solid 1px ${color.divider.subtle};
   }
 
   .panel-body {
     display: flex;
-    gap: 16px;
   }
 
   nav {
-    flex: 0 0 244px;
+    flex: 0 0 220px;
     white-space: nowrap;
+    margin-top: 24px;
   }
 
   section {
     flex: 1 1 auto;
-    padding: 10px 16px 16px;
-    height: 360px;
+    padding: 16px;
+    height: 380px;
     overflow: auto;
     overscroll-behavior: contain;
+    scrollbar-width: thin;
+    background: ${color.page.background};
+
+    > * {
+      background: ${color.container.background};
+      box-shadow: ${effect.elevation['01']};
+      border-radius: 8px;
+    }
   }
 `
 
@@ -49,5 +58,21 @@ style.passthrough.css`
     background: ${color.icon.interactive};
     border-radius: 50%;
     padding: 6px;
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 24px;
+    border-bottom: solid 1px ${color.divider.subtle};
+
+    label {
+      flex: 1 1 auto;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `

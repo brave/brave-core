@@ -150,7 +150,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog">
-    Customize Dashboard
+    Customize New Tab Page
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
@@ -173,8 +173,12 @@
     Show search widget in new tabs
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT" desc="Text describing earning for new tab page ads">
+    With <ph name="LINK_BEGIN">$1</ph>Brave Rewards<ph name="LINK_END">$2</ph>, you can earn for seeing new tab page ads.
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">
-    Show Sponsored Images
+    Show new tab page ads
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP">
@@ -334,7 +338,7 @@
   </message>
 
   <message name="IDS_NEW_TAB_WIDGET_SETTINGS_TITLE" desc="Title of widgets settings panel">
-    Widgets
+    Cards
   </message>
 
 </grit-part>

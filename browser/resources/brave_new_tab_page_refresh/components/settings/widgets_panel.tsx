@@ -25,7 +25,7 @@ export function WidgetsPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='form-control-row'>
+      <div className='control-row'>
         <label>{getString('showStatsLabel')}</label>
         <Toggle
           size='small'
@@ -37,7 +37,7 @@ export function WidgetsPanel() {
       </div>
       {
         vpnFeatureEnabled &&
-          <div className='form-control-row'>
+          <div className='control-row'>
             <label>{getString('showVpnWidgetLabel')}</label>
             <Toggle
               size='small'
@@ -50,7 +50,7 @@ export function WidgetsPanel() {
       }
       {
         rewardsFeatureEnabled &&
-          <div className='form-control-row'>
+          <div className='control-row'>
             <label>{getString('showRewardsWidgetLabel')}</label>
             <Toggle
               size='small'
@@ -61,7 +61,7 @@ export function WidgetsPanel() {
             />
           </div>
       }
-      <div className='form-control-row'>
+      <div className='control-row'>
         <label>{getString('showTalkWidgetLabel')}</label>
         <Toggle
           size='small'

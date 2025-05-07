@@ -236,6 +236,8 @@ void NewTabPageInitializer::AddStrings() {
       {"showNewsWidgetLabel", IDS_NEW_TAB_SHOW_NEWS_WIDGET_LABEL},
       {"showRewardsWidgetLabel", IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL},
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
+      {"showSponsoredImagesEarningText",
+       IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
       {"showStatsLabel", IDS_NEW_TAB_SHOW_STATS_LABEL},
       {"showTalkWidgetLabel", IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL},

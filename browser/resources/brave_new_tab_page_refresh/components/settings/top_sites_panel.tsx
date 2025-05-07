@@ -34,7 +34,7 @@ export function TopSitesPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='toggle-row'>
+      <div className='control-row'>
         <label>{getString('showTopSitesLabel')}</label>
         <Toggle
           size='small'

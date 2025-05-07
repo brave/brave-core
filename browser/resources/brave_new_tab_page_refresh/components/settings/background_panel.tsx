@@ -13,6 +13,9 @@ import { useLocale } from '../context/locale_context'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { optional } from '../../lib/optional'
 import { BackgroundTypePanel } from './background_type_panel'
+import { Link } from '../common/link'
+import formatMessage from '$web-common/formatMessage'
+import { settingsURL } from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
 import {
   SelectedBackgroundType,
@@ -32,6 +35,7 @@ export function BackgroundPanel() {
   const selectedBackground = useAppState((s) => s.selectedBackground)
   const braveBackgrounds = useAppState((s) => s.braveBackgrounds)
   const customBackgrounds = useAppState((s) => s.customBackgrounds)
+  const rewardsEnabled = useAppState((s) => s.rewardsEnabled)
 
   const [panelType, setPanelType] =
     React.useState(optional<SelectedBackgroundType>())
@@ -137,7 +141,7 @@ export function BackgroundPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='toggle-row'>
+      <div className='control-row'>
         <label>{getString('showBackgroundsLabel')}</label>
         <Toggle
           size='small'
@@ -147,8 +151,29 @@ export function BackgroundPanel() {
       </div>
       {
         backgroundsEnabled &&
-          <div className='toggle-row'>
-            <label>{getString('showSponsoredImagesLabel')}</label>
+          <div className='control-row'>
+            <label>
+              {getString('showSponsoredImagesLabel')}
+              <div className='subtext'>
+                {
+                  !rewardsEnabled && formatMessage(
+                    getString('showSponsoredImagesEarningText'),
+                    {
+                      tags: {
+                        $1: (content) => (
+                          <Link
+                            key='learn-more'
+                            url={settingsURL}
+                            openInNewTab
+                          >
+                            {content}
+                          </Link>
+                        )
+                      }
+                    })
+                }
+              </div>
+            </label>
             <Toggle
               size='small'
               checked={sponsoredImagesEnabled}

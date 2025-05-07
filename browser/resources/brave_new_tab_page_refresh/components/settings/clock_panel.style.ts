@@ -9,15 +9,5 @@ export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-
-    > * {
-      display: flex;
-      align-items: center;
-
-      label {
-        flex: 1 1 auto;
-      }
-    }
   }
 `
