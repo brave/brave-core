@@ -23,9 +23,7 @@ class BraveGeolocationPermissionContextDelegate
   ~BraveGeolocationPermissionContextDelegate() override;
 
   bool DecidePermission(
-      const permissions::PermissionRequestID& id,
-      const GURL& requesting_origin,
-      bool user_gesture,
+      const std::unique_ptr<permissions::PermissionRequestData>& request_data,
       permissions::BrowserPermissionCallback* callback,
       permissions::GeolocationPermissionContext* context) override;
 
