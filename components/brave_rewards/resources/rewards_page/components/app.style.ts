@@ -10,8 +10,6 @@ import { addStyles, css } from '../lib/style_injector'
 
 import backgroundAnimated from '../assets/background_animated.svg'
 import backgroundStatic from '../assets/background_static.svg'
-import backgroundAnimatedDark from '../assets/background_animated_dark.svg'
-import backgroundStaticDark from '../assets/background_static_dark.svg'
 
 import rewardsLogoImage from '../assets/rewards_logo.svg'
 import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
@@ -60,10 +58,10 @@ export const style = scoped.css`
     }
 
     @media (prefers-color-scheme: dark) {
-      background-image: url(${backgroundStaticDark});
+      background-image: none;
 
       .animated-background & {
-        background-image: url(${backgroundAnimatedDark});
+        background-image: none;
       }
     }
   }
@@ -183,7 +181,7 @@ addStyles('app-global-styles', css`
     .content-card {
       border-radius: 16px;
       padding: 4px;
-      background-color: rgb(from ${color.container.background} r g b / 55%);
+      background-color: rgba(255, 255, 255, 0.55);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -192,6 +190,10 @@ addStyles('app-global-styles', css`
         border-radius: 12px;
         background: ${color.container.background};
         width: 100%;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        background-color: rgba(37, 37, 37, 0.58);
       }
     }
 

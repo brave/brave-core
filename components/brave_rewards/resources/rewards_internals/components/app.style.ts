@@ -15,11 +15,10 @@ export const style = scoped.css`
   & {
     display: flex;
     block-size: 100vh;
-    background: #ede6fa;
     container-type: inline-size;
 
     @media (prefers-color-scheme: dark) {
-      background: #270d69;
+      scrollbar-color: rgba(255, 255, 255, 0.25) rgba(0, 0, 0, 0);
     }
   }
 
@@ -215,7 +214,7 @@ global.css`
     .content-card {
       border-radius: 16px;
       padding: 4px;
-      background-color: rgb(from ${color.container.background} r g b / 55%);
+      background-color: rgba(255, 255, 255, 0.55);
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -229,6 +228,10 @@ global.css`
 
       h4 {
         padding: 8px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        background-color: rgba(37, 37, 37, 0.58);
       }
     }
   }
