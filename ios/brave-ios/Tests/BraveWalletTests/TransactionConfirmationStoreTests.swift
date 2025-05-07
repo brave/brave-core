@@ -48,6 +48,12 @@ class TransactionConfirmationStoreTests: XCTestCase {
       price: "62117.0",
       assetTimeframeChange: "-57.23"
     )
+    let mockZECAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: "zec",
+      toAsset: "usd",
+      price: "36.24",
+      assetTimeframeChange: "-0.13"
+    )
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     let mockFILBalanceWei = formatter.weiString(from: 1, decimals: 18) ?? ""
@@ -56,7 +62,13 @@ class TransactionConfirmationStoreTests: XCTestCase {
     assetRatioService._price = { _, _, _, completion in
       completion(
         true,
-        [mockEthAssetPrice, mockSolAssetPrice, mockFilAssetPrice, mockBtcAssetPrice]
+        [
+          mockEthAssetPrice,
+          mockSolAssetPrice,
+          mockFilAssetPrice,
+          mockBtcAssetPrice,
+          mockZECAssetPrice,
+        ]
       )
     }
     let rpcService = MockJsonRpcService()
@@ -142,6 +154,8 @@ class TransactionConfirmationStoreTests: XCTestCase {
       completion(bitcoinBalance, "")
     }
 
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
+
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
       rpcService: rpcService,
@@ -152,6 +166,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
@@ -660,6 +675,51 @@ class TransactionConfirmationStoreTests: XCTestCase {
 
     await fulfillment(of: [prepareExpectation], timeout: 1)
 
+  }
+
+  func testPrepareZecSend() async {
+    let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockZecToken]
+    let mockTransaction: BraveWallet.TransactionInfo = .mockZecUnapprovedSend
+    let store = setupStore(
+      accountInfos: [.mockZcashAccount],
+      allTokens: mockAllTokens,
+      transactions: [mockTransaction]
+    )
+
+    let prepareExpectation = expectation(description: "prepare")
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    store.$gasValue
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0.00100000")
+      }
+      .store(in: &cancellables)
+    store.$gasSymbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockZecToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$symbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockZecToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$value
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0.01")
+      }
+      .store(in: &cancellables)
+
+    await fulfillment(of: [prepareExpectation], timeout: 1)
   }
 }
 
