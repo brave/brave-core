@@ -29,12 +29,25 @@ type OperatorType = string
 type OperatorArg = CSSSelector | ProceduralSelector | string
 type OperatorResult = HTMLElement[]
 
-type UnboundStringFunc = (arg: string, element: HTMLElement) => OperatorResult
+// Broad type, different operators should define more specific types
+// of caches they may receive.
+type OperatorCache = WeakMap<any, any>
+// Used to store intermediate results generated when determining
+// what text each node contains.
+type OperatorTextCache = WeakMap<HTMLElement, string>
+
+type UnboundStringFunc = (
+  arg: string,
+  element: HTMLElement,
+  cache?: OperatorCache) => OperatorResult
 type UnboundChildRuleOrStringFunc = (
   arg: string | ProceduralSelector,
-  element: HTMLElement) => OperatorResult
+  element: HTMLElement,
+  cache?: OperatorCache) => OperatorResult
 type UnboundOperatorFunc = UnboundStringFunc | UnboundChildRuleOrStringFunc
-type OperatorFunc = (element: HTMLElement) => OperatorResult
+type OperatorFunc = (
+  element: HTMLElement,
+  cache?: OperatorCache) => OperatorResult
 
 /* post-processed for convenient usage in JS */
 interface CompiledProceduralOperator {
@@ -289,10 +302,44 @@ const operatorHas = (instruction: CSSSelector | ProceduralSelector,
   }
 }
 
+const _tagsToIgnoreForChildText = new Set(['SCRIPT', 'STYLE'])
+const _childTextForElement = (element: HTMLElement,
+                              cache: OperatorTextCache): string => {
+  const cachedValue = cache.get(element)
+  if (cachedValue) {
+    return cachedValue
+  }
+
+  const childTextStrings: string[] = []
+  for (const childNode of element.childNodes) {
+    if (childNode.nodeType === Node.TEXT_NODE) {
+      const textForChild = childNode.textContent
+      if (textForChild) {
+        childTextStrings.push(textForChild)
+      }
+      continue
+    }
+
+    if (childNode.nodeType === Node.ELEMENT_NODE) {
+      const childElement = childNode as HTMLElement
+      if (_tagsToIgnoreForChildText.has(childElement.tagName)) {
+        continue
+      }
+      const textForChild = _childTextForElement(childElement, cache)
+      childTextStrings.push(textForChild)
+    }
+  }
+
+  const childText = childTextStrings.join('')
+  cache.set(element, childText)
+  return childText
+}
+
 // Implementation of ":has-text" rule
 const operatorHasText = (instruction: string,
-                         element: HTMLElement): OperatorResult => {
-  const text = element.innerText
+                         element: HTMLElement,
+                         cache: OperatorTextCache): OperatorResult => {
+  const text = _childTextForElement(element, cache)
   const valueTest = _extractValueMatchRuleFromStr(instruction)
   return valueTest(text) ? [element] : []
 }
@@ -560,21 +607,33 @@ const _determineInitNodesAndIndex = (selector: CompiledProceduralSelector,
   return [index, nodesToConsider]
 }
 
+// List of operator types that should receive a shared cache for mapping
+// elements to their child text.
+const _nodeTextCacheTypes:  Set<OperatorType> = new Set([
+  'has-type',
+  'contains'
+])
 const applyCompiledSelector = (selector: CompiledProceduralSelector,
                                initNodes?: HTMLElement[]): HTMLElement[] => {
   const initState = _determineInitNodesAndIndex(selector, initNodes)
+
+  const nodeTextCache: WeakMap<HTMLElement, string> = new WeakMap()
+
   let [index, nodesToConsider] = initState
   const numOperators = selector.length
   for (index; nodesToConsider.length > 0 && index < numOperators; ++index) {
     const operator = selector[index]
     const operatorFunc = operator.func
     const operatorType = operator.type
+    const cacheForOperator = _nodeTextCacheTypes.has(operatorType)
+      ? nodeTextCache
+      : undefined
 
     // Note that we special case the :matches-path case here, since if
     // if it passes for one element, then it will pass for all elements.
     if (fastPathOperatorTypes.includes(operatorType)) {
       const firstNode = nodesToConsider[0]
-      if (operatorFunc(firstNode).length === 0) {
+      if (operatorFunc(firstNode, cacheForOperator).length === 0) {
         nodesToConsider = []
       }
       // Note that unless we've taken the if-true branch above, then
@@ -585,7 +644,7 @@ const applyCompiledSelector = (selector: CompiledProceduralSelector,
 
     let newNodesToConsider: HTMLElement[] = []
     for (const aNode of nodesToConsider) {
-      const result = operatorFunc(aNode)
+      const result = operatorFunc(aNode, cacheForOperator)
       newNodesToConsider = newNodesToConsider.concat(result)
     }
     nodesToConsider = newNodesToConsider
