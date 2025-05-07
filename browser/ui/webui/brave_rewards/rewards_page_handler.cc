@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_ads/core/public/user_engagement/reactions/reactions_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
@@ -234,6 +235,10 @@ void RewardsPageHandler::GetPluralString(const std::string& key,
   auto iter = kPluralStrings.find(key);
   CHECK(iter != kPluralStrings.end());
   std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->second, count));
+}
+
+void RewardsPageHandler::NotifyRewardsPageView() {
+  p3a::RecordRewardsPageViews(prefs_, true);
 }
 
 void RewardsPageHandler::GetRewardsParameters(
@@ -486,6 +491,8 @@ void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
     }
     std::move(callback).Run(std::move(json));
   };
+
+  brave_rewards::p3a::RecordAdsHistoryView();
 
   // TODO(https://github.com/brave/brave-browser/issues/24595): Transition
   // GetAdHistory from base::Value to a mojom data structure.
