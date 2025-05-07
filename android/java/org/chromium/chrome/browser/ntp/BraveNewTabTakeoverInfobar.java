@@ -7,7 +7,9 @@ package org.chromium.chrome.browser.ntp;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -22,6 +24,9 @@ public class BraveNewTabTakeoverInfobar {
     private static final String TAG = "NewTabTakeover";
     private static final String LEARN_MORE_URL =
             "https://support.brave.com/hc/en-us/articles/35182999599501";
+    private static final String NEW_TAB_PAGE_ADS_FEATURE = "NewTabPageAds";
+    private static final String SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM =
+            "should_support_confirmations_for_non_rewards";
     private final Profile mProfile;
 
     public BraveNewTabTakeoverInfobar(Profile profile) {
@@ -75,6 +80,17 @@ public class BraveNewTabTakeoverInfobar {
     }
 
     private boolean shouldShowInfobar() {
+        if (!ChromeFeatureList.getFieldTrialParamByFeatureAsBoolean(
+                NEW_TAB_PAGE_ADS_FEATURE,
+                SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM,
+                /* defaultValue= */ false)) {
+            return false;
+        }
+
+        if (BraveRewardsHelper.isRewardsEnabled()) {
+            return false;
+        }
+
         PrefService prefService = UserPrefs.get(mProfile);
         final int infobarShowCount =
                 prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT);
