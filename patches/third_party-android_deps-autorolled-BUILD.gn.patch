@@ -1,0 +1,12 @@
+diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
+index 4e5b800f97ede555443ee63b12f607e61c175c08..84879ff7c5d5aff9684925fc125e33b3849d4cbd 100644
+--- a/third_party/android_deps/autorolled/BUILD.gn
++++ b/third_party/android_deps/autorolled/BUILD.gn
+@@ -756,6 +756,7 @@ template("define_autorolled_targets") {
+           "//third_party/android_deps:javax_inject_javax_inject_java",
+           "//third_party/androidx:androidx_annotation_annotation_java",
+         ]
++        import("//brave/third_party/android_deps/sources.gni") visibility += brave_third_party_android_deps_visibility
+       }
+     }
+ 
