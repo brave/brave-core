@@ -33,7 +33,10 @@ public class SponsoredRichMediaWebView {
             Activity activity, WindowAndroid windowAndroid, Profile profile) {
         mWebContents =
                 WebContentsFactory.createWebContentsWithWarmRenderer(
-                        profile, /* initiallyHidden= */ false, /* targetNetwork= */ NetId.INVALID);
+                        profile,
+                        /* initiallyHidden= */ false,
+                        /* usesPlatformAutofill= */ true,
+                        /* targetNetwork= */ NetId.INVALID);
 
         final ContentView webContentView = ContentView.createContentView(activity, mWebContents);
         mWebContents.setDelegates(
