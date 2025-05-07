@@ -300,7 +300,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
   constexpr char kExpectedText[] = "This is the way.";
   // A url that does by itself trigger print preview extraction.
   for (const auto& host : kPrintPreviewRetrievalHosts) {
-    NavigateTo(GURL("https://docs.google.com"));
+    NavigateTo(GURL(base::StrCat({"https://", host})));
     if (is_print_preview_supported_) {
       // PrintPreview always initiated on URL
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
