@@ -48,7 +48,6 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "gmock/gmock.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -674,7 +673,8 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
           associated_content.GetContentId(), associated_content.GetWeakPtr());
   auto conversation_client = CreateConversationClient(conversation);
 
-  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(testing::AtLeast(1));
+  EXPECT_CALL(associated_content, GetStagedEntriesFromContent)
+      .Times(testing::AtLeast(1));
 
   bool opened = false;
   ai_chat_service_->OpenConversationWithStagedEntries(
@@ -747,6 +747,177 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   // Verify deleted from database
   ResetService();
   ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+}
+
+TEST_P(AIChatServiceUnitTest, MaybeAssociateContent) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  ConversationHandler* handler = CreateConversation();
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler->get_conversation_uuid());
+
+  EXPECT_TRUE(handler->associated_content_manager()->HasAssociatedContent());
+
+  EXPECT_EQ(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       MaybeAssociateContent_AlreadyAttachedToOtherConversation) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  ConversationHandler* handler1 = CreateConversation();
+  ConversationHandler* handler2 = CreateConversation();
+  auto client1 = CreateConversationClient(handler1);
+  auto client2 = CreateConversationClient(handler2);
+
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler1->get_conversation_uuid());
+
+  EXPECT_TRUE(handler1->associated_content_manager()->HasAssociatedContent());
+
+  EXPECT_EQ(
+      handler1,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler2->get_conversation_uuid());
+
+  EXPECT_TRUE(handler1->associated_content_manager()->HasAssociatedContent());
+  EXPECT_TRUE(handler2->associated_content_manager()->HasAssociatedContent());
+
+  EXPECT_EQ(
+      handler2,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+}
+
+TEST_P(AIChatServiceUnitTest, MaybeAssociateContent_InvalidScheme) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("chrome://example")));
+
+  ConversationHandler* handler = CreateConversation();
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler->get_conversation_uuid());
+
+  EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
+  EXPECT_EQ(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+}
+
+TEST_P(AIChatServiceUnitTest, DisassociateContent) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler->get_conversation_uuid());
+
+  EXPECT_TRUE(handler->associated_content_manager()->HasAssociatedContent());
+  EXPECT_EQ(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+
+  ai_chat_service_->DisassociateContent(&associated_content,
+                                        handler->get_conversation_uuid());
+
+  EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
+  EXPECT_NE(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+}
+
+TEST_P(AIChatServiceUnitTest, DisassociateContent_NotAttached) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+
+  EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
+
+  ai_chat_service_->DisassociateContent(&associated_content,
+                                        handler->get_conversation_uuid());
+
+  EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
+  EXPECT_NE(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+}
+
+TEST_P(AIChatServiceUnitTest, DisassociateContent_NotAttachedInvalidScheme) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("chrome://example")));
+
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler->get_conversation_uuid());
+
+  EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
+  EXPECT_EQ(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+
+  ai_chat_service_->DisassociateContent(&associated_content,
+                                        handler->get_conversation_uuid());
+
+  EXPECT_FALSE(handler->associated_content_manager()->HasAssociatedContent());
+  EXPECT_NE(handler, ai_chat_service_->GetOrCreateConversationHandlerForContent(
+                         associated_content.GetContentId(),
+                         associated_content.GetWeakPtr()));
+}
+
+TEST_P(AIChatServiceUnitTest, DisassociateContent_AttachedToOtherConversation) {
+  NiceMock<MockAssociatedContent> associated_content;
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  ConversationHandler* handler1 = CreateConversation();
+  ConversationHandler* handler2 = CreateConversation();
+  auto client1 = CreateConversationClient(handler1);
+  auto client2 = CreateConversationClient(handler2);
+
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler1->get_conversation_uuid());
+
+  EXPECT_TRUE(handler1->associated_content_manager()->HasAssociatedContent());
+  EXPECT_EQ(
+      handler1,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+
+  ai_chat_service_->MaybeAssociateContent(&associated_content,
+                                          handler2->get_conversation_uuid());
+
+  EXPECT_TRUE(handler2->associated_content_manager()->HasAssociatedContent());
+  EXPECT_EQ(
+      handler2,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+
+  ai_chat_service_->DisassociateContent(&associated_content,
+                                        handler1->get_conversation_uuid());
+
+  EXPECT_FALSE(handler1->associated_content_manager()->HasAssociatedContent());
+  EXPECT_TRUE(handler2->associated_content_manager()->HasAssociatedContent());
+  EXPECT_EQ(
+      handler2,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
 }
 
 TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
