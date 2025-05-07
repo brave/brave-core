@@ -154,8 +154,9 @@ class TabTileModel : public TabStripModelObserver {
   std::vector<TabTile> tab_tiles_;
   std::vector<TabTile> tab_tiles_to_be_attached_to_new_window_;
 
-  // As UI is likely to read more frequently than insert or delete, we cache
-  // index for faster look up.
+  // As UI is likely to find TabHandle's TabTile in |tab_tiles_| more frequently
+  // than insert or delete to it, we cache TabHandle's index in |tab_tiles_| for
+  // faster look up.
   base::flat_map<tabs::TabHandle, size_t> tab_tile_index_for_tab_;
 
   base::ObserverList<TabTileModelObserver> observers_;
