@@ -47,7 +47,7 @@
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
-#include "brave/components/ntp_background_images/common/new_tab_takeover_infobar_util.h"
+#include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"

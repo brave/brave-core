@@ -5,7 +5,7 @@
 
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 
-#include "brave/components/ntp_background_images/common/new_tab_takeover_infobar_util.h"
+#include "brave/components/ntp_background_images/common/pref_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
@@ -38,7 +38,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 static_cast<int>(ThemesOption::kSuperReferral));
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(prefs::kNewTabTakeoverInfobarShowCount,
-                                GetNewTabTakeoverInfobarShowCountThreshold());
+                                kNewTabTakeoverInfobarShowCountThreshold);
 }
 
 void RegisterProfilePrefsForMigration(
