@@ -25,6 +25,7 @@
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
+#include "components/permissions/resolvers/content_setting_permission_resolver.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -178,7 +179,10 @@ class PermissionLifetimeManagerTest : public testing::Test {
     ExpectContentSetting(FROM_HERE, origin, content_type, content_setting);
 
     auto request = std::make_unique<PermissionRequest>(
-        origin, ContentSettingsTypeToRequestType(content_type), true,
+        std::make_unique<permissions::PermissionRequestData>(
+            std::make_unique<permissions::ContentSettingPermissionResolver>(
+                ContentSettingsTypeToRequestType(content_type)),
+            /*user_gesture=*/true, origin),
         PermissionDecidedCallback(), base::OnceClosure());
     request->SetLifetime(lifetime);
     return request;

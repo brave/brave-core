@@ -15,6 +15,7 @@
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -40,8 +41,8 @@ class BraveOpenAIChatPermissionContextTest
     ContentSetting setting = ContentSetting::CONTENT_SETTING_DEFAULT;
     base::RunLoop run_loop;
     permission_context->RequestPermission(
-        PermissionRequestData(permission_context, id, /*user_gesture=*/true,
-                              url),
+        std::make_unique<PermissionRequestData>(permission_context, id,
+                                                /*user_gesture=*/true, url),
         base::BindLambdaForTesting([&](ContentSetting result) {
           setting = result;
           run_loop.Quit();
@@ -95,20 +96,29 @@ TEST_F(BraveOpenAIChatPermissionContextTest, NotAllowedInInsecureOrigins) {
 
   EXPECT_EQ(content::PermissionStatus::DENIED,
             permission_context
-                .GetPermissionStatus(nullptr /* render_frame_host */,
-                                     insecure_url, insecure_url)
+                .GetPermissionStatus(
+                    content::PermissionDescriptorUtil::
+                        CreatePermissionDescriptorForPermissionType(
+                            blink::PermissionType::NOTIFICATIONS),
+                    nullptr /* render_frame_host */, insecure_url, insecure_url)
                 .status);
 
   EXPECT_EQ(content::PermissionStatus::DENIED,
             permission_context
-                .GetPermissionStatus(nullptr /* render_frame_host */,
-                                     insecure_url, secure_url)
+                .GetPermissionStatus(
+                    content::PermissionDescriptorUtil::
+                        CreatePermissionDescriptorForPermissionType(
+                            blink::PermissionType::NOTIFICATIONS),
+                    nullptr /* render_frame_host */, insecure_url, secure_url)
                 .status);
 
   EXPECT_EQ(content::PermissionStatus::ASK,
             permission_context
-                .GetPermissionStatus(nullptr /* render_frame_host */,
-                                     secure_url, secure_url)
+                .GetPermissionStatus(
+                    content::PermissionDescriptorUtil::
+                        CreatePermissionDescriptorForPermissionType(
+                            blink::PermissionType::NOTIFICATIONS),
+                    nullptr /* render_frame_host */, secure_url, secure_url)
                 .status);
 }
 

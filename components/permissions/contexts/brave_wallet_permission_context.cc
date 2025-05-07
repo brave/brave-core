@@ -63,11 +63,11 @@ bool BraveWalletPermissionContext::IsRestrictedToSecureOrigins() const {
 }
 
 void BraveWalletPermissionContext::RequestPermission(
-    PermissionRequestData request_data,
+    std::unique_ptr<PermissionRequestData> request_data,
     BrowserPermissionCallback callback) {
-  const std::string id_str = request_data.id.ToString();
+  const std::string id_str = request_data->id.ToString();
   url::Origin requesting_origin =
-      url::Origin::Create(request_data.requesting_origin);
+      url::Origin::Create(request_data->requesting_origin);
   url::Origin origin;
   permissions::RequestType type =
       ContentSettingsTypeToRequestType(content_settings_type());
@@ -81,13 +81,12 @@ void BraveWalletPermissionContext::RequestPermission(
           type, requesting_origin, &origin,
           is_new_id ? &address_queue : nullptr)) {
     content::RenderFrameHost* rfh = content::RenderFrameHost::FromID(
-        request_data.id.global_render_frame_host_id());
+        request_data->id.global_render_frame_host_id());
     content::WebContents* web_contents =
         content::WebContents::FromRenderFrameHost(rfh);
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
-    NotifyPermissionSet(request_data.id, requesting_origin.GetURL(),
-                        embedding_origin, std::move(callback),
+    NotifyPermissionSet(std::move(request_data), std::move(callback),
                         /*persist=*/false, CONTENT_SETTING_BLOCK,
                         /*is_one_time=*/false,
                         /*is_final_decision=*/true);
@@ -112,12 +111,13 @@ void BraveWalletPermissionContext::RequestPermission(
   if (addr_queue.empty()) {
     request_address_queues_.erase(addr_queue_it);
   }
-  auto data =
-      PermissionRequestData(this, request_data.id, request_data.user_gesture,
-                            sub_request_origin->GetURL());
+  std::unique_ptr<PermissionRequestData> data =
+      std::make_unique<PermissionRequestData>(this, request_data->id,
+                                              request_data->user_gesture,
+                                              sub_request_origin->GetURL());
   // This will prevent PermissionRequestManager from reprioritize the request
   // queue.
-  data.embedded_permission_element_initiated = true;
+  data->embedded_permission_element_initiated = true;
   PermissionContextBase::RequestPermission(std::move(data),
                                            std::move(callback));
 }
