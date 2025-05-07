@@ -13,6 +13,7 @@
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/permissions/request_type.h"
+#include "components/permissions/resolvers/content_setting_permission_resolver.h"
 #include "components/prefs/pref_service.h"
 #include "components/url_formatter/elide_url.h"
 #include "components/vector_icons/vector_icons.h"
@@ -27,9 +28,11 @@ WidevinePermissionRequest::WidevinePermissionRequest(
     content::WebContents* web_contents,
     bool for_restart)
     : PermissionRequest(
-          web_contents->GetVisibleURL(),
-          permissions::RequestType::kWidevine,
-          /*has_gesture=*/false,
+          std::make_unique<permissions::PermissionRequestData>(
+              std::make_unique<permissions::ContentSettingPermissionResolver>(
+                  permissions::RequestType::kWidevine),
+              false,
+              web_contents->GetVisibleURL()),
           base::BindRepeating(&WidevinePermissionRequest::PermissionDecided,
                               base::Unretained(this)),
           base::BindOnce(&WidevinePermissionRequest::DeleteRequest,
@@ -58,9 +61,11 @@ std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
 }
 #endif
 
-void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
-                                                  bool is_one_time,
-                                                  bool is_final_decision) {
+void WidevinePermissionRequest::PermissionDecided(
+    ContentSetting result,
+    bool is_one_time,
+    bool is_final_decision,
+    const std::unique_ptr<permissions::PermissionRequestData>& request_data) {
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
     if (!for_restart_) {
