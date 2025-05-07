@@ -45,7 +45,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
    * will then consume one address from the saved list and call
    * PermissionContextBase::RequestPermission with it.
    */
-  void RequestPermission(PermissionRequestData request_data,
+  void RequestPermission(std::unique_ptr<PermissionRequestData> request_data,
                          BrowserPermissionCallback callback) override;
 
   static void RequestPermissions(

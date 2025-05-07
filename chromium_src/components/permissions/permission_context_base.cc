@@ -44,14 +44,13 @@ void PermissionContextBase::SetPermissionLifetimeManagerFactory(
   permission_lifetime_manager_factory_ = factory;
 }
 
-void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
-                                              const GURL& requesting_origin,
-                                              const GURL& embedding_origin,
-                                              ContentSetting content_setting,
-                                              bool is_one_time,
-                                              bool is_final_decision) {
+void PermissionContextBase::PermissionDecided(
+    ContentSetting content_setting,
+    bool is_one_time,
+    bool is_final_decision,
+    const std::unique_ptr<PermissionRequestData>& request_data) {
   if (permission_lifetime_manager_factory_) {
-    const auto request_it = pending_requests_.find(id.ToString());
+    const auto request_it = pending_requests_.find(request_data->id.ToString());
     if (request_it != pending_requests_.end()) {
       const PermissionRequest* permission_request =
           request_it->second.first.get();
@@ -59,11 +58,12 @@ void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
       if (auto* permission_lifetime_manager =
               permission_lifetime_manager_factory_.Run(browser_context_)) {
         permission_lifetime_manager->PermissionDecided(
-            *permission_request, requesting_origin, embedding_origin,
-            content_setting, is_one_time);
+            *permission_request, request_data->requesting_origin,
+            request_data->embedding_origin, content_setting, is_one_time);
       }
     }
-    const auto group_request_it = pending_grouped_requests_.find(id.ToString());
+    const auto group_request_it =
+        pending_grouped_requests_.find(request_data->id.ToString());
     if (group_request_it != pending_grouped_requests_.end()) {
       for (const auto& request : group_request_it->second->Requests()) {
         const PermissionRequest* permission_request = request.first.get();
@@ -71,8 +71,8 @@ void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
         if (auto* permission_lifetime_manager =
                 permission_lifetime_manager_factory_.Run(browser_context_)) {
           permission_lifetime_manager->PermissionDecided(
-              *permission_request, requesting_origin, embedding_origin,
-              content_setting, is_one_time);
+              *permission_request, request_data->requesting_origin,
+              request_data->embedding_origin, content_setting, is_one_time);
         }
       }
     }
@@ -80,20 +80,21 @@ void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
 
   if (!IsGroupedPermissionType(content_settings_type())) {
     PermissionContextBase_ChromiumImpl::PermissionDecided(
-        id, requesting_origin, embedding_origin, content_setting, is_one_time,
-        is_final_decision);
+        content_setting, is_one_time, is_final_decision,
+        std::move(request_data));
     return;
   }
 
   DCHECK(content_setting == CONTENT_SETTING_ALLOW ||
          content_setting == CONTENT_SETTING_BLOCK ||
          content_setting == CONTENT_SETTING_DEFAULT);
-  UserMadePermissionDecision(id, requesting_origin, embedding_origin,
-                             content_setting);
+  UserMadePermissionDecision(request_data->id, request_data->requesting_origin,
+                             request_data->embedding_origin, content_setting);
 
   bool persist = content_setting != CONTENT_SETTING_DEFAULT;
 
-  auto grouped_request = pending_grouped_requests_.find(id.ToString());
+  auto grouped_request =
+      pending_grouped_requests_.find(request_data->id.ToString());
   DCHECK(grouped_request != pending_grouped_requests_.end());
   DCHECK(grouped_request->second);
 
@@ -103,16 +104,15 @@ void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
 
   auto callback = grouped_request->second->GetNextCallback();
   if (callback) {
-    NotifyPermissionSet(id, requesting_origin, embedding_origin,
-                        std::move(callback), persist, content_setting,
-                        is_one_time, is_final_decision);
+    NotifyPermissionSet(request_data, std::move(callback), persist,
+                        content_setting, is_one_time, is_final_decision);
   }
 }
 
 void PermissionContextBase::DecidePermission(
-    permissions::PermissionRequestData request_data,
+    std::unique_ptr<permissions::PermissionRequestData> request_data,
     BrowserPermissionCallback callback) {
-  auto id = request_data.id;
+  auto id = request_data->id;
   PermissionContextBase_ChromiumImpl::DecidePermission(std::move(request_data),
                                                        std::move(callback));
 

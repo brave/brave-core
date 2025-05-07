@@ -23,9 +23,7 @@ BraveGeolocationPermissionContextDelegate::
     ~BraveGeolocationPermissionContextDelegate() = default;
 
 bool BraveGeolocationPermissionContextDelegate::DecidePermission(
-    const permissions::PermissionRequestID& id,
-    const GURL& requesting_origin,
-    bool user_gesture,
+    const std::unique_ptr<permissions::PermissionRequestData>& request_data,
     permissions::BrowserPermissionCallback* callback,
     permissions::GeolocationPermissionContext* context) {
   if (profile_->IsTor()) {
@@ -34,5 +32,5 @@ bool BraveGeolocationPermissionContextDelegate::DecidePermission(
   }
 
   return GeolocationPermissionContextDelegate::DecidePermission(
-      id, requesting_origin, user_gesture, callback, context);
+      std::move(request_data), callback, context);
 }

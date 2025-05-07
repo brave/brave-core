@@ -99,19 +99,7 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 namespace permissions {
 
 PermissionRequest::PermissionRequest(
-    const GURL& requesting_origin,
-    RequestType request_type,
-    bool has_gesture,
-    PermissionDecidedCallback permission_decided_callback,
-    base::OnceClosure delete_callback)
-    : PermissionRequest_ChromiumImpl(requesting_origin,
-                                     request_type,
-                                     has_gesture,
-                                     std::move(permission_decided_callback),
-                                     std::move(delete_callback)) {}
-
-PermissionRequest::PermissionRequest(
-    PermissionRequestData request_data,
+    std::unique_ptr<PermissionRequestData> request_data,
     PermissionDecidedCallback permission_decided_callback,
     base::OnceClosure delete_callback,
     bool uses_automatic_embargo)
