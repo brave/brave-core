@@ -80,6 +80,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
             ObservableSupplier<Tab> tabSupplier,
+            ObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator) {
         super(
                 controlContainer,
@@ -108,6 +109,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 onLongClickListener,
                 progressBar,
                 tabSupplier,
+                toolbarNavControlsEnabledSupplier,
                 backButtonCoordinator);
 
         mBraveToolbarLayout = toolbarLayout;
