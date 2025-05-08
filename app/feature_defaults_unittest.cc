@@ -109,7 +109,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
 #endif
-      &chrome_urls::kInternalOnlyUisPref,
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
