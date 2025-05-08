@@ -91,6 +91,9 @@ interface RewardsPageHandler {
   // Returns a plural UI string for the specified number.
   GetPluralString(string key, int32 count) => (string plural_string);
 
+  // Notifies the browser that a Rewards page view has occurred.
+  NotifyRewardsPageView();
+
   // Returns the server-side Rewards system parameters.
   GetRewardsParameters() => (RewardsParameters? rewards_parameters);
 

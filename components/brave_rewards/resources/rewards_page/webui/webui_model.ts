@@ -353,6 +353,9 @@ export function createModel(): AppModel {
 
     onAppRendered() {
       pageHandler.onPageReady()
+      if (!isBubble) {
+        pageHandler.notifyRewardsPageView()
+      }
     },
 
     openTab(url) {
