@@ -601,6 +601,10 @@
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
 
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
+-MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
