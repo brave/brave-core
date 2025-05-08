@@ -50,7 +50,8 @@ TEST_F(NewTabTakeoverInfobarUtilTest, ShouldDisplayInfobar) {
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  for (int i = 0; i < kNewTabTakeoverInfobarDisplayCountThreshold; ++i) {
+  for (int i = 0; i < kNewTabTakeoverInfobarRemainingDisplayCountThreshold;
+       ++i) {
     EXPECT_TRUE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
     RecordNewTabTakeoverInfobarWasDisplayed(pref_service());
   }
@@ -89,7 +90,8 @@ TEST_F(NewTabTakeoverInfobarUtilTest,
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, 0);
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                             0);
 
   EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }
@@ -99,7 +101,8 @@ TEST_F(NewTabTakeoverInfobarUtilTest,
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, -1);
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                             -1);
 
   EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }

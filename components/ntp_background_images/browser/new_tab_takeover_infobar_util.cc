@@ -24,21 +24,23 @@ bool ShouldDisplayNewTabTakeoverInfobar(const PrefService* prefs) {
     return false;
   }
 
-  return prefs->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount) > 0;
+  return prefs->GetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount) >
+         0;
 }
 
 void RecordNewTabTakeoverInfobarWasDisplayed(PrefService* prefs) {
   CHECK(prefs);
 
   const int count =
-      prefs->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount);
-  prefs->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, count - 1);
+      prefs->GetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount);
+  prefs->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                    count - 1);
 }
 
 void SuppressNewTabTakeoverInfobar(PrefService* prefs) {
   CHECK(prefs);
 
-  prefs->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, 0);
+  prefs->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount, 0);
 }
 
 }  // namespace ntp_background_images

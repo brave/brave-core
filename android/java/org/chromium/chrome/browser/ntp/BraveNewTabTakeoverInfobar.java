@@ -93,20 +93,21 @@ public class BraveNewTabTakeoverInfobar {
 
         PrefService prefService = UserPrefs.get(mProfile);
         final int infobarDisplayCount =
-                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT);
+                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT);
         return infobarDisplayCount > 0;
     }
 
     private void recordInfobarWasDisplayed() {
         PrefService prefService = UserPrefs.get(mProfile);
         final int infobarDisplayCount =
-                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT);
+                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT);
         prefService.setInteger(
-                BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT, infobarDisplayCount - 1);
+                BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT,
+                infobarDisplayCount - 1);
     }
 
     private void suppressInfobar() {
         PrefService prefService = UserPrefs.get(mProfile);
-        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT, 0);
+        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT, 0);
     }
 }

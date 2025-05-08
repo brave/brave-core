@@ -17,9 +17,14 @@ namespace ntp_background_images {
 
 namespace {
 
+// Added 09/2023.
 constexpr char kCountToBrandedWallpaperPref[] =
     "brave.count_to_branded_wallpaper";
 
+// Added 05/2025.
+// Migration was needed for the following reasons:
+// - Reset the counter as the infobar was incorrectly displayed due to a bug
+// - Changed preference name as part of using 'display' instead of 'show'
 constexpr char kNewTabTakeoverInfobarShowCount[] =
     "brave.new_tab_page.new_tab_takeover_infobar_show_count";
 
@@ -40,8 +45,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(prefs::kNewTabPageSuperReferralThemesOption,
                                 static_cast<int>(ThemesOption::kSuperReferral));
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
-  registry->RegisterIntegerPref(prefs::kNewTabTakeoverInfobarDisplayCount,
-                                kNewTabTakeoverInfobarDisplayCountThreshold);
+  registry->RegisterIntegerPref(
+      prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+      kNewTabTakeoverInfobarRemainingDisplayCountThreshold);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -50,8 +56,7 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterIntegerPref(kCountToBrandedWallpaperPref, 0);
 
   // Added 05/2025.
-  registry->RegisterIntegerPref(kNewTabTakeoverInfobarShowCount,
-                                kNewTabTakeoverInfobarDisplayCountThreshold);
+  registry->RegisterIntegerPref(kNewTabTakeoverInfobarShowCount, 0);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {

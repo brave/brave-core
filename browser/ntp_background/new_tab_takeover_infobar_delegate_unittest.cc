@@ -83,13 +83,17 @@ TEST_F(
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
-              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
+  EXPECT_THAT(
+      GetPrefs()->GetInteger(
+          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
+      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
 
   CreateInfobar();
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
-              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold - 1));
+  EXPECT_THAT(
+      GetPrefs()->GetInteger(
+          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
+      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold - 1));
 }
 
 TEST_F(
@@ -98,8 +102,10 @@ TEST_F(
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
-              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
+  EXPECT_THAT(
+      GetPrefs()->GetInteger(
+          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
+      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
 
   VerifyInfobarWasNotDisplayedExpectation();
 }
@@ -110,8 +116,10 @@ TEST_F(
   SetRewardsEnabled(/*enabled=*/true);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
-              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
+  EXPECT_THAT(
+      GetPrefs()->GetInteger(
+          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
+      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
 
   VerifyInfobarWasNotDisplayedExpectation();
 }
@@ -122,8 +130,10 @@ TEST_F(
   SetRewardsEnabled(/*enabled=*/true);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
-              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
+  EXPECT_THAT(
+      GetPrefs()->GetInteger(
+          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
+      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
 
   VerifyInfobarWasNotDisplayedExpectation();
 }
@@ -133,15 +143,19 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
-              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
+  EXPECT_THAT(
+      GetPrefs()->GetInteger(
+          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
+      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
 
-  for (int i = 0; i < kNewTabTakeoverInfobarDisplayCountThreshold; i++) {
+  for (int i = 0; i < kNewTabTakeoverInfobarRemainingDisplayCountThreshold;
+       i++) {
     CreateInfobar();
     CloseInfobar();
   }
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+  EXPECT_THAT(GetPrefs()->GetInteger(
+                  prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
               ::testing::Eq(0));
 
   VerifyInfobarWasNotDisplayedExpectation();
@@ -152,7 +166,7 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, 0);
+  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount, 0);
 
   VerifyInfobarWasNotDisplayedExpectation();
 }
@@ -162,7 +176,8 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
   SetRewardsEnabled(/*enabled=*/false);
   SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, -1);
+  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
+                         -1);
 
   VerifyInfobarWasNotDisplayedExpectation();
 }
