@@ -16,6 +16,8 @@ BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperDemo);
 
 BASE_DECLARE_FEATURE(kBraveNTPSuperReferralWallpaper);
 
+BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist);
+
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
 // The branded wallpaper will initially be displayed on the nth new tab. The
