@@ -56,6 +56,7 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
 }
 
 // Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
+// LINT.IfChange
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
     brave_engines_map = {
         {PREPOPULATED_ENGINE_ID_GOOGLE, &brave_google},
@@ -72,6 +73,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
         {PREPOPULATED_ENGINE_ID_YAHOO_JP, &brave_yahoo_jp},
 };
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
                                       const char16_t* const name,
@@ -108,6 +110,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
 
 }  // namespace
 
+// LINT.IfChange
 const PrepopulatedEngine duckduckgo = MakeBravePrepopulatedEngine(
     u"DuckDuckGo",
     u":d",
@@ -117,7 +120,9 @@ const PrepopulatedEngine duckduckgo = MakeBravePrepopulatedEngine(
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
     SEARCH_ENGINE_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine duckduckgo_de =
     ModifyEngineParams(duckduckgo,
                        nullptr,
@@ -126,7 +131,9 @@ const PrepopulatedEngine duckduckgo_de =
                        nullptr,
                        nullptr,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine duckduckgo_au_nz_ie =
     ModifyEngineParams(duckduckgo,
                        nullptr,
@@ -135,8 +142,10 @@ const PrepopulatedEngine duckduckgo_au_nz_ie =
                        nullptr,
                        nullptr,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 #if BUILDFLAG(IS_ANDROID)
+// LINT.IfChange
 const PrepopulatedEngine duckduckgo_lite = MakeBravePrepopulatedEngine(
     u"DuckDuckGo Lite",
     u":dl",
@@ -146,8 +155,10 @@ const PrepopulatedEngine duckduckgo_lite = MakeBravePrepopulatedEngine(
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
     SEARCH_ENGINE_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 #endif  // BUILDFLAG(IS_ANDROID)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_ecosia =
     ModifyEngineParams(ecosia,
                        nullptr,
@@ -162,7 +173,9 @@ const PrepopulatedEngine brave_ecosia =
                        "https://ac.ecosia.org/?q={searchTerms}",
                        nullptr,
                        PREPOPULATED_ENGINE_ID_ECOSIA);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
     u"Qwant",
     u":q",
@@ -172,7 +185,9 @@ const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
     "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
     SEARCH_ENGINE_QWANT,
     PREPOPULATED_ENGINE_ID_QWANT);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_startpage =
     ModifyEngineParams(startpage,
                        u"Startpage",
@@ -183,7 +198,9 @@ const PrepopulatedEngine brave_startpage =
                        "csuggest?query={searchTerms}&limit=10&format=json",
                        nullptr,
                        PREPOPULATED_ENGINE_ID_STARTPAGE);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_yandex =
     ModifyEngineParams(yandex_com,
                        u"Yandex",
@@ -199,7 +216,9 @@ const PrepopulatedEngine brave_yandex =
                        "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
                        nullptr,
                        PREPOPULATED_ENGINE_ID_YANDEX);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     u"Brave",
     u":br",
@@ -220,7 +239,9 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
 #endif
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_BRAVE);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     brave_search,
     nullptr,
@@ -233,7 +254,9 @@ const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     "suggest?q={searchTerms}",
     nullptr,
     PREPOPULATED_ENGINE_ID_BRAVE_TOR);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_bing = ModifyEngineParams(
     bing,
     u"Bing",
@@ -242,7 +265,9 @@ const PrepopulatedEngine brave_bing = ModifyEngineParams(
     "https://www.bing.com/osjson.aspx?query={searchTerms}&language={language}",
     "https://www.bing.com/images/detail/search?iss=sbiupload#enterInsights",
     PREPOPULATED_ENGINE_ID_BING);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
     yahoo_jp,
     u"Yahoo! JAPAN",
@@ -273,9 +298,12 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
     "brave-desktop_ext",
 #endif
     PREPOPULATED_ENGINE_ID_YAHOO_JP);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+// LINT.IfChange
 const PrepopulatedEngine brave_google =
     ModifyEngineParams(google, nullptr, u":g", nullptr, nullptr, nullptr, 0);
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap() {
