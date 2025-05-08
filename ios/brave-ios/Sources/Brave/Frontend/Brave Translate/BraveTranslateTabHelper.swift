@@ -105,8 +105,9 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         throw BraveTranslateError.otherError
       }
 
-      guard let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
-        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier,
+      guard
+        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier(.alpha2),
+        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier(.alpha2),
         currentLanguage != pageLanguage
       else {
         throw BraveTranslateError.invalidLanguage
@@ -306,6 +307,13 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return
     }
 
+    // Check if the page is already translated
+    let isTranslatedAlready = await isPageTranslated()
+    if isTranslatedAlready {
+      delegate.updateTranslateURLBar(tab: tab, state: .active)
+      return
+    }
+
     // Check if the translation language is supported
     let isTranslationSupported = await BraveTranslateSession.isTranslationSupported(
       from: pageLanguage,
@@ -401,15 +409,26 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   // MARK: - TabObserver
 
   func tabDidUpdateURL(_ tab: some TabState) {
-    url = tab.visibleURL
-    canShowToast = false
-    currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
-    currentLanguageInfo.pageLanguage = nil
-    translationTask = nil
+    Task { @MainActor [weak self, weak tab] in
+      guard let self = self, let tab = tab else { return }
 
-    if let delegate = self.delegate {
-      delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
-      BraveTranslateScriptHandler.checkTranslate(tab: tab)
+      url = tab.visibleURL
+      canShowToast = false
+      translationTask = nil
+
+      // Check if the page is already translated
+      let isTranslatedAlready = await isPageTranslated()
+      if isTranslatedAlready {
+        return
+      }
+
+      currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
+      currentLanguageInfo.pageLanguage = nil
+
+      if let delegate = self.delegate {
+        delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
+        BraveTranslateScriptHandler.checkTranslate(tab: tab)
+      }
     }
   }
 
@@ -432,6 +451,27 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       """,
       contentWorld: BraveTranslateScriptHandler.scriptSandbox
     )
+  }
+
+  @MainActor
+  private func isPageTranslated() async -> Bool {
+    guard let tab else { return false }
+
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: """
+          typeof cr != 'undefined' && typeof cr.googleTranslate != 'undefined' && 
+          typeof cr.googleTranslate.translate == 'function' &&
+          window.__firefox__.\(BraveTranslateScriptHandler.namespace).isPageTranslated()
+          """,
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      return result as? Bool == true
+    } catch {
+      Logger.module.error("isPageTranslated error: \(error)")
+      return false
+    }
   }
 
   @MainActor
