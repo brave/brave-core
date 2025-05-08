@@ -12,11 +12,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -198,8 +198,6 @@ void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
 
   auto* profile = Profile::FromBrowserContext(
       web_ui()->GetWebContents()->GetBrowserContext());
-  auto* extension_service =
-      extensions::ExtensionSystem::Get(profile)->extension_service();
 
   if (enable) {
     if (!installed) {
@@ -210,13 +208,13 @@ void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
               weak_factory_.GetWeakPtr(), args[0].Clone()));
       installer_->BeginInstall();
     } else {
-      extension_service->EnableExtension(id);
+      extensions::ExtensionRegistrar::Get(profile)->EnableExtension(id);
       ResolveJavascriptCallback(args[0], base::Value(true));
     }
   } else {
     installer_.reset();
-    extension_service->DisableExtension(
-        id, extensions::disable_reason::DISABLE_USER_ACTION);
+    extensions::ExtensionRegistrar::Get(profile)->DisableExtension(
+        id, {extensions::disable_reason::DISABLE_USER_ACTION});
     ResolveJavascriptCallback(args[0], base::Value(true));
   }
 }
