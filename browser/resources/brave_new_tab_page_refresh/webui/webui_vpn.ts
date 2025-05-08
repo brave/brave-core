@@ -7,13 +7,19 @@ import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-import { VPNState, VPNActions, defaultVPNActions, ConnectionState } from '../models/vpn'
+import { VpnAPI, defaultVpnState, defaultVpnActions, ConnectionState } from '../api/vpn'
 
-export function initializeVPN(store: Store<VPNState>): VPNActions {
+export function createVpnAPI(): VpnAPI {
+  const store = createStore(defaultVpnState())
+
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
-    return defaultVPNActions()
+    return {
+      getState: store.getState,
+      addListener: store.addListener,
+      ...defaultVpnActions()
+    }
   }
 
   const newTabProxy = NewTabPageProxy.getInstance()
@@ -78,6 +84,10 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
   loadData()
 
   return {
+
+    getState: store.getState,
+
+    addListener: store.addListener,
 
     setShowVpnWidget(showVpnWidget) {
       handler.setShowVPNWidget(showVpnWidget)

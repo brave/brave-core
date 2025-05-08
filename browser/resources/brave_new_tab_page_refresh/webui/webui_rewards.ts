@@ -8,18 +8,20 @@ import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import { RewardsPageProxy } from '../../../../components/brave_rewards/resources/rewards_page/webui/rewards_page_proxy'
 import { externalWalletFromExtensionData } from '../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 import { Optional } from '../lib/optional'
 import { debounceListener } from './debounce_listener'
+import { RewardsAPI, defaultRewardsState, defaultRewardsActions } from '../api/rewards'
 
-import {
-  RewardsState,
-  RewardsActions,
-  defaultRewardsActions } from '../models/rewards'
+export function createRewardsAPI(): RewardsAPI {
+  const store = createStore(defaultRewardsState())
 
-export function initializeRewards(store: Store<RewardsState>): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
-    return defaultRewardsActions()
+    return {
+      getState: store.getState,
+      addListener: store.addListener,
+      ...defaultRewardsActions()
+    }
   }
 
   const newTabProxy = NewTabPageProxy.getInstance()
@@ -82,6 +84,10 @@ export function initializeRewards(store: Store<RewardsState>): RewardsActions {
   loadData()
 
   return {
+    getState: store.getState,
+
+    addListener: store.addListener,
+
     setShowRewardsWidget(showRewardsWidget) {
       newTabHandler.setShowRewardsWidget(showRewardsWidget)
     }

@@ -6,16 +6,20 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useAppState } from '../context/app_model_context'
+import { useNewTabState } from '../context/new_tab_context'
+import { useRewardsState } from '../context/rewards_context'
+import { useVpnState } from '../context/vpn_context'
+import { useNewsState } from '../context/news_context'
 import { NtpWidget } from './ntp_widget'
 import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'
-import { VPNWidget } from './vpn_widget'
+import { VpnWidget } from './vpn_widget'
 import { StatsWidget } from './stats_widget'
+import { NewsWidget } from './news_widget'
 
 import { style } from './widget_stack.style'
 
-type TabName = 'rewards' | 'talk' | 'vpn' | 'stats'
+type TabName = 'rewards' | 'talk' | 'vpn' | 'stats' | 'news'
 
 interface Props {
   name: string
@@ -23,12 +27,13 @@ interface Props {
 }
 
 export function WidgetStack(props: Props) {
-  const showTalkWidget = useAppState((s) => s.showTalkWidget)
-  const showRewardsWidget = useAppState((s) => s.showRewardsWidget)
-  const rewardsFeatureEnabled = useAppState((s) => s.rewardsFeatureEnabled)
-  const vpnFeatureEnabled = useAppState((s) => s.vpnFeatureEnabled)
-  const showVpnWidget = useAppState((s) => s.showVpnWidget)
-  const showShieldsStats = useAppState((s) => s.showShieldsStats)
+  const showTalkWidget = useNewTabState((s) => s.showTalkWidget)
+  const showShieldsStats = useNewTabState((s) => s.showShieldsStats)
+  const showRewardsWidget = useRewardsState((s) => s.showRewardsWidget)
+  const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
+  const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
+  const showVpnWidget = useVpnState((s) => s.showVpnWidget)
+  const showNewsWidget = useNewsState((s) => s.showNewsWidget)
 
   const [currentTab, setCurrentTab] = React.useState(loadCurrentTab(props.name))
 
@@ -39,6 +44,7 @@ export function WidgetStack(props: Props) {
         case 'talk': return showTalkWidget
         case 'vpn': return vpnFeatureEnabled && showVpnWidget
         case 'stats': return showShieldsStats
+        case 'news': return showNewsWidget
       }
     })
   }, [
@@ -48,11 +54,11 @@ export function WidgetStack(props: Props) {
     showRewardsWidget,
     vpnFeatureEnabled,
     showVpnWidget,
-    showShieldsStats
+    showShieldsStats,
+    showNewsWidget
   ])
 
   React.useEffect(() => {
-    storeCurrentTab(props.name, currentTab)
     if (currentTab && !visibleTabs.includes(currentTab)) {
       setCurrentTab(null)
     }
@@ -63,7 +69,10 @@ export function WidgetStack(props: Props) {
       <button
         key={tab}
         className={tab === activeTab ? 'active' : ''}
-        onClick={() => setCurrentTab(tab)}
+        onClick={() => {
+          storeCurrentTab(props.name, tab)
+          setCurrentTab(tab)
+        }}
       >
         {renderProductIcon(tab)}
       </button>
@@ -76,6 +85,7 @@ export function WidgetStack(props: Props) {
       case 'talk': return <Icon name='product-brave-talk' />
       case 'vpn': return <Icon name='product-vpn' />
       case 'stats': return <Icon name='bar-chart' />
+      case 'news': return <Icon name='product-brave-news' />
     }
   }
 
@@ -83,8 +93,9 @@ export function WidgetStack(props: Props) {
     switch (activeTab) {
       case 'rewards': return <RewardsWidget />
       case 'talk': return <TalkWidget />
-      case 'vpn': return <VPNWidget />
+      case 'vpn': return <VpnWidget />
       case 'stats': return <StatsWidget />
+      case 'news': return <NewsWidget />
     }
   }
 
@@ -122,6 +133,7 @@ function tabNameIdentity(tabName: TabName): TabName {
     case 'rewards':
     case 'talk':
     case 'stats':
+    case 'news':
       return tabName
   }
 }

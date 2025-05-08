@@ -3,18 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { createStore } from '../lib/store'
 
 import {
-  VPNState,
-  VPNActions,
-  defaultVPNState,
-  defaultVPNActions,
-  ConnectionState } from '../models/vpn'
+  VpnAPI,
+  defaultVpnState,
+  defaultVpnActions,
+  ConnectionState } from '../api/vpn'
 
-export function initializeVPN(store: Store<VPNState>): VPNActions {
+export function createVpnAPI(): VpnAPI {
+  const store = createStore(defaultVpnState())
+
   store.update({
-    ...defaultVPNState(),
+    ...defaultVpnState(),
     vpnFeatureEnabled: true,
     showVpnWidget: true,
     vpnPurchased: true,
@@ -35,7 +36,11 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
   })
 
   return {
-    ...defaultVPNActions(),
+    getState: store.getState,
+
+    addListener: store.addListener,
+
+    ...defaultVpnActions(),
 
     setShowVpnWidget(showVpnWidget) {
       store.update({ showVpnWidget })
