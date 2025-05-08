@@ -9,6 +9,9 @@
 class SharedPinnedTabDummyView;
 class SplitViewLocationBar;
 
+// DO NOT ADD TO THIS LIST!
+// These existing cases are "grandfathered in", but there shouldn't be more.
+// See comments atop View class in ui/views/view.h.
 #define BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY \
   friend class ::SharedPinnedTabDummyView;  \
   friend class ::SplitViewLocationBar;
