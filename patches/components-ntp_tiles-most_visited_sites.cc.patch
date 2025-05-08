@@ -1,0 +1,12 @@
+diff --git a/components/ntp_tiles/most_visited_sites.cc b/components/ntp_tiles/most_visited_sites.cc
+index 2aae51db257bfc62376990cf4cbfc4e3ac69c349..2ce950f21aa069fd21e636a6ed679d390924fd57 100644
+--- a/components/ntp_tiles/most_visited_sites.cc
++++ b/components/ntp_tiles/most_visited_sites.cc
+@@ -550,6 +550,7 @@ MostVisitedSites::CreatePopularSitesSections(
+   if (!popular_sites_) {
+     return sections;
+   }
++  BRAVE_MOST_VISITED_SITES_CREATE_POPULAR_SITES_SECTIONS
+ 
+   const std::set<std::string> no_hosts;
+   for (const auto& section_type_and_sites : popular_sites()->sections()) {
