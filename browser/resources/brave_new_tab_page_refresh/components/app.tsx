@@ -47,7 +47,7 @@ export function App() {
           />
         </div>
         <div className='spacer allow-background-pointer-events' />
-        <div className='background-caption-container'>
+        <div className='caption-container'>
           <BackgroundCaption />
         </div>
         <div className='widget-container'>
