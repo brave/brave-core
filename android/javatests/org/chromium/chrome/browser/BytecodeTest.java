@@ -1346,6 +1346,7 @@ public class BytecodeTest {
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
                         ObservableSupplier.class,
+                        ObservableSupplier.class,
                         BackButtonCoordinator.class));
         Assert.assertTrue(
                 constructorsMatch(
