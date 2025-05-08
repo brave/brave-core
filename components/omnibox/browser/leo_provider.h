@@ -18,7 +18,7 @@ class LeoProvider : public AutocompleteProvider {
 
   // AutocompleteProvider:
   void Start(const AutocompleteInput& input, bool minimal_changes) override;
-  void Stop(bool clear_cached_results, bool due_to_user_inactivity) override;
+  void Stop(AutocompleteStopReason stop_reason) override;
 
  private:
   // Destructor for AutocompleteProvider must be private or protected as it
