@@ -940,18 +940,15 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       completion(false, Strings.Wallet.internalErrorMessage)
       return
     }
-    let btcTxData: BraveWallet.BtcTxData = .init(
+    let params: BraveWallet.NewBitcoinTransactionParams = .init(
+      chainId: token.chainId,
+      from: fromAccountId,
       to: sendAddress,
       amount: amountInSatoshi,
-      sendingMaxAmount: isSendingMaxValue,
-      fee: 0,
-      inputs: [],
-      outputs: []
+      sendingMaxAmount: isSendingMaxValue
     )
     self.txService.addUnapprovedBitcoinTransaction(
-      txDataUnion: BraveWallet.TxDataUnion(btcTxData: btcTxData),
-      chainId: token.chainId,
-      from: fromAccountId
+      params: params
     ) { success, txMetaId, errorMessage in
       self.isMakingTx = false
       completion(success, errorMessage)
