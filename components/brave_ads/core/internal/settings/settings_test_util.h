@@ -22,6 +22,8 @@ void OptOutOfSearchResultAds();
 
 void OptOutOfAllAds();
 
+void OptOutOfSurveyPanelist();
+
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_TEST_UTIL_H_

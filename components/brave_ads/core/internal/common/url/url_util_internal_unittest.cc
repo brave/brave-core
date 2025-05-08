@@ -117,6 +117,14 @@ TEST(
 
 TEST(
     BraveAdsUrlUtilInternalTest,
+    ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndSurveyPanelistPath) {
+  // Act & Assert
+  EXPECT_TRUE(
+      ShouldSupportInternalUrl(GURL("chrome://settings/surveyPanelist")));
+}
+
+TEST(
+    BraveAdsUrlUtilInternalTest,
     ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndSearchEnginesPath) {
   // Act & Assert
   EXPECT_TRUE(

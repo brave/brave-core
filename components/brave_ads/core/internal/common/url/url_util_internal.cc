@@ -24,6 +24,8 @@ constexpr char kWalletHostName[] = "wallet";
 
 constexpr char kSettingsHostName[] = "settings";
 
+constexpr char kSurveyPanelistPath[] = "/surveyPanelist";
+
 constexpr char kSearchEnginesPath[] = "/searchEngines";
 constexpr char kSearchPath[] = "/search";
 constexpr char kDefaultSearchPath[] = "/search/defaultSearch";
@@ -65,6 +67,11 @@ bool ShouldSupportInternalUrl(const GURL& url) {
   if (host_name != kSettingsHostName) {
     // Do not support hosts other than chrome://settings.
     return false;
+  }
+
+  if (url.path() == kSurveyPanelistPath) {
+    // Support chrome://settings/surveyPanelist.
+    return true;
   }
 
   if (url.path() == kSearchEnginesPath || url.path() == kSearchPath ||
