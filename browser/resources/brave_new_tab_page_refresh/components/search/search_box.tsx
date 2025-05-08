@@ -10,7 +10,6 @@ import {
   SearchEngineInfo,
   AutocompleteMatch,
   ClickEvent,
-  defaultSearchEngine,
   braveSearchHost } from '../../models/search'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
@@ -36,6 +35,7 @@ export function SearchBox(props: Props) {
   const showSearchBox = useAppState((s) => s.showSearchBox)
   const searchEngines = useAppState((s) => s.searchEngines)
   const enabledSearchEngines = useAppState((s) => s.enabledSearchEngines)
+  const defaultSearchEngine = useAppState((s) => s.defaultSearchEngine)
   const lastUsedSearchEngine = useAppState((s) => s.lastUsedSearchEngine)
   const searchMatches = useAppState((s) => s.searchMatches)
 
@@ -62,7 +62,7 @@ export function SearchBox(props: Props) {
         setCurrentEngine(firstEngine)
       }
     }
-  }, [enabledSearchEngines])
+  }, [enabledSearchEngines, defaultSearchEngine])
 
   // Build the list of result options. The result options can contain a direct
   // URL (if the user has typed a URL) or a list of autocomplete options.

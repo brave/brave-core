@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -20,6 +21,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
@@ -29,6 +31,8 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -41,6 +45,31 @@
 #endif
 
 namespace brave_new_tab_page_refresh {
+
+namespace {
+
+using regional_capabilities::RegionalCapabilitiesService;
+using regional_capabilities::RegionalCapabilitiesServiceFactory;
+
+std::string GetSearchDefaultHost(
+    RegionalCapabilitiesService* regional_capabilities) {
+  constexpr char kBraveSearchHost[] = "search.brave.com";
+  constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
+
+  if (regional_capabilities) {
+    regional_capabilities::CountryIdHolder country_id =
+        regional_capabilities->GetCountryId();
+    regional_capabilities::CountryIdHolder japan_country_id(
+        country_codes::CountryId("JP"));
+    if (country_id == japan_country_id) {
+      return kYahooSearchHost;
+    }
+  }
+
+  return kBraveSearchHost;
+}
+
+}  // namespace
 
 NewTabPageInitializer::NewTabPageInitializer(content::WebUI& web_ui)
     : web_ui_(web_ui) {}
@@ -102,6 +131,11 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  source_->AddString(
+      "ntpSearchDefaultHost",
+      GetSearchDefaultHost(
+          RegionalCapabilitiesServiceFactory::GetForProfile(profile)));
 
   source_->AddBoolean("rewardsFeatureEnabled",
                       brave_rewards::IsSupportedForProfile(profile));
