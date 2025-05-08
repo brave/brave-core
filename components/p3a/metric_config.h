@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_METRIC_CONFIG_H_
 
 #include <array>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -77,8 +78,8 @@ struct RemoteMetricConfig {
   RemoteMetricConfig();
   ~RemoteMetricConfig();
 
-  RemoteMetricConfig(const RemoteMetricConfig&);
-  RemoteMetricConfig& operator=(const RemoteMetricConfig&);
+  RemoteMetricConfig(const RemoteMetricConfig&) = delete;
+  RemoteMetricConfig& operator=(const RemoteMetricConfig&) = delete;
 
   std::optional<bool> ephemeral;
   std::optional<bool> constellation_only;
@@ -89,6 +90,7 @@ struct RemoteMetricConfig {
   std::optional<bool> record_activation_date;
   std::optional<std::string> activation_metric_name;
   std::optional<MetricLogType> cadence;
+  std::unique_ptr<base::Value::Dict> definition;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<RemoteMetricConfig>* converter);
