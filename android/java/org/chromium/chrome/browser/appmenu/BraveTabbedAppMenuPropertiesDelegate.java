@@ -486,7 +486,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
-    protected boolean shouldShowNewWindow() {
+    public boolean shouldShowNewWindow() {
         return BraveMultiWindowUtils.shouldEnableMultiWindows() && super.shouldShowNewWindow();
     }
 
