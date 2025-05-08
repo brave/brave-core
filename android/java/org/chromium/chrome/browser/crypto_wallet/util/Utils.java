@@ -1115,21 +1115,29 @@ public class Utils {
             chromeActivity = BraveActivity.getChromeTabbedActivity();
         }
         if (chromeActivity == null) {
-            return ProfileManager.getLastUsedRegularProfile(); // Last resort
+            return getLastUsedProfile(isIncognito); // Last resort
         }
 
         ObservableSupplier<TabModelSelector> supplier =
                 chromeActivity.getTabModelSelectorSupplier();
         TabModelSelector selector = supplier.get();
         if (selector == null) {
-            return ProfileManager.getLastUsedRegularProfile();
+            return getLastUsedProfile(isIncognito);
         }
 
         Profile profile = selector.getModel(isIncognito).getProfile();
         if (profile == null) {
-            return ProfileManager.getLastUsedRegularProfile();
+            return getLastUsedProfile(isIncognito);
         }
         return profile;
+    }
+
+    private static Profile getLastUsedProfile(boolean isIncognito) {
+        if (!isIncognito) {
+            return ProfileManager.getLastUsedRegularProfile();
+        } else {
+            return ProfileManager.getLastUsedRegularProfile().getPrimaryOtrProfile(true);
+        }
     }
 
     public static String formatErc721TokenTitle(String title, String id) {
