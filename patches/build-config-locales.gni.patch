@@ -1,5 +1,5 @@
 diff --git a/build/config/locales.gni b/build/config/locales.gni
-index ed26f3de9bed095cdd1d8f928b442c4b50b95e0e..7fe4735d5fd5a7e74f8ff50ad4c5f329063242d2 100644
+index e1f23cb53d9d41b28fcdd1562e2a7898433932b6..b5936d50d8a93a5025c3895075e7ec07d0ea15db 100644
 --- a/build/config/locales.gni
 +++ b/build/config/locales.gni
 @@ -154,6 +154,7 @@ extended_locales = [

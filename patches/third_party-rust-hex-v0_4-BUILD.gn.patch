@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/hex/v0_4/BUILD.gn b/third_party/rust/hex/v0_4/BUILD.gn
-index 24dcfb0bf4474047ebf5ff7acded9f2c16c0d373..d6e1f1e834101bd1c3d265dfd11b7f3732d74527 100644
+index 473e602f5afe9fdd93185dd887f6a0655d322c9f..b9ccc82f8f49e85f492d92933f7268d925b7152b 100644
 --- a/third_party/rust/hex/v0_4/BUILD.gn
 +++ b/third_party/rust/hex/v0_4/BUILD.gn
-@@ -43,5 +43,4 @@ cargo_crate("lib") {
+@@ -44,5 +44,4 @@ cargo_crate("lib") {
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
    ]
  

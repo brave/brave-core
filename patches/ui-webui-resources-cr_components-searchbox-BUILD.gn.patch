@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_components/searchbox/BUILD.gn b/ui/webui/resources/cr_components/searchbox/BUILD.gn
-index 2cfebe3c3c14f6416b4262c4f12151f73fca7f21..a56e14aad96ac9cfd78e03e02324e09b7636c603 100644
+index 743e5e54d21c90ceaf3116597786d167042e375a..e45f1724f6d6c7fd5bf07de8107f4d753c15d2a9 100644
 --- a/ui/webui/resources/cr_components/searchbox/BUILD.gn
 +++ b/ui/webui/resources/cr_components/searchbox/BUILD.gn
 @@ -9,6 +9,7 @@ assert(!is_android && !is_ios)

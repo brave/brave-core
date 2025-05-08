@@ -1,5 +1,5 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index 16073d41f4878284e8b50986205e4d4680b07dfd..ec9ef0f1be05f460d2945f644d6d60408bd2be40 100644
+index 642c6c2dc0f4feedbaa84eccc6d343cddb68500e..4ca049f578ec020635a3753f15a7bb9e8a5d0d13 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
 @@ -101,7 +101,7 @@
