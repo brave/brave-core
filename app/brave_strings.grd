@@ -357,6 +357,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_TASK_MANAGER_KILL_ACCESSIBILITY_NAME" desc="The accessibility description for the End Task button in the Task Manager window">
         Ends the highlighted task.
       </message>
+      <message name="IDS_TASK_MANAGER_TASK_KILL_SUCCESS_ACCESSIBILITY_MESSAGE" desc="The text announced after a process and some of its tasks are killed.">
+        Task(s) ended.
+      </message>
+      <message name="IDS_TASK_MANAGER_TASK_KILL_FAIL_ACCESSIBILITY_MESSAGE" desc="The text announced when all tasks in the process could not be killed.">
+        Failed to end task(s).
+      </message>
       <message name="IDS_TASK_MANAGER_CATEGORY_TABS_AND_EXTENSIONS_NAME" desc="The title of the 'Tabs and Extensions' filter category.">
         Tabs &amp; extensions
       </message>
@@ -1148,8 +1154,8 @@ Brave is unable to recover your settings.
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_NO_UNSYNCED_DATA_BODY" desc="This is the subtitle of a confirmation dialog that asks the user to confirm that they want to sign out of Brave. It appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. This subtitle is after the 'Sign out of Brave?' string. The tone should be calm, because we want to explain to the user that their data is saved; however, we want to set expectations by clarifying that the data will be removed from the device. This string provides a path to resolution because it explains how the user can see their data again (by signing back in).">
           Your passwords and other Brave data that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.
         </message>
-        <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_VERIFY_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
-          Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out, this data will stay on this device.
+        <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_VERIFY_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; we want to set expectations by clarifying that the data will be removed from the device. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved and will be deleted if they sign out. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
+          Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out now, this data will be deleted.
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_UNSYNCED_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user tries to sign out immediately after having saved saved some data (like a password or payment method) to Brave and Brave hasn't had time to save that data to the user's Brave sync chain yet. This subtitle is after the 'Some data isn't saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string asks the user to wait a few minutes before trying to sign out again.">
           Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out. If you sign out now, this data will be deleted.
@@ -1659,6 +1665,12 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_OVERLAY_COPY_AS_IMAGE_TOAST_MESSAGE" desc="Notification shown in the Lens Overlay when the user has copied the selected image to the clipboard.">
           Image copied
         </message>
+        <message name="IDS_LENS_OVERLAY_FEEDBACK_TOAST_MESSAGE" desc="The message on the toast prompting the user to share their thoughts by sending feedback.">
+          Share your thoughts
+        </message>
+        <message name="IDS_LENS_OVERLAY_SEND_FEEDBACK_BUTTON_LABEL" desc="The label for the button that on click opens a feedback form for the user to send feedback about the feature.">
+          Send feedback
+        </message>
         <message name="IDS_LENS_OVERLAY_MORE_OPTIONS_BUTTON_LABEL" desc="Text that is shown in the tooltip of the more options button in the Lens Overlay.">
           More options
         </message>
@@ -1784,6 +1796,20 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_SIDE_PANEL_LENS_OVERLAY_TOOLBAR_TOOLTIP" desc="The tooltip for the Lens overlay toolbar button.">
           Search with Image Search
+        </message>
+
+        <!-- Lens Side Panel Error Page -->
+        <message name="IDS_SIDE_PANEL_LENS_OVERLAY_GENERIC_ERROR_PAGE_FIRST_LINE" desc="Text shown on the side panel for the Lens feature when there is a network or other server error. The texts informs the user that an error has occured.">
+          Something went wrong
+        </message>
+        <message name="IDS_SIDE_PANEL_LENS_OVERLAY_GENERIC_ERROR_PAGE_SECOND_LINE" desc="Text shown on the side panel for the Lens feature when there is a network or other server error. The texts informs the user the panel can not be loaded.">
+          Couldn't load this panel, try again
+        </message>
+        <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PROTECTED_PAGE_ERROR_FIRST_LINE" desc="Text shown on the side panel for the Lens feature when there is are no results being loaded due to the page being protected. The texts informs the user the panel can not be loaded.">
+          This page is protected
+        </message>
+        <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PROTECTED_PAGE_ERROR_SECOND_LINE" desc="Text shown on the side panel for the Lens feature when there is are no results being loaded due to the page being protected. The text suggests the user try a different page since the current one can not be read.">
+          Protected pages can't be read. Try a different page.
         </message>
 
         <!-- Lens Permission Bubble Dialog-->
@@ -2042,13 +2068,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_SIGNOUT_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNOUT_IPH_TEXT_SCREENREADER" desc="Text announced by screenreaders related to the confirmation message is intended to help users to understand that signing out of a Brave service (like Gmail) will not sign them out of Brave. It appears in a blue in-product help bubble, which points to the Brave Profile Menu; it appears after the user signs out of a Brave service (like Gmail). The user can open the Profile Menu and sign out of Brave, if they wish to do so.">
           To remove your Brave sync chain from Brave, sign out of Brave in the Settings page
-        </message>
-      </if>
-
-      <!-- Strings for full restore notifications -->
-      <if expr="is_chromeos">
-        <message name="IDS_RESTORE_NOTIFICATION_DISPLAY_SOURCE" desc="This is the string shown as the display source of the notification for the user to select restore or not on startup.">
-          ChromeOS system
         </message>
       </if>
 

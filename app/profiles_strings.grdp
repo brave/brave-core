@@ -122,12 +122,6 @@
         Verify it’s you
       </message>
     </if>
-  <message name="IDS_PROFILES_CREDIT_CARDS_LINK" desc="Text of the menu item leading to the list of saved credit cards.">
-    Payment methods
-  </message>
-  <message name="IDS_PROFILES_ADDRESSES_LINK" desc="Text of the menu item leading to the list of autofill addresses.">
-    Addresses and more
-  </message>
   <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in.">
     Sign in to get your passwords and more on all your devices
   </message>
@@ -165,9 +159,6 @@
       other {Close this profile (# windows)}
       }
     </message>
-    <message name="IDS_PROFILE_MENU_ADD_NEW_PROFILE" desc="The text label of the add new profile item in the profile menu.">
-      Add new profile
-    </message>
     <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
       Sync is on
     </message>
@@ -196,9 +187,6 @@
       =1 {Close This Profile}
       other {Close This Profile (# Windows)}
       }
-    </message>
-    <message name="IDS_PROFILE_MENU_ADD_NEW_PROFILE" desc="The text label of the add new profile item in the profile menu.">
-      Add New Profile
     </message>
     <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
       Sync Is On
@@ -1070,19 +1058,47 @@
     <message name="IDS_BATCH_UPLOAD_SCREEN_READER_SELECT_NONE" desc="Text read by the screen reader when focusing the toggle button of a section in the Batch Upload dialog and that toggle is turned on. Notifies that the action on the toggle would select no items in this section.">
       Select none
     </message>
+    <message name="IDS_BATCH_UPLOAD_PROMO_TITLE" desc="Title of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+      Get your bookmarks and more on all your devices
+    </message>
+    <if expr="use_titlecase">
+      <message name="IDS_BATCH_UPLOAD_PROMO_TITLE_OK_BUTTON_LABEL" desc="Affirmative button of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks (and other items, if any) are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. When the user clicks this button, the items aren’t saved yet: the user first sees the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+        Save in Account
+      </message>
+    </if>
+    <if expr="not use_titlecase">
+      <message name="IDS_BATCH_UPLOAD_PROMO_TITLE_OK_BUTTON_LABEL" desc="Affirmative button of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks (and other items, if any) are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. When the user clicks this button, the items aren’t saved yet: the user first sees the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+        Save in account
+      </message>
+    </if>
+    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_BOOKMARKS" desc="Subtitle of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark is saved only to this device. To use it on your other devices, save it in your Brave sync chain.}
+      other {{BOOKMARK_COUNT} bookmarks are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
+    <message name="IDS_BATCH_UPLOAD_PROMO_SUBTITLE_BOOKMARKS_COMBO" desc="Subtitle of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device; this subtitle mentions how many bookmarks and other items are on the device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
+      {BOOKMARK_COUNT, plural,
+      =1 {1 bookmark and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      other {{BOOKMARK_COUNT} bookmarks and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain.}
+      }
+    </message>
 
     <!-- Signout Confirmation Dialog Desktop -->
     <message name="IDS_SIGNOUT_CONFIRMATION_EXTENSIONS_SECTION_TITLE" desc="Title of the Extensions section in the Signout Confirmation dialog which allows users to remove extensions linked to their account when signing out.">
       {ACCOUNT_EXTENSIONS_COUNT, plural,
-      =1 {Remove 1 extension and the data it's saved on this device}
-      other {Remove {ACCOUNT_EXTENSIONS_COUNT} extensions and the data they've saved on this device}
+      =1 {Remove 1 extension and the data that it saved on this device}
+      other {Remove {ACCOUNT_EXTENSIONS_COUNT} extensions and the data that they saved on this device}
       }
     </message>
     <message name="IDS_SIGNOUT_CONFIRMATION_EXTENSIONS_SECTION_TOOLTIP" desc="Mouse over tooltip for the Extensions section in the Signout Confirmation dialog which allows users to remove extensions linked to their account when signing out.">
       {ACCOUNT_EXTENSIONS_COUNT, plural,
-      =1 {This extension is saved in your Brave sync chain, but any data it’s saved only on this device may be deleted}
+      =1 {This extension is saved in your Brave sync chain, but any data it saved only on this device may be deleted}
       other {These extensions are saved in your Brave sync chain, but any data they've saved only on this device may be deleted}
       }
+    </message>
+    <message name="IDS_SIGNOUT_CONFIRMATION_UNSYNCED_DATA_WITH_ACCOUNT_EXTENSIONS" desc="An additional message shown in the Signout Confirmation dialog if the user initiates a signout with unsynced data and they have account extensions installed.">
+      You can also remove these extensions from this device:
     </message>
 
     <!-- History Sync Opt-in Desktop -->
@@ -1095,6 +1111,17 @@
     </message>
     <message translateable="false" name="IDS_HISTORY_SYNC_OPT_IN_DESCRIPTION" desc="">
       You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+    </message>
+
+    <!-- History Sync Opt-in Expansion Pill Desktop -->
+    <message name="IDS_AVATAR_BUTTON_BROWSE_ACROSS_DEVICES" desc="The avatar button label for the history sync promo. When clicked, it opens the turn on sync dialog.">
+      Browse across devices?
+    </message>
+    <message name="IDS_AVATAR_BUTTON_SYNC_HISTORY" desc="The avatar button label for the history sync promo. When clicked, it opens the turn on sync dialog.">
+      Sync history?
+    </message>
+    <message name="IDS_AVATAR_BUTTON_SEE_TABS_FROM_OTHER_DEVICES" desc="The avatar button label for the history sync promo. When clicked, it opens the turn on sync dialog.">
+      See tabs from other devices?
     </message>
   </if>
 </grit-part>

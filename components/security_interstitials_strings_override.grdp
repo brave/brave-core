@@ -46,6 +46,11 @@
 
     </if>
 
+  <if expr="not is_android">
+    </if>
+  <if expr="is_android">
+    </if>
+
   <message name="IDS_HTTPS_ONLY_MODE_FOR_INCOGNITO_PRIMARY_PARAGRAPH" desc="Main paragrpah of the HTTPS-Only Mode warning. This warning is shown when the browser tries to upgrade a navigation to a site to HTTPS but the site does not support HTTPS. The user is seeing this warning because they are browsing in Private mode.">
     You are seeing this warning because this site does not support HTTPS and you are in Private mode. <ph name="BEGIN_LEARN_MORE_LINK">&lt;a href="#" id="learn-more-link"&gt;</ph>Learn more about this warning<ph name="END_LEARN_MORE_LINK">&lt;/a&gt;</ph>
   </message>
