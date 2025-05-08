@@ -30,7 +30,7 @@ class URLSanitizerServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
 #if BUILDFLAG(IS_ANDROID)
   static mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
-  GetForContext(content::BrowserContext* context);
+  GetRemoteForProfile(content::BrowserContext* context);
 #endif  // # BUILDFLAG(IS_ANDROID)
   static URLSanitizerServiceFactory* GetInstance();
 

@@ -25,10 +25,15 @@ CookieListOptInServiceFactory* CookieListOptInServiceFactory::GetInstance() {
 
 // static
 mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler>
-CookieListOptInServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<CookieListOptInService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+CookieListOptInServiceFactory::GetRemoteForProfile(
+    content::BrowserContext* context) {
+  auto* service = static_cast<CookieListOptInService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+  if (!service) {
+    return mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler>();
+  }
+
+  return service->MakeRemote();
 }
 
 // static

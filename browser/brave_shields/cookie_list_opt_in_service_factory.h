@@ -30,7 +30,7 @@ class CookieListOptInServiceFactory : public BrowserContextKeyedServiceFactory {
       const CookieListOptInServiceFactory&) = delete;
 
   static mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler>
-  GetForContext(content::BrowserContext* context);
+  GetRemoteForProfile(content::BrowserContext* context);
   static CookieListOptInService* GetServiceForContext(
       content::BrowserContext* context);
   static CookieListOptInServiceFactory* GetInstance();

@@ -31,7 +31,7 @@ class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactory {
       const WebcompatReporterServiceFactory&) = delete;
 
   static mojo::PendingRemote<mojom::WebcompatReporterHandler>
-  GetHandlerForContext(content::BrowserContext* context);
+  GetRemoteForProfile(content::BrowserContext* context);
   static WebcompatReporterService* GetServiceForContext(
       content::BrowserContext* context);
   static WebcompatReporterServiceFactory* GetInstance();

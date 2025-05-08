@@ -31,7 +31,7 @@ class BraveNewsControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
   static BraveNewsController* GetForBrowserContext(
       content::BrowserContext* context);
-  static mojo::PendingRemote<mojom::BraveNewsController> GetRemoteService(
+  static mojo::PendingRemote<mojom::BraveNewsController> GetRemoteForProfile(
       content::BrowserContext* context);
   static BraveNewsControllerFactory* GetInstance();
 

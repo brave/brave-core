@@ -17,10 +17,12 @@ static jlong JNI_MiscAndroidMetricsFactory_GetInterfaceToMiscAndroidMetrics(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
-  auto pending = misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance()
-                     ->GetServiceForContext(profile)
-                     ->GetMiscAndroidMetrics()
-                     ->MakeRemote();
+  auto* service = misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance()
+                      ->GetServiceForContext(profile);
+  auto pending = mojo::PendingRemote<misc_metrics::mojom::MiscAndroidMetrics>();
+  if (service) {
+    pending = service->GetMiscAndroidMetrics()->MakeRemote();
+  }
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }

@@ -28,8 +28,8 @@ class FilterListServiceFactory : public BrowserContextKeyedServiceFactory {
   FilterListServiceFactory(const FilterListServiceFactory&) = delete;
   FilterListServiceFactory& operator=(const FilterListServiceFactory&) = delete;
 
-  static mojo::PendingRemote<mojom::FilterListAndroidHandler> GetForContext(
-      content::BrowserContext* context);
+  static mojo::PendingRemote<mojom::FilterListAndroidHandler>
+  GetRemoteForProfile(content::BrowserContext* context);
   static FilterListService* GetServiceForContext(
       content::BrowserContext* context);
   static FilterListServiceFactory* GetInstance();

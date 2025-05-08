@@ -25,10 +25,16 @@ FilterListServiceFactory* FilterListServiceFactory::GetInstance() {
 
 // static
 mojo::PendingRemote<mojom::FilterListAndroidHandler>
-FilterListServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<FilterListService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+FilterListServiceFactory::GetRemoteForProfile(
+    content::BrowserContext* context) {
+  auto* service = static_cast<FilterListService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+
+  if (!service) {
+    return mojo::PendingRemote<mojom::FilterListAndroidHandler>();
+  }
+
+  return service->MakeRemote();
 }
 
 // static

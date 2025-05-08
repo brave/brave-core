@@ -37,7 +37,8 @@ BraveNewsController* BraveNewsControllerFactory::GetForBrowserContext(
 
 // static
 mojo::PendingRemote<mojom::BraveNewsController>
-BraveNewsControllerFactory::GetRemoteService(content::BrowserContext* context) {
+BraveNewsControllerFactory::GetRemoteForProfile(
+    content::BrowserContext* context) {
   auto* service = static_cast<BraveNewsController*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
   if (!service) {

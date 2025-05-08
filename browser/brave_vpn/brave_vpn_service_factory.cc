@@ -104,10 +104,15 @@ BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
 #if BUILDFLAG(IS_ANDROID)
 // static
 mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
-BraveVpnServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<BraveVpnService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+BraveVpnServiceFactory::GetRemoteForProfile(content::BrowserContext* context) {
+  auto* service = static_cast<BraveVpnService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+
+  if (!service) {
+    return mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>();
+  }
+
+  return service->MakeRemote();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 

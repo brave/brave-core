@@ -16,9 +16,8 @@ static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
-  auto pending =
-      brave_news::BraveNewsControllerFactory::GetInstance()->GetRemoteService(
-          profile);
+  auto pending = brave_news::BraveNewsControllerFactory::GetInstance()
+                     ->GetRemoteForProfile(profile);
   if (!pending.is_valid()) {
     return 0;
   }

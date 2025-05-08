@@ -34,10 +34,15 @@ URLSanitizerService* URLSanitizerServiceFactory::GetForBrowserContext(
 #if BUILDFLAG(IS_ANDROID)
 // static
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
-URLSanitizerServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<URLSanitizerService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+URLSanitizerServiceFactory::GetRemoteForProfile(
+    content::BrowserContext* context) {
+  auto* service = static_cast<URLSanitizerService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+  if (!service) {
+    return mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>();
+  }
+
+  return service->MakeRemote();
 }
 #endif  // # BUILDFLAG(IS_ANDROID)
 
