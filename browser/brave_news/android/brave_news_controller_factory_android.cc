@@ -18,12 +18,8 @@ static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending = brave_news::BraveNewsControllerFactory::GetInstance()
                      ->GetRemoteForProfile(profile);
-  if (!pending.is_valid()) {
-    return 0;
-  }
-  auto passPipe = pending.PassPipe();
 
-  return static_cast<jlong>(passPipe.release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android
