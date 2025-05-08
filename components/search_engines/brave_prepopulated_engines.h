@@ -41,6 +41,7 @@ inline constexpr int kBraveFirstTrackedDataVersion = 6;
 // Chromium adds one of these engines to their list with a different id we need
 // to either patch theirs out or use ModifyEngineParams function to match our
 // previous definition (likely including the engine id).
+// LINT.IfChange
 enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_INVALID = 0,
 
@@ -123,6 +124,7 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_BRAVE,
   PREPOPULATED_ENGINE_ID_BRAVE_TOR,
 };
+// LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
 extern const PrepopulatedEngine duckduckgo;
 extern const PrepopulatedEngine duckduckgo_de;
