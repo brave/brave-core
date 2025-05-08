@@ -65,6 +65,7 @@ source_set("brave_new_tab_page_refresh") {
     "//chrome/browser/ui/webui:webui_util",
     "//chrome/browser/ui/webui/searchbox",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/strings:components_strings",
     "//ui/base",
     "//ui/shell_dialogs",
