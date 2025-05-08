@@ -36,6 +36,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(prefs::kNewTabPageSponsoredImagesSurveyPanelist,
+                                false);
   registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
                                 false);
   registry->RegisterBooleanPref(

@@ -8,6 +8,10 @@
 
 namespace ntp_background_images::prefs {
 
+// Survey panelist.
+inline constexpr char kNewTabPageSponsoredImagesSurveyPanelist[] =
+    "brave.new_tab_page.sponsored_images.survey_panelist";
+
 // There are two categories in Branded wallpaper.
 // The one is sponsored images wallpaper and the other is super referral
 // wallpaper.

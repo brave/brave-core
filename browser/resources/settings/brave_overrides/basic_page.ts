@@ -22,6 +22,7 @@ import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
+import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 
 import {
   html,
@@ -328,6 +329,20 @@ RegisterPolymerTemplateModifications({
         }
       ))
 
+      const sectionSurveyPanelist = document.createElement('template')
+      sectionSurveyPanelist.setAttribute('is', 'dom-if')
+      sectionSurveyPanelist.setAttribute('restamp', 'true')
+      sectionSurveyPanelist
+        .setAttribute('if', '[[showPage_(pageVisibility.surveyPanelist)]]')
+      sectionSurveyPanelist.content.appendChild(createSectionElement(
+        'surveyPanelist',
+        'surveyPanelist',
+        'settings-brave-survey-panelist-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+
       const sectionPlaylist = document.createElement('template')
       sectionPlaylist.setAttribute('is', 'dom-if')
       sectionPlaylist.setAttribute('restamp', 'true')
@@ -423,6 +438,8 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionDataCollection)
       // Insert Leo Assistant
       last = last.insertAdjacentElement('afterend', sectionLeoAssist)
+      // Insert Surevy Panelist
+      last = last.insertAdjacentElement('afterend', sectionSurveyPanelist)
       // Insert Custom Models List
       last.insertAdjacentElement('afterend', sectionLeoCustomModels)
 
