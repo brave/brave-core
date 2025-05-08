@@ -538,10 +538,6 @@ void ConversationHandler::RateMessage(bool is_liked,
                                       const std::string& turn_uuid,
                                       RateMessageCallback callback) {
   DVLOG(2) << __func__ << ": " << is_liked << ", " << turn_uuid;
-  auto& model = GetCurrentModel();
-
-  // We only allow Leo models to be rated.
-  CHECK(model.options->is_leo_model_options());
 
   const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
 
@@ -553,6 +549,15 @@ void ConversationHandler::RateMessage(bool is_liked,
     return;
   }
 
+  auto* model = (*entry_it)->model_key
+                    ? model_service_->GetModel(*(*entry_it)->model_key)
+                    : &GetCurrentModel();
+  // Only Leo models are allowed to be rated.
+  if (!model || !model->options->is_leo_model_options()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
   const size_t count = std::distance(history.begin(), entry_it) + 1;
 
   base::span<const mojom::ConversationTurnPtr> history_slice =
@@ -560,7 +565,7 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   feedback_api_->SendRating(
       is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-      model.options->get_leo_model_options()->name, selected_language_,
+      model->options->get_leo_model_options()->name, selected_language_,
       base::BindOnce(
           [](RateMessageCallback callback, APIRequestResult result) {
             if (result.Is2XXResponseCode() && result.value_body().is_dict()) {

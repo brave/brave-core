@@ -175,6 +175,21 @@ class MockTextEmbedder : public TextEmbedder {
       (override));
 };
 
+class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
+ public:
+  MockAIChatFeedbackAPI() : AIChatFeedbackAPI(nullptr, "") {}
+
+  MOCK_METHOD(void,
+              SendRating,
+              (bool is_liked,
+               bool is_premium,
+               const base::span<const mojom::ConversationTurnPtr>& history,
+               const std::string& model_name,
+               const std::string& selected_language,
+               api_request_helper::APIRequestHelper::ResultCallback callback),
+              (override));
+};
+
 }  // namespace
 
 class ConversationHandlerUnitTest : public testing::Test {
@@ -209,14 +224,15 @@ class ConversationHandlerUnitTest : public testing::Test {
         std::move(credential_manager), &prefs_, nullptr, os_crypt_.get(),
         shared_url_loader_factory_, "", temp_directory_.GetPath());
 
+    mock_feedback_api_ = std::make_unique<NiceMock<MockAIChatFeedbackAPI>>();
+
     conversation_ = mojom::Conversation::New(
         "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, nullptr);
 
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
         ai_chat_service_->GetCredentialManagerForTesting(),
-        ai_chat_service_->GetFeedbackAPIForTesting(),
-        shared_url_loader_factory_);
+        mock_feedback_api_.get(), shared_url_loader_factory_);
 
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
@@ -316,6 +332,7 @@ class ConversationHandlerUnitTest : public testing::Test {
   mojom::ConversationPtr conversation_;
   std::unique_ptr<ConversationHandler> conversation_handler_;
   std::unique_ptr<NiceMock<MockAssociatedContent>> associated_content_;
+  std::unique_ptr<NiceMock<MockAIChatFeedbackAPI>> mock_feedback_api_;
   bool is_opted_in_ = true;
   bool has_associated_content_ = true;
 
@@ -2236,6 +2253,187 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
 
     testing::Mock::VerifyAndClearExpectations(mock_engine);
     testing::Mock::VerifyAndClearExpectations(mock_text_embedder);
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest, RateMessage) {
+  // Create a sample chat history with 2 turns (human, assistant)
+  std::vector<mojom::ConversationTurnPtr> history = CreateSampleChatHistory(1);
+  ASSERT_EQ(history.size(), 2u);
+
+  // Store UUIDs for easy access
+  const std::string human_turn_uuid = history[0]->uuid.value();
+  const std::string assistant_turn_uuid = history[1]->uuid.value();
+
+  // Initialize the conversation handler with test history
+  conversation_handler_->SetChatHistoryForTesting(CloneHistory(history));
+
+  // Test when model_key is null (should use current model)
+  {
+    // Clear the model_key on the assistant turn
+    conversation_handler_->GetConversationHistory().back()->model_key =
+        std::nullopt;
+
+    // Set expectations for the mock
+    std::optional<std::string> received_rating_id;
+
+    // Should use the current model from GetCurrentModel()
+    EXPECT_CALL(*mock_feedback_api_,
+                SendRating(true, false, _, "automatic", _, _))
+        .WillOnce(
+            [&](bool is_liked, bool is_premium,
+                const base::span<const mojom::ConversationTurnPtr>&
+                    history_span,
+                const std::string& model_name,
+                const std::string& selected_language,
+                api_request_helper::APIRequestHelper::ResultCallback callback) {
+              // Verify the history being sent contains the human and assistant
+              // turns
+              EXPECT_EQ(history_span.size(), 2u);
+
+              // Create a mock response with an ID
+              base::Value::Dict response_dict;
+              response_dict.Set("id", "test-rating-current-model");
+              base::Value response(std::move(response_dict));
+
+              // Return the response via callback
+              std::move(callback).Run(api_request_helper::APIRequestResult(
+                  200,                  // response_code
+                  std::move(response),  // value_body
+                  {},                   // empty headers
+                  net::OK,              // error_code
+                  GURL()));             // empty final_url
+            });
+
+    // Call RateMessage
+    base::RunLoop run_loop;
+    conversation_handler_->RateMessage(
+        true, assistant_turn_uuid,
+        base::BindLambdaForTesting(
+            [&](const std::optional<std::string>& rating_id) {
+              received_rating_id = rating_id;
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
+
+    // Verify the rating ID was returned
+    EXPECT_EQ(received_rating_id, "test-rating-current-model");
+  }
+
+  // Test with an invalid model_key that returns nullptr
+  {
+    // Set an invalid model_key on the assistant turn
+    conversation_handler_->GetConversationHistory().back()->model_key =
+        "non-existent-model";
+
+    // Set expectations for the mock - SendRating should not be called
+    EXPECT_CALL(*mock_feedback_api_, SendRating).Times(0);
+
+    // Call RateMessage
+    std::optional<std::string> received_rating_id;
+    base::RunLoop run_loop;
+    conversation_handler_->RateMessage(
+        true, assistant_turn_uuid,
+        base::BindLambdaForTesting(
+            [&](const std::optional<std::string>& rating_id) {
+              received_rating_id = rating_id;
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
+
+    // Verify no rating ID was returned for an invalid model
+    EXPECT_FALSE(received_rating_id.has_value());
+  }
+
+  // Test regular case with model_key present in turn
+  {
+    // Set the model_key for the assistant turn to be a "chat-basic" model
+    conversation_handler_->GetConversationHistory().back()->model_key =
+        "chat-basic";
+
+    // Set expectations for the mock
+    std::optional<std::string> received_rating_id;
+
+    EXPECT_CALL(*mock_feedback_api_,
+                SendRating(true, false, _, "llama-3-8b-instruct", _, _))
+        .WillOnce(
+            [&](bool is_liked, bool is_premium,
+                const base::span<const mojom::ConversationTurnPtr>&
+                    history_span,
+                const std::string& model_name,
+                const std::string& selected_language,
+                api_request_helper::APIRequestHelper::ResultCallback callback) {
+              // Verify the history being sent contains the human and assistant
+              // turns
+              EXPECT_EQ(history_span.size(), 2u);
+
+              // Create a mock response with an ID
+              base::Value::Dict response_dict;
+              response_dict.Set("id", "test-rating-123");
+              base::Value response(std::move(response_dict));
+
+              // Return the response via callback
+              std::move(callback).Run(api_request_helper::APIRequestResult(
+                  200,                  // response_code
+                  std::move(response),  // value_body
+                  {},                   // empty headers
+                  net::OK,              // error_code
+                  GURL()));             // empty final_url
+            });
+
+    // Call RateMessage with a like
+    base::RunLoop run_loop;
+    conversation_handler_->RateMessage(
+        true, assistant_turn_uuid,
+        base::BindLambdaForTesting(
+            [&](const std::optional<std::string>& rating_id) {
+              received_rating_id = rating_id;
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
+
+    // Verify the rating ID was returned
+    EXPECT_EQ(received_rating_id, "test-rating-123");
+  }
+
+  // Test with an error response
+  {
+    std::optional<std::string> received_rating_id;
+
+    EXPECT_CALL(*mock_feedback_api_, SendRating)
+        .WillOnce(
+            [&](bool is_liked, bool is_premium,
+                const base::span<const mojom::ConversationTurnPtr>&
+                    history_span,
+                const std::string& model_name,
+                const std::string& selected_language,
+                api_request_helper::APIRequestHelper::ResultCallback callback) {
+              // Return an error
+              std::move(callback).Run(api_request_helper::APIRequestResult(
+                  500,              // response_code
+                  base::Value(),    // empty value_body
+                  {},               // empty headers
+                  net::ERR_FAILED,  // error_code
+                  GURL()));         // empty final_url
+            });
+
+    // Call RateMessage
+    base::RunLoop run_loop;
+    conversation_handler_->RateMessage(
+        true, assistant_turn_uuid,
+        base::BindLambdaForTesting(
+            [&](const std::optional<std::string>& rating_id) {
+              received_rating_id = rating_id;
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
+
+    // Verify no rating ID was returned
+    EXPECT_FALSE(received_rating_id.has_value());
   }
 }
 
