@@ -913,6 +913,7 @@
     *** mMinimizationManagerHolder;
     *** mCustomTabFeatureOverridesManager;
     *** getAppHeaderCoordinator(...);
+    *** getBrowserServicesThemeColorProvider(...);
     public <init>(...);
 }
 

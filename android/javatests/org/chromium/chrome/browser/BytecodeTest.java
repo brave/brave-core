@@ -68,6 +68,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
+import org.chromium.chrome.browser.customtabs.features.toolbar.BrowserServicesThemeColorProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
@@ -915,6 +916,12 @@ public class BytecodeTest {
                         "getAppHeaderCoordinator",
                         MethodModifier.REGULAR,
                         AppHeaderCoordinator.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "getBrowserServicesThemeColorProvider",
+                        MethodModifier.REGULAR,
+                        BrowserServicesThemeColorProvider.class));
     }
 
     @Test
