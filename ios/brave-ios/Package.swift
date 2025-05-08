@@ -165,7 +165,7 @@ var package = Package(
     ),
     .target(
       name: "Data",
-      dependencies: ["BraveShields", "Storage", "Strings", "Preferences", "Shared"],
+      dependencies: ["BraveShields", "BraveShared", "Storage", "Strings", "Preferences", "Shared"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
