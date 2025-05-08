@@ -13,7 +13,7 @@
 
 namespace ntp_background_images {
 
-bool ShouldShowNewTabTakeoverInfobar(const PrefService* prefs) {
+bool ShouldDisplayNewTabTakeoverInfobar(const PrefService* prefs) {
   CHECK(prefs);
 
   if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
@@ -24,20 +24,21 @@ bool ShouldShowNewTabTakeoverInfobar(const PrefService* prefs) {
     return false;
   }
 
-  return prefs->GetInteger(prefs::kNewTabTakeoverInfobarShowCount) > 0;
+  return prefs->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount) > 0;
 }
 
-void RecordNewTabTakeoverInfobarWasShown(PrefService* prefs) {
+void RecordNewTabTakeoverInfobarWasDisplayed(PrefService* prefs) {
   CHECK(prefs);
 
-  const int count = prefs->GetInteger(prefs::kNewTabTakeoverInfobarShowCount);
-  prefs->SetInteger(prefs::kNewTabTakeoverInfobarShowCount, count - 1);
+  const int count =
+      prefs->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount);
+  prefs->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, count - 1);
 }
 
 void SuppressNewTabTakeoverInfobar(PrefService* prefs) {
   CHECK(prefs);
 
-  prefs->SetInteger(prefs::kNewTabTakeoverInfobarShowCount, 0);
+  prefs->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, 0);
 }
 
 }  // namespace ntp_background_images

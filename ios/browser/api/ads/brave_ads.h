@@ -75,10 +75,10 @@ OBJC_EXPORT
 /// Returns `true` if the new tab takeover infobar should be displayed
 /// when a user views a new tab takeover. This should be called before calling
 /// `triggerNewTabPageAdEvent` for the `kViewedImpression` event type.
-- (BOOL)shouldShowNewTabTakeoverInfoBar;
+- (BOOL)shouldDisplayNewTabTakeoverInfobar;
 
-/// Records that the new tab takeover infobar was shown.
-- (void)recordNewTabTakeoverInfobarWasShown;
+/// Records that the new tab takeover infobar was displayed.
+- (void)recordNewTabTakeoverInfobarWasDisplayed;
 
 /// Suppresses the new tab takeover infobar.
 - (void)suppressNewTabTakeoverInfobar;

@@ -33,12 +33,12 @@ public class BraveNewTabTakeoverInfobar {
         mProfile = profile;
     }
 
-    public void maybeCreate() {
+    public void maybeDisplayAndIncrementCounter() {
         try {
-            if (!shouldShowInfobar()) {
+            if (!shouldDisplayInfobar()) {
                 return;
             }
-            recordInfobarWasShown();
+            recordInfobarWasDisplayed();
 
             BraveActivity activity = BraveActivity.getBraveActivity();
             Tab tab = activity.getActivityTabProvider().get();
@@ -79,7 +79,7 @@ public class BraveNewTabTakeoverInfobar {
         }
     }
 
-    private boolean shouldShowInfobar() {
+    private boolean shouldDisplayInfobar() {
         if (!ChromeFeatureList.getFieldTrialParamByFeatureAsBoolean(
                 NEW_TAB_PAGE_ADS_FEATURE,
                 SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM,
@@ -92,20 +92,20 @@ public class BraveNewTabTakeoverInfobar {
         }
 
         PrefService prefService = UserPrefs.get(mProfile);
-        final int infobarShowCount =
-                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT);
-        return infobarShowCount > 0;
+        final int infobarDisplayCount =
+                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT);
+        return infobarDisplayCount > 0;
     }
 
-    private void recordInfobarWasShown() {
+    private void recordInfobarWasDisplayed() {
         PrefService prefService = UserPrefs.get(mProfile);
-        final int infobarShowCount =
-                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT);
-        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT, infobarShowCount - 1);
+        final int infobarDisplayCount =
+                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT);
+        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT, infobarDisplayCount - 1);
     }
 
     private void suppressInfobar() {
         PrefService prefService = UserPrefs.get(mProfile);
-        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT, 0);
+        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT, 0);
     }
 }

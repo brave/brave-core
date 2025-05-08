@@ -209,13 +209,13 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar);
 }
 
-- (BOOL)shouldShowNewTabTakeoverInfoBar {
-  return ntp_background_images::ShouldShowNewTabTakeoverInfobar(
+- (BOOL)shouldDisplayNewTabTakeoverInfobar {
+  return ntp_background_images::ShouldDisplayNewTabTakeoverInfobar(
       self.profilePrefService);
 }
 
-- (void)recordNewTabTakeoverInfobarWasShown {
-  ntp_background_images::RecordNewTabTakeoverInfobarWasShown(
+- (void)recordNewTabTakeoverInfobarWasDisplayed {
+  ntp_background_images::RecordNewTabTakeoverInfobarWasDisplayed(
       self.profilePrefService);
 }
 

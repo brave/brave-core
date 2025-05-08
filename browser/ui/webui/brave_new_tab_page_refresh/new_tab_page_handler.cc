@@ -121,7 +121,7 @@ void NewTabPageHandler::GetSponsoredImageBackground(
   if (sponsored_background) {
     if (auto* web_contents = tab_->GetContents()) {
       ntp_background_images::NewTabTakeoverInfoBarDelegate::
-          MaybeShowAndRecordInfobarShown(web_contents, &pref_service_.get());
+          MaybeDisplayAndIncrementCounter(web_contents, &pref_service_.get());
     }
   }
   std::move(callback).Run(std::move(sponsored_background));

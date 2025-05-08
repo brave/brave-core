@@ -13,9 +13,9 @@ namespace ntp_background_images {
 // TODO(https://github.com/brave/brave-browser/issues/45926): Decouple New Tab
 // Takeover infobar from ntp_background_images component.
 
-bool ShouldShowNewTabTakeoverInfobar(const PrefService* prefs);
+bool ShouldDisplayNewTabTakeoverInfobar(const PrefService* prefs);
 
-void RecordNewTabTakeoverInfobarWasShown(PrefService* prefs);
+void RecordNewTabTakeoverInfobarWasDisplayed(PrefService* prefs);
 
 void SuppressNewTabTakeoverInfobar(PrefService* prefs);
 

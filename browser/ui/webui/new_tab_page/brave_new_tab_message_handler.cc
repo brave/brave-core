@@ -540,8 +540,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
       should_metrics_fallback_to_p3a);
 
   ntp_background_images::NewTabTakeoverInfoBarDelegate::
-      MaybeShowAndRecordInfobarShown(web_ui()->GetWebContents(),
-                                     profile_->GetPrefs());
+      MaybeDisplayAndIncrementCounter(web_ui()->GetWebContents(),
+                                      profile_->GetPrefs());
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));

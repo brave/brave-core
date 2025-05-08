@@ -5,7 +5,7 @@
 
 source_set("common") {
   sources = [
-    "pref_constants.h",
+    "infobar_constants.h",
     "pref_names.h",
     "url_constants.h",
     "view_counter_pref_names.h",

@@ -24,16 +24,16 @@
 namespace ntp_background_images {
 
 // static
-void NewTabTakeoverInfoBarDelegate::MaybeShowAndRecordInfobarShown(
+void NewTabTakeoverInfoBarDelegate::MaybeDisplayAndIncrementCounter(
     content::WebContents* web_contents,
     PrefService* prefs) {
   CHECK(web_contents);
   CHECK(prefs);
 
-  if (!ShouldShowNewTabTakeoverInfobar(prefs)) {
+  if (!ShouldDisplayNewTabTakeoverInfobar(prefs)) {
     return;
   }
-  RecordNewTabTakeoverInfobarWasShown(prefs);
+  RecordNewTabTakeoverInfobarWasDisplayed(prefs);
 
   if (infobars::ContentInfoBarManager* infobar_manager =
           infobars::ContentInfoBarManager::FromWebContents(web_contents)) {

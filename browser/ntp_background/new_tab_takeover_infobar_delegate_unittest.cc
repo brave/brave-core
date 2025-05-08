@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
-#include "brave/components/ntp_background_images/common/pref_constants.h"
+#include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -40,43 +40,33 @@ class NewTabTakeoverInfoBarDelegateTest
   PrefService* GetPrefs() { return profile()->GetPrefs(); }
 
   void CreateInfobar() {
-    EXPECT_THAT(GetInfobarManager()->infobars().size(), ::testing::Eq(0));
-    NewTabTakeoverInfoBarDelegate::MaybeShowAndRecordInfobarShown(
+    EXPECT_THAT(GetInfobarManager()->infobars(), ::testing::IsEmpty());
+    NewTabTakeoverInfoBarDelegate::MaybeDisplayAndIncrementCounter(
         web_contents(), GetPrefs());
-    EXPECT_THAT(GetInfobarManager()->infobars().size(), ::testing::Eq(1));
+    EXPECT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));
   }
 
   void CloseInfobar() {
-    GetInfobarManager()->RemoveAllInfoBars(false);
-    EXPECT_THAT(GetInfobarManager()->infobars().size(), ::testing::Eq(0));
+    GetInfobarManager()->RemoveAllInfoBars(/*animate=*/false);
+    EXPECT_THAT(GetInfobarManager()->infobars(), ::testing::IsEmpty());
   }
 
-  void VerifyInfobarCannotBeCreated() {
-    NewTabTakeoverInfoBarDelegate::MaybeShowAndRecordInfobarShown(
+  void VerifyInfobarWasNotDisplayedExpectation() {
+    NewTabTakeoverInfoBarDelegate::MaybeDisplayAndIncrementCounter(
         web_contents(), GetPrefs());
-    EXPECT_THAT(GetInfobarManager()->infobars().size(), ::testing::Eq(0));
+    EXPECT_THAT(GetInfobarManager()->infobars(), ::testing::IsEmpty());
   }
 
-  void EnableSupportNewTabPageAdConfirmationsForNonRewards() {
+  void SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(bool enabled) {
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{brave_ads::kNewTabPageAdFeature,
-          {{"should_support_confirmations_for_non_rewards", "true"}}}},
+          {{"should_support_confirmations_for_non_rewards",
+            enabled ? "true" : "false"}}}},
         {});
   }
 
-  void DisableSupportNewTabPageAdConfirmationsForNonRewards() {
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        {{brave_ads::kNewTabPageAdFeature,
-          {{"should_support_confirmations_for_non_rewards", "false"}}}},
-        {});
-  }
-
-  void EnableRewards() {
-    GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  }
-
-  void DisableRewards() {
-    GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  void SetRewardsEnabled(bool enabled) {
+    GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, enabled);
   }
 
  private:
@@ -89,108 +79,122 @@ class NewTabTakeoverInfoBarDelegateTest
 
 TEST_F(
     NewTabTakeoverInfoBarDelegateTest,
-    InfobarNotCreatedWhenRewardsDisabledAndSupportNewTabPageAdConfirmationsForNonRewardsDisabled) {
-  DisableRewards();
-  DisableSupportNewTabPageAdConfirmationsForNonRewards();
+    ShouldDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsEnabled) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
-              ::testing::Eq(kNewTabTakeoverInfobarShowCountThreshold));
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
 
-  VerifyInfobarCannotBeCreated();
+  CreateInfobar();
+
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold - 1));
 }
 
 TEST_F(
     NewTabTakeoverInfoBarDelegateTest,
-    InfobarNotCreatedWhenRewardsEnabledAndSupportNewTabPageAdConfirmationsForNonRewardsDisabled) {
-  EnableRewards();
-  DisableSupportNewTabPageAdConfirmationsForNonRewards();
+    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsDisabled) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
-              ::testing::Eq(kNewTabTakeoverInfobarShowCountThreshold));
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
 
-  VerifyInfobarCannotBeCreated();
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
-TEST_F(NewTabTakeoverInfoBarDelegateTest, InfobarNotCreatedWhenRewardsEnabled) {
-  EnableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+TEST_F(
+    NewTabTakeoverInfoBarDelegateTest,
+    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsEnabledAndRewardsIsEnabled) {
+  SetRewardsEnabled(/*enabled=*/true);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
-              ::testing::Eq(kNewTabTakeoverInfobarShowCountThreshold));
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
 
-  VerifyInfobarCannotBeCreated();
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
-TEST_F(NewTabTakeoverInfoBarDelegateTest, CreateInfobar) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+TEST_F(
+    NewTabTakeoverInfoBarDelegateTest,
+    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsDisabledAndRewardsIsEnabled) {
+  SetRewardsEnabled(/*enabled=*/true);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
-              ::testing::Eq(kNewTabTakeoverInfobarShowCountThreshold));
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
 
-  CreateInfobar();
-
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
-              ::testing::Eq(kNewTabTakeoverInfobarShowCountThreshold - 1));
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
-       DisplayNewTabTakeoverInfobarUntilThreshold) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+       ShouldDisplayInfobarWhenThresholdHasNotBeenExceeded) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
-              ::testing::Eq(kNewTabTakeoverInfobarShowCountThreshold));
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
+              ::testing::Eq(kNewTabTakeoverInfobarDisplayCountThreshold));
 
-  for (int i = 0; i < kNewTabTakeoverInfobarShowCountThreshold; i++) {
+  for (int i = 0; i < kNewTabTakeoverInfobarDisplayCountThreshold; i++) {
     CreateInfobar();
     CloseInfobar();
   }
 
-  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarShowCount),
+  EXPECT_THAT(GetPrefs()->GetInteger(prefs::kNewTabTakeoverInfobarDisplayCount),
               ::testing::Eq(0));
 
-  VerifyInfobarCannotBeCreated();
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
-       DontDisplayNewTabTakeoverInfobarWhenThresholdIsReached) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+       ShouldNotDisplayInfobarWhenThresholdIsMet) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarShowCount, 0);
+  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, 0);
 
-  VerifyInfobarCannotBeCreated();
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
-       DontDisplayNewTabTakeoverInfobarAfterInfobarIsDismissed) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+       ShouldNotDisplayInfobarWhenThresholdIsExceeded) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
+
+  GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, -1);
+
+  VerifyInfobarWasNotDisplayedExpectation();
+}
+
+TEST_F(NewTabTakeoverInfoBarDelegateTest,
+       ShouldNeverDisplayInfobarAgainIfClosedByUser) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   CreateInfobar();
-  ASSERT_THAT(GetInfobarManager()->infobars().size(), ::testing::Eq(1));
+  ASSERT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));
 
   infobars::InfoBar* infobar = GetInfobarManager()->infobars()[0];
   infobar->delegate()->InfoBarDismissed();
   CloseInfobar();
 
-  VerifyInfobarCannotBeCreated();
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
-       DontDisplayNewTabTakeoverInfobarAfterLinkIsClicked) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+       ShouldNeverDisplayInfobarAgainIfUserClicksLearnMoreLink) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   CreateInfobar();
-  ASSERT_THAT(GetInfobarManager()->infobars().size(), ::testing::Eq(1));
+  ASSERT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));
 
   infobars::InfoBar* infobar = GetInfobarManager()->infobars()[0];
   infobar->delegate()->LinkClicked(WindowOpenDisposition::CURRENT_TAB);
   CloseInfobar();
 
-  VerifyInfobarCannotBeCreated();
+  VerifyInfobarWasNotDisplayedExpectation();
 }
 
 }  // namespace ntp_background_images

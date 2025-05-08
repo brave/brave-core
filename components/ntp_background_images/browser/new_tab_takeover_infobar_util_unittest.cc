@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
-#include "brave/components/ntp_background_images/common/pref_constants.h"
+#include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -28,26 +28,16 @@ class NewTabTakeoverInfobarUtilTest : public testing::Test {
 
   PrefService* pref_service() { return &pref_service_; }
 
-  void EnableSupportNewTabPageAdConfirmationsForNonRewards() {
+  void SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(bool enabled) {
     scoped_feature_list_.InitWithFeaturesAndParameters(
         {{brave_ads::kNewTabPageAdFeature,
-          {{"should_support_confirmations_for_non_rewards", "true"}}}},
+          {{"should_support_confirmations_for_non_rewards",
+            enabled ? "true" : "false"}}}},
         {});
   }
 
-  void DisableSupportNewTabPageAdConfirmationsForNonRewards() {
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        {{brave_ads::kNewTabPageAdFeature,
-          {{"should_support_confirmations_for_non_rewards", "false"}}}},
-        {});
-  }
-
-  void EnableRewards() {
-    pref_service()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  }
-
-  void DisableRewards() {
-    pref_service()->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  void SetRewardsEnabled(bool enabled) {
+    pref_service()->SetBoolean(brave_rewards::prefs::kEnabled, enabled);
   }
 
  private:
@@ -56,63 +46,78 @@ class NewTabTakeoverInfobarUtilTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable pref_service_;
 };
 
+TEST_F(NewTabTakeoverInfobarUtilTest, ShouldDisplayInfobar) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
+
+  for (int i = 0; i < kNewTabTakeoverInfobarDisplayCountThreshold; ++i) {
+    EXPECT_TRUE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
+    RecordNewTabTakeoverInfobarWasDisplayed(pref_service());
+  }
+
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
+}
+
 TEST_F(
     NewTabTakeoverInfobarUtilTest,
-    DoNotShowInfobarWhenRewardsDisabledAndSupportNewTabPageAdConfirmationsForNonRewardsDisabled) {
-  DisableRewards();
-  DisableSupportNewTabPageAdConfirmationsForNonRewards();
+    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsDisabled) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
-  EXPECT_FALSE(ShouldShowNewTabTakeoverInfobar(pref_service()));
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }
 
 TEST_F(
     NewTabTakeoverInfobarUtilTest,
     DoNotShowInfobarWhenRewardsEnabledAndSupportNewTabPageAdConfirmationsForNonRewardsDisabled) {
-  EnableRewards();
-  DisableSupportNewTabPageAdConfirmationsForNonRewards();
+  SetRewardsEnabled(/*enabled=*/true);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
-  EXPECT_FALSE(ShouldShowNewTabTakeoverInfobar(pref_service()));
-}
-
-TEST_F(NewTabTakeoverInfobarUtilTest, ShowNewTabTakeoverInfobarUntilThreshold) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
-
-  for (int i = 0; i < kNewTabTakeoverInfobarShowCountThreshold; ++i) {
-    EXPECT_TRUE(ShouldShowNewTabTakeoverInfobar(pref_service()));
-    RecordNewTabTakeoverInfobarWasShown(pref_service());
-  }
-
-  EXPECT_FALSE(ShouldShowNewTabTakeoverInfobar(pref_service()));
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }
 
 TEST_F(NewTabTakeoverInfobarUtilTest,
-       ShouldNotShowNewTabTakeoverInfobarWhenRewardsEnabled) {
-  EnableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+       ShouldNotDisplayInfobarIfRewardsIsEnabled) {
+  SetRewardsEnabled(/*enabled=*/true);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  EXPECT_FALSE(ShouldShowNewTabTakeoverInfobar(pref_service()));
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }
 
 TEST_F(NewTabTakeoverInfobarUtilTest,
-       ShouldNotShowNewTabTakeoverInfobarWhenThresholdIsReached) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
+       ShouldNotDisplayInfobarWhenThresholdIsMet) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
-  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarShowCount, 0);
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, 0);
 
-  EXPECT_FALSE(ShouldShowNewTabTakeoverInfobar(pref_service()));
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
+}
+
+TEST_F(NewTabTakeoverInfobarUtilTest,
+       ShouldNotDisplayInfobarWhenThresholdIsExceeded) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
+
+  pref_service()->SetInteger(prefs::kNewTabTakeoverInfobarDisplayCount, -1);
+
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
+}
+
+TEST_F(NewTabTakeoverInfobarUtilTest, RecordInfobarWasDisplayed) {
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
+
+  RecordNewTabTakeoverInfobarWasDisplayed(pref_service());
+  EXPECT_TRUE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }
 
 TEST_F(NewTabTakeoverInfobarUtilTest, SuppressNewTabTakeoverInfobar) {
-  DisableRewards();
-  EnableSupportNewTabPageAdConfirmationsForNonRewards();
-
-  RecordNewTabTakeoverInfobarWasShown(pref_service());
-  EXPECT_TRUE(ShouldShowNewTabTakeoverInfobar(pref_service()));
+  SetRewardsEnabled(/*enabled=*/false);
+  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   SuppressNewTabTakeoverInfobar(pref_service());
-  EXPECT_FALSE(ShouldShowNewTabTakeoverInfobar(pref_service()));
+  EXPECT_FALSE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
 }
 
 }  // namespace ntp_background_images
