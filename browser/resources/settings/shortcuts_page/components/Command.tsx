@@ -35,11 +35,13 @@ const Column = styled.div`
 
 const RemoveButton = styled(Button)`
   visibility: hidden;
+  flex-grow: 0;
 `
 
 const Row = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
 
