@@ -112,14 +112,12 @@ class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
 
   void EnableExtension(bool enable) {
     if (enable) {
-      extensions::ExtensionSystem::Get(browser()->profile())
-          ->extension_service()
+      extensions::ExtensionRegistrar::Get(browser()->profile())
           ->EnableExtension(kExtensionId);
     } else {
-      extensions::ExtensionSystem::Get(browser()->profile())
-          ->extension_service()
+      extensions::ExtensionRegistrar::Get(browser()->profile())
           ->DisableExtension(kExtensionId,
-                             extensions::disable_reason::DISABLE_USER_ACTION);
+                             {extensions::disable_reason::DISABLE_USER_ACTION});
     }
   }
 
