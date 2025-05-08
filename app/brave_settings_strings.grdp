@@ -1695,6 +1695,26 @@ Leo AI. This action can't be undone.
     ≈<ph name="TOKENS_COUNT">$1<ex>175</ex></ph> tokens
   </message>
 
+  <!-- Settings / Survey Panelist -->
+  <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">
+    Survey Panelist
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_ABOUT_LABEL" desc="Label for the about survey panelist section">
+    About Survey Panelist
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_1" desc="Description for the about survey panelist section">
+    Maecenas sed diam eget risus varius blandit sit amet non magna. Maecenas sed diam eget risus varius blandit sit amet non magna. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Sed posuere consectetur est at lobortis.
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_2" desc="Description for learning more about becoming a survey panelist">
+    Nulla vitae elit libero, a pharetra augue. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_LABEL" desc="The text for settings option to enable survey panelist">
+    Help us improve Brave
+  </message>
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_DESC" desc="The description for settings option to enable survey panelist">
+    Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+  </message>
+
   <!-- Settings / Playlist -->
   <message name="IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL" desc="The text for setting to en/disable Playlist feature">
     Enable Playlist

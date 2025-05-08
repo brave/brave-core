@@ -82,6 +82,9 @@ void RegisterProfilePrefs() {
   RegisterProfileBooleanPref(ntp_background_images::prefs::
                                  kNewTabPageShowSponsoredImagesBackgroundImage,
                              true);
+  RegisterProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
+      true);
 }
 
 }  // namespace brave_ads::test
