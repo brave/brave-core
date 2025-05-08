@@ -101,7 +101,8 @@ public class BraveNewTabTakeoverInfobar {
         PrefService prefService = UserPrefs.get(mProfile);
         final int infobarDisplayCount =
                 prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT);
-        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT, infobarDisplayCount - 1);
+        prefService.setInteger(
+                BravePref.NEW_TAB_TAKEOVER_INFOBAR_DISPLAY_COUNT, infobarDisplayCount - 1);
     }
 
     private void suppressInfobar() {
