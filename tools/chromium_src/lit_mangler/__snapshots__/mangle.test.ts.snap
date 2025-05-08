@@ -118,109 +118,64 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/appearance.html.ts
-@@ -4,80 +4,49 @@
+@@ -1,4 +1,8 @@
++// Copyright 2024 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
  
- export function getHtml(this: AppearanceElement) {
+ import type {AppearanceElement} from './appearance.js';
+ 
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/components/webui/chrome_urls/resources/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../components/webui/chrome_urls/resources/app.html.ts
++++ gen/components/webui/chrome_urls/resources/preprocessed/app.html.ts
+@@ -4,16 +4,16 @@
+ 
+ export function getHtml(this: ChromeUrlsAppElement) {
    // clang-format off
-   return html\`<!--_html_template_start_-->
--<customize-chrome-theme-snapshot id=\\"themeSnapshot\\"
--    @edit-theme-click=\\"\${this.onEditThemeClicked_}\\"
--    ?hidden=\\"\${!this.showThemeSnapshot_}\\">
--</customize-chrome-theme-snapshot>
--<customize-chrome-hover-button id=\\"thirdPartyThemeLinkButton\\"
--    class=\\"link-out-button theme-button\\"
--    ?hidden=\\"\${!this.thirdPartyThemeId_}\\"
--    @click=\\"\${this.onThirdPartyThemeLinkButtonClick_}\\"
--    label=\\"\${this.thirdPartyThemeName_}\\"
--    label-description=\\"$i18n{currentTheme}\\">
-+
-+<customize-chrome-hover-button id=\\"thirdPartyThemeLinkButton\\" class=\\"link-out-button theme-button\\" ?hidden=\\"\${!this.thirdPartyThemeId_}\\" @click=\\"\${this.onThirdPartyThemeLinkButtonClick_}\\" label=\\"\${this.thirdPartyThemeName_}\\" label-description=\\"$i18n{currentTheme}\\">
- </customize-chrome-hover-button>
--<customize-chrome-hover-button id=\\"uploadedImageButton\\" class=\\"theme-button\\"
--    ?hidden=\\"\${!this.showUploadedImageButton_}\\"
--    @click=\\"\${this.onUploadedImageButtonClick_}\\"
--    label=\\"$i18n{yourUploadedImage}\\"
--    label-description=\\"$i18n{currentTheme}\\">
-+<customize-chrome-hover-button id=\\"uploadedImageButton\\" class=\\"theme-button\\" ?hidden=\\"\${!this.showUploadedImageButton_}\\" @click=\\"\${this.onUploadedImageButtonClick_}\\" label=\\"$i18n{yourUploadedImage}\\" label-description=\\"$i18n{currentTheme}\\">
- </customize-chrome-hover-button>
--<customize-chrome-hover-button id=\\"searchedImageButton\\" class=\\"theme-button\\"
--    ?hidden=\\"\${!this.showSearchedImageButton_}\\"
--    @click=\\"\${this.onSearchedImageButtonClick_}\\"
--    label=\\"$i18n{yourSearchedImage}\\"
--    label-description=\\"$i18n{currentTheme}\\">
-+<customize-chrome-hover-button id=\\"searchedImageButton\\" class=\\"theme-button\\" ?hidden=\\"\${!this.showSearchedImageButton_}\\" @click=\\"\${this.onSearchedImageButtonClick_}\\" label=\\"$i18n{yourSearchedImage}\\" label-description=\\"$i18n{currentTheme}\\">
- </customize-chrome-hover-button>
- \${(!this.isSourceTabFirstPartyNtp_ && !!this.ntpManagedByName_) ? html\`
--  <customize-chrome-hover-button id=\\"thirdPartyManageLinkButton\\"
--      aria-button-label=\\"\${this.i18n('newTabPageManagedByA11yLabel',
--                           this.ntpManagedByName_)}\\"
--      class=\\"link-out-button theme-button\\"
--      @click=\\"\${this.onNewTabPageManageByButtonClicked_}\\"
--      label-description=\\"\${this.i18n('newTabPageManagedBy',
--                           this.ntpManagedByName_)}\\">
--  </customize-chrome-hover-button>
-+  
-   \`: ''}
--<div id=\\"editButtonsContainer\\" ?hidden=\\"\${!this.showEditTheme_}\\">
--  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClicked_}\\"
--      class=\\"floating-button\\">
--    <div id=\\"editThemeIcon\\" class=\\"cr-icon edit-theme-icon\\" slot=\\"prefix-icon\\"
--        ?hidden=\\"\${this.wallpaperSearchButtonEnabled_}\\"></div>
--    \${this.editThemeButtonText_}
--  </cr-button>
--  \${this.wallpaperSearchButtonEnabled_ ? html\`
--    <cr-button id=\\"wallpaperSearchButton\\"
--        @click=\\"\${this.onWallpaperSearchClicked_}\\" class=\\"floating-button\\">
--      <div id=\\"wallpaperSearchIcon\\" class=\\"cr-icon edit-theme-icon\\"
--          slot=\\"prefix-icon\\"></div>
--      $i18n{wallpaperSearchTileLabel}
--    </cr-button>
--  \` : ''}
--</div>
-+
- <hr class=\\"sp-hr\\" ?hidden=\\"\${!this.showEditTheme_}\\">
- <customize-color-scheme-mode></customize-color-scheme-mode>
- <cr-theme-color-picker id=\\"chromeColors\\" ?hidden=\\"\${!this.showColorPicker_}\\">
- </cr-theme-color-picker>
- <hr class=\\"sp-hr\\" ?hidden=\\"\${!this.showBottomDivider_}\\">
--<div id=\\"followThemeToggle\\" class=\\"sp-card-content\\"
--    ?hidden=\\"\${!this.showDeviceThemeToggle_}\\">
-+<div id=\\"followThemeToggle\\" class=\\"sp-card-content\\" ?hidden=\\"\${!this.showDeviceThemeToggle_}\\">
-   <div id=\\"followThemeToggleTitle\\">$i18n{followThemeToggle}</div>
--  <cr-toggle id=\\"followThemeToggleControl\\" title=\\"$i18n{followThemeToggle}\\"
--      ?checked=\\"\${!!this.theme_ && this.theme_.followDeviceTheme}\\"
--      @change=\\"\${this.onFollowThemeToggleChange_}\\">
-+  <cr-toggle id=\\"followThemeToggleControl\\" title=\\"$i18n{followThemeToggle}\\" ?checked=\\"\${!!this.theme_ && this.theme_.followDeviceTheme}\\" @change=\\"\${this.onFollowThemeToggleChange_}\\">
-   </cr-toggle>
- </div>
--<customize-chrome-hover-button id=\\"setClassicChromeButton\\"
--    ?hidden=\\"\${!this.showClassicChromeButton_}\\"
--    label=\\"$i18n{resetToClassicChrome}\\"
--    @click=\\"\${this.onSetClassicChromeClicked_}\\">
-+<customize-chrome-hover-button id=\\"setClassicChromeButton\\" ?hidden=\\"\${!this.showClassicChromeButton_}\\" label=\\"$i18n{resetToClassicChrome}\\" @click=\\"\${this.onSetClassicChromeClicked_}\\">
- </customize-chrome-hover-button>
- \${this.showManagedDialog_ ? html\`
-   <managed-dialog @close=\\"\${this.onManagedDialogClosed_}\\"
-       title=\\"$i18n{managedColorsTitle}\\"
-       body=\\"$i18n{managedColorsBody}\\">
-   </managed-dialog>
- \` : ''}
--<!--_html_template_end_-->\`;
-+<!--_html_template_end_--><div id=\\"editButtonsContainer\\" ?hidden=\\"\${!this.showEditTheme_}\\">
-+  <cr-button id=\\"editThemeButton\\" @click=\\"\${this.onEditThemeClicked_}\\" class=\\"floating-button\\">
-+    <div id=\\"editThemeIcon\\" class=\\"cr-icon edit-theme-icon\\" slot=\\"prefix-icon\\" ?hidden=\\"\${this.wallpaperSearchButtonEnabled_}\\"></div>
-+    \${this.editThemeButtonText_}
-+  </cr-button>
-+  \${this.wallpaperSearchButtonEnabled_ ? html\`
-+    <cr-button id=\\"wallpaperSearchButton\\"
-+        @click=\\"\${this.onWallpaperSearchClicked_}\\" class=\\"floating-button\\">
-+      <div id=\\"wallpaperSearchIcon\\" class=\\"cr-icon edit-theme-icon\\"
-+          slot=\\"prefix-icon\\"></div>
-+      $i18n{wallpaperSearchTileLabel}
-+    </cr-button>
-+  \` : ''}
-+</div>\`;
-   // clang-format on
+   return html\`
+-<h2>List of Chrome URLs</h2>
++<h2>List of Brave URLs</h2>
+ <ul>
+   \${this.webuiUrlInfos_.map(info => html\`
+     \${this.isChromeUrlsUrl_(info) ?
+-      html\`<li><a href=\\"#\\">chrome://chrome-urls</a></li>\` :
++      html\`<li><a href=\\"#\\">brave://chrome-urls</a></li>\` :
+       html\`\${info.enabled ?
+-        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url}</a></li>\` :
+-        html\`<li>\${info.url.url}</li>\`
++        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url.replace(/chrome:/, \\"brave:\\")}</a></li>\` :
++        html\`<li>\${info.url.url.replace(/chrome:/, \\"brave:\\")}</li>\`
+       }\`
+     }\`)}
+ </ul>
+ \${this.internalUrlInfos_.length ? html\`
+@@ -28,10 +28,10 @@
+   </cr-button>
+   <ul>
+     \${this.internalUrlInfos_.map(info => html\`
+       \${this.isInternalUiEnabled_(info) ?
+-        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url}</a></li>\` :
+-        html\`<li>\${info.url.url}</li>\`
++        html\`<li><a href=\\"\${info.url.url}\\">\${info.url.url.replace(/chrome:/, \\"brave:\\")}</a></li>\` :
++        html\`<li>\${info.url.url.replace(/chrome:/, \\"brave:\\")}</li>\`
+       }\`)}
+   </ul>\` : ''}
+ \${this.commandUrls_.length ? html\`
+   <h2>Command URLs for Debug</h2>
+@@ -40,7 +40,7 @@
+     hang the renderer, they're not linked directly; you can type them into the
+     address bar if you need them.
+   </p>
+   <ul>
+-    \${this.commandUrls_.map(url => html\`<li>\${url.url}</li>\`)}
++    \${this.commandUrls_.map(url => html\`<li>\${url.url.replace(/chrome:/, \\"brave:\\")}</li>\`)}
+   </ul>\` : ''}\`;
  }
 "
 `;
