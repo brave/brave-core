@@ -110,13 +110,14 @@ const localeStrings: Record<StringKey, string>  = {
   searchSuggestionsEnableButtonLabel: 'Enable',
   searchSuggestionsPromptText: 'When you search, what you type will be sent to your search engine for better suggestions.',
   searchSuggestionsPromptTitle: 'Enable search suggestions?',
-  settingsTitle: 'Customize Dashboard',
+  settingsTitle: 'Customize New Tab Page',
   showBackgroundsLabel: 'Show Background Images',
   showClockLabel: 'Show clock',
   showNewsWidgetLabel: 'News and RSS',
   showRewardsWidgetLabel: 'Brave Rewards',
   showSearchBoxLabel: 'Show search widget in new tabs',
-  showSponsoredImagesLabel: 'Show Sponsored Images',
+  showSponsoredImagesEarningText: 'With $1Brave Rewards$2, you can earn for seeing new tab page ads.',
+  showSponsoredImagesLabel: 'Show new tab page ads',
   showStatsLabel: 'Brave Stats',
   showTalkWidgetLabel: 'Brave Talk',
   showTopSitesLabel: 'Show top sites',
@@ -157,7 +158,7 @@ const localeStrings: Record<StringKey, string>  = {
   vpnStatusDisconnected: 'Disconnected',
   vpnStatusDisconnecting: 'Disconnecting',
   vpnWidgetTitle: 'BRAVE VPN',
-  widgetSettingsTitle: 'Widgets'
+  widgetSettingsTitle: 'Cards'
 }
 
 const pluralStrings: Record<PluralStringKey, string>  = {

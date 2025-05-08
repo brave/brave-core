@@ -114,6 +114,7 @@ export type StringKey =
   'showNewsWidgetLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
+  'showSponsoredImagesEarningText' |
   'showSponsoredImagesLabel' |
   'showStatsLabel' |
   'showTalkWidgetLabel' |

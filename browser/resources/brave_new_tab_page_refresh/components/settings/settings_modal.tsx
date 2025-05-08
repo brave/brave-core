@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
+import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
@@ -76,6 +77,16 @@ export function SettingsModal(props: Props) {
     }
   }
 
+  function getNavItemIcon(view: SettingsView) {
+    switch (view) {
+      case 'background': return <Icon name='image' />
+      case 'search': return <Icon name='search' />
+      case 'top-sites': return <Icon name='window-content' />
+      case 'clock': return <Icon name='clock' />
+      case 'widgets': return <Icon name='browser-ntp-widget' />
+    }
+  }
+
   function renderNavItem(view: SettingsView) {
     if (!shouldShowView(view)) {
       return null
@@ -85,6 +96,7 @@ export function SettingsModal(props: Props) {
         isCurrent={view === currentView}
         onClick={() => setCurrentView(view)}
       >
+        {getNavItemIcon(view)}
         {getNavItemText(view)}
       </NavigationItem>
     )
@@ -107,7 +119,7 @@ export function SettingsModal(props: Props) {
             </Navigation>
           </nav>
           <section>
-            {renderPanel()}
+            <div>{renderPanel()}</div>
           </section>
         </div>
       </Dialog>

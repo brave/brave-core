@@ -44,7 +44,7 @@ export function ClockPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='form-control-row'>
+      <div className='control-row'>
         <label>{getString('showClockLabel')}</label>
         <Toggle
           size='small'
@@ -52,7 +52,7 @@ export function ClockPanel() {
           onChange={({ checked }) => { actions.setShowClock(checked) }}
         />
       </div>
-      <div>
+      <div className='control-row'>
         <label>{getString('clockFormatLabel')}</label>
         <DropDown
           value={String(clockFormat)}

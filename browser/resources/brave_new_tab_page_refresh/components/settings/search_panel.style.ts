@@ -10,23 +10,18 @@ export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-  }
-
-  .toggle-row {
-    display: flex;
-    align-items: center;
-
-    label {
-      flex: 1 1 auto;
-    }
   }
 
   .search-engines {
+    padding: 24px;
+  }
+
+  .search-engine-list {
     --leo-checkbox-flex-direction: row-reverse;
     --leo-checkbox-label-gap: 16px;
     --leo-icon-size: 20px;
 
+    padding: 24px 0;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -53,6 +48,7 @@ export const style = scoped.css`
   .customize-link {
     --leo-icon-size: 20px;
 
+    margin-top: 16px;
     display: inline-flex;
     align-items: center;
     gap: 8px;

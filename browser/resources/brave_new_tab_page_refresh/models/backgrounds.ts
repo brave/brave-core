@@ -110,6 +110,7 @@ export function getCurrentBackground(
     braveBackgrounds,
     customBackgrounds,
     selectedBackground,
+    currentBackground,
     sponsoredImageBackground } = state
 
   if (!backgroundsEnabled) {
@@ -128,6 +129,9 @@ export function getCurrentBackground(
 
   switch (type) {
     case SelectedBackgroundType.kBrave: {
+      if (currentBackground?.type === 'brave') {
+        return currentBackground
+      }
       const braveBackground = chooseRandom(braveBackgrounds)
       return braveBackground ? { type: 'brave', ...braveBackground } : null
     }

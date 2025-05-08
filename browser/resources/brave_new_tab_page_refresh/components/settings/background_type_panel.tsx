@@ -82,7 +82,7 @@ export function BackgroundTypePanel(props: Props) {
         {panelTitle()}
       </button>
     </h4>
-    <div className='toggle-row'>
+    <div className='control-row'>
       <label>{getString('randomizeBackgroundLabel')}</label>
       <Toggle
         size='small'
