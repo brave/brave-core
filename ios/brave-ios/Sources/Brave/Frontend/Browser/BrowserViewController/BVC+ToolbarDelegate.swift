@@ -342,7 +342,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "version",
       "skus-internals",
       "ads-internals",
-      "hello-world",
+      "account-dialogs",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false

@@ -242,7 +242,7 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [34790],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/components/hello_world/resources/resources.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
     "META": {"sizes": {"includes": [25]}},
     "includes": [34810],
   },

@@ -11,6 +11,8 @@
 #include "base/containers/fixed_flat_set.h"
 #include "build/build_config.h"
 
+inline constexpr char kBraveAccountDialogsHost[] = "account-dialogs";
+inline constexpr char kBraveAccountDialogsURL[] = "chrome://account-dialogs/";
 inline constexpr char kAdblockHost[] = "adblock";
 inline constexpr char kAdblockInternalsHost[] = "adblock-internals";
 inline constexpr char kAdblockJS[] = "brave_adblock.js";
@@ -103,9 +105,6 @@ inline constexpr char kBraveUINewTabURL[] = "chrome://newtab/";
 
 inline constexpr char kBraveUINewTabTakeoverURL[] =
     "chrome://new-tab-takeover/";
-
-inline constexpr char kChromeUIHelloWorldHost[] = "hello-world";
-inline constexpr char kChromeUIHelloWorldURL[] = "chrome://hello-world/";
 
 // Hosts that are allowed to be installed as PWAs, which is usually
 // a blocked action for WebUIs. In Chromium, the "password-manager" host

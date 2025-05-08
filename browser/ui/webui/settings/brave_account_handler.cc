@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/ui/webui/hello_world/hello_world_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 #include "components/password_manager/core/browser/ui/weak_check_utility.h"
 
 namespace brave_account {
@@ -25,6 +25,6 @@ void BraveAccountHandler::GetPasswordStrength(
 }
 
 void BraveAccountHandler::OpenDialog() {
-  HelloWorldDialog::Show(web_ui_);
+  BraveAccountDialogsDialog::Show(web_ui_);
 }
 }  // namespace brave_account

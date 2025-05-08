@@ -1,25 +1,23 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/hello_world/hello_world_ui.h"
+#include "brave/ios/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 
-#include "base/containers/span.h"
-#include "brave/components/hello_world/resources/grit/hello_world_resources.h"
-#include "brave/components/hello_world/resources/grit/hello_world_resources_map.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_dialogs.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
-#include "components/grit/brave_components_strings.h"
+#include "base/version_info/version_info.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_account/resources/grit/brave_account_resources.h"
+#include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
+#include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_ui.h"
-#include "content/public/browser/web_ui_data_source.h"
+#include "components/grit/brave_components_strings.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/public/webui/web_ui_ios.h"
+#include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/compositor/layer.h"
-#include "ui/views/widget/widget_delegate.h"
-#include "ui/webui/webui_util.h"
+#include "ui/base/webui/web_ui_util.h"
+#include "url/gurl.h"
 
 namespace {
 constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
@@ -29,7 +27,7 @@ constexpr char16_t kBraveAccountTermsOfServiceURL[] =
 constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
     u"https://brave.com/privacy/browser/";
 
-void AddStringResources(content::WebUIDataSource* source) {
+void AddStringResources(BraveWebUIIOSDataSource* source) {
   static constexpr webui::LocalizedString kStrings[] = {
       // Row:
       {"braveAccountRowTitle", IDS_BRAVE_ACCOUNT_ROW_TITLE},
@@ -117,90 +115,28 @@ void AddStringResources(content::WebUIDataSource* source) {
 }
 }  // namespace
 
-HelloWorldUI::HelloWorldUI(content::WebUI* web_ui)
-    : content::WebUIController(web_ui) {
-  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
-      web_ui->GetWebContents()->GetBrowserContext(), kChromeUIHelloWorldHost);
+BraveAccountDialogsUI::BraveAccountDialogsUI(web::WebUIIOS* web_ui, const GURL& url)
+    : web::WebUIIOSController(web_ui, url.host()) {
+  BraveWebUIIOSDataSource* source = BraveWebUIIOSDataSource::Create(url.host());
 
-  webui::SetupWebUIDataSource(source, kHelloWorldResources,
-                              IDR_HELLO_WORLD_HELLO_WORLD_HTML);
+  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
+
+  source->AddResourcePaths(kBraveAccountResources);
+  source->SetDefaultResource(IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_HTML);
 
   AddStringResources(source);
+  source->UseStringsJs();
+  source->EnableReplaceI18nInJS();
 
   source->AddResourcePath("full_brave_brand.svg", IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
   source->AddResourcePath("full_brave_brand_dark.svg", IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
-  source->UseStringsJs();
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc, "script-src chrome://resources 'wasm-unsafe-eval' 'self';");
+      
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc,
+      "connect-src chrome://resources chrome://theme 'self';");
 }
 
-HelloWorldUI::~HelloWorldUI() = default;
-
-HelloWorldDialog::HelloWorldDialog() = default;
-
-void HelloWorldDialog::Show(content::WebUI* web_ui) {
-  // chrome::ShowWebDialog(web_ui->GetWebContents()->GetNativeView(),
-  //                       Profile::FromWebUI(web_ui), new HelloWorldDialog());
-  const int kSigninEmailConfirmationDialogWidth = 500;
-  const int kSigninEmailConfirmationDialogMinHeight = 470;
-  const int kSigninEmailConfirmationDialogMaxHeight = 794;
-  gfx::Size min_size(kSigninEmailConfirmationDialogWidth,
-                     kSigninEmailConfirmationDialogMinHeight);
-  gfx::Size max_size(kSigninEmailConfirmationDialogWidth,
-                     kSigninEmailConfirmationDialogMaxHeight);
-
-  auto* delegate = ShowConstrainedWebDialogWithAutoResize(
-      Profile::FromWebUI(web_ui), base::WrapUnique(new HelloWorldDialog()),
-      web_ui->GetWebContents(), min_size, max_size);
-  DCHECK(delegate);
-  auto* widget =
-      views::Widget::GetWidgetForNativeWindow(delegate->GetNativeDialog());
-  if (widget && widget->GetLayer()) {
-    widget->GetLayer()->SetRoundedCornerRadius(gfx::RoundedCornersF(16));
-  }
-}
-
-ui::mojom::ModalType HelloWorldDialog::GetDialogModalType() const {
-  return ui::mojom::ModalType::kWindow;
-}
-
-std::u16string HelloWorldDialog::GetDialogTitle() const {
-  return u"";
-}
-
-GURL HelloWorldDialog::GetDialogContentURL() const {
-  return GURL(kChromeUIHelloWorldURL);
-}
-
-void HelloWorldDialog::GetWebUIMessageHandlers(
-    std::vector<content::WebUIMessageHandler*>* handlers) {}
-
-void HelloWorldDialog::GetDialogSize(gfx::Size* size) const {
-  const int kDefaultWidth = 500;
-  const int kDefaultHeight = 754;
-  size->SetSize(kDefaultWidth, kDefaultHeight);
-}
-
-std::string HelloWorldDialog::GetDialogArgs() const {
-  return "";
-}
-
-void HelloWorldDialog::OnDialogShown(content::WebUI* webui) {
-  webui_ = webui;
-}
-
-void HelloWorldDialog::OnDialogClosed(const std::string& json_retval) {
-  VLOG(0) << "deleted";
-  // delete this;
-}
-
-void HelloWorldDialog::OnCloseContents(content::WebContents* source,
-                                       bool* out_close_dialog) {
-  *out_close_dialog = true;
-}
-
-bool HelloWorldDialog::ShouldShowDialogTitle() const {
-  return false;
-}
-
-HelloWorldDialog::~HelloWorldDialog() {
-  VLOG(0) << "~HelloWorldDialog()";
-}
+BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;

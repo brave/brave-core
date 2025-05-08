@@ -6,11 +6,11 @@
 import("//ui/webui/resources/tools/build_webui.gni")
 
 build_webui("build") {
-  grd_prefix = "hello_world"
+  grd_prefix = "brave_account"
 
   static_files = [
-    "hello_world.css",
-    "hello_world.html",
+    "brave_account_dialogs.css",
+    "brave_account_dialogs.html",
   ]
 
   non_web_component_files = [
