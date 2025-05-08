@@ -17,4 +17,7 @@
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -PlatformStateStoreWinTest.*
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerCheckIsDisabled
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordManagerSettingsIsDisabled
+-RenderViewContextMenuPrefsTest.SearchWebForOptionOnPasswordsManagerSubPageIsDisabled
 -WebAppShortcutWinTest.*
