@@ -41,3 +41,20 @@ export function CardView(props: Props) {
     </div>
   )
 }
+
+export function sortCards(cards: UICard[]) {
+  return cards.sort((a, b) => a.order - b.order)
+}
+
+export function splitCardsIntoColumns(cards: UICard[]) {
+  const left: UICard[] = []
+  const right: UICard[] = []
+  for (const card of cards) {
+    if (left.length > right.length) {
+      right.push(card)
+    } else {
+      left.push(card)
+    }
+  }
+  return [left, right]
+}

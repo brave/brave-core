@@ -133,6 +133,8 @@ export function createModel(): AppModel {
       {
         name: 'community-card',
         title: '',
+        order: 0,
+        section: '',
         items: [
           {
             title: 'Brave meetup in Toronto!',
@@ -145,6 +147,8 @@ export function createModel(): AppModel {
       {
         name: 'merch-store-card',
         title: '',
+        order: 0,
+        section: '',
         items: [
           {
             title: 'Brave Embroidered Crop Top',
@@ -157,6 +161,8 @@ export function createModel(): AppModel {
       {
         name: 'partner-promo-card',
         title: 'Ledger Hardware Wallet',
+        order: 0,
+        section: '',
         items: [
           {
             title: 'Secure Your Crypto with Ledger Nano',

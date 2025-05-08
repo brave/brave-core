@@ -66,6 +66,12 @@ std::optional<std::vector<mojom::UICardPtr>> ReadResponseBody(
       if (auto* title = dict.FindString("title")) {
         card->title = *title;
       }
+      if (auto* section = dict.FindString("section")) {
+        card->section = *section;
+      }
+      if (auto order = dict.FindInt("order")) {
+        card->order = *order;
+      }
       if (auto* list = dict.FindList("items")) {
         card->items = ReadItemList(*list);
       }
