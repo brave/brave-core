@@ -231,7 +231,8 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         () -> mCustomTabFeatureOverridesManager,
                         () -> getCustomTabActivityNavigationController().openCurrentUrlInBrowser(),
                         getEdgeToEdgeManager(),
-                        getAppHeaderCoordinator());
+                        getAppHeaderCoordinator(),
+                        this::getBrowserServicesThemeColorProvider);
         return mBaseCustomTabRootUiCoordinator;
     }
 
