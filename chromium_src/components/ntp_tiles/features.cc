@@ -14,7 +14,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPopularSitesBakedInContentFeature, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpMostLikelyFaviconsFromServerFeature,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {kUsePopularSitesSuggestions, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace ntp_tiles
