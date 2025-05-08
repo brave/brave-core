@@ -1,15 +1,19 @@
 # Split view
 
-Browser uses split view feature to shows two different tabs' contents at once.
+Browser uses split view feature to show two different tabs' contents at once.
 
-brave/browser/ui/views/split_view has Ui implementation of SplitView feature.
-It runs behind the tabs::features::kBraveSplitView feature.
+This feature is behind the tabs::features::kBraveSplitView.
 
+SplitView(brave/browser/ui/views/split_view/split_view.h) has UI implementation that
+shows two tabs' contents together.
 SplitView is container view that holds two contents contents views and
 SplitViewLayoutManager manages these two contents views' layout.
+SplitViewLocationBar is mini url bar that shows split view's inactive(secondary) contents url.
 
-The two tabs to be shown in SplitView are provided by the TabTileModel.
-TabTile is consists of two adjacent tabs and each tab's contents are shown together
-in SplitView.
+In tab strip UI, we have TabTile(brave/browser/ui/tabs/tab_tile_model.h).
+TabTile represents two tabs tied together like tile in tab strip UI.
+When two tabs are tiled, we made both tabs are adjacent in tab strip and we use split view to show
+two tabs in a tile together.
 
 For now, TabTile is the only data source for SplitView.
+And we're planning to use SplitView for showing sidebar's web panel.
