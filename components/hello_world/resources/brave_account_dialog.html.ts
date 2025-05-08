@@ -9,35 +9,34 @@ import { SettingsBraveAccountDialogElement } from './brave_account_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountDialogElement) {
   return html`<!--_html_template_start_-->
-    <leo-dialog id="dialog" isopen modal>
-      <div class="header">
-        <div class="buttons">
-          ${this.showBackButton
-            ? html`<leo-button kind="plain-faint"
-                               size="tiny"
-                               @click=${() => this.fire('back-button-clicked')}>
-                     <leo-icon name="arrow-left"></leo-icon>
-                   </leo-button>`
-            : nothing}
-          <leo-button kind="plain-faint"
-                      size="tiny">
-            <leo-icon name="close"></leo-icon>
-          </leo-button>
-        </div>
-        <div class="logo"></div>
+    <div class="header">
+      <div class="buttons">
+        ${this.showBackButton
+          ? html`<leo-button kind="plain-faint"
+                             size="tiny"
+                             @click=${() => this.fire('back-button-clicked')}>
+                   <leo-icon name="arrow-left"></leo-icon>
+                 </leo-button>`
+          : nothing}
+        <leo-button kind="plain-faint"
+                    size="tiny"
+                    @click=${() => this.fire('close-button-clicked')}>
+          <leo-icon name="close"></leo-icon>
+        </leo-button>
       </div>
-      <div class="body">
-        <div class="title-and-description">
-          <div class="title">${this.dialogTitle}</div>
-          <div class="description">${this.dialogDescription}</div>
-          ${this.alertMessage.length !== 0
-            ? html`<leo-alert>${this.alertMessage}</leo-alert>`
-            : nothing}
-        </div>
-        <slot name="inputs"></slot>
-        <slot name="buttons"></slot>
+      <div class="logo"></div>
+    </div>
+    <div class="body">
+      <div class="title-and-description">
+        <div class="title">${this.dialogTitle}</div>
+        <div class="description">${this.dialogDescription}</div>
+        ${this.alertMessage.length !== 0
+          ? html`<leo-alert>${this.alertMessage}</leo-alert>`
+          : nothing}
       </div>
-      <slot name="footer"></slot>
-    </leo-dialog>
+      <slot name="inputs"></slot>
+      <slot name="buttons"></slot>
+    </div>
+    <slot name="footer"></slot>
   <!--_html_template_end_-->`
 }

@@ -18,7 +18,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
     case Dialog.ENTRY:
       return html`
         <settings-brave-account-entry-dialog
-          @close=${() => this.dialog = Dialog.NONE}
+          @close-button-clicked=${this.onCloseButtonClicked}
           @create-button-clicked=${() => this.dialog = Dialog.CREATE}
           @self-custody-button-clicked=${() => this.dialog = Dialog.NONE}
           @sign-in-button-clicked=${() => this.dialog = Dialog.SIGN_IN}>
@@ -28,7 +28,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
       return html`
         <settings-brave-account-create-dialog
           @back-button-clicked=${this.onBackButtonClicked}
-          @close=${() => this.dialog = Dialog.NONE}
+          @close-button-clicked=${this.onCloseButtonClicked}
           @create-account-button-clicked=${() => this.dialog = Dialog.NONE}>
         </settings-brave-account-create-dialog>
       `
@@ -36,7 +36,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
       return html`
         <settings-brave-account-sign-in-dialog
           @back-button-clicked=${this.onBackButtonClicked}
-          @close=${() => this.dialog = Dialog.NONE}
+          @close-button-clicked=${this.onCloseButtonClicked}
           @forgot-password-button-clicked=${() => this.dialog = Dialog.FORGOT_PASSWORD}
           @sign-in-button-clicked=${() => {this.dialog = Dialog.NONE; this.signedIn = true}}>
         </settings-brave-account-sign-in-dialog>
@@ -46,7 +46,7 @@ export function getHtml(this: SettingsBraveAccountRow) {
         <settings-brave-account-forgot-password-dialog
           @back-button-clicked=${this.onBackButtonClicked}
           @cancel-button-clicked=${this.onBackButtonClicked}
-          @close=${() => this.dialog = Dialog.NONE}>
+          @close-button-clicked=${this.onCloseButtonClicked}
         </settings-brave-account-forgot-password-dialog>
       `
   }

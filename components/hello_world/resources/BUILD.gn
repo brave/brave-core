@@ -9,6 +9,7 @@ build_webui("build") {
   grd_prefix = "hello_world"
 
   static_files = [
+    "hello_world.css",
     "hello_world.html",
   ]
 

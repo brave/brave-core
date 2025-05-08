@@ -10,12 +10,15 @@
 #include "brave/components/hello_world/resources/grit/hello_world_resources_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_dialogs.h"
+#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/compositor/layer.h"
+#include "ui/views/widget/widget_delegate.h"
 #include "ui/webui/webui_util.h"
 
 namespace {
@@ -134,16 +137,33 @@ HelloWorldUI::~HelloWorldUI() = default;
 HelloWorldDialog::HelloWorldDialog() = default;
 
 void HelloWorldDialog::Show(content::WebUI* web_ui) {
-  chrome::ShowWebDialog(web_ui->GetWebContents()->GetNativeView(),
-                        Profile::FromWebUI(web_ui), new HelloWorldDialog());
+  // chrome::ShowWebDialog(web_ui->GetWebContents()->GetNativeView(),
+  //                       Profile::FromWebUI(web_ui), new HelloWorldDialog());
+  const int kSigninEmailConfirmationDialogWidth = 500;
+  const int kSigninEmailConfirmationDialogMinHeight = 470;
+  const int kSigninEmailConfirmationDialogMaxHeight = 794;
+  gfx::Size min_size(kSigninEmailConfirmationDialogWidth,
+                     kSigninEmailConfirmationDialogMinHeight);
+  gfx::Size max_size(kSigninEmailConfirmationDialogWidth,
+                     kSigninEmailConfirmationDialogMaxHeight);
+
+  auto* delegate = ShowConstrainedWebDialogWithAutoResize(
+      Profile::FromWebUI(web_ui), base::WrapUnique(new HelloWorldDialog()),
+      web_ui->GetWebContents(), min_size, max_size);
+  DCHECK(delegate);
+  auto* widget =
+      views::Widget::GetWidgetForNativeWindow(delegate->GetNativeDialog());
+  if (widget && widget->GetLayer()) {
+    widget->GetLayer()->SetRoundedCornerRadius(gfx::RoundedCornersF(16));
+  }
 }
 
 ui::mojom::ModalType HelloWorldDialog::GetDialogModalType() const {
-  return ui::mojom::ModalType::kNone;
+  return ui::mojom::ModalType::kWindow;
 }
 
 std::u16string HelloWorldDialog::GetDialogTitle() const {
-  return u"Hello world";
+  return u"";
 }
 
 GURL HelloWorldDialog::GetDialogContentURL() const {
@@ -154,8 +174,8 @@ void HelloWorldDialog::GetWebUIMessageHandlers(
     std::vector<content::WebUIMessageHandler*>* handlers) {}
 
 void HelloWorldDialog::GetDialogSize(gfx::Size* size) const {
-  const int kDefaultWidth = 1024;
-  const int kDefaultHeight = 1024;
+  const int kDefaultWidth = 500;
+  const int kDefaultHeight = 754;
   size->SetSize(kDefaultWidth, kDefaultHeight);
 }
 
@@ -168,7 +188,8 @@ void HelloWorldDialog::OnDialogShown(content::WebUI* webui) {
 }
 
 void HelloWorldDialog::OnDialogClosed(const std::string& json_retval) {
-  delete this;
+  VLOG(0) << "deleted";
+  // delete this;
 }
 
 void HelloWorldDialog::OnCloseContents(content::WebContents* source,
@@ -177,7 +198,9 @@ void HelloWorldDialog::OnCloseContents(content::WebContents* source,
 }
 
 bool HelloWorldDialog::ShouldShowDialogTitle() const {
-  return true;
+  return false;
 }
 
-HelloWorldDialog::~HelloWorldDialog() = default;
+HelloWorldDialog::~HelloWorldDialog() {
+  VLOG(0) << "~HelloWorldDialog()";
+}
