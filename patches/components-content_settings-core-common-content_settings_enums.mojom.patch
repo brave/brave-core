@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_enums.mojom b/components/content_settings/core/common/content_settings_enums.mojom
-index ca1647986c01e3651378fa1d359a091d9935aba0..94b74395223374357b6c9376284a5ced610d85de 100644
+index 6edb5f532360fb4a9022856650e59b651b8ac903..214bf471ef5d95a284ffca52de546912a3104afb 100644
 --- a/components/content_settings/core/common/content_settings_enums.mojom
 +++ b/components/content_settings/core/common/content_settings_enums.mojom
-@@ -76,6 +76,7 @@ enum ProviderType {
+@@ -77,6 +77,7 @@ enum ProviderType {
    kOneTimePermissionProvider,
    kPrefProvider,
    kJavascriptOptimizerAndroidProvider,
