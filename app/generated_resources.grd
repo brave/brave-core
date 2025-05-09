@@ -10374,6 +10374,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORDS_SAVE_RECOVERY_PROMO_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for IPH prompting users to reconsider saving passwords">
           To save your password to Brave Password Manager, the Password Manager icon in the Location Bar
         </message>
+        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_BLOCKED" desc="Text for the 'Manage Passwords' when the user has blocked saving passwords for this site">
+          Never for this site
+        </message>
         <message name="IDS_PASSWORD_MANAGER_IPH_MANAGEMENT_BUBBLE_AFTER_SAVE" desc="Body of the in Product Help shown after saving a password informing the user about the password management bubble">
           To view your password or add a note about it, click the key icon
         </message>
@@ -10841,6 +10844,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_PICTURE_IN_PICTURE_MINIMIZE_CONTROL_TEXT" desc="Text label of the minimize control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Minimize
       </message>
+      <message name="IDS_PICTURE_IN_PICTURE_LIVE_CAPTION_CONTROL_TEXT" desc="Text label of the live caption button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Live Caption
+      </message>
       <message name="IDS_PICTURE_IN_PICTURE_REPLAY_10_TEXT" desc="Text label of the replay 10 seconds button. The button appears when the user hovers over the Picture-in-Picture window.">
         Replay 10 seconds
       </message>
@@ -10975,8 +10981,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
           Add tab to split view
         </message>
-        <message name="IDS_TAB_CXMENU_REMOVE_SPLIT" desc="The label of the tab context menu submenu for exiting split view." translateable="false">
-          Exit split view
+        <message name="IDS_TAB_CXMENU_ARRANGE_SPLIT" desc="The label of the tab context menu submenu for exiting split view.">
+          Arrange split view
+        </message>
+        <message name="IDS_TAB_CXMENU_SWAP_WITH_ACTIVE_SPLIT" desc="The label of the tab context menu item for swapping a tab with the current view in the split.">
+          Swap with current view
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New group
@@ -11082,8 +11091,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
           Add Tab to Split View
         </message>
-        <message name="IDS_TAB_CXMENU_REMOVE_SPLIT" desc="The label of the tab context menu submenu for exiting split view." translateable="false">
-          Exit Split View
+        <message name="IDS_TAB_CXMENU_ARRANGE_SPLIT" desc="The label of the tab context menu submenu for exiting split view.">
+          Arrange Split View
+        </message>
+        <message name="IDS_TAB_CXMENU_SWAP_WITH_ACTIVE_SPLIT" desc="The label of the tab context menu item for swapping a tab with the current view in the split.">
+          Swap with Current View
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New Group
@@ -11710,6 +11722,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             <message name="IDS_DATA_SHARING_SHARE_GROUP_TITLE" desc="The Title for the creation flow for a shared group.">
               Share “<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>” Tab Group
             </message>
+            <message name="IDS_DATA_SHARING_COPY_LINK" desc="Label of the copy link button for the data sharing dialog.">
+              Copy Link
+            </message>
+            <message name="IDS_DATA_SHARING_COPY_LINK_SUCCESS" desc="Label of the copy link button for the data sharing dialog after copy link succeeds.">
+              Link Copied
+            </message>
           <!-- /Data Sharing Create Flow -->
 
           <!-- Data Sharing Owner Manage Flow -->
@@ -11856,6 +11874,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             <message name="IDS_DATA_SHARING_SHARE_GROUP_TITLE" desc="The Title for the creation flow for a shared group.">
               Share “<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>” tab group
             </message>
+          <message name="IDS_DATA_SHARING_COPY_LINK" desc="Label of the copy link button for the data sharing dialog.">
+            Copy link
+          </message>
+          <message name="IDS_DATA_SHARING_COPY_LINK_SUCCESS" desc="Label of the copy link button for the data sharing dialog after copy link succeeds.">
+            Link copied
+          </message>
           <!-- /Data Sharing Create Flow -->
 
           <!-- Data Sharing Owner Manage Flow -->
@@ -12232,12 +12256,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_DATA_SHARING_LOADING" desc="Alt text of the loading indicator for the data sharing dialog.">
           Loading
-        </message>
-        <message name="IDS_DATA_SHARING_COPY_LINK" desc="Label of the copy link button for the data sharing dialog.">
-          Copy link
-        </message>
-        <message name="IDS_DATA_SHARING_COPY_LINK_SUCCESS" desc="Label of the copy link button for the data sharing dialog after copy link succeeds.">
-          Link copied
         </message>
         <message name="IDS_DATA_SHARING_COPY_LINK_FAILED" desc="Label of the copy link button for the data sharing dialog after copy link fails.">
           Failed to copy link
@@ -17597,25 +17615,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_CHROMELABS_ENABLED_WITH_VARIATION_NAME" desc="Label for combobox option for an enabled variation that will have a description describing what variation is enabled in the placeholder.">
       Enabled – <ph name="VARIATION_NAME">$1<ex>tabs shrink to pinned tab width</ex></ph>
     </message>
-    <!-- BraveLabs Tab Scrolling -->
-    <message name="IDS_TAB_SCROLLING_EXPERIMENT_NAME" desc="Name for Tab Scrolling experiment">
-      Tab Scrolling
-    </message>
-    <message name="IDS_TAB_SCROLLING_EXPERIMENT_DESCRIPTION" desc="Description for Tab Scrolling experiment">
-      Enables tab strip to scroll left and right when full.
-    </message>
-    <message name="IDS_TABS_SHRINK_TO_PINNED_TAB_WIDTH" desc="Label describing tab behavior will shrink to pinned tab width">
-      Tabs shrink to pinned tab width
-    </message>
-    <message name="IDS_TABS_SHRINK_TO_MEDIUM_WIDTH" desc="Label describing tab behavior will shrink to medium width">
-      Tabs shrink to a medium width
-    </message>
-    <message name="IDS_TABS_SHRINK_TO_LARGE_WIDTH" desc="Label describing tab behavior will shrink to large width">
-      Tabs shrink to a large width
-    </message>
-    <message name="IDS_TABS_DO_NOT_SHRINK" desc="Label describing tab behavior will not shrink">
-      Tabs don't shrink
-    </message>
     <!-- Lens Region Search bubble dialog -->
     <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Google Lens.">
       Select an area to search with Lens
@@ -18124,6 +18123,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_IMAGE_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when an image is successfully copied.">
         Image copied
       </message>
+      <message name="IDS_VIDEO_FRAME_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a video frame is successfully copied.">
+        Video frame copied
+      </message>
       <message name="IDS_LINK_COPIED_TO_HIGHLIGHT_TOAST_BODY" desc="Text on a toast notification that is shown when a link to highlight is successfully copied.">
         Link copied to highlight
       </message>
@@ -18132,6 +18134,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_READING_LIST_TOAST_BUTTON" desc="Button on a toast notification that allows a user to open a reading list entry.">
         Open
+      </message>
+      <message name="IDS_CLOSE_PINNED_TAB_TOAST_BODY" desc="Text on a toast notification that is shown when a pinned tab is being closed.">
+        Press <ph name="SHORTCUT_TEXT">$1<ex>⌘ + W</ex></ph> again to close the pinned tab
       </message>
       <message name="IDS_TOAST_CLOSE_TOOLTIP" desc="Tooltip for the X button on a toast notification that closes the toast.">
         Close
@@ -18387,6 +18392,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
   </message>
   <message name="IDS_CHROME_NO_LONGER_SHOW_WARNINGS_NOTIFICATION_BODY" desc="The body for the notification sent by Brave informing the user that their decision to never show warnings for the url has been applied.">
     Brave will stop flagging notifications from this site as spam
+  </message>
+  <message name="IDS_CHROME_NO_LONGER_SHOW_WARNINGS_NOTIFICATION_TITLE_NEW" desc="The title for the notification sent by Brave informing the user that their decision to never show warnings for the url has been applied.">
+    Notifications allowed from <ph name="DOMAIN">$1<ex>example.com</ex></ph>
+  </message>
+  <message name="IDS_CHROME_NO_LONGER_SHOW_WARNINGS_NOTIFICATION_BODY_NEW" desc="The body for the notification sent by Brave informing the user that their decision to never show warnings for the url has been applied and they may report their notification contents to Brave.">
+    Help improve spam protection by sending notification content and the site's URL to Brave.
   </message>
 
      <!-- Merchant Trust IPH strings -->

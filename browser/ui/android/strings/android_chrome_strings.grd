@@ -930,20 +930,11 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_POST_PWD_MIGRATION_SHEET_SUBTITLE_ABOUT_LOCAL_PWD" desc="The subtitle of the post password migration sheet that emphasises on merging local passwords." formatter_data="android_java">
         All passwords saved only to this device for Brave and <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph> were merged. You can autofill all your saved passwords on both apps.
       </message>
-      <message name="IDS_EXPORTED_PASSWORDS_DELETION_DIALOG_TITLE" desc="The title of the dialog that offers to delete passwords from Brave Password Manager." formatter_data="android_java">
-        Delete passwords from Brave Password Manager?
-      </message>
       <message name="IDS_EXPORTED_PASSWORDS_DELETION_IN_PROGRESS_TITLE" desc="The title of the progress bar that is visible while the passwords are being deleted." formatter_data="android_java">
         Deleting
       </message>
       <message name="IDS_PASSWORDS_EXPORT_IN_PROGRESS_TITLE" desc="The title of the progress bar that is visible while the passwords are being exported." formatter_data="android_java">
         Exporting
-      </message>
-      <message name="IDS_EXPORTED_PASSWORDS_DELETION_DIALOG_TEXT" desc="The text that describes the option to delete the passwords that were just exported." formatter_data="android_java">
-        Your passwords will be deleted from Brave Password Manager for <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph>. You will keep the passwords file you just downloaded.
-      </message>
-      <message name="IDS_EXPORTED_PASSWORDS_DELETE_BUTTON" desc="The text on the button that confirms the action of deleting the passwords that were exported." formatter_data="android_java">
-        Delete passwords
       </message>
       <message name="IDS_CHROME_CHANNEL_NAME_CANARY" desc="The Brave channel name for canary channel">
         Brave Canary
@@ -1872,14 +1863,14 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_NO_COMPROMISED_LOCAL_PASSWORDS_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the checkup did not find any local compromised passwords.">
         No compromised passwords on this device
       </message>
-      <message name="IDS_SAFETY_HUB_NO_COMPROMISED_LOCAL_PASSWORDS_SUMMARY" desc="Summary for the local password check row in the Safety Check page indicating that the checkup didn't find any compromised local passwords">
-        If your passwords are compromised, we’ll let you know
-      </message>
       <message name="IDS_SAFETY_HUB_NO_ACCOUNT_PASSWORDS_TITLE" desc="Title for the account password check row in the Safety Check page indicating that the user does not have any account passwords saved to their Brave account.">
         No saved passwords in your Brave sync chain
       </message>
       <message name="IDS_SAFETY_HUB_NO_LOCAL_PASSWORDS_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the user does not have any local passwords saved.">
         No saved passwords on this device
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the user does not have any local or account passwords saved.">
+        No saved passwords
       </message>
       <message name="IDS_SAFETY_HUB_NO_PASSWORDS_SUMMARY" desc="Summary for the password check row in the Safety Check page indicating that the user has no passwords saved and that Safety check will start checking for breached passwords when they save them.">
         Brave can check your passwords when you save them
@@ -1919,6 +1910,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_LOCAL_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the local password checkup could not be completed.">
         Can’t check passwords on this device
       </message>
+      <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the password check row in the Safety Check page indicating that the local and/or account password checkup could not be completed.">
+        Can’t check passwords
+      </message>
       <message name="IDS_SAFETY_HUB_UNAVAILABLE_SUMMARY" desc="Summary for the rows in the Safety Check page indicating that the checkup for the specific module could not be run at this time and to check again later.">
         Try again later
       </message>
@@ -1928,17 +1922,23 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_NO_REUSED_WEAK_PASSWORDS_TITLE" desc="Title for the password hub row in the Safety Check page indicating that the checkup didn't found reused or weak passwords.">
         No weak or reused passwords
       </message>
+      <message name="IDS_SAFETY_HUB_NO_COMPROMISED_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the checkup did not find any account or local compromised passwords.">
+        No compromised passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_COMPROMISED_PASSWORDS_SUMMARY" desc="Summary for the password check row in the Safety Check page indicating that the checkup didn't find any compromised passwords.">
+        If your passwords are compromised, we’ll let you know
+      </message>
       <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_SIGNED_OUT_SUMMARY" desc="Summary for the password check row in the Safety Check page indicating that the user should sign-in so Safety Check can check if they have compromised passwords. This is only shown for signed-out users when the checkup could not be completed.">
         To check for compromised passwords, sign in to your Brave sync chain
-      </message>
-      <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_TIME_RECENTLY" desc="Summary for the password check row in the Safety Check page indicating that the checkup was ran recently for the passwords in the user's Brave account.">
-        Recently checked passwords saved to <ph name="USERNAME">%1$s<ex>elisa.becket@gmail.com</ex></ph>
       </message>
       <message name="IDS_SAFETY_HUB_REUSED_WEAK_ACCOUNT_PASSWORDS_TITLE" desc="Title for the account password hub row in the Safety Check page indicating that the checkup found reused or/and weak account passwords.">
         Strengthen your passwords in your Brave sync chain
       </message>
       <message name="IDS_SAFETY_HUB_REUSED_WEAK_LOCAL_PASSWORDS_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the checkup found reused or/and weak local passwords.">
         Strengthen your passwords on this device
+      </message>
+      <message name="IDS_SAFETY_HUB_REUSED_WEAK_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the checkup found reused or/and weak account and local passwords.">
+        Strengthen your passwords
       </message>
       <message name="IDS_SAFETY_HUB_WEAK_PASSWORDS_SUMMARY" desc="Summary for the password hub row in the Safety Check page indicating that the checkup found weak passwords and that the user should improve them.">
         {NUM_PASSWORDS, plural,
@@ -2300,6 +2300,9 @@ Your Brave account may have other forms of browsing history like searches and ac
         </message>
         <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_AUDIO_SHARE_TEXT" desc="Text for the dialog showing a list of tabs for capture to ask user if tab audio should be shared.">
           Also share tab audio
+        </message>
+        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_WINDOW_OR_SCREEN_TEXT" desc="Text for the dialog showing a list of tabs for capture to ask user whether to share a window or screen instead of a tab.">
+          Share window or screen instead
         </message>
       </if>
 
@@ -3218,6 +3221,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CONTEXTMENU_INSPECT_ELEMENT" desc="This string is shown in the context menu to inspect an element in a web page using the developer tools. [CHAR_LIMIT=30]">
         Inspect
       </message>
+      <message name="IDS_CONTEXTMENU_SHOW_INTEREST_IN_ELEMENT" desc="This string is shown in the context menu for requesting additional information about the web link the user long-pressed. [CHAR_LIMIT=30]">
+        More info about link from site
+      </message>
 
       <!-- Swipe refresh -->
       <message name="IDS_ACCESSIBILITY_SWIPE_REFRESH" desc="Content description for the swipe refresh action.">
@@ -3338,6 +3344,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NOTIFICATION_PROVISIONALLY_UNSUBSCRIBED_BODY" desc="Body text of a system notification informing the user that they have successfully unsubscribed from receiving notifications from a web site.">
         You'll no longer receive notifications from <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>.
       </message>
+      <message name="IDS_NOTIFICATION_PROVISIONALLY_UNSUBSCRIBED_BODY_NEW" desc="Body text of a system notification informing the user that they can report their notification contents to Brave.">
+        Help improve spam protection by sending notification content and the site's URL to Brave.
+      </message>
       <message name="IDS_NOTIFICATION_UNDO_UNSUBSCRIBE_BUTTON" desc="Label for an action button on a system notification informing the user that they have successfully unsubscribed from receiving notifications from a web site. Clicking the button allows the user to undo unsubscribing, and continue receiving notifications instead.">
         Undo
       </message>
@@ -3358,6 +3367,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_NOTIFICATION_ALWAYS_ALLOW_BUTTON" desc="Text of a button shown on original notifications that were displayed after the warning notifications. Clicking the button allows the user to always receive notifications from their origin without warning notifications.">
         Always allow
+      </message>
+      <message name="IDS_NOTIFICATION_REPORT_SAFE_BUTTON" desc="Text of a button shown on always allow confirmation notification, allowing the user to report notification contents to Brave signaling that it contains safe contents.">
+        Report as not spam
+      </message>
+      <message name="IDS_NOTIFICATION_REPORT_SPAM_BUTTON" desc="Text of a button shown on unsubscribe confirmation notification, allowing the user to report notification contents to Brave signaling that it contains spam contents.">
+        Report spam
       </message>
 
       <!-- Download UI -->
@@ -4052,6 +4067,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_FEED_MANAGE_INTERESTS" desc="Title of the list item Interests in the new tab page customization feed settings bottom sheet.">
         Interests
+      </message>
+      <message name="IDS_FEED_MANAGE_INTERESTS_DESCRIPTION" desc="Content description to manage interested sites.">
+        Manage content you follow and suggested topics and searches
       </message>
       <message name="IDS_FOLLOW_MANAGE_FOLLOWING" desc="Header for Following Management activity.">
         Following
