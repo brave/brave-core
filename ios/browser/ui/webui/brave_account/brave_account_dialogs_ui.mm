@@ -138,6 +138,7 @@ BraveAccountDialogsUI::BraveAccountDialogsUI(web::WebUIIOS* web_ui,
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src chrome://resources 'wasm-unsafe-eval' 'self';");
 
+  // so that the XHR that loads the WASM works
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc,
       "connect-src chrome://resources chrome://theme 'self';");

@@ -9,10 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 
 class BraveAccountDialogsUI;
@@ -29,10 +31,27 @@ class BraveAccountDialogsUIConfig
   }
 };
 
-class BraveAccountDialogsUI : public content::WebUIController {
+class BraveAccountDialogsUI : public content::WebUIController,
+                              public brave_account::mojom::BraveAccountHandler {
  public:
   explicit BraveAccountDialogsUI(content::WebUI* web_ui);
   ~BraveAccountDialogsUI() override;
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+          pending_receiver);
+
+  void GetPasswordStrength(
+      const std::string& password,
+      brave_account::mojom::BraveAccountHandler::GetPasswordStrengthCallback
+          callback) override;
+
+  void OpenDialog() override;
+
+ private:
+  mojo::Receiver<brave_account::mojom::BraveAccountHandler> receiver_{this};
+
+  WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
 class BraveAccountDialogsDialog : public ui::WebDialogDelegate {

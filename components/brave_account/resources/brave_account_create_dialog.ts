@@ -5,10 +5,10 @@
 
 import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
 
-// import {
-//   BraveAccountBrowserProxy,
-//   BraveAccountBrowserProxyImpl
-// } from './brave_account_browser_proxy.js'
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl
+} from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { isEmailValid } from './brave_account_common.js'
@@ -142,10 +142,10 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    // this.browserProxy.handler.getPasswordStrength(this.password).then(
-    //   (value: { strength: number }) =>
-    //     this.passwordStrength = value.strength
-    // )
+    this.browserProxy.handler.getPasswordStrength(this.password).then(
+      (value: { strength: number }) =>
+        this.passwordStrength = value.strength
+    )
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -169,8 +169,8 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     return this.icon
   }
 
-  // private browserProxy: BraveAccountBrowserProxy =
-  //   BraveAccountBrowserProxyImpl.getInstance()
+  private browserProxy: BraveAccountBrowserProxy =
+    BraveAccountBrowserProxyImpl.getInstance()
   protected email: string = ''
   protected icon: string = 'warning-triangle-filled'
   protected isCheckboxChecked: boolean = false
