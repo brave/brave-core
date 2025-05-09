@@ -15,8 +15,7 @@ base::MemoryMappedFile::Region g_brave_resources_pack_region;
 
 void BraveLoadMainAndroidPackFile(const char* path_within_apk,
                                   const base::FilePath& disk_file_path) {
-  if (LoadFromApkOrFile(path_within_apk,
-                        &disk_file_path,
+  if (LoadFromApkOrFile(path_within_apk, &disk_file_path,
                         &g_brave_resources_pack_fd,
                         &g_brave_resources_pack_region)) {
     ResourceBundle::GetSharedInstance().AddDataPackFromFileRegion(
