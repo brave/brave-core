@@ -167,7 +167,7 @@ void BraveNewsBubbleView::OnThemeChanged() {
 
   auto is_dark = dark_mode::GetActiveBraveDarkModeType() ==
                  dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  set_background_color(is_dark ? kBackgroundColorDark : kBackgroundColorLight);
+  SetBackgroundColor(is_dark ? kBackgroundColorDark : kBackgroundColorLight);
   subtitle_label_->SetEnabledColor(is_dark ? kSubtitleColorDark
                                            : kSubtitleColorLight);
 }
