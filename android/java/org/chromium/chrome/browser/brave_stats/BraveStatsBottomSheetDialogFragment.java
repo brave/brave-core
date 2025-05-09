@@ -31,7 +31,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.chromium.base.BuildInfo;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -213,12 +212,16 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         View notificationOnButton = view.findViewById(R.id.notification_on_button);
         notificationOnButton.setOnClickListener(
                 v -> {
+                    int targetSdkVersion =
+                            ContextUtils.getApplicationContext()
+                                    .getApplicationInfo()
+                                    .targetSdkVersion;
                     if (BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())
                             || getActivity()
                                     .shouldShowRequestPermissionRationale(
                                             Manifest.permission.POST_NOTIFICATIONS)
                             || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                                    || !BuildInfo.targetsAtLeastT())) {
+                                    || targetSdkVersion < Build.VERSION_CODES.TIRAMISU)) {
                         // other than android 13 redirect to
                         // setting page and for android 13 Last time don't allow selected in
                         // permission
