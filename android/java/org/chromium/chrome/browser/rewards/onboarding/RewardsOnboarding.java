@@ -26,7 +26,7 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import org.chromium.base.BuildInfo;
+import org.chromium.base.ContextUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -307,11 +307,13 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     }
 
     private void requestNotificationPermission() {
+        int targetSdkVersion =
+                ContextUtils.getApplicationContext().getApplicationInfo().targetSdkVersion;
         if (BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(mAnchorView.getContext())
                 || mActivity.shouldShowRequestPermissionRationale(
                         Manifest.permission.POST_NOTIFICATIONS)
                 || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                        || !BuildInfo.targetsAtLeastT())) {
+                        || targetSdkVersion < Build.VERSION_CODES.TIRAMISU)) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
             // dialog, then enable through setting, this done through this dialog
