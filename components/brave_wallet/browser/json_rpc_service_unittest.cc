@@ -4031,6 +4031,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.wallet",
       "test.blockchain",
       "test.bitcoin",
+      "test.brave",
       "brave.zil",
       "brave.altimist",
       "brave.anime",

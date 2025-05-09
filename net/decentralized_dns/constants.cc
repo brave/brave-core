@@ -57,14 +57,15 @@ struct SuffixComparator {
 
 inline constexpr auto kUnstoppableDomains =
     base::MakeFixedFlatSet<std::string_view>(
-        {".crypto",     ".x",          ".nft",     ".dao",         ".wallet",
-         ".blockchain", ".bitcoin",    ".zil",     ".altimist",    ".anime",
-         ".klever",     ".manga",      ".polygon", ".unstoppable", ".pudgy",
-         ".tball",      ".stepn",      ".secret",  ".raiin",       ".pog",
-         ".clay",       ".metropolis", ".witg",    ".ubu",         ".kryptic",
-         ".farms",      ".dfz",        ".kresus",  ".binanceus",   ".austin",
-         ".bitget",     ".wrkx",       ".bald",    ".benji",       ".chomp",
-         ".dream",      ".ethermail",  ".lfg",     ".propykeys",   ".smobler"},
+        {".crypto",     ".x",       ".nft",        ".dao",     ".wallet",
+         ".blockchain", ".bitcoin", ".brave",      ".zil",     ".altimist",
+         ".anime",      ".klever",  ".manga",      ".polygon", ".unstoppable",
+         ".pudgy",      ".tball",   ".stepn",      ".secret",  ".raiin",
+         ".pog",        ".clay",    ".metropolis", ".witg",    ".ubu",
+         ".kryptic",    ".farms",   ".dfz",        ".kresus",  ".binanceus",
+         ".austin",     ".bitget",  ".wrkx",       ".bald",    ".benji",
+         ".chomp",      ".dream",   ".ethermail",  ".lfg",     ".propykeys",
+         ".smobler"},
         SuffixComparator());
 
 // Ensure all domain suffixes start with `.`

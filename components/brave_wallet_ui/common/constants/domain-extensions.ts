@@ -14,6 +14,7 @@ export const supportedUDExtensions = [
   '.wallet',
   '.blockchain',
   '.bitcoin',
+  '.brave',
   '.zil',
   '.altimist',
   '.anime',

@@ -138,7 +138,7 @@ public struct WalletConstants {
   /// The supported Unstoppable Domain (UD) extensions
   public static let supportedUDExtensions = [
     ".crypto", ".x", ".nft", ".dao", ".wallet",
-    ".blockchain", ".bitcoin", ".zil", ".altimist", ".anime",
+    ".blockchain", ".bitcoin", ".brave", ".zil", ".altimist", ".anime",
     ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy",
     ".tball", ".stepn", ".secret", ".raiin", ".pog", ".clay",
     ".metropolis", ".witg", ".ubu", ".kryptic", ".farms", ".dfz",
