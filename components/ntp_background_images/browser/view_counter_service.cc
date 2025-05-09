@@ -521,9 +521,9 @@ bool ViewCounterService::HasGracePeriodEnded(
   }
 
   // Otherwise, the grace period is still active.
-  VLOG(1) << "Sponsored images not shown: Grace period after installation is "
-             "still active until "
-          << grace_period_end_at;
+  LOG(INFO) << "Sponsored images not shown: Grace period after installation is "
+               "still active until "
+            << grace_period_end_at;
   return false;
 }
 
