@@ -115,7 +115,7 @@ std::array<uint8_t, kCardanoTxHashSize> CardanoSerializer::GetTxHash(
     const CardanoTransaction& tx) {
   auto cbor_bytes = cbor::Writer::Write(SerializeTxBody(tx));
   CHECK(cbor_bytes);
-  return Blake2bHash<kCardanoTxHashSize>(*cbor_bytes);
+  return Blake2bHash<kCardanoTxHashSize>({*cbor_bytes});
 }
 
 }  // namespace brave_wallet

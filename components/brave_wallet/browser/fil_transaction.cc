@@ -288,7 +288,7 @@ FilTransaction::TransactionCid(const FilAddress& from) const {
 
   std::array<uint8_t, kFilTransactionCidSize> cid = {0x01, 0x71, 0xa0,
                                                      0xe4, 0x02, 0x20};
-  base::span(cid).last<32>().copy_from(Blake2bHash<32>(*cbor));
+  base::span(cid).last<32>().copy_from(Blake2bHash<32>({*cbor}));
 
   return cid;
 }

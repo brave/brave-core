@@ -78,4 +78,127 @@ TEST(EncodingUtilsUnitTest, Base58EncodeWithCheck) {
                     .value()));
 }
 
+// Test vectors calculated using https://ss58.org
+TEST(EncodingUtilsUnitTest, Ss58Encode) {
+  // Single-byte prefix
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 0;
+    EXPECT_EQ("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5",
+              addr.Encode().value());
+
+    auto decoded =
+        Ss58Address::Decode("15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5");
+    EXPECT_EQ(decoded->public_key, addr.public_key);
+    EXPECT_EQ(decoded->prefix, 0u);
+  }
+
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 42;
+    EXPECT_EQ("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
+              addr.Encode().value());
+
+    auto decoded =
+        Ss58Address::Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
+    EXPECT_EQ(decoded->public_key, addr.public_key);
+    EXPECT_EQ(decoded->prefix, 42u);
+  }
+
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 63;
+    EXPECT_EQ("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba",
+              addr.Encode().value());
+
+    auto decoded =
+        Ss58Address::Decode("7NPoMQbiA6trJKkjB35uk96MeJD4PGWkLQLH7k7hXEkZpiba");
+    EXPECT_EQ(decoded->public_key, addr.public_key);
+    EXPECT_EQ(decoded->prefix, 63u);
+  }
+
+  // Two-bytes prefix
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 64u;
+    EXPECT_EQ("cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp",
+              addr.Encode().value());
+
+    auto decoded = Ss58Address::Decode(
+        "cEaNSpz4PxFcZ7nT1VEKrKewH67rfx6MfcM6yKojyyPz7qaqp");
+    EXPECT_EQ(decoded->public_key, addr.public_key);
+    EXPECT_EQ(decoded->prefix, 64u);
+  }
+
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 200;
+    EXPECT_EQ("sD4TrgAhf8c8tYheiyKQb19jvTWY5fGx3TD1nK1Ue61WHRnT4",
+              addr.Encode().value());
+
+    auto decoded =
+        Ss58Address::Decode("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY");
+    EXPECT_EQ(decoded->public_key, addr.public_key);
+    EXPECT_EQ(decoded->prefix, 42u);
+  }
+
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 16383;
+    EXPECT_EQ("yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn",
+              addr.Encode().value());
+
+    auto decoded = Ss58Address::Decode(
+        "yNa8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn");
+    EXPECT_EQ(decoded->public_key, addr.public_key);
+    EXPECT_EQ(decoded->prefix, 16383u);
+  }
+
+  // Wrong prefix encode
+  {
+    Ss58Address addr;
+    EXPECT_TRUE(base::HexStringToSpan(
+        "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+        base::span(addr.public_key)));
+    addr.prefix = 16384u;
+    EXPECT_FALSE(addr.Encode());
+  }
+
+  // Wrong prefix decode
+  {
+    EXPECT_FALSE(Ss58Address::Decode(
+        "HHrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"));
+  }
+
+  // Wrong addr size
+  {
+    EXPECT_FALSE(Ss58Address::Decode(
+        "0Na8JpqfFB3q8A29rCwSgxvdU94ufJw2yKKxDgznS5m1PoFvn"));
+  }
+
+  // Wrong checksum
+  {
+    EXPECT_FALSE(Ss58Address::Decode(
+        "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQa"));
+  }
+}
+
 }  // namespace brave_wallet

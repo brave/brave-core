@@ -13,6 +13,26 @@
 
 namespace brave_wallet {
 
+// Size of Ed25519\Sr25519 public keys.
+inline constexpr size_t kSs58PublicKeySize = 32u;
+
+// Encodes Ed25519 pr Sr25519 public key adding
+// special prefix and checksum.
+struct Ss58Address {
+  Ss58Address();
+  ~Ss58Address();
+  Ss58Address(Ss58Address& addr) = delete;
+  Ss58Address& operator=(const Ss58Address& addr) = delete;
+  Ss58Address(Ss58Address&& addr);
+  Ss58Address& operator=(Ss58Address&& addr);
+  uint16_t prefix = 0;
+  // ed25519 or sr25519 public key.
+  std::array<uint8_t, kSs58PublicKeySize> public_key = {};
+
+  std::optional<std::string> Encode();
+  static std::optional<Ss58Address> Decode(const std::string& str);
+};
+
 // A bridge function to call DecodeBase58 in bitcoin-core.
 // It will return false if length of decoded byte array does not match len
 // param.
