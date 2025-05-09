@@ -243,6 +243,10 @@ inline constexpr char kGoogleAccountChooserURL[] = "https://support.brave.com/";
 inline constexpr char kGoogleAccountDeviceActivityURL[] =
     "https://support.brave.com/";
 
+// URL of the Google Account home address page.
+inline constexpr char kGoogleAccountHomeAddressURL[] =
+    "https://support.brave.com/";
+
 // URL of the two factor authentication setup required intersitial.
 inline constexpr char kGoogleTwoFactorIntersitialURL[] =
     "https://support.brave.com/";
