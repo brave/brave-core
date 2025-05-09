@@ -60,6 +60,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
+  void NotifyRewardsPageView() override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void GetAvailableCountries(GetAvailableCountriesCallback callback) override;
   void GetRewardsPaymentId(GetRewardsPaymentIdCallback callback) override;
