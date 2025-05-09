@@ -309,6 +309,13 @@ extension Strings {
       comment:
         "A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step forward"
     )
+    static let accessibilityPreviousItem = NSLocalizedString(
+      "playlist.accessibilityPreviousItem",
+      bundle: .module,
+      value: "Previous Item",
+      comment:
+        "A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue"
+    )
     static let accessibilityNextItem = NSLocalizedString(
       "playlist.accessibilityNextItem",
       bundle: .module,

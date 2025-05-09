@@ -226,9 +226,12 @@ extension MediaContentView {
             .toggleStyle(.button)
             Spacer()
             Button {
-              Task { await model.seekBackwards() }
+              Task { await model.playPreviousItem() }
             } label: {
-              Label(Strings.Playlist.accessibilityStepBack, braveSystemImage: "leo.rewind.15")
+              Label(
+                Strings.Playlist.accessibilityPreviousItem,
+                braveSystemImage: "leo.previous.outline"
+              )
             }
             .buttonStyle(.playbackControl(size: .large))
             .tint(Color(braveSystemName: .textPrimary))
@@ -248,12 +251,13 @@ extension MediaContentView {
             .buttonStyle(.playbackControl(size: .extraLarge))
             Spacer()
             Button {
-              Task { await model.seekForwards() }
+              Task { await model.playNextItem() }
             } label: {
-              Label(Strings.Playlist.accessibilityStepForwards, braveSystemImage: "leo.forward.15")
+              Label(Strings.Playlist.accessibilityNextItem, braveSystemImage: "leo.next.outline")
             }
             .buttonStyle(.playbackControl(size: .large))
             .tint(Color(braveSystemName: .textPrimary))
+            .disabled(!model.canPlayNextItem)
             Spacer()
             RepeatModePicker(repeatMode: $model.repeatMode)
           }
