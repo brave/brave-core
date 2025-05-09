@@ -122,7 +122,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 #endif  // PA_BUILDFLAG(USE_PARTITION_ALLOC) && !BUILDFLAG(USE_BLINK)
 
     NSBundle* baseBundle = base::apple::OuterBundle();
-    base::apple::SetBaseBundleID(
+    base::apple::SetBaseBundleIDOverride(
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
     // Register all providers before calling any Chromium code.
@@ -340,7 +340,7 @@ static bool CustomLogHandler(int severity,
   [BraveCoreMain initializeICUForTesting];
 
   NSBundle* baseBundle = base::apple::OuterBundle();
-  base::apple::SetBaseBundleID(
+  base::apple::SetBaseBundleIDOverride(
       base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
   // Register all providers before calling any Chromium code.
