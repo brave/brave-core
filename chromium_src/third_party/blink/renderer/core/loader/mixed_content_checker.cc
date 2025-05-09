@@ -72,13 +72,14 @@ void MixedContentChecker::UpgradeInsecureRequest(
     const FetchClientSettingsObject* fetch_client_settings_object,
     ExecutionContext* execution_context_for_logging,
     mojom::RequestContextFrameType frame_type,
-    WebContentSettingsClient* settings_client) {
+    WebContentSettingsClient* settings_client,
+    LocalFrame* frame) {
   // Do not upgrade resource from .onion sites because we treat them as secure.
   if (IsOnion(resource_request.Url()))
     return;
   UpgradeInsecureRequest_ChromiumImpl(
       resource_request, fetch_client_settings_object,
-      execution_context_for_logging, frame_type, settings_client);
+      execution_context_for_logging, frame_type, settings_client, frame);
 }
 
 }  // namespace blink
