@@ -256,7 +256,7 @@ class ConversationHandlerUnitTest : public testing::Test {
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
 
-  void TearDown() override { ai_chat_service_.reset(); }
+  void TearDown() override {}
 
   void SetAssociatedContentStagedEntries(bool empty = false,
                                          bool multi = false) {
@@ -322,8 +322,6 @@ class ConversationHandlerUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<AIChatService> ai_chat_service_;
-  std::unique_ptr<ModelService> model_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
@@ -331,9 +329,11 @@ class ConversationHandlerUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   mojom::ConversationPtr conversation_;
+  std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<NiceMock<MockAIChatFeedbackAPI>> mock_feedback_api_;
+  std::unique_ptr<AIChatService> ai_chat_service_;
   std::unique_ptr<ConversationHandler> conversation_handler_;
   std::unique_ptr<NiceMock<MockAssociatedContent>> associated_content_;
-  std::unique_ptr<NiceMock<MockAIChatFeedbackAPI>> mock_feedback_api_;
   bool is_opted_in_ = true;
   bool has_associated_content_ = true;
 

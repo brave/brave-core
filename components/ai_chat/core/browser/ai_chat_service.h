@@ -287,19 +287,15 @@ class AIChatService : public KeyedService,
       GetFocusTabsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> result);
 
-  raw_ptr<ModelService> model_service_;
-  raw_ptr<TabTrackerService> tab_tracker_service_;
-  raw_ptr<PrefService> profile_prefs_;
-  raw_ptr<AIChatMetrics> ai_chat_metrics_;
-  raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  PrefChangeRegistrar pref_change_registrar_;
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
+
+  PrefChangeRegistrar pref_change_registrar_;
 
   base::FilePath profile_path_;
 
@@ -348,6 +344,12 @@ class AIChatService : public KeyedService,
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
   // Maintains the subscription for `OSCryptAsync` and cancels upon destruction.
   base::CallbackListSubscription encryptor_ready_subscription_;
+
+  raw_ptr<ModelService> model_service_;
+  raw_ptr<TabTrackerService> tab_tracker_service_;
+  raw_ptr<PrefService> profile_prefs_;
+  raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
