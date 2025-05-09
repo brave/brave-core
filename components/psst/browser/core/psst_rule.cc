@@ -25,9 +25,9 @@ namespace {
 // psst.json keys
 constexpr char kInclude[] = "include";
 constexpr char kExclude[] = "exclude";
-const char kName[] = "name";
+constexpr char kName[] = "name";
 constexpr char kVersion[] = "version";
-const char kUserScript[] = "user_script";
+constexpr char kUserScript[] = "user_script";
 constexpr char kPolicyScript[] = "policy_script";
 
 bool GetURLPatternSetFromValue(const base::Value* value,
@@ -79,8 +79,6 @@ void PsstRule::RegisterJSONConverter(
   converter->RegisterStringField(kName, &PsstRule::name_);
   converter->RegisterCustomValueField<base::FilePath>(
       kUserScript, &PsstRule::user_script_path_, GetFilePathFromValue);
-  // converter->RegisterCustomValueField<base::FilePath>(
-  //     kTestScript, &PsstRule::test_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
       kPolicyScript, &PsstRule::policy_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &PsstRule::version_);

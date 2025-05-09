@@ -56,7 +56,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
       const PsstConsentStatus status,
       const std::vector<std::string>& disabled_checks) = 0;
   virtual void OnPolicyScriptResult(const MatchedRule& rule,
-                                    base::Value value) = 0;
+                                    base::Value script_result) = 0;
 
   virtual bool TryToLoadContext(const MatchedRule& rule,
                                 base::Value& script_result) = 0;
@@ -101,7 +101,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
       const PsstConsentStatus status,
       const std::vector<std::string>& disabled_checks) override;
   void OnPolicyScriptResult(const MatchedRule& rule,
-                            base::Value value) override;
+                            base::Value script_result) override;
 
   bool TryToLoadContext(const MatchedRule& rule,
                         base::Value& script_result) override;

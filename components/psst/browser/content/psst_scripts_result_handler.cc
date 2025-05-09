@@ -248,15 +248,15 @@ void PsstScriptsHandlerImpl::OnUserDialogAction(
 }
 
 void PsstScriptsHandlerImpl::OnPolicyScriptResult(const MatchedRule& rule,
-                                                  base::Value value) {
+                                                  base::Value script_result) {
   DCHECK(delegate_);
   DCHECK(web_contents_);
-  if (!value.is_dict()) {
+  if (!script_result.is_dict()) {
     ResetContext();
     return;
   }
 
-  const auto* psst = value.GetDict().FindDict("psst");
+  const auto* psst = script_result.GetDict().FindDict("psst");
   if (!psst) {
     ResetContext();
     return;
@@ -270,7 +270,7 @@ void PsstScriptsHandlerImpl::OnPolicyScriptResult(const MatchedRule& rule,
       ParseAppliedList(delegate_.get(), psst->FindList("applied"));
   const auto errors_list =
       ParseErrors(delegate_.get(), psst->FindDict("errors"));
-  if (const auto result = value.GetDict().FindBool("result");
+  if (const auto result = script_result.GetDict().FindBool("result");
       !result || !result.value()) {
     return;
   }
@@ -354,6 +354,7 @@ void PsstScriptsHandlerImpl::InsertScriptInPage(
   if (!render_frame_host ||
       render_frame_host_id_ !=
           web_contents_->GetPrimaryMainFrame()->GetGlobalId()) {
+    std::move(cb).Run(base::Value(base::Value::Type::NONE));
     return;
   }
 

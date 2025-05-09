@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/psst/common/features.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -32,9 +32,7 @@ constexpr char kEnablePsstFlag[] = "enable_psst";
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
     registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
-    registry->RegisterDictionaryPref(
-        prefs::kPsstSettingsPref,
-        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+    registry->RegisterDictionaryPref(prefs::kPsstSettingsPref);
   }
 }
 
@@ -46,7 +44,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 // See: base::Value::Dict::FindByDottedPath()
 const std::string ConstructPath(const std::string& user_id,
                                 const std::string& name) {
-  return base::StringPrintf("%s.%s", name.c_str(), user_id.c_str());
+  return base::JoinString({name, user_id}, ".");
 }
 
 PsstSettings::PsstSettings(const PsstConsentStatus consent_status,
