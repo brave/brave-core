@@ -1,9 +1,0 @@
-diff --git a/tools/search_engine_choice/search_engine_icons_utils.py b/tools/search_engine_choice/search_engine_icons_utils.py
-index 42e511f530bd00443bdf7258b52ae2894d76cf25..93671ce8b92f20c69346a956c5e8eb9987ffae3a 100644
---- a/tools/search_engine_choice/search_engine_icons_utils.py
-+++ b/tools/search_engine_choice/search_engine_icons_utils.py
-@@ -92,3 +92,4 @@ try:
-   import json_comment_eater
- finally:
-   sys.path.pop(0)
-+from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
