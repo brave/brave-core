@@ -138,6 +138,14 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
   }
 
+  if (suite === 'brave_browser_tests') {
+    braveArgs.push('--test-launcher-print-test-stdio=always')
+    braveArgs.push('--v=-3')
+    braveArgs.push('"--vmodule=*/extensions/*=5"')
+    braveArgs.push('--test-launcher-developer-mode=true')
+    braveArgs.push('--gtest_filter=BraveExtensionProviderTest.*')
+  }
+
   braveArgs = braveArgs.concat(passthroughArgs)
 
   if (
