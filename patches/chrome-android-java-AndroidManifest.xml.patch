@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 54244bbdcb5a7599c6182e6092236f29b4b7a795..06feab4bb82d43237dbcbd170d0dabf8ba313ffd 100644
+index 3c6b68b8f58a83741f8132d80530c628f05a8ecf..92d9f9c0a0c8c7e40ae13c93bbb5a849f363da88 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -106,7 +106,7 @@ index 54244bbdcb5a7599c6182e6092236f29b4b7a795..06feab4bb82d43237dbcbd170d0dabf8
  
          <!-- Search Activity -->
          <activity android:name="org.chromium.chrome.browser.searchwidget.SearchActivity"
-@@ -1217,6 +1235,7 @@ by a child template that "extends" this file.
+@@ -1220,6 +1238,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

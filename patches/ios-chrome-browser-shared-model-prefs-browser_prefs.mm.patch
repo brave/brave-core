@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 93cad12e3cd5ab16cee7865e54f70d231cf44d63..27a753b38d35ce473fc55ffaf6de767cbc2610a6 100644
+index ac37753af9a09d5c3bbbe1060b4388ac40c73119..28debee1668b13491b3887e83e12fd891824b783 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -651,6 +651,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -653,6 +653,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 03/2025, migrated to profile pref.
    registry->RegisterIntegerPref(
        prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
@@ -10,7 +10,7 @@ index 93cad12e3cd5ab16cee7865e54f70d231cf44d63..27a753b38d35ce473fc55ffaf6de767c
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1045,6 +1046,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1049,6 +1050,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Deprecated 04/2025.
    registry->RegisterBooleanPref(kAutologinEnabled, false);

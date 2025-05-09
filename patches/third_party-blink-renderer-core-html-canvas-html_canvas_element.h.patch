@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 6a7b5ac7e760a063c9c2a502d8092663b16089b7..54a6599cf06a76f91386581a25df15b40d32b454 100644
+index d607c8b673cb22c37b848d38c6ca97a1062b29fe..cec8aec000cc964e1f5aca0597823f7ac49d70cd 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -328,6 +328,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -331,6 +331,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
    bool ShouldDisableAccelerationBecauseOfReadback() const;
  

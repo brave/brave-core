@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index ebf407904b9b9bc7f60a9c13a5c39ce64640189d..8e6cf02c418639b4e93beecf7ce8ae3be96c7d6d 100644
+index f5534e1bef316f307eb585cffc04ed58ef06dddb..c53d9d6367523246449e49cdcfa9763c07b0035c 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -5235,6 +5235,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5251,6 +5251,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
      candidate_site_for_cookies = net::SiteForCookies(top_frame_site);
    }
  
@@ -10,7 +10,7 @@ index ebf407904b9b9bc7f60a9c13a5c39ce64640189d..8e6cf02c418639b4e93beecf7ce8ae3b
    std::optional<base::UnguessableToken> nonce =
        ComputeNonce(is_credentialless, fenced_frame_nonce_for_navigation);
    return net::IsolationInfo::Create(request_type, top_frame_origin,
-@@ -5245,6 +5246,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5261,6 +5262,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
  std::optional<base::UnguessableToken> RenderFrameHostImpl::ComputeNonce(
      bool is_credentialless,
      std::optional<base::UnguessableToken> fenced_frame_nonce_for_navigation) {
@@ -18,7 +18,7 @@ index ebf407904b9b9bc7f60a9c13a5c39ce64640189d..8e6cf02c418639b4e93beecf7ce8ae3b
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -5304,6 +5306,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+@@ -5320,6 +5322,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
      // current value of net::features::ThirdPartyStoragePartitioning.
      if (rfs_document_data_for_storage_key->runtime_feature_state_read_context()
              .IsDisableThirdPartyStoragePartitioning3Enabled()) {
@@ -26,7 +26,7 @@ index ebf407904b9b9bc7f60a9c13a5c39ce64640189d..8e6cf02c418639b4e93beecf7ce8ae3b
        return false;
      }
      // Compile the list of third-party origins we need to check in addition to
-@@ -5321,6 +5324,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+@@ -5337,6 +5340,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
      if (rfs_document_data_for_storage_key->runtime_feature_state_read_context()
              .IsDisableThirdPartyStoragePartitioning3EnabledForThirdParty(
                  third_party_origins)) {
@@ -34,7 +34,7 @@ index ebf407904b9b9bc7f60a9c13a5c39ce64640189d..8e6cf02c418639b4e93beecf7ce8ae3b
        return false;
      }
    }
-@@ -9827,6 +9831,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -9843,6 +9847,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  

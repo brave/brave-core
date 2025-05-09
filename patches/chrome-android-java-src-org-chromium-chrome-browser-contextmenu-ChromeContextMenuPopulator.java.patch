@@ -18,7 +18,7 @@ index ccdc0f5fe4c610add51e3314a439a9f5d6c20f4f..84437e44ac4fc6075aeb214b04495f14
 +            int COPY_CLEAN_LINK = 49;int NUM_ENTRIES = 50;
          }
      }
-
+ 
 @@ -385,6 +386,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
