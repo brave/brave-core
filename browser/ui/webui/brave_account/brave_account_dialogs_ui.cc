@@ -140,6 +140,9 @@ BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;
 void BraveAccountDialogsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
         pending_receiver) {
+  if (receiver_.is_bound()) {
+    receiver_.reset();
+  }
   receiver_.Bind(std::move(pending_receiver));
 }
 
