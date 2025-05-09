@@ -42,6 +42,7 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -640,6 +641,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  registry.ForWebUI<BraveAccountDialogsUI>()
+      .Add<brave_account::mojom::BraveAccountHandler>();
 }
 
 std::optional<base::UnguessableToken>
