@@ -151,9 +151,8 @@ void BraveAccountDialogsUI::GetPasswordStrength(
 }
 
 void BraveAccountDialogsUI::OpenDialog() {
-  auto* delegate = GetConstrainedDelegate();
-  if (delegate) {
-    delegate->GetWebDialogDelegate()->OnDialogClosed(std::string());
+  if (auto* delegate = GetConstrainedDelegate()) {
+    delegate->GetWebDialogDelegate()->OnDialogClosed("");
     delegate->OnDialogCloseFromWebUI();
   }
 }
