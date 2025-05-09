@@ -23,7 +23,8 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     guard let tab,
       let childTab = tab.delegate?.tab(
         tab,
-        createNewTabWithRequest: navigationAction.request
+        createNewTabWithRequest: navigationAction.request,
+        isUserInitiated: navigationAction.isUserInitiated
       ) as? WebKitTabState
     else { return nil }
     childTab.initialConfiguration = configuration

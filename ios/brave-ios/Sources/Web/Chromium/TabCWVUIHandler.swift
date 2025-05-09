@@ -20,7 +20,8 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     guard let tab,
       let childTab = tab.delegate?.tab(
         tab,
-        createNewTabWithRequest: action.request
+        createNewTabWithRequest: action.request,
+        isUserInitiated: action.isUserInitiated
       ) as? ChromiumTabState
     else { return nil }
     childTab.cwvConfiguration = configuration

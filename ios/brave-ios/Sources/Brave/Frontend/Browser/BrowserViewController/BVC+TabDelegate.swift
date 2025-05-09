@@ -591,14 +591,15 @@ extension BrowserViewController {
 
   public func tab(
     _ tab: some TabState,
-    createNewTabWithRequest request: URLRequest
+    createNewTabWithRequest request: URLRequest,
+    isUserInitiated: Bool
   ) -> (any TabState)? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
-      braveCore.defaultHostContentSettings.popupsAllowed,
+      isUserInitiated || braveCore.defaultHostContentSettings.popupsAllowed,
       navigationURL.shouldRequestBeOpenedAsPopup()
     else {
-      print("Denying popup from request: \(request)")
+      print("Denying popup from request: \(request); is user initiated: \(isUserInitiated)")
       return nil
     }
 

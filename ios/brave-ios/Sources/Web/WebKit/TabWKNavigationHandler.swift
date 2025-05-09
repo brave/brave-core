@@ -80,10 +80,6 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       @unknown default: .other
       }
 
-    let isSyntheticClick =
-      navigationAction.responds(to: Selector(("_syntheticClickType")))
-      && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
-
     let policy =
       await tab.shouldAllowRequest(
         navigationAction.request,
@@ -91,7 +87,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
           navigationType: navigationType,
           isMainFrame: isMainFrame,
           isNewWindow: navigationAction.targetFrame == nil,
-          isUserInitiated: !isSyntheticClick
+          isUserInitiated: !navigationAction.isSyntheticClick
         )
       )
 
