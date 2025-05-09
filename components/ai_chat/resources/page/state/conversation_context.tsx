@@ -569,6 +569,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const uploadImage = (useMediaCapture: boolean) => {
     aiChatContext.uiHandler?.uploadImage(useMediaCapture)
     .then(({uploadedImages}) => {
+      // Return early if the cancelFileUpload function has been called.
+      if (ignoreIncomingFiles.current) {
+        return
+      }
       if (uploadedImages) {
         processUploadedImage(uploadedImages)
       }
@@ -592,6 +596,26 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       })
     }
   }
+
+  // Listen for user uploading files to display the uploading indicator.
+  React.useEffect(() => {
+    async function handleSetIsUploading() {
+      setPartialContext({
+        isUploadingFiles: true
+      })
+    }
+
+    const listenerId = getAPI()
+      .uiObserver
+      .onUploadFilesSelected
+      .addListener(handleSetIsUploading)
+
+    return () => {
+      getAPI()
+        .uiObserver
+        .removeListener(listenerId)
+    }
+  }, [])
 
   const ignoreExternalLinkWarningFromLocalStorage =
     React.useMemo(() => {
