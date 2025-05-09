@@ -19,7 +19,6 @@ class BraveBookmarkTabHelper
   BraveBookmarkTabHelper& operator=(const BraveBookmarkTabHelper&) = delete;
   ~BraveBookmarkTabHelper() override;
 
-  bool ShouldShowBookmarkBar();
   void AddObserver(BookmarkTabHelperObserver* observer);
   void RemoveObserver(BookmarkTabHelperObserver* observer);
 
