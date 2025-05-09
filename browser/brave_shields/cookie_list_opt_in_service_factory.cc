@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/content/browser/cookie_list_opt_in_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace brave_shields {
@@ -25,10 +26,14 @@ CookieListOptInServiceFactory* CookieListOptInServiceFactory::GetInstance() {
 
 // static
 mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler>
-CookieListOptInServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<CookieListOptInService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+CookieListOptInServiceFactory::GetRemoteForProfile(Profile* profile) {
+  auto* service = static_cast<CookieListOptInService*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+  if (!service) {
+    return mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler>();
+  }
+
+  return service->MakeRemote();
 }
 
 // static

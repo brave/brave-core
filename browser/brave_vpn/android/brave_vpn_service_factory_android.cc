@@ -20,7 +20,8 @@ static jlong JNI_BraveVpnServiceFactoryAndroid_GetInterfaceToVpnService(
     return static_cast<jlong>(-1);
   }
   auto pending =
-      brave_vpn::BraveVpnServiceFactory::GetInstance()->GetForContext(profile);
+      brave_vpn::BraveVpnServiceFactory::GetInstance()->GetRemoteForProfile(
+          profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }

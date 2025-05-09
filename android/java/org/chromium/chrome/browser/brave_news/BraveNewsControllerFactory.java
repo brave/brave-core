@@ -51,11 +51,11 @@ public class BraveNewsControllerFactory {
                     long nativeHandle =
                             BraveNewsControllerFactoryJni.get()
                                     .getInterfaceToBraveNewsController(profile);
-                    if (nativeHandle == 0) {
+                    MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+                    if (!handle.isValid()) {
                         promise.fulfill(null);
                         return;
                     }
-                    MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
                     BraveNewsController braveNewsController =
                             BraveNewsController.MANAGER.attachProxy(handle, 0);
                     if (connectionErrorHandler != null) {

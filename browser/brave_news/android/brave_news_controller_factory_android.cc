@@ -16,15 +16,10 @@ static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
-  auto pending =
-      brave_news::BraveNewsControllerFactory::GetInstance()->GetRemoteService(
-          profile);
-  if (!pending.is_valid()) {
-    return 0;
-  }
-  auto passPipe = pending.PassPipe();
+  auto pending = brave_news::BraveNewsControllerFactory::GetInstance()
+                     ->GetRemoteForProfile(profile);
 
-  return static_cast<jlong>(passPipe.release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

@@ -20,9 +20,8 @@ static jlong JNI_FilterListServiceFactory_GetInterfaceToFilterListService(
     return static_cast<jlong>(-1);
   }
 
-  auto pending =
-      brave_shields::FilterListServiceFactory::GetInstance()->GetForContext(
-          profile);
+  auto pending = brave_shields::FilterListServiceFactory::GetInstance()
+                     ->GetRemoteForProfile(profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }

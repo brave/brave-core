@@ -14,6 +14,7 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -34,10 +35,14 @@ URLSanitizerService* URLSanitizerServiceFactory::GetForBrowserContext(
 #if BUILDFLAG(IS_ANDROID)
 // static
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
-URLSanitizerServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<URLSanitizerService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+URLSanitizerServiceFactory::GetRemoteForProfile(Profile* profile) {
+  auto* service = static_cast<URLSanitizerService*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+  if (!service) {
+    return mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>();
+  }
+
+  return service->MakeRemote();
 }
 #endif  // # BUILDFLAG(IS_ANDROID)
 

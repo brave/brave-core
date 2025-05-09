@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/content/browser/filter_list_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace brave_shields {
@@ -25,10 +26,15 @@ FilterListServiceFactory* FilterListServiceFactory::GetInstance() {
 
 // static
 mojo::PendingRemote<mojom::FilterListAndroidHandler>
-FilterListServiceFactory::GetForContext(content::BrowserContext* context) {
-  return static_cast<FilterListService*>(
-             GetInstance()->GetServiceForBrowserContext(context, true))
-      ->MakeRemote();
+FilterListServiceFactory::GetRemoteForProfile(Profile* profile) {
+  auto* service = static_cast<FilterListService*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+
+  if (!service) {
+    return mojo::PendingRemote<mojom::FilterListAndroidHandler>();
+  }
+
+  return service->MakeRemote();
 }
 
 // static

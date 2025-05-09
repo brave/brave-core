@@ -17,7 +17,8 @@ static jlong JNI_PlaylistServiceFactoryAndroid_GetInterfaceToPlaylistService(
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
-      playlist::PlaylistServiceFactory::GetInstance()->GetForContext(profile);
+      playlist::PlaylistServiceFactory::GetInstance()->GetRemoteForProfile(
+          profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }
