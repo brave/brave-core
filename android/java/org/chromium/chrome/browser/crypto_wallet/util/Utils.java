@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
@@ -1138,7 +1140,8 @@ public class Utils {
         if (!isIncognito) {
             return ProfileManager.getLastUsedRegularProfile();
         } else {
-            return ProfileManager.getLastUsedRegularProfile().getPrimaryOtrProfile(true);
+            return assertNonNull(
+                    ProfileManager.getLastUsedRegularProfile().getPrimaryOtrProfile(true));
         }
     }
 
