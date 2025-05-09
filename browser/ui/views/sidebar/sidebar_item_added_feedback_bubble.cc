@@ -44,7 +44,7 @@ views::Widget* SidebarItemAddedFeedbackBubble::Create(
   frame_view->SetDisplayVisibleArrow(true);
   delegate->set_adjust_if_offscreen(true);
   delegate->SizeToContents();
-  frame_view->SetCornerRadius(6);
+  frame_view->SetRoundedCorners(gfx::RoundedCornersF(6));
 
   return bubble;
 }
