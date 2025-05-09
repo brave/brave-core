@@ -11,6 +11,6 @@ namespace brave_user_agent::features {
 
 BASE_FEATURE(kUseBraveUserAgent,
              "UseBraveUserAgent",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_user_agent::features
