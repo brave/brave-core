@@ -72,12 +72,14 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
+  cancelFileUpload: () => void
   uploadImage: (useMediaCapture: boolean) => void
   getScreenshots: () => void
   removeImage: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
   pendingMessageImages: Mojom.UploadedFile[] | null
+  isUploadingFiles: boolean
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -120,12 +122,14 @@ const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
+  cancelFileUpload: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
   getScreenshots: () => {},
   removeImage: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
   pendingMessageImages: null,
+  isUploadingFiles: false,
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -532,7 +536,22 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
+  const ignoreIncomingFiles = React.useRef(false)
+
+  const cancelFileUpload = () => {
+    ignoreIncomingFiles.current = true
+    setPartialContext({
+      isUploadingFiles: false
+    })
+  }
+
   const processUploadedImage = (images: Mojom.UploadedFile[]) => {
+        // Fail safe to prevent processing images if the cancelFileUpload
+        // function has been called.
+        if (ignoreIncomingFiles.current) {
+          return
+        }
+
         const totalUploadedImages = context.conversationHistory.reduce(
           (total, turn) => total +
             (getImageFiles(turn.uploadedFiles)?.length || 0),
@@ -544,6 +563,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
         if (newImages.length > 0) {
           setPartialContext({
+            isUploadingFiles: false,
             pendingMessageImages: context.pendingMessageImages
               ? [...context.pendingMessageImages, ...newImages]
               : [...newImages]
@@ -552,8 +572,18 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
   const getScreenshots = () => {
+    // Reset the ignoreIncomingFiles so that the next screenshot
+    // upload is not ignored.
+    ignoreIncomingFiles.current = false
+    setPartialContext({
+      isUploadingFiles: true
+    })
     conversationHandler.getScreenshots()
     .then(({screenshots}) => {
+      // Return early if the cancelFileUpload function has been called.
+      if (ignoreIncomingFiles.current) {
+        return
+      }
       if (screenshots) {
         processUploadedImage(screenshots)
       }
@@ -561,6 +591,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const uploadImage = (useMediaCapture: boolean) => {
+    // Reset the ignoreIncomingFiles so that the next image upload
+    // is not ignored.
+    ignoreIncomingFiles.current = false
     aiChatContext.uiHandler?.uploadImage(useMediaCapture)
     .then(({uploadedImages}) => {
       if (uploadedImages) {
@@ -676,6 +709,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     handleVoiceRecognition,
     uploadImage,
     getScreenshots,
+    cancelFileUpload,
     removeImage,
     conversationHandler,
     setGeneratedUrlToBeOpened:

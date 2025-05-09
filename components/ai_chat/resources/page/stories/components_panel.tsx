@@ -781,6 +781,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     pendingMessageImages: null,
     generatedUrlToBeOpened: options.args.generatedUrlToBeOpened,
     ratingTurnUuid: options.args.ratingTurnUuid,
+    isUploadingFiles: false,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,
@@ -806,7 +807,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setIgnoreExternalLinkWarning: () => { },
     handleCloseRateMessagePrivacyModal:
       () => setArgs({ ratingTurnUuid: undefined }),
-    handleRateMessage: () => Promise.resolve()
+    handleRateMessage: () => Promise.resolve(),
+    cancelFileUpload: () => { }
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
