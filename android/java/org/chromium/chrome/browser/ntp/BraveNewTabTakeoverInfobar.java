@@ -7,7 +7,9 @@ package org.chromium.chrome.browser.ntp;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -22,18 +24,21 @@ public class BraveNewTabTakeoverInfobar {
     private static final String TAG = "NewTabTakeover";
     private static final String LEARN_MORE_URL =
             "https://support.brave.com/hc/en-us/articles/35182999599501";
+    private static final String NEW_TAB_PAGE_ADS_FEATURE = "NewTabPageAds";
+    private static final String SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM =
+            "should_support_confirmations_for_non_rewards";
     private final Profile mProfile;
 
     public BraveNewTabTakeoverInfobar(Profile profile) {
         mProfile = profile;
     }
 
-    public void maybeCreate() {
+    public void maybeDisplayAndIncrementCounter() {
         try {
-            if (!shouldShowInfobar()) {
+            if (!shouldDisplayInfobar()) {
                 return;
             }
-            recordInfobarWasShown();
+            recordInfobarWasDisplayed();
 
             BraveActivity activity = BraveActivity.getBraveActivity();
             Tab tab = activity.getActivityTabProvider().get();
@@ -43,7 +48,9 @@ public class BraveNewTabTakeoverInfobar {
                     tab.getWebContents(),
                     new SimpleConfirmInfoBarBuilder.Listener() {
                         @Override
-                        public void onInfoBarDismissed() {}
+                        public void onInfoBarDismissed() {
+                            suppressInfobar();
+                        }
 
                         @Override
                         public boolean onInfoBarButtonClicked(boolean isPrimary) {
@@ -72,22 +79,35 @@ public class BraveNewTabTakeoverInfobar {
         }
     }
 
-    private boolean shouldShowInfobar() {
+    private boolean shouldDisplayInfobar() {
+        if (!ChromeFeatureList.getFieldTrialParamByFeatureAsBoolean(
+                NEW_TAB_PAGE_ADS_FEATURE,
+                SHOULD_SUPPORT_CONFIRMATIONS_FOR_NON_REWARDS_FEATURE_PARAM,
+                /* defaultValue= */ false)) {
+            return false;
+        }
+
+        if (BraveRewardsHelper.isRewardsEnabled()) {
+            return false;
+        }
+
         PrefService prefService = UserPrefs.get(mProfile);
-        final int infobarShowCount =
-                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT);
-        return infobarShowCount > 0;
+        final int infobarDisplayCount =
+                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT);
+        return infobarDisplayCount > 0;
     }
 
-    private void recordInfobarWasShown() {
+    private void recordInfobarWasDisplayed() {
         PrefService prefService = UserPrefs.get(mProfile);
-        final int infobarShowCount =
-                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT);
-        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT, infobarShowCount - 1);
+        final int infobarDisplayCount =
+                prefService.getInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT);
+        prefService.setInteger(
+                BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT,
+                infobarDisplayCount - 1);
     }
 
     private void suppressInfobar() {
         PrefService prefService = UserPrefs.get(mProfile);
-        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_SHOW_COUNT, 0);
+        prefService.setInteger(BravePref.NEW_TAB_TAKEOVER_INFOBAR_REMAINING_DISPLAY_COUNT, 0);
     }
 }

@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/components/ntp_background_images/common/new_tab_takeover_infobar_util.h"
+#include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
@@ -24,16 +24,16 @@
 namespace ntp_background_images {
 
 // static
-void NewTabTakeoverInfoBarDelegate::MaybeCreate(
+void NewTabTakeoverInfoBarDelegate::MaybeDisplayAndIncrementCounter(
     content::WebContents* web_contents,
     PrefService* prefs) {
   CHECK(web_contents);
   CHECK(prefs);
 
-  if (!ShouldShowNewTabTakeoverInfobar(prefs)) {
+  if (!ShouldDisplayNewTabTakeoverInfobar(prefs)) {
     return;
   }
-  RecordNewTabTakeoverInfobarWasShown(prefs);
+  RecordNewTabTakeoverInfobarWasDisplayed(prefs);
 
   if (infobars::ContentInfoBarManager* infobar_manager =
           infobars::ContentInfoBarManager::FromWebContents(web_contents)) {

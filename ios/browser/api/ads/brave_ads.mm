@@ -47,7 +47,7 @@
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
-#include "brave/components/ntp_background_images/common/new_tab_takeover_infobar_util.h"
+#include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
@@ -209,13 +209,13 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar);
 }
 
-- (BOOL)shouldShowNewTabTakeoverInfoBar {
-  return ntp_background_images::ShouldShowNewTabTakeoverInfobar(
+- (BOOL)shouldDisplayNewTabTakeoverInfobar {
+  return ntp_background_images::ShouldDisplayNewTabTakeoverInfobar(
       self.profilePrefService);
 }
 
-- (void)recordNewTabTakeoverInfobarWasShown {
-  ntp_background_images::RecordNewTabTakeoverInfobarWasShown(
+- (void)recordNewTabTakeoverInfobarWasDisplayed {
+  ntp_background_images::RecordNewTabTakeoverInfobarWasDisplayed(
       self.profilePrefService);
 }
 
