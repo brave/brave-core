@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/password_manager/core/browser/ui/weak_check_utility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -135,6 +136,23 @@ BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
 }
 
 BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;
+
+void BraveAccountDialogsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+        pending_receiver) {
+  receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountDialogsUI::GetPasswordStrength(
+    const std::string& password,
+    brave_account::mojom::BraveAccountHandler::GetPasswordStrengthCallback
+        callback) {
+  std::move(callback).Run(password_manager::GetPasswordStrength(password));
+}
+
+void BraveAccountDialogsUI::OpenDialog() {}
+
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountDialogsUI)
 
 BraveAccountDialogsDialog::BraveAccountDialogsDialog() = default;
 
