@@ -182,6 +182,9 @@ void AIChatUIPageHandler::UploadImage(bool use_media_capture,
     upload_file_helper_ =
         std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
   }
+  if (!upload_file_helper_observation_.IsObserving()) {
+    upload_file_helper_observation_.Observe(upload_file_helper_.get());
+  }
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
 #if BUILDFLAG(IS_ANDROID)
@@ -295,6 +298,11 @@ void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
   // UI where it will keep a previous navigation's conversation active.
   chat_ui_->OnNewDefaultConversation();
 }
+
+void AIChatUIPageHandler::OnFilesSelected() {
+  chat_ui_->OnUploadFilesSelected();
+}
+
 void AIChatUIPageHandler::CloseUI() {
 #if !BUILDFLAG(IS_ANDROID)
   ai_chat::ClosePanel(owner_web_contents_);

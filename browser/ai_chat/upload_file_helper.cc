@@ -121,9 +121,20 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
       nullptr);
 }
 
+void UploadFileHelper::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void UploadFileHelper::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
                                     int index) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  for (auto& observer : observers_) {
+    observer.OnFilesSelected();
+  }
   profile_->set_last_selected_directory(file.path().DirName());
   auto read_image = base::BindOnce(
       [](const ui::SelectedFileInfo& info)
@@ -147,6 +158,9 @@ void UploadFileHelper::MultiFilesSelected(
   if (files.empty()) {
     std::move(upload_image_callback_).Run(std::nullopt);
     return;
+  }
+  for (auto& observer : observers_) {
+    observer.OnFilesSelected();
   }
 
   // Create a barrier callback that will be called when all files are processed
