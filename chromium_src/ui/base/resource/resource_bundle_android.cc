@@ -10,36 +10,16 @@ namespace ui {
 namespace {
 
 int g_brave_resources_pack_fd = -1;
-int g_dev_ui_resources_pack_fd = -1;
-
 base::MemoryMappedFile::Region g_brave_resources_pack_region;
-base::MemoryMappedFile::Region g_dev_ui_resources_pack_region;
 }
 
-void BraveLoadAdditionalAndroidPackFiles() {
-  base::FilePath disk_file_path;
-
-  // brave_100_percent.pak is excluded now from the Android build because
-  // its resources are not used
-  if (LoadFromApkOrFile("assets/brave_resources.pak", &disk_file_path,
+void BraveLoadMainAndroidPackFile(const char* path_within_apk,
+                                  const base::FilePath& disk_file_path) {
+  if (LoadFromApkOrFile(path_within_apk, &disk_file_path,
                         &g_brave_resources_pack_fd,
                         &g_brave_resources_pack_region)) {
     ResourceBundle::GetSharedInstance().AddDataPackFromFileRegion(
         base::File(g_brave_resources_pack_fd), g_brave_resources_pack_region,
-        ui::kScaleFactorNone);
-  }
-
-  // dev_ui_resources.pak is required only for the case when the universal
-  // apk was generated from aab, with --android_aab_to_apk build key.
-  // For the aab bundle dev_ui_resources.pak is placed into a separate module,
-  // dev_ui-master.apk and with --android_aab_to_apk it goes into
-  // Bravearm64Universal.apk as-is, so we need to force load. The regular apk
-  // has dev-ui resources merged into resources.pak.
-  if (LoadFromApkOrFile("assets/dev_ui_resources.pak", &disk_file_path,
-                        &g_dev_ui_resources_pack_fd,
-                        &g_dev_ui_resources_pack_region)) {
-    ResourceBundle::GetSharedInstance().AddDataPackFromFileRegion(
-        base::File(g_dev_ui_resources_pack_fd), g_dev_ui_resources_pack_region,
         ui::kScaleFactorNone);
   }
 }
