@@ -3,7 +3,7 @@ URL: https://crates.io/crates/tracing-log
 Version: 0.2.0
 Revision: 4161d8137d4f6117f17b110b0ec022d9350bf8e6
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-log-0.2.0/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-log-v0_2/LICENSE
 Shipped: yes
 Security Critical: yes
 

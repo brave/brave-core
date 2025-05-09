@@ -8,6 +8,9 @@ script/uplift.py @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 
+# Views
+chromium_src/ui/views/view.h @bridiver
+
 # brave/browser/ui/BUILD.gn should not have new files added to it
 browser/ui/BUILD.gn @bridiver
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index f8cecc628ae53d071596dc1bf79ab94a25d0d881..ff3e532a4d77e3205588f803c40d8093d3c67434 100644
+index 2ad76b4d5241ed0057c6e3164706f1573ab47020..ed71b6a215f019809b2cd0da7bc396e39f1005d7 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -95,6 +95,7 @@ source_set("channel_info") {
@@ -10,7 +10,7 @@ index f8cecc628ae53d071596dc1bf79ab94a25d0d881..ff3e532a4d77e3205588f803c40d8093
  }
  
  source_set("ini_parser") {
-@@ -279,6 +280,7 @@ static_library("common_lib") {
+@@ -280,6 +281,7 @@ static_library("common_lib") {
    if (enable_ppapi) {
      public_deps += [ "//ppapi/shared_impl" ]
    }

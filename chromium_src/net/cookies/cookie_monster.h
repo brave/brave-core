@@ -39,7 +39,7 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
   void DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
                                   DeleteCallback callback) override;
   void DeleteSessionCookiesAsync(DeleteCallback) override;
-  void SetCookieableSchemes(const std::vector<std::string>& schemes,
+  void SetCookieableSchemes(std::vector<std::string> schemes,
                             SetCookieableSchemesCallback callback) override;
 
   void SetCanonicalCookieAsync(

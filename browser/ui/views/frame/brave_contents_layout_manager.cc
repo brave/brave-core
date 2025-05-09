@@ -15,6 +15,7 @@ BraveContentsLayoutManager* BraveContentsLayoutManager::GetLayoutManagerForView(
 
 BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* devtools_view,
+    views::View* devtools_scrim_view,
     views::View* contents_view,
     views::View* lens_overlay_view,
     views::View* scrim_view,
@@ -22,6 +23,7 @@ BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* watermark_view,
     views::View* reader_mode_toolbar)
     : ContentsLayoutManager(devtools_view,
+                            devtools_scrim_view,
                             contents_view,
                             lens_overlay_view,
                             scrim_view,

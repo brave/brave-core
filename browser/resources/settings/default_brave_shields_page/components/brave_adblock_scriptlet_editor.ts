@@ -47,10 +47,10 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     }
   }
 
-  scriptlet: Scriptlet
-  dialogTitle_: string
-  isScriptletValid_: boolean
-  scriptletErrorMessage_: string
+  declare scriptlet: Scriptlet
+  declare dialogTitle_: string
+  declare isScriptletValid_: boolean
+  declare scriptletErrorMessage_: string
 
   oldScriptletName_: string
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()

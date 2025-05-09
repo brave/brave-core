@@ -7,6 +7,12 @@
 
 #include "ui/compositor/compositor.h"
 
+#if BUILDFLAG(IS_WIN)
+// This header includes shobjidl.h which also defines SetBackgroundColor in
+// Windows SDK 10.0.26100.0
+#include "ui/gfx/win/hwnd_util.h"
+#endif
+
 #define SetBackgroundColor(color) \
   SetBackgroundColor(desktop_window_tree_host_->GetBackgroundColor(color))
 

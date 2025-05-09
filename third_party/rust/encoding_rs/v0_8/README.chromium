@@ -3,7 +3,7 @@ URL: https://crates.io/crates/encoding_rs
 Version: 0.8.32
 Revision: a962ef4f8e569ccf5a22104d19cc10e8a0b458e6
 License: Apache-2.0, BSD-3-Clause
-License File: //brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-0.8.32/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/encoding_rs-v0_8/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

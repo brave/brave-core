@@ -112,7 +112,10 @@ public class ImageLoader {
 
             WebContents webContents =
                     WebContentsFactory.createWebContentsWithWarmRenderer(
-                            profile, true, NetId.INVALID);
+                            profile,
+                            /* initiallyHidden= */ false,
+                            /* usesPlatformAutofill= */ true,
+                            /* targetNetwork= */ NetId.INVALID);
             webContents.downloadImage(
                     new GURL(validUrl), // Url
                     false, // isFavIcon

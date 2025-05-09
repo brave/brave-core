@@ -68,9 +68,9 @@ export class SettingsBraveSyncCodeDialogElement
     };
   }
 
-  private deleteAccountError: string;
-  private deleteIsInProgress: boolean;
-  private doingDeleteAccount: boolean;
+  private declare deleteAccountError: string;
+  private declare deleteIsInProgress: boolean;
+  private declare doingDeleteAccount: boolean;
 
   syncBrowserProxy_: BraveSyncBrowserProxy =
                                             BraveSyncBrowserProxy.getInstance();

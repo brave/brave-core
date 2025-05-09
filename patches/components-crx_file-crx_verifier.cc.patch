@@ -1,12 +1,12 @@
 diff --git a/components/crx_file/crx_verifier.cc b/components/crx_file/crx_verifier.cc
-index 1bea357d91476835fdbdb948b8ea4fc2ec118148..5886cec5cad0ced2ac832a1e61e0215945668335 100644
+index 730369f0b6cce6e4f6cd7984f992b39026075f45..f4f4616b078e4d76e539af477c350a3bcee031c3 100644
 --- a/components/crx_file/crx_verifier.cc
 +++ b/components/crx_file/crx_verifier.cc
-@@ -210,6 +210,7 @@ VerifierResult VerifyCrx3(
+@@ -199,6 +199,7 @@ VerifierResult VerifyCrx3(
        found_publisher_key =
            found_publisher_key || key_hash == publisher_key ||
            (accept_publisher_test_key && key_hash == *publisher_test_key);
 +      found_publisher_key = found_publisher_key || IsBravePublisher(key_hash);
        auto v = std::make_unique<crypto::SignatureVerifier>();
-       static_assert(sizeof(unsigned char) == sizeof(uint8_t),
-                     "Unsupported char size.");
+       if (!v->VerifyInit(proof_type.second, base::as_byte_span(sig),
+                          base::as_byte_span(key))) {

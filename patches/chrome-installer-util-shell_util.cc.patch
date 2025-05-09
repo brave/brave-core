@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 358af176f55310aa435bec6db02eba582ef29bbd..e4310ed7fead2a452df8a750f604cad0be4587ac 100644
+index b5b269da941db6a79caae96fe91a84f314c426c9..11e69cf8ae504805cee379d656b31fbd80288b7f 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -372,6 +372,7 @@ void GetChromeProgIdEntries(

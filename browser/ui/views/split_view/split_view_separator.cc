@@ -35,7 +35,6 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
-namespace {
 class MenuButtonDelegate : public views::WidgetDelegateView,
                            public gfx::AnimationDelegate {
   METADATA_HEADER(MenuButtonDelegate, views::WidgetDelegateView)
@@ -128,8 +127,6 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
 
 BEGIN_METADATA(MenuButtonDelegate)
 END_METADATA
-
-}  // namespace
 
 SplitViewSeparator::SplitViewSeparator(Browser* browser)
     : ResizeArea(this), browser_(browser) {}

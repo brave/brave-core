@@ -61,9 +61,8 @@ class TorSnowflakeExtensionBrowserTest : public InProcessBrowserTest {
         extensions::ExtensionBuilder("Snowflake")
             .SetID(kSnowflakeExtensionId)
             .Build());
-    extensions::ExtensionSystem::Get(browser()->profile())
-        ->extension_service()
-        ->AddExtension(extension.get());
+    extensions::ExtensionRegistrar::Get(browser()->profile())
+        ->AddExtension(extension);
   }
 
   void EnableSnowflake(bool enable) {

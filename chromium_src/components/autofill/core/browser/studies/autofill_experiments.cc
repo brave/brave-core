@@ -23,18 +23,8 @@ bool IsCreditCardUploadEnabled(
     LogManager* log_manager) {
   return false;
 }
-bool IsCreditCardMigrationEnabled(
-    const PaymentsDataManager& payments_data_manager,
-    const syncer::SyncService* sync_service,
-    const PrefService& pref_service,
-    bool is_test_mode,
-    LogManager* log_manager) {
-  return false;
-}
 }  // namespace autofill
 
 #define IsCreditCardUploadEnabled IsCreditCardUploadEnabled_ChromiumImpl
-#define IsCreditCardMigrationEnabled IsCreditCardMigrationEnabled_ChromiumImpl
 #include "src/components/autofill/core/browser/studies/autofill_experiments.cc"
 #undef IsCreditCardUploadEnabled
-#undef IsCreditCardMigrationEnabled

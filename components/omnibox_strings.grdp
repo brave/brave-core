@@ -8,6 +8,9 @@
   <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
     <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
   </message>
+  <message name="IDS_AUTOCOMPLETE_SEARCH_IN_SIDE_PANEL_DESCRIPTION" desc="Description for search matches that open in side panel." translateable="false">
+    Search in side panel
+  </message>
   <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
     &lt;Type search term&gt;
   </message>
@@ -111,6 +114,9 @@
   </message>
   <message name="IDS_CONTENT_SUGGESTION_DESCRIPTION_TEMPLATE_WITHOUT_FILE_TYPE_DESCRIPTION" desc="Product description for content suggestions in omnibox when the file type description is missing.">
     <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_OWNER">$2<ex>First Last</ex></ph>
+  </message>
+  <message name="IDS_PERSON_SUGGESTION_DESCRIPTION" desc="Description for person suggestions in omnibox.">
+  <ph name="ENGINE">$1<ex>Agentspace</ex></ph> People
   </message>
   <if expr="use_titlecase">
     <then>
@@ -238,10 +244,16 @@
     <ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to search
   </message>
   <message name="IDS_ACC_KEYWORD_MODE" desc="Announcement when entering keyword search mode.">
-    Search <ph name="KEYWORD_SUFFIX">$1<ex>Youtube</ex>, type a query and press Enter to search</ph>
+    Search <ph name="KEYWORD_SUFFIX">$1<ex>Youtube</ex></ph>
   </message>
   <message name="IDS_ACC_ASK_KEYWORD_MODE" desc="Announcement when entering keyword mode for an engine that is suitable for asking vs. searching (e.g. Gemini).">
-    Ask <ph name="KEYWORD_SUFFIX">$1<ex>Gemini</ex>, type a question or ask it to do something and press Enter</ph>
+    Ask <ph name="KEYWORD_SUFFIX">$1<ex>Gemini</ex></ph>
+  </message>
+  <message name="IDS_ACC_KEYWORD_MODE_WITH_SHORTCUT" desc="Announcement when entering keyword search mode with shortcut.">
+    <ph name="KEYWORD_SHORTCUT">$1<ex>yt</ex></ph>, Search <ph name="KEYWORD_SUFFIX">$2<ex>Youtube</ex></ph>
+  </message>
+  <message name="IDS_ACC_ASK_KEYWORD_MODE_WITH_SHORTCUT" desc="Announcement when entering keyword mode for an engine that is suitable for asking vs. searching (e.g. Gemini) with shortcut.">
+    <ph name="KEYWORD_SHORTCUT">$1<ex>gemini</ex></ph>, Ask <ph name="KEYWORD_SUFFIX">$2<ex>Gemini</ex></ph>
   </message>
 
   <!-- Accessibility labels for the omnibox thumbs up feedback button. -->

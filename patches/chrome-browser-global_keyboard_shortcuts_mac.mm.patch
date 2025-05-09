@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index 60188f03eb4e5c2b35fa00a126f17dc0b2559923..ffe933a1fee5eaabeb1cf6eb20ed6e62d39e0aef 100644
+index cbc0d472d9476c03795dbd3a36dc86a754a237be..f269a7f8a611bf5cceafeffa6a2d5377c7cf0d55 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
-@@ -153,6 +153,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
- #if BUILDFLAG(ENABLE_GLIC)
-       {true,  false,  true, false,  kVK_ANSI_G,            IDC_GLIC_TOGGLE_FOCUS},
- #endif
-+    {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},
+@@ -150,6 +150,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
+       {true,  false, false, true,  kVK_DownArrow,         IDC_FOCUS_NEXT_PANE},
+       {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
+       {true,  true,  false, true,  kVK_ANSI_A,            IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY},
++      {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},
      });
      // clang-format on
  

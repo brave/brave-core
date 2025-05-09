@@ -109,8 +109,6 @@ source_set("extensions") {
     "brave_extension_management.h",
     "brave_extension_provider.cc",
     "brave_extension_provider.h",
-    "brave_extension_service.cc",
-    "brave_extension_service.h",
     "brave_extensions_browser_api_provider.cc",
     "brave_extensions_browser_api_provider.h",
     "brave_extensions_browser_client_impl.cc",

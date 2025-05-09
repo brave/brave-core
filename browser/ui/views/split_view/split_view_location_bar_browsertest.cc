@@ -169,8 +169,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
   net::SSLServerConfig ssl_config;
   ssl_config.client_cert_type =
       net::SSLServerConfig::ClientCertType::REQUIRE_CLIENT_CERT;
-  https_server.SetSSLConfig(net::EmbeddedTestServer::CERT_BAD_VALIDITY,
-                            ssl_config);
+  https_server.SetSSLConfig(net::EmbeddedTestServer::CERT_EXPIRED, ssl_config);
   https_server.ServeFilesFromSourceDirectory("chrome/test/data");
   ASSERT_TRUE(https_server.Start());
   GURL bad_url = https_server.GetURL("/");

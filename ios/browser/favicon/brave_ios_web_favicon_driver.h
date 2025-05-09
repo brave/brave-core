@@ -94,8 +94,6 @@ class BraveIOSWebFaviconDriver
   // The WebState this instance is observing. Will be null after
   // WebStateDestroyed has been called.
   raw_ptr<web::WebState> web_state_ = nullptr;
-
-  WEB_STATE_USER_DATA_KEY_DECL();
 };
 
 }  // namespace brave_favicon

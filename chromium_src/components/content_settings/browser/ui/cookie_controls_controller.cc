@@ -6,9 +6,13 @@
 #include "components/content_settings/browser/ui/cookie_controls_controller.h"
 #include "components/content_settings/browser/ui/cookie_controls_view.h"
 
+// Trying a little trick with `should_highlight && !should_highlight` to get to
+// refer to `should_highlight` but at the same time pass false into this call,
+// and avoiding `error: unused variable 'should_highlight'` failures.
 #define OnCookieControlsIconStatusChanged(ICON_VISIBLE, PROTECTIONS_ON,      \
                                           BLOCKING_STATUS, SHOULD_HIGHLIGHT) \
   OnCookieControlsIconStatusChanged(ICON_VISIBLE, PROTECTIONS_ON,            \
-                                    BLOCKING_STATUS, false)
+                                    BLOCKING_STATUS,                         \
+                                    should_highlight && !should_highlight)
 #include "src/components/content_settings/browser/ui/cookie_controls_controller.cc"
 #undef OnCookieControlsIconStatusChanged

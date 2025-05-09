@@ -46,7 +46,7 @@ export class SettingsBravePerformancePageElement
     }
   }
 
-  private showBatterySettings_: boolean;
+  private declare showBatterySettings_: boolean;
   private performanceBrowserProxy_: PerformanceBrowserProxy =
       PerformanceBrowserProxyImpl.getInstance();
 

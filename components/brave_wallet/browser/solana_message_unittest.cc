@@ -544,7 +544,7 @@ TEST(SolanaMessageUnitTest, UsesDurableNonce) {
            SolanaAccountMeta(kFromAccount, std::nullopt, false, false),
            SolanaAccountMeta(kToAccount, std::nullopt, true, false)}),
       base::byte_span_from_ref(
-          base::numerics::U32FromLittleEndian(base::byte_span_from_ref(
+          base::U32FromLittleEndian(base::byte_span_from_ref(
               mojom::SolanaSystemInstruction::kAdvanceNonceAccount))));
 
   auto message1 = GetTestLegacyMessage();

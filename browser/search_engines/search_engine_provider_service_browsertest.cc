@@ -83,12 +83,11 @@ TemplateURLData CreateTestSearchEngine() {
 
 std::string GetBraveSearchProviderSyncGUID(Profile* profile) {
   CHECK(profile);
-  regional_capabilities::CountryIdHolder country_id_holder =
+  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      *profile->GetPrefs(),
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
           profile)
-          ->GetCountryId();
-  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *profile->GetPrefs(), country_id_holder.GetForTesting(),
+          ->GetRegionalPrepopulatedEngines(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   DCHECK(data);
   return data->sync_guid;
@@ -375,14 +374,12 @@ constexpr int kTestExtensionPrepopulatedId = 83;
 // chrome/test/data/extensions/settings_override/manifest.json
 std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
-  regional_capabilities::CountryIdHolder country_id_holder =
-      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
-          profile)
-          ->GetCountryId();
   // Enforcing that `kTestExtensionPrepopulatedId` is not part of the
   // prepopulated set for the current profile's country.
   for (auto& data : TemplateURLPrepopulateData::GetPrepopulatedEngines(
-           *prefs, country_id_holder.GetForTesting())) {
+           *prefs, regional_capabilities::RegionalCapabilitiesServiceFactory::
+                       GetForProfile(profile)
+                           ->GetRegionalPrepopulatedEngines())) {
     EXPECT_NE(data->prepopulate_id, kTestExtensionPrepopulatedId);
   }
 
@@ -402,7 +399,10 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
 
   std::unique_ptr<TemplateURLData> prepopulated =
       TemplateURLPrepopulateData::GetPrepopulatedEngineFromFullList(
-          *prefs, country_id_holder.GetForTesting(),
+          *prefs,
+          regional_capabilities::RegionalCapabilitiesServiceFactory::
+              GetForProfile(profile)
+                  ->GetRegionalPrepopulatedEngines(),
           kTestExtensionPrepopulatedId);
   CHECK(prepopulated);
   // Values below do not exist in extension manifest and are taken from
