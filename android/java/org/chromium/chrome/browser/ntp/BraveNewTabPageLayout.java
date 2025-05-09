@@ -1264,7 +1264,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         if (wasWallpaperShown && ntpImage instanceof Wallpaper) {
             BraveNewTabTakeoverInfobar infobar = new BraveNewTabTakeoverInfobar(mProfile);
-            infobar.maybeCreate();
+            infobar.maybeDisplayAndIncrementCounter();
         }
     }
 
