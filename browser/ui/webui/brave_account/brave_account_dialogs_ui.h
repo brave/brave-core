@@ -11,6 +11,7 @@
 
 #include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
@@ -31,7 +32,7 @@ class BraveAccountDialogsUIConfig
   }
 };
 
-class BraveAccountDialogsUI : public content::WebUIController,
+class BraveAccountDialogsUI : public ConstrainedWebDialogUI,
                               public brave_account::mojom::BraveAccountHandler {
  public:
   explicit BraveAccountDialogsUI(content::WebUI* web_ui);
