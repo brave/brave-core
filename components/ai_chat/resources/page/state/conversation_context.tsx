@@ -78,6 +78,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
   pendingMessageImages: Mojom.UploadedFile[] | null
+  isUploadingFiles: boolean
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -126,6 +127,7 @@ const defaultContext: ConversationContext = {
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
   pendingMessageImages: null,
+  isUploadingFiles: false,
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -544,6 +546,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
         if (newImages.length > 0) {
           setPartialContext({
+            isUploadingFiles: false,
             pendingMessageImages: context.pendingMessageImages
               ? [...context.pendingMessageImages, ...newImages]
               : [...newImages]
@@ -552,6 +555,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
   const getScreenshots = () => {
+    setPartialContext({
+      isUploadingFiles: true
+    })
     conversationHandler.getScreenshots()
     .then(({screenshots}) => {
       if (screenshots) {

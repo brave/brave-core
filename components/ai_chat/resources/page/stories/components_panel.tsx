@@ -803,6 +803,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     pendingMessageImages: null,
     generatedUrlToBeOpened: options.args.generatedUrlToBeOpened,
     ratingTurnUuid: options.args.ratingTurnUuid,
+    isUploadingFiles: false,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,

@@ -13,7 +13,7 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import UploadedImgItem from '../uploaded_img_item'
+import { AttachmentImageItem, AttachmentSpinnerItem } from '../attachment_item'
 
 type Props = Pick<
   ConversationContext,
@@ -37,6 +37,7 @@ type Props = Pick<
   | 'removeImage'
   | 'conversationHistory'
   | 'associatedContentInfo'
+  | 'isUploadingFiles'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -123,7 +124,8 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {props.context.pendingMessageImages && (
+      {(props.context.pendingMessageImages ||
+        props.context.isUploadingFiles) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -132,11 +134,14 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {props.context.pendingMessageImages.map((img, i) => (
-            <UploadedImgItem
+          {props.context.isUploadingFiles && (
+            <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
+          )}
+          {props.context.pendingMessageImages?.map((img, i) => (
+            <AttachmentImageItem
               key={img.filename}
               uploadedImage={img}
-              removeImage={() => props.context.removeImage(i)}
+              remove={() => props.context.removeImage(i)}
             />
           ))}
         </div>
