@@ -9,6 +9,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/unload_controller.h"
 
+#define ShouldShowBookmarkBar virtual ShouldShowBookmarkBar
 #define FinishWarnBeforeClosing virtual FinishWarnBeforeClosing
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
 #define ShouldDisplayFavicon virtual ShouldDisplayFavicon
@@ -31,5 +32,6 @@
 #undef ShouldDisplayFavicon
 #undef ScheduleUIUpdate
 #undef FinishWarnBeforeClosing
+#undef ShouldShowBookmarkBar
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_

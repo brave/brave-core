@@ -163,8 +163,6 @@ source_set("ui") {
       "bookmark/bookmark_prefs_service_factory.h",
       "bookmark/brave_bookmark_prefs.cc",
       "bookmark/brave_bookmark_prefs.h",
-      "bookmark/brave_bookmark_tab_helper.cc",
-      "bookmark/brave_bookmark_tab_helper.h",
       "brave_browser.cc",
       "brave_browser.h",
       "brave_browser_actions.cc",
