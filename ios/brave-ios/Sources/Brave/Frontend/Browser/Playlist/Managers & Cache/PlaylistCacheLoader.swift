@@ -25,7 +25,6 @@ class LivePlaylistWebLoaderFactory: PlaylistWebLoaderFactory {
 
 class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   fileprivate static var pageLoadTimeout = 300.0
-  private var pendingRequests = [String: URLRequest]()
 
   private let tab: any TabState
 
@@ -49,8 +48,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     self.tab = tab
     super.init(frame: .zero)
 
-    tab.createWebView()
     tab.browserData = .init(tab: tab)
+    tab.createWebView()
     tab.browserData?.setScript(
       script: .playlistMediaSource,
       enabled: true
@@ -90,6 +89,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       browserViewController.tabDidCreateWebView(AnyTabState(tab))
 
       tab.addObserver(self)
+      tab.addPolicyDecider(self)
       tab.browserData?.replaceContentScript(
         PlaylistWebLoaderContentHelper(self),
         name: PlaylistWebLoaderContentHelper.scriptName,
@@ -104,6 +104,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   }
 
   func stop() {
+    tab.removeObserver(self)
+    tab.removePolicyDecider(self)
     tab.stopLoading()
     self.handler?(nil)
     tab.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
@@ -278,5 +280,88 @@ extension LivePlaylistWebLoader: TabObserver {
     if error.userInfo["_WKRecoveryAttempterErrorKey"] == nil {
       self.handler?(nil)
     }
+  }
+}
+
+extension LivePlaylistWebLoader: TabPolicyDecider {
+  func tab(
+    _ tab: some TabState,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    guard let requestURL = request.url else {
+      return .cancel
+    }
+
+    // Add logic that powers adblock into the playlist loader, this is mostly copied from
+    // BVC+TabPolicyDecider with the only difference being we force shields on and don't use
+    // persistent Domain lookups.
+
+    if let mainDocumentURL = request.mainDocumentURL {
+      if mainDocumentURL != tab.currentPageData?.mainFrameURL {
+        tab.currentPageData = PageData(mainFrameURL: mainDocumentURL)
+      }
+
+      let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
+
+      if !requestInfo.isNewWindow {
+        tab.currentPageData?.addSubframeURL(
+          forRequestURL: requestURL,
+          isForMainFrame: requestInfo.isMainFrame
+        )
+        let scriptTypes =
+          await tab.currentPageData?.makeUserScriptTypes(
+            domain: domainForMainFrame,
+            isDeAmpEnabled: false
+          ) ?? []
+        tab.browserData?.setCustomUserScript(scripts: scriptTypes)
+      }
+    }
+
+    if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
+      if requestInfo.isMainFrame,
+        let etldP1 = requestURL.baseDomain,
+        tab.proceedAnywaysDomainList?.contains(etldP1) == false
+      {
+        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: false)
+
+        let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
+          requestURL: requestURL,
+          sourceURL: requestURL,
+          resourceType: .document,
+          domain: domain
+        )
+
+        if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
+          let request = PrivilegedRequest(url: url) as URLRequest
+          tab.loadRequest(request)
+          return .cancel
+        }
+      }
+
+      if let mainDocumentURL = request.mainDocumentURL,
+        mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
+        requestInfo.isMainFrame
+      {
+        let domainForShields = Domain.getOrCreate(
+          forUrl: mainDocumentURL,
+          persistent: !false
+        )
+
+        // Force adblocking on
+        domainForShields.shield_allOff = 0
+        domainForShields.domainBlockAdsAndTrackingLevel = .standard
+
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
+        tab.contentBlocker?.set(ruleLists: ruleLists)
+      }
+
+      // Cookie Blocking code below
+      tab.browserData?.setScript(
+        script: .cookieBlocking,
+        enabled: Preferences.Privacy.blockAllCookies.value
+      )
+    }
+    return .allow
   }
 }
