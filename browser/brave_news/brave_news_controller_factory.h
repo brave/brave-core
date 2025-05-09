@@ -19,6 +19,7 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
+class Profile;
 namespace content {
 class BrowserContext;
 }
@@ -32,7 +33,7 @@ class BraveNewsControllerFactory : public BrowserContextKeyedServiceFactory {
   static BraveNewsController* GetForBrowserContext(
       content::BrowserContext* context);
   static mojo::PendingRemote<mojom::BraveNewsController> GetRemoteForProfile(
-      content::BrowserContext* context);
+      Profile* profile);
   static BraveNewsControllerFactory* GetInstance();
 
   BraveNewsControllerFactory(const BraveNewsControllerFactory&) = delete;

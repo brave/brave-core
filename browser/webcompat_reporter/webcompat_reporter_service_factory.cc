@@ -31,10 +31,9 @@ WebcompatReporterServiceFactory::GetInstance() {
 
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
-WebcompatReporterServiceFactory::GetRemoteForProfile(
-    content::BrowserContext* context) {
+WebcompatReporterServiceFactory::GetRemoteForProfile(Profile* profile) {
   auto* service = static_cast<WebcompatReporterService*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
+      GetInstance()->GetServiceForBrowserContext(profile, true));
   if (!service) {
     return mojo::PendingRemote<mojom::WebcompatReporterHandler>();
   }

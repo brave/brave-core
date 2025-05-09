@@ -18,6 +18,7 @@ namespace base {
 template <typename T>
 class NoDestructor;
 }  // namespace base
+class Profile;
 
 namespace webcompat_reporter {
 
@@ -31,7 +32,7 @@ class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactory {
       const WebcompatReporterServiceFactory&) = delete;
 
   static mojo::PendingRemote<mojom::WebcompatReporterHandler>
-  GetRemoteForProfile(content::BrowserContext* context);
+  GetRemoteForProfile(Profile* profile);
   static WebcompatReporterService* GetServiceForContext(
       content::BrowserContext* context);
   static WebcompatReporterServiceFactory* GetInstance();

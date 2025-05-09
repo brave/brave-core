@@ -216,9 +216,9 @@ PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
 #if BUILDFLAG(IS_ANDROID)
 // static
 mojo::PendingRemote<mojom::PlaylistService>
-PlaylistServiceFactory::GetRemoteForProfile(content::BrowserContext* context) {
+PlaylistServiceFactory::GetRemoteForProfile(Profile* profile) {
   auto* service = static_cast<PlaylistService*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
+      GetInstance()->GetServiceForBrowserContext(profile, true));
   if (!service) {
     return mojo::PendingRemote<mojom::PlaylistService>();
   }

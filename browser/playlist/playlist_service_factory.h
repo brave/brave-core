@@ -16,6 +16,7 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 class PrefRegistrySimple;
+class Profile;
 
 namespace base {
 template <typename T>
@@ -32,7 +33,7 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
 #if BUILDFLAG(IS_ANDROID)
   static mojo::PendingRemote<mojom::PlaylistService> GetRemoteForProfile(
-      content::BrowserContext* context);
+      Profile* profile);
 #endif  // BUILDFLAG(IS_ANDROID)
   static PlaylistServiceFactory* GetInstance();
 

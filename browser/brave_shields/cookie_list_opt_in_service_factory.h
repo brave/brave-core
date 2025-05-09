@@ -18,6 +18,7 @@ namespace base {
 template <typename T>
 class NoDestructor;
 }  // namespace base
+class Profile;
 
 namespace brave_shields {
 
@@ -30,7 +31,7 @@ class CookieListOptInServiceFactory : public BrowserContextKeyedServiceFactory {
       const CookieListOptInServiceFactory&) = delete;
 
   static mojo::PendingRemote<mojom::CookieListOptInPageAndroidHandler>
-  GetRemoteForProfile(content::BrowserContext* context);
+  GetRemoteForProfile(Profile* profile);
   static CookieListOptInService* GetServiceForContext(
       content::BrowserContext* context);
   static CookieListOptInServiceFactory* GetInstance();

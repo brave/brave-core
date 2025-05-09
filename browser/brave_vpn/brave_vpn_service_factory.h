@@ -31,7 +31,7 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
   static BraveVpnService* GetForProfile(Profile* profile);
 #if BUILDFLAG(IS_ANDROID)
   static mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
-  GetRemoteForProfile(content::BrowserContext* context);
+  GetRemoteForProfile(Profile* profile);
 #endif  // BUILDFLAG(IS_ANDROID)
   static BraveVpnServiceFactory* GetInstance();
 

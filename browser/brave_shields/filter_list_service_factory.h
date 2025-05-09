@@ -18,6 +18,7 @@ namespace base {
 template <typename T>
 class NoDestructor;
 }  // namespace base
+class Profile;
 
 namespace brave_shields {
 
@@ -29,7 +30,7 @@ class FilterListServiceFactory : public BrowserContextKeyedServiceFactory {
   FilterListServiceFactory& operator=(const FilterListServiceFactory&) = delete;
 
   static mojo::PendingRemote<mojom::FilterListAndroidHandler>
-  GetRemoteForProfile(content::BrowserContext* context);
+  GetRemoteForProfile(Profile* profile);
   static FilterListService* GetServiceForContext(
       content::BrowserContext* context);
   static FilterListServiceFactory* GetInstance();
