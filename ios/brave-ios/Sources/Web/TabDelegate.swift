@@ -45,7 +45,8 @@ public protocol TabDelegate: AnyObject {
   ) async -> URLCredential?
   func tab(
     _ tab: some TabState,
-    createNewTabWithRequest request: URLRequest
+    createNewTabWithRequest request: URLRequest,
+    isUserInitiated: Bool
   ) -> (any TabState)?
   func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   func tab(_ tab: some TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
@@ -75,7 +76,8 @@ public enum WebPermissionDecision {
 extension TabDelegate {
   public func tab(
     _ tab: some TabState,
-    createNewTabWithRequest request: URLRequest
+    createNewTabWithRequest request: URLRequest,
+    isUserInitiated: Bool
   ) -> (any TabState)? {
     return nil
   }
