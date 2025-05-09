@@ -119,7 +119,7 @@ void AddStringResources(content::WebUIDataSource* source) {
 }  // namespace
 
 BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
-    : content::WebUIController(web_ui) {
+    : ConstrainedWebDialogUI(web_ui) {
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kBraveAccountDialogsHost);
 
@@ -150,7 +150,13 @@ void BraveAccountDialogsUI::GetPasswordStrength(
   std::move(callback).Run(password_manager::GetPasswordStrength(password));
 }
 
-void BraveAccountDialogsUI::OpenDialog() {}
+void BraveAccountDialogsUI::OpenDialog() {
+  auto* delegate = GetConstrainedDelegate();
+  if (delegate) {
+    delegate->GetWebDialogDelegate()->OnDialogClosed(std::string());
+    delegate->OnDialogCloseFromWebUI();
+  }
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountDialogsUI)
 
