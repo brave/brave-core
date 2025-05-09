@@ -2885,10 +2885,10 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
-    if !rewards.ads.shouldShowNewTabTakeoverInfoBar() {
+    if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
       return
     }
-    rewards.ads.recordNewTabTakeoverInfobarWasShown()
+    rewards.ads.recordNewTabTakeoverInfobarWasDisplayed()
 
     let newTabTakeoverInfoBar = NewTabTakeoverInfoBar(
       tabManager: self.tabManager,

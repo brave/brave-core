@@ -27,8 +27,9 @@ class NewTabTakeoverInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   ~NewTabTakeoverInfoBarDelegate() override;
 
-  static void MaybeCreate(content::WebContents* web_contents,
-                          PrefService* prefs);
+  static void MaybeDisplayAndIncrementCounter(
+      content::WebContents* web_contents,
+      PrefService* prefs);
 
  private:
   // ConfirmInfoBarDelegate:

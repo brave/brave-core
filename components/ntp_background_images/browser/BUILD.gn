@@ -9,6 +9,8 @@ static_library("browser") {
   sources = [
     "features.cc",
     "features.h",
+    "new_tab_takeover_infobar_util.cc",
+    "new_tab_takeover_infobar_util.h",
     "ntp_background_images_component_installer.cc",
     "ntp_background_images_component_installer.h",
     "ntp_background_images_data.cc",
@@ -110,5 +112,22 @@ source_set("test_support") {
     "ntp_background_images_service_waiter.h",
     "ntp_p3a_helper_mock.cc",
     "ntp_p3a_helper_mock.h",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "new_tab_takeover_infobar_util_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/ntp_background_images/common",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
   ]
 }
