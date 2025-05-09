@@ -115,6 +115,37 @@ const buildTests = async (
   await util.buildTargets()
 }
 
+// Appends test results from `from` file to `into` file
+const mergeTestOutput = (suite, from, into) => {
+  assert(
+    from !== into,
+    `Attempted to merge test output into itself. File: ${from}`,
+  )
+  fs.readFile(from, 'utf8', (err, data) => {
+    if (err) {
+      console.log(`Error reading results file ${from}: ` + err)
+      return false
+    }
+    let newData = ''
+    if (!fs.existsSync(into)) {
+      newData += '<?xml version="1.0" encoding="UTF-8"?>\n'
+    }
+    // Add a comment indicating which file this data came from and also
+    // strip xml declaration (doing this with brute replace since bringing
+    // in an xml parser is too heavy for this.)
+    newData +=
+      `<!-- ${suite} -->`
+      + data.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
+    fs.appendFile(into, newData, (err) => {
+      if (err) {
+        console.log(`Error appending ${from} into ${into} file: ` + err)
+        return false
+      }
+    })
+  })
+  return true
+}
+
 const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
@@ -145,6 +176,16 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 
   if (options.output) {
+    // Clear any previous output
+    const outputPath = path.join(config.srcDir, options.output)
+    if (fs.existsSync(outputPath)) {
+      try {
+        fs.unlinkSync(outputPath)
+      } catch (err) {
+        console.log(`Error deleting output file ${outputPath}:` + err)
+        return false
+      }
+    }
     braveArgs.push('--gtest_output=xml:' + options.output)
   }
 
@@ -231,7 +272,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         if (previousOutput !== -1) {
           braveArgs.splice(previousOutput, 1)
         }
-        braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
+        braveArgs.push(`--gtest_output=xml:${testSuite}_part.xml`)
       }
       if (config.targetOS === 'android' && !isJunitTestSuite) {
         assert(
@@ -272,8 +313,19 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         braveArgs,
         runOptions,
       )
-      // Don't run other tests if one has failed already, especially because
-      // this would overwrite the --output file (if given).
+      if (options.output) {
+        // Merge xml output of each test suite into one output file
+        if (
+          !mergeTestOutput(
+            testSuite,
+            path.join(config.srcDir, `${testSuite}_part.xml`),
+            path.join(config.srcDir, options.output),
+          )
+        ) {
+          return false
+        }
+      }
+      // Don't run other tests if one has failed already.
       return prog.status === 0
     })
   }
