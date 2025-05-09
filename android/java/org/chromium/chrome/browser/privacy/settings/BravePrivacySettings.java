@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.privacy.settings;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -18,6 +20,8 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
@@ -53,6 +57,7 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
+@NullMarked
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
@@ -188,8 +193,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private TextMessagePreference mBlockCrosssiteCookiesLearnMore;
     private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mDebouncePref;
-    private ChromeSwitchPreference mHttpsFirstModePrefLegacy;
-    private Preference mHttpsFirstModePref;
+    private @Nullable ChromeSwitchPreference mHttpsFirstModePrefLegacy;
+    private @Nullable Preference mHttpsFirstModePref;
     private BraveDialogPreference mHttpsUpgradePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mFingerprintingProtection2Pref;
@@ -214,7 +219,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private Preference mUstoppableDomains;
     private ChromeSwitchPreference mFingerprntLanguagePref;
     private ChromeSwitchPreference mBraveShieldsSaveContactInfoPref;
-    private FilterListAndroidHandler mFilterListAndroidHandler;
+    private @Nullable FilterListAndroidHandler mFilterListAndroidHandler;
     private WebcompatReporterHandler mWebcompatReporterHandler;
 
     @Override
@@ -254,7 +259,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
         // override title
         getActivity().setTitle(R.string.brave_shields_and_privacy);
@@ -327,8 +332,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
-                                            requireContext(),
-                                            R.color.brave_link,
+                                            requireContext().getColor(R.color.brave_link),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(
                                                         requireContext(),
@@ -696,11 +700,13 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         boolean httpsByDefaultIsEnabled =
                 ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
         if (!ChromeFeatureList.isEnabled(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)) {
+            assumeNonNull(mHttpsFirstModePrefLegacy);
             mHttpsFirstModePrefLegacy.setVisible(!httpsByDefaultIsEnabled);
             mHttpsFirstModePrefLegacy.setChecked(
                     UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
         } else {
+            assumeNonNull(mHttpsFirstModePref);
             mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
         }
 

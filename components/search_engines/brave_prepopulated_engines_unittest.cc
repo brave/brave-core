@@ -24,8 +24,7 @@ TEST_F(BravePrepopulatedEnginesTest, ModifiedProviderTest) {
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       search_engines_test_environment_.pref_service(),
       search_engines_test_environment_.regional_capabilities_service()
-          .GetCountryId()
-          .GetForTesting(),
+          .GetRegionalPrepopulatedEngines(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   // Check modified bing provider url.
   EXPECT_EQ(data->url(), "https://www.bing.com/search?q={searchTerms}");

@@ -568,7 +568,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       SendError("Failed to allocate memory for PDF file");
       return;
     }
-    memcpy(pdf_region.mapping.memory(), data->data(), data->size());
+    pdf_region.mapping.GetMemoryAsSpan<uint8_t>().copy_from(*data);
     std::optional<bool> pdf_use_skia_renderer_enabled;
     auto* prefs = profile_->GetPrefs();
     if (prefs &&

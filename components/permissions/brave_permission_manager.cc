@@ -10,6 +10,7 @@
 #include "base/auto_reset.h"
 #include "components/permissions/permission_context_base.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_request_description.h"
 #include "url/origin.h"
 
@@ -37,7 +38,10 @@ void BravePermissionManager::RequestPermissionsForOrigin(
                                                      requesting_origin);
   return RequestPermissionsFromCurrentDocument(
       render_frame_host,
-      content::PermissionRequestDescription(permissions, user_gesture),
+      content::PermissionRequestDescription(
+          content::PermissionDescriptorUtil::
+              CreatePermissionDescriptorForPermissionTypes(permissions),
+          user_gesture),
       std::move(callback));
 }
 
@@ -50,7 +54,9 @@ BravePermissionManager::GetPermissionStatusForOrigin(
   base::AutoReset<GURL> auto_reset_requesting_origin(&forced_requesting_origin_,
                                                      requesting_origin);
   return GetPermissionStatusForCurrentDocument(
-      permission, render_frame_host, /*should_include_device_status=*/false);
+      content::PermissionDescriptorUtil::
+          CreatePermissionDescriptorForPermissionType(permission),
+      render_frame_host, /*should_include_device_status=*/false);
 }
 
 }  // namespace permissions

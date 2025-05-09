@@ -3,7 +3,7 @@ URL: https://crates.io/crates/tap
 Version: 1.0.1
 Revision: f5315f0f5ca90ce6399daac76c1fe3ba645a4e4e
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/LICENSE.txt
+License File: //brave/third_party/rust/chromium_crates_io/vendor/tap-v1/LICENSE.txt
 Shipped: yes
 Security Critical: yes
 

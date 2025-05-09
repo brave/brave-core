@@ -141,7 +141,7 @@ class BraveWebTorrentNavigationThrottleUnitTest
                      .SetID(brave_webtorrent_extension_id)
                      .Build();
     ASSERT_TRUE(extension_);
-    extension_service()->AddExtension(extension_.get());
+    ExtensionRegistrar::Get(profile())->AddExtension(extension_);
   }
 
  private:

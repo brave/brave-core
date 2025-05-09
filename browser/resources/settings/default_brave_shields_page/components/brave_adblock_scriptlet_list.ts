@@ -51,9 +51,9 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     return ['onSctiptelsListChanged_(customScriptletsList_)']
   }
 
-  customScriptletsList_: Scriptlet[]
-  editingScriptlet_: Scriptlet | null = null
-  isEditing_: boolean = false
+  declare customScriptletsList_: Scriptlet[]
+  declare editingScriptlet_: Scriptlet | null
+  declare isEditing_: boolean
 
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
 

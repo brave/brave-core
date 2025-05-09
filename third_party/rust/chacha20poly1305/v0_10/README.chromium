@@ -3,7 +3,7 @@ URL: https://crates.io/crates/chacha20poly1305
 Version: 0.10.1
 Revision: 746f70a5f6c7371e723dc64e04f2115b56f24d27
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-v0_10/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

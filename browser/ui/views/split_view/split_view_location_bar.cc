@@ -44,7 +44,7 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
       location_bar_model_(std::make_unique<LocationBarModelImpl>(
           location_bar_model_delegate_.get(),
           content::kMaxURLDisplayChars)) {
-  set_owned_by_client();
+  set_owned_by_client(OwnedByClientPassKey());
 
   if (split_view_) {
     view_observation_.Observe(split_view_->secondary_contents_container());

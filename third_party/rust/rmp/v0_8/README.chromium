@@ -3,7 +3,7 @@ URL: https://crates.io/crates/rmp
 Version: 0.8.11
 Revision: 36940d05eb4ebcafddd8141b864d3afea0142376
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/LICENSE
 Shipped: yes
 Security Critical: yes
 

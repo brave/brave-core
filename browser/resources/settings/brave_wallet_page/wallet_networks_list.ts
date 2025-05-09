@@ -97,19 +97,19 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     }
   }
 
-  private addNewAllowed: boolean
-  private coin: number
-  private listTitle: string
-  private networks: NetworkInfo[]
-  private knownNetworks: string[]
-  private customNetworks: string[]
-  private hiddenNetworks: string[]
-  private showAddWalletNetworkDialog_: boolean
-  private selectedNetwork: NetworkInfo | Record<string, never>
-  private defaultNetwork: string
-  private isDefaultNetwork: boolean
-  private canRemoveNetwork: boolean
-  private canResetNetwork: boolean
+  private declare addNewAllowed: boolean
+  private declare coin: number
+  private declare listTitle: string
+  private declare networks: NetworkInfo[]
+  private declare knownNetworks: string[]
+  private declare customNetworks: string[]
+  private declare hiddenNetworks: string[]
+  private declare showAddWalletNetworkDialog_: boolean
+  private declare selectedNetwork: NetworkInfo | Record<string, never>
+  private declare defaultNetwork: string
+  private declare isDefaultNetwork: boolean
+  private declare canRemoveNetwork: boolean
+  private declare canResetNetwork: boolean
 
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
 

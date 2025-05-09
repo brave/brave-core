@@ -8,11 +8,11 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 import android.content.Context;
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -26,7 +26,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tabmodel.TabWindowManager;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
@@ -37,6 +37,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.util.List;
 import java.util.Locale;
 
+@NullMarked
 class BraveAutocompleteMediator extends AutocompleteMediator
         implements BraveSuggestionHost, BraveLeoAutocompleteDelegate {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
@@ -46,31 +47,30 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     private Supplier<Tab> mActivityTabSupplier;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
+    @SuppressWarnings("NullAway") // Actual instance is at the parent
     private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
-    private DropdownItemViewInfoListBuilder mDropdownViewInfoListBuilder;
+    private @Nullable DropdownItemViewInfoListBuilder mDropdownViewInfoListBuilder;
 
     public BraveAutocompleteMediator(
-            @NonNull Context context,
-            @NonNull AutocompleteDelegate delegate,
-            @NonNull UrlBarEditingTextStateProvider textProvider,
-            @NonNull PropertyModel listPropertyModel,
-            @NonNull Handler handler,
-            @NonNull Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            @NonNull Supplier<Tab> activityTabSupplier,
+            Context context,
+            AutocompleteDelegate delegate,
+            UrlBarEditingTextStateProvider textProvider,
+            PropertyModel listPropertyModel,
+            Handler handler,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<Tab> activityTabSupplier,
             @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
-            @NonNull LocationBarDataProvider locationBarDataProvider,
-            @NonNull Callback<Tab> bringTabToFrontCallback,
-            @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
-            @NonNull BookmarkState bookmarkState,
-            @NonNull OmniboxActionDelegate omniboxActionDelegate,
-            @NonNull ActivityLifecycleDispatcher lifecycleDispatcher,
-            @NonNull OmniboxSuggestionsDropdownEmbedder embedder,
-            @NonNull WindowAndroid windowAndroid,
-            @NonNull
-                    DeferredIMEWindowInsetApplicationCallback
-                            deferredIMEWindowInsetApplicationCallback) {
+            LocationBarDataProvider locationBarDataProvider,
+            Callback<Tab> bringTabToFrontCallback,
+            Supplier<TabWindowManager> tabWindowManagerSupplier,
+            BookmarkState bookmarkState,
+            OmniboxActionDelegate omniboxActionDelegate,
+            ActivityLifecycleDispatcher lifecycleDispatcher,
+            OmniboxSuggestionsDropdownEmbedder embedder,
+            WindowAndroid windowAndroid,
+            DeferredIMEWindowInsetApplicationCallback deferredIMEWindowInsetApplicationCallback) {
         super(
                 context,
                 delegate,
@@ -105,7 +105,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     /** We override parent to move back ability to set AutocompleteDelegate. */
     @Override
     void initDefaultProcessors() {
-        if (mDropdownViewInfoListBuilder instanceof BraveDropdownItemViewInfoListBuilder) {
+        if (mDropdownViewInfoListBuilder != null
+                && mDropdownViewInfoListBuilder instanceof BraveDropdownItemViewInfoListBuilder) {
             ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
                     .setAutocompleteDelegate(mDelegate);
             ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
@@ -116,12 +117,12 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
     @Override
     public boolean isAutoCompleteEnabled(WebContents webContents) {
-        if (ProfileManager.isInitialized()
-                && !UserPrefs.get(Profile.fromWebContents(webContents))
-                        .getBoolean(AUTOCOMPLETE_ENABLED)) {
-            return false;
+        if (ProfileManager.isInitialized()) {
+            Profile profile = Profile.fromWebContents(webContents);
+            if (profile != null && !UserPrefs.get(profile).getBoolean(AUTOCOMPLETE_ENABLED)) {
+                return false;
+            }
         }
-
         return true;
     }
 
@@ -139,9 +140,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     @Override
     void onVoiceResults(@Nullable List<VoiceRecognitionHandler.VoiceResult> voiceResults) {
         Tab tab = mActivityTabSupplier.get();
-        if (tab != null) {
-            VoiceResult topResult =
-                    (voiceResults != null && voiceResults.size() > 0) ? voiceResults.get(0) : null;
+        if (tab != null && voiceResults != null) {
+            VoiceResult topResult = (voiceResults.size() > 0) ? voiceResults.get(0) : null;
             if (topResult != null) {
                 String topResultQuery = topResult.getMatch();
                 // Check if the query starts with the start word for Leo.
@@ -151,7 +151,9 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                     // Remove the start word from the query and process it.
                     topResultQuery =
                             topResultQuery.substring(LEO_START_WORD_UPPER_CASE.length()).trim();
-                    openLeoQuery(tab.getWebContents(), "", topResultQuery);
+                    if (tab.getWebContents() != null) {
+                        openLeoQuery(tab.getWebContents(), "", topResultQuery);
+                    }
 
                     // Clear the voice results to prevent the query from being processed by Chromium
                     // since it's already handled by Leo.

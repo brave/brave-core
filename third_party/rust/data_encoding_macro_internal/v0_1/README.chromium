@@ -3,7 +3,7 @@ URL: https://crates.io/crates/data-encoding-macro-internal
 Version: 0.1.13
 Revision: 18203b91ced11ac3284177d7a96e5cd6ad76c921
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/data-encoding-macro-internal-0.1.13/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/data-encoding-macro-internal-v0_1/LICENSE
 Shipped: yes
 Security Critical: yes
 

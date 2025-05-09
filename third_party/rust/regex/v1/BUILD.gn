@@ -12,20 +12,21 @@ cargo_crate("lib") {
   crate_name = "regex"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/builders.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/find_byte.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/pattern.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/string.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/builders.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/find_byte.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/pattern.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regex/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regex/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regex/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regexset/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regexset/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regexset/string.rs",
   ]
   inputs = []
 
@@ -50,6 +51,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/regex_syntax/v0_8:lib",
   ]
   features = [
+    "default",
     "perf",
     "perf-backtrack",
     "perf-cache",
@@ -67,6 +69,7 @@ cargo_crate("lib") {
     "unicode-script",
     "unicode-segment",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
@@ -75,20 +78,21 @@ cargo_crate("buildrs_support") {
   crate_name = "regex"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/builders.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/find_byte.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/pattern.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/string.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/builders.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/find_byte.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/pattern.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regex/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regex/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regex/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regexset/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regexset/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-v1/src/regexset/string.rs",
   ]
   inputs = []
 
@@ -112,6 +116,7 @@ cargo_crate("buildrs_support") {
     "//brave/third_party/rust/regex_automata/v0_4:lib",
     "//brave/third_party/rust/regex_syntax/v0_8:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

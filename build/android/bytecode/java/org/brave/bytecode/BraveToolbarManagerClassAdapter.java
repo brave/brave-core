@@ -101,6 +101,9 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mTabGroupUiOneshotSupplier");
         makeProtectedField(sToolbarManagerClassName, "mTabGroupUiOneshotSupplier");
 
+        deleteField(sBraveToolbarManagerClassName, "mUndoBarThrottle");
+        makeProtectedField(sToolbarManagerClassName, "mUndoBarThrottle");
+
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(
                 sBraveToolbarManagerClassName, "onOrientationChange", "Ljava/lang/Override;");

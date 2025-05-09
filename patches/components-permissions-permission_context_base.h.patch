@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index b37444394cfff41169a35157c3ffa22906b09d04..11a2c6d979e3874e6b59a56c312ab61dfb243019 100644
+index f4315dbcc775c8b1f84434c1b9508d0476c947db..09889ef7c8cb8b7dd50d6b92ab91d5e9d4b8737a 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
-@@ -153,6 +153,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -156,6 +156,7 @@ class PermissionContextBase : public content_settings::Observer {
      has_device_permission_for_test_ = has_permission;
    }
  

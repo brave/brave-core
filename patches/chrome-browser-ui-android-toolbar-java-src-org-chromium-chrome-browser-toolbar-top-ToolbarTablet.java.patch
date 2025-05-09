@@ -1,21 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index a64b322cdfdc1ecf69bc7abb0b7252c0b57c70c9..777de8473a4290e94c846977bbcd43e16d36d1eb 100644
+index e2751bf67b045c558010ea0d2f57e2c3b7db2077..53023c144a5df7af2a727cf6dfa1b44dfd5d43d2 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -327,10 +327,12 @@ public class ToolbarTablet extends ToolbarLayout
-                     getContext(), getToolbarDataProvider().getTab(), /* fromAppMenu= */ false);
-             RecordUserAction.record("MobileToolbarDownloadPage");
-         }
-+        BraveToolbarLayout.class.cast(this).onClickImpl(v);
-     }
- 
-     @Override
-     public boolean onLongClick(View v) {
-+        if (BraveToolbarLayout.class.cast(this).onLongClickImpl(v)) return true;
-         String description = null;
-         Context context = getContext();
-         Resources resources = context.getResources();
-@@ -451,6 +453,7 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -306,6 +306,7 @@ public class ToolbarTablet extends ToolbarLayout implements OnClickListener {
          mLocationBar.getTabletCoordinator().tintBackground(textBoxColor);
          mLocationBar.updateVisualsForState();
          setToolbarHairlineColor(color);

@@ -27,6 +27,7 @@ import android.widget.TextView;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.chromium.base.IntentUtils;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.ui.LayoutInflaterUtils;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
@@ -37,6 +38,7 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.util.ColorUtils;
 
 /* Adds additional items to Permission Dialog. */
+@NullMarked
 class BravePermissionDialogModel {
     // Link for Widevine
     private static final String URL_WIDEVINE_LEARN_MORE =
@@ -86,8 +88,7 @@ class BravePermissionDialogModel {
                                 "<LINK>",
                                 "</LINK>",
                                 new ChromeClickableSpan(
-                                        context,
-                                        R.color.brave_link,
+                                        context.getColor(R.color.brave_link),
                                         result -> {
                                             openUrlInCustomTab(context, URL_WIDEVINE_LEARN_MORE);
                                         })));
@@ -130,6 +131,11 @@ class BravePermissionDialogModel {
     /* Adds a permission lifetime options to a dialog view if lifetime options are available. */
     private static void addLifetimeOptions(View customView, PermissionDialogDelegate delegate) {
         Context context = delegate.getWindow().getContext().get();
+
+        if (context == null) {
+            throw new NullPointerException("Unexpected null context");
+        }
+
         BravePermissionDialogDelegate braveDelegate =
                 (BravePermissionDialogDelegate) (Object) delegate;
 

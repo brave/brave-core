@@ -27,7 +27,13 @@
     return false;                                              \
   }
 
+#define GetTypesWithTemporaryGrants GetTypesWithTemporaryGrants_ChromiumImpl
+#define GetTypesWithTemporaryGrantsInHcsm \
+  GetTypesWithTemporaryGrantsInHcsm_ChromiumImpl
+
 #include "src/components/content_settings/core/browser/content_settings_utils.cc"
+#undef GetTypesWithTemporaryGrantsInHcsm
+#undef GetTypesWithTemporaryGrants
 #undef BRAVE_CAN_TRACK_LAST_VISIT
 #undef GetRendererContentSettingRules
 
@@ -56,6 +62,16 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
     rules->webcompat_rules[webcompat_settings_type] =
         map->GetSettingsForOneType(webcompat_settings_type);
   }
+}
+
+const std::vector<ContentSettingsType>& GetTypesWithTemporaryGrants() {
+  static base::NoDestructor<const std::vector<ContentSettingsType>> types;
+  return *types;
+}
+
+const std::vector<ContentSettingsType>& GetTypesWithTemporaryGrantsInHcsm() {
+  static base::NoDestructor<const std::vector<ContentSettingsType>> types;
+  return *types;
 }
 
 }  // namespace content_settings

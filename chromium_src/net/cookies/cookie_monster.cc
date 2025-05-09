@@ -92,12 +92,13 @@ void CookieMonster::DeleteSessionCookiesAsync(DeleteCallback callback) {
 }
 
 void CookieMonster::SetCookieableSchemes(
-    const std::vector<std::string>& schemes,
+    std::vector<std::string> schemes,
     SetCookieableSchemesCallback callback) {
   for (auto& it : ephemeral_cookie_stores_) {
     it.second->SetCookieableSchemes(schemes, SetCookieableSchemesCallback());
   }
-  ChromiumCookieMonster::SetCookieableSchemes(schemes, std::move(callback));
+  ChromiumCookieMonster::SetCookieableSchemes(std::move(schemes),
+                                              std::move(callback));
 }
 
 void CookieMonster::SetCanonicalCookieAsync(

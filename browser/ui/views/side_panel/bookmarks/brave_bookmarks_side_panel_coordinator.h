@@ -8,11 +8,10 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/browser_user_data.h"
+#include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 
-class Browser;
-class SidePanelRegistry;
 class SidePanelEntryScope;
+class SidePanelRegistry;
 
 namespace views {
 class View;
@@ -21,32 +20,20 @@ class View;
 // Introduced to give custom contents view(BraveBookmarksSidePanelView) for
 // bookmarks panel entry. That contents view includes bookmarks panel specific
 // header view and web view.
-// Note that this is not the subclass of upstream BookmarksSidePanelCoordinator.
-// As it inherits BrowserUserData, subclassig doesn't work well when its
-// instance is created via BrowserUserData<>::CreateForBrowser(). So, new
-// coordinator class is introduced and
 // BookmarksSidePanelCoordinator::CreateBookmarksWebView() is reused from
 // BraveBookmarksSidePanelView. That's why BraveBookmarksSidePanelView is set
 // as BookmarksSidePanelCoordinator's friend.
 class BraveBookmarksSidePanelCoordinator
-    : public BrowserUserData<BraveBookmarksSidePanelCoordinator> {
+    : public BookmarksSidePanelCoordinator {
  public:
-  explicit BraveBookmarksSidePanelCoordinator(Browser* browser);
-  BraveBookmarksSidePanelCoordinator(
-      const BraveBookmarksSidePanelCoordinator&) = delete;
-  BraveBookmarksSidePanelCoordinator& operator=(
-      const BraveBookmarksSidePanelCoordinator&) = delete;
+  using BookmarksSidePanelCoordinator::BookmarksSidePanelCoordinator;
   ~BraveBookmarksSidePanelCoordinator() override;
 
-  void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
+  void CreateAndRegisterEntry(SidePanelRegistry* global_registry) override;
 
  private:
-  friend class BrowserUserData<BraveBookmarksSidePanelCoordinator>;
-
   std::unique_ptr<views::View> CreateBookmarksPanelView(
       SidePanelEntryScope& scope);
-
-  BROWSER_USER_DATA_KEY_DECL();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BOOKMARKS_BRAVE_BOOKMARKS_SIDE_PANEL_COORDINATOR_H_

@@ -12,11 +12,12 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_scope.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
@@ -42,7 +43,7 @@ class BookmarksSidePanelHeaderView : public views::View {
   METADATA_HEADER(BookmarksSidePanelHeaderView, views::View)
 
  public:
-  explicit BookmarksSidePanelHeaderView(Browser* browser) {
+  explicit BookmarksSidePanelHeaderView(SidePanelEntryScope& scope) {
     constexpr int kHeaderInteriorMargin = 16;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
@@ -76,10 +77,10 @@ class BookmarksSidePanelHeaderView : public views::View {
             .WithOrder(2));
     auto* button =
         AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
-            [](Browser* browser, const ui::Event& event) {
-              ShowSingletonTab(browser, GURL(chrome::kChromeUIBookmarksURL));
+            [](Profile* profile, const ui::Event& event) {
+              ShowSingletonTab(profile, GURL(chrome::kChromeUIBookmarksURL));
             },
-            browser)));
+            scope.GetBrowserWindowInterface().GetProfile())));
     button->SetTooltipText(l10n_util::GetStringUTF16(
         IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP));
 
@@ -103,12 +104,12 @@ class BookmarksSidePanelHeaderView : public views::View {
 
     button =
         AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
-            [](Browser* browser) {
-              if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
-                ui->Close();
+            [](SidePanelUI* side_panel_ui) {
+              if (side_panel_ui) {
+                side_panel_ui->Close();
               }
             },
-            browser)));
+            scope.GetBrowserWindowInterface().GetFeatures().side_panel_ui())));
     button->SetTooltipText(
         l10n_util::GetStringUTF16(IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP));
     button->SetImageModel(
@@ -144,18 +145,19 @@ END_METADATA
 }  // namespace
 
 BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(
-    Browser* browser,
     SidePanelEntryScope& scope) {
+  CHECK_EQ(SidePanelEntryScope::ScopeType::kBrowser, scope.get_scope_type());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
-  AddChildView(std::make_unique<BookmarksSidePanelHeaderView>(browser));
+  AddChildView(std::make_unique<BookmarksSidePanelHeaderView>(scope));
   AddChildView(std::make_unique<views::Separator>())
       ->SetColorId(kColorSidebarPanelHeaderSeparator);
 
-  // Reuse upstream's bookmarks panl nwebui.
-  auto* web_view =
-      AddChildView(BookmarksSidePanelCoordinator::GetOrCreateForBrowser(browser)
-                       ->CreateBookmarksWebView(scope));
+  // Reuse upstream's bookmarks panel webui.
+  auto* web_view = AddChildView(scope.GetBrowserWindowInterface()
+                                    .GetFeatures()
+                                    .bookmarks_side_panel_coordinator()
+                                    ->CreateBookmarksWebView(scope));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

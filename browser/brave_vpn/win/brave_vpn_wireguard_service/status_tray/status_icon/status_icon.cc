@@ -28,8 +28,7 @@ std::unique_ptr<NOTIFYICONDATA> GetIconData(HWND window, UINT uFlags = 0) {
 }  // namespace
 
 StatusIcon::StatusIcon(HWND window, UINT message)
-    : window_(window), message_id_(message) {
-}
+    : window_(window), message_id_(message) {}
 
 StatusIcon::~StatusIcon() {
   // Remove our icon
@@ -99,7 +98,7 @@ void StatusIcon::UpdateIcon() {
 
 void StatusIcon::SetToolTip(const std::u16string& tool_tip) {
   auto icon_data = GetIconData(window_, NIF_TIP);
-  wcscpy_s(icon_data->szTip, base::as_wcstr(tool_tip));
+  UNSAFE_TODO(wcscpy_s(icon_data->szTip, base::as_wcstr(tool_tip)));
   if (!Shell_NotifyIcon(NIM_MODIFY, icon_data.get())) {
     LOG(WARNING) << "Unable to set tooltip for status tray icon";
   }
