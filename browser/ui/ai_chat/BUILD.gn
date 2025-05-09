@@ -37,6 +37,7 @@ source_set("unit_tests") {
     "//chrome/test:test_support",
     "//components/favicon/content",
     "//components/favicon/core/test:test_support",
+    "//components/printing/browser",
     "//content/test:test_support",
     "//testing/gtest:gtest",
   ]

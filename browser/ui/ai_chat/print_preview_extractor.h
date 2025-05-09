@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_H_
 #define BRAVE_BROWSER_UI_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -40,9 +41,11 @@ class PrintPreviewExtractor
    public:
     virtual ~Extractor() = default;
     virtual void CreatePrintPreview() = 0;
+    virtual std::optional<int32_t> GetPrintPreviewUIIdForTesting() = 0;
   };
 
  private:
+  friend class PrintPreviewExtractorTest;
   template <typename CallbackType, typename ResultType>
   void OnComplete(CallbackType callback,
                   base::expected<ResultType, std::string> result);

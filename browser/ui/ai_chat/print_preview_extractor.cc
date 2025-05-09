@@ -12,6 +12,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
@@ -322,6 +323,11 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
     }
   }
 
+  std::optional<int32_t> GetPrintPreviewUIIdForTesting() override {
+    CHECK_IS_TEST();
+    return print_preview_ui_id_;
+  }
+
   void SendError(const std::string& error) {
     PreviewCleanup();
     if (auto* text_cb = std::get_if<ExtractCallback>(&callback_)) {
@@ -440,16 +446,19 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
           [*print_preview_ui_id_] = -1;
     }
+    SendError("PrintPreviewFailed");
   }
 
   void PrintPreviewCancelled(int32_t document_cookie,
                              int32_t request_id) override {
     DLOG(ERROR) << __func__ << ": id=" << request_id;
+    SendError("PrintPreviewCancelled");
   }
 
   void PrinterSettingsInvalid(int32_t document_cookie,
                               int32_t request_id) override {
     DLOG(ERROR) << __func__ << ": id=" << request_id;
+    SendError("PrinterSettingsInvalid");
   }
 
   void DidGetDefaultPageLayout(
