@@ -25,7 +25,6 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
-#include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
@@ -303,10 +302,6 @@
 + (Feature*)kVerboseLoggingFeature {
   return [[Feature alloc]
       initWithFeature:&brave_rewards::features::kVerboseLoggingFeature];
-}
-
-+ (Feature*)kNewPlaylistUI {
-  return [[Feature alloc] initWithFeature:&playlist::features::kNewPlaylistUI];
 }
 
 + (Feature*)kBraveHttpsByDefault {

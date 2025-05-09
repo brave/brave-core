@@ -8,13 +8,6 @@ import Preferences
 import Shared
 import UIKit
 
-// MARK: - PlayListSide
-
-public enum PlayListSide: String, CaseIterable {
-  case left
-  case right
-}
-
 // MARK: - PlayListDownloadType
 
 public enum PlayListDownloadType: String, CaseIterable {
@@ -25,11 +18,6 @@ public enum PlayListDownloadType: String, CaseIterable {
 
 extension Preferences {
   final public class Playlist {
-    /// The Option to show video list left or right side
-    public static let listViewSide = Option<String>(
-      key: "playlist.listViewSide",
-      default: PlayListSide.left.rawValue
-    )
     /// The count of how many times  Add to Playlist URL-Bar onboarding has been shown
     public static let addToPlaylistURLBarOnboardingCount = Option<Int>(
       key: "playlist.addToPlaylistURLBarOnboardingCount",
@@ -64,9 +52,6 @@ extension Preferences {
     /// The last time all playlist folders were synced
     public static let lastPlaylistFoldersSyncTime =
       Option<Date?>(key: "playlist.lastPlaylistFoldersSyncTime", default: nil)
-    /// Sync shared folders automatically preference
-    public static let syncSharedFoldersAutomatically =
-      Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: true)
     /// The date of the last cached data cleanup for dangling playlist items
     public static let lastCacheDataCleanupDate =
       Option<Date?>(key: "playlist.lastCacheDataCleanupDate", default: nil)
