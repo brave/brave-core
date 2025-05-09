@@ -5,10 +5,10 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-// import {
-//   BraveAccountBrowserProxy,
-//   BraveAccountBrowserProxyImpl
-// } from './brave_account_browser_proxy.js'
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl
+} from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
@@ -59,11 +59,10 @@ export class SettingsBraveAccountRow extends CrLitElement {
   }
 
   protected onCloseButtonClicked() {
-    console.log('onCloseButtonClicked')
-    window.close()
+    this.browserProxy.handler.openDialog()
   }
 
-  // private browserProxy: BraveAccountBrowserProxy = BraveAccountBrowserProxyImpl.getInstance()
+  private browserProxy: BraveAccountBrowserProxy = BraveAccountBrowserProxyImpl.getInstance()
   protected dialog: Dialog = Dialog.ENTRY
   protected signedIn: boolean = false
 }
