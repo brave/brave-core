@@ -52,7 +52,7 @@ views::Widget* SidebarEditItemBubbleDelegateView::Create(
   frame_view->SetDisplayVisibleArrow(true);
   delegate->set_adjust_if_offscreen(true);
   delegate->SizeToContents();
-  frame_view->SetCornerRadius(4);
+  frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
 
   return bubble;
 }
