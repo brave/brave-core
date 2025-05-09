@@ -12,6 +12,8 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
@@ -27,6 +29,14 @@ namespace ai_chat {
 
 class UploadFileHelper : public ui::SelectFileDialog::Listener {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnFilesSelected() {}
+
+   protected:
+    ~Observer() override = default;
+  };
+
   UploadFileHelper(content::WebContents* web_contents, Profile* profile);
   ~UploadFileHelper() override;
   UploadFileHelper(const UploadFileHelper&) = delete;
@@ -37,6 +47,9 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
                    bool use_media_capture,
 #endif
                    mojom::AIChatUIHandler::UploadImageCallback callback);
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
  private:
   // ui::SelectFileDialog::Listener
@@ -51,6 +64,7 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   void OnImageEncoded(std::string filename,
                       std::optional<std::vector<uint8_t>> output);
 
+  base::ObserverList<Observer> observers_;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
