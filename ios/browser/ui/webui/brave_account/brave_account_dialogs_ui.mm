@@ -12,7 +12,9 @@
 #include "brave/ios/browser/ui/webui/brave_web_ui_ios_data_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/password_manager/core/browser/ui/weak_check_utility.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -142,6 +144,26 @@ BraveAccountDialogsUI::BraveAccountDialogsUI(web::WebUIIOS* web_ui,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc,
       "connect-src chrome://resources chrome://theme 'self';");
+
+  web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
+      base::BindRepeating(&BraveAccountDialogsUI::BindInterface,
+                          base::Unretained(this)));
 }
 
 BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;
+
+void BraveAccountDialogsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+        pending_receiver) {
+  receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountDialogsUI::GetPasswordStrength(
+    const std::string& password,
+    brave_account::mojom::BraveAccountHandler::GetPasswordStrengthCallback
+        callback) {
+  std::move(callback).Run(password_manager::GetPasswordStrength(password));
+}
+
+void BraveAccountDialogsUI::OpenDialog() {
+}
