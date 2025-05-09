@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as i18n from '../../core/i18n/i18n.js'
 import * as SDK from '../../core/sdk/sdk.js'
 import * as Lit from '../../ui/lit/lit.js'
 import * as RenderCoordinator from '../../ui/components/render_coordinator/render_coordinator.js';

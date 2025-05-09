@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
+index 68cdddbb4a2698fe6e30ab628897db87743d51a5..8090e9b8a1778ec69d63ee3e0ab0ef9a1874963d 100644
+--- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
++++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog_v2.ts
+@@ -77,6 +77,8 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
+       return loadTimeData.getString('clearDownloadHistory');
+     case BrowsingDataType.HOSTED_APPS_DATA:
+       return loadTimeData.getString('clearHostedAppData');
++    case BrowsingDataType.BRAVE_AI_CHAT:
++      return loadTimeData.getString('clearBraveAIChat');
+   }
+ }
+ 
+@@ -96,6 +98,8 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
+       return 'browser.clear_data.download_history';
+     case BrowsingDataType.HOSTED_APPS_DATA:
+       return 'browser.clear_data.hosted_apps_data';
++    case BrowsingDataType.BRAVE_AI_CHAT:
++      return 'browser.clear_data.brave_leo';
+   }
+ }
+ 

@@ -22,8 +22,8 @@ bool RemovePadding(std::string_view* padded_string) {
   }
 
   // Read payload length from the header.
-  uint32_t data_length = base::numerics::U32FromBigEndian(
-      base::as_byte_span(*padded_string).first<4u>());
+  uint32_t data_length =
+      base::U32FromBigEndian(base::as_byte_span(*padded_string).first<4u>());
 
   // Remove length header.
   padded_string->remove_prefix(sizeof(uint32_t));

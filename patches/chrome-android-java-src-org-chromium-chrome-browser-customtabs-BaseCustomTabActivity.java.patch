@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabActivity.java
+index 203c36df769d96650e1e108e0216dca2302a64d0..6a6039ab99a270b02d390016b451b6afac641ac3 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/BaseCustomTabActivity.java
+@@ -1515,7 +1515,7 @@ public abstract class BaseCustomTabActivity extends ChromeActivity {
+         return mAppHeaderCoordinator;
+     }
+ 
+-    private BrowserServicesThemeColorProvider getBrowserServicesThemeColorProvider() {
++    public BrowserServicesThemeColorProvider getBrowserServicesThemeColorProvider() {
+         if (mBrowserServicesThemeColorProvider != null) return mBrowserServicesThemeColorProvider;
+ 
+         mBrowserServicesThemeColorProvider =

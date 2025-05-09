@@ -12,7 +12,7 @@ class DraggingTabsSession : public DraggingTabsSessionChromium {
  public:
   explicit DraggingTabsSession(DragSessionData drag_data,
                                TabDragContext* attached_context,
-                               int mouse_offset,
+                               float offset_to_width_ratio,
                                bool initial_move,
                                gfx::Point point_in_screen);
   ~DraggingTabsSession() override;

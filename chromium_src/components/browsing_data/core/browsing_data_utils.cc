@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/chromium_src/components/browsing_data/core/browsing_data_utils.h"
+#include "components/browsing_data/core/browsing_data_utils.h"
 
 #include <optional>
 #include <string_view>

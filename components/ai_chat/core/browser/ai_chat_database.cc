@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"

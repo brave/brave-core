@@ -39,7 +39,7 @@ std::unique_ptr<SharedPinnedTabDummyView> SharedPinnedTabDummyView::Create(
   // Note that SharedPinnedTabDummyView is owned by the client, not by a view
   // tree. This is invariant of WebView::SetCrashedOverlayView, which we're
   // using to attach this view to web view.
-  view->set_owned_by_client();
+  view->set_owned_by_client(views::View::OwnedByClientPassKey());
 
   return view;
 }

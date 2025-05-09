@@ -11,6 +11,7 @@ group("brave_providers") {
     "//brave/ios/browser/providers/lottie:chromium_lottie_animation",
 
     # The individual API implementations.
+    "//ios/chrome/browser/providers/add_to_calendar:chromium_add_to_calendar",
     "//ios/chrome/browser/providers/additional_features:chromium_additional_features",
     "//ios/chrome/browser/providers/app_distribution:chromium_app_distribution",
     "//ios/chrome/browser/providers/app_utils:chromium_app_utils",
@@ -23,6 +24,7 @@ group("brave_providers") {
     "//ios/chrome/browser/providers/follow:chromium_follow",
     "//ios/chrome/browser/providers/font:chromium_font",
     "//ios/chrome/browser/providers/fullscreen:chromium_fullscreen",
+    "//ios/chrome/browser/providers/glic:chromium_glic",
     "//ios/chrome/browser/providers/google_one:chromium_google_one",
     "//ios/chrome/browser/providers/keyboard:chromium_keyboard",
     "//ios/chrome/browser/providers/lens:chromium_lens",

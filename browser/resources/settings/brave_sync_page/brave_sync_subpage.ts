@@ -101,14 +101,14 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
     }
   }
 
-  private pageStatus_: PageStatus
-  private syncPrefs: SyncPrefs | undefined
-  private syncStatus: BraveSyncStatus
-  private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null
-  private syncDisabledByAdmin_: boolean
-  private hasLockedSafeStorage_: boolean
-  private hasUnlockedSafeStorageCannotDecryptSeed_: boolean
-  private syncSectionDisabled_: boolean
+  private declare pageStatus_: PageStatus
+  private declare syncPrefs: SyncPrefs | undefined
+  private declare syncStatus: BraveSyncStatus
+  private declare syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null
+  private declare syncDisabledByAdmin_: boolean
+  private declare hasLockedSafeStorage_: boolean
+  private declare hasUnlockedSafeStorageCannotDecryptSeed_: boolean
+  private declare syncSectionDisabled_: boolean
 
   private browserProxy_ = SyncBrowserProxyImpl.getInstance()
 

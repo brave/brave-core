@@ -2,7 +2,7 @@ Name: zcash_encoding
 URL: https://crates.io/crates/zcash_encoding
 Version: 0.2.0
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/zcash_encoding-0.2.0/../../../../../common/licenses/Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/zcash_encoding-v0_2/../../../../../common/licenses/Apache-2.0
 Shipped: yes
 Security Critical: yes
 

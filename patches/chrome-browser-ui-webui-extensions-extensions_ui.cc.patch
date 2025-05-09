@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index fc605dbc68f6d3907e0266b161f22ccb18965f52..a3645fa6c880e0a24c8a326773a5ff2c1d9eff69 100644
+index f769bdb0591567b2f4e5da4dcee4032ba6724131..c86fa5c7c1a1fc58bdf79d4e6a90aeb2afcdeede 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -508,6 +508,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -517,6 +517,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
            l10n_util::GetStringUTF16(IDS_SHORT_PRODUCT_OS_NAME)));
  #endif  // BUILDFLAG(IS_CHROMEOS)
  

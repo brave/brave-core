@@ -13,6 +13,7 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
   static BraveContentsLayoutManager* GetLayoutManagerForView(views::View* host);
 
   BraveContentsLayoutManager(views::View* devtools_view,
+                             views::View* devtools_scrim_view,
                              views::View* contents_view,
                              views::View* lens_overlay_view,
                              views::View* scrim_view,

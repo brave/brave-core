@@ -3,7 +3,7 @@ URL: https://crates.io/crates/kuchikiki
 Version: 0.8.8-speedreader
 Revision: 2aade9dd598ec6dea5307d2ae9ad0017962c200d
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/LICENSE
 Shipped: yes
 Security Critical: yes
 

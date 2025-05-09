@@ -5,10 +5,11 @@
 
 import { RegisterPolymerPrototypeModification } from 'chrome://resources/brave/polymer_overriding.js'
 import { PowerBookmarksService } from '../power_bookmarks_service.js';
+import type {BookmarksTreeNode} from '../bookmarks.mojom-webui.js';
 
 const originalSortBookmarks = PowerBookmarksService.prototype.sortBookmarks
 PowerBookmarksService.prototype.sortBookmarks = function(
-    bookmarks: chrome.bookmarks.BookmarkTreeNode[],
+    bookmarks: BookmarksTreeNode[],
     activeSortIndex: number): boolean {
     if (activeSortIndex === /*custom order*/5) {
       return false
@@ -20,9 +21,9 @@ RegisterPolymerPrototypeModification({
   'power-bookmarks-list': prototype => {
     const originalOnBookmarkMoved = prototype.onBookmarkMoved
     prototype.onBookmarkMoved = function (
-        bookmark: chrome.bookmarks.BookmarkTreeNode,
-        oldParent: chrome.bookmarks.BookmarkTreeNode,
-        newParent: chrome.bookmarks.BookmarkTreeNode) {
+        bookmark: BookmarksTreeNode,
+        oldParent: BookmarksTreeNode,
+        newParent: BookmarksTreeNode) {
       originalOnBookmarkMoved.apply(this, [bookmark, oldParent, newParent])
       const shouldShow = prototype.bookmarkShouldShow_.apply(this, [bookmark]);
       // Update if currently visible item is moved in the same directory,

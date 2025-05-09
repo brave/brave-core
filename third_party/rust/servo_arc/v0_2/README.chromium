@@ -3,7 +3,7 @@ URL: https://crates.io/crates/servo_arc
 Version: 0.2.0
 Revision: e82d7868d999d84f6d59719e4c397e5252aecb85
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/servo_arc-0.2.0/../../../../../common/licenses/Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/servo_arc-v0_2/../../../../../common/licenses/Apache-2.0
 Shipped: yes
 Security Critical: yes
 

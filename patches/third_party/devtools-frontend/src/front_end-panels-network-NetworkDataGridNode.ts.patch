@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/network/NetworkDataGridNode.ts b/front_end/panels/network/NetworkDataGridNode.ts
-index 7586fa57a7810008294d6288df11d54bf5f57866..d58bfc15cc5dcc6fe60209644206b2d547824a84 100644
+index 4beafb7a75aaaa40af009bec0b55aaffa215d533..d3bd25c1e6b7f1920d7a70790f4c39ae7210fd69 100644
 --- a/front_end/panels/network/NetworkDataGridNode.ts
 +++ b/front_end/panels/network/NetworkDataGridNode.ts
-@@ -1500,6 +1500,7 @@ export class NetworkRequestNode extends NetworkNode {
+@@ -1517,6 +1517,7 @@ export class NetworkRequestNode extends NetworkNode {
    }
  }
  

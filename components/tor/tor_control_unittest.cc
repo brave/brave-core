@@ -137,7 +137,8 @@ TEST(TorControlTest, ReadDone) {
         control->async_events_[tor::TorControlEvent::NETWORK_LIVENESS] = 1;
         control->readiobuf_ = base::MakeRefCounted<net::GrowableIOBuffer>();
         control->readiobuf_->SetCapacity(sizeof test_str - 1);
-        std::memcpy(control->readiobuf_->data(), test_str, sizeof test_str - 1);
+        UNSAFE_TODO(std::memcpy(control->readiobuf_->data(), test_str,
+                                sizeof test_str - 1));
 
         // Not yet seen CRLF
         // Read this time: 250-SOCKSP

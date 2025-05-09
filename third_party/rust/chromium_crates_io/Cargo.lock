@@ -396,14 +396,14 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.32"
+version = "4.5.35"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.5.32"
+version = "4.5.35"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -546,7 +546,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.150"
+version = "1.0.156"
 dependencies = [
  "cc",
  "cxxbridge-cmd",
@@ -558,7 +558,7 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.150"
+version = "1.0.156"
 dependencies = [
  "clap",
  "codespan-reporting",
@@ -569,11 +569,11 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.150"
+version = "1.0.156"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.150"
+version = "1.0.156"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -675,8 +675,7 @@ dependencies = [
 
 [[package]]
 name = "equivalent"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "1.0.2"
 
 [[package]]
 name = "feed-rs"
@@ -903,6 +902,7 @@ dependencies = [
 [[package]]
 name = "getrandom"
 version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if",
  "libc",
@@ -959,8 +959,7 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "0.15.2"
 dependencies = [
  "allocator-api2",
  "equivalent",
@@ -1032,8 +1031,7 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "2.9.0"
 dependencies = [
  "equivalent",
  "hashbrown",
@@ -1556,6 +1554,7 @@ dependencies = [
 [[package]]
 name = "ppv-lite86"
 version = "0.2.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "zerocopy",
 ]
@@ -1614,6 +1613,7 @@ dependencies = [
 [[package]]
 name = "rand"
 version = "0.8.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "libc",
  "rand_chacha 0.3.1",
@@ -1632,6 +1632,7 @@ dependencies = [
 [[package]]
 name = "rand_chacha"
 version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "ppv-lite86",
  "rand_core 0.6.4",
@@ -1648,6 +1649,7 @@ dependencies = [
 [[package]]
 name = "rand_core"
 version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "getrandom 0.2.15",
 ]
@@ -1730,7 +1732,6 @@ dependencies = [
 [[package]]
 name = "regex-syntax"
 version = "0.8.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "rmp"
@@ -1851,7 +1852,6 @@ dependencies = [
 [[package]]
 name = "serde_json"
 version = "1.0.140"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "itoa",
  "memchr",
@@ -2442,6 +2442,7 @@ dependencies = [
 [[package]]
 name = "zerocopy"
 version = "0.8.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "zerocopy-derive",
 ]
@@ -2449,6 +2450,7 @@ dependencies = [
 [[package]]
 name = "zerocopy-derive"
 version = "0.8.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2486,4 +2488,4 @@ dependencies = [
 
 [[patch.unused]]
 name = "anyhow"
-version = "1.0.97"
+version = "1.0.98"

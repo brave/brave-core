@@ -1,8 +1,8 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index e9b3014f2fee74ef25744918a92cc8e111b6e744..bb4977ba683bea093f3f345c278454fc60d928f4 100644
+index 579d66ff54fd9250672c8a4c16d1fd1bd738d4b8..9a50822c73d398b133b2b0b1451db67c8b94b129 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
-@@ -29,6 +29,7 @@ assert(!(incremental_install && !is_java_debug),
+@@ -31,6 +31,7 @@ assert(!(incremental_install && !is_java_debug),
  robolectric_toolchain = "//build/toolchain/android:robolectric_$host_cpu"
  
  if (is_android) {

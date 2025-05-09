@@ -11,6 +11,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 
+// TOOD(https://github.com/brave/brave-browser/issues/45582): Plaster issue.
+// This header has to be pre-emptively included as it eventually causes the
+// inclusion of components/permissions/permission_prompt.h, where
+// `PermissionRequest` is used as a forward declaration, but was getting
+// replaced with `PermissionRequest_ChromiumImpl`. This is another issue that
+// has to be fixed with plaster.
+#include "components/permissions/permission_hats_trigger_helper.h"
+
 #define PermissionRequest PermissionRequest_ChromiumImpl
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 #include "src/components/permissions/permission_request.h"  // IWYU pragma: export
@@ -21,16 +29,10 @@ namespace permissions {
 
 class PermissionRequest : public PermissionRequest_ChromiumImpl {
  public:
-  PermissionRequest(const GURL& requesting_origin,
-                    RequestType request_type,
-                    bool has_gesture,
-                    PermissionDecidedCallback permission_decided_callback,
-                    base::OnceClosure delete_callback);
-
-  PermissionRequest(PermissionRequestData request_data,
+  PermissionRequest(std::unique_ptr<PermissionRequestData> request_data,
                     PermissionDecidedCallback permission_decided_callback,
                     base::OnceClosure delete_callback,
-                    bool uses_automatic_embargo);
+                    bool uses_automatic_embargo = true);
 
   PermissionRequest(const PermissionRequest&) = delete;
   PermissionRequest& operator=(const PermissionRequest&) = delete;

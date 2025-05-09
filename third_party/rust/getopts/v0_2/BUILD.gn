@@ -12,10 +12,10 @@ cargo_crate("lib") {
   crate_name = "getopts"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/getopts-0.2.21/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/getopts-v0_2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/getopts-0.2.21/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/getopts-0.2.21/src/tests/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/getopts-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/getopts-v0_2/src/tests/mod.rs",
   ]
   inputs = []
 
@@ -33,6 +33,7 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/unicode_width/v0_1:lib" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

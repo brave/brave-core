@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts b/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts
-index 377e34aa0dc3d9490f73d20ec613d69f8103b898..24542cd692144f242193a9540d12801a0fa2e016 100644
+index 075337560a1c0dea68ed6757f43bf2a72e76f305..57bb9f367e6cd2f7bb8d6b89bce26ca1703f1c0d 100644
 --- a/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts
 +++ b/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts
 @@ -163,6 +163,7 @@ export const SiteSettingsMixin = dedupingMixin(

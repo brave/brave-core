@@ -22,7 +22,6 @@ class TabStripController;
 class TabContainer;
 class TabSlotView;
 class TabStrip;
-struct TabLayoutConstants;
 
 namespace tabs {
 
@@ -34,7 +33,6 @@ inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 int GetTabCornerRadius(const Tab& tab);
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
-    const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
     bool is_floating_mode);

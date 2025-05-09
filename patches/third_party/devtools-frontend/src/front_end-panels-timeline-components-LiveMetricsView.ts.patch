@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/timeline/components/LiveMetricsView.ts b/front_end/panels/timeline/components/LiveMetricsView.ts
-index 47652a306934e5eba3d5cabb56d539cd1d5d024a..307d5ea0b688516f965803ca480c9e80ecd40ad5 100644
+index e676eefcdbc42f25f6bde5b284c936e5f3385e03..c9321a9d8156cdf8a0400643eb7e39a374db5146 100644
 --- a/front_end/panels/timeline/components/LiveMetricsView.ts
 +++ b/front_end/panels/timeline/components/LiveMetricsView.ts
-@@ -1124,7 +1124,7 @@ export class LiveMetricsView extends LegacyWrapper.LegacyWrapper.WrappableCompon
+@@ -1120,7 +1120,7 @@ export class LiveMetricsView extends LegacyWrapper.LegacyWrapper.WrappableCompon
            </main>
            <aside class="next-steps" aria-labelledby="next-steps-section-title">
              <h2 id="next-steps-section-title" class="section-title">${i18nString(UIStrings.nextSteps)}</h2>

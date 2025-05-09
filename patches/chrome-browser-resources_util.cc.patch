@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index eb57680b1155f8b116ee4c17b8f71a3cd98eb660..9a36b48fbfa67d804d0726f744346f484ae01b65 100644
+index b33ed83f0816ba8c889b7dc33ed133bb0bdfc440..e32ffec0f79ba6d1e57c87b9c412a7071867f92b 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
-@@ -60,6 +60,7 @@ class ThemeMap {
+@@ -72,6 +72,7 @@ class ThemeMap {
                             kUiChromeosResources[i].id);
      }
  #endif

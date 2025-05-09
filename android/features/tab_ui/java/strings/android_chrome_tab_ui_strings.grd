@@ -652,6 +652,12 @@
           other {Expand shared tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
         }
       </message>
+      <message name="IDS_ACCESSIBILITY_EXPAND_SHARED_TAB_GROUP_WITH_COLOR_WITH_CARD_LABEL" desc="The accessibility text to read when a card representing a shared tab group is clicked in grid tab switcher. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group. CARD_LABEL is the label for the group.">
+        {NUMBER_OF_TABS, plural,
+          =1 {Expand shared tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>, with label <ph name="CARD_LABEL">%3$s<ex>New Activity</ex></ph>.}
+          other {Expand shared tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>, with label <ph name="CARD_LABEL">%3$s<ex>New Activity</ex></ph>.}
+        }
+      </message>
       <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP_WITH_GROUP_NAME_WITH_COLOR" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
         {NUMBER_OF_TABS, plural,
           =1 {Expand <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
@@ -664,16 +670,10 @@
           other {Expand shared <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
         }
       </message>
-      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_COLOR" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
+      <message name="IDS_ACCESSIBILITY_EXPAND_SHARED_TAB_GROUP_WITH_GROUP_NAME_WITH_COLOR_WITH_CARD_LABEL" desc="The accessibility text to read when a card representing a shared tab group is clicked in grid tab switcher. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group. CARD_LABEL is the label for the group.">
         {NUMBER_OF_TABS, plural,
-          =1 {Close tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
-          other {Close tab group with <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}
-        }
-      </message>
-      <message name="IDS_ACCESSIBILITY_CLOSE_TAB_GROUP_BUTTON_WITH_GROUP_NAME_WITH_COLOR" desc="The accessibility text to read when the close button on a card representing a tab group is focused in grid tab switcher. When this close button is tapped, all tabs within the tab group will be closed. TITLE_OF_GROUP is the title of the group. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
-        {NUMBER_OF_TABS, plural,
-          =1 {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
-          other {Close <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>.}
+          =1 {Expand shared <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_ONE">%2$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>, with label <ph name="CARD_LABEL">%4$s<ex>New Activity</ex></ph>.}
+          other {Expand shared <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph> tab group with <ph name="TABS_COUNT_MANY">%2$d<ex>2</ex></ph> tabs, color <ph name="COLOR_NAME">%3$s<ex>Blue</ex></ph>, with label <ph name="CARD_LABEL">%4$s<ex>New Activity</ex></ph>.}
         }
       </message>
       <message name="IDS_TAB_GROUP_CREATION_DIALOG_DESCRIPTION_TEXT_SYNC_ON" desc="A subtitle on the dialog for new tab group creations. Explains the group automatically saves and updates across all devices.">
@@ -768,51 +768,6 @@
       <message name="IDS_PLUS_HIDDEN_TAB_COUNT" desc="A string to show how many other tabs are contained in a tab group who's favicons are not shown. [CHAR_LIMIT=5]">
         +<ph name="HIDDEN_TABS_COUNT">%1$s<ex>3</ex></ph>
       </message>
-      <message name="IDS_DELETE_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to delete a tab group.">
-        Delete tab group?
-      </message>
-      <message name="IDS_DELETE_TAB_GROUP_DESCRIPTION" desc="Description of the action of deleting a tab group, shown in a confirmation dialog.">
-        This will delete the group from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_DELETE_TAB_GROUP_NO_SYNC_DESCRIPTION" desc="Description of the action of deleting a tab group, shown in a confirmation dialog.">
-        This will permanently delete the group from your device
-      </message>
-      <message name="IDS_DELETE_TAB_GROUP_ACTION" desc="Button text in a confirmation dialog which will delete a tab group.">
-        Delete group
-      </message>
-      <message name="IDS_DELETE_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to delete a tab group.">
-        Delete
-      </message>
-      <message name="IDS_DELETE_SHARED_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to delete a tab group that is shared with other users.">
-        Delete group?
-      </message>
-      <message name="IDS_DELETE_SHARED_TAB_GROUP_DESCRIPTION" desc="Menu item text which will prompt a confirmation dialog to delete a tab group that is shared with other users.">
-        Everyone will immediately lose access to the "<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group, and it will be deleted from all devices
-      </message>
-      <message name="IDS_LEAVE_TAB_GROUP_MENU_ITEM" desc="Menu item text for an item which will leave a group the user does not own.">
-        Leave
-      </message>
-      <message name="IDS_LEAVE_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to leave a shared tab group.">
-        Leave group?
-      </message>
-      <message name="IDS_LEAVE_TAB_GROUP_DESCRIPTION" desc="Description of the action of leaving a shared tab group, shown in a confirmation dialog.">
-        You’ll immediately lose access to the "<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group, and it will be deleted from all your devices
-      </message>
-      <message name="IDS_UNGROUP_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to ungroup all tabs in a group.">
-        Ungroup tab group?
-      </message>
-      <message name="IDS_UNGROUP_TAB_GROUP_DESCRIPTION" desc="Description of the impact of ungrouping the tabs in a group, shown in a confirmation dialog.">
-        The tabs will remain open on this device but the group will be deleted from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_UNGROUP_TAB_GROUP_NO_SYNC_DESCRIPTION" desc="Description of the impact of ungrouping the tabs in a group, shown in a confirmation dialog.">
-        The tabs will remain open on this device but the group will be permanently deleted
-      </message>
-      <message name="IDS_UNGROUP_TAB_GROUP_ACTION" desc="Button text in a confirmation dialog which will ungroup tabs in a group.">
-        Ungroup
-      </message>
-      <message name="IDS_UNGROUP_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to ungroup a tab group.">
-        Ungroup
-      </message>
       <message name="IDS_OPEN_NEW_TAB_IN_GROUP_CONTEXT_MENU_ITEM" desc="Menu item text which will be display for tab group context menu on strip to allow opening a new tab in the tab group.">
         New tab in group
       </message>
@@ -842,35 +797,6 @@
       <message name="IDS_CLOSE_ALL_TABS_AND_GROUPS_ACTION" desc="Button text in a confirmation dialog which will close all tabs and groups.">
         Close all tabs and groups
       </message>
-      <message name="IDS_REMOVE_FROM_GROUP_DIALOG_MESSAGE" desc="Title of a dialog asking if the user really wants to remove all tabs in a group.">
-        Remove tab(s) and delete group?
-      </message>
-      <message name="IDS_REMOVE_FROM_GROUP_DESCRIPTION" desc="Description of the action of removing all tabs in a group, shown in a confirmation dialog.">
-        This will delete the group from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_CLOSE_FROM_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to close a tab and group.">
-        Close tab and delete group?
-      </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking the user if they want to keep the tab group.">
-        Keep group?
-      </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_OWNER" desc="Main text content of a dialog asking the owner of a shared group if they want to keep it. The &#10; is a newline character to force formatting.">
-        Keep this group to add tabs later, or delete it if you no longer need it.
-
-If you delete it, everyone will immediately lose access to the "<ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>" tab group, and it will be deleted from all devices.
-      </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_MEMBER" desc="Main text content of a dialog asking a member of a shared group if they want to keep it or leave.">
-        Keep this group to add tabs later, or leave it if you no longer want access to it
-      </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_KEEP_ACTION" desc="Action button to keep the tab group in the keep group dialog.">
-        Keep group
-      </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DELETE_ACTION" desc="Action button for the owner of a group to delete the tab group in the keep group dialog.">
-        Delete group
-      </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_LEAVE_ACTION" desc="Action button for a member of a group to leave the tab group in the keep group dialog.">
-        Leave group
-      </message>
       <message name="IDS_CLOSE_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to close a tab group.">
         Close
       </message>
@@ -882,9 +808,6 @@ If you delete it, everyone will immediately lose access to the "<ph name="TITLE_
       </message>
       <message name="IDS_ACCESSIBILITY_OPEN_SHARED_TAB_GROUP_OVERFLOW_MENU_WITH_GROUP_NAME_WITH_COLOR" desc="Accessibility string for opening the overflow menu on a shared tab group, which will allow the user to perform several actions on the tab group. TITLE_OF_GROUP is the title of the group. COLOR_NAME is the color of the group.">
         Open the tab group action menu for shared tab group <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.
-      </message>
-      <message name="IDS_CLOSE_FROM_GROUP_DESCRIPTION" desc="Description of the action of deleting a tab and a group, shown in a confirmation dialog.">
-        This will delete the group from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>
       </message>
       <message name="IDS_REMOVE_LAST_TAB_ACTION" desc="The text shown on the bottom bar when the user is dragging the last tab of a group around. Indicates removing this tab will also delete the group.">
         Remove tab and delete group
@@ -926,7 +849,10 @@ If you delete it, everyone will immediately lose access to the "<ph name="TITLE_
         Open
       </message>
       <message name="IDS_TAB_GROUP_ROW_ACCESSIBILITY_TEXT" desc="Content description for accessibility to describe action of tapping on a tab group row.">
-        Open <ph name="TITLE_OF_GROUP">%s<ex>shopping</ex></ph>
+        {TAB_COUNT, plural,
+          =1 {Open <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> with <ph name="TAB_COUNT2">%2$d<ex>12</ex></ph> tab}
+          other {Open <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> with <ph name="TAB_COUNT2">%2$d<ex>12</ex></ph> tabs}
+        }
       </message>
       <message name="IDS_TAB_GROUP_MENU_ACCESSIBILITY_TEXT" desc="Content description for accessibility to describe the action of tapping on the more menu button.">
         <ph name="TITLE_OF_GROUP">%s<ex>shopping</ex></ph> tab group options
@@ -1048,6 +974,9 @@ If you delete it, everyone will immediately lose access to the "<ph name="TITLE_
       <message name="IDS_ADD_TAB_TO_GROUP" desc="Content description for an action which adds a tab to a group.">
         Add to group
       </message>
+      <message name="IDS_SELECT_TAB" desc="Content description for an action which selects a singular tab.">
+        Select tab
+      </message>
       <message name="IDS_ADD_TO_BOOKMARKS" desc="Content description for an action which adds a tab to the bookmarks.">
         Add to bookmarks
       </message>
@@ -1055,6 +984,9 @@ If you delete it, everyone will immediately lose access to the "<ph name="TITLE_
         {WINDOW_COUNT, plural,
           =1 {Move to new window}
           other {Move to other window}}
+      </message>
+      <message name="IDS_MOVE_TAB_TO_GROUP" desc="Content description for an action which moves a tab to another group.">
+        Move to group
       </message>
 
       <!-- Tab Group List Bottom Sheet -->
@@ -1080,7 +1012,10 @@ If you delete it, everyone will immediately lose access to the "<ph name="TITLE_
         Tab group list closed
       </message>
       <message name="IDS_TAB_GROUP_BOTTOM_SHEET_ROW_ACCESSIBILITY_TEXT" desc="Content description for accessibility to describe action of tapping on a tab group row on the bottom sheet.">
-        Add to <ph name="TITLE_OF_GROUP">%s<ex>shopping</ex></ph>
+        {TAB_COUNT, plural,
+          =1 {Add to group named <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> with <ph name="TAB_COUNT1">%2$d<ex>12</ex></ph> tab}
+          other {Add to group named <ph name="TITLE_OF_GROUP">%1$s<ex>shopping</ex></ph> with <ph name="TAB_COUNT1">%2$d<ex>12</ex></ph> tabs}
+        }
       </message>
     </messages>
   </release>

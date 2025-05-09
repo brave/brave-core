@@ -70,12 +70,12 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     }
   }
 
-  private webRTCPolicies_: Object[]
-  private webRTCPolicy_: String
-  private isDebounceFeatureEnabled_: boolean
-  private isRequestOTRFeatureEnabled_: boolean
-  private requestOTRActions_: Object[]
-  private requestOTRAction_: String
+  private declare webRTCPolicies_: Object[]
+  private declare webRTCPolicy_: String
+  private declare isDebounceFeatureEnabled_: boolean
+  private declare isRequestOTRFeatureEnabled_: boolean
+  private declare requestOTRActions_: Object[]
+  private declare requestOTRAction_: String
 
   browserProxy_: BravePrivacyBrowserProxy = BravePrivacyBrowserProxyImpl.getInstance()
 

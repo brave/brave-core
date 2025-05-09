@@ -34,10 +34,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "components/signin/internal/identity_manager/child_account_info_fetcher_android.h"
-#endif
-
 namespace signin {
 namespace {
 

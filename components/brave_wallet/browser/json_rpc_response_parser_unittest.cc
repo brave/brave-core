@@ -10,7 +10,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -155,17 +157,19 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
-  std::string json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + std::to_string(UINT64_MAX) +
-      "}";
+  std::string json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" +
+                     base::NumberToString(UINT64_MAX) + "}";
 
-  EXPECT_EQ(ConvertUint64ToString("/result", json).value(),
-            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
-                std::to_string(UINT64_MAX) + "\"}");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(ConvertUint64ToString("/result", json).value()),
+      base::test::ParseJsonDict("{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
+                                base::NumberToString(UINT64_MAX) + "\"}"));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
-  EXPECT_EQ(ConvertUint64ToString("/result", json).value(),
-            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(ConvertUint64ToString("/result", json).value()),
+      base::test::ParseJsonDict(
+          "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}"));
 
   EXPECT_FALSE(ConvertUint64ToString("", json));
 
@@ -188,8 +192,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
 
   json = R"({"jsonrpc":"2.0","id":1,"result":{"value":18446744073709551615}})";
   EXPECT_EQ(
-      *ConvertUint64ToString("/result/value", json),
-      R"({"id":1,"jsonrpc":"2.0","result":{"value":"18446744073709551615"}})");
+      base::test::ParseJsonDict(*ConvertUint64ToString("/result/value", json)),
+      base::test::ParseJsonDict(
+          R"({"id":1,"jsonrpc":"2.0","result":{"value":"18446744073709551615"}})"));
 
   json = R"({"jsonrpc": "2.0", "id": 1,
              "error": {
@@ -197,7 +202,8 @@ TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
                "message":"method does not exist"
              }
             })";
-  EXPECT_EQ(*ConvertUint64ToString("/result", json), json);
+  EXPECT_EQ(base::test::ParseJsonDict(*ConvertUint64ToString("/result", json)),
+            base::test::ParseJsonDict(json));
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64ToString) {
@@ -275,25 +281,27 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
-  std::string json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + std::to_string(INT64_MAX) +
-      "}";
+  std::string json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" +
+                     base::NumberToString(INT64_MAX) + "}";
 
-  EXPECT_EQ(ConvertInt64ToString("/result", json).value(),
-            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
-                std::to_string(INT64_MAX) + "\"}");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(ConvertInt64ToString("/result", json).value()),
+      base::test::ParseJsonDict("{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
+                                base::NumberToString(INT64_MAX) + "\"}"));
 
-  json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + std::to_string(INT64_MIN) +
-      "}";
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" +
+         base::NumberToString(INT64_MIN) + "}";
 
-  EXPECT_EQ(ConvertInt64ToString("/result", json).value(),
-            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
-                std::to_string(INT64_MIN) + "\"}");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(ConvertInt64ToString("/result", json).value()),
+      base::test::ParseJsonDict("{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
+                                base::NumberToString(INT64_MIN) + "\"}"));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
-  EXPECT_EQ(ConvertInt64ToString("/result", json).value(),
-            "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(ConvertInt64ToString("/result", json).value()),
+      base::test::ParseJsonDict(
+          "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}"));
 
   EXPECT_FALSE(ConvertInt64ToString("", json));
 
@@ -317,7 +325,8 @@ TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
                "message":"method does not exist"
              }
             })";
-  EXPECT_EQ(*ConvertInt64ToString("/result", json), json);
+  EXPECT_EQ(base::test::ParseJsonDict(*ConvertInt64ToString("/result", json)),
+            base::test::ParseJsonDict(json));
 }
 
 TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
