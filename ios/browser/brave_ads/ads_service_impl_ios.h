@@ -173,10 +173,13 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsData(ClearDataCallback callback, bool success);
   void ClearAdsDataCallback(ClearDataCallback callback);
 
+  void RefetchNewTabPageAd();
+  void RefetchNewTabPageAdCallback(bool success);
+  void ResetNewTabPageAd();
+
   void OnParseAndSaveNewTabPageAdsCallback(
       ParseAndSaveNewTabPageAdsCallback callback,
       bool success);
-  void ResetNewTabPageAd();
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 

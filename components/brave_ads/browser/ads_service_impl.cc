@@ -855,7 +855,7 @@ void AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback(
     ParseAndSaveNewTabPageAdsCallback callback,
     bool success) {
   if (success) {
-    new_tab_page_ad_prefetcher_->Prefetch();
+    RefetchNewTabPageAd();
   }
 
   std::move(callback).Run(success);
