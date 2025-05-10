@@ -41,7 +41,7 @@ struct AccountActivityView: View {
             } label: {
               Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
             }
-            if store.account.coin != .btc {
+            if store.account.supportsAccountExport {
               Button {
                 isPresentingExportAccount = true
               } label: {
@@ -190,7 +190,7 @@ struct AccountActivityView: View {
           )
         }
       )
-      if store.account.coin != .fil && store.account.coin != .btc {
+      if store.account.supportsNFT {
         Divider()
         NavigationLink(
           destination: {

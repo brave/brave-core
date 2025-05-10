@@ -34,7 +34,18 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     var id: String { account.id }
     let account: BraveWallet.AccountInfo
     let bitcoinAccountInfo: BraveWallet.BitcoinAccountInfo?
+    let zcashAccountInfo: BraveWallet.ZCashAccountInfo?
     let tokenBalances: [TokenBalance]
+
+    var copyAddress: String {
+      if let bitcoinAccountInfo {
+        return bitcoinAccountInfo.nextReceiveAddress.addressString
+      } else if let zcashAccountInfo {
+        return zcashAccountInfo.nextTransparentChangeAddress.addressString
+      } else {
+        return account.address
+      }
+    }
   }
 
   /// The networks to filter the tokens/accounts by.
@@ -91,6 +102,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var walletServiceObserver: WalletServiceObserver?
@@ -106,6 +118,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
     query: String? = nil
@@ -116,6 +129,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     self.walletService = walletService
     self.assetRatioService = assetRatioService
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     self.query = query ?? ""
@@ -163,6 +177,8 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private var allAccounts: [BraveWallet.AccountInfo] = []
   /// All` BitcoinAccountInfo` models for every Bitcoin account. Key is `accountId.uniqueKey` of the Account.
   private var bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo] = [:]
+  /// All` ZCashAccountInfo` models for every Zcash account. Key is `accountId.uniqueKey` of the Account.
+  private var zcashAccounts: [String: BraveWallet.ZCashAccountInfo] = [:]
   // All user visible assets, key is `Identifiable.id` of `BlockchainToken`.
   private var userVisibleAssets: [String: BraveWallet.BlockchainToken] = [:]
   // All user accounts.
@@ -178,9 +194,15 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         .init(isSelected: true, model: $0)
       }
       let btcAccountInfos = allAccounts.filter({ $0.coin == .btc })
+      let zcashAccountInfos = allAccounts.filter({ $0.coin == .zec })
       if !btcAccountInfos.isEmpty {
         self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
           accounts: btcAccountInfos
+        )
+      }
+      if !zcashAccountInfos.isEmpty {
+        self.zcashAccounts = await zcashWalletService.fetchZcashAccountInfo(
+          accounts: zcashAccountInfos
         )
       }
       let allNetworkAssets = await assetManager.getUserAssets(
@@ -199,6 +221,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
         allAccounts: allAccounts,
         bitcoinAccounts: bitcoinAccounts,
+        zcashAccounts: zcashAccounts,
         userVisibleAssets: Array(userVisibleAssets.values),
         balancesCache: balancesForAccountsCache,
         btcBalancesCache: accountsBTCBalances,
@@ -226,6 +249,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
         allAccounts: allAccounts,
         bitcoinAccounts: bitcoinAccounts,
+        zcashAccounts: zcashAccounts,
         userVisibleAssets: Array(userVisibleAssets.values),
         balancesCache: balancesForAccountsCache,
         btcBalancesCache: accountsBTCBalances,
@@ -262,12 +286,24 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
               balancesForAccountsCache.merge(with: [account.id: result])
             } else {
               group.addTask {  // get balance for all tokens this account supports
-                let balancesForTokens: [String: Double] = await self.rpcService
-                  .fetchBalancesForTokens(
-                    account: account,
-                    networkAssets: networkAssets
-                  )
-                return [account.id: balancesForTokens]
+                if account.coin == .zec,
+                  let zecNetworkAsset = networkAssets.first,
+                  let zec = zecNetworkAsset.tokens.first
+                {
+                  let zecBalance =
+                    await self.zcashWalletService.fetchZECTransparentBalances(
+                      networkId: zecNetworkAsset.network.chainId,
+                      accountId: account.accountId
+                    ) ?? 0
+                  return [account.id: [zec.id: zecBalance]]
+                } else {
+                  let balancesForTokens: [String: Double] = await self.rpcService
+                    .fetchBalancesForTokens(
+                      account: account,
+                      networkAssets: networkAssets
+                    )
+                  return [account.id: balancesForTokens]
+                }
               }
             }
           }
@@ -363,6 +399,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     selectedNetworks: [BraveWallet.NetworkInfo],
     allAccounts: [BraveWallet.AccountInfo],
     bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo],
+    zcashAccounts: [String: BraveWallet.ZCashAccountInfo],
     userVisibleAssets: [BraveWallet.BlockchainToken],
     balancesCache: TokenBalanceCache,
     btcBalancesCache: [String: [BTCBalanceType: Double]],
@@ -430,6 +467,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       return AccountSection(
         account: account,
         bitcoinAccountInfo: bitcoinAccounts[account.id],
+        zcashAccountInfo: zcashAccounts[account.id],
         tokenBalances:
           accountTokenBalances
           .sorted { lhs, rhs in

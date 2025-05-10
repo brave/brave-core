@@ -172,6 +172,8 @@ extension BraveWallet.AccountInfo {
     case .btc:
       return Strings.Wallet.btcAccountDescription
     case .zec:
+      return Strings.Wallet.zecAccountDescription
+    case .ada:
       return ""
     @unknown default:
       return ""
@@ -185,11 +187,26 @@ extension BraveWallet.AccountInfo {
   /// Displays as `Account Name (truncated address)`, ex `Ethereum Account 1 (0x1234...5678)`
   /// or `Account Name` for Bitcoin.
   var accountNameDisplay: String {
-    if coin == .btc {
+    if coin == .btc || coin == .zec {
       return name
     } else {
       return "\(name) (\(address.truncatedAddress))"
     }
+  }
+
+  var supportsAccountExport: Bool {
+    switch coin {
+    case .eth, .sol, .fil:
+      return true
+    case .btc, .zec, .ada:
+      return false
+    @unknown default:
+      return false
+    }
+  }
+
+  var supportsNFT: Bool {
+    coin == .eth || coin == .sol
   }
 
   public func sort(
@@ -206,6 +223,12 @@ extension BraveWallet.AccountInfo {
       if self.keyringId == .bitcoin84 && other.keyringId != .bitcoin84 {
         return true
       } else if self.keyringId != .bitcoin84 && other.keyringId == .bitcoin84 {
+        return false
+      }
+    } else if self.coin == .zec && other.coin == .zec {
+      if self.keyringId == .zCashMainnet && other.keyringId != .zCashMainnet {
+        return true
+      } else if self.keyringId != .zCashMainnet && other.keyringId == .zCashMainnet {
         return false
       }
     } else {
@@ -232,6 +255,8 @@ extension BraveWallet.CoinType {
       return [.bitcoin84, .bitcoin84Testnet]
     case .zec:
       return [.zCashMainnet, .zCashTestnet]
+    case .ada:
+      return [.cardanoMainnet, .cardanoTestnet]
     @unknown default:
       return [.default]
     }
@@ -248,6 +273,8 @@ extension BraveWallet.CoinType {
     case .btc:
       return Strings.Wallet.coinTypeBitcoin
     case .zec:
+      return Strings.Wallet.coinTypeZCash
+    case .ada:
       fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
@@ -265,6 +292,8 @@ extension BraveWallet.CoinType {
     case .btc:
       return Strings.Wallet.coinTypeBitcoinDescription
     case .zec:
+      return Strings.Wallet.coinTypeZCashDescription
+    case .ada:
       fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
@@ -282,6 +311,8 @@ extension BraveWallet.CoinType {
     case .btc:
       return "bitcoin-asset-icon"
     case .zec:
+      return "zcash-asset-icon"
+    case .ada:
       fallthrough
     @unknown default:
       return ""
@@ -300,6 +331,8 @@ extension BraveWallet.CoinType {
     case .btc:
       return 4
     case .zec:
+      return 5
+    case .ada:
       fallthrough
     @unknown default:
       return 10
@@ -636,6 +669,8 @@ extension BraveWallet.KeyringId {
       return chainId == BraveWallet.BitcoinMainnet ? .bitcoin84 : .bitcoin84Testnet
     case .zec:
       return chainId == BraveWallet.ZCashMainnet ? .zCashMainnet : .zCashTestnet
+    case .ada:
+      return chainId == BraveWallet.CardanoMainnet ? .cardanoMainnet : .cardanoTestnet
     @unknown default:
       return .default
     }
