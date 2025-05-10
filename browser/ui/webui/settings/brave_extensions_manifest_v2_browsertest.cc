@@ -3,11 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
+#include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/extensions/chrome_content_verifier_delegate.h"
+#include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -21,34 +26,34 @@
 
 namespace {
 
-constexpr char kExtensionId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
+constexpr char kExtensionId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";
 
 bool ClickExtensionToggle(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').click()")
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
       .value.is_none();
 }
 
 bool ClickExtensionRemove(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').querySelector('#"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').click()")
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').querySelector('#"
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').click()")
       .value.is_none();
 }
 
 bool IsExtensionToggled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').checked")
+                "bgkmgpgeempochogfoddiobpbhdfgkdi').checked")
       .value.GetBool();
 }
 
 bool IsExtensionToggleEnabled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "!window.testing.extensionsV2Subpage.getElementById('"
-                "doojmbjmlfjjnbmnoijecmcbfeoakpjm')."
+                "bgkmgpgeempochogfoddiobpbhdfgkdi')."
                 "disabled")
       .value.GetBool();
 }
@@ -122,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest, InstallFail) {
       browser(), GURL("brave://settings/extensions/v2")));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   content::WebContentsConsoleObserver console_observer(web_contents);
-  console_observer.SetPattern("Could not fetch data from the Chrome Web Store");
+  console_observer.SetPattern("Failed to download extension.");
   ClickExtensionToggle(web_contents);
   ASSERT_TRUE(console_observer.Wait());
 
@@ -173,4 +178,58 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest,
   ClickExtensionRemove(web_contents);
   EXPECT_FALSE(IsExtensionInstalled());
   EXPECT_FALSE(IsExtensionEnabled());
+}
+
+class BraveExtensionsManifestV2InstallerBrowserTest
+    : public BraveExtensionsManifestV2BrowserTest {
+ public:
+  void SetUp() override {
+    extensions::ChromeContentVerifierDelegate::SetDefaultModeForTesting(
+        extensions::ChromeContentVerifierDelegate::VerifyInfo::Mode::
+            ENFORCE_STRICT);
+    BraveExtensionsManifestV2BrowserTest::SetUp();
+  }
+
+  void TearDown() override {
+    extensions::ChromeContentVerifierDelegate::SetDefaultModeForTesting(
+        std::nullopt);
+    BraveExtensionsManifestV2BrowserTest::TearDown();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
+                       InstallBravePublishedExtension) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  constexpr char kTestExtension[] = "eedcldngdlcmkjdcdlffmjhpbfdcmkce";
+
+  base::FilePath test_extension =
+      base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+  test_extension = test_extension.AppendASCII(
+      "manifest_v2/eedcldngdlcmkjdcdlffmjhpbfdcmkce.crx");
+
+  auto installer = extensions::CrxInstaller::CreateSilent(browser()->profile());
+  installer->set_allow_silent_install(true);
+  installer->set_is_gallery_install(true);
+  installer->AddInstallerCallback(base::BindLambdaForTesting(
+      [](const std::optional<extensions::CrxInstallError>& result) {
+        EXPECT_FALSE(result.has_value());
+      }));
+
+  ui_test_utils::TabAddedWaiter tab_waiter(browser());
+  installer->InstallCrx(test_extension);
+  content::WebContents* web_contents = tab_waiter.Wait();
+  content::WaitForLoadStop(web_contents);
+  EXPECT_EQ(u"Extension v2", web_contents->GetTitle());
+
+  const auto* extension =
+      extensions::ExtensionRegistry::Get(browser()->profile())
+          ->GetInstalledExtension(kTestExtension);
+  EXPECT_TRUE(extension->from_webstore());
+  EXPECT_TRUE(base::PathExists(extension->path()
+                                   .AppendASCII("_metadata")
+                                   .AppendASCII("verified_contents.json")));
+  EXPECT_TRUE(base::PathExists(extension->path()
+                                   .AppendASCII("_metadata")
+                                   .AppendASCII("computed_hashes.json")));
 }
