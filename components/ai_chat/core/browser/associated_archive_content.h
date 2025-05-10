@@ -33,7 +33,8 @@ class AssociatedArchiveContent
   AssociatedArchiveContent(GURL url,
                            std::string text_content,
                            std::u16string title,
-                           bool is_video);
+                           bool is_video,
+                           std::string uuid);
   ~AssociatedArchiveContent() override;
   AssociatedArchiveContent(const AssociatedArchiveContent&) = delete;
   AssociatedArchiveContent& operator=(const AssociatedArchiveContent&) = delete;
@@ -49,8 +50,8 @@ class AssociatedArchiveContent
 
   void GetContent(
       ConversationHandler::GetPageContentCallback callback) override;
-  std::string_view GetCachedTextContent() override;
-  bool GetCachedIsVideo() override;
+  std::string_view GetCachedTextContent() const override;
+  bool GetCachedIsVideo() const override;
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr();
 

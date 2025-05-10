@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
-import SiteTitle from '../site_title'
+import SiteTitles from '../site_title'
 import styles from './style.module.scss'
 
 function PageContextToggle() {
@@ -58,7 +58,7 @@ function PageContextToggle() {
                 {getLocale('contextToggleTooltipInfo')}
               </div>
               <div className={styles.tooltipSiteTitle}>
-                <SiteTitle size='small' />
+                <SiteTitles size='small' />
               </div>
             </div>
             <Button

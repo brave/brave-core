@@ -97,10 +97,10 @@ class AIChatService : public KeyedService,
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
                                   bool in_progress) override;
-  void OnConversationEntryAdded(
-      ConversationHandler* handler,
-      mojom::ConversationTurnPtr& entry,
-      std::optional<std::string_view> associated_content_value) override;
+  void OnConversationEntryAdded(ConversationHandler* handler,
+                                mojom::ConversationTurnPtr& entry,
+                                std::optional<std::vector<std::string_view>>
+                                    maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
@@ -109,8 +109,7 @@ class AIChatService : public KeyedService,
   void OnConversationTokenInfoChanged(const std::string& conversation_uuid,
                                       uint64_t total_tokens,
                                       uint64_t trimmed_tokens) override;
-  void OnAssociatedContentDestroyed(ConversationHandler* handler,
-                                    int content_id) override;
+  void OnAssociatedContentUpdated(ConversationHandler* handler) override;
 
   // mojom::TabDataObserver
   void TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) override;
@@ -153,8 +152,12 @@ class AIChatService : public KeyedService,
           associated_content,
       base::OnceClosure open_ai_chat);
 
-  void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
-                        const std::string& conversation_uuid);
+  void MaybeAssociateContent(
+      ConversationHandler::AssociatedContentDelegate* content,
+      const std::string& conversation_uuid);
+  void DisassociateContent(
+      ConversationHandler::AssociatedContentDelegate* content,
+      const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,
@@ -242,21 +245,21 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(ConversationHandler*)> callback,
       mojom::ConversationArchivePtr data);
 
-  void MaybeAssociateContentWithConversation(
+  void MaybeAssociateContent(
       ConversationHandler* conversation,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
   void MaybeUnloadConversation(ConversationHandler* conversation);
-  void HandleFirstEntry(
+  void HandleFirstEntry(ConversationHandler* handler,
+                        mojom::ConversationTurnPtr& entry,
+                        std::optional<std::vector<std::string>> maybe_content,
+                        mojom::ConversationPtr& conversation);
+  void HandleNewEntry(
       ConversationHandler* handler,
       mojom::ConversationTurnPtr& entry,
-      std::optional<std::string_view> associated_content_value,
+      std::optional<std::vector<std::string>> maybe_associated_content,
       mojom::ConversationPtr& conversation);
-  void HandleNewEntry(ConversationHandler* handler,
-                      mojom::ConversationTurnPtr& entry,
-                      std::optional<std::string_view> associated_content_value,
-                      mojom::ConversationPtr& conversation);
 
   void OnUserOptedIn();
   void OnSkusServiceReceived(
