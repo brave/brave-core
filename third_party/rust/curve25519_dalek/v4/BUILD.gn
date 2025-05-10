@@ -101,6 +101,7 @@ cargo_crate("lib") {
   features = [
     "alloc",
     "digest",
+    "legacy_compatibility",
     "precomputed-tables",
     "rand_core",
     "serde",

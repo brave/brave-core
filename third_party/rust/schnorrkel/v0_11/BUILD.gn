@@ -1,0 +1,69 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "schnorrkel"
+  epoch = "0.11"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/aead.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/batch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/cert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/context.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/derive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/keys.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/musig.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/points.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/scalars.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/serdey.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/sign.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/schnorrkel-0.11.4/src/vrf.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.11.4"
+  cargo_pkg_authors = "Jeff Burdges <jeff@web3.foundation>"
+  cargo_pkg_name = "schnorrkel"
+  cargo_pkg_description =
+      "Schnorr VRF, signatures, etc. using the Ristretto group"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/arrayref/v0_3:lib",
+    "//brave/third_party/rust/arrayvec/v0_7:lib",
+    "//brave/third_party/rust/curve25519_dalek/v4:lib",
+    "//brave/third_party/rust/getrandom_or_panic/v0_0:lib",
+    "//brave/third_party/rust/merlin/v3:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/serde_bytes/v0_11:lib",
+    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+  ]
+  features = [
+    "alloc",
+    "getrandom",
+    "serde_bytes",
+    "std",
+  ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
+}
