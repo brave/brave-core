@@ -1,0 +1,13 @@
+diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+index 5cfb86aa8033ef10040f85a7b20fc5fbb1503f82..35520be1e28774d4352a7e915808697e2480c9cf 100644
+--- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
++++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+@@ -43,7 +43,7 @@ public class TemplateUrlService {
+     private final ObserverList<TemplateUrlServiceObserver> mObservers = new ObserverList<>();
+     private long mNativeTemplateUrlServiceAndroid;
+ 
+-    private TemplateUrlService(long nativeTemplateUrlServiceAndroid) {
++    protected TemplateUrlService(long nativeTemplateUrlServiceAndroid) {
+         // Note that this technically leaks the native object, however, TemplateUrlService
+         // is a singleton that lives forever and there's no clean shutdown of Chrome on Android.
+         mNativeTemplateUrlServiceAndroid = nativeTemplateUrlServiceAndroid;

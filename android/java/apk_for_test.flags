@@ -975,3 +975,11 @@
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.TilesLinearLayout { *; }
+
+-keep class org.chromium.components.search_engines.TemplateUrlService {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.search_engines.BraveTemplateUrlService {
+    public <init>(...);
+}
