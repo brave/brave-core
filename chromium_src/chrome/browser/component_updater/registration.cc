@@ -12,8 +12,11 @@
 
 #undef RegisterComponentsForUpdate
 
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/p3a/component_installer.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/psst/browser/core/psst_component_installer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -27,6 +30,10 @@ void RegisterComponentsForUpdate() {
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
   psst::RegisterPsstComponent(cus);
+  auto* p3a_service = g_brave_browser_process->p3a_service();
+  p3a::RegisterP3AComponent(
+      cus, p3a_service ? p3a_service->remote_config_manager()->GetWeakPtr()
+                       : nullptr);
   ai_chat::ManageLocalModelsComponentRegistration(cus);
 }
 
