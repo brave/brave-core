@@ -62,6 +62,10 @@ private class BookmarkViewModel: ObservableObject {
     items = await model.bookmarks(for: folder, query: query)
     isLoading = false
   }
+  
+  func move(nodes: [Bookmarkv2], to index: Int) {
+    model.move(nodes: nodes, to: index)
+  }
 
   func delete(nodes: [Bookmarkv2]) {
     model.delete(nodes: nodes)
@@ -69,6 +73,15 @@ private class BookmarkViewModel: ObservableObject {
 
   func handleBookmarkItemSelection(_ selection: BookmarkItemSelection, node: Bookmarkv2) {
     model.handleBookmarkItemSelection(selection, node: node)
+  }
+  
+  func addBookmark(url: URL, title: String?, in parent: Bookmarkv2? = nil) {
+    model.addBookmark(url: url, title: title, in: parent)
+  }
+  
+  @discardableResult
+  func addFolder(title: String, in parent: Bookmarkv2? = nil) -> Bookmarkv2? {
+    model.addFolder(title: title, in: parent)
   }
 }
 
@@ -126,6 +139,11 @@ private struct BookmarksListView: View {
 
   @ObservedObject
   var model: BookmarkViewModel
+  
+  @State private var showCreateFolder = false
+  @State private var createFolderName = ""
+  
+  @State private var editMode = EditMode.inactive
 
   @State private var searchText = ""
   @State private var timer: Timer?
@@ -152,6 +170,20 @@ private struct BookmarksListView: View {
     List {
       ForEach(model.items) { node in
         view(for: node)
+          .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button {
+              // TODO: EDIT BOOKMARK
+            } label: {
+              Label(Strings.edit)
+            }
+            .tint(.indigo)
+            
+            Button(role: .destructive) {
+              model.delete([node])
+            } label: {
+              Label(Strings.delete)
+            }
+          }
           .listRowBackground(Color.clear)
           .contextMenu {
             Section {
@@ -196,15 +228,23 @@ private struct BookmarksListView: View {
             }
           }
       }
+      .onMove { (indexSet, newOffset) in
+        let nodes = model.items
+        let nodesToMove = indexSet.map({ nodes[$0] })
+        model.move(nodes: nodesToMove, to: newOffset)
+      }
       .onDelete { indexSet in
         withAnimation {
-          self.delete(indexSet)
+          let nodes = model.items
+          let nodesToDelete = indexSet.map({ nodes[$0] })
+          model.delete(nodes: nodesToDelete)
         }
       }
     }
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
     .listStyle(.plain)
+    .environment(\.editMode, $editMode)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(.visible, for: .navigationBar)
     .overlay {
@@ -229,7 +269,7 @@ private struct BookmarksListView: View {
             if model.folder == nil {
               // TODO: Share - Import/Export
             } else {
-              // TODO: Create New Folder
+              showCreateFolder = true
             }
           } label: {
             Label {
@@ -244,7 +284,7 @@ private struct BookmarksListView: View {
           Spacer()
 
           Button {
-            // TODO: Edit Bookmark
+            editMode = editMode.isEditing ? .inactive : .active
           } label: {
             Label {
               Text("EDIT BOOKMARKS")  // TODO: Localize
@@ -258,6 +298,22 @@ private struct BookmarksListView: View {
         .frame(maxWidth: .infinity)
       }
     }
+    .alert(Strings.newFolder, isPresented: $showCreateFolder, actions: {
+      TextField(Strings.name, text: $createFolderName)
+      
+      Button(Strings.CancelString) {
+        showCreateFolder = false
+        createFolderName = ""
+      }
+      
+      Button(Strings.OBErrorOkay) {
+        model.addFolder(title: createFolderName, in: model.folder)
+        createFolderName = ""
+      }
+      .disabled(createFolderName.isEmpty)
+    }, message: {
+      Text(Strings.enterFolderName)
+    })
     .onChange(of: searchText) { searchText in
       self.timer?.invalidate()
       self.timer = Timer.scheduledTimer(
@@ -283,12 +339,6 @@ private struct BookmarksListView: View {
         await model.refresh()
       }
     }
-  }
-
-  func delete(_ offsets: IndexSet) {
-    let nodes = model.items
-    let nodesToDelete = offsets.map({ nodes[$0] })
-    model.delete(nodes: nodesToDelete)
   }
 }
 

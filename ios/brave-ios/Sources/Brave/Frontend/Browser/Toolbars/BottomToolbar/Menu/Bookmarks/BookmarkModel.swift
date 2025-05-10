@@ -6,6 +6,7 @@
 //
 
 import BraveCore
+import Growth
 
 enum BookmarkItemSelection {
   case openInNewTab
@@ -79,10 +80,20 @@ class BookmarkModel: NSObject, ObservableObject {
       }
     }
   }
+  
+  func move(nodes: [Bookmarkv2], to index: Int) {
+    nodes.enumerated().forEach({
+      if let parent = $0.element.parent?.bookmarkNode ?? api?.mobileNode {
+        $0.element.bookmarkNode.move(toParent: parent, index: UInt(index))
+      }
+    })
+  }
 
   func delete(nodes: [Bookmarkv2]) {
     nodes.forEach({
-      api?.removeBookmark($0.bookmarkNode)
+      if $0.canBeDeleted {
+        api?.removeBookmark($0.bookmarkNode)
+      }
     })
   }
 
@@ -108,14 +119,37 @@ class BookmarkModel: NSObject, ObservableObject {
       toolbarUrlActionsDelegate?.share(url)
     }
   }
+  
+  @discardableResult
+  public func addFolder(title: String, in parentFolder: Bookmarkv2? = nil) -> Bookmarkv2? {
+    guard let api = api else {
+      return nil
+    }
 
-  func model(for folder: Bookmarkv2) -> BookmarkModel {
-    return BookmarkModel(
-      api: api,
-      tabManager: tabManager,
-      bookmarksManager: bookmarkManager,
-      toolbarUrlActionsDelegate: toolbarUrlActionsDelegate,
-      dismiss: dismiss
-    )
+    if let parentNode = parentFolder?.bookmarkNode {
+      if let result = api.createFolder(withParent: parentNode, title: title) {
+        return Bookmarkv2(result)
+      }
+      return nil
+    }
+    
+    if let result = api.createFolder(withTitle: title) {
+      return Bookmarkv2(result)
+    }
+    return nil
+  }
+
+  public func addBookmark(url: URL, title: String?, in parentFolder: Bookmarkv2? = nil) {
+    guard let api = api else {
+      return
+    }
+
+    if let parentNode = parentFolder?.bookmarkNode {
+      api.createBookmark(withParent: parentNode, title: title ?? "", with: url)
+    } else {
+      api.createBookmark(withTitle: title ?? "", url: url)
+    }
+
+    AppReviewManager.shared.processSubCriteria(for: .numberOfBookmarks)
   }
 }
