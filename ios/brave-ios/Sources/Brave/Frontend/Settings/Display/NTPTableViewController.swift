@@ -11,6 +11,14 @@ import Shared
 import Static
 import Web
 
+private struct FooterViewUX {
+  static let font = UIFont.preferredFont(forTextStyle: .footnote)
+  static let textColor = UIColor.braveLabel
+  static let linkUnderlineStyle = 1
+  static let textAlignment = NSTextAlignment.left
+  static let insets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+}
+
 class NTPTableViewController: TableViewController {
   enum BackgroundType: RepresentableOptionType {
 
@@ -34,9 +42,11 @@ class NTPTableViewController: TableViewController {
   }
 
   private let rewards: BraveRewards?
+  var linkTapped: ((URLRequest) -> Void)?
 
-  init(_ rewards: BraveRewards?) {
+  init(rewards: BraveRewards?, linkTapped: ((URLRequest) -> Void)?) {
     self.rewards = rewards
+    self.linkTapped = linkTapped
 
     super.init(style: .insetGrouped)
   }
@@ -110,6 +120,41 @@ class NTPTableViewController: TableViewController {
     }
   }
 
+  private func imageTypeSelectionDescription() -> UIView {
+    let footerLabel = LinkLabel().then {
+      $0.font = FooterViewUX.font
+      $0.textColor = FooterViewUX.textColor
+      $0.linkColor = FooterViewUX.textColor
+      $0.linkUnderlineStyle = FooterViewUX.linkUnderlineStyle
+      $0.textAlignment = FooterViewUX.textAlignment
+      $0.text =
+        "\(Strings.NTP.imageTypeSelectionDescription) \(Strings.NTP.imageTypeSelectionDescriptionLearnMore)"
+      $0.setURLInfo([
+        Strings.NTP.imageTypeSelectionDescriptionLearnMore: "learn-more"
+      ])
+    }
+
+    footerLabel.onLinkedTapped = { [unowned self] link in
+      self.dismiss(animated: true) {
+        switch link.absoluteString {
+        case "learn-more":
+          self.linkTapped?(URLRequest(url: .brave.newTabTakeoverLearnMoreLinkUrl))
+        default:
+          assertionFailure()
+        }
+      }
+    }
+
+    let footerView = UITableViewHeaderFooterView().then {
+      $0.contentView.addSubview(footerLabel)
+      footerLabel.snp.makeConstraints {
+        $0.edges.equalToSuperview().inset(FooterViewUX.insets)
+      }
+      $0.isUserInteractionEnabled = true
+    }
+    return footerView
+  }
+
   private func backgroundImageOptions() -> [BackgroundType] {
     var available: [BackgroundType] = [.defaultImages]
     if rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true {
@@ -139,7 +184,7 @@ class NTPTableViewController: TableViewController {
       // Show options for tab bar visibility
       let optionsViewController = OptionSelectionViewController<BackgroundType>(
         headerText: Strings.NTP.settingsBackgroundImageSubMenu,
-        footerText: Strings.NTP.imageTypeSelectionDescription,
+        footerView: self.imageTypeSelectionDescription(),
         style: .insetGrouped,
         options: self.backgroundImageOptions(),
         selectedOption: self.selectedItem(),

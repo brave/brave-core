@@ -7,13 +7,16 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 // Common components
-import { SettingsText } from '../../../components/default'
-import Icon from '@brave/leo/react/icon'
+import {
+  LearnMoreLink,
+  LearnMoreText,
+  SettingsText } from '../../../components/default'
 import Toggle from '@brave/leo/react/toggle'
-import Tooltip from '@brave/leo/react/tooltip'
+import Flex from '$web-common/Flex'
 
 // Utilities
 import { getLocale } from '../../../../common/locale'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 interface Props {
   onChange: () => void
@@ -38,42 +41,7 @@ const ControlsContainer = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
-
-const InfoTooltip = styled(Tooltip)`
-  --leo-tooltip-padding: 0px;
-  --leo-tooltip-background: var(--background1);
-  --leo-tooltip-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
-  margin-right: 18px;
-
-  > div {
-    width: 264px;
-    border-radius: 6px;
-    padding: 24px;
-  }
-
-  div {
-    letter-spacing: 0.01em;
-    font-family: var(--brave-font-family-non-serif);
-  }
-}
-`
-
-const InfoIcon = styled(Icon)`
-  --leo-icon-size: 17px;
-`
-
-const InfoIconTooltipTitle = styled.div`
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
-  margin-bottom: 16px;
-`
-
-const InfoIconTooltipBody = styled.div`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
+  margin-left: 24px;
 `
 
 const Container = styled.div`
@@ -122,16 +90,6 @@ const EnableRewardsButton = styled.button`
   align-self: start;
 `
 
-function getInfoTooltipText (checked: boolean, rewardsEnabled: boolean) {
-  if (!checked) {
-    return rewardsEnabled
-      ? getLocale('sponsoredImageOffRewardsOnDescription')
-      : getLocale('sponsoredImageRewardsOffDescription')
-  }
-
-  return getLocale('sponsoredImageOnDescription')
-}
-
 function getDescriptionText (rewardsEnabled: boolean) {
   if (!rewardsEnabled) {
     return getLocale('sponsoredImageRewardsOffDescription')
@@ -153,13 +111,6 @@ export default function SponsoredImageToggle (
     onChange, onEnableRewards, checked, disabled, rewardsEnabled,
     isExternalWalletConnected
   }: Props) {
-  // Info icon is shown when:
-  // 1. SI toggle is off
-  // 2. Rewards is enabled (with a custodian connected)
-  const showInfoIcon =
-    !disabled &&
-    (!checked || (rewardsEnabled && isExternalWalletConnected))
-
   // Description is shown when SI toggle is on and:
   // 1. Rewards is not enabled (to show the button to enable Rewards)
   // 2. Rewards custodian is not connected (to show the button to go to Rewards)
@@ -171,23 +122,22 @@ export default function SponsoredImageToggle (
   return (
     <div>
       <ToggleRow>
-        <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+        <Flex direction="column">
+          <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+          <LearnMoreText>
+            {
+              checked && rewardsEnabled && isExternalWalletConnected
+                ? getLocale('sponsoredImageEarningDescription')
+                : getLocale('sponsoredImageCanEarnDescription')
+            }
+            {' '}
+            <LearnMoreLink
+              href={loadTimeData.getString('newTabTakeoverLearnMoreLinkUrl')}>
+              {getLocale('sponsoredImageLearnMore')}
+            </LearnMoreLink>
+          </LearnMoreText>
+        </Flex>
         <ControlsContainer>
-          {showInfoIcon &&
-            <InfoTooltip mode='default' positionStrategy='fixed' tabIndex={0}>
-              <InfoIcon name='info-outline' />
-              <div slot="content">
-                <InfoIconTooltipTitle>
-                  {checked
-                    ? getLocale('sponsoredImageEarningTitle')
-                    : getLocale('sponsoredImageNotEarningTitle')}
-                </InfoIconTooltipTitle>
-                <InfoIconTooltipBody>
-                  {getInfoTooltipText(checked, rewardsEnabled)}
-                </InfoIconTooltipBody>
-              </div>
-            </InfoTooltip>
-          }
           <Toggle onChange={onChange} checked={checked} disabled={disabled}
             size='small' />
         </ControlsContainer>
