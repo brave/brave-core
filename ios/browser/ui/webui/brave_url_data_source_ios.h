@@ -20,6 +20,7 @@ class BraveURLDataSourceIOS : public web::URLDataSourceIOS {
       network::mojom::CSPDirectiveName directive) const;
 
  private:
+  std::string GetContentSecurityPolicyBase() const override;
   std::string GetContentSecurityPolicyObjectSrc() const override;
   std::string GetContentSecurityPolicyFrameSrc() const override;
 
