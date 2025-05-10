@@ -10,6 +10,7 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
@@ -565,6 +566,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "Enables the refreshed version of the New Tab Page",                 \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
+      },                                                                       \
+      {                                                                        \
+          "brave-screenshots",                                                 \
+          "Screenshot Options",                                                \
+          "Enables screenshot support via browser commands and context menu.", \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(brave_screenshots::features::kBraveScreenshots),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \

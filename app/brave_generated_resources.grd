@@ -171,6 +171,8 @@
     <messages fallback_to_english="true">
       <!-- Brave Settings WebUI strings -->
       <part file="brave_settings_strings.grdp" />
+      <!-- Brave Screenshots context-menu/settings strings -->
+      <part file="brave_screenshots_strings.grdp" />
 
       <!-- Brave App Management strings -->
       <part file="brave_app_management.grdp" />
@@ -359,7 +361,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Check details
       </message>
 
-      <!-- Adblock contenxt menu -->
+      <!-- Adblock context menu -->
       <message name="IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS" desc="Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page">
         Block elements
       </message>

@@ -1,0 +1,64 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
+
+assert(enable_brave_screenshots)
+
+source_set("utils") {
+  sources = [
+    "screenshots_utils.cc",
+    "screenshots_utils.h",
+  ]
+
+  deps = [
+    "//chrome/browser/image_editor",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
+    "//ui/base/clipboard",
+  ]
+}
+
+source_set("brave_screenshots") {
+  sources = [ "brave_screenshots_tab_feature.h" ]
+
+  public_deps = [
+    "//base",
+    "//content/public/browser",
+  ]
+}
+
+source_set("brave_screenshots_impl") {
+  sources = [ "brave_screenshots_tab_feature.cc" ]
+
+  deps = [
+    ":brave_screenshots",
+    ":utils",
+    "strategies",
+    "//chrome/browser/image_editor",
+    "//chrome/browser/ui",
+  ]
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "test/brave_screenshots_unittests.cc" ]
+  deps = [
+    ":features",
+    "//base",
+    "//brave/app:command_ids",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}
