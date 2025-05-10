@@ -22,6 +22,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
@@ -101,7 +102,7 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
       scroll_animator_for_item_(std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
-  model_observed_.Observe(browser->sidebar_controller()->model());
+  model_observed_.Observe(browser->GetFeatures().sidebar_controller()->model());
   bounds_animator_observed_.AddObservation(scroll_animator_for_item_.get());
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =

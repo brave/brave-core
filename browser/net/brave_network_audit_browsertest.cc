@@ -19,11 +19,11 @@
 #include "base/time/time.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -145,8 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
 #if defined(TOOLKIT_VIEWS)
-  auto* sidebar_controller =
-      static_cast<BraveBrowser*>(browser())->sidebar_controller();
+  auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
   auto* sidebar_model = sidebar_controller->model();
   const auto& all_items = sidebar_model->GetAllSidebarItems();
   const int item_num = all_items.size();

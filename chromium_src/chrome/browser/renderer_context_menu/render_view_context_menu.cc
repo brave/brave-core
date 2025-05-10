@@ -27,6 +27,7 @@
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -48,7 +49,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -327,8 +327,7 @@ void OnRewriteSuggestionCompleted(
     }
     conversation->MaybeUnlinkAssociatedContent();
 
-    auto* sidebar_controller =
-        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
     CHECK(sidebar_controller);
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
@@ -601,8 +600,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     conversation->MaybeUnlinkAssociatedContent();
 
     // Active the panel.
-    auto* sidebar_controller =
-        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
     CHECK(sidebar_controller);
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);

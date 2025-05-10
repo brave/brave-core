@@ -6,16 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
-
-#if defined(TOOLKIT_VIEWS)
-namespace sidebar {
-class SidebarController;
-}  // namespace sidebar
-#endif
 
 class BraveBrowserWindow;
 
@@ -62,12 +54,6 @@ class BraveBrowser : public Browser {
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
 
-#if defined(TOOLKIT_VIEWS)
-  sidebar::SidebarController* sidebar_controller() {
-    return sidebar_controller_.get();
-  }
-#endif
-
   BraveBrowserWindow* brave_window();
 
   void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
@@ -85,8 +71,6 @@ class BraveBrowser : public Browser {
   static void SuppressBrowserWindowClosingDialogForTesting(bool suppress);
 
   bool AreAllTabsSharedPinnedTabs();
-
-  std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
 
   // Set true when user allowed to close browser before starting any
   // warning or onbeforeunload handlers.

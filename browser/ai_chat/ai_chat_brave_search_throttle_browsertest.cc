@@ -12,11 +12,11 @@
 #include "base/location.h"
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
@@ -105,7 +105,7 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
 
   bool IsLeoOpened() {
     sidebar::SidebarController* controller =
-        static_cast<BraveBrowser*>(browser())->sidebar_controller();
+        browser()->GetFeatures().sidebar_controller();
     auto index = controller->model()->GetIndexOf(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
     return index.has_value() && controller->IsActiveIndex(index);
@@ -114,7 +114,7 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
   void CloseLeoPanel(const base::Location& location) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     sidebar::SidebarController* controller =
-        static_cast<BraveBrowser*>(browser())->sidebar_controller();
+        browser()->GetFeatures().sidebar_controller();
     controller->DeactivateCurrentPanel();
     ASSERT_FALSE(IsLeoOpened());
   }
