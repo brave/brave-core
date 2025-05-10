@@ -220,6 +220,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  mojom::ConversationStatePtr GetState();
+
   // Called when the provided Conversation data is updated
   void OnConversationMetadataUpdated();
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
@@ -245,7 +247,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
   // mojom::ConversationHandler
-  void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,

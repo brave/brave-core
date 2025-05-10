@@ -6,11 +6,17 @@
 import { useMemo } from "react";
 import { useAIChat } from "../state/ai_chat_context";
 
-export default function useIsConversationVisible(conversationId?: string) {
-    const context = useAIChat()
+export function useGetVisibleConversation(conversationUuid?: string) {
+  const context = useAIChat()
 
-    return useMemo<boolean>(
-      () => context.visibleConversations.some(c => c.uuid === conversationId),
-      [conversationId, context.visibleConversations]
-    )
+  return useMemo(() => {
+    if (!conversationUuid) {
+      return undefined
+    }
+    return context.visibleConversations.find(c => c.uuid === conversationUuid)
+  }, [conversationUuid, context.visibleConversations])
+}
+
+export default function useIsConversationVisible(conversationUuid?: string) {
+  return (useGetVisibleConversation(conversationUuid) !== undefined)
 }
