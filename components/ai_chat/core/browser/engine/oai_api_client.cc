@@ -60,13 +60,22 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 std::string CreateJSONRequestBody(
     base::Value::List messages,
     const bool is_sse_enabled,
-    const mojom::CustomModelOptions& model_options) {
+    const mojom::CustomModelOptions& model_options,
+    const std::optional<std::vector<std::string>>& stop_sequences) {
   base::Value::Dict dict;
 
   dict.Set("messages", std::move(messages));
   dict.Set("stream", is_sse_enabled);
   dict.Set("temperature", 0.7);
   dict.Set("model", model_options.model_request_name);
+
+  if (stop_sequences && !stop_sequences->empty()) {
+    base::Value::List stop_list;
+    for (const auto& sequence : *stop_sequences) {
+      stop_list.Append(sequence);
+    }
+    dict.Set("stop", std::move(stop_list));
+  }
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
@@ -91,7 +100,8 @@ void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
     GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback) {
+    GenerationCompletedCallback completed_callback,
+    const std::optional<std::vector<std::string>>& stop_sequences) {
   if (!model_options.endpoint.is_valid()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
@@ -100,7 +110,8 @@ void OAIAPIClient::PerformRequest(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body =
-      CreateJSONRequestBody(std::move(messages), is_sse_enabled, model_options);
+      CreateJSONRequestBody(std::move(messages), is_sse_enabled, model_options,
+                          stop_sequences);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",
