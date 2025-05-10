@@ -35,6 +35,12 @@ const getTestsToRun = (config, suite) => {
   } else if (suite === 'chromium_unit_tests') {
     testsToRun = getChromiumUnitTestsSuites()
   }
+
+  if (suite === 'chrome_junit_tests' && config.targetOS === 'android') {
+    testsToRun = ['bin/run_chrome_junit_tests']
+    // Full command line to run it is
+    // npm run test -- chrome_junit_tests  Debug  --target_os=android --target_arch=x86 --filter="org.chromium.brave.browser.custom_app_icons.*"
+  }
   return testsToRun
 }
 
@@ -83,6 +89,7 @@ const buildTests = async (suite, buildConfig = config.defaultBuildConfig, option
     'brave_unit_tests',
     'brave_browser_tests',
     'brave_java_unit_tests',
+    'brave_junit_tests',
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
@@ -208,6 +215,12 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       if (config.isTeamcity) {
         // Stdout and stderr must be separate for a test launcher.
         runOptions.stdio = 'inherit'
+      }
+      if (suite === 'chrome_junit_tests' && config.targetOS === 'android') {
+          braveArgs = []
+          if (options.filter) {
+            braveArgs.push('--gtest_filter=' + options.filter)
+          }
       }
       if (options.output)
         // When test results are saved to a file, callers (such as CI) generate
