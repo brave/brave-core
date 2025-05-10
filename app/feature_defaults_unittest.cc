@@ -54,6 +54,7 @@
 #include "components/webui/chrome_urls/features.h"
 #include "content/common/features.h"
 #include "content/public/common/btm_utils.h"
+#include "content/public/common/buildflags.h"
 #include "content/public/common/content_features.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
@@ -138,6 +139,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
 #endif  // !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
+      &features::kDevToolsNewPermissionDialog,
+#endif  // BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
       &features::kDevToolsPrivacyUI,
       &features::kDigitalGoodsApi,
       &features::kFedCm,
