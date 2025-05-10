@@ -273,6 +273,15 @@ RegisterPolymerTemplateModifications({
       privacyEl.insertAdjacentElement('afterend', web3El)
     }
 
+    // Add survey panelist item
+    const surveyPanelistEl = createMenuElement(
+      loadTimeData.getString('surveyPanelist'),
+      '/surveyPanelist',
+      'product-brave-survey-panelist',
+      'surveyPanelist',
+    )
+    web3El.insertAdjacentElement('afterend', surveyPanelistEl)
+
     // Add leo item
     const leoAssistantEl = createMenuElement(
       loadTimeData.getString('leoAssistant'),
@@ -280,7 +289,7 @@ RegisterPolymerTemplateModifications({
       'product-brave-leo',
       'leoAssistant',
     )
-    web3El.insertAdjacentElement('afterend', leoAssistantEl)
+    surveyPanelistEl.insertAdjacentElement('afterend', leoAssistantEl)
 
     // Add Sync item
     const syncEl = createMenuElement(
