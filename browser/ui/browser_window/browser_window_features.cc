@@ -72,6 +72,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
   BrowserWindowFeatures_ChromiumImpl::InitPostWindowConstruction(browser);
 
   if (sidebar::CanUseSidebar(browser)) {
-    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(browser);
+    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
+        browser, browser->profile());
   }
 }

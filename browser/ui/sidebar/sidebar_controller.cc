@@ -54,9 +54,9 @@ std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
 
 }  // namespace
 
-SidebarController::SidebarController(Browser* browser)
+SidebarController::SidebarController(Browser* browser, Profile* profile)
     : tab_strip_model_(browser->tab_strip_model()),
-      profile_(browser->profile()),
+      profile_(profile),
       browser_(browser),
       sidebar_model_(new SidebarModel(profile_)) {
   sidebar_service_observed_.Observe(GetSidebarService(profile_));
