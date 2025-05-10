@@ -62,7 +62,7 @@ class BraveHelpBubbleHostView;
 class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
-class SplitView;
+class SplitViewViews;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
 class WalletButton;
@@ -78,8 +78,8 @@ class BraveBrowserView : public BrowserView,
 
   static BraveBrowserView* From(BrowserView* view);
 
-  SplitView* split_view() { return split_view_; }
-  const SplitView* split_view() const { return split_view_; }
+  SplitViewViews* split_view() { return split_view_; }
+  const SplitViewViews* split_view() const { return split_view_; }
   views::View* GetContentsBoundingView() const;
 
   void SetStarredState(bool is_starred) override;
@@ -229,7 +229,7 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
 
-  raw_ptr<SplitView> split_view_ = nullptr;
+  raw_ptr<SplitViewViews> split_view_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,

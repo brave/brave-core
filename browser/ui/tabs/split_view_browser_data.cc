@@ -17,15 +17,13 @@
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 #include "brave/components/misc_metrics/split_view_metrics.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-SplitViewBrowserData::SplitViewBrowserData(
-    BrowserWindowInterface* browser_window_interface)
-    : tab_strip_model_adapter_(std::make_unique<SplitViewTabStripModelAdapter>(
-          *this,
-          browser_window_interface->GetTabStripModel())) {
+SplitViewBrowserData::SplitViewBrowserData(TabStripModel* tab_strip_model)
+    : tab_strip_model_adapter_(
+          std::make_unique<SplitViewTabStripModelAdapter>(*this,
+                                                          tab_strip_model)) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 }
 
