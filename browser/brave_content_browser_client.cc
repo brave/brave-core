@@ -92,6 +92,7 @@
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
@@ -274,6 +275,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/components/psst/browser/core/psst_consent_dialog.mojom.h"
 #endif
 
 namespace {
@@ -840,6 +846,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_account::mojom::BraveAccountHandler, BraveSettingsUI>(map);
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  content::RegisterWebUIControllerInterfaceBinder<
+      psst_consent_dialog::mojom::PsstConsentFactory, psst::BravePsstDialogUI>(
+      map);
 #endif
 
   auto* prefs =

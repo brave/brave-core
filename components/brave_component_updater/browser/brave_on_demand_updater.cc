@@ -18,9 +18,11 @@ BraveOnDemandUpdater* BraveOnDemandUpdater::GetInstance() {
   static base::NoDestructor<BraveOnDemandUpdater> instance;
   return instance.get();
 }
+bool BraveOnDemandUpdater::IsValid() {
+  return on_demand_updater_ != nullptr;
+}
 
 BraveOnDemandUpdater::BraveOnDemandUpdater() = default;
-
 BraveOnDemandUpdater::~BraveOnDemandUpdater() = default;
 
 component_updater::OnDemandUpdater*

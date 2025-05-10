@@ -48,6 +48,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isDebounceFeatureEnabled')
         }
       },
+      isPsstFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isPsstFeatureEnabled')
+        }
+      },
       isRequestOTRFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
@@ -74,6 +81,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   private webRTCPolicy_: String
   private isDebounceFeatureEnabled_: boolean
   private isRequestOTRFeatureEnabled_: boolean
+  private isPsstFeatureEnabled_: boolean
   private requestOTRActions_: Object[]
   private requestOTRAction_: String
 

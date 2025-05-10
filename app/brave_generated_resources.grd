@@ -1403,6 +1403,28 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         An embedded page on this page wants to save
       </message>
 
+      <message name="IDS_PSST_CONSENT_DIALOG_TITLE" desc="A title for a dialog to adjust PSST">
+        Privacy settings optimization
+      </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_BODY" desc="A body for a dialog to adjust PSST">
+        This website offers privacy settings. Brave can automatically tune these settings for you. Would you like Brave to do so?
+      </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_OPTIONS_TITLE" desc="A dialog's proposed options title">
+        It's what's happening / 
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_OK" desc="Ok button's Text for PSST complete dialog">
+        Apply changes
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED" desc="Report failed button's Text for PSST complete dialog">
+        Report failed content
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CLOSE" desc="Close button's Text for PSST complete dialog">
+        Close
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for PSST complete dialog">
+        Cancel
+      </message>
+
       <!-- Tab Search -->
       <message name="IDS_BRAVE_ORGANIZE_TAB_TITLE" desc="Title for the tab organizer page">
         Tab focus

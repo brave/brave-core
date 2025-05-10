@@ -112,4 +112,7 @@ inline constexpr auto kInstallablePWAWebUIHosts =
         kAIChatUIHost,
     });
 
+inline constexpr char kBravePsstHost[] = "psst";
+inline constexpr char kBraveUIPsstURL[] = "chrome://psst/";
+
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
