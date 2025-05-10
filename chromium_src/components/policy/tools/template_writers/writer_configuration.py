@@ -8,7 +8,12 @@ import override_utils
 @override_utils.override_function(globals())
 def GetConfigurationForBuild(original_function, defines):
   base = original_function(defines)
-  return _merge_dicts(_BRAVE_VALUES, base)
+  merged = _merge_dicts(_BRAVE_VALUES, base)
+
+  # Remove Google.Policies namespace. Microsoft.Policies.Windows remains, as it is hardcoded in admx_writer.py.
+  merged.pop('admx_using_namespaces', None)
+
+  return merged
 
 _BRAVE_VALUES = {
   'build': 'brave',
@@ -22,9 +27,10 @@ _BRAVE_VALUES = {
       'reg_mandatory_key_name': 'Software\\Policies\\BraveSoftware\\Brave',
       'reg_recommended_key_name':
         'Software\\Policies\\BraveSoftware\\Brave\\Recommended',
-      'mandatory_category_path': ['Brave:Cat_Brave', 'brave'],
-      'recommended_category_path': ['Brave:Cat_Brave', 'brave_recommended'],
+      'mandatory_category_path': ['Cat_Brave', 'brave'],
+      'recommended_category_path': ['Cat_Brave', 'brave_recommended'],
       'category_path_strings': {
+        'Cat_Brave': 'Brave Software',
         'brave': 'Brave',
         'brave_recommended':
         'Brave - {doc_recommended}'
@@ -32,15 +38,7 @@ _BRAVE_VALUES = {
       'namespace': 'BraveSoftware.Policies.Brave',
     },
   },
-  # The string 'Brave' is defined in brave.adml for ADMX, but ADM doesn't
-  # support external references, so we define this map here.
-  'adm_category_path_strings': {
-    'Brave:Cat_Brave': 'Brave'
-  },
   'admx_prefix': 'brave',
-  'admx_using_namespaces': {
-    'Brave': 'BraveSoftware.Policies'  # prefix: namespace
-  },
   'linux_policy_path': '/etc/brave/policies/',
   'bundle_id': 'com.brave.ios.core',
 }
