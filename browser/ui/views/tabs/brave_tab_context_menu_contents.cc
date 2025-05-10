@@ -174,7 +174,7 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       return false;
     }
     case BraveTabMenuModel::CommandCloseDuplicateTabs:
-      return brave::HasDuplicateTabs(browser_);
+      return brave::HasDuplicatesOfActiveTab(browser_);
     case BraveTabMenuModel::CommandShowVerticalTabs:
       [[fallthrough]];
     case BraveTabMenuModel::CommandBringAllTabsToThisWindow:
@@ -226,7 +226,7 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       return;
     }
     case BraveTabMenuModel::CommandCloseDuplicateTabs:
-      brave::CloseDuplicateTabs(browser_);
+      brave::CloseDuplicatesOfActiveTab(browser_);
       return;
     case BraveTabMenuModel::CommandNewSplitView:
       NewSplitView();
