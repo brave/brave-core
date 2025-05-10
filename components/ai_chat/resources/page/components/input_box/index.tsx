@@ -37,6 +37,8 @@ type Props = Pick<
   | 'removeImage'
   | 'conversationHistory'
   | 'associatedContentInfo'
+  | 'isUploadingFiles'
+  | 'cancelFileUpload'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -123,7 +125,8 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {props.context.pendingMessageImages && (
+      {(props.context.pendingMessageImages ||
+        props.context.isUploadingFiles) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -132,7 +135,13 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {props.context.pendingMessageImages.map((img, i) => (
+          {props.context.isUploadingFiles && (
+            <UploadedImgItem
+              isLoading={true}
+              cancelFileUpload={props.context.cancelFileUpload}
+            />
+          )}
+          {props.context.pendingMessageImages?.map((img, i) => (
             <UploadedImgItem
               key={img.filename}
               uploadedImage={img}

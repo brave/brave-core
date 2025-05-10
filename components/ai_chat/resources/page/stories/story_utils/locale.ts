@@ -122,6 +122,7 @@ provideStrings({
   toolsMenuButtonLabel: 'Leo tools',
   attachmentMenuButtonLabel: 'Attachment',
   uploadFileButtonLabel: 'Upload file...',
+  uploadingFileLabel: 'Uploading file...',
   takeAPictureButtonLabel: 'Take a picture...',
   screenshotButtonLabel: 'Screenshot',
   currentTabContentsButtonLabel: 'Current tab contents',
