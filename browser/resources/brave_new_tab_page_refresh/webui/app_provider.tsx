@@ -13,29 +13,41 @@ import { TopSitesProvider } from '../components/context/top_sites_context'
 import { VpnProvider } from '../components/context/vpn_context'
 import { RewardsProvider } from '../components/context/rewards_context'
 
-import { createLocale } from './sb_locale'
-import { createBackgroundAPI } from './sb_backgrounds'
-import { createNewTabAPI } from './sb_new_tab'
-import { createRewardsAPI } from './sb_rewards'
-import { createSearchAPI } from './sb_search'
-import { createTopSitesAPI } from './sb_top_sites'
-import { createVpnAPI } from './sb_vpn'
+import { createLocale } from './webui_locale'
+import { createBackgroundAPI } from './webui_backgrounds'
+import { createNewTabAPI } from './webui_new_tab'
+import { createRewardsAPI } from './webui_rewards'
+import { createSearchAPI } from './webui_search'
+import { createTopSitesAPI   } from './webui_top_sites'
+import { createVpnAPI } from './webui_vpn'
 
-import { App } from '../components/app'
+const newTab = createNewTabAPI()
+const backgrounds = createBackgroundAPI()
+const rewards = createRewardsAPI()
+const search = createSearchAPI()
+const topSites = createTopSitesAPI()
+const vpn = createVpnAPI()
 
-export default {
-  title: 'New Tab/Refresh'
-}
+Object.assign(self, {
+  [Symbol.for('ntp')]: {
+    newTab,
+    backgrounds,
+    rewards,
+    search,
+    topSites,
+    vpn
+  }
+})
 
-function AppProvider(props: { children: React.ReactNode }) {
+export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <LocaleProvider value={createLocale()}>
-      <NewTabProvider value={createNewTabAPI()}>
-        <BackgroundProvider value={createBackgroundAPI()}>
-          <SearchProvider value={createSearchAPI()}>
-            <TopSitesProvider value={createTopSitesAPI()}>
-              <VpnProvider value={createVpnAPI()}>
-                <RewardsProvider value={createRewardsAPI()}>
+      <NewTabProvider value={newTab}>
+        <BackgroundProvider value={backgrounds}>
+          <SearchProvider value={search}>
+            <TopSitesProvider value={topSites}>
+              <VpnProvider value={vpn}>
+                <RewardsProvider value={rewards}>
                   {props.children}
                 </RewardsProvider>
               </VpnProvider>
@@ -44,15 +56,5 @@ function AppProvider(props: { children: React.ReactNode }) {
         </BackgroundProvider>
       </NewTabProvider>
     </LocaleProvider>
-  )
-}
-
-export function NTPRefresh() {
-  return (
-    <AppProvider>
-      <div style={{ position: 'absolute', inset: 0 }}>
-        <App />
-      </div>
-    </AppProvider>
   )
 }
