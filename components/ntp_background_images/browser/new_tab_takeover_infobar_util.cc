@@ -16,7 +16,7 @@ namespace ntp_background_images {
 bool ShouldDisplayNewTabTakeoverInfobar(const PrefService* prefs) {
   CHECK(prefs);
 
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
+  if (!brave_ads::kShouldSupportNewTabPageAdConfirmations.Get()) {
     return false;
   }
 
