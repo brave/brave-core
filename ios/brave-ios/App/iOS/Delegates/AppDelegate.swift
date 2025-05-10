@@ -491,12 +491,12 @@ extension AppDelegate {
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 
     sceneSessions.forEach { session in
-      if let windowIdString = BrowserState.getWindowInfo(from: session).windowId,
+      if let windowIdString = BrowserState.getWindowId(from: session),
         let windowId = UUID(uuidString: windowIdString)
       {
         SessionWindow.delete(windowId: windowId)
       } else if let userActivity = session.scene?.userActivity,
-        let windowIdString = BrowserState.getWindowInfo(from: userActivity).windowId,
+        let windowIdString = BrowserState.getNewWindowInfo(from: userActivity).windowId,
         let windowId = UUID(uuidString: windowIdString)
       {
         SessionWindow.delete(windowId: windowId)

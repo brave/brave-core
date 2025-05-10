@@ -10,7 +10,6 @@ import os.log
 
 public final class SessionWindow: NSManagedObject, CRUD {
   @NSManaged public var index: Int32
-  @NSManaged private(set) public var isPrivate: Bool
   @NSManaged public var isSelected: Bool
   @NSManaged private(set) public var windowId: UUID
 
@@ -35,7 +34,6 @@ public final class SessionWindow: NSManagedObject, CRUD {
   public init(
     context: NSManagedObjectContext,
     index: Int32,
-    isPrivate: Bool,
     isSelected: Bool
   ) {
     guard let entity = NSEntityDescription.entity(forEntityName: "SessionWindow", in: context)
@@ -47,7 +45,6 @@ public final class SessionWindow: NSManagedObject, CRUD {
     self.sessionTabs = Set()
     self.sessionTabGroups = Set()
     self.index = index
-    self.isPrivate = isPrivate
     self.isSelected = isSelected
     self.windowId = UUID()
   }
@@ -84,7 +81,6 @@ extension SessionWindow {
       _ = SessionWindow(
         context: context,
         index: index,
-        isPrivate: isPrivate,
         isSelected: isSelected
       )
 
@@ -98,7 +94,7 @@ extension SessionWindow {
     }
   }
 
-  public static func createWindow(isPrivate: Bool, isSelected: Bool, uuid: UUID) {
+  public static func createWindow(isSelected: Bool, uuid: UUID) {
     DataController.performOnMainContext { context in
       if let sessionWindow = SessionWindow.from(windowId: uuid, in: context) {
         Self.all().forEach {
@@ -113,7 +109,6 @@ extension SessionWindow {
       let window = SessionWindow(
         context: context,
         index: Int32(count),
-        isPrivate: isPrivate,
         isSelected: isSelected
       )
       window.windowId = uuid
@@ -163,31 +158,6 @@ extension SessionWindow {
       }
 
       sessionWindow.delete(context: .existing(context))
-    }
-  }
-
-  public static func deleteAllWindows(privateOnly: Bool) {
-    DataController.perform { context in
-      guard
-        let sessionWindows = SessionWindow.all(
-          where: NSPredicate(format: "isPrivate == %@", NSNumber(value: privateOnly)),
-          context: context
-        )
-      else {
-        return
-      }
-
-      sessionWindows.forEach { sessionWindow in
-        sessionWindow.sessionTabs?.forEach {
-          $0.delete(context: .existing(context))
-        }
-
-        sessionWindow.sessionTabGroups?.forEach {
-          $0.delete(context: .existing(context))
-        }
-
-        sessionWindow.delete(context: .existing(context))
-      }
     }
   }
 }

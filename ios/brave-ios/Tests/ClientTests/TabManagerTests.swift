@@ -769,7 +769,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       forNotification: NSNotification.Name.NSManagedObjectContextDidSave,
       object: nil
     )
-    SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: testWindowId)
+    SessionWindow.createWindow(isSelected: true, uuid: testWindowId)
     wait(for: [windowCreateExpectation], timeout: 5)
 
     delegate.expect([willAdd, didAdd])
@@ -812,7 +812,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       forNotification: .NSManagedObjectContextDidSave,
       object: nil
     )
-    SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: testWindowId)
+    SessionWindow.createWindow(isSelected: true, uuid: testWindowId)
     wait(for: [windowCreateExpectation], timeout: 5)
 
     delegate.expect([willAdd, didAdd, willAdd, didAdd])

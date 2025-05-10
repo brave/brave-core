@@ -109,7 +109,7 @@ public class Migration {
     }
 
     let windowIds = UIApplication.shared.openSessions
-      .compactMap({ BrowserState.getWindowInfo(from: $0).windowId })
+      .compactMap({ BrowserState.getWindowId(from: $0) })
       .filter({ $0 != activeWindow.windowId.uuidString })
 
     let zombieTabs =
