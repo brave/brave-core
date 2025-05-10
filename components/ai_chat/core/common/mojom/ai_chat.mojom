@@ -371,7 +371,8 @@ interface Service {
   BindConversation(
       string conversation_uuid,
       pending_receiver<ConversationHandler> conversation,
-      pending_remote<ConversationUI> conversation_ui);
+      pending_remote<ConversationUI> conversation_ui)
+          => (ConversationState conversation_state);
 
   // Bind metrics interface
   BindMetrics(pending_receiver<Metrics> metrics);
@@ -415,23 +416,21 @@ interface AIChatUIHandler {
   // initial constant state
   SetChatUI(pending_remote<ChatUI> chat_ui) => (bool is_standalone);
 
-  // Bind 2-way communication to the conversation related to the open page in
-  // the current browser window. No binding will occur if this isn't a
-  // tab-related UI, e.g. sidebar or popup.
+  // Bind 2-way communication to an existing or new conversation, maybe related to the open page in
+  // the current browser window if the UI is connected to that (e.g. Sidebar or Popup).
+  // A new conversation is always created if the UI is not connected to a page
+  // (e.g. when the UI is open as a standalone Tab or PWA).
   BindRelatedConversation(
       pending_receiver<ConversationHandler> conversation,
-      pending_remote<ConversationUI> conversation_ui);
+      pending_remote<ConversationUI> conversation_ui,
+      bool create_new_conversation)
+          => (ConversationState conversation_state);
 
   // Associates an open tab with a conversation.
   AssociateTab(TabData tab, string conversation_uuid);
-
   // Disassociates an open tab from a conversation.
   DisassociateTab(TabData tab, string conversation_uuid);
 
-  // Make a completely new conversation, which may
-  // be bound to the associated conversation, if this UI has a target
-  NewConversation(pending_receiver<ConversationHandler> conversation,
-      pending_remote<ConversationUI> conversation_ui);
 };
 
 // UI-side handler for messages from the browser WebUI
@@ -481,8 +480,6 @@ struct ConversationEntriesState {
 
 // Browser-side handler for a Conversation
 interface ConversationHandler {
-  GetState() => (ConversationState conversation_state);
-
   GetConversationUuid() => (string conversation_uuid);
 
   // Get all the possible models for any conversation

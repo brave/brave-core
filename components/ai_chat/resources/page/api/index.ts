@@ -38,7 +38,8 @@ export const defaultUIState: State = {
   tabs: []
 }
 
-// Owns connections to the browser via mojom as well as global state
+// Owns connections to the browser via mojom. Passes state from the browser
+// to the UI.
 class PageAPI extends API<State> {
   public service: Mojom.ServiceRemote
     = Mojom.Service.getRemote()
@@ -156,41 +157,4 @@ export default function getAPI() {
     apiInstance = new PageAPI()
   }
   return apiInstance
-}
-
-export function bindConversation(id: string | undefined) {
-  let conversationHandler: Mojom.ConversationHandlerRemote =
-    new Mojom.ConversationHandlerRemote()
-  let callbackRouter = new Mojom.ConversationUICallbackRouter()
-
-  if (id !== undefined) {
-    getAPI().service.bindConversation(
-      id,
-      conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote()
-    )
-  } else {
-    getAPI().uiHandler.bindRelatedConversation(
-      conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote()
-    )
-  }
-  return {
-    conversationHandler,
-    callbackRouter
-  }
-}
-
-export function newConversation() {
-  let conversationHandler: Mojom.ConversationHandlerRemote =
-    new Mojom.ConversationHandlerRemote()
-  let callbackRouter = new Mojom.ConversationUICallbackRouter()
-  getAPI().uiHandler.newConversation(
-    conversationHandler.$.bindNewPipeAndPassReceiver(),
-    callbackRouter.$.bindNewPipeAndPassRemote()
-  )
-  return {
-    conversationHandler,
-    callbackRouter
-  }
 }

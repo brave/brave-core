@@ -926,11 +926,13 @@ void AIChatService::GetVisibleConversations(
 void AIChatService::BindConversation(
     const std::string& uuid,
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+    BindConversationCallback callback) {
   GetConversation(
       std::move(uuid),
       base::BindOnce(
           [](mojo::PendingReceiver<mojom::ConversationHandler> receiver,
+             BindConversationCallback callback,
              mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
              ConversationHandler* handler) {
             if (!handler) {
@@ -939,8 +941,10 @@ void AIChatService::BindConversation(
             }
             handler->Bind(std::move(receiver),
                           std::move(conversation_ui_handler));
+            std::move(callback).Run(handler->GetState());
           },
-          std::move(receiver), std::move(conversation_ui_handler)));
+          std::move(receiver), std::move(callback),
+          std::move(conversation_ui_handler)));
 }
 
 void AIChatService::BindMetrics(mojo::PendingReceiver<mojom::Metrics> metrics) {

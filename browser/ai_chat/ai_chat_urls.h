@@ -12,10 +12,6 @@
 
 namespace ai_chat {
 
-// UI that will open a conversation associated with the active Tab in the same
-// browser window. The conversation will change when that Tab navigates.
-GURL TabAssociatedConversationUrl();
-
 // UI that will open to a specific conversation. The conversation will not
 // change upon any navigation.
 GURL ConversationUrl(std::string_view conversation_uuid);

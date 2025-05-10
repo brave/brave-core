@@ -10,7 +10,7 @@ import * as Mojom from '../../common/mojom'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
 import { isLeoModel } from '../model_utils'
-import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
+import { useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
 import getAPI from '../api'
 import {
@@ -197,7 +197,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
 
   const aiChatContext = useAIChat()
-  const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
+  const {
+    conversationHandler,
+    callbackRouter,
+    selectedConversationId,
+    initialStatePromise,
+    updateSelectedConversationId,
+    isTabAssociated,
+  } = useActiveChat()
   const sendFeedbackState = useSendFeedback(conversationHandler, getAPI().conversationEntriesFrameObserver)
 
   const [
@@ -224,6 +231,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   // Initialization
   React.useEffect(() => {
+    if (!initialStatePromise || !conversationHandler || !callbackRouter) {
+      setPartialContext(defaultContext)
+      return
+    }
+
     async function updateHistory(entry?: Mojom.ConversationTurn) {
       if (entry) {
         // Use the shared utility function to update the history
@@ -244,8 +256,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }
     }
 
-    async function initialize() {
-      const { conversationState: {
+    // Initial data
+    updateHistory()
+    initialStatePromise.then(({conversationState}) => {
+      const {
         conversationUuid,
         isRequestInProgress: isGenerating,
         allModels: models,
@@ -255,7 +269,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         associatedContent,
         shouldSendContent,
         error
-      } } = await conversationHandler.getState()
+      } = conversationState
       setPartialContext({
         conversationUuid,
         isGenerating,
@@ -266,11 +280,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         shouldSendPageContents: shouldSendContent,
         currentError: error
       })
-    }
-
-    // Initial data
-    updateHistory()
-    initialize()
+    })
 
     // Bind the conversation handler
     let id: number
@@ -334,16 +344,24 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         callbackRouter.removeListener(id)
       }
     }
-  }, [conversationHandler, callbackRouter])
+  }, [conversationHandler, callbackRouter, initialStatePromise])
 
-  // Update the location when the visible conversation changes
+  // Update the location when we get a new ID for a conversation and the conversation has content
   const isVisible = useIsConversationVisible(context.conversationUuid)
   React.useEffect(() => {
+    // Don't update in content-associated mode, since we want to maintain
+    // that the url refers to the "default conversation for the content"
+    // and not for the conversation.
+    if (!aiChatContext.isStandalone) return
+    // Don't change the URL until the conversation is committed as signaled
+    // by being in the visible conversation list.
     if (!isVisible) return
-    if (selectedConversationId === tabAssociatedChatId) return
+    // Don't change the URL if it is already the selected conversation
     if (context.conversationUuid === selectedConversationId) return
+    // Change the URL
+    // Avoid re-binding to the same conversation
     updateSelectedConversationId(context.conversationUuid)
-  }, [isVisible, updateSelectedConversationId])
+  }, [isVisible, updateSelectedConversationId, isTabAssociated])
 
   // Update page title when conversation changes
   React.useEffect(() => {
