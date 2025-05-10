@@ -153,18 +153,32 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  void OpenAIChatSidePanel() {
+  content::WebContents* OpenAIChatSidePanel() {
     auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
+    auto* side_panel_web_contents =
+        side_panel_ui->GetWebContentsForTest(SidePanelEntryId::kChatUI);
+    ASSERT_TRUE(side_panel_web_contents);
+    content::WaitForLoadStop(side_panel_web_contents);
+  }
+
+  void CloseAIChatSidePanel() {
+    auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
+    side_panel_ui->Close();
+  }
+
+  content::WebContents* GetAIChatSidePanelWebContents() {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     auto* side_panel = browser_view->unified_side_panel();
     auto* ai_chat_side_panel =
         side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId);
-    ASSERT_TRUE(ai_chat_side_panel);
-    auto* side_panel_web_contents =
-        (static_cast<views::WebView*>(ai_chat_side_panel))->web_contents();
-    ASSERT_TRUE(side_panel_web_contents);
-    content::WaitForLoadStop(side_panel_web_contents);
+    return (static_cast<views::WebView*>(ai_chat_side_panel))->web_contents();
+  }
+
+  std::string GetConversationUuidFromUI(content::WebContents* web_contents) {
+    std::string conversation_uuid =
+        content::EvalJs(web_contents, "getConversationUuid()").ExtractString();
+    return conversation_uuid;
   }
 
   void FetchPageContent(const base::Location& location,
@@ -384,3 +398,10 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                                          {{"test query", "test summary"},
                                           {"test query 2", "test summary 2"}}));
 }
+
+// Tests for navigation:
+// - Sidebar: Navigate to / should load content-related conversation
+// - Tab: Navigate to / should load new conversation
+// - Both: Navigate to /[uuid] should load that conversation (both container and
+// frame)
+// - Sidebar: Clicking "new conversation button" should load new conversation
