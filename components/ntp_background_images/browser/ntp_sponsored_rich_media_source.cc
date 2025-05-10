@@ -5,11 +5,9 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
@@ -18,24 +16,11 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_source_util.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
-
-namespace {
-
-std::optional<std::string> ReadFileToString(const base::FilePath& path) {
-  std::string contents;
-  if (!base::ReadFileToString(path, &contents)) {
-    return std::optional<std::string>();
-  }
-  return contents;
-}
-
-}  // namespace
 
 NTPSponsoredRichMediaSource::NTPSponsoredRichMediaSource(
     NTPBackgroundImagesService* background_images_service)
@@ -78,11 +63,10 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
 
 std::string NTPSponsoredRichMediaSource::GetMimeType(const GURL& url) {
   std::string mime_type;
-  const base::FilePath::StringType file_path_extension =
-      base::FilePath::FromUTF8Unsafe(url.path_piece()).Extension();
-  if (!file_path_extension.empty()) {
-    net::GetWellKnownMimeTypeFromExtension(file_path_extension.substr(1),
-                                           &mime_type);
+  const base::FilePath file_path =
+      base::FilePath::FromUTF8Unsafe(url.path_piece());
+  if (!file_path.empty()) {
+    net::GetWellKnownMimeTypeFromFile(file_path, &mime_type);
   }
 
   return mime_type;

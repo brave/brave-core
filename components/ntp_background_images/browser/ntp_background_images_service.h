@@ -75,7 +75,7 @@ class NTPBackgroundImagesService {
       bool super_referral,
       bool supports_rich_media) const;
 
-  bool test_data_used() const { return test_data_used_; }
+  bool overridden_component_path() const { return overridden_component_path_; }
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
@@ -85,9 +85,6 @@ class NTPBackgroundImagesService {
   void ForceSponsoredComponentUpdate();
 
  private:
-  friend class NTPSponsoredRichMediaSourceTest;
-  friend class NTPSponsoredRichMediaWithCSPViolationBrowserTest;
-  friend class NTPSponsoredRichMediaBrowserTest;
   friend class NTPBackgroundImagesServiceForTesting;
   friend class NTPBackgroundImagesServiceTest;
   friend class ViewCounterServiceTest;
@@ -210,7 +207,7 @@ class NTPBackgroundImagesService {
 
   base::Time last_update_check_at_;
 
-  bool test_data_used_ = false;
+  bool overridden_component_path_ = false;
 
   const raw_ptr<component_updater::ComponentUpdateService>
       component_update_service_ = nullptr;

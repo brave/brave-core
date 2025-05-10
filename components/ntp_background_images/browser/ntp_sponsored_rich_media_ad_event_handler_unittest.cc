@@ -6,9 +6,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 
 #include <memory>
-#include <utility>
 
-#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"

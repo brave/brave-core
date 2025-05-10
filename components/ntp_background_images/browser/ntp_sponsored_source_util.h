@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_SOURCE_UTIL_H_
 
 #include <optional>
+#include <string>
 #include <vector>
 
 namespace base {
@@ -16,6 +17,8 @@ class FilePath;
 namespace ntp_background_images {
 
 struct Campaign;
+
+std::optional<std::string> ReadFileToString(const base::FilePath& path);
 
 // Sandbox the request to the campaign creative directory or its children to
 // prevent path traversal.

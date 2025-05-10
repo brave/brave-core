@@ -8,13 +8,13 @@
 
 namespace ntp_background_images::switches {
 
-// Allows forcing sponsored images to use a local directory to find the json
-// (campaigns.json for sponsored images or data.json for super referral) rule
-// file and associated images.
-inline constexpr char kNTPSponsoredImagesDataPathForTesting[] =
-    "ntp-sponsored-images-data-path";
-inline constexpr char kNTPSuperReferralDataPathForTesting[] =
-    "ntp-super-referral-data-path";
+// Optional testing override of the sponsored images component's path.
+inline constexpr char kOverrideSponsoredImagesComponentPath[] =
+    "ntp-sponsored-images-component-path";
+
+//  Optional testing override of the super referral component's path.
+inline constexpr char kOverrideSuperReferralsComponentPath[] =
+    "ntp-super-referrals-component-path";
 
 }  // namespace ntp_background_images::switches
 

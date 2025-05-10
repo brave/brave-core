@@ -10,6 +10,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
+#include "brave/components/ntp_background_images/browser/switches.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -38,17 +39,18 @@ class NTPSponsoredRichMediaWithCSPViolationBrowserTest
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 
     const base::FilePath component_file_path =
-        test_data_file_path.AppendASCII("ntp_background_images")
-            .AppendASCII("components")
+        test_data_file_path.AppendASCII("components")
+            .AppendASCII("ntp_sponsored_images")
             .AppendASCII("rich_media_with_csp_violation");
+    base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
+        switches::kOverrideSponsoredImagesComponentPath, component_file_path);
 
     NTPBackgroundImagesService* const ntp_background_images_service =
         g_brave_browser_process->ntp_background_images_service();
     ASSERT_TRUE(ntp_background_images_service);
 
     NTPBackgroundImagesServiceWaiter waiter(*ntp_background_images_service);
-    ntp_background_images_service->OnSponsoredComponentReady(
-        /*is_super_referral=*/false, component_file_path);
+    ntp_background_images_service->Init();
     waiter.WaitForOnSponsoredContentDidUpdate();
   }
 

@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "ui/gfx/geometry/point.h"
-#include "ui/gfx/geometry/rect.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

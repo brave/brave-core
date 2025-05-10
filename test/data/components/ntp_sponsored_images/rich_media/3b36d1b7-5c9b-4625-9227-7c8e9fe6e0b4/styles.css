@@ -16,4 +16,23 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: url('background.jpg') center/cover no-repeat;
+}
+
+.button {
+  padding: 10px 20px;
+  min-width: 60px;
+  min-height: 44px;
+  background-color: white;
+  color: #FF1F01;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #f4f4f4;
+  cursor: hand;
 }

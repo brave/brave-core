@@ -106,15 +106,16 @@ void NTPBackgroundImagesService::Init() {
   pref_change_registrar_.Init(pref_service_);
 
   // Flag override for testing or demo purposes
-  base::FilePath forced_local_path(
-      base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
-          switches::kNTPSponsoredImagesDataPathForTesting));
-  if (!forced_local_path.empty()) {
-    test_data_used_ = true;
+  base::FilePath override_sponsored_images_component_path(
+      base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
+          switches::kOverrideSponsoredImagesComponentPath));
+  if (!override_sponsored_images_component_path.empty()) {
+    overridden_component_path_ = true;
     DVLOG(6)
         << "NTP Sponsored Images test data will be loaded from local path at: "
-        << forced_local_path.LossyDisplayName();
-    OnSponsoredComponentReady(/*is_super_referral=*/false, forced_local_path);
+        << override_sponsored_images_component_path.LossyDisplayName();
+    OnSponsoredComponentReady(/*is_super_referral=*/false,
+                              override_sponsored_images_component_path);
   } else {
     RegisterBackgroundImagesComponent();
     RegisterSponsoredImagesComponent();
@@ -128,16 +129,16 @@ void NTPBackgroundImagesService::Init() {
 
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
     // Flag override for testing or demo purposes
-    base::FilePath forced_local_path_super_referral(
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
-            switches::kNTPSuperReferralDataPathForTesting));
-    if (!forced_local_path_super_referral.empty()) {
-      test_data_used_ = true;
+    base::FilePath override_super_referrals_component_path(
+        base::CommandLine::ForCurrentProcess()->GetSwitchValuePath(
+            switches::kOverrideSuperReferralsComponentPath));
+    if (!override_super_referrals_component_path.empty()) {
+      overridden_component_path_ = true;
       DVLOG(6)
           << "NTP Super Referral test data will be loaded from local path at: "
-          << forced_local_path_super_referral.LossyDisplayName();
+          << override_super_referrals_component_path.LossyDisplayName();
       OnSponsoredComponentReady(/*is_super_referral=*/false,
-                                forced_local_path_super_referral);
+                                override_super_referrals_component_path);
     } else {
       CheckSuperReferralComponent();
     }

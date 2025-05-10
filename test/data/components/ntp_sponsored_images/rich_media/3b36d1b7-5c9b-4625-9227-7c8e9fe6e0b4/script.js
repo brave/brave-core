@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 document.addEventListener('DOMContentLoaded', () => {
-  const box = document.querySelector('.button-box');
-  box.addEventListener('click', () => {
-    box.textContent = 'Clicked';
+  const button = document.querySelector('.button');
+  button.addEventListener('click', () => {
+    button.textContent = '🚀';
   });
 });

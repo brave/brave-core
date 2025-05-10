@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "campaigns": [
+    {
+      "version": 1,
+      "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+      "advertiserId": "496b045a-195e-441f-b439-07bac083450f",
+      "geoTargets": [
+        "US"
+      ],
+      "creativeSets": [
+        {
+          "creativeSetId": "34ab06be-c9ed-4104-9ce0-9e639f4ad272",
+          "creatives": [
+            {
+              "creativeInstanceId": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd",
+              "alt": "Some content",
+              "companyName": "Image NTT Creative",
+              "targetUrl": "https://basicattentiontoken.org",
+              "wallpaper": {
+                "type": "image",
+                "relativeUrl": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd/background.jpg",
+                "button": {
+                  "image": {
+                    "relativeUrl": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd/button.png"
+                  }
+                },
+                "focalPoint": {
+                  "x": 1280,
+                  "y": 720
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
