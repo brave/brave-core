@@ -3,41 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 
-#include <utility>
+#include <memory>
 
-#include "base/run_loop.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/tabs/tab_group_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/tab_groups/tab_group_id.h"
-#include "content/public/browser/content_browser_client.h"
-#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/page_transition_types.h"
 
-class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
+class TabTileModelBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewTabStripModelAdapterBrowserTest()
-      : feature_list_(tabs::features::kBraveSplitView) {}
-  ~SplitViewTabStripModelAdapterBrowserTest() override = default;
+  TabTileModelBrowserTest() : feature_list_(tabs::features::kBraveSplitView) {}
+  ~TabTileModelBrowserTest() override = default;
 
   TabStripModel* tab_strip_model() const {
     return browser()->tab_strip_model();
   }
-  SplitViewBrowserData& data() const {
-    return *browser()->GetFeatures().split_view_browser_data();
-  }
-  SplitViewTabStripModelAdapter& adapter() const {
-    return *data().tab_strip_model_adapter_.get();
-  }
+
+  TabTileModel& data() { return *browser()->GetFeatures().tab_tile_model(); }
 
   std::unique_ptr<content::WebContents> CreateWebContents() {
     content::WebContents::CreateParams params(browser()->profile());
@@ -46,12 +35,83 @@ class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
     return web_contents;
   }
 
+  tabs::TabModel* CreateTabModel() {
+    content::WebContents::CreateParams params(browser()->profile());
+    auto web_contents = content::WebContents::Create(params);
+    CHECK(web_contents);
+    auto tab_model = std::make_unique<tabs::TabModel>(
+        std::move(web_contents), browser()->tab_strip_model());
+    auto* result = tab_model.get();
+    browser()->tab_strip_model()->AppendTab(std::move(tab_model),
+                                            /*foreground=*/true);
+    return result;
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
-                       TilingTabsMakesTabsAdjacent) {
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, TileTabs_AddsTile) {
+  auto* tab_1 = CreateTabModel();
+  auto* tab_2 = CreateTabModel();
+  EXPECT_FALSE(data().IsTabTiled(tab_1->GetHandle()));
+  EXPECT_FALSE(data().IsTabTiled(tab_2->GetHandle()));
+
+  data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
+
+  EXPECT_TRUE(data().IsTabTiled(tab_1->GetHandle()));
+  EXPECT_TRUE(data().IsTabTiled(tab_2->GetHandle()));
+}
+
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, BreakTile_RemovesTile) {
+  auto* tab_1 = CreateTabModel();
+  auto* tab_2 = CreateTabModel();
+  data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
+
+  ASSERT_TRUE(data().IsTabTiled(tab_1->GetHandle()));
+  ASSERT_TRUE(data().IsTabTiled(tab_2->GetHandle()));
+
+  data().BreakTile(tab_1->GetHandle());
+  EXPECT_FALSE(data().IsTabTiled(tab_1->GetHandle()));
+  EXPECT_FALSE(data().IsTabTiled(tab_2->GetHandle()));
+
+  data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
+  data().BreakTile(tab_2->GetHandle());
+  EXPECT_FALSE(data().IsTabTiled(tab_1->GetHandle()));
+  EXPECT_FALSE(data().IsTabTiled(tab_2->GetHandle()));
+}
+
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, FindTabTile) {
+  auto* tab_1 = CreateTabModel();
+  auto* tab_2 = CreateTabModel();
+  data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
+
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_1->GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_2->GetHandle())));
+
+  data().BreakTile(tab_2->GetHandle());
+  EXPECT_EQ(data().tab_tiles_.end(), data().FindTabTile(tab_1->GetHandle()));
+  EXPECT_EQ(data().tab_tiles_.end(), data().FindTabTile(tab_2->GetHandle()));
+
+  auto* tab_3 = CreateTabModel();
+  auto* tab_4 = CreateTabModel();
+  data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});
+  data().TileTabs({.first = tab_3->GetHandle(), .second = tab_4->GetHandle()});
+  EXPECT_EQ(1, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_3->GetHandle())));
+  EXPECT_EQ(1, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_4->GetHandle())));
+
+  data().BreakTile(tab_1->GetHandle());
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_3->GetHandle())));
+  EXPECT_EQ(0, std::distance(data().tab_tiles_.begin(),
+                             data().FindTabTile(tab_4->GetHandle())));
+}
+
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, TilingTabsMakesTabsAdjacent) {
   // Given that there're multiple tabs
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground=*/true);
@@ -72,7 +132,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(secondary_tab.Get()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        TilingTabsMakesGroupSynchronized_OnlyFirstTabIsGrouped) {
   // Given that a tab is in a group,
   const auto group_id = tab_groups::TabGroupId::GenerateNew();
@@ -98,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(group_id, *tab_strip_model()->GetTabGroupForTab(1));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        TilingTabsMakesGroupSynchronized_InDifferentGroups) {
   // Given that tabs are in different groups
   const auto group_id = tab_groups::TabGroupId::GenerateNew();
@@ -128,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(group_id, *tab_strip_model()->GetTabGroupForTab(2));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        TilingTabsSynchronizePinnedState_OnlyOneTabIsPinned) {
   // Given that a tab is pinned
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
@@ -152,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_TRUE(tab_strip_model()->IsTabPinned(1));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        OnTabInserted_MoveTabWhenInsertedBetweenTile) {
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
@@ -180,8 +240,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(new_contents_ptr, tab_strip_model()->GetWebContentsAt(2));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
-                       OnTabMoved_MovesTiledTab) {
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, OnTabMoved_MovesTiledTab) {
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
@@ -237,8 +296,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
-                       OnTabRemoved_BreaksTile) {
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, OnTabRemoved_BreaksTile) {
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
@@ -257,7 +315,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_FALSE(data().IsTabTiled(tab2));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        TabPinnedStateChanged_PinnedStateIsSynced) {
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
@@ -298,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
       tab_strip_model()->GetIndexOfTab(tab1.Get())));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        TabPinnedStateChanged_IndexIsSynced) {
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
@@ -365,8 +423,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
-                       TabGroupedStateChanged) {
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest, TabGroupedStateChanged) {
   // Given that tabs are tiled in a group,
   const auto group_id = tab_groups::TabGroupId::GenerateNew();
   ASSERT_TRUE(tab_strip_model()->group_model());
@@ -402,7 +459,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
+IN_PROC_BROWSER_TEST_F(TabTileModelBrowserTest,
                        OnTabMoved_TileShouldBeBrokenWhenTabMovedBetweenTile) {
   // Given that two tabs are tiled and there's a non-tiled tab
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
@@ -421,7 +478,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
       data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
 
   // When moving non-tiled tab between tiled tabs
-  adapter().TabDragStarted();
+  auto on_tab_drag_ended_closure_ = data().TabDragStarted();
   tab_strip_model()->MoveWebContentsAt(2, 1, /*select_after_move*/ false);
 
   // Then the tile should be kept during drag and drop session
@@ -433,7 +490,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
       data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
 
   // When drag-and-drop session ends
-  adapter().TabDragEnded();
+  on_tab_drag_ended_closure_.RunAndReset();
 
   // Then the tile should be broken.
   base::RunLoop().RunUntilIdle();
