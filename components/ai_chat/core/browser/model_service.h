@@ -67,6 +67,9 @@ class ModelService : public KeyedService {
   const std::vector<ai_chat::mojom::ModelPtr>& GetModels();
   const ai_chat::mojom::Model* GetModel(std::string_view key);
 
+  std::optional<std::string> GetLeoModelKeyByName(std::string_view name);
+  std::optional<std::string> GetLeoModelNameByKey(std::string_view key);
+
   void AddCustomModel(mojom::ModelPtr model);
   void SaveCustomModel(uint32_t index, mojom::ModelPtr model);
   void DeleteCustomModel(uint32_t index);

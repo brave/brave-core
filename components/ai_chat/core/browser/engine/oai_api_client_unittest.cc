@@ -59,7 +59,7 @@ base::Value ParseOrStringValue(const std::string& json) {
 
 class MockCallbacks {
  public:
-  MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
+  MOCK_METHOD(void, OnDataReceived, (EngineConsumer::GenerationResultData));
   MOCK_METHOD(void, OnCompleted, (GenerationResult));
 };
 
@@ -82,9 +82,11 @@ class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
 class TestOAIAPIClient : public OAIAPIClient {
  public:
   TestOAIAPIClient() : OAIAPIClient(nullptr) {
-    SetAPIRequestHelperForTesting(std::make_unique<MockAPIRequestHelper>(
-        net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
-        nullptr));
+    auto mock_helper =
+        std::make_unique<testing::NiceMock<MockAPIRequestHelper>>(
+            net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
+            nullptr);
+    SetAPIRequestHelperForTesting(std::move(mock_helper));
   }
   ~TestOAIAPIClient() override = default;
 
@@ -100,7 +102,7 @@ class OAIAPIUnitTest : public testing::Test {
 
   void SetUp() override { client_ = std::make_unique<TestOAIAPIClient>(); }
 
-  void TearDown() override {}
+  void TearDown() override { client_.reset(); }
 
   std::string GetMessagesJson(std::string_view body_json) {
     auto dict = base::test::ParseJsonDict(body_json);
@@ -175,16 +177,22 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_completion_event());
-        EXPECT_EQ(event->get_completion_event()->completion,
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
                   expected_chunk_response);
+        EXPECT_FALSE(result.model_key.has_value());
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](GenerationResult result) {
-        EXPECT_TRUE(result.has_value());
-        EXPECT_EQ(result.value(), expected_completion_response);
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion,
+                  expected_completion_response);
+        EXPECT_FALSE(result->model_key.has_value());
       });
 
   // Begin request
@@ -198,8 +206,9 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
                      base::Unretained(&mock_callbacks)));
 
   run_loop.Run();
-  testing::Mock::VerifyAndClearExpectations(client_.get());
+
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
 }
 
 class OAIAPIInvalidResponseTest
@@ -225,7 +234,7 @@ TEST_P(OAIAPIInvalidResponseTest,
                     ResultCallback result_callback, auto, auto) {
         // Simulate data chunk received
         base::Value maybe_val = ParseOrStringValue(invalid_server_response);
-        std::move(data_received_callback).Run(base::ok(std::move(maybe_val)));
+        data_received_callback.Run(base::ok(std::move(maybe_val)));
 
         // Simulate final callback
         base::Value maybe_val_final =
@@ -243,8 +252,11 @@ TEST_P(OAIAPIInvalidResponseTest,
 
   // For invalid 200 OK payloads, we expect an empty completion from OnCompleted
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
-      .WillOnce([&](GenerationResult result) {
-        EXPECT_EQ(result.value(), std::string());
+      .WillOnce([](GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
       });
 
   // Begin request
@@ -256,6 +268,9 @@ TEST_P(OAIAPIInvalidResponseTest,
                      base::Unretained(&mock_callbacks)));
 
   run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
 }
 
 // A set of invalid responses that should not trigger any callbacks

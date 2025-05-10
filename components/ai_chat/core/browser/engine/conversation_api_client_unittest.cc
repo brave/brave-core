@@ -27,11 +27,13 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -61,6 +63,8 @@ using DataReceivedCallback =
     api_request_helper::APIRequestHelper::DataReceivedCallback;
 using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
+using ResponseConversionCallback =
+    api_request_helper::APIRequestHelper::ResponseConversionCallback;
 
 namespace ai_chat {
 
@@ -121,7 +125,7 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 
 class MockCallbacks {
  public:
-  MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
+  MOCK_METHOD(void, OnDataReceived, (EngineConsumer::GenerationResultData));
   MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
 };
 
@@ -150,16 +154,29 @@ class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
                (const base::flat_map<std::string, std::string>&),
                const api_request_helper::APIRequestOptions&),
               (override));
+  MOCK_METHOD(Ticket,
+              Request,
+              (const std::string&,
+               const GURL&,
+               const std::string&,
+               const std::string&,
+               ResultCallback,
+               (const base::flat_map<std::string, std::string>&),
+               const api_request_helper::APIRequestOptions&,
+               ResponseConversionCallback),
+              (override));
 };
 
 // Create a version of the ConversationAPIClient that contains our mocks
 class TestConversationAPIClient : public ConversationAPIClient {
  public:
   explicit TestConversationAPIClient(
-      AIChatCredentialManager* credential_manager)
+      AIChatCredentialManager* credential_manager,
+      ModelService* model_service)
       : ConversationAPIClient("unit_test_model_name",
                               nullptr,
-                              credential_manager) {
+                              credential_manager,
+                              model_service) {
     SetAPIRequestHelperForTesting(std::make_unique<MockAPIRequestHelper>(
         net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
         nullptr));
@@ -177,13 +194,16 @@ class ConversationAPIUnitTest : public testing::Test {
   ~ConversationAPIUnitTest() override = default;
 
   void SetUp() override {
+    prefs::RegisterProfilePrefs(prefs_.registry());
+    ModelService::RegisterProfilePrefs(prefs_.registry());
     credential_manager_ = std::make_unique<MockAIChatCredentialManager>(
-        base::NullCallback(), &prefs_service_);
-    client_ =
-        std::make_unique<TestConversationAPIClient>(credential_manager_.get());
+        base::NullCallback(), &prefs_);
+    model_service_ = std::make_unique<ModelService>(&prefs_);
+    client_ = std::make_unique<TestConversationAPIClient>(
+        credential_manager_.get(), model_service_.get());
     // Intercept credential fetch
-    EXPECT_CALL(*credential_manager_, FetchPremiumCredential(_))
-        .WillOnce(
+    ON_CALL(*credential_manager_, FetchPremiumCredential(_))
+        .WillByDefault(
             [&](base::OnceCallback<void(std::optional<CredentialCacheEntry>)>
                     callback) {
               std::move(callback).Run(std::move(credential_));
@@ -239,9 +259,10 @@ class ConversationAPIUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<TestConversationAPIClient> client_;
   std::unique_ptr<MockAIChatCredentialManager> credential_manager_;
-  TestingPrefServiceSimple prefs_service_;
+  std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<TestConversationAPIClient> client_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   std::optional<CredentialCacheEntry> credential_ = std::nullopt;
 };
 
@@ -304,11 +325,13 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "isSearching");
+          result.GetDict().Set("model", "chat-claude-sonnet");
           data_received_callback.Run(base::ok(std::move(result)));
         }
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "searchQueries");
+          result.GetDict().Set("model", "chat-claude-sonnet");
           base::Value queries(base::Value::Type::LIST);
           queries.GetList().Append("Star Wars");
           queries.GetList().Append("Star Trek");
@@ -318,6 +341,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "webSources");
+          result.GetDict().Set("model", "chat-claude-sonnet");
           base::Value sources(base::Value::Type::LIST);
           {
             // Invalid because it doesn't contain the expected host
@@ -362,12 +386,14 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "completion");
+          result.GetDict().Set("model", "chat-claude-sonnet");
           result.GetDict().Set("completion", expected_completion_response);
           data_received_callback.Run(base::ok(std::move(result)));
         }
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "selectedLanguage");
+          result.GetDict().Set("model", "chat-claude-sonnet");
           result.GetDict().Set("language", expected_selected_language);
           data_received_callback.Run(base::ok(std::move(result)));
         }
@@ -384,24 +410,27 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   Sequence seq;
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_search_status_event());
-        EXPECT_TRUE(event->get_search_status_event()->is_searching);
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_search_status_event());
+        EXPECT_TRUE(result.event->get_search_status_event()->is_searching);
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_search_queries_event());
-        auto queries = event->get_search_queries_event()->search_queries;
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_search_queries_event());
+        auto queries = result.event->get_search_queries_event()->search_queries;
         EXPECT_EQ(queries.size(), 2u);
         EXPECT_EQ(queries[0], "Star Wars");
         EXPECT_EQ(queries[1], "Star Trek");
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_sources_event());
-        auto& sources = event->get_sources_event()->sources;
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_sources_event());
+        auto& sources = result.event->get_sources_event()->sources;
         EXPECT_EQ(sources.size(), 2u);
         EXPECT_EQ(sources[0]->title, "Star Wars");
         EXPECT_EQ(sources[1]->title, "Star Trek");
@@ -414,20 +443,32 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_completion_event());
-        EXPECT_EQ(event->get_completion_event()->completion,
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
                   expected_completion_response);
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_selected_language_event());
-        EXPECT_EQ(event->get_selected_language_event()->selected_language,
-                  expected_selected_language);
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_selected_language_event());
+        EXPECT_EQ(
+            result.event->get_selected_language_event()->selected_language,
+            expected_selected_language);
       });
-  EXPECT_CALL(mock_callbacks,
-              OnCompleted(EngineConsumer::GenerationResult("")));
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](EngineConsumer::GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_TRUE(result->event);
+        EXPECT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result.value(),
+                  EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New("")),
+                      std::nullopt));
+      });
 
   // Begin request
   client_->PerformRequest(
@@ -498,6 +539,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
           base::Value result(base::Value::Type::DICT);
           base::Value::Dict& result_dict = result.GetDict();
           result_dict.Set("type", "completion");
+          result_dict.Set("model", "llama-3-8b-instruct");
           result_dict.Set("completion", expected_completion_response);
           data_received_callback.Run(base::ok(std::move(result)));
         }
@@ -506,6 +548,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "selectedLanguage");
+          result.GetDict().Set("model", "llama-3-8b-instruct");
           result.GetDict().Set("language", expected_selected_language);
           data_received_callback.Run(base::ok(std::move(result)));
         }
@@ -522,20 +565,30 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   Sequence seq;
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_completion_event());
-        EXPECT_EQ(event->get_completion_event()->completion,
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
                   expected_completion_response);
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
-      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
-        EXPECT_TRUE(event->is_selected_language_event());
-        EXPECT_EQ(event->get_selected_language_event()->selected_language,
-                  expected_selected_language);
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_selected_language_event());
+        EXPECT_EQ(
+            result.event->get_selected_language_event()->selected_language,
+            expected_selected_language);
       });
-  EXPECT_CALL(mock_callbacks,
-              OnCompleted(EngineConsumer::GenerationResult("")));
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([](EngineConsumer::GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(result.value(),
+                  EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New("")),
+                      std::nullopt));
+      });
 
   // Begin request
   client_->PerformRequest(
@@ -551,11 +604,150 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
+TEST_F(ConversationAPIUnitTest,
+       PerformRequest_WithModelNameOverride_Streaming) {
+  // Tests that the model name override is correctly passed to the API
+  const std::vector<ConversationAPIClient::ConversationEvent>& events =
+      GetMockEventsAndExpectedEventsBody().first;
+  std::string override_model_name = "llama-3-8b-instruct";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify the request is as expected
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        // Verify the model name was overridden in the request
+        auto dict = base::JSONReader::ReadDict(body);
+        EXPECT_TRUE(dict.has_value());
+        const std::string* model = dict->FindString("model");
+        EXPECT_TRUE(model);
+        EXPECT_EQ(*model, override_model_name);
+
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "completion");
+          result.GetDict().Set("model", override_model_name);
+          result.GetDict().Set("completion", "This is a test completion");
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "This is a test completion");
+        EXPECT_EQ(result.model_key, "chat-basic");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](const EngineConsumer::GenerationResult& result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+        EXPECT_FALSE(result->model_key.has_value());
+      });
+
+  // Begin request with model override
+  client_->PerformRequest(
+      events, "",
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)),
+      override_model_name);
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+}
+
+TEST_F(ConversationAPIUnitTest,
+       PerformRequest_WithModelNameOverride_NonStreaming) {
+  // Tests that the non-streaming version (Request) is called with null callback
+  const std::vector<ConversationAPIClient::ConversationEvent>& events =
+      GetMockEventsAndExpectedEventsBody().first;
+  std::string override_model_name = "llama-3-8b-instruct";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // RequestSSE should NOT be called when data_received_callback is null
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .Times(0);
+
+  // Instead, Request should be called
+  EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options,
+                    ResponseConversionCallback response_conversion_callback) {
+        // Verify the model name was overridden in the request
+        auto dict = base::JSONReader::ReadDict(body);
+        EXPECT_TRUE(dict.has_value());
+        const std::string* model = dict->FindString("model");
+        EXPECT_TRUE(model);
+        EXPECT_EQ(*model, override_model_name);
+
+        // Create a response with both completion and model information
+        base::Value response(base::Value::Type::DICT);
+        response.GetDict().Set("type", "completion");
+        response.GetDict().Set("completion", "This is a test completion");
+        response.GetDict().Set("model", override_model_name);
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, std::move(response),
+                                                      {}, net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](const EngineConsumer::GenerationResult& result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion,
+                  "This is a test completion");
+        EXPECT_EQ(result->model_key, "chat-basic");
+      });
+
+  // Begin request with model override but NULL data_received_callback
+  client_->PerformRequest(events, "", base::NullCallback(),
+                          base::BindOnce(&MockCallbacks::OnCompleted,
+                                         base::Unretained(&mock_callbacks)),
+                          override_model_name);
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+}
+
 TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   // Tests handling invalid request parameters
   std::vector<ConversationAPIClient::ConversationEvent> events;
-  EngineConsumer::GenerationResult expected_result =
-      base::unexpected(mojom::APIError::None);
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -568,7 +760,9 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   // Callbacks should be passed through and translated from APIRequestHelper
   // format.
   EXPECT_CALL(mock_callbacks, OnDataReceived).Times(0);
-  EXPECT_CALL(mock_callbacks, OnCompleted(expected_result));
+  EXPECT_CALL(
+      mock_callbacks,
+      OnCompleted(testing::Eq(base::unexpected(mojom::APIError::None))));
 
   // Begin request
   client_->PerformRequest(
@@ -583,121 +777,166 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST(ParseResponseEventTest, ParsesContentReceiptEvent) {
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_ParsesContentReceiptEvent) {
   base::Value::Dict content_receipt_event;
   content_receipt_event.Set("type", "contentReceipt");
+  content_receipt_event.Set("model", "llama-3-8b-instruct");
   content_receipt_event.Set("total_tokens", static_cast<int>(1234567890));
   content_receipt_event.Set("trimmed_tokens", static_cast<int>(987654321));
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(content_receipt_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_content_receipt_event());
-  EXPECT_EQ(event->get_content_receipt_event()->total_tokens, 1234567890u);
-  EXPECT_EQ(event->get_content_receipt_event()->trimmed_tokens, 987654321u);
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(content_receipt_event,
+                                                model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_content_receipt_event());
+  EXPECT_EQ(result->event->get_content_receipt_event()->total_tokens,
+            1234567890u);
+  EXPECT_EQ(result->event->get_content_receipt_event()->trimmed_tokens,
+            987654321u);
+  EXPECT_EQ(result->model_key, "chat-basic");
 
   // Test with missing values (both missing)
   // Should default to 0 when values are missing
   base::Value::Dict missing_values_event;
   missing_values_event.Set("type", "contentReceipt");
-  event = ConversationAPIClient::ParseResponseEvent(missing_values_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_content_receipt_event());
-  EXPECT_EQ(event->get_content_receipt_event()->total_tokens, 0u);
-  EXPECT_EQ(event->get_content_receipt_event()->trimmed_tokens, 0u);
+  missing_values_event.Set("model", "llama-3-8b-instruct");
+  result = ConversationAPIClient::ParseResponseEvent(missing_values_event,
+                                                     model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_content_receipt_event());
+  EXPECT_EQ(result->event->get_content_receipt_event()->total_tokens, 0u);
+  EXPECT_EQ(result->event->get_content_receipt_event()->trimmed_tokens, 0u);
+  EXPECT_EQ(result->model_key, "chat-basic");
 
   // Test with missing trimmed_tokens only
   base::Value::Dict missing_trimmed_event;
   missing_trimmed_event.Set("type", "contentReceipt");
+  missing_trimmed_event.Set("model", "llama-3-8b-instruct");
   missing_trimmed_event.Set("total_tokens", static_cast<int>(12345));
 
   // No trimmed_tokens set
-  event = ConversationAPIClient::ParseResponseEvent(missing_trimmed_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_content_receipt_event());
-  EXPECT_EQ(event->get_content_receipt_event()->total_tokens, 12345u);
-  EXPECT_EQ(event->get_content_receipt_event()->trimmed_tokens, 0u);
+  result = ConversationAPIClient::ParseResponseEvent(missing_trimmed_event,
+                                                     model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_content_receipt_event());
+  EXPECT_EQ(result->event->get_content_receipt_event()->total_tokens, 12345u);
+  EXPECT_EQ(result->event->get_content_receipt_event()->trimmed_tokens, 0u);
+  EXPECT_EQ(result->model_key, "chat-basic");
 
   // Test with negative values
   base::Value::Dict negative_values_event;
   negative_values_event.Set("type", "contentReceipt");
+  negative_values_event.Set("model", "llama-3-8b-instruct");
   negative_values_event.Set("total_tokens", static_cast<int>(-100));
   negative_values_event.Set("trimmed_tokens", static_cast<int>(-200));
-  event = ConversationAPIClient::ParseResponseEvent(negative_values_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_content_receipt_event());
+  result = ConversationAPIClient::ParseResponseEvent(negative_values_event,
+                                                     model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_content_receipt_event());
   // Should default to 0 for negative values
-  EXPECT_EQ(event->get_content_receipt_event()->total_tokens, 0u);
-  EXPECT_EQ(event->get_content_receipt_event()->trimmed_tokens, 0u);
+  EXPECT_EQ(result->event->get_content_receipt_event()->total_tokens, 0u);
+  EXPECT_EQ(result->event->get_content_receipt_event()->trimmed_tokens, 0u);
+  EXPECT_EQ(result->model_key, "chat-basic");
 
   // Test with mixed values (one positive, one negative)
   base::Value::Dict mixed_values_event;
   mixed_values_event.Set("type", "contentReceipt");
+  mixed_values_event.Set("model", "llama-3-8b-instruct");
   mixed_values_event.Set("total_tokens", static_cast<int>(500));
   mixed_values_event.Set("trimmed_tokens", static_cast<int>(-50));
-  event = ConversationAPIClient::ParseResponseEvent(mixed_values_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_content_receipt_event());
-  EXPECT_EQ(event->get_content_receipt_event()->total_tokens, 500u);
-  EXPECT_EQ(event->get_content_receipt_event()->trimmed_tokens, 0u);
+  result = ConversationAPIClient::ParseResponseEvent(mixed_values_event,
+                                                     model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_content_receipt_event());
+  EXPECT_EQ(result->event->get_content_receipt_event()->total_tokens, 500u);
+  EXPECT_EQ(result->event->get_content_receipt_event()->trimmed_tokens, 0u);
+  EXPECT_EQ(result->model_key, "chat-basic");
 }
 
-TEST(ParseResponseEventTest, ParsesCompletionEvent) {
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_ParsesCompletionEvent) {
   base::Value::Dict completion_event;
   completion_event.Set("type", "completion");
+  completion_event.Set("model", "llama-3-8b-instruct");
   completion_event.Set("completion", "Wherever I go, he goes");
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(completion_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_completion_event());
-  EXPECT_EQ(event->get_completion_event()->completion,
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(completion_event,
+                                                model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion,
             "Wherever I go, he goes");
+  EXPECT_EQ(result->model_key, "chat-basic");
 }
 
-TEST(ParseResponseEventTest, ParsesIsSearchingEvent) {
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_ParsesIsSearchingEvent) {
   base::Value::Dict is_searching_event;
   is_searching_event.Set("type", "isSearching");
+  is_searching_event.Set("model", "llama-3-8b-instruct");
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(is_searching_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_search_status_event());
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(is_searching_event,
+                                                model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_search_status_event());
+  EXPECT_EQ(result->model_key, "chat-basic");
 }
 
-TEST(ParseResponseEventTest, ParsesSearchQueriesEvent) {
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_ParsesSearchQueriesEvent) {
   base::Value::Dict search_queries_event;
   search_queries_event.Set("type", "searchQueries");
+  search_queries_event.Set("model", "llama-3-8b-instruct");
+
   base::Value::List queries;
   queries.Append("query1");
   queries.Append("query2");
   search_queries_event.Set("queries", std::move(queries));
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(search_queries_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_search_queries_event());
-  EXPECT_EQ(event->get_search_queries_event()->search_queries.size(), 2u);
-  EXPECT_EQ(event->get_search_queries_event()->search_queries[0], "query1");
-  EXPECT_EQ(event->get_search_queries_event()->search_queries[1], "query2");
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(search_queries_event,
+                                                model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_search_queries_event());
+  EXPECT_EQ(result->event->get_search_queries_event()->search_queries.size(),
+            2u);
+  EXPECT_EQ(result->event->get_search_queries_event()->search_queries[0],
+            "query1");
+  EXPECT_EQ(result->event->get_search_queries_event()->search_queries[1],
+            "query2");
+  EXPECT_EQ(result->model_key, "chat-basic");
 }
 
-TEST(ParseResponseEventTest, ParsesConversationTitleEvent) {
+TEST_F(ConversationAPIUnitTest,
+       ParseResponseEvent_ParsesConversationTitleEvent) {
   base::Value::Dict conversation_title_event;
   conversation_title_event.Set("type", "conversationTitle");
+  conversation_title_event.Set("model", "llama-3-8b-instruct");
   conversation_title_event.Set("title", "This is the way");
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(conversation_title_event);
-  ASSERT_TRUE(!!event);
-  ASSERT_TRUE(event->is_conversation_title_event());
-  EXPECT_EQ(event->get_conversation_title_event()->title, "This is the way");
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(conversation_title_event,
+                                                model_service_.get());
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_conversation_title_event());
+  EXPECT_EQ(result->event->get_conversation_title_event()->title,
+            "This is the way");
+  EXPECT_EQ(result->model_key, "chat-basic");
 }
 
-TEST(ParseResponseEventTest, ParsesWebSourcesEvent) {
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_ParsesWebSourcesEvent) {
   // Case 1: Valid favicon from allowed brave host
   base::Value::Dict event_with_valid_favicon;
   event_with_valid_favicon.Set("type", "webSources");
+  event_with_valid_favicon.Set("model", "llama-3-8b-instruct");
   base::Value::List sources1;
 
   base::Value::Dict source1;
@@ -708,20 +947,25 @@ TEST(ParseResponseEventTest, ParsesWebSourcesEvent) {
 
   event_with_valid_favicon.Set("sources", std::move(sources1));
 
-  mojom::ConversationEntryEventPtr result1 =
-      ConversationAPIClient::ParseResponseEvent(event_with_valid_favicon);
-  ASSERT_FALSE(result1.is_null());
-  ASSERT_TRUE(result1->is_sources_event());
-  EXPECT_EQ(result1->get_sources_event()->sources.size(), 1u);
-  EXPECT_EQ(result1->get_sources_event()->sources[0]->title, "Example 1");
-  EXPECT_EQ(result1->get_sources_event()->sources[0]->url.spec(),
+  std::optional<EngineConsumer::GenerationResultData> result1 =
+      ConversationAPIClient::ParseResponseEvent(event_with_valid_favicon,
+                                                model_service_.get());
+  ASSERT_TRUE(result1);
+  ASSERT_TRUE(result1->event);
+  ASSERT_TRUE(result1->event->is_sources_event());
+  EXPECT_EQ(result1->event->get_sources_event()->sources.size(), 1u);
+  EXPECT_EQ(result1->event->get_sources_event()->sources[0]->title,
+            "Example 1");
+  EXPECT_EQ(result1->event->get_sources_event()->sources[0]->url.spec(),
             "https://example.com/1");
-  EXPECT_EQ(result1->get_sources_event()->sources[0]->favicon_url.spec(),
+  EXPECT_EQ(result1->event->get_sources_event()->sources[0]->favicon_url.spec(),
             "https://imgs.search.brave.com/favicon.ico");
+  EXPECT_EQ(result1->model_key, "chat-basic");
 
   // Case 2: Missing favicon, should use default
   base::Value::Dict event_with_missing_favicon;
   event_with_missing_favicon.Set("type", "webSources");
+  event_with_missing_favicon.Set("model", "llama-3-8b-instruct");
   base::Value::List sources2;
 
   base::Value::Dict source2;
@@ -731,21 +975,26 @@ TEST(ParseResponseEventTest, ParsesWebSourcesEvent) {
 
   event_with_missing_favicon.Set("sources", std::move(sources2));
 
-  mojom::ConversationEntryEventPtr result2 =
-      ConversationAPIClient::ParseResponseEvent(event_with_missing_favicon);
-  ASSERT_FALSE(result2.is_null());
-  ASSERT_TRUE(result2->is_sources_event());
-  EXPECT_EQ(result2->get_sources_event()->sources.size(), 1u);
-  EXPECT_EQ(result2->get_sources_event()->sources[0]->title, "Example 2");
-  EXPECT_EQ(result2->get_sources_event()->sources[0]->url.spec(),
+  std::optional<EngineConsumer::GenerationResultData> result2 =
+      ConversationAPIClient::ParseResponseEvent(event_with_missing_favicon,
+                                                model_service_.get());
+  ASSERT_TRUE(result2);
+  ASSERT_TRUE(result2->event);
+  ASSERT_TRUE(result2->event->is_sources_event());
+  EXPECT_EQ(result2->event->get_sources_event()->sources.size(), 1u);
+  EXPECT_EQ(result2->event->get_sources_event()->sources[0]->title,
+            "Example 2");
+  EXPECT_EQ(result2->event->get_sources_event()->sources[0]->url.spec(),
             "https://example.com/2");
-  EXPECT_EQ(result2->get_sources_event()->sources[0]->favicon_url.spec(),
+  EXPECT_EQ(result2->event->get_sources_event()->sources[0]->favicon_url.spec(),
             "chrome-untrusted://resources/brave-icons/globe.svg");
+  EXPECT_EQ(result2->model_key, "chat-basic");
 
   // Case 3: Disallowed favicon host, should be skipped
   // We manage the allowed list in kAllowedWebSourceFaviconHost
   base::Value::Dict event_with_disallowed_favicon;
   event_with_disallowed_favicon.Set("type", "webSources");
+  event_with_disallowed_favicon.Set("model", "llama-3-8b-instruct");
   base::Value::List sources3;
 
   base::Value::Dict source3;
@@ -757,19 +1006,32 @@ TEST(ParseResponseEventTest, ParsesWebSourcesEvent) {
 
   event_with_disallowed_favicon.Set("sources", std::move(sources3));
 
-  mojom::ConversationEntryEventPtr result3 =
-      ConversationAPIClient::ParseResponseEvent(event_with_disallowed_favicon);
-  EXPECT_TRUE(result3.is_null())
-      << "Disallowed favicon host should be filtered out";
+  std::optional<EngineConsumer::GenerationResultData> result3 =
+      ConversationAPIClient::ParseResponseEvent(event_with_disallowed_favicon,
+                                                model_service_.get());
+  EXPECT_FALSE(result3) << "Disallowed favicon host should be filtered out";
 }
 
-TEST(ParseResponseEventTest, HandlesInvalidEvent) {
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_InvalidEventType) {
   base::Value::Dict invalid_event;
   invalid_event.Set("type", "unknownThisIsTheWayEvent");
+  invalid_event.Set("model", "llama-3-8b-instruct");
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(invalid_event);
-  ASSERT_TRUE(event.is_null());
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(invalid_event,
+                                                model_service_.get());
+  EXPECT_FALSE(result);
+}
+
+TEST_F(ConversationAPIUnitTest, ParseResponseEvent_MissingModelKey) {
+  base::Value::Dict invalid_event;
+  invalid_event.Set("type", "conversationTitle");
+  invalid_event.Set("title", "This is the way");
+
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(invalid_event,
+                                                model_service_.get());
+  EXPECT_FALSE(result);
 }
 
 }  // namespace ai_chat

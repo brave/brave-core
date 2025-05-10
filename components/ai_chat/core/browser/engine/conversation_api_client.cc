@@ -34,6 +34,7 @@
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -198,8 +199,11 @@ ConversationAPIClient::ConversationEvent::operator=(const ConversationEvent&) =
 ConversationAPIClient::ConversationAPIClient(
     const std::string& model_name,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    AIChatCredentialManager* credential_manager)
-    : model_name_(model_name), credential_manager_(credential_manager) {
+    AIChatCredentialManager* credential_manager,
+    ModelService* model_service)
+    : model_name_(model_name),
+      credential_manager_(credential_manager),
+      model_service_(model_service) {
   CHECK(!model_name_.empty());
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetNetworkTrafficAnnotationTag(), url_loader_factory);
@@ -215,24 +219,26 @@ void ConversationAPIClient::PerformRequest(
     const std::vector<ConversationEvent>& conversation,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
-    GenerationCompletedCallback completed_callback) {
+    GenerationCompletedCallback completed_callback,
+    const std::optional<std::string>& model_name) {
   // Get credentials and then perform request
-  auto callback =
-      base::BindOnce(&ConversationAPIClient::PerformRequestWithCredentials,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
-                     selected_language, std::move(data_received_callback),
-                     std::move(completed_callback));
+  auto callback = base::BindOnce(
+      &ConversationAPIClient::PerformRequestWithCredentials,
+      weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
+      selected_language, model_name, std::move(data_received_callback),
+      std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
     const std::vector<ConversationEvent>& conversation,
     const std::string& selected_language,
+    const std::optional<std::string>& model_name,
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
   dict.Set("events", ConversationEventsToList(conversation));
-  dict.Set("model", model_name_);
+  dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("selected_language", selected_language);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
@@ -251,7 +257,8 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 
 void ConversationAPIClient::PerformRequestWithCredentials(
     const std::vector<ConversationEvent>& conversation,
-    const std::string selected_language,
+    const std::string& selected_language,
+    const std::optional<std::string>& model_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
@@ -271,7 +278,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(conversation), selected_language, is_sse_enabled);
+      std::move(conversation), selected_language, model_name, is_sse_enabled);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
@@ -328,6 +335,8 @@ void ConversationAPIClient::OnQueryCompleted(
   // Handle successful request
   if (success) {
     std::string completion = "";
+    std::optional<std::string> model_key = std::nullopt;
+    mojom::ConversationEntryEventPtr completion_event = nullptr;
     // We're checking for a value body in case for non-streaming API results.
     // TODO(petemill): server should provide parseable history events even for
     // non-streaming requests?
@@ -338,9 +347,19 @@ void ConversationAPIClient::OnQueryCompleted(
         // Trimming necessary for Llama 2 which prepends responses with a " ".
         completion = base::TrimWhitespaceASCII(*value, base::TRIM_ALL);
       }
+
+      const std::string* model_value =
+          result.value_body().GetDict().FindString("model");
+      if (model_value) {
+        model_key = model_service_->GetLeoModelKeyByName(*model_value);
+      }
     }
 
-    std::move(callback).Run(base::ok(std::move(completion)));
+    completion_event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(completion));
+    GenerationResultData data(std::move(completion_event),
+                              std::move(model_key));
+    std::move(callback).Run(base::ok(std::move(data)));
     return;
   }
 
@@ -369,49 +388,57 @@ void ConversationAPIClient::OnQueryDataReceived(
   if (!result.has_value() || !result->is_dict()) {
     return;
   }
-  auto event = ParseResponseEvent(result->GetDict());
-  if (event) {
-    callback.Run(std::move(event));
+  auto result_data = ParseResponseEvent(result->GetDict(), model_service_);
+  if (result_data) {
+    callback.Run(std::move(*result_data));
   }
 }
 
 // static
-mojom::ConversationEntryEventPtr ConversationAPIClient::ParseResponseEvent(
-    base::Value::Dict& response_event) {
+std::optional<ConversationAPIClient::GenerationResultData>
+ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
+                                          ModelService* model_service) {
+  mojom::ConversationEntryEventPtr event;
+  const std::string* model = response_event.FindString("model");
+  if (!model) {
+    return std::nullopt;
+  }
+
   const std::string* type = response_event.FindString("type");
   if (!type) {
-    return nullptr;
+    return std::nullopt;
   }
+
   // Vary response parsing based on type
   if (*type == "completion") {
     const std::string* completion = response_event.FindString("completion");
     if (!completion) {
-      return nullptr;
+      return std::nullopt;
     }
-    return mojom::ConversationEntryEvent::NewCompletionEvent(
+    event = mojom::ConversationEntryEvent::NewCompletionEvent(
         mojom::CompletionEvent::New(*completion));
   } else if (*type == "isSearching") {
-    return mojom::ConversationEntryEvent::NewSearchStatusEvent(
+    event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
         mojom::SearchStatusEvent::New());
   } else if (*type == "searchQueries") {
     const base::Value::List* queries = response_event.FindList("queries");
     if (!queries) {
-      return nullptr;
+      return std::nullopt;
     }
-    auto event = mojom::SearchQueriesEvent::New();
+    auto search_queries_event = mojom::SearchQueriesEvent::New();
     for (auto& item : *queries) {
       if (item.is_string()) {
-        event->search_queries.push_back(item.GetString());
+        search_queries_event->search_queries.push_back(item.GetString());
       }
     }
-    return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-        std::move(event));
+    event = mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+        std::move(search_queries_event));
   } else if (*type == "webSources") {
     const base::Value::List* sources = response_event.FindList("sources");
     if (!sources) {
-      return nullptr;
+      return std::nullopt;
     }
-    auto event = mojom::WebSourcesEvent::New();
+    auto web_sources_event = mojom::WebSourcesEvent::New();
     for (auto& item : *sources) {
       if (!item.is_dict()) {
         continue;
@@ -444,27 +471,28 @@ mojom::ConversationEntryEventPtr ConversationAPIClient::ParseResponseEvent(
                  << item.DebugString();
         continue;
       }
-      event->sources.push_back(
+      web_sources_event->sources.push_back(
           mojom::WebSource::New(*title, item_url, item_favicon_url));
     }
-    if (event->sources.empty()) {
-      return nullptr;
+    if (web_sources_event->sources.empty()) {
+      return std::nullopt;
     }
-    return mojom::ConversationEntryEvent::NewSourcesEvent(std::move(event));
+    event = mojom::ConversationEntryEvent::NewSourcesEvent(
+        std::move(web_sources_event));
   } else if (*type == "conversationTitle") {
     const std::string* title = response_event.FindString("title");
     if (!title) {
-      return nullptr;
+      return std::nullopt;
     }
-    return mojom::ConversationEntryEvent::NewConversationTitleEvent(
+    event = mojom::ConversationEntryEvent::NewConversationTitleEvent(
         mojom::ConversationTitleEvent::New(*title));
   } else if (*type == "selectedLanguage") {
     const std::string* selected_language =
         response_event.FindString("language");
     if (!selected_language) {
-      return nullptr;
+      return std::nullopt;
     }
-    return mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
+    event = mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
         mojom::SelectedLanguageEvent::New(*selected_language));
   } else if (*type == "contentReceipt") {
     std::optional<int> total_tokens_opt =
@@ -479,13 +507,16 @@ mojom::ConversationEntryEventPtr ConversationAPIClient::ParseResponseEvent(
         trimmed_tokens_opt.has_value() && trimmed_tokens_opt.value() >= 0
             ? static_cast<uint64_t>(trimmed_tokens_opt.value())
             : 0;
-    return mojom::ConversationEntryEvent::NewContentReceiptEvent(
+    event = mojom::ConversationEntryEvent::NewContentReceiptEvent(
         mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
+  } else {
+    // Server will provide different types of events. From time to time, new
+    // types of events will be introduced and we should ignore unknown ones.
+    return std::nullopt;
   }
 
-  // Server will provide different types of events. From time to time, new
-  // types of events will be introduced and we should ignore unknown ones.
-  return nullptr;
+  return GenerationResultData(std::move(event),
+                              model_service->GetLeoModelKeyByName(*model));
 }
 
 }  // namespace ai_chat

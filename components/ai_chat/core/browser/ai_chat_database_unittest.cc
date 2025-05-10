@@ -206,7 +206,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 1", std::nullopt, std::nullopt, std::nullopt,
           base::Time::Now() + base::Minutes(121), std::nullopt, std::nullopt,
-          false));
+          false, std::nullopt));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -223,7 +223,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 2", std::nullopt, std::nullopt, std::nullopt,
           base::Time::Now() + base::Minutes(122), std::nullopt, std::nullopt,
-          false));
+          false, std::nullopt));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -831,6 +831,52 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
       EXPECT_EQ(test_conversation->entries[1]->uploaded_files->at(i)->type,
                 history[0]->uploaded_files->at(i)->type);
     }
+  }
+
+  // V5 Specific Migration checks
+  {
+    // Verify existing entries have model_key field added with NULL.
+    if (version() == 4) {
+      // Get conversation with specific UUID
+      auto conversation_data =
+          db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1");
+      ASSERT_TRUE(conversation_data);
+      ASSERT_GT(conversation_data->entries.size(), 0u);
+
+      // Check all entries in this conversation have null model_key (default
+      // value)
+      for (const auto& entry : conversation_data->entries) {
+        EXPECT_FALSE(entry->model_key.has_value()) << *entry->uuid;
+      }
+    }
+
+    // Create a new conversation with two entries.
+    const std::string uuid = "model_key_test";
+    const std::string conversation_model_key = "automatic";
+    mojom::ConversationPtr metadata =
+        mojom::Conversation::New(uuid, "title", base::Time::Now(), true,
+                                 conversation_model_key, 0, 0, nullptr);
+
+    auto history = CreateSampleChatHistory(1u);
+    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                     history[0]->Clone()));
+
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone(),
+                                          conversation_model_key));
+
+    // Verify model_keys are stored correctly in both conversation and entry
+    // level.
+    // 1. Conversation-level model_key persistence
+    auto conversations = db_->GetAllConversations();
+    auto* conversation = GetConversation(FROM_HERE, conversations, uuid);
+    EXPECT_EQ(conversation->model_key, conversation_model_key);
+
+    // 2. Entry-level model_key persistence
+    const std::string entry_model_key = "chat-basic";
+    auto conversation_data = db_->GetConversationData(uuid);
+    ASSERT_EQ(conversation_data->entries.size(), 2u);
+    EXPECT_FALSE(conversation_data->entries[0]->model_key);
+    EXPECT_EQ(conversation_data->entries[1]->model_key, entry_model_key);
   }
 }
 

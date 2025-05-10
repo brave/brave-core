@@ -358,4 +358,38 @@ TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_LeoModel) {
   EXPECT_EQ(max_content_length, expected_content_length);
 }
 
+TEST_F(ModelServiceTest, GetLeoModelKeyByName) {
+  // Test with a valid model name
+  auto key = GetService()->GetLeoModelKeyByName("llama-3-8b-instruct");
+  EXPECT_EQ(key, "chat-basic");
+
+  // Test with an invalid model name
+  key = GetService()->GetLeoModelKeyByName("nonexistent-model");
+  EXPECT_FALSE(key.has_value());
+
+  // Test with other known models
+  key = GetService()->GetLeoModelKeyByName("automatic");
+  EXPECT_EQ(key, "chat-automatic");
+
+  key = GetService()->GetLeoModelKeyByName("mixtral-8x7b-instruct");
+  EXPECT_EQ(key, "chat-leo-expanded");
+}
+
+TEST_F(ModelServiceTest, GetLeoModelNameByKey) {
+  // Test with a valid model key
+  auto name = GetService()->GetLeoModelNameByKey("chat-basic");
+  EXPECT_EQ(name, "llama-3-8b-instruct");
+
+  // Test with an invalid model key
+  name = GetService()->GetLeoModelNameByKey("nonexistent-key");
+  EXPECT_FALSE(name.has_value());
+
+  // Test with other known models
+  name = GetService()->GetLeoModelNameByKey("chat-automatic");
+  EXPECT_EQ(name, "automatic");
+
+  name = GetService()->GetLeoModelNameByKey("chat-leo-expanded");
+  EXPECT_EQ(name, "mixtral-8x7b-instruct");
+}
+
 }  // namespace ai_chat
