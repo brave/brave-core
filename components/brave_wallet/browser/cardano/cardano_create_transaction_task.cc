@@ -26,6 +26,10 @@
 
 namespace brave_wallet {
 
+// Transaction is valid for 2 hours.
+// https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/tx-construction/src/ensureValidityInterval.ts#L3
+constexpr uint32_t kTxValiditySeconds = 2 * 3600;
+
 namespace {
 std::vector<CardanoTransaction::TxInput> TxInputsFromUtxoMap(
     const std::map<CardanoAddress, cardano_rpc::UnspentOutputs>& map) {
@@ -53,6 +57,8 @@ CardanoCreateTransactionTask::CardanoCreateTransactionTask(
       account_id_(account_id.Clone()),
       address_to_(address_to),
       sending_max_amount_(sending_max_amount) {
+  CHECK(IsCardanoAccount(account_id));
+
   transaction_.set_to(address_to);
   transaction_.set_amount(amount);
   transaction_.set_sending_max_amount(sending_max_amount);
@@ -93,19 +99,21 @@ CardanoCreateTransactionTask::CreateChangeOutput() {
   return change_output;
 }
 
+cardano_rpc::CardanoRpc* CardanoCreateTransactionTask::GetCardanoRpc() {
+  return cardano_wallet_service_->GetCardanoRpc(
+      GetNetworkForCardanoAccount(account_id_));
+}
+
 void CardanoCreateTransactionTask::WorkOnTask() {
   if (!latest_epoch_parameters_) {
-    cardano_wallet_service_->cardano_rpc().GetLatestEpochParameters(
-        GetNetworkForCardanoAccount(account_id_),
-        base::BindOnce(
-            &CardanoCreateTransactionTask::OnGetLatestEpochParameters,
-            weak_ptr_factory_.GetWeakPtr()));
+    GetCardanoRpc()->GetLatestEpochParameters(base::BindOnce(
+        &CardanoCreateTransactionTask::OnGetLatestEpochParameters,
+        weak_ptr_factory_.GetWeakPtr()));
     return;
   }
 
   if (!latest_block_) {
-    cardano_wallet_service_->cardano_rpc().GetLatestBlock(
-        GetNetworkForCardanoAccount(account_id_),
+    GetCardanoRpc()->GetLatestBlock(
         base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestBlock,
                        weak_ptr_factory_.GetWeakPtr()));
     return;
@@ -121,7 +129,7 @@ void CardanoCreateTransactionTask::WorkOnTask() {
 
   if (!change_address_) {
     cardano_wallet_service_->DiscoverNextUnusedAddress(
-        account_id_.Clone(), mojom::CardanoKeyRole::kInternal,
+        account_id_.Clone(), mojom::CardanoKeyRole::kExternal,
         base::BindOnce(
             &CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
             weak_ptr_factory_.GetWeakPtr()));
@@ -130,6 +138,7 @@ void CardanoCreateTransactionTask::WorkOnTask() {
 
   if (!has_solved_transaction_) {
     base::expected<CardanoTransaction, std::string> solved_transaction;
+    transaction_.set_invalid_after(latest_block_->slot + kTxValiditySeconds);
 
     if (!sending_max_amount_) {
       transaction_.AddOutput(CreateTargetOutput());
@@ -201,8 +210,11 @@ void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
     StopWithError(std::move(address.error()));
     return;
   }
+  // TODO(https://github.com/brave/brave-browser/issues/45278): we support only
+  // simple Cardano accounts now when there is only one address per account. So
+  // change address is also external address.
   DCHECK_EQ(address.value()->payment_key_id->role,
-            mojom::CardanoKeyRole::kInternal);
+            mojom::CardanoKeyRole::kExternal);
   // TODO(https://github.com/brave/brave-browser/issues/45278): should update
   // account pref with new address.
   change_address_ = std::move(address.value());

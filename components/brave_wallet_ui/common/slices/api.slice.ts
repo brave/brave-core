@@ -341,6 +341,7 @@ export const {
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendZecTransactionMutation,
+  useSendCardanoTransactionMutation,
   useSetAutoLockMinutesMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetIsTxSimulationOptInStatusMutation,

@@ -435,6 +435,13 @@ void BraveWalletP3A::OnTransactionStatusChanged(
     if (!count_test_networks && chain_id == mojom::kZCashTestnet) {
       return;
     }
+  } else if (tx_coin == mojom::CoinType::ADA) {
+    if (tx_type != mojom::TransactionType::Other) {
+      return;
+    }
+    if (!count_test_networks && chain_id == mojom::kCardanoTestnet) {
+      return;
+    }
   } else {
     NOTREACHED() << tx_coin;
   }

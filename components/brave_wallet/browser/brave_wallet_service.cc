@@ -147,7 +147,8 @@ BraveWalletService::BraveWalletService(
 
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
-      *keyring_service(), profile_prefs, delegate_->GetWalletBaseDirectory(),
+      GetCardanoWalletService(), *keyring_service(), profile_prefs,
+      delegate_->GetWalletBaseDirectory(),
       base::SequencedTaskRunner::GetCurrentDefault());
 
   brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(
@@ -1664,6 +1665,18 @@ void BraveWalletService::GenerateReceiveAddress(
     return;
   }
 
+  if (account_id->coin == mojom::CoinType::ADA) {
+    if (!cardano_wallet_service_) {
+      std::move(callback).Run("", WalletInternalErrorMessage());
+      return;
+    }
+    cardano_wallet_service_->DiscoverNextUnusedAddress(
+        std::move(account_id), mojom::CardanoKeyRole::kExternal,
+        base::BindOnce(&BraveWalletService::OnGenerateCardanoReceiveAddress,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+
   if (account_id->coin == mojom::CoinType::ETH ||
       account_id->coin == mojom::CoinType::SOL ||
       account_id->coin == mojom::CoinType::FIL) {
@@ -1697,6 +1710,17 @@ void BraveWalletService::OnGenerateBtcReceiveAddress(
 void BraveWalletService::OnGenerateZecReceiveAddress(
     GenerateReceiveAddressCallback callback,
     base::expected<mojom::ZCashAddressPtr, std::string> result) {
+  if (result.has_value()) {
+    std::move(callback).Run(result.value()->address_string, std::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(std::nullopt, result.error());
+}
+
+void BraveWalletService::OnGenerateCardanoReceiveAddress(
+    GenerateReceiveAddressCallback callback,
+    base::expected<mojom::CardanoAddressPtr, std::string> result) {
   if (result.has_value()) {
     std::move(callback).Run(result.value()->address_string, std::nullopt);
     return;

@@ -91,4 +91,19 @@ std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
   return result;
 }
 
+// static
+std::optional<Transaction> Transaction::FromBlockfrostApiValue(
+    std::optional<blockfrost_api::Transaction> api_transaction) {
+  if (!api_transaction) {
+    return std::nullopt;
+  }
+
+  Transaction result;
+  if (!base::HexStringToSpan(api_transaction->hash, result.tx_hash)) {
+    return std::nullopt;
+  }
+
+  return result;
+}
+
 }  // namespace brave_wallet::cardano_rpc

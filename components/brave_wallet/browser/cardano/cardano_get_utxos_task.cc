@@ -16,6 +16,7 @@
 #include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -25,7 +26,9 @@ GetCardanoUtxosTask::GetCardanoUtxosTask(
     std::vector<CardanoAddress> addresses)
     : cardano_wallet_service_(cardano_wallet_service),
       chain_id_(chain_id),
-      addresses_(std::move(addresses)) {}
+      addresses_(std::move(addresses)) {
+  CHECK(IsCardanoNetwork(chain_id));
+}
 
 GetCardanoUtxosTask::~GetCardanoUtxosTask() = default;
 
@@ -38,6 +41,10 @@ void GetCardanoUtxosTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&GetCardanoUtxosTask::WorkOnTask,
                                 weak_factory_.GetWeakPtr()));
+}
+
+cardano_rpc::CardanoRpc* GetCardanoUtxosTask::GetCardanoRpc() {
+  return cardano_wallet_service_->GetCardanoRpc(chain_id_);
 }
 
 void GetCardanoUtxosTask::MaybeSendRequests() {
@@ -53,8 +60,8 @@ void GetCardanoUtxosTask::MaybeSendRequests() {
   }
 
   for (const auto& address : addresses_) {
-    cardano_wallet_service_->cardano_rpc().GetUtxoList(
-        chain_id_, address.ToString(),
+    GetCardanoRpc()->GetUtxoList(
+        address.ToString(),
         base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,
                        weak_factory_.GetWeakPtr(), address));
   }

@@ -160,7 +160,7 @@ class CardanoTransaction {
   TxOutput* ChangeOutput();
 
   // Adjust amount of change output so transaction fee is equal to `min_fee`.
-  uint64_t MoveSurplusFeeToChangeOutput(uint64_t min_fee);
+  bool MoveSurplusFeeToChangeOutput(uint64_t min_fee);
 
   uint32_t invalid_after() const { return invalid_after_; }
   void set_invalid_after(uint32_t invalid_after) {

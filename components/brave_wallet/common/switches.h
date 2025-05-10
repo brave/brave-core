@@ -15,20 +15,23 @@ inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
 inline constexpr char kAssetRatioDevUrl[] = "asset-ratio-dev-url";
 inline constexpr char kMeldAssetRatioDevUrl[] = "meld-asset-ratio-dev-url";
 
-// ZCash rpc mainnet endpoint.
+// ZCash mainnet rpc endpoint.
 inline constexpr char kZCashMainnetRpcUrl[] = "zcash-mainnet-rpc-url";
 
-// ZCash rpc testnet endpoint.
+// ZCash testnet rpc endpoint.
 inline constexpr char kZCashTestnetRpcUrl[] = "zcash-testnet-rpc-url";
 
-// Cardano rpc mainnet endpoint.
+// Cardano mainnet rpc endpoint.
 inline constexpr char kCardanoMainnetRpcUrl[] = "cardano-mainnet-rpc-url";
 
-// Cardano rpc testnet endpoint.
+// Cardano testnet rpc endpoint.
 inline constexpr char kCardanoTestnetRpcUrl[] = "cardano-testnet-rpc-url";
 
-// Cardano rpc project id.
-inline constexpr char kCardanoProjectId[] = "cardano-project-id";
+// Cardano mainnet rpc project id.
+inline constexpr char kCardanoMainnetProjectId[] = "cardano-mainnet-project-id";
+
+// Cardano testnet rpc project id.
+inline constexpr char kCardanoTestnetProjectId[] = "cardano-testnet-project-id";
 
 }  // namespace brave_wallet::switches
 

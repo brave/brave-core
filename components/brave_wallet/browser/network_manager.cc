@@ -609,7 +609,7 @@ const mojom::NetworkInfo* GetCardanoMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Cardano Mainnet",
-       {""},
+       {"https://cexplorer.io"},
        {},
        0,
        {CardanoMainnetRpcUrl()},
@@ -627,8 +627,8 @@ const mojom::NetworkInfo* GetCardanoTestnet() {
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "Cardano Testnet",
-       {""},
+       "Cardano Preprod Testnet",
+       {"https://preprod.cexplorer.io"},
        {},
        0,
        {CardanoTestnetRpcUrl()},

@@ -16,6 +16,7 @@ namespace blockfrost_api {
 struct EpochParameters;
 struct Block;
 struct UnspentOutput;
+struct Transaction;
 }  // namespace blockfrost_api
 
 // Adapter of Blockfrost's EpochParameters struct for wallet's use.
@@ -54,6 +55,16 @@ struct UnspentOutput {
 };
 
 using UnspentOutputs = std::vector<UnspentOutput>;
+
+// Adapter of Blockfrost's Transaction struct for wallet's use.
+struct Transaction {
+  bool operator==(const Transaction& other) const = default;
+
+  std::array<uint8_t, 32> tx_hash = {};
+
+  static std::optional<Transaction> FromBlockfrostApiValue(
+      std::optional<blockfrost_api::Transaction> api_epoch_parameters);
+};
 
 }  // namespace brave_wallet::cardano_rpc
 

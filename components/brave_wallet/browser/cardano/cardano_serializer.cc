@@ -21,7 +21,9 @@ cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx) {
   for (const auto& input : tx.inputs()) {
     cbor::Value::ArrayValue input_value;
     input_value.emplace_back(input.utxo_outpoint.txid);
-    input_value.emplace_back(int64_t(input.utxo_outpoint.index));
+    // TODO(https://github.com/brave/brave-browser/issues/45278): upstream a fix
+    // for cbor::Value to support uint64_t
+    input_value.emplace_back(static_cast<int64_t>(input.utxo_outpoint.index));
     result.emplace_back(std::move(input_value));
   }
 

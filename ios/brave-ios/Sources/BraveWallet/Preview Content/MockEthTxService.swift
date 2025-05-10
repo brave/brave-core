@@ -39,6 +39,27 @@ class MockTxService: BraveWalletTxService {
     completion(true, "txMetaId", "")
   }
 
+  func addUnapprovedBitcoinTransaction(
+    params: BraveWallet.NewBitcoinTransactionParams,
+    completion: @escaping (Bool, String, String) -> Void
+  ) {
+    completion(true, "txMetaId", "")
+  }
+
+  func addUnapprovedZCashTransaction(
+    params: BraveWallet.NewZCashTransactionParams,
+    completion: @escaping (Bool, String, String) -> Void
+  ) {
+    completion(true, "txMetaId", "")
+  }
+
+  func addUnapprovedCardanoTransaction(
+    params: BraveWallet.NewCardanoTransactionParams,
+    completion: @escaping (Bool, String, String) -> Void
+  ) {
+    completion(true, "txMetaId", "")
+  }
+
   func rejectTransaction(
     coinType: BraveWallet.CoinType,
     chainId: String,

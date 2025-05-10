@@ -321,6 +321,10 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
     return mojom::CoinType::ZEC;
   }
 
+  if (tx_data_union.is_cardano_tx_data()) {
+    return mojom::CoinType::ADA;
+  }
+
   NOTREACHED();
 }
 
