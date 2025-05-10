@@ -79,18 +79,9 @@ constexpr size_t kDefaultSuggestionsCount = 4;
 
 }  // namespace
 
-AssociatedContentDelegate::AssociatedContentDelegate()
-    : text_embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
+AssociatedContentDelegate::AssociatedContentDelegate() = default;
 
 AssociatedContentDelegate::~AssociatedContentDelegate() = default;
-
-void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
-  pending_top_similarity_requests_.clear();
-  if (text_embedder_) {
-    text_embedder_->CancelAllTasks();
-    text_embedder_.reset();
-  }
-}
 
 void AssociatedContentDelegate::GetStagedEntriesFromContent(
     GetStagedEntriesCallback callback) {
@@ -104,70 +95,6 @@ bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
 void AssociatedContentDelegate::GetScreenshots(
     mojom::ConversationHandler::GetScreenshotsCallback callback) {
   std::move(callback).Run(std::nullopt);
-}
-
-void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
-    const std::string& prompt,
-    const std::string& text,
-    uint32_t context_limit,
-    TextEmbedder::TopSimilarityCallback callback) {
-  // Create TextEmbedder
-  if (!text_embedder_) {
-    base::FilePath universal_qa_model_path =
-        LocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
-    // Tasks in TextEmbedder are run on |embedder_task_runner|. The
-    // text_embedder_ must be deleted on that sequence to guarantee that pending
-    // tasks can safely be executed.
-    scoped_refptr<base::SequencedTaskRunner> embedder_task_runner =
-        base::ThreadPool::CreateSequencedTaskRunner(
-            {base::MayBlock(), base::TaskPriority::USER_BLOCKING});
-    text_embedder_ = TextEmbedder::Create(
-        base::FilePath(universal_qa_model_path), embedder_task_runner);
-    if (!text_embedder_) {
-      std::move(callback).Run(
-          base::unexpected("Failed to create TextEmbedder"));
-      pending_top_similarity_requests_.pop_back();
-      return;
-    }
-  }
-
-  if (!text_embedder_->IsInitialized()) {
-    // Will have to wait for initialization to complete, store params for
-    // calling later.
-    pending_top_similarity_requests_.emplace_back(prompt, text, context_limit,
-                                                  std::move(callback));
-
-    text_embedder_->Initialize(
-        base::BindOnce(&ConversationHandler::AssociatedContentDelegate::
-                           OnTextEmbedderInitialized,
-                       weak_ptr_factory_.GetWeakPtr()));
-  } else {
-    // Run immediately if already initialized
-    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        prompt, text, context_limit, std::move(callback));
-  }
-}
-
-void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
-  if (!initialized) {
-    VLOG(1) << "Failed to initialize TextEmbedder";
-    for (auto& request_info : pending_top_similarity_requests_) {
-      std::move(std::get<3>(request_info))
-          .Run(base::unexpected<std::string>(
-              "Failed to initialize TextEmbedder"));
-    }
-    pending_top_similarity_requests_.clear();
-    return;
-  }
-
-  CHECK(text_embedder_);
-  for (auto& request_info : pending_top_similarity_requests_) {
-    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        std::move(std::get<0>(request_info)),
-        std::move(std::get<1>(request_info)), std::get<2>(request_info),
-        std::move(std::get<3>(request_info)));
-  }
-  pending_top_similarity_requests_.clear();
 }
 
 ConversationHandler::Suggestion::Suggestion(std::string title)
@@ -1173,40 +1100,6 @@ void ConversationHandler::PerformAssistantGeneration(
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr());
 
-  const size_t max_content_length =
-      ModelService::CalcuateMaxAssociatedContentLengthForModel(
-          GetCurrentModel());
-
-  mojom::ConversationTurnPtr& last_entry = chat_history_.back();
-
-  if (features::IsPageContentRefineEnabled() &&
-      page_content.length() > max_content_length &&
-      last_entry->action_type != mojom::ActionType::SUMMARIZE_PAGE &&
-      associated_content_delegate_) {
-    DVLOG(2) << "Refining content of length: " << page_content.length();
-
-    auto refined_content_callback = base::BindOnce(
-        &ConversationHandler::OnGetRefinedPageContent,
-        weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback),
-        std::move(data_completed_callback), page_content, is_video);
-
-    associated_content_delegate_->GetTopSimilarityWithPromptTilContextLimit(
-        last_entry->prompt.value_or(last_entry->text), page_content,
-        max_content_length, std::move(refined_content_callback));
-
-    UpdateOrCreateLastAssistantEntry(
-        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-            mojom::PageContentRefineEvent::New()));
-    return;
-  } else if (is_content_refined_) {
-    // If we previously refined content but we're not anymore (perhaps the
-    // content shrunk or the model changed to one with a larger content length
-    // limit), update the UI to let them know we're not refining content
-    // anymore.
-    is_content_refined_ = false;
-    OnAssociatedContentInfoChanged();
-  }
-
   engine_->GenerateAssistantResponse(
       is_video, page_content, chat_history_, selected_language_,
       std::move(data_received_callback), std::move(data_completed_callback));
@@ -1474,39 +1367,6 @@ void ConversationHandler::OnGeneratePageContentComplete(
   OnAssociatedContentInfoChanged();
 }
 
-void ConversationHandler::OnGetRefinedPageContent(
-    EngineConsumer::GenerationDataCallback data_received_callback,
-    EngineConsumer::GenerationCompletedCallback data_completed_callback,
-    std::string page_content,
-    bool is_video,
-    base::expected<std::string, std::string> refined_page_content) {
-  // Remove tenative assistant entry dedicated for page content event
-  const auto& last_turn = chat_history_.back();
-  if (last_turn->events && !last_turn->events->empty() &&
-      last_turn->events->back()->is_page_content_refine_event()) {
-    chat_history_.pop_back();
-    OnHistoryUpdate(nullptr);
-  } else {
-    VLOG(1) << "last entry should be page content refine event";
-  }
-  std::string page_content_to_use = std::move(page_content);
-  if (refined_page_content.has_value()) {
-    page_content_to_use = std::move(refined_page_content.value());
-    is_content_refined_ = true;
-    OnAssociatedContentInfoChanged();
-  } else {
-    VLOG(1) << "Failed to get refined page content: "
-            << refined_page_content.error();
-    if (is_content_refined_) {
-      is_content_refined_ = false;
-      OnAssociatedContentInfoChanged();
-    }
-  }
-  engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
-}
-
 void ConversationHandler::OnEngineCompletionDataReceived(
     mojom::ConversationEntryEventPtr result) {
   UpdateOrCreateLastAssistantEntry(std::move(result));
@@ -1721,7 +1581,6 @@ void ConversationHandler::UpdateAssociatedContentInfo() {
         associated_content_delegate_->GetContentId();
     metadata_->associated_content->content_used_percentage =
         GetContentUsedPercentage();
-    metadata_->associated_content->is_content_refined = is_content_refined_;
   } else {
     metadata_->associated_content = nullptr;
   }
@@ -1735,7 +1594,6 @@ ConversationHandler::GetStateForConversationEntries() {
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
   entries_state->is_generating = IsRequestInProgress();
-  entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->total_tokens = metadata_->total_tokens;
   entries_state->trimmed_tokens = metadata_->trimmed_tokens;
