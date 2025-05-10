@@ -287,9 +287,16 @@ void ConversationHandler::BindUntrustedConversationUI(
     mojo::PendingRemote<mojom::UntrustedConversationUI>
         untrusted_conversation_ui_handler,
     BindUntrustedConversationUICallback callback) {
-  untrusted_conversation_ui_handlers_.Add(
+  auto id = untrusted_conversation_ui_handlers_.Add(
       std::move(untrusted_conversation_ui_handler));
   std::move(callback).Run(GetStateForConversationEntries());
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  if (metadata_->associated_content && should_send_page_contents_) {
+    associated_content.push_back(metadata_->associated_content->Clone());
+  }
+  untrusted_conversation_ui_handlers_.Get(id)->AssociatedContentChanged(
+      std::move(associated_content));
 }
 
 void ConversationHandler::OnConversationMetadataUpdated() {
@@ -1762,6 +1769,14 @@ void ConversationHandler::OnAssociatedContentInfoChanged() {
         should_send_page_contents_);
   }
   OnStateForConversationEntriesChanged();
+
+  for (const auto& client : untrusted_conversation_ui_handlers_) {
+    std::vector<mojom::AssociatedContentPtr> associated_content;
+    if (metadata_->associated_content && should_send_page_contents_) {
+      associated_content.push_back(metadata_->associated_content->Clone());
+    }
+    client->AssociatedContentChanged(std::move(associated_content));
+  }
 }
 
 void ConversationHandler::OnClientConnectionChanged() {

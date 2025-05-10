@@ -9,7 +9,7 @@ import { getLocale } from '$web-common/locale'
 import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
-import UploadedImgItem from '../../../page/components/uploaded_img_item'
+import { AttachmentImageItem, AttachmentItem } from '../../../page/components/attachment_item'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
@@ -60,28 +60,28 @@ function ConversationEntries() {
 
   const allAllowedLinks: string[] = conversationContext.conversationHistory
     .flatMap(turn =>
-    turn.events?.flatMap(event =>
-      event.sourcesEvent?.sources?.map(source => source.url.url) || []
-    ) || []
-  )
+      turn.events?.flatMap(event =>
+        event.sourcesEvent?.sources?.map(source => source.url.url) || []
+      ) || []
+    )
 
   return (
     <>
       <div>
-        {conversationContext.conversationHistory.map((turn, id) => {
+        {conversationContext.conversationHistory.map((turn, index) => {
           const isLastEntry =
-            (id === conversationContext.conversationHistory.length - 1)
+            (index === conversationContext.conversationHistory.length - 1)
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
             isLastEntry && isAIAssistant && conversationContext.isGenerating
           const isHuman = turn.characterType === Mojom.CharacterType.HUMAN
           const showLongPageContentInfo =
-            id === 1 &&
+            index === 1 &&
             isAIAssistant &&
             ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
-             (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
-          const showEditInput = editInputId === id
+              (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
+          const showEditInput = editInputId === index
           const showEditIndicator = !showEditInput && !!turn.edits?.length
           const latestEdit = turn.edits?.at(-1)
           const latestTurn = latestEdit ?? turn
@@ -115,15 +115,19 @@ function ConversationEntries() {
           const imageFiles =
             getImageFiles(latestTurn.uploadedFiles) || []
 
+          const hasImageAttachments = imageFiles.length > 0
+          const hasTabAttachments = index === 0 && conversationContext.associatedContent.length > 0
+          const hasAttachments = hasImageAttachments || hasTabAttachments
+
           return (
             <div
-              key={id}
+              key={index}
               className={turnContainer}
             >
               <div
-                data-id={id}
+                data-id={index}
                 className={turnClass}
-                onMouseEnter={() => isHuman && setHoverMenuButtonId(id)}
+                onMouseEnter={() => isHuman && setHoverMenuButtonId(index)}
                 onMouseLeave={() => {
                   if (!isHuman) return
                   setActiveMenuId(undefined)
@@ -157,12 +161,12 @@ function ConversationEntries() {
                   )}
                   {isHuman && !turn.selectedText && !showEditInput && (
                     <>
-                      {hoverMenuButtonId === id ? (
+                      {hoverMenuButtonId === index ? (
                         <ContextMenuHuman
-                          isOpen={activeMenuId === id}
-                          onClick={() => showHumanMenu(id)}
+                          isOpen={activeMenuId === index}
+                          onClick={() => showHumanMenu(index)}
                           onClose={hideHumanMenu}
-                          onEditQuestionClicked={() => setEditInputId(id)}
+                          onEditQuestionClicked={() => setEditInputId(index)}
                           onCopyQuestionClicked={handleCopyText}
                         />
                       ) : (
@@ -179,10 +183,17 @@ function ConversationEntries() {
                             </div>
                           )}
                         </div>
-                        {imageFiles.length > 0 &&
-                          <div className={styles.uploadedImages}>
+                        {hasAttachments &&
+                          <div className={styles.attachmentsContainer}>
+                          {hasTabAttachments && conversationContext.associatedContent.map(c => <AttachmentItem
+                            key={c.contentId}
+                            smallImage
+                            subtitle={c.url.url}
+                            thumbnailUrl={`//favicon2?size=256&pageUrl=${encodeURIComponent(c.url.url)}`}
+                            title={c.title}
+                          />)}
                             {imageFiles.map((img) => (
-                              <UploadedImgItem
+                              <AttachmentImageItem
                                 key={img.filename}
                                 uploadedImage={img}
                               />
@@ -195,7 +206,7 @@ function ConversationEntries() {
                   {showEditInput && (
                     <EditInput
                       text={latestTurnText}
-                      onSubmit={(text) => handleEditSubmit(id, text)}
+                      onSubmit={(text) => handleEditSubmit(index, text)}
                       onCancel={() => setEditInputId(undefined)}
                       isSubmitDisabled={
                         !conversationContext.canSubmitUserEntries
@@ -217,7 +228,7 @@ function ConversationEntries() {
                   !showEditInput && (
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
-                      onEditAnswerClicked={() => setEditInputId(id)}
+                      onEditAnswerClicked={() => setEditInputId(index)}
                       onCopyTextClicked={handleCopyText}
                     />
                   )}
