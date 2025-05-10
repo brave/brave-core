@@ -5,77 +5,77 @@
 
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 
+#include <array>
 #include <string>
 #include <string_view>
 
 #include "base/compiler_specific.h"
+#include "base/types/zip.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-TEST(BravePrivateCdnHelper, RemovePadding) {
+TEST(BravePrivateCdnHelperTest, RemovePadding) {
   using std::string_literals::operator""s;
 
-  std::string invalid_inputs[]{
-      ""s,
-      "\xFF"s,
-      "\x00\x00\x00"s,
-      "\x00\x00\x00\x01"s,
-      "\x00\x00\x00\x04"s
-      "ABC"s,
-      "\x00\x00\x00\x08"s
-      "ABCDPPP"s,
-  };
+  constexpr static auto invalid_inputs = std::to_array<std::string_view>({
+      "",
+      "\xFF",
+      "\x00\x00\x00",
+      "\x00\x00\x00\x01",
+      "\x00\x00\x00\x04"
+      "ABC",
+      "\x00\x00\x00\x08"
+      "ABCDPPP",
+  });
 
-  for (auto& invalid_input : invalid_inputs) {
-    std::string_view padded_string(invalid_input);
-    EXPECT_FALSE(brave::private_cdn::RemovePadding(&padded_string));
+  for (auto invalid_input : invalid_inputs) {
+    EXPECT_FALSE(brave::private_cdn::RemovePadding(&invalid_input));
   }
 
-  std::string inputs[] = {
-      "\x00\x00\x00\x00"s,
-      "\x00\x00\x00\x04"s
-      "ABCD"s,
-      "\x00\x00\x01\x00"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s,
-      "\x00\x00\x00\x04"s
-      "ABCDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"s,
-      "\x00\x00\x00\x05"s
-      "AB"s
-      "\x00"s
-      "CDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"s,
-      "\x00\x00\x00\x01"s
-      "PP"s,
-      "\x00\x00\x00\x04"s
-      "ABCDABCD"s,
-      "\x00\x00\x00\x01"s
-      "P"s
-      "\x00\x00\x00"s,
-  };
-  const std::string outputs[]{
-      ""s,
-      "ABCD"s,
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"s,
-      "ABCD"s,
-      "AB"s
-      "\x00"s
-      "CD"s,
-      "P"s,
-      "ABCD"s,
-      "P"s,
-  };
+  constexpr static auto inputs = std::to_array<std::string_view>({
+      "\x00\x00\x00\x00",
+      "\x00\x00\x00\x04"
+      "ABCD",
+      "\x00\x00\x01\x00"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "\x00\x00\x00\x04"
+      "ABCDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",
+      "\x00\x00\x00\x05"
+      "AB"
+      "\x00"
+      "CDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",
+      "\x00\x00\x00\x01"
+      "PP",
+      "\x00\x00\x00\x04"
+      "ABCDABCD",
+      "\x00\x00\x00\x01"
+      "P"
+      "\x00\x00\x00",
+  });
+  constexpr static auto outputs = std::to_array<std::string_view>({
+      "",
+      "ABCD",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "ABCD",
+      "AB"
+      "\x00"
+      "CD",
+      "P",
+      "ABCD",
+      "P",
+  });
 
-  constexpr size_t kInputCount = sizeof(inputs) / sizeof(std::string);
-  static_assert(kInputCount == sizeof(outputs) / sizeof(std::string),
-                "Inputs and outputs must have the same number of elements.");
+  static_assert(inputs.size() == outputs.size(),
+                "inputs and outputs must have the same size");
 
-  for (size_t i = 0; i < kInputCount; i++) {
-    std::string_view padded_string(UNSAFE_TODO(inputs[i]));
+  for (auto [input, output] : base::zip(inputs, outputs)) {
+    std::string_view padded_string = input;
     EXPECT_TRUE(brave::private_cdn::RemovePadding(&padded_string));
-    EXPECT_EQ(padded_string, UNSAFE_TODO(outputs[i]));
+    EXPECT_EQ(padded_string, output);
   }
 }
