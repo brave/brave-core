@@ -1161,6 +1161,13 @@ public class BytecodeTest {
                         void.class,
                         boolean.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org.chromium/chrome/browser/notifications/channels/SiteChannelsManager",
+                        "toChannelStatus",
+                        MethodModifier.STATIC,
+                        int.class,
+                        int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
