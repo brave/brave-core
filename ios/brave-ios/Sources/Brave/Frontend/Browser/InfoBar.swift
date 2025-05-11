@@ -11,10 +11,11 @@ import UIKit
 import Web
 
 private struct InfoBarUX {
-  static let toastPadding: CGFloat = 10.0
-  static let toastCloseButtonWidth: CGFloat = 20.0
-  static let toastLabelFont = UIFont.preferredFont(forTextStyle: .subheadline)
-  static let toastBackgroundColor = UIColor(braveSystemName: .schemesOnPrimaryFixed)
+  static let tapBehavior: Toast.TapBehavior = .dismissOnOutsideTap
+  static let padding: CGFloat = 10.0
+  static let closeButtonWidth: CGFloat = 20.0
+  static let labelFont = UIFont.preferredFont(forTextStyle: .subheadline)
+  static let backgroundColor = UIColor(braveSystemName: .schemesOnPrimaryFixed)
 }
 
 class InfoBar: Toast, UITextViewDelegate {
@@ -42,18 +43,18 @@ class InfoBar: Toast, UITextViewDelegate {
 
     super.init(frame: .zero)
 
-    self.tapDismissalMode = .outsideTap
+    self.tapBehavior = InfoBarUX.tapBehavior
 
     self.clipsToBounds = true
 
-    toastView.backgroundColor = InfoBarUX.toastBackgroundColor
+    toastView.backgroundColor = InfoBarUX.backgroundColor
 
     let toastContent = createToastContent(self.labelText + " ")
     toastView.addSubview(toastContent)
     toastContent.snp.makeConstraints { make in
       make.centerX.equalTo(toastView)
       make.centerY.equalTo(toastView)
-      make.edges.equalTo(toastView).inset(InfoBarUX.toastPadding)
+      make.edges.equalTo(toastView).inset(InfoBarUX.padding)
     }
 
     addSubview(toastView)
@@ -73,13 +74,13 @@ class InfoBar: Toast, UITextViewDelegate {
     let horizontalStackView = UIStackView()
     horizontalStackView.axis = .horizontal
     horizontalStackView.alignment = .center
-    horizontalStackView.spacing = InfoBarUX.toastPadding
+    horizontalStackView.spacing = InfoBarUX.padding
 
     let label = UITextView()
     label.textAlignment = .left
     label.textColor = .white
-    label.font = InfoBarUX.toastLabelFont
-    label.backgroundColor = InfoBarUX.toastBackgroundColor
+    label.font = InfoBarUX.labelFont
+    label.backgroundColor = InfoBarUX.backgroundColor
     label.isEditable = false
     label.isScrollEnabled = false
     label.isSelectable = true
@@ -88,11 +89,11 @@ class InfoBar: Toast, UITextViewDelegate {
     let learnMoreOptOutChoicesText = self.linkText
     let attributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: UIColor.white,
-      .font: InfoBarUX.toastLabelFont,
+      .font: InfoBarUX.labelFont,
     ]
 
     let linkAttributes: [NSAttributedString.Key: Any] = [
-      .font: InfoBarUX.toastLabelFont,
+      .font: InfoBarUX.labelFont,
       .foregroundColor: UIColor.white,
       .underlineStyle: 1,
     ]
@@ -125,7 +126,7 @@ class InfoBar: Toast, UITextViewDelegate {
       scale: .small
     )
     button.snp.makeConstraints {
-      $0.width.equalTo(InfoBarUX.toastCloseButtonWidth)
+      $0.width.equalTo(InfoBarUX.closeButtonWidth)
     }
     button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     horizontalStackView.addArrangedSubview(button)
