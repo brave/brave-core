@@ -102,3 +102,6 @@
     *** dismissActivityIfNeeded(...);
 }
 
+-keep class org.chromium.chrome.browser.notifications.channels.SiteChannelsManager {
+    *** toChannelStatus(...);
+}
