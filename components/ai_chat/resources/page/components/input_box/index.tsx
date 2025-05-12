@@ -42,7 +42,7 @@ type Props = Pick<
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
-interface InputBoxProps {
+export interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
@@ -93,8 +93,10 @@ function InputBox(props: InputBoxProps) {
     if (!node) {
       return
     }
-    if (props.context.selectedActionType ||
-      props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
+    if (
+      props.context.selectedActionType ||
+      props.maybeShowSoftKeyboard?.(querySubmitted.current)
+    ) {
       node.focus()
     }
   }
@@ -125,7 +127,8 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(props.context.pendingMessageImages || !!props.context.associatedContentInfo) && (
+      {(props.context.pendingMessageImages ||
+        !!props.context.associatedContentInfo) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -134,13 +137,19 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {props.context.associatedContentInfo && props.context.shouldSendPageContents && !props.conversationStarted && <AttachmentItem
-            smallImage
-            thumbnailUrl={`chrome://favicon2?size=256&pageUrl=${encodeURIComponent(props.context.associatedContentInfo.url.url)}`}
-            title={props.context.associatedContentInfo.title}
-            subtitle={props.context.associatedContentInfo.url.url}
-            remove={() => props.context.updateShouldSendPageContents(false)}
-          />}
+          {props.context.associatedContentInfo &&
+            props.context.shouldSendPageContents &&
+            !props.conversationStarted && (
+              <AttachmentItem
+                smallImage
+                thumbnailUrl={`chrome://favicon2?size=256&pageUrl=${encodeURIComponent(
+                  props.context.associatedContentInfo.url.url
+                )}`}
+                title={props.context.associatedContentInfo.title}
+                subtitle={props.context.associatedContentInfo.url.url}
+                remove={() => props.context.updateShouldSendPageContents(false)}
+              />
+            )}
           {props.context.pendingMessageImages?.map((img, i) => (
             <AttachmentImageItem
               key={img.filename}
@@ -156,9 +165,11 @@ function InputBox(props: InputBoxProps) {
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(props.conversationStarted
-            ? 'placeholderLabel'
-            : 'initialPlaceholderLabel')}
+          placeholder={getLocale(
+            props.conversationStarted
+              ? 'placeholderLabel'
+              : 'initialPlaceholderLabel'
+          )}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -187,8 +198,7 @@ function InputBox(props: InputBoxProps) {
               e.preventDefault()
               e.stopPropagation()
               props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-            }
-            }
+            }}
             title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
@@ -216,7 +226,9 @@ function InputBox(props: InputBoxProps) {
             associatedContentInfo={props.context.associatedContentInfo}
             isMobile={props.context.isMobile}
             shouldSendPageContents={props.context.shouldSendPageContents}
-            updateShouldSendPageContents={props.context.updateShouldSendPageContents}
+            updateShouldSendPageContents={
+              props.context.updateShouldSendPageContents
+            }
             conversationStarted={props.conversationStarted}
           />
         </div>
