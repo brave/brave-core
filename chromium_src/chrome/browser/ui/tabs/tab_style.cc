@@ -44,9 +44,12 @@ class BraveTabStyle : public TabStyle {
                                   brave_tabs::kHorizontalTabInset);
   }
 
-  int GetPinnedWidth() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
-      return TabStyle::GetPinnedWidth();
+  // TODO(https://github.com/brave/brave-browser/issues/46000): It is not very
+  // clear if this is the best implementation with the [SxS] being still under
+  // development in upstream.
+  int GetPinnedWidth(const bool is_split) const override {
+    if (!is_split) {
+      return TabStyle::GetPinnedWidth(is_split);
     }
     return brave_tabs::GetHorizontalTabHeight() +
            brave_tabs::kHorizontalTabInset * 2;
