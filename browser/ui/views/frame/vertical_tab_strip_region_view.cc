@@ -17,6 +17,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
@@ -1140,8 +1141,9 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
       (*vertical_tab_on_right_ ? bounds_in_screen.right() - cursor_position
                                : cursor_position - bounds_in_screen.x()) -
       *resize_offset_ - GetInsets().width();
-  dest_width = std::clamp(dest_width, tab_style_->GetPinnedWidth() * 3,
-                          tab_style_->GetStandardWidth() * 2);
+  bool is_split = tabs::features::HorizontalTabsUpdateEnabled();
+  dest_width = std::clamp(dest_width, tab_style_->GetPinnedWidth(is_split) * 3,
+                          tab_style_->GetStandardWidth(is_split) * 2);
   if (done_resizing) {
     resize_offset_ = std::nullopt;
   }
