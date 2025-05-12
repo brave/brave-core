@@ -7,7 +7,6 @@ import { ViewState } from './types'
 import { color, spacing } from '@brave/leo/tokens/css/variables'
 import { font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
-import { MAX_ALIASES } from './constant'
 import { onEnterKeyForDiv } from './on_enter_key'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
@@ -19,7 +18,7 @@ import Icon from '@brave/leo/react/icon'
 import Row from './styles/Row'
 import styled from 'styled-components'
 import Tooltip from '@brave/leo/react/tooltip'
-import { Alias, EmailAliasesServiceInterface }
+import { Alias, EmailAliasesServiceInterface, MAX_ALIASES }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const AliasItemRow = styled(Row)`
@@ -118,8 +117,7 @@ const AliasItem = ({ alias, onEdit, onDelete }:
             fab
             title={getLocale('emailAliasesClickToCopyAlias')}
             kind='plain-faint'
-            size='medium'
-            onClick={() => navigator.clipboard.writeText(alias.email)}>
+            size='medium'>
             <Icon name="copy"/>
           </Button>
         </CopyToast>

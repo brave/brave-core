@@ -25,7 +25,7 @@ jest.mock('$web-common/locale', () => ({
 }))
 
 // Mock the email aliases service
-class MockEmailAliasesServiceInterface extends EmailAliasesServiceInterface {
+class MockEmailAliasesService extends EmailAliasesServiceInterface {
   private observerInit?:
     (observer: EmailAliasesServiceObserverInterface) => void
   constructor(observerInit?:
@@ -49,7 +49,7 @@ class MockEmailAliasesServiceInterface extends EmailAliasesServiceInterface {
 }
 
 const createBindObserver =
-  (emailAliasesService: MockEmailAliasesServiceInterface) =>
+  (emailAliasesService: MockEmailAliasesService) =>
   (observer: EmailAliasesServiceObserverInterface) => {
     emailAliasesService.addObserver(observer)
     return () => {
@@ -63,7 +63,7 @@ describe('ManagePage', () => {
   })
 
   it('shows loading state initially', async () => {
-    const mockEmailAliasesService = new MockEmailAliasesServiceInterface()
+    const mockEmailAliasesService = new MockEmailAliasesService()
     await act(async () => {
       render(<ManagePage
                emailAliasesService={mockEmailAliasesService}
@@ -78,7 +78,7 @@ describe('ManagePage', () => {
 
   it('shows sign up form when no email is available', async () => {
     const mockEmailAliasesService =
-      new MockEmailAliasesServiceInterface((observer) => {
+      new MockEmailAliasesService((observer) => {
       observer.onLoggedOut()
     })
     await act(async () => {
@@ -106,7 +106,7 @@ describe('ManagePage', () => {
       }
     ]
     const mockEmailAliasesService =
-      new MockEmailAliasesServiceInterface((observer) => {
+      new MockEmailAliasesService((observer) => {
       observer.onLoggedIn(mockEmail)
       observer.onAliasesUpdated(mockAliases)
     })
@@ -127,7 +127,7 @@ describe('ManagePage', () => {
   it('shows verification pending view', async () => {
     const mockEmail = 'test@brave.com'
     const mockEmailAliasesService =
-      new MockEmailAliasesServiceInterface((observer) => {
+      new MockEmailAliasesService((observer) => {
       observer.onVerificationPending(mockEmail)
     })
 
@@ -150,7 +150,7 @@ describe('ManagePage', () => {
   it('triggers logout when sign out button is clicked', async () => {
     const mockEmail = 'test@brave.com'
     const mockEmailAliasesService =
-      new MockEmailAliasesServiceInterface((observer) => {
+      new MockEmailAliasesService((observer) => {
       observer.onLoggedIn(mockEmail)
     })
 
