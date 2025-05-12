@@ -182,7 +182,9 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     height += tabs::kMarginForVerticalTabContainers;
   }
 
-  return gfx::Size(tab_style_->GetStandardWidth(), height);
+  // Passed |true| but it doesn't have any meaning becuase we always use same
+  // width.
+  return gfx::Size(tab_style_->GetStandardWidth(/*is_split*/ true), height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -256,7 +258,7 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   bounds.set_height(tabs::kVerticalTabHeight);
   const auto tab_width = new_tab->data().pinned
                              ? tabs::kVerticalTabMinWidth
-                             : tab_style_->GetStandardWidth();
+                             : tab_style_->GetStandardWidth(true);
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)

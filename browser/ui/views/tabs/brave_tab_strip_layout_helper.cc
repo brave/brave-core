@@ -59,8 +59,10 @@ void CalculatePinnedTabsBoundsInGrid(
     }
 
     // Update rect for the next pinned tabs. If overflowed, break into new line
+    // Passed |true| as |is_split| but it doesn't have any meaning becuase we
+    // always use same width.
     if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing <
-        width.value_or(tab_style->GetStandardWidth())) {
+        width.value_or(tab_style->GetStandardWidth(/*is_split*/ true))) {
       rect.set_x(rect.right() + kVerticalTabsSpacing);
     } else {
       // New line
