@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "حظر الكل";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "سيؤدي حظر جميع ملفات تعريف الارتباط إلى منع بعض مواقع الويب من العمل بشكل صحيح.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "حظر جميع ملفات تعريف الارتباط؟";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "حظر جميع ملفات تعريف الارتباط؟";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "تحظر Shields بالفعل ملفات تعريف الارتباط الخاصة بالأطراف الخارجية. سيؤدي هذا الإعداد لحظر جميع ملفات تعريف الارتباط إلى إزالة ملفات تعريف الارتباط الموجودة وبيانات الموقع، وقد يؤدي إلى تعطيل مواقع الويب.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "فشل في تعيين التفضيل. يرجى المحاولة مرة أخرى.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "حظر إشعارات الموافقة على ملفات تعريف الارتباط";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "يمنع هذا الخيار مواقع الويب من تخزين معلومات حول زياراتك السابقة.\nتم إهمال خيار \"حظر جميع ملفات تعريف الارتباط\". لمعرفة كيفية فرض تمكين هذا الخيار، تفضل بزيارة [صفحة المساعدة الخاصة بنا] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "حجب المراقبة";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "تأكيد";
 
-/* Cookie settings option title */
-"CookieControl" = "التحكم في ملفات تعريف الارتباط";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "ملفات تعريف الارتباط وبيانات المواقع";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "تم";
-
-/* cookie settings option */
-"DontBlockCookies" = "لا تحظر ملفات تعريف الارتباط";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "لا ترسل";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "ترقيات HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "استيراد بيانات التصفح";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "أدوات التحكم الفردية";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "تعذر تحميل الصفحة.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "التراخيص";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "عدد الكلمات: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "الإشارات المرجعية المستوردة";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "إغلاق";

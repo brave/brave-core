@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "חסימת הכול";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "חסימת כל קובצי העוגיות תמנע מאתרים מסוימים לפעול כהלכה.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "לחסום את כל קובצי העוגיות?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "לחסום את כל קובצי העוגיות?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "המגנים כבר חוסמים קובצי עוגיות של צד שלישי. ההגדרה הזו לחסום את *כל* קובצי העוגיות תסיר קובצי עוגיות ונתונים אתרים קיימים, ועלולה לגרום לאתרים להפסיק לפעול כראוי.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "הגדרת ההעדפה נכשלה. יש לנסות שוב.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "חסימת התראות הסכמה לקובצי עוגיות";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "מונע מאתרים לאחסן מידע על הביקורים הקודמים שלך.\nהאפשרות ״חסימת כל קובצי ה-cookie״ הוסרה. כדי ללמוד איך לאפשר את האפשרות הזו בכל זאת, אפשר לבקר ב[דף העזרה שלנו](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "מוניטור חסימה";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "אישור";
 
-/* Cookie settings option title */
-"CookieControl" = "בקרת עוגיות";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "קובצי Cookie ונתוני אתר";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "סיום";
-
-/* cookie settings option */
-"DontBlockCookies" = "לא לחסום קובצי עוגיות";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "לא לשלוח";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "שדרוגי HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "ייבוא נתוני גלישה";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "אמצעי בקרה פרטניים";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "לא ניתן לטעון את העמוד.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "רישיונות";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "ספירת מילים: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "סימניות מיובאות";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "סגור";

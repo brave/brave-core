@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "حدث خطأ أثناء استيراد الإشارات المرجعية.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "حدث خطأ أثناء استيراد السجل.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "حدث خطأ أثناء استيراد كلمات المرور.\nتعذر استيراد بعض كلمات المرور بسبب وجود تعارض.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "حدث خطأ أثناء استيراد كلمات المرور.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "حدث خطأ أثناء فك ضغط الملف.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "اختيار ملف...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "استورد إشاراتك المرجعية وسجل التصفح وبيانات المتصفح الأخرى إلى Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "استيراد بيانات التصفح";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "استيراد الإشارات المرجعية والمزيد";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "كيفية التصدير من Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "حدث خطأ ما أثناء استيراد بياناتك.\nيرجى المحاولة مرة أخرى.\nإذا استمرت المشكلة، اتصل بالدعم.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "فشل الاستيراد";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "احتفظ بكلمات المرور من Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "استخدم كلمات المرور من سفاري";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "تم العثور على %d تعارضات في كلمات المرور.\nاختر ما تريد استيراده.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "تعارض في كلمات المرور";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "متابعة";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "تم استيراد بياناتك بنجاح.\nأنت جاهز لبدء التصفح باستخدام Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "تم بنجاح!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "إعادة المحاولة";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "فتح صفحة مساعدة Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "هل تريد عملية تصدير مفصلة؟";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "كيفية التصدير من Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "احفظ الملف في **ملفات**، واختر موقعًا يمكنك العثور عليه بسهولة لاحقًا.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**اختر** البيانات التي تريد تصديرها (الإشارات المرجعية، سجل التصفح، بطاقات الائتمان، كلمات المرور).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "افتح **الإعدادات**، ثم مرر لأسفل وانقر على **التطبيقات**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "مرر لأسفل وانقر على **تصدير**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "الخطوة %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "ابحث وانقر على **Safari** من قائمة التطبيقات (مرتبة أبجديًا).";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "لا يحتوي الملف المضغوط على بيانات الاستيراد.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "يرجى الانتظار بينما نقوم بنقل بياناتك بأمان.\nقد يستغرق الأمر بضع لحظات.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "جارٍ استيراد بياناتك...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "اختر الحساب الشخصي الذي تريد استيراد البيانات منه";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "تم اكتشاف حسابات شخصية متعددة";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "شخصي";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "الإشارات المرجعية المستوردة";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "لا يحتوي الملف المضغوط على بيانات الاستيراد.";
+

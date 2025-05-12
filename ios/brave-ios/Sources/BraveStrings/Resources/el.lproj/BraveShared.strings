@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Αποκλεισμός όλων";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Ο αποκλεισμός όλων των cookie θα αποτρέψει τη σωστή λειτουργία ορισμένων ιστότοπων.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Αποκλεισμός όλων των cookie;";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Αποκλεισμός όλων των cookie;";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Οι Ασπίδες μπλοκάρουν ήδη τα cookies τρίτων μερών. Αυτή η ρύθμιση για τον αποκλεισμό ΟΛΩΝ των cookie θα αφαιρέσει τα υπάρχοντα cookies και τα δεδομένα ιστότοπου και θα μπορούσαν να καταστρέψουν ιστότοπους.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Ο ορισμός της προτίμησης απέτυχε. Δοκιμάστε ξανά.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Αποκλεισμός ειδοποιήσεων συναίνεσης για cookie";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Αποτρέπει τους ιστότοπους από το να αποθηκεύουν πληροφορίες σχετικά με τις προηγούμενες επισκέψεις σας.\nΗ επιλογή «Αποκλεισμός όλων των Cookies» έχει καταργηθεί. Για να μάθετε πώς να ενεργοποιήσετε αυτήν την επιλογή, επισκεφθείτε τη [σελίδα βοήθειας](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Αποκλεισμός της οθόνης";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Επιβεβαίωση";
 
-/* Cookie settings option title */
-"CookieControl" = "Έλεγχος Cookies";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Δεδομένα cookie και ιστοτόπου";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Τέλος";
-
-/* cookie settings option */
-"DontBlockCookies" = "Χωρίς αποκλεισμό των cookie";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Να μην γίνει αποστολή";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Αναβαθμίσεις HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Εισαγωγή δεδομένων περιήγησης";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Μεμονωμένοι Έλεγχοι";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Η φόρτωση της σελίδας δεν ήταν δυνατή.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Άδειες";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Καταμέτρηση λέξεων: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Εισαγόμενοι σελιδοδείκτες";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Κλείσιμο";

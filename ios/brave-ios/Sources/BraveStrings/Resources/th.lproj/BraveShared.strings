@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "บล็อกทั้งหมด";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "การบล็อกคุกกี้ทั้งหมดจะเป็นการทำให้บางเว็บไซต์ทำงานไม่ถูกต้อง";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "บล็อกคุกกี้ทั้งหมด";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "ต้องการบล็อกคุกกี้ทั้งหมดหรือไม่";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields จะบล็อกคุกกี้ของบุคคลที่สามอยู่แล้ว การตั้งค่านี้เพื่อบล็อกคุกกี้ทั้งหมดจะลบคุกกี้และข้อมูลไซต์ที่มีอยู่ และอาจทำให้เว็บไซต์เสียหายได้";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "ตั้งค่าไม่สำเร็จ โปรดลองอีกครั้ง";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "บล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "ป้องกันเว็บไซต์จากการเก็บข้อมูลเกี่ยวกับการเยี่ยมชมครั้งก่อนของคุณ\nตัวเลือก \"บล็อกคุกกี้ทั้งหมด\" ถูกยกเลิกแล้ว สำหรับข้อมูลเกี่ยวกับวิธีเปิดใช้งานตัวเลือกนี้ให้ไปที่ [หน้าช่วยเหลือ](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "การบล็อกตัวติดตาม";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "ยืนยัน";
 
-/* Cookie settings option title */
-"CookieControl" = "ควบคุมคุกกี้";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "คุกกี้และข้อมูลเว็บไซต์";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "เสร็จแล้ว";
-
-/* cookie settings option */
-"DontBlockCookies" = "อย่าบล็อกคุกกี้";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "อย่าส่ง";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "การอัพเกรด HTTPS ";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "นำเข้าข้อมูลการเรียกดู";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "ตัวควบคุมแบบแยกรายการ";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "ไม่สามารถโหลดหน้าได้";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "ใบอนุญาต";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "จำนวนคำ: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "บุ๊กมาร์กที่นำเข้า";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "ปิด";
