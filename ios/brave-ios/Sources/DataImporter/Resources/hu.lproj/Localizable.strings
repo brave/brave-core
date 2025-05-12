@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Hiba történt a könyvjelzők importálása közben.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Hiba történt az előzmények importálása közben.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Hiba történt a jelszavak importálása közben.\nEgyes jelszavakat egyezés miatt nem lehetett importálni.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Hiba történt a jelszavak importálása közben.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Hiba történt a fájl kicsomagolása közben.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Fájl kiválasztása...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Importálja a könyvjelzőit, az előzményeket és egyéb böngészőadatait a Brave alkalmazásba.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Böngészési adatok importálása";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Könyvjelzők és továbbiak importálása";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Hogyan lehet exportálni a Safariból";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Hiba történt az importálás során. Próbálja meg újra.\nHa a probléma továbbra is fennáll, lépjen kapcsolatba\naz ügyfélszolgálattal.\n";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Az importálás sikertelen volt";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Jelszavak megtartása a Brave-ből";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Jelszavak használata a Safariból";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "%d Jelszóütközéseket találtunk.\nVálassza ki, mit szeretne importálni.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Jelszóütközés";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Folytatás";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Az adatok importálása sikeresen megtörtént.\nKészen áll a Brave böngészés megkezdésére.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Sikerült!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Próbálja újra";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Safari súgó oldal megnyitása";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Részletes exportálási folyamatot szeretne?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Hogyan lehet exportálni a Safariból";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Mentse el a fájlt a **Fájlok** menüpontba, olyan helyre, ahol később könnyen megtalálja.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Válassza ki** az exportálni kívánt adatokat (könyvjelzők, előzmények, hitelkártyák, jelszavak).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Nyissa meg a **Beállításokat**, görgessen lefelé, és kattintson az **Alkalmazások** lehetőségre.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Görgessen lefelé, és kattintson a **Exportálás** lehetőségre.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Lépés %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "Az alkalmazások listájából (ábécé sorrendben) keresse meg és kattintson a **Safari** lehetőségre.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "A zip fájl nem tartalmaz importálási adatokat.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Kérjük, várjon, amíg biztonságosan továbbítjuk az adatait.\nEz néhány pillanatig eltarthat.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Adatok importálása...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Válassza ki a profilt, amelyből adatokat szeretne importálni";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Több profil észlelése";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Személyes";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Importált könyvjelzők";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "A zip fájl nem tartalmaz importálási adatokat.";
+

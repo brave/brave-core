@@ -2081,6 +2081,9 @@
 The message after the title when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorMsg" = "Došlo je do pogreške prilikom pokušaja slanja";
 
+/* The message after the title when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "Došlo je do pogreške prilikom pokušaja zamjene";
+
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "Nije moguće poslati";
 

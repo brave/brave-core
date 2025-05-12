@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "Riempimento automatico su browser con 1Password";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "I siti web che visiti potrebbero richiedere la tua posizione.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Questa impostazione consente di utilizzare il microfono quando si usa Brave.";
+"NSMicrophoneUsageDescription" = "Questo permette a brave di effettuare ricerche usando la tua voce.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Questa impostazione ti permette di salvare le foto.";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "Questa autorizzazione serve ad attivare il riconoscimento vocale avanzato di Apple. In caso di mancata autorizzazione, verrà utilizzato il riconoscimento “sul dispositivo” e le ricerche saranno assolutamente private. Brave non memorizza né condivide le tue ricerche vocali.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "File OPML";
 
