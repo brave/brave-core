@@ -2112,6 +2112,31 @@
 # specifically with how we currently manage our vertical tabs host view
 -SideBySideBrowserViewTest.SplitViewInactiveIndexReturnsCorrectly
 
+# These tests fail because we disable IsScreenAIOCREnabled and
+# features::IsScreenAIMainContentExtractionEnabled
+-All/OpticalCharacterRecognizerResultsTest.PerformOCR/*
+-All/OpticalCharacterRecognizerTest.Create/OCR_Enabled_Library_Available
+-All/OpticalCharacterRecognizerTest.CreateWithStatusCallback/OCR_Enabled_Library_Available
+-All/OpticalCharacterRecognizerTest.PerformOCR*
+-All/PDFSearchifyTest.HelloWorld/1
+-All/PdfOcrControllerBrowserTest.DownloadRetry/*
+-All/PdfOcrIntegrationTest.EnsureScreenAIInitializes/OcrService_Enabled_Library_Available_Searchify_*
+-All/PdfOcrIntegrationTest.HelloWorld/OcrService_Enabled_Library_Available_Searchify_*
+-All/PdfOcrIntegrationTest.NoOcrResultOnBlankImagePdf/OcrService_Enabled_Library_Available_Searchify_*
+-All/PdfOcrIntegrationTest.TestBatchingWithTwentyPagePDF/OcrService_Enabled_Library_Available_Searchify_Disabled_*
+-All/PdfOcrIntegrationTest.ThreePagePDF/OcrService_Enabled_Library_Available_Searchify_*
+-All/ScreenAIServiceRouterTest.MainContentExtractionInitialization/Library_Available*
+-All/ScreenAIServiceRouterTest.MixedInitialization/Library_Available*
+-All/ScreenAIServiceRouterTest.MixedInitializationWithoutWait/Library_Available*
+-All/ScreenAIServiceRouterTest.OCRInitialization/Library_Available*
+-All/ScreenAIServiceRouterTest.RepeatedInitializationWithoutWait/Library_Available*
+-AXMainNodeAnnotatorControllerBrowserTest.EnabledByPreference
+-AXMainNodeAnnotatorControllerBrowserTest.ExistingWebContents
+-AXMainNodeAnnotatorControllerBrowserTest.NewWebContents
+-AXMainNodeAnnotatorControllerBrowserTest.NotEnabledWithoutScreenReader
+-MainContentExtractionTest.EmptyInput
+-MainContentExtractionTest.MultipleRequests
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*

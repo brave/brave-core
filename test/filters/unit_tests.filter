@@ -563,6 +563,13 @@
 # created when the test profile is using the first-party NTP
 -NtpMicrosoftAuthResponseCaptureNavigationThrottleTest.*
 
+# These tests fail because we disable IsScreenAIOCREnabled and
+# features::IsScreenAIMainContentExtractionEnabled
+-ScreenAIInstallStateTest.AddingObserverTriggersDownload
+-ScreenAIInstallStateTest.ObservationAfterFailure
+-ScreenAIServiceShutdownHandlerTest.CrashCountBeforeResume
+-ScreenAIServiceShutdownHandlerTest.NotSuspendedAfterShutdown
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
