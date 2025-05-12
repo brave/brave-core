@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "1Password kitöltési böngészőművelet";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "A meglátogatott webhelyek kérhetik a tartózkodási helyét.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ez lehetővé teszi a mikrofon használatát a Brave használatakor.";
+"NSMicrophoneUsageDescription" = "Ez lehetővé teszi a Brave számára, hogy az Ön hangját felhasználva adjon le keresési lekérdezéseket.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Ezzel elmentheti a fényképeket.";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "Ez az engedély az Apple Advanced Speech Recognition (fejlett beszédfelismerés) engedélyezésére szolgál. Ha nincs engedélyezve, a rendszer az eszközön zajló felismerést alkalmazza, és a keresés teljesen privát lesz. A Brave nem tárolja és nem osztja meg hangalapú kereséseit.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "OPML-fájl";
 

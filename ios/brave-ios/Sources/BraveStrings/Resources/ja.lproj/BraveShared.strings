@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "すべてブロック";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "すべてのCookieをブロックすると、ウェブサイトが正しく動作しなくなる場合があります。";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "すべてのCookieをブロックしますか？";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "すべてのCookieをブロックしますか？";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "シールドは既にサードパーティのクッキーをブロックしています。すべてのクッキーをブロックすると、既存のクッキーとサイトデータが削除され、ウェブサイトが壊れる可能性があります。";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Cookieの同意通知をブロック";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "以前の訪問に関する情報をウェブサイトが保管するのを防ぎます。\n「すべてのクッキーをブロックする」オプションは廃止されました。このオプションを強制的に有効にする方法については、[ヘルプページ] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting) をご覧ください。";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "ブロックモニター";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "確認";
 
-/* Cookie settings option title */
-"CookieControl" = "Cookie コントロール";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "クッキーとサイトのデータ";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "完了";
-
-/* cookie settings option */
-"DontBlockCookies" = "Cookie をブロックしない";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "送信しない";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS アップグレード";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "閲覧データをインポート";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "個別コントロール";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "ページを読み込めませんでした。";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "ライセンス";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "ワード数: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "インポートされたブックマーク";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "閉じる";

@@ -2081,6 +2081,9 @@
 The message after the title when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorMsg" = "尝试发送时出现错误";
 
+/* The message after the title when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "尝试交换时出错";
+
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "无法发送";
 

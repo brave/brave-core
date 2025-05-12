@@ -80,25 +80,22 @@
 "Block3rdPartyCookies" = "Bloqueja galetes de tercers";
 
 /* Title for setting to block all website cookies. */
-"BlockAllCookies" = "Bloqueja totes les galetes";
+"BlockAllCookies" = "Bloquejar totes les cookies";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Bloqueja tot";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "El bloqueig de totes les galetes impedirà que alguns llocs web funcionin correctament.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Vols bloquejar totes les cookies?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Vols bloquejar totes les galetes?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Els Escuts ja bloquegen les cookies de tercers. Aquesta configuració per bloquejar TOTES les cookies eliminarà les cookies existents i les dades del lloc, i podria dificultar la navegació d'alguns llocs web.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "No s'ha pogut establir la preferència. Siusplau torna-ho a provar.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Bloqueja els avisos de consentiment de galetes";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Evita que els llocs web emmagatzemin informació sobre les teves visites anteriors. L'opció \"Bloquejar totes les cookies\" està obsoleta. Per saber com forçar l'activació d'aquesta opció, visita [la nostra pàgina d'ajuda](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Control de bloqueig";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Confirma";
 
-/* Cookie settings option title */
-"CookieControl" = "Control de galetes";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Dades de llocs web i galetes";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Fet";
-
-/* cookie settings option */
-"DontBlockCookies" = "No bloquegis les galetes";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "No enviïs";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Actualitzacions HTTPS ";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importar dades de navegació";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Controls individuals";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "No es pot carregar la pàgina.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Llicències";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Nombre de paraules: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Adreces d'interès importades";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tanca";

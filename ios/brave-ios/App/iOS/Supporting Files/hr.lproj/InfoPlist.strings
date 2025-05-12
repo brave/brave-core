@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "Radnja za ispunjavanje programa 1Password za preglednik";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Na mrežnim mjestima koja posjećujete može se zahtijevati vaša lokacija.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ovim se omogućava upotreba vašeg mikrofona pri upotrebi preglednika Brave.";
+"NSMicrophoneUsageDescription" = "Ovo omogućujeBraveu da šalje upite za pretragu koristeći vaš glas.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Omogućava vam spremanje fotografija.";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "Ovo se dopuštenje upotrebljava za omogućivanje Appleova naprednog prepoznavanja govora. Ako nije dopušteno, upotrebljava se prepoznavanje na uređaju i pretraživanja su potpuno privatna. U pregledniku Brave ne pohranjuju se ili dijele vaša glasovna pretraživanja.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "Datoteka OPML";
 
