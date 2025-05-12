@@ -142,8 +142,12 @@ import WebKit
       domain: domain
     )
 
+    // Every scriptlet is injected into all frames, then compared against the
+    // `windowOriginURL`. To avoid the same scriptlet injected multiple times,
+    // filter the set to the `windowOriginURL`.
+    let filteredSubframeURLs = Set(allSubframeURLs.map { $0.windowOriginURL })
     // Add engine scripts for all of the known sub-frames
-    async let additionalScriptTypes = allSubframeURLs.asyncConcurrentCompactMap({ frameURL in
+    async let additionalScriptTypes = filteredSubframeURLs.asyncConcurrentCompactMap({ frameURL in
       return await self.groupsManager.makeEngineScriptTypes(
         frameURL: frameURL,
         isMainFrame: false,
