@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/mac_features.h"
 #include "chrome/browser/buildflags.h"
 
 // When the current build is more than several weeks old, upstream takes this as
@@ -16,6 +15,8 @@
 // the background. To work around this, we disable outdated build detection
 // until we also have background updates on macOS.
 #if BUILDFLAG(IS_MAC)
+#include "brave/browser/mac_features.h"
+
 #define BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR \
   if (!brave::ShouldUseOmaha4()) {                                \
     return;                                                       \
