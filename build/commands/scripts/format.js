@@ -60,7 +60,7 @@ const runFormat = async (options = {}) => {
       ...cmdOptions,
       continueOnFail: true
     })
-    if (clFormatResult.status == 2) {
+    if (clFormatResult.status === 2) {
       // format issues found. Run git cl format with --diff to print the diff
       const diffResult = util.run(cmd, [...args, '--diff'], {
         ...cmdOptions,

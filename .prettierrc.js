@@ -27,5 +27,5 @@ module.exports = {
   'useTabs': false,
   'vueIndentScriptAndStyle': false,
   'jsxBracketSameLine': false,
-  'singleAttributePerLine': true,
+  'singleAttributePerLine': true
 }
