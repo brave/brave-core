@@ -296,3 +296,13 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
 TEST(FeatureDefaultsTest, IsOmniboxEntryPointEnabled) {
   EXPECT_FALSE(lens::features::IsOmniboxEntryPointEnabled());
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST(FeatureDefaultsTest, IsScreenAIMainContentExtractionEnabled) {
+  EXPECT_FALSE(features::IsScreenAIMainContentExtractionEnabled());
+}
+
+TEST(FeatureDefaultsTest, IsScreenAIOCREnabled) {
+  EXPECT_FALSE(features::IsScreenAIOCREnabled());
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
