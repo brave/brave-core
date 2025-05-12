@@ -7,34 +7,24 @@
 #include "brave/browser/mac_features.h"
 #include "chrome/browser/buildflags.h"
 
+// When the current build is more than several weeks old, upstream takes this as
+// a sign that automatic updates are broken and shows a prominent "Can't update
+// - please reinstall" notification. This makes sense for upstream, which uses
+// Omaha 4 with background updates on macOS. But we still use Sparkle, which
+// only updates while the browser is running and requires a relaunch to install
+// new versions. In this case, the "reinstall" prompt is very confusing,
+// especially because it is likely that Brave is just downloading an update in
+// the background. To work around this, we disable outdated build detection
+// until we also have background updates on macOS.
 #if BUILDFLAG(IS_MAC)
-namespace base {
-class FeatureList_BraveImpl : public FeatureList {
- public:
-  static bool IsEnabled(const Feature& feature) {
-    if (!brave::ShouldUseOmaha4() &&
-        strcmp(feature.name, "OutdatedBuildDetector") == 0) {
-      // When the current build is more than several weeks old, upstream takes
-      // this as a sign that automatic updates are broken and shows a prominent
-      // "Can't update - please reinstall" notification. This makes sense for
-      // upstream, which uses Omaha 4 with background updates on macOS. But we
-      // still use Sparkle, which only updates while the browser is running and
-      // requires a relaunch to install new versions. In this case, the
-      // "reinstall" prompt is very confusing, especially because it is likely
-      // that Brave is just downloading an update in the background. To work
-      // around this, we disable the outdated build detection feature until we
-      // also have background updates on macOS.
-      return false;
-    }
-    return FeatureList::IsEnabled(feature);
+#define BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR \
+  if (!brave::ShouldUseOmaha4()) {                                \
+    return;                                                       \
   }
-};
-}  // namespace base
-#define FeatureList FeatureList_BraveImpl
+#else
+#define BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR
 #endif
 
 #include "src/chrome/browser/upgrade_detector/upgrade_detector_impl.cc"
 
-#if BUILDFLAG(IS_MAC)
-#undef FeatureList
-#endif
+#undef BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR
