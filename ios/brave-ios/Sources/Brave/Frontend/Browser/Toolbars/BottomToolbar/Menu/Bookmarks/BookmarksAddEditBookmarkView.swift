@@ -5,10 +5,12 @@
 //  Created by Brandon T on 2025-05-12.
 //
 
+import BraveCore
 import BraveStrings
 import Data
 import DesignSystem
 import Favicon
+import Introspect
 import SwiftUI
 
 private enum BookmarksSaveFolder {
@@ -36,18 +38,24 @@ struct BookmarksAddEditBookmarkView: View {
   @State
   private var saveFolder: BookmarksSaveFolder = .mobileBookmarks
 
+  @FocusState
+  private var isURLFieldFocused: Bool
+
   @State
   private var isExpanded = false
 
   @State
   private var folders: [(folder: Bookmarkv2, indentationLevel: Int)] = []
 
+  @State
+  private var urlTextField: UITextField?
+
   private var bookmarkURL: URL? {
     guard let urlString = node?.url else {
       return nil
     }
 
-    return URL(string: urlString)
+    return URL(string: urlString) ?? URL.bookmarkletURL(from: urlString)
   }
 
   private var defaultRootFolder: Bookmarkv2? {
@@ -87,6 +95,42 @@ struct BookmarksAddEditBookmarkView: View {
               .frame(height: 1.0)
 
             TextField("", text: $urlString, prompt: Text(Strings.bookmarkUrlPlaceholderText))
+              .focused($isURLFieldFocused)
+              .introspectTextField { textField in
+                self.urlTextField = textField
+              }
+              .onChange(of: isURLFieldFocused) { isFocused in
+                guard let urlTextField = urlTextField else {
+                  return
+                }
+
+                // When the URL field gains focus, move the cursor to position 0.
+                if isFocused {
+                  urlString = bookmarkURL?.absoluteString ?? ""
+
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    let start = urlTextField.beginningOfDocument
+
+                    UIView.animate(withDuration: 0.25) {
+                      urlTextField.selectedTextRange = urlTextField.textRange(
+                        from: start,
+                        to: start
+                      )
+                    }
+                  }
+                } else {
+                  // When the URL field loses focus, format the URL
+
+                  let urlText = urlTextField.text ?? ""
+                  let suggestedText = URLFormatter.formatURLOrigin(
+                    forDisplayOmitSchemePathAndTrivialSubdomains: urlText
+                  )
+
+                  if !suggestedText.isEmpty {
+                    urlString = suggestedText
+                  }
+                }
+              }
           }
         }
       }
@@ -179,6 +223,11 @@ struct BookmarksAddEditBookmarkView: View {
       }
     }
     .onAppear {
+      self.urlString = URLFormatter.formatURLOrigin(
+        forDisplayOmitSchemePathAndTrivialSubdomains: bookmarkURL?.strippingBlobURLAuth
+          .absoluteString ?? urlString
+      )
+
       Task {
         self.folders = await model.folders().map({
           return ($0, $0.indentationLevel)
@@ -210,7 +259,7 @@ struct BookmarksAddEditBookmarkView: View {
   }
 
   private func addOrUpdateBookmark(parent: Bookmarkv2?) {
-    if let url = bookmarkURL {
+    if let url = URL(string: urlString) ?? URL.bookmarkletURL(from: urlString) {
       if let node = node {
         node.bookmarkNode.setTitle(title)
         node.bookmarkNode.url = url
