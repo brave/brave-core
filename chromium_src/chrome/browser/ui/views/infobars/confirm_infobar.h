@@ -6,17 +6,19 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
 
-#define GetDelegate                            \
-  Unused() { return nullptr; }                 \
+#define target_height_for_testing              \
+  Unused() {                                   \
+    return 0;                                  \
+  }                                            \
   friend class BraveSyncAccountDeletedInfoBar; \
   friend class BraveConfirmInfoBar;            \
-  ConfirmInfoBarDelegate* GetDelegate
+  int target_height_for_testing
 
 #define NonLabelWidth virtual NonLabelWidth
 
 #include "src/chrome/browser/ui/views/infobars/confirm_infobar.h"  // IWYU pragma: export
 
 #undef NonLabelWidth
-#undef GetDelegate
+#undef target_height_for_testing
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
