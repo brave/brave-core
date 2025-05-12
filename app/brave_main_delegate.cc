@@ -128,7 +128,15 @@ void BraveMainDelegate::AppendCommandLineOptions() {
                                     kBraveOriginTrialsPublicKey);
   }
 
+  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
+
   command_line->AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
+
+  // Brave's sync protocol does not use the sync service url
+  if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
+    command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
+                                    brave_sync_service_url.c_str());
+  }
 
   variations::AppendBraveCommandLineOptions(*command_line);
 }
@@ -220,6 +228,8 @@ std::optional<int> BraveMainDelegate::PostEarlyInitialization(
         !network::IsOriginPotentiallyTrustworthy(
             url::Origin::Create(sync_service_url))) {
       command_line->RemoveSwitch(syncer::kSyncServiceURL);
+      LOG(WARNING) << "Provided sync service URL is invalid or insecure; "
+                      "falling back to the default Brave-hosted Sync server.";
     }
   }
 
