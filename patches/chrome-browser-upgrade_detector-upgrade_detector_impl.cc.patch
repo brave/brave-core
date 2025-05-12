@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
+index a372c42fe5755b9328b25ca09efca7297a0db57e..3436b446e1bd1515543472bf2644a9c03eccdd62 100644
+--- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
++++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
+@@ -214,6 +214,7 @@ void UpgradeDetectorImpl::DoCalculateThresholds() {
+ 
+ void UpgradeDetectorImpl::StartOutdatedBuildDetector() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  BRAVE_UPGRADE_DETECTOR_IMPL_START_OUTDATED_BUILD_DETECTOR
+   static BASE_FEATURE(kOutdatedBuildDetector, "OutdatedBuildDetector",
+                       base::FEATURE_ENABLED_BY_DEFAULT);
+ 
