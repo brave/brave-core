@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 5220ed1608c81e1d9e0fc3e24d69fcec6f25aa90..e0e09b712ae9fc3c829c0d962124144593bcb745 100644
+index 9d5f4069f8b8533b3d5ddde8f45d8968d6fb8780..78288a5acbfed6f4b3956b456522426d644e923b 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -258,6 +258,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     {ContentSettingsType::REVOKED_DISRUPTIVE_NOTIFICATION_PERMISSIONS, nullptr},
      {ContentSettingsType::ON_DEVICE_SPEECH_RECOGNITION_LANGUAGES_DOWNLOADED,
       nullptr},
+     {ContentSettingsType::INITIALIZED_TRANSLATIONS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
