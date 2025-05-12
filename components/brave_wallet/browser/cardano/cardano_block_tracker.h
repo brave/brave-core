@@ -43,9 +43,9 @@ class CardanoBlockTracker : public BlockTracker {
 
   void Start(const std::string& chain_id, base::TimeDelta interval) override;
   void RequestLatestBlock(const std::string& chain_id);
+  std::optional<uint32_t> GetLatestHeight(const std::string& chain_id) const;
 
  private:
-  std::optional<uint32_t> GetLatestHeight(const std::string& chain_id) const;
   void OnGetLatestBlock(
       const std::string& chain_id,
       base::expected<cardano_rpc::Block, std::string> latest_height);

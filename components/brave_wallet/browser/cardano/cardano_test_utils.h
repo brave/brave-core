@@ -20,9 +20,19 @@ namespace brave_wallet {
 
 class CardanoWalletService;
 
+inline constexpr char kMockCardanoAddress1[] =
+    "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53l7"
+    "lh5u7z08l0rvp49ht88s5uskl6tsl";
+
+inline constexpr char kMockCardanoAddress2[] =
+    "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefvjmpww7f7"
+    "w9gwem3x6gcm3ulw3kpcgws9sgrhg";
+
+inline constexpr char kMockCardanoTxid[] =
+    "7e2aeed860faf61b0513e9807be633a90e3260480ebc46b53ea99c497195fc29";
+
 class CardanoTestRpcServer {
  public:
-  CardanoTestRpcServer();
   explicit CardanoTestRpcServer(CardanoWalletService& cardano_wallet_service);
   ~CardanoTestRpcServer();
 
@@ -31,17 +41,31 @@ class CardanoTestRpcServer {
 
   void AddUtxo(const std::string& address, uint32_t amount);
 
+  void FailNextTransactionSubmission();
+  void ConfirmAllTransactions();
+
+  scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
+
  private:
   void RequestInterceptor(const network::ResourceRequest& request);
   std::string ExtractApiRequestPath(const GURL& request_url);
   std::optional<std::string> IsAddressUtxoRequest(
       const network::ResourceRequest& request);
-
+  bool IsLatestEpochParametersRequest(const network::ResourceRequest& request);
+  bool IsLatestBlockRequest(const network::ResourceRequest& request);
+  bool IsTxSubmitRequest(const network::ResourceRequest& request);
+  std::optional<std::string> IsGetTransactionRequest(
+      const network::ResourceRequest& request);
   std::array<uint8_t, 32> CreateNewTxHash();
 
   std::map<std::string, std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>
       utxos_map_;
   std::array<uint8_t, 32> next_tx_hash_ = {};
+
+  std::string captured_raw_tx_;
+  bool fail_next_transaction_submission_ = false;
+  std::vector<std::string> mempool_transactions_;
+  std::vector<std::string> confirmed_transactions_;
 
   network::TestURLLoaderFactory url_loader_factory_;
   raw_ref<CardanoWalletService> cardano_wallet_service_;

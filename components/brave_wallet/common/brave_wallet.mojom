@@ -2162,6 +2162,7 @@ interface TxServiceObserver {
   OnTxServiceReset();
 };
 
+// Params sent from UI to Core for a new unapproved EVM transaction.
 struct NewEvmTransactionParams {
   string chain_id;
   AccountId from;
@@ -2171,6 +2172,7 @@ struct NewEvmTransactionParams {
   array<uint8> data;
 };
 
+// Params sent from UI to Core for a new unapproved Bitcoin transaction.
 struct NewBitcoinTransactionParams {
   string chain_id;
   AccountId from;
@@ -2179,6 +2181,7 @@ struct NewBitcoinTransactionParams {
   bool sending_max_amount;
 };
 
+// Params sent from UI to Core for a new unapproved ZCash transaction.
 struct NewZCashTransactionParams {
   string chain_id;
   AccountId from;
@@ -2190,6 +2193,7 @@ struct NewZCashTransactionParams {
   bool use_shielded_pool;
 };
 
+// Params sent from UI to Core for a new unapproved Cardano transaction.
 struct NewCardanoTransactionParams {
   string chain_id;
   AccountId from;

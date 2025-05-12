@@ -266,6 +266,7 @@ class TxService : public mojom::TxService,
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
   friend class BitcoinTxManagerUnitTest;
+  friend class CardanoTxManagerUnitTest;
   friend class BraveWalletP3AUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
