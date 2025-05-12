@@ -181,13 +181,14 @@ export function bindConversation(id: string | undefined) {
   }
 }
 
-export function newConversation() {
+export function newConversation(modelKey?: string) {
   let conversationHandler: Mojom.ConversationHandlerRemote =
     new Mojom.ConversationHandlerRemote()
   let callbackRouter = new Mojom.ConversationUICallbackRouter()
   getAPI().uiHandler.newConversation(
     conversationHandler.$.bindNewPipeAndPassReceiver(),
-    callbackRouter.$.bindNewPipeAndPassRemote()
+    callbackRouter.$.bindNewPipeAndPassRemote(),
+    modelKey
   )
   return {
     conversationHandler,

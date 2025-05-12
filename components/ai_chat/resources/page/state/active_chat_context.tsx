@@ -58,8 +58,8 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     ...conversationAPI,
     selectedConversationId,
     updateSelectedConversationId,
-    createNewConversation: () => {
-      setConversationAPI(API.newConversation())
+    createNewConversation: (modelKey?: string) => {
+      setConversationAPI(API.newConversation(modelKey))
     },
     isTabAssociated: selectedConversationId === tabAssociatedChatId
   }), [selectedConversationId, updateSelectedConversationId, conversationAPI])
@@ -127,7 +127,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     }
   }, [visibleConversations, selectedConversationId, initialized])
 
-  return <ActiveChatContext.Provider value={details as any}>
+  return <ActiveChatContext.Provider value={details as SelectedChatDetails}>
     {conversationAPI && children}
   </ActiveChatContext.Provider>
 }

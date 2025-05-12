@@ -188,9 +188,23 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }))
   }
 
+  // If the user changes the model manually in this UI, this will be populated.
+  // `undefined` means the user has not explicitly chosen a model in this session.
+  const userChosenModelName = React.useRef<string | undefined>(undefined)
+  const isNewConversation = useIsNewConversation()
+
+  // When the conversation changes, update the model if it's
+  // a new conversation and this session has a user-chosen model.
+  React.useEffect(() => {
+    if (isNewConversation && userChosenModelName.current) {
+      conversationHandler.changeModel(userChosenModelName.current)
+    }
+  }, [isNewConversation, conversationHandler, context.conversationUuid])
+
   React.useEffect(() => {
     context.setShowAttachments(!!aiChatContext.isStandalone && !aiChatContext.visibleConversations.some(c => c.uuid === context.conversationUuid))
   }, [context.conversationUuid])
+
 
   const getModelContext = (
     currentModelKey: string,
@@ -542,7 +556,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     handleResetError,
     handleStopGenerating,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
-    setCurrentModel: (model) => conversationHandler.changeModel(model.key),
+    setCurrentModel: (model) => {
+      userChosenModelName.current = model.key
+      conversationHandler.changeModel(model.key)
+    },
     generateSuggestedQuestions: () => conversationHandler.generateQuestions(),
     resetSelectedActionType,
     updateShouldSendPageContents: (shouldSend) => conversationHandler.setShouldSendPageContents(shouldSend),
