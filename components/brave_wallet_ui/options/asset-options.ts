@@ -18,6 +18,7 @@ import {
   AuroraIcon,
   BaseIcon,
   CeloIcon,
+  DOTIcon,
   FtmIcon,
   NeonIcon,
   OpIcon,
@@ -60,6 +61,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return ZECIcon
     case 'ADA':
       return CardanoIcon
+    case 'DOT':
+      return DOTIcon
   }
 
   return ''

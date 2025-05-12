@@ -906,6 +906,7 @@ enum KeyringId {
   kBitcoinHardwareTestnet = 11,
   kCardanoMainnet = 12,
   kCardanoTestnet = 13,
+  kPolkadotSubstrateMainnet = 14,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -987,6 +988,7 @@ struct WalletInfo {
   bool is_transaction_simulations_feature_enabled;
   bool is_z_cash_shielded_transactions_enabled;
   bool is_cardano_enabled;
+  bool is_polkadot_enabled;
   array<CoinType> enabled_coins;
 };
 
@@ -1413,6 +1415,7 @@ const string kBitcoinMainnet = "bitcoin_mainnet";
 const string kBitcoinTestnet = "bitcoin_testnet";
 const string kCardanoMainnet = "cardano_mainnet";
 const string kCardanoTestnet = "cardano_testnet";
+const string kPolkadotRelayChainId = "polkadot";
 const string kZCashMainnet = "zcash_mainnet";
 const string kZCashTestnet = "zcash_testnet";
 const string kArbitrumNovaChainId = "0xa4ba";
@@ -1482,6 +1485,7 @@ enum CoinType {
   FIL = 461,
   SOL = 501,
   ADA = 1815,
+  DOT = 354,
 };
 
 struct NetworkInfo {

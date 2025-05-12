@@ -68,6 +68,10 @@ bool IsZCashShieldedTransactionsEnabled() {
 #endif
 }
 
+bool IsPolkadotEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletPolkadotFeature);
+}
+
 bool IsAnkrBalancesEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAnkrBalancesFeature);
@@ -256,6 +260,18 @@ bool IsCardanoAccount(const mojom::AccountIdPtr& account_id) {
          IsCardanoKeyring(account_id->keyring_id);
 }
 
+bool IsPolkadotSubstrateNetwork(const std::string& network_id) {
+  return network_id == mojom::kPolkadotRelayChainId;
+}
+
+bool IsPolkadotSubstrateKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kPolkadotSubstrateMainnet;
+}
+
+bool IsPolkadotSubstrateAccount(const mojom::AccountIdPtr& account_id) {
+  return IsPolkadotSubstrateKeyring(account_id->keyring_id);
+}
+
 std::string GetNetworkForCardanoKeyring(const mojom::KeyringId& keyring_id) {
   if (IsCardanoMainnetKeyring(keyring_id)) {
     return mojom::kCardanoMainnet;
@@ -294,6 +310,10 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
 
   if (IsCardanoKeyring(keyring_id)) {
     return mojom::CoinType::ADA;
+  }
+
+  if (IsPolkadotSubstrateKeyring(keyring_id)) {
+    return mojom::CoinType::DOT;
   }
 
   NOTREACHED() << "Unknown keyring: " << keyring_id;
@@ -374,6 +394,9 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
     ids.push_back(mojom::KeyringId::kCardanoMainnet);
     ids.push_back(mojom::KeyringId::kCardanoTestnet);
   }
+  if (IsPolkadotEnabled()) {
+    ids.push_back(mojom::KeyringId::kPolkadotSubstrateMainnet);
+  }
 
   DCHECK_GT(ids.size(), 0u);
   return ids;
@@ -418,6 +441,10 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
         return {mojom::KeyringId::kCardanoMainnet};
       } else {
         return {mojom::KeyringId::kCardanoTestnet};
+      }
+    case mojom::CoinType::DOT:
+      if (chain_id == mojom::kPolkadotRelayChainId) {
+        return {mojom::KeyringId::kPolkadotSubstrateMainnet};
       }
   }
   NOTREACHED();

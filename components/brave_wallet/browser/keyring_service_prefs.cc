@@ -52,6 +52,8 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
       return "cardano_mainnet";
     case mojom::KeyringId::kCardanoTestnet:
       return "cardano_testnet";
+    case mojom::KeyringId::kPolkadotSubstrateMainnet:
+      return "polkadot_substrate_mainnet";
   }
   NOTREACHED();
 }

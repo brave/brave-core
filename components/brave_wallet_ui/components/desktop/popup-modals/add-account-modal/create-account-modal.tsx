@@ -62,6 +62,8 @@ export const CreateAccountModal = () => {
   const isCardanoEnabled = useSafeWalletSelector(
     WalletSelectors.isCardanoEnabled
   )
+  const isPolkadotEnabled =
+    useSafeWalletSelector(WalletSelectors.isPolkadotEnabled)
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -81,7 +83,8 @@ export const CreateAccountModal = () => {
       visibleNetworks,
       isBitcoinEnabled,
       isZCashEnabled,
-      isCardanoEnabled
+      isCardanoEnabled,
+      isPolkadotEnabled
     })
   }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled, isCardanoEnabled])
 
@@ -114,7 +117,8 @@ export const CreateAccountModal = () => {
         BraveWallet.CoinType.FIL,
         BraveWallet.CoinType.BTC,
         BraveWallet.CoinType.ZEC,
-        BraveWallet.CoinType.ADA
+        BraveWallet.CoinType.ADA,
+        BraveWallet.CoinType.DOT
       ].includes(selectedAccountType.coin)
     ) {
       network = selectedAccountType.fixedNetwork

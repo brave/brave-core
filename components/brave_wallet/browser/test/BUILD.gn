@@ -83,6 +83,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/nft_metadata_fetcher_unittest.cc",
     "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
     "//brave/components/brave_wallet/browser/permission_utils_unittest.cc",
+    "//brave/components/brave_wallet/browser/polkadot/polkadot_substrate_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
     "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
     "//brave/components/brave_wallet/browser/simple_hash_client_unittest.cc",

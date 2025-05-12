@@ -34,18 +34,18 @@ class ValueStoreFactory;
 namespace brave_wallet {
 
 class AccountResolverDelegate;
-class JsonRpcService;
+class BitcoinTxManager;
 class BitcoinWalletService;
-class ZCashWalletService;
+class EthTxManager;
+class FilTxManager;
+class JsonRpcService;
 class KeyringService;
+class SolanaTxManager;
 class TxManager;
 class TxStorageDelegate;
 class TxStorageDelegateImpl;
-class EthTxManager;
-class SolanaTxManager;
-class BitcoinTxManager;
-class FilTxManager;
 class ZCashTxManager;
+class ZCashWalletService;
 
 class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
