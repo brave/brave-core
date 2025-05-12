@@ -40,15 +40,19 @@ BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
 void BraveScreenshotsTabFeature::StartScreenshot(ScreenshotType type) {
   DVLOG(1) << "Called StartScreenshot";
 
+  // If a screenshot is already in progress, cancel it
+  CancelPendingScreenshot();
+
   // We've determined the appropriate strategy to use
   strategy_ = CreateStrategy(type);
+  const int capture_id = ++current_capture_id_;
 
   DVLOG(2) << "Starting capture";
 
   strategy_->Capture(
       web_contents(),
       base::BindOnce(&BraveScreenshotsTabFeature::OnCaptureComplete,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), capture_id));
 }
 
 std::unique_ptr<BraveScreenshotStrategy>
@@ -71,15 +75,32 @@ BraveScreenshotsTabFeature::CreateStrategy(ScreenshotType type) {
 }
 
 bool BraveScreenshotsTabFeature::IsScreenshotInProgress() const {
+  DVLOG(2) << "Called IsScreenshotInProgress";
   return strategy_ != nullptr;
 }
 
+void BraveScreenshotsTabFeature::CancelPendingScreenshot() {
+  DVLOG(2) << "Called CancelPendingScreenshot";
+
+  if (strategy_) {
+    DVLOG(3) << "Cancelling screenshot strategy";
+    strategy_->Cancel();
+    strategy_.reset();
+  }
+}
+
 void BraveScreenshotsTabFeature::OnCaptureComplete(
+    int capture_id,
     const image_editor::ScreenshotCaptureResult& result) {
   DVLOG(2) << __func__;
 
+  // If the capture was cancelled, ignore the result
+  if (capture_id != current_capture_id_) {
+    DVLOG(2) << "OnCaptureComplete called for expired capture";
+    return;
+  }
+
   if (result.image.IsEmpty()) {
-    DVLOG(2) << "Screenshot capture failed";
     strategy_.reset();
     return;
   }

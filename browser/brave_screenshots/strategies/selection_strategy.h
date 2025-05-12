@@ -19,6 +19,7 @@ class SelectionStrategy : public BraveScreenshotStrategy,
   SelectionStrategy(const SelectionStrategy&) = delete;
   SelectionStrategy& operator=(const SelectionStrategy&) = delete;
   ~SelectionStrategy() override;
+  void Cancel() override;
   // Requests the user to select a region of the screen to capture
   void Capture(content::WebContents* web_contents,
                image_editor::ScreenshotCaptureCallback callback) override;

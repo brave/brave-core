@@ -22,6 +22,12 @@ SelectionStrategy::~SelectionStrategy() {
   DVLOG(2) << "SelectionStrategy destroyed";
 }
 
+// Cancels the screenshot flow
+void SelectionStrategy::Cancel() {
+  DVLOG(2) << "SelectionStrategy::Cancel";
+  CancelCapture();
+}
+
 // Requests the user to select a region of the screen to capture
 void SelectionStrategy::Capture(
     content::WebContents* web_contents,

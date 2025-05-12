@@ -1165,13 +1165,9 @@ void SwapTabsInTile(Browser* browser) {
 }
 
 void TakeScreenshot(content::WebContents* web_contents, int command_id) {
+  DVLOG(2) << "Called TakeScreenshot";
   auto* tab = tabs::TabInterface::GetFromContents(web_contents);
   auto* features = tab->GetTabFeatures();
-
-  // Don't attempt a new screenshot for the tab if one is in progress.
-  if (features->brave_screenshots_tab_feature()->IsScreenshotInProgress()) {
-    return;
-  }
 
   brave_screenshots::ScreenshotType type;
 

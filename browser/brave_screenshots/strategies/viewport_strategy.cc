@@ -22,6 +22,12 @@ ViewportStrategy::~ViewportStrategy() {
   DVLOG(2) << "ViewportStrategy destroyed";
 }
 
+// Cancels the screenshot flow
+void ViewportStrategy::Cancel() {
+  DVLOG(2) << "ViewportStrategy::Cancel";
+  CancelCapture();
+}
+
 // Captures the visible portion of the page (viewport)
 void ViewportStrategy::Capture(
     content::WebContents* web_contents,

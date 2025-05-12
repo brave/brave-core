@@ -24,6 +24,8 @@ class FullPageStrategy : public BraveScreenshotStrategy,
   FullPageStrategy& operator=(const FullPageStrategy&) = delete;
   ~FullPageStrategy() override;
 
+  void Cancel() override;
+
   // BraveScreenshotStrategy implementation
   void Capture(content::WebContents* web_contents,
                image_editor::ScreenshotCaptureCallback callback) override;

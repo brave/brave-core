@@ -35,11 +35,14 @@ class BraveScreenshotsTabFeature : public content::WebContentsObserver {
 
   void StartScreenshot(ScreenshotType type);
   bool IsScreenshotInProgress() const;
+  void CancelPendingScreenshot();
 
  private:
-  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
+  void OnCaptureComplete(int capture_id,
+                         const image_editor::ScreenshotCaptureResult& result);
   std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
 
+  int current_capture_id_ = 0;
   std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
 

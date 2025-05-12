@@ -19,6 +19,7 @@ class ViewportStrategy : public BraveScreenshotStrategy,
   ViewportStrategy(const ViewportStrategy&) = delete;
   ViewportStrategy& operator=(const ViewportStrategy&) = delete;
   ~ViewportStrategy() override;
+  void Cancel() override;
   // Captures the visible portion of the page (viewport)
   void Capture(content::WebContents* web_contents,
                image_editor::ScreenshotCaptureCallback callback) override;

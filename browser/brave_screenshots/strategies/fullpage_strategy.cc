@@ -39,6 +39,17 @@ FullPageStrategy::~FullPageStrategy() {
   }
 }
 
+void FullPageStrategy::Cancel() {
+  DVLOG(2) << __func__;
+  RunCallback({});
+  // If anything is still attached, tear it down
+  if (devtools_host_ && devtools_host_->IsAttached()) {
+    devtools_host_->DetachClient(this);
+  }
+  web_contents_.reset();
+  callback_.Reset();
+}
+
 void FullPageStrategy::Capture(
     content::WebContents* web_contents,
     image_editor::ScreenshotCaptureCallback callback) {
