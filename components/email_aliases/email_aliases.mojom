@@ -5,6 +5,8 @@
 
 module email_aliases.mojom;
 
+const uint8 kMaxAliases = 5;
+
 struct Alias {
   string email;
   string? note;

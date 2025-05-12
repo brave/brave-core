@@ -69,7 +69,7 @@ const BeforeSendingEmailForm = ({ initEmail, emailAliasesService }:
 
 const AfterSendingEmailMessage = ({ mainEmail, emailAliasesService }:
   { mainEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
-  const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const onClick = () => {
     emailAliasesService.cancelPrimaryEmailVerification()
   }
   return <SpacedCol>

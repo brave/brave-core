@@ -92,7 +92,7 @@ const demoData = {
   ]
 } satisfies { email: string, aliases: Alias[] }
 
-class MockEmailAliasesService implements EmailAliasesServiceInterface {
+class StubEmailAliasesService implements EmailAliasesServiceInterface {
   accountEmail: string
   aliases: Map<string, Alias>
   accountState: AccountState
@@ -187,31 +187,31 @@ class MockEmailAliasesService implements EmailAliasesServiceInterface {
 
 }
 
-const mockEmailAliasesServiceNoAccountInstance =
-  new MockEmailAliasesService('NoAccount', '')
+const stubEmailAliasesServiceNoAccountInstance =
+  new StubEmailAliasesService('NoAccount', '')
 
-const mockEmailAliasesServiceAccountReadyInstance =
-  new MockEmailAliasesService('AccountReady', demoData.email)
+const stubEmailAliasesServiceAccountReadyInstance =
+  new StubEmailAliasesService('AccountReady', demoData.email)
 
 const bindNoAccountObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
-    mockEmailAliasesServiceNoAccountInstance.addObserver(observer)
+    stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
     return () => {
-      mockEmailAliasesServiceNoAccountInstance.removeObserver(observer)
+      stubEmailAliasesServiceNoAccountInstance.removeObserver(observer)
     }
   }
 
 const bindAccountReadyObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
-    mockEmailAliasesServiceAccountReadyInstance.addObserver(observer)
+    stubEmailAliasesServiceAccountReadyInstance.addObserver(observer)
     return () => {
-      mockEmailAliasesServiceAccountReadyInstance.removeObserver(observer)
+      stubEmailAliasesServiceAccountReadyInstance.removeObserver(observer)
     }
   }
 
 export const SignInPage = () => {
   return (
-    <ManagePage emailAliasesService={mockEmailAliasesServiceNoAccountInstance}
+    <ManagePage emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
                 bindObserver={bindNoAccountObserver}>
     </ManagePage>
   )
@@ -220,7 +220,7 @@ export const SignInPage = () => {
 export const SettingsPage = () => {
   return (
     <ManagePage
-      emailAliasesService={mockEmailAliasesServiceAccountReadyInstance}
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
       bindObserver={bindAccountReadyObserver}>
     </ManagePage>
   )
@@ -234,7 +234,7 @@ export const Bubble = () => {
       viewState={{ mode: 'Create' }}
       mainEmail={demoData.email}
       bubble={true}
-      emailAliasesService={mockEmailAliasesServiceAccountReadyInstance}
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
     />
   )
 }

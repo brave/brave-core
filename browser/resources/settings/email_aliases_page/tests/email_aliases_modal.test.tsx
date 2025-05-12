@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import { EmailAliasModal } from '../content/email_aliases_modal'
 import { ViewState } from '../content/types'
 
@@ -172,16 +172,18 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows limit reached message in bubble mode', async () => {
-    render(
-      <EmailAliasModal
-        viewState={{ mode: 'Create' }}
-        mainEmail={mockEmail}
-        aliasCount={5}
-        onReturnToMain={mockOnReturnToMain}
+    await act(async () => {
+      render(
+        <EmailAliasModal
+          viewState={{ mode: 'Create' }}
+          mainEmail={mockEmail}
+          aliasCount={5}
+          onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
-        bubble={true}
-      />
-    )
+          bubble={true}
+        />
+      )
+    })
 
     // Wait for limit check
     await waitFor(() => {
@@ -191,11 +193,8 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows loading state while generating alias', async () => {
-    // Mock generateAlias to take some time
-    mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(() => {
-      return new Promise(
-        resolve => setTimeout(() => resolve('new@brave.com'), 100))
-    })
+    mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
+      () => Promise.resolve('new@brave.com'))
 
     render(
       <EmailAliasModal

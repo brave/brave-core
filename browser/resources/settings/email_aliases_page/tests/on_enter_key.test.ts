@@ -7,16 +7,14 @@ import { onEnterKeyForDiv, onEnterKeyForInput } from '../content/on_enter_key'
 import { KeyboardEvent } from 'react'
 
 describe('onEnterKey', () => {
-  const testKeyPress = (handler: (e: any) => void,
-                        key: string, shouldCall: boolean) => {
+  const testKeyPress = (key: string, shouldCall: boolean) => {
     let called = false
     const wrappedHandler = onEnterKeyForDiv(() => { called = true })
     wrappedHandler({ key } as KeyboardEvent<HTMLDivElement>)
     expect(called).toBe(shouldCall)
   }
 
-  const testInputKeyPress = (handler: (e: any) => void,
-                             key: string, shouldCall: boolean) => {
+  const testInputKeyPress = (key: string, shouldCall: boolean) => {
     let called = false
     const wrappedHandler = onEnterKeyForInput(() => { called = true })
     wrappedHandler({ innerEvent: { key } } as any)
@@ -25,21 +23,21 @@ describe('onEnterKey', () => {
 
   describe('onEnterKeyForDiv', () => {
     test('calls onSubmit when Enter key is pressed', () => {
-      testKeyPress(onEnterKeyForDiv, 'Enter', true)
+      testKeyPress('Enter', true)
     })
 
     test('does not call onSubmit for other keys', () => {
-      testKeyPress(onEnterKeyForDiv, 'Space', false)
+      testKeyPress('Space', false)
     })
   })
 
   describe('onEnterKeyForInput', () => {
     test('calls onSubmit when Enter key is pressed', () => {
-      testInputKeyPress(onEnterKeyForInput, 'Enter', true)
+      testInputKeyPress('Enter', true)
     })
 
     test('does not call onSubmit for other keys', () => {
-      testInputKeyPress(onEnterKeyForInput, 'Space', false)
+      testInputKeyPress('Space', false)
     })
   })
 })

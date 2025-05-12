@@ -18,17 +18,3 @@ export type ViewState = {
   mode: ViewMode,
   alias?: Alias
 }
-
-export interface emailAliasesService {
-  createAlias(email: string, note: string): Promise<void>
-  getAliases(): Promise<Alias[]>
-  updateAlias(email: string, note: string, status: boolean): Promise<void>
-  deleteAlias(email: string): Promise<void>
-  generateAlias(): Promise<string>
-  getAccountEmail (): Promise<string | undefined>
-  requestAccount (accountEmail: string): Promise<void>
-  onAccountReady (): Promise<boolean>
-  cancelAccountRequest (): Promise<void>
-  logout (): Promise<void>
-  showSettingsPage(): Promise<void>
-}

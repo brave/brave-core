@@ -6,7 +6,6 @@
 import { color, font, radius, spacing, typography } from
   "@brave/leo/tokens/css/variables"
 import { formatLocale, getLocale } from '$web-common/locale'
-import { MAX_ALIASES } from "./constant"
 import { onEnterKeyForInput } from "./on_enter_key"
 import { ViewState } from "./types"
 import * as React from 'react'
@@ -17,7 +16,7 @@ import Input from "@brave/leo/react/input"
 import ProgressRing from "@brave/leo/react/progressRing"
 import Row from "./styles/Row"
 import styled from "styled-components"
-import { EmailAliasesServiceInterface }
+import { EmailAliasesServiceInterface, MAX_ALIASES }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const ModalCol = styled(Col)`

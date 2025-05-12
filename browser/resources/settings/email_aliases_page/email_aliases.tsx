@@ -115,7 +115,7 @@ const MainEmailDisplay = ({ email, emailAliasesService }:
         kind='plain-faint'
         title={getLocale('emailAliasesSignOutTitle')}
         size='small'
-        onClick={(e) => {
+        onClick={() => {
           emailAliasesService.logout()
         }}>
         <Icon slot='icon-before' name="outside" />
