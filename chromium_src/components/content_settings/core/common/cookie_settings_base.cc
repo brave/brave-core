@@ -122,13 +122,30 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     base::optional_ref<const url::Origin> top_frame_origin,
-    net::CookieSettingOverrides overrides) const {
+    net::CookieSettingOverrides overrides,
+    base::optional_ref<const net::CookiePartitionKey> cookie_partition_key,
+    CookieSettingWithMetadata* cookie_settings) const {
   if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
     return true;
   }
 
   return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
-                                   overrides);
+                                   overrides, cookie_partition_key,
+                                   cookie_settings);
+}
+
+bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    base::optional_ref<const url::Origin> top_frame_origin,
+    net::CookieSettingOverrides overrides,
+    CookieSettingWithMetadata* cookie_settings) const {
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
+    return true;
+  }
+
+  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
+                                   overrides, cookie_settings);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
