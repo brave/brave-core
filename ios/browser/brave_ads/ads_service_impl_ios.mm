@@ -542,6 +542,26 @@ void AdsServiceImplIOS::ClearAdsDataCallback(ClearDataCallback callback) {
   InitializeAds(std::move(callback));
 }
 
+void AdsServiceImplIOS::RefetchNewTabPageAd() {
+  ResetNewTabPageAd();
+
+  PurgeOrphanedAdEventsForType(
+      mojom::AdType::kNewTabPageAd,
+      base::BindOnce(&AdsServiceImplIOS::RefetchNewTabPageAdCallback,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void AdsServiceImplIOS::RefetchNewTabPageAdCallback(bool success) {
+  if (success) {
+    new_tab_page_ad_prefetcher_->Prefetch();
+  }
+}
+
+void AdsServiceImplIOS::ResetNewTabPageAd() {
+  new_tab_page_ad_prefetcher_ =
+      std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this);
+}
+
 void AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback(
     ParseAndSaveNewTabPageAdsCallback callback,
     bool success) {
@@ -550,11 +570,6 @@ void AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback(
   }
 
   std::move(callback).Run(success);
-}
-
-void AdsServiceImplIOS::ResetNewTabPageAd() {
-  new_tab_page_ad_prefetcher_ =
-      std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this);
 }
 
 }  // namespace brave_ads

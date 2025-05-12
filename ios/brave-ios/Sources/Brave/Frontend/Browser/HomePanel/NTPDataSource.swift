@@ -119,13 +119,15 @@ public class NTPDataSource {
   }
 
   func getSponsoredMediaBackground() -> NTPWallpaper? {
-    guard let sponsoredImageData = service.sponsoredImageData,
-      let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
+    guard let sponsoredImageData = service.sponsoredImageData
     else { return nil }
 
     if !hasGracePeriodEnded(sponsoredImageData) {
       return nil
     }
+
+    guard let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
+    else { return nil }
 
     let isSponsoredVideoAllowed =
       Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
