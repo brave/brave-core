@@ -17,11 +17,11 @@ public class BrowserState {
     self.profile = profile
   }
 
-  public static func userActivity(
-    for windowId: String,
+  public static func newWindowUserActivity(
     isPrivate: Bool,
-    openURL: URL? = nil
+    openURL: URL?
   ) -> NSUserActivity {
+    let windowId = UUID().uuidString
     return NSUserActivity(activityType: sceneId).then {
       $0.targetContentIdentifier = windowId
       $0.addUserInfoEntries(from: [
@@ -37,32 +37,36 @@ public class BrowserState {
     }
   }
 
-  public static func setWindowInfo(for activity: NSUserActivity, windowId: String, isPrivate: Bool)
-  {
+  public static func userActivity(
+    for windowId: String
+  ) -> NSUserActivity {
+    return NSUserActivity(activityType: sceneId).then {
+      $0.targetContentIdentifier = windowId
+      $0.addUserInfoEntries(from: [
+        SessionState.windowIDKey: windowId
+      ])
+    }
+  }
+
+  public static func setWindowId(for activity: NSUserActivity, windowId: String) {
     if activity.userInfo == nil {
       activity.userInfo = [:]
     }
 
     activity.targetContentIdentifier = windowId
     activity.addUserInfoEntries(from: [
-      SessionState.windowIDKey: windowId,
-      SessionState.isPrivateKey: isPrivate,
+      SessionState.windowIDKey: windowId
     ])
   }
 
-  public static func getWindowInfo(from session: UISceneSession) -> SessionState {
+  public static func getWindowId(from session: UISceneSession) -> String? {
     guard let userInfo = session.userInfo else {
-      return SessionState(windowId: nil, isPrivate: false, openURL: nil)
+      return nil
     }
-
-    return SessionState(
-      windowId: userInfo[SessionState.windowIDKey] as? String,
-      isPrivate: userInfo[SessionState.isPrivateKey] as? Bool == true,
-      openURL: userInfo[SessionState.openURLKey] as? URL
-    )
+    return userInfo[SessionState.windowIDKey] as? String
   }
 
-  public static func getWindowInfo(from activity: NSUserActivity) -> SessionState {
+  public static func getNewWindowInfo(from activity: NSUserActivity) -> SessionState {
     guard let userInfo = activity.userInfo else {
       return SessionState(windowId: nil, isPrivate: false, openURL: nil)
     }
@@ -74,10 +78,9 @@ public class BrowserState {
     )
   }
 
-  public static func setWindowInfo(for session: UISceneSession, windowId: String, isPrivate: Bool) {
+  public static func setWindowId(for session: UISceneSession, windowId: String) {
     let userInfo: [String: Any] = [
-      SessionState.windowIDKey: windowId,
-      SessionState.isPrivateKey: isPrivate,
+      SessionState.windowIDKey: windowId
     ]
 
     if session.userInfo == nil {
@@ -88,9 +91,15 @@ public class BrowserState {
   }
 
   public struct SessionState {
-    public let windowId: String?
-    public let isPrivate: Bool
-    public let openURL: URL?
+    public var windowId: String?
+    public var isPrivate: Bool
+    public var openURL: URL?
+
+    public init(windowId: String? = nil, isPrivate: Bool, openURL: URL? = nil) {
+      self.windowId = windowId
+      self.isPrivate = isPrivate
+      self.openURL = openURL
+    }
 
     static let windowIDKey = "WindowID"
     static let isPrivateKey = "isPrivate"
