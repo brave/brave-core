@@ -180,7 +180,9 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     height += tabs::kMarginForVerticalTabContainers;
   }
 
-  return gfx::Size(tab_style_->GetStandardWidth(), height);
+  return gfx::Size(tab_style_->GetStandardWidth(
+                       tabs::features::HorizontalTabsUpdateEnabled()),
+                   height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
@@ -252,9 +254,11 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   auto* new_tab = GetTabAtModelIndex(model_index);
   gfx::Rect bounds = new_tab->bounds();
   bounds.set_height(tabs::kVerticalTabHeight);
-  const auto tab_width = new_tab->data().pinned
-                             ? tabs::kVerticalTabMinWidth
-                             : tab_style_->GetStandardWidth();
+  const auto tab_width =
+      new_tab->data().pinned
+          ? tabs::kVerticalTabMinWidth
+          : tab_style_->GetStandardWidth(
+                tabs::features::HorizontalTabsUpdateEnabled());
   bounds.set_width(tab_width);
   bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)
