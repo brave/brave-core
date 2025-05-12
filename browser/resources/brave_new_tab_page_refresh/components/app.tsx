@@ -20,6 +20,16 @@ export function App() {
   const [settingsView, setSettingsView] =
     React.useState<SettingsView | null>(null)
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const settingsArg = params.get('openSettings')
+    if (settingsArg === null) {
+      return
+    }
+    setSettingsView('background')
+    history.pushState(null, '', '/')
+  }, [])
+
   return (
     <div data-css-scope={style.scope}>
       <Background />
