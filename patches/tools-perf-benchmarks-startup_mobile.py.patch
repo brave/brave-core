@@ -1,0 +1,31 @@
+diff --git a/tools/perf/benchmarks/startup_mobile.py b/tools/perf/benchmarks/startup_mobile.py
+index ecd68ec06aa85c4be79cabe7d101298a313d1424..4cbe6db7a79271f59f91b20c0516aca328707cad 100644
+--- a/tools/perf/benchmarks/startup_mobile.py
++++ b/tools/perf/benchmarks/startup_mobile.py
+@@ -89,18 +89,18 @@ class _MobileStartupSharedState(story_module.SharedState):
+     # Allow using this shared state only on Android.
+     assert isinstance(self.platform, android_platform.AndroidPlatform)
+     self._finder_options.browser_options.browser_user_agent_type = 'mobile'
+-    self._finder_options.browser_options.AppendExtraBrowserArgs(
+-        '--skip-webapk-verification')
++    # self._finder_options.browser_options.AppendExtraBrowserArgs(
++    #     '--skip-webapk-verification')
+     self.platform.Initialize()
+     self.platform.SetPerformanceMode(finder_options.performance_mode)
+     self._perf_mode_set = (finder_options.performance_mode !=
+                            android_device.KEEP_PERFORMANCE_MODE)
+-    webapk = core_util.FindLatestApkOnHost(finder_options.chrome_root,
+-                                           'WebApk.apk')
+-    if not webapk:
+-      raise Exception('WebApk not found! Follow the Mini-HOWTO in '
+-                      'startup_mobile.py' + finder_options.chrome_root)
+-    self.platform.InstallApplication(webapk)
++    # webapk = core_util.FindLatestApkOnHost(finder_options.chrome_root,
++    #                                        'WebApk.apk')
++    # if not webapk:
++    #   raise Exception('WebApk not found! Follow the Mini-HOWTO in '
++    #                   'startup_mobile.py' + finder_options.chrome_root)
++    # self.platform.InstallApplication(webapk)
+     wpr_mode = wpr_modes.WPR_REPLAY
+     self._number_of_iterations = _NUMBER_OF_ITERATIONS
+     if finder_options.use_live_sites:
