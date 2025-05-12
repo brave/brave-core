@@ -213,6 +213,7 @@ license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/h
 
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
+license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2/LICENSE.txt']
 
 [crate.lock_api]
 extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] }
