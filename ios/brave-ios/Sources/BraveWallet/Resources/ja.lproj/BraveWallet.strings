@@ -1199,7 +1199,7 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "パスワードは8文字以上で入力してください";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "Enter password";
+"wallet.passwordPlaceholder" = "パスワードを入力してください";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "パスワードが違います";
@@ -2080,6 +2080,9 @@
 /* The message after the title when a send transaction failed to be confirmed on the blockchain.
 The message after the title when a swap transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorMsg" = "送信中にエラーが発生しました";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorMsg" = "スワップ中にエラーが発生しました";
 
 /* The title of the message when a send transaction failed to be confirmed on the blockchain. */
 "wallet.txStatusSendTxErrorTitle" = "送信できません";

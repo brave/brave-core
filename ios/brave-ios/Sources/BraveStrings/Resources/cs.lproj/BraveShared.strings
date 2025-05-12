@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blokovat vše";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Blokování všech souborů cookie zabrání tomu, aby některé webové stránky fungovaly správně.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Blokovat všechny soubory cookie?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Zablokovat všechny soubory cookie?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Štíty už blokují soubory cookie třetích stran. Toto nastavení blokování VŠECH souborů cookie odstraní stávající soubory cookie a data stránek a může narušit webové stránky.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Nastavení předvoleb se nezdařilo. Zkuste to prosím znovu.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blokovat oznámení o souhlasu se soubory cookie";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Zabraňuje webovým stránkám ukládat informace o vašich předchozích návštěvách.\nMožnost „Blokovat všechny soubory cookie“ byla zrušena. Chcete-li zjistit, jak vynuceně povolit tuto možnost, navštivte [naši stránku s nápovědou](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokování monitoru";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Potvrdit";
 
-/* Cookie settings option title */
-"CookieControl" = "Kontrola souborů cookie ";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Soubory cookie a data webových stránek";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Hotovo";
-
-/* cookie settings option */
-"DontBlockCookies" = "Neblokujte soubory cookie";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Neodesílat";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Aktualizace HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importovat data procházení";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Individuální kontroly";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Nelze načíst stránku.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licence";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Počet slov: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Importované záložky";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zavřít";

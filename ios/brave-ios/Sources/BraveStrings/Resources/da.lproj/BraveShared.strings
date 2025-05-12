@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Bloker alle";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Blokering af alle cookies forhindrer nogle websteder i at fungere korrekt.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Bloker alle cookies?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Bloker alle cookies?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields blokerer allerede tredjepartscookies. Denne indstilling til at blokere ALLE cookies vil fjerne eksisterende cookies og hjemmesidedata og kan forhindre hjemmesider i at fungere korrekt.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Præferencen kunne ikke indstilles. Prøv igen.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Bloker meddelelser om samtykke til cookies";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Forhindrer hjemmesider i at gemme oplysninger om dine tidligere besøg.\nIndstillingen \"Bloker alle cookies\" er blevet forældet. Besøg [vores hjælpeside](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting) for at læse mere om, hvordan du aktiverer denne indstilling.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokeringsmonitor";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Bekræft";
 
-/* Cookie settings option title */
-"CookieControl" = "Cookie-kontrol";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookies og site-data";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Færdig";
-
-/* cookie settings option */
-"DontBlockCookies" = "Bloker ikke cookies";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Send ikke";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS Opgraderinger";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importér browserdata";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Individuelle Kontroller";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Siden kunne ikke indlæses.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licenser";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Ordantal: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Importerede bogmærker";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Luk";

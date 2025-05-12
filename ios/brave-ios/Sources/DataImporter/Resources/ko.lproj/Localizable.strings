@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "북마크를 가져오는 동안 오류가 발생했습니다.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "기록을 가져오는 동안 오류가 발생했습니다.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "비밀번호를 가져오는 동안 오류가 발생했습니다.\n일부 비밀번호가 충돌을 일으켜서 가져오지 못했습니다.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "비밀번호를 가져오는 동안 오류가 발생했습니다.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "파일 압축을 푸는 동안 오류가 발생했습니다.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "파일 선택...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "북마크나 기록 같은 브라우저 데이터를 Brave로 가져오세요.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "브라우징 데이터 가져오기";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "북마크 등의 데이터 가져오기";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Safari에서 내보내는 방법";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "데이터를 가져오는 동안 문제가 발생했습니다.\n다시 시도해 보세요.\n문제가 지속되면 지원팀에 문의하세요.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "가져오기 실패";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Brave의 비밀번호 유지";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Safari의 비밀번호 사용";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "비밀번호 충돌이 %d개 발견되었습니다.\n가져올 항목을 선택하세요.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "비밀번호 충돌";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "계속";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "데이터를 가져왔습니다.\n이제 Brave로 브라우징을 시작할 수 있습니다.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "성공!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "다시 시도";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Safari 도움말 페이지를 여세요";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "자세한 내보내기 프로세스를 알고 싶으신가요?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Safari에서 내보내는 방법";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "나중에 쉽게 찾을 수 있는 위치를 선택하여 **파일**에 파일을 저장하세요.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "내보내려는 데이터(북마크, 기록, 신용카드, 비밀번호)를 **선택**하세요.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "**설정**을 열고 아래로 스크롤하여 **앱**을 탭하세요.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "아래로 스크롤하여 **내보내기**를 탭하세요.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "%d단계";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "앱 목록(알파벳 순으로 정렬됨)에서 **Safari**를 찾아 탭하세요.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "압축 파일에 가져오기 데이터가 포함되어 있지 않습니다.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "데이터를 안전하게 전송하는 동안 기다려 주세요.\n잠시 시간이 걸릴 수 있습니다.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "데이터를 가져오는 중...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "데이터를 가져올 프로필을 선택하세요";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "여러 프로필이 감지됨";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "개인";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "가져온 북마크";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "압축 파일에 가져오기 데이터가 포함되어 있지 않습니다.";
+
