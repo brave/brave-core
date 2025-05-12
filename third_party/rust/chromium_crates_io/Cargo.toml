@@ -182,6 +182,10 @@ package = "libc"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/log-v0_4"
 package = "log"
 
+[patch.crates-io.libm_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2"
+package = "libm"
+
 [patch.crates-io.memchr_v2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/memchr-v2"
 package = "memchr"

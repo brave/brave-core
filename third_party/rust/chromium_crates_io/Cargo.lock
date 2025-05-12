@@ -1122,8 +1122,7 @@ version = "0.2.172"
 
 [[package]]
 name = "libm"
-version = "0.2.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "0.2.15"
 
 [[package]]
 name = "lifeguard"
