@@ -20,6 +20,7 @@ _WPR_ARCHIVES_TO_REPLACE = [
     'rendering_desktop.json',
     'rendering_mobile.json',
     'jetstream2.json',
+    'startup_pages.json'
 ]
 
 

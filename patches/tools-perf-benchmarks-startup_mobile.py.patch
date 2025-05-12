@@ -29,3 +29,19 @@ index ecd68ec06aa85c4be79cabe7d101298a313d1424..4cbe6db7a79271f59f91b20c0516aca3
      wpr_mode = wpr_modes.WPR_REPLAY
      self._number_of_iterations = _NUMBER_OF_ITERATIONS
      if finder_options.use_live_sites:
+@@ -130,12 +130,15 @@ class _MobileStartupSharedState(story_module.SharedState):
+       self.platform.FlushDnsCache()
+       self._possible_browser.FlushOsPageCaches()
+     self.platform.WaitForBatteryTemperature(_MAX_BATTERY_TEMP)
++    logging.info('Launching browser with url: %s, package: %s, activity: %s', url, self._possible_browser.settings.package, self._possible_browser.settings.activity)
+     self.platform.StartActivity(
+         intent.Intent(package=self._possible_browser.settings.package,
+                       activity=self._possible_browser.settings.activity,
+                       data=url,
+                       action='android.intent.action.VIEW'),
+         blocking=True)
++    logging.info('Browser launched')
++
+ 
+   def LaunchCCT(self, url):
+     self.platform.FlushDnsCache()

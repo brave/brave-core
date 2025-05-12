@@ -1,0 +1,24 @@
+{
+    "archives": {
+        "cct:coldish:bbc": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "http://bbc.co.uk": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "http://kapook.com": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "intent:coldish:bbc": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "intent:warm:bbc": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "mobile_pwa:with_http_cache": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        }
+    },
+    "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
+    "platform_specific": true
+}
