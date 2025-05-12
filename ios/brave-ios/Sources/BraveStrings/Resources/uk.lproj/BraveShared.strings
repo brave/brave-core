@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Блокувати все";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Блокування всіх файлів cookie може призвести до того, що дейкі сайти працюватимуть некоректно.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Блокувати всі файли cookie?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Блокувати усі файли cookie?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Щити вже блокують сторонні файли cookie. Цей параметр блокує ВСІ куки та дані сайтів, а також може впливати на роботу веб-сайтів.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Збій установлення параметра. Спробуйте ще раз пізніше.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Блокувати повідомлення про згоду на використання файлів cookie";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Забороняє веб-сайтам зберігати інформацію про ваші попередні сеанси.\nОпція «Блокувати всі файли cookie» застаріла. Щоб дізнатися, як примусово увімкнути цю опцію, відвідайте [нашу сторінку допомоги] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Блокування програм відстеження";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
 
-/* Cookie settings option title */
-"CookieControl" = "Керування файлами cookie";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Файли cookie та дані сайтів";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Завершено";
-
-/* cookie settings option */
-"DontBlockCookies" = "Не блокувати файли cookie";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Не надсилати";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Оновлення HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Імпорт даних перегляду";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Індивідуальні налаштування";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Не вдалося завантажити сторінку.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Ліцензії";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Кількість слів: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Імпортовані закладки";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Закрити";

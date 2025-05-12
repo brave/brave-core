@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blokiraj sve";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Blokiranjem svih kolačića sprečava se pravilan rad nekih mrežnih mjesta.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Blokirati sve kolačiće?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Blokirati sve kolačiće?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Funkcionalnost Štitovi već blokira kolačiće treće strane. Ova postavka za blokiranje SVIH kolačića uklonit će postojeće kolačiće i podatke mrežnih sjedišta i mogla bi pokvariti internetske stranice.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Postavljanje preferencije nije uspjelo. Pokušajte ponovno.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blokiranje obavijesti o davanju privole za kolačiće";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Sprečava mrežna mjesta da pohranjuju podatke o vašim prethodnim posjetima.\nOpcija „Blokiraj sve kolačiće\" je zastarjela. Kako biste doznali kako prisilno omogućiti ovu opciju posjetite [našu stranicu za pomoć] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Nadzornik blokiranja";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Potvrdi";
 
-/* Cookie settings option title */
-"CookieControl" = "Upravljanje kolačićima";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Kolačići i podaci web-lokacije";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Završeno";
-
-/* cookie settings option */
-"DontBlockCookies" = "Ne blokiraj kolačiće";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ne šalji";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Nadogradnje HTTPS-a";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Uvezi podatke o pregledavanju";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Pojedinačne kontrole";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Nije moguće učitati stranicu.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licence";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Broj riječi: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Uvezene knjižne oznake";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zatvori";
