@@ -1260,6 +1260,123 @@ extension Strings {
   )
 }
 
+extension Strings {
+  public struct TabGrid {
+    public static let closeAllTabsButtonTitle = NSLocalizedString(
+      "tabGrid.closeAllTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close All Tabs",
+      comment: "A button title which when tapped will close all of the open tabs for the user"
+    )
+    public static let moreMenuButtonTitle = NSLocalizedString(
+      "tabGrid.moreMenuButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "More",
+      comment: "A button title which when tapped will display a menu with more options"
+    )
+    public static let newTabAccessibilityLabel = NSLocalizedString(
+      "tabGrid.addTabAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "New Tab",
+      comment: "Accessibility label for a close button that when tapped opens a new tab"
+    )
+    public static let closeTabAccessibilityLabel = NSLocalizedString(
+      "tabGrid.closeTab",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close Tab",
+      comment: "Accessibility label for a close button that when tapped closes the associated tab"
+    )
+    public static let shredTabsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.shredTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Shred Tabs",
+      comment: "Accessibility label for a button that allows users to shred their tabs (erase them & associated data)"
+    )
+    public static let viewHistoryAccessibilityLabel = NSLocalizedString(
+      "tabGrid.viewHistoryAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "View History",
+      comment: "Accessibility label for a button that when tapped presents the users history & recently closed tabs"
+    )
+    public static let viewSyncedTabsAccessibilityLabel = NSLocalizedString(
+      "tabGrid.viewSyncedTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "View Synced Tabs",
+      comment: "Accessibility label for a button that when tapped presents the users synced tabs"
+    )
+    public static let regularBrowsingModeAccessibilityLabel = NSLocalizedString(
+      "tabGrid.regularBrowsingModeAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Regular Browsing",
+      comment: "Accessibility label for the regular browsing option in the browsing mode picker"
+    )
+    public static let privateBrowsingModeAccessibilityLabel = NSLocalizedString(
+      "tabGrid.privateBrowsingModeAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Private Browsing",
+      comment: "Accessibility label for the regular browsing option in the browsing mode picker"
+    )
+    public static let privateBrowsingInfoTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "private browsing",
+      comment: "A title shown when in private browsing mode with no tabs open"
+    )
+    public static let privateBrowsingInfoBulletOneTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletOneTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Leave no trace on your device",
+      comment: "A bullet point explaining the benefits of private browsing"
+    )
+    public static let privateBrowsingInfoBulletOneBody = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletOneBody",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.",
+      comment: "A bullet point explaining the benefits of private browsing"
+    )
+    public static let privateBrowsingInfoBulletTwoTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletTwoTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Browsing visibility",
+      comment: "A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer"
+    )
+    public static let privateBrowsingInfoBulletTwoBody = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletTwoBody",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Note that—even in private windows—your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work machine/network).",
+      comment: "A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer"
+    )
+    public static let privateBrowsingInfoBulletThreeTitle = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletThreeTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave VPN",
+      comment: "A bullet point explaining the benefits of Brave VPN"
+    )
+    public static let privateBrowsingInfoBulletThreeBody = NSLocalizedString(
+      "tabGrid.privateBrowsingInfoBulletThreeBody",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave VPN encrypts and protects anything you do online, even outside the Brave browser.",
+      comment: "A bullet point explaining the benefits of Brave VPN"
+    )
+  }
+}
+
 // MARK:-  TabTrayController.swift
 extension Strings {
   public static let tabAccessibilityCloseActionLabel = NSLocalizedString(

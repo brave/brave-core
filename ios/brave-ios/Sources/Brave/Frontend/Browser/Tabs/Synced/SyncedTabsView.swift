@@ -376,7 +376,7 @@ extension SyncDeviceFormFactor {
 
 #if DEBUG
 
-private struct MockOpenTabsModel: OpenTabsModel {
+struct MockOpenTabsModel: OpenTabsModel {
   var sessions: [OpenDistantSession] = []
   func getSyncedSessions() -> [OpenDistantSession] {
     return sessions

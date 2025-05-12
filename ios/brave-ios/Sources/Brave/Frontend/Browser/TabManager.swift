@@ -85,8 +85,8 @@ class TabManager: NSObject {
   var selectedIndex: Int {
     return _selectedIndex
   }
-  var normalTabSelectedIndex: Int = 0
-  var privateTabSelectedIndex: Int = 0
+  var normalTabSelectedIndex: Int?
+  var privateTabSelectedIndex: Int?
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
   private var braveCore: BraveProfileController?
@@ -229,8 +229,8 @@ class TabManager: NSObject {
     if let query = query, !query.isEmpty {
       // Display title is the only data that will be present on every situation
       return allTabs.filter {
-        $0.displayTitle.lowercased().contains(query)
-          || ($0.visibleURL?.baseDomain?.contains(query) ?? false)
+        $0.displayTitle.localizedCaseInsensitiveContains(query)
+          || ($0.visibleURL?.baseDomain?.localizedCaseInsensitiveContains(query) ?? false)
       }
     } else {
       return allTabs

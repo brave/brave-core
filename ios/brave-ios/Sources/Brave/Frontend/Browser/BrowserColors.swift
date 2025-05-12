@@ -28,7 +28,9 @@ protocol BrowserColors {
   var browserButtonBackgroundActive: UIColor { get }
 
   // MARK: - TabSwitcher
-  var tabSwitcherButton: UIColor { get }
+  var tabSwitcherForeground: UIColor { get }
+  var tabSwitcherSelectedCellBorder: UIColor { get }
+  var tabSwitcherCellBackground: UIColor { get }
   var tabSwitcherBackground: UIColor { get }
 
   // MARK: - Container
@@ -106,12 +108,20 @@ struct StandardBrowserColors: BrowserColors {
     .init(light: .primitiveNeutral90, dark: .primitiveNeutral5)
   }
 
-  var tabSwitcherButton: UIColor {
-    .init(lightColor: .white, darkColor: .init(braveSystemName: .primitiveNeutral10))
+  var tabSwitcherForeground: UIColor {
+    .init(braveSystemName: .containerDisabled)
+  }
+
+  var tabSwitcherSelectedCellBorder: UIColor {
+    .init(braveSystemName: .buttonBackground)
+  }
+
+  var tabSwitcherCellBackground: UIColor {
+    .init(braveSystemName: .containerBackground)
   }
 
   var tabSwitcherBackground: UIColor {
-    .init(light: .primitiveNeutral98, dark: .primitiveNeutral20)
+    .init(braveSystemName: .iosBrowserBackgroundIos)
   }
 
   var containerBackground: UIColor {
@@ -205,12 +215,20 @@ struct PrivateModeBrowserColors: BrowserColors {
     .init(braveSystemName: .primitivePrivateWindow5)
   }
 
-  var tabSwitcherButton: UIColor {
-    .init(braveSystemName: .primitivePrimary10)
+  var tabSwitcherForeground: UIColor {
+    .init(braveSystemName: .privateWindow20)
+  }
+
+  var tabSwitcherCellBackground: UIColor {
+    .init(braveSystemName: .privateWindow20)
+  }
+
+  var tabSwitcherSelectedCellBorder: UIColor {
+    .init(braveSystemName: .buttonBackground)
   }
 
   var tabSwitcherBackground: UIColor {
-    .init(braveSystemName: .primitivePrimary20)
+    .init(braveSystemName: .privateWindow5)
   }
 
   var containerBackground: UIColor {
