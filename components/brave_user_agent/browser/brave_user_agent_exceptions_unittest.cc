@@ -8,6 +8,8 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/current_thread.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -23,6 +25,10 @@ class BraveUserAgentExceptionsUnitTest : public testing::Test {
 };
 
 TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsNotLoaded) {
+  // BraveUserAgentExceptions returns nullptr when feature is disabled.
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_user_agent::features::kUseBraveUserAgent);
+
   auto* brave_user_agent_exceptions = BraveUserAgentExceptions::GetInstance();
   // Excepted domains not loaded; default to true.
   GURL url = GURL("https://brave.com");
@@ -30,6 +36,10 @@ TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsNotLoaded) {
 }
 
 TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsLoaded) {
+  // BraveUserAgentExceptions returns nullptr when feature is disabled.
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_user_agent::features::kUseBraveUserAgent);
+
   auto* brave_user_agent_exceptions = BraveUserAgentExceptions::GetInstance();
 
   // Load excepted domains to hide brave
