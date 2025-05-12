@@ -10,16 +10,18 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_source_test_util.h"
+#include "brave/components/ntp_background_images/browser/switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -27,15 +29,32 @@
 
 namespace ntp_background_images {
 
+namespace {
+
+base::FilePath GetComponentPath() {
+  return test::GetSponsoredImagesComponentPath().AppendASCII("rich_media");
+}
+
+}  // namespace
+
 class NTPSponsoredRichMediaSourceTest : public testing::Test {
  protected:
   void SetUp() override {
+    // Disable the super referral wallpaper feature, as it relies on referral
+    // codes that are not initialized. Note: Super Referrals are being
+    // deprecated, see https://github.com/brave/brave-browser/issues/44403.
     feature_list_.InitAndDisableFeature(
         features::kBraveNTPSuperReferralWallpaper);
 
-    SetUpUrlDataSource();
+    NTPBackgroundImagesService::RegisterLocalStatePrefs(
+        pref_service_.registry());
 
-    SetupSponsoredComponent();
+    background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
+        /*component_update_service=*/nullptr, &pref_service_);
+    url_data_source_ = std::make_unique<NTPSponsoredRichMediaSource>(
+        background_images_service_.get());
+
+    SimulateOnSponsoredImagesDataDidUpdate();
   }
 
   NTPSponsoredRichMediaSource* url_data_source() {
@@ -66,64 +85,74 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
   }
 
  private:
-  void SetUpUrlDataSource() {
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(
-        pref_service_.registry());
-
-    background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*component_update_service=*/nullptr, &pref_service_);
-    url_data_source_ = std::make_unique<NTPSponsoredRichMediaSource>(
-        background_images_service_.get());
-  }
-
-  void SetupSponsoredComponent() {
-    const base::FilePath test_data_file_path =
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-
-    const base::FilePath component_file_path =
-        test_data_file_path.AppendASCII("ntp_background_images")
-            .AppendASCII("components")
-            .AppendASCII("rich_media");
+  void SimulateOnSponsoredImagesDataDidUpdate() {
+    base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
+        switches::kOverrideSponsoredImagesComponentPath, GetComponentPath());
 
     NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
-    background_images_service_->OnSponsoredComponentReady(
-        /*is_super_referral=*/false, component_file_path);
+    background_images_service_->Init();
     waiter.WaitForOnSponsoredImagesDataDidUpdate();
   }
 
   content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple pref_service_;
+
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<NTPSponsoredRichMediaSource> url_data_source_;
 };
 
 TEST_F(NTPSponsoredRichMediaSourceTest, StartDataRequest) {
-  const std::string data = StartDataRequest(GURL(
-      R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)"));
-  EXPECT_THAT(data, ::testing::Not(::testing::IsEmpty()));
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)")),
+      ::testing::Not(::testing::IsEmpty()));
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest,
-       DoNotStartDataRequestIfReferencingParentDirectory) {
-  std::string data = StartDataRequest(
-      GURL("chrome-untrusted://new-tab-takeover/campaigns.json"));
-  EXPECT_THAT(data, ::testing::IsEmpty());
+       DoNotStartDataRequestIfContentIsReferencingParentDirectory) {
+  EXPECT_THAT(StartDataRequest(
+                  GURL("chrome-untrusted://new-tab-takeover/restricted.jpg")),
+              ::testing::IsEmpty());
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../restricted.jpg)")),
+      ::testing::IsEmpty());
+}
 
-  data = StartDataRequest(GURL(
-      R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../campaigns.json)"));
-  EXPECT_THAT(data, ::testing::IsEmpty());
+TEST_F(NTPSponsoredRichMediaSourceTest,
+       DoNotStartDataRequestIfContentIsFromAnotherCampaign) {
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/index.html)")),
+      ::testing::IsEmpty());
+}
+
+TEST_F(NTPSponsoredRichMediaSourceTest,
+       DoNotStartDataRequestIfContentIsOutsideOfSandbox3) {
+  EXPECT_THAT(StartDataRequest(
+                  GURL("chrome-untrusted://new-tab-takeover/restricted.jpg")),
+              ::testing::IsEmpty());
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/index.html)")),
+      ::testing::IsEmpty());
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../restricted.jpg)")),
+      ::testing::IsEmpty());
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest,
        DoNotStartDataRequestIfContentDoesNotExist) {
-  std::string data = StartDataRequest(GURL(
-      "chrome-untrusted://new-tab-takeover/non-existent-creative/index.html"));
-  EXPECT_THAT(data, ::testing::IsEmpty());
-
-  data = StartDataRequest(GURL(
-      R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent-file.html)"));
-  EXPECT_THAT(data, ::testing::IsEmpty());
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/non-existent-creative/index.html)")),
+      ::testing::IsEmpty());
+  EXPECT_THAT(
+      StartDataRequest(GURL(
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent.html)")),
+      ::testing::IsEmpty());
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest, GetMimeType) {
