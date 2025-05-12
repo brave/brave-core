@@ -12,6 +12,7 @@
 #include "brave/browser/ui/split_view/split_view_controller.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
@@ -39,7 +40,12 @@ void BrowserWindowFeatures::ReplaceBrowserWindowFeaturesForTesting(
 }
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
-BrowserWindowFeatures::~BrowserWindowFeatures() = default;
+
+BrowserWindowFeatures::~BrowserWindowFeatures() {
+  if (sidebar_controller_) {
+    sidebar_controller_->set_web_panel_delegate(nullptr);
+  }
+}
 
 BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -86,6 +92,14 @@ void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
     sidebar_controller_ = std::make_unique<sidebar::SidebarController>(browser);
     sidebar_controller_->set_side_panel_ui(side_panel_ui());
     static_cast<BraveBrowserWindow*>(browser->window())->InitSidebar();
+
+    if (split_view_controller_ &&
+        base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+      auto* web_panel_data =
+          split_view_controller_->split_view_web_panel_data();
+      web_panel_data->SetBrowser(browser);
+      sidebar_controller_->set_web_panel_delegate(web_panel_data);
+    }
   }
 }
 

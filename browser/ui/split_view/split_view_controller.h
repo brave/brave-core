@@ -40,7 +40,14 @@ class SplitViewController : public SplitViewBrowserDataObserver {
     return &split_view_tab_tile_data_;
   }
 
-  void set_split_view_view(SplitViewView* view) { view_ = view; }
+  SplitViewWebPanelData* split_view_web_panel_data() {
+    return &split_view_web_panel_data_;
+  }
+
+  void set_split_view_view(SplitViewView* view) {
+    view_ = view;
+    split_view_web_panel_data_.view_ = view;
+  }
 
   // true when active tab is opened in split view.
   bool IsSplitViewActive() const;
@@ -55,6 +62,8 @@ class SplitViewController : public SplitViewBrowserDataObserver {
   content::WebContents* GetNonActiveWebContents() const;
   void CacheSizeDeltaFor(content::WebContents* contents, int delta);
   int GetSizeDeltaFor(content::WebContents* contents);
+  void WillChangeActiveWebContents(content::WebContents* old_contents,
+                                   content::WebContents* new_contents);
 
  private:
   std::optional<TabTile> GetActiveTabTile() const;

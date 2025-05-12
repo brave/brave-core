@@ -43,6 +43,11 @@ bool SplitViewController::IsActiveWebContentsIncludedIn(
 }
 
 bool SplitViewController::IsSplitViewActive() const {
+  // split view should be always active when there is an active web panel.
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return true;
+  }
+
   return split_view_tab_tile_data_.GetTile(GetActiveTabHandle()).has_value();
 }
 
@@ -51,6 +56,12 @@ bool SplitViewController::IsOpenedFor(content::WebContents* contents) const {
   if (tab_index == TabStripModel::kNoTab) {
     return false;
   }
+
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return split_view_web_panel_data_.GetActivePanelContents() == contents ||
+           tab_strip_model_->GetActiveWebContents() == contents;
+  }
+
   const auto tab_handle =
       tab_strip_model_->GetTabAtIndex(tab_index)->GetHandle();
   return split_view_tab_tile_data_.IsTabTiled(tab_handle);
@@ -58,6 +69,13 @@ bool SplitViewController::IsOpenedFor(content::WebContents* contents) const {
 
 bool SplitViewController::AreShowingTogether(
     const std::vector<content::WebContents*>& contents) {
+  // TODO(simonhong): Revisit this.
+  // Need to return true when one of |contents| is web panel and
+  // the other is displayed tab.
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return true;
+  }
+
   // We only support two views in split view.
   CHECK(contents.size() == 2);
   return GetTileFor(contents[0]) == GetTileFor(contents[1]);
@@ -65,12 +83,24 @@ bool SplitViewController::AreShowingTogether(
 
 bool SplitViewController::ShouldShowActiveWebContentsAtRight() const {
   CHECK(IsSplitViewActive());
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return split_view_web_panel_data_.GetActivePanelContents() ==
+           tab_strip_model_->GetActiveWebContents();
+  }
+
   auto tile = GetActiveTabTile();
   return GetActiveTabHandle() == tile->second;
 }
 
 content::WebContents* SplitViewController::GetNonActiveWebContents() const {
   CHECK(IsSplitViewActive());
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return split_view_web_panel_data_.GetActivePanelContents() ==
+                   tab_strip_model_->GetActiveWebContents()
+               ? tab_strip_model_->GetWebContentsAt(0)
+               : split_view_web_panel_data_.GetActivePanelContents();
+  }
+
   auto tile = GetActiveTabTile();
   return tab_strip_model_->GetWebContentsAt(tab_strip_model_->GetIndexOfTab(
       ShouldShowActiveWebContentsAtRight() ? tile->first.Get()
@@ -90,15 +120,33 @@ std::optional<TabTile> SplitViewController::GetActiveTabTile() const {
 
 void SplitViewController::CacheSizeDeltaFor(content::WebContents* contents,
                                             int delta) {
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return;
+  }
+
   CHECK(GetTileFor(contents));
   auto tab_handle = GetTabHandleFor(contents);
   split_view_tab_tile_data_.SetSizeDelta(tab_handle, delta);
 }
 
 int SplitViewController::GetSizeDeltaFor(content::WebContents* contents) {
+  if (split_view_web_panel_data_.HasActiveWebPanel()) {
+    return split_view_web_panel_data_.GetSizeDelta();
+  }
+
   CHECK(GetTileFor(contents));
   auto tab_handle = GetTabHandleFor(contents);
   return split_view_tab_tile_data_.GetSizeDelta(tab_handle);
+}
+
+void SplitViewController::WillChangeActiveWebContents(
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  if (!split_view_web_panel_data_.HasActiveWebPanel()) {
+    return;
+  }
+
+  split_view_web_panel_data_.UpdateActivePanelContents(new_contents);
 }
 
 tabs::TabHandle SplitViewController::GetActiveTabHandle() const {

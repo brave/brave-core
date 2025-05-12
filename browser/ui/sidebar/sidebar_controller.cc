@@ -13,6 +13,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_delegate.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_handle.h"
 
 namespace sidebar {
 
@@ -108,6 +110,11 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
       // Prevent one-time Leo panel open.
       profile_->GetPrefs()->SetBoolean(kLeoPanelOneShotOpen, true);
     }
+    return;
+  }
+
+  if (CanLoadInWebPanel(item)) {
+    web_panel_delegate_->LoadInWebPanel(item);
     return;
   }
 
@@ -239,6 +246,18 @@ void SidebarController::UpdateActiveItemState(
   if (auto index = sidebar_model_->GetIndexOf(*active_panel_item)) {
     ActivateItemAt(*index);
   }
+}
+
+bool SidebarController::CanLoadInWebPanel(const SidebarItem& item) const {
+  if (!web_panel_delegate_) {
+    return false;
+  }
+
+  if (item.is_built_in_type() && !item.open_in_panel) {
+    return true;
+  }
+
+  return item.is_web_type();
 }
 
 }  // namespace sidebar

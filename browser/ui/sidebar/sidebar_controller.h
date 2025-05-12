@@ -26,6 +26,7 @@ namespace sidebar {
 
 class Sidebar;
 class SidebarModel;
+class SidebarWebPanelDelegate;
 
 // This controls the sidebar. Each browser could have different runtime sidebar
 // state and it's stored in the model. Model initializes with persisted data
@@ -75,6 +76,9 @@ class SidebarController : public SidebarService::Observer {
   void set_side_panel_ui(SidePanelUI* side_panel_ui) {
     side_panel_ui_ = side_panel_ui;
   }
+  void set_web_panel_delegate(SidebarWebPanelDelegate* delegate) {
+    web_panel_delegate_ = delegate;
+  }
 
   SidebarModel* model() const { return sidebar_model_.get(); }
 
@@ -93,11 +97,15 @@ class SidebarController : public SidebarService::Observer {
   // and activate it if found.
   bool ActiveTabFromOtherBrowsersForHost(const GURL& url);
 
+  // True when |item| can be loaded in web panel.
+  bool CanLoadInWebPanel(const SidebarItem& item) const;
+
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<SidePanelUI> side_panel_ui_ = nullptr;
   raw_ptr<Sidebar> sidebar_ = nullptr;
+  raw_ptr<SidebarWebPanelDelegate> web_panel_delegate_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
   base::ScopedObservation<SidebarService, SidebarService::Observer>

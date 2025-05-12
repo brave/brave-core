@@ -16,6 +16,10 @@ const base::FeatureParam<bool> kOpenOneShotLeoPanel{
     /*name=*/"open_one_shot_leo_panel",
     /*default_value=*/false};
 
+BASE_FEATURE(kSidebarWebPanel,
+             "SidebarWebPanel",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 SidebarDefaultMode GetSidebarDefaultMode() {
    if (base::FeatureList::IsEnabled(kSidebarShowAlwaysOnStable)) {
      if (kOpenOneShotLeoPanel.Get()) {

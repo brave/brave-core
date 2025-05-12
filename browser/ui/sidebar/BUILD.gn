@@ -21,6 +21,7 @@ source_set("sidebar") {
     "sidebar_tab_helper.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
+    "sidebar_web_panel_delegate.h",
   ]
 
   deps = [

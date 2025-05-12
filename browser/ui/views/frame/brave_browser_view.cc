@@ -853,14 +853,16 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   // to give their final position.
   UpdateContentsSeparatorVisibility();
 
-  if (split_view_) {
+  auto* split_view_controller = browser_->GetFeatures().split_view_controller();
+  if (split_view_controller) {
+    split_view_controller->WillChangeActiveWebContents(old_contents, new_contents);
     split_view_->WillChangeActiveWebContents(
         /*passkey*/ {}, old_contents, new_contents);
   }
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
-  if (split_view_) {
+  if (split_view_controller) {
     split_view_->DidChangeActiveWebContents(
         /*passkey*/ {}, old_contents, new_contents);
   }
@@ -880,8 +882,8 @@ void BraveBrowserView::UpdateContentsSeparatorVisibility() {
   // refers it's preferred size.
   // Don't show that separator as split view has border around contents
   // container.
-  if (split_view_ &&
-      browser_->GetFeatures().split_view_controller()->IsSplitViewActive()) {
+  auto* split_view_controller = browser_->GetFeatures().split_view_controller();
+  if (split_view_controller && split_view_controller->IsSplitViewActive()) {
     contents_separator_->SetPreferredSize({});
     return;
   }

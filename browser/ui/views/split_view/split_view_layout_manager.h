@@ -48,7 +48,7 @@ class SplitViewLayoutManager : public views::LayoutManagerBase,
   raw_ptr<views::View> secondary_contents_container_ = nullptr;
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
 
-  int split_view_size_delta_ = 0;
+  int split_view_size_delta_ = 300;
   int ongoing_split_view_size_delta_ = 0;
 
   bool show_main_web_contents_at_tail_ = false;
