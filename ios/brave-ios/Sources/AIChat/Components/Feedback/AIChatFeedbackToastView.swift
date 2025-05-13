@@ -6,6 +6,12 @@
 import DesignSystem
 import SwiftUI
 
+struct AIChatFeedbackInfo: Hashable {
+  var isLiked: Bool
+  var turnId: String
+  var turnIndex: Int
+}
+
 private struct AIChatFeedbackToastModifier: ViewModifier {
   @State
   private var task: Task<Void, Error>?
@@ -69,25 +75,6 @@ enum AIChatFeedbackToastType: Equatable {
     ):
       return isLikedA == isLikedB
         && String(describing: onAddFeedbackA) == String(describing: onAddFeedbackB)
-    default:
-      return false
-    }
-  }
-}
-
-enum AIChatFeedbackToastPrivacyWarning: Equatable {
-  case liked(turnIndex: Int, turnId: String)
-  case disliked(turnIndex: Int, turnId: String)
-
-  static func == (
-    lhs: AIChatFeedbackToastPrivacyWarning,
-    rhs: AIChatFeedbackToastPrivacyWarning
-  ) -> Bool {
-    switch (lhs, rhs) {
-    case (.liked(let turnIndexA, let turnIdA), .liked(let turnIndexB, let turnIdB)):
-      return turnIndexA == turnIndexB && turnIdA == turnIdB
-    case (.disliked(let turnIndexA, let turnIdA), .disliked(let turnIndexB, let turnIdB)):
-      return turnIndexA == turnIndexB && turnIdA == turnIdB
     default:
       return false
     }

@@ -45,7 +45,7 @@ public struct AIChatView: View {
   private var shouldShowFeedbackPrivacyWarningAlert = false
 
   @State
-  private var feedbackPrivacyWarning: AIChatFeedbackToastPrivacyWarning?
+  private var feedbackPrivacyWarning: AIChatFeedbackInfo?
 
   @State
   private var isShowingSlashTools = false
@@ -395,42 +395,30 @@ public struct AIChatView: View {
         shouldShowFeedbackPrivacyWarningAlert = false
         feedbackPrivacyWarning = nil
       } onSend: {
-        guard let warning = feedbackPrivacyWarning else {
-          return
-        }
-
-        switch warning {
-        case .liked(_, let turnId):
+        Task { @MainActor in
           shouldShowFeedbackPrivacyWarningAlert = false
-          feedbackPrivacyWarning = nil
-
-          Task { @MainActor in
-            let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
-            if ratingId != nil {
-              feedbackToast = .success(isLiked: true)
-            } else {
-              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
-            }
+          guard let warning = feedbackPrivacyWarning else {
+            return
           }
-        case .disliked(let turnIndex, let turnId):
-          shouldShowFeedbackPrivacyWarningAlert = false
+
           feedbackPrivacyWarning = nil
 
-          Task { @MainActor in
-            let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)
-            if let ratingId = ratingId {
-              feedbackToast = .success(
-                isLiked: false,
-                onAddFeedback: {
-                  customFeedbackInfo = AIChatFeedbackModelToast(
-                    turnId: turnIndex,
-                    ratingId: ratingId
-                  )
-                }
-              )
-            } else {
-              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
-            }
+          let ratingId = await model.rateConversation(
+            isLiked: warning.isLiked,
+            turnId: warning.turnId
+          )
+          if let ratingId = ratingId {
+            feedbackToast = .success(
+              isLiked: warning.isLiked,
+              onAddFeedback: {
+                customFeedbackInfo = AIChatFeedbackModelToast(
+                  turnId: warning.turnIndex,
+                  ratingId: ratingId
+                )
+              }
+            )
+          } else {
+            feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
           }
         }
       } onOpenURL: { url in
@@ -566,7 +554,11 @@ public struct AIChatView: View {
           guard let turnId = turn.uuid else { return }
 
           if Preferences.AIChat.showFeedbackPrivacyWarning.value {
-            feedbackPrivacyWarning = .liked(turnIndex: turnIndex, turnId: turnId)
+            feedbackPrivacyWarning = AIChatFeedbackInfo(
+              isLiked: true,
+              turnId: turnId,
+              turnIndex: turnIndex
+            )
             shouldShowFeedbackPrivacyWarningAlert = true
           } else {
             Task { @MainActor in
@@ -588,7 +580,11 @@ public struct AIChatView: View {
           guard let turnId = turn.uuid else { return }
 
           if Preferences.AIChat.showFeedbackPrivacyWarning.value {
-            feedbackPrivacyWarning = .disliked(turnIndex: turnIndex, turnId: turnId)
+            feedbackPrivacyWarning = AIChatFeedbackInfo(
+              isLiked: false,
+              turnId: turnId,
+              turnIndex: turnIndex
+            )
             shouldShowFeedbackPrivacyWarningAlert = true
           } else {
             Task { @MainActor in
