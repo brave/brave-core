@@ -99,6 +99,9 @@ constexpr char16_t kLeoPrivacyPolicyURL[] =
 constexpr char16_t kSurveyPanelistLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/36550092449165";
 
+constexpr char16_t kExtensionsV2LearnMoreURL[] =
+    u"https://brave.com/blog/brave-shields-manifest-v3/";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -1057,6 +1060,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveSurveyPanelistDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_SURVEY_PANELIST_DESC,
                                  kSurveyPanelistLearnMoreURL));
+  html_source->AddString(
+      "extensionsV2Warn",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,
+                                 kExtensionsV2LearnMoreURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,

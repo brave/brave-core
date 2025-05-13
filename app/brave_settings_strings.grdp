@@ -1268,6 +1268,9 @@
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_SUBLABEL" desc="The sub label of manage v2 extensions link in settings">
     The following Manifest V2 extensions will be removed from the Chrome Web Store, but are still supported in Brave. Toggle to download and install, or to uninstall.
   </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN" desc="The warning message in v2 extensions in settings.">
+    Brave does not review or verify the content, security, or behavior of these Manifest V2 extensions. Please see each extension's official page for help. Read Brave's plans for Manifest V2 <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
     Close
   </message>
