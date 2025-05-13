@@ -25,6 +25,7 @@ BASE_FEATURE(kExtensionsManifestV2,
 
 struct ExtensionManifestV2 {
   std::string id;
+  std::string sources;
   std::u16string name;
   std::u16string description;
   bool installed = false;
@@ -33,6 +34,7 @@ struct ExtensionManifestV2 {
   base::Value ToValue() const {
     base::Value::Dict v;
     v.Set("id", id);
+    v.Set("sources", sources);
     v.Set("name", name);
     v.Set("description", description);
     v.Set("installed", installed);
@@ -44,6 +46,7 @@ struct ExtensionManifestV2 {
 BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
   // NoScript
   extensions_.push_back({extensions_mv2::kNoScriptId,
+                         "https://github.com/hackademix/noscript/",
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME),
                          l10n_util::GetStringUTF16(
@@ -52,7 +55,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
 
   // uBlock Origin
   extensions_.push_back(
-      {extensions_mv2::kUBlockId,
+      {extensions_mv2::kUBlockId, "https://github.com/gorhill/uBlock/",
        l10n_util::GetStringUTF16(
            IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME),
        l10n_util::GetStringUTF16(
@@ -61,6 +64,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
 
   // uMatrix
   extensions_.push_back({extensions_mv2::kUMatrixId,
+                         "https://github.com/gorhill/uMatrix/",
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME),
                          l10n_util::GetStringUTF16(
@@ -68,12 +72,14 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
                          false});
 
   // AdGuard
-  extensions_.push_back({extensions_mv2::kAdGuardId,
-                         l10n_util::GetStringUTF16(
-                             IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME),
-                         l10n_util::GetStringUTF16(
-                             IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC),
-                         false});
+  extensions_.push_back(
+      {extensions_mv2::kAdGuardId,
+       "https://github.com/AdguardTeam/AdguardBrowserExtension",
+       l10n_util::GetStringUTF16(
+           IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME),
+       l10n_util::GetStringUTF16(
+           IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC),
+       false});
 }
 
 BraveExtensionsManifestV2Handler::~BraveExtensionsManifestV2Handler() = default;
