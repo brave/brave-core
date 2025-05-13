@@ -108,7 +108,7 @@ function InputBox(props: InputBoxProps) {
   React.useEffect(() => {
     // Update the height of the attachment wrapper when
     // pendingMessageImages changes.
-    if (props.context?.pendingMessageImages) {
+    if (props.context?.pendingMessageImages.length > 0) {
       updateAttachmentWrapperHeight()
     }
   }, [props.context.pendingMessageImages])
@@ -124,7 +124,7 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(props.context.pendingMessageImages ||
+      {(props.context.pendingMessageImages.length > 0 ||
         props.context.isUploadingFiles) && (
         <div
           className={classnames({

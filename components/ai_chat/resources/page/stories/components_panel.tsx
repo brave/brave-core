@@ -800,7 +800,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isCharLimitApproaching: inputText.length > 64,
     isCharLimitExceeded: inputText.length > 70,
     inputTextCharCountDisplay: `${inputText.length} / 70`,
-    pendingMessageImages: null,
+    pendingMessageImages: [],
     generatedUrlToBeOpened: options.args.generatedUrlToBeOpened,
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,

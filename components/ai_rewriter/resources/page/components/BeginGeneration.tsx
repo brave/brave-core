@@ -58,7 +58,7 @@ export default function BeginGeneration() {
           uploadImage: (useMediaCapture: boolean) => {},
           getScreenshots: () => {},
           conversationHistory: [],
-          pendingMessageImages: null,
+          pendingMessageImages: [],
           isUploadingFiles: false,
         }} />
     </FiltersContainer>
