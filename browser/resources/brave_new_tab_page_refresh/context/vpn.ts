@@ -5,7 +5,7 @@
 
 import { ConnectionState, Region} from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 
-import { API } from '../lib/api'
+import { API, createAPIContext } from '../lib/api_context'
 
 export { ConnectionState, Region }
 
@@ -46,3 +46,8 @@ export function defaultVpnActions(): VpnActions {
 }
 
 export type VpnAPI = API<VpnState, VpnActions>
+
+export const {
+  Provider: VpnProvider,
+  useState: useVpnState,
+  useActions: useVpnActions } = createAPIContext<VpnState, VpnActions>()

@@ -8,9 +8,13 @@ import Icon from '@brave/leo/react/icon'
 
 import formatMessage from '$web-common/formatMessage'
 import { Link } from '../common/link'
-import { useLocale } from '../context/locale_context'
-import { useBackgroundActions, useBackgroundState } from '../context/background_context'
-import { BraveBackground, SponsoredImageBackground } from '../../api/backgrounds'
+import { useLocale } from '../../context/locale'
+
+import {
+  BraveBackground,
+  SponsoredImageBackground,
+  useBackgroundActions,
+  useBackgroundState } from '../../context/backgrounds'
 
 import { style } from './background_caption.style'
 

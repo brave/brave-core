@@ -6,7 +6,7 @@
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js'
 
 import { createStore } from '../lib/store'
-import { SearchAPI, defaultSearchState, defaultSearchActions } from '../api/search'
+import { SearchAPI, defaultSearchState, defaultSearchActions } from '../context/search'
 
 export function createSearchAPI(): SearchAPI {
   const store = createStore(defaultSearchState())

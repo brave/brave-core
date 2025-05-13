@@ -6,9 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useNewTabState } from '../context/new_tab_context'
-import { useRewardsState } from '../context/rewards_context'
-import { useVpnState } from '../context/vpn_context'
+import { useNewTabState } from '../../context/new_tab'
+import { useRewardsState } from '../../context/rewards'
+import { useVpnState } from '../../context/vpn'
 import { NtpWidget } from './ntp_widget'
 import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'

@@ -6,9 +6,8 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { TopSite, TopSitesListKind } from '../../api/top_sites'
-import { useLocale } from '../context/locale_context'
-import { useTopSitesState, useTopSitesActions } from '../context/top_sites_context'
+import { TopSite, TopSitesListKind, useTopSitesState, useTopSitesActions } from '../../context/top_sites'
+import { useLocale } from '../../context/locale'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { RemoveToast } from './remove_toast'
 import { TopSitesTile, DropLocation } from './top_site_tile'

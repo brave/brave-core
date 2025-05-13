@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocale } from '../context/locale_context'
-import { useRewardsState } from '../context/rewards_context'
+import { useLocale } from '../../context/locale'
+import { useRewardsState } from '../../context/rewards'
 import { Link, openLink } from '../common/link'
 
 import * as urls from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'

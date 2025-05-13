@@ -5,7 +5,7 @@
 
 import { ShieldsStats, ClockFormat } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
-import { API } from '../lib/api'
+import { API, createAPIContext } from '../lib/api_context'
 
 export { ShieldsStats, ClockFormat }
 
@@ -44,3 +44,9 @@ export function defaultNewTabActions(): NewTabActions {
 }
 
 export type NewTabAPI = API<NewTabState, NewTabActions>
+
+export const {
+  Provider: NewTabProvider,
+  useState: useNewTabState,
+  useActions: useNewTabActions } =
+    createAPIContext<NewTabState, NewTabActions>()

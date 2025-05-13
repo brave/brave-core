@@ -9,7 +9,7 @@ import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mo
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-import { VpnAPI, defaultVpnState, defaultVpnActions, ConnectionState } from '../api/vpn'
+import { VpnAPI, defaultVpnState, defaultVpnActions, ConnectionState } from '../context/vpn'
 
 export function createVpnAPI(): VpnAPI {
   const store = createStore(defaultVpnState())

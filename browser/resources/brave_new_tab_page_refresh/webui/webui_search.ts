@@ -16,7 +16,7 @@ import {
   SearchEngineInfo,
   defaultSearchEngine,
   defaultSearchState,
-  defaultSearchActions } from '../api/search'
+  defaultSearchActions } from '../context/search'
 
 const enabledSearchEnginesStorageKey = 'search-engines'
 

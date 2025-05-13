@@ -5,7 +5,7 @@
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-import { Locale } from '../api/locale_strings'
+import { Locale } from '../context/locale'
 
 export function createLocale(): Locale {
   return {

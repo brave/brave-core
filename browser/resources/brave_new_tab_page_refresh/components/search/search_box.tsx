@@ -11,12 +11,13 @@ import {
   AutocompleteMatch,
   ClickEvent,
   defaultSearchEngine,
-  braveSearchHost } from '../../api/search'
+  braveSearchHost,
+  useSearchState,
+  useSearchActions } from '../../context/search'
 
-import { useSearchState, useSearchActions } from '../context/search_context'
 import { optional } from '../../lib/optional'
 import { urlFromInput } from '../../lib/url_input'
-import { useLocale } from '../context/locale_context'
+import { useLocale } from '../../context/locale'
 import { Popover } from '../common/popover'
 import { EngineIcon } from './engine_icon'
 import { SearchResults, ResultOption } from './search_results'

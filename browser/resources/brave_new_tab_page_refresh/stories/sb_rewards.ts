@@ -9,7 +9,7 @@ import { optional } from '../lib/optional'
 import {
   RewardsAPI,
   defaultRewardsState,
-  defaultRewardsActions } from '../api/rewards'
+  defaultRewardsActions } from '../context/rewards'
 
 export function createRewardsAPI(): RewardsAPI {
   const store = createStore(defaultRewardsState())

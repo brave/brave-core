@@ -11,7 +11,7 @@ import {
   SelectedBackground,
   SelectedBackgroundType } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
-import { API } from '../lib/api'
+import { API, createAPIContext } from '../lib/api_context'
 
 export {
   BraveBackground,
@@ -170,3 +170,9 @@ export function backgroundCSSValue(
 }
 
 export type BackgroundAPI = API<BackgroundState, BackgroundActions>
+
+export const {
+  Provider: BackgroundProvider,
+  useState: useBackgroundState,
+  useActions: useBackgroundActions } =
+    createAPIContext<BackgroundState, BackgroundActions>()

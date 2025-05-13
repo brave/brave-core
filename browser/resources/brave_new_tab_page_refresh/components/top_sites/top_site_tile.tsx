@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { TopSite } from '../../api/top_sites'
+import { TopSite } from '../../context/top_sites'
 import { faviconURL } from '../../lib/favicon_url'
 
 function sanitizeTileURL(url: string) {

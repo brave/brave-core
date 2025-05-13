@@ -10,7 +10,7 @@ import {
   SponsoredImageBackground,
   SelectedBackgroundType,
   defaultBackgroundState,
-  getCurrentBackground } from '../api/backgrounds'
+  getCurrentBackground } from '../context/backgrounds'
 
 function delay(ms: number) {
   return new Promise((resolve) => {

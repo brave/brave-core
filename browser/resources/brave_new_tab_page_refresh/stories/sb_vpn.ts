@@ -9,7 +9,7 @@ import {
   VpnAPI,
   defaultVpnState,
   defaultVpnActions,
-  ConnectionState } from '../api/vpn'
+  ConnectionState } from '../context/vpn'
 
 export function createVpnAPI(): VpnAPI {
   const store = createStore(defaultVpnState())

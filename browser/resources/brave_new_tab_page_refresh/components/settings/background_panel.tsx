@@ -8,9 +8,8 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useBackgroundActions, useBackgroundState } from '../context/background_context'
-import { useRewardsState } from '../context/rewards_context'
-import { useLocale } from '../context/locale_context'
+import { useRewardsState } from '../../context/rewards'
+import { useLocale } from '../../context/locale'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { optional } from '../../lib/optional'
 import { BackgroundTypePanel } from './background_type_panel'
@@ -22,7 +21,9 @@ import {
   SelectedBackgroundType,
   backgroundCSSValue,
   gradientPreviewBackground,
-  solidPreviewBackground } from '../../api/backgrounds'
+  solidPreviewBackground,
+  useBackgroundState,
+  useBackgroundActions } from '../../context/backgrounds'
 
 import { style } from './background_panel.style'
 

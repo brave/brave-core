@@ -7,8 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useBackgroundActions, useBackgroundState } from '../context/background_context'
-import { useLocale } from '../context/locale_context'
+import { useLocale } from '../../context/locale'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import classNames from '$web-common/classnames'
 
@@ -16,7 +15,9 @@ import {
   SelectedBackgroundType,
   backgroundCSSValue,
   solidBackgrounds,
-  gradientBackgrounds } from '../../api/backgrounds'
+  gradientBackgrounds,
+  useBackgroundState,
+  useBackgroundActions } from '../../context/backgrounds'
 
 interface Props {
   backgroundType: SelectedBackgroundType

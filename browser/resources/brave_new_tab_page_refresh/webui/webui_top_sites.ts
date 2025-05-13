@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { TopSitesAPI, TopSitesListKind, defaultTopSitesState } from '../api/top_sites'
+import { TopSitesAPI, TopSitesListKind, defaultTopSitesState } from '../context/top_sites'
 import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
 

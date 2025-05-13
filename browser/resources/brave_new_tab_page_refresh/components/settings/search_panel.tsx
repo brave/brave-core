@@ -8,8 +8,8 @@ import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useSearchState, useSearchActions } from '../context/search_context'
-import { useLocale } from '../context/locale_context'
+import { useSearchState, useSearchActions } from '../../context/search'
+import { useLocale } from '../../context/locale'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
 

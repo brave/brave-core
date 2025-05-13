@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import { useNewTabState } from '../context/new_tab_context'
-import { ClockFormat } from '../../api/new_tab'
+import { useNewTabState } from '../../context/new_tab'
+import { ClockFormat } from '../../context/new_tab'
 
 export function Clock() {
   const showClock = useNewTabState((s) => s.showClock)

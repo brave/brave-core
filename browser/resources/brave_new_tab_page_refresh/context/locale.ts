@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { LocaleInterface, createLocaleContext } from '../lib/locale_context'
+
 export type StringKey =
   'addTopSiteLabel' |
   'addTopSiteTitle' |
@@ -161,7 +163,9 @@ export type StringKey =
 export type PluralStringKey =
   'newsSourceCountText'
 
-export interface Locale {
-  getString: (key: StringKey) => string
-  getPluralString: (key: PluralStringKey, count: number) => Promise<string>
-}
+export type Locale = LocaleInterface<StringKey, PluralStringKey>
+
+export const {
+  LocaleProvider,
+  useLocale,
+  usePluralString } = createLocaleContext<StringKey, PluralStringKey>()

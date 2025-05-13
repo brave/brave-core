@@ -9,7 +9,7 @@ import {
   TopSitesAPI,
   TopSite,
   TopSitesListKind,
-  defaultTopSitesState } from '../api/top_sites'
+  defaultTopSitesState } from '../context/top_sites'
 
 export function createTopSitesAPI(): TopSitesAPI {
   const store = createStore(defaultTopSitesState())

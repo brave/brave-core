@@ -11,7 +11,7 @@ import { NewTabPageProxy } from './new_tab_page_proxy'
 import { createStore } from '../lib/store'
 import { Optional } from '../lib/optional'
 import { debounceListener } from './debounce_listener'
-import { RewardsAPI, defaultRewardsState, defaultRewardsActions } from '../api/rewards'
+import { RewardsAPI, defaultRewardsState, defaultRewardsActions } from '../context/rewards'
 
 export function createRewardsAPI(): RewardsAPI {
   const store = createStore(defaultRewardsState())

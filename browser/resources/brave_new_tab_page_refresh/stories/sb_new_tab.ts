@@ -8,7 +8,7 @@ import { createStore } from '../lib/store'
 import {
   NewTabAPI,
   defaultNewTabState,
-  defaultNewTabActions } from '../api/new_tab'
+  defaultNewTabActions } from '../context/new_tab'
 
 export function createNewTabAPI(): NewTabAPI {
   const store = createStore(defaultNewTabState())

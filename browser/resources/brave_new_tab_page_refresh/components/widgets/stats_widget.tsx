@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 
-import { useNewTabState } from '../context/new_tab_context'
-import { useLocale } from '../context/locale_context'
+import { useNewTabState } from '../../context/new_tab'
+import { useLocale } from '../../context/locale'
 
 import { style } from './stats_widget.style'
 

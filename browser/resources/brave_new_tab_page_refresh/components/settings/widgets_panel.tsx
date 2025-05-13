@@ -6,10 +6,10 @@
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useLocale } from '../context/locale_context'
-import { useNewTabState, useNewTabActions } from '../context/new_tab_context'
-import { useRewardsState, useRewardsActions } from '../context/rewards_context'
-import { useVpnState, useVpnActions } from '../context/vpn_context'
+import { useLocale } from '../../context/locale'
+import { useNewTabState, useNewTabActions } from '../../context/new_tab'
+import { useRewardsState, useRewardsActions } from '../../context/rewards'
+import { useVpnState, useVpnActions } from '../../context/vpn'
 
 import { style } from './widgets_panel.style'
 

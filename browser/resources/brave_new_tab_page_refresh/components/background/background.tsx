@@ -5,8 +5,12 @@
 
 import * as React from 'react'
 
-import { NewTabPageAdEventType, SponsoredImageBackground } from '../../api/backgrounds'
-import { useBackgroundState, useBackgroundActions } from '../context/background_context'
+import {
+  NewTabPageAdEventType,
+  SponsoredImageBackground,
+  useBackgroundState,
+  useBackgroundActions } from '../../context/backgrounds'
+
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 

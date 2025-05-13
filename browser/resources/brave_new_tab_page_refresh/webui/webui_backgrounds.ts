@@ -9,7 +9,7 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-import { BackgroundAPI, defaultBackgroundState, getCurrentBackground } from '../api/backgrounds'
+import { BackgroundAPI, defaultBackgroundState, getCurrentBackground } from '../context/backgrounds'
 
 export function createBackgroundAPI(): BackgroundAPI {
   const store = createStore(defaultBackgroundState())

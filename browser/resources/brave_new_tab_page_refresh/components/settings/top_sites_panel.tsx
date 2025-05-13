@@ -7,9 +7,8 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { TopSitesListKind } from '../../api/top_sites'
-import { useTopSitesState, useTopSitesActions } from '../context/top_sites_context'
-import { useLocale } from '../context/locale_context'
+import { TopSitesListKind, useTopSitesState, useTopSitesActions } from '../../context/top_sites'
+import { useLocale } from '../../context/locale'
 import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'

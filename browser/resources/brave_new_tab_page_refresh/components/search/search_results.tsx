@@ -9,9 +9,13 @@ import Icon from '@brave/leo/react/icon'
 
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
 
-import { AutocompleteMatch, ClickEvent } from '../../api/search'
-import { useLocale } from '../context/locale_context'
-import { useSearchState, useSearchActions } from '../context/search_context'
+import {
+  AutocompleteMatch,
+  ClickEvent,
+  useSearchState,
+  useSearchActions } from '../../context/search'
+
+import { useLocale } from '../../context/locale'
 import { placeholderImageSrc } from '../../lib/image_loader'
 import { faviconURL } from '../../lib/favicon_url'
 import { Optional } from '../../lib/optional'

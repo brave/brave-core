@@ -5,7 +5,7 @@
 
 import { TopSite, TopSitesListKind } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
-import { API } from '../lib/api'
+import { API, createAPIContext } from '../lib/api_context'
 
 export { TopSite, TopSitesListKind }
 
@@ -46,3 +46,9 @@ export function defaultTopSitesActions(): TopSitesActions {
 }
 
 export type TopSitesAPI = API<TopSitesState, TopSitesActions>
+
+export const {
+  Provider: TopSitesProvider,
+  useState: useTopSitesState,
+  useActions: useTopSitesActions } =
+    createAPIContext<TopSitesState, TopSitesActions>()

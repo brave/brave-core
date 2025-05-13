@@ -8,9 +8,8 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useVpnState, useVpnActions } from '../context/vpn_context'
-import { useLocale } from '../context/locale_context'
-import { ConnectionState } from '../../api/vpn'
+import { useLocale } from '../../context/locale'
+import { ConnectionState, useVpnState, useVpnActions } from '../../context/vpn'
 import classNames from '$web-common/classnames'
 
 import { style } from './vpn_widget.style'

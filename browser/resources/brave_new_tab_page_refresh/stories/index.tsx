@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 
-import { LocaleProvider } from '../components/context/locale_context'
-import { NewTabProvider } from '../components/context/new_tab_context'
-import { BackgroundProvider } from '../components/context/background_context'
-import { SearchProvider } from '../components/context/search_context'
-import { TopSitesProvider } from '../components/context/top_sites_context'
-import { VpnProvider } from '../components/context/vpn_context'
-import { RewardsProvider } from '../components/context/rewards_context'
+import { LocaleProvider } from '../context/locale'
+import { NewTabProvider } from '../context/new_tab'
+import { BackgroundProvider } from '../context/backgrounds'
+import { SearchProvider } from '../context/search'
+import { TopSitesProvider } from '../context/top_sites'
+import { VpnProvider } from '../context/vpn'
+import { RewardsProvider } from '../context/rewards'
 
 import { createLocale } from './sb_locale'
 import { createBackgroundAPI } from './sb_backgrounds'

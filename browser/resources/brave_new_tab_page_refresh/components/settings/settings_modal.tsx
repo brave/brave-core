@@ -9,13 +9,13 @@ import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
-import { useSearchState } from '../context/search_context'
+import { useSearchState } from '../../context/search'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
 import { ClockPanel } from './clock_panel'
 import { WidgetsPanel } from './widgets_panel'
-import { useLocale } from '../context/locale_context'
+import { useLocale } from '../../context/locale'
 
 import { style } from './settings_modal.style'
 
