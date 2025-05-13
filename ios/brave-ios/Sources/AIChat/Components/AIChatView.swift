@@ -428,6 +428,8 @@ public struct AIChatView: View {
       actions: { warning in
         Button {
           feedbackPrivacyWarning = .none
+          openURL(.brave.braveLeoPrivacyFeedbackLearnMoreLinkUrl)
+          dismiss()
         } label: {
           Text(Strings.learnMore)
         }
