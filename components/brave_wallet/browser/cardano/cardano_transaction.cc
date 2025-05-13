@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 
+#include <algorithm>
 #include <optional>
 #include <string_view>
 #include <utility>
