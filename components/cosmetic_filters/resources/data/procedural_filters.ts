@@ -305,9 +305,12 @@ const operatorHas = (instruction: CSSSelector | ProceduralSelector,
 const _tagsToIgnoreForChildText = new Set(['SCRIPT', 'STYLE'])
 const _childTextForElement = (element: HTMLElement,
                               cache: OperatorTextCache): string => {
-  const cachedValue = cache.get(element)
-  if (cachedValue) {
-    return cachedValue
+  var cachedValue: string | undefined
+  if (cache) {
+    cachedValue = cache.get(element)
+    if (cachedValue) {
+      return cachedValue
+    }
   }
 
   const childTextStrings: string[] = []
@@ -331,7 +334,9 @@ const _childTextForElement = (element: HTMLElement,
   }
 
   const childText = childTextStrings.join('')
-  cache.set(element, childText)
+  if (cache) {
+    cache.set(element, childText)
+  }
   return childText
 }
 
