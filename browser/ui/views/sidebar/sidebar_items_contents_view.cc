@@ -39,6 +39,7 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
@@ -89,7 +90,7 @@ SidebarItemsContentsView::SidebarItemsContentsView(
     views::DragController* drag_controller)
     : browser_(browser),
       drag_controller_(drag_controller),
-      sidebar_model_(browser->sidebar_controller()->model()) {
+      sidebar_model_(browser->GetFeatures().sidebar_controller()->model()) {
   DCHECK(browser_);
   set_context_menu_controller(this);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -155,10 +156,10 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
     // will use colored one for normal state also.
     if (item.built_in_item_type ==
         sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
-      UpdateItemViewStateAt(
-          item_index,
-          browser_->sidebar_controller()->DoesBrowserHaveOpenedTabForItem(
-              item));
+      UpdateItemViewStateAt(item_index,
+                            browser_->GetFeatures()
+                                .sidebar_controller()
+                                ->DoesBrowserHaveOpenedTabForItem(item));
       continue;
     }
 
@@ -501,7 +502,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
 
 void SidebarItemsContentsView::OnItemPressed(const views::View* item,
                                              const ui::Event& event) {
-  auto* controller = browser_->sidebar_controller();
+  auto* controller = browser_->GetFeatures().sidebar_controller();
   auto index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
     controller->DeactivateCurrentPanel();

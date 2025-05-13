@@ -13,9 +13,11 @@
 #define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
 #define Init virtual Init
 #define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
+#define InitPostWindowConstruction virtual InitPostWindowConstruction
 
 #include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
 
+#undef InitPostWindowConstruction
 #undef InitPostBrowserViewConstruction
 #undef Init
 #undef BrowserWindowFeatures

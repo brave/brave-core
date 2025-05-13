@@ -72,7 +72,8 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 
-  sidebar_model_observed_.Observe(browser_->sidebar_controller()->model());
+  sidebar_model_observed_.Observe(
+      browser_->GetFeatures().sidebar_controller()->model());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
 }
@@ -215,7 +216,10 @@ void SidebarControlView::UpdateItemAddButtonState() {
   DCHECK(sidebar_item_add_view_);
   // Determine add button enabled state.
   bool should_enable = true;
-  if (browser_->sidebar_controller()->model()->IsSidebarHasAllBuiltInItems() &&
+  if (browser_->GetFeatures()
+          .sidebar_controller()
+          ->model()
+          ->IsSidebarHasAllBuiltInItems() &&
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     should_enable = false;
   }

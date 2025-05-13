@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -16,6 +15,7 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -41,8 +41,7 @@ class SidebarContainerViewBrowserTest : public InProcessBrowserTest {
   }
 
   SidebarContainerView* sidebar() {
-    auto* controller =
-        static_cast<BraveBrowser*>(browser())->sidebar_controller();
+    auto* controller = browser()->GetFeatures().sidebar_controller();
     return static_cast<SidebarContainerView*>(controller->sidebar());
   }
 

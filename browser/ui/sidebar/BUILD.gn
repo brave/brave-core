@@ -8,6 +8,43 @@ import("//extensions/buildflags/buildflags.gni")
 
 assert(toolkit_views)
 
+source_set("sidebar") {
+  sources = [
+    "sidebar.h",
+    "sidebar_controller.cc",
+    "sidebar_controller.h",
+    "sidebar_model.cc",
+    "sidebar_model.h",
+    "sidebar_service_factory.cc",
+    "sidebar_service_factory.h",
+    "sidebar_tab_helper.cc",
+    "sidebar_tab_helper.h",
+    "sidebar_utils.cc",
+    "sidebar_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/sidebar/browser",
+    "//brave/components/sidebar/common",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/favicon",
+    "//chrome/browser/image_fetcher",
+    "//chrome/browser/profiles",
+    "//chrome/browser/search",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/side_panel",
+    "//components/image_fetcher/core",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//ui/base",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -18,6 +55,7 @@ source_set("browser_tests") {
   ]
 
   deps = [
+    ":sidebar",
     "//base",
     "//brave/app:command_ids",
     "//brave/browser/ui/tabs:split_view",
@@ -46,6 +84,7 @@ source_set("unit_tests") {
   sources = [ "sidebar_unittest.cc" ]
 
   deps = [
+    ":sidebar",
     "//base",
     "//brave/common",
     "//brave/components/playlist/common",
