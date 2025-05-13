@@ -39,7 +39,8 @@ struct SendTokenView: View {
       !sendTokenStore.sendAddress.isEmpty,
       !sendTokenStore.isResolvingAddress,
       sendTokenStore.addressError?.shouldBlockSend != true,
-      sendTokenStore.sendError == nil
+      sendTokenStore.sendError == nil,
+      isShowingSendAmountError == false
     else {
       return true
     }
@@ -54,14 +55,14 @@ struct SendTokenView: View {
     if token.isErc721 || token.isNft {
       return balance < 1
     }
-    guard let sendAmount = BDouble(sendTokenStore.sendAmount.normalizedDecimals) else {
+    guard let sendAmount = BDouble(sendTokenStore.sendAmount) else {
       return true
     }
     let walletAmountFormatter = WalletAmountFormatter(
       decimalFormatStyle: .decimals(precision: Int(token.decimals))
     )
     if walletAmountFormatter.weiString(
-      from: sendTokenStore.sendAmount.normalizedDecimals,
+      from: sendTokenStore.sendAmount,
       radix: .decimal,
       decimals: Int(token.decimals)
     ) == nil {
