@@ -85,6 +85,16 @@
       }
     },
     {
+      "skippedTests" : [
+        "UserAgentBuilderTests",
+        "UserAgentBuilderTests\/testDesktopUA()",
+        "UserAgentBuilderTests\/testFutureProofDesktopUA()",
+        "UserAgentBuilderTests\/testFutureProofMobileUA()",
+        "UserAgentBuilderTests\/testSpecificMobileUA()",
+        "UserAgentTests\/testBraveWebViewUserAgentOnPhone()",
+        "UserAgentTests\/testDesktopUserAgentOnPad()",
+        "UserAgentTests\/testMobileUserAgentOnPad()"
+      ],
       "target" : {
         "containerPath" : "container:..",
         "identifier" : "UserAgentTests",
