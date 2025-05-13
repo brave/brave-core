@@ -28,9 +28,9 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/split_view/split_view_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
@@ -43,7 +43,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -305,9 +305,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser_->is_type_normal()) {
-    split_view_ =
-        contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
-            *browser_, contents_container_, contents_web_view_));
+    split_view_ = contents_container_->parent()->AddChildView(
+        std::make_unique<SplitViewViews>(*browser_, contents_container_,
+                                         contents_web_view_));
     set_contents_view(split_view_);
   }
 
@@ -874,7 +874,8 @@ void BraveBrowserView::UpdateContentsSeparatorVisibility() {
   // refers it's preferred size.
   // Don't show that separator as split view has border around contents
   // container.
-  if (split_view_ && split_view_->IsSplitViewActive()) {
+  if (split_view_ &&
+      browser_->GetFeatures().split_view_controller()->IsSplitViewActive()) {
     contents_separator_->SetPreferredSize({});
     return;
   }
@@ -947,7 +948,7 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   contents_container_->layer()->SetRoundedCornerRadius(corners);
 
   const auto in_split_view_mode =
-      !!browser_->GetFeatures().split_view_browser_data();
+      !!browser_->GetFeatures().split_view_controller();
 
   auto update_corner_radius =
       [in_split_view_mode](views::WebView* contents, views::WebView* devtools,

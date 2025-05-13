@@ -7,9 +7,10 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/split_view/split_view_controller.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
@@ -45,11 +46,21 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 #endif
 }
 
-void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-  BrowserWindowFeatures_ChromiumImpl::Init(browser);
+SplitViewBrowserData* BrowserWindowFeatures::split_view_browser_data() {
+  return split_view_controller_
+             ? split_view_controller_->split_view_browser_data()
+             : nullptr;
+}
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
-    split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
+void BrowserWindowFeatures::Init(
+    BrowserWindowInterface* browser_window_interface) {
+  BrowserWindowFeatures_ChromiumImpl::Init(browser_window_interface);
+
+  if (browser_window_interface->GetType() ==
+          BrowserWindowInterface::TYPE_NORMAL &&
+      base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    split_view_controller_ = std::make_unique<SplitViewController>(
+        browser_window_interface->GetTabStripModel());
   }
 }
 

@@ -37,6 +37,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:split_view",
     "//brave/browser/ui/views/split_view",
     "//chrome/browser/ui",

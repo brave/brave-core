@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_VIEWS_H_
+#define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_VIEWS_H_
 
 #include <memory>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/scoped_observation.h"
 #include "base/types/pass_key.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/split_view/split_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
@@ -44,29 +44,27 @@ class SplitViewLayoutManager;
 class SplitViewLocationBar;
 class SplitViewSeparator;
 
-// Contains a pair of contents container view.
-class SplitView : public views::View,
+// This is view part of split view module and contains a pair of contents
+// container view. SplitViewController controls how view works.
+class SplitViewViews : public views::View,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-                  public ReaderModeToolbarView::Delegate,
+                       public ReaderModeToolbarView::Delegate,
 #endif
-                  public views::WidgetObserver,
-                  public FullscreenObserver,
-                  public SplitViewBrowserDataObserver {
-  METADATA_HEADER(SplitView, views::View)
+                       public views::WidgetObserver,
+                       public FullscreenObserver,
+                       public SplitView {
+  METADATA_HEADER(SplitViewViews, views::View)
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
 
   static constexpr int kInactiveBorderThickness = 1;
   static constexpr int kBorderThickness = 2;
 
-  SplitView(Browser& browser,
-            views::View* contents_container,
-            ContentsWebView* contents_web_view);
+  SplitViewViews(Browser& browser,
+                 views::View* contents_container,
+                 ContentsWebView* contents_web_view);
 
-  ~SplitView() override;
-
-  // true when active tab is in tile.
-  bool IsSplitViewActive() const;
+  ~SplitViewViews() override;
 
   void ListenFullscreenChanges();
 
@@ -118,10 +116,8 @@ class SplitView : public views::View,
   void Layout(PassKey) override;
   void AddedToWidget() override;
 
-  // SplitViewBrowserDataObserver:
-  void OnTileTabs(const TabTile& tile) override;
-  void OnDidBreakTile(const TabTile& tile) override;
-  void OnSwapTabsInTile(const TabTile& tile) override;
+  // SplitView:
+  void Update() override;
 
   // views::WidgetObserver:
   void OnWidgetDestroying(views::Widget* widget) override;
@@ -136,17 +132,11 @@ class SplitView : public views::View,
   friend class SplitViewLocationBarBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, SplitView);
 
-  tabs::TabHandle GetActiveTabHandle() const;
-  bool IsActiveWebContentsTiled(const TabTile& tile) const;
-  bool IsWebContentsTiled(content::WebContents* contents) const;
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();
   void UpdateContentsWebViewBorder();
   void UpdateSecondaryContentsWebViewVisibility();
-
-  SplitViewLayoutManager* GetSplitViewLayoutManager();
-  const SplitViewLayoutManager* GetSplitViewLayoutManager() const;
   bool ShouldHideSecondaryContentsByTabFullscreen() const;
 
   raw_ref<Browser> browser_;
@@ -165,16 +155,15 @@ class SplitView : public views::View,
 #endif
 
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
+  raw_ptr<SplitViewLayoutManager> layout_manager_ = nullptr;
 
   std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
   std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
-  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
-      split_view_observation_{this};
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
   base::ScopedObservation<FullscreenController, FullscreenObserver>
       fullscreen_observation_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_VIEWS_H_

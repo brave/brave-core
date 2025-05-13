@@ -13,8 +13,8 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar_model_delegate.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "cc/paint/paint_flags.h"
 #include "components/omnibox/browser/location_bar_model_impl.h"
@@ -36,7 +36,7 @@
 #include "ui/views/widget/widget_delegate.h"
 
 SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
-                                           SplitView* split_view)
+                                           SplitViewViews* split_view)
     : prefs_(prefs),
       split_view_(split_view),
       location_bar_model_delegate_(
@@ -161,7 +161,7 @@ void SplitViewLocationBar::OnPaintBorder(gfx::Canvas* canvas) {
   flags.setColor(cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder));
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kStroke_Style);
-  flags.setStrokeWidth(SplitView::kInactiveBorderThickness);
+  flags.setStrokeWidth(SplitViewViews::kInactiveBorderThickness);
   canvas->DrawPath(path, flags);
 }
 
@@ -218,8 +218,8 @@ void SplitViewLocationBar::UpdateBounds() {
   // Inactive splitview tab's border is 2px.
   // Outer 1px border color is same color with toolbar and inner border's color
   // is inactive border color. locate this mini urlbar to inner border's origin.
-  gfx::Point point(SplitView::kInactiveBorderThickness,
-                   SplitView::kInactiveBorderThickness);
+  gfx::Point point(SplitViewViews::kInactiveBorderThickness,
+                   SplitViewViews::kInactiveBorderThickness);
   views::View::ConvertPointToWidget(view, &point);
 
   auto* widget = GetWidget();

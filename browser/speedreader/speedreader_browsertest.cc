@@ -22,8 +22,8 @@
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
+#include "brave/browser/ui/views/split_view/split_view_views.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -1095,8 +1095,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
                 secondary_contents_container,
                 target_secondary_location_bar_origin);
         target_secondary_location_bar_origin.Offset(
-            SplitView::kInactiveBorderThickness,
-            SplitView::kInactiveBorderThickness);
+            SplitViewViews::kInactiveBorderThickness,
+            SplitViewViews::kInactiveBorderThickness);
         return target_secondary_location_bar_origin;
       };
 
