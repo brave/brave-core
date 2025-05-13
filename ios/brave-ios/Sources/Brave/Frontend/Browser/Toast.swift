@@ -13,7 +13,6 @@ class ToastTapInterceptingOverlay: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    isUserInteractionEnabled = true
   }
 
   required init?(coder: NSCoder) {
@@ -65,7 +64,7 @@ class Toast: UIView {
 
   var displayState = State.dismissed
 
-  var tapBehavior: TapBehavior = .dismissOnOutsideTap
+  var tapDismissalMode: TapDismissalMode = .dismissOnOutsideTap
 
   private lazy var tapInterceptingOverlay = ToastTapInterceptingOverlay()
 
@@ -106,7 +105,7 @@ class Toast: UIView {
 
     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
       self.tapInterceptingOverlay.didTapOutside = { [weak self] in
-        if self?.tapBehavior == .noDismissal {
+        if self?.tapDismissalMode == .noDismissal {
           return
         }
         self?.dismiss(false, completion: completion)
@@ -167,11 +166,11 @@ class Toast: UIView {
   }
 
   @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
-    if tapBehavior == .noDismissal {
+    if tapDismissalMode == .noDismissal {
       return
     }
 
-    if tapBehavior == .dismissOnOutsideTap {
+    if tapDismissalMode == .dismissOnOutsideTap {
       let location = gestureRecognizer.location(in: self)
       // Check if the tap was inside the toast view
       if self.point(inside: location, with: nil) {
@@ -189,7 +188,7 @@ class Toast: UIView {
     case dismissed
   }
 
-  enum TapBehavior {
+  enum TapDismissalMode {
     case dismissOnOutsideTap
     case dismissOnAnyTap
     case noDismissal

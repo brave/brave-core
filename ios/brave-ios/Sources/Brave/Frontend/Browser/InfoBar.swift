@@ -11,7 +11,7 @@ import UIKit
 import Web
 
 private struct InfoBarUX {
-  static let tapBehavior: Toast.TapBehavior = .dismissOnOutsideTap
+  static let tapDismissalMode: Toast.TapDismissalMode = .dismissOnOutsideTap
   static let padding: CGFloat = 10.0
   static let closeButtonWidth: CGFloat = 20.0
   static let labelFont = UIFont.preferredFont(forTextStyle: .subheadline)
@@ -43,7 +43,7 @@ class InfoBar: Toast, UITextViewDelegate {
 
     super.init(frame: .zero)
 
-    self.tapBehavior = InfoBarUX.tapBehavior
+    self.tapDismissalMode = InfoBarUX.tapDismissalMode
 
     self.clipsToBounds = true
 

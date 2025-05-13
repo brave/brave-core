@@ -9,7 +9,7 @@ import UIKit
 import Web
 
 struct DownloadToastUX {
-  static let toastTapBehavior: Toast.TapBehavior = .noDismissal
+  static let toastTapDismissalMode: Toast.TapDismissalMode = .noDismissal
   static let toastBackgroundColor = UIColor.braveInfoBorder
   static let toastProgressColor = UIColor.braveInfoLabel
 }
@@ -81,7 +81,7 @@ class DownloadToast: Toast {
   init(download: Download, completion: @escaping (_ buttonPressed: Bool) -> Void) {
     super.init(frame: .zero)
 
-    self.tapBehavior = DownloadToastUX.toastTapBehavior
+    self.tapDismissalMode = DownloadToastUX.toastTapDismissalMode
 
     self.completionHandler = completion
     self.clipsToBounds = true
