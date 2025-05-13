@@ -28,7 +28,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
       Text(
         LocalizedStringKey(
           String(
-            format: "[%@](%@)",
+            format: "%@",
             Strings.AIChat.rateAnswerFeedbackPrivacyWarningMessage,
             URL.Brave.braveLeoPrivacyFeedbackLearnMoreLinkUrl.absoluteString
           )
