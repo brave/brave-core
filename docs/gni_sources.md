@@ -16,6 +16,8 @@ Whenever possible try to break circular dependencies see [Recipes for Breaking C
 An interface/impl pattern can also often be used where header files and possibly some cc files are included in the direct dependency and the code that would cause the circular dependency is included in a higher level target like `//brave/browser` to ensure that the implementation code is always linked into the final output. See [tabs:tabs_public](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/BUILD.gn;l=12;drc=ad947f73e5449afe74659d107eb34e2521bee100) and [tabs:impl](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/BUILD.gn;l=300;drc=ad947f73e5449afe74659d107eb34e2521bee100) and [//chrome/browser impl dependency](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/BUILD.gn;l=4378;drc=265bc11af3dc764e0f59f93016aa350bbfa5f814). The chromium ios code is also a good model for separating out dependencies and sometimes makes use of interface/implementation patterns.
 
 Another technique to avoid circular dependencies is to use a template so the subclass does not need a dependency on the base class.
+
+brave_class.h
 ```cpp
 template <typename ChromeClass>
 class BraveClass : public ChromeClass {
@@ -24,6 +26,13 @@ class BraveClass : public ChromeClass {
 ```
 
 The chrome target that we override will need a dependency on the brave target, but there is no circular dependency
+some_chromium_source.cc
+```cpp
+...
+  chrome_class_ = std::make_unique<ChromeClass>();
+```
+
+chromium_src/some_chromium_source.cc
 ```cpp
 #define ChromeClass BraveClass<ChromeClass>()
 ```
