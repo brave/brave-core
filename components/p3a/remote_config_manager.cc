@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
@@ -75,16 +76,18 @@ ReadAndParseJsonRules(const base::FilePath& manifest_file_path) {
 
 }  // namespace
 
-RemoteConfigManager::RemoteConfigManager(Delegate* delegate)
-    : delegate_(delegate) {}
+RemoteConfigManager::RemoteConfigManager(const Delegate* delegate)
+    : delegate_(delegate) {
+  CHECK(delegate_);
+}
 
 RemoteConfigManager::~RemoteConfigManager() = default;
 
-void RemoteConfigManager::OnComponentReady(const base::FilePath& install_dir) {
-  LoadRemoteConfig(install_dir);
-}
+void RemoteConfigManager::LoadRemoteConfig(
+    const base::FilePath& install_dir,
+    base::OnceClosure config_loaded_callback) {
+  config_loaded_callback_ = std::move(config_loaded_callback);
 
-void RemoteConfigManager::LoadRemoteConfig(const base::FilePath& install_dir) {
   base::FilePath manifest_file_path =
       install_dir.AppendASCII(kP3AManifestFileName);
 
@@ -98,6 +101,7 @@ void RemoteConfigManager::LoadRemoteConfig(const base::FilePath& install_dir) {
 void RemoteConfigManager::SetMetricConfigs(
     std::unique_ptr<base::flat_map<std::string, RemoteMetricConfig>> result) {
   if (!result) {
+    std::move(config_loaded_callback_).Run();
     return;
   }
 
@@ -111,9 +115,7 @@ void RemoteConfigManager::SetMetricConfigs(
     }
 
     const auto* base_config = delegate_->GetBaseMetricConfig(entry.first);
-
     const auto& remote_config = entry.second;
-
     auto metric_config = base_config ? *base_config : MetricConfig{};
 
     metric_config.ephemeral =
@@ -147,15 +149,13 @@ void RemoteConfigManager::SetMetricConfigs(
 
     metric_configs_.emplace(entry.first, metric_config);
   }
+
+  std::move(config_loaded_callback_).Run();
 }
 
 const MetricConfig* RemoteConfigManager::GetRemoteMetricConfig(
     std::string_view metric_name) const {
-  auto it = metric_configs_.find(metric_name);
-  if (it == metric_configs_.end()) {
-    return nullptr;
-  }
-  return &it->second;
+  return base::FindOrNull(metric_configs_, metric_name);
 }
 
 base::WeakPtr<RemoteConfigManager> RemoteConfigManager::GetWeakPtr() {

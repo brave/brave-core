@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/p3a/metric_config.h"
@@ -19,7 +20,7 @@
 
 namespace p3a {
 
-constexpr base::FilePath::CharType kP3AManifestFileName[] =
+inline constexpr base::FilePath::CharType kP3AManifestFileName[] =
     FILE_PATH_LITERAL("p3a_manifest.json");
 
 // The RemoteConfigManager loads remote configuration data from the Brave Local
@@ -36,24 +37,25 @@ class RemoteConfigManager {
         std::string_view histogram_name) const = 0;
   };
 
-  explicit RemoteConfigManager(Delegate* delegate);
+  explicit RemoteConfigManager(const Delegate* delegate);
   ~RemoteConfigManager();
 
-  void OnComponentReady(const base::FilePath& install_dir);
+  void LoadRemoteConfig(const base::FilePath& install_dir,
+                        base::OnceClosure config_loaded_callback);
 
   const MetricConfig* GetRemoteMetricConfig(std::string_view metric_name) const;
 
   base::WeakPtr<RemoteConfigManager> GetWeakPtr();
 
  private:
-  void LoadRemoteConfig(const base::FilePath& install_dir);
   void SetMetricConfigs(
       std::unique_ptr<base::flat_map<std::string, RemoteMetricConfig>> result);
 
   base::flat_map<std::string, MetricConfig> metric_configs_;
   base::flat_set<std::string> activation_metric_names_;
 
-  raw_ptr<Delegate> delegate_ = nullptr;
+  raw_ptr<const Delegate> delegate_ = nullptr;
+  base::OnceClosure config_loaded_callback_;
 
   base::WeakPtrFactory<RemoteConfigManager> weak_factory_{this};
 };

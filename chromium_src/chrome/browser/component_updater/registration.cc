@@ -31,9 +31,10 @@ void RegisterComponentsForUpdate() {
                                              g_browser_process->local_state());
   psst::RegisterPsstComponent(cus);
   auto* p3a_service = g_brave_browser_process->p3a_service();
-  p3a::RegisterP3AComponent(
-      cus, p3a_service ? p3a_service->remote_config_manager()->GetWeakPtr()
-                       : nullptr);
+  if (p3a_service) {
+    p3a::RegisterP3AComponent(
+        cus, p3a_service->remote_config_manager()->GetWeakPtr());
+  }
   ai_chat::ManageLocalModelsComponentRegistration(cus);
 }
 

@@ -96,8 +96,12 @@ class P3ARemoteConfigManagerTest : public testing::Test,
 };
 
 TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
-  remote_config_manager_->OnComponentReady(test_data_path_);
-  task_environment_.RunUntilIdle();
+  {
+    base::RunLoop run_loop;
+    remote_config_manager_->LoadRemoteConfig(test_data_path_,
+                                             run_loop.QuitClosure());
+    run_loop.Run();
+  }
 
   const auto* uptime_config = remote_config_manager_->GetRemoteMetricConfig(
       "Brave.Uptime.BrowserOpenMinutes");
@@ -160,9 +164,13 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
 }
 
 TEST_F(P3ARemoteConfigManagerTest, InvalidConfig) {
-  // Don't set up the test data, which will result in an empty config
-  remote_config_manager_->OnComponentReady(bad_dir_.GetPath());
-  task_environment_.RunUntilIdle();
+  {
+    base::RunLoop run_loop;
+    // Don't set up the test data, which will result in an empty config
+    remote_config_manager_->LoadRemoteConfig(bad_dir_.GetPath(),
+                                             run_loop.QuitClosure());
+    run_loop.Run();
+  }
 
   // All calls to GetRemoteMetricConfig should return nullptr
   EXPECT_FALSE(remote_config_manager_->GetRemoteMetricConfig(

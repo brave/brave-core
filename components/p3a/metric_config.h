@@ -73,6 +73,8 @@ struct MetricConfig {
   std::optional<MetricLogType> cadence;
 };
 
+// This struct is used to store the remote configuration for a metric.
+// The remote configuration is provided by the component updater.
 struct RemoteMetricConfig {
   RemoteMetricConfig();
   ~RemoteMetricConfig();

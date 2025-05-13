@@ -69,7 +69,9 @@ class P3AComponentInstallerPolicy
   void ComponentReady(const base::Version& version,
                       const base::FilePath& install_dir,
                       base::Value::Dict manifest) override {
-    remote_config_manager_->OnComponentReady(install_dir);
+    if (remote_config_manager_) {
+      remote_config_manager_->LoadRemoteConfig(install_dir, base::DoNothing());
+    }
   }
 
   base::FilePath GetRelativeInstallDir() const override {
