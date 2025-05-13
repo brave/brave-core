@@ -11,56 +11,29 @@
 #include <vector>
 
 #include "base/component_export.h"
-#include "base/gtest_prod_util.h"
-#include "base/memory/raw_ptr.h"
-#include "base/memory/singleton.h"
-#include "base/memory/weak_ptr.h"
+#include "base/functional/callback.h"
+#include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
-
-class GURL;
+#include "url/gurl.h"
 
 namespace psst {
-// Needed for testing private methods in PsstTabHelperBrowserTest.
-FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, NoMatch);
-FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse);
-FORWARD_DECLARE_TEST(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue);
 
-// This class loads and stores the rules from the psst.json file.
-// It is also used for matching based on the URL.
+// Represents the registry of PSST rules.
+// It allows to load the all items from the psst.json file and match them
+// against the URL. For matched rules, it loads rule data (the user.js and
+// policy.js script contents) with using of rule data reader.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
  public:
-  PsstRuleRegistry(const PsstRuleRegistry&) = delete;
-  PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
-  ~PsstRuleRegistry();
-  static PsstRuleRegistry* GetInstance();  // singleton
+  using OnLoadCallback = base::OnceCallback<void(const std::string&,
+                                                 const std::vector<PsstRule>&)>;
+  static PsstRuleRegistry* GetInstance();
+
   // Returns the matched PSST rule, if any.
-  void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(MatchedRule)> cb) const;
-  // Given a path to psst.json, loads the rules from the file into memory.
-  void LoadRules(const base::FilePath& path);
+  virtual void CheckIfMatch(
+      const GURL& url,
+      base::OnceCallback<void(std::unique_ptr<MatchedRule>)> cb) = 0;
 
- private:
-  PsstRuleRegistry();
-
-  // These methods are also called by PsstTabHelperBrowserTest.
-  // Given contents of psst.json, loads the rules from the file into memory.
-  // Called by |LoadRules| after the file is read.
-  void OnLoadRules(const std::string& data);
-  // Sets the component path used to resolve the paths to the scripts.
-  void SetComponentPath(const base::FilePath& path);
-
-  base::FilePath component_path_;
-  std::vector<PsstRule> rules_;
-
-  base::WeakPtrFactory<PsstRuleRegistry> weak_factory_{this};
-
-  // Needed for testing private methods in PsstTabHelperBrowserTest.
-  FRIEND_TEST_ALL_PREFIXES(PsstTabHelperBrowserTest, NoMatch);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse);
-  FRIEND_TEST_ALL_PREFIXES(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue);
-  friend class PsstTabHelperBrowserTest;
-
-  friend struct base::DefaultSingletonTraits<PsstRuleRegistry>;
+  virtual void LoadRules(const base::FilePath& path, OnLoadCallback cb) = 0;
 };
 
 }  // namespace psst
