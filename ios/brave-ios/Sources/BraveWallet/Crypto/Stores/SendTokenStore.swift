@@ -686,7 +686,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
       let weiHexString = walletAmountFormatter.weiString(
-        from: amount.normalizedDecimals,
+        from: amount,
         radix: .hex,
         decimals: Int(token.decimals)
       )
@@ -780,7 +780,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     isMakingTx = true
     guard
       let amount = WalletAmountFormatter.decimalToAmount(
-        amount.normalizedDecimals,
+        amount,
         tokenDecimals: Int(token.decimals)
       )
     else {
@@ -892,7 +892,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     )
     guard
       let weiString = walletAmountFormatter.weiString(
-        from: amount.normalizedDecimals,
+        from: amount,
         decimals: Int(token.decimals)
       )
     else {
@@ -932,7 +932,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     isMakingTx = true
     guard
       let amountInSatoshi = WalletAmountFormatter.decimalToAmount(
-        amount.normalizedDecimals,
+        amount,
         tokenDecimals: Int(token.decimals)
       )
     else {
