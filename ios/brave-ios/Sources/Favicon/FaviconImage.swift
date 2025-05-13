@@ -35,6 +35,9 @@ public struct FaviconImage: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .task(id: url) {
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] != nil {
+          return
+        }
         faviconLoader.load(url: url, isPrivateBrowsing: isPrivateBrowsing)
       }
   }
