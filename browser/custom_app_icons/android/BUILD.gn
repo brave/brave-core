@@ -1,0 +1,118 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//build/config/locales.gni")
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIcons.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManager.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/confirm_dialog/BraveConfirmationDialog.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/confirm_dialog/OnConfirmationDialogListener.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsAdapter.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsFragment.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsListener.java",
+  ]
+  deps = [
+    ":java_resources",
+    "//base:tasks_java",
+    "//chrome/android:chrome_base_module_resources",
+    "//chrome/browser/preferences:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+  ]
+
+  resources_package = "org.chromium.brave.browser.custom_app_icons"
+}
+
+android_resources("java_resources") {
+  sources = []
+  foreach(density,
+          [
+            "hdpi",
+            "mdpi",
+            "xhdpi",
+            "xxhdpi",
+            "xxxhdpi",
+          ]) {
+    sources += [
+      "java/res/drawable-${density}/ic_launcher_3d.webp",
+      "java/res/drawable-${density}/ic_launcher_80s.webp",
+      "java/res/drawable-${density}/ic_launcher_aqua.webp",
+      "java/res/drawable-${density}/ic_launcher_bat.webp",
+      "java/res/drawable-${density}/ic_launcher_holo.webp",
+      "java/res/drawable-${density}/ic_launcher_neon.webp",
+      "java/res/drawable-${density}/ic_launcher_netscape.webp",
+      "java/res/drawable-${density}/ic_launcher_popart.webp",
+      "java/res/drawable-${density}/ic_launcher_popartdark.webp",
+      "java/res/drawable-${density}/ic_launcher_supernova.webp",
+      "java/res/drawable-${density}/ic_launcher_terminal.webp",
+      "java/res/drawable-${density}/ic_launcher_windows.webp",
+    ]
+  }
+
+  sources += [
+    "java/res/drawable/brave_action_button_bg.xml",
+    "java/res/drawable/confirmation_dialog_shape.xml",
+    "java/res/drawable/ic_check_circle_filled.xml",
+    "java/res/layout/brave_confirmation_dialog_layout.xml",
+    "java/res/layout/custom_app_icons_item.xml",
+    "java/res/layout/fragment_custom_app_icons.xml",
+    "java/res/values-night/custom_app_icons_colors.xml",
+    "java/res/values/custom_app_icons_colors.xml",
+    "java/res/values/custom_app_icons_styles.xml",
+  ]
+
+  foreach(icon,
+          [
+            "3d",
+            "80s",
+            "aqua",
+            "bat",
+            "holo",
+            "neon",
+            "netscape",
+            "popart",
+            "popartdark",
+            "supernova",
+            "terminal",
+            "windows",
+          ]) {
+    sources += [
+      "java/res/mipmap-anydpi-v26/ic_launcher_${icon}.xml",
+      "java/res/mipmap-anydpi-v26/ic_launcher_${icon}_round.xml",
+    ]
+  }
+
+  deps = [ ":java_strings_grd" ]
+}
+
+java_strings_grd("java_strings_grd") {
+  defines = chrome_grit_defines
+  grd_file = "java/strings/android_custom_app_icons_strings.grd"
+  outputs = [ "values/android_custom_app_icons_strings.xml" ] + process_file_template(
+                android_bundle_locales_as_resources,
+                [ "values-{{source_name_part}}/android_custom_app_icons_strings.xml" ])
+}
+
+robolectric_library("junit_tests") {
+  sources = [ "junit/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManagerTest.java" ]
+
+  deps = [
+    ":java",
+    ":java_resources",
+    "//base:base_java_test_support",
+    "//base:base_junit_test_support",
+    "//chrome/browser/preferences:java",
+    "//third_party/androidx:androidx_test_core_java",
+    "//third_party/junit",
+    "//third_party/mockito:mockito_java",
+  ]
+}

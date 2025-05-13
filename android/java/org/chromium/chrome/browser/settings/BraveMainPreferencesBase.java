@@ -5,16 +5,36 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -47,6 +67,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.HashMap;
 
 // This excludes some settings in main settings screen.
+@NullMarked
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
@@ -78,6 +99,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
+    private static final String PREF_CUSTOM_APP_ICONS = "custom_app_icons";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
@@ -95,11 +117,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
-    private Preference mVpnCalloutPreference;
+    private @MonotonicNonNull Preference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Add brave's additional preferences here because |onCreatePreference| is not called
@@ -239,7 +261,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (result == null) {
             result = (T) mRemovedPreferences.get((String) key);
         }
-        return result;
+        return assumeNonNull(result);
     }
 
     /**
@@ -330,6 +352,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         findPreference(PREF_TABS).setOrder(++displaySectionOrder);
         findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
         findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
+        findPreference(PREF_CUSTOM_APP_ICONS).setOrder(++displaySectionOrder);
         findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
         findPreference(PREF_ACCESSIBILITY).setOrder(++displaySectionOrder);
         findPreference(PREF_BRAVE_LANGUAGES).setOrder(++displaySectionOrder);
@@ -377,6 +400,51 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
+    private void updateCustomAppIcon(String preferenceString) {
+        Preference preference = findPreference(preferenceString);
+        @AppIconType int currentIcon = CustomAppIconsManager.getInstance().getCurrentIcon();
+        int iconResource =
+                currentIcon == CustomAppIcons.ICON_DEFAULT
+                        ? R.drawable.ic_launcher_round
+                        : CustomAppIcons.getIcon(currentIcon);
+        if (preference != null) {
+            Drawable drawable =
+                    getCircularDrawable(getContext(), iconResource, dpToPx(getContext(), 16));
+            if (drawable != null) {
+                preference.setIcon(drawable);
+            }
+        }
+    }
+
+    private Drawable getCircularDrawable(Context context, int drawableResId, int size) {
+        Drawable sourceDrawable = ContextCompat.getDrawable(context, drawableResId);
+        Bitmap sourceBitmap = drawableToBitmap(sourceDrawable, size, size);
+        return createCircularBitmapDrawable(context, sourceBitmap, size);
+    }
+
+    private BitmapDrawable createCircularBitmapDrawable(
+            Context context, Bitmap sourceBitmap, int size) {
+        Bitmap outputBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(outputBitmap);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(
+                new BitmapShader(sourceBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+        float radius = size / 2f;
+        canvas.drawCircle(radius, radius, radius, paint);
+
+        return new BitmapDrawable(context.getResources(), outputBitmap);
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable, int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) {
@@ -406,6 +474,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    updateCustomAppIcon(PREF_CUSTOM_APP_ICONS);
+                });
     }
 
     private void updateSearchEnginePreference() {
