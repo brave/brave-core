@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -17,8 +18,11 @@
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "base/memory/singleton.h"
+#include "base/memory/weak_ptr.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
+#include "brave/components/psst/browser/core/rule_data_reader.h"
 #include "brave/components/psst/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
@@ -29,54 +33,61 @@ namespace psst {
 namespace {
 
 const base::FilePath::CharType kJsonFile[] = FILE_PATH_LITERAL("psst.json");
-const base::FilePath::CharType kScriptsDir[] = FILE_PATH_LITERAL("scripts");
 
 std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
   bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
-    VLOG(2) << "ReadFile: cannot "
-            << "read file " << file_path;
+    VLOG(2) << "ReadFile: cannot " << "read file " << file_path;
   }
   return contents;
 }
 
-MatchedRule CreateMatchedRule(const base::FilePath& component_path,
-                              const base::FilePath& test_script_path,
-                              const base::FilePath& policy_script_path,
-                              const int version) {
-  auto prefix = base::FilePath(component_path).Append(kScriptsDir);
-  auto test_script = ReadFile(base::FilePath(prefix).Append(test_script_path));
-  auto policy_script =
-      ReadFile(base::FilePath(prefix).Append(policy_script_path));
-  return {test_script, policy_script, version};
+std::optional<MatchedRule> CreateMatchedRule(
+    std::unique_ptr<MatchedRuleFactory> factory,
+    const PsstRule& rule) {
+  return factory->Create(rule);
 }
 
 }  // namespace
 
 // static
-PsstRuleRegistry* PsstRuleRegistry::GetInstance() {
-  // Check if feature flag is enabled.
+PsstRuleRegistryAccessor* PsstRuleRegistryAccessor::GetInstance() {
+  return base::Singleton<PsstRuleRegistryAccessor>::get();
+}
+
+PsstRuleRegistryAccessor::PsstRuleRegistryAccessor()
+    : impl_(std::make_unique<PsstRuleRegistryImpl>()) {}
+PsstRuleRegistryAccessor::~PsstRuleRegistryAccessor() = default;
+
+PsstRuleRegistry* PsstRuleRegistryAccessor::Registry() {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
     return nullptr;
   }
-  return base::Singleton<PsstRuleRegistry>::get();
+
+  return impl_.get();
 }
 
-PsstRuleRegistry::PsstRuleRegistry() = default;
+void PsstRuleRegistryAccessor::SetRegistryForTesting(
+    std::unique_ptr<PsstRuleRegistry> new_inst) {
+  impl_ = std::move(new_inst);
+}
 
-PsstRuleRegistry::~PsstRuleRegistry() = default;
+PsstRuleRegistryImpl::PsstRuleRegistryImpl() = default;
+PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 
-void PsstRuleRegistry::CheckIfMatch(
+void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
-    base::OnceCallback<void(MatchedRule)> cb) const {
+    base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const {
   for (const PsstRule& rule : rules_) {
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
-          base::BindOnce(&CreateMatchedRule, component_path_,
-                         rule.GetTestScript(), rule.GetPolicyScript(),
-                         rule.GetVersion()),
+          base::BindOnce(
+              &CreateMatchedRule,
+              std::make_unique<MatchedRuleFactory>(rule_data_reader_.get(),
+                                                   rule.Name(), rule.Version()),
+              rule),
           std::move(cb));
       // Only ever find one matching rule.
       return;
@@ -84,20 +95,24 @@ void PsstRuleRegistry::CheckIfMatch(
   }
 }
 
-void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
-  SetComponentPath(path);
+void PsstRuleRegistryImpl::SetRuleDataReaderForTest(
+    std::unique_ptr<RuleDataReader> rule_data_reader) {
+  rule_data_reader_ = std::move(rule_data_reader);
+}
+
+void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path) {
+  if (!rule_data_reader_) {
+    rule_data_reader_ = std::make_unique<RuleDataReader>(path);
+  }
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
-      base::BindOnce(&PsstRuleRegistry::OnLoadRules,
+      base::BindOnce(&PsstRuleRegistryImpl::OnLoadRules,
                      weak_factory_.GetWeakPtr()));
 }
 
-void PsstRuleRegistry::SetComponentPath(const base::FilePath& path) {
-  component_path_ = path;
-}
-
-void PsstRuleRegistry::OnLoadRules(const std::string& contents) {
+void PsstRuleRegistryImpl::OnLoadRules(const std::string& contents) {
   auto parsed_rules = PsstRule::ParseRules(contents);
   if (!parsed_rules) {
     return;
