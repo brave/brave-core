@@ -26,7 +26,7 @@
 
 namespace {
 
-constexpr char kExtensionId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";
+constexpr char kExtensionId[] = "bgkmgpgeempochogfoddiobpbhdfgkdi";  // NoScript
 
 bool ClickExtensionToggle(content::WebContents* web_contents) {
   return EvalJs(web_contents,
@@ -200,7 +200,8 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
                        InstallBravePublishedExtension) {
   base::ScopedAllowBlockingForTesting allow_blocking;
 
-  constexpr char kTestExtension[] = "eedcldngdlcmkjdcdlffmjhpbfdcmkce";
+  constexpr char kTestExtension[] =
+      "eedcldngdlcmkjdcdlffmjhpbfdcmkce";  // test/data extension
 
   base::FilePath test_extension =
       base::PathService::CheckedGet(brave::DIR_TEST_DATA);
