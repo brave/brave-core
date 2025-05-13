@@ -76,7 +76,6 @@ enum AIChatFeedbackToastType: Equatable {
 }
 
 enum AIChatFeedbackToastPrivacyWarning: Equatable {
-  case none
   case liked(turnIndex: Int, turnId: String)
   case disliked(turnIndex: Int, turnId: String)
 
@@ -85,8 +84,6 @@ enum AIChatFeedbackToastPrivacyWarning: Equatable {
     rhs: AIChatFeedbackToastPrivacyWarning
   ) -> Bool {
     switch (lhs, rhs) {
-    case (.none, .none):
-      return true
     case (.liked(let turnIndexA, let turnIdA), .liked(let turnIndexB, let turnIdB)):
       return turnIndexA == turnIndexB && turnIdA == turnIdB
     case (.disliked(let turnIndexA, let turnIdA), .disliked(let turnIndexB, let turnIdB)):

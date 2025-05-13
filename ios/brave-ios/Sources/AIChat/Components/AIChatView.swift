@@ -45,7 +45,7 @@ public struct AIChatView: View {
   private var shouldShowFeedbackPrivacyWarningAlert = false
 
   @State
-  private var feedbackPrivacyWarning: AIChatFeedbackToastPrivacyWarning = .none
+  private var feedbackPrivacyWarning: AIChatFeedbackToastPrivacyWarning?
 
   @State
   private var isShowingSlashTools = false
@@ -393,13 +393,16 @@ public struct AIChatView: View {
     .bravePopup(isPresented: $shouldShowFeedbackPrivacyWarningAlert) {
       AIChatFeedbackPrivacyWarningView {
         shouldShowFeedbackPrivacyWarningAlert = false
-        feedbackPrivacyWarning = .none
+        feedbackPrivacyWarning = nil
       } onSend: {
-        switch feedbackPrivacyWarning {
-        case .none: break
+        guard let warning = feedbackPrivacyWarning else {
+          return
+        }
+
+        switch warning {
         case .liked(_, let turnId):
           shouldShowFeedbackPrivacyWarningAlert = false
-          feedbackPrivacyWarning = .none
+          feedbackPrivacyWarning = nil
 
           Task { @MainActor in
             let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
@@ -411,7 +414,7 @@ public struct AIChatView: View {
           }
         case .disliked(let turnIndex, let turnId):
           shouldShowFeedbackPrivacyWarningAlert = false
-          feedbackPrivacyWarning = .none
+          feedbackPrivacyWarning = nil
 
           Task { @MainActor in
             let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)
@@ -432,7 +435,7 @@ public struct AIChatView: View {
         }
       } onOpenURL: { url in
         shouldShowFeedbackPrivacyWarningAlert = false
-        feedbackPrivacyWarning = .none
+        feedbackPrivacyWarning = nil
         openURL(url)
         dismiss()
       }
