@@ -58,23 +58,6 @@ public struct BravePopupView<Content: View>: UIViewControllerRepresentable {
     if isPresented {
       guard uiViewController.presentedViewController == nil
       else {
-        // The system dismissed our Popup automatically, but never updated our presentation state
-        // It usually does this if you present another Popup or sheet
-        // Manually update it
-        if let controller = context.coordinator.presentedViewController
-          as? PopupViewController<Content>
-        {
-          DispatchQueue.main.async {
-            controller.dismiss(animated: true) {
-              context.coordinator.presentedViewController = nil
-              self.isPresented = false
-            }
-          }
-        } else if context.coordinator.presentedViewController != nil {
-          DispatchQueue.main.async {
-            isPresented = false
-          }
-        }
         return
       }
 

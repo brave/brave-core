@@ -945,8 +945,17 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Liking an answer will send rating, conversation, model, language, version and premium stats to Brave in order to improve Leo.",
+        "Liking or disliking an answer will send rating, conversation, model, language, version, and premium status to Brave in order to improve Leo. [Learn More](%@)",
       comment: "The message for privacy warning alert when rating a response"
+    )
+    public static let dontShowAgainTitle = NSLocalizedString(
+      "aichat.dontShowAgainTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Don't show again",
+      comment:
+        "The checkbox title for the privacy alert warning that will make it not warn the user again"
     )
     public static let suggestionsGenerationButtonTitle = NSLocalizedString(
       "aichat.suggestionsGenerationButtonTitle",
