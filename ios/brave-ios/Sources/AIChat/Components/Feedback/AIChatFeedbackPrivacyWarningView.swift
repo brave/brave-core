@@ -15,7 +15,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
 
   var onCancel: () -> Void
   var onSend: () -> Void
-  var onOpenURL: (URL) -> Void
+  var openURL: (URL) -> Void
 
   var body: some View {
     VStack(spacing: 16.0) {
@@ -28,8 +28,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
       Text(
         LocalizedStringKey(
           String(
-            format: "%@",
-            Strings.AIChat.rateAnswerFeedbackPrivacyWarningMessage,
+            format: Strings.AIChat.rateAnswerFeedbackPrivacyWarningMessage,
             URL.Brave.braveLeoPrivacyFeedbackLearnMoreLinkUrl.absoluteString
           )
         )
@@ -39,6 +38,13 @@ struct AIChatFeedbackPrivacyWarningView: View {
       .multilineTextAlignment(.leading)
       .fixedSize(horizontal: false, vertical: true)
       .foregroundStyle(Color(braveSystemName: .textSecondary))
+      .environment(
+        \.openURL,
+        OpenURLAction { url in
+          openURL(url)
+          return .handled
+        }
+      )
 
       Button {
         showFeedbackPrivacyWarning.value.toggle()

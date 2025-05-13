@@ -421,7 +421,7 @@ public struct AIChatView: View {
             feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
           }
         }
-      } onOpenURL: { url in
+      } openURL: { url in
         shouldShowFeedbackPrivacyWarningAlert = false
         feedbackPrivacyWarning = nil
         openURL(url)
