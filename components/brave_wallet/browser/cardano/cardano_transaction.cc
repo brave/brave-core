@@ -492,4 +492,17 @@ bool CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
   return false;
 }
 
+void CardanoTransaction::ArrangeTransactionForTesting() {
+  std::sort(inputs_.begin(), inputs_.end(),
+            [](const auto& input1, const auto& input2) {
+              return input1.utxo_outpoint < input2.utxo_outpoint;
+            });
+
+  DCHECK_LE(outputs_.size(), 2u);
+  std::sort(outputs_.begin(), outputs_.end(),
+            [](const auto& output1, const auto& output2) {
+              return output1.type < output2.type;
+            });
+}
+
 }  // namespace brave_wallet

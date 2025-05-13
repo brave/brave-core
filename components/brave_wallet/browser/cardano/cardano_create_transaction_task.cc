@@ -31,6 +31,8 @@ namespace brave_wallet {
 constexpr uint32_t kTxValiditySeconds = 2 * 3600;
 
 namespace {
+static bool g_arrange_tx_for_test = false;
+
 std::vector<CardanoTransaction::TxInput> TxInputsFromUtxoMap(
     const std::map<CardanoAddress, cardano_rpc::UnspentOutputs>& map) {
   std::vector<CardanoTransaction::TxInput> result;
@@ -65,6 +67,11 @@ CardanoCreateTransactionTask::CardanoCreateTransactionTask(
 }
 
 CardanoCreateTransactionTask::~CardanoCreateTransactionTask() = default;
+
+// static
+void CardanoCreateTransactionTask::SetArrangeTransactionForTesting(bool value) {
+  g_arrange_tx_for_test = value;
+}
 
 void CardanoCreateTransactionTask::Start(Callback callback) {
   callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
@@ -156,6 +163,9 @@ void CardanoCreateTransactionTask::WorkOnTask() {
 
     has_solved_transaction_ = true;
     transaction_ = std::move(*solved_transaction);
+    if (g_arrange_tx_for_test) {
+      transaction_.ArrangeTransactionForTesting();  // IN-TEST
+    }
   }
 
   std::move(callback_).Run(base::ok(std::move(transaction_)));

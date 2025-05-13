@@ -660,7 +660,7 @@ export const transactionEndpoints = ({
             data: { success }
           }
         } catch (error) {
-          return { error: 'Failed to send Btc transaction' }
+          return { error: 'Failed to send ADA transaction' }
         }
       },
       invalidatesTags: (res, err, arg) =>

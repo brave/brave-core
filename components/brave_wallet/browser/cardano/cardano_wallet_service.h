@@ -111,7 +111,8 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   void OnGetTransactionStatus(
       const std::string& txid,
       GetTransactionStatusCallback callback,
-      base::expected<cardano_rpc::Transaction, std::string> transaction);
+      base::expected<std::optional<cardano_rpc::Transaction>, std::string>
+          transaction);
 
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
   cardano_rpc::CardanoRpc cardano_mainnet_rpc_;

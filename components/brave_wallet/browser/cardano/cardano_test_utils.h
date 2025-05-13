@@ -43,6 +43,9 @@ class CardanoTestRpcServer {
 
   void FailNextTransactionSubmission();
   void ConfirmAllTransactions();
+  void AddConfirmedTransaction(const std::string& txid);
+
+  std::string captured_raw_tx() const { return captured_raw_tx_; }
 
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 

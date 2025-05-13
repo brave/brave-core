@@ -379,6 +379,12 @@ void CardanoRpc::GetTransaction(std::string_view txid,
 
 void CardanoRpc::OnGetTransaction(GetTransactionCallback callback,
                                   APIRequestResult api_request_result) {
+  // Transaction still in mempool is returned as 404.
+  if (api_request_result.response_code() == net::HTTP_NOT_FOUND) {
+    std::move(callback).Run(base::ok(std::nullopt));
+    return;
+  }
+
   if (!api_request_result.Is2XXResponseCode()) {
     return ReplyWithInternalError(std::move(callback));
   }

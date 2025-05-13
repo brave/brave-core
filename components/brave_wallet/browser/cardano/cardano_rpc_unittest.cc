@@ -31,6 +31,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::RunOnceClosure;
 using testing::Truly;
 
 namespace brave_wallet {
@@ -142,7 +143,7 @@ TEST_F(CardanoRpcUnitTest, Throttling) {
         .WillOnce({})
         .WillOnce({})
         .WillOnce({})
-        .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+        .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
     cardano_rpc->GetLatestBlock(callback.Get());
     cardano_rpc->GetLatestBlock(callback.Get());
     cardano_rpc->GetLatestBlock(callback.Get());
@@ -168,7 +169,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestBlock) {
                                                          .slot = 7,
                                                          .epoch = 88};
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, LatestBlockPayload(123, 7, 88));
   cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
   task_environment_.RunUntilQuit();
@@ -180,7 +181,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestBlock) {
                                                          .slot = 5,
                                                          .epoch = 12};
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, LatestBlockPayload(9999999, 5, 12));
   cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
   task_environment_.RunUntilQuit();
@@ -188,7 +189,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestBlock) {
 
   // Invalid value returned.
   EXPECT_CALL(callback, Run(MatchError(WalletParsingErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, R"({"some": "string"})");
   cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
   task_environment_.RunUntilQuit();
@@ -196,7 +197,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestBlock) {
 
   // HTTP Error returned.
   EXPECT_CALL(callback, Run(MatchError(WalletInternalErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, LatestBlockPayload(123, 7, 88),
                                   net::HTTP_INTERNAL_SERVER_ERROR);
   cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
@@ -209,7 +210,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestBlock) {
                                                          .slot = 7,
                                                          .epoch = 88};
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(testnet_rpc_url_ + "blocks/latest",
                                   LatestBlockPayload(123, 7, 88));
   cardano_testnet_rpc_->GetLatestBlock(callback.Get());
@@ -229,7 +230,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
                        cardano_rpc::EpochParameters{.min_fee_coefficient = 100,
                                                     .min_fee_constant = 200};
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, LatestEpochParameters(100, 200));
   cardano_mainnet_rpc_->GetLatestEpochParameters(callback.Get());
   task_environment_.RunUntilQuit();
@@ -241,7 +242,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
                        cardano_rpc::EpochParameters{.min_fee_coefficient = 7,
                                                     .min_fee_constant = 5};
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, LatestEpochParameters(7, 5));
   cardano_mainnet_rpc_->GetLatestEpochParameters(callback.Get());
   task_environment_.RunUntilQuit();
@@ -249,7 +250,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
 
   // Invalid value returned.
   EXPECT_CALL(callback, Run(MatchError(WalletParsingErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, R"({"some": "string"})");
   cardano_mainnet_rpc_->GetLatestEpochParameters(callback.Get());
   task_environment_.RunUntilQuit();
@@ -257,7 +258,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
 
   // HTTP Error returned.
   EXPECT_CALL(callback, Run(MatchError(WalletInternalErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, LatestEpochParameters(123, 7),
                                   net::HTTP_INTERNAL_SERVER_ERROR);
   cardano_mainnet_rpc_->GetLatestEpochParameters(callback.Get());
@@ -270,7 +271,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
                        cardano_rpc::EpochParameters{.min_fee_coefficient = 100,
                                                     .min_fee_constant = 200};
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(testnet_rpc_url_ + "epochs/latest/parameters",
                                   LatestEpochParameters(100, 200));
   cardano_testnet_rpc_->GetLatestEpochParameters(callback.Get());
@@ -325,7 +326,7 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
                 EXPECT_EQ(arg.value(), utxos);
                 return true;
               })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, utxo_json);
   cardano_mainnet_rpc_->GetUtxoList(address, callback.Get());
   task_environment_.RunUntilQuit();
@@ -333,7 +334,7 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
 
   // Invalid value returned.
   EXPECT_CALL(callback, Run(MatchError(WalletParsingErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, "[123]");
   cardano_mainnet_rpc_->GetUtxoList(address, callback.Get());
   task_environment_.RunUntilQuit();
@@ -341,7 +342,7 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
 
   // HTTP Error returned.
   EXPECT_CALL(callback, Run(MatchError(WalletInternalErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.AddResponse(req_url, utxo_json,
                                   net::HTTP_INTERNAL_SERVER_ERROR);
   cardano_mainnet_rpc_->GetUtxoList(address, callback.Get());
@@ -351,7 +352,7 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
   // Testnet works.
   EXPECT_CALL(callback,
               Run(Truly([&](auto& arg) { return arg.value() == utxos; })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   url_loader_factory_.ClearResponses();
   url_loader_factory_.AddResponse(
       testnet_rpc_url_ + "addresses/" + address + "/utxos", utxo_json);
@@ -370,7 +371,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
 
   // PostTransaction works.
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) { return arg == txid; })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   cardano_mainnet_rpc_->PostTransaction({1, 2, 3}, callback.Get());
   auto request = WaitForPendingRequest();
   EXPECT_EQ(request.url, req_url);
@@ -386,7 +387,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   // Invalid value returned.
   url_loader_factory_.ClearResponses();
   EXPECT_CALL(callback, Run(MatchError(WalletParsingErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   cardano_mainnet_rpc_->PostTransaction({1, 2, 3}, callback.Get());
   request = WaitForPendingRequest();
   EXPECT_EQ(request.url, req_url);
@@ -397,7 +398,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   // HTTP Error returned.
   url_loader_factory_.ClearResponses();
   EXPECT_CALL(callback, Run(MatchError(WalletInternalErrorMessage())))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   cardano_mainnet_rpc_->PostTransaction({1, 2, 3}, callback.Get());
   request = WaitForPendingRequest();
   EXPECT_EQ(request.url, req_url);
@@ -409,7 +410,7 @@ TEST_F(CardanoRpcUnitTest, PostTransaction) {
   // Testnet works.
   url_loader_factory_.ClearResponses();
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) { return arg == txid; })))
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
   cardano_testnet_rpc_->PostTransaction({1, 2, 3}, callback.Get());
   request = WaitForPendingRequest();
   EXPECT_EQ(request.url, testnet_rpc_url_ + "tx/submit");

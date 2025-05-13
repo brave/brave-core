@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 
 namespace brave_wallet {
@@ -106,8 +107,8 @@ void CardanoTestRpcServer::RequestInterceptor(
           request.url.spec(), *base::WriteJsonWithOptions(tx.ToValue(), 0));
       return;
     }
-    url_loader_factory_.AddResponse(request.url.spec(), "Bad request",
-                                    net::HTTP_BAD_REQUEST);
+    url_loader_factory_.AddResponse(request.url.spec(), "Not found",
+                                    net::HTTP_NOT_FOUND);
     return;
   }
 
@@ -215,6 +216,10 @@ void CardanoTestRpcServer::FailNextTransactionSubmission() {
 
 void CardanoTestRpcServer::ConfirmAllTransactions() {
   base::Extend(confirmed_transactions_, std::move(mempool_transactions_));
+}
+
+void CardanoTestRpcServer::AddConfirmedTransaction(const std::string& txid) {
+  confirmed_transactions_.push_back(txid);
 }
 
 scoped_refptr<network::SharedURLLoaderFactory>

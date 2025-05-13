@@ -54,7 +54,8 @@ class CardanoRpc {
   void PostTransaction(const std::vector<uint8_t>& transaction,
                        PostTransactionCallback callback);
 
-  using GetTransactionCallback = RpcResponseCallback<Transaction>;
+  using GetTransactionCallback =
+      RpcResponseCallback<std::optional<Transaction>>;
   void GetTransaction(std::string_view txid, GetTransactionCallback callback);
 
   void SetUrlLoaderFactoryForTesting(

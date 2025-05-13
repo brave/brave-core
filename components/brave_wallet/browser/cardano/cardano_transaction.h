@@ -167,6 +167,10 @@ class CardanoTransaction {
     invalid_after_ = invalid_after;
   }
 
+  // Arrange order of inputs and outputs so transaction binary form is suitable
+  // for testing.
+  void ArrangeTransactionForTesting();
+
  private:
   std::vector<TxInput> inputs_;
   std::vector<TxOutput> outputs_;

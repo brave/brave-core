@@ -44,6 +44,7 @@ class CardanoCreateTransactionTask {
   ~CardanoCreateTransactionTask();
 
   void Start(Callback callback);
+  static void SetArrangeTransactionForTesting(bool arrange_for_testing);
 
  private:
   CardanoTransaction::TxOutput CreateTargetOutput();

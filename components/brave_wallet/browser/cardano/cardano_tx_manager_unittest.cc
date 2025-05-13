@@ -141,9 +141,9 @@ class CardanoTxManagerUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
-  std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;
+  std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   std::unique_ptr<TxService> tx_service_;
   std::unordered_map<std::string, std::string> responses_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

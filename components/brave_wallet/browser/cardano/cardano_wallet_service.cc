@@ -259,13 +259,19 @@ void CardanoWalletService::GetTransactionStatus(
 void CardanoWalletService::OnGetTransactionStatus(
     const std::string& txid,
     GetTransactionStatusCallback callback,
-    base::expected<cardano_rpc::Transaction, std::string> transaction) {
+    base::expected<std::optional<cardano_rpc::Transaction>, std::string>
+        transaction) {
   if (!transaction.has_value()) {
     std::move(callback).Run(base::unexpected(transaction.error()));
     return;
   }
 
-  if (HexEncodeLower(transaction.value().tx_hash) != txid) {
+  if (!transaction.value().has_value()) {
+    std::move(callback).Run(base::ok(false));
+    return;
+  }
+
+  if (HexEncodeLower(transaction.value()->tx_hash) != txid) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
