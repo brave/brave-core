@@ -1,0 +1,68 @@
+[package]
+name = "schnorrkel"
+version = "0.11.4"
+authors = ["Jeff Burdges <jeff@web3.foundation>"]
+readme = "README.md"
+license = "BSD-3-Clause"
+repository = "https://github.com/w3f/schnorrkel"
+documentation = "https://docs.rs/schnorrkel"
+keywords = ["cryptography", "ed25519", "curve25519", "signature", "ECC"]
+categories = ["cryptography", "no-std"]
+description = "Schnorr VRF, signatures, etc. using the Ristretto group"
+exclude = [".gitignore", "res/*"]
+edition = "2021"
+
+[dependencies]
+aead = { version = "0.5.2", default-features = false, optional = true }
+arrayref = { version = "0.3.7", default-features = false }
+# needs to match parity-scale-code which is "=0.7.0"
+arrayvec = { version = "0.7.4", default-features = false }
+curve25519-dalek = { version = "4.1.0", default-features = false, features = [
+    "digest",
+    "zeroize",
+    "precomputed-tables",
+    "legacy_compatibility",
+] }
+subtle = { version = "2.4.1", default-features = false }
+merlin = { version = "3.0.0", default-features = false }
+getrandom_or_panic = { version = "0.0.3", default-features = false }
+rand_core = { version = "0.6.2", default-features = false }
+serde_crate = { version = "1.0.130", package = "serde", default-features = false, optional = true }
+serde_bytes = { version = "0.11.5", default-features = false, optional = true }
+cfg-if = { version = "1.0.0", optional = true }
+sha2 = { version = "0.10.7", default-features = false }
+failure = { version = "0.1.8", default-features = false, optional = true }
+zeroize = { version = "1.6", default-features = false, features = ["zeroize_derive"] }
+
+[dev-dependencies]
+rand = "0.8.5"
+rand_chacha = { version = "0.3.1", default-features = false }
+hex-literal = "0.4.1"
+sha3 = "0.10.8"
+bincode = "1.3.3"
+criterion = "0.4.0"
+serde_json = "1.0.68"
+
+[[bench]]
+name = "schnorr_benchmarks"
+harness = false
+
+[features]
+default = ["std", "getrandom"]
+preaudit_deprecated = []
+nightly = []
+alloc = ["curve25519-dalek/alloc", "rand_core/alloc", "getrandom_or_panic/alloc", "serde_bytes/alloc"]
+std = ["alloc", "getrandom", "serde_bytes/std", "rand_core/std", "getrandom_or_panic/std"]
+asm = ["sha2/asm"]
+serde = ["serde_crate", "serde_bytes", "cfg-if"]
+# We cannot make getrandom a direct dependency because rand_core makes
+# getrandom a feature name, which requires forwarding.
+getrandom = ["rand_core/getrandom", "getrandom_or_panic/getrandom", "aead?/getrandom"]
+# We thus cannot forward the wasm-bindgen feature of getrandom,
+# but our consumers could depend upon getrandom and activate its
+# wasm-bindgen feature themselve, which works due to cargo features
+# being additive.
+# wasm-bindgen = ["getrandom/wasm-bindgen"]
+# See https://github.com/rust-lang/cargo/issues/9210
+# and https://github.com/w3f/schnorrkel/issues/65#issuecomment-786923588
+aead = ["dep:aead"]
