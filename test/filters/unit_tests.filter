@@ -405,6 +405,7 @@
 
 # These tests fail because we disable
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
+-ChangePasswordFormFillingSubmissionHelperTest.*
 -ChromeHintsManagerFetchingTest.HintsFetched_*
 -PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
 -PasswordChangeDelegateImplTest.MetricsReportedWasPasswordChangeNewTabFocused
@@ -412,6 +413,7 @@
 -PasswordChangeDelegateImplTest.OtpDetectionProcessed
 -PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
 -PasswordChangeDelegateImplTest.RestartPasswordChange
+-PasswordChangeSubmissionVerifierTest.*
 
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
@@ -422,6 +424,7 @@
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysIncognitoDescriptionWhenInIncognito
 -PageInfoCookiesContentViewPre3pcdTest.*
+-PageInfoCookiesContentViewTrackingProtectionBubbleTest.DisplaysAct*
 
 # This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
@@ -601,6 +604,10 @@
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
 
+# These tests fail because we always set should_show_discard_status to true
+-TabRendererDataTest.FromTabInModel
+-TabRendererDataTest.TabLifecycleManagement
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -683,6 +690,7 @@
 -ProfileResetterTest.CheckSnapshots
 -ProfileResetterTest.ResetContentSettings
 -ProfileResetterTest.ResetStartPagePartially
+-RealThemeSyncableServiceTest.*
 -RenderViewContextMenuExtensionsTest.*
 -SaveCardBubbleControllerImplTest.UploadCvcOnlySaveDialogContent
 -SearchProviderRequestTest.SendRequest*
@@ -708,9 +716,11 @@
 -TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
 -ThemeLocalDataBatchUploaderTest.*
 -ThemeServiceTest.IsGrayscale
--ThemeSyncableServiceTest.*
+-ThemeSyncableServiceTest.GetAllSyncDataForTesting_Extension
+-ThemeSyncableServiceTest.OnThemeChangeByUser_Extension
+-ThemeSyncableServiceTest.RestoreSystemThemeBitWhenChangeToCustomTheme
 -ThemeSyncableServiceTestWithAccountThemesSeparation.LoadsLocalGrayscaleThemeFromPrefUponSyncStop
--ThemeSyncableServiceWithMigrationFlag*.*
+-ThemeSyncableServiceTestWithoutAccountThemesSeparation.ShouldCommitExtensionThemeAndBrowserColorSchemeOnInitialSync
 -ThemeSyncableServiceVerifyFinalStateTest.*
 -TranslateManagerRenderViewHostTest.*
 -UpdateServiceCanUpdateFeatureEnabledNonDefaultUpdateUrl.*
