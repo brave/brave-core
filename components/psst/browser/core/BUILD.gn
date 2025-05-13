@@ -9,12 +9,18 @@ component("core") {
   defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
 
   sources = [
+    "matched_rule.cc",
+    "matched_rule.h",
     "psst_component_installer.cc",
     "psst_component_installer.h",
+    "psst_dialog_delegate.cc",
+    "psst_dialog_delegate.h",
     "psst_rule.cc",
     "psst_rule.h",
     "psst_rule_registry.cc",
     "psst_rule_registry.h",
+    "rule_data_reader.cc",
+    "rule_data_reader.h",
   ]
 
   deps = [
@@ -23,8 +29,28 @@ component("core") {
     "//brave/components/psst/common",
     "//brave/extensions:common",
     "//components/component_updater",
+    "//components/prefs:prefs",
     "//crypto",
     "//net",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "psst_rule_registry_unittest.cc",
+    "rule_data_reader_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/constants:constants",
+    "//brave/components/psst/browser/content:content",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common:common",
+    "//content/test:test_support",
+    "//url:url",
   ]
 }
