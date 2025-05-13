@@ -9,8 +9,8 @@ component("content") {
   defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "psst_tab_helper.cc",
-    "psst_tab_helper.h",
+    "psst_scripts_result_handler.cc",
+    "psst_scripts_result_handler.h",
   ]
 
   deps = [

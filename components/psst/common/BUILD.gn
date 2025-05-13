@@ -10,7 +10,13 @@ component("common") {
   sources = [
     "features.cc",
     "features.h",
+    "psst_prefs.cc",
+    "psst_prefs.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/pref_registry",
+    "//components/prefs",
+  ]
 }
