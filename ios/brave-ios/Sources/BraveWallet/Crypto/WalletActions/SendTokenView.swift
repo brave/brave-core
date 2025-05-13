@@ -21,6 +21,7 @@ struct SendTokenView: View {
   @State private var isShowingSelectAccountTokenView: Bool = false
   @State private var isBitcoinWarningUnderstood: Bool = false
   @State private var bitcoinBalanceDetails: BitcoinBalanceDetails?
+  @State private var isShowingSendAmountError = false
 
   @ScaledMetric private var length: CGFloat = 16.0
 
@@ -138,6 +139,17 @@ struct SendTokenView: View {
     }
   }
 
+  private var sendAmountFooter: some View {
+    VStack(alignment: .leading) {
+      ShortcutAmountGrid(action: { amount in
+        sendTokenStore.suggestedAmountTapped(amount)
+      })
+      SectionFooterErrorView(
+        errorMessage: isShowingSendAmountError ? Strings.Wallet.sendAmountFormatError : nil
+      )
+    }
+  }
+
   var body: some View {
     NavigationView {
       Form {
@@ -183,11 +195,9 @@ struct SendTokenView: View {
                   )
                 )
               ),
-            footer: ShortcutAmountGrid(action: { amount in
-              sendTokenStore.suggestedAmountTapped(amount)
-            })
-            .listRowInsets(.zero)
-            .padding(.bottom, 8)
+            footer: sendAmountFooter
+              .listRowInsets(.zero)
+              .padding(.bottom, 8)
           ) {
             TextField(
               String.localizedStringWithFormat(
@@ -196,7 +206,7 @@ struct SendTokenView: View {
               ),
               text: $sendTokenStore.sendAmount
             )
-            .keyboardType(.decimalPad)
+            .keyboardType(.numbersAndPunctuation)
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
@@ -368,6 +378,9 @@ struct SendTokenView: View {
             currencyFormatter: .usdCurrencyFormatter
           )
         }
+      }
+      .onChange(of: sendTokenStore.sendAmount) { _, newValue in
+        isShowingSendAmountError = BDouble(newValue) == nil
       }
       .navigationTitle(Strings.Wallet.send)
       .navigationBarTitleDisplayMode(.inline)
