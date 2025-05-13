@@ -23,7 +23,7 @@ struct FavoritesPreloadedData {
     title: "Facebook"
   )
   static let brave = FavoriteSite(
-    url: URL(string: "https://www.facebook.com/")!,
+    url: URL(string: "https://brave.com/whats-new/")!,
     title: "What's new in Brave"
   )
   static let popularFavorites = [youtube, wikipedia, facebook, brave]
@@ -79,7 +79,7 @@ struct FavoritesPreloadedData {
       return sites
     case "AU":
       var sites: [FavoriteSite] = []
-      if let url = URL(string: "http://www.bom.gov.au/") {
+      if let url = URL(string: "https://www.bom.gov.au/") {
         sites.append(FavoriteSite(url, title: "BOM"))
       }
       sites.append(youtube)
@@ -87,7 +87,7 @@ struct FavoritesPreloadedData {
         sites.append(FavoriteSite(url, title: "Swellnet"))
       }
       sites.append(wikipedia)
-      if let url = URL(string: "http://cricket.com.au/") {
+      if let url = URL(string: "https://cricket.com.au/") {
         sites.append(FavoriteSite(url, title: "Cricket.com.au"))
       }
       return sites
