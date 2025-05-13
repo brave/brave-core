@@ -8,6 +8,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -246,6 +247,13 @@ source_set("extensions") {
       "brave_webtorrent_navigation_throttle.h",
     ]
     deps += [ "//brave/components/brave_webtorrent/browser" ]
+  }
+
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/buildflags:buildflags",
+      "//brave/components/psst/common:common",
+    ]
   }
 
   allow_circular_includes_from = [ ":brave_prefs_util_impl" ]

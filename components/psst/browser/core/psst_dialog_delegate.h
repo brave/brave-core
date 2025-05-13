@@ -1,0 +1,78 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_
+#define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_
+
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/component_export.h"
+#include "base/observer_list.h"
+// #include "base/observer_list_types.h"
+#include "base/functional/callback.h"
+#include "base/values.h"
+
+namespace psst {
+
+class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
+ public:
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnSetRequestDone(const std::string& url,
+                                  const std::optional<std::string>& error) {}
+    virtual void OnSetCompleted(
+        const std::optional<std::vector<std::string>>& applied_checks,
+        const std::optional<std::vector<std::string>>& errors) {}
+  };
+
+  void AddObserver(Observer* obs);
+  void RemoveObserver(Observer* obs);
+  bool HasObserver(Observer* observer);
+
+  using ConsentCallback =
+      base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
+  using ShareCallback = base::OnceCallback<void()>;
+
+  struct COMPONENT_EXPORT(PSST_BROWSER_CORE) ShowDialogData {
+    ShowDialogData(const bool is_new_version,
+                   const std::string& site_name,
+                   base::Value::List request_infos,
+                   ConsentCallback apply_changes_callback,
+                   ConsentCallback cancel_callback,
+                   base::OnceClosure never_ask_me_callback);
+    ~ShowDialogData();
+
+    bool is_new_version;
+    std::string site_name;
+    base::Value::List request_infos;
+    ConsentCallback apply_changes_callback;
+    ConsentCallback cancel_callback;
+    base::OnceClosure never_ask_me_callback;
+  };
+
+  PsstDialogDelegate();
+  virtual ~PsstDialogDelegate();
+  virtual void SetProgressValue(const double value);
+  virtual void SetRequestDone(const std::string& url,
+                              const std::optional<std::string>& error);
+  virtual void SetCompletedView(
+      const std::optional<std::vector<std::string>>& applied_checks,
+      const std::optional<std::vector<std::string>>& errors);
+  virtual void Show();
+  virtual void Close();
+
+  void SetShowDialogData(std::unique_ptr<ShowDialogData> show_dialog_data);
+  ShowDialogData* GetShowDialogData();
+
+ private:
+  std::unique_ptr<ShowDialogData> show_dialog_data_;
+  base::ObserverList<Observer> observer_list_;
+};
+
+}  // namespace psst
+
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_DIALOG_DELEGATE_H_
