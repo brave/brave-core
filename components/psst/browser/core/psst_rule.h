@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/json/json_value_converter.h"
@@ -22,13 +23,6 @@ class GURL;
 
 namespace psst {
 
-// Holds the loaded script text when a rule is matched.
-struct MatchedRule {
-  std::string test_script;
-  std::string policy_script;
-  int version;
-};
-
 // Format of the psst.json file:
 // [
 //   {
@@ -37,15 +31,17 @@ struct MatchedRule {
 //     ],
 //     "exclude": [
 //     ],
+//     "name": "twitter",
 //     "version": 1,
-//     "test_script": "twitter/test.js",
-//     "policy_script": "twitter/policy.js"
+//     "user_script": "user.js",
+//     "policy_script": "policy.js"
 //   }, ...
 // ]
-// Note that "test_script" and "policy_script" give paths
-// relative to the component under scripts/
+// Note that values for the "_script" keys give paths
+// relative to the component under scripts/<name>/, NOT script contents.
+
 // This class describes a single rule in the psst.json file.
-class PsstRule {
+class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
  public:
   PsstRule();
   ~PsstRule();
@@ -63,16 +59,18 @@ class PsstRule {
   bool ShouldInsertScript(const GURL& url) const;
 
   // Getters.
-  const base::FilePath& GetPolicyScript() const { return policy_script_path_; }
-  const base::FilePath& GetTestScript() const { return test_script_path_; }
-  int GetVersion() const { return version_; }
+  const std::string& Name() const { return name_; }
+  const base::FilePath& PolicyScriptPath() const { return policy_script_path_; }
+  const base::FilePath& UserScriptPath() const { return user_script_path_; }
+  int Version() const { return version_; }
 
  private:
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;
+  std::string name_;
   // These are paths (not contents!) relative to the component under scripts/.
   base::FilePath policy_script_path_;
-  base::FilePath test_script_path_;
+  base::FilePath user_script_path_;
   // Used for checking if the last inserted script is the latest version.
   int version_;
 };
