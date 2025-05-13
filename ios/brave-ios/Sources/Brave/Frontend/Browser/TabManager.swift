@@ -132,8 +132,8 @@ class TabManager: NSObject {
     self.privateBrowsingManager = privateBrowsingManager
     super.init()
 
-    Preferences.Shields.blockImages.observe(from: self)
     Preferences.General.nightModeEnabled.observe(from: self)
+    Preferences.Chromium.syncOpenTabsEnabled.observe(from: self)
 
     domainFrc.delegate = self
     do {
@@ -1532,6 +1532,10 @@ extension TabManager: PreferencesObserver {
         tabManager: self,
         enabled: Preferences.General.nightModeEnabled.value
       )
+    case Preferences.Chromium.syncOpenTabsEnabled.key:
+      if Preferences.Chromium.syncOpenTabsEnabled.value {
+        addRegularTabsToSyncChain()
+      }
     default:
       break
     }
