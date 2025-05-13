@@ -9,8 +9,7 @@ import {
   BackgroundAPI,
   SponsoredImageBackground,
   SelectedBackgroundType,
-  defaultBackgroundState,
-  getCurrentBackground } from '../context/backgrounds'
+  defaultBackgroundState } from '../context/backgrounds'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -68,7 +67,6 @@ export function createBackgroundAPI(): BackgroundAPI {
   })
 
   store.update({
-    currentBackground: getCurrentBackground(store.getState()),
     sponsoredRichMediaBaseUrl: 'https://brave.com'
   })
 
@@ -80,9 +78,6 @@ export function createBackgroundAPI(): BackgroundAPI {
 
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
-      store.update({
-        currentBackground: getCurrentBackground(store.getState())
-      })
     },
 
     setSponsoredImagesEnabled(enabled) {
@@ -92,9 +87,6 @@ export function createBackgroundAPI(): BackgroundAPI {
     selectBackground(type, value) {
       store.update({
         selectedBackground: { type, value }
-      })
-      store.update({
-        currentBackground: getCurrentBackground(store.getState())
       })
     },
 
@@ -107,10 +99,6 @@ export function createBackgroundAPI(): BackgroundAPI {
             value: sampleBackground
           }
         }))
-
-        store.update({
-          currentBackground: getCurrentBackground(store.getState())
-        })
       })
 
       return true

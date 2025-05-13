@@ -8,6 +8,7 @@ import * as React from 'react'
 import { LocaleProvider } from '../context/locale'
 import { NewTabProvider } from '../context/new_tab'
 import { BackgroundProvider } from '../context/backgrounds'
+import { CurrentBackgroundProvider } from '../context/current_background'
 import { SearchProvider } from '../context/search'
 import { TopSitesProvider } from '../context/top_sites'
 import { VpnProvider } from '../context/vpn'
@@ -32,15 +33,17 @@ function AppProvider(props: { children: React.ReactNode }) {
     <LocaleProvider value={createLocale()}>
       <NewTabProvider value={createNewTabAPI()}>
         <BackgroundProvider value={createBackgroundAPI()}>
-          <SearchProvider value={createSearchAPI()}>
-            <TopSitesProvider value={createTopSitesAPI()}>
-              <VpnProvider value={createVpnAPI()}>
-                <RewardsProvider value={createRewardsAPI()}>
-                  {props.children}
-                </RewardsProvider>
-              </VpnProvider>
-            </TopSitesProvider>
-          </SearchProvider>
+          <CurrentBackgroundProvider getRandomValue={Math.random}>
+            <SearchProvider value={createSearchAPI()}>
+              <TopSitesProvider value={createTopSitesAPI()}>
+                <VpnProvider value={createVpnAPI()}>
+                  <RewardsProvider value={createRewardsAPI()}>
+                    {props.children}
+                  </RewardsProvider>
+                </VpnProvider>
+              </TopSitesProvider>
+            </SearchProvider>
+          </CurrentBackgroundProvider>
         </BackgroundProvider>
       </NewTabProvider>
     </LocaleProvider>

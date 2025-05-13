@@ -9,7 +9,7 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { createStore } from '../lib/store'
 import { debounceListener } from './debounce_listener'
-import { BackgroundAPI, defaultBackgroundState, getCurrentBackground } from '../context/backgrounds'
+import { BackgroundAPI, defaultBackgroundState } from '../context/backgrounds'
 
 export function createBackgroundAPI(): BackgroundAPI {
   const store = createStore(defaultBackgroundState())
@@ -25,12 +25,6 @@ export function createBackgroundAPI(): BackgroundAPI {
     sponsoredRichMediaBaseUrl:
         loadTimeData.getString('sponsoredRichMediaBaseUrl')
   })
-
-  function updateCurrentBackground() {
-    store.update({
-      currentBackground: getCurrentBackground(store.getState())
-    })
-  }
 
   async function updateBackgroundsEnabled() {
     const { enabled } = await handler.getBackgroundsEnabled()
@@ -70,7 +64,6 @@ export function createBackgroundAPI(): BackgroundAPI {
         updateCustomBackgrounds(),
         updateSelectedBackground(),
       ])
-      updateCurrentBackground()
     })
   })
 
@@ -83,8 +76,6 @@ export function createBackgroundAPI(): BackgroundAPI {
       updateSelectedBackground(),
       updateSponsoredImageBackground()
     ])
-
-    updateCurrentBackground()
   }
 
   loadData()

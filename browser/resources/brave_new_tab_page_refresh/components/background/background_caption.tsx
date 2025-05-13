@@ -9,24 +9,24 @@ import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { Link } from '../common/link'
 import { useLocale } from '../../context/locale'
+import { useCurrentBackground } from '../../context/current_background'
 
 import {
   BraveBackground,
   SponsoredImageBackground,
-  useBackgroundActions,
-  useBackgroundState } from '../../context/backgrounds'
+  useBackgroundActions } from '../../context/backgrounds'
 
 import { style } from './background_caption.style'
 
 export function BackgroundCaption() {
-  const currentBackground = useBackgroundState((s) => s.currentBackground)
+  const background = useCurrentBackground()
 
   function renderCaption() {
-    switch (currentBackground?.type) {
+    switch (background.type) {
       case 'brave':
-        return <BraveBackgroundCredits background={currentBackground} />
+        return <BraveBackgroundCredits background={background} />
       case 'sponsored-image':
-        return <SponsoredBackgroundLogo background={currentBackground} />
+        return <SponsoredBackgroundLogo background={background} />
       default:
         return null
     }

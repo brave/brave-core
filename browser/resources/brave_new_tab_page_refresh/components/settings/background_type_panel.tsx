@@ -19,6 +19,8 @@ import {
   useBackgroundState,
   useBackgroundActions } from '../../context/backgrounds'
 
+import { useCurrentBackground } from '../../context/current_background'
+
 interface Props {
   backgroundType: SelectedBackgroundType
   renderUploadOption: () => React.ReactNode
@@ -31,7 +33,7 @@ export function BackgroundTypePanel(props: Props) {
 
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
-  const currentBackground = useBackgroundState((s) => s.currentBackground)
+  const currentBackground = useCurrentBackground()
 
   const type = props.backgroundType
 
