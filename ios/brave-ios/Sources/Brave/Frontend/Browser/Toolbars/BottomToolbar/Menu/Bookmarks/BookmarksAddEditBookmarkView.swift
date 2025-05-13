@@ -34,6 +34,9 @@ struct BookmarksAddEditBookmarkView: View {
 
   @State
   private var urlString: String
+  
+  @State
+  private var oldUrlString: String
 
   @State
   private var saveFolder: BookmarksSaveFolder = .mobileBookmarks
@@ -51,10 +54,6 @@ struct BookmarksAddEditBookmarkView: View {
   private var urlTextField: UITextField?
 
   private var bookmarkURL: URL? {
-    guard let urlString = node?.url else {
-      return nil
-    }
-
     return URL(string: urlString) ?? URL.bookmarkletURL(from: urlString)
   }
 
@@ -64,9 +63,12 @@ struct BookmarksAddEditBookmarkView: View {
 
   init(model: BookmarkModel, node: Bookmarkv2? = nil) {
     self.model = model
-    self.node = node
-    self.title = node?.title ?? ""
-    self.urlString = node?.url ?? ""
+    self._node = .init(initialValue: node)
+    self._title = .init(initialValue: node?.title ?? "")
+    
+    let formattedURL = URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: node?.url ?? "")
+    self._urlString = .init(initialValue: formattedURL.isEmpty ? node?.url ?? "" : formattedURL)
+    self._oldUrlString = .init(initialValue: node?.url ?? "")
   }
 
   var body: some View {
@@ -74,7 +76,7 @@ struct BookmarksAddEditBookmarkView: View {
       Section {
         HStack {
           Group {
-            if let url = bookmarkURL {
+            if let url = URL(string: oldUrlString) {
               FaviconImage(url: url, isPrivateBrowsing: false)
             } else {
               Color.clear
@@ -106,7 +108,7 @@ struct BookmarksAddEditBookmarkView: View {
 
                 // When the URL field gains focus, move the cursor to position 0.
                 if isFocused {
-                  urlString = bookmarkURL?.absoluteString ?? ""
+                  urlString = oldUrlString
 
                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     let start = urlTextField.beginningOfDocument
@@ -120,8 +122,9 @@ struct BookmarksAddEditBookmarkView: View {
                   }
                 } else {
                   // When the URL field loses focus, format the URL
-
                   let urlText = urlTextField.text ?? ""
+                  oldUrlString = urlText
+                  
                   let suggestedText = URLFormatter.formatURLOrigin(
                     forDisplayOmitSchemePathAndTrivialSubdomains: urlText
                   )
@@ -223,11 +226,6 @@ struct BookmarksAddEditBookmarkView: View {
       }
     }
     .onAppear {
-      self.urlString = URLFormatter.formatURLOrigin(
-        forDisplayOmitSchemePathAndTrivialSubdomains: bookmarkURL?.strippingBlobURLAuth
-          .absoluteString ?? urlString
-      )
-
       Task {
         self.folders = await model.folders().map({
           return ($0, $0.indentationLevel)
@@ -259,7 +257,7 @@ struct BookmarksAddEditBookmarkView: View {
   }
 
   private func addOrUpdateBookmark(parent: Bookmarkv2?) {
-    if let url = URL(string: urlString) ?? URL.bookmarkletURL(from: urlString) {
+    if let url = bookmarkURL {
       if let node = node {
         node.bookmarkNode.setTitle(title)
         node.bookmarkNode.url = url
