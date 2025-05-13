@@ -933,6 +933,21 @@ extension Strings {
       value: "Error Rating Answer",
       comment: "The title for error when rating a response is not success"
     )
+    public static let rateAnswerFeedbackPrivacyWarningTitle = NSLocalizedString(
+      "aichat.rateAnswerFeedbackPrivacyWarningTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Response Feedback",
+      comment: "The title for privacy warning alert when rating a response"
+    )
+    public static let rateAnswerFeedbackPrivacyWarningMessage = NSLocalizedString(
+      "aichat.rateAnswerFeedbackPrivacyWarningMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Liking an answer will send rating, conversation, model, language, version and premium stats to Brave in order to improve Leo.",
+      comment: "The message for privacy warning alert when rating a response"
+    )
     public static let suggestionsGenerationButtonTitle = NSLocalizedString(
       "aichat.suggestionsGenerationButtonTitle",
       tableName: "BraveLeo",

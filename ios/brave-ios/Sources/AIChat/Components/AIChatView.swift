@@ -42,6 +42,9 @@ public struct AIChatView: View {
   private var feedbackToast: AIChatFeedbackToastType = .none
 
   @State
+  private var feedbackPrivacyWarning: AIChatFeedbackToastPrivacyWarning = .none
+
+  @State
   private var isShowingSlashTools = false
 
   @State
@@ -409,6 +412,74 @@ public struct AIChatView: View {
         focusedField = .input
       }
     }
+    .alert(
+      Strings.AIChat.rateAnswerFeedbackPrivacyWarningTitle,
+      isPresented: .init(
+        get: {
+          feedbackPrivacyWarning != .none
+        },
+        set: { value in
+          if !value {
+            feedbackPrivacyWarning = .none
+          }
+        }
+      ),
+      presenting: feedbackPrivacyWarning,
+      actions: { warning in
+        Button {
+          feedbackPrivacyWarning = .none
+        } label: {
+          Text(Strings.learnMore)
+        }
+
+        Button(role: .cancel) {
+          switch warning {
+          case .none: break
+          case .liked(_, let turnId):
+            feedbackPrivacyWarning = .none
+
+            Task { @MainActor in
+              let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
+              if ratingId != nil {
+                feedbackToast = .success(isLiked: true)
+              } else {
+                feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+              }
+            }
+          case .disliked(let turnIndex, let turnId):
+            feedbackPrivacyWarning = .none
+
+            Task { @MainActor in
+              let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)
+              if let ratingId = ratingId {
+                feedbackToast = .success(
+                  isLiked: false,
+                  onAddFeedback: {
+                    customFeedbackInfo = AIChatFeedbackModelToast(
+                      turnId: turnIndex,
+                      ratingId: ratingId
+                    )
+                  }
+                )
+              } else {
+                feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+              }
+            }
+          }
+        } label: {
+          Text(Strings.sendButtonTitle)
+        }
+
+        Button(role: .destructive) {
+          feedbackPrivacyWarning = .none
+        } label: {
+          Text(Strings.cancelButtonTitle)
+        }
+      },
+      message: { _ in
+        Text(Strings.AIChat.rateAnswerFeedbackPrivacyWarningMessage)
+      }
+    )
   }
 
   private var menuView: some View {
@@ -507,16 +578,8 @@ public struct AIChatView: View {
         title: Strings.AIChat.responseContextMenuLikeAnswerTitle,
         icon: Image(braveSystemName: "leo.thumb.up"),
         onSelected: {
-          Task { @MainActor in
-            guard let turnId = turn.uuid else { return }
-
-            let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
-            if ratingId != nil {
-              feedbackToast = .success(isLiked: true)
-            } else {
-              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
-            }
-          }
+          guard let turnId = turn.uuid else { return }
+          feedbackPrivacyWarning = .liked(turnIndex: turnIndex, turnId: turnId)
         }
       )
 
@@ -524,24 +587,8 @@ public struct AIChatView: View {
         title: Strings.AIChat.responseContextMenuDislikeAnswerTitle,
         icon: Image(braveSystemName: "leo.thumb.down"),
         onSelected: {
-          Task { @MainActor in
-            guard let turnId = turn.uuid else { return }
-
-            let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)
-            if let ratingId = ratingId {
-              feedbackToast = .success(
-                isLiked: false,
-                onAddFeedback: {
-                  customFeedbackInfo = AIChatFeedbackModelToast(
-                    turnId: turnIndex,
-                    ratingId: ratingId
-                  )
-                }
-              )
-            } else {
-              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
-            }
-          }
+          guard let turnId = turn.uuid else { return }
+          feedbackPrivacyWarning = .disliked(turnIndex: turnIndex, turnId: turnId)
         }
       )
     }
