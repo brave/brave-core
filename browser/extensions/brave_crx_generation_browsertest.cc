@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
+#include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_file.h"
 #include "base/path_service.h"
@@ -47,10 +48,7 @@ std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
   std::vector<uint8_t> public_key;
   private_key->ExportPublicKey(&public_key);
 
-  std::vector<uint8_t> key_hash(crypto::kSHA256Length);
-  crypto::SHA256HashString(std::string(public_key.begin(), public_key.end()),
-                           key_hash.data(), key_hash.size());
-  return key_hash;
+  return base::ToVector(crypto::SHA256Hash(public_key));
 }
 
 }  // namespace
