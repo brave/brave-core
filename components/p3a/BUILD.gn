@@ -28,6 +28,8 @@ static_library("p3a") {
     "message_manager.h",
     "metric_config.cc",
     "metric_config.h",
+    "metric_config_utils.cc",
+    "metric_config_utils.h",
     "metric_log_store.cc",
     "metric_log_store.h",
     "metric_log_type.cc",

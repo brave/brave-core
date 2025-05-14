@@ -19,6 +19,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/features.h"
+#include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -64,34 +65,12 @@ class P3AMessageManagerTest : public testing::Test,
 
   const MetricConfig* GetMetricConfig(
       std::string_view histogram_name) const override {
-    const std::optional<MetricConfig>* metric_config = nullptr;
-
-    auto it = p3a::kCollectedTypicalHistograms.find(histogram_name);
-    if (it != p3a::kCollectedTypicalHistograms.end()) {
-      metric_config = &it->second;
-    } else if (it = p3a::kCollectedSlowHistograms.find(histogram_name);
-               it != p3a::kCollectedSlowHistograms.end()) {
-      metric_config = &it->second;
-    } else if (it = p3a::kCollectedExpressHistograms.find(histogram_name);
-               it != p3a::kCollectedExpressHistograms.end()) {
-      metric_config = &it->second;
-    }
-    if (metric_config && metric_config->has_value()) {
-      return &metric_config->value();
-    }
-    return nullptr;
+    return GetBaseMetricConfig(histogram_name);
   }
 
   std::optional<MetricLogType> GetLogTypeForHistogram(
       std::string_view histogram_name) const override {
-    if (p3a::kCollectedExpressHistograms.contains(histogram_name)) {
-      return MetricLogType::kExpress;
-    } else if (p3a::kCollectedSlowHistograms.contains(histogram_name)) {
-      return MetricLogType::kSlow;
-    } else if (p3a::kCollectedTypicalHistograms.contains(histogram_name)) {
-      return MetricLogType::kTypical;
-    }
-    return std::nullopt;
+    return GetBaseLogTypeForHistogram(histogram_name);
   }
 
   void OnRotation(MetricLogType log_type, bool is_constellation) override {}

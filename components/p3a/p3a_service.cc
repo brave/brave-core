@@ -22,6 +22,7 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/message_manager.h"
+#include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p2a_protocols.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -245,22 +246,7 @@ const MetricConfig* P3AService::GetMetricConfig(
 
 const MetricConfig* P3AService::GetBaseMetricConfig(
     std::string_view histogram_name) const {
-  const std::optional<MetricConfig>* metric_config = nullptr;
-
-  auto it = p3a::kCollectedTypicalHistograms.find(histogram_name);
-  if (it != p3a::kCollectedTypicalHistograms.end()) {
-    metric_config = &it->second;
-  } else if (it = p3a::kCollectedSlowHistograms.find(histogram_name);
-             it != p3a::kCollectedSlowHistograms.end()) {
-    metric_config = &it->second;
-  } else if (it = p3a::kCollectedExpressHistograms.find(histogram_name);
-             it != p3a::kCollectedExpressHistograms.end()) {
-    metric_config = &it->second;
-  }
-  if (metric_config && metric_config->has_value()) {
-    return &metric_config->value();
-  }
-  return nullptr;
+  return p3a::GetBaseMetricConfig(histogram_name);
 }
 
 std::optional<MetricLogType> P3AService::GetLogTypeForHistogram(
@@ -278,14 +264,7 @@ std::optional<MetricLogType> P3AService::GetLogTypeForHistogram(
     return dynamic_metric_log_type;
   }
 
-  if (p3a::kCollectedExpressHistograms.contains(histogram_name)) {
-    return MetricLogType::kExpress;
-  } else if (p3a::kCollectedSlowHistograms.contains(histogram_name)) {
-    return MetricLogType::kSlow;
-  } else if (p3a::kCollectedTypicalHistograms.contains(histogram_name)) {
-    return MetricLogType::kTypical;
-  }
-  return std::nullopt;
+  return GetBaseLogTypeForHistogram(histogram_name);
 }
 
 void P3AService::LoadDynamicMetrics() {

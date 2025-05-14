@@ -19,6 +19,7 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/p3a/metric_config.h"
+#include "brave/components/p3a/metric_config_utils.h"
 
 constexpr char kMetricsKey[] = "metrics";
 
@@ -88,8 +89,7 @@ void RemoteConfigManager::LoadRemoteConfig(
     base::OnceClosure config_loaded_callback) {
   config_loaded_callback_ = std::move(config_loaded_callback);
 
-  base::FilePath manifest_file_path =
-      install_dir.AppendASCII(kP3AManifestFileName);
+  base::FilePath manifest_file_path = install_dir.Append(kP3AManifestFileName);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
