@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
   BraveAccountBrowserProxy,
@@ -26,6 +27,7 @@ class PasswordStrengthMeter extends CrLitElement {
       :host {
         align-items: center;
         display: flex;
+        gap: var(--leo-spacing-m);
         justify-content: space-between;
         width: 100%;
       }
@@ -48,9 +50,9 @@ class PasswordStrengthMeter extends CrLitElement {
       .bar {
         background-color: var(--secondary-color);
         border-radius: var(--leo-radius-m);
+        flex-grow: 1;
         height: 4px;
         transition: 750ms;
-        width: 376px;
       }
 
       .strength {
@@ -75,6 +77,7 @@ class PasswordStrengthMeter extends CrLitElement {
         <div class="strength" style="--strength: ${this.strength}"></div>
       </div>
       <div class="text">
+        ${loadTimeData.getString(`braveAccountPasswordStrengthMeter${this.category}`)}
       </div>
     `
   }

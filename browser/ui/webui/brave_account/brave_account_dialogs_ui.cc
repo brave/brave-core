@@ -96,6 +96,7 @@ void AddStringResources(content::WebUIDataSource* source) {
        IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
 
       // Common:
+      {"braveAccountBackButtonLabel", IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL},
       {"braveAccountEmailInputLabel", IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},
       {"braveAccountEmailInputPlaceholder",
        IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER},
