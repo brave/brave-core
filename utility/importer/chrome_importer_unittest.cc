@@ -17,10 +17,10 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_data_types.h"
-#include "chrome/common/importer/importer_url_row.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "components/favicon_base/favicon_usage_data.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/user_data_importer/common/importer_url_row.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::UTF16ToASCII;
@@ -70,7 +70,7 @@ class ChromeImporterTest : public ::testing::Test {
 };
 
 TEST_F(ChromeImporterTest, ImportHistory) {
-  std::vector<ImporterURLRow> history;
+  std::vector<user_data_importer::ImporterURLRow> history;
 
   EXPECT_CALL(*bridge_, NotifyStarted());
   EXPECT_CALL(*bridge_, NotifyItemStarted(importer::HISTORY));
