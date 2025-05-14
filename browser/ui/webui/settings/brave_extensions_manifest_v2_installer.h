@@ -34,7 +34,6 @@ inline constexpr char kUBlockId[] = "jcokkipkhhgiakinbnnplhkdbjbgcgpe";
 inline constexpr char kUMatrixId[] = "fplfeajmkijmaeldaknocljmmoebdgmk";
 inline constexpr char kAdGuardId[] = "ejoelgckfgogkoppbgkklbbjdkjdbmen";
 
-// For metrics
 inline constexpr auto kPreconfiguredManifestV2Extensions =
     base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
                                              {
@@ -61,7 +60,7 @@ class ExtensionManifestV2Installer {
   void OnInstalled(const std::optional<extensions::CrxInstallError>& error);
 
   const std::string extension_id_;
-  const raw_ptr<content::WebContents> web_contents_;
+  base::WeakPtr<content::WebContents> web_contents_;
   extensions::WebstoreInstallWithPrompt::Callback callback_;
 
   std::unique_ptr<network::SimpleURLLoader> url_loader_;

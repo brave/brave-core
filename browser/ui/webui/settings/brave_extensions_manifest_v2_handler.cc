@@ -46,7 +46,7 @@ struct ExtensionManifestV2 {
 BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
   // NoScript
   extensions_.push_back({extensions_mv2::kNoScriptId,
-                         "https://github.com/hackademix/noscript/",
+                         "https://github.com/hackademix/noscript",
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME),
                          l10n_util::GetStringUTF16(
@@ -55,7 +55,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
 
   // uBlock Origin
   extensions_.push_back(
-      {extensions_mv2::kUBlockId, "https://github.com/gorhill/uBlock/",
+      {extensions_mv2::kUBlockId, "https://github.com/gorhill/uBlock",
        l10n_util::GetStringUTF16(
            IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME),
        l10n_util::GetStringUTF16(
@@ -64,7 +64,7 @@ BraveExtensionsManifestV2Handler::BraveExtensionsManifestV2Handler() {
 
   // uMatrix
   extensions_.push_back({extensions_mv2::kUMatrixId,
-                         "https://github.com/gorhill/uMatrix/",
+                         "https://github.com/gorhill/uMatrix",
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME),
                          l10n_util::GetStringUTF16(
