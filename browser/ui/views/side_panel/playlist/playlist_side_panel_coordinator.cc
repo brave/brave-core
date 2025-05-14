@@ -52,9 +52,10 @@ PlaylistSidePanelCoordinator::~PlaylistSidePanelCoordinator() = default;
 void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
     SidePanelRegistry* global_registry) {
   global_registry->Register(std::make_unique<SidePanelEntry>(
-      SidePanelEntry::Id::kPlaylist,
+      SidePanelEntry::Key(SidePanelEntry::Id::kPlaylist),
       base::BindRepeating(&PlaylistSidePanelCoordinator::CreateWebView,
-                          base::Unretained(this))));
+                          base::Unretained(this)),
+      SidePanelEntry::kSidePanelDefaultContentWidth));
 }
 
 void PlaylistSidePanelCoordinator::ActivatePanel() {
