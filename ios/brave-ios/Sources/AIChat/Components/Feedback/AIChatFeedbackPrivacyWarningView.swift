@@ -112,6 +112,6 @@ struct AIChatFeedbackPrivacyWarningView: View {
       )
     }
     .scrollBounceBehavior(.basedOnSize)
-    .frame(height: viewHeight)
+    .frame(maxHeight: viewHeight)
   }
 }
