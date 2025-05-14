@@ -5,26 +5,27 @@
 
 import BraveShared
 import BraveStrings
+import BraveUI
 import DesignSystem
 import Preferences
 import SwiftUI
-import BraveUI
 
 struct AIChatCheckboxToggleStyle: ToggleStyle {
   func makeBody(configuration: Configuration) -> some View {
-    HStack {
-      Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
-        .foregroundStyle(
-          Color(
-            braveSystemName: configuration.isOn ? .iconInteractive : .iconDefault
-          )
-        )
-
-      configuration.label
-    }
-    .contentShape(Rectangle())
-    .onTapGesture {
+    Button {
       configuration.isOn.toggle()
+    } label: {
+      HStack {
+        Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+          .foregroundStyle(
+            Color(
+              braveSystemName: configuration.isOn ? .iconInteractive : .iconDefault
+            )
+          )
+
+        configuration.label
+      }
+      .contentShape(Rectangle())
     }
   }
 }
@@ -48,7 +49,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .fixedSize(horizontal: false, vertical: true)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
-        
+
         Text(
           LocalizedStringKey(
             String(
@@ -63,12 +64,12 @@ struct AIChatFeedbackPrivacyWarningView: View {
         .foregroundStyle(Color(braveSystemName: .textSecondary))
         .environment(
           \.openURL,
-           OpenURLAction { url in
-             openURL(url)
-             return .handled
-           }
+          OpenURLAction { url in
+            openURL(url)
+            return .handled
+          }
         )
-        
+
         Toggle(isOn: $dontShowAgain) {
           Text(Strings.AIChat.dontShowAgainTitle)
             .font(.subheadline)
@@ -77,7 +78,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
         }
         .toggleStyle(AIChatCheckboxToggleStyle())
         .frame(maxWidth: .infinity, alignment: .leading)
-        
+
         HStack(spacing: 12) {
           Button {
             onCancel()
@@ -89,7 +90,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
               .padding(.vertical, 12)
           }
           .clipShape(RoundedRectangle(cornerRadius: 8))
-          
+
           Button {
             Preferences.AIChat.showFeedbackPrivacyWarning.value = !dontShowAgain
             onSend()
@@ -110,6 +111,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
         }
       )
     }
+    .scrollBounceBehavior(.basedOnSize)
     .frame(height: viewHeight)
   }
 }
