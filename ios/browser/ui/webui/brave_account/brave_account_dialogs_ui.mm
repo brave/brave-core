@@ -91,7 +91,6 @@ void AddStringResources(BraveWebUIIOSDataSource* source) {
       {"braveAccountForgotPasswordDialogDescription",
        IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION},
       {"braveAccountAlertMessage", IDS_BRAVE_ACCOUNT_ALERT_MESSAGE},
-      {"braveAccountCancelButtonLabel", IDS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL},
       {"braveAccountResetPasswordButtonLabel",
        IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
 
