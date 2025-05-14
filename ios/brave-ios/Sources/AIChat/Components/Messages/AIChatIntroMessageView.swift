@@ -8,6 +8,9 @@ import DesignSystem
 import SwiftUI
 
 struct AIChatIntroMessageView: View {
+  @Environment(\.sizeCategory)
+  private var sizeCategory
+
   @State
   private var shouldShowInformationPopover = false
 
@@ -121,7 +124,8 @@ struct AIChatIntroMessageView: View {
               .tint(Color(braveSystemName: .textInteractive))
             }
             .padding()
-            .frame(maxWidth: 260.0)
+            .frame(maxWidth: sizeCategory >= .accessibilityLarge ? 300.0 : 260.0)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
           }
         }
       }

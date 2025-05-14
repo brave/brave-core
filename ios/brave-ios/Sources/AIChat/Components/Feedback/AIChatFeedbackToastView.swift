@@ -6,6 +6,12 @@
 import DesignSystem
 import SwiftUI
 
+struct AIChatFeedbackInfo: Hashable {
+  var isLiked: Bool
+  var turnId: String
+  var turnIndex: Int
+}
+
 private struct AIChatFeedbackToastModifier: ViewModifier {
   @State
   private var task: Task<Void, Error>?
