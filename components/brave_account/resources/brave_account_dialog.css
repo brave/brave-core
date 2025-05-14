@@ -81,11 +81,6 @@ leo-icon {
   gap: var(--leo-spacing-m);
 }
 
-:host([horizontal-buttons]) ::slotted([slot=buttons]) {
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
 :host ::slotted([slot=footer]) {
   border-bottom-left-radius: inherit;
   border-bottom-right-radius: inherit;

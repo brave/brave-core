@@ -26,7 +26,6 @@ export class SettingsBraveAccountDialogElement extends CrLitElement {
       alertMessage: { type: String },
       dialogDescription: { type: String },
       dialogTitle: { type: String },
-      horizontalButtons: { type: Boolean },
       showBackButton: { type: Boolean },
     }
   }
@@ -34,7 +33,6 @@ export class SettingsBraveAccountDialogElement extends CrLitElement {
   protected alertMessage: string = ''
   protected dialogDescription: string = ''
   protected dialogTitle: string = ''
-  protected horizontalButtons: boolean = false
   protected showBackButton: boolean = false
 }
 
