@@ -13,7 +13,7 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import UploadedImgItem from '../uploaded_img_item'
+import { AttachmentImageItem, AttachmentItem } from '../attachment_item'
 
 type Props = Pick<
   ConversationContext,
@@ -37,10 +37,12 @@ type Props = Pick<
   | 'removeImage'
   | 'conversationHistory'
   | 'associatedContentInfo'
+  | 'shouldSendPageContents'
+  | 'updateShouldSendPageContents'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
-interface InputBoxProps {
+export interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
@@ -91,8 +93,10 @@ function InputBox(props: InputBoxProps) {
     if (!node) {
       return
     }
-    if (props.context.selectedActionType ||
-      props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
+    if (
+      props.context.selectedActionType ||
+      props.maybeShowSoftKeyboard?.(querySubmitted.current)
+    ) {
       node.focus()
     }
   }
@@ -123,7 +127,8 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {props.context.pendingMessageImages && (
+      {(props.context.pendingMessageImages ||
+        !!props.context.associatedContentInfo) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -132,11 +137,24 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {props.context.pendingMessageImages.map((img, i) => (
-            <UploadedImgItem
+          {props.context.associatedContentInfo &&
+            props.context.shouldSendPageContents &&
+            !props.conversationStarted && (
+              <AttachmentItem
+                smallImage
+                thumbnailUrl={`chrome://favicon2?size=256&pageUrl=${encodeURIComponent(
+                  props.context.associatedContentInfo.url.url
+                )}`}
+                title={props.context.associatedContentInfo.title}
+                subtitle={props.context.associatedContentInfo.url.url}
+                remove={() => props.context.updateShouldSendPageContents(false)}
+              />
+            )}
+          {props.context.pendingMessageImages?.map((img, i) => (
+            <AttachmentImageItem
               key={img.filename}
               uploadedImage={img}
-              removeImage={() => props.context.removeImage(i)}
+              remove={() => props.context.removeImage(i)}
             />
           ))}
         </div>
@@ -147,9 +165,11 @@ function InputBox(props: InputBoxProps) {
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(props.conversationStarted
-            ? 'placeholderLabel'
-            : 'initialPlaceholderLabel')}
+          placeholder={getLocale(
+            props.conversationStarted
+              ? 'placeholderLabel'
+              : 'initialPlaceholderLabel'
+          )}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -174,13 +194,11 @@ function InputBox(props: InputBoxProps) {
             fab
             kind='plain-faint'
             size='large'
-            onClick={(e) =>
-              {
-                e.preventDefault()
-                e.stopPropagation()
-                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-              }
-            }
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }}
             title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
@@ -207,6 +225,11 @@ function InputBox(props: InputBoxProps) {
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}
             isMobile={props.context.isMobile}
+            shouldSendPageContents={props.context.shouldSendPageContents}
+            updateShouldSendPageContents={
+              props.context.updateShouldSendPageContents
+            }
+            conversationStarted={props.conversationStarted}
           />
         </div>
         <div>
