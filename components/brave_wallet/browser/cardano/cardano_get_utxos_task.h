@@ -20,6 +20,10 @@
 namespace brave_wallet {
 class CardanoWalletService;
 
+namespace cardano_rpc {
+class CardanoRpc;
+}
+
 // This class implements `CardanoWalletService::GetUtxos` logic of fetching all
 // utxos associated with `addresses`.
 class GetCardanoUtxosTask {
@@ -39,6 +43,8 @@ class GetCardanoUtxosTask {
   void ScheduleWorkOnTask();
   void WorkOnTask();
   void StopWithError(std::string error_string);
+
+  cardano_rpc::CardanoRpc* GetCardanoRpc();
 
   void MaybeSendRequests();
   void OnGetUtxoList(

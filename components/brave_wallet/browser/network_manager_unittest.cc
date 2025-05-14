@@ -572,8 +572,9 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
 
   // Cardano
   mojom::NetworkInfo cardano_mainnet(
-      mojom::kCardanoMainnet, "Cardano Mainnet", {""}, {}, 0, {GURL("")}, "ADA",
-      "Cardano", 6, mojom::CoinType::ADA, {mojom::KeyringId::kCardanoMainnet});
+      mojom::kCardanoMainnet, "Cardano Mainnet", {"https://cexplorer.io"}, {},
+      0, {GURL("")}, "ADA", "Cardano", 6, mojom::CoinType::ADA,
+      {mojom::KeyringId::kCardanoMainnet});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ADA));
   EXPECT_EQ(
       network_manager()->GetChain("cardano_mainnet", mojom::CoinType::ADA),

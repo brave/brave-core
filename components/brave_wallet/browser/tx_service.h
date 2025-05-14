@@ -37,6 +37,7 @@ class AccountResolverDelegate;
 class JsonRpcService;
 class BitcoinWalletService;
 class ZCashWalletService;
+class CardanoWalletService;
 class KeyringService;
 class TxManager;
 class TxStorageDelegate;
@@ -46,6 +47,7 @@ class SolanaTxManager;
 class BitcoinTxManager;
 class FilTxManager;
 class ZCashTxManager;
+class CardanoTxManager;
 
 class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
@@ -56,6 +58,7 @@ class TxService : public mojom::TxService,
   TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
+            CardanoWalletService* cardano_wallet_service,
             KeyringService& keyring_service,
             PrefService* prefs,
             const base::FilePath& wallet_base_directory,
@@ -86,6 +89,15 @@ class TxService : public mojom::TxService,
       mojom::NewEvmTransactionParamsPtr params,
       const std::optional<url::Origin>& origin,
       AddUnapprovedEvmTransactionCallback callback);
+  void AddUnapprovedBitcoinTransaction(
+      mojom::NewBitcoinTransactionParamsPtr params,
+      AddUnapprovedBitcoinTransactionCallback callback) override;
+  void AddUnapprovedZCashTransaction(
+      mojom::NewZCashTransactionParamsPtr params,
+      AddUnapprovedZCashTransactionCallback callback) override;
+  void AddUnapprovedCardanoTransaction(
+      mojom::NewCardanoTransactionParamsPtr params,
+      AddUnapprovedCardanoTransactionCallback callback) override;
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id,
@@ -254,6 +266,7 @@ class TxService : public mojom::TxService,
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
   friend class BitcoinTxManagerUnitTest;
+  friend class CardanoTxManagerUnitTest;
   friend class BraveWalletP3AUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
@@ -264,6 +277,7 @@ class TxService : public mojom::TxService,
   FilTxManager* GetFilTxManager();
   BitcoinTxManager* GetBitcoinTxManager();
   ZCashTxManager* GetZCashTxManager();
+  CardanoTxManager* GetCardanoTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;

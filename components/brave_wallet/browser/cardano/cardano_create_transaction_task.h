@@ -20,6 +20,10 @@ namespace brave_wallet {
 class CardanoWalletService;
 class CardanoTransaction;
 
+namespace cardano_rpc {
+class CardanoRpc;
+}
+
 // This class implements `CardanoWalletService::CreateTransaction` logic of
 // creating a Cardano transaction based on wallet's account, destination address
 // and amount of native coins to send. Fetches latest block and epoch
@@ -40,12 +44,15 @@ class CardanoCreateTransactionTask {
   ~CardanoCreateTransactionTask();
 
   void Start(Callback callback);
+  static void SetArrangeTransactionForTesting(bool arrange_for_testing);
 
  private:
   CardanoTransaction::TxOutput CreateTargetOutput();
   CardanoTransaction::TxOutput CreateChangeOutput();
 
   void ScheduleWorkOnTask();
+
+  cardano_rpc::CardanoRpc* GetCardanoRpc();
 
   void WorkOnTask();
   void StopWithError(std::string error_string);

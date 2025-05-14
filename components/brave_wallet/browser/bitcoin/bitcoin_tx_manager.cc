@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
@@ -103,25 +104,34 @@ void BitcoinTxManager::OnLatestHeightUpdated(const std::string& chain_id,
   UpdatePendingTransactions(chain_id);
 }
 
+void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
+    mojom::NewBitcoinTransactionParamsPtr params,
+    AddUnapprovedBitcoinTransactionCallback callback) {
+  auto chain_id = params->chain_id;
+  if (params->chain_id != GetNetworkForBitcoinAccount(params->from)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  // We don't support Bitcoin dApps so far, so all transactions come from
+  // wallet origin.
+  std::optional<url::Origin> origin = std::nullopt;
+
+  bitcoin_wallet_service_->CreateTransaction(
+      params->from.Clone(), params->to, params->amount,
+      params->sending_max_amount,
+      base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
+                     weak_factory_.GetWeakPtr(), chain_id, params->from.Clone(),
+                     origin, std::move(callback)));
+}
+
 void BitcoinTxManager::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
-  if (chain_id != GetNetworkForBitcoinAccount(from)) {
-    std::move(callback).Run(false, "", WalletInternalErrorMessage());
-    return;
-  }
-
-  const auto& btc_tx_data = tx_data_union->get_btc_tx_data();
-
-  bitcoin_wallet_service_->CreateTransaction(
-      from->Clone(), btc_tx_data->to, btc_tx_data->amount,
-      btc_tx_data->sending_max_amount,
-      base::BindOnce(&BitcoinTxManager::ContinueAddUnapprovedTransaction,
-                     weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
-                     std::move(callback)));
+  NOTREACHED() << "AddUnapprovedBitcoinTransaction must be used";
 }
 
 void BitcoinTxManager::ContinueAddUnapprovedTransaction(

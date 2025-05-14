@@ -65,9 +65,16 @@ class CardanoWalletService : public mojom::CardanoWalletService {
                               CardanoTransaction cardano_transaction,
                               SignAndPostTransactionCallback callback);
 
-  cardano_rpc::CardanoRpc& cardano_rpc() { return cardano_rpc_; }
+  using GetTransactionStatusCallback =
+      base::OnceCallback<void(base::expected<bool, std::string>)>;
+  void GetTransactionStatus(const std::string& chain_id,
+                            const std::string& txid,
+                            GetTransactionStatusCallback callback);
+
   KeyringService& keyring_service() { return *keyring_service_; }
   NetworkManager& network_manager() { return *network_manager_; }
+
+  cardano_rpc::CardanoRpc* GetCardanoRpc(const std::string& chain_id);
 
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -101,8 +108,15 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   bool SignTransactionInternal(CardanoTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
 
+  void OnGetTransactionStatus(
+      const std::string& txid,
+      GetTransactionStatusCallback callback,
+      base::expected<std::optional<cardano_rpc::Transaction>, std::string>
+          transaction);
+
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
-  cardano_rpc::CardanoRpc cardano_rpc_;
+  cardano_rpc::CardanoRpc cardano_mainnet_rpc_;
+  cardano_rpc::CardanoRpc cardano_testnet_rpc_;
 
   TaskContainer<GetCardanoUtxosTask> get_cardano_utxo_tasks_;
   TaskContainer<CardanoCreateTransactionTask> create_transaction_tasks_;

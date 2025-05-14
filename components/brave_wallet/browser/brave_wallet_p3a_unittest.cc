@@ -322,6 +322,25 @@ class BraveWalletP3AUnitTest : public testing::Test {
     return success;
   }
 
+  bool AddUnapprovedBitcoinTransaction(
+      mojom::NewBitcoinTransactionParamsPtr params,
+      std::string* tx_meta_id) {
+    bool success;
+    base::RunLoop run_loop;
+    tx_service()->AddUnapprovedBitcoinTransaction(
+        std::move(params),
+        base::BindLambdaForTesting([&](bool v, const std::string& tx_id,
+                                       const std::string& error_message) {
+          success = v;
+          *tx_meta_id = tx_id;
+          ASSERT_TRUE(error_message.empty());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+
+    return success;
+  }
+
   bool ApproveTransaction(const mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id) {
@@ -744,13 +763,11 @@ TEST_F(BraveWalletP3AUnitTest, BtcTransactionSentObservation) {
 
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
 
-  auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
-                                       std::vector<mojom::BtcTxInputPtr>(),
-                                       std::vector<mojom::BtcTxOutputPtr>());
+  auto params = mojom::NewBitcoinTransactionParams::New(
+      mojom::kBitcoinMainnet, btc_from(), kMockBtcAddress, 5000, false);
+
   std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewBtcTxData(std::move(tx_data)),
-      mojom::kBitcoinMainnet, btc_from(), &tx_meta_id));
+  EXPECT_TRUE(AddUnapprovedBitcoinTransaction(std::move(params), &tx_meta_id));
 
   // Approve the BTC transaction
   EXPECT_TRUE(ApproveTransaction(mojom::CoinType::BTC, mojom::kBitcoinMainnet,

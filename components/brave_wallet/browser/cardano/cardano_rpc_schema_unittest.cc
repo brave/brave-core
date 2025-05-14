@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 
+#include <array>
 #include <string>
 
 #include "base/strings/string_number_conversions.h"
@@ -139,6 +140,31 @@ TEST(CardanoRpcSchema, UnspentOutput) {
     EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(invalid.Clone()))
         << value;
   }
+}
+
+TEST(CardanoRpcSchema, Transaction) {
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(std::nullopt));
+
+  blockfrost_api::Transaction valid;
+  valid.hash =
+      "000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f";
+
+  EXPECT_EQ(
+      *Transaction::FromBlockfrostApiValue(valid.Clone()),
+      Transaction({.tx_hash = std::to_array<uint8_t>({
+                       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                   })}));
+
+  valid.hash = "";
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
+
+  valid.hash =
+      "xx0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e";
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
+
+  valid.hash = "0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e";
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
 }
 
 }  // namespace brave_wallet::cardano_rpc

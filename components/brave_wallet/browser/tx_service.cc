@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_tx_manager.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -77,6 +78,7 @@ size_t CalculatePendingTxCount(
 TxService::TxService(JsonRpcService* json_rpc_service,
                      BitcoinWalletService* bitcoin_wallet_service,
                      ZCashWalletService* zcash_wallet_service,
+                     CardanoWalletService* cardano_wallet_service,
                      KeyringService& keyring_service,
                      PrefService* prefs,
                      const base::FilePath& wallet_base_directory,
@@ -120,7 +122,14 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   }
 
   if (IsCardanoEnabled()) {
-    // TODO(apaymyshev): Cardano transactions
+    if (!cardano_wallet_service) {
+      CHECK_IS_TEST();
+    } else {
+      tx_manager_map_[mojom::CoinType::ADA] =
+          std::make_unique<CardanoTxManager>(*this, *cardano_wallet_service,
+                                             keyring_service, *delegate_,
+                                             *account_resolver_delegate_);
+    }
   }
 }
 
@@ -150,6 +159,10 @@ BitcoinTxManager* TxService::GetBitcoinTxManager() {
 
 ZCashTxManager* TxService::GetZCashTxManager() {
   return static_cast<ZCashTxManager*>(GetTxManager(mojom::CoinType::ZEC));
+}
+
+CardanoTxManager* TxService::GetCardanoTxManager() {
+  return static_cast<CardanoTxManager*>(GetTxManager(mojom::CoinType::ADA));
 }
 
 template <>
@@ -185,6 +198,12 @@ void TxService::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   CHECK_NE(from->coin, mojom::CoinType::ETH)
       << "Wallet UI must use AddUnapprovedEvmTransaction";
+  CHECK_NE(from->coin, mojom::CoinType::BTC)
+      << "Wallet UI must use AddUnapprovedBitcoinTransaction";
+  CHECK_NE(from->coin, mojom::CoinType::ZEC)
+      << "Wallet UI must use AddUnapprovedZCashTransaction";
+  CHECK_NE(from->coin, mojom::CoinType::ADA)
+      << "Wallet UI must use AddUnapprovedCardanoTransaction";
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
                                      std::move(from), std::nullopt,
                                      std::move(callback));
@@ -244,6 +263,69 @@ void TxService::AddUnapprovedEvmTransactionWithOrigin(
                                                  std::move(callback));
 }
 
+void TxService::AddUnapprovedBitcoinTransaction(
+    mojom::NewBitcoinTransactionParamsPtr params,
+    AddUnapprovedBitcoinTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::BTC);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
+  GetBitcoinTxManager()->AddUnapprovedBitcoinTransaction(std::move(params),
+                                                         std::move(callback));
+}
+
+void TxService::AddUnapprovedZCashTransaction(
+    mojom::NewZCashTransactionParamsPtr params,
+    AddUnapprovedZCashTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::ZEC);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
+  GetZCashTxManager()->AddUnapprovedZCashTransaction(std::move(params),
+                                                     std::move(callback));
+}
+
+void TxService::AddUnapprovedCardanoTransaction(
+    mojom::NewCardanoTransactionParamsPtr params,
+    AddUnapprovedCardanoTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::ADA);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
+  GetCardanoTxManager()->AddUnapprovedCardanoTransaction(std::move(params),
+                                                         std::move(callback));
+}
+
 void TxService::ApproveTransaction(mojom::CoinType coin_type,
                                    const std::string& chain_id,
                                    const std::string& tx_meta_id,
@@ -277,14 +359,6 @@ void TxService::GetAllTransactionInfo(
     GetAllTransactionInfoCallback callback) {
   std::optional<mojom::AccountIdPtr> from_opt =
       from ? std::move(from) : std::optional<mojom::AccountIdPtr>();
-
-  // TODO(apaymyshev): Cardano transactions
-  if (IsCardanoEnabled()) {
-    if (coin_type == mojom::CoinType::ADA) {
-      std::move(callback).Run({});
-      return;
-    }
-  }
 
   std::move(callback).Run(GetTxManager(coin_type)->GetAllTransactionInfo(
       chain_id, std::move(from_opt)));
