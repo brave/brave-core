@@ -64,11 +64,10 @@ BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy()
     : component_id_(kBraveUserAgentExceptionsComponentId),
       component_name_(kBraveUserAgentExceptionsComponentName) {
   // Generate hash from public key.
-  std::string decoded_public_key;
-  base::Base64Decode(kBraveUserAgentExceptionsComponentBase64PublicKey,
-                     &decoded_public_key);
-  crypto::SHA256HashString(decoded_public_key, component_hash_.data(),
-                           component_hash_.size());
+  auto decoded_public_key =
+      base::Base64Decode(kBraveUserAgentExceptionsComponentBase64PublicKey);
+  CHECK(decoded_public_key);
+  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
 }
 
 BraveUserAgentComponentInstallerPolicy::
