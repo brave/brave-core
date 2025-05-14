@@ -9,7 +9,6 @@ import Combine
 import Foundation
 import SafariServices
 import Shared
-import SwiftyJSON
 import os.log
 
 enum UrpError {
@@ -69,16 +68,18 @@ struct UrpService {
     sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
       switch response {
       case .success(let data):
-        if let data = data as? Data {
-          Logger.module.debug(
-            "Referral code lookup response: \(String(data: data, encoding: .utf8) ?? "nil")"
-          )
+        guard let data = data as? Data,
+          let referral = try? JSONDecoder().decode(ReferralData.self, from: data)
+        else {
+          completion(nil, .endpointError)
+          return
         }
 
-        let json = JSON(data)
-        let referral = ReferralData(json: json)
-        completion(referral, nil)
+        Logger.module.debug(
+          "Referral code lookup response: \(String(data: data, encoding: .utf8) ?? "nil")"
+        )
 
+        completion(referral, nil)
       case .failure(let error):
         Logger.module.error("Referral code lookup response: \(error.localizedDescription)")
         completion(nil, .endpointError)
@@ -168,13 +169,16 @@ struct UrpService {
     sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
       switch response {
       case .success(let data):
-        if let data = data as? Data {
-          Logger.module.debug(
-            "Check if authorized for grant response: \(String(data: data, encoding: .utf8) ?? "nil")"
-          )
+        guard let data = data as? Data,
+          let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        else {
+          completion(nil, .endpointError)
+          return
         }
-        let json = JSON(data)
-        completion(json["finalized"].boolValue, nil)
+        Logger.module.debug(
+          "Check if authorized for grant response: \(String(data: data, encoding: .utf8) ?? "nil")"
+        )
+        completion(json["finalized"] as? Bool, nil)
 
       case .failure(let error):
         Logger.module.error("Check if authorized for grant response: \(error.localizedDescription)")

@@ -1,5 +1,5 @@
 {
-  "originHash" : "805c02fe8d6bf5a5f2715cb4269e865e24a7d8887a57843f53f2c2765578ff4e",
+  "originHash" : "cc77e6f3629107d5cbe6c6faf6f01675cae9b1794b1b3b2a5a58fad817ae819c",
   "pins" : [
     {
       "identity" : "feedkit",
@@ -132,15 +132,6 @@
       "state" : {
         "revision" : "f2616860a41f9d9932da412a8978fec79c06fe24",
         "version" : "0.1.4"
-      }
-    },
-    {
-      "identity" : "swiftyjson",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
-      "state" : {
-        "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
-        "version" : "5.0.1"
       }
     },
     {
