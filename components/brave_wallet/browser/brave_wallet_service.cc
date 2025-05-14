@@ -62,13 +62,13 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
 }
 
 // Ensure token list contains native tokens when appears empty. Only for BTC,
-// ZEC and ADA by now.
+// ZEC, ADA, DOT by now.
 std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     const std::string& chain_id,
     mojom::CoinType coin,
     std::vector<mojom::BlockchainTokenPtr> tokens) {
   if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC &&
-      coin != mojom::CoinType::ADA) {
+      coin != mojom::CoinType::ADA && coin != mojom::CoinType::DOT) {
     return tokens;
   }
 
@@ -86,6 +86,10 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
 
   if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id)) {
     tokens.push_back(GetCardanoNativeToken(chain_id));
+  }
+
+  if (coin == mojom::CoinType::DOT && IsPolkadotSubstrateNetwork(chain_id)) {
+    tokens.push_back(GetPolkadotNativeToken(chain_id));
   }
 
   return tokens;

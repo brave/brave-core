@@ -732,6 +732,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
       return kSolanaPrefKey;
     case mojom::CoinType::ADA:
       return kCardanoPrefKey;
+    case mojom::CoinType::DOT:
+      return kPolkadotPrefKey;
   }
   NOTREACHED() << coin;
 }
@@ -818,6 +820,21 @@ mojom::BlockchainTokenPtr GetCardanoNativeToken(std::string_view chain_id) {
   result->logo = "ada.png";
   if (chain_id == mojom::kCardanoMainnet) {
     result->coingecko_id = "ada";
+  } else {
+    result->coingecko_id = "";
+  }
+
+  return result;
+}
+
+mojom::BlockchainTokenPtr GetPolkadotNativeToken(std::string_view chain_id) {
+  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::DOT);
+  CHECK(network);
+
+  auto result = NetworkToNativeToken(*network);
+  result->logo = "dot.png";
+  if (chain_id == mojom::kPolkadotRelayChainId) {
+    result->coingecko_id = "dot";
   } else {
     result->coingecko_id = "";
   }

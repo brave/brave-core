@@ -47,15 +47,15 @@ class HDKeyEd25519 {
   std::vector<uint8_t> GetPrivateKeyBytes() const;
   std::vector<uint8_t> GetPublicKeyBytes() const;
 
+  base::span<const uint8_t, kEd25519PrivateKeySize> GetPrivateKeyAsSpan() const;
+  base::span<const uint8_t, kEd25519PublicKeySize> GetPublicKeyAsSpan() const;
+
   std::string GetBase58EncodedPublicKey() const;
   std::string GetBase58EncodedKeypair() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519UnitTest, TestVector1);
   FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519UnitTest, TestVector2);
-
-  base::span<const uint8_t, kEd25519PrivateKeySize> GetPrivateKeyAsSpan() const;
-  base::span<const uint8_t, kEd25519PublicKeySize> GetPublicKeyAsSpan() const;
 
   static std::unique_ptr<HDKeyEd25519> DeriveFromHmacPayload(
       base::span<const uint8_t> key,

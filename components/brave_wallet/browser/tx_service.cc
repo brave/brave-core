@@ -119,6 +119,10 @@ TxService::TxService(JsonRpcService* json_rpc_service,
     }
   }
 
+  if (IsPolkadotEnabled()) {
+    // TODO(cypt4): Polkadot transactions
+  }
+
   if (IsCardanoEnabled()) {
     // TODO(apaymyshev): Cardano transactions
   }

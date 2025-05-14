@@ -180,6 +180,12 @@ export const keyringIdForNewAccount = (
     }
   }
 
+  if (coin === BraveWallet.CoinType.DOT) {
+    if (chainId === BraveWallet.POLKADOT_RELAY_CHAIN_ID) {
+      return BraveWallet.KeyringId.kPolkadotSubstrateMainnet
+    }
+  }
+
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
@@ -206,6 +212,8 @@ export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
         return getLocale('braveWalletCardanoTestnetAccountDescription')
       }
       return getLocale('braveWalletCardanoAccountDescription')
+    case BraveWallet.CoinType.DOT:
+      return getLocale('braveWalletDOTAccountDescription')
     default:
       assertNotReached(`Unknown coin ${accountId.coin}`)
   }

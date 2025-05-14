@@ -16,6 +16,7 @@ export const isBitcoinLedgerEnabled = ({ wallet }: State) =>
   wallet.isBitcoinLedgerEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
 export const isCardanoEnabled = ({ wallet }: State) => wallet.isCardanoEnabled
+export const isPolkadotEnabled = ({ wallet }: State) => wallet.isPolkadotEnabled
 export const isWalletCreated = ({ wallet }: State) => wallet.isWalletCreated
 export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts

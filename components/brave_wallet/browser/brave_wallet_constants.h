@@ -544,6 +544,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION},
     {"braveWalletCreateAccountFilecoinTestnetDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_TESTNET_DESCRIPTION},
+    {"braveWalletCreateAccountPolkadotSubstrateDescription",
+     IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_SUBSTRATE_DESCRIPTION},
     {"braveWalletCreateAccountBitcoinDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_DESCRIPTION},
     {"braveWalletCreateAccountBitcoinTestnetDescription",
@@ -1170,6 +1172,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_BTC_TESTNET_ACCOUNT_DESCRIPTION},
     {"braveWalletZECAccountDescription",
      IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION},
+    {"braveWalletDOTAccountDescription",
+     IDS_BRAVE_WALLET_DOT_ACCOUNT_DESCRIPTION},
     {"braveWalletZECTestnetAccountDescription",
      IDS_BRAVE_WALLET_ZEC_TESTNET_ACCOUNT_DESCRIPTION},
     {"braveWalletCardanoAccountDescription",
@@ -1753,6 +1757,7 @@ inline constexpr char kEthereumPrefKey[] = "ethereum";
 inline constexpr char kFilecoinPrefKey[] = "filecoin";
 inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kCardanoPrefKey[] = "cardano";
+inline constexpr char kPolkadotPrefKey[] = "polkadot";
 
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";

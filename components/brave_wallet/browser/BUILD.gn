@@ -451,6 +451,8 @@ source_set("hd_keyring") {
     "ethereum_keyring.h",
     "filecoin_keyring.cc",
     "filecoin_keyring.h",
+    "polkadot/polkadot_substrate_keyring.cc",
+    "polkadot/polkadot_substrate_keyring.h",
     "secp256k1_hd_keyring.cc",
     "secp256k1_hd_keyring.h",
     "solana_keyring.cc",

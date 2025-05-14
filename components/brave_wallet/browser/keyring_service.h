@@ -49,6 +49,7 @@ class PasswordEncryptor;
 class SolanaKeyring;
 class SolanaProviderImplUnitTest;
 class ZCashKeyring;
+class PolkadotSubstrateKeyring;
 struct KeyringSeed;
 
 // This class is not thread-safe and should have single owner
@@ -427,6 +428,8 @@ class KeyringService : public mojom::KeyringService {
 
   std::unique_ptr<CardanoHDKeyring> cardano_hd_mainnet_keyring_;
   std::unique_ptr<CardanoHDKeyring> cardano_hd_testnet_keyring_;
+
+  std::unique_ptr<PolkadotSubstrateKeyring> polkadot_substrate_mainnet_keyring_;
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
 
