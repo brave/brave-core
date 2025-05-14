@@ -100,7 +100,8 @@ class DiskReaderModeCache: ReaderModeCache {
     guard let (_, contentFilePath) = cachePathsForURL(url),
       await AsyncFileManager.default.fileExists(atPath: contentFilePath),
       let string = await AsyncFileManager.default.utf8Contents(at: URL(filePath: contentFilePath)),
-      let value = ReadabilityResult(string: string)
+      case let jsonObject = try JSONSerialization.jsonObject(with: Data(string.utf8)) as AnyObject,
+      let value = ReadabilityResult(object: jsonObject)
     else {
       throw NSError(
         domain: readerModeCacheErrorDomain,

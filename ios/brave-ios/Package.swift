@@ -56,7 +56,6 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
     .package(url: "https://github.com/cezheng/Fuzi", from: "3.1.3"),
-    .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.0"),
     .package(url: "https://github.com/airbnb/lottie-spm", from: "4.4.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImage", exact: "5.10.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
@@ -84,7 +83,6 @@ var package = Package(
         "BraveCore",
         "MaterialComponents",
         "Strings",
-        "SwiftyJSON",
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -487,7 +485,6 @@ var braveTarget: PackageDescription.Target = .target(
     "Static",
     "SDWebImage",
     "Then",
-    "SwiftyJSON",
     "BrowserIntentsModels",
     "BraveWidgetsModels",
     "BraveVPN",

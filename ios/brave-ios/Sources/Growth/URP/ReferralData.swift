@@ -5,10 +5,9 @@
 import BraveShared
 import Foundation
 import Shared
-import SwiftyJSON
 import os.log
 
-struct ReferralData {
+struct ReferralData: Decodable {
 
   let downloadId: String
   let referralCode: String
@@ -25,15 +24,9 @@ struct ReferralData {
     self.offerPage = offerPage
   }
 
-  init?(json: JSON) {
-    guard let downloadId = json["download_id"].string, let code = json["referral_code"].string
-    else {
-      Logger.module.error("Failed to unwrap json to Referral struct.")
-      return nil
-    }
-
-    self.downloadId = downloadId
-    self.referralCode = code
-    self.offerPage = json["offer_page_url"].string
+  enum CodingKeys: String, CodingKey {
+    case downloadId = "download_id"
+    case referralCode = "referral_code"
+    case offerPage = "offer_page_url"
   }
 }

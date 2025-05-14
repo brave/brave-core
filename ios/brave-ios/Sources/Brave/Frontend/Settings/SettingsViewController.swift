@@ -20,7 +20,6 @@ import Preferences
 import Shared
 import Static
 import SwiftUI
-import SwiftyJSON
 import UIKit
 import Web
 import WebKit
@@ -1260,15 +1259,21 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Load all QA Links",
           selection: { [unowned self] in
-            let url = URL(
-              string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
-            )!
-            let string = try? String(contentsOf: url)
-            let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap {
-              URL(string: $0.stringValue)
+            struct Links: Decodable {
+              var links: [String]
             }
-            self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
-            self.dismiss(animated: true)
+            Task.detached {
+              let url = URL(
+                string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
+              )!
+              let data = try Data(contentsOf: url)
+              let links = try JSONDecoder().decode(Links.self, from: data)
+              let urls = links.links.compactMap(URL.init)
+              await MainActor.run {
+                self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
+                self.dismiss(animated: true)
+              }
+            }
           },
           cellClass: MultilineButtonCell.self
         ),
