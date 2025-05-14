@@ -24,8 +24,10 @@
 namespace extensions {
 
 scoped_refptr<const Extension>
-ExtensionFunctionalTest::InstallExtensionSilently(const char* filename,
-                                                  const char* extension_id) {
+ExtensionFunctionalTest::InstallExtensionSilentlyInternal(
+    const char* filename,
+    const char* extension_id,
+    const char* public_key) {
   ExtensionRegistry* registry = ExtensionRegistry::Get(profile());
   size_t num_before = registry->enabled_extensions().size();
 
@@ -46,7 +48,11 @@ ExtensionFunctionalTest::InstallExtensionSilently(const char* filename,
           .GetCallback<const std::optional<CrxInstallError>&>());
   LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
              << "calling InstallCrx on path = " << path.value().c_str();
-  installer->InstallCrx(path);
+  if (public_key) {
+    installer->InstallUnpackedCrx(extension_id, public_key, path);
+  } else {
+    installer->InstallCrx(path);
+  }
 
   const std::optional<CrxInstallError>& error = installer_done_future.Get();
   EXPECT_FALSE(error);
@@ -118,6 +124,20 @@ ExtensionFunctionalTest::InstallExtensionSilently(const char* filename,
   return extension;
 }
 
+scoped_refptr<const Extension>
+ExtensionFunctionalTest::InstallExtensionSilently(const char* filename,
+                                                  const char* extension_id) {
+  return InstallExtensionSilentlyInternal(filename, extension_id, nullptr);
+}
+
+scoped_refptr<const Extension>
+ExtensionFunctionalTest::InstallUnpackedExtensionSilently(
+    const char* path,
+    const char* public_key,
+    const char* extension_id) {
+  return InstallExtensionSilentlyInternal(path, extension_id, public_key);
+}
+
 void ExtensionFunctionalTest::SetUp() {
   InitEmbeddedTestServer();
   ExtensionBrowserTest::SetUp();
@@ -125,7 +145,7 @@ void ExtensionFunctionalTest::SetUp() {
 
 void ExtensionFunctionalTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
-  GetTestDataDir(&test_data_dir_);
+  OverrideTestDataDir(&test_data_dir_);
 }
 
 void ExtensionFunctionalTest::InitEmbeddedTestServer() {
@@ -135,7 +155,8 @@ void ExtensionFunctionalTest::InitEmbeddedTestServer() {
   ASSERT_TRUE(embedded_test_server()->Start());
 }
 
-void ExtensionFunctionalTest::GetTestDataDir(base::FilePath* test_data_dir) {
+void ExtensionFunctionalTest::OverrideTestDataDir(
+    base::FilePath* test_data_dir) {
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
 }

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
@@ -43,9 +44,28 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
+  base::FilePath src =
+      GetTestDataDir().AppendASCII("extension-compat-test-extension");
+  base::FilePath dest =
+      GetTestDataDir().AppendASCII("extension-compat-test-extension-copy");
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(base::CopyDirectory(src, dest, false));
+  }
   scoped_refptr<const extensions::Extension> extension =
-      InstallExtensionSilently("extension-compat-test-extension.crx",
-                               "cdoagmgkjelodcdljmbjiifapnilecob");
+      InstallUnpackedExtensionSilently(
+          "extension-compat-test-extension-copy",
+          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnsTdWGAO7gvCgM/"
+          "ymAuEQ+OpT5T7zGj6UUR/ArzRvdM4RcU97O8Qnq86XSxwKdd/DjqsxGSimU5vw/"
+          "WS4Xvos7ZnrSKy9oqo1ahPa7IQKnPNbs4OVwuI7HBnuskONveGcSH3LL+"
+          "Vx5CDYpbjbgQMtOxEX3xO8u/"
+          "MjAyzkt26XKS1jlsKbwY5yD38IsB9ldBVTU7oHMCA0pJpyQ0J4eKFtb0GdqUlUgpK/"
+          "KYb+xP30Z81RzHXpdhXNN+"
+          "jMQV8M9zox7FeWTGoKkE2faZcXn7VP88Gw0i8enZpR9JGD9fSexJ/"
+          "IW9BzlkjEk8EI6pM309qGxe0ctj20a0MVcZDCLsGaQIDAQAB",
+          "amcdfjbbjngdcepnmopaocdhglmfmihc");
+  // InstallExtensionSilently("extension-compat-test-extension.crx",
+  //                          "cdoagmgkjelodcdljmbjiifapnilecob");
   GURL url = extension->GetResourceURL("blocking.html");
   LOG(ERROR) << "BraveExtensionProviderTest: url = " << url.spec();
 
