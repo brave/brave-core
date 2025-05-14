@@ -568,10 +568,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const uploadImage = (useMediaCapture: boolean) => {
     aiChatContext.uiHandler?.uploadImage(useMediaCapture)
     .then(({uploadedImages}) => {
-      // Return early if the cancelFileUpload function has been called.
-      if (ignoreIncomingFiles.current) {
-        return
-      }
       if (uploadedImages) {
         processUploadedImage(uploadedImages)
       }

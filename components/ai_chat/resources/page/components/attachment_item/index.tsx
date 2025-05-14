@@ -16,7 +16,7 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
 type Props = {
-  thumbnailUrl: string
+  icon: React.ReactNode
   title: string
   subtitle: string
   // remove is optional here so we can also reuse
@@ -29,16 +29,7 @@ export function AttachmentItem(props: Props) {
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
-        {props.thumbnailUrl ? (
-          <img
-            className={styles.image}
-            src={props.thumbnailUrl}
-          />
-        ) : (
-          <div className={styles.loadingContainer}>
-            <ProgressRing />
-          </div>
-        )}
+        {props.icon}
         <div className={styles.info}>
           <Tooltip
             mode='mini'
@@ -49,7 +40,12 @@ export function AttachmentItem(props: Props) {
             </div>
           </Tooltip>
           {props.subtitle && (
-            <span className={styles.subtitle}>{props.subtitle}</span>
+            <span
+              data-key='subtitle'
+              className={styles.subtitle}
+            >
+              {props.subtitle}
+            </span>
           )}
         </div>
       </div>
@@ -93,7 +89,12 @@ export function AttachmentImageItem(props: {
 
   return (
     <AttachmentItem
-      thumbnailUrl={dataUrl}
+      icon={
+        <img
+          className={styles.image}
+          src={dataUrl}
+        />
+      }
       title={props.uploadedImage.filename}
       subtitle={filesize}
       remove={props.remove}
@@ -104,7 +105,11 @@ export function AttachmentImageItem(props: {
 export function AttachmentSpinnerItem(props: { title: string }) {
   return (
     <AttachmentItem
-      thumbnailUrl={''}
+      icon={
+        <div className={styles.loadingContainer}>
+          <ProgressRing />
+        </div>
+      }
       title={props.title}
       subtitle={''}
     />
