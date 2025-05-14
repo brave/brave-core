@@ -1,25 +1,25 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index ccdc0f5fe4c610add51e3314a439a9f5d6c20f4f..84437e44ac4fc6075aeb214b04495f1409f82a3b 100644
+index 541b38fdf12842ada17bfc12659064584b986867..b8de9e5c58f6323b6ba2ff3ddc86492bb95bf6ad 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -184,6 +184,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.RELOAD,
+@@ -181,6 +181,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+             Action.PRINT_PAGE,
              Action.INSPECT_ELEMENT,
              Action.SHOW_INTEREST_IN_ELEMENT,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -236,7 +237,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int RELOAD = 46;
+@@ -233,7 +234,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+             // int RELOAD = 46;  Deprecated since 05/2025.
              int INSPECT_ELEMENT = 47;
              int SHOW_INTEREST_IN_ELEMENT = 48;
 -            int NUM_ENTRIES = 49;
 +            int COPY_CLEAN_LINK = 49;int NUM_ENTRIES = 50;
          }
      }
-
-@@ -385,6 +386,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+ 
+@@ -373,6 +374,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
