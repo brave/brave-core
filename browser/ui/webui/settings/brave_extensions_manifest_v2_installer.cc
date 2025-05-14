@@ -33,8 +33,7 @@ namespace extensions_mv2 {
 namespace {
 
 bool IsKnownMV2Extension(std::string_view id) {
-  return id == kNoScriptId || id == kUBlockId || id == kUMatrixId ||
-         id == kAdGuardId;
+  return kPreconfiguredManifestV2Extensions.contains(id);
 }
 
 GURL GetUpdaterExtensionDownloadUrl(std::string_view extenion_id) {
@@ -45,8 +44,7 @@ GURL GetUpdaterExtensionDownloadUrl(std::string_view extenion_id) {
       update_client::UpdateQueryParams::Get(
           update_client::UpdateQueryParams::CRX) +
       "&x=" + base::EscapeQueryParamValue(base::JoinString(params, "&"), true));
-  DCHECK(url.is_valid());
-
+  CHECK(url.is_valid());
   return url;
 }
 
@@ -54,11 +52,11 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
                        std::string_view extension_id) {
   const auto* gupdate = update_manifest.FindDict("gupdate");
   if (!gupdate) {
-    return GURL::EmptyGURL();
+    return GURL();
   }
   const auto* app_list = gupdate->FindList("app");
   if (!app_list) {
-    return GURL::EmptyGURL();
+    return GURL();
   }
 
   for (const auto& appv : *app_list) {
@@ -74,16 +72,16 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 
     const auto* update_check = app.FindDict("updatecheck");
     if (!update_check) {
-      return GURL::EmptyGURL();
+      return GURL();
     }
     const auto* codebase = update_check->FindString("codebase");
     if (!codebase) {
-      return GURL::EmptyGURL();
+      return GURL();
     }
     return GURL(*codebase);
   }
 
-  return GURL::EmptyGURL();
+  return GURL();
 }
 
 }  // namespace
@@ -93,7 +91,7 @@ ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     content::WebContents* web_contents,
     extensions::WebstoreInstallWithPrompt::Callback callback)
     : extension_id_(extension_id),
-      web_contents_(web_contents),
+      web_contents_(web_contents->GetWeakPtr()),
       callback_(std::move(callback)) {
   CHECK(IsKnownMV2Extension(extension_id));
   auto* profile =
@@ -185,6 +183,11 @@ void ExtensionManifestV2Installer::OnCrxDownloaded(base::FilePath path) {
         false, "Failed to download extension.",
         extensions::webstore_install::Result::OTHER_ERROR);
   }
+  if (!web_contents_) {
+    return std::move(callback_).Run(
+        false, "Installation cancelled.",
+        extensions::webstore_install::Result::USER_CANCELLED);
+  }
 
   extensions::CRXFileInfo crx;
   crx.path = std::move(path);
@@ -192,7 +195,7 @@ void ExtensionManifestV2Installer::OnCrxDownloaded(base::FilePath path) {
 
   crx_installer_ = extensions::CrxInstaller::Create(
       web_contents_->GetBrowserContext(),
-      std::make_unique<ExtensionInstallPrompt>(web_contents_));
+      std::make_unique<ExtensionInstallPrompt>(web_contents_.get()));
   crx_installer_->set_expected_id(extension_id_);
   crx_installer_->set_is_gallery_install(true);
   crx_installer_->AddInstallerCallback(base::BindOnce(

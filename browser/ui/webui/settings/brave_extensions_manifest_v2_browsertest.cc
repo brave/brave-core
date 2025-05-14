@@ -17,8 +17,10 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/crx_file/crx_verifier.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
@@ -201,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   base::ScopedAllowBlockingForTesting allow_blocking;
 
   constexpr char kTestExtension[] =
-      "eedcldngdlcmkjdcdlffmjhpbfdcmkce";  // test/data extension
+      "eedcldngdlcmkjdcdlffmjhpbfdcmkce";  // test/data/manifest_v2
 
   base::FilePath test_extension =
       base::PathService::CheckedGet(brave::DIR_TEST_DATA);
@@ -217,7 +219,12 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
       }));
 
   ui_test_utils::TabAddedWaiter tab_waiter(browser());
-  installer->InstallCrx(test_extension);
+
+  extensions::CRXFileInfo crx;
+  crx.path = test_extension;
+  crx.required_format = crx_file::VerifierFormat::CRX3;
+  installer->InstallCrxFile(crx);
+
   content::WebContents* web_contents = tab_waiter.Wait();
   content::WaitForLoadStop(web_contents);
   EXPECT_EQ(u"Extension v2", web_contents->GetTitle());
