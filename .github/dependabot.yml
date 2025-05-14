@@ -7,3 +7,10 @@ updates:
     labels:
       - "CI/skip"
       - "dependencies"
+  - package-ecosystem: "cargo"
+    schedule:
+      interval: "weekly"
+    directory: "/"
+    labels:
+      - "CI/skip"
+      - "dependencies"
