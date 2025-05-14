@@ -15,7 +15,7 @@
 
 namespace psst {
 
-// Used to hold the loaded script contents for a matched PsstRule.
+// Represents the loaded PSST data for PsstRule matched by the URL.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
  public:
   ~MatchedRule();
