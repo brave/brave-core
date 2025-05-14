@@ -17,10 +17,9 @@ import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 
-/**
- * Brave's version of a radio button group Preference used for Homepage Preference.
- */
-public final class BraveRadioButtonGroupHomepagePreference extends RadioButtonGroupHomepagePreference {
+/** Brave's version of a radio button group Preference used for Homepage Preference. */
+public final class BraveRadioButtonGroupHomepagePreference
+        extends RadioButtonGroupHomepagePreference {
     static final String MOBILE_BOOKMARKS_PATH = "chrome-native://bookmarks/folder/1";
 
     private RadioButtonWithDescription mMobileBookmarks;
@@ -55,7 +54,9 @@ public final class BraveRadioButtonGroupHomepagePreference extends RadioButtonGr
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        mMobileBookmarks = (RadioButtonWithDescription) holder.findViewById(R.id.brave_homepage_mobile_bookmarks);
+        mMobileBookmarks =
+                (RadioButtonWithDescription)
+                        holder.findViewById(R.id.brave_homepage_mobile_bookmarks);
         assert mMobileBookmarks != null : "Mobile bookmarks button is missing in the layout";
 
         mCustomUri = (RadioButtonWithEditText) holder.findViewById(R.id.radio_button_uri_edit);
