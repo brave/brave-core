@@ -62,7 +62,10 @@ public class BraveNewTabTakeoverInfobar {
                         public boolean onInfoBarLinkClicked() {
                             suppressInfobar();
                             TabUtils.openUrlInSameTab(LEARN_MORE_URL);
-                            return true;
+                            // Return false to immediately close the infobar. This is different
+                            // from ConfirmInfoBarDelegate where we return true to close the
+                            // infobar.
+                            return false;
                         }
                     },
                     BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
