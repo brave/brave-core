@@ -352,23 +352,17 @@ chromium_presubmit_overrides.inline_presubmit('//PRESUBMIT.py', globals(),
 
 # pyright: reportUnboundVariable=false, reportUndefinedVariable=false
 
-_BANNED_JAVA_FUNCTIONS += (
-    BanRule(
-      'Utils.getProfile(),
-      (
-       'Prefer passing in the Profile reference instead of relying on the '
-       'static getProfile() call. Only top level entry points '
-       '(e.g. Activities) should call ProfileManager.getLastUsedRegularProfile '
-       'instead. Otherwise, the Profile should either be passed in explicitly '
-       'or retreived from an existing entity with a reference to the Profile '
-       '(e.g. WebContents).',
-      ),
-      False,
-      excluded_paths=(
-        r'.*Test[A-Z]?.*\.java',
-      ),
-    ),
-)
+_BANNED_JAVA_FUNCTIONS += (BanRule(
+    r'/(BraveLeoPrefUtils|Utils)\.getProfile\(\)',
+    ('Prefer passing in the Profile reference instead of relying on the '
+     'static getProfile() call. Only top level entry points '
+     '(e.g. Activities) should call ProfileManager.getLastUsedRegularProfile '
+     'instead. Otherwise, the Profile should either be passed in explicitly '
+     'or retreived from an existing entity with a reference to the Profile '
+     '(e.g. WebContents).', ),
+    False,
+    excluded_paths=(r'.*Test[A-Z]?.*\.java', ),
+), )
 
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
@@ -395,11 +389,9 @@ _BANNED_CPP_FUNCTIONS += (
         ('ExecuteJavaScript() should not be used outside of chrome:// urls. If '
          'you must inject into the main world, consider using '
          'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
-         'instead',
-         ),
+         'instead', ),
         treat_as_error=False,
-    )
-)
+    ))
 
 
 # Extend BanRule exclude lists with Brave-specific paths.
