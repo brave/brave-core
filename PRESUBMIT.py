@@ -390,6 +390,15 @@ _BANNED_CPP_FUNCTIONS += (
         treat_as_error=True,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
+    BanRule(
+        r'/\bAllowInjectingJavaScript\(\)',
+        ('ExecuteJavaScript() should not be used outside of chrome:// urls. If '
+         'you must inject into the main world, consider using '
+         'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
+         'instead',
+         ),
+        treat_as_error=False,
+    )
 )
 
 
