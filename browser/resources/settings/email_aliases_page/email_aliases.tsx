@@ -166,24 +166,24 @@ export const ManagePage = ({ emailAliasesService, bindObserver }:
   const onReturnToMain = () => {
     setViewState({ mode: 'Main' })
   }
-  const observer : EmailAliasesServiceObserverInterface = {
-    onAliasesUpdated: (aliases: Alias[]) => {
-      setAliasesState(aliases)
-    },
-    onLoggedIn: (email: string) => {
-      setMainEmail(email)
-      setViewState({ mode: 'Main' })
-    },
-    onLoggedOut: () => {
-      setMainEmail('')
-      setViewState({ mode: 'SignUp' })
-    },
-    onVerificationPending: (email: string) => {
-      setViewState({ mode: 'AwaitingAuthorization' })
-      setMainEmail(email)
-    }
-  }
   React.useEffect(() => {
+    const observer : EmailAliasesServiceObserverInterface = {
+      onAliasesUpdated: (aliases: Alias[]) => {
+        setAliasesState(aliases)
+      },
+      onLoggedIn: (email: string) => {
+        setMainEmail(email)
+        setViewState({ mode: 'Main' })
+      },
+      onLoggedOut: () => {
+        setMainEmail('')
+        setViewState({ mode: 'SignUp' })
+      },
+      onVerificationPending: (email: string) => {
+        setViewState({ mode: 'AwaitingAuthorization' })
+        setMainEmail(email)
+      }
+    }
     return bindObserver(observer)
   }, [] /* Only run at mount. */)
   return (
