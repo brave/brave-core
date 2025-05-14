@@ -10,7 +10,7 @@ updates:
   - package-ecosystem: "cargo"
     schedule:
       interval: "weekly"
-    directory: "/"
+    directory: "/tools/crates"
     labels:
       - "CI/skip"
       - "dependencies"
