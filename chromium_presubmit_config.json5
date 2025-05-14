@@ -64,7 +64,7 @@
     "third_party/rust/",
     "tools/crates/",
     "win_build_output/",
-    "third_party/ios_deps/",
+    "ios/third_party/",
     "ui/webui/resources/wasm/vendor/",
   ],
 

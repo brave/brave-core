@@ -134,9 +134,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # android_deps/libs instead and it's special-cased further down.
         os.path.join('brave', 'third_party', 'android_deps'),
 
-        # No third-party code directly under ios_deps.
-        os.path.join('brave', 'third_party', 'ios_deps'),
-
         # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
@@ -303,14 +300,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         for dirpath in dirs:
             dirname = os.path.basename(dirpath)
             additional_list += [os.path.join(android_libs, dirname)]
-
-    # Add all iOS libraries since they're not directly contained
-    # within a third_party directory. iOS deps will never be nested
-    ios_deps = os.path.join('brave', 'third_party', 'ios_deps')
-    for dirname in os.listdir(os.path.join(root, ios_deps)):
-        if not os.path.isdir(os.path.join(root, ios_deps, dirname)):
-            continue
-        additional_list += [os.path.join(ios_deps, dirname)]
 
     additional_paths = tuple(additional_list)
 
