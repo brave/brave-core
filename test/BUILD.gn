@@ -474,6 +474,7 @@ test("brave_unit_tests") {
       "//brave/ui/views:unit_tests",
       "//chrome/browser/ui/views/bubble",
       "//components/favicon/content",
+      "//components/user_data_importer/common",
     ]
   }
 
