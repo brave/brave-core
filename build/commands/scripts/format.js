@@ -7,6 +7,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const prettier = require('prettier')
 const program = require('commander')
+const { spawnSync } = require('child_process')
 
 const config = require('../lib/config')
 const util = require('../lib/util')
@@ -118,7 +119,7 @@ const runPrettier = async (files, dryRun) => {
     if (content !== formatted) {
       if (dryRun) {
         // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-        const diffResult = util.runProcess('git', ['diff', '--no-index', file, '-'], {
+        const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
           stdio: 'pipe',
           input: formatted,
         })
