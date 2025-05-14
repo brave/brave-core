@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    schedule:
+      interval: "weekly"
+    directory: "/"
+    labels:
+      - "CI/skip"
+      - "dependencies"
+  - package-ecosystem: "cargo"
+    schedule:
+      interval: "weekly"
+    directory: "/tools/crates"
+    labels:
+      - "CI/skip"
+      - "dependencies"
