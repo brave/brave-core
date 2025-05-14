@@ -45,7 +45,6 @@ export function getHtml(this: SettingsBraveAccountRow) {
       return html`
         <settings-brave-account-forgot-password-dialog
           @back-button-clicked=${this.onBackButtonClicked}
-          @cancel-button-clicked=${this.onBackButtonClicked}
           @close-button-clicked=${this.onCloseButtonClicked}
         </settings-brave-account-forgot-password-dialog>
       `

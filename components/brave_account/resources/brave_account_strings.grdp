@@ -102,9 +102,6 @@
   <message name="IDS_BRAVE_ACCOUNT_ALERT_MESSAGE" translateable="false" desc="Alert message explaining that if the user resets their password without having an active login, all their data will be deleted">
     [Explain that if they reset their password without having an active login, all the user data will be deleted]
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user back to the 'Sign In' dialog">
-    Cancel
-  </message>
   <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Forgot Password' dialog">
     Reset your password
   </message>
