@@ -10,20 +10,24 @@ import android.util.AttributeSet;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceViewHolder;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 
 /** Brave's version of a radio button group Preference used for Homepage Preference. */
+@NullMarked
 public final class BraveRadioButtonGroupHomepagePreference
         extends RadioButtonGroupHomepagePreference {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static final String MOBILE_BOOKMARKS_PATH = "chrome-native://bookmarks/folder/1";
 
-    private RadioButtonWithDescription mMobileBookmarks;
-    private RadioButtonWithEditText mCustomUri;
+    @Nullable private RadioButtonWithDescription mMobileBookmarks;
+    @Nullable private RadioButtonWithEditText mCustomUri;
     private boolean mSelectMobileBookmarks;
 
     public BraveRadioButtonGroupHomepagePreference(Context context, AttributeSet attrs) {
@@ -81,14 +85,12 @@ public final class BraveRadioButtonGroupHomepagePreference
     }
 
     void maybeSelectMobileBookmarks(boolean forceSelect) {
-        if (mSelectMobileBookmarks || forceSelect) {
-            if (mMobileBookmarks != null) {
-                // Make sure it is selected.
-                mMobileBookmarks.setChecked(true);
-                // Set proper URL (mobile bookmarks is the same as custom uri just with mobile
-                // bookmarks path).
-                onTextChanged(MOBILE_BOOKMARKS_PATH);
-            }
+        if ((mSelectMobileBookmarks || forceSelect) && mMobileBookmarks != null) {
+            // Make sure it is selected.
+            mMobileBookmarks.setChecked(true);
+            // Set proper URL (mobile bookmarks is the same as custom uri just with mobile
+            // bookmarks path).
+            onTextChanged(MOBILE_BOOKMARKS_PATH);
         }
     }
 
@@ -103,6 +105,7 @@ public final class BraveRadioButtonGroupHomepagePreference
     }
 
     @VisibleForTesting
+    @Nullable
     RadioButtonWithDescription getMobileBookmarksRadioButton() {
         return mMobileBookmarks;
     }
