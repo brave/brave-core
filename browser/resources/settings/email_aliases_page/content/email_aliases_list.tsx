@@ -179,3 +179,4 @@ export const AliasList = ({
           onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
         </AliasItem>)}
   </DivWithTopDivider>
+  
