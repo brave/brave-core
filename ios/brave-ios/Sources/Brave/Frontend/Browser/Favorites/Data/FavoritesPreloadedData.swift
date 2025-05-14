@@ -51,10 +51,27 @@ struct FavoritesPreloadedData {
       "TR", "TM", "TC", "TV", "UG", "UA", "AE", "UY", "UM", "UZ", "VU", "VE", "VN", "VI", "WF",
       "EH", "YE", "ZM", "ZW":
       return popularFavorites
-    case "AF":
+    case "AF", "AT", "EE", "FI":
       var sites = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://www.sporcle.com/") {
-        sites.append(FavoriteSite(url, title: "Sporcle"))
+      if region == "AF" {
+        if let url = URL(string: "https://www.sporcle.com/") {
+          sites.append(FavoriteSite(url, title: "Sporcle"))
+        }
+      } else if region == "AT" {
+        if let url = URL(string: "https://orf.at/") {
+          sites.append(FavoriteSite(url, title: "Orf"))
+        }
+      } else if region == "EE" {
+        if let url = URL(string: "https://ekspress.delfi.ee//") {
+          sites.append(FavoriteSite(url, title: "Eesti Ekspress"))
+        }
+      } else if region == "FI" {
+        if let url = URL(string: "https://www.iltalehti.fi/") {
+          sites.append(FavoriteSite(url, title: "Iltalehti"))
+        }
+        if let url = URL(string: "https://yle.fi/") {
+          sites.append(FavoriteSite(url, title: "Yle"))
+        }
       }
       return sites
     case "AS":
@@ -91,28 +108,76 @@ struct FavoritesPreloadedData {
         sites.append(FavoriteSite(url, title: "Cricket.com.au"))
       }
       return sites
-    case "AT":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://orf.at/") {
-        sites.append(FavoriteSite(url, title: "Orf"))
-      }
-      return sites
-    case "BE":
+    case "BE", "BR", "CL", "CO", "CZ", "HR", "DK", "EG":
       var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.vrt.be/nl") {
-        sites.append(FavoriteSite(url, title: "VRT"))
-      }
-      if let url = URL(string: "https://www.hln.be/") {
-        sites.append(FavoriteSite(url, title: "HLN"))
-      }
-      return sites
-    case "BR":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.uol.com.br/") {
-        sites.append(FavoriteSite(url, title: "UOL"))
-      }
-      if let url = URL(string: "https://www.globo.com/") {
-        sites.append(FavoriteSite(url, title: "Globo"))
+      if region == "BE" {
+        if let url = URL(string: "https://www.vrt.be/nl") {
+          sites.append(FavoriteSite(url, title: "VRT"))
+        }
+        if let url = URL(string: "https://www.hln.be/") {
+          sites.append(FavoriteSite(url, title: "HLN"))
+        }
+      } else if region == "BR" {
+        if let url = URL(string: "https://www.uol.com.br/") {
+          sites.append(FavoriteSite(url, title: "UOL"))
+        }
+        if let url = URL(string: "https://www.globo.com/") {
+          sites.append(FavoriteSite(url, title: "Globo"))
+        }
+      } else if region == "CL" {
+        if let url = URL(string: "https://www.emol.com/") {
+          sites.append(FavoriteSite(url, title: "Emol"))
+        }
+        if let url = URL(string: "https://www.biobiochile.cl/") {
+          sites.append(FavoriteSite(url, title: "BiobioChile"))
+        }
+      } else if region == "CO" {
+        if let url = URL(string: "https://www.eltiempo.com/") {
+          sites.append(FavoriteSite(url, title: "El Tiempo"))
+        }
+        if let url = URL(string: "https://www.semana.com/") {
+          sites.append(FavoriteSite(url, title: "Semana"))
+        }
+      } else if region == "CZ" {
+        if let url = URL(string: "https://www.novinky.cz/") {
+          sites.append(FavoriteSite(url, title: "Novinky"))
+        }
+        if let url = URL(string: "https://www.idnes.cz/") {
+          sites.append(FavoriteSite(url, title: "iDNES.cz"))
+        }
+        if let url = URL(string: "https://www.centrum.cz/") {
+          sites.append(FavoriteSite(url, title: "Centrum.cz"))
+        }
+      } else if region == "HR" {
+        if let url = URL(string: "https://www.jutarnji.hr/") {
+          sites.append(FavoriteSite(url, title: "Jutarnji list"))
+        }
+        if let url = URL(string: "https://www.index.hr/") {
+          sites.append(FavoriteSite(url, title: "Index.HR"))
+        }
+        if let url = URL(string: "https://www.24sata.hr/") {
+          sites.append(FavoriteSite(url, title: "24 Sata"))
+        }
+      } else if region == "DK" {
+        if let url = URL(string: "https://www.berlingske.dk/") {
+          sites.append(FavoriteSite(url, title: "Berlingske"))
+        }
+        if let url = URL(string: "https://politiken.dk/") {
+          sites.append(FavoriteSite(url, title: "Politiken"))
+        }
+      } else if region == "EG" {
+        if let url = URL(string: "https://www.youm7.com/") {
+          sites.append(FavoriteSite(url, title: "اليوم السابع"))
+        }
+        if let url = URL(string: "https://www.almasryalyoum.com/") {
+          sites.append(FavoriteSite(url, title: "المصري اليوم"))
+        }
+        if let url = URL(string: "https://www.egyptindependent.com/") {
+          sites.append(FavoriteSite(url, title: "Egyptian Independent"))
+        }
+        if let url = URL(string: "https://www.madamasr.com/en/") {
+          sites.append(FavoriteSite(url, title: "Madamasr"))
+        }
       }
       return sites
     case "VG":
@@ -134,87 +199,6 @@ struct FavoritesPreloadedData {
         sites.append(FavoriteSite(url, title: "AccuWeather"))
       }
       sites.append(contentsOf: [wikipedia, youtube])
-      return sites
-    case "CL":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.emol.com/") {
-        sites.append(FavoriteSite(url, title: "Emol"))
-      }
-      if let url = URL(string: "https://www.biobiochile.cl/") {
-        sites.append(FavoriteSite(url, title: "BiobioChile"))
-      }
-      return sites
-    case "CO":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.eltiempo.com/") {
-        sites.append(FavoriteSite(url, title: "El Tiempo"))
-      }
-      if let url = URL(string: "https://www.semana.com/") {
-        sites.append(FavoriteSite(url, title: "Semana"))
-      }
-      return sites
-    case "HR":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.jutarnji.hr/") {
-        sites.append(FavoriteSite(url, title: "Jutarnji list"))
-      }
-      if let url = URL(string: "https://www.index.hr/") {
-        sites.append(FavoriteSite(url, title: "Index.HR"))
-      }
-      if let url = URL(string: "https://www.24sata.hr/") {
-        sites.append(FavoriteSite(url, title: "24 Sata"))
-      }
-      return sites
-    case "CZ":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.novinky.cz/") {
-        sites.append(FavoriteSite(url, title: "Novinky"))
-      }
-      if let url = URL(string: "https://www.idnes.cz/") {
-        sites.append(FavoriteSite(url, title: "iDNES.cz"))
-      }
-      if let url = URL(string: "https://www.centrum.cz/") {
-        sites.append(FavoriteSite(url, title: "Centrum.cz"))
-      }
-      return sites
-    case "DK":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.berlingske.dk/") {
-        sites.append(FavoriteSite(url, title: "Berlingske"))
-      }
-      if let url = URL(string: "https://politiken.dk/") {
-        sites.append(FavoriteSite(url, title: "Politiken"))
-      }
-      return sites
-    case "EG":
-      var sites: [FavoriteSite] = [youtube, wikipedia]
-      if let url = URL(string: "https://www.youm7.com/") {
-        sites.append(FavoriteSite(url, title: "اليوم السابع"))
-      }
-      if let url = URL(string: "https://www.almasryalyoum.com/") {
-        sites.append(FavoriteSite(url, title: "المصري اليوم"))
-      }
-      if let url = URL(string: "https://www.egyptindependent.com/") {
-        sites.append(FavoriteSite(url, title: "Egyptian Independent"))
-      }
-      if let url = URL(string: "https://www.madamasr.com/en/") {
-        sites.append(FavoriteSite(url, title: "Madamasr"))
-      }
-      return sites
-    case "EE":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://ekspress.delfi.ee//") {
-        sites.append(FavoriteSite(url, title: "Eesti Ekspress"))
-      }
-      return sites
-    case "FI":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://www.iltalehti.fi/") {
-        sites.append(FavoriteSite(url, title: "Iltalehti"))
-      }
-      if let url = URL(string: "https://yle.fi/") {
-        sites.append(FavoriteSite(url, title: "Yle"))
-      }
       return sites
     case "FR":
       var sites: [FavoriteSite] = [youtube, facebook, wikipedia]
@@ -250,25 +234,39 @@ struct FavoritesPreloadedData {
         sites.append(FavoriteSite(url, title: "Asia Sentinel"))
       }
       return sites
-    case "HU":
+    case "HU", "IS", "IT", "LV", "LT", "MG", "NL":
       var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=hu") {
-        sites.append(FavoriteSite(url, title: "SCMP"))
-      }
-      if let url = URL(string: "https://www.asiasentinel.com/") {
-        sites.append(FavoriteSite(url, title: "Asia Sentinel"))
-      }
-      return sites
-    case "IS":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://european-union.europa.eu/news-and-events_en") {
-        sites.append(FavoriteSite(url, title: "EU"))
-      }
-      return sites
-    case "IT":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=it") {
-        sites.append(FavoriteSite(url, title: "EU"))
+      if region == "HU" {
+        if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=hu") {
+          sites.append(FavoriteSite(url, title: "SCMP"))
+        }
+        if let url = URL(string: "https://www.asiasentinel.com/") {
+          sites.append(FavoriteSite(url, title: "Asia Sentinel"))
+        }
+      } else if region == "IS" {
+        if let url = URL(string: "https://european-union.europa.eu/news-and-events_en") {
+          sites.append(FavoriteSite(url, title: "EU"))
+        }
+      } else if region == "IT" {
+        if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=it") {
+          sites.append(FavoriteSite(url, title: "EU"))
+        }
+      } else if region == "LV" {
+        if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=lv") {
+          sites.append(FavoriteSite(url, title: "EU"))
+        }
+      } else if region == "LT" {
+        if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=lt") {
+          sites.append(FavoriteSite(url, title: "EU"))
+        }
+      } else if region == "MG" {
+        if let url = URL(string: "https://www.sporcle.com/") {
+          sites.append(FavoriteSite(url, title: "Sporcle"))
+        }
+      } else if region == "NL" {
+        if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=nl") {
+          sites.append(FavoriteSite(url, title: "EU"))
+        }
       }
       return sites
     case "JP":
@@ -300,30 +298,6 @@ struct FavoritesPreloadedData {
       }
       if let url = URL(string: "https://www.daum.net/") {
         sites.append(FavoriteSite(url, title: "Daum"))
-      }
-      return sites
-    case "LV":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=lv") {
-        sites.append(FavoriteSite(url, title: "EU"))
-      }
-      return sites
-    case "LT":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=lt") {
-        sites.append(FavoriteSite(url, title: "EU"))
-      }
-      return sites
-    case "MG":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://www.sporcle.com/") {
-        sites.append(FavoriteSite(url, title: "Sporcle"))
-      }
-      return sites
-    case "NL":
-      var sites: [FavoriteSite] = [youtube, wikipedia, facebook]
-      if let url = URL(string: "https://european-union.europa.eu/news-and-events_en?prefLang=nl") {
-        sites.append(FavoriteSite(url, title: "EU"))
       }
       return sites
     case "NZ":
