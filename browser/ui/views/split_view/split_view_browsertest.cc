@@ -50,6 +50,26 @@ IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
   EXPECT_FALSE(!!split_view_data);
 }
 
+class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
+ public:
+  SideBySideEnabledBrowserTest() {
+    // Can't enable SideBySide and our SplitView features together.
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {features::kSideBySide},
+        /*disabled_features*/ {tabs::features::kBraveSplitView});
+  }
+  ~SideBySideEnabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+// Check there is no crash when Chromium's SideBySide feature is enabled.
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, LaunchTest) {
+  EXPECT_TRUE(!!BrowserView::GetBrowserViewForBrowser(browser())
+                    ->multi_contents_view_for_testing());
+}
+
 class SplitViewBrowserTest : public InProcessBrowserTest {
  public:
   SplitViewBrowserTest() = default;

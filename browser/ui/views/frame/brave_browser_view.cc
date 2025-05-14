@@ -63,10 +63,12 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -233,9 +235,15 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       contents_container_->AddChildView(std::make_unique<ReaderModeToolbarView>(
           browser_->profile(), use_rounded_corners));
 
+  views::View* contents_view = contents_web_view_;
+  // MultiContentsView is contents view with SideBySide feature.
+  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
+    contents_view = multi_contents_view_;
+  }
+  CHECK(contents_view);
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view(), devtools_scrim_view(), contents_web_view(),
+          devtools_web_view(), devtools_scrim_view(), contents_view,
           lens_overlay_view_, contents_scrim_view(), /*border_view*/ nullptr,
           watermark_view_.get(), reader_mode_toolbar_));
 #endif
