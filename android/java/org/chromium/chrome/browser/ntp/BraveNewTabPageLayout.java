@@ -163,6 +163,8 @@ public class BraveNewTabPageLayout
     private Bitmap mSponsoredLogo;
     private Wallpaper mWallpaper;
 
+    private BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
+
     private CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCard =
             new CopyOnWriteArrayList<FeedItemsCard>();
     private RecyclerView mRecyclerView;
@@ -1273,9 +1275,9 @@ public class BraveNewTabPageLayout
             wasWallpaperShown = false;
         }
 
-        if (wasWallpaperShown && ntpImage instanceof Wallpaper) {
-            BraveNewTabTakeoverInfobar infobar = new BraveNewTabTakeoverInfobar(mProfile);
-            infobar.maybeDisplayAndIncrementCounter();
+        if (wasWallpaperShown && ntpImage instanceof Wallpaper && mNewTabTakeoverInfobar == null) {
+            mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
+            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter();
         }
     }
 
