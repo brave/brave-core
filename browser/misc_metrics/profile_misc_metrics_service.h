@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -59,6 +60,7 @@ class ProfileMiscMetricsService : public KeyedService {
   void ReportSimpleMetrics();
 
   raw_ptr<PrefService> profile_prefs_;
+  base::FilePath context_path_;
   PrefChangeRegistrar pref_change_registrar_;
 
   std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
