@@ -172,7 +172,7 @@
     "style-loader": "2.0.0",
     "styled-components": "5.3.11",
     "teamcity-service-messages": "0.1.14",
-    "terser": "5.16.2",
+    "terser": "5.39.1",
     "timers-browserify": "2.0.12",
     "ts-jest": "28.0.8",
     "ts-loader": "9.5.2",
