@@ -43,6 +43,9 @@ public class BravePrivacySettingsTest {
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
+    private static final String PREF_INCOGNITO_TRACKING_PROTECTIONS =
+            "incognito_tracking_protections";
+    private static final String PREF_ADVANCED_PROTECTION_INFO = "advanced_protection_info";
 
     private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 30;
 
@@ -81,6 +84,9 @@ public class BravePrivacySettingsTest {
         checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);
         checkPreferenceRemoved(PREF_PASSWORD_LEAK_DETECTION);
 
+        checkPreferenceVisibility(PREF_INCOGNITO_TRACKING_PROTECTIONS, false);
+        checkPreferenceVisibility(PREF_ADVANCED_PROTECTION_INFO, false);
+
         assertEquals(BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS, mItemsLeft);
     }
 
@@ -92,6 +98,10 @@ public class BravePrivacySettingsTest {
     private void checkPreferenceRemoved(String pref) {
         assertEquals(null, mFragment.findPreference(pref));
         mItemsLeft--;
+    }
+
+    private void checkPreferenceVisibility(String pref, boolean expectedVisibility) {
+        assertEquals(expectedVisibility, mFragment.findPreference(pref).isVisible());
     }
 
     @Test

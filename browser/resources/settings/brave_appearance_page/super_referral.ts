@@ -63,8 +63,8 @@ export class SettingsBraveAppearanceSuperReferralElement extends
     ]
   }
 
-  prefs: any
-  private useSystemTheme_: boolean
+  declare prefs: any
+  private declare useSystemTheme_: boolean
 
   private themeUrl_: string
   private themeSublabel_: string

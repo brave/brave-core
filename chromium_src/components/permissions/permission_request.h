@@ -11,6 +11,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 
+// TOOD(https://github.com/brave/brave-browser/issues/45582): Plaster issue.
+// This header has to be pre-emptively included as it eventually causes the
+// inclusion of components/permissions/permission_prompt.h, where
+// `PermissionRequest` is used as a forward declaration, but was getting
+// replaced with `PermissionRequest_ChromiumImpl`. This is another issue that
+// has to be fixed with plaster.
+#include "components/permissions/permission_hats_trigger_helper.h"
+
 #define PermissionRequest PermissionRequest_ChromiumImpl
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 #include "src/components/permissions/permission_request.h"  // IWYU pragma: export

@@ -12,11 +12,12 @@ cargo_crate("lib") {
   crate_name = "either"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/either-1.8.1/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/either-1.8.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/either-1.8.1/src/serde_untagged.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/either-1.8.1/src/serde_untagged_optional.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/serde_untagged.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/serde_untagged_optional.rs",
   ]
   inputs = []
 
@@ -33,7 +34,11 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-  features = [ "use_std" ]
+  features = [
+    "default",
+    "use_std",
+  ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

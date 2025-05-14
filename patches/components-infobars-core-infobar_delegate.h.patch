@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 7a44429a3fa3e8849eaa4290f9fd9bacb6c6f98a..18025f21ab217230f2e72092dad7319960c079a6 100644
+index d4b2c9af903dbda9b133039120ef0371e4fe09f3..3ce39f5bed46c4233ffd47abc8152f4cd861a964 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -187,6 +187,7 @@ class InfoBarDelegate {
-     DEV_TOOLS_SHARED_PROCESS_DELEGATE = 120,
+@@ -188,6 +188,7 @@ class InfoBarDelegate {
      ENHANCED_SAFE_BROWSING_INFOBAR_DELEGATE = 121,
      CREDENTIAL_PROVIDER_INFOBAR_DELEGATE_IOS = 122,
+     PDF_INFOBAR_DELEGATE = 123,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

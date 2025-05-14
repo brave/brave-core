@@ -3,7 +3,7 @@ URL: https://crates.io/crates/parking_lot
 Version: 0.12.1
 Revision: 336a9b31ff385728d00eb7ef173e4d054584b787
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

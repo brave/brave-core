@@ -212,6 +212,10 @@ inline constexpr char16_t kFamilyGroupCreateURL[] =
 // Link for viewing family group with Google Families.
 inline constexpr char16_t kFamilyGroupViewURL[] = u"https://support.brave.com/";
 
+// "Learn more" URL for Incognito tracking protections.
+inline constexpr char kIncognitoTrackingProtectionsLearnMoreUrl[] =
+    "https://support.brave.com/";
+
 // Url to a blogpost about Flash deprecation.
 inline constexpr char kFlashDeprecationLearnMoreURL[] =
     "https://blog.chromium.org/2017/07/so-long-and-thanks-for-all-flash.html";
@@ -426,6 +430,10 @@ inline constexpr char16_t kSyncLearnMoreURL[] = u"https://support.brave.com/";
 inline constexpr char kSigninOnDesktopLearnMoreURL[] =
     "https://support.brave.com/";
 
+// The URL for the "Learn more" page for adding a new profile to Chrome.
+inline constexpr char kAddNewProfileOnDesktopLearnMoreURL[] =
+    "https://support.brave.com/";
+
 // The URL for the "Learn more" page for AI settings for managed users.
 inline constexpr char16_t kAiSettingsLearnMorePageManagedUrl[] =
     u"https://support.brave.com/";
@@ -440,6 +448,14 @@ inline constexpr char kComposeLearnMorePageManagedURL[] =
 // The URL for the "Learn more" links for pages related to History search.
 // TODO(crbug.com/328300718): Update help article URL.
 inline constexpr char kHistorySearchLearnMorePageURL[] =
+    "https://support.brave.com/";
+
+// The URL for the "Learn more about shortcuts" page for Glic.
+inline constexpr char kGlicKeyboardShortcutLearnMoreURL[] =
+    "https://support.brave.com/";
+
+// The URL for the "Learn more about shortcuts" page for Glic for managed users.
+inline constexpr char kGlicKeyboardShortcutLearnMoreManagedURL[] =
     "https://support.brave.com/";
 
 // The URL for the "Learn more" links for pages related to History search for

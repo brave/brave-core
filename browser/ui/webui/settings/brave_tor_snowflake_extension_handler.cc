@@ -176,7 +176,7 @@ void BraveTorSnowflakeExtensionHandler::EnableSnowflakeExtension(
     }
   } else {
     installer_.reset();
-    extension_service->UninstallExtension(
+    extensions::ExtensionRegistrar::Get(profile)->UninstallExtension(
         kSnowflakeExtensionId, extensions::UNINSTALL_REASON_INTERNAL_MANAGEMENT,
         nullptr);
     ResolveJavascriptCallback(args[0], base::Value(true));

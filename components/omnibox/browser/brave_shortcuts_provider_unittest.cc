@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
+
 #include <memory>
 #include <string_view>
 #include <vector>
@@ -13,7 +15,6 @@
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
@@ -22,6 +23,7 @@
 #include "components/omnibox/browser/shortcuts_provider.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engines_test_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/page_transition_types.h"
@@ -49,6 +51,8 @@ class BraveShortcutsProviderTest : public testing::Test {
     EXPECT_CALL(client_, GetHistoryService())
         .WillRepeatedly(testing::Return(&history_service_));
 
+    client_.set_template_url_service(
+        search_engines_test_environment_.template_url_service());
     backend_ = base::MakeRefCounted<ShortcutsBackend>(
         client_.GetTemplateURLService(), std::make_unique<SearchTermsData>(),
         client_.GetHistoryService(), base::FilePath(), true);
@@ -75,6 +79,7 @@ class BraveShortcutsProviderTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
 
   MockHistoryService history_service_;
   TestSchemeClassifier classifier_;

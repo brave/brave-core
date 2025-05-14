@@ -72,11 +72,7 @@ void BraveIncognitoMenuView::AddedToWidget() {
   int window_count = BrowserList::GetOffTheRecordBrowsersActiveForProfile(
       browser()->profile());
   SetProfileIdentityInfo(
-      /*profile_name=*/std::u16string(),
-      /*profile_background_color=*/SK_ColorTRANSPARENT,
-      /*edit_button_params=*/std::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
-      ui::ImageModel(),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)

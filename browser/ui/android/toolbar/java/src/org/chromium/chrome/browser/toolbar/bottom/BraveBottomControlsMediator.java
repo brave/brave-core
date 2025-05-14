@@ -18,7 +18,6 @@ import org.chromium.ui.modelutil.PropertyModel;
 
 class BraveBottomControlsMediator extends BottomControlsMediator {
     // To delete in bytecode, members from parent class will be used instead.
-    private int mBottomControlsHeight;
     private PropertyModel mModel;
     private BottomControlsStacker mBottomControlsStacker;
 
@@ -63,18 +62,16 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
 
     @Override
     public void setBottomControlsVisible(boolean visible) {
-        updateBottomControlsHeight(mBottomToolbarVisibleSupplier.get() && visible);
+        mTabGroupUiVisibleSupplier.set(visible);
         // We should keep it visible if bottom toolbar is visible.
         super.setBottomControlsVisible(mBottomToolbarVisibleSupplier.get() || visible);
-        mTabGroupUiVisibleSupplier.set(visible);
         updateYOffset();
     }
 
     public void setBottomToolbarVisible(boolean visible) {
-        updateBottomControlsHeight(mTabGroupUiVisibleSupplier.get() && visible);
+        mBottomToolbarVisibleSupplier.set(visible);
         // We should keep it visible if tag group UI is visible.
         super.setBottomControlsVisible(mTabGroupUiVisibleSupplier.get() || visible);
-        mBottomToolbarVisibleSupplier.set(visible);
         updateYOffset();
     }
 
@@ -86,19 +83,27 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         return mTabGroupUiVisibleSupplier;
     }
 
-    private void updateBottomControlsHeight(boolean bothBottomControlsVisible) {
-        // Double the height if both bottom controls are visible
-        mBottomControlsHeight = bothBottomControlsVisible ? mBottomControlsHeightDouble
-                                                          : mBottomControlsHeightSingle;
-    }
-
     private void updateYOffset() {
         // This indicates that both controls are visible, but bottom toolbar has already been
         // scrolled down, so we move scroll further for tab groups control.
-        if (mBottomControlsHeight == mBottomControlsHeightDouble
+        if (bothBottomControlsVisible()
                 && mBottomControlsStacker.getBrowserControls().getBottomControlOffset()
                         == mBottomControlsHeightSingle) {
             mModel.set(BottomControlsProperties.Y_OFFSET, mBottomControlsHeightDouble);
         }
+    }
+
+    @Override
+    public int getHeight() {
+        if (bothBottomControlsVisible()) {
+            // Factor in the height of the Brave navigation bottom controls when they are visible.
+            return super.getHeight() + mBottomControlsHeightSingle;
+        }
+
+        return super.getHeight();
+    }
+
+    private boolean bothBottomControlsVisible() {
+        return mTabGroupUiVisibleSupplier.get() && mBottomToolbarVisibleSupplier.get();
     }
 }

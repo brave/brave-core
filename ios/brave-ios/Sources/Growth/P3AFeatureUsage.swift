@@ -53,9 +53,11 @@ public struct P3AFeatureUsage {
   /// Call this directly if you want to record a histogram without updating the features usage such as
   /// when the app launches.
   public func recordHistogram() {
-    // Record last usage to bucket if there's an associated p3a question
-    UmaHistogramRecordLastFeatureUsage(histogram, option: lastUsageOption)
-    Logger.module.info("Recorded P3A feature usage histogram: \(histogram)")
+    if !histogram.isEmpty {
+      // Record last usage to bucket if there's an associated p3a question
+      UmaHistogramRecordLastFeatureUsage(histogram, option: lastUsageOption)
+      Logger.module.info("Recorded P3A feature usage histogram: \(histogram)")
+    }
 
     if firstUsageOption.value != nil {
       recordReturningUsageMetric()

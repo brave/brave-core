@@ -1,11 +1,12 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.tipping;
+
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
@@ -25,8 +26,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -36,6 +35,8 @@ import org.json.JSONException;
 import org.chromium.base.Log;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
 import org.chromium.brave_rewards.mojom.WalletStatus;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
@@ -53,6 +54,7 @@ import org.chromium.ui.text.ChromeClickableSpan;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+@NullMarked
 public class RewardsTippingPanelFragment extends Fragment implements BraveRewardsObserver {
     public static final String TAG_FRAGMENT = "tipping_panel_tag";
     private static final String TAG = "TippingPanelFragment";
@@ -81,14 +83,14 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private Button mWeb3WalletButton;
     private int mCurrentTabId = -1;
     private double mBalance;
-    private String mWeb3Url;
+    private @Nullable String mWeb3Url;
 
     private boolean mIsLogoutState;
     private double mAmountSelected;
 
     private double mRate;
     private boolean mIsBatCurrency;
-    private BraveRewardsExternalWallet mExternalWallet;
+    private @Nullable BraveRewardsExternalWallet mExternalWallet;
     private ProgressBar mTipProgressBar;
     private ProgressBar mFetchBalanceProgressBar;
 
@@ -118,10 +120,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rewards_tippingpanel_fragment_base, null);
+        final View view =
+                LayoutInflater.from(getContext())
+                        .inflate(R.layout.brave_rewards_tippingpanel_fragment_base, null);
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         if (getArguments() != null) {
             mCurrentTabId = getArguments().getInt(RewardsTippingBannerActivity.TAB_ID_EXTRA);
@@ -333,8 +338,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         SpannableString textSpannableString = new SpannableString(textSpanned.toString());
         ChromeClickableSpan monthlyContributionClickableSpan =
                 new ChromeClickableSpan(
-                        getActivity(),
-                        R.color.monthly_contributions_text_color,
+                        getActivity().getColor(R.color.monthly_contributions_text_color),
                         (textView) -> {
                             TabUtils.openUrlInNewTab(
                                     false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);
@@ -353,8 +357,10 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     @SuppressLint("SetTextI18n")
     private void setLogoutStateMessage() {
+        assumeNonNull(mExternalWallet);
         String logoutWarningMessage =
-                String.format(getString(R.string.logged_out_of_custodian_description),
+                String.format(
+                        getString(R.string.logged_out_of_custodian_description),
                         getWalletStringFromType(mExternalWallet.getType()));
         if (!TextUtils.isEmpty(mWeb3Url)) {
             logoutWarningMessage += getString(R.string.still_receive_contributions_from_web3);
@@ -412,8 +418,10 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private void web3ButtonClick() {
         mWeb3WalletButton.setOnClickListener(
                 v -> {
-                    TabUtils.openUrlInNewTab(false, mWeb3Url);
-                    dismissRewardsPanel();
+                    if (mWeb3Url != null && !mWeb3Url.isEmpty()) {
+                        TabUtils.openUrlInNewTab(false, mWeb3Url);
+                        dismissRewardsPanel();
+                    }
                 });
     }
 

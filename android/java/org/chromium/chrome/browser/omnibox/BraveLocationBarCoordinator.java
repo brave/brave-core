@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -30,7 +31,7 @@ import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.tabmodel.TabWindowManager;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -39,6 +40,8 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 
+// NullUnmarked because LocationBarCoordinator is not yet NullMarked
+@NullUnmarked
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     /**
      * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
@@ -92,7 +95,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Supplier<Integer> bottomWindowPaddingSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            boolean isToolbarPositionCustomizationEnabled) {
+            boolean isToolbarPositionCustomizationEnabled,
+            @NonNull OfflineDownloader offlineDownloader) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -129,7 +133,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                                         : 0),
                 onLongClickListener,
                 browserControlsStateProvider,
-                isToolbarPositionCustomizationEnabled);
+                isToolbarPositionCustomizationEnabled,
+                offlineDownloader);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

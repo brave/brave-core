@@ -82,8 +82,6 @@
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
 -ExtensionInstalledBubbleViewsBrowserTest.*
 -FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
--FileSystemAccessBrowserSlowLoadTest.*
--FileSystemAccessBrowserTestForWebUI.*
 -IEImporterBrowserTest.*
 -ImageWriterUtilityClientTest.*
 -InfoBarUiTest.*

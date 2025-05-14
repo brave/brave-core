@@ -73,15 +73,15 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     }
   }
 
-  private isZCashEnabled: boolean
-  private isBitcoinEnabled: boolean
-  private isCardanoEnabled: boolean
-  private ethCoin: number
-  private filCoin: number
-  private solCoin: number
-  private btcCoin: number
-  private zecCoin: number
-  private adaCoin: number
+  private declare isZCashEnabled: boolean
+  private declare isBitcoinEnabled: boolean
+  private declare isCardanoEnabled: boolean
+  private declare ethCoin: number
+  private declare filCoin: number
+  private declare solCoin: number
+  private declare btcCoin: number
+  private declare zecCoin: number
+  private declare adaCoin: number
 
   private browserProxy_: BraveWalletBrowserProxy =
     BraveWalletBrowserProxyImpl.getInstance()

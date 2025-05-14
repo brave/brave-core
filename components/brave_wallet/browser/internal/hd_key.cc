@@ -386,7 +386,7 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
   while (!sig_has_low_r(GetSecp256k1Ctx(), &ecdsa_sig)) {
     base::as_writable_byte_span(extra_entropy)
         .first<4>()
-        .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
+        .copy_from(base::byte_span_from_ref(base::U32FromLittleEndian(
             base::byte_span_from_ref(++extra_entropy_counter))));
 
     if (!secp256k1_ecdsa_sign(

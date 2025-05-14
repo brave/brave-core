@@ -93,6 +93,7 @@ import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
@@ -100,7 +101,6 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.reload_button.ReloadButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
-import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
@@ -132,7 +132,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.function.BooleanSupplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout,
@@ -594,7 +593,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void showOnBoarding() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            int deviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
+            int deviceWidth = ConfigurationUtils.getDisplayMetricsWidth(activity);
             boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
             deviceWidth = (int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
             RewardsOnboarding panel = new RewardsOnboarding(mBraveRewardsButton, deviceWidth);
@@ -1498,24 +1497,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             MenuButtonCoordinator menuButtonCoordinator,
             ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier,
-            OfflineDownloader offlineDownloader,
             UserEducationHelper userEducationHelper,
             ObservableSupplier<Tracker> trackerSupplier,
             ToolbarProgressBar progressBar,
-            @Nullable ReloadButtonCoordinator reloadButtonCoordinator) {
+            @Nullable ReloadButtonCoordinator reloadButtonCoordinator,
+            @Nullable BackButtonCoordinator backButtonCoordinator) {
         super.initialize(
                 toolbarDataProvider,
                 tabController,
                 menuButtonCoordinator,
                 tabSwitcherButtonCoordinator,
                 historyDelegate,
-                partnerHomepageEnabledSupplier,
-                offlineDownloader,
                 userEducationHelper,
                 trackerSupplier,
                 progressBar,
-                reloadButtonCoordinator);
+                reloadButtonCoordinator,
+                backButtonCoordinator);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls()
@@ -1588,11 +1585,5 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 showPlaylistButton(playlistItems);
             }
         }
-    }
-
-    /** Opens hompage in the current tab. Override it here to make it publicly accessible. */
-    @Override
-    public void openHomepage() {
-        super.openHomepage();
     }
 }

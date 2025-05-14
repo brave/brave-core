@@ -580,7 +580,7 @@ public class Utils {
                                     }
                                 });
                     } catch (Exception exc) {
-                        Log.e(TAG, "Error while setting Bitmap resource", exc);
+                        Log.e(TAG, "Error while setting Bitmap resource exc=" + exc.getMessage());
                         if (textView != null) {
                             Drawable iconDrawable = AppCompatResources.getDrawable(context, iconId);
                             Bitmap bitmap =
@@ -1042,7 +1042,8 @@ public class Utils {
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
             ChromeClickableSpan linkSpan =
-                    new ChromeClickableSpan(context, R.color.brave_link, onClickListener::onClick);
+                    new ChromeClickableSpan(
+                            context.getColor(R.color.brave_link), onClickListener::onClick);
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1103,6 +1104,7 @@ public class Utils {
         return AndroidUtils.formatHTML(geteTldHtmlString(originInfo));
     }
 
+    @Nullable
     public static Profile getProfile(boolean isIncognito) {
         ChromeActivity chromeActivity = null;
         try {
@@ -1114,16 +1116,30 @@ public class Utils {
             chromeActivity = BraveActivity.getChromeTabbedActivity();
         }
         if (chromeActivity == null) {
-            return ProfileManager.getLastUsedRegularProfile(); // Last resort
+            return getLastUsedProfile(isIncognito); // Last resort
         }
 
         ObservableSupplier<TabModelSelector> supplier =
                 chromeActivity.getTabModelSelectorSupplier();
         TabModelSelector selector = supplier.get();
         if (selector == null) {
-            return ProfileManager.getLastUsedRegularProfile();
+            return getLastUsedProfile(isIncognito);
         }
-        return selector.getModel(isIncognito).getProfile();
+
+        Profile profile = selector.getModel(isIncognito).getProfile();
+        if (profile == null) {
+            return getLastUsedProfile(isIncognito);
+        }
+        return profile;
+    }
+
+    @Nullable
+    private static Profile getLastUsedProfile(boolean isIncognito) {
+        if (!isIncognito) {
+            return ProfileManager.getLastUsedRegularProfile();
+        } else {
+            return ProfileManager.getLastUsedRegularProfile().getPrimaryOtrProfile(true);
+        }
     }
 
     public static String formatErc721TokenTitle(String title, String id) {

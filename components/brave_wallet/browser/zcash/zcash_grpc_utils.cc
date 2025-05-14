@@ -36,7 +36,7 @@ void GRrpcMessageStreamHandler::OnDataReceived(std::string_view string_piece,
         OnComplete(false);
         return;
       }
-      message_body_size = base::numerics::U32FromBigEndian(
+      message_body_size = base::U32FromBigEndian(
           base::as_byte_span(data_view).subspan<1, 4u>());
       if (*message_body_size > message_data_limit_) {
         // Too large message

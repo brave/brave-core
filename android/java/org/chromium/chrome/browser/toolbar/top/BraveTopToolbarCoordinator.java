@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
 import androidx.annotation.ColorInt;
@@ -18,26 +17,20 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
-import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
-import org.chromium.chrome.browser.toolbar.reload_button.ReloadButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
-import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
@@ -46,7 +39,6 @@ import org.chromium.ui.resources.ResourceManager;
 import org.chromium.ui.util.ColorUtils;
 
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     // To delete in bytecode. Variables from the parent class will be used instead.
@@ -57,7 +49,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomControlsVisible;
     private ObservableSupplier<Integer> mConstraintsProxy;
-    private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private ToolbarControlContainer mControlContainer;
     private boolean mInTabSwitcherMode;
 
@@ -72,13 +63,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ThemeColorProvider normalThemeColorProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
-            ToggleTabStackButtonCoordinator tabSwitcerButtonCoordinator,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
+            ObservableSupplier<Integer> tabCountSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier,
-            OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors,
             ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
@@ -90,7 +79,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
-            @Nullable ReloadButtonCoordinator reloadButtonCoordinator) {
+            ObservableSupplier<Tab> tabSupplier,
+            @Nullable BackButtonCoordinator backButtonCoordinator) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -102,13 +92,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 normalThemeColorProvider,
                 browsingModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier,
-                tabSwitcerButtonCoordinator,
-                tabModelSelectorSupplier,
+                tabSwitcherButtonCoordinator,
+                tabCountSupplier,
                 homepageEnabledSupplier,
                 resourceManagerSupplier,
                 historyDelegate,
-                partnerHomepageEnabledSupplier,
-                offlineDownloader,
                 initializeWithIncognitoColors,
                 constraintsSupplier,
                 compositorInMotionSupplier,
@@ -119,12 +107,12 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabStripTransitionDelegateSupplier,
                 onLongClickListener,
                 progressBar,
-                reloadButtonCoordinator);
+                tabSupplier,
+                backButtonCoordinator);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
         mConstraintsProxy = constraintsSupplier;
-        mTabModelSelectorSupplier = tabModelSelectorSupplier;
         mControlContainer = controlContainer;
 
         if (isToolbarPhone()) {
@@ -193,36 +181,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     public ObservableSupplier<Integer> getConstraintsProxy() {
         return mConstraintsProxy;
-    }
-
-    @Override
-    public void initializeWithNative(
-            Profile profile,
-            Runnable layoutUpdater,
-            OnClickListener bookmarkClickHandler,
-            OnClickListener customTabsBackClickHandler,
-            LayoutManager layoutManager,
-            ObservableSupplier<Tab> tabSupplier,
-            BrowserControlsVisibilityManager browserControlsVisibilityManager,
-            TopUiThemeColorProvider topUiThemeColorProvider,
-            ObservableSupplier<Integer> bottomToolbarControlsOffsetSupplier) {
-        super.initializeWithNative(
-                profile,
-                layoutUpdater,
-                bookmarkClickHandler,
-                customTabsBackClickHandler,
-                layoutManager,
-                tabSupplier,
-                browserControlsVisibilityManager,
-                topUiThemeColorProvider,
-                bottomToolbarControlsOffsetSupplier);
-
-        assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
-                : "Something has changed in the upstream!";
-        if (mBraveToolbarLayout instanceof BraveToolbarLayoutImpl) {
-            ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
-                    .setTabModelSelector(mTabModelSelectorSupplier.get());
-        }
     }
 
     @Override

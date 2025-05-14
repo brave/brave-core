@@ -347,9 +347,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
       extensions::ExtensionBuilder("MetaMask")
           .SetID(kMetamaskExtensionId)
           .Build());
-  extensions::ExtensionSystem::Get(browser()->profile())
-      ->extension_service()
-      ->AddExtension(extension.get());
+  extensions::ExtensionRegistrar::Get(browser()->profile())
+      ->AddExtension(extension);
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -378,9 +377,8 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
       extensions::ExtensionBuilder("MetaMask")
           .SetID(kMetamaskExtensionId)
           .Build());
-  extensions::ExtensionSystem::Get(browser()->profile())
-      ->extension_service()
-      ->AddExtension(extension.get());
+  extensions::ExtensionRegistrar::Get(browser()->profile())
+      ->AddExtension(extension);
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),

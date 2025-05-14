@@ -85,7 +85,7 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                             ui::ColorVariant color,
                             const ui::ColorProvider* color_provider) {
     gfx::ImageSkia folder;
-    SkColor sk_color = color.ConvertToSkColor(color_provider);
+    SkColor sk_color = color.ResolveToSkColor(color_provider);
 
     const int resource_id = color_utils::IsDark(sk_color)
 #if BUILDFLAG(IS_WIN)
