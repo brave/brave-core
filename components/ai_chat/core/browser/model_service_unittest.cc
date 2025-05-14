@@ -358,4 +358,22 @@ TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_LeoModel) {
   EXPECT_EQ(max_content_length, expected_content_length);
 }
 
+TEST_F(ModelServiceTest, GetLeoModelKeyByName_And_GetLeoModelNameByKey) {
+  auto& models = GetService()->GetModels();
+  for (const auto& model : models) {
+    ASSERT_TRUE(model->options->is_leo_model_options());
+    EXPECT_EQ(GetService()->GetLeoModelKeyByName(
+                  model->options->get_leo_model_options()->name),
+              model->key);
+    EXPECT_EQ(GetService()->GetLeoModelNameByKey(model->key),
+              model->options->get_leo_model_options()->name);
+  }
+
+  // Test with an invalid model name or key
+  auto key = GetService()->GetLeoModelKeyByName("nonexistent-model");
+  EXPECT_FALSE(key.has_value());
+  auto name = GetService()->GetLeoModelNameByKey("nonexistent-key");
+  EXPECT_FALSE(name.has_value());
+}
+
 }  // namespace ai_chat

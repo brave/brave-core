@@ -150,5 +150,7 @@ provideStrings({
   rateMessagePrivacyModalDescription:
     'Liking or disliking an answer will send rating, conversation, ' +
     'model, language, version, and premium status to Brave in order ' +
-    'to improve Leo. $1Learn more$1'
+    'to improve Leo. $1Learn more$1',
+  regenerateAnswerMenuTitle: 'Change model for answer',
+  regenerateAnswerButtonLabel: 'Regenerate'
 })

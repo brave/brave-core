@@ -94,6 +94,29 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
             : mojom::ModelAccess::PREMIUM;
 
     std::vector<mojom::ModelPtr> models;
+
+#if !BUILDFLAG(IS_IOS)
+    // Not added in iOS as we do not have UI currently to show users what model
+    // is used for each response, this build flag should be removed once we
+    // have the UI, probably when we migrate to WebUI on iOS.
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->name = "automatic";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = kFreemiumAccess;
+      options->max_associated_content_length = 180000;
+      options->long_conversation_warning_character_limit = 320000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-automatic";
+      model->display_name = "Automatic";
+      model->vision_support = true;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+      models.push_back(std::move(model));
+    }
+#endif
+
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Mistral AI";
@@ -409,7 +432,7 @@ const mojom::Model* ModelService::GetModelForTesting(std::string_view key) {
 
   auto match_iter = std::find_if(
       all_models.cbegin(), all_models.cend(),
-      [&key](const mojom::ModelPtr& model) { return model->key == key; });
+      [key](const mojom::ModelPtr& model) { return model->key == key; });
   if (match_iter != all_models.cend()) {
     return &*match_iter->get();
   }
@@ -479,12 +502,44 @@ const mojom::Model* ModelService::GetModel(std::string_view key) {
 
   auto match_iter = std::find_if(
       all_models.cbegin(), all_models.cend(),
-      [&key](const mojom::ModelPtr& model) { return model->key == key; });
+      [key](const mojom::ModelPtr& model) { return model->key == key; });
   if (match_iter != all_models.cend()) {
     return &*match_iter->get();
   }
 
   return nullptr;
+}
+
+std::optional<std::string> ModelService::GetLeoModelKeyByName(
+    std::string_view name) {
+  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+
+  auto match_iter = std::find_if(
+      leo_models.cbegin(), leo_models.cend(),
+      [name](const mojom::ModelPtr& model) {
+        CHECK(model->options->is_leo_model_options());
+        return model->options->get_leo_model_options()->name == name;
+      });
+  if (match_iter != leo_models.cend()) {
+    return (*match_iter)->key;
+  }
+
+  return std::nullopt;
+}
+
+std::optional<std::string> ModelService::GetLeoModelNameByKey(
+    std::string_view key) {
+  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+
+  auto match_iter = std::find_if(
+      leo_models.cbegin(), leo_models.cend(),
+      [key](const mojom::ModelPtr& model) { return model->key == key; });
+  if (match_iter != leo_models.cend()) {
+    CHECK((*match_iter)->options->is_leo_model_options());
+    return (*match_iter)->options->get_leo_model_options()->name;
+  }
+
+  return std::nullopt;
 }
 
 void ModelService::AddCustomModel(mojom::ModelPtr model) {
@@ -697,12 +752,12 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     auto& leo_model_opts = model->options->get_leo_model_options();
     DVLOG(1) << "Started AI engine: conversation api";
     engine = std::make_unique<EngineConsumerConversationAPI>(
-        *leo_model_opts, url_loader_factory, credential_manager);
+        *leo_model_opts, url_loader_factory, credential_manager, this);
   } else if (model->options->is_custom_model_options()) {
     auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
-    engine = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
-                                                       url_loader_factory);
+    engine = std::make_unique<EngineConsumerOAIRemote>(
+        *custom_model_opts, url_loader_factory, this);
   }
 
   return engine;

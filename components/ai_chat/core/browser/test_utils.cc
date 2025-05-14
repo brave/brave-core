@@ -126,6 +126,7 @@ void ExpectConversationEntryEquals(base::Location location,
   EXPECT_EQ(a->selected_text, b->selected_text);
   EXPECT_EQ(a->text, b->text);
   EXPECT_EQ(a->prompt, b->prompt);
+  EXPECT_EQ(a->model_key, b->model_key);
 
   // compare events
   EXPECT_EQ(a->events.has_value(), b->events.has_value());
@@ -230,7 +231,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         base::StrCat({"query", base::NumberToString(i)}),
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
-        std::move(uploaded_files), false));
+        std::move(uploaded_files), false, std::nullopt /* model_key */));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -248,7 +249,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
-        std::nullopt, std::nullopt, false));
+        std::nullopt, std::nullopt, false, "chat-basic"));
   }
   return history;
 }

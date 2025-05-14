@@ -88,7 +88,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
         mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
     engine_ = std::make_unique<EngineConsumerOAIRemote>(
-        *model_->options->get_custom_model_options(), nullptr);
+        *model_->options->get_custom_model_options(), nullptr, nullptr);
 
     engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
   }
@@ -166,7 +166,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback) {
       std::move(completed_callback)
-          .Run(EngineConsumer::GenerationResult(result_string));
+          .Run(base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New(result_string)),
+              std::nullopt /* model_key */)));
     };
   };
 
@@ -217,6 +220,127 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
+TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
+  std::string page_content = "This is a test page content";
+  auto* client = GetClient();
+
+  // Test error case: result doesn't have a value
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions&, base::Value::List,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback completed_callback) {
+              // Return an error response (result without a value)
+              std::move(completed_callback)
+                  .Run(base::unexpected(mojom::APIError::RateLimitReached));
+            });
+
+    engine_->GenerateQuestionSuggestions(
+        false, page_content, "",
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
+              // Check that error is properly propagated
+              EXPECT_FALSE(result.has_value());
+              EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+              run_loop.Quit();
+            }));
+
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(client);
+  }
+
+  // Test error case: result has an empty event
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions&, base::Value::List,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback completed_callback) {
+              // Return a result with a null event
+              std::move(completed_callback)
+                  .Run(base::ok(EngineConsumer::GenerationResultData(
+                      nullptr, std::nullopt /* model_key */)));
+            });
+
+    engine_->GenerateQuestionSuggestions(
+        false, page_content, "",
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
+              // Check that error is properly propagated
+              EXPECT_FALSE(result.has_value());
+              EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+              run_loop.Quit();
+            }));
+
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(client);
+  }
+
+  // Test error case: result has a non-completion event
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions&, base::Value::List,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback completed_callback) {
+              // Return a result with a non-completion event (using DeltaEvent
+              // instead)
+              std::move(completed_callback)
+                  .Run(base::ok(EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
+                          mojom::SelectedLanguageEvent::New("en-us")),
+                      std::nullopt /* model_key */)));
+            });
+
+    engine_->GenerateQuestionSuggestions(
+        false, page_content, "",
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
+              // Check that error is properly propagated
+              EXPECT_FALSE(result.has_value());
+              EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+              run_loop.Quit();
+            }));
+
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(client);
+  }
+
+  // Test error case: result has an empty completion
+  {
+    base::RunLoop run_loop;
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions&, base::Value::List,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback completed_callback) {
+              // Return a result with an empty completion
+              std::move(completed_callback)
+                  .Run(base::ok(EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New("")),
+                      std::nullopt /* model_key */)));
+            });
+
+    engine_->GenerateQuestionSuggestions(
+        false, page_content, "",
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
+              // Check that error is properly propagated
+              EXPECT_FALSE(result.has_value());
+              EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+              run_loop.Quit();
+            }));
+
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(client);
+  }
+}
+
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponseWithDefaultSystemPrompt) {
   // Create a set of options WITHOUT a custom system prompt.
@@ -234,7 +358,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Create a new engine with the new model.
   engine_ = std::make_unique<EngineConsumerOAIRemote>(
-      *model_->options->get_custom_model_options(), nullptr);
+      *model_->options->get_custom_model_options(), nullptr, nullptr);
   engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
 
   EngineConsumer::ConversationHistory history;
@@ -262,7 +386,8 @@ TEST_F(EngineConsumerOAIUnitTest,
       base::Time::Now(),               // Current time
       std::nullopt,                    // No message edits
       std::nullopt,                    // No uploaded images
-      false                            // Not from Brave SERP
+      false,                           // Not from Brave SERP
+      std::nullopt                     // No model_key
       ));
 
   // Prepare to capture API client request
@@ -285,7 +410,10 @@ TEST_F(EngineConsumerOAIUnitTest,
             EXPECT_EQ(*messages[1].GetDict().Find("content"), human_input);
 
             std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(assistant_response));
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(assistant_response)),
+                    std::nullopt /* model_key */)));
           });
 
   // Initiate the test
@@ -293,7 +421,11 @@ TEST_F(EngineConsumerOAIUnitTest,
       /* is_video */ false, "", history, "", base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
-        EXPECT_STREQ(result.value().c_str(), assistant_response.c_str());
+        EXPECT_EQ(result.value(),
+                  EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New(assistant_response)),
+                      std::nullopt /* model_key */));
         run_loop->Quit();
       }));
 
@@ -317,13 +449,13 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, human_input,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false));
+      std::nullopt, std::nullopt, false, std::nullopt /* model_key */));
 
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, assistant_input, std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      false));
+      false, std::nullopt /* model_key */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -353,7 +485,10 @@ TEST_F(EngineConsumerOAIUnitTest,
                       "What's his name?");
 
             std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult("I dont know"));
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("I dont know")),
+                    std::nullopt /* model_key */)));
           });
 
   {
@@ -367,7 +502,11 @@ TEST_F(EngineConsumerOAIUnitTest,
       /* is_video */ false, "", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
-            EXPECT_STREQ(result.value().c_str(), "I dont know");
+            EXPECT_EQ(result.value(),
+                      EngineConsumer::GenerationResultData(
+                          mojom::ConversationEntryEvent::NewCompletionEvent(
+                              mojom::CompletionEvent::New("I dont know")),
+                          std::nullopt /* model_key */));
             run_loop->Quit();
           }));
 
@@ -399,7 +538,11 @@ TEST_F(EngineConsumerOAIUnitTest,
         EXPECT_EQ(*messages[3].GetDict().Find("content"),
                   "Is it related to a broader series?");
 
-        std::move(completed_callback).Run(EngineConsumer::GenerationResult(""));
+        std::move(completed_callback)
+            .Run(base::ok(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("")),
+                std::nullopt /* model_key */)));
       });
 
   engine_->GenerateAssistantResponse(
@@ -430,7 +573,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
       std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, std::nullopt, false);
+      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
@@ -516,17 +659,25 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
             EXPECT_EQ(*messages[3].GetDict().Find("content"), kTestPrompt);
 
             std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(kAssistantResponse));
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(kAssistantResponse)),
+                    std::nullopt /* model_key */)));
           });
 
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, Clone(uploaded_images), false));
+      base::Time::Now(), std::nullopt, Clone(uploaded_images), false,
+      std::nullopt /* model_key */));
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
                                      future.GetCallback());
-  EXPECT_STREQ(future.Take()->c_str(), kAssistantResponse);
+  EXPECT_EQ(future.Take(),
+            EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(kAssistantResponse)),
+                std::nullopt /* model_key */));
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
@@ -550,7 +701,10 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
             EXPECT_EQ(*messages[2].GetDict().Find("content"),
                       "Tell me more about this page");
             std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(""));
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt /* model_key */)));
           });
 
   {

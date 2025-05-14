@@ -91,6 +91,12 @@ function ConversationEntries() {
           const lastEditedTime = latestTurn.createdTime
           const hasReasoning = latestTurnText.includes('<think>')
 
+          const turnModelKey = turn.modelKey
+            ? conversationContext.allModels
+                .find(m => m.key === turn.modelKey)
+                ?.key ?? undefined
+            : undefined;
+
           const turnContainer = classnames({
             [styles.turnContainerMobile]: conversationContext.isMobile
           })
@@ -217,6 +223,7 @@ function ConversationEntries() {
                   !showEditInput && (
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
+                      turnModelKey={turnModelKey}
                       onEditAnswerClicked={() => setEditInputId(id)}
                       onCopyTextClicked={handleCopyText}
                     />

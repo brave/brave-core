@@ -10,9 +10,21 @@
 
 #include "base/base64.h"
 #include "base/strings/strcat.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
+
+EngineConsumer::GenerationResultData::GenerationResultData(
+    mojom::ConversationEntryEventPtr event,
+    std::optional<std::string>&& model_key)
+    : event(std::move(event)), model_key(std::move(model_key)) {}
+
+EngineConsumer::GenerationResultData::GenerationResultData(
+    GenerationResultData&& other) = default;
+EngineConsumer::GenerationResultData&
+EngineConsumer::GenerationResultData::operator=(GenerationResultData&& other) =
+    default;
+
+EngineConsumer::GenerationResultData::~GenerationResultData() = default;
 
 // static
 std::string EngineConsumer::GetPromptForEntry(
@@ -23,7 +35,8 @@ std::string EngineConsumer::GetPromptForEntry(
   return prompt_entry->prompt.value_or(prompt_entry->text);
 }
 
-EngineConsumer::EngineConsumer() = default;
+EngineConsumer::EngineConsumer(ModelService* model_service)
+    : model_service_(model_service) {}
 EngineConsumer::~EngineConsumer() = default;
 
 bool EngineConsumer::SupportsDeltaTextResponses() const {
