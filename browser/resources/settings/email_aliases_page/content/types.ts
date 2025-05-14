@@ -5,16 +5,12 @@
 
 import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-export type ViewMode =
-  | 'Startup'
-  | 'Main'
+export type EditMode =
+  | 'None'
   | 'Create'
   | 'Edit'
-  | 'Delete'
-  | 'SignUp'
-  | 'AwaitingAuthorization'
 
-export type ViewState = {
-  mode: ViewMode,
+export type EditState = {
+  mode: EditMode,
   alias?: Alias
 }
