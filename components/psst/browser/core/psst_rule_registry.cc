@@ -5,14 +5,11 @@
 
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
-#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_forward.h"
@@ -44,9 +41,14 @@ std::string ReadFile(const base::FilePath& file_path) {
 }
 
 std::optional<MatchedRule> CreateMatchedRule(
-    std::unique_ptr<MatchedRuleFactory> factory,
+    base::WeakPtr<PsstRuleRegistryImpl> registry,
+    RuleDataReader* rule_data_reader,
     const PsstRule& rule) {
-  return factory->Create(rule);
+  if (!registry) {
+    return std::nullopt;
+  }
+  return MatchedRuleFactory(rule_data_reader, rule.Name(), rule.Version())
+      .Create(rule);
 }
 
 }  // namespace
@@ -78,16 +80,13 @@ PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 
 void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
-    base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const {
+    base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) {
   for (const PsstRule& rule : rules_) {
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
-          base::BindOnce(
-              &CreateMatchedRule,
-              std::make_unique<MatchedRuleFactory>(rule_data_reader_.get(),
-                                                   rule.Name(), rule.Version()),
-              rule),
+          base::BindOnce(&CreateMatchedRule, weak_factory_.GetWeakPtr(),
+                         rule_data_reader_.get(), rule),
           std::move(cb));
       // Only ever find one matching rule.
       return;

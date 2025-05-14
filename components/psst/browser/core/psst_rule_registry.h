@@ -36,7 +36,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   // Returns the matched PSST rule, if any.
   virtual void CheckIfMatch(
       const GURL& url,
-      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const = 0;
+      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) = 0;
 
   // Given a path to psst.json, loads the rules from the file into memory.
   virtual void LoadRules(const base::FilePath& path) = 0;
@@ -88,9 +88,9 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryImpl
   PsstRuleRegistryImpl(const PsstRuleRegistryImpl&) = delete;
   PsstRuleRegistryImpl& operator=(const PsstRuleRegistryImpl&) = delete;
   ~PsstRuleRegistryImpl() override;
-  void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(const std::optional<MatchedRule>&)>
-                        cb) const override;
+  void CheckIfMatch(
+      const GURL& url,
+      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) override;
   // Given a path to psst.json, loads the rules from the file into memory.
   void LoadRules(const base::FilePath& path) override;
 
