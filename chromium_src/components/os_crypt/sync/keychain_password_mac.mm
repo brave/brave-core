@@ -11,9 +11,6 @@
 
 namespace {
 
-constexpr char kBraveDefaultServiceName[] = "Brave Safe Storage";
-constexpr char kBraveDefaultAccountName[] = "Brave";
-
 KeychainPassword::KeychainNameType& GetBraveServiceName();
 KeychainPassword::KeychainNameType& GetBraveAccountName();
 
@@ -27,48 +24,68 @@ KeychainPassword::KeychainNameType& GetBraveAccountName();
 
 namespace {
 
-std::pair<std::string, std::string> GetServiceAndAccountName() {
-  std::string service_name, account_name;
+KeychainPassword::KeychainNameType& GetBraveServiceName() {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   if (command_line->HasSwitch("import-edge")) {
-    service_name = std::string("Microsoft Edge Safe Storage");
-    account_name = std::string("Microsoft Edge");
+    static KeychainNameContainerType kEdgeServiceName(
+        "Microsoft Edge Safe Storage");
+    return *kEdgeServiceName;
   } else if (command_line->HasSwitch("import-yandex")) {
-    service_name = std::string("Yandex Safe Storage");
-    account_name = std::string("Yandex");
+    static KeychainNameContainerType kYandexServiceName("Yandex Safe Storage");
+    return *kYandexServiceName;
   } else if (command_line->HasSwitch("import-whale")) {
-    service_name = std::string("Whale Safe Storage");
-    account_name = std::string("Whale");
+    static KeychainNameContainerType kWhaleServiceName("Whale Safe Storage");
+    return *kWhaleServiceName;
   } else if (command_line->HasSwitch("import-chrome")) {
-    service_name = std::string("Chrome Safe Storage");
-    account_name = std::string("Chrome");
+    static KeychainNameContainerType kChromeServiceName("Chrome Safe Storage");
+    return *kChromeServiceName;
   } else if (command_line->HasSwitch("import-vivaldi")) {
-    service_name = std::string("Vivaldi Safe Storage");
-    account_name = std::string("Vivaldi");
+    static KeychainNameContainerType kVivaldiServiceName(
+        "Vivaldi Safe Storage");
+    return *kVivaldiServiceName;
   } else if (command_line->HasSwitch("import-chromium") ||
              command_line->HasSwitch("import-brave")) {
-    service_name = std::string("Chromium Safe Storage");
-    account_name = std::string("Chromium");
+    static KeychainNameContainerType kChromiumServiceName(
+        "Chromium Safe Storage");
+    return *kChromiumServiceName;
   } else if (command_line->HasSwitch("import-opera")) {
-    service_name = std::string("Opera Safe Storage");
-    account_name = std::string("Opera");
+    static KeychainNameContainerType kOperaServiceName("Opera Safe Storage");
+    return *kOperaServiceName;
   } else {
-    service_name = std::string(kBraveDefaultServiceName);
-    account_name = std::string(kBraveDefaultAccountName);
+    static KeychainNameContainerType kBraveDefaultServiceName(
+        "Brave Safe Storage");
+    return *kBraveDefaultServiceName;
   }
-  return std::make_pair(service_name, account_name);
-}
-
-KeychainPassword::KeychainNameType& GetBraveServiceName() {
-  static KeychainNameContainerType service_name(
-      GetServiceAndAccountName().first);
-  return *service_name;
 }
 
 KeychainPassword::KeychainNameType& GetBraveAccountName() {
-  static KeychainNameContainerType account_name(
-      GetServiceAndAccountName().second);
-  return *account_name;
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch("import-edge")) {
+    static KeychainNameContainerType kEdgeAccountName("Microsoft Edge");
+    return *kEdgeAccountName;
+  } else if (command_line->HasSwitch("import-yandex")) {
+    static KeychainNameContainerType kYandexAccountName("Yandex");
+    return *kYandexAccountName;
+  } else if (command_line->HasSwitch("import-whale")) {
+    static KeychainNameContainerType kWhaleAccountName("Whale");
+    return *kWhaleAccountName;
+  } else if (command_line->HasSwitch("import-chrome")) {
+    static KeychainNameContainerType kChromeAccountName("Chrome");
+    return *kChromeAccountName;
+  } else if (command_line->HasSwitch("import-vivaldi")) {
+    static KeychainNameContainerType kVivaldiAccountName("Vivaldi");
+    return *kVivaldiAccountName;
+  } else if (command_line->HasSwitch("import-chromium") ||
+             command_line->HasSwitch("import-brave")) {
+    static KeychainNameContainerType kChromiumAccountName("Chromium");
+    return *kChromiumAccountName;
+  } else if (command_line->HasSwitch("import-opera")) {
+    static KeychainNameContainerType kOperaAccountName("Opera");
+    return *kOperaAccountName;
+  } else {
+    static KeychainNameContainerType kBraveDefaultAccountName("Brave");
+    return *kBraveDefaultAccountName;
+  }
 }
 
 }  // namespace
