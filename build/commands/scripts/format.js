@@ -10,6 +10,7 @@ const program = require('commander')
 
 const config = require('../lib/config')
 const util = require('../lib/util')
+const Log = require('../lib/logging')
 
 program
   .description(
@@ -23,7 +24,11 @@ program
     '--full',
     'format all lines in changed files instead of only the changed lines'
   )
-  .option('--presubmit', 'Enables extra presubmit checks in git cl format')
+  .option(
+    '--presubmit',
+    'filter out formatters that have dedicated presubmit checks.' +
+      'Used when running the script from a presubmit'
+  )
   .option(
     '--dry-run',
     "dry run, don't format files, just check if they are formatted"
@@ -39,7 +44,6 @@ const runFormat = async (options = {}) => {
   let cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
   cmdOptions = util.mergeWithDefault(cmdOptions)
-  cmd = 'git'
   args = ['cl', 'format', '--upstream=' + options.base]
 
   args.push('--python')
@@ -53,16 +57,16 @@ const runFormat = async (options = {}) => {
     args.push('--presubmit')
   }
 
-  const errors = []
+  let errors = []
 
   if (options.dryRun) {
-    const clFormatResult = util.run(cmd, [...args, '--dry-run'], {
+    const clFormatResult = util.run('git', [...args, '--dry-run'], {
       ...cmdOptions,
       continueOnFail: true
     })
     if (clFormatResult.status === 2) {
       // format issues found. Run git cl format with --diff to print the diff
-      const diffResult = util.run(cmd, [...args, '--diff'], {
+      const diffResult = util.run('git', [...args, '--diff'], {
         ...cmdOptions,
         stdio: 'pipe'
       })
@@ -70,22 +74,26 @@ const runFormat = async (options = {}) => {
         diffResult.stdout.toString() + '\n' + 'git cl format checks failed'
       )
     } else if (clFormatResult.status !== 0) {
-      console.error('Fatal: git cl format internal error')
-      process.exit(1)
+      Log.error(
+        'Fatal: git cl format internal error.' +
+          clFormatResult.stdout.toString() +
+          clFormatResult.stderr.toString()
+      )
+      process.exit(clFormatResult.status)
     }
   } else {
-    util.run(cmd, args, {
+    util.run('git', args, {
       ...cmdOptions
     })
   }
 
   const changedFiles = util.getChangedFiles(config.braveCoreDir, options.base)
 
-  errors.push(...(await runPrettier(changedFiles, options.dryRun)))
+  errors = errors.concat(await runPrettier(changedFiles, options.dryRun))
 
   if (options.dryRun && errors.length > 0) {
-    console.error(errors.join('\n'))
-    process.exit(1)
+    Log.error(errors.join('\n'))
+    process.exit(2)
   }
 }
 
@@ -115,7 +123,7 @@ const runPrettier = async (files, dryRun) => {
     if (content !== formatted) {
       if (dryRun) {
         // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-        const diffResult = util.run(cmd, ['diff', '--no-index', file, '-'], {
+        const diffResult = util.run('git', ['diff', '--no-index', file, '-'], {
           stdio: 'pipe',
           input: formatted
         })
