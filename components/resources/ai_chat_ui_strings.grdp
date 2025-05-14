@@ -39,6 +39,12 @@
   <message name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
     Summarize this video
   </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION" desc="Button to summarize the currently attached page(s) [ICU Syntax]">
+    {PAGE_COUNT, plural,
+      =1 {Summarize this page}
+      other {Summarize these pages}
+    }
+  </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
   </message>

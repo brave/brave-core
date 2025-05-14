@@ -1289,6 +1289,14 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
     OnSuggestedQuestionsChanged();
+  } else if (!suggestions_.empty() &&
+             suggestions_[0].action_type == mojom::ActionType::SUMMARIZE_PAGE) {
+    // The title for the summarize page suggestion needs to be updated when
+    // the number of associated content items changes.
+    suggestions_[0].title =
+        l10n_util::GetPluralStringFUTF8(IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+                                        metadata_->associated_content.size());
+    OnSuggestedQuestionsChanged();
   }
 }
 
