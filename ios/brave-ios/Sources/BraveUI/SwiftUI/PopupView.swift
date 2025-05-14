@@ -52,8 +52,8 @@ public class PopupViewController<Content: View>: UIViewController,
     }
   }
 
-  public override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
 
     if isBeingDismissed {
       onDidDismiss?()
