@@ -210,6 +210,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a_utils",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
+  "//brave/components/psst/buildflags",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/skus/browser",
@@ -275,7 +276,6 @@ if (enable_psst) {
   brave_chrome_browser_deps += [
     "//brave/components/psst/browser/content",
     "//brave/components/psst/browser/core",
-    "//brave/components/psst/buildflags",
     "//brave/components/psst/common",
   ]
 }
