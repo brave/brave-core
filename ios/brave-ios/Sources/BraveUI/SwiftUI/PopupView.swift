@@ -17,6 +17,8 @@ public class PopupViewController<Content: View>: UIViewController,
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
 
+  var onDidDismiss: (() -> Void)?
+
   public init(rootView: Content, isDismissable: Bool = false) {
     let popup = PopupView({ rootView })
     hostingController = UIHostingController(rootView: popup)
@@ -47,6 +49,14 @@ public class PopupViewController<Content: View>: UIViewController,
 
     hostingController.view.snp.makeConstraints {
       $0.edges.equalTo(view.safeAreaLayoutGuide)
+    }
+  }
+
+  public override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    if isBeingDismissed {
+      onDidDismiss?()
     }
   }
 

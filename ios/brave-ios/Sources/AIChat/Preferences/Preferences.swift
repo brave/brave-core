@@ -37,5 +37,11 @@ extension Preferences {
       key: "aichat.leo-in-quick-search-bar-enabled",
       default: true
     )
+
+    /// Flag that determines whether or not to show the Feedback Privacy Warning
+    public static let showFeedbackPrivacyWarning = Option<Bool>(
+      key: "aichat.feedback-privacy-warning",
+      default: true
+    )
   }
 }
