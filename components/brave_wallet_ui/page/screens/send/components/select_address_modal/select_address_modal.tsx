@@ -740,12 +740,14 @@ const processZCashAddress = (
     zcashAddressError ===
     BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingTransparentPart
   ) {
+    // eslint-disable-next-line max-len
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError
   }
   if (
     zcashAddressError ===
     BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingOrchardPart
   ) {
+    // eslint-disable-next-line max-len
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError
   }
   if (
