@@ -44,7 +44,7 @@ const runFormat = async (options = {}) => {
   let cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
   cmdOptions = util.mergeWithDefault(cmdOptions)
-  args = ['cl', 'format', '--upstream=' + options.base]
+  const args = ['cl', 'format', '--upstream=' + options.base]
 
   args.push('--python')
   args.push('--no-rust-fmt')
@@ -57,34 +57,29 @@ const runFormat = async (options = {}) => {
     args.push('--presubmit')
   }
 
+  if (options.dryRun) {
+    args.push('--diff', '--dry-run')
+  }
+
   let errors = []
 
-  if (options.dryRun) {
-    const clFormatResult = util.run('git', [...args, '--dry-run'], {
-      ...cmdOptions,
-      continueOnFail: true
-    })
-    if (clFormatResult.status === 2) {
-      // format issues found. Run git cl format with --diff to print the diff
-      const diffResult = util.run('git', [...args, '--diff'], {
-        ...cmdOptions,
-        stdio: 'pipe'
-      })
-      errors.push(
-        diffResult.stdout.toString() + '\n' + 'git cl format checks failed'
-      )
-    } else if (clFormatResult.status !== 0) {
-      Log.error(
-        'Fatal: git cl format internal error.' +
-          clFormatResult.stdout.toString() +
-          clFormatResult.stderr.toString()
-      )
-      process.exit(clFormatResult.status)
-    }
-  } else {
-    util.run('git', args, {
-      ...cmdOptions
-    })
+  const clFormatResult = util.run('git', [...args], {
+    ...cmdOptions,
+    continueOnFail: true,
+    stdio: 'pipe',
+  })
+
+  if (clFormatResult.status === 2 && options.dryRun) {
+    errors.push(
+      clFormatResult.stdout.toString() + '\n' + 'git cl format checks failed'
+    )
+  } else if (clFormatResult.status !== 0) {
+    Log.error(
+      'Fatal: git cl format internal error.\n' +
+        clFormatResult.stdout.toString() +
+        clFormatResult.stderr.toString()
+    )
+    process.exit(clFormatResult.status)
   }
 
   const changedFiles = util.getChangedFiles(config.braveCoreDir, options.base)
@@ -123,10 +118,11 @@ const runPrettier = async (files, dryRun) => {
     if (content !== formatted) {
       if (dryRun) {
         // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-        const diffResult = util.run('git', ['diff', '--no-index', file, '-'], {
+        const diffResult = util.runProcess('git', ['diff', '--no-index', file, '-'], {
           stdio: 'pipe',
-          input: formatted
+          input: formatted,
         })
+
         errors.push(diffResult.stdout.toString())
       } else {
         await fs.writeFile(file, formatted)
