@@ -123,24 +123,20 @@
         android:title="@string/prefs_section_other_privacy_settings"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="app_links"
-            android:order="25"
             android:title="@string/settings_app_links_label"
             android:defaultValue="true"/>
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment"
             android:key="webrtc_policy"
-            android:order="25"
             android:title="@string/settings_webrtc_policy_label"
             android:persistent="false"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="incognito_screenshot"
-            android:order="25"
             android:title="@string/private_tab_screenshot_title"
             android:summary="@string/private_tab_screenshot_summary"
             android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="close_tabs_on_exit"
-            android:order="25"
             defaultValue="false"
             android:title="@string/close_tabs_on_exit_title"
             android:summary="@string/close_tabs_on_exit_summary" />
@@ -153,46 +149,48 @@
             app:dialog_default_index="1" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="block_cookie_consent_notices"
-            android:order="25"
             android:title="@string/block_cookie_consent_notices_title"
             android:summary="@string/block_cookie_consent_notices_summary"
             android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="block_switch_to_app_notices"
-            android:order="25"
             android:title="@string/block_switch_to_app_notices"
             android:defaultValue="true" />
         <Preference
             android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.UnstoppableDomainsSettingsFragment"
             android:key="unstoppable_domains"
-            android:order="25"
             android:title="@string/unstoppable_domains_title" />
         <Preference
             android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.ENSSettingsFragment"
             android:key="ens"
-            android:order="25"
             android:title="@string/ens_title" />
         <Preference
             android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.SnsSettingsFragment"
             android:key="sns"
-            android:order="25"
             android:title="@string/sns_title" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="send_p3a_analytics"
-            android:order="25"
             android:title="@string/send_p3a_analytics_title"
             android:summary="@string/send_p3a_analytics_summary"
             android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
           android:key="send_crash_reports"
-          android:order="25"
           android:title="@string/send_crash_reports_title"
           android:summary="@string/send_crash_reports_summary"
           android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="brave_stats_usage_ping"
-            android:order="25"
             android:title="@string/brave_stats_usage_ping_title"
             android:summary="@string/brave_stats_usage_ping_summary"
             android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="survey_panelist"
+            android:title="@string/survey_panelist_title"
+            android:summary="@string/survey_panelist_summary"
+            android:defaultValue="false"
+            android:visibility="gone" />
+        <org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference
+            android:key="survey_panelist_learn_more"
+            app:allowDividerAbove="false"
+            android:visibility="gone" />
 </PreferenceScreen>
