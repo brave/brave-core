@@ -40,12 +40,11 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
           </leo-icon>
         </leo-input>
       </div>
-      <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
-                    @click=${() => this.fire('sign-in-button-clicked')}>
-          $i18n{braveAccountSignInButtonLabel}
-        </leo-button>
-      </div>
+      <leo-button slot="buttons"
+                  ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
+                  @click=${() => this.fire('sign-in-button-clicked')}>
+        $i18n{braveAccountSignInButtonLabel}
+      </leo-button>
     </settings-brave-account-dialog>
   <!--_html_template_end_-->`
 }
