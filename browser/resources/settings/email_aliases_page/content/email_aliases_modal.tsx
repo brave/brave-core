@@ -212,12 +212,6 @@ export const EmailAliasModal = (
       }
       <ButtonRow bubble={bubble}>
         <span>
-          {bubble && <Button kind='plain-faint'
-                        onClick={emailAliasesService.showSettingsPage}>
-            {getLocale('emailAliasesManageButton')}
-          </Button>}
-        </span>
-        <span>
           <Button onClick={onReturnToMain} kind='plain-faint'>
             {getLocale('emailAliasesCancelButton')}
           </Button>

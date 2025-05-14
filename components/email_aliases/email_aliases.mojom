@@ -57,8 +57,5 @@ interface EmailAliasesService {
   // Remove an email aliases observer.
   RemoveObserver(pending_remote<EmailAliasesServiceObserver> observer);
 
-  // Show the Email Aliases settings page.
-  ShowSettingsPage();
-
 };
 
