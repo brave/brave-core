@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <optional>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -27,7 +26,6 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -145,7 +143,6 @@ class CardanoTxManagerUnitTest : public testing::Test {
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;
   std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
   std::unique_ptr<TxService> tx_service_;
-  std::unordered_map<std::string, std::string> responses_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
