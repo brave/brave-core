@@ -1,0 +1,23 @@
+diff --git a/components/update_client/pipeline.cc b/components/update_client/pipeline.cc
+index 9e922a09e674ea89a1e84832468595cc84d9d9a5..c60f89f3f34fd6d58fd552303f88db7585d96f91 100644
+--- a/components/update_client/pipeline.cc
++++ b/components/update_client/pipeline.cc
+@@ -77,9 +77,7 @@ constexpr CategorizedError kInvalidOperationAttributesError = CategorizedError(
+ // completion callback will keep it alive).
+ class Pipeline : public base::RefCountedThreadSafe<Pipeline> {
+  public:
+-  Pipeline(
+-      std::queue<Operation> operations,
+-      scoped_refptr<Pipeline> fallback);
++  Pipeline(std::queue<Operation> operations, scoped_refptr<Pipeline> fallback);
+   Pipeline(const Pipeline&) = delete;
+   Pipeline& operator=(const Pipeline&) = delete;
+ 
+@@ -263,6 +261,7 @@ std::queue<Operation> MakeOperations(
+   for (const ProtocolParser::Operation& operation : pipeline.operations) {
+     if (operation.type == "download") {
+       // expects: `urls` (list of url objects), `size`, and `out` (hash object)
++      BRAVE_MAKE_OPERATIONS
+       if (operation.urls.empty() || operation.size <= 0 ||
+           operation.sha256_out.empty()) {
+         return MakeErrorOperations(event_adder,

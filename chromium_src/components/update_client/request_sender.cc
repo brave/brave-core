@@ -10,44 +10,28 @@
 #include "components/update_client/request_sender.h"
 
 #include "base/base64.h"
-#include "components/client_update_protocol/ecdsa.h"
 
 namespace {
 
 // If you change the following, then you will likely also need to update
 // RequestSenderTest::UsesBraveCUPKey.
 constexpr int kBraveKeyVersion = 1;
-constexpr char kBraveKeyPubBytesBase64[] =
-    "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMZENJfFz9Jph//JXTejVdn5U+ALz"
-    "NT/Bht/fvkf2hZ5RionWCLzcxmjV3uh0R3MKLfsgI3w7ukou7m8VhkFQSg==";
+// Base64 = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMZENJfFz9Jph//JXTejVdn5U+ALz"
+//          "NT/Bht/fvkf2hZ5RionWCLzcxmjV3uh0R3MKLfsgI3w7ukou7m8VhkFQSg==";
+constexpr auto kBravePublicKey = std::to_array<uint8_t>(
+    {0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02,
+     0x01, 0x06, 0x08, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07, 0x03,
+     0x42, 0x00, 0x04, 0x31, 0x91, 0x0d, 0x25, 0xf1, 0x73, 0xf4, 0x9a, 0x61,
+     0xff, 0xf2, 0x57, 0x4d, 0xe8, 0xd5, 0x76, 0x7e, 0x54, 0xf8, 0x02, 0xf3,
+     0x35, 0x3f, 0xc1, 0x86, 0xdf, 0xdf, 0xbe, 0x47, 0xf6, 0x85, 0x9e, 0x51,
+     0x8a, 0x89, 0xd6, 0x08, 0xbc, 0xdc, 0xc6, 0x68, 0xd5, 0xde, 0xe8, 0x74,
+     0x47, 0x73, 0x0a, 0x2d, 0xfb, 0x20, 0x23, 0x7c, 0x3b, 0xba, 0x4a, 0x2e,
+     0xee, 0x6f, 0x15, 0x86, 0x41, 0x50, 0x4a});
 
 }  // namespace
 
-namespace client_update_protocol {
-
-class BraveEcdsa : public Ecdsa {
- public:
-  static std::unique_ptr<Ecdsa> Create(int key_version,
-                                       const std::string_view& public_key) {
-    const std::string base64_decoded = GetKey(kBraveKeyPubBytesBase64);
-    return Ecdsa::Create(kBraveKeyVersion, base64_decoded);
-  }
-
- private:
-  static std::string GetKey(const char* key_bytes_base64) {
-    // This method is a copy of upstream's RequestSender::GetKey, which is
-    // unfortunately private.
-    std::string result;
-    return base::Base64Decode(std::string(key_bytes_base64), &result)
-               ? result
-               : std::string();
-  }
-};
-
-}  // namespace client_update_protocol
-
-#define Ecdsa BraveEcdsa
+#define signer_(KEY_VERSION, PUBLIC_KEY) \
+  signer_(kBraveKeyVersion, kBravePublicKey)
 
 #include "src/components/update_client/request_sender.cc"
-
-#undef Ecdsa
+#undef signer_

@@ -2,7 +2,7 @@ Name: idna
 URL: https://crates.io/crates/idna
 Version: 1.0.3
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/idna-1.0.3/../../../../../common/licenses/Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/idna-v1/../../../../../common/licenses/Apache-2.0
 Shipped: yes
 Security Critical: yes
 

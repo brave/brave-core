@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index 9e2816b78ed7fb5d9fd0334dc8ba4108b05dee7f..103d2c4f774eddf06fddf73a3dcc9c32e24d30de 100644
+index 1708409e4c63d89c1bb0a1efaf73884dc6dfc7a5..a2de91d62b25dfc6a4dbee57c7289cc3fdfdaf05 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-@@ -204,6 +204,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+@@ -200,6 +200,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
  }
  
  NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
@@ -10,7 +10,7 @@ index 9e2816b78ed7fb5d9fd0334dc8ba4108b05dee7f..103d2c4f774eddf06fddf73a3dcc9c32
      unsigned channel_index,
      ExceptionState& exception_state) {
    if (channel_index >= channels_.size()) {
-@@ -215,6 +216,7 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
+@@ -211,6 +212,7 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
      return NotShared<DOMFloat32Array>(nullptr);
    }
  
@@ -18,7 +18,7 @@ index 9e2816b78ed7fb5d9fd0334dc8ba4108b05dee7f..103d2c4f774eddf06fddf73a3dcc9c32
    return getChannelData(channel_index);
  }
  
-@@ -226,13 +228,15 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+@@ -222,13 +224,15 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
    return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
  }
  
@@ -37,7 +37,7 @@ index 9e2816b78ed7fb5d9fd0334dc8ba4108b05dee7f..103d2c4f774eddf06fddf73a3dcc9c32
                                    int32_t channel_number,
                                    size_t buffer_offset,
                                    ExceptionState& exception_state) {
-@@ -265,6 +269,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
+@@ -261,6 +265,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
    DCHECK(dst.data());
  
    dst.first(count).copy_from(src.subspan(buffer_offset, count));

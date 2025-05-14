@@ -26,7 +26,7 @@ namespace profiles {
 struct IconResourceInfo;
 
 const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
-      size_t chromium_index);
+    size_t chromium_index);
 
 size_t GetBraveAvatarIconStartIndex();
 
@@ -41,7 +41,7 @@ size_t GetBraveAvatarIconStartIndex();
       return brave_icon;                                         \
   }
 
-#define BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX  \
+#define BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX \
   return GetBraveAvatarIconStartIndex();
 
 #define BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN \
@@ -69,15 +69,18 @@ gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
   GetPlaceholderAvatarIconWithColors_ChromiumImpl
 #define GetDefaultProfileAvatarIconAndLabel \
   GetDefaultProfileAvatarIconAndLabel_ChromiumImpl
+#define GetPlaceholderAvatarIconVisibleAgainstBackground \
+  GetPlaceholderAvatarIconVisibleAgainstBackground_ChromiumImpl
 
 #include "src/chrome/browser/profiles/profile_avatar_icon_util.cc"
-#undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
-#undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
-#undef BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
-#undef IsDefaultAvatarIconUrl
-#undef GetGuestAvatar
-#undef GetPlaceholderAvatarIconWithColors
+#undef GetPlaceholderAvatarIconVisibleAgainstBackground
 #undef GetDefaultProfileAvatarIconAndLabel
+#undef GetPlaceholderAvatarIconWithColors
+#undef GetGuestAvatar
+#undef IsDefaultAvatarIconUrl
+#undef BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
+#undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
+#undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 
 namespace profiles {
 
@@ -85,8 +88,7 @@ size_t GetBraveAvatarIconStartIndex() {
   return kDefaultAvatarIconsCount - kBraveDefaultAvatarIconsCount;
 }
 
-const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
-      size_t index) {
+const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(size_t index) {
 #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
   return nullptr;
 #else
@@ -196,6 +198,14 @@ gfx::Image GetPlaceholderAvatarIconWithColors(
     SkColor stroke_color,
     int size,
     const PlaceholderAvatarIconParams& icon_params) {
+  return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+      GetPlaceholderAvatarIconResourceID());
+}
+
+gfx::Image GetPlaceholderAvatarIconVisibleAgainstBackground(
+    SkColor profile_color_seed,
+    int size,
+    AvatarVisibilityAgainstBackground visibility) {
   return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
       GetPlaceholderAvatarIconResourceID());
 }

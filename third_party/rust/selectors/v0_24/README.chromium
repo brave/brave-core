@@ -3,7 +3,7 @@ URL: https://crates.io/crates/selectors
 Version: 0.24.0
 Revision: e82d7868d999d84f6d59719e4c397e5252aecb85
 License: Mozilla-Public-License-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/selectors-0.24.0/../../../../../common/licenses/MPL-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_24/../../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 

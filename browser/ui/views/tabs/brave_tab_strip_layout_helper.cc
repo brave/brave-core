@@ -26,7 +26,6 @@ namespace tabs {
 namespace {
 
 void CalculatePinnedTabsBoundsInGrid(
-    const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
     bool is_floating_mode,
@@ -69,8 +68,7 @@ void CalculatePinnedTabsBoundsInGrid(
   }
 }
 
-void CalculateVerticalLayout(const TabLayoutConstants& layout_constants,
-                             const std::vector<TabWidthConstraints>& tabs,
+void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
                              std::optional<int> width,
                              std::vector<gfx::Rect>* result) {
   DCHECK(tabs.size());
@@ -121,7 +119,6 @@ int GetTabCornerRadius(const Tab& tab) {
 }
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
-    const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
     bool is_floating_mode) {
@@ -130,9 +127,8 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
   }
 
   std::vector<gfx::Rect> bounds;
-  CalculatePinnedTabsBoundsInGrid(layout_constants, tabs, width,
-                                  is_floating_mode, &bounds);
-  CalculateVerticalLayout(layout_constants, tabs, width, &bounds);
+  CalculatePinnedTabsBoundsInGrid(tabs, width, is_floating_mode, &bounds);
+  CalculateVerticalLayout(tabs, width, &bounds);
 
   DCHECK_EQ(tabs.size(), bounds.size());
   return bounds;

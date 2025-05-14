@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.ui.text.ChromeClickableSpan;
@@ -29,6 +30,7 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 import java.util.Arrays;
 import java.util.List;
 
+@NullMarked
 public class AlwaysOnPagerAdapter extends PagerAdapter {
     private Context mContext;
 
@@ -70,7 +72,6 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                             new SpanInfo(
                                     "<auto_reconnect_vpn_tutorial>",
                                     "</auto_reconnect_vpn_tutorial>",
-                                    null,
                                     new StyleSpan(android.graphics.Typeface.BOLD)));
             autoReconnectVpnTutorialText.setText(tutorialSpannableString);
 
@@ -78,8 +79,7 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                     mContext.getResources().getString(mTexts.get(position + 1));
             ChromeClickableSpan learnMoreClickableSpan =
                     new ChromeClickableSpan(
-                            mContext,
-                            R.color.brave_blue_tint_color,
+                            mContext.getColor(R.color.brave_blue_tint_color),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(mContext, AUTO_RECONNECT_VPN_LINK);
                             });

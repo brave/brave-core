@@ -54,14 +54,9 @@ bool BraveWebTorrentNavigationThrottle::MaybeLoadWebtorrent(
     return false;
   }
 
-  extensions::ExtensionService* service =
-    extensions::ExtensionSystem::Get(context)->extension_service();
-  if (!service)
-    return false;
-
-  extensions::ComponentLoader* loader = service->component_loader();
-  static_cast<extensions::BraveComponentLoader*>(loader)->
-    AddWebTorrentExtension();
+  static_cast<extensions::BraveComponentLoader*>(
+      extensions::ComponentLoader::Get(context))
+      ->AddWebTorrentExtension();
   return true;
 }
 

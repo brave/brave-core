@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarC
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -229,7 +230,13 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
                         () -> mCustomTabFeatureOverridesManager,
                         () -> getCustomTabActivityNavigationController().openCurrentUrlInBrowser(),
-                        getEdgeToEdgeManager());
+                        getEdgeToEdgeManager(),
+                        getAppHeaderCoordinator());
         return mBaseCustomTabRootUiCoordinator;
+    }
+
+    private AppHeaderCoordinator getAppHeaderCoordinator() {
+        assert false : "This methos should be overridden via bytecode manipulation!";
+        return null;
     }
 }

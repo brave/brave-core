@@ -13,6 +13,8 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
@@ -24,6 +26,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 
 /** Fragment to keep track of all the display related preferences. */
+@NullMarked
 public class BackgroundImagesPreferences extends BravePreferenceFragment
         implements OnPreferenceChangeListener {
     // deprecated preferences from browser-android-tabs
@@ -41,14 +44,14 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.prefs_new_tab_page));
         SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mShowBackgroundImagesPref =
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_BACKGROUND_IMAGES);

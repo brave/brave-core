@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 4211b13a1719c96fdf00727e55c27e303ba69575..f75ba2ebb13effaffab7784213c99eeef7307989 100644
+index c09fd4cb4b3a7690e441085a57b66e1a8e7a652a..93f2c22e740157932fc307f5ec88440df3df29a1 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -2046,6 +2046,7 @@
+@@ -2120,6 +2120,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -10,7 +10,7 @@ index 4211b13a1719c96fdf00727e55c27e303ba69575..f75ba2ebb13effaffab7784213c99eee
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -2060,6 +2061,7 @@
+@@ -2134,6 +2135,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
        status: {"default": "stable"},
@@ -18,7 +18,7 @@ index 4211b13a1719c96fdf00727e55c27e303ba69575..f75ba2ebb13effaffab7784213c99eee
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2870,6 +2872,7 @@
+@@ -2980,6 +2982,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",
@@ -26,3 +26,12 @@ index 4211b13a1719c96fdf00727e55c27e303ba69575..f75ba2ebb13effaffab7784213c99eee
      },
      {
        name: "MobileLayoutTheme",
+@@ -3819,7 +3822,7 @@
+       // composited pixel alignment issues. See
+       // https://crbug.com/40084005
+       name: "RenderSurfaceFor2DScaleTransform",
+-      status: "stable",
++      status: "experimental",
+     },
+     {
+       name: "ReportEventTimingAtVisibilityChange",

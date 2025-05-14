@@ -9,6 +9,5 @@
  * #include=print-preview-shared-chromium
  * #css_wrapper_metadata_end */
 
-print-preview-settings-section [slot=controls] > .md-select {
-  margin: 1px var(--print-preview-sidebar-margin);
-}
+/* Intentionally left empty as it is generated at build time from the equivalent
+ * Lit version. */

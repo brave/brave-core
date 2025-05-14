@@ -234,9 +234,7 @@ void BraveExtensionsManifestV2Handler::RemoveExtensionManifestV2(
   if (installed) {
     auto* profile = Profile::FromBrowserContext(
         web_ui()->GetWebContents()->GetBrowserContext());
-    auto* extension_service =
-        extensions::ExtensionSystem::Get(profile)->extension_service();
-    extension_service->UninstallExtension(
+    extensions::ExtensionRegistrar::Get(profile)->UninstallExtension(
         id, extensions::UNINSTALL_REASON_INTERNAL_MANAGEMENT, nullptr);
   }
 
