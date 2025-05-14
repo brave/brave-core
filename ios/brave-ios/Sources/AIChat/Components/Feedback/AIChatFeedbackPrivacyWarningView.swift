@@ -9,9 +9,29 @@ import DesignSystem
 import Preferences
 import SwiftUI
 
+struct AIChatCheckboxToggleStyle: ToggleStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    HStack {
+      Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+        .foregroundStyle(
+          Color(
+            braveSystemName: configuration.isOn ? .iconInteractive : .iconDefault
+          )
+        )
+
+      configuration.label
+    }
+    .contentShape(Rectangle())
+    .onTapGesture {
+      configuration.isOn.toggle()
+    }
+  }
+}
+
 struct AIChatFeedbackPrivacyWarningView: View {
-  @ObservedObject
-  private var showFeedbackPrivacyWarning = Preferences.AIChat.showFeedbackPrivacyWarning
+
+  @State
+  private var dontShowAgain = false
 
   var onCancel: () -> Void
   var onSend: () -> Void
@@ -33,7 +53,6 @@ struct AIChatFeedbackPrivacyWarningView: View {
           )
         )
       )
-      .font(.body)
       .frame(maxWidth: .infinity, alignment: .leading)
       .multilineTextAlignment(.leading)
       .fixedSize(horizontal: false, vertical: true)
@@ -46,28 +65,14 @@ struct AIChatFeedbackPrivacyWarningView: View {
         }
       )
 
-      Button {
-        showFeedbackPrivacyWarning.value.toggle()
-      } label: {
-        HStack {
-          Image(
-            braveSystemName: showFeedbackPrivacyWarning.value
-              ? "leo.checkbox.unchecked" : "leo.checkbox.checked"
-          )
-          .renderingMode(.template)
-          .foregroundColor(
-            Color(
-              braveSystemName: showFeedbackPrivacyWarning.value ? .iconDefault : .iconInteractive
-            )
-          )
-
-          Text(Strings.AIChat.dontShowAgainTitle)
-            .font(.subheadline)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-            .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+      Toggle(isOn: $dontShowAgain) {
+        Text(Strings.AIChat.dontShowAgainTitle)
+          .font(.subheadline)
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .fixedSize(horizontal: false, vertical: true)
       }
+      .toggleStyle(AIChatCheckboxToggleStyle())
+      .frame(maxWidth: .infinity, alignment: .leading)
 
       HStack(spacing: 12) {
         Button {
@@ -82,6 +87,7 @@ struct AIChatFeedbackPrivacyWarningView: View {
         .clipShape(RoundedRectangle(cornerRadius: 8))
 
         Button {
+          Preferences.AIChat.showFeedbackPrivacyWarning.value = !dontShowAgain
           onSend()
         } label: {
           Text(Strings.sendButtonTitle)
@@ -91,7 +97,6 @@ struct AIChatFeedbackPrivacyWarningView: View {
         .buttonStyle(BraveFilledButtonStyle(size: .large))
       }
     }
-    .padding(.top, 32.0)
-    .padding([.leading, .trailing, .bottom], 24.0)
+    .padding(24.0)
   }
 }

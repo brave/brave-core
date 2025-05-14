@@ -108,8 +108,10 @@ public struct AIChatView: View {
         },
         menuContent: {
           menuView
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
       )
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
@@ -427,6 +429,7 @@ public struct AIChatView: View {
         openURL(url)
         dismiss()
       }
+      .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
     .task {
       await model.getInitialState()
@@ -559,7 +562,10 @@ public struct AIChatView: View {
               turnId: turnId,
               turnIndex: turnIndex
             )
-            shouldShowFeedbackPrivacyWarningAlert = true
+
+            Task.delayed(bySeconds: 1.0) { @MainActor in
+              shouldShowFeedbackPrivacyWarningAlert = true
+            }
           } else {
             Task { @MainActor in
               let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
@@ -585,7 +591,10 @@ public struct AIChatView: View {
               turnId: turnId,
               turnIndex: turnIndex
             )
-            shouldShowFeedbackPrivacyWarningAlert = true
+
+            Task.delayed(bySeconds: 1.0) { @MainActor in
+              shouldShowFeedbackPrivacyWarningAlert = true
+            }
           } else {
             Task { @MainActor in
               let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)

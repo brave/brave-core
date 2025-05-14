@@ -17,6 +17,8 @@ public class PopupViewController<Content: View>: UIViewController,
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
 
+  var onDidDismiss: (() -> Void)?
+
   public init(rootView: Content, isDismissable: Bool = false) {
     let popup = PopupView({ rootView })
     hostingController = UIHostingController(rootView: popup)
@@ -84,6 +86,8 @@ public class PopupViewController<Content: View>: UIViewController,
     animator.addCompletion { _ in
       self.view.removeFromSuperview()
       context.completeTransition(true)
+
+      self.onDidDismiss?()
     }
     animator.startAnimation()
   }
