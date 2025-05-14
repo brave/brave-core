@@ -42,4 +42,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_WEB_DISCOVERY_NATIVE = "BraveWebDiscoveryNative";
     public static final String NEW_REWARDS_UI_FEATURE = "BraveRewardsNewRewardsUI";
     public static final String BRAVE_INCOGNITO_SCREENSHOT = "incognito-screenshot";
+    public static final String BRAVE_SURVEY_PANELIST = "BraveNTPBrandedWallpaperSurveyPanelist";
 }
