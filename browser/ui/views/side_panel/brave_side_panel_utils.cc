@@ -49,10 +49,10 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
       Profile::FromBrowserContext(context)->IsRegularProfile()) {
     // If |registry| already has it, it's no-op.
     registry->Register(std::make_unique<SidePanelEntry>(
-        SidePanelEntry::Id::kChatUI,
-        base::BindRepeating(
-            &CreateAIChatSidePanelWebView,
-            Profile::FromBrowserContext(context)->GetWeakPtr())));
+        SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
+        base::BindRepeating(&CreateAIChatSidePanelWebView,
+                            Profile::FromBrowserContext(context)->GetWeakPtr()),
+        SidePanelEntry::kSidePanelDefaultContentWidth));
   }
 }
 
