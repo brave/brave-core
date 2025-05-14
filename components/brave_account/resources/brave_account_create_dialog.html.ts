@@ -78,16 +78,15 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <div>$i18nRaw{braveAccountConsentCheckboxLabel}</div>
         </leo-checkbox>
       </div>
-      <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailValid
-                               || this.isEmailValid && this.isEmailBraveAlias
-                               || this.passwordStrength !== 100
-                               || this.passwordConfirmation !== this.password
-                               || !this.isCheckboxChecked}
-                    @click=${() => this.fire('create-account-button-clicked')}>
-          $i18n{braveAccountCreateAccountButtonLabel}
-        </leo-button>
-      </div>
+      <leo-button slot="buttons"
+                  ?isDisabled=${!this.isEmailValid
+                              || this.isEmailValid && this.isEmailBraveAlias
+                              || this.passwordStrength !== 100
+                              || this.passwordConfirmation !== this.password
+                              || !this.isCheckboxChecked}
+                  @click=${() => this.fire('create-account-button-clicked')}>
+        $i18n{braveAccountCreateAccountButtonLabel}
+      </leo-button>
     </settings-brave-account-dialog>
   <!--_html_template_end_-->`
 }
