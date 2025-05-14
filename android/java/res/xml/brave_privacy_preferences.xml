@@ -195,4 +195,16 @@
             android:title="@string/brave_stats_usage_ping_title"
             android:summary="@string/brave_stats_usage_ping_summary"
             android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="brave_survey_panelist"
+            android:order="26"
+            android:title="@string/brave_survey_panelist_title"
+            android:summary="@string/brave_survey_panelist_summary"
+            android:defaultValue="false" 
+            android:visibility="gone" />
+        <org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference
+            android:key="brave_survey_panelist_learn_more"
+            android:order="26"
+            app:allowDividerAbove="false" 
+            android:visibility="gone" />
 </PreferenceScreen>

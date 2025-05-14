@@ -777,6 +777,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time\nSaved
       </message>
+      <message name="IDS_BRAVE_SURVEY_PANELIST_TITLE" desc="Title for enable/disable brave survey panelist toggle.">
+        Survey Panelist
+      </message>
+      <message name="IDS_BRAVE_SURVEY_PANELIST_SUMMARY" desc="Summary for enable/disable brave survey panelist toggle.">
+        Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+      </message>
+      <message name="IDS_BRAVE_SURVEY_PANELIST_LEARN_MORE" desc="Title of learn more about survey panelist.">
+        Learn more about Survey Panelist
+      </message>
       <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
         Autoplay

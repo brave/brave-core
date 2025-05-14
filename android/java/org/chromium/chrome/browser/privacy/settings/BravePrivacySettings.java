@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -61,6 +62,7 @@ import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
+    private static final String BLOCK_SURVEY_PANELIST_LEARN_MORE_LINK = "https://brave.com";
 
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
@@ -107,6 +109,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
+    private static final String PREF_BRAVE_SURVEY_PANELIST = "brave_survey_panelist";
+    private static final String PREF_BRAVE_SURVEY_PANELIST_LEARN_MORE =
+            "brave_survey_panelist_learn_more";
     public static final String PREF_APP_LINKS = "app_links";
     public static final String PREF_APP_LINKS_RESET = "app_links_reset";
 
@@ -177,6 +182,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_SEND_P3A,
         PREF_SEND_CRASH_REPORTS,
         PREF_BRAVE_STATS_USAGE_PING,
+        PREF_BRAVE_SURVEY_PANELIST,
         PREF_USAGE_STATS,
         PREF_PRIVACY_SANDBOX
     };
@@ -205,6 +211,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mSendP3A;
     private ChromeSwitchPreference mSendCrashReports;
     private ChromeSwitchPreference mBraveStatsUsagePing;
+    private ChromeSwitchPreference mBraveSurveyPanelist;
+    private ClickableSpansTextMessagePreference mBraveSurveyPanelistLearnMore;
     private ChromeSwitchPreference mBlockCookieConsentNoticesPref;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
     private PreferenceCategory mSocialBlockingCategory;
@@ -389,6 +397,29 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mSendCrashReports.setOnPreferenceChangeListener(this);
         mBraveStatsUsagePing = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_USAGE_PING);
         mBraveStatsUsagePing.setOnPreferenceChangeListener(this);
+
+        boolean surveyPanelistEnabled =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SURVEY_PANELIST);
+        mBraveSurveyPanelist = (ChromeSwitchPreference) findPreference(PREF_BRAVE_SURVEY_PANELIST);
+        mBraveSurveyPanelist.setOnPreferenceChangeListener(this);
+        mBraveSurveyPanelist.setVisible(surveyPanelistEnabled);
+        mBraveSurveyPanelistLearnMore =
+                (ClickableSpansTextMessagePreference)
+                        findPreference(PREF_BRAVE_SURVEY_PANELIST_LEARN_MORE);
+        mBraveSurveyPanelistLearnMore.setVisible(surveyPanelistEnabled);
+        ChromeClickableSpan chromeClickableSpan =
+                new ChromeClickableSpan(
+                        getContext(),
+                        R.color.brave_link,
+                        result -> {
+                            TabUtils.openUrlInCustomTab(
+                                    requireContext(), BLOCK_SURVEY_PANELIST_LEARN_MORE_LINK);
+                        });
+        SpannableString spannableString =
+                new SpannableString(
+                        getContext().getString(R.string.brave_survey_panelist_learn_more));
+        spannableString.setSpan(chromeClickableSpan, 0, spannableString.length(), 0);
+        mBraveSurveyPanelistLearnMore.setSummary(spannableString);
 
         mSocialBlockingCategory =
                 (PreferenceCategory) findPreference(PREF_BRAVE_SOCIAL_BLOCKING_SECTION);
@@ -615,6 +646,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.STATS_REPORTING_ENABLED, (boolean) newValue);
+        } else if (PREF_BRAVE_SURVEY_PANELIST.equals(key)) {
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    .setBoolean(
+                            BravePref.NEW_TAB_PAGE_SPONSORED_IMAGES_SURVEY_PANELIST,
+                            (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_GOOGLE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE, (boolean) newValue);
@@ -798,6 +834,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mBraveStatsUsagePing.setChecked(
                 BraveLocalState.get().getBoolean(BravePref.STATS_REPORTING_ENABLED));
+
+        mBraveSurveyPanelist.setChecked(
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SPONSORED_IMAGES_SURVEY_PANELIST));
 
         mWebrtcPolicy.setSummary(
                 webrtcPolicyToString(BravePrefServiceBridge.getInstance().getWebrtcPolicy()));
