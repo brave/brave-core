@@ -51,6 +51,8 @@ struct TimePeriodEventsMetricDefinition {
   int min_report_amount = 0;
 };
 
+// This remote metric class is used to report the number of events that occur
+// in a given time period.
 class TimePeriodEventsMetric : public RemoteMetric {
  public:
   TimePeriodEventsMetric(PrefService* local_state,

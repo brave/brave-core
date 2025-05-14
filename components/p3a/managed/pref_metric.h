@@ -43,6 +43,9 @@ struct PrefMetricDefinition {
   bool use_profile_prefs = false;
 };
 
+// This remote metric class is used to report the value of a preference.
+// A preference value to metric value mapping is used to generate the metric
+// value.
 class PrefMetric : public RemoteMetric {
  public:
   PrefMetric(PrefService* local_state,
