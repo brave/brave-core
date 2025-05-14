@@ -7,7 +7,7 @@ import { color, font, radius, spacing, typography } from
   "@brave/leo/tokens/css/variables"
 import { formatLocale, getLocale } from '$web-common/locale'
 import { onEnterKeyForInput } from "./on_enter_key"
-import { ViewState } from "./types"
+import { EditState } from "./types"
 import * as React from 'react'
 import Button from "@brave/leo/react/button"
 import Col from "./styles/Col"
@@ -125,11 +125,11 @@ const RefreshButton = ({ onClick, waiting }:
 }
 
 export const EmailAliasModal = (
-  { onReturnToMain, viewState, mainEmail, aliasCount, emailAliasesService,
+  { onReturnToMain, editState, mainEmail, aliasCount, emailAliasesService,
     bubble }:
     {
       onReturnToMain: () => void,
-      viewState: ViewState,
+      editState: EditState,
       bubble?: boolean,
       mainEmail: string,
       aliasCount: number,
@@ -138,9 +138,9 @@ export const EmailAliasModal = (
 ) => {
   const [limitReached, setLimitReached] = React.useState<boolean>(false)
   const [proposedAlias, setProposedAlias] = React.useState<string>(
-    viewState?.alias?.email ?? '')
+    editState?.alias?.email ?? '')
   const [proposedNote, setProposedNote] = React.useState<string>(
-    viewState?.alias?.note ?? '')
+    editState?.alias?.note ?? '')
   const [awaitingProposedAlias, setAwaitingProposedAlias] =
     React.useState<boolean>(true)
   const createOrSave = async () => {
@@ -151,9 +151,9 @@ export const EmailAliasModal = (
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
-    const { alias } = await emailAliasesService.generateAlias()
-    if (viewState.mode === 'Create' || viewState.mode === 'Edit') {
-      setProposedAlias(alias)
+    const { aliasEmail } = await emailAliasesService.generateAlias()
+    if (editState.mode === 'Create' || editState.mode === 'Edit') {
+      setProposedAlias(aliasEmail)
       setAwaitingProposedAlias(false)
     }
   }
@@ -161,13 +161,13 @@ export const EmailAliasModal = (
     if (bubble) {
       setLimitReached(aliasCount >= MAX_ALIASES)
     }
-    if (viewState.mode === 'Create') {
+    if (editState.mode === 'Create') {
       regenerateAlias()
     }
-  }, [viewState.mode])
+  }, [editState.mode])
   return (
     <ModalCol>
-      <ModalTitle>{viewState.mode === 'Create'
+      <ModalTitle>{editState.mode === 'Create'
         ? getLocale('emailAliasesCreateAliasTitle')
         : getLocale('emailAliasesEditAliasTitle')}</ModalTitle>
       {bubble && <ModalDescription>
@@ -182,7 +182,7 @@ export const EmailAliasModal = (
               <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
               <GeneratedEmailContainer>
                 <div className='generated-email'>{proposedAlias}</div>
-                {viewState.mode === 'Create' &&
+                {editState.mode === 'Create' &&
                  <RefreshButton data-testid='regenerate-button'
                                 onClick={regenerateAlias}
                                 waiting={awaitingProposedAlias} />}
@@ -202,10 +202,10 @@ export const EmailAliasModal = (
                 onChange={(detail) => setProposedNote(detail.value)}
                 onKeyDown={onEnterKeyForInput(createOrSave)}>
               </NoteInput>
-              {viewState.mode === 'Edit' && viewState?.alias?.domains &&
+              {editState.mode === 'Edit' && editState?.alias?.domains &&
                 <div>
                 {formatLocale('emailAliasesUsedBy',
-                              { $1: viewState?.alias?.domains?.join(', ') })}
+                              { $1: editState?.alias?.domains?.join(', ') })}
                 </div>}
             </ModalSectionCol>
           </ModalCol>
@@ -217,10 +217,10 @@ export const EmailAliasModal = (
           </Button>
           <Button
             kind='filled'
-            isDisabled={viewState.mode === 'Create'
+            isDisabled={editState.mode === 'Create'
                          && (limitReached || awaitingProposedAlias)}
             onClick={createOrSave}>
-            {viewState.mode === 'Create'
+            {editState.mode === 'Create'
               ? getLocale('emailAliasesCreateAliasButton')
               : getLocale('emailAliasesSaveAliasButton')}
           </Button>

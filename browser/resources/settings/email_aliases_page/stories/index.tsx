@@ -8,13 +8,13 @@ import { ManagePage } from '../email_aliases'
 import { EmailAliasModal } from '../content/email_aliases_modal'
 import {
   Alias,
+  AuthenticationStatus,
+  AuthState,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverRemote
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { provideStrings } from '../../../../../.storybook/locale'
-
-type AccountState = 'NoAccount' | 'AccountReady' | 'AwaitingAccount'
 
 provideStrings({
   emailAliasesShortDescription: 'Keep your personal email address private',
@@ -93,15 +93,13 @@ const demoData = {
 } satisfies { email: string, aliases: Alias[] }
 
 class StubEmailAliasesService implements EmailAliasesServiceInterface {
-  accountEmail: string
   aliases: Map<string, Alias>
-  accountState: AccountState
+  authState: AuthState
   accountRequestId: number
   observers: Set<EmailAliasesServiceObserverRemote |
                  EmailAliasesServiceObserverInterface>
-  constructor(accountState: AccountState, accountEmail: string) {
-    this.accountState = accountState
-    this.accountEmail = accountEmail
+  constructor(authState: AuthState) {
+    this.authState = authState
     this.observers = new Set<EmailAliasesServiceObserverRemote |
                              EmailAliasesServiceObserverInterface>()
     this.aliases = new Map<string, Alias>();
@@ -113,17 +111,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   addObserver (observer: EmailAliasesServiceObserverRemote |
                          EmailAliasesServiceObserverInterface) {
     this.observers.add(observer)
-    switch (this.accountState) {
-      case 'NoAccount':
-        observer.onLoggedOut()
-        break
-      case 'AccountReady':
-        observer.onLoggedIn(this.accountEmail)
-        break
-      case 'AwaitingAccount':
-        observer.onVerificationPending(this.accountEmail)
-        break
-    }
+    observer.onAuthStateChanged(this.authState)
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 
@@ -154,30 +142,42 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
         "@bravealias.com"
     } while (this.aliases.has(generated))
     await new Promise(resolve => setTimeout(resolve, 1000))
-    return { alias: generated }
+    return { aliasEmail: generated }
   }
 
-  requestPrimaryEmailVerification (email: string) {
+  requestAuthentication (email: string) {
     this.observers.forEach(observer => {
-      observer.onVerificationPending(email)
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kAuthenticating,
+        email: email
+      })
     })
     this.accountRequestId = window.setTimeout(() => {
       this.observers.forEach(observer => {
-        observer.onLoggedIn(email)
+        observer.onAuthStateChanged({
+          status: AuthenticationStatus.kAuthenticated,
+          email: email
+        })
       })
     }, 5000);
   }
 
-  cancelPrimaryEmailVerification () {
+  cancelAuthentication () {
     window.clearTimeout(this.accountRequestId)
     this.observers.forEach(observer => {
-      observer.onLoggedOut()
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kUnauthenticated,
+        email: ''
+      })
     })
   }
 
   logout () {
     this.observers.forEach(observer => {
-      observer.onLoggedOut()
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kUnauthenticated,
+        email: ''
+      })
     })
   }
 
@@ -188,10 +188,16 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
 }
 
 const stubEmailAliasesServiceNoAccountInstance =
-  new StubEmailAliasesService('NoAccount', '')
+  new StubEmailAliasesService({
+    status: AuthenticationStatus.kUnauthenticated,
+    email: ''
+  })
 
 const stubEmailAliasesServiceAccountReadyInstance =
-  new StubEmailAliasesService('AccountReady', demoData.email)
+  new StubEmailAliasesService({
+    status: AuthenticationStatus.kAuthenticated,
+    email: demoData.email
+  })
 
 const bindNoAccountObserver =
   (observer: EmailAliasesServiceObserverInterface) => {
@@ -231,7 +237,7 @@ export const Bubble = () => {
     <EmailAliasModal
       aliasCount={demoData.aliases.length}
       onReturnToMain={() => {}}
-      viewState={{ mode: 'Create' }}
+      editState={{ mode: 'Create' }}
       mainEmail={demoData.email}
       bubble={true}
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}

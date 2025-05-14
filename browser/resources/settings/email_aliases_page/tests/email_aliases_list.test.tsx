@@ -1,4 +1,4 @@
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -37,9 +37,8 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
-  showSettingsPage: jest.fn(),
-  requestPrimaryEmailVerification: jest.fn(),
-  cancelPrimaryEmailVerification: jest.fn(),
+  requestAuthentication: jest.fn(),
+  cancelAuthentication: jest.fn(),
   addObserver: jest.fn(),
   removeObserver: jest.fn()
 }
@@ -58,7 +57,7 @@ describe('AliasList', () => {
     }
   ]
 
-  const mockOnViewChange = jest.fn()
+  const mockOnEditStateChange = jest.fn()
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -68,7 +67,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={mockAliases}
-        onViewChange={mockOnViewChange}
+        onEditStateChange={mockOnEditStateChange}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -84,7 +83,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={mockAliases}
-        onViewChange={mockOnViewChange}
+        onEditStateChange={mockOnEditStateChange}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -102,7 +101,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={mockAliases}
-        onViewChange={mockOnViewChange}
+        onEditStateChange={mockOnEditStateChange}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -126,7 +125,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={maxAliases}
-        onViewChange={mockOnViewChange}
+        onEditStateChange={mockOnEditStateChange}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -142,7 +141,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={mockAliases}
-        onViewChange={mockOnViewChange}
+        onEditStateChange={mockOnEditStateChange}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -160,7 +159,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={mockAliases}
-        onViewChange={mockOnViewChange}
+        onEditStateChange={mockOnEditStateChange}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -170,7 +169,7 @@ describe('AliasList', () => {
     fireEvent.click(editButtons[0])
 
     // Check if view change was called with correct state
-    expect(mockOnViewChange).toHaveBeenCalledWith({
+    expect(mockOnEditStateChange).toHaveBeenCalledWith({
       mode: 'Edit',
       alias: mockAliases[0]
     })

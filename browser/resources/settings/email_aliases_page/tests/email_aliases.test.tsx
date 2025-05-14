@@ -8,6 +8,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { ManagePage } from '../email_aliases'
 import { localeRegex, clickLeoButton } from './test_utils'
 import {
+  AuthenticationStatus,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
@@ -42,10 +43,9 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
   generateAlias = jest.fn()
   updateAlias = jest.fn()
   deleteAlias = jest.fn()
-  requestPrimaryEmailVerification = jest.fn()
-  cancelPrimaryEmailVerification = jest.fn()
+  requestAuthentication = jest.fn()
+  cancelAuthentication = jest.fn()
   logout = jest.fn()
-  showSettingsPage = jest.fn()
 }
 
 const createBindObserver =
@@ -79,7 +79,10 @@ describe('ManagePage', () => {
   it('shows sign up form when no email is available', async () => {
     const mockEmailAliasesService =
       new MockEmailAliasesService((observer) => {
-      observer.onLoggedOut()
+        observer.onAuthStateChanged({
+          status: AuthenticationStatus.kUnauthenticated,
+        email: ''
+      })
     })
     await act(async () => {
       render(<ManagePage
@@ -107,7 +110,10 @@ describe('ManagePage', () => {
     ]
     const mockEmailAliasesService =
       new MockEmailAliasesService((observer) => {
-      observer.onLoggedIn(mockEmail)
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kAuthenticated,
+        email: mockEmail
+      })
       observer.onAliasesUpdated(mockAliases)
     })
 
@@ -128,7 +134,10 @@ describe('ManagePage', () => {
     const mockEmail = 'test@brave.com'
     const mockEmailAliasesService =
       new MockEmailAliasesService((observer) => {
-      observer.onVerificationPending(mockEmail)
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kAuthenticating,
+        email: mockEmail
+      })
     })
 
     await act(async () => {
@@ -151,7 +160,10 @@ describe('ManagePage', () => {
     const mockEmail = 'test@brave.com'
     const mockEmailAliasesService =
       new MockEmailAliasesService((observer) => {
-      observer.onLoggedIn(mockEmail)
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kAuthenticated,
+        email: mockEmail
+      })
     })
 
     await act(async () => {

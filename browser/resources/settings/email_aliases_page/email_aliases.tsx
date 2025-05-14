@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { ViewState } from './content/types'
+import { EditState } from './content/types'
 import { AliasList } from './content/email_aliases_list'
 import { color, spacing, font, radius, typography } from
   '@brave/leo/tokens/css/variables'
@@ -23,6 +23,8 @@ import Row from './content/styles/Row'
 import SecureLink from '$web-common/SecureLink'
 import styled, { StyleSheetManager } from 'styled-components'
 import {
+  AuthenticationStatus,
+  AuthState,
   Alias,
   EmailAliasesServiceInterface,
   EmailAliasesServiceRemote,
@@ -132,25 +134,26 @@ const SpacedRow = styled(Row)`
 `
 
 const MainView = ({
-  viewState, mainEmail, aliasesState, setViewState,
+  editState, aliasesState, setEditState,
+  authState,
   emailAliasesService
 }: {
-  viewState: ViewState,
-  mainEmail: string,
+  editState: EditState,
+  authState: AuthState,
   aliasesState: Alias[],
-  setViewState: (viewState: ViewState) => void,
+  setEditState: (editState: EditState) => void,
   emailAliasesService: EmailAliasesServiceInterface
-}) => (viewState.mode === 'Startup'
+}) => (authState.status === AuthenticationStatus.kStartup
         ? <SpacedRow>
             <ProgressRing />
             <div>{getLocale('emailAliasesConnectingToBraveAccount')}</div>
           </SpacedRow>
         : <span>
             <MainEmailDisplay
-              email={mainEmail}
+              email={authState.email}
               emailAliasesService={emailAliasesService} />
             <AliasList aliases={aliasesState}
-              onViewChange={setViewState}
+              onEditStateChange={setEditState}
               emailAliasesService={emailAliasesService} />
           </span>)
 
@@ -159,48 +162,40 @@ export const ManagePage = ({ emailAliasesService, bindObserver }:
     emailAliasesService: EmailAliasesServiceInterface,
     bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   }) => {
-  const [viewState, setViewState] = React.useState<ViewState>(
-    { mode: 'Startup' })
-  const [mainEmail, setMainEmail] = React.useState<string>('')
+  const [authState, setAuthState] = React.useState<AuthState>(
+      { status: AuthenticationStatus.kStartup, email: '' })
+  const [editState, setEditState] = React.useState<EditState>(
+    { mode: 'None' })
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
   const onReturnToMain = () => {
-    setViewState({ mode: 'Main' })
+    setEditState({ mode: 'None' })
   }
   React.useEffect(() => {
     const observer : EmailAliasesServiceObserverInterface = {
       onAliasesUpdated: (aliases: Alias[]) => {
         setAliasesState(aliases)
       },
-      onLoggedIn: (email: string) => {
-        setMainEmail(email)
-        setViewState({ mode: 'Main' })
+      onAuthStateChanged: (state: AuthState) => {
+        setAuthState(state)
       },
-      onLoggedOut: () => {
-        setMainEmail('')
-        setViewState({ mode: 'SignUp' })
-      },
-      onVerificationPending: (email: string) => {
-        setViewState({ mode: 'AwaitingAuthorization' })
-        setMainEmail(email)
-      }
     }
     return bindObserver(observer)
   }, [] /* Only run at mount. */)
   return (
     <PageCol>
       <Introduction />
-      {viewState.mode === 'SignUp' || viewState.mode === 'AwaitingAuthorization'
+      {authState.status === AuthenticationStatus.kUnauthenticated ||
+       authState.status === AuthenticationStatus.kAuthenticating
         ? <MainEmailEntryForm
-            viewState={viewState}
-            mainEmail={mainEmail}
+            authState={authState}
             emailAliasesService={emailAliasesService} />
         : <MainView
-            viewState={viewState}
-            mainEmail={mainEmail}
+            editState={editState}
+            authState={authState}
             aliasesState={aliasesState}
-            setViewState={setViewState}
+            setEditState={setEditState}
             emailAliasesService={emailAliasesService} />}
-      {(viewState.mode === 'Create' || viewState.mode === 'Edit') &&
+      {(editState.mode === 'Create' || editState.mode === 'Edit') &&
       <AliasDialog
         isOpen
         onClose={onReturnToMain}
@@ -209,8 +204,8 @@ export const ManagePage = ({ emailAliasesService, bindObserver }:
         showClose>
         <EmailAliasModal
           onReturnToMain={onReturnToMain}
-            viewState={viewState}
-            mainEmail={mainEmail}
+            editState={editState}
+            mainEmail={authState.email}
             aliasCount={aliasesState.length}
             emailAliasesService={emailAliasesService} />
         </AliasDialog>}

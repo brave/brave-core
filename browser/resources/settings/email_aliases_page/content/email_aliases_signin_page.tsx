@@ -5,7 +5,6 @@
 
 import { formatLocale, getLocale } from "$web-common/locale";
 import { onEnterKeyForInput } from "./on_enter_key"
-import { ViewState } from "./types"
 import * as React from 'react'
 import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
@@ -16,7 +15,7 @@ import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
 import { spacing } from "@brave/leo/tokens/css/variables";
-import { EmailAliasesServiceInterface }
+import { AuthenticationStatus, AuthState, EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m";
 
 const SignupRow = styled(Row)`
@@ -42,9 +41,10 @@ const SpacedCol = styled(Col)`
   flex-grow: 1;
 `
 
-const BeforeSendingEmailForm = ({ initEmail, emailAliasesService }:
-  { initEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
-  const [email, setEmail] = React.useState<string>(initEmail)
+const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
+  { suggestedAuthEmail: string,
+    emailAliasesService: EmailAliasesServiceInterface }) => {
+  const [email, setEmail] = React.useState<string>(suggestedAuthEmail)
   return <SpacedCol>
     <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>
     <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
@@ -52,14 +52,14 @@ const BeforeSendingEmailForm = ({ initEmail, emailAliasesService }:
       <StretchyInput autofocus
         onChange={(detail) => setEmail(detail.value)}
         onKeyDown={onEnterKeyForInput((value) =>
-                    emailAliasesService.requestPrimaryEmailVerification(value))}
+                    emailAliasesService.requestAuthentication(value))}
         name='email'
         type='text'
         placeholder={getLocale('emailAliasesEmailAddressPlaceholder')}
         value={email} />
       <Button
         onClick={() =>
-                  emailAliasesService.requestPrimaryEmailVerification(email)}
+                  emailAliasesService.requestAuthentication(email)}
         type='submit' kind='filled'>
         {getLocale('emailAliasesGetLoginLinkButton')}
       </Button>
@@ -67,13 +67,13 @@ const BeforeSendingEmailForm = ({ initEmail, emailAliasesService }:
   </SpacedCol>
 }
 
-const AfterSendingEmailMessage = ({ mainEmail, emailAliasesService }:
-  { mainEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
+const AfterSendingEmailMessage = ({ authEmail, emailAliasesService }:
+  { authEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
   const onClick = () => {
-    emailAliasesService.cancelPrimaryEmailVerification()
+    emailAliasesService.cancelAuthentication()
   }
   return <SpacedCol>
-    <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: mainEmail })}</h4>
+    <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div>
       {formatMessage(getLocale('emailAliasesDontSeeEmail'),
@@ -84,18 +84,18 @@ const AfterSendingEmailMessage = ({ mainEmail, emailAliasesService }:
 }
 
 export const MainEmailEntryForm = (
-  { viewState, mainEmail, emailAliasesService }:
-  { viewState: ViewState, mainEmail: string,
+  { authState, emailAliasesService }:
+  { authState: AuthState,
     emailAliasesService: EmailAliasesServiceInterface }) =>
   <Card>
     <SignupRow>
       <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
-      {viewState.mode === 'SignUp' ?
+      {authState.status === AuthenticationStatus.kUnauthenticated ?
         <BeforeSendingEmailForm
-          initEmail={mainEmail}
+          suggestedAuthEmail={authState.email}
           emailAliasesService={emailAliasesService} /> :
         <AfterSendingEmailMessage
-          mainEmail={mainEmail}
+          authEmail={authState.email}
           emailAliasesService={emailAliasesService} />}
     </SignupRow>
   </Card>

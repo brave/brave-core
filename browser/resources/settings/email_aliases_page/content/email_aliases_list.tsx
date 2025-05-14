@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { ViewState } from './types'
+import { EditState } from './types'
 import { color, spacing } from '@brave/leo/tokens/css/variables'
 import { font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
@@ -143,10 +143,10 @@ const AliasItem = ({ alias, onEdit, onDelete }:
     </AliasItemRow>
 
 export const AliasList = ({
-  aliases, onViewChange, emailAliasesService }: {
+  aliases, onEditStateChange, emailAliasesService }: {
     emailAliasesService: EmailAliasesServiceInterface,
     aliases: Alias[],
-    onViewChange: (viewState: ViewState) => void
+    onEditStateChange: (editState: EditState) => void
   }) =>
   <DivWithTopDivider>
     <AliasListIntro>
@@ -164,7 +164,7 @@ export const AliasList = ({
         title={getLocale('emailAliasesCreateAliasTitle')}
         onClick={
           () => {
-            onViewChange({ mode: 'Create' })
+            onEditStateChange({ mode: 'Create' })
           }
         }>
         {getLocale('emailAliasesCreateAliasLabel')}
@@ -175,7 +175,7 @@ export const AliasList = ({
         <AliasItem
           key={alias.email}
           alias={alias}
-          onEdit={() => onViewChange({ mode: 'Edit', alias: alias })}
+          onEdit={() => onEditStateChange({ mode: 'Edit', alias: alias })}
           onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
         </AliasItem>)}
   </DivWithTopDivider>

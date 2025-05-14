@@ -6,11 +6,11 @@
 import * as React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
 import { EmailAliasModal } from '../content/email_aliases_modal'
-import { ViewState } from '../content/types'
 
 import { clickLeoButton, localeRegex } from './test_utils'
 import { EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
+import { EditState } from '../content/types'
 
 jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
@@ -30,9 +30,8 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
-  showSettingsPage: jest.fn(),
-  requestPrimaryEmailVerification: jest.fn(),
-  cancelPrimaryEmailVerification: jest.fn(),
+  requestAuthentication: jest.fn(),
+  cancelAuthentication: jest.fn(),
   addObserver: jest.fn(),
   removeObserver: jest.fn()
 }
@@ -44,13 +43,13 @@ describe('EmailAliasModal', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockEmailAliasesService.generateAlias = jest.fn()
-      .mockResolvedValue({ alias: 'generated@brave.com' })
+      .mockResolvedValue({ aliasEmail: 'generated@brave.com' })
   })
 
   it('renders create mode correctly', async () => {
     render(
       <EmailAliasModal
-        viewState={{ mode: 'Create' }}
+        editState={{ mode: 'Create' }}
         mainEmail={mockEmail}
         aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
@@ -69,7 +68,7 @@ describe('EmailAliasModal', () => {
   })
 
   it('renders edit mode correctly', () => {
-    const mockViewState: ViewState = {
+    const mockEditState: EditState = {
       mode: 'Edit',
       alias: {
         email: 'existing@brave.com',
@@ -80,7 +79,7 @@ describe('EmailAliasModal', () => {
 
     render(
       <EmailAliasModal
-        viewState={mockViewState}
+        editState={mockEditState}
         mainEmail={mockEmail}
         aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
@@ -103,7 +102,7 @@ describe('EmailAliasModal', () => {
     await act(async () => {
       render(
         <EmailAliasModal
-        viewState={{ mode: 'Create' }}
+        editState={{ mode: 'Create' }}
         mainEmail={mockEmail}
         aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
@@ -144,7 +143,7 @@ describe('EmailAliasModal', () => {
   it('handles alias regeneration', async () => {
     render(
       <EmailAliasModal
-        viewState={{ mode: 'Create' }}
+        editState={{ mode: 'Create' }}
         mainEmail={mockEmail}
         aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
@@ -175,7 +174,7 @@ describe('EmailAliasModal', () => {
     await act(async () => {
       render(
         <EmailAliasModal
-          viewState={{ mode: 'Create' }}
+          editState={{ mode: 'Create' }}
           mainEmail={mockEmail}
           aliasCount={5}
           onReturnToMain={mockOnReturnToMain}
@@ -198,7 +197,7 @@ describe('EmailAliasModal', () => {
 
     render(
       <EmailAliasModal
-        viewState={{ mode: 'Create' }}
+        editState={{ mode: 'Create' }}
         mainEmail={mockEmail}
         aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
@@ -223,7 +222,7 @@ describe('EmailAliasModal', () => {
   })
 
   it('handles alias updates', async () => {
-    const mockViewState: ViewState = {
+    const mockEditState: EditState = {
       mode: 'Edit',
       alias: {
         email: 'existing@brave.com',
@@ -234,7 +233,7 @@ describe('EmailAliasModal', () => {
 
     render(
       <EmailAliasModal
-        viewState={mockViewState}
+        editState={mockEditState}
         mainEmail={mockEmail}
         aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
