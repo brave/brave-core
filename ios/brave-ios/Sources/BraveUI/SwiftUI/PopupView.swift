@@ -52,6 +52,14 @@ public class PopupViewController<Content: View>: UIViewController,
     }
   }
 
+  public override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    if isBeingDismissed {
+      onDidDismiss?()
+    }
+  }
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
@@ -86,8 +94,6 @@ public class PopupViewController<Content: View>: UIViewController,
     animator.addCompletion { _ in
       self.view.removeFromSuperview()
       context.completeTransition(true)
-
-      self.onDidDismiss?()
     }
     animator.startAnimation()
   }
