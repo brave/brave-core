@@ -1,7 +1,8 @@
 include_rules = [
-  "+components/password_manager/core/common",
-  "+components/webdata/common",
   "+brave/components/constants/brave_paths.h",
+  "+components/password_manager/core/common",
+  "+components/user_data_importer/common",
+  "+components/webdata/common",
 ]
 
 specific_include_rules = {

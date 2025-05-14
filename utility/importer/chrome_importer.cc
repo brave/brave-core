@@ -21,7 +21,6 @@
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/common/importer/importer_data_types.h"
-#include "chrome/common/importer/importer_url_row.h"
 #include "chrome/utility/importer/favicon_reencode.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/password_manager/core/browser/password_form.h"
@@ -29,6 +28,7 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
+#include "components/user_data_importer/common/importer_url_row.h"
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
@@ -257,11 +257,11 @@ void ChromeImporter::ImportHistory() {
   s.BindInt64(3, ui::PAGE_TRANSITION_MANUAL_SUBFRAME);
   s.BindInt64(4, ui::PAGE_TRANSITION_KEYWORD_GENERATED);
 
-  std::vector<ImporterURLRow> rows;
+  std::vector<user_data_importer::ImporterURLRow> rows;
   while (s.Step() && !cancelled()) {
     GURL url(s.ColumnString(0));
 
-    ImporterURLRow row(url);
+    user_data_importer::ImporterURLRow row(url);
     row.title = s.ColumnString16(1);
     row.last_visit = base::Time::FromSecondsSinceUnixEpoch(
         chromeTimeToDouble((s.ColumnInt64(2))));
