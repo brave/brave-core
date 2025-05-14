@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_
 
 // Make override-able
+#define LayoutSidePanelView virtual LayoutSidePanelView
 #define LayoutTabStripRegion           \
   UnUsed() { return {}; }              \
   friend class BraveBrowserViewLayout; \
@@ -29,5 +30,6 @@
 #undef LayoutInfoBar
 #undef LayoutBookmarkAndInfoBars
 #undef LayoutTabStripRegion
+#undef LayoutSidePanelView
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_

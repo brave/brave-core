@@ -160,6 +160,18 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
+void BraveBrowserViewLayout::LayoutSidePanelView(
+    views::View* side_panel,
+    gfx::Rect& contents_container_bounds) {
+  if (contents_background_) {
+    contents_background_->SetBoundsRect(contents_container_bounds);
+  }
+
+  LayoutSideBar(contents_container_bounds);
+
+  UpdateContentsContainerInsets(contents_container_bounds);
+}
+
 int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     // In case we're using vertical tabstrip, we can decide the position
