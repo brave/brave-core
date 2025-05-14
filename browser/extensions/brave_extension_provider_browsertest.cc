@@ -47,11 +47,13 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
       InstallExtensionSilently("extension-compat-test-extension.crx",
                                "cdoagmgkjelodcdljmbjiifapnilecob");
   GURL url = extension->GetResourceURL("blocking.html");
+  LOG(ERROR) << "BraveExtensionProviderTest: url = " << url.spec();
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
+  LOG(ERROR) << "BraveExtensionProviderTest: Navigated to url = " << url.spec();
 
   EXPECT_EQ(true,
             content::EvalJs(contents, "canGetCookie('test', 'http://a.com')"));
