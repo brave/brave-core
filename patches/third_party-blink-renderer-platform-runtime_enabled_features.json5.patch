@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index e4715ebdbf48335098a9aaf0ccf896318a503ad4..6fb80dfe5d3dc61712372cffae845f17a8d09bf1 100644
+index 4211b13a1719c96fdf00727e55c27e303ba69575..f75ba2ebb13effaffab7784213c99eeef7307989 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -2046,6 +2046,7 @@
@@ -26,12 +26,3 @@ index e4715ebdbf48335098a9aaf0ccf896318a503ad4..6fb80dfe5d3dc61712372cffae845f17
      },
      {
        name: "MobileLayoutTheme",
-@@ -3682,7 +3685,7 @@
-       // composited pixel alignment issues. See
-       // https://crbug.com/40084005
-       name: "RenderSurfaceFor2DScaleTransform",
--      status: "stable",
-+      status: "experimental",
-     },
-     {
-       name: "ReportEventTimingAtVisibilityChange",
