@@ -107,6 +107,9 @@
   </message>
 
   <!-- Common: -->
+  <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button">
+    Go back
+  </message>
   <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL" translateable="false" desc="Label for the 'Email address' input field">
     Email address
   </message>

@@ -10,19 +10,21 @@ import { SettingsBraveAccountDialogElement } from './brave_account_dialog.js'
 export function getHtml(this: SettingsBraveAccountDialogElement) {
   return html`<!--_html_template_start_-->
     <div class="header">
-      <div class="buttons">
-        ${this.showBackButton
-          ? html`<leo-button kind="plain-faint"
-                             size="tiny"
-                             @click=${() => this.fire('back-button-clicked')}>
-                   <leo-icon name="arrow-left"></leo-icon>
-                 </leo-button>`
-          : nothing}
-        <leo-button kind="plain-faint"
-                    size="tiny"
-                    @click=${() => this.fire('close-button-clicked')}>
-          <leo-icon name="close"></leo-icon>
-        </leo-button>
+      <div class="navigation-buttons">
+        <if expr="not is_android and not is_ios">
+          ${this.showBackButton
+            ? html`<leo-button kind="plain-faint"
+                               size="tiny"
+                               @click=${() => this.fire('back-button-clicked')}>
+                     <leo-icon name="arrow-left"></leo-icon>
+                   </leo-button>`
+            : nothing}
+          <leo-button kind="plain-faint"
+                      size="tiny"
+                      @click=${() => this.fire('close-button-clicked')}>
+            <leo-icon name="close"></leo-icon>
+          </leo-button>
+        </if>
       </div>
       <div class="logo"></div>
     </div>
@@ -35,7 +37,17 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
           : nothing}
       </div>
       <slot name="inputs"></slot>
-      <slot name="buttons"></slot>
+      <div class="action-buttons">
+        <slot name="buttons"></slot>
+        <if expr="is_android or is_ios">
+          ${this.showBackButton
+            ? html`<leo-button kind="plain-faint"
+                               @click=${() => this.fire('back-button-clicked')}>
+                     $i18n{braveAccountBackButtonLabel}
+                   </leo-button>`
+            : nothing}
+        </if>
+      </div>
     </div>
     <slot name="footer"></slot>
   <!--_html_template_end_-->`
