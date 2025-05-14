@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference.java b/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference.java
+index 40cfaac31d778a0035a51c84d588ecf56eb19ca6..18dde71d347d41515546943c03a4bf12b14d3482 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference.java
+@@ -30,7 +30,7 @@ import java.lang.annotation.RetentionPolicy;
+  * a {@link RadioButtonWithDescription} that represent Chrome NTP, and a
+  * {@link RadioButtonWithEditText} that represents customized URL set by partner or user.
+  */
+-public final class RadioButtonGroupHomepagePreference extends Preference
++public class RadioButtonGroupHomepagePreference extends Preference
+         implements RadioGroup.OnCheckedChangeListener, OnTextChangeListener {
+     /** A data structure which holds the displayed value and the status for this preference. */
+     static class PreferenceValues {
