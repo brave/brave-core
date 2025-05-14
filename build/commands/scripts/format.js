@@ -42,6 +42,8 @@ const runFormat = async (options = {}) => {
   if (!options.base) {
     options.base = 'origin/master'
   }
+  const skipLogging = options.presubmit
+
   let cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
   cmdOptions = util.mergeWithDefault(cmdOptions)
@@ -67,28 +69,31 @@ const runFormat = async (options = {}) => {
   const clFormatResult = util.run('git', [...args], {
     ...cmdOptions,
     continueOnFail: true,
-    stdio: 'pipe',
+    skipLogging,
+    stdio: 'pipe'
   })
 
+  const clFormatOutput = [clFormatResult.stdout, clFormatResult.stderr].join(
+    '\n'
+  )
+
   if (clFormatResult.status === 2 && options.dryRun) {
-    errors.push(
-      clFormatResult.stdout.toString() + '\n' + 'git cl format checks failed'
-    )
+    errors.push(clFormatOutput)
   } else if (clFormatResult.status !== 0) {
-    Log.error(
-      'Fatal: git cl format internal error.\n' +
-        clFormatResult.stdout.toString() +
-        clFormatResult.stderr.toString()
-    )
+    Log.error('Fatal: git cl format failed:\n' + clFormatOutput)
     process.exit(clFormatResult.status)
   }
 
-  const changedFiles = util.getChangedFiles(config.braveCoreDir, options.base)
+  const changedFiles = util.getChangedFiles(
+    config.braveCoreDir,
+    options.base,
+    skipLogging
+  )
 
   errors = errors.concat(await runPrettier(changedFiles, options.dryRun))
 
   if (options.dryRun && errors.length > 0) {
-    Log.error(errors.join('\n'))
+    console.error(errors.join('\n'))
     process.exit(2)
   }
 }
@@ -97,7 +102,7 @@ const runPrettier = async (files, dryRun) => {
   const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
-    throw new RuntimeError('prettierignore file not found')
+    throw new RuntimeError(`${ignorePath} file not found`)
   }
 
   const errors = []
@@ -123,8 +128,13 @@ const runPrettier = async (files, dryRun) => {
           stdio: 'pipe',
           input: formatted,
         })
-
-        errors.push(diffResult.stdout.toString())
+        const diffOutput = [diffResult.stdout, diffResult.stderr].join('\n')
+        if (diffResult.status === 1) {
+          // Differences were found
+          errors.push(diffOutput)
+        } else {
+          errors.push(`Can't show diff for ${file}:\n ${diffOutput}`)
+        }
       } else {
         await fs.writeFile(file, formatted)
       }

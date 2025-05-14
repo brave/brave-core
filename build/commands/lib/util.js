@@ -132,16 +132,22 @@ const getAdditionalGenLocation = () => {
 
 const util = {
 
-  runProcess: (cmd, args = [], options = {}) => {
-    Log.command(options.cwd, cmd, args)
+  runProcess: (cmd, args = [], options = {}, skipLogging = false) => {
+    if (!skipLogging) {
+      Log.command(options.cwd, cmd, args)
+    }
     return spawnSync(cmd, args, options)
   },
 
   run: (cmd, args = [], options = {}) => {
-    const { continueOnFail, ...cmdOptions } = options
-    const prog = util.runProcess(cmd, args, cmdOptions)
+    const { continueOnFail, skipLogging, ...cmdOptions } = options
+    const prog = util.runProcess(cmd, args, cmdOptions, skipLogging)
     if (prog.status !== 0) {
       if (!continueOnFail) {
+        if (skipLogging) {
+          console.log(cmd, args, 'exited with status', prog.status, cmdOptions)
+        }
+
         console.log(prog.stdout && prog.stdout.toString())
         console.error(prog.stderr && prog.stderr.toString())
         process.exit(1)
@@ -820,19 +826,19 @@ const util = {
   },
 
   // Get the files that have been changed in the current diff with base branch.
-  getChangedFiles: (repoDir, base) => {
-    const upstreamCommit = util.runGit(repoDir, [
+  getChangedFiles: (repoDir, base, skipLogging = false) => {
+    const upstreamCommit = util.run('git', [
       'merge-base',
       'HEAD',
-      base
-    ])
+      base,
+    ], {cwd: repoDir, skipLogging}).stdout.toString().trim()
 
-    return util.runGit(repoDir, [
+    return util.run('git', [
       'diff',
       '--name-only',
       '--diff-filter=d',
       upstreamCommit
-    ]).split('\n')
+    ], {cwd: repoDir, skipLogging}).stdout.toString().trim().split('\n')
   },
 
   presubmit: (options = {}) => {
