@@ -64,10 +64,6 @@ class CardanoBlockTrackerUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    network_manager_->SetNetworkURLForTesting(
-        mojom::kCardanoMainnet, GURL("https://wallet.brave.com/cardano/api/"));
-    network_manager_->SetNetworkURLForTesting(
-        mojom::kCardanoTestnet, GURL("https://cardano-test.example.com/api/"));
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     cardano_wallet_service_ = std::make_unique<CardanoWalletService>(

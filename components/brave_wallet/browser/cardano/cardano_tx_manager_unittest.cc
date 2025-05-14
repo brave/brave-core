@@ -71,8 +71,6 @@ class CardanoTxManagerUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    network_manager_->SetNetworkURLForTesting(
-        mojom::kCardanoMainnet, GURL("https://wallet.brave.com/cardano/api/"));
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),

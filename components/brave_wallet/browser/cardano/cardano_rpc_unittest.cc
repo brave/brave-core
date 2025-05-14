@@ -70,10 +70,14 @@ class CardanoRpcUnitTest : public testing::Test {
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    network_manager_->SetNetworkURLForTesting(mojom::kCardanoMainnet,
-                                              GURL(mainnet_rpc_url_));
-    network_manager_->SetNetworkURLForTesting(mojom::kCardanoTestnet,
-                                              GURL(testnet_rpc_url_));
+    mainnet_rpc_url_ =
+        network_manager_
+            ->GetNetworkURL(mojom::kCardanoMainnet, mojom::CoinType::ADA)
+            .spec();
+    testnet_rpc_url_ =
+        network_manager_
+            ->GetNetworkURL(mojom::kCardanoTestnet, mojom::CoinType::ADA)
+            .spec();
     cardano_mainnet_rpc_ = std::make_unique<cardano_rpc::CardanoRpc>(
         mojom::kCardanoMainnet, *network_manager_, shared_url_loader_factory_);
     cardano_testnet_rpc_ = std::make_unique<cardano_rpc::CardanoRpc>(
@@ -91,8 +95,8 @@ class CardanoRpcUnitTest : public testing::Test {
   }
 
  protected:
-  std::string mainnet_rpc_url_ = "https://wallet.brave.com/cardano/api/";
-  std::string testnet_rpc_url_ = "https://cardano-test.example.com/api/";
+  std::string mainnet_rpc_url_;
+  std::string testnet_rpc_url_;
   uint32_t response_height_ = 0;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -112,6 +116,10 @@ TEST_F(CardanoRpcUnitTest, Throttling) {
     const size_t expected_size;
   } test_cases[] = {{true, "0", 5},  {true, "3", 5},  {true, "10", 5},
                     {false, "0", 5}, {false, "3", 3}, {false, "10", 5}};
+
+  testnet_rpc_url_ = "https://cardano-test.example.com/api/";
+  network_manager_->SetNetworkURLForTesting(mojom::kCardanoTestnet,
+                                            GURL(testnet_rpc_url_));
 
   for (const auto& test_case : test_cases) {
     base::test::ScopedFeatureList feature_list;
