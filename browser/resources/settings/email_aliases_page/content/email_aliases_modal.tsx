@@ -7,7 +7,6 @@ import { color, font, radius, spacing, typography } from
   "@brave/leo/tokens/css/variables"
 import { formatLocale, getLocale } from '$web-common/locale'
 import { onEnterKeyForInput } from "./on_enter_key"
-import { EditState } from "./types"
 import * as React from 'react'
 import Button from "@brave/leo/react/button"
 import Col from "./styles/Col"
@@ -16,7 +15,7 @@ import Input from "@brave/leo/react/input"
 import ProgressRing from "@brave/leo/react/progressRing"
 import Row from "./styles/Row"
 import styled from "styled-components"
-import { EmailAliasesServiceInterface, MAX_ALIASES }
+import { Alias, EmailAliasesServiceInterface, MAX_ALIASES }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const ModalCol = styled(Col)`
@@ -110,6 +109,16 @@ const LoadingIcon = styled(ProgressRing)`
   --leo-progressring-color: ${color.icon.default};
   --leo-progressring-size: 24px;
 `
+
+type EditMode =
+  | 'None'
+  | 'Create'
+  | 'Edit'
+
+export type EditState = {
+  mode: EditMode,
+  alias?: Alias
+}
 
 const RefreshButton = ({ onClick, waiting }:
   { onClick: () => Promise<void>, waiting: boolean }) => {
