@@ -1264,9 +1264,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             wasWallpaperShown = false;
         }
 
-        if (wasWallpaperShown && ntpImage instanceof Wallpaper && mNewTabTakeoverInfobar == null) {
+        if (wasWallpaperShown
+                && ntpImage instanceof Wallpaper
+                && getTab() != null
+                && mNewTabTakeoverInfobar == null) {
             mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(mActivity, getTab().getWebContents());
+            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
+                    mActivity, getTab().getWebContents());
         }
     }
 
