@@ -4,10 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { AliasList } from './content/email_aliases_list'
-import { color, spacing, font, radius, typography } from
+import { spacing, font, radius, typography } from
   '@brave/leo/tokens/css/variables'
 import { createRoot } from 'react-dom/client';
-import { EditState, EmailAliasModal } from './content/email_aliases_modal';
 import { getLocale } from '$web-common/locale'
 import { MainEmailEntryForm } from './content/email_aliases_signin_page'
 import * as React from 'react'
@@ -127,14 +126,12 @@ const SpacedRow = styled(Row)`
 `
 
 const MainView = ({
-  editState, aliasesState, setEditState,
+  aliasesState,
   authState,
   emailAliasesService
 }: {
-  editState: EditState,
   authState: AuthState,
   aliasesState: Alias[],
-  setEditState: (editState: EditState) => void,
   emailAliasesService: EmailAliasesServiceInterface
 }) => (authState.status === AuthenticationStatus.kStartup
         ? <SpacedRow>
@@ -146,7 +143,7 @@ const MainView = ({
               email={authState.email}
               emailAliasesService={emailAliasesService} />
             <AliasList aliases={aliasesState}
-              onEditStateChange={setEditState}
+              authEmail={authState.email}
               emailAliasesService={emailAliasesService} />
           </span>)
 
@@ -157,12 +154,7 @@ export const ManagePage = ({ emailAliasesService, bindObserver }:
   }) => {
   const [authState, setAuthState] = React.useState<AuthState>(
       { status: AuthenticationStatus.kStartup, email: '' })
-  const [editState, setEditState] = React.useState<EditState>(
-    { mode: 'None' })
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
-  const onReturnToMain = () => {
-    setEditState({ mode: 'None' })
-  }
   React.useEffect(() => {
     const observer : EmailAliasesServiceObserverInterface = {
       onAliasesUpdated: (aliases: Alias[]) => {
@@ -183,10 +175,8 @@ export const ManagePage = ({ emailAliasesService, bindObserver }:
             authState={authState}
             emailAliasesService={emailAliasesService} />
         : <MainView
-            editState={editState}
             authState={authState}
             aliasesState={aliasesState}
-            setEditState={setEditState}
             emailAliasesService={emailAliasesService} />}
     </PageCol>
   )
