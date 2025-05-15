@@ -144,6 +144,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     // braveArgs.push('"--vmodule=*/extensions/*=5"')
     braveArgs.push('--test-launcher-developer-mode=true')
     braveArgs.push('--gtest_filter=BraveExtensionProviderTest.ExtensionsCanGetCookies')
+    braveArgs.push('--disable-brave-extension')
   }
 
   braveArgs = braveArgs.concat(passthroughArgs)
