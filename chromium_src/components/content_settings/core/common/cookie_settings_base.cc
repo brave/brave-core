@@ -107,7 +107,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     return false;
 
   bool allow_3p = IsFullCookieAccessAllowed(
-      url, site_for_cookies, top_frame_origin, net::CookieSettingOverrides());
+      url, site_for_cookies, top_frame_origin, net::CookieSettingOverrides(),
+      /*cookie_partition_key=*/std::nullopt);
   bool allow_1p =
       first_party_setting
           ? IsAllowed(first_party_setting->cookie_setting())
@@ -132,20 +133,6 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
   return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
                                    overrides, cookie_partition_key,
                                    cookie_settings);
-}
-
-bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
-    const GURL& url,
-    const net::SiteForCookies& site_for_cookies,
-    base::optional_ref<const url::Origin> top_frame_origin,
-    net::CookieSettingOverrides overrides,
-    CookieSettingWithMetadata* cookie_settings) const {
-  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
-    return true;
-  }
-
-  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
-                                   overrides, cookie_settings);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
@@ -232,17 +219,6 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
   }
 
   return false;
-}
-
-bool CookieSettingsBase::IsFullCookieAccessAllowed(
-    const GURL& url,
-    const net::SiteForCookies& site_for_cookies,
-    base::optional_ref<const url::Origin> top_frame_origin,
-    net::CookieSettingOverrides overrides,
-    CookieSettingWithMetadata* cookie_settings) const {
-  return IsFullCookieAccessAllowed(
-      url, site_for_cookies, top_frame_origin, overrides,
-      /*cookie_partition_key=*/std::nullopt, cookie_settings);
 }
 
 // Determines whether a 3p cookies block should be applied if a requesting URL

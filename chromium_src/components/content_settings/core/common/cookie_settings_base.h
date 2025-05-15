@@ -20,21 +20,11 @@
       net::CookieSettingOverrides overrides,                                  \
       base::optional_ref<const net::CookiePartitionKey> cookie_partition_key, \
       CookieSettingWithMetadata* cookie_settings = nullptr) const;            \
-  bool IsEphemeralCookieAccessAllowed(                                        \
-      const GURL& url, const net::SiteForCookies& site_for_cookies,           \
-      base::optional_ref<const url::Origin> top_frame_origin,                 \
-      net::CookieSettingOverrides overrides,                                  \
-      CookieSettingWithMetadata* cookie_settings = nullptr) const;            \
   bool IsFullCookieAccessAllowed_ChromiumImpl(                                \
       const GURL& url, const net::SiteForCookies& site_for_cookies,           \
       base::optional_ref<const url::Origin> top_frame_origin,                 \
       net::CookieSettingOverrides overrides,                                  \
       base::optional_ref<const net::CookiePartitionKey> cookie_partition_key, \
-      CookieSettingWithMetadata* cookie_settings = nullptr) const;            \
-  bool IsFullCookieAccessAllowed_ChromiumImpl(                                \
-      const GURL& url, const net::SiteForCookies& site_for_cookies,           \
-      base::optional_ref<const url::Origin> top_frame_origin,                 \
-      net::CookieSettingOverrides overrides,                                  \
       CookieSettingWithMetadata* cookie_settings = nullptr) const;            \
   bool ShouldBlockThirdPartyIfSettingIsExplicit(                              \
       bool block_third_party_cookies, ContentSetting cookie_setting,          \
