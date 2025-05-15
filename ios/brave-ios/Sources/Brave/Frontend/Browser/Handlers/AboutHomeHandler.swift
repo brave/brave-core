@@ -38,21 +38,3 @@ public class AboutHomeHandler: InternalSchemeResponse {
 
   public init() {}
 }
-
-public class AboutLicenseHandler: InternalSchemeResponse {
-  public static let path = "about/license"
-
-  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
-    guard let url = request.url else { return nil }
-    let response = InternalSchemeHandler.response(forUrl: url)
-    guard let asset = Bundle.module.url(forResource: "Licenses", withExtension: "html"),
-      let html = await AsyncFileManager.default.utf8Contents(at: asset)
-    else {
-      return nil
-    }
-    let data = Data(html.utf8)
-    return (response, data)
-  }
-
-  public init() {}
-}
