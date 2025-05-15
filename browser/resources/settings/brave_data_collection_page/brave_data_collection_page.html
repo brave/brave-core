@@ -25,3 +25,11 @@
     </cr-button>
   </template>
 </settings-toggle-button>
+<template is="dom-if" if="[[showNewTabPageSponsoredImagesSurveyPanelist_]]">
+  <cr-link-row id="newTabPageSponsoredImagesSurveyPanelistLinkRow"
+    class="hr" label="$i18n{surveyPanelist}"
+    sub-label="$i18n{surveyPanelistDesc}"
+    on-click="onNewTabPageSponsoredImagesSurveyPanelistChange_"
+    role-description="$i18n{subpageArrowRoleDescription}">
+  </cr-link-row>
+</template>

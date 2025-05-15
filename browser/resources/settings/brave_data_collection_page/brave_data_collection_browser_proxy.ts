@@ -45,6 +45,10 @@ implements BraveDataCollectionBrowserProxy
   getMetricsReporting() {
     return sendWithPromise('getMetricsReporting')
   }
+
+  getNewTabPageSponsoredImagesSurveyPanelistVisible(): Promise<boolean> {
+    return sendWithPromise('getNewTabPageSponsoredImagesSurveyPanelistVisible')
+  }
 }
 
 let instance: BraveDataCollectionBrowserProxy|null = null

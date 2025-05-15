@@ -14,6 +14,10 @@ import {getTemplate} from './brave_data_collection_page.html.js'
 
 import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js'
 
+import {Router} from '../router.js'
+
+import {loadTimeData} from "../i18n_setup.js"
+
 const SettingBraveDataCollectionPageElementBase =
   WebUiListenerMixin(PrefsMixin(PolymerElement))
 
@@ -67,6 +71,7 @@ extends SettingBraveDataCollectionPageElementBase
         },
       },
       showRestartForMetricsReporting_: Boolean,
+      showNewTabPageSponsoredImagesSurveyPanelist_: Boolean,
     }
   }
 
@@ -74,6 +79,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare statsUsagePingEnabledPref_: Object
   private declare metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartForMetricsReporting_: boolean
+  private declare showNewTabPageSponsoredImagesSurveyPanelist_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -101,6 +107,9 @@ extends SettingBraveDataCollectionPageElementBase
       'stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref)
     this.browserProxy_.getStatsUsagePingEnabled().then(
       (enabled: boolean) => setStatsUsagePingEnabledPref(enabled))
+
+    this.showNewTabPageSponsoredImagesSurveyPanelist_ =
+      loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
 
   setP3AEnabledPref_(enabled: boolean) {
@@ -165,6 +174,11 @@ extends SettingBraveDataCollectionPageElementBase
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open("chrome://restart", "_self")
+  }
+
+  onNewTabPageSponsoredImagesSurveyPanelistChange_() {
+    const router = Router.getInstance()
+    router.navigateTo(router.getRoutes().BRAVE_SURVEY_PANELIST)
   }
 }
 

@@ -645,14 +645,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
       // Survey Panelist Page
       {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
+      {"surveyPanelistDesc", IDS_SETTINGS_SURVEY_PANELIST_DESC},
       {"braveSurveyPanelistAboutLabel",
        IDS_SETTINGS_SURVEY_PANELIST_ABOUT_LABEL},
       {"braveSurveyPanelistAboutDesc1",
        IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_1},
       {"braveSurveyPanelistAboutDesc2",
        IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_2},
-      {"braveSurveyPanelistLabel", IDS_SETTINGS_SURVEY_PANELIST_LABEL},
-      {"braveSurveyPanelistDesc", IDS_SETTINGS_SURVEY_PANELIST_DESC},
+      {"braveSurveyPanelistControlLabel",
+       IDS_SETTINGS_SURVEY_PANELIST_CONTROL_LABEL},
+      {"braveSurveyPanelistControlDesc",
+       IDS_SETTINGS_SURVEY_PANELIST_CONTROL_DESC},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
