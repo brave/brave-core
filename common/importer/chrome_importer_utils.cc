@@ -70,11 +70,6 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
     if (dict.FindBool("was_installed_by_default").value_or(true))
       continue;
 
-    // explicit `"state": 0` means disabled state
-    if (!dict.FindInt("state").value_or(true)) {
-      continue;
-    }
-
     const auto state = dict.FindInt("state");
     if (state.has_value()) {
       // If `state` exists, probably it is an old browser version.
