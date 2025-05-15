@@ -109,7 +109,10 @@ export const BuyQuote = ({
     : quoteServiceProvider?.logoImages?.lightShortUrl
 
   return (
-    <StyledWrapper isOpen={isOpen}>
+    <StyledWrapper
+      isOpen={isOpen}
+      data-key='buy-quote-wrapper'
+    >
       <Row
         justifyContent='space-between'
         width='100%'
@@ -134,23 +137,31 @@ export const BuyQuote = ({
           gap='8px'
           justifyContent='flex-end'
         >
-          {isBestOption ? (
-            <BestOptionLabel>
-              <div slot='icon-before'>
-                <Icon name='thumb-up' />
-              </div>
-              {getLocale('braveWalletBestOption')}
-            </BestOptionLabel>
-          ) : null}
-          <PaymentMethodsWrapper>
-            {isDeditCardSupported ? <PaymentMethodIcon name='bank' /> : null}
-            {isCreditCardSupported ? (
-              <PaymentMethodIcon name='credit-card' />
+          <Row
+            width='unset'
+            gap='8px'
+            justifyContent='flex-end'
+            flexWrap='wrap'
+          >
+            {isBestOption ? (
+              <BestOptionLabel>
+                <div slot='icon-before'>
+                  <Icon name='thumb-up' />
+                </div>
+                {getLocale('braveWalletBestOption')}
+              </BestOptionLabel>
             ) : null}
-          </PaymentMethodsWrapper>
+            <PaymentMethodsWrapper>
+              {isDeditCardSupported ? <PaymentMethodIcon name='bank' /> : null}
+              {isCreditCardSupported ? (
+                <PaymentMethodIcon name='credit-card' />
+              ) : null}
+            </PaymentMethodsWrapper>
+          </Row>
           <CaratIcon
             isOpen={isOpen}
             name='carat-down'
+            data-key='carat-icon'
           />
         </Row>
       </Row>
