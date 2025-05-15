@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
@@ -326,7 +327,11 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
           continue;
         }
         creative.file_path = installed_dir.AppendASCII(*relative_url);
-        creative.url = GURL(url_prefix + *relative_url);
+        const std::string creative_url_string = base::ReplaceStringPlaceholders(
+            "$1://$2/$3",
+            {content::kChromeUIScheme, kBrandedWallpaperHost, *relative_url},
+            nullptr);
+        creative.url = GURL(creative_url_string);
 
         // Focal point (optional).
         const int focal_point_x =
@@ -352,7 +357,11 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
         }
         creative.logo.image_file =
             installed_dir.AppendASCII(*button_image_relative_url);
-        creative.logo.image_url = url_prefix + *button_image_relative_url;
+        creative.logo.image_url = base::ReplaceStringPlaceholders(
+            "$1://$2/$3",
+            {content::kChromeUIScheme, kBrandedWallpaperHost,
+             *button_image_relative_url},
+            nullptr);
       } else if (*wallpaper_type == kRichMediaWallpaperType) {
         // Rich media.
         creative.wallpaper_type = WallpaperType::kRichMedia;
