@@ -14,7 +14,6 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
@@ -23,7 +22,6 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/mojom/ip_endpoint.mojom.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
@@ -49,8 +47,6 @@ class BraveProxyingWebSocket
   BraveProxyingWebSocket(
       WebSocketFactory factory,
       const network::ResourceRequest& request,
-      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-          handshake_client,
       content::FrameTreeNodeId frame_tree_node_id,
       content::BrowserContext* browser_context,
       scoped_refptr<RequestIDGenerator> request_id_generator,
@@ -65,14 +61,12 @@ class BraveProxyingWebSocket
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const std::optional<std::string>& user_agent,
-      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-          handshake_client);
+      const std::optional<std::string>& user_agent);
 
-  void Start();
+  void Start(mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+                 handshake_client);
 
-  content::ContentBrowserClient::WebSocketFactory web_socket_factory();
-  mojo::Remote<network::mojom::WebSocketHandshakeClient> handshake_client();
+  content::ContentBrowserClient::WebSocketFactory CreateWebSocketFactory();
   bool proxy_has_extra_headers();
 
   // network::mojom::WebSocketHandshakeClient methods:
