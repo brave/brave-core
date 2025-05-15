@@ -27,6 +27,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
  public:
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
+      Profile* profile,
       std::unique_ptr<PsstDialogDelegate> delegate,
       const int32_t world_id);
 
@@ -38,7 +39,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstDialogDelegate* GetPsstDialogDelegate() const;
 
  private:
-  PsstTabWebContentsObserver(content::WebContents*,
+  PsstTabWebContentsObserver(content::WebContents* web_contents,
+                             PrefService* prefs,
                              std::unique_ptr<PsstDialogDelegate> delegate,
                              const int32_t world_id);
 
