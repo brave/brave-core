@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EditState } from './types'
+import { EditState, EmailAliasModal } from './email_aliases_modal'
 import { color, spacing } from '@brave/leo/tokens/css/variables'
 import { font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
@@ -13,6 +13,7 @@ import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Col from './styles/Col'
 import Description from './styles/Description'
+import Dialog from '@brave/leo/react/dialog'
 import { formatLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Row from './styles/Row'
@@ -62,6 +63,11 @@ const DivWithTopDivider = styled.div`
 const AliasMenuItemContent = styled(Row)`
   gap: ${spacing.m};
   padding: 0;
+`
+
+const AliasDialog = styled(Dialog)`
+  --leo-dialog-backdrop-background: ${color.dialogs.scrimBackground};
+  --leo-dialog-padding: ${spacing['2Xl']};
 `
 
 const AliasMenuItem = ({ onClick, iconName, text }:
@@ -143,40 +149,58 @@ const AliasItem = ({ alias, onEdit, onDelete }:
     </AliasItemRow>
 
 export const AliasList = ({
-  aliases, onEditStateChange, emailAliasesService }: {
+  aliases, authEmail, emailAliasesService }: {
     emailAliasesService: EmailAliasesServiceInterface,
     aliases: Alias[],
-    onEditStateChange: (editState: EditState) => void
-  }) =>
-  <DivWithTopDivider>
-    <AliasListIntro>
-      <Col>
-        <h4>{getLocale('emailAliasesListTitle')}</h4>
-        <Description>
-          {getLocale('emailAliasesCreateDescription')}
-        </Description>
-      </Col>
-      <Button
-        isDisabled={aliases.length >= MAX_ALIASES}
-        kind='filled'
-        size='small'
-        name='create-alias'
-        title={getLocale('emailAliasesCreateAliasTitle')}
-        onClick={
-          () => {
-            onEditStateChange({ mode: 'Create' })
-          }
-        }>
-        {getLocale('emailAliasesCreateAliasLabel')}
-      </Button>
-    </AliasListIntro>
-    {aliases.map(
-      alias =>
-        <AliasItem
-          key={alias.email}
-          alias={alias}
-          onEdit={() => onEditStateChange({ mode: 'Edit', alias: alias })}
-          onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
-        </AliasItem>)}
-  </DivWithTopDivider>
-  
+    authEmail: string
+  }) => {
+  const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
+  const onEditStateChange = (editState: EditState) => setEditState(editState)
+  return (
+    <DivWithTopDivider>
+      <AliasListIntro>
+        <Col>
+          <h4>{getLocale('emailAliasesListTitle')}</h4>
+          <Description>
+            {getLocale('emailAliasesCreateDescription')}
+          </Description>
+        </Col>
+        <Button
+          isDisabled={aliases.length >= MAX_ALIASES}
+          kind='filled'
+          size='small'
+          name='create-alias'
+          title={getLocale('emailAliasesCreateAliasTitle')}
+          onClick={
+            () => {
+              onEditStateChange({ mode: 'Create' })
+            }
+          }>
+          {getLocale('emailAliasesCreateAliasLabel')}
+        </Button>
+      </AliasListIntro>
+      {aliases.map(
+        alias =>
+          <AliasItem
+            key={alias.email}
+            alias={alias}
+            onEdit={() => setEditState({ mode: 'Edit', alias: alias })}
+            onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
+          </AliasItem>)}
+      {(editState.mode === 'Create' || editState.mode === 'Edit') &&
+        <AliasDialog
+          isOpen
+          onClose={() => setEditState({ mode: 'None' })}
+          backdropClickCloses
+          modal
+          showClose>
+          <EmailAliasModal
+            onReturnToMain={() => setEditState({ mode: 'None' })}
+            editState={editState}
+            mainEmail={authEmail}
+            aliasCount={aliases.length}
+            emailAliasesService={emailAliasesService} />
+        </AliasDialog>}
+    </DivWithTopDivider>
+  )
+}
