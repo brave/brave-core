@@ -125,6 +125,10 @@ source_set("ui") {
     sources += [
       "ai_chat/print_preview_extractor.cc",
       "ai_chat/print_preview_extractor.h",
+
+      # TODO(darkdh): move to an internal target and break circular deps
+      "ai_chat/print_preview_extractor_internal.cc",
+      "ai_chat/print_preview_extractor_internal.h",
     ]
     deps += [
       "//chrome/browser/pdf",
