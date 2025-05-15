@@ -5,20 +5,20 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import org.chromium.base.Log;
+import android.app.Activity;
+
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.WebContents;
 
 public class BraveNewTabTakeoverInfobar {
     private static final String TAG = "NewTabTakeover";
@@ -33,53 +33,45 @@ public class BraveNewTabTakeoverInfobar {
         mProfile = profile;
     }
 
-    public void maybeDisplayAndIncrementCounter() {
-        try {
-            if (!shouldDisplayInfobar()) {
-                return;
-            }
-            recordInfobarWasDisplayed();
-
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            Tab tab = activity.getActivityTabProvider().get();
-            if (tab == null) return;
-
-            BraveSimpleConfirmInfoBarBuilder.create(
-                    tab.getWebContents(),
-                    new SimpleConfirmInfoBarBuilder.Listener() {
-                        @Override
-                        public void onInfoBarDismissed() {
-                            suppressInfobar();
-                        }
-
-                        @Override
-                        public boolean onInfoBarButtonClicked(boolean isPrimary) {
-                            suppressInfobar();
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onInfoBarLinkClicked() {
-                            suppressInfobar();
-                            TabUtils.openUrlInSameTab(LEARN_MORE_URL);
-                            // Return false to immediately close the infobar. This is different
-                            // from ConfirmInfoBarDelegate where we return true to close the
-                            // infobar.
-                            return false;
-                        }
-                    },
-                    BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
-                    activity,
-                    /* drawableId= */ 0,
-                    activity.getString(R.string.new_tab_takeover_infobar_message, ""),
-                    /* primaryText= */ "",
-                    /* secondaryText= */ "",
-                    activity.getString(
-                            R.string.new_tab_takeover_infobar_learn_more_opt_out_choices, ""),
-                    /* autoExpire= */ true);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "maybeCreate infobar", e);
+    public void maybeDisplayAndIncrementCounter(Activity activity, WebContents webContents) {
+        if (!shouldDisplayInfobar()) {
+            return;
         }
+        recordInfobarWasDisplayed();
+
+        BraveSimpleConfirmInfoBarBuilder.create(
+                webContents,
+                new SimpleConfirmInfoBarBuilder.Listener() {
+                    @Override
+                    public void onInfoBarDismissed() {
+                        suppressInfobar();
+                    }
+
+                    @Override
+                    public boolean onInfoBarButtonClicked(boolean isPrimary) {
+                        suppressInfobar();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onInfoBarLinkClicked() {
+                        suppressInfobar();
+                        TabUtils.openUrlInSameTab(LEARN_MORE_URL);
+                        // Return false to immediately close the infobar. This is different
+                        // from ConfirmInfoBarDelegate where we return true to close the
+                        // infobar.
+                        return false;
+                    }
+                },
+                BraveInfoBarIdentifier.NEW_TAB_TAKEOVER_INFOBAR_DELEGATE,
+                activity,
+                /* drawableId= */ 0,
+                activity.getString(R.string.new_tab_takeover_infobar_message, ""),
+                /* primaryText= */ "",
+                /* secondaryText= */ "",
+                activity.getString(
+                        R.string.new_tab_takeover_infobar_learn_more_opt_out_choices, ""),
+                /* autoExpire= */ true);
     }
 
     private boolean shouldDisplayInfobar() {
