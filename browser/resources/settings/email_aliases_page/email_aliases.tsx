@@ -217,12 +217,9 @@ export const mount = (at: HTMLElement) => {
   const root = createRoot(at);
   const emailAliasesService = new EmailAliasesServiceRemote()
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
-    emailAliasesService.addObserver(
-      new EmailAliasesServiceObserverRemote(observer))
-    return () => {
-      emailAliasesService.removeObserver(
-        new EmailAliasesServiceObserverRemote(observer))
-    }
+    const observerRemote = new EmailAliasesServiceObserverRemote(observer)
+    emailAliasesService.addObserver(observerRemote)
+    return () => emailAliasesService.removeObserver(observerRemote)
   }
   root.render(
     <StyleSheetManager target={at}>
