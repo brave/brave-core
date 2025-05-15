@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 7a075931cc1467283ac599b06399386917ead790..fe0272bffe8331f69b17b8691eb6cf6aeb526a56 100644
+index 93096ad92c1a36ca4bd964e87365c01f62a523a3..db8998b43d0ea6595af67425f54e6ac5da22da7f 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -759,6 +759,7 @@ static_library("ui") {
@@ -22,7 +22,7 @@ index 7a075931cc1467283ac599b06399386917ead790..fe0272bffe8331f69b17b8691eb6cf6a
      }
    }
  
-@@ -5774,6 +5778,7 @@ static_library("ui_public_dependencies") {
+@@ -5772,6 +5776,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }

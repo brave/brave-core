@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 545b9ee31756d533eba47e406835b0829b0ae81c..863e6d59a1ff924dcf2e0388d61dff4f5eaff69b 100644
+index a326a5b1e637afefe28214e83ac43b0614bacada..6c6329e43acef8b67f3341c47c0b3ca00e6d172c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 @@ -300,6 +300,7 @@ public abstract class FullscreenHtmlApiHandlerBase
