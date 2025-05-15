@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 93cad12e3cd5ab16cee7865e54f70d231cf44d63..27a753b38d35ce473fc55ffaf6de767cbc2610a6 100644
+index 2257bee7bf59bf5dfe12a938330d9892e30f4ec9..d7f1d1b96b458226494f700790a08559aa57a266 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -651,6 +651,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -658,6 +658,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 03/2025, migrated to profile pref.
    registry->RegisterIntegerPref(
        prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
@@ -10,10 +10,10 @@ index 93cad12e3cd5ab16cee7865e54f70d231cf44d63..27a753b38d35ce473fc55ffaf6de767c
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1045,6 +1046,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1058,6 +1059,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Deprecated 04/2025.
-   registry->RegisterBooleanPref(kAutologinEnabled, false);
+   registry->RegisterDictionaryPref(kSuggestionGroupVisibility);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
