@@ -15,7 +15,6 @@ import BraveIconCircle from './content/styles/brave_icon_circle'
 import Button from '@brave/leo/react/button'
 import Card from './content/styles/Card'
 import Col from './content/styles/Col'
-import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Row from './content/styles/Row'
@@ -40,11 +39,6 @@ const PageCol = styled(Col)`
     line-height: ${typography.heading.h4.lineHeight};
     margin: 0;
   }
-`
-
-const AliasDialog = styled(Dialog)`
-  --leo-dialog-backdrop-background: ${color.dialogs.scrimBackground};
-  --leo-dialog-padding: ${spacing['2Xl']};
 `
 
 const SectionTitle = styled(Card)`
@@ -194,20 +188,6 @@ export const ManagePage = ({ emailAliasesService, bindObserver }:
             aliasesState={aliasesState}
             setEditState={setEditState}
             emailAliasesService={emailAliasesService} />}
-      {(editState.mode === 'Create' || editState.mode === 'Edit') &&
-      <AliasDialog
-        isOpen
-        onClose={onReturnToMain}
-        backdropClickCloses
-        modal
-        showClose>
-        <EmailAliasModal
-          onReturnToMain={onReturnToMain}
-            editState={editState}
-            mainEmail={authState.email}
-            aliasCount={aliasesState.length}
-            emailAliasesService={emailAliasesService} />
-        </AliasDialog>}
     </PageCol>
   )
 }
