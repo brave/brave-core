@@ -3,12 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EditState } from './content/types'
 import { AliasList } from './content/email_aliases_list'
 import { color, spacing, font, radius, typography } from
   '@brave/leo/tokens/css/variables'
 import { createRoot } from 'react-dom/client';
-import { EmailAliasModal } from './content/email_aliases_modal';
+import { EditState, EmailAliasModal } from './content/email_aliases_modal';
 import { getLocale } from '$web-common/locale'
 import { MainEmailEntryForm } from './content/email_aliases_signin_page'
 import * as React from 'react'
