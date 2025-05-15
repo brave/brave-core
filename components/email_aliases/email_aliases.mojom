@@ -47,11 +47,8 @@ interface EmailAliasesService {
   // Initiate authentication using the user's auth email.
   RequestAuthentication(string auth_email);
 
-  // Cancel pending authentication.
-  CancelAuthentication();
-
-  // Sign out of currently authenticated account.
-  Logout();
+  // Cancel pending authentication or log out if already authenticated.
+  CancelAuthenticationOrLogout();
 
   // Generate a proposed email alias.
   GenerateAlias() => (string alias_email);
