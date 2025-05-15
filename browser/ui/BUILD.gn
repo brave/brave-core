@@ -346,6 +346,7 @@ source_set("ui") {
       "//brave/browser/resources/settings/email_aliases_page:features",
       "//brave/common",
       "//brave/components/constants",
+      "//brave/components/email_aliases:features",
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",

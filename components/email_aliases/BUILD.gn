@@ -16,3 +16,12 @@ mojom_component("mojom") {
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
+
+static_library("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
