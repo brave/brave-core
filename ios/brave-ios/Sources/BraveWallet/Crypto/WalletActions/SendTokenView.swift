@@ -197,7 +197,8 @@ struct SendTokenView: View {
                   )
                 )
               ),
-            footer: sendAmountFooter
+            footer:
+              sendAmountFooter
               .listRowInsets(.zero)
               .padding(.bottom, 8)
           ) {
