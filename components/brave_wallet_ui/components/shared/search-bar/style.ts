@@ -38,6 +38,7 @@ export const SearchInput = styled.input<{
 }>`
   flex: 1;
   height: 100%;
+  min-width: 0px;
   outline: none;
   background-image: none;
   background-color: var(--background-color);
