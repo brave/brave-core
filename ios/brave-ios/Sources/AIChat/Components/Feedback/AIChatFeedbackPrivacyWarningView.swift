@@ -7,6 +7,7 @@ import BraveShared
 import BraveStrings
 import BraveUI
 import DesignSystem
+import Introspect
 import Preferences
 import SwiftUI
 
