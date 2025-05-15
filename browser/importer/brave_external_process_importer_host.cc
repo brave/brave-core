@@ -58,6 +58,7 @@ void BraveExternalProcessImporterHost::LaunchImportIfReady() {
 #endif
 
   if (!do_not_launch_import_for_testing_) {
+    CHECK(!client_);
     ExternalProcessImporterHost::LaunchImportIfReady();
   } else {
     NotifyImportEnded();
