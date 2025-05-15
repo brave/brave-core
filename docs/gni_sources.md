@@ -15,7 +15,8 @@ not adding to the problem on our side.
 #### Usage of sources.gni
 
 Use of sources.gni to include sources in `//chrome/browser` and
-`//chrome/browser/ui` should be avoided. Adding deps through sources.gni is
+`//chrome/browser/ui` should be avoided, see [Circular
+dependencies](#circular-dependencies). Adding deps through sources.gni is
 generally ok. Use of sources.gni to include sources in other targets can be used
 if the there is no reasonable way to avoid it using the options below.
 
@@ -69,6 +70,8 @@ chromium_src/some_chromium_source.cc
 ```cpp
 #define ChromeClass BraveClass<ChromeClass>()
 ```
+
+#### Circular dependencies {#circular-dependencies}
 
 Circular dependencies can sometimes (temporarily) use
 `allow_circular_includes_from` to split sources up into smaller targets so they
