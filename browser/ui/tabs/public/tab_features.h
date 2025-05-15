@@ -40,7 +40,9 @@ class TabFeatures : public TabFeatures_Chromium {
   void Init(TabInterface& tab, Profile* profile) override;
 
 #if BUILDFLAG(ENABLE_PSST)
-  inline psst::PsstTabWebContentsObserver* psst_web_contents_observer();
+  inline psst::PsstTabWebContentsObserver* psst_web_contents_observer() {
+    return psst_web_contents_observer_.get();
+  }
 #endif
 
  private:

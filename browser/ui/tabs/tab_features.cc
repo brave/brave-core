@@ -19,7 +19,6 @@
 #include "components/tabs/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/psst/psst_dialog_tab_helper_delegate_impl.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #endif
 
@@ -64,9 +63,7 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_PSST)
   psst_web_contents_observer_ =
       psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          tab.GetContents(),
-          std::make_unique<psst::PsstDialogTabHelperDelegateImpl>(
-              tab.GetContents()),
+          tab.GetContents(), nullptr, /* delegate implementation */
           ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #endif
 }

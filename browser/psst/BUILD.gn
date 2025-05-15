@@ -5,8 +5,6 @@
 
 static_library("psst") {
   sources = [
-    "psst_dialog_tab_helper_delegate_impl.cc",
-    "psst_dialog_tab_helper_delegate_impl.h",
     "psst_tab_web_contents_observer.cc",
     "psst_tab_web_contents_observer.h",
   ]

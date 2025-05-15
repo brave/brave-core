@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -16,7 +17,6 @@ class PrefService;
 
 namespace psst {
 
-class PsstDialogDelegate;
 class PsstScriptsHandler;
 class PsstRuleRegistry;
 
