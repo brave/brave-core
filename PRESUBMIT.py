@@ -359,7 +359,8 @@ _BANNED_JAVA_FUNCTIONS += (BanRule(
      '(e.g. Activities) should call ProfileManager.getLastUsedRegularProfile '
      'instead. Otherwise, the Profile should either be passed in explicitly '
      'or retreived from an existing entity with a reference to the Profile '
-     '(e.g. WebContents).', ),
+     '(e.g. WebContents). This is a warning only for existing usages, new '
+     'usages are strictly banned.', ),
     False,
     excluded_paths=(r'.*Test[A-Z]?.*\.java', ),
 ), )
@@ -389,7 +390,8 @@ _BANNED_CPP_FUNCTIONS += (
         ('ExecuteJavaScript() should not be used outside of chrome:// urls. If '
          'you must inject into the main world, consider using '
          'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
-         'instead', ),
+         'instead. This is a warning only for existing usages, new usages are '
+         'strictly banned.'),
         treat_as_error=False,
     ))
 
