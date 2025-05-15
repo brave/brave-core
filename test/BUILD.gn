@@ -1212,6 +1212,7 @@ test("brave_browser_tests") {
     ]
     deps += [
       "//brave/browser/extensions/api/identity/test:browsertests",
+      "//brave/browser/importer:browser_tests",
       "//brave/components/brave_webtorrent/browser",
     ]
   }

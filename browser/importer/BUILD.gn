@@ -34,4 +34,22 @@ if (!is_android) {
       "//testing/gtest",
     ]
   }
+
+  source_set("browser_tests") {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "brave_importer_browsertest.cc" ]
+
+    deps = [
+      "//base",
+      "//chrome/browser/importer",
+      "//chrome/browser/ui",
+      "//chrome/common:constants",
+      "//chrome/common/importer",
+      "//chrome/test:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
 }
