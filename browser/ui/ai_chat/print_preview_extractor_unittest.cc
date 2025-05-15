@@ -7,8 +7,12 @@
 
 #include <memory>
 
+#include "base/containers/span.h"
 #include "base/strings/stringprintf.h"
+#include "base/rand_util.h"
+#include "base/containers/span_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/ai_chat/print_preview_extractor_internal.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -30,6 +34,19 @@
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
 namespace ai_chat {
+
+base::MappedReadOnlyRegion CreatePageRegion(size_t size) {
+  // We need to fulfill printing::LooksLikePdf()
+  base::MappedReadOnlyRegion page =
+      base::ReadOnlySharedMemoryRegion::Create(size < 50u ? 50u : size);
+  auto writer = base::SpanWriter(base::span(page.mapping));
+  LOG(ERROR) << writer.remaining();
+  writer.Write(base::byte_span_from_cstring("%PDF-"));
+  LOG(ERROR) << writer.num_written();
+  LOG(ERROR) << writer.remaining();
+  base::RandBytes(writer.remaining_span());
+  return page;
+}
 
 namespace {
 
@@ -305,6 +322,10 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     VerifyPrintPreviewUIState();
   }
 
+  PrintPreviewExtractorInternal* internal_extractor() {
+    return static_cast<PrintPreviewExtractorInternal*>(pp_extractor_->extractor_.get());
+  }
+
  protected:
   std::unique_ptr<PrintPreviewExtractor> pp_extractor_;
 };
@@ -372,6 +393,48 @@ TEST_F(PrintPreviewExtractorTest, Errors) {
   RunErrorTest("application/pdf", false,
                MockPrintPreviewPrintRenderFrame::ExpectedError::kNone,
                "Print preview is disabled");
+}
+
+TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
+  {
+    auto print_render_frame = SetupPrintPreviewTest("text/html", MockPrintPreviewPrintRenderFrame::ExpectedError::kNone);
+      base::test::TestFuture<base::expected<std::string, std::string>> future;
+      pp_extractor_->Extract(future.GetCallback());
+      
+      internal_extractor()->OnPreviewReady();
+      auto result = future.Take();
+      ASSERT_FALSE(result.has_value());
+      EXPECT_EQ(result.error(), "Failed to get preview data");
+  }
+  {
+    auto print_render_frame = SetupPrintPreviewTest("application/pdf", MockPrintPreviewPrintRenderFrame::ExpectedError::kNone);
+      base::test::TestFuture<
+          base::expected<std::vector<std::vector<uint8_t>>, std::string>>
+          future;
+      pp_extractor_->CapturePdf(future.GetCallback());
+      internal_extractor()->OnPreviewReady();
+      auto result = future.Take();
+      ASSERT_FALSE(result.has_value());
+      EXPECT_EQ(result.error(), "Failed to get preview data");
+  }
+  {
+    auto print_render_frame = SetupPrintPreviewTest("text/html", MockPrintPreviewPrintRenderFrame::ExpectedError::kNone);
+      base::test::TestFuture<base::expected<std::string, std::string>> future;
+      pp_extractor_->Extract(future.GetCallback());
+      
+    internal_extractor()->OnCompositePdfPageDone(0, 0, 0,
+                           printing::mojom::PrintCompositor::Status::kSuccess,
+                           CreatePageRegion(8).region);
+    internal_extractor()->OnCompositePdfPageDone(1, 0, 0,
+                           printing::mojom::PrintCompositor::Status::kSuccess,
+                           CreatePageRegion(16).region);
+    internal_extractor()->OnCompositeToPdfDone(0, 0,
+                           printing::mojom::PrintCompositor::Status::kSuccess,
+                           CreatePageRegion(64).region);
+      auto result = future.Take();
+      ASSERT_FALSE(result.has_value());
+      EXPECT_EQ(result.error(), "Failed to get preview data");
+  }
 }
 
 }  // namespace ai_chat
