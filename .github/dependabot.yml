@@ -2,14 +2,14 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     schedule:
-      interval: "weekly"
+      interval: "yearly"
     directory: "/"
     labels:
       - "CI/skip"
       - "dependencies"
   - package-ecosystem: "cargo"
     schedule:
-      interval: "weekly"
+      interval: "yearly"
     directory: "/tools/crates"
     labels:
       - "CI/skip"
