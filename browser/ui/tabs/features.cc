@@ -39,7 +39,7 @@ bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
 }
 
-bool SplitViewEnabled() {
+bool IsBraveSplitViewEnabled() {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
     return false;
   }

@@ -22,7 +22,7 @@ SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
     SplitViewBrowserData& split_view_browser_data,
     TabStripModel* model)
     : split_view_browser_data_(split_view_browser_data), model_(*model) {
-  CHECK(tabs::features::SplitViewEnabled());
+  CHECK(tabs::features::IsBraveSplitViewEnabled());
 
   model_->AddObserver(this);
 }

@@ -343,7 +343,7 @@ void OnRewriteSuggestionCompleted(
 
 bool CanOpenSplitViewForWebContents(
     base::WeakPtr<content::WebContents> web_contents) {
-  if (!tabs::features::SplitViewEnabled()) {
+  if (!tabs::features::IsBraveSplitViewEnabled()) {
     return false;
   }
 

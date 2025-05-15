@@ -68,7 +68,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, LaunchTest) {
                     ->multi_contents_view_for_testing());
 
   // Check SplitView feature is not enabled.
-  EXPECT_FALSE(tabs::features::SplitViewEnabled());
+  EXPECT_FALSE(tabs::features::IsBraveSplitViewEnabled());
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
   EXPECT_FALSE(!!split_view_data);
 }

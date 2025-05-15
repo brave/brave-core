@@ -132,7 +132,7 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForSend();
   UpdateCommandsForPin();
 
-  if (tabs::features::SplitViewEnabled() && browser_->is_type_normal() &&
+  if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal() &&
       selection.active_tab_changed()) {
     UpdateCommandForSplitView();
   }
