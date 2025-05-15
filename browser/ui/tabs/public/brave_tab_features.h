@@ -35,7 +35,7 @@ class BraveTabFeatures : public TabFeatures {
   void Init(TabInterface& tab, Profile* profile) override;
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst::PsstTabWebContentsObserver* GetPsstTabHelper();
+  inline psst::PsstTabWebContentsObserver* psst_web_contents_observer();
 #endif
 
  protected:
@@ -45,7 +45,7 @@ class BraveTabFeatures : public TabFeatures {
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
 #if BUILDFLAG(ENABLE_PSST)
-  std::unique_ptr<psst::PsstTabWebContentsObserver> psst_observer_;
+  std::unique_ptr<psst::PsstTabWebContentsObserver> psst_web_contents_observer_;
 #endif
 };
 
