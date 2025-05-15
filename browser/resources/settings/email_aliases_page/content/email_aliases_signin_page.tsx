@@ -5,6 +5,7 @@
 
 import { formatLocale, getLocale } from "$web-common/locale";
 import { onEnterKeyForInput } from "./on_enter_key"
+import { spacing } from "@brave/leo/tokens/css/variables";
 import * as React from 'react'
 import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
@@ -14,7 +15,6 @@ import formatMessage from '$web-common/formatMessage'
 import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
-import { spacing } from "@brave/leo/tokens/css/variables";
 import { AuthenticationStatus, AuthState, EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m";
 
