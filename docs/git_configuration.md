@@ -10,4 +10,4 @@ It is recommended to use this configuration in `.gitconfig` to ensure consistent
 - `fix`: Automatically fixes whitespace issues in patches (e.g., removes/trims trailing spaces, adds a carriage return at the end of a file if it's missing, etc.).
 - `-indent-with-non-tab`: Prevents warnings about lines that are indented with spaces instead of tabs (essentially ignores this issue).
 - `trailing-space`: Flags or fixes trailing spaces at the end of lines.
-cr-at-eol: Ensures that files end with a carriage return (newline) at the end of the last line.
+- `cr-at-eol`: Ensures that files end with a carriage return (newline) at the end of the last line.
