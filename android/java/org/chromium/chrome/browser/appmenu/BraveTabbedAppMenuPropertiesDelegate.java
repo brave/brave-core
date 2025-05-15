@@ -475,6 +475,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     item.setIcon(
                             AppCompatResources.getDrawable(
                                     mContext, R.drawable.brave_menu_settings));
+                } else if (item.getItemId() == R.id.download_page_id) {
+                    item.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.ic_download));
                 }
             }
         }
