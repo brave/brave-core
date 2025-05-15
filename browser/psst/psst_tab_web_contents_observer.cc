@@ -14,6 +14,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace psst {
@@ -52,15 +53,13 @@ PsstDialogDelegate* PsstTabWebContentsObserver::GetPsstDialogDelegate() const {
   return script_handler_->GetPsstDialogDelegate();
 }
 
-void PsstTabWebContentsObserver::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted() ||
-      navigation_handle->IsSameDocument()) {
+void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
+  auto* entry = page.GetMainDocument().GetController().GetActiveEntry();
+  if (!entry) {
     return;
   }
-  should_process_ =
-      navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
+
+  should_process_ = !entry->IsRestored();
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
