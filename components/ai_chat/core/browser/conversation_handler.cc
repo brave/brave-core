@@ -449,7 +449,8 @@ void ConversationHandler::SetArchiveContent(std::string text_content,
 }
 
 void ConversationHandler::SetAssociatedContentDelegate(
-    base::WeakPtr<AssociatedContentDelegate> delegate, bool should_send_page_contents) {
+    base::WeakPtr<AssociatedContentDelegate> delegate,
+    bool should_send_page_contents) {
   // If this conversation is allowed to fetch content, this is the delegate
   // that can provide fresh content for the conversation.
   CHECK(delegate)
