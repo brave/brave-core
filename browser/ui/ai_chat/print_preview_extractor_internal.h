@@ -47,12 +47,14 @@ class PreviewPageTextExtractor {
       AIChatTabHelper::PrintPreviewExtractionDelegate::CapturePdfCallback;
   using CallbackVariant = std::variant<TextCallback, ImageCallback>;
 
-  PreviewPageTextExtractor(base::ReadOnlySharedMemoryRegion pdf_region,
-                           CallbackVariant callback,
-                           std::optional<bool> pdf_use_skia_renderer_enabled);
+  PreviewPageTextExtractor();
   virtual ~PreviewPageTextExtractor();
 
-  void StartExtract();
+  virtual void StartExtract(base::ReadOnlySharedMemoryRegion pdf_region,
+                            CallbackVariant callback,
+                            std::optional<bool> pdf_use_skia_renderer_enabled);
+
+ private:
   void ScheduleNextPageOrComplete();
   void OnGetPageCount(std::optional<uint32_t> page_count);
   void OnGetBitmap(const SkBitmap& bitmap);
@@ -60,7 +62,6 @@ class PreviewPageTextExtractor {
   void ProcessNextBitmapPage(const SkBitmap& bitmap);
   void BitmapConverterDisconnected();
 
- private:
   std::string preview_text_;
   size_t current_page_index_ = 0;
   size_t total_page_count_ = 0;
@@ -91,6 +92,9 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
   void CreatePrintPreview() override;
 
   std::optional<int32_t> GetPrintPreviewUIIdForTesting() override;
+
+  void SetPreviewPageTextExtractorForTesting(
+      std::unique_ptr<PreviewPageTextExtractor> extractor);
 
   void SendError(const std::string& error);
 
