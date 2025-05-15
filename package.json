@@ -207,7 +207,7 @@
     "@types/webtorrent": "^0.109.8",
     "array-move": "^2.2.1",
     "async": "^3.2.4",
-    "bignumber.js": "^9.0.2",
+    "bignumber.js": "^9.3.0",
     "core-js": "^3.9.1",
     "darkreader": "^4.9.87",
     "date-fns": "^2.15.0",
