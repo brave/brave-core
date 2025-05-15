@@ -289,7 +289,8 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
   for (const auto [name, value] : log_dict) {
     LogEntry entry;
     // Check if the metric is obsolete.
-    if (!delegate_->IsActualMetric(name)) {
+    auto metric_log_type = delegate_->GetLogTypeForHistogram(name);
+    if (!metric_log_type || metric_log_type != type_) {
       // Drop it from the local state.
       metrics_to_remove.push_back(name);
       continue;

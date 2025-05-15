@@ -140,13 +140,16 @@ void MessageManager::UpdateMetricValue(
     size_t bucket,
     std::optional<bool> only_update_for_constellation) {
   bool update_for_all = !only_update_for_constellation.has_value();
-  MetricLogType log_type = GetLogTypeForHistogram(histogram_name);
+  auto log_type = GetLogTypeForHistogram(histogram_name);
+  if (!log_type) {
+    return;
+  }
   if (features::IsConstellationEnabled() &&
       (update_for_all || *only_update_for_constellation)) {
-    constellation_prep_log_stores_[log_type]->UpdateValue(
+    constellation_prep_log_stores_[*log_type]->UpdateValue(
         std::string(histogram_name), bucket);
   }
-  auto* json_log_store = json_log_stores_[log_type].get();
+  auto* json_log_store = json_log_stores_[*log_type].get();
   if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
     json_log_store->UpdateValue(std::string(histogram_name), bucket);
   }
@@ -385,13 +388,17 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
   }
 }
 
-MetricLogType MessageManager::GetLogTypeForHistogram(
-    std::string_view histogram_name) {
+std::optional<MetricLogType> MessageManager::GetLogTypeForHistogram(
+    std::string_view histogram_name) const {
   std::string histogram_name_str = std::string(histogram_name);
-  MetricLogType result = MetricLogType::kTypical;
-  if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
+  std::optional<MetricLogType> result;
+  if (p3a::kCollectedTypicalHistograms.contains(histogram_name) ||
       delegate_->GetDynamicMetricLogType(histogram_name_str) ==
-          MetricLogType::kExpress) {
+          MetricLogType::kTypical) {
+    result = MetricLogType::kTypical;
+  } else if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
+             delegate_->GetDynamicMetricLogType(histogram_name_str) ==
+                 MetricLogType::kExpress) {
     result = MetricLogType::kExpress;
   } else if (p3a::kCollectedSlowHistograms.contains(histogram_name) ||
              delegate_->GetDynamicMetricLogType(histogram_name_str) ==
@@ -451,13 +458,6 @@ void MessageManager::CleanupActivationDates() {
       it++;
     }
   }
-}
-
-bool MessageManager::IsActualMetric(const std::string& histogram_name) const {
-  return p3a::kCollectedTypicalHistograms.contains(histogram_name) ||
-         p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-         p3a::kCollectedSlowHistograms.contains(histogram_name) ||
-         delegate_->GetDynamicMetricLogType(histogram_name).has_value();
 }
 
 bool MessageManager::IsEphemeralMetric(

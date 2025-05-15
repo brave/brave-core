@@ -54,7 +54,7 @@ class MessageManager : public MetricLogStore::Delegate {
   class Delegate {
    public:
     virtual std::optional<MetricLogType> GetDynamicMetricLogType(
-        const std::string& histogram_name) const = 0;
+        std::string_view histogram_name) const = 0;
     virtual void OnRotation(MetricLogType log_type, bool is_constellation) = 0;
     // A metric "cycle" is a transmission to the P3A JSON server,
     // or a Constellation preparation for the current epoch.
@@ -95,7 +95,8 @@ class MessageManager : public MetricLogStore::Delegate {
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);
   void StartScheduledConstellationPrep(MetricLogType log_type);
 
-  MetricLogType GetLogTypeForHistogram(std::string_view histogram_name);
+  std::optional<MetricLogType> GetLogTypeForHistogram(
+      std::string_view histogram_name) const override;
 
   void OnLogUploadComplete(bool is_ok,
                            int response_code,
@@ -125,7 +126,6 @@ class MessageManager : public MetricLogStore::Delegate {
                            MetricLogType log_type,
                            bool is_constellation,
                            const std::string& upload_type) override;
-  bool IsActualMetric(const std::string& histogram_name) const override;
   bool IsEphemeralMetric(const std::string& histogram_name) const override;
 
   const raw_ref<PrefService, DanglingUntriaged> local_state_;

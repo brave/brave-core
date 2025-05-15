@@ -58,7 +58,7 @@ class P3AMessageManagerTest : public testing::Test,
                 &url_loader_factory_)) {}
 
   std::optional<MetricLogType> GetDynamicMetricLogType(
-      const std::string& histogram_name) const override {
+      std::string_view histogram_name) const override {
     return std::optional<MetricLogType>();
   }
 
