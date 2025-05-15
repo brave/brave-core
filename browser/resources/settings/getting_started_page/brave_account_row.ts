@@ -59,8 +59,8 @@ export class SettingsBraveAccountRow extends CrLitElement {
   }
 
   private browserProxy: BraveAccountBrowserProxy = BraveAccountBrowserProxyImpl.getInstance()
-  protected dialog: Dialog = Dialog.NONE
-  protected signedIn: boolean = false
+  protected accessor dialog: Dialog = Dialog.NONE
+  protected accessor signedIn: boolean = false
 }
 
 declare global {

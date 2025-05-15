@@ -99,8 +99,8 @@ class PasswordStrengthMeter extends CrLitElement {
     }
   }
 
-  protected category: 'Weak' | 'Medium' | 'Strong' = 'Weak'
-  protected strength: number = 0
+  protected accessor category: 'Weak' | 'Medium' | 'Strong' = 'Weak'
+  protected accessor strength: number = 0
 }
 
 declare global {
@@ -174,14 +174,15 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
-  protected email: string = ''
+
   protected icon: string = 'warning-triangle-filled'
-  protected isCheckboxChecked: boolean = false
-  protected isEmailBraveAlias: boolean = false
-  protected isEmailValid: boolean = false
-  protected password: string = ''
-  protected passwordConfirmation: string = ''
-  protected passwordStrength: number = 0
+  protected accessor email: string = ''
+  protected accessor isCheckboxChecked: boolean = false
+  protected accessor isEmailBraveAlias: boolean = false
+  protected accessor isEmailValid: boolean = false
+  protected accessor password: string = ''
+  protected accessor passwordConfirmation: string = ''
+  protected accessor passwordStrength: number = 0
   protected registration = new Registration()
 }
 
