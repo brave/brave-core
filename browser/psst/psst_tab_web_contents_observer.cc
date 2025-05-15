@@ -11,6 +11,7 @@
 #include "brave/components/psst/browser/content/psst_scripts_result_handler.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -23,29 +24,32 @@ namespace psst {
 std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
+    Profile* profile,
     std::unique_ptr<PsstDialogDelegate> delegate,
     const int32_t world_id) {
-  if (contents->GetBrowserContext()->IsOffTheRecord() ||
+  if (!profile || contents->GetBrowserContext()->IsOffTheRecord() ||
       !base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
     return nullptr;
   }
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
-      new PsstTabWebContentsObserver(contents, std::move(delegate), world_id));
+      new PsstTabWebContentsObserver(contents, profile->GetPrefs(),
+                                     std::move(delegate), world_id));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
+    PrefService* prefs,
     std::unique_ptr<PsstDialogDelegate> delegate,
     const int32_t world_id)
     : WebContentsObserver(web_contents),
       script_handler_(std::make_unique<PsstScriptsHandlerImpl>(
           std::move(delegate),
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()),
+          prefs,
           web_contents,
           web_contents->GetPrimaryMainFrame(),
           world_id)),
-      prefs_(user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())) {}
+      prefs_(prefs) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 

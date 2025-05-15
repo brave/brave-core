@@ -44,7 +44,7 @@ class RuleDataReaderUnitTest : public testing::Test {
     ASSERT_FALSE(psst_rules_content.empty());
 
     psst_rules_ = PsstRule::ParseRules(psst_rules_content);
-    ASSERT_EQ(psst_rules_->size(), 2U);
+    ASSERT_EQ(psst_rules_->size(), 3U);
   }
 
   base::FilePath GetBasePath() { return test_data_dir_base_; }
@@ -54,7 +54,7 @@ class RuleDataReaderUnitTest : public testing::Test {
   }
 
   PsstRule& GetBasicRule() { return (*psst_rules_)[0]; }
-  PsstRule& GetWrongNameRule() { return (*psst_rules_)[1]; }
+  PsstRule& GetWrongNameRule() { return (*psst_rules_)[2]; }
 
  private:
   base::FilePath test_data_dir_base_;
