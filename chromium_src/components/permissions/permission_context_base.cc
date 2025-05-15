@@ -48,9 +48,9 @@ void PermissionContextBase::PermissionDecided(
     ContentSetting content_setting,
     bool is_one_time,
     bool is_final_decision,
-    const std::unique_ptr<PermissionRequestData>& request_data) {
+    const PermissionRequestData& request_data) {
   if (permission_lifetime_manager_factory_) {
-    const auto request_it = pending_requests_.find(request_data->id.ToString());
+    const auto request_it = pending_requests_.find(request_data.id.ToString());
     if (request_it != pending_requests_.end()) {
       const PermissionRequest* permission_request =
           request_it->second.first.get();
@@ -58,12 +58,12 @@ void PermissionContextBase::PermissionDecided(
       if (auto* permission_lifetime_manager =
               permission_lifetime_manager_factory_.Run(browser_context_)) {
         permission_lifetime_manager->PermissionDecided(
-            *permission_request, request_data->requesting_origin,
-            request_data->embedding_origin, content_setting, is_one_time);
+            *permission_request, request_data.requesting_origin,
+            request_data.embedding_origin, content_setting, is_one_time);
       }
     }
     const auto group_request_it =
-        pending_grouped_requests_.find(request_data->id.ToString());
+        pending_grouped_requests_.find(request_data.id.ToString());
     if (group_request_it != pending_grouped_requests_.end()) {
       for (const auto& request : group_request_it->second->Requests()) {
         const PermissionRequest* permission_request = request.first.get();
@@ -71,8 +71,8 @@ void PermissionContextBase::PermissionDecided(
         if (auto* permission_lifetime_manager =
                 permission_lifetime_manager_factory_.Run(browser_context_)) {
           permission_lifetime_manager->PermissionDecided(
-              *permission_request, request_data->requesting_origin,
-              request_data->embedding_origin, content_setting, is_one_time);
+              *permission_request, request_data.requesting_origin,
+              request_data.embedding_origin, content_setting, is_one_time);
         }
       }
     }
@@ -80,21 +80,20 @@ void PermissionContextBase::PermissionDecided(
 
   if (!IsGroupedPermissionType(content_settings_type())) {
     PermissionContextBase_ChromiumImpl::PermissionDecided(
-        content_setting, is_one_time, is_final_decision,
-        std::move(request_data));
+        content_setting, is_one_time, is_final_decision, request_data);
     return;
   }
 
   DCHECK(content_setting == CONTENT_SETTING_ALLOW ||
          content_setting == CONTENT_SETTING_BLOCK ||
          content_setting == CONTENT_SETTING_DEFAULT);
-  UserMadePermissionDecision(request_data->id, request_data->requesting_origin,
-                             request_data->embedding_origin, content_setting);
+  UserMadePermissionDecision(request_data.id, request_data.requesting_origin,
+                             request_data.embedding_origin, content_setting);
 
   bool persist = content_setting != CONTENT_SETTING_DEFAULT;
 
   auto grouped_request =
-      pending_grouped_requests_.find(request_data->id.ToString());
+      pending_grouped_requests_.find(request_data.id.ToString());
   DCHECK(grouped_request != pending_grouped_requests_.end());
   DCHECK(grouped_request->second);
 
