@@ -7,6 +7,7 @@ script/uplift.py @bsclifton
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
+rewrite/ @bridiver @cdesouza-chromium
 
 # Views
 chromium_src/ui/views/view.h @bridiver
