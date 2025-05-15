@@ -3,20 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AliasList } from './content/email_aliases_list'
-import { spacing, font, radius, typography } from
-  '@brave/leo/tokens/css/variables'
 import { createRoot } from 'react-dom/client';
 import { getLocale } from '$web-common/locale'
 import { MainEmailEntryForm } from './content/email_aliases_signin_page'
+import { spacing, font, radius, typography }
+  from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
-import BraveIconCircle from './content/styles/brave_icon_circle'
-import Button from '@brave/leo/react/button'
 import Card from './content/styles/Card'
 import Col from './content/styles/Col'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Row from './content/styles/Row'
+import { MainView } from './content/email_aliases_main_view'
+
 import SecureLink from '$web-common/SecureLink'
 import styled, { StyleSheetManager } from 'styled-components'
 import {
@@ -48,31 +44,6 @@ const SectionTitle = styled(Card)`
   row-gap: ${spacing.m};
 `
 
-const MainEmailTextContainer = styled(Col)`
-  justify-content: center;
-  cursor: default;
-  user-select: none;
-`
-
-const MainEmail = styled.div`
-  font: ${font.default.semibold};
-`
-
-const MainEmailDescription = styled.div`
-  font: ${font.small.regular};
-`
-
-const AccountRow = styled(Row)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  & * {
-    flex-grow: 0;
-    column-gap: ${spacing.xl};
-  }
-`
-
 const Introduction = () =>
   <SectionTitle>
       <div>
@@ -87,65 +58,6 @@ const Introduction = () =>
         </SecureLink>
       </div>
   </SectionTitle>
-
-const MainEmailDisplay = ({ email, emailAliasesService }:
-  { email: string, emailAliasesService: EmailAliasesServiceInterface }) =>
-  <Card>
-    <AccountRow>
-      <Row>
-        <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
-        <MainEmailTextContainer>
-          <MainEmail>
-            {email === ''
-              ? getLocale('emailAliasesConnectingToBraveAccount')
-              : email}
-          </MainEmail>
-          <MainEmailDescription>
-            {getLocale('emailAliasesBraveAccount')}
-          </MainEmailDescription>
-        </MainEmailTextContainer>
-      </Row>
-      <Button
-        kind='plain-faint'
-        title={getLocale('emailAliasesSignOutTitle')}
-        size='small'
-        onClick={() => {
-          emailAliasesService.logout()
-        }}>
-        <Icon slot='icon-before' name="outside" />
-        <span>{getLocale('emailAliasesSignOut')}</span>
-      </Button>
-    </AccountRow>
-  </Card>
-
-const SpacedRow = styled(Row)`
-  gap: ${spacing.m};
-  justify-content: center;
-  align-items: center;
-  font: ${font.default.semibold};
-`
-
-const MainView = ({
-  aliasesState,
-  authState,
-  emailAliasesService
-}: {
-  authState: AuthState,
-  aliasesState: Alias[],
-  emailAliasesService: EmailAliasesServiceInterface
-}) => (authState.status === AuthenticationStatus.kStartup
-        ? <SpacedRow>
-            <ProgressRing />
-            <div>{getLocale('emailAliasesConnectingToBraveAccount')}</div>
-          </SpacedRow>
-        : <span>
-            <MainEmailDisplay
-              email={authState.email}
-              emailAliasesService={emailAliasesService} />
-            <AliasList aliases={aliasesState}
-              authEmail={authState.email}
-              emailAliasesService={emailAliasesService} />
-          </span>)
 
 export const ManagePage = ({ emailAliasesService, bindObserver }:
   {
