@@ -10,7 +10,7 @@
 
 #include "brave/components/psst/browser/content/psst_scripts_result_handler.h"
 #include "brave/components/psst/common/features.h"
-#include "brave/components/psst/common/psst_prefs.h"
+#include "brave/components/psst/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"

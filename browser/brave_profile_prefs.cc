@@ -139,7 +139,7 @@ using extensions::FeatureSwitch;
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/common/psst_prefs.h"
+#include "brave/components/psst/common/pref_names.h"
 #endif
 
 namespace brave {

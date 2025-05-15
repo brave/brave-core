@@ -10,8 +10,8 @@ component("common") {
   sources = [
     "features.cc",
     "features.h",
-    "psst_prefs.cc",
-    "psst_prefs.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
   deps = [

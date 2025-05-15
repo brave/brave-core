@@ -12,7 +12,7 @@
 #include "base/component_export.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_dialog_delegate.h"
-#include "brave/components/psst/common/psst_prefs.h"
+#include "brave/components/psst/common/pref_names.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents.h"

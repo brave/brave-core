@@ -17,7 +17,7 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
-#include "brave/components/psst/common/psst_prefs.h"
+#include "brave/components/psst/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
