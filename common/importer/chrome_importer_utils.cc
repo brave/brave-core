@@ -75,9 +75,16 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
       continue;
     }
 
-    // Extension is enabled if there is no disable reason.
-    if (const auto* disable_reasons = dict.FindList("disable_reasons");
-        disable_reasons && !disable_reasons->empty()) {
+    const auto state = dict.FindInt("state");
+    if (state.has_value()) {
+      // If `state` exists, probably it is an old browser version.
+      if (state == 0) {
+        // explicit `"state": 0` means disabled state
+        continue;
+      }
+    } else if (const auto* disable_reasons = dict.FindList("disable_reasons");
+               disable_reasons && !disable_reasons->empty()) {
+      // For new browsers an extension is enabled if there is no disable reason.
       continue;
     }
 
