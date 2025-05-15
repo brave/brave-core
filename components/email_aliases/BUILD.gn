@@ -9,6 +9,8 @@ mojom_component("mojom") {
   output_prefix = "email_aliases_mojom"
   macro_prefix = "EMAIL_ALIASES_MOJOM"
 
+  generate_java = true
+  generate_legacy_js_bindings = true
   webui_module_path = "/"
 
   sources = [ "email_aliases.mojom" ]
