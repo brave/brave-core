@@ -122,7 +122,7 @@ void BraveTabMenuModel::Build(Browser* browser,
                            CommandCloseDuplicateTabs,
                            IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS);
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+  if (tabs::features::SplitViewEnabled()) {
     BuildItemsForSplitView(browser, tab_strip_model, indices);
     return;
   }

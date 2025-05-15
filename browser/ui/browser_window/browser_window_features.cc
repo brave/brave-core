@@ -53,7 +53,7 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+  if (tabs::features::SplitViewEnabled()) {
     split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
   }
 }

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/tabs/features.h"
 
+#include "chrome/browser/ui/ui_features.h"
+
 namespace tabs::features {
 
 #if BUILDFLAG(IS_LINUX)
@@ -35,6 +37,17 @@ BASE_FEATURE(kBraveSplitView,
 
 bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
+}
+
+bool SplitViewEnabled() {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    return false;
+  }
+
+  // Brave can't use both features together.
+  // We'll migrate our SplitView feature onto upstream's SideBySide
+  // feature.
+  return !base::FeatureList::IsEnabled(::features::kSideBySide);
 }
 
 }  // namespace tabs::features
