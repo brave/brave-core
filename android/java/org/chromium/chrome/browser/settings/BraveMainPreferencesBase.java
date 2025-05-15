@@ -60,7 +60,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_GENERAL_SECTION = "general_section";
     private static final String PREF_BASICS_SECTION = "basics_section";
     private static final String PREF_ADVANCED_SECTION = "advanced_section";
-    private static final String PREF_ONLINE_CHECKOUT_SECTION = "online_checkout_section";
     private static final String PREF_SUPPORT_SECTION = "support_section";
     private static final String PREF_ABOUT_SECTION = "about_section";
 
@@ -314,7 +313,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_HOME_SCREEN_WIDGET);
         }
 
-        setPreferenceOrder(PREF_PASSWORDS, ++generalOrder);
         setPreferenceOrder(PREF_SYNC, ++generalOrder);
         setPreferenceOrder(PREF_BRAVE_STATS, ++generalOrder);
         // if notification is not available (eg. for emulators)
@@ -340,14 +338,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_ACCESSIBILITY, ++displaySectionOrder);
         setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
-        int onlineCheckoutSectionOrder = displaySectionOrder;
-        setPreferenceOrder(PREF_ONLINE_CHECKOUT_SECTION, ++onlineCheckoutSectionOrder);
+        int passwordsAndAutofillSectionOrder = displaySectionOrder;
+        setPreferenceOrder(MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
+        setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+        setPreferenceOrder(MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
+        setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
+        setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        setPreferenceOrder(PREF_AUTOFILL_PRIVATE_WINDOW, ++passwordsAndAutofillSectionOrder);
 
-        setPreferenceOrder(PREF_PAYMENT_METHODS, ++onlineCheckoutSectionOrder);
-        setPreferenceOrder(PREF_ADDRESSES, ++onlineCheckoutSectionOrder);
-        setPreferenceOrder(PREF_AUTOFILL_PRIVATE_WINDOW, ++onlineCheckoutSectionOrder);
-
-        int supportSectionOrder = onlineCheckoutSectionOrder;
+        int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
 
         setPreferenceOrder(PREF_RATE_BRAVE, ++supportSectionOrder);
