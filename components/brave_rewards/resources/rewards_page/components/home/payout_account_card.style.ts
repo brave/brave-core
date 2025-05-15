@@ -12,7 +12,6 @@ export const style = scoped.css`
     --leo-icon-size: 24px;
     --leo-icon-color: ${color.systemfeedback.successIcon};
 
-    padding: 16px;
     display: flex;
     gap: 8px;
     align-items: center;
