@@ -62,18 +62,13 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   }
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst_observer_ = psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-      tab.GetContents(),
-      std::make_unique<psst::PsstDialogTabHelperDelegateImpl>(
-          tab.GetContents()),
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  psst_web_contents_observer_ =
+      psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
+          tab.GetContents(),
+          std::make_unique<psst::PsstDialogTabHelperDelegateImpl>(
+              tab.GetContents()),
+          ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #endif
 }
-
-#if BUILDFLAG(ENABLE_PSST)
-psst::PsstTabWebContentsObserver* TabFeatures::GetPsstTabHelper() {
-  return psst_observer_.get();
-}
-#endif
 
 }  // namespace tabs
