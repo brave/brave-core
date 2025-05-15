@@ -17,12 +17,6 @@
 
 namespace psst {
 
-namespace {
-
-constexpr char kEnablePsstFlag[] = "enable_psst";
-
-}  // namespace
-
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
     registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
@@ -31,19 +25,18 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 bool GetEnablePsstFlag(PrefService* prefs) {
-  if (!prefs->HasPrefPath(prefs::kPsstSettingsPref)) {
+  if (!prefs || !prefs->HasPrefPath(prefs::kPsstEnabled)) {
     return false;
   }
 
-  const auto& psst_settings = prefs->GetDict(prefs::kPsstSettingsPref);
-  const auto result = psst_settings.FindBool(kEnablePsstFlag);
-  return result.has_value() && result.value();
+  return prefs->GetBoolean(prefs::kPsstEnabled);
 }
 
 void SetEnablePsstFlag(PrefService* prefs, const bool val) {
-  ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
-  base::Value::Dict& pref = update.Get();
-  pref.Set(kEnablePsstFlag, val);
+  if (!prefs) {
+    return;
+  }
+  prefs->SetBoolean(prefs::kPsstEnabled, val);
 }
 
 }  // namespace psst
