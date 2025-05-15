@@ -88,11 +88,10 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
     size_t next_callback_index_ = 0;
   };
 
-  void PermissionDecided(
-      ContentSetting content_setting,
-      bool is_one_time,
-      bool is_final_decision,
-      const std::unique_ptr<PermissionRequestData>& request_data) override;
+  void PermissionDecided(ContentSetting content_setting,
+                         bool is_one_time,
+                         bool is_final_decision,
+                         const PermissionRequestData& request_data) override;
   void CleanUpRequest(content::WebContents* web_contents,
                       const PermissionRequestID& id,
                       bool embedded_permission_element_initiated) override;

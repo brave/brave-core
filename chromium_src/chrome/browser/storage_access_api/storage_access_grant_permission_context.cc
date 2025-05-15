@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_STORAGE_ACCESS_GRANT_PERMISSION_CONTEXT_CHECK_FOR_AUTO_GRANT_OR_AUTO_DENIAL \
-  NotifyPermissionSetInternal(std::move(request_data), std::move(callback),               \
+  NotifyPermissionSetInternal(*request_data, std::move(callback),                         \
                               /*persist=*/true, CONTENT_SETTING_BLOCK,                    \
                               RequestOutcome::kDeniedByPrerequisites);                    \
   return;
