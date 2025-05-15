@@ -21,19 +21,30 @@
   height: 48px;
   object-fit: contain;
   border-radius: var(--leo-radius-m);
-  box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px
-      var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)),
-    0px var(--leo-elevation-xxs, 1px) var(--leo-elevation-xs, 4px) 0px
-      var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.1));
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.loadingContainer {
+  --leo-progressring-color: var(--leo-color-icon-default);
+  --leo-progressring-size: 24px;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--leo-radius-m);
+  background-color: var(--leo-color-container-highlight);
+  box-shadow: var(--leo-effect-elevation-01);
 }
 
 .leftSide {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: var(--leo-spacing-xl);
 }
 
-.imageInfo {
+.info {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,7 +55,7 @@
   display: grid;
 }
 
-.nameText {
+.title {
   cursor: pointer;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
@@ -53,7 +64,12 @@
   text-overflow: ellipsis;
 }
 
-.sizeText {
+.uploadingText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.subtitle {
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
 }

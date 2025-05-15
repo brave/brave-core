@@ -446,6 +446,9 @@ interface ChatUI {
   // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
   OnNewDefaultConversation();
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
+  // Notifies that files are selected between AIChatUIHandler::UploadImage() is
+  // called and return of uploaded files after processed.
+  OnUploadFilesSelected();
 };
 
 struct ConversationState {
