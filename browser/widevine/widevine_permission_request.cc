@@ -65,7 +65,7 @@ void WidevinePermissionRequest::PermissionDecided(
     ContentSetting result,
     bool is_one_time,
     bool is_final_decision,
-    const std::unique_ptr<permissions::PermissionRequestData>& request_data) {
+    const permissions::PermissionRequestData& request_data) {
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
     if (!for_restart_) {
