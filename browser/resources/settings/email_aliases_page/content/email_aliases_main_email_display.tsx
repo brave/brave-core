@@ -63,7 +63,7 @@ export const MainEmailDisplay = ({ email, emailAliasesService }:
         title={getLocale('emailAliasesSignOutTitle')}
         size='small'
         onClick={() => {
-          emailAliasesService.logout()
+          emailAliasesService.cancelAuthenticationOrLogout()
         }}>
         <Icon slot='icon-before' name="outside" />
         <span>{getLocale('emailAliasesSignOut')}</span>

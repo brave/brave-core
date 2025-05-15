@@ -70,7 +70,7 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
 const AfterSendingEmailMessage = ({ authEmail, emailAliasesService }:
   { authEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
   const onClick = () => {
-    emailAliasesService.cancelAuthentication()
+    emailAliasesService.cancelAuthenticationOrLogout()
   }
   return <SpacedCol>
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}</h4>
