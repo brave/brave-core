@@ -26,7 +26,6 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
       render_frame_host_id_(render_frame_host->GetGlobalId()),
       web_contents_(web_contents),
       world_id_(world_id) {
-  DCHECK(delegate_);
   DCHECK(world_id_ > content::ISOLATED_WORLD_ID_CONTENT_END);
   DCHECK(render_frame_host);
   DCHECK(web_contents_);
