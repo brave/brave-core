@@ -36,6 +36,25 @@ program
   )
   .parse(process.argv)
 
+// Replace the first 4 lines of the diff output with the before/after
+// format header.
+const convertDiff = (diffOutput, file) => {
+  let pos = -1
+  for (let i = 0; i < 4; i++) {
+    pos = diffOutput.indexOf('\n', pos + 1)
+  }
+  const diffOutputWithHeader =
+    `--- ${file} (original)\n+++ ${file} (reformatted)\n` +
+    diffOutput.slice(pos + 1)
+  return diffOutputWithHeader
+}
+
+const formatOutput = (result) => {
+  return [result.stdout, result.stderr]
+    .filter((v) => v.length)
+    .join('\nstderr:\n')
+}
+
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
 const runFormat = async (options = {}) => {
@@ -73,9 +92,7 @@ const runFormat = async (options = {}) => {
     stdio: 'pipe'
   })
 
-  const clFormatOutput = [clFormatResult.stdout, clFormatResult.stderr].join(
-    '\n'
-  )
+  const clFormatOutput = formatOutput(clFormatResult)
 
   if (clFormatResult.status === 2 && options.dryRun) {
     errors.push(clFormatOutput)
@@ -128,12 +145,13 @@ const runPrettier = async (files, dryRun) => {
           stdio: 'pipe',
           input: formatted,
         })
-        const diffOutput = [diffResult.stdout, diffResult.stderr].join('\n')
         if (diffResult.status === 1) {
           // Differences were found
-          errors.push(diffOutput)
+          errors.push(convertDiff(diffResult.stdout.toString(), file))
         } else {
-          errors.push(`Can't show diff for ${file}:\n ${diffOutput}`)
+          errors.push(
+            `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
+          )
         }
       } else {
         await fs.writeFile(file, formatted)

@@ -61,8 +61,9 @@ def CheckPatchFormatted(input_api, output_api):
         return []
     except RuntimeError as err:
         return [
-            f'The code requires formatting. '
-            f'Please run: npm run presubmit -- --fix.\n\n{err.args[1]}'
+            output_api.PresubmitError(
+                f'The code requires formatting. '
+                f'Please run: npm run presubmit -- --fix.\n\n{err.args[1]}')
         ]
 
 
