@@ -242,7 +242,8 @@ class ConversationHandlerUnitTest : public testing::Test {
     if (has_associated_content_) {
       associated_content_ = std::make_unique<NiceMock<MockAssociatedContent>>();
       conversation_handler_->SetAssociatedContentDelegate(
-          associated_content_->GetWeakPtr());
+          associated_content_->GetWeakPtr(),
+          /*should_send_page_contents=*/true);
     }
 
     if (is_opted_in_) {
@@ -1959,7 +1960,9 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
       GURL("https://example.com"), "This is the way - page contents",
       u"The way",
       /*is_video=*/false);
-  conversation_handler_->SetAssociatedContentDelegate(delegate->GetWeakPtr());
+  conversation_handler_->SetAssociatedContentDelegate(
+      delegate->GetWeakPtr(),
+      /*should_send_page_contents=*/true);
 
   std::string expected_input = "What is the way?";
   uint64_t expected_total_tokens = 1000;

@@ -446,11 +446,10 @@ void ConversationHandler::SetArchiveContent(std::string text_content,
       base::UTF8ToUTF16(metadata_->associated_content->title), is_video);
   associated_content_delegate_ = archive_content->GetWeakPtr();
   archive_content_ = std::move(archive_content);
-  should_send_page_contents_ = features::IsPageContextEnabledInitially();
 }
 
 void ConversationHandler::SetAssociatedContentDelegate(
-    base::WeakPtr<AssociatedContentDelegate> delegate) {
+    base::WeakPtr<AssociatedContentDelegate> delegate, bool should_send_page_contents) {
   // If this conversation is allowed to fetch content, this is the delegate
   // that can provide fresh content for the conversation.
   CHECK(delegate)
@@ -480,7 +479,7 @@ void ConversationHandler::SetAssociatedContentDelegate(
   // This class should only be provided with a delegate when
   // it is allowed to use it (e.g. not internal WebUI content).
   // The user can toggle this via the UI.
-  should_send_page_contents_ = features::IsPageContextEnabledInitially();
+  should_send_page_contents_ = should_send_page_contents;
 
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();

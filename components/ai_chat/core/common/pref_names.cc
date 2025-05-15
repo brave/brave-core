@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -16,6 +17,7 @@ namespace ai_chat::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
+    registry->RegisterBooleanPref(kBraveChatPageContextEnabledInitially, true);
     registry->RegisterBooleanPref(kBraveChatStorageEnabled, true);
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
@@ -46,6 +48,14 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Added 11/2023
   registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
+}
+
+bool IsPageContextEnabledInitially(const PrefService& prefs) {
+  auto* has_pref = prefs.GetUserPrefValue(kBraveChatPageContextEnabledInitially);
+  if (has_pref) {
+    return has_pref->GetBool();
+  }
+  return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);
 }
 
 }  // namespace ai_chat::prefs

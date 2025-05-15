@@ -108,10 +108,6 @@ BASE_FEATURE(kPageContextEnabledInitially,
              "PageContextEnabledInitially",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-bool IsPageContextEnabledInitially() {
-  return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);
-}
-
 BASE_FEATURE(kTabOrganization,
              "BraveTabOrganization",
              base::FEATURE_ENABLED_BY_DEFAULT);

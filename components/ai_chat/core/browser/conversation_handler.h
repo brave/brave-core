@@ -240,7 +240,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // This can be called multiple times, e.g. when the user navigates back to
   // content, this conversation can be reunited with the delegate.
   void SetAssociatedContentDelegate(
-      base::WeakPtr<AssociatedContentDelegate> delegate);
+      base::WeakPtr<AssociatedContentDelegate> delegate,
+      bool should_send_page_contents);
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 

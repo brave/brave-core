@@ -551,7 +551,9 @@ void AIChatService::MaybeAssociateContentWithConversation(
         associated_content) {
   if (associated_content &&
       kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
-    conversation->SetAssociatedContentDelegate(associated_content);
+    conversation->SetAssociatedContentDelegate(
+        associated_content,
+        prefs::IsPageContextEnabledInitially(*profile_prefs_));
   }
   // Record that this is the latest conversation for this content. Even
   // if we don't call SetAssociatedContentDelegate, the conversation still
