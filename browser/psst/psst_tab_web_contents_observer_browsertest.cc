@@ -87,7 +87,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     auto* psst_tab_helper = browser()
                                 ->GetActiveTabInterface()
                                 ->GetTabFeatures()
-                                ->GetPsstTabHelper();
+                                ->psst_web_contents_observer();
     auto script_handler = std::make_unique<MockScriptHandler>();
     MockScriptHandler* result = script_handler.get();
     psst_tab_helper->SetScriptHandlerForTesting(std::move(script_handler));
