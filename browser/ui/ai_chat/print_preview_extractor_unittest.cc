@@ -8,11 +8,16 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/span.h"
+#include "base/containers/span_writer.h"
+#include "base/rand_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
+#include "base/types/expected.h"
+#include "brave/browser/ui/ai_chat/print_preview_extractor_internal.h"
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
@@ -33,6 +38,16 @@ static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 namespace ai_chat {
 
 namespace {
+
+base::MappedReadOnlyRegion CreatePageRegion(size_t size) {
+  // We need to fulfill printing::LooksLikePdf()
+  base::MappedReadOnlyRegion page =
+      base::ReadOnlySharedMemoryRegion::Create(size < 50u ? 50u : size);
+  auto writer = base::SpanWriter(base::span(page.mapping));
+  writer.Write(base::byte_span_from_cstring("%PDF-"));
+  base::RandBytes(writer.remaining_span());
+  return page;
+}
 
 class MockPrintPreviewPrintRenderFrame
     : public printing::mojom::PrintRenderFrame {
@@ -128,6 +143,49 @@ class MockPrintPreviewPrintRenderFrame
   mojo::AssociatedReceiver<printing::mojom::PrintRenderFrame> receiver_{this};
 };
 
+class MockPreviewPageTextExtractor : public PreviewPageTextExtractor {
+ public:
+  MockPreviewPageTextExtractor(base::ReadOnlySharedMemoryRegion expected_region,
+                               bool expected_error)
+      : expected_region_(std::move(expected_region)),
+        expected_error_(expected_error) {}
+  ~MockPreviewPageTextExtractor() override = default;
+
+  MockPreviewPageTextExtractor(const MockPreviewPageTextExtractor&) = delete;
+  MockPreviewPageTextExtractor& operator=(const MockPreviewPageTextExtractor&) =
+      delete;
+
+  void StartExtract(
+      base::ReadOnlySharedMemoryRegion pdf_region,
+      CallbackVariant callback,
+      std::optional<bool> pdf_use_skia_renderer_enabled) override {
+    // verify the correct memory region is passed
+    EXPECT_EQ(pdf_region.Map().GetMemoryAsSpan<const uint8_t>(),
+              expected_region_.Map().GetMemoryAsSpan<const uint8_t>());
+
+    if (auto* text_cb = std::get_if<TextCallback>(&callback)) {
+      if (!expected_error_) {
+        std::move(*text_cb).Run(base::ok("extracted text"));
+      } else {
+        std::move(*text_cb).Run(
+            base::unexpected("PreviewPageTextExtractor error"));
+      }
+    } else if (auto* image_cb = std::get_if<ImageCallback>(&callback)) {
+      if (!expected_error_) {
+        std::vector<std::vector<uint8_t>> result = {{0xde, 0xad}, {0xbe, 0xef}};
+        std::move(*image_cb).Run(base::ok(std::move(result)));
+      } else {
+        std::move(*image_cb).Run(
+            base::unexpected("PreviewPageTextExtractor error"));
+      }
+    }
+  }
+
+ private:
+  base::ReadOnlySharedMemoryRegion expected_region_;
+  bool expected_error_ = false;
+};
+
 }  // namespace
 class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
  public:
@@ -139,6 +197,10 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
       delete;
 
  protected:
+  using ImageResult =
+      base::expected<std::vector<std::vector<uint8_t>>, std::string>;
+  using TextResult = base::expected<std::string, std::string>;
+
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
     NavigateAndCommit(GURL("https://brave.com/"),
@@ -304,6 +366,79 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     EXPECT_FALSE(GetPrintPreviewUIId());
   }
 
+  void SimulateFullFlow(bool extractor_error) {
+    auto full_pdf_region = CreatePageRegion(64).region;
+    internal_extractor()->SetPreviewPageTextExtractorForTesting(
+        std::make_unique<MockPreviewPageTextExtractor>(
+            full_pdf_region.Duplicate(), extractor_error));
+
+    // Simulate page composition
+    internal_extractor()->OnCompositePdfPageDone(
+        0, 0, 0, printing::mojom::PrintCompositor::Status::kSuccess,
+        CreatePageRegion(8).region);
+    internal_extractor()->OnCompositePdfPageDone(
+        1, 0, 0, printing::mojom::PrintCompositor::Status::kSuccess,
+        CreatePageRegion(16).region);
+    internal_extractor()->OnCompositeToPdfDone(
+        0, 0, printing::mojom::PrintCompositor::Status::kSuccess,
+        full_pdf_region.Duplicate());
+  }
+
+  template <typename T>
+  void RunTestCase(base::test::TestFuture<T>& future,
+                   const std::string& mime_type,
+                   bool use_capture_pdf,
+                   const std::string& expected_error_msg,
+                   bool extractor_error,
+                   bool simulate_partial_composition) {
+    const bool expect_error = !expected_error_msg.empty();
+    if (!expect_error || extractor_error) {
+      SimulateFullFlow(extractor_error);
+    } else if (simulate_partial_composition) {
+      // Simulate partial composition without setting preview data in
+      // OnCompositeToPdfDone
+      internal_extractor()->OnCompositePdfPageDone(
+          0, 0, 0, printing::mojom::PrintCompositor::Status::kSuccess,
+          CreatePageRegion(8).region);
+      internal_extractor()->OnCompositePdfPageDone(
+          1, 0, 0, printing::mojom::PrintCompositor::Status::kSuccess,
+          CreatePageRegion(16).region);
+      internal_extractor()->OnCompositeToPdfDone(
+          0, 0, printing::mojom::PrintCompositor::Status::kCompositingFailure,
+          CreatePageRegion(32).region);
+    } else {
+      // Missing preview data
+      internal_extractor()->OnCompositeToPdfDone(
+          0, 0, printing::mojom::PrintCompositor::Status::kCompositingFailure,
+          CreatePageRegion(32).region);
+    }
+
+    auto result = future.Take();
+    if (expect_error) {
+      ASSERT_FALSE(result.has_value())
+          << "Expected error for mime_type=" << mime_type
+          << ", use_capture_pdf=" << use_capture_pdf
+          << ", partial_composition=" << simulate_partial_composition;
+      EXPECT_EQ(result.error(), expected_error_msg);
+    } else {
+      ASSERT_TRUE(result.has_value())
+          << "Expected success for mime_type=" << mime_type
+          << ", use_capture_pdf=" << use_capture_pdf;
+      if constexpr (std::is_same_v<T, ImageResult>) {
+        const std::vector<std::vector<uint8_t>> expected = {{0xde, 0xad},
+                                                            {0xbe, 0xef}};
+        EXPECT_EQ(result.value(), expected);
+      } else {
+        EXPECT_EQ(result.value(), std::string("extracted text"));
+      }
+    }
+  }
+
+  PrintPreviewExtractorInternal* internal_extractor() {
+    return static_cast<PrintPreviewExtractorInternal*>(
+        pp_extractor_->extractor_.get());
+  }
+
  protected:
   std::unique_ptr<PrintPreviewExtractor> pp_extractor_;
 };
@@ -371,6 +506,55 @@ TEST_F(PrintPreviewExtractorTest, Errors) {
   RunErrorTest("application/pdf", false,
                MockPrintPreviewPrintRenderFrame::ExpectedError::kNone,
                "Print preview is disabled");
+}
+
+TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
+  struct TestParams {
+    std::string mime_type;
+    bool use_capture_pdf;
+    std::string expected_error_msg;  // Empty string means success
+    bool extractor_error;
+    bool simulate_partial_composition;
+  };
+
+  const TestParams kTestCases[] = {
+      // Missing preview data cases - error on OnCompositeToPdfDone
+      {"text/html", false, "Failed to get preview data", false, false},
+      {"application/pdf", true, "Failed to get preview data", false, false},
+
+      // Missing preview data cases - missing OnCompositePdfPageDone and error
+      // on OnCompositeToPdfDone
+      {"text/html", false, "Failed to get preview data", false, true},
+      {"application/pdf", true, "Failed to get preview data", false, true},
+
+      // Successful extraction cases
+      {"text/html", false, "", false, false},
+      {"application/pdf", true, "", false, false},
+
+      // Extraction error cases
+      {"text/html", false, "PreviewPageTextExtractor error", true, false},
+      {"application/pdf", true, "PreviewPageTextExtractor error", true, false},
+  };
+
+  for (const auto& test_case : kTestCases) {
+    auto print_render_frame = SetupPrintPreviewTest(
+        test_case.mime_type,
+        MockPrintPreviewPrintRenderFrame::ExpectedError::kNone);
+
+    if (test_case.use_capture_pdf) {
+      base::test::TestFuture<ImageResult> future;
+      pp_extractor_->CapturePdf(future.GetCallback());
+      RunTestCase(future, test_case.mime_type, test_case.use_capture_pdf,
+                  test_case.expected_error_msg, test_case.extractor_error,
+                  test_case.simulate_partial_composition);
+    } else {
+      base::test::TestFuture<TextResult> future;
+      pp_extractor_->Extract(future.GetCallback());
+      RunTestCase(future, test_case.mime_type, test_case.use_capture_pdf,
+                  test_case.expected_error_msg, test_case.extractor_error,
+                  test_case.simulate_partial_composition);
+    }
+  }
 }
 
 }  // namespace ai_chat

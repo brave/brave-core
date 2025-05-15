@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/browser/ui/ai_chat/print_preview_extractor.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -82,11 +83,16 @@ content::RenderFrameHost* GetRenderFrameHostToUse(
 
 }  // namespace
 
-PreviewPageTextExtractor::PreviewPageTextExtractor(
+PreviewPageTextExtractor::PreviewPageTextExtractor() = default;
+
+PreviewPageTextExtractor::~PreviewPageTextExtractor() = default;
+
+void PreviewPageTextExtractor::StartExtract(
     base::ReadOnlySharedMemoryRegion pdf_region,
     CallbackVariant callback,
-    std::optional<bool> pdf_use_skia_renderer_enabled)
-    : pdf_region_(std::move(pdf_region)), callback_(std::move(callback)) {
+    std::optional<bool> pdf_use_skia_renderer_enabled) {
+  pdf_region_ = std::move(pdf_region);
+  callback_ = std::move(callback);
   DCHECK(!pdf_to_bitmap_converter_.is_bound());
   GetPrintingService()->BindPdfToBitmapConverter(
       pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
@@ -97,11 +103,6 @@ PreviewPageTextExtractor::PreviewPageTextExtractor(
     pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(
         pdf_use_skia_renderer_enabled.value());
   }
-}
-
-PreviewPageTextExtractor::~PreviewPageTextExtractor() = default;
-
-void PreviewPageTextExtractor::StartExtract() {
   pdf_to_bitmap_converter_->GetPdfPageCount(
       pdf_region_.Duplicate(),
       base::BindOnce(&PreviewPageTextExtractor::OnGetPageCount,
@@ -297,6 +298,12 @@ std::optional<int32_t>
 PrintPreviewExtractorInternal::GetPrintPreviewUIIdForTesting() {
   CHECK_IS_TEST();
   return print_preview_ui_id_;
+}
+
+void PrintPreviewExtractorInternal::SetPreviewPageTextExtractorForTesting(
+    std::unique_ptr<PreviewPageTextExtractor> extractor) {
+  CHECK_IS_TEST();
+  preview_page_text_extractor_ = std::move(extractor);
 }
 
 void PrintPreviewExtractorInternal::SendError(const std::string& error) {
@@ -574,10 +581,12 @@ void PrintPreviewExtractorInternal::OnPreviewReady() {
                        weak_ptr_factory_.GetWeakPtr());
   }
 
-  preview_page_text_extractor_ = std::make_unique<PreviewPageTextExtractor>(
-      std::move(pdf_region.region), std::move(callback),
-      pdf_use_skia_renderer_enabled);
-  preview_page_text_extractor_->StartExtract();
+  if (!preview_page_text_extractor_) {
+    preview_page_text_extractor_ = std::make_unique<PreviewPageTextExtractor>();
+  }
+  preview_page_text_extractor_->StartExtract(std::move(pdf_region.region),
+                                             std::move(callback),
+                                             pdf_use_skia_renderer_enabled);
 }
 
 void PrintPreviewExtractorInternal::OnGetOCRResult(
