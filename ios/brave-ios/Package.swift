@@ -154,7 +154,7 @@ var package = Package(
     ),
     .binaryTarget(
       name: "GRDWireGuardKit",
-      path: "../../third_party/ios_deps/GRDWireGuardKit/GRDWireGuardKit.xcframework"
+      path: "../third_party/GRDWireGuardKit/GRDWireGuardKit.xcframework"
     ),
     .target(
       name: "Storage",
@@ -641,7 +641,7 @@ if isNativeTalkEnabled {
     )
   )
   package.dependencies.append(
-    .package(name: "JitsiMeet", path: "../../third_party/ios_deps/JitsiMeet")
+    .package(name: "JitsiMeet", path: "../third_party/JitsiMeet")
   )
   package.products.append(.library(name: "BraveTalk", targets: ["BraveTalk"]))
   package.targets.append(contentsOf: [

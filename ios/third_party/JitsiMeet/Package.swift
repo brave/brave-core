@@ -12,7 +12,9 @@ let package = Package(
   dependencies: [
     .package(
       // webrtc 124.0.2
-      url: "https://github.com/jitsi/webrtc", revision: "M124")
+      url: "https://github.com/jitsi/webrtc",
+      revision: "M124"
+    )
   ],
   targets: [
     .target(name: "JitsiMeet", dependencies: [.product(name: "WebRTC", package: "webrtc")]),
