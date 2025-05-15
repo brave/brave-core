@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -1068,6 +1069,9 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
+  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    return;
+  }
   webui::LocalizedString localized_strings[] = {
       {"emailAliasesLabel", IDS_SETTINGS_EMAIL_ALIASES_LABEL},
       {"emailAliasesShortDescription",
