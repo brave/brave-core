@@ -38,6 +38,24 @@ class MockScriptHandler : public PsstScriptsHandler {
 
   MOCK_METHOD(void, Start, (), (override));
   MOCK_METHOD(PsstDialogDelegate*, GetPsstDialogDelegate, (), (override));
+  MOCK_METHOD(mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&,
+              GetRemote,
+              (content::RenderFrameHost * rfh),
+              (override));
+  MOCK_METHOD(void,
+              InsertUserScript,
+              (const std::optional<MatchedRule>& rule),
+              (override));
+  MOCK_METHOD(void,
+              OnUserScriptResult,
+              (const MatchedRule& rule, base::Value script_result),
+              (override));
+  MOCK_METHOD(void,
+              InsertScriptInPage,
+              (const std::string& script,
+               std::optional<base::Value> value,
+               InsertScriptInPageCallback cb),
+              (override));
 };
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
@@ -58,6 +76,11 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
+
+    auto* registry = PsstRuleRegistryAccessor::GetInstance()->Registry();
+    if (registry) {
+      registry->LoadRules(test_data_dir.AppendASCII("psst-component-data"));
+    }
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -158,4 +181,39 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_FALSE(content::NavigateToURL(web_contents(), url));
 }
 
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       StartScriptHandlerBothScriptsExecuted) {
+  psst::SetEnablePsstFlag(GetPrefs(), true);
+  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
+
+  std::u16string expected_title(u"user-policy");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       StartScriptHandlerJustUserScriptExecuted) {
+  psst::SetEnablePsstFlag(GetPrefs(), true);
+  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  const GURL url = GetEmbeddedTestServer().GetURL("b.com", "/simple.html");
+
+  std::u16string expected_title(u"user-");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       StartScriptHandlerNoMatchedRule) {
+  psst::SetEnablePsstFlag(GetPrefs(), true);
+  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  const GURL url = GetEmbeddedTestServer().GetURL("c.com", "/simple.html");
+
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
 }  // namespace psst
