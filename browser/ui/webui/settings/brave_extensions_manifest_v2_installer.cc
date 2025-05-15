@@ -1,4 +1,4 @@
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/constants/brave_services_key_helper.h"
 #include "brave/components/constants/network_constants.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_install_prompt.h"
@@ -72,13 +73,17 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 
     const auto* update_check = app.FindDict("updatecheck");
     if (!update_check) {
-      return GURL();
+      break;
     }
     const auto* codebase = update_check->FindString("codebase");
     if (!codebase) {
-      return GURL();
+      break;
     }
-    return GURL(*codebase);
+    const GURL url(*codebase);
+    if (!url.is_valid() || !brave::ShouldAddBraveServicesKeyHeader(url)) {
+      break;
+    }
+    return url;
   }
 
   return GURL();
@@ -114,7 +119,7 @@ void ExtensionManifestV2Installer::BeginInstall() {
     semantics {
       sender: "Extension Manifest V2 Installer"
       description:
-        "In response to this request Brave backend returns Xml file
+        "In response to this request Brave backend returns an JSON file
         with update/download response."
       trigger:
         "The user enables MV2 extension on the settings page"
