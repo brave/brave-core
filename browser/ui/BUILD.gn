@@ -129,6 +129,10 @@ source_set("ui") {
     sources += [
       "ai_chat/print_preview_extractor.cc",
       "ai_chat/print_preview_extractor.h",
+
+      # move to an internal target
+      "ai_chat/print_preview_extractor_internal.cc",
+      "ai_chat/print_preview_extractor_internal.h",
     ]
     deps += [
       "//chrome/browser/pdf",
