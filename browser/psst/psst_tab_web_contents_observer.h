@@ -43,8 +43,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                              const int32_t world_id);
 
   // content::WebContentsObserver overrides
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
+  void PrimaryPageChanged(content::Page& page) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
   void SetScriptHandlerForTesting(
