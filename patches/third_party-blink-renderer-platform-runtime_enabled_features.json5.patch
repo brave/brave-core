@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index c09fd4cb4b3a7690e441085a57b66e1a8e7a652a..93f2c22e740157932fc307f5ec88440df3df29a1 100644
+index ea412eeeff02c7701e51872ad345fc399be5d768..4551e9e2b196f538da75d297133f7fd516c69b6c 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -2120,6 +2120,7 @@
@@ -18,7 +18,7 @@ index c09fd4cb4b3a7690e441085a57b66e1a8e7a652a..93f2c22e740157932fc307f5ec88440d
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2980,6 +2982,7 @@
+@@ -2979,6 +2981,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",
@@ -26,12 +26,3 @@ index c09fd4cb4b3a7690e441085a57b66e1a8e7a652a..93f2c22e740157932fc307f5ec88440d
      },
      {
        name: "MobileLayoutTheme",
-@@ -3819,7 +3822,7 @@
-       // composited pixel alignment issues. See
-       // https://crbug.com/40084005
-       name: "RenderSurfaceFor2DScaleTransform",
--      status: "stable",
-+      status: "experimental",
-     },
-     {
-       name: "ReportEventTimingAtVisibilityChange",
