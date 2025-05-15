@@ -78,6 +78,9 @@
     "CheckNewHeaderWithoutGnChangeOnUpload": ["chromium_src/"],
     "CheckForCcIncludes": ["chromium_src/"],
     "CheckForRelativeIncludes": ["chromium_src/"],
+    "CheckLongLines": [
+      "components/p3a/metric_names\\.h",
+    ],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
       "components/brave_ads/core/test/data/invalid\\.json",

@@ -9,20 +9,25 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/metric_config.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -45,8 +50,23 @@ constexpr char kTestSlowNextEpochTime[] = "2086-06-22T18:00:00Z";
 constexpr char kTestTypicalNextEpochTime[] = "2086-06-24T18:00:00Z";
 constexpr char kTestExpressNextEpochTime[] = "2086-07-01T18:00:00Z";
 constexpr char kTestHistogramName[] = "Brave.Test.Histogram";
+constexpr char kTestActivationHistogramName[] =
+    "Brave.Test.ActivationHistogram";
 constexpr char kTestNebulaHistogramName[] = "Brave.Core.WeeklyUsage.Nebula";
 constexpr char kTestHost[] = "https://localhost:8443";
+
+std::string FormatUTCDateFromTime(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.UTCExplode(&exploded);
+  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
+                            exploded.day_of_month);
+}
+
+std::vector<std::string> SplitMessageLayers(const std::string& message) {
+  return base::SplitString(message, kP3AMessageConstellationLayerSeparator,
+                           base::WhitespaceHandling::TRIM_WHITESPACE,
+                           base::SplitResult::SPLIT_WANT_NONEMPTY);
+}
 
 }  // namespace
 
@@ -65,6 +85,8 @@ class P3AConstellationHelperTest : public testing::Test {
     p3a_config_.star_randomness_host = kTestHost;
 
     ConstellationHelper::RegisterPrefs(local_state_.registry());
+    local_state_.registry()->RegisterDictionaryPref(
+        p3a::kActivationDatesDictPref);
 
 #if !BUILDFLAG(IS_IOS)
     local_state_.registry()->RegisterStringPref(kReferralPromoCode, {});
@@ -280,10 +302,8 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
 
   std::string message_with_no_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType, std::nullopt);
-  std::vector<std::string> no_refcode_layers = base::SplitString(
-      message_with_no_refcode, kP3AMessageConstellationLayerSeparator,
-      base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> no_refcode_layers =
+      SplitMessageLayers(message_with_no_refcode);
 
   EXPECT_EQ(no_refcode_layers.size(), 8U);
   EXPECT_FALSE(no_refcode_layers.at(7).starts_with("ref"));
@@ -291,10 +311,8 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   std::string message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType,
       MetricConfig{.append_attributes = {MetricAttribute::kRef}});
-  std::vector<std::string> refcode_layers = base::SplitString(
-      message_with_refcode, kP3AMessageConstellationLayerSeparator,
-      base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> refcode_layers =
+      SplitMessageLayers(message_with_refcode);
 
   EXPECT_EQ(refcode_layers.size(), 9U);
   EXPECT_EQ(refcode_layers.at(8), "ref|none");
@@ -306,10 +324,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType,
       MetricConfig{.append_attributes = {MetricAttribute::kRef}});
-  refcode_layers = base::SplitString(message_with_refcode,
-                                     kP3AMessageConstellationLayerSeparator,
-                                     base::WhitespaceHandling::TRIM_WHITESPACE,
-                                     base::SplitResult::SPLIT_WANT_NONEMPTY);
+  refcode_layers = SplitMessageLayers(message_with_refcode);
 
   EXPECT_EQ(refcode_layers.size(), 9U);
   EXPECT_EQ(refcode_layers.at(8), "ref|BRV003");
@@ -320,10 +335,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType,
       MetricConfig{.append_attributes = {MetricAttribute::kRef}});
-  refcode_layers = base::SplitString(message_with_refcode,
-                                     kP3AMessageConstellationLayerSeparator,
-                                     base::WhitespaceHandling::TRIM_WHITESPACE,
-                                     base::SplitResult::SPLIT_WANT_NONEMPTY);
+  refcode_layers = SplitMessageLayers(message_with_refcode);
 
   EXPECT_EQ(refcode_layers.size(), 9U);
   EXPECT_EQ(refcode_layers.at(8), "ref|other");
@@ -348,10 +360,7 @@ TEST_F(P3AConstellationHelperTest, CustomAttributes) {
   std::string message = GenerateP3AConstellationMessage(
       kTestHistogramName, 7, meta_info, kP3AUploadType, config);
 
-  std::vector<std::string> layers =
-      base::SplitString(message, kP3AMessageConstellationLayerSeparator,
-                        base::WhitespaceHandling::TRIM_WHITESPACE,
-                        base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> layers = SplitMessageLayers(message);
 
   // Verify number of layers matches number of non-null attributes
   EXPECT_EQ(layers.size(), 8U);
@@ -377,10 +386,7 @@ TEST_F(P3AConstellationHelperTest, NebulaMessage) {
   std::string message = GenerateP3AConstellationMessage(
       kTestHistogramName, 3, meta_info, kP3AUploadType,
       MetricConfig{.nebula = true});
-  std::vector<std::string> no_refcode_layers =
-      base::SplitString(message, kP3AMessageConstellationLayerSeparator,
-                        base::WhitespaceHandling::TRIM_WHITESPACE,
-                        base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> no_refcode_layers = SplitMessageLayers(message);
 
   EXPECT_EQ(no_refcode_layers.size(), 7U);
   EXPECT_EQ(no_refcode_layers[0],
@@ -420,6 +426,85 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
   }
   EXPECT_GE(points_request_count, 1u);
   EXPECT_LE(points_request_count, 25u);
+}
+
+TEST_F(P3AConstellationHelperTest, ActivationDateAttributes) {
+  // Create metric config with both activation attributes
+  MetricConfig config{.attributes = MetricAttributes{
+                          MetricAttribute::kAnswerIndex,
+                          MetricAttribute::kWeekOfActivation,
+                          MetricAttribute::kDateOfActivation,
+                      }};
+
+  MessageMetainfo meta_info;
+  meta_info.Init(&local_state_, "release", install_time_);
+
+  // Test case 1: No activation date set
+  auto message = GenerateP3AConstellationMessage(
+      kTestHistogramName, 3, meta_info, kP3AUploadType, config);
+
+  auto layers = SplitMessageLayers(message);
+
+  // Verify activation attributes show "none" when no activation date is set
+  EXPECT_EQ(layers.size(), 4U);
+  EXPECT_EQ(layers[2], "woa|none");
+  EXPECT_EQ(layers[3], "dtoa|none");
+
+  // Test case 2: Recent activation date (within threshold)
+  base::Time activation_time = base::Time::Now() - base::Days(1);
+  base::Time activation_week = brave_stats::GetLastMondayTime(activation_time);
+
+  {
+    ScopedDictPrefUpdate update(&local_state_, p3a::kActivationDatesDictPref);
+    update->Set(kTestHistogramName, base::TimeToValue(activation_time));
+  }
+
+  message = GenerateP3AConstellationMessage(kTestHistogramName, 3, meta_info,
+                                            kP3AUploadType, config);
+
+  layers = SplitMessageLayers(message);
+
+  // Verify activation attributes show dates for recent activation
+  EXPECT_EQ(layers.size(), 4U);
+  EXPECT_EQ(layers[2], "woa|" + FormatUTCDateFromTime(activation_week));
+  EXPECT_EQ(layers[3], "dtoa|" + FormatUTCDateFromTime(activation_time));
+
+  activation_time = activation_time - base::Days(14);
+  activation_week = brave_stats::GetLastMondayTime(activation_time);
+  {
+    ScopedDictPrefUpdate update(&local_state_, p3a::kActivationDatesDictPref);
+    update->Set(kTestActivationHistogramName,
+                base::TimeToValue(activation_time));
+  }
+  // Test with separate activation histogram name
+  config.activation_metric_name = kTestActivationHistogramName;
+
+  message = GenerateP3AConstellationMessage(kTestHistogramName, 3, meta_info,
+                                            kP3AUploadType, config);
+
+  layers = SplitMessageLayers(message);
+
+  // Verify activation attributes show dates for recent activation
+  EXPECT_EQ(layers.size(), 4U);
+  EXPECT_EQ(layers[2], "woa|" + FormatUTCDateFromTime(activation_week));
+  EXPECT_EQ(layers[3], "dtoa|" + FormatUTCDateFromTime(activation_time));
+
+  activation_time = activation_time - base::Days(17);
+  {
+    ScopedDictPrefUpdate update(&local_state_, p3a::kActivationDatesDictPref);
+    update->Set(kTestActivationHistogramName,
+                base::TimeToValue(activation_time));
+  }
+
+  message = GenerateP3AConstellationMessage(kTestHistogramName, 3, meta_info,
+                                            kP3AUploadType, config);
+
+  layers = SplitMessageLayers(message);
+
+  // Verify activation attributes show "none" for old activation date
+  EXPECT_EQ(layers.size(), 4U);
+  EXPECT_EQ(layers[2], "woa|none");
+  EXPECT_EQ(layers[3], "dtoa|none");
 }
 
 }  // namespace p3a
