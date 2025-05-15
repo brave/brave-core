@@ -111,13 +111,23 @@ struct AIChatFeedbackPrivacyWarningView: View {
         }
       )
     }
-    .osAvailabilityModifiers({ view in
+    .osAvailabilityModifiers({ content in
+      #if compiler(>=5.8)
       if #available(iOS 16.4, *) {
-        view
+        content
           .scrollBounceBehavior(.basedOnSize)
       } else {
-        view
+        content
+          .introspectScrollView { scrollView in
+            scrollView.alwaysBounceVertical = false
+          }
       }
+      #else
+      content
+        .introspectScrollView { scrollView in
+          scrollView.alwaysBounceVertical = false
+        }
+      #endif
     })
     .frame(maxHeight: viewHeight)
   }
