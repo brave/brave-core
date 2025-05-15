@@ -86,7 +86,7 @@ void BraveWalletPermissionContext::RequestPermission(
         content::WebContents::FromRenderFrameHost(rfh);
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
-    NotifyPermissionSet(std::move(request_data), std::move(callback),
+    NotifyPermissionSet(*request_data, std::move(callback),
                         /*persist=*/false, CONTENT_SETTING_BLOCK,
                         /*is_one_time=*/false,
                         /*is_final_decision=*/true);
