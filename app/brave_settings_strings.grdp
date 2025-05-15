@@ -1550,6 +1550,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
     Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOMATICALLY_ATTACH_PAGE_LABEL" desc="The text for settings option to automatically attach page to Leo">
+    Automatically add content from the active tab for context
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOMATICALLY_ATTACH_PAGE_DESC" desc="The description for settings option to automatically attach page to Leo">
+    Toggle this on for new conversations started from the sidebar to be contextually aware of the page you launched them from. The contents will be sent to Brave Leo along with your messages.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL" desc="The text for settings option to enable tab focus mode">
     Tab Focus Mode
   </message>

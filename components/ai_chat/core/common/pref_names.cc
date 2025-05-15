@@ -17,7 +17,9 @@ namespace ai_chat::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
-    registry->RegisterBooleanPref(kBraveChatPageContextEnabledInitially, true);
+    registry->RegisterBooleanPref(
+        kBraveChatPageContextEnabledInitially,
+        base::FeatureList::IsEnabled(features::kPageContextEnabledInitially));
     registry->RegisterBooleanPref(kBraveChatStorageEnabled, true);
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
@@ -51,7 +53,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 bool IsPageContextEnabledInitially(const PrefService& prefs) {
-  auto* has_pref = prefs.GetUserPrefValue(kBraveChatPageContextEnabledInitially);
+  auto* has_pref =
+      prefs.GetUserPrefValue(kBraveChatPageContextEnabledInitially);
   if (has_pref) {
     return has_pref->GetBool();
   }
