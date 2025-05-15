@@ -62,9 +62,4 @@ public class BraveRadioButtonGroupHomepagePreferenceDummySuper extends Preferenc
         assert false : "This dummy class should be replaced in bytecode!";
         return null;
     }
-
-    @VisibleForTesting
-    public static Class getPreferenceValuesClass() {
-        return PreferenceValues.class;
-    }
 }

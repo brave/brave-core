@@ -78,7 +78,7 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreferenceDummySuper;
+import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
@@ -932,16 +932,14 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
                         "getPreferenceValue",
                         MethodModifier.REGULAR,
-                        BraveRadioButtonGroupHomepagePreferenceDummySuper
-                                .getPreferenceValuesClass()));
+                        BraveRadioButtonGroupHomepagePreference.getPreferenceValuesClass()));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
                         "setupPreferenceValues",
                         MethodModifier.REGULAR,
                         void.class,
-                        BraveRadioButtonGroupHomepagePreferenceDummySuper
-                                .getPreferenceValuesClass()));
+                        BraveRadioButtonGroupHomepagePreference.getPreferenceValuesClass()));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line

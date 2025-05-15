@@ -111,4 +111,9 @@ public final class BraveRadioButtonGroupHomepagePreference
     RadioButtonWithDescription getMobileBookmarksRadioButton() {
         return mMobileBookmarks;
     }
+
+    @VisibleForTesting
+    public static Class getPreferenceValuesClass() {
+        return PreferenceValues.class;
+    }
 }
