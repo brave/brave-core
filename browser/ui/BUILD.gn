@@ -411,6 +411,7 @@ source_set("ui") {
       ]
 
       deps += [
+        "//brave/components/constants:brave_service_key_helper",
         "//chrome/browser/extensions",
         "//extensions/browser",
         "//extensions/common",
