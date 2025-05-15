@@ -63,7 +63,7 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_PSST)
   psst_web_contents_observer_ =
       psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          tab.GetContents(), nullptr, /* delegate implementation */
+          tab.GetContents(), profile, nullptr, /* delegate implementation */
           ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #endif
 }
