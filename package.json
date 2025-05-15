@@ -181,7 +181,7 @@
     "typescript": "5.7.3",
     "typescript-plugin-css-modules": "5.1.0",
     "typescript-plugin-styled-components": "3.0.0",
-    "webpack": "5.97.1",
+    "webpack": "5.99.8",
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
