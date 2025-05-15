@@ -18,11 +18,3 @@ transpile_web_ui("email_aliases_ui") {
   deps = [ "//brave/components/email_aliases:mojom_js" ]
 }
 
-static_library("features") {
-  sources = [
-    "features.cc",
-    "features.h",
-  ]
-
-  public_deps = [ "//base" ]
-}
