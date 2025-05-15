@@ -13,6 +13,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
@@ -59,15 +60,18 @@ PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
       world_id_(world_id) {
   CHECK(world_id_ > content::ISOLATED_WORLD_ID_CONTENT_END);
   CHECK(render_frame_host);
-  CHECK(web_contents_);
   CHECK(prefs_);
 }
 
 PsstScriptsHandlerImpl::~PsstScriptsHandlerImpl() = default;
 
 void PsstScriptsHandlerImpl::Start() {
-  // Here must be implemented the logic of starting the script handler
-  // and showing the dialog.
+  CHECK(web_contents_);
+  auto url = web_contents_->GetLastCommittedURL();
+
+  PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+      url, base::BindOnce(&PsstScriptsHandlerImpl::InsertUserScript,
+                          weak_factory_.GetWeakPtr()));
 }
 
 PsstDialogDelegate* PsstScriptsHandlerImpl::GetPsstDialogDelegate() {
