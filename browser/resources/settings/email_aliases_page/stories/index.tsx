@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ManagePage } from '../email_aliases'
+import { ManagePageConnected } from '../email_aliases'
 import { EmailAliasModal } from '../content/email_aliases_modal'
 import {
   Alias,
@@ -162,17 +162,8 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     }, 5000);
   }
 
-  cancelAuthentication () {
+  cancelAuthenticationOrLogout () {
     window.clearTimeout(this.accountRequestId)
-    this.observers.forEach(observer => {
-      observer.onAuthStateChanged({
-        status: AuthenticationStatus.kUnauthenticated,
-        email: ''
-      })
-    })
-  }
-
-  logout () {
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kUnauthenticated,
@@ -217,18 +208,17 @@ const bindAccountReadyObserver =
 
 export const SignInPage = () => {
   return (
-    <ManagePage emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
-                bindObserver={bindNoAccountObserver}>
-    </ManagePage>
+    <ManagePageConnected
+      emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
+      bindObserver={bindNoAccountObserver} />
   )
 }
 
 export const SettingsPage = () => {
   return (
-    <ManagePage
+    <ManagePageConnected
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      bindObserver={bindAccountReadyObserver}>
-    </ManagePage>
+      bindObserver={bindAccountReadyObserver} />
   )
 }
 
