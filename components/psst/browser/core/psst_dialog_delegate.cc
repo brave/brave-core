@@ -13,6 +13,22 @@ namespace psst {
 PsstDialogDelegate::PsstDialogDelegate() = default;
 PsstDialogDelegate::~PsstDialogDelegate() = default;
 
+PsstDialogDelegate::ShowDialogData::ShowDialogData(
+    const bool is_new_version,
+    const std::string& site_name,
+    base::Value::List request_infos,
+    ConsentCallback apply_changes_callback,
+    ConsentCallback cancel_callback,
+    base::OnceClosure never_ask_me_callback)
+    : is_new_version(is_new_version),
+      site_name(site_name),
+      request_infos(std::move(request_infos)),
+      apply_changes_callback(std::move(apply_changes_callback)),
+      cancel_callback(std::move(cancel_callback)),
+      never_ask_me_callback(std::move(never_ask_me_callback)) {}
+
+PsstDialogDelegate::ShowDialogData::~ShowDialogData() = default;
+
 void PsstDialogDelegate::SetProgressValue(const double value) {
   // Default implementation does nothing.
 }

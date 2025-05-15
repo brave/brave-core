@@ -15,6 +15,8 @@ component("core") {
     "psst_component_installer.h",
     "psst_dialog_delegate.cc",
     "psst_dialog_delegate.h",
+    "psst_opeartion_context.cc",
+    "psst_opeartion_context.h",
     "psst_rule.cc",
     "psst_rule.h",
     "psst_rule_registry.cc",
@@ -40,6 +42,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "psst_opeartion_context_unittest.cc",
     "psst_rule_registry_unittest.cc",
     "rule_data_reader_unittest.cc",
   ]

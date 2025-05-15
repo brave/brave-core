@@ -12,6 +12,7 @@
 
 #include "base/component_export.h"
 #include "base/functional/callback.h"
+#include "base/values.h"
 
 namespace psst {
 
@@ -25,7 +26,22 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
 
   // Data structure to hold information, required for displaying the PSST
   // dialog.
-  struct COMPONENT_EXPORT(PSST_BROWSER_CORE) ShowDialogData {};
+  struct COMPONENT_EXPORT(PSST_BROWSER_CORE) ShowDialogData {
+    ShowDialogData(const bool is_new_version,
+                   const std::string& site_name,
+                   base::Value::List request_infos,
+                   ConsentCallback apply_changes_callback,
+                   ConsentCallback cancel_callback,
+                   base::OnceClosure never_ask_me_callback);
+    ~ShowDialogData();
+
+    bool is_new_version;
+    std::string site_name;
+    base::Value::List request_infos;
+    ConsentCallback apply_changes_callback;
+    ConsentCallback cancel_callback;
+    base::OnceClosure never_ask_me_callback;
+  };
 
   PsstDialogDelegate();
   virtual ~PsstDialogDelegate();
