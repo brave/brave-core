@@ -116,7 +116,7 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
   EXPECT_EQ(creative.creative_instance_id,
             "30244a36-561a-48f0-8d7a-780e9035c57a");
   EXPECT_EQ(creative.url,
-            GURL("chrome://branded-wallpaper/sponsored-images/"
+            GURL("chrome://branded-wallpaper/"
                  "30244a36-561a-48f0-8d7a-780e9035c57a/background-1.jpg"));
   EXPECT_EQ(creative.file_path,
             installed_dir.AppendASCII(
@@ -130,8 +130,8 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
             installed_dir.AppendASCII(
                 "30244a36-561a-48f0-8d7a-780e9035c57a/button-1.png"));
   EXPECT_EQ(creative.logo.image_url,
-            "chrome://branded-wallpaper/sponsored-images/"
-            "30244a36-561a-48f0-8d7a-780e9035c57a/button-1.png");
+            "chrome://branded-wallpaper/30244a36-561a-48f0-8d7a-780e9035c57a/"
+            "button-1.png");
 }
 
 TEST(NTPSponsoredImagesDataTest, ParseSponsoredRichMediaCampaign) {
