@@ -966,3 +966,14 @@
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.TilesLinearLayout { *; }
+
+-keep class org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference {
+    *** onCheckedChanged(...);
+    *** getPreferenceValue(...);
+    *** setupPreferenceValues(...);
+    *** onTextChanged(...);
+    *** getCustomUriRadioButton(...);
+    *** getChromeNtpRadioButton(...);
+}
+
+-keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference

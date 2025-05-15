@@ -27,6 +27,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
@@ -77,6 +78,7 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreferenceDummySuper;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
@@ -158,6 +160,8 @@ import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher.WebsitePermissionsType;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
+import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
+import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
@@ -915,6 +919,48 @@ public class BytecodeTest {
                         "getAppHeaderCoordinator",
                         MethodModifier.REGULAR,
                         AppHeaderCoordinator.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "onCheckedChanged",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        RadioGroup.class,
+                        int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "getPreferenceValue",
+                        MethodModifier.REGULAR,
+                        BraveRadioButtonGroupHomepagePreferenceDummySuper
+                                .getPreferenceValuesClass()));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "setupPreferenceValues",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        BraveRadioButtonGroupHomepagePreferenceDummySuper
+                                .getPreferenceValuesClass()));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "onTextChanged",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        CharSequence.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "getCustomUriRadioButton",
+                        MethodModifier.REGULAR,
+                        RadioButtonWithEditText.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "getChromeNtpRadioButton",
+                        MethodModifier.REGULAR,
+                        RadioButtonWithDescription.class));
     }
 
     @Test
@@ -2433,6 +2479,22 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "androidx/preference/Preference")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/homepage/settings/BraveRadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference")); // presubmit: ignore-long-line
+    }
+
+    @Test
+    @SmallTest
+    public void testClassInNotFinal() throws Exception {
+        Assert.assertTrue(
+                checkClassIsNotFinal(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -2627,5 +2689,13 @@ public class BytecodeTest {
             return false;
         }
         return c.getSuperclass().equals(s);
+    }
+
+    private boolean checkClassIsNotFinal(String className) {
+        Class c = getClassForPath(className);
+        if (c == null) {
+            return false;
+        }
+        return !Modifier.isFinal(c.getModifiers());
     }
 }

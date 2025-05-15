@@ -16,13 +16,15 @@ import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference.HomepageOption;
+import org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference.PreferenceValues;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 
 /** Brave's version of a radio button group Preference used for Homepage Preference. */
 @NullMarked
 public final class BraveRadioButtonGroupHomepagePreference
-        extends RadioButtonGroupHomepagePreference {
+        extends BraveRadioButtonGroupHomepagePreferenceDummySuper {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static final String MOBILE_BOOKMARKS_PATH = "chrome-native://bookmarks/folder/1";
 
@@ -43,7 +45,7 @@ public final class BraveRadioButtonGroupHomepagePreference
      */
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        PreferenceValues preferenceValues = getPreferenceValue();
+        PreferenceValues preferenceValues = super.getPreferenceValue();
         if (preferenceValues == null) return;
 
         if (checkedId == R.id.brave_homepage_mobile_bookmarks) {
@@ -90,7 +92,7 @@ public final class BraveRadioButtonGroupHomepagePreference
             mMobileBookmarks.setChecked(true);
             // Set proper URL (mobile bookmarks is the same as custom uri just with mobile
             // bookmarks path).
-            onTextChanged(MOBILE_BOOKMARKS_PATH);
+            super.onTextChanged(MOBILE_BOOKMARKS_PATH);
         }
     }
 
