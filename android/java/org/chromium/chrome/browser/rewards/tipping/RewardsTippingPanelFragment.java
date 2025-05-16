@@ -60,7 +60,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private static final String TAG = "TippingPanelFragment";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private final String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private final String mWalletType =
+            BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 
     private final TextView mRadioTipAmount[] = new TextView[4];
     private double[] mTipChoices;
@@ -465,30 +466,31 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         });
     }
 
-    private final TextWatcher mTextChangeListener = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    private final TextWatcher mTextChangeListener =
+            new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (TextUtils.isEmpty(s)) s = "0";
-            Double batValue = getBatValue(s.toString(), mIsBatCurrency);
-            Double usdValue = mRate * batValue;
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (TextUtils.isEmpty(s)) s = "0";
+                    Double batValue = getBatValue(s.toString(), mIsBatCurrency);
+                    Double usdValue = mRate * batValue;
 
-            if (mIsBatCurrency) {
-                mCurrency2ValueTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
-            } else {
-                mCurrency2ValueTextView.setText(String.valueOf(batValue));
-            }
+                    if (mIsBatCurrency) {
+                        mCurrency2ValueTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
+                    } else {
+                        mCurrency2ValueTextView.setText(String.valueOf(batValue));
+                    }
 
-            mAmountSelected = selectedAmount();
-            checkEnoughFund();
-        }
+                    mAmountSelected = selectedAmount();
+                    checkEnoughFund();
+                }
 
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
+                @Override
+                public void afterTextChanged(Editable s) {}
+            };
 
     private void init(View view) {
         mCurrency1TextView = view.findViewById(R.id.currency1);
@@ -610,53 +612,54 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         }
     }
 
-    private final View.OnClickListener mRadioClicker = view -> {
-        if (mFetchBalanceProgressBar.getVisibility() == View.VISIBLE) {
-            return;
-        }
-        mCurrency1ValueEditTextView.removeTextChangedListener(mTextChangeListener);
+    private final View.OnClickListener mRadioClicker =
+            view -> {
+                if (mFetchBalanceProgressBar.getVisibility() == View.VISIBLE) {
+                    return;
+                }
+                mCurrency1ValueEditTextView.removeTextChangedListener(mTextChangeListener);
 
-        TextView tb_pressed = (TextView) view;
-        if (!tb_pressed.isSelected()) {
-            tb_pressed.setSelected(true);
-        }
+                TextView tb_pressed = (TextView) view;
+                if (!tb_pressed.isSelected()) {
+                    tb_pressed.setSelected(true);
+                }
 
-        int id = view.getId();
-        if (id == R.id.tipChoiceCustom) {
-            mCurrency1ValueEditTextView.requestFocus();
-            mCurrency1ValueTextView.setVisibility(View.INVISIBLE);
-            mCurrency1ValueEditTextView.setVisibility(View.VISIBLE);
-        } else {
-            mCurrency1ValueTextView.setVisibility(View.VISIBLE);
-            mCurrency1ValueEditTextView.setVisibility(View.INVISIBLE);
-            mCurrency1ValueTextView.setInputType(InputType.TYPE_NULL);
-            String s = ((TextView) view).getText().toString();
+                int id = view.getId();
+                if (id == R.id.tipChoiceCustom) {
+                    mCurrency1ValueEditTextView.requestFocus();
+                    mCurrency1ValueTextView.setVisibility(View.INVISIBLE);
+                    mCurrency1ValueEditTextView.setVisibility(View.VISIBLE);
+                } else {
+                    mCurrency1ValueTextView.setVisibility(View.VISIBLE);
+                    mCurrency1ValueEditTextView.setVisibility(View.INVISIBLE);
+                    mCurrency1ValueTextView.setInputType(InputType.TYPE_NULL);
+                    String s = ((TextView) view).getText().toString();
 
-            Double batValue = getBatValue(s, true);
-            Double usdValue = mRate * batValue;
-            String usdValueString = String.valueOf(roundExchangeUp(usdValue));
+                    Double batValue = getBatValue(s, true);
+                    Double usdValue = mRate * batValue;
+                    String usdValueString = String.valueOf(roundExchangeUp(usdValue));
 
-            if (mIsBatCurrency) {
-                mCurrency1ValueTextView.setText(s);
-                mCurrency1ValueEditTextView.setText(s);
-                mCurrency2ValueTextView.setText(usdValueString);
-            } else {
-                mCurrency1ValueTextView.setText(usdValueString);
-                mCurrency1ValueEditTextView.setText(usdValueString);
-                mCurrency2ValueTextView.setText(s);
-            }
-        }
-        for (TextView tb : mRadioTipAmount) {
-            if (tb.getId() == id) {
-                continue;
-            }
-            tb.setSelected(false);
-        }
-        mAmountSelected = selectedAmount();
+                    if (mIsBatCurrency) {
+                        mCurrency1ValueTextView.setText(s);
+                        mCurrency1ValueEditTextView.setText(s);
+                        mCurrency2ValueTextView.setText(usdValueString);
+                    } else {
+                        mCurrency1ValueTextView.setText(usdValueString);
+                        mCurrency1ValueEditTextView.setText(usdValueString);
+                        mCurrency2ValueTextView.setText(s);
+                    }
+                }
+                for (TextView tb : mRadioTipAmount) {
+                    if (tb.getId() == id) {
+                        continue;
+                    }
+                    tb.setSelected(false);
+                }
+                mAmountSelected = selectedAmount();
 
-        checkEnoughFund();
-        mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
-    };
+                checkEnoughFund();
+                mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
+            };
 
     private double selectedAmount() {
         double amount = 0.0;

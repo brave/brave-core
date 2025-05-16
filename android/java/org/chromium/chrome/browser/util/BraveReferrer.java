@@ -62,6 +62,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private class InitReferrerRunnable implements Runnable {
         private final Context mContext;
         private final BraveReferrer mBraveReferrer;
+
         public InitReferrerRunnable(Context context, BraveReferrer braveReferrer) {
             mContext = context;
             mBraveReferrer = braveReferrer;
@@ -97,6 +98,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
 
     private class SaveReferrerRunnable implements Runnable {
         private final String mUrpc;
+
         public SaveReferrerRunnable(String urpc) {
             mUrpc = urpc;
         }
