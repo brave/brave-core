@@ -168,7 +168,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bitflags"
-version = "2.9.0"
+version = "2.9.1"
 
 [[package]]
 name = "bitvec"
@@ -396,14 +396,14 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.37"
+version = "4.5.38"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.5.37"
+version = "4.5.38"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -739,7 +739,7 @@ name = "flatbuffers"
 version = "25.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.9.0",
+ "bitflags 2.9.1",
  "rustc_version",
 ]
 
@@ -968,7 +968,7 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.15.2"
+version = "0.15.3"
 dependencies = [
  "allocator-api2",
  "equivalent",
@@ -1155,7 +1155,7 @@ name = "lol_html"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.9.0",
+ "bitflags 2.9.1",
  "cfg-if",
  "cssparser 0.29.6",
  "encoding_rs",
@@ -1683,7 +1683,7 @@ dependencies = [
 name = "readability"
 version = "0.1.4"
 dependencies = [
- "bitflags 2.9.0",
+ "bitflags 2.9.1",
  "html5ever",
  "kuchikiki",
  "lazy_static",
@@ -1715,7 +1715,7 @@ name = "redox_syscall"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.9.0",
+ "bitflags 2.9.1",
 ]
 
 [[package]]
@@ -1824,7 +1824,7 @@ name = "selectors"
 version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.9.0",
+ "bitflags 2.9.1",
  "cssparser 0.34.0",
  "derive_more",
  "fxhash",
@@ -1912,7 +1912,7 @@ name = "shardtree"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.9.0",
+ "bitflags 2.9.1",
  "either",
  "incrementalmerkletree",
  "tracing",
