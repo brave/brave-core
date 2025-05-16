@@ -146,6 +146,7 @@ bool ImportIndexedDBExtensionSettings(const std::string& extension_id,
   // Copy settings.
   source_enumerator.ForEach([&target_profile,
                              &kIndexedDBDir](const base::FilePath& path) {
+    base::CreateDirectory(target_profile.AppendASCII(kIndexedDBDir));
     base::CopyDirectory(
         path, target_profile.AppendASCII(kIndexedDBDir).Append(path.BaseName()),
         true);

@@ -55,6 +55,7 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
                            extensions_import::ExtensionImportStatus status);
 
   std::unique_ptr<extensions_import::ExtensionsImporter> extensions_importer_;
+  bool extensions_import_ready_ = false;
 #endif
 
   bool do_not_launch_import_for_testing_ = false;

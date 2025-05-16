@@ -51,10 +51,14 @@ void BraveExternalProcessImporterHost::LaunchImportIfReady() {
           weak_ptr_factory_.GetWeakPtr()));
       return;
     }
+    if (!extensions_import_ready_) {
+      return;
+    }
   }
 #endif
 
   if (!do_not_launch_import_for_testing_) {
+    CHECK(!client_);
     ExternalProcessImporterHost::LaunchImportIfReady();
   } else {
     NotifyImportEnded();
@@ -93,6 +97,7 @@ void BraveExternalProcessImporterHost::OnExtensionsImportReady(bool ready) {
             weak_ptr_factory_.GetWeakPtr()),
         IDS_EXTENSIONS_IMPORTER_LOCK_TITLE, IDS_EXTENSIONS_IMPORTER_LOCK_TEXT);
   } else {
+    extensions_import_ready_ = true;
     LaunchImportIfReady();
   }
 }
