@@ -31,15 +31,27 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     public BraveMenuButtonCoordinator(
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate,
-            WindowAndroid windowAndroid, SetFocusFunction setUrlBarFocusFunction,
-            Runnable requestRenderRunnable, boolean shouldShowAppUpdateBadge,
-            Supplier<Boolean> isInOverviewModeSupplier, ThemeColorProvider themeColorProvider,
-            Supplier<MenuButtonState> menuButtonStateSupplier, Runnable onMenuButtonClicked,
+            WindowAndroid windowAndroid,
+            SetFocusFunction setUrlBarFocusFunction,
+            Runnable requestRenderRunnable,
+            boolean shouldShowAppUpdateBadge,
+            Supplier<Boolean> isInOverviewModeSupplier,
+            ThemeColorProvider themeColorProvider,
+            Supplier<MenuButtonState> menuButtonStateSupplier,
+            Runnable onMenuButtonClicked,
             @IdRes int menuButtonId) {
-        super(appMenuCoordinatorSupplier, controlsVisibilityDelegate, windowAndroid,
-                setUrlBarFocusFunction, requestRenderRunnable, shouldShowAppUpdateBadge,
-                isInOverviewModeSupplier, themeColorProvider, menuButtonStateSupplier,
-                onMenuButtonClicked, menuButtonId);
+        super(
+                appMenuCoordinatorSupplier,
+                controlsVisibilityDelegate,
+                windowAndroid,
+                setUrlBarFocusFunction,
+                requestRenderRunnable,
+                shouldShowAppUpdateBadge,
+                isInOverviewModeSupplier,
+                themeColorProvider,
+                menuButtonStateSupplier,
+                onMenuButtonClicked,
+                menuButtonId);
 
         mActivity = windowAndroid.getActivity().get();
     }

@@ -26,8 +26,8 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
-public class BraveWalletAutoLockPreferences
-        extends Preference implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
+public class BraveWalletAutoLockPreferences extends Preference
+        implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
     private final String TAG = "BraveWalletAutoLockPreferences";
 
     public static final int WALLET_AUTOLOCK_DEFAULT_TIME = 5;
