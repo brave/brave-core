@@ -105,6 +105,7 @@ public struct BrowserMenu: View {
                 .padding(.horizontal, 12)
                 .background(Color(braveSystemName: .iosBrowserContainerHighlightIos), in: .capsule)
             }
+            .buttonStyle(.plain)
           }
           .foregroundStyle(Color(braveSystemName: .textTertiary))
           QuickActionsView(actions: quickActions) { $action in
