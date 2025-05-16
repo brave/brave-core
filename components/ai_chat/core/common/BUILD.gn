@@ -42,9 +42,7 @@ source_set("test_support") {
 if (!is_ios) {
   source_set("unit_tests") {
     testonly = true
-    sources = [
-      "utils_unittest.cc",
-    ]
+    sources = [ "utils_unittest.cc" ]
 
     deps = [
       "//base/test:test_support",
