@@ -24,7 +24,7 @@ import {
 export class BraveSettingsClearBrowsingDataDialogElement
 extends SettingsClearBrowsingDataDialogElement {
   declare braveRewardsEnabled_: boolean
-  onClearBraveAdsDataClickHandler_: ((e: Event) => void) = () => {}
+  declare onClearBraveAdsDataClickHandler_: ((e: Event) => void)
 
   private clearDataBrowserProxy_: BraveClearBrowsingDataDialogBrowserProxy =
     BraveClearBrowsingDataDialogBrowserProxyImpl.getInstance()
@@ -41,6 +41,10 @@ extends SettingsClearBrowsingDataDialogElement {
       braveRewardsEnabled_: {
         type: Boolean,
         value: false,
+      },
+      onClearBraveAdsDataClickHandler_: {
+        type: Function,
+        value: () => {},
       },
     }
   }
