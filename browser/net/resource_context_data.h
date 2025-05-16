@@ -66,13 +66,11 @@ class ResourceContextData : public base::SupportsUserData::Data {
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
-  static BraveProxyingWebSocket* StartProxyingWebSocket(
+  static BraveProxyingWebSocket* CreateProxyingWebSocket(
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
       const std::optional<std::string>& user_agent,
-      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-          handshake_client,
       content::BrowserContext* browser_context,
       int frame_id,
       content::FrameTreeNodeId frame_tree_node_id,
