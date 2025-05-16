@@ -61,8 +61,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
-    private AppCompatActivity mActivity;
-    private OneshotSupplier<HubManager> mHubManagerSupplier;
+    private final AppCompatActivity mActivity;
+    private final OneshotSupplier<HubManager> mHubManagerSupplier;
     private final ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
 
     public BraveTabbedRootUiCoordinator(

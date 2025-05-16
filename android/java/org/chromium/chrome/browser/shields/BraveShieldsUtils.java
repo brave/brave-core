@@ -66,9 +66,9 @@ public class BraveShieldsUtils {
     }
 
     public static class BraveShieldsWorkerTask extends AsyncTask<Void> {
-        private String mDomain;
-        private String mApiKey;
-        private byte[] mScreenshotBytes;
+        private final String mDomain;
+        private final String mApiKey;
+        private final byte[] mScreenshotBytes;
 
         public BraveShieldsWorkerTask(String domain, String apiKey, byte[] pngBytes) {
             mDomain = domain;

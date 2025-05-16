@@ -115,9 +115,6 @@ license_files = ['LICENSE']
 [crate.arrayref]
 license_files = ['LICENSE']
 
-[crate.arrayvec]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/arrayvec-v0_7/LICENSE-APACHE']
-
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
@@ -216,6 +213,7 @@ license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/h
 
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
+license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2/LICENSE.txt']
 
 [crate.lock_api]
 extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] }

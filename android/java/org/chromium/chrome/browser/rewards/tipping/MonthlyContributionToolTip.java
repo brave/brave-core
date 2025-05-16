@@ -26,7 +26,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 public class MonthlyContributionToolTip {
     private PopupWindow mPopupWindow;
     View mContentView;
-    private boolean mIsTablet;
+    private final boolean mIsTablet;
 
     public MonthlyContributionToolTip(@NonNull Context context) {
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);

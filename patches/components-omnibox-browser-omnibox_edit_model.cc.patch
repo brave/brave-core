@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
-index fbeff5d5b3ffa4433f163b642d349119a6dec587..85b377cf3b89f271859cbbf16f8591db5d208bd2 100644
+index 659c0a765fd3c48b47d234cc13016bfdd955341b..1664ae402f202e93c677d7d5b08cea7a9b8aa1cb 100644
 --- a/components/omnibox/browser/omnibox_edit_model.cc
 +++ b/components/omnibox/browser/omnibox_edit_model.cc
-@@ -596,6 +596,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
+@@ -594,6 +594,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
        (*text == display_text_ || *text == url_for_editing_)) {
      *url_from_text = controller_->client()->GetNavigationEntryURL();
      *write_url = true;

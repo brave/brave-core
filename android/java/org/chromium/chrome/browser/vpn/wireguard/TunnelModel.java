@@ -17,7 +17,7 @@ public class TunnelModel implements Tunnel {
     private final String name;
 
     @SuppressWarnings("UnusedVariable")
-    private Config config;
+    private final Config config;
 
     private final TunnelStateUpdateListener tunnelStateUpdateListener;
 

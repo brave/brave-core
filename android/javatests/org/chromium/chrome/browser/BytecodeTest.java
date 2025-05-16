@@ -68,6 +68,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
+import org.chromium.chrome.browser.customtabs.features.toolbar.BrowserServicesThemeColorProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
@@ -86,7 +87,6 @@ import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
-import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.notifications.BraveNotificationPlatformBridge;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
@@ -915,6 +915,12 @@ public class BytecodeTest {
                         "getAppHeaderCoordinator",
                         MethodModifier.REGULAR,
                         AppHeaderCoordinator.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "getBrowserServicesThemeColorProvider",
+                        MethodModifier.REGULAR,
+                        BrowserServicesThemeColorProvider.class));
     }
 
     @Test
@@ -1097,6 +1103,13 @@ public class BytecodeTest {
                         void.class,
                         boolean.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org.chromium/chrome/browser/notifications/channels/SiteChannelsManager",
+                        "toChannelStatus",
+                        MethodModifier.STATIC,
+                        int.class,
+                        int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1155,8 +1168,7 @@ public class BytecodeTest {
                         boolean.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
-                        Supplier.class,
-                        DseNewTabUrlManager.class));
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -1326,6 +1338,7 @@ public class BytecodeTest {
                         ToggleTabStackButtonCoordinator.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
+                        ObservableSupplier.class,
                         Supplier.class,
                         HistoryDelegate.class,
                         boolean.class,
@@ -1338,6 +1351,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class,
                         BackButtonCoordinator.class));
         Assert.assertTrue(

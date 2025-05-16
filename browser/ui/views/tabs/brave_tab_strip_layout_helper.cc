@@ -58,7 +58,8 @@ void CalculatePinnedTabsBoundsInGrid(
 
     // Update rect for the next pinned tabs. If overflowed, break into new line
     if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing <
-        width.value_or(tab_style->GetStandardWidth())) {
+        width.value_or(tab_style->GetStandardWidth(
+            tabs::features::HorizontalTabsUpdateEnabled()))) {
       rect.set_x(rect.right() + kVerticalTabsSpacing);
     } else {
       // New line

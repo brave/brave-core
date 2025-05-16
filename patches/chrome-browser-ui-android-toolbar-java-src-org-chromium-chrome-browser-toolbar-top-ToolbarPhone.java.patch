@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index d71b590f99469799a841d513c2ef709dc2e2b442..9d2a0457a058e024f26449bba99f6537b8ef98aa 100644
+index b6e8797fb79bdd1868c20c7f15e9d7a96076d052..dacaa3af22e86593b790cc507f3467560a263e38 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -449,6 +449,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -444,6 +444,7 @@ public class ToolbarPhone extends ToolbarLayout
          if (mOptionalButtonCoordinator != null) {
              mOptionalButtonCoordinator.setBackgroundColorFilter(color);
          }

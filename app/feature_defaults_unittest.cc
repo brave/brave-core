@@ -68,7 +68,6 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
-#include "components/password_manager/core/common/password_manager_features.h"
 #else
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
@@ -107,11 +106,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
-      &blink::features::kSpeculationRulesPrefetchFuture,
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
 #endif
-      &chrome_urls::kInternalOnlyUisPref,
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
@@ -223,10 +220,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
-#if BUILDFLAG(IS_ANDROID)
-      &password_manager::features::
-          kUnifiedPasswordManagerLocalPasswordsMigrationWarning,
-#endif
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
@@ -237,7 +230,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
-      &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kDownloadsPageReferrerUrl,
       &safe_browsing::kExtensionTelemetryForEnterprise,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,

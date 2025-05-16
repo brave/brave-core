@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index d50ffdfbcce3450682b92298b4cb3ab51df3bb09..c20612ae8eac89298a64e794e883484310cb4fc9 100644
+index f7f750cb703d90d7d290e3ea9af8151b8dd0747b..44f5126d14ad8baf7c4d8e00ac26df633b2664cc 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1512,6 +1512,7 @@ source_set("extensions") {
+@@ -1514,6 +1514,7 @@ source_set("extensions") {
        deps += [ "//chrome/browser/ui/toasts" ]
      }
    }  # if (enable_extensions)

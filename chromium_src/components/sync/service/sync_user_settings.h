@@ -12,9 +12,9 @@
 // call internally
 // GetUserSettings()->KeepAccountSettingsPrefsOnlyForUsers_Unused(gaia_id_hashes);
 
-#define KeepAccountSettingsPrefsOnlyForUsers                        \
-  KeepAccountSettingsPrefsOnlyForUsers_Unused(                      \
-      const std::vector<signin::GaiaIdHash>& available_gaia_ids) {} \
+#define KeepAccountSettingsPrefsOnlyForUsers            \
+  KeepAccountSettingsPrefsOnlyForUsers_Unused(          \
+      const std::vector<GaiaId>& available_gaia_ids) {} \
   virtual void KeepAccountSettingsPrefsOnlyForUsers
 
 #include "src/components/sync/service/sync_user_settings.h"  // IWYU pragma: export
