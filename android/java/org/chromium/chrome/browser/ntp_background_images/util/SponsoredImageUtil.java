@@ -26,7 +26,7 @@ public class SponsoredImageUtil {
 
     public static final int MAX_TABS = 10;
 
-    private static final List<BackgroundImage> backgroundImages =
+    private static final List<BackgroundImage> sBackgroundImages =
             new ArrayList<BackgroundImage>(
                     Arrays.asList(
                             new BackgroundImage(
@@ -37,12 +37,12 @@ public class SponsoredImageUtil {
                                             "Dylan Malval",
                                             "https://www.instagram.com/vass_captures/"))));
 
-    private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
+    private static int backgroundImageIndex = getRandomIndex(sBackgroundImages.size());
 
     private static int tabIndex = 1;
 
     public static List<BackgroundImage> getBackgroundImages() {
-        return backgroundImages;
+        return sBackgroundImages;
     }
 
     public static int getTabIndex() {
@@ -59,12 +59,12 @@ public class SponsoredImageUtil {
     }
 
     public static BackgroundImage getBackgroundImage() {
-    	if (backgroundImageIndex >= backgroundImages.size()) {
-    		backgroundImageIndex = 0;
-    	}
+        if (backgroundImageIndex >= sBackgroundImages.size()) {
+            backgroundImageIndex = 0;
+        }
 
-    	BackgroundImage backgroundImage = backgroundImages.get(backgroundImageIndex);
-    	backgroundImageIndex++;
-    	return backgroundImage;
+        BackgroundImage backgroundImage = sBackgroundImages.get(backgroundImageIndex);
+        backgroundImageIndex++;
+        return backgroundImage;
     }
 }
