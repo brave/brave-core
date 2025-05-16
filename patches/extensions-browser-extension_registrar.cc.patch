@@ -1,12 +1,12 @@
 diff --git a/extensions/browser/extension_registrar.cc b/extensions/browser/extension_registrar.cc
-index 836ccbf0e45dff2f36c9e09385ff64e105f4e918..b14ddba937543038f3cff790f4a7c0cd3c0cefac 100644
+index 836ccbf0e45dff2f36c9e09385ff64e105f4e918..7f6ca6e10d437a810503b9fbe41ceba73c449371 100644
 --- a/extensions/browser/extension_registrar.cc
 +++ b/extensions/browser/extension_registrar.cc
 @@ -208,6 +208,8 @@ void ExtensionRegistrar::AddExtension(
  
  void ExtensionRegistrar::AddNewExtension(
      scoped_refptr<const Extension> extension) {
-+  LOG(ERROR) << "ExtensionRegistrar::AddNewExtension: id = "
++  VLOG(1) << "ExtensionRegistrar::AddNewExtension: id = "
 +             << extension->id().c_str();
    if (blocklist_prefs::IsExtensionBlocklisted(extension->id(),
                                                extension_prefs_)) {
@@ -15,7 +15,7 @@ index 836ccbf0e45dff2f36c9e09385ff64e105f4e918..b14ddba937543038f3cff790f4a7c0cd
    } else if (extension_prefs_->IsExtensionDisabled(extension->id())) {
      registry_->AddDisabled(extension);
    } else {  // Extension should be enabled.
-+    LOG(ERROR) << "ExtensionRegistrar::AddNewExtension: adding enabled.";
++    VLOG(1) << "ExtensionRegistrar::AddNewExtension: adding enabled.";
      registry_->AddEnabled(extension);
      ActivateExtension(extension.get(), true);
    }
@@ -23,7 +23,7 @@ index 836ccbf0e45dff2f36c9e09385ff64e105f4e918..b14ddba937543038f3cff790f4a7c0cd
      const syncer::StringOrdinal& page_ordinal,
      int install_flags,
      base::Value::Dict ruleset_install_prefs) {
-+  LOG(ERROR) << "ExtensionRegistrar::OnExtensionInstalled: id = "
++  VLOG(1) << "ExtensionRegistrar::OnExtensionInstalled: id = "
 +             << extension->id().c_str();
    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
    delegate_->OnExtensionInstalled(extension, page_ordinal, install_flags,
@@ -32,10 +32,10 @@ index 836ccbf0e45dff2f36c9e09385ff64e105f4e918..b14ddba937543038f3cff790f4a7c0cd
        !Manifest::ShouldAlwaysLoadExtension(extension->location(),
                                             extension->is_theme()) &&
        disable_flag_exempted_extensions_.count(extension->id()) == 0) {
-+    LOG(ERROR) << "ExtensionRegistrar::CanAddExtension: false";
++    VLOG(1) << "ExtensionRegistrar::CanAddExtension: false";
      return false;
    }
-+  LOG(ERROR) << "ExtensionRegistrar::CanAddExtension: true";
++  VLOG(1) << "ExtensionRegistrar::CanAddExtension: true";
    return true;
  }
  

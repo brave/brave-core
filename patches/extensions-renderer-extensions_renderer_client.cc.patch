@@ -1,19 +1,19 @@
 diff --git a/extensions/renderer/extensions_renderer_client.cc b/extensions/renderer/extensions_renderer_client.cc
-index a52f5b6a0f530983c8f6d8204f18dcb3d20b96f4..d10b95b3c3b9f6dc4a75f5b3a32952ad24e8011a 100644
+index a52f5b6a0f530983c8f6d8204f18dcb3d20b96f4..20837082c8e458d7e63d58ab8dc124630a84f14d 100644
 --- a/extensions/renderer/extensions_renderer_client.cc
 +++ b/extensions/renderer/extensions_renderer_client.cc
 @@ -65,11 +65,15 @@ void ExtensionsRendererClient::Set(ExtensionsRendererClient* client) {
  }
  
  void ExtensionsRendererClient::OnExtensionLoaded(const Extension& extension) {
-+  LOG(ERROR) << "ExtensionsRendererClient::OnExtensionLoaded: id = "
++  VLOG(1) << "ExtensionsRendererClient::OnExtensionLoaded: id = "
 +             << extension.id();
    resource_request_policy_->OnExtensionLoaded(extension);
  }
  
  void ExtensionsRendererClient::OnExtensionUnloaded(
      const ExtensionId& extension_id) {
-+  LOG(ERROR) << "ExtensionsRendererClient::OnExtensionUnloaded: id = "
++  VLOG(1) << "ExtensionsRendererClient::OnExtensionUnloaded: id = "
 +             << extension_id;
    resource_request_policy_->OnExtensionUnloaded(extension_id);
  }
