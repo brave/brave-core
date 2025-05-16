@@ -1,20 +1,28 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 6a8f5adbceedb7822e74a51935ed38c76864b4df..81a3c7f3c4e1487dd22e4efe0f7fc0f4f0926aff 100644
+index 6a8f5adbceedb7822e74a51935ed38c76864b4df..3c8285c0475e727bb176ce614627fe29bbe7852e 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -633,6 +633,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
-   VISIT(manufacturer);
-   VISIT(last_updated_timestamp);
-   VISIT(feature_fields);
-+  BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS
-   VISIT(sharing_fields);
-   VISIT(invalidation_fields);
-   VISIT(paask_fields);
-@@ -655,6 +656,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
-   VISIT(floating_workspace_last_signin_time_windows_epoch_micros);
+@@ -123,6 +123,7 @@
+   void VisitProtoFields(V& visitor, proto)
+ 
+ namespace syncer {
++BRAVE_VISIT_PROTO_FIELDS
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::AppListSpecifics& proto) {
+   VISIT(item_id);
+@@ -623,6 +624,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeletionOrigin& proto) {
  }
  
-+BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
- VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
-   VISIT(vapid_fcm_token);
-   VISIT_BYTES(vapid_p256dh);
+ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
++  VISIT(brave_fields);
+   VISIT(cache_guid);
+   VISIT(client_name);
+   VISIT_ENUM(device_type);
+@@ -1529,6 +1531,7 @@ VISIT_PROTO_FIELDS(const sync_pb::UserEventSpecifics::FlocIdComputed& proto) {
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::TabNavigation& proto) {
++  VISIT(brave_fields);
+   VISIT(virtual_url);
+   VISIT(referrer);
+   VISIT(title);
