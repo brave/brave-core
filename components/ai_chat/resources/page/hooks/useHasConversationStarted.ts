@@ -5,12 +5,15 @@
 
 import { useMemo } from "react";
 import { useAIChat } from "../state/ai_chat_context";
+import * as Mojom from "../../common/mojom";
 
-export default function useIsConversationVisible(conversationId?: string) {
+export default function useHasConversationStarted(conversationId?: string) {
     const context = useAIChat()
 
     return useMemo<boolean>(
-      () => context.visibleConversations.some(c => c.uuid === conversationId),
-      [conversationId, context.visibleConversations]
+      () => !!context.conversations.find(
+        (c: Mojom.Conversation) => c.uuid === conversationId && c.hasContent
+      ),
+      [conversationId, context.conversations]
     )
 }

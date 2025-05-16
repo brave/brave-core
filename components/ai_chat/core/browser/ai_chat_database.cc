@@ -162,7 +162,9 @@ AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
       db_(sql::DatabaseOptions().set_page_size(4096).set_cache_size(1000),
           sql::Database::Tag("AIChatDatabase")),
       encryptor_(std::move(encryptor)) {
-  base::AssertLongCPUWorkAllowed();
+  // Constructor is the only thing in this class which is not on the same
+  // sequence, because it is called on the original thread.
+  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 AIChatDatabase::~AIChatDatabase() = default;
@@ -177,6 +179,7 @@ bool AIChatDatabase::LazyInit(bool re_init) {
 
 sql::InitStatus AIChatDatabase::InitInternal() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::AssertLongCPUWorkAllowed();
   if (!GetDB().is_open() && !GetDB().Open(db_file_path_)) {
     DVLOG(0) << "Failed to open database at " << db_file_path_.value();
     return sql::InitStatus::INIT_FAILURE;
@@ -583,6 +586,7 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
                                      std::vector<std::string> contents,
                                      mojom::ConversationTurnPtr first_entry) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!conversation->temporary);
   CHECK(!conversation->uuid.empty());
   CHECK(first_entry);
   if (!LazyInit()) {

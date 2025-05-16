@@ -12,7 +12,7 @@ import * as Mojom from '../../common/mojom'
 export type State = Mojom.ServiceState & {
   initialized: boolean
   isStandalone?: boolean
-  visibleConversations: Mojom.Conversation[]
+  conversations: Mojom.Conversation[]
   isPremiumStatusFetching: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
@@ -24,7 +24,7 @@ export type State = Mojom.ServiceState & {
 
 export const defaultUIState: State = {
   initialized: false,
-  visibleConversations: [],
+  conversations: [],
   hasAcceptedAgreement: false,
   isStoragePrefEnabled: false,
   isPremiumStatusFetching: true,
@@ -74,13 +74,13 @@ class PageAPI extends API<State> {
     const [
       { state },
       { isStandalone },
-      { conversations: visibleConversations },
+      { conversations },
       { actionList: allActions },
       premiumStatus
     ] = await Promise.all([
       this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
       this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
-      this.service.getVisibleConversations(),
+      this.service.getConversations(),
       this.service.getActionMenuList(),
       this.getCurrentPremiumStatus()
     ])
@@ -89,7 +89,7 @@ class PageAPI extends API<State> {
       ...premiumStatus,
       initialized: true,
       isStandalone,
-      visibleConversations,
+      conversations,
       allActions
     })
 
@@ -112,7 +112,7 @@ class PageAPI extends API<State> {
     this.observer.onConversationListChanged.addListener(
       (conversations: Mojom.Conversation[]) => {
         this.setPartialState({
-          visibleConversations: conversations
+          conversations
         })
       }
     )

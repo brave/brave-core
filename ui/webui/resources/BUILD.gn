@@ -293,6 +293,7 @@ leo_icons = [
   "media-visualizer.svg",
   "message-bubble-comments.svg",
   "message-bubble-text.svg",
+  "message-bubble-temporary.svg",
   "microphone-off.svg",
   "microphone.svg",
   "money-bag-coins.svg",

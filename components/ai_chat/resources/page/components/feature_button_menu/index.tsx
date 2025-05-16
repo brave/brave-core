@@ -8,13 +8,15 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
+import Toggle from '@brave/leo/react/toggle'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
-import useIsConversationVisible from '../../hooks/useIsConversationVisible'
+import useHasConversationStarted from '../../hooks/useHasConversationStarted'
+
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
 }
@@ -27,9 +29,10 @@ export default function FeatureMenu(props: Props) {
     aiChatContext.uiHandler?.openAIChatSettings()
   }
 
-  // If conversation is in the conversations list, then it has been committed
-  // as a conversation with content.
-  const isActiveConversationPermanent = useIsConversationVisible(conversationContext.conversationUuid)
+  // If conversation has been started, then it has been committed
+  // as a conversation with messages either in memory or persisted.
+  const hasConversationStarted =
+    useHasConversationStarted(conversationContext.conversationUuid)
 
   const customModels = conversationContext.allModels.filter(
     (model) => model.options.customModelOptions
@@ -37,6 +40,10 @@ export default function FeatureMenu(props: Props) {
   const leoModels = conversationContext.allModels.filter(
     (model) => model.options.leoModelOptions
   )
+
+  const handleTemporaryChatToggle = (detail: { checked: boolean }) => {
+    conversationContext.setTemporary(detail.checked)
+  }
 
   return (
     <ButtonMenu className={styles.buttonMenu}>
@@ -112,7 +119,27 @@ export default function FeatureMenu(props: Props) {
       })}
       <div className={styles.menuSeparator} />
 
-      {aiChatContext.isStandalone && isActiveConversationPermanent && <>
+      {!hasConversationStarted && (
+        <leo-menu-item>
+          <div className={classnames(
+            styles.menuItemWithIcon,
+            styles.menuItemMainItem
+          )}>
+            <Icon name='message-bubble-temporary' />
+            <span className={styles.menuText}>
+              {getLocale('temporaryChatLabel')}
+            </span>
+            <Toggle
+              size='small'
+              onChange={handleTemporaryChatToggle}
+              checked={conversationContext.isTemporaryChat}
+            >
+            </Toggle>
+          </div>
+        </leo-menu-item>
+      )}
+
+      {aiChatContext.isStandalone && hasConversationStarted && <>
         <leo-menu-item onClick={() => aiChatContext.setEditingConversationId(conversationContext.conversationUuid!)}>
           <div className={classnames(
             styles.menuItemWithIcon,

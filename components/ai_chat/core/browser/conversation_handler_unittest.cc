@@ -178,7 +178,7 @@ class ConversationHandlerUnitTest : public testing::Test {
     mock_feedback_api_ = std::make_unique<NiceMock<MockAIChatFeedbackAPI>>();
 
     conversation_ = mojom::Conversation::New(
-        "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0,
+        "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, false,
         std::vector<mojom::AssociatedContentPtr>());
 
     conversation_handler_ = std::make_unique<ConversationHandler>(

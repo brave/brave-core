@@ -7,7 +7,6 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import * as Mojom from '../../common/mojom'
-import useIsConversationVisible from '../hooks/useIsConversationVisible'
 import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
 import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
@@ -19,6 +18,7 @@ import {
 import {
   updateConversationHistory, getImageFiles
 } from '../../common/conversation_history_utils'
+import useHasConversationStarted from '../hooks/useHasConversationStarted'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -70,6 +70,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleVoiceRecognition?: () => void
   conversationHandler?: Mojom.ConversationHandlerRemote
 
+  isTemporaryChat: boolean
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
   uploadImage: (useMediaCapture: boolean) => void
@@ -79,6 +80,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   setIgnoreExternalLinkWarning: () => void
   pendingMessageImages: Mojom.UploadedFile[]
   isUploadingFiles: boolean
+  setTemporary: (temporary: boolean) => void
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -120,6 +122,7 @@ const defaultContext: ConversationContext = {
   resetSelectedActionType: () => { },
   handleActionTypeClick: () => { },
   setIsToolsMenuOpen: () => { },
+  isTemporaryChat: false,
   showAttachments: false,
   setShowAttachments: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
@@ -129,6 +132,7 @@ const defaultContext: ConversationContext = {
   setIgnoreExternalLinkWarning: () => { },
   pendingMessageImages: [],
   isUploadingFiles: false,
+  setTemporary: (temporary: boolean) => { },
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -254,7 +258,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         suggestionStatus,
         associatedContent,
         shouldSendContent,
-        error
+        error,
+        temporary
       } } = await conversationHandler.getState()
       setPartialContext({
         conversationUuid,
@@ -264,7 +269,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         suggestionStatus,
         associatedContentInfo: associatedContent,
         shouldSendPageContents: shouldSendContent,
-        currentError: error
+        currentError: error,
+        isTemporaryChat: temporary
       })
     }
 
@@ -336,19 +342,20 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }, [conversationHandler, callbackRouter])
 
-  // Update the location when the visible conversation changes
-  const isVisible = useIsConversationVisible(context.conversationUuid)
+  // Update the location when the conversation has been started
+  const hasConversationStarted =
+    useHasConversationStarted(context.conversationUuid)
   React.useEffect(() => {
-    if (!isVisible) return
+    if (!hasConversationStarted) return
     if (selectedConversationId === tabAssociatedChatId) return
     if (context.conversationUuid === selectedConversationId) return
     updateSelectedConversationId(context.conversationUuid)
-  }, [isVisible, updateSelectedConversationId])
+  }, [hasConversationStarted, updateSelectedConversationId])
 
   // Update page title when conversation changes
   React.useEffect(() => {
     const originalTitle = document.title
-    const conversationTitle = aiChatContext.visibleConversations.find(c =>
+    const conversationTitle = aiChatContext.conversations.find(c =>
       c.uuid === context.conversationUuid
     )?.title || getLocale('conversationListUntitled')
 
@@ -370,7 +377,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       document.title = originalTitle
       isPWAQuery.removeEventListener('change', handleChange)
     }
-  }, [aiChatContext.visibleConversations, context.conversationUuid])
+  }, [aiChatContext.conversations, context.conversationUuid])
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
@@ -693,6 +700,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     uploadImage,
     getScreenshots,
     removeImage,
+    setTemporary: (temporary) => {
+      // Backend would check if the conversation has not yet started
+      // (conversation.hasContent is false), the UI switch is only available
+      // before conversation starts.
+      setPartialContext({ isTemporaryChat: temporary })
+      conversationHandler.setTemporary(temporary)
+    },
     conversationHandler,
     setGeneratedUrlToBeOpened:
       (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
@@ -714,8 +728,9 @@ export function useIsNewConversation() {
   const conversationContext = useConversation()
   const aiChatContext = useAIChat()
 
-  // A conversation is new if it isn't in the list of visible conversations.
-  return !aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
+  // A conversation is new if it isn't in the list of conversations or doesn't have content
+  return !aiChatContext.conversations.find(
+    c => c.uuid === conversationContext.conversationUuid && c.hasContent)
 }
 
 export function useSupportsAttachments() {

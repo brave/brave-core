@@ -573,4 +573,10 @@
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
     New conversation
   </message>
+  <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu">
+    Temporary chat
+  </message>
+  <message name="IDS_AI_CHAT_TEMPORARY_CHAT_DESCRIPTION" desc="Description for temporary chat functionality">
+    This chat won't be saved into your history or use any of Leo's customization or memories.
+  </message>
 </grit-part>
