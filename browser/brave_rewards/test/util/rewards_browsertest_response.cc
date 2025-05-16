@@ -120,7 +120,7 @@ std::string GetPublisherChannelResponse(
   uint32_t length = out.length();
   out.insert(0, 4, ' ');
   base::as_writable_byte_span(out).first<4u>().copy_from(
-      base::numerics::U32ToBigEndian(length));
+      base::U32ToBigEndian(length));
   return out;
 }
 

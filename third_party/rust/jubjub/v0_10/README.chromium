@@ -3,7 +3,7 @@ URL: https://crates.io/crates/jubjub
 Version: 0.10.0
 Revision: 47dfe5181ccf39166c0c479c35c0644d708f4294
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/jubjub-0.10.0/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/jubjub-v0_10/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

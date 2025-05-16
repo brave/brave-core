@@ -52,8 +52,8 @@ source_set("android_browser_process") {
 
 source_set("tab_features") {
   sources = [
-    "tab_features_android.cc",
-    "tab_features_android.h",
+    "tab_features.cc",
+    "tab_features.h",
   ]
 
   deps = [

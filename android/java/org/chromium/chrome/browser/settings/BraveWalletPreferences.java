@@ -5,12 +5,13 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,8 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_wallet.mojom.DefaultWallet;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -34,6 +37,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 
+@NullMarked
 public class BraveWalletPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     private static final String TAG = "WalletPreferences";
@@ -57,10 +61,10 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     private BraveDialogPreference mDefaultSolanaWallet;
     private BraveWalletAutoLockPreferences mPrefAutolock;
     private ChromeSwitchPreference mWeb3NotificationsSwitch;
-    private ChromeSwitchPreference mWeb3NftDiscoverySwitch;
+    private @Nullable ChromeSwitchPreference mWeb3NftDiscoverySwitch;
 
-    private KeyringService mKeyringService;
-    private WalletModel mWalletModel;
+    private @Nullable KeyringService mKeyringService;
+    private @Nullable WalletModel mWalletModel;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -133,7 +137,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     }
 
     private void setupDefaultWalletPreference(
-            @NonNull final BraveDialogPreference walletPreference,
+            final BraveDialogPreference walletPreference,
             @DefaultWallet.EnumType final Integer defaultWallet) {
         walletPreference.setEnabled(true);
         if (defaultWallet == DefaultWallet.BRAVE_WALLET_PREFER_EXTENSION) {
@@ -152,7 +156,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void onDisplayPreferenceDialog(@NonNull Preference preference) {
+    public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof BraveDialogPreference) {
             BravePreferenceDialogFragment dialogFragment =
                     BravePreferenceDialogFragment.newInstance(preference);
@@ -171,11 +175,13 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     private void setUpNftDiscoveryPreference() {
         if (mWalletModel == null) return;
         mWeb3NftDiscoverySwitch = findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_SWITCH);
+        assertNonNull(mWeb3NftDiscoverySwitch);
         mWalletModel
                 .getCryptoModel()
                 .isNftDiscoveryEnabled(
                         isNftDiscoveryEnabled ->
-                                mWeb3NftDiscoverySwitch.setChecked(isNftDiscoveryEnabled));
+                                assumeNonNull(mWeb3NftDiscoverySwitch)
+                                        .setChecked(isNftDiscoveryEnabled));
         mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(this);
 
         TextMessagePreference learnMorePreference =
@@ -188,8 +194,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
-                                            requireContext(),
-                                            R.color.brave_link,
+                                            requireContext().getColor(R.color.brave_link),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(
                                                         requireContext(),
@@ -216,7 +221,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringService.close();
+        assumeNonNull(mKeyringService).close();
         mKeyringService = null;
         initKeyringService();
     }
@@ -256,7 +261,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public boolean onPreferenceChange(@NonNull Preference preference, Object object) {
+    public boolean onPreferenceChange(Preference preference, Object object) {
         String key = preference.getKey();
         if (PREF_DEFAULT_ETHEREUM_WALLET.equals(key) && mWalletModel != null) {
             @DefaultWallet.EnumType

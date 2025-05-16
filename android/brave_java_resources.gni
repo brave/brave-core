@@ -438,6 +438,7 @@ brave_java_resources = [
   "java/res/drawable/ic_custom_tabs.xml",
   "java/res/drawable/ic_disabled.xml",
   "java/res/drawable/ic_discount.xml",
+  "java/res/drawable/ic_download.xml",
   "java/res/drawable/ic_downloads.xml",
   "java/res/drawable/ic_drag.xml",
   "java/res/drawable/ic_edit_pencil.xml",

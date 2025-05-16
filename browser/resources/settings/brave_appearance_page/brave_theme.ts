@@ -46,9 +46,16 @@ export class SettingsBraveAppearanceThemeElement extends SettingsBraveAppearance
     ]
   }
 
-  browserProxy_: BraveAppearanceBrowserProxy = BraveAppearanceBrowserProxyImpl.getInstance()
-  braveThemeList_: chrome.braveTheme.ThemeItem[]
-  braveThemeType_: number // index of current theme type in braveThemeList_
+  static get properties() {
+    return {
+      braveThemeList_: Array,
+      braveThemeType_: Number,
+    }
+  }
+
+  private browserProxy_: BraveAppearanceBrowserProxy = BraveAppearanceBrowserProxyImpl.getInstance()
+  declare private braveThemeList_: chrome.braveTheme.ThemeItem[]
+  declare private braveThemeType_: number // index of current theme type in braveThemeList_
 
   override ready() {
     super.ready()

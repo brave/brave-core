@@ -3,7 +3,7 @@ URL: https://crates.io/crates/strobe-rs
 Version: 0.10.0
 Revision: 97fa9690d3a8737606776f8cd541efba2aacbaee
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/strobe-rs-0.10.0/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/strobe-rs-v0_10/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

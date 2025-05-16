@@ -187,6 +187,7 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
@@ -776,7 +777,9 @@ public abstract class BraveActivity extends ChromeActivity
                 mMiscAndroidMetrics.recordAppMenuNewTab();
             }
         } else if (itemId == R.id.home_menu_id) {
-            getBraveToolbarLayout().openHomepage();
+            if (getToolbarManager() instanceof BraveToolbarManager) {
+                ((BraveToolbarManager) getToolbarManager()).openHomepage();
+            }
         }
         return super.onOptionsItemSelected(itemId, menuItemData);
     }

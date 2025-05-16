@@ -12,8 +12,8 @@ cargo_crate("lib") {
   crate_name = "phf_shared"
   epoch = "0.11"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/phf_shared-0.11.3/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/phf_shared-0.11.3/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/phf_shared-v0_11/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/phf_shared-v0_11/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false
@@ -30,7 +30,11 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/siphasher/v1:lib" ]
-  features = [ "std" ]
+  features = [
+    "default",
+    "std",
+  ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

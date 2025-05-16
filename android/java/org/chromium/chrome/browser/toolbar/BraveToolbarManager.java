@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -46,6 +47,7 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -54,6 +56,7 @@ import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
+import org.chromium.chrome.browser.tab_ui.TabModelDotInfo;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -69,16 +72,20 @@ import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator
 import org.chromium.chrome.browser.toolbar.bottom.BraveScrollingBottomViewResourceFrameLayout;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
 import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
+import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
@@ -123,6 +130,7 @@ public class BraveToolbarManager extends ToolbarManager
     private int mCurrentOrientation;
     private boolean mInitializedWithNative;
     private @Nullable TabGroupUiOneshotSupplier mTabGroupUiOneshotSupplier;
+    private @Nullable UndoBarThrottle mUndoBarThrottle;
 
     // Own members.
     private boolean mIsBraveBottomControlsVisible;
@@ -142,6 +150,8 @@ public class BraveToolbarManager extends ToolbarManager
     private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private Runnable mOpenGridTabSwitcherHandler;
+    private final ObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
+    private final Supplier<ShareDelegate> mShareDelegateSupplier;
 
     public BraveToolbarManager(
             AppCompatActivity activity,
@@ -187,7 +197,9 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable BackPressManager backPressManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
-            @Nullable DesktopWindowStateManager desktopWindowStateManager) {
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
+            @Nullable MultiInstanceManager multiInstanceManager,
+            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -230,7 +242,9 @@ public class BraveToolbarManager extends ToolbarManager
                 backPressManager,
                 overviewColorSupplier,
                 readAloudControllerSupplier,
-                desktopWindowStateManager);
+                desktopWindowStateManager,
+                multiInstanceManager,
+                tabBookmarkerSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -242,6 +256,8 @@ public class BraveToolbarManager extends ToolbarManager
         mBrowserControlsSizer = controlsSizer;
         mDataSharingTabManager = dataSharingTabManager;
         mTabModelSelectorSupplier = tabModelSelectorSupplier;
+        mTabBookmarkerSupplier = tabBookmarkerSupplier;
+        mShareDelegateSupplier = shareDelegateSupplier;
 
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility();
@@ -301,7 +317,10 @@ public class BraveToolbarManager extends ToolbarManager
                             mTabCreatorManager,
                             mLayoutStateProviderSupplier,
                             mModalDialogManagerSupplier.get(),
-                            bottomUiThemeColorProvider);
+                            bottomUiThemeColorProvider,
+                            mUndoBarThrottle,
+                            mTabBookmarkerSupplier,
+                            mShareDelegateSupplier);
             var bottomControlsContentDelegateSupplier =
                     (OneshotSupplier<BottomControlsContentDelegate>)
                             ((OneshotSupplier<? extends BottomControlsContentDelegate>)
@@ -407,7 +426,8 @@ public class BraveToolbarManager extends ToolbarManager
             OnClickListener bookmarkClickHandler,
             OnClickListener customTabsBackClickHandler,
             @Nullable ObservableSupplier<Integer> archivedTabCountSupplier,
-            ObservableSupplier<Boolean> tabModelNotificationDotSupplier) {
+            ObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
+            @Nullable UndoBarThrottle undoBarThrottle) {
 
         super.initializeWithNative(
                 layoutManager,
@@ -416,13 +436,22 @@ public class BraveToolbarManager extends ToolbarManager
                 bookmarkClickHandler,
                 customTabsBackClickHandler,
                 archivedTabCountSupplier,
-                tabModelNotificationDotSupplier);
+                tabModelNotificationDotSupplier,
+                undoBarThrottle);
 
         mOpenGridTabSwitcherHandler = openGridTabSwitcherHandler;
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             mLocationBar.getContainerView().setAccessibilityTraversalBefore(R.id.bottom_toolbar);
             ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        ToolbarLayout toolbarLayout = mActivity.findViewById(R.id.toolbar);
+        assert toolbarLayout instanceof BraveToolbarLayoutImpl
+                : "Something has changed in the upstream!";
+        if (toolbarLayout instanceof BraveToolbarLayoutImpl) {
+            ((BraveToolbarLayoutImpl) toolbarLayout)
+                    .setTabModelSelector(mTabModelSelectorSupplier.get());
         }
     }
 
@@ -577,5 +606,11 @@ public class BraveToolbarManager extends ToolbarManager
                     }
                 };
         layoutStateProvider.addObserver(mLayoutStateObserver);
+    }
+
+    public void openHomepage() {
+        if (mToolbarTabController == null) return;
+
+        mToolbarTabController.openHomepage();
     }
 }

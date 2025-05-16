@@ -104,8 +104,8 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicy(
     case network::mojom::CSPDirectiveName::ManifestSrc:
     case network::mojom::CSPDirectiveName::MediaSrc:
     case network::mojom::CSPDirectiveName::ReportURI:
-    case network::mojom::CSPDirectiveName::RequireSRIFor:
     case network::mojom::CSPDirectiveName::Sandbox:
+    case network::mojom::CSPDirectiveName::ScriptSrcV2:
     case network::mojom::CSPDirectiveName::ScriptSrcAttr:
     case network::mojom::CSPDirectiveName::ScriptSrcElem:
     case network::mojom::CSPDirectiveName::StyleSrc:

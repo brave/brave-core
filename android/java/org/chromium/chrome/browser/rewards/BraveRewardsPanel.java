@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.rewards;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -48,6 +50,8 @@ import org.chromium.base.SysUtils;
 import org.chromium.brave_rewards.mojom.PublisherStatus;
 import org.chromium.brave_rewards.mojom.UserType;
 import org.chromium.brave_rewards.mojom.WalletStatus;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsBalance;
@@ -88,6 +92,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@NullMarked
 public class BraveRewardsPanel
         implements BraveRewardsObserver, BraveRewardsHelper.LargeIconReadyCallback {
     public static final String PREF_WAS_BRAVE_REWARDS_TURNED_ON = "brave_rewards_turned_on";
@@ -155,21 +160,21 @@ public class BraveRewardsPanel
     private ViewGroup mPopupView;
     private FrameLayout mBravePanelShadow;
     private LinearLayout mRewardsMainLayout;
-    private BraveActivity mBraveActivity;
+    private @Nullable BraveActivity mBraveActivity;
     private final ChromeTabbedActivity mActivity;
     private BraveRewardsHelper mIconFetcher;
 
     private LinearLayout mRewardsSummaryDetailLayout;
     private LinearLayout mPayoutStatusBannerLayout;
     private CardView mRewardsTipLayout;
-    private LinearLayout mBtnTip;
-    private ImageView mImgTip;
-    private TextView mTextTip;
-    private LinearLayout mBtnSummary;
-    private ImageView mImgSummary;
-    private TextView mTextSummary;
+    private @Nullable LinearLayout mBtnTip;
+    private @Nullable ImageView mImgTip;
+    private @Nullable TextView mTextTip;
+    private @Nullable LinearLayout mBtnSummary;
+    private @Nullable ImageView mImgSummary;
+    private @Nullable TextView mTextSummary;
 
-    private Timer mPublisherFetcher;
+    private @Nullable Timer mPublisherFetcher;
     private int mPublisherFetchesCount;
     private boolean mPublisherExist;
 
@@ -178,9 +183,9 @@ public class BraveRewardsPanel
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     private int mCurrentTabId;
-    private TextView mPublisherAttention;
+    private @Nullable TextView mPublisherAttention;
 
-    private BraveRewardsExternalWallet mExternalWallet;
+    private @Nullable BraveRewardsExternalWallet mExternalWallet;
 
     private View mNotificationLayout;
     private View mNotificationPermissionLayout;
@@ -192,14 +197,14 @@ public class BraveRewardsPanel
 
     private View mRewardsSolanaEligibleLayout;
 
-    private BraveRewardsOnboardingPagerAdapter mBraveRewardsOnboardingPagerAdapter;
-    private HeightWrappingViewPager mBraveRewardsViewPager;
+    private @Nullable BraveRewardsOnboardingPagerAdapter mBraveRewardsOnboardingPagerAdapter;
+    private @Nullable HeightWrappingViewPager mBraveRewardsViewPager;
     private View mBraveRewardsOnboardingView;
     private ViewGroup mBraveRewardsUnverifiedView;
 
     private View mWalletBalanceProgress;
-    private View mBalanceDataViewGroups;
-    private PopupWindowTippingTabletUI mPopupWindowTippingTabletUI;
+    private @Nullable View mBalanceDataViewGroups;
+    private @Nullable PopupWindowTippingTabletUI mPopupWindowTippingTabletUI;
     private boolean mIsTablet;
 
     public BraveRewardsPanel(View anchorView) {
@@ -217,8 +222,13 @@ public class BraveRewardsPanel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopupWindow.setElevation(20);
         }
-        mIconFetcher =
-                new BraveRewardsHelper(BraveRewardsHelper.currentActiveChromeTabbedActivityTab());
+
+        Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
+        if (tab == null) {
+            throw new NullPointerException("Unexpected null tab");
+        }
+
+        mIconFetcher = new BraveRewardsHelper(tab);
         mPopupWindow.setOnDismissListener(
                 new PopupWindow.OnDismissListener() {
                     @Override
@@ -308,7 +318,7 @@ public class BraveRewardsPanel
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel_layout, null);
 
-        int deviceWidth = ConfigurationUtils.getDisplayMetrics(mActivity).get("width");
+        int deviceWidth = ConfigurationUtils.getDisplayMetricsWidth(mActivity);
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
 
         mPopupWindow.setWidth((int) (mIsTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
@@ -406,7 +416,11 @@ public class BraveRewardsPanel
         mBtnTip = mPopupView.findViewById(R.id.tip_btn);
         mImgTip = mPopupView.findViewById(R.id.tip_img);
         mTextTip = mPopupView.findViewById(R.id.tip_text);
-        mBtnTip.setOnClickListener(view -> { showTipSection(); });
+
+        mBtnTip.setOnClickListener(
+                view -> {
+                    showTipSection();
+                });
 
         mBtnSummary = mPopupView.findViewById(R.id.summary_btn);
         mImgSummary = mPopupView.findViewById(R.id.summary_img);
@@ -441,6 +455,11 @@ public class BraveRewardsPanel
     }
 
     private void showSummarySection() {
+        assumeNonNull(mImgTip);
+        assumeNonNull(mImgSummary);
+        assumeNonNull(mTextSummary);
+        assumeNonNull(mTextTip);
+
         mTextTip.setTextAppearance(R.style.BraveRewardsSecondaryTextColor);
         mImgTip.setColorFilter(
                 new PorterDuffColorFilter(
@@ -464,6 +483,11 @@ public class BraveRewardsPanel
     }
 
     private void showTipSection() {
+        assumeNonNull(mImgSummary);
+        assumeNonNull(mImgTip);
+        assumeNonNull(mTextSummary);
+        assumeNonNull(mTextTip);
+
         mTextTip.setTextAppearance(R.style.BraveRewardsActionColor);
         mImgTip.setColorFilter(
                 new PorterDuffColorFilter(
@@ -999,11 +1023,14 @@ public class BraveRewardsPanel
     public void onBalance(boolean success) {
         try {
             if (success) {
-                mBalanceDataViewGroups.setVisibility(
-                        (mExternalWallet != null
-                                && mExternalWallet.getStatus() == WalletStatus.LOGGED_OUT)
-                                ? View.GONE
-                                : View.VISIBLE);
+                if (mBalanceDataViewGroups != null) {
+                    mBalanceDataViewGroups.setVisibility(
+                            (mExternalWallet != null
+                                            && mExternalWallet.getStatus()
+                                                    == WalletStatus.LOGGED_OUT)
+                                    ? View.GONE
+                                    : View.VISIBLE);
+                }
                 mWalletBalanceProgress.setVisibility(View.GONE);
                 if (mBraveRewardsNativeWorker != null) {
                     BraveRewardsBalance walletBalanceObject =
@@ -1058,16 +1085,14 @@ public class BraveRewardsPanel
 
         ChromeClickableSpan resetClickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.rewards_panel_notification_secondary_text_color,
+                        mActivity.getColor(R.color.rewards_panel_notification_secondary_text_color),
                         (textView) -> {
                             TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_REWARDS_RESET_PAGE);
                             dismiss();
                         });
         ChromeClickableSpan tosClickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.brave_blue_tint_color,
+                        mActivity.getColor(R.color.brave_blue_tint_color),
                         (textView) -> {
                             TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_TERMS_PAGE);
                             dismiss();
@@ -1173,7 +1198,7 @@ public class BraveRewardsPanel
 
     private void showOnBoarding() {
         if (mBraveActivity != null) {
-            int deviceWidth = ConfigurationUtils.getDisplayMetrics(mBraveActivity).get("width");
+            int deviceWidth = ConfigurationUtils.getDisplayMetricsWidth(mBraveActivity);
             deviceWidth = (int) (mIsTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95));
             RewardsOnboarding panel = new RewardsOnboarding(mAnchorView, deviceWidth);
             panel.showLikePopDownMenu();
@@ -1181,6 +1206,7 @@ public class BraveRewardsPanel
     }
 
     private void showViewsBasedOnExternalWallet() {
+        assumeNonNull(mExternalWallet);
         int walletStatus = mExternalWallet.getStatus();
         if (PackageUtils.isFirstInstall(mActivity)) {
             if (walletStatus == WalletStatus.CONNECTED || walletStatus == WalletStatus.LOGGED_OUT) {
@@ -1202,18 +1228,19 @@ public class BraveRewardsPanel
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (mBraveRewardsViewPager == null) {
+                        return;
+                    }
                     int viewId = view.getId();
                     if (viewId == R.id.btn_start_quick_tour) {
-                        if (mBraveRewardsViewPager != null
-                                && mBraveRewardsViewPager.getCurrentItem() == 0) {
+                        if (mBraveRewardsViewPager.getCurrentItem() == 0) {
                             mBraveRewardsViewPager.setCurrentItem(
                                     mBraveRewardsViewPager.getCurrentItem() + 1);
                         }
                     }
 
                     if (viewId == R.id.btn_next) {
-                        if (mBraveRewardsViewPager != null
-                                && mBraveRewardsOnboardingPagerAdapter != null) {
+                        if (mBraveRewardsOnboardingPagerAdapter != null) {
                             if (mBraveRewardsViewPager.getCurrentItem()
                                     == mBraveRewardsOnboardingPagerAdapter.getCount() - 2) {
                                 if (mBraveRewardsOnboardingView != null) {
@@ -1243,12 +1270,14 @@ public class BraveRewardsPanel
                         }
                     }
 
-                    if (viewId == R.id.btn_skip && mBraveRewardsOnboardingView != null) {
+                    if (viewId == R.id.btn_skip
+                            && mBraveRewardsOnboardingView != null
+                            && mBraveRewardsOnboardingPagerAdapter != null) {
                         mBraveRewardsViewPager.setCurrentItem(
                                 mBraveRewardsOnboardingPagerAdapter.getCount() - 1);
                     }
 
-                    if (viewId == R.id.btn_go_back && mBraveRewardsViewPager != null) {
+                    if (viewId == R.id.btn_go_back) {
                         mBraveRewardsViewPager.setCurrentItem(
                                 mBraveRewardsViewPager.getCurrentItem() - 1);
                     }
@@ -1604,8 +1633,7 @@ public class BraveRewardsPanel
 
         ChromeClickableSpan clickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.brave_rewards_modal_theme_color,
+                        mActivity.getColor(R.color.brave_rewards_modal_theme_color),
                         (textView) -> {
                             CustomTabActivity.showInfoPage(mActivity, NEW_SIGNUP_DISABLED_URL);
                         });
@@ -1627,8 +1655,7 @@ public class BraveRewardsPanel
 
         ChromeClickableSpan clickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.brave_rewards_modal_theme_color,
+                        mActivity.getColor(R.color.brave_rewards_modal_theme_color),
                         (textView) -> {
                             CustomTabActivity.showInfoPage(mActivity, clickUrl);
                         });
@@ -1790,6 +1817,8 @@ public class BraveRewardsPanel
     }
 
     private void requestPublisherInfo() {
+        assumeNonNull(mBtnTip);
+
         Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         if (currentActiveTab != null && !currentActiveTab.isIncognito()) {
             String url = currentActiveTab.getUrl().getSpec();
@@ -1997,7 +2026,12 @@ public class BraveRewardsPanel
         }
     }
 
+    @Nullable
     private Intent buildUserWalletActivityIntent(final int status) {
+        if (mExternalWallet == null) {
+            return null;
+        }
+
         Class clazz = null;
         switch (status) {
             case WalletStatus.CONNECTED:

@@ -2,7 +2,7 @@ Name: fxhash
 URL: https://crates.io/crates/fxhash
 Version: 0.2.1
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/fxhash-0.2.1/../../../../../common/licenses/Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/fxhash-v0_2/../../../../../common/licenses/Apache-2.0
 Shipped: yes
 Security Critical: yes
 

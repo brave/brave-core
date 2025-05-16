@@ -26,6 +26,7 @@
 #include "components/value_store/test_value_store_factory.h"
 #include "components/value_store/value_store.h"
 #include "content/public/test/browser_task_environment.h"
+#include "extensions/browser/extension_registrar.h"
 #include "extensions/common/constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"

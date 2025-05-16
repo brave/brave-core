@@ -45,10 +45,10 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
   }
 
   browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
-  braveV2Extensions_: Array<ExtensionV2>
-  showErrorToast_: boolean
-  toastMessage_: string
-  installInProgress_: boolean
+  declare braveV2Extensions_: Array<ExtensionV2>
+  declare showErrorToast_: boolean
+  declare toastMessage_: string
+  declare installInProgress_: boolean
 
   override ready() {
     super.ready()

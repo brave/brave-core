@@ -578,8 +578,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mTvDefault != null) {
             ChromeClickableSpan wdpLearnMoreClickableSpan =
                     new ChromeClickableSpan(
-                            WelcomeOnboardingActivity.this,
-                            R.color.brave_blue_tint_color,
+                            WelcomeOnboardingActivity.this.getColor(R.color.brave_blue_tint_color),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(this, WDP_LINK);
                             });

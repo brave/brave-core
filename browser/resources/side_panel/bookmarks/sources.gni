@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_side_panel_bookmarks_non_web_component_files = [
+brave_side_panel_bookmarks_ts_files = [
   "brave_overrides/cr_toolbar_search_field.ts",
   "brave_overrides/power_bookmarks_list.ts",
   "brave_overrides/power_bookmarks_edit_dialog.ts",
@@ -13,5 +13,4 @@ brave_side_panel_bookmarks_non_web_component_files = [
 brave_side_panel_bookmarks_preprocess_extra_deps =
     [ "//brave/browser/resources/side_panel/bookmarks:preprocess" ]
 
-brave_side_panel_bookmarks_ts_local_files =
-    brave_side_panel_bookmarks_non_web_component_files
+brave_side_panel_bookmarks_ts_local_files = brave_side_panel_bookmarks_ts_files

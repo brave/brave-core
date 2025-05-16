@@ -3,7 +3,7 @@ URL: https://crates.io/crates/getopts
 Version: 0.2.21
 Revision: be919b8323f57ba238ea9cd6e68190029809e278
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/getopts-0.2.21/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/getopts-v0_2/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

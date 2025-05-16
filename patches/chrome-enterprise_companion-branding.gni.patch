@@ -1,5 +1,5 @@
 diff --git a/chrome/enterprise_companion/branding.gni b/chrome/enterprise_companion/branding.gni
-index 3e626f26396e1f2bdf68b72b4f5b8563e0650caa..66dcea75529f7f814e840724d30e6e224cbd0d59 100644
+index 6b4469870d693df3df1bb8fe9cd9212dbbd2be86..432f65cffbc9b9bcac2cbc02739a9f1ea758dd31 100644
 --- a/chrome/enterprise_companion/branding.gni
 +++ b/chrome/enterprise_companion/branding.gni
 @@ -41,3 +41,4 @@ enterprise_companion_device_management_realtime_reporting_url =
