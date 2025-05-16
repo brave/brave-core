@@ -17,7 +17,7 @@ namespace psst {
 
 // Represents the PSST dialog delegate interface.
 // Allows to manage by the PSST dialog's lifecycle and provide data to it.
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
+class PsstDialogDelegate {
  public:
   using ConsentCallback =
       base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
@@ -25,7 +25,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstDialogDelegate {
 
   // Data structure to hold information, required for displaying the PSST
   // dialog.
-  struct COMPONENT_EXPORT(PSST_BROWSER_CORE) ShowDialogData {};
+  struct ShowDialogData {};
 
   PsstDialogDelegate();
   virtual ~PsstDialogDelegate();
