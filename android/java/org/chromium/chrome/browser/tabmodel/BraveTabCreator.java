@@ -8,15 +8,12 @@ package org.chromium.chrome.browser.tabmodel;
 import android.app.Activity;
 import android.os.Build;
 
-import androidx.annotation.Nullable;
-
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
-import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -39,8 +36,7 @@ public class BraveTabCreator extends ChromeTabCreator {
             boolean incognito,
             AsyncTabParamsManager asyncTabParamsManager,
             Supplier<TabModelSelector> tabModelSelectorSupplier,
-            Supplier<CompositorViewHolder> compositorViewHolderSupplier,
-            @Nullable DseNewTabUrlManager dseNewTabUrlManager) {
+            Supplier<CompositorViewHolder> compositorViewHolderSupplier) {
         super(
                 activity,
                 nativeWindow,
@@ -49,8 +45,7 @@ public class BraveTabCreator extends ChromeTabCreator {
                 incognito,
                 asyncTabParamsManager,
                 tabModelSelectorSupplier,
-                compositorViewHolderSupplier,
-                dseNewTabUrlManager);
+                compositorViewHolderSupplier);
     }
 
     @Override
