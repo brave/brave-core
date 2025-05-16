@@ -80,7 +80,9 @@ const runFormat = async (options = {}) => {
   }
 
   if (options.dryRun) {
-    args.push('--diff', '--dry-run')
+    // `--dry-run` alone only generates a non-zero exit code on format issues.
+    // `--diff` is required to get the actual change in stdout.
+    args.push('--dry-run', '--diff')
   }
 
   let errors = []
