@@ -28,13 +28,13 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
         void logoRetrieved(Wallpaper wallpaper, Bitmap logoWallpaper);
     }
 
-    private Context mContext;
-    private NTPImage mNTPImage;
-    private int mLayoutWidth;
-    private int mLayoutHeight;
+    private final Context mContext;
+    private final NTPImage mNTPImage;
+    private final int mLayoutWidth;
+    private final int mLayoutHeight;
 
     // The callback to use to communicate the results.
-    private WallpaperRetrievedCallback mCallback;
+    private final WallpaperRetrievedCallback mCallback;
 
     public FetchWallpaperWorkerTask(NTPImage ntpImage, int layoutWidth, int layoutHeight,WallpaperRetrievedCallback callback) {
         mNTPImage = ntpImage;

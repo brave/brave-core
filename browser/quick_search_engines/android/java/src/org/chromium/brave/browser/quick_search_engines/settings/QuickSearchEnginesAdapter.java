@@ -25,9 +25,9 @@ import java.util.List;
 
 public class QuickSearchEnginesAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesSettingsViewHolder> {
-    private List<QuickSearchEnginesModel> mSearchEngines;
-    private QuickSearchEnginesCallback mQuickSearchEnginesCallback;
-    private ItemTouchHelperCallback.OnStartDragListener mDragStartListener;
+    private final List<QuickSearchEnginesModel> mSearchEngines;
+    private final QuickSearchEnginesCallback mQuickSearchEnginesCallback;
+    private final ItemTouchHelperCallback.OnStartDragListener mDragStartListener;
     private boolean mIsEditMode;
 
     public QuickSearchEnginesAdapter(

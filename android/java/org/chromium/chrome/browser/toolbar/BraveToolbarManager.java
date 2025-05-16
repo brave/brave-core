@@ -135,20 +135,20 @@ public class BraveToolbarManager extends ToolbarManager
 
     // Own members.
     private boolean mIsBraveBottomControlsVisible;
-    private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
-    private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
-    private HomepageManager.HomepageStateListener mBraveHomepageStateListener;
-    private AppCompatActivity mActivity;
-    private WindowAndroid mWindowAndroid;
-    private CompositorViewHolder mCompositorViewHolder;
+    private final ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
+    private final OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
+    private final HomepageManager.HomepageStateListener mBraveHomepageStateListener;
+    private final AppCompatActivity mActivity;
+    private final WindowAndroid mWindowAndroid;
+    private final CompositorViewHolder mCompositorViewHolder;
     private final Object mLock = new Object();
     private boolean mBottomControlsEnabled;
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
-    private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
-    private ObservableSupplier<Profile> mProfileSupplier;
+    private final ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
+    private final ObservableSupplier<Profile> mProfileSupplier;
     private final BrowserControlsSizer mBrowserControlsSizer;
     private final DataSharingTabManager mDataSharingTabManager;
-    private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
+    private final ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private Runnable mOpenGridTabSwitcherHandler;
     private final ObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;

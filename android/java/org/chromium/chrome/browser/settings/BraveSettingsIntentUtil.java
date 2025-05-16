@@ -15,9 +15,9 @@ import androidx.annotation.Nullable;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 
 public class BraveSettingsIntentUtil {
-    private static String PASSWORD_SETTINGS_FRAGMENT =
+    private static final String PASSWORD_SETTINGS_FRAGMENT =
             "org.chromium.chrome.browser.password_manager.settings.PasswordSettings";
-    private static String CREDENTIAL_EDIT_FRAGMENT =
+    private static final String CREDENTIAL_EDIT_FRAGMENT =
             "org.chromium.chrome.browser.password_entry_edit.CredentialEditFragmentView";
 
     public static Intent createIntent(

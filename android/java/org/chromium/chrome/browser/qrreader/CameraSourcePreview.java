@@ -34,8 +34,8 @@ public class CameraSourcePreview extends ViewGroup {
 
     public boolean mCameraExist = true;
 
-    private Context mContext;
-    private SurfaceView mSurfaceView;
+    private final Context mContext;
+    private final SurfaceView mSurfaceView;
     private boolean mStartRequested;
     private boolean mSurfaceAvailable;
     private CameraSource mCameraSource;
