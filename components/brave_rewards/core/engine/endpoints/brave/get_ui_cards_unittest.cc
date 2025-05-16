@@ -43,6 +43,10 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
       "title": "$card-title",
       "section": "explore",
       "order": 1,
+      "banner": {
+        "image": "$banner-image",
+        "url": "$banner-url"
+      },
       "items": [{
         "title": "$title",
         "description": "$description",
@@ -71,6 +75,9 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
   EXPECT_EQ(promo_card->title, "$card-title");
   EXPECT_EQ(promo_card->section, "explore");
   EXPECT_EQ(promo_card->order, 1);
+  ASSERT_TRUE(promo_card->banner);
+  EXPECT_EQ(promo_card->banner->image, "$banner-image");
+  EXPECT_EQ(promo_card->banner->url, "$banner-url");
   ASSERT_EQ(promo_card->items.size(), static_cast<size_t>(1));
   EXPECT_EQ(promo_card->items[0]->title, "$title");
   EXPECT_EQ(promo_card->items[0]->description, "$description");

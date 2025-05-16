@@ -8,6 +8,8 @@ import * as React from 'react'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { UICard } from '../../lib/app_state'
 import { CardItemView } from './card_item_view'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
+import { sanitizeURL, cardImageURL } from './card_urls'
 
 import { style } from './card_view.style'
 
@@ -35,6 +37,12 @@ export function CardView(props: Props) {
   return (
     <div className='content-card' data-css-scope={style.scope}>
       <h4>{cardTitle()}</h4>
+      {
+        card.banner &&
+          <NewTabLink className='banner' href={sanitizeURL(card.banner.url)}>
+            <img src={cardImageURL(card.banner.image)} />
+          </NewTabLink>
+      }
       <section>
         {card.items.map((item, i) => <CardItemView key={i} item={item} />)}
       </section>
