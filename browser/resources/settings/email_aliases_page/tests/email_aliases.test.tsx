@@ -167,8 +167,10 @@ describe('ManagePageConnected', () => {
 
     await waitFor(() => {
       expect(screen.getByText(mockEmail)).toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesBraveAccount'))).toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesSignOut'))).toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesBraveAccount')))
+        .toBeInTheDocument()
+      expect(screen.getByText(localeRegex('emailAliasesSignOut')))
+        .toBeInTheDocument()
     })
   })
 
@@ -235,7 +237,8 @@ describe('ManagePageConnected', () => {
 
     await act(async () => {
       // Update the second alias
-      mockEmailAliasesService.updateAlias('alias2@brave.com', 'Test_Alias_2_updated')
+      mockEmailAliasesService.updateAlias(
+        'alias2@brave.com', 'Test_Alias_2_updated')
     })
 
     await waitFor(() => {
