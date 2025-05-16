@@ -30,6 +30,8 @@
     return "brave_ethereum";                            \
   case PermissionName::BRAVE_SOLANA:                    \
     return "brave_solana";                              \
+  case PermissionName::BRAVE_CARDANO:                   \
+    return "brave_cardano";                             \
   case PermissionName::BRAVE_GOOGLE_SIGN_IN:            \
     return "brave_google_sign_in";                      \
   case PermissionName::BRAVE_LOCALHOST_ACCESS:          \

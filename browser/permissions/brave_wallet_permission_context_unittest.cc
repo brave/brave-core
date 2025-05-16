@@ -65,7 +65,10 @@ TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
                 blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                blink::PermissionType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA},
+               {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psdu"
+                "yk6n4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+                blink::PermissionType::BRAVE_CARDANO}};
   for (auto entry : cases) {
     SCOPED_TRACE(entry.address);
     bool has_permission;
@@ -114,7 +117,10 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetPermission) {
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
                 blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                blink::PermissionType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA},
+               {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psdu"
+                "yk6n4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+                blink::PermissionType::BRAVE_CARDANO}};
   for (auto entry : cases) {
     SCOPED_TRACE(entry.address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
@@ -162,7 +168,10 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetAllPermissions) {
   } cases[] = {{"0x407637cC04893DA7FA4A7C0B58884F82d69eD448",
                 blink::PermissionType::BRAVE_ETHEREUM},
                {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-                blink::PermissionType::BRAVE_SOLANA}};
+                blink::PermissionType::BRAVE_SOLANA},
+               {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psdu"
+                "yk6n4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+                blink::PermissionType::BRAVE_CARDANO}};
   for (auto entry : cases) {
     SCOPED_TRACE(entry.address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
@@ -203,7 +212,11 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
        ContentSettingsType::BRAVE_ETHEREUM,
        blink::PermissionType::BRAVE_ETHEREUM},
       {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA},
+      {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+       ContentSettingsType::BRAVE_CARDANO,
+       blink::PermissionType::BRAVE_CARDANO}};
   for (auto entry : cases) {
     SCOPED_TRACE(entry.address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(
@@ -240,7 +253,11 @@ TEST_F(BraveWalletPermissionContextUnitTest, ResetWebSitePermission) {
        ContentSettingsType::BRAVE_ETHEREUM,
        blink::PermissionType::BRAVE_ETHEREUM},
       {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA},
+      {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+       ContentSettingsType::BRAVE_CARDANO,
+       blink::PermissionType::BRAVE_CARDANO}};
   for (auto entry : cases) {
     SCOPED_TRACE(entry.address);
     bool success = permissions::BraveWalletPermissionContext::AddPermission(

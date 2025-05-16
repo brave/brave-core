@@ -19,6 +19,7 @@
   BRAVE_SPEEDREADER,                \
   BRAVE_ETHEREUM,                   \
   BRAVE_SOLANA,                     \
+  BRAVE_CARDANO,                    \
   BRAVE_GOOGLE_SIGN_IN,             \
   BRAVE_LOCALHOST_ACCESS,           \
   BRAVE_OPEN_AI_CHAT,               \

@@ -2446,14 +2446,18 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin, eth_addr));
   ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
       blink::PermissionType::BRAVE_SOLANA, profile_.get(), origin, sol_addr));
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_CARDANO, profile_.get(), origin, sol_addr));
 
   ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
   ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ADA, origin, sol_addr));
 
   service_->Reset();
 
   EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
   EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
+  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ADA, origin, sol_addr));
 
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));

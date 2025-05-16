@@ -15,6 +15,7 @@
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
+  case RequestType::kBraveCardano:                   \
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
@@ -52,6 +53,8 @@
     return ContentSettingsType::BRAVE_ETHEREUM;                  \
   case PermissionType::BRAVE_SOLANA:                             \
     return ContentSettingsType::BRAVE_SOLANA;                    \
+  case PermissionType::BRAVE_CARDANO:                            \
+    return ContentSettingsType::BRAVE_CARDANO;                   \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
     return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
@@ -75,6 +78,8 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveEthereum";
     case ContentSettingsType::BRAVE_SOLANA:
       return "BraveSolana";
+    case ContentSettingsType::BRAVE_CARDANO:
+      return "BraveCardano";
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return "BraveGoogleSignInPermission";
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
@@ -90,7 +95,8 @@ std::string PermissionUtil::GetPermissionString(
 bool PermissionUtil::GetPermissionType(ContentSettingsType type,
                                        blink::PermissionType* out) {
   if (type == ContentSettingsType::BRAVE_ETHEREUM ||
-      type == ContentSettingsType::BRAVE_SOLANA) {
+      type == ContentSettingsType::BRAVE_SOLANA ||
+      type == ContentSettingsType::BRAVE_CARDANO) {
     *out = PermissionType::WINDOW_MANAGEMENT;
     return true;
   }
@@ -115,6 +121,7 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
   switch (type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
+    case ContentSettingsType::BRAVE_CARDANO:
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
@@ -149,6 +156,8 @@ PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
       return PermissionType::BRAVE_ETHEREUM;
     case ContentSettingsType::BRAVE_SOLANA:
       return PermissionType::BRAVE_SOLANA;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return PermissionType::BRAVE_CARDANO;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return PermissionType::BRAVE_GOOGLE_SIGN_IN;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
@@ -166,7 +175,8 @@ GURL PermissionUtil::GetCanonicalOrigin(ContentSettingsType permission,
                                         const GURL& embedding_origin) {
   // Use requesting_origin which will have ethereum or solana address info.
   if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
-      permission == ContentSettingsType::BRAVE_SOLANA) {
+      permission == ContentSettingsType::BRAVE_SOLANA ||
+      permission == ContentSettingsType::BRAVE_CARDANO) {
     return requesting_origin;
   }
 

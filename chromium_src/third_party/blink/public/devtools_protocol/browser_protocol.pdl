@@ -8,6 +8,7 @@ domain Page
     enum
       ethereum
       solana
+      cardano
 
   # Generates a Page Graph report for the page.
   experimental command generatePageGraph

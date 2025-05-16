@@ -35,7 +35,9 @@
   case PermissionType::BRAVE_ETHEREUM:                  \
     return "BraveEthereum";                             \
   case PermissionType::BRAVE_SOLANA:                    \
-    return "BraveSolana";
+    return "BraveSolana";                               \
+  case PermissionType::BRAVE_CARDANO:                   \
+    return "BraveCardano";
 
 #define kDisplayCapture                                         \
   kDisplayCapture;                                              \
@@ -43,6 +45,8 @@
     return network::mojom::PermissionsPolicyFeature::kEthereum; \
   case PermissionType::BRAVE_SOLANA:                            \
     return network::mojom::PermissionsPolicyFeature::kSolana;   \
+  case PermissionType::BRAVE_CARDANO:                           \
+    return network::mojom::PermissionsPolicyFeature::kCardano;  \
   case PermissionType::BRAVE_ADS:                               \
   case PermissionType::BRAVE_COSMETIC_FILTERING:                \
   case PermissionType::BRAVE_TRACKERS:                          \
@@ -62,6 +66,8 @@
     return PermissionType::BRAVE_ETHEREUM;                                  \
   case PermissionName::BRAVE_SOLANA:                                        \
     return PermissionType::BRAVE_SOLANA;                                    \
+  case PermissionName::BRAVE_CARDANO:                                       \
+    return PermissionType::BRAVE_CARDANO;                                   \
   case PermissionName::BRAVE_ADS:                                           \
     return PermissionType::BRAVE_ADS;                                       \
   case PermissionName::BRAVE_COSMETIC_FILTERING:                            \
