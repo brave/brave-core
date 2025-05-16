@@ -28,7 +28,7 @@ public class NTPBackgroundImagesBridge {
     private long mNativeNTPBackgroundImagesBridge;
     private final ObserverList<NTPBackgroundImageServiceObserver> mObservers =
             new ObserverList<NTPBackgroundImageServiceObserver>();
-    private static final List<TopSite> mTopSites = new ArrayList<>();
+    private static final List<TopSite> sTopSites = new ArrayList<>();
     private static NewTabPageListener mNewTabPageListener;
 
     public abstract static class NTPBackgroundImageServiceObserver {
@@ -120,9 +120,9 @@ public class NTPBackgroundImagesBridge {
     }
 
     public void getTopSites() {
-        mTopSites.clear();
-        NTPBackgroundImagesBridgeJni.get().getTopSites(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+        sTopSites.clear();
+        NTPBackgroundImagesBridgeJni.get()
+                .getTopSites(mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
     public String getReferralApiKey() {
@@ -135,13 +135,14 @@ public class NTPBackgroundImagesBridge {
     }
 
     @CalledByNative
-    public static void loadTopSitesData(String name, String destinationUrl, String backgroundColor, String imagePath) {
-        mTopSites.add(new TopSite(name, destinationUrl, backgroundColor, imagePath));
+    public static void loadTopSitesData(
+            String name, String destinationUrl, String backgroundColor, String imagePath) {
+        sTopSites.add(new TopSite(name, destinationUrl, backgroundColor, imagePath));
     }
 
     @CalledByNative
     public static void topSitesLoaded() {
-        mNewTabPageListener.updateTopSites(mTopSites);
+        mNewTabPageListener.updateTopSites(sTopSites);
     }
 
     @CalledByNative
