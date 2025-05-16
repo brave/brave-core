@@ -56,6 +56,7 @@ source_set("ui") {
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
+    "//brave/components/brave_account",
     "//brave/components/brave_account/resources",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",

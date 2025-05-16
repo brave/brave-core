@@ -15,6 +15,7 @@
 #include "brave/ios/browser/ui/webui/brave_url_data_source_ios.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+#include "ios/web/public/browser_state.h"
 #include "ios/web/public/web_client.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
@@ -26,6 +27,15 @@
 BraveWebUIIOSDataSource* BraveWebUIIOSDataSource::Create(
     const std::string& source_name) {
   return new BraveWebUIIOSDataSource(source_name);
+}
+
+// static
+BraveWebUIIOSDataSource* BraveWebUIIOSDataSource::CreateAndAdd(
+    web::BrowserState* browser_state,
+    const std::string& source_name) {
+  auto* data_source = Create(source_name);
+  web::WebUIIOSDataSource::Add(browser_state, data_source);
+  return data_source;
 }
 
 class BraveWebUIIOSDataSource::BraveInternalDataSource

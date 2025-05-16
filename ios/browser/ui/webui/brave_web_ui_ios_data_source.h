@@ -14,9 +14,16 @@
 #include "ios/web/webui/web_ui_ios_data_source_impl.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 
+namespace web {
+class BrowserState;
+}
+
 class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  public:
   static BraveWebUIIOSDataSource* Create(const std::string& source_name);
+
+  static BraveWebUIIOSDataSource* CreateAndAdd(web::BrowserState* browser_state,
+                                               const std::string& source_name);
 
   BraveWebUIIOSDataSource(const BraveWebUIIOSDataSource&) = delete;
   BraveWebUIIOSDataSource& operator=(const BraveWebUIIOSDataSource&) = delete;

@@ -10,11 +10,10 @@ source_set("brave_account") {
   ]
 
   deps = [
-    "//brave/components/brave_account/core/mojom",
-    "//brave/components/brave_account/resources",
-    "//brave/components/constants",
-    "//components/password_manager/core/browser/ui",
+    "//base",
+    "//brave/components/brave_account",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
     "//ios/web/public/webui",
     "//url",
   ]
