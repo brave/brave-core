@@ -1,5 +1,0 @@
-import("//extensions/buildflags/buildflags.gni")
-
-declare_args() {
-  ethereum_remote_client_enabled = enable_extensions
-}

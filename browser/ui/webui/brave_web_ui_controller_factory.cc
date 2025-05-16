@@ -15,7 +15,6 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
@@ -64,9 +63,6 @@
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_ui.h"
-#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -107,16 +103,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPageHost &&
              brave_wallet::IsAllowedForContext(profile)) {
     if (brave_wallet::IsNativeWalletEnabled()) {
-      auto default_wallet =
-          brave_wallet::GetDefaultEthereumWallet(profile->GetPrefs());
-      if (default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
-        return new EthereumRemoteClientUI(web_ui, url.host());
-      }
       return new WalletPageUI(web_ui);
     }
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-    return new EthereumRemoteClientUI(web_ui, url.host());
-#endif
 #endif  // !BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because

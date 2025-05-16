@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 
 // icons
-import CryptoWalletsIcon from '../../../../../../assets/svg-icons/crypto-wallets-icon.svg'
 import GridIcon from '../../../../../../assets/svg-icons/grid-icon.svg'
 import IpfsIcon from '../../../../../../assets/svg-icons/ipfs-icon.svg'
 import KeyIcon from '../../../../../../assets/svg-icons/key-icon.svg'
@@ -15,7 +14,6 @@ import WalletWithCoinsIcon from '../../../../../../assets/svg-icons/wallet-with-
 import WalletIcon from '../../../../../../assets/svg-icons/wallet-icon.svg'
 
 export type ArticleLinkIcons =
-  | 'crypto-wallets'
   | 'grid'
   | 'ipfs'
   | 'key'
@@ -36,7 +34,6 @@ const getIcon = (iconName: ArticleLinkIcons) => {
   return (
     (
       {
-        'crypto-wallets': CryptoWalletsIcon,
         'grid': GridIcon,
         'ipfs': IpfsIcon,
         'key': KeyIcon,

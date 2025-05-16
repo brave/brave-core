@@ -7,7 +7,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/skus/common/skus_utils.h"
 #include "chrome/browser/chrome_content_browser_client.h"
@@ -24,75 +23,6 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/common/content_client.h"
-
-namespace extensions {
-
-class BraveWalleBrowserClientUnitTest
-    : public ChromeRenderViewHostTestHarness {
- public:
-  BraveWalleBrowserClientUnitTest() = default;
-  BraveWalleBrowserClientUnitTest(const BraveWalleBrowserClientUnitTest&) =
-      delete;
-  BraveWalleBrowserClientUnitTest& operator=(
-      const BraveWalleBrowserClientUnitTest&) = delete;
-
-  void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
-    original_client_ = content::SetBrowserClientForTesting(&client_);
-  }
-
-  void TearDown() override {
-    content::SetBrowserClientForTesting(original_client_);
-    ChromeRenderViewHostTestHarness::TearDown();
-  }
-
-  void AddExtension() {
-    extension_ = ExtensionBuilder()
-                     .SetManifest(base::Value::Dict()
-                                      .Set("name", "ext")
-                                      .Set("version", "0.1")
-                                      .Set("manifest_version", 2))
-                     .SetID(kEthereumRemoteClientExtensionId)
-                     .Build();
-    ASSERT_TRUE(extension_);
-    ExtensionRegistry::Get(browser_context())->AddReady(extension_.get());
-  }
-
- private:
-  scoped_refptr<const Extension> extension_;
-  content::ContentBrowserClient client_;
-  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
-};
-
-TEST_F(BraveWalleBrowserClientUnitTest,
-    DoesNotResolveEthereumRemoteClientIfNotInstalled) {
-  GURL url("chrome://wallet/");
-  ASSERT_FALSE(BraveContentBrowserClient::HandleURLOverrideRewrite(
-        &url, browser_context()));
-}
-
-TEST_F(BraveWalleBrowserClientUnitTest,
-    ResolvesEthereumRemoteClientIfInstalled) {
-  AddExtension();
-  profile()->GetPrefs()->SetInteger(
-      kDefaultEthereumWallet,
-      static_cast<int>(brave_wallet::mojom::DefaultWallet::CryptoWallets));
-  GURL url("chrome://wallet/");
-  ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
-        &url, browser_context()));
-  EXPECT_EQ(url, GURL(kEthereumRemoteClientBaseUrl));
-}
-
-}  // namespace extensions
 #endif
 
 class BraveContentBrowserClientTest : public testing::Test {

@@ -8,7 +8,6 @@
 #include <string>
 
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
@@ -83,11 +82,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -375,13 +369,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   NTPBackgroundPrefs::RegisterPref(registry);
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  registry->RegisterIntegerPref(kERCPrefVersion, 0);
-  registry->RegisterStringPref(kERCAES256GCMSivNonce, "");
-  registry->RegisterStringPref(kERCEncryptedSeed, "");
-  registry->RegisterBooleanPref(kERCOptedIntoCryptoWallets, false);
 #endif
 
   // Brave Wallet

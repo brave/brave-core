@@ -16,8 +16,6 @@ inline constexpr char kP3ALearnMoreURL[] = "https://brave.com/P3A";
 inline constexpr char kP3ASettingsLink[] = "chrome://settings/privacy";
 inline constexpr char kImportDataHelpURL[] =
     "https://support.brave.com/hc/en-us/articles/360019782291#safari";
-inline constexpr char kCryptoWalletsLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360034535452";
 inline constexpr char kPermissionPromptLearnMoreUrl[] =
     "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 inline constexpr char kPermissionPromptHardwareAccessPrivacyRisksURL[] =

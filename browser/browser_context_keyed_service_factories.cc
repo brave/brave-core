@@ -24,7 +24,6 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -61,10 +60,6 @@
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 #include "brave/browser/brave_shields/filter_list_service_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -147,10 +142,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
     commander::CommanderServiceFactory::GetInstance();
   }
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  EthereumRemoteClientServiceFactory::GetInstance();
 #endif
 
   brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();

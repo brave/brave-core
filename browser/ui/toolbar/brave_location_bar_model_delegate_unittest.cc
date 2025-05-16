@@ -8,30 +8,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 
 using BraveLocationBarModelDelegateTest = testing::Test;
-
-TEST_F(BraveLocationBarModelDelegateTest, ResolvesEthereumRemoteClient) {
-  GURL url(kEthereumRemoteClientBaseUrl);
-  std::u16string formatted_url = base::UTF8ToUTF16(url.spec());
-  BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
-  ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://wallet");
-}
-TEST_F(BraveLocationBarModelDelegateTest,
-    ResolvesEthereumRemoteClientPhishingRoute) {
-  GURL url(kEthereumRemoteClientPhishingUrl);
-  std::u16string formatted_url = base::UTF8ToUTF16(url.spec());
-  BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
-  ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://wallet");
-}
-TEST_F(BraveLocationBarModelDelegateTest,
-    ResolvesEthereumRemoteClientENSRoute) {
-  GURL url(kEthereumRemoteClientEnsRedirectUrl);
-  std::u16string formatted_url = base::UTF8ToUTF16(url.spec());
-  BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
-  ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://wallet");
-}
 
 TEST_F(BraveLocationBarModelDelegateTest, ResolvesChromeSchemeToBrave) {
   GURL url("chrome://sync/");

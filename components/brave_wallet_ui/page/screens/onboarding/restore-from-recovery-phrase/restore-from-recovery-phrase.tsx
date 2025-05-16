@@ -308,28 +308,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
               </InfoAlert>
             </AlertWrapper>
           )}
-
-          {importableWallets?.isLegacyCryptoWalletsInitialized && (
-            <AlertWrapper>
-              <InfoAlert>
-                <div slot='icon'>
-                  <Icon name='crypto-wallets' />
-                </div>
-                {getLocale('braveWalletLegacyWalletDetected')}
-                <div slot='content-after'>
-                  <Button
-                    kind='plain'
-                    size='small'
-                    onClick={() =>
-                      history.push(WalletRoutes.OnboardingImportLegacy)
-                    }
-                  >
-                    {getLocale('braveWalletUsePassword')}
-                  </Button>
-                </div>
-              </InfoAlert>
-            </AlertWrapper>
-          )}
         </>
       )}
 

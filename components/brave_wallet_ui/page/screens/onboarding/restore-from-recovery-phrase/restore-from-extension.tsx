@@ -12,7 +12,6 @@ import { getLocale } from '../../../../../common/locale'
 import {
   useCheckExternalWalletPasswordMutation,
   useGetWalletsToImportQuery,
-  useImportFromCryptoWalletsMutation,
   useImportFromMetaMaskMutation,
   useReportOnboardingActionMutation
 } from '../../../../common/slices/api.slice'
@@ -50,7 +49,7 @@ import {
 type RestoreFromExtensionSteps = 'newPassword' | 'currentPassword'
 
 interface Props {
-  restoreFrom: 'metamask' | 'legacy'
+  restoreFrom: 'metamask'
 }
 
 export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
@@ -67,14 +66,6 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
     useCheckExternalWalletPasswordMutation()
 
   const [
-    importFromCryptoWallets,
-    {
-      data: importFromLegacyWalletResult,
-      isLoading: isImportingFromLegacyExtension
-    }
-  ] = useImportFromCryptoWalletsMutation()
-
-  const [
     importFromMetaMask,
     {
       data: importFromMetaMaskResult,
@@ -84,8 +75,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
 
   // computed from mutations
   const isCreatingWallet =
-    (restoreFrom === 'legacy' && isImportingFromLegacyExtension) ||
-    (restoreFrom === 'metamask' && isImportingFromMetaMaskExtension)
+    restoreFrom === 'metamask' && isImportingFromMetaMaskExtension
 
   // state
   const [isPasswordValid, setIsPasswordValid] = React.useState(false)
@@ -97,16 +87,12 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
 
   const importWalletError =
     extensionPasswordError ||
-    (restoreFrom === 'metamask' && importFromMetaMaskResult?.errorMessage) ||
-    (restoreFrom === 'legacy' && importFromLegacyWalletResult?.errorMessage)
-
+    (restoreFrom === 'metamask' && importFromMetaMaskResult?.errorMessage)
   // methods
   const checkImportPassword = React.useCallback(async () => {
     const results = await checkExtensionPassword({
       walletType:
-        restoreFrom === 'metamask'
-          ? BraveWallet.ExternalWalletType.MetaMask
-          : BraveWallet.ExternalWalletType.CryptoWallets,
+          BraveWallet.ExternalWalletType.MetaMask,
       password: extensionPassword
     }).unwrap()
     if (results.errorMessage) {
@@ -130,22 +116,13 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
       history.push(WalletRoutes.OnboardingComplete)
       return
     }
-
-    if (restoreFrom === 'legacy') {
-      await importFromCryptoWallets({
-        password: extensionPassword,
-        newPassword: password
-      }).unwrap()
-      history.push(WalletRoutes.OnboardingComplete)
-    }
   }, [
     isPasswordValid,
     restoreFrom,
     importFromMetaMask,
     extensionPassword,
     password,
-    history,
-    importFromCryptoWallets
+    history
   ])
 
   const handlePasswordChange = React.useCallback(
@@ -186,14 +163,8 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
     switch (currentStep) {
       case 'currentPassword':
         return {
-          title:
-            restoreFrom === 'metamask'
-              ? getLocale('braveWalletMetaMaskExtensionDetected')
-              : getLocale('braveWalletCryptoWalletsDetected'),
-          description:
-            restoreFrom === 'metamask'
-              ? getLocale('braveWalletMetaMaskExtensionImportDescription')
-              : getLocale('braveWalletImportBraveLegacyDescription')
+          title: getLocale('braveWalletMetaMaskExtensionDetected'),
+          description: getLocale('braveWalletMetaMaskExtensionImportDescription')
         }
 
       case 'newPassword':
@@ -259,9 +230,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
             hasError={!!importWalletError}
             onKeyDown={handleKeyDown}
             placeholder={
-              restoreFrom === 'metamask'
-                ? getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
-                : getLocale('braveWalletImportBraveLegacyInput')
+                getLocale('braveWalletMetaMaskPasswordInputPlaceholder')
             }
             name='extensionPassword'
           />

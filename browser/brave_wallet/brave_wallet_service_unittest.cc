@@ -1427,9 +1427,6 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultEthereumWallet) {
   SetDefaultEthereumWallet(mojom::DefaultWallet::BraveWallet);
   EXPECT_EQ(GetDefaultEthereumWallet(), mojom::DefaultWallet::BraveWallet);
 
-  SetDefaultEthereumWallet(mojom::DefaultWallet::CryptoWallets);
-  EXPECT_EQ(GetDefaultEthereumWallet(), mojom::DefaultWallet::CryptoWallets);
-
   SetDefaultEthereumWallet(mojom::DefaultWallet::None);
   EXPECT_EQ(GetDefaultEthereumWallet(), mojom::DefaultWallet::None);
 

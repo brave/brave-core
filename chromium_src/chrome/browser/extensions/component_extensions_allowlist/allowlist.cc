@@ -9,24 +9,16 @@
 #include "src/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc"
 #undef IsComponentExtensionAllowlisted
 
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#endif
 
 namespace extensions {
 
   bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
     const char* const kAllowed[] = {
       brave_extension_id,
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-      kEthereumRemoteClientExtensionId,
-#endif
       brave_webtorrent_extension_id
     };
 

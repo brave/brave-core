@@ -56,16 +56,12 @@ class ExternalWalletsImporter {
   void SetExternalWalletInstalledForTesting(bool installed);
 
  private:
-  const extensions::Extension* GetCryptoWallets() const;
   const extensions::Extension* GetMetaMask() const;
-  void OnCryptoWalletsLoaded(InitCallback);
-  bool IsCryptoWalletsInstalledInternal() const;
 
   void GetLocalStorage(const extensions::Extension&, InitCallback);
   void OnGetLocalStorage(InitCallback, base::Value::Dict);
 
-  void GetMnemonic(bool is_legacy_crypto_wallets,
-                   GetImportInfoCallback callback,
+  void GetMnemonic(bool is_legacy_wallet, GetImportInfoCallback callback,
                    const std::string& password) const;
 
   bool is_external_wallet_installed_for_testing_ = false;

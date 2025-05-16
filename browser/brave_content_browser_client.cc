@@ -32,7 +32,6 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
@@ -219,12 +218,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -1139,28 +1132,6 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     *url = GURL(kWelcomeURL);
     return true;
   }
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  brave_wallet::mojom::DefaultWallet default_wallet =
-      brave_wallet::GetDefaultEthereumWallet(prefs);
-  if (!brave_wallet::IsNativeWalletEnabled() ||
-      default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
-    // If the Crypto Wallets extension is loaded, then it replaces the WebUI
-    auto* service =
-        EthereumRemoteClientServiceFactory::GetForContext(browser_context);
-    if (service->IsCryptoWalletsReady() &&
-        url->SchemeIs(content::kChromeUIScheme) &&
-        url->host() == kEthereumRemoteClientHost) {
-      auto* registry = extensions::ExtensionRegistry::Get(browser_context);
-      if (registry && registry->ready_extensions().GetByID(
-                          kEthereumRemoteClientExtensionId)) {
-        *url = GURL(kEthereumRemoteClientBaseUrl);
-        return true;
-      }
-    }
-  }
-#endif
 
   return false;
 }

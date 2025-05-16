@@ -63,30 +63,6 @@ const char* valid_data_with_utf8_mnemonic =
     "\\\"mmSwsbEsytQDfdNBP6WwOw==\\\",\\\"salt\\\":"
     "\\\"ZNDNQqgIaLswCtSH72AwaaymPQqmO6VCgpbfAmAuw5s=\\\"}\"}}}";
 
-const char* valid_legacy_mnemonic =
-    "cushion pitch impact album daring marine much annual budget social "
-    "clarify "
-    "balance rose almost area busy among bring hidden bind later capable pulp "
-    "laundry";
-const char* valid_legacy_data =
-    "{\"data\": {\"KeyringController\": {"
-    "\"argonParams\": {"
-    "\"hashLen\": 32,"
-    "\"mem\": 500000,"
-    "\"time\": 1,"
-    "\"type\": 2"
-    "},"
-    "\"salt\": \"�t\u0003c͓��:BX��R��VE�N��[�[���h�\","  // NOLINT
-    "\"vault\": "
-    "\"{\\\"data\\\":\\\"z4NZSfTYHg2DBDqlkXYa5rmB4LwtL9pw5MKY3RhBYPh6qHgYO/YwO/"
-    "jkX6Xdie6vtqbyo2v/juXopeuGOVWv29z8uBlOdKtHgZWhmG0hjnjemEd//"
-    "vhxf57CR7GLTV25l0mxFM4ZAh8D8lrf5A8h1G517XvF+Nw+hyuiPYKKrezujrBfr0BxhN0nq+"
-    "y5Yfehcge1SPpIZO+KTY2SDFkYBuv4EixHRNYAPTP/"
-    "HiLvGXIectog1E5SoykqaLcbxIDDXzDBGm1psvLRuLj1fRGIp+vi7T2B5QUTnk/"
-    "mJuzxMbxB5EQICDaGYkA+TikvnalHiDQ5N2UE+EgxoJJvf4Hbrn88CEd/"
-    "RTAxRA==\\\",\\\"iv\\\":\\\"F+H7Yn5bDI5tgMmtpy5Wlg==\\\",\\\"salt\\\":"
-    "\\\"p7eG29poyGVjP4aeaN175BV0g+SaFKGtyhLHEkLbuyg=\\\"}\"}}}";
-
 }  // namespace
 
 class ExternalWalletsImporterUnitTest : public testing::Test {
@@ -104,21 +80,6 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
                                           base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     base::expected<ImportInfo, ImportError> out_info;
 
-    {
-      ExternalWalletsImporter importer(mojom::ExternalWalletType::CryptoWallets,
-                                       browser_context());
-
-      importer.SetStorageDataForTesting(json.Clone());
-
-      base::RunLoop run_loop;
-      importer.GetImportInfo(
-          password, base::BindLambdaForTesting(
-                        [&](base::expected<ImportInfo, ImportError> info) {
-                          out_info = std::move(info);
-                          run_loop.Quit();
-                        }));
-      run_loop.Run();
-    }
     {
       ExternalWalletsImporter importer(mojom::ExternalWalletType::MetaMask,
                                        browser_context());
@@ -141,16 +102,11 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
   void SimulateIsExternalWalletInitialized(const std::string& json_str,
                                            bool* out_initialized) {
     ASSERT_NE(out_initialized, nullptr);
-    ExternalWalletsImporter cw_importer(
-        mojom::ExternalWalletType::CryptoWallets, browser_context());
     ExternalWalletsImporter mm_importer(mojom::ExternalWalletType::MetaMask,
                                         browser_context());
     auto json = base::test::ParseJsonDict(json_str);
-    cw_importer.SetStorageDataForTesting(json.Clone());
     mm_importer.SetStorageDataForTesting(json.Clone());
-    cw_importer.SetExternalWalletInstalledForTesting(true);
     mm_importer.SetExternalWalletInstalledForTesting(true);
-    *out_initialized = cw_importer.IsExternalWalletInitialized();
     EXPECT_EQ(mm_importer.IsExternalWalletInitialized(), *out_initialized);
   }
 
@@ -205,7 +161,6 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
   auto info = SimulateGetImportInfo("brave4ever", valid_data_10K);
   ASSERT_TRUE(info.has_value());
   EXPECT_EQ(info->mnemonic, kMnemonicDripCaution);
-  EXPECT_FALSE(info->is_legacy_crypto_wallets);
   EXPECT_EQ(info->number_of_accounts, 1u);
 }
 
@@ -215,7 +170,6 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_600K_Iterations) {
   EXPECT_EQ(info->mnemonic,
             "try fossil lesson direct toddler favorite wedding opera camera "
             "sand great hammer");
-  EXPECT_FALSE(info->is_legacy_crypto_wallets);
   EXPECT_EQ(info->number_of_accounts, 1u);
 }
 
@@ -224,62 +178,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_UTF8Mnemonic) {
       SimulateGetImportInfo("brave4ever", valid_data_with_utf8_mnemonic);
   ASSERT_TRUE(info.has_value());
   EXPECT_EQ(info->mnemonic, kMnemonicDripCaution);
-  EXPECT_FALSE(info->is_legacy_crypto_wallets);
   EXPECT_EQ(info->number_of_accounts, 1u);
-}
-
-TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
-  // argonParams is not a dict
-  EXPECT_EQ(SimulateGetImportInfo("123", R"({
-          "data": { "KeyringController": {
-                  "argonParams": "123"
-              }}})")
-                .error(),
-            ImportError::kInternalError);
-
-  // argonParams multiple fields are missing
-  EXPECT_EQ(SimulateGetImportInfo("123", R"({
-          "data": { "KeyringController": {
-                  "argonParams": {
-                    "mem": 256
-                  }
-              }}})")
-                .error(),
-            ImportError::kInternalError);
-
-  // argonParams type is not 2
-  EXPECT_EQ(SimulateGetImportInfo("123", R"({
-          "data": { "KeyringController": {
-                  "argonParams": {
-                    "hashLen": 32,
-                    "mem": 500000,
-                    "time": 1,
-                    "type": 1
-                  }
-              }}})")
-                .error(),
-            ImportError::kInternalError);
-
-  // KeyringController.salt is missing
-  EXPECT_EQ(SimulateGetImportInfo("123", R"({
-          "data": { "KeyringController": {
-                  "argonParams": {
-                    "hashLen": 32,
-                    "mem": 500000,
-                    "time": 1,
-                    "type": 2
-                  }
-              }}})")
-                .error(),
-            ImportError::kInternalError);
-}
-
-TEST_F(ExternalWalletsImporterUnitTest, DISABLED_ImportLegacyWallet) {
-  auto info = SimulateGetImportInfo("bbbravey", valid_legacy_data);
-  ASSERT_TRUE(info.has_value());
-  EXPECT_EQ(info->mnemonic, valid_legacy_mnemonic);
-  EXPECT_TRUE(info->is_legacy_crypto_wallets);
-  EXPECT_EQ(info->number_of_accounts, 2u);
 }
 
 TEST_F(ExternalWalletsImporterUnitTest, IsExternalWalletInitialized) {

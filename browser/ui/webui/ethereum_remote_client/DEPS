@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/components/ethereum_remote_client_page/resources",
-]

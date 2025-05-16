@@ -48,10 +48,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#endif
-
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
@@ -128,12 +124,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setWebTorrentEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
                           base::Unretained(this)));
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  web_ui()->RegisterMessageCallback(
-      "setBraveWalletEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetBraveWalletEnabled,
-                          base::Unretained(this)));
-#endif
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (brave_wallet::IsZCashShieldedTransactionsEnabled()) {
@@ -315,15 +305,6 @@ void BraveDefaultExtensionsHandler::IsWidevineEnabled(
 }
 
 void BraveDefaultExtensionsHandler::OnWalletTypeChanged() {
-  if (brave_wallet::GetDefaultEthereumWallet(profile_->GetPrefs()) ==
-      brave_wallet::mojom::DefaultWallet::CryptoWallets) {
-    return;
-  }
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  service->DisableExtension(
-      kEthereumRemoteClientExtensionId,
-      extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
 }
 
 void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
@@ -337,25 +318,6 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
     OnRestartNeededChanged();
   }
 }
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  bool enabled = args[0].GetBool();
-
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  if (enabled) {
-    service->EnableExtension(kEthereumRemoteClientExtensionId);
-  } else {
-    service->DisableExtension(
-        kEthereumRemoteClientExtensionId,
-        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
-  }
-}
-#endif
 
 void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
     const base::Value::List& args) {

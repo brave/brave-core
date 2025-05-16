@@ -13,96 +13,6 @@
     ],
     "functions": [
       {
-        "name": "ready",
-        "type": "function",
-        "description": "Called by Crypto Wallets when it is ready",
-        "parameters": []
-      }, {
-        "name": "shouldPromptForSetup",
-        "type": "function",
-        "description": "Called to determine if a brave wallet prompt should be shown to opt into install",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "enabled",
-              "type": "boolean"
-            }
-          ]
-        }
-      }, {
-        "name": "notifyWalletUnlock",
-        "type": "function",
-        "description": "Called to notify Brave that the wallet was unlocked",
-        "parameters": []
-      }, {
-        "name": "getWalletSeed",
-        "type": "function",
-        "description": "Called when website detects a Dapp",
-        "parameters": [
-          {
-            "name": "key",
-            "type": "binary"
-          }
-        ],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "seed",
-              "type": "binary"
-            }
-          ]
-        }
-      }, {
-        "name": "getProjectID",
-        "type": "function",
-        "description": "Called to get the configured infura project ID",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "projectID",
-              "type": "string"
-            }
-          ]
-        }
-      }, {
-        "name": "getBraveKey",
-        "type": "function",
-        "description": "Called to get the Brave service key",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "key",
-              "type": "string"
-            }
-          ]
-        }
-      }, {
-        "name": "resetWallet",
-        "type": "function",
-        "description": "Called to restore Crypto Wallets to its original state",
-        "parameters": []
-      }, {
-        "name": "getWeb3Provider",
-        "type": "function",
-        "description": "Called to get the configured web3 provider extension ID",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "extensionID",
-              "type": "string"
-            }
-          ]
-        }
-      }, {
         "name": "getWeb3ProviderList",
         "type": "function",
         "description": "Get available web3 providers",
@@ -128,22 +38,6 @@
             {
               "name": "val",
               "type": "boolean"
-            }
-          ]
-        }
-      }, {
-        "name": "loadUI",
-        "type": "function",
-        "description": "Called when brave://wallet WebUI wants to load the real UI",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "cb",
-              "type": "function",
-              "name": "callback",
-              "parameters": []
             }
           ]
         }

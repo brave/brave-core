@@ -225,7 +225,6 @@ provideStrings({
   braveWalletRestoreWalletError: 'Check your recovery phrase and try again.',
   braveWalletImportWithRecoveryPhrase: 'Import using your recovery phrase',
   braveWalletMetamaskDetected: 'Metamask wallet detected!',
-  braveWalletLegacyWalletDetected: 'Legacy wallet detected!',
   braveWalletUsePassword: 'Use password',
   braveWalletRecoveryPhraseWord: 'Word $1',
 
@@ -883,19 +882,6 @@ provideStrings({
   braveWalletPermissionOneDay: 'For 24 hours',
   braveWalletPermissionOneWeek: 'For 1 week',
   braveWalletPermissionForever: 'Forever',
-
-  // Import from Legacy Wallet
-  braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
-  braveWalletCryptoWalletsDescriptionTwo:
-    'If youd rather skip the import and keep the old Crypto Wallets ' +
-    'experience, just navigate to the Brave Browser $1Settings$2 and ' +
-    'change the default back to Crypto Wallets. You can also import, ' +
-    'try the new Brave Wallet, and change back at any time.',
-  braveWalletImportBraveLegacyDescription:
-    'Enter your existing crypto wallets password to import to ' +
-    'Brave Wallet. Enjoy a faster and more secure way to manage crypto ' +
-    'assets and interact with Web3 DApps.',
-  braveWalletImportBraveLegacyInput: 'Type Crypto wallets password',
 
   // Connect Hardware Wallet Panel
   braveWalletConnectHardwarePanelConnected: '$1 connected',
