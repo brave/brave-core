@@ -5,12 +5,11 @@
 
 import * as React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
-import { EmailAliasModal } from '../content/email_aliases_modal'
+import { EmailAliasModal, EditState } from '../content/email_aliases_modal'
 
 import { clickLeoButton, localeRegex } from './test_utils'
 import { EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
-import { EditState } from '../content/types'
 
 jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
@@ -26,12 +25,11 @@ jest.mock('$web-common/locale', () => ({
 
 // Mock the email aliases service
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
-  logout: jest.fn(),
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
   requestAuthentication: jest.fn(),
-  cancelAuthentication: jest.fn(),
+  cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
   removeObserver: jest.fn()
 }
