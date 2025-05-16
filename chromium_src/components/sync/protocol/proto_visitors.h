@@ -6,16 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
 
-#define BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS \
-VISIT(brave_fields);
-
-#define BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD                  \
-VISIT_PROTO_FIELDS(const sync_pb::BraveSpecificFields& proto) {        \
-  VISIT(is_self_delete_supported);                                     \
-}
+#define BRAVE_VISIT_PROTO_FIELDS                                       \
+  VISIT_PROTO_FIELDS(const sync_pb::BraveSpecificFields& proto) {      \
+    VISIT(is_self_delete_supported);                                   \
+  }                                                                    \
+                                                                       \
+  VISIT_PROTO_FIELDS(const sync_pb::TabNavigationBraveFields& proto) { \
+    VISIT(storage_partition_domain);                                   \
+    VISIT(storage_partition_name);                                     \
+  }
 
 #include "src/components/sync/protocol/proto_visitors.h"  // IWYU pragma: export
-#undef BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
-#undef BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS
+
+#undef BRAVE_VISIT_PROTO_FIELDS
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
