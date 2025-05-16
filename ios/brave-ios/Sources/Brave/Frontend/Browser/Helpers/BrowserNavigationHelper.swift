@@ -69,7 +69,7 @@ class BrowserNavigationHelper {
     let vc = UIHostingController(
       rootView: HistoryView(
         model: HistoryModel(
-          api: bvc.braveCore.historyAPI,
+          api: bvc.profileController.historyAPI,
           tabManager: bvc.tabManager,
           toolbarUrlActionsDelegate: bvc,
           dismiss: { [weak bvc] in bvc?.dismiss(animated: true) },

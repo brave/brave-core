@@ -65,7 +65,7 @@ extension BrowserViewController: TabObserver {
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
     if !tab.isPrivate {
       injectedScripts += [
-        LoginsScriptHandler(profile: profile, passwordAPI: braveCore.passwordAPI),
+        LoginsScriptHandler(profile: profile, passwordAPI: profileController.passwordAPI),
         EthereumProviderScriptHandler(),
         SolanaProviderScriptHandler(),
         BraveSearchResultAdScriptHandler(),
@@ -180,7 +180,7 @@ extension BrowserViewController: TabObserver {
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
     if let browserData = tab.browserData {
-      if let provider = braveCore.braveWalletAPI.ethereumProvider(
+      if let provider = profileController.braveWalletAPI.ethereumProvider(
         with: browserData,
         isPrivateBrowsing: tab.isPrivate
       ) {
@@ -190,7 +190,7 @@ extension BrowserViewController: TabObserver {
         tab.walletEthProvider = provider
         tab.walletEthProvider?.initialize(eventsListener: browserData)
       }
-      if let provider = braveCore.braveWalletAPI.solanaProvider(
+      if let provider = profileController.braveWalletAPI.solanaProvider(
         with: browserData,
         isPrivateBrowsing: tab.isPrivate
       ) {

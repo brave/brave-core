@@ -29,6 +29,60 @@ extension Logger {
   }
 }
 
+struct ProfileState {
+  var rewards: Brave.BraveRewards
+  var migrations: BraveProfileMigrations
+  var dau: DAU
+
+  init(profileController: BraveProfileController) {
+    // Setup DAU
+    dau = DAU(braveCoreStats: profileController.braveStats)
+
+    // Setup Rewards & Ads
+    let configuration = BraveRewards.Configuration.current()
+    Self.migrateAdsConfirmations(for: configuration)
+    rewards = BraveRewards(configuration: configuration)
+
+    // Setup BraveCore profile migrations
+    migrations = BraveProfileMigrations(profileController: profileController)
+    migrations.launchMigrations()
+  }
+
+  private static func migrateAdsConfirmations(for configuruation: Brave.BraveRewards.Configuration)
+  {
+    // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
+    // estimated payout remain correct.
+    //
+    // This hack is unfortunately neccessary due to a missed migration path when moving
+    // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
+    // state file and save it as a new file under the ads directory.
+    let base = configuruation.storageURL
+    let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
+    let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
+    let fm = FileManager.default
+
+    if !fm.fileExists(atPath: ledgerStateContainer.path)
+      || fm.fileExists(atPath: adsConfirmations.path)
+    {
+      // Nothing to migrate or already migrated
+      return
+    }
+
+    do {
+      let contents = NSDictionary(contentsOfFile: ledgerStateContainer.path)
+      guard let confirmations = contents?["confirmations.json"] as? String else {
+        adsRewardsLog.debug("No confirmations found to migrate in ledger's state container")
+        return
+      }
+      try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
+    } catch {
+      adsRewardsLog.error(
+        "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
+      )
+    }
+  }
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   // This property must be non-null because even though it's optional,
@@ -37,6 +91,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private var windowProtection: WindowProtection?
   static var shouldHandleUrpLookup = false
   static var shouldHandleInstallAttributionFetch = false
+  private var profileState: ProfileState?
 
   private var cancellables: Set<AnyCancellable> = []
 
@@ -47,22 +102,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
 
-    let attributionManager = AttributionManager(
-      dau: AppState.shared.dau,
-      urp: UserReferralProgram.shared
-    )
-
-    let browserViewController = createBrowserWindow(
-      scene: windowScene,
-      braveCore: AppState.shared.braveCore,
-      profile: AppState.shared.profile,
-      attributionManager: attributionManager,
-      migration: AppState.shared.migration,
-      rewards: AppState.shared.rewards,
-      newsFeedDataSource: AppState.shared.newsFeedDataSource,
-      userActivity: connectionOptions.userActivities.first
-    )
-
     let conditions = scene.activationConditions
     conditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
     if let windowId = session.userInfo?["WindowID"] as? String {
@@ -72,32 +111,96 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     Preferences.General.themeNormalMode.objectWillChange
       .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
       }
       .store(in: &cancellables)
 
     Preferences.General.nightModeEnabled.objectWillChange
       .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
       }
       .store(in: &cancellables)
+
+    let braveCore = AppState.shared.braveCore
+    if let profileController = braveCore.profileController, let profileState {
+      connectSceneToProfile(
+        windowScene: windowScene,
+        connectionOptions: connectionOptions,
+        profileController: profileController,
+        profileState: profileState
+      )
+    } else {
+      braveCore.loadDefaultProfile { [weak self] profileController in
+        guard let self, let profileController else {
+          Logger.module.error("Failed to load default profile")
+          return
+        }
+
+        profileState = .init(profileController: profileController)
+
+        // Adding Observer to enable sync types
+        NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(enableUserSelectedTypesForSync),
+          name: BraveServiceStateObserver.coreServiceLoadedNotification,
+          object: nil
+        )
+
+        connectSceneToProfile(
+          windowScene: windowScene,
+          connectionOptions: connectionOptions,
+          profileController: profileController,
+          profileState: profileState!
+        )
+      }
+    }
+  }
+
+  @objc private func enableUserSelectedTypesForSync() {
+    guard let profileController = AppState.shared.braveCore.profileController,
+      profileController.syncAPI.isInSyncGroup
+    else {
+      Logger.module.info("Sync is not active")
+      return
+    }
+
+    profileController.syncAPI.enableSyncTypes(
+      syncProfileService: profileController.syncProfileService
+    )
+  }
+
+  private func connectSceneToProfile(
+    windowScene: UIWindowScene,
+    connectionOptions: UIScene.ConnectionOptions,
+    profileController: BraveProfileController,
+    profileState: ProfileState
+  ) {
+    let attributionManager = AttributionManager(
+      dau: profileState.dau,
+      urp: UserReferralProgram.shared
+    )
+
+    let browserViewController = createBrowserWindow(
+      scene: windowScene,
+      braveCore: AppState.shared.braveCore,
+      profileController: profileController,
+      profile: AppState.shared.profile,
+      attributionManager: attributionManager,
+      rewards: profileState.rewards,
+      newsFeedDataSource: AppState.shared.newsFeedDataSource,
+      userActivity: connectionOptions.userActivities.first
+    )
 
     browserViewController.privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
       .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
+      .sink { [weak self, weak windowScene] _ in
+        guard let self = self, let windowScene else { return }
+        self.updateTheme(for: windowScene)
       }
       .store(in: &cancellables)
 
@@ -167,7 +270,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // Handle Custom Activity and Intents
     if let currentActivity = connectionOptions.userActivities.first {
-      handleCustomUserActivityActions(scene, userActivity: currentActivity)
+      handleCustomUserActivityActions(windowScene, userActivity: currentActivity)
+    }
+
+    if windowScene.activationState == .foregroundActive {
+      sendDAUPingIfNeeded()
+      refreshSKUsCredentials(in: windowScene)
+    }
+  }
+
+  private func sendDAUPingIfNeeded() {
+    guard let profileState else { return }
+    // We try to send DAU ping each time the app goes to foreground to work around network edge cases
+    // (offline, bad connection etc.).
+    // Also send the ping only after the URP lookup and install attribution has processed.
+    if Preferences.URP.referralLookupOutstanding.value == true,
+      Preferences.URP.installAttributionLookupOutstanding.value == true
+    {
+      profileState.dau.sendPingToServer()
+    }
+  }
+
+  private func refreshSKUsCredentials(in scene: UIWindowScene) {
+    Task { @MainActor in
+      let isPrivateBrowsing =
+        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
     }
   }
 
@@ -264,19 +392,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       quickActions.launchedShortcutItem = nil
     }
 
-    // We try to send DAU ping each time the app goes to foreground to work around network edge cases
-    // (offline, bad connection etc.).
-    // Also send the ping only after the URP lookup and install attribution has processed.
-    if Preferences.URP.referralLookupOutstanding.value == true,
-      Preferences.URP.installAttributionLookupOutstanding.value == true
-    {
-      AppState.shared.dau.sendPingToServer()
-    }
-
-    Task { @MainActor in
-      let isPrivateBrowsing =
-        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
+    if let profileState {
+      sendDAUPingIfNeeded()
+      refreshSKUsCredentials(in: scene)
     }
   }
 
@@ -564,9 +682,9 @@ extension SceneDelegate {
   private func createBrowserWindow(
     scene: UIWindowScene,
     braveCore: BraveCoreMain,
+    profileController: BraveProfileController,
     profile: Profile,
     attributionManager: AttributionManager,
-    migration: Migration?,
     rewards: Brave.BraveRewards,
     newsFeedDataSource: BraveNews.FeedDataSource,
     userActivity: NSUserActivity?
@@ -633,8 +751,8 @@ extension SceneDelegate {
       profile: profile,
       attributionManager: attributionManager,
       braveCore: braveCore,
+      profileController: profileController,
       rewards: rewards,
-      migration: migration,
       crashedLastSession: crashedLastSession,
       newsFeedDataSource: newsFeedDataSource,
       privateBrowsingManager: privateBrowsingManager

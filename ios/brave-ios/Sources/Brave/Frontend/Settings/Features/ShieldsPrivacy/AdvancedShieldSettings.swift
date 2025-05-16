@@ -111,12 +111,13 @@ import os
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     debounceService: DebounceService?,
-    braveCore: BraveCoreMain,
+    braveCore: BraveProfileController,
+    p3aUtils: BraveP3AUtils,
     rewards: BraveRewards?,
     webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
-    self.p3aUtilities = braveCore.p3aUtils
+    self.p3aUtilities = p3aUtils
     self.deAmpPrefs = braveCore.deAmpPrefs
     self.debounceService = debounceService
     self.tabManager = tabManager

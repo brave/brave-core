@@ -30,13 +30,13 @@ public class TabStateFactory {
     public var id: UUID
     public var initialConfiguration: WKWebViewConfiguration?
     public var lastActiveTime: Date?
-    public var braveCore: BraveCoreMain?
+    public var braveCore: BraveProfileController?
 
     public init(
       id: UUID = .init(),
       initialConfiguration: WKWebViewConfiguration? = nil,
       lastActiveTime: Date? = nil,
-      braveCore: BraveCoreMain? = nil
+      braveCore: BraveProfileController? = nil
     ) {
       self.id = id
       self.initialConfiguration = initialConfiguration

@@ -56,7 +56,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   // MARK: Private
 
-  private let braveCoreMain: BraveCoreMain
+  private let braveCoreMain: BraveProfileController
   private let syncAPI: BraveSyncAPI
   private let syncProfileService: BraveSyncProfileServiceIOS
   private let tabManager: TabManager
@@ -90,7 +90,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   init(
     isModallyPresented: Bool = false,
-    braveCoreMain: BraveCoreMain,
+    braveCoreMain: BraveProfileController,
     tabManager: TabManager,
     windowProtection: WindowProtection?
   ) {
