@@ -32,7 +32,7 @@ import org.chromium.ui.KeyboardVisibilityDelegate;
  */
 public class BraveWalletResetTxHistoryAndNoncePreference
         extends Preference implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
-    private String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
+    private final String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
 
     private TxService mTxService;
     private final String mConfirmationPhrase;

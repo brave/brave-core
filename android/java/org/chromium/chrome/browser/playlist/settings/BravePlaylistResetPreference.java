@@ -19,9 +19,9 @@ import org.chromium.chrome.R;
  */
 public class BravePlaylistResetPreference
         extends Preference implements Preference.OnPreferenceClickListener {
-    private String TAG = "BravePlaylistResetPreference";
+    private final String TAG = "BravePlaylistResetPreference";
 
-    private int mPrefAccentColor;
+    private final int mPrefAccentColor;
 
     /** Constructor for BravePlaylistResetPreference. */
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {

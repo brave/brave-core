@@ -7,10 +7,10 @@ package org.chromium.chrome.browser.notifications.retention;
 
 public class RetentionNotification {
 
-    private int notificationId;
-    private int notificationTime; // In minutes
-    private String channelId;
-    private String notificationTitle;
+    private final int notificationId;
+    private final int notificationTime; // In minutes
+    private final String channelId;
+    private final String notificationTitle;
 
     public RetentionNotification(int notificationId, int notificationTime, String channelId, String notificationTitle) {
         this.notificationId = notificationId;

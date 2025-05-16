@@ -28,7 +28,7 @@ public class NTPBackgroundImagesBridge {
     private long mNativeNTPBackgroundImagesBridge;
     private final ObserverList<NTPBackgroundImageServiceObserver> mObservers =
             new ObserverList<NTPBackgroundImageServiceObserver>();
-    private static List<TopSite> mTopSites = new ArrayList<>();
+    private static final List<TopSite> mTopSites = new ArrayList<>();
     private static NewTabPageListener mNewTabPageListener;
 
     public abstract static class NTPBackgroundImageServiceObserver {

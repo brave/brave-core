@@ -37,7 +37,7 @@ public class BraveStatsPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mBraveStatsPref;
     private ChromeSwitchPreference mBraveStatsNotificationPref;
 
-    private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
+    private final DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 

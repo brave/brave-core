@@ -10,10 +10,10 @@ package org.chromium.chrome.browser.onboarding.v2;
 import android.view.View;
 
 public class HighlightItem {
-    private int screenLeft;
-    private int screenTop;
-    private int screenRight;
-    private int screenBottom;
+    private final int screenLeft;
+    private final int screenTop;
+    private final int screenRight;
+    private final int screenBottom;
 
     public HighlightItem(View highlightView) {
         int[] location = new int[2];

@@ -8,9 +8,9 @@ package org.chromium.chrome.browser.billing;
 import com.android.billingclient.api.Purchase;
 
 public class PurchaseModel {
-    private String mPurchaseToken;
-    private String mProductId;
-    private Purchase mPurchase;
+    private final String mPurchaseToken;
+    private final String mProductId;
+    private final Purchase mPurchase;
 
     public PurchaseModel(String purchaseToken, String productId, Purchase purchase) {
         this.mPurchaseToken = purchaseToken;
