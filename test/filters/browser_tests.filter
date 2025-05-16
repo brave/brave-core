@@ -2143,15 +2143,6 @@
 -All/OpticalCharacterRecognizerTest.PerformOCR_Simple/OCR_Enabled_Library_Available
 -MainContentExtractionTest.RequestWithContent
 
-# These tests fail because we disable kSideBySide
--MultiContentsViewBrowserTest.*
--TabStripModelBrowserTest.CommandAddToSplit
--TabStripModelBrowserTest.CommandOrganizeTabs
--TabStripModelBrowserTest.CommandRemoveSplit
--TabStripModelBrowserTest.DetachWebContentsAtForInsertion
--TabStripModelBrowserTest.OnTabGroupAdded
--TabStripModelBrowserTest.OnTabGroupWillBeRemoved
-
 # These tests fail because we disable MV2 deprecation and disablement
 -ManifestV2ExperimentManagerBrowserTest.*
 -ManifestV2ExperimentWithLegacyExtensionSupportTest.*

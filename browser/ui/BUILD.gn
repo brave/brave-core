@@ -1425,7 +1425,10 @@ source_set("brave_tab_features") {
     "tabs/features.cc",
     "tabs/features.h",
   ]
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//chrome/browser/ui:ui_features",
+  ]
 }
 
 source_set("brave_rewards_source") {

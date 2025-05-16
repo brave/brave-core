@@ -53,10 +53,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
 class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  public:
   SideBySideEnabledBrowserTest() {
-    // Can't enable SideBySide and our SplitView features together.
     scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide},
-        /*disabled_features*/ {tabs::features::kBraveSplitView});
+        /*enabled_features*/ {features::kSideBySide}, {});
   }
   ~SideBySideEnabledBrowserTest() override = default;
 
@@ -68,6 +66,11 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, LaunchTest) {
   EXPECT_TRUE(!!BrowserView::GetBrowserViewForBrowser(browser())
                     ->multi_contents_view_for_testing());
+
+  // Check SplitView feature is not enabled.
+  EXPECT_FALSE(tabs::features::IsBraveSplitViewEnabled());
+  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
+  EXPECT_FALSE(!!split_view_data);
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
