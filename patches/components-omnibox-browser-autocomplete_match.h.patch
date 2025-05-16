@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_match.h b/components/omnibox/browser/autocomplete_match.h
-index 2b7690b4ba0f42f4b98732d7bf0e85c1d9ab20c3..b3c4bed7290707b8151f07cacb11082d7df71b5a 100644
+index 44db2366e64d3a4bcf716753175c2c04bb2d78e2..b45e8653db043819fbc6f75d8a4fc2870d8daf6b 100644
 --- a/components/omnibox/browser/autocomplete_match.h
 +++ b/components/omnibox/browser/autocomplete_match.h
-@@ -715,7 +715,7 @@ struct AutocompleteMatch {
+@@ -716,7 +716,7 @@ struct AutocompleteMatch {
    // The provider of this match, used to remember which provider the user had
    // selected when the input changes. This may be NULL, in which case there is
    // no provider (or memory of the user's selection).

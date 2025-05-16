@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 5cf40332f9b30bad90871ff932c865032b87f4e9..8a680a6bfad1b9af0a8cdde6d33053900dce5f5f 100644
+index ade4a94a1a94b089af11281f5dd20ebf4ea62bb2..89114578ddabb635dd4d03ce7f817cf505bb5f68 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -3245,6 +3245,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
@@ -162,7 +162,7 @@ index 5cf40332f9b30bad90871ff932c865032b87f4e9..8a680a6bfad1b9af0a8cdde6d3305390
    GLvoid* result = nullptr;
    // NOTE: If pname is ever a value that returns more than 1 element
    // this will corrupt memory.
-@@ -4996,6 +5016,7 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
+@@ -5000,6 +5020,7 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
                                                   int64_t offset) {
    if (isContextLost())
      return;

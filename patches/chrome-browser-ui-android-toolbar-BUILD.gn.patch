@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 0bfb0cca2e1c7631f58353dfe45442a41bf022de..8f33db03eb923d8a9deadd0303c69eb227f7d52c 100644
+index b2e7142cfe888010a7bc8663c6334a6bad590c83..4c9f2df5fc2ca76b341a512137a84a8a4ee10096 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
-@@ -124,6 +124,7 @@ android_library("java") {
+@@ -133,6 +133,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/toolbar/top/tab_strip/StripVisibilityState.java",
      "java/src/org/chromium/chrome/browser/toolbar/top/tab_strip/TabStripTransitionCoordinator.java",
    ]

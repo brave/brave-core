@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/create_app_bundle.py b/build/android/gyp/create_app_bundle.py
-index 43efec3ce978c0c425d6da169ef2e7ae47e04bb3..59b42cdace895df93d90f8ad3400d2fd1b30098d 100755
+index cbea5d330472c0634c4b4ed086011768838f5730..65c0cd880bdb9d7664596a77ccd63686b818684c 100755
 --- a/build/android/gyp/create_app_bundle.py
 +++ b/build/android/gyp/create_app_bundle.py
 @@ -79,6 +79,7 @@ _ALLOWLISTED_NON_BASE_SERVICES = {
