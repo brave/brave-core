@@ -75,7 +75,7 @@ class CORE_EXPORT BraveSessionCache final
   static const char kSupplementName[];
 
   explicit BraveSessionCache(ExecutionContext&);
-  virtual ~BraveSessionCache() = default;
+  ~BraveSessionCache() = default;
 
   static BraveSessionCache& From(ExecutionContext&);
   static void Init();
