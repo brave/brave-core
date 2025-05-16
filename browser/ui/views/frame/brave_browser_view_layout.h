@@ -58,8 +58,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
 
   // BrowserViewLayout:
   void Layout(views::View* host) override;
-  void LayoutSidePanelView(views::View* side_panel,
-                           gfx::Rect& contents_container_bounds) override;
   int LayoutTabStripRegion(int top) override;
   int LayoutBookmarkAndInfoBars(int top, int browser_view_y) override;
   int LayoutInfoBar(int top) override;
