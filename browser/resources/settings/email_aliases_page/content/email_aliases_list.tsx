@@ -35,6 +35,32 @@ const AliasDialog = styled(Dialog)`
   --leo-dialog-padding: ${spacing['2Xl']};
 `
 
+export const ListIntroduction = ({
+  aliasesCount,
+  onCreateClicked
+}: {
+  aliasesCount: number,
+  onCreateClicked: () => void
+}) => (
+  <AliasListIntro>
+    <Col>
+      <h4>{getLocale('emailAliasesListTitle')}</h4>
+      <Description>
+        {getLocale('emailAliasesCreateDescription')}
+      </Description>
+    </Col>
+    <Button
+      isDisabled={aliasesCount >= MAX_ALIASES}
+      kind='filled'
+      size='small'
+      name='create-alias'
+      title={getLocale('emailAliasesCreateAliasTitle')}
+      onClick={onCreateClicked}>
+      {getLocale('emailAliasesCreateAliasLabel')}
+    </Button>
+  </AliasListIntro>
+)
+
 export const AliasList = ({
   aliases, authEmail, emailAliasesService }: {
     emailAliasesService: EmailAliasesServiceInterface,
@@ -42,30 +68,11 @@ export const AliasList = ({
     authEmail: string
   }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
-  const onEditStateChange = (editState: EditState) => setEditState(editState)
   return (
     <DivWithTopDivider>
-      <AliasListIntro>
-        <Col>
-          <h4>{getLocale('emailAliasesListTitle')}</h4>
-          <Description>
-            {getLocale('emailAliasesCreateDescription')}
-          </Description>
-        </Col>
-        <Button
-          isDisabled={aliases.length >= MAX_ALIASES}
-          kind='filled'
-          size='small'
-          name='create-alias'
-          title={getLocale('emailAliasesCreateAliasTitle')}
-          onClick={
-            () => {
-              onEditStateChange({ mode: 'Create' })
-            }
-          }>
-          {getLocale('emailAliasesCreateAliasLabel')}
-        </Button>
-      </AliasListIntro>
+      <ListIntroduction
+        aliasesCount={aliases.length}
+        onCreateClicked={() => setEditState({ mode: 'Create' })} />
       {aliases.map(
         alias =>
           <AliasItem

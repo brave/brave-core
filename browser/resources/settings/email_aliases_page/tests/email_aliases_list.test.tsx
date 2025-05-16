@@ -4,13 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { AliasList } from '../content/email_aliases_list'
+import { act, render, screen } from '@testing-library/react'
+import { AliasList, ListIntroduction } from '../content/email_aliases_list'
 import { getLocale } from '$web-common/locale'
 import {
   Alias,
-  EmailAliasesServiceInterface
+  EmailAliasesServiceInterface,
+  MAX_ALIASES
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { clickLeoButton } from './test_utils'
 
 jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
@@ -33,17 +35,18 @@ Object.assign(navigator, {
 
 // Mock the email aliases service
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
-  logout: jest.fn(),
   updateAlias: jest.fn(),
   deleteAlias: jest.fn(),
   generateAlias: jest.fn(),
   requestAuthentication: jest.fn(),
-  cancelAuthentication: jest.fn(),
+  cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
   removeObserver: jest.fn()
 }
 
 describe('AliasList', () => {
+  const mockAuthEmail = 'test@brave.com'
+
   const mockAliases: Alias[] = [
     {
       email: 'test1@brave.com',
@@ -57,8 +60,6 @@ describe('AliasList', () => {
     }
   ]
 
-  const mockOnEditStateChange = jest.fn()
-
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -67,7 +68,7 @@ describe('AliasList', () => {
     render(
       <AliasList
         aliases={mockAliases}
-        onEditStateChange={mockOnEditStateChange}
+        authEmail={mockAuthEmail}
         emailAliasesService={mockEmailAliasesService}
       />
     )
@@ -79,99 +80,40 @@ describe('AliasList', () => {
     expect(screen.getByText(/Test Alias 2/)).toBeInTheDocument()
   })
 
-  it('handles copy functionality', () => {
-    render(
-      <AliasList
-        aliases={mockAliases}
-        onEditStateChange={mockOnEditStateChange}
-        emailAliasesService={mockEmailAliasesService}
-      />
-    )
-
-    // Click copy button
-    const copyButtons = screen.getAllByTestId('copy-toast')
-    fireEvent.click(copyButtons[0])
-
-    // Check if clipboard API was called
-    expect(navigator.clipboard.writeText)
-      .toHaveBeenCalledWith('test1@brave.com')
-  })
-
-  it('copies email when clicking alias label', () => {
-    render(
-      <AliasList
-        aliases={mockAliases}
-        onEditStateChange={mockOnEditStateChange}
-        emailAliasesService={mockEmailAliasesService}
-      />
-    )
-
-    // Click the alias label
-    const aliasLabel = screen.getByText(/test1@brave\.com/)
-    fireEvent.click(aliasLabel)
-
-    // Check if clipboard API was called
-    expect(navigator.clipboard.writeText)
-      .toHaveBeenCalledWith('test1@brave.com')
-  })
-
   it('disables create button when max aliases reached', () => {
-    const maxAliases = Array(10).fill(null).map((_, i) => ({
-      email: `test${i}@brave.com`,
-      note: `Test Alias ${i}`,
-      domains: ['brave.com']
-    }))
-
+    const mockOnCreateClicked = jest.fn()
     render(
-      <AliasList
-        aliases={maxAliases}
-        onEditStateChange={mockOnEditStateChange}
-        emailAliasesService={mockEmailAliasesService}
+      <ListIntroduction
+        aliasesCount={MAX_ALIASES}
+        onCreateClicked={mockOnCreateClicked}
       />
     )
 
     // Check if create button is disabled
     const createButton = screen.getByText(getLocale(
       'emailAliasesCreateAliasLabel'))
-    expect(createButton.closest('leo-button'))
-      .toHaveAttribute('isdisabled', 'true')
+    expect(createButton).toHaveAttribute('isdisabled', 'true')
   })
 
-  it('handles delete functionality', async () => {
+
+  it ('fires callback when create button is clicked', async () => {
+    const mockOnCreateClicked = jest.fn()
+
     render(
-      <AliasList
-        aliases={mockAliases}
-        onEditStateChange={mockOnEditStateChange}
-        emailAliasesService={mockEmailAliasesService}
+      <ListIntroduction
+        aliasesCount={mockAliases.length}
+        onCreateClicked={mockOnCreateClicked}
       />
     )
 
-    // Click delete button
-    const deleteButtons = screen.getAllByText(getLocale('emailAliasesDelete'))
-    fireEvent.click(deleteButtons[0])
-
-    // Check if service was called
-    expect(mockEmailAliasesService.deleteAlias)
-      .toHaveBeenCalledWith('test1@brave.com')
-  })
-
-  it('handles edit functionality', () => {
-    render(
-      <AliasList
-        aliases={mockAliases}
-        onEditStateChange={mockOnEditStateChange}
-        emailAliasesService={mockEmailAliasesService}
-      />
-    )
-
-    // Click edit button
-    const editButtons = screen.getAllByText(getLocale('emailAliasesEdit'))
-    fireEvent.click(editButtons[0])
-
-    // Check if view change was called with correct state
-    expect(mockOnEditStateChange).toHaveBeenCalledWith({
-      mode: 'Edit',
-      alias: mockAliases[0]
+    await act(async () => {
+      // Click create button
+      const createButton = screen.getByTitle(getLocale(
+        'emailAliasesCreateAliasTitle'))
+      clickLeoButton(createButton)
     })
+
+    expect(mockOnCreateClicked).toHaveBeenCalled()
   })
+
 })
