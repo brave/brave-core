@@ -41,7 +41,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mNativeInitialized;
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
-    private final @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
+    private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
+            BrandedColorScheme.APP_DEFAULT;
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
 
     public BraveLocationBarMediator(
@@ -138,7 +139,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mLocationBarLayout instanceof BraveLocationBarLayout) {
             ((BraveLocationBarLayout) mLocationBarLayout)
                     .setQRButtonTint(
-                            ThemeUtils.getThemedToolbarIconTint(mContext, mBrandedColorScheme));
+                            ThemeUtils.getThemedToolbarIconTint(mContext, BRANDED_COLOR_SCHEME));
         }
     }
 
