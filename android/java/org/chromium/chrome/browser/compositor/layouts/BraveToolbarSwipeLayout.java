@@ -20,7 +20,7 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
      * parent class will be used instead.
      */
     @SuppressWarnings("UnusedVariable")
-    private boolean mMoveToolbar;
+    private final boolean mMoveToolbar;
 
     public BraveToolbarSwipeLayout(
             Context context,

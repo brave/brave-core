@@ -26,7 +26,7 @@ import java.util.List;
  * sub-title.
  */
 public class TwoLineItemFragment extends Fragment {
-    private List<TwoLineItem> items;
+    private final List<TwoLineItem> items;
     private TwoLineItemRecyclerViewAdapter adapter;
 
     public TwoLineItemFragment(List<TwoLineItem> items) {

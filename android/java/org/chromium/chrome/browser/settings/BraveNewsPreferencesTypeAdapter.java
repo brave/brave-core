@@ -37,21 +37,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private BraveNewsController mBraveNewsController;
-    private BraveNewsPreferencesListener mBraveNewsPreferencesListener;
+    private final BraveNewsController mBraveNewsController;
+    private final BraveNewsPreferencesListener mBraveNewsPreferencesListener;
     private BraveNewsPreferencesSearchType mBraveNewsPreferencesSearchType;
-    private Context mContext;
+    private final Context mContext;
     private HashMap<String, Integer> mChannelIcons = new HashMap<>();
     private List<Channel> mChannelList;
     private List<Publisher> mPublisherList;
     private List<FeedSearchResultItem> mFeedSearchResultItemList;
     private HashMap<String, String> mFeedSearchResultItemFollowMap;
-    private RequestManager mGlide;
-    private String mBraveNewsPreferencesType;
+    private final RequestManager mGlide;
+    private final String mBraveNewsPreferencesType;
     private String mSearchUrl;
 
-    private static int TYPE_SECTION = 1;
-    private static int TYPE_ITEMS = 2;
+    private static final int TYPE_SECTION = 1;
+    private static final int TYPE_ITEMS = 2;
 
     private static final int ONE_ITEM_SPACE = 1;
 

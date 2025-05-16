@@ -44,7 +44,7 @@ public class WireguardServiceImpl
     private Timer mVpnStatisticsTimer;
     private Timer mVpnRecordStatisticsTimer;
     private static final int BRAVE_VPN_NOTIFICATION_ID = 801;
-    private Context mContext = ContextUtils.getApplicationContext();
+    private final Context mContext = ContextUtils.getApplicationContext();
 
     class LocalBinder extends Binder {
         WireguardServiceImpl getService() {

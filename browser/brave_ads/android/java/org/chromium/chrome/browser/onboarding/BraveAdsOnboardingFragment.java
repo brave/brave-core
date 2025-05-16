@@ -31,7 +31,7 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
     private OnViewPagerAction onViewPagerAction;
 
     private int progress;
-    private int endTime = 3;
+    private final int endTime = 3;
     private boolean mNativeInitialized;
 
     private LottieAnimationView animatedView;

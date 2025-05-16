@@ -42,16 +42,16 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     // Own members.
     private @Nullable BottomToolbarCoordinator mBottomToolbarCoordinator;
-    private OnLongClickListener mTabSwitcherLongclickListener;
-    private ActivityTabProvider mTabProvider;
-    private ThemeColorProvider mThemeColorProvider;
-    private ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
-    private Runnable mOpenHomepageAction;
-    private Callback<Integer> mSetUrlBarFocusAction;
-    private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
-    private ScrollingBottomViewResourceFrameLayout mRoot;
-    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
-    private LocationBarModel mLocationBarModel;
+    private final OnLongClickListener mTabSwitcherLongclickListener;
+    private final ActivityTabProvider mTabProvider;
+    private final ThemeColorProvider mThemeColorProvider;
+    private final ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
+    private final Runnable mOpenHomepageAction;
+    private final Callback<Integer> mSetUrlBarFocusAction;
+    private final OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
+    private final ScrollingBottomViewResourceFrameLayout mRoot;
+    private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private final LocationBarModel mLocationBarModel;
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,

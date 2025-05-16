@@ -60,9 +60,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private static final String TAG = "TippingPanelFragment";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private final String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 
-    private TextView mRadioTipAmount[] = new TextView[4];
+    private final TextView mRadioTipAmount[] = new TextView[4];
     private double[] mTipChoices;
     private TextView mCurrency1TextView;
     private TextView mCurrency2TextView;
@@ -465,7 +465,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         });
     }
 
-    private TextWatcher mTextChangeListener = new TextWatcher() {
+    private final TextWatcher mTextChangeListener = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -610,7 +610,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         }
     }
 
-    private View.OnClickListener mRadioClicker = view -> {
+    private final View.OnClickListener mRadioClicker = view -> {
         if (mFetchBalanceProgressBar.getVisibility() == View.VISIBLE) {
             return;
         }

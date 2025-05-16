@@ -39,7 +39,7 @@ import java.util.Queue;
 public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHandler {
     private static final String TAG = "Playlist/HlsServiceImpl";
     private final IBinder mBinder = new LocalBinder();
-    private Context mContext = ContextUtils.getApplicationContext();
+    private final Context mContext = ContextUtils.getApplicationContext();
     private PlaylistService mPlaylistService;
     public static String currentDownloadingPlaylistItemId = "";
 

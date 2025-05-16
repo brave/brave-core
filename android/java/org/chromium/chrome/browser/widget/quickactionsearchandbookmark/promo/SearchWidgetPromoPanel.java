@@ -18,8 +18,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 
 public class SearchWidgetPromoPanel implements View.OnClickListener {
-    private PopupWindow mPopupWindow;
-    private Context mContext;
+    private final PopupWindow mPopupWindow;
+    private final Context mContext;
 
     public SearchWidgetPromoPanel(@NonNull Context context) {
         mContext = context;

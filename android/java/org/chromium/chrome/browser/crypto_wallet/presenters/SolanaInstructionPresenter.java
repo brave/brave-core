@@ -31,7 +31,7 @@ public class SolanaInstructionPresenter {
     public List<SolanaInstructionAccountPresenter> mAccountDatas;
     public boolean mIsUnknown;
     private boolean isDecodedDataPresent;
-    private SolanaInstruction mSolanaInstruction;
+    private final SolanaInstruction mSolanaInstruction;
     private Integer mInstructionType;
     private String mFromPubKey;
     private String mToPubKey;
@@ -292,12 +292,12 @@ public class SolanaInstructionPresenter {
     }
 
     private static class SolanaInstructionAccountPresenter {
-        private String mPubKey;
-        private SolanaAccountMeta mSolanaAccountMeta;
-        private String mLocalizeAccountHeader;
+        private final String mPubKey;
+        private final SolanaAccountMeta mSolanaAccountMeta;
+        private final String mLocalizeAccountHeader;
 
         @SuppressWarnings("UnusedVariable")
-        private String mAccountHeader;
+        private final String mAccountHeader;
 
         private SolanaInstructionAccountPresenter(
                 String pubKey,

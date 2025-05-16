@@ -64,7 +64,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
-    private ChromeTabbedActivity mActivity;
+    private final ChromeTabbedActivity mActivity;
 
     private static final String SUCCESS = "success";
 

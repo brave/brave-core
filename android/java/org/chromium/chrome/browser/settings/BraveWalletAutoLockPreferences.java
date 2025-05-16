@@ -28,7 +28,7 @@ import org.chromium.ui.KeyboardVisibilityDelegate;
 
 public class BraveWalletAutoLockPreferences
         extends Preference implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
-    private String TAG = "BraveWalletAutoLockPreferences";
+    private final String TAG = "BraveWalletAutoLockPreferences";
 
     public static final int WALLET_AUTOLOCK_DEFAULT_TIME = 5;
 

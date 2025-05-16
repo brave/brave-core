@@ -23,7 +23,7 @@ import java.util.List;
 public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdapter.ViewHolder> {
     private final LayoutInflater inflater;
     private OnCreateAccountClickListener mCreateAccountClickListener;
-    private List<CryptoAccountTypeInfo> mCryptoAccountTypeInfos;
+    private final List<CryptoAccountTypeInfo> mCryptoAccountTypeInfos;
 
     public CreateAccountAdapter(
             Context context, List<CryptoAccountTypeInfo> cryptoAccountTypeInfos) {

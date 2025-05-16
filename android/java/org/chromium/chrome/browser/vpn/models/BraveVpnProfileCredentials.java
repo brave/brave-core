@@ -6,9 +6,9 @@
 package org.chromium.chrome.browser.vpn.models;
 
 public class BraveVpnProfileCredentials {
-    private String mApiAuthToken;
-    private String mUsername;
-    private String mPassword;
+    private final String mApiAuthToken;
+    private final String mUsername;
+    private final String mPassword;
 
     public BraveVpnProfileCredentials(String apiAuthToken, String username, String password) {
         this.mApiAuthToken = apiAuthToken;

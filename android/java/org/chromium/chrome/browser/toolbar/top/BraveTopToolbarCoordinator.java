@@ -45,11 +45,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private OptionalBrowsingModeButtonController mOptionalButtonController;
 
     // Own members.
-    private ToolbarLayout mBraveToolbarLayout;
-    private MenuButtonCoordinator mBraveMenuButtonCoordinator;
+    private final ToolbarLayout mBraveToolbarLayout;
+    private final MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomControlsVisible;
-    private ObservableSupplier<Integer> mConstraintsProxy;
-    private ToolbarControlContainer mControlContainer;
+    private final ObservableSupplier<Integer> mConstraintsProxy;
+    private final ToolbarControlContainer mControlContainer;
     private boolean mInTabSwitcherMode;
 
     public BraveTopToolbarCoordinator(

@@ -73,8 +73,8 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private final int mParentPaddingHorizontal;
     private final int mParentPaddingVertical;
     private boolean dismissed;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     private PopupWindowTooltip(Builder builder) {
         mContext = builder.context;

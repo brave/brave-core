@@ -21,7 +21,7 @@ import org.chromium.ui.modelutil.PropertyModel;
  * available.
  */
 public class NoGooglePlayServicesDialog {
-    private Context mContext;
+    private final Context mContext;
     private ModalDialogManager mManager;
     private PropertyModel mModel;
 

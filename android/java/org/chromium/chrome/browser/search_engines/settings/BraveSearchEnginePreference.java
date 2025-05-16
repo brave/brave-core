@@ -15,7 +15,7 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
     private SearchEngineAdapter mSearchEngineAdapter;
 
     // Own members.
-    private boolean mPrivate;
+    private final boolean mPrivate;
     private Profile mProfile;
 
     public BraveSearchEnginePreference(boolean isPrivate) {

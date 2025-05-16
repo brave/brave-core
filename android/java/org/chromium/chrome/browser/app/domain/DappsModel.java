@@ -34,7 +34,7 @@ import java.util.List;
 
 public class DappsModel implements KeyringServiceObserver {
     private JsonRpcService mJsonRpcService;
-    private KeyringService mKeyringService;
+    private final KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
     private PendingTxHelper mPendingTxHelper;
     private final MutableLiveData<Boolean> _mWalletIconNotificationVisible =
@@ -44,8 +44,8 @@ public class DappsModel implements KeyringServiceObserver {
             new MutableLiveData<>();
     private final MutableLiveData<List<SignSolTransactionsRequest>> _mSignSolTransactionsRequests;
     private final LiveData<List<SignSolTransactionsRequest>> mSignSolTransactionsRequests;
-    private List<WalletAccountCreationRequest> mPendingWalletAccountCreationRequests;
-    private MutableLiveData<WalletAccountCreationRequest> _mPendingWalletAccountCreationRequest;
+    private final List<WalletAccountCreationRequest> mPendingWalletAccountCreationRequests;
+    private final MutableLiveData<WalletAccountCreationRequest> _mPendingWalletAccountCreationRequest;
     public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
     public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =

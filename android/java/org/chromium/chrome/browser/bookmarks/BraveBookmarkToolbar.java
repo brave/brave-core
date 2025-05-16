@@ -13,8 +13,8 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 
 public class BraveBookmarkToolbar extends BookmarkToolbar {
-    private int MENU_IMPORT_ID = 100;
-    private int MENU_EXPORT_ID = 101;
+    private final int MENU_IMPORT_ID = 100;
+    private final int MENU_EXPORT_ID = 101;
 
     private BraveBookmarkDelegate mBraveBookmarkDelegate;
 

@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class VpnRegionPreference extends Preference {
-    private Context mContext;
+    private final Context mContext;
 
     public VpnRegionPreference(Context context, AttributeSet attrs) {
         super(context, attrs);

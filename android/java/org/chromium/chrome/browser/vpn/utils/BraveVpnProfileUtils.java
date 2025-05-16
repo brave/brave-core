@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
-    private static Object sMutex = new Object();
+    private static final Object sMutex = new Object();
 
     private BraveVpnProfileUtils() {}
 

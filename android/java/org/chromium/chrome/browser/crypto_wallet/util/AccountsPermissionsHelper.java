@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class AccountsPermissionsHelper {
-    private BraveWalletService mBraveWalletService;
-    private AccountInfo[] mAccounts;
+    private final BraveWalletService mBraveWalletService;
+    private final AccountInfo[] mAccounts;
     private HashSet<AccountInfo> mAccountsWithPermissions;
 
     public AccountsPermissionsHelper(

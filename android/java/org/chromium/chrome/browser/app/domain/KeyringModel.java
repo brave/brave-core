@@ -49,7 +49,7 @@ public class KeyringModel implements KeyringServiceObserver {
     private final MutableLiveData<AccountInfo> _mSelectedAccount;
     private final MutableLiveData<AllAccountsInfo> _mAllAccountsInfo;
     private final MutableLiveData<List<AccountInfo>> _mAccountInfos;
-    private CryptoSharedActions mCryptoSharedActions;
+    private final CryptoSharedActions mCryptoSharedActions;
     public LiveData<List<AccountInfo>> mAccountInfos;
     public LiveData<AccountInfo> mSelectedAccount;
     public LiveData<AllAccountsInfo> mAllAccountsInfo;

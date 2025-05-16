@@ -52,8 +52,8 @@ public class CryptoModel {
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
-    private SwapService mSwapService;
-    private CryptoSharedActions mCryptoSharedActions;
+    private final SwapService mSwapService;
+    private final CryptoSharedActions mCryptoSharedActions;
     private final CryptoSharedData mSharedData;
     private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);

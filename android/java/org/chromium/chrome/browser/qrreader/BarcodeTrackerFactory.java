@@ -24,7 +24,7 @@ import com.google.android.gms.vision.barcode.Barcode;
  * multi-processor uses this factory to create barcode trackers as needed -- one for each barcode.
  */
 public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
-    private BarcodeTracker.BarcodeGraphicTrackerCallback mContext;
+    private final BarcodeTracker.BarcodeGraphicTrackerCallback mContext;
 
     public BarcodeTrackerFactory(BarcodeTracker.BarcodeGraphicTrackerCallback context) {
         mContext = context;

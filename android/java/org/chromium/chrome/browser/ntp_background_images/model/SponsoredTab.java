@@ -10,7 +10,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 
 public class SponsoredTab {
-    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
+    private final NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private NTPImage mNtpImage;
     private int mTabIndex;
 

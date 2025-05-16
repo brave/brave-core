@@ -95,8 +95,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
     public static final int THANKYOU_STAY_DURATION = 2000; //ms
     private static final float DP_PER_INCH_MDPI = 160f;
-    private Tab mTab;
-    private Profile mProfile;
+    private final Tab mTab;
+    private final Profile mProfile;
 
     public static boolean isRewardsEnabled() {
         BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();

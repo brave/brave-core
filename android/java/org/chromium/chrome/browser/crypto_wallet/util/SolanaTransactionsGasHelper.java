@@ -16,8 +16,8 @@ import java.util.HashMap;
 
 public class SolanaTransactionsGasHelper {
     private final WeakReference<BraveWalletBaseActivity> mActivity;
-    private TransactionInfo[] mTransactionInfos;
-    private HashMap<String, Long> mPerTxFee;
+    private final TransactionInfo[] mTransactionInfos;
+    private final HashMap<String, Long> mPerTxFee;
 
     public SolanaTransactionsGasHelper(
             BraveWalletBaseActivity activity, TransactionInfo[] transactionInfos) {

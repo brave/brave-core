@@ -50,8 +50,8 @@ public class BraveRewardsNativeWorker {
     private String mFrontTabUrl;
     private static final Handler sHandler = new Handler();
 
-    private List<BraveRewardsObserver> mObservers;
-    private List<PublisherObserver> mFrontTabPublisherObservers;
+    private final List<BraveRewardsObserver> mObservers;
+    private final List<PublisherObserver> mFrontTabPublisherObservers;
     private long mNativeBraveRewardsNativeWorker;
 
     private static BraveRewardsNativeWorker sInstance;
