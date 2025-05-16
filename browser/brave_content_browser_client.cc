@@ -1034,15 +1034,14 @@ void BraveContentBrowserClient::CreateWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
   auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
-      frame, std::move(factory), url, site_for_cookies, user_agent,
-      std::move(handshake_client));
+      frame, std::move(factory), url, site_for_cookies, user_agent);
 
   if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
     ChromeContentBrowserClient::CreateWebSocket(
-        frame, proxy->web_socket_factory(), url, site_for_cookies, user_agent,
-        proxy->handshake_client().Unbind());
+        frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
+        user_agent, std::move(handshake_client));
   } else {
-    proxy->Start();
+    proxy->Start(std::move(handshake_client));
   }
 }
 
