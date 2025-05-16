@@ -51,11 +51,14 @@ describe('MainEmailEntryForm', () => {
         email: mockAuthEmail }}
       emailAliasesService={mockEmailAliasesService} />)
 
-    const signUpButton = screen.getByText(getLocale('emailAliasesGetLoginLinkButton'))
-    const emailInput = screen.getByPlaceholderText(getLocale('emailAliasesEmailAddressPlaceholder'))
+    const signUpButton = screen.getByText(
+      getLocale('emailAliasesGetLoginLinkButton'))
+    const emailInput = screen.getByPlaceholderText(
+      getLocale('emailAliasesEmailAddressPlaceholder'))
     fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
     clickLeoButton(signUpButton)
-    expect(mockEmailAliasesService.requestAuthentication).toHaveBeenCalledWith(mockAuthEmail)
+    expect(mockEmailAliasesService.requestAuthentication)
+      .toHaveBeenCalledWith(mockAuthEmail)
   })
 
 })
