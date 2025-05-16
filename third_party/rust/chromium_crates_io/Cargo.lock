@@ -959,7 +959,7 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.15.2"
+version = "0.15.3"
 dependencies = [
  "allocator-api2",
  "equivalent",
