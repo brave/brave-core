@@ -53,7 +53,10 @@ def CheckLeoVariables(input_api, output_api):
 
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
-    cmd = ['build/commands/scripts/format.js', '--presubmit']
+    cmd = [
+        brave_chromium_utils.wspath(
+            '//brave/build/commands/scripts/format.js'), '--presubmit'
+    ]
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
