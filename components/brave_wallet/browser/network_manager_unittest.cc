@@ -222,11 +222,7 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
 
   EXPECT_EQ(network_manager()->GetAllChains().size(), 24u);
   for (auto& chain : network_manager()->GetAllChains()) {
-    if (chain->coin == mojom::CoinType::ADA) {
-      EXPECT_FALSE(chain->rpc_endpoints[0].is_valid());
-    } else {
-      EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
-    }
+    EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
     EXPECT_EQ(chain->active_rpc_endpoint_index, 0);
   }
 
@@ -437,8 +433,9 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
             network_manager()->GetNetworkURL(mojom::kZCashMainnet,
                                              mojom::CoinType::ZEC));
 
-  EXPECT_EQ(GURL(), network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
-                                                     mojom::CoinType::ADA));
+  EXPECT_EQ(GURL("https://cardano-mainnet.wallet.brave.com/"),
+            network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
+                                             mojom::CoinType::ADA));
   auto custom_cardano_network = network_manager()->GetKnownChain(
       mojom::kCardanoMainnet, mojom::CoinType::ADA);
   custom_cardano_network->rpc_endpoints.emplace_back(
@@ -573,8 +570,8 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   // Cardano
   mojom::NetworkInfo cardano_mainnet(
       mojom::kCardanoMainnet, "Cardano Mainnet", {"https://cexplorer.io"}, {},
-      0, {GURL("")}, "ADA", "Cardano", 6, mojom::CoinType::ADA,
-      {mojom::KeyringId::kCardanoMainnet});
+      0, {GURL("https://cardano-mainnet.wallet.brave.com/")}, "ADA", "Cardano",
+      6, mojom::CoinType::ADA, {mojom::KeyringId::kCardanoMainnet});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ADA));
   EXPECT_EQ(
       network_manager()->GetChain("cardano_mainnet", mojom::CoinType::ADA),
