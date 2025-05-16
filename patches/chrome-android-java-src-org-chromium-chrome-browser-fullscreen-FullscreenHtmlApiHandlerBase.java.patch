@@ -1,7 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index a326a5b1e637afefe28214e83ac43b0614bacada..6c6329e43acef8b67f3341c47c0b3ca00e6d172c 100644
+index a326a5b1e637afefe28214e83ac43b0614bacada..93cd521a06cfe929558ee3bdcd569329866fb953 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
+@@ -237,7 +237,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+         @Override
+         public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+             if (mTab != null && !mIsInMultiWindowMode && isInMultiWindowMode) {
+-                onExitFullscreen(mTab);
++                if (!mActivity.isInPictureInPictureMode()) onExitFullscreen(mTab);
+             }
+             mIsInMultiWindowMode = isInMultiWindowMode;
+         }
 @@ -300,6 +300,7 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
