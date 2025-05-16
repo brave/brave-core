@@ -180,8 +180,14 @@ TEST_F(PsstRuleRegistryUnitTest, NoRulesLoaded) {
 }
 
 TEST_F(PsstRuleRegistryUnitTest, ComponentPathEmptyNoRulesLoaded) {
-  TestRuleLoading(base::FilePath("") /* empty path */);
-  TestRuleLoading(base::FilePath("non-existing-path") /* non-existing path */);
+  auto* rule_data_reader = GetMockRuleDataReader();
+  EXPECT_CALL(*GetPsstRuleRegistry(), OnLoadRules(testing::_)).Times(0);
+  EXPECT_CALL(*rule_data_reader, ReadUserScript).Times(0);
+  EXPECT_CALL(*rule_data_reader, ReadPolicyScript).Times(0);
+  PsstRuleRegistryAccessor::GetInstance()->Registry()->LoadRules(
+      base::FilePath(""));
+  PsstRuleRegistryAccessor::GetInstance()->Registry()->LoadRules(
+      base::FilePath("non-existing-path"));
 }
 
 }  // namespace psst
