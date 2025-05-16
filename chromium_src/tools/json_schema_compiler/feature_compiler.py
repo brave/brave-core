@@ -22,7 +22,7 @@ class BraveFeatureDefinitionExtender:
         "extensions/common/api/_api_features.json": True,
         "extensions/common/api/_behavior_features.json": True,
         "extensions/common/api/_manifest_features.json": True,
-        "extensions/common/api/_permission_features.json": True,
+        "extensions/common/api/_permission_features.json": False,
         "extensions/shell/common/api/_api_features.json": False,
     }
 

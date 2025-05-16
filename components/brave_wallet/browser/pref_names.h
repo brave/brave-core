@@ -100,4 +100,14 @@ inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
 inline constexpr char kBraveWalletGoerliNetworkMigrated[] =
     "brave.wallet.custom_networks.goerli_migrated";
 
+// CryptoWallets prefs
+// Deprecated 05/2025
+inline constexpr char kERCAES256GCMSivNonceDeprecated[] =
+    "brave.wallet.aes_256_gcm_siv_nonce";
+inline constexpr char kERCEncryptedSeedDeprecated[] =
+    "brave.wallet.encrypted_seed";
+inline constexpr char kERCPrefVersionDeprecated[] = "brave.wallet.pref_version";
+inline constexpr char kERCOptedIntoCryptoWalletsDeprecated[] =
+    "brave.wallet.opted_in";
+
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

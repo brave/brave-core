@@ -11,7 +11,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
@@ -38,13 +37,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void GetRestartNeeded(const base::Value::List& args);
   void SetWebTorrentEnabled(const base::Value::List& args);
   void SetMediaRouterEnabled(const base::Value::List& args);
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  void SetBraveWalletEnabled(const base::Value::List& args);
-#endif
   void SetWidevineEnabled(const base::Value::List& args);
   void IsWidevineEnabled(const base::Value::List& args);
   void OnWidevineEnabledChanged();
-  void OnWalletTypeChanged();
   void GetDecentralizedDnsResolveMethodList(const base::Value::List& args);
   void GetEnsOffchainResolveMethodList(const base::Value::List& args);
 

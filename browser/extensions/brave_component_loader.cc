@@ -31,11 +31,6 @@
 #include "extensions/common/mojom/manifest.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "brave/browser/extensions/ethereum_remote_client_util.h"
-#endif
-
 using extensions::mojom::ManifestLocation;
 
 namespace extensions {
@@ -67,28 +62,6 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
   if (allow_file_access) {
     ExtensionPrefs::Get(profile_)->SetAllowFileAccess(extension_id, true);
   }
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  if (extension_id == kEthereumRemoteClientExtensionId) {
-    ReinstallAsNonComponent(kEthereumRemoteClientExtensionId);
-  }
-#endif
-}
-
-void BraveComponentLoader::ReinstallAsNonComponent(
-    const std::string& extension_id) {
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(profile_);
-  const Extension* extension = registry->GetInstalledExtension(extension_id);
-  DCHECK(extension);
-  if (extension->location() == ManifestLocation::kComponent) {
-    extensions::ExtensionRegistrar::Get(profile_)->RemoveComponentExtension(
-        extension_id);
-    std::string error;
-    scoped_refptr<Extension> normal_extension = Extension::Create(
-        extension->path(), ManifestLocation::kExternalPref,
-        *extension->manifest()->value(), extension->creation_flags(), &error);
-    ExtensionRegistrar::Get(profile_)->AddExtension(normal_extension);
-  }
 }
 
 void BraveComponentLoader::AddExtension(const std::string& extension_id,
@@ -107,27 +80,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   ComponentLoader::AddDefaultComponentExtensions(skip_session_components);
   UpdateBraveExtension();
 }
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-void BraveComponentLoader::AddEthereumRemoteClientExtension() {
-  AddExtension(kEthereumRemoteClientExtensionId,
-               kEthereumRemoteClientExtensionName,
-               kEthereumRemoteClientExtensionPublicKey);
-}
-
-void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
-  // Only load Crypto Wallets if it is set as the default wallet
-  if (ShouldLoadEthereumRemoteClientExtension(profile_prefs_)) {
-    AddEthereumRemoteClientExtension();
-  }
-}
-
-void BraveComponentLoader::UnloadEthereumRemoteClientExtension() {
-  extensions::ExtensionRegistrar::Get(profile_)->RemoveExtension(
-      kEthereumRemoteClientExtensionId,
-      extensions::UnloadedExtensionReason::DISABLE);
-}
-#endif
 
 void BraveComponentLoader::AddWebTorrentExtension() {
   const base::CommandLine& command_line =

@@ -294,7 +294,6 @@ export const walletEndpoints = ({
     getWalletsToImport: query<
       {
         isMetaMaskInitialized: boolean
-        isLegacyCryptoWalletsInitialized: boolean
       },
       void
     >({
@@ -303,16 +302,12 @@ export const walletEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { braveWalletService } = api
 
-          const cwResult = await braveWalletService.isExternalWalletInitialized(
-            BraveWallet.ExternalWalletType.CryptoWallets
-          )
           const mmResult = await braveWalletService.isExternalWalletInitialized(
             BraveWallet.ExternalWalletType.MetaMask
           )
 
           return {
             data: {
-              isLegacyCryptoWalletsInitialized: cwResult.initialized,
               isMetaMaskInitialized: mmResult.initialized
             }
           }
@@ -363,68 +358,6 @@ export const walletEndpoints = ({
         }
       },
       invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
-    }),
-
-    importFromCryptoWallets: mutation<
-      { success: boolean; errorMessage?: string },
-      ImportFromExternalWalletPayloadType
-    >({
-      queryFn: async (arg, { endpoint, getState }, extraOptions, baseQuery) => {
-        try {
-          if (!arg.newPassword) {
-            throw new Error('A new password is required')
-          }
-
-          const { data: api, cache } = baseQuery(undefined)
-          const { keyringService, braveWalletService } = api
-
-          const results: ImportWalletResults = await importFromExternalWallet(
-            BraveWallet.ExternalWalletType.CryptoWallets,
-            arg,
-            { braveWalletService, keyringService }
-          )
-
-          if (results.errorMessage) {
-            return {
-              data: {
-                success: false,
-                errorMessage: results.errorMessage
-              }
-            }
-          }
-
-          const { allowedNewWalletAccountTypeNetworkIds } = (
-            getState() as { wallet: WalletState }
-          ).wallet
-
-          await createDefaultAccounts({
-            allowedNewWalletAccountTypeNetworkIds,
-            keyringService,
-            cache
-          })
-
-          cache.clearWalletInfo()
-
-          return {
-            data: {
-              success: true
-            }
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Unable to restore wallet from legacy crypto wallets extension',
-            error
-          )
-        }
-      },
-      invalidatesTags: [
-        'AccountInfos',
-        'IsWalletBackedUp',
-        'TokenBalances',
-        'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
     }),
 
     importFromMetaMask: mutation<

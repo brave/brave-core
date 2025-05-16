@@ -45,10 +45,3 @@ export const RestoreFromMetamaskWallet = {
     restoreFrom: 'metamask'
   }
 }
-
-export const RestoreFromLegacyWallet = {
-  args: {
-    restoreFrom: 'legacy'
-  }
-}
-

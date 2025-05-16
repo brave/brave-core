@@ -12,7 +12,6 @@
 #include "brave/common/extensions/api/generated_schemas.h"
 #include "brave/common/extensions/api/grit/brave_api_resources.h"
 #include "brave/common/extensions/api/manifest_features.h"
-#include "brave/common/extensions/api/permission_features.h"
 #include "extensions/common/features/json_feature_provider_source.h"
 #include "extensions/common/permissions/permissions_info.h"
 
@@ -32,7 +31,6 @@ void BraveExtensionsAPIProvider::AddManifestFeatures(
 
 void BraveExtensionsAPIProvider::AddPermissionFeatures(
     FeatureProvider* provider) {
-  AddBravePermissionFeatures(provider);
 }
 
 void BraveExtensionsAPIProvider::AddBehaviorFeatures(

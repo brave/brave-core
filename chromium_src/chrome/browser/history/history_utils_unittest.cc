@@ -23,8 +23,4 @@ TEST(HistoryUtilsTest, VariousURLTest) {
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-native://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-search://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-distiller://test")));
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  EXPECT_FALSE(CanAddURLToHistory(
-      GURL("chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html")));
-#endif
 }

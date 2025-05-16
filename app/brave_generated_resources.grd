@@ -872,24 +872,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Web3 detection -->
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Would you like to start Crypto Wallets for Ethereum support?
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Set up Crypto Wallets to interact with this app and others like it.
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS" desc="Set up Crypto Wallets">
-        Set up Crypto Wallets
-      </message>
-       <message name="IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD" desc="Start Crypto Wallets and reload">
-        Start Crypto Wallets and reload
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETTINGS" desc="Open Crypto Wallets settings">
-        Settings
-      </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_DONT_ASK" desc="Sets provider to none">
-        Don't ask again
-      </message>
       <message name="IDS_BRAVE_WALLET_SETTINGS_SECTION" desc="Open Wallet settings section">
         Wallet
       </message>

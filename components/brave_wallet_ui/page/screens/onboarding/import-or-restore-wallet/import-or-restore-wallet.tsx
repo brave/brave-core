@@ -34,7 +34,6 @@ import {
   BraveWalletIcon,
   CardButton,
   CardButtonTextContainer,
-  LegacyWalletIcon,
   LinkRow,
   MetaMaskIcon
 } from './import-or-restore-wallet.style'
@@ -72,15 +71,6 @@ export const OnboardingImportOrRestoreWallet = () => {
                 <p>{getLocale('braveWalletImportFromMetaMaskDescription')}</p>
               </CardButtonTextContainer>
               <MetaMaskIcon />
-            </CardButton>
-          )}
-
-          {importableWallets?.isLegacyCryptoWalletsInitialized && (
-            <CardButton to={WalletRoutes.OnboardingImportLegacy}>
-              <CardButtonTextContainer>
-                <p>{getLocale('braveWalletImportFromLegacy')}</p>
-              </CardButtonTextContainer>
-              <LegacyWalletIcon />
             </CardButton>
           )}
 

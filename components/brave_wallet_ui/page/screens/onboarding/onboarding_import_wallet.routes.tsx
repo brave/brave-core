@@ -90,16 +90,6 @@ export const OnboardingImportWalletRoutes = () => {
         <OnboardingRestoreFromRecoveryPhrase />
       </ProtectedRoute>
 
-      {/* From legacy crypto wallets extension */}
-      <ProtectedRoute
-        path={WalletRoutes.OnboardingImportLegacy}
-        exact
-        requirement={termsAcknowledged}
-        redirectRoute={WalletRoutes.OnboardingImportTerms}
-      >
-        <OnboardingRestoreFromExtension restoreFrom='legacy' />
-      </ProtectedRoute>
-
       {/* From MetaMask extension */}
       <ProtectedRoute
         path={WalletRoutes.OnboardingImportMetaMask}
