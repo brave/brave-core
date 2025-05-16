@@ -64,9 +64,7 @@ class BraveClass : public ChromeClass {
 The chrome target that we override will need a dependency on the brave target,
 but there is no circular dependency some_chromium_source.cc
 ```cpp
-...
   chrome_class_ = std::make_unique<ChromeClass>();
-...
 ```
 
 chromium_src/some_chromium_source.cc
