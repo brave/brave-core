@@ -6,8 +6,8 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class ImageCredit {
-    private String name;
-    private String url;
+    private final String name;
+    private final String url;
 
     public ImageCredit(String name, String url) {
         this.name = name;

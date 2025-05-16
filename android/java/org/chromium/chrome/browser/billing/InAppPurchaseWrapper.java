@@ -68,7 +68,7 @@ public class InAppPurchaseWrapper {
             1000000; // 1,000,000 micro-units equal one unit of the currency
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
-    private static Object sMutex = new Object();
+    private static final Object sMutex = new Object();
 
     public enum SubscriptionType {
         MONTHLY,
@@ -80,12 +80,12 @@ public class InAppPurchaseWrapper {
         LEO
     }
 
-    private MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsVPN =
+    private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsVPN =
             new MutableLiveData();
-    private LiveData<ProductDetails> mMonthlyProductDetailsVPN = mMutableMonthlyProductDetailsVPN;
-    private MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsLeo =
+    private final LiveData<ProductDetails> mMonthlyProductDetailsVPN = mMutableMonthlyProductDetailsVPN;
+    private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsLeo =
             new MutableLiveData();
-    private LiveData<ProductDetails> mMonthlyProductDetailsLeo = mMutableMonthlyProductDetailsLeo;
+    private final LiveData<ProductDetails> mMonthlyProductDetailsLeo = mMutableMonthlyProductDetailsLeo;
 
     private void setMonthlyProductDetails(
             ProductDetails productDetails, SubscriptionProduct product) {
@@ -104,10 +104,10 @@ public class InAppPurchaseWrapper {
         return mMonthlyProductDetailsVPN;
     }
 
-    private MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN = new MutableLiveData();
-    private LiveData<ProductDetails> mYearlyProductDetailsVPN = mMutableYearlyProductDetailsVPN;
-    private MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo = new MutableLiveData();
-    private LiveData<ProductDetails> mYearlyProductDetailsLeo = mMutableYearlyProductDetailsLeo;
+    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN = new MutableLiveData();
+    private final LiveData<ProductDetails> mYearlyProductDetailsVPN = mMutableYearlyProductDetailsVPN;
+    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo = new MutableLiveData();
+    private final LiveData<ProductDetails> mYearlyProductDetailsLeo = mMutableYearlyProductDetailsLeo;
 
     private void setYearlyProductDetails(
             ProductDetails productDetails, SubscriptionProduct product) {

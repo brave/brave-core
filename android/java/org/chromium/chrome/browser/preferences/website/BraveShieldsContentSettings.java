@@ -40,7 +40,7 @@ public class BraveShieldsContentSettings {
     public static final int NEVER = 2;
 
     private long mNativeBraveShieldsContentSettings;
-    private List<BraveShieldsContentSettingsObserver> mBraveShieldsContentSettingsObservers;
+    private final List<BraveShieldsContentSettingsObserver> mBraveShieldsContentSettingsObservers;
     private static BraveShieldsContentSettings sInstance;
 
     public static BraveShieldsContentSettings getInstance() {

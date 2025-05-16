@@ -38,7 +38,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     private TabGroupUiToolbarView mToolbarView;
 
     // Own members.
-    private TabModelSelector mTabModelSelector;
+    private final TabModelSelector mTabModelSelector;
 
     public BraveTabGroupUiCoordinator(
             @NonNull Activity activity,

@@ -35,10 +35,10 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int THREE_ITEMS_SPACE = 3;
     private static final int FOUR_ITEMS_SPACE = 4;
 
-    private BraveContentFilteringListener mBraveContentFileringListener;
+    private final BraveContentFilteringListener mBraveContentFileringListener;
     private ArrayList<SubscriptionInfo> mSubscriptionFilterLists;
     private Value mFilterLists[];
-    private Context mContext;
+    private final Context mContext;
     private boolean mIsEdit;
 
     public ContentFilteringAdapter(

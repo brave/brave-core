@@ -15,8 +15,8 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.DAppsMessageFra
 import java.util.List;
 
 public class SignMessagePagerAdapter extends FragmentStateAdapter {
-    private List<String> mTabTitles;
-    private SignMessageRequest mCurrentSignMessageRequest;
+    private final List<String> mTabTitles;
+    private final SignMessageRequest mCurrentSignMessageRequest;
 
     public SignMessagePagerAdapter(
             Fragment fragment,

@@ -30,7 +30,7 @@ public class AsyncUtils {
     // Helper to track multiple wallet services responses
     public static class MultiResponseHandler {
         private Runnable mWhenAllCompletedRunnable;
-        private int mTotalElements;
+        private final int mTotalElements;
         private int mCurrentElements;
         private final Object mLock = new Object();
 
@@ -70,7 +70,7 @@ public class AsyncUtils {
     }
 
     public static class SingleResponseBaseContext {
-        private Runnable mResponseCompleteCallback;
+        private final Runnable mResponseCompleteCallback;
 
         public SingleResponseBaseContext(Runnable responseCompleteCallback) {
             mResponseCompleteCallback = responseCompleteCallback;

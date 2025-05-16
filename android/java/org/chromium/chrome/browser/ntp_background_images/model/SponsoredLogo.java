@@ -6,10 +6,10 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class SponsoredLogo {
-    private String imageUrl;
-    private String alt;
-    private String companyName;
-    private String destinationUrl;
+    private final String imageUrl;
+    private final String alt;
+    private final String companyName;
+    private final String destinationUrl;
 
     public SponsoredLogo(String imageUrl, String alt, String companyName, String destinationUrl) {
         this.imageUrl = imageUrl;

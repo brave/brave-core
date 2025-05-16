@@ -6,17 +6,17 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class Wallpaper extends NTPImage {
-    private String mImagePath;
-    private int mFocalPointX;
-    private int mFocalPointY;
-    private String mLogoPath;
-    private String mLogoDestinationUrl;
-    private String mThemeName;
-    private boolean mIsSponsored;
-    private String mCreativeInstanceId;
-    private String mWallpaperId;
-    private boolean mIsRichMedia;
-    private boolean mShouldMetricsFallbackToP3a;
+    private final String mImagePath;
+    private final int mFocalPointX;
+    private final int mFocalPointY;
+    private final String mLogoPath;
+    private final String mLogoDestinationUrl;
+    private final String mThemeName;
+    private final boolean mIsSponsored;
+    private final String mCreativeInstanceId;
+    private final String mWallpaperId;
+    private final boolean mIsRichMedia;
+    private final boolean mShouldMetricsFallbackToP3a;
 
     public Wallpaper(
             String imagePath,

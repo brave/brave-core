@@ -41,7 +41,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mNativeInitialized;
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
-    private @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
+    private final @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
 
     public BraveLocationBarMediator(
