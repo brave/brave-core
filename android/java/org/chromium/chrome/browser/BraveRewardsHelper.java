@@ -90,10 +90,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private final Handler mHandler = new Handler();
     private int mFetchCount;
     private static final int MAX_FAVICON_FETCH_COUNT = 8;
-    public static final int CROSS_FADE_DURATION = 1000; //ms
-    public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
-    public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
-    public static final int THANKYOU_STAY_DURATION = 2000; //ms
+    public static final int CROSS_FADE_DURATION = 1000; // ms
+    public static final int THANKYOU_FADE_OUT_DURATION = 1500; // ms
+    public static final int THANKYOU_FADE_IN_DURATION = 1500; // ms
+    public static final int THANKYOU_STAY_DURATION = 2000; // ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private final Tab mTab;
     private final Profile mProfile;

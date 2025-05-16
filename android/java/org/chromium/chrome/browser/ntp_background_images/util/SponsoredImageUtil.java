@@ -6,13 +6,13 @@
 package org.chromium.chrome.browser.ntp_background_images.util;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
-import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
 
 public class SponsoredImageUtil {
 
@@ -26,9 +26,16 @@ public class SponsoredImageUtil {
 
     public static final int MAX_TABS = 10;
 
-    private static final List<BackgroundImage> backgroundImages = new ArrayList<BackgroundImage>(
-            Arrays.asList(new BackgroundImage(R.drawable.dylan_malval_sea_min, 1300, 720,
-                    new ImageCredit("Dylan Malval", "https://www.instagram.com/vass_captures/"))));
+    private static final List<BackgroundImage> backgroundImages =
+            new ArrayList<BackgroundImage>(
+                    Arrays.asList(
+                            new BackgroundImage(
+                                    R.drawable.dylan_malval_sea_min,
+                                    1300,
+                                    720,
+                                    new ImageCredit(
+                                            "Dylan Malval",
+                                            "https://www.instagram.com/vass_captures/"))));
 
     private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
 

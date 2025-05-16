@@ -170,37 +170,40 @@ public class HighlightDialogFragment extends DialogFragment {
         }
     }
 
-    private final HighlightDialogListener highlightDialogListener = new HighlightDialogListener() {
-        @Override
-        public void onNextPage() {
-            if (viewpager != null) {
-                if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                    OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
-                    RetentionNotificationUtil.scheduleNotificationForEverySunday(getActivity(), RetentionNotificationUtil.EVERY_SUNDAY);
-                    if (onboardingV2PagerAdapter != null) {
-                        onboardingV2PagerAdapter.notifyDataSetChanged();
+    private final HighlightDialogListener highlightDialogListener =
+            new HighlightDialogListener() {
+                @Override
+                public void onNextPage() {
+                    if (viewpager != null) {
+                        if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                            OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
+                            RetentionNotificationUtil.scheduleNotificationForEverySunday(
+                                    getActivity(), RetentionNotificationUtil.EVERY_SUNDAY);
+                            if (onboardingV2PagerAdapter != null) {
+                                onboardingV2PagerAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        int currentPage = viewpager.getCurrentItem();
+                        if ((OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+                                        && currentPage == 2)
+                                || currentPage == 3
+                                || isFromStats) {
+                            dismiss();
+                            BraveStatsUtil.showBraveStats();
+                            checkAndOpenNtpPage();
+                        } else {
+                            viewpager.setCurrentItem(currentPage + 1);
+                        }
                     }
                 }
-                int currentPage = viewpager.getCurrentItem();
-                if ((OnboardingPrefManager.getInstance().isBraveStatsEnabled() && currentPage == 2)
-                        || currentPage == 3
-                        || isFromStats) {
-                    dismiss();
-                    BraveStatsUtil.showBraveStats();
-                    checkAndOpenNtpPage();
-                } else {
-                    viewpager.setCurrentItem(currentPage + 1);
-                }
-            }
-        }
 
-        @Override
-        public void onLearnMore() {
-            dismiss();
-            //Start from beginning
-            ((BraveActivity)getActivity()).showOnboardingV2(false);
-        }
-    };
+                @Override
+                public void onLearnMore() {
+                    dismiss();
+                    // Start from beginning
+                    ((BraveActivity) getActivity()).showOnboardingV2(false);
+                }
+            };
 
     private void checkAndOpenNtpPage() {
         String countryCode = Locale.getDefault().getCountry();

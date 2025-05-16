@@ -82,10 +82,12 @@ public class InAppPurchaseWrapper {
 
     private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsVPN =
             new MutableLiveData();
-    private final LiveData<ProductDetails> mMonthlyProductDetailsVPN = mMutableMonthlyProductDetailsVPN;
+    private final LiveData<ProductDetails> mMonthlyProductDetailsVPN =
+            mMutableMonthlyProductDetailsVPN;
     private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsLeo =
             new MutableLiveData();
-    private final LiveData<ProductDetails> mMonthlyProductDetailsLeo = mMutableMonthlyProductDetailsLeo;
+    private final LiveData<ProductDetails> mMonthlyProductDetailsLeo =
+            mMutableMonthlyProductDetailsLeo;
 
     private void setMonthlyProductDetails(
             ProductDetails productDetails, SubscriptionProduct product) {
@@ -104,10 +106,14 @@ public class InAppPurchaseWrapper {
         return mMonthlyProductDetailsVPN;
     }
 
-    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN = new MutableLiveData();
-    private final LiveData<ProductDetails> mYearlyProductDetailsVPN = mMutableYearlyProductDetailsVPN;
-    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo = new MutableLiveData();
-    private final LiveData<ProductDetails> mYearlyProductDetailsLeo = mMutableYearlyProductDetailsLeo;
+    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN =
+            new MutableLiveData();
+    private final LiveData<ProductDetails> mYearlyProductDetailsVPN =
+            mMutableYearlyProductDetailsVPN;
+    private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo =
+            new MutableLiveData();
+    private final LiveData<ProductDetails> mYearlyProductDetailsLeo =
+            mMutableYearlyProductDetailsLeo;
 
     private void setYearlyProductDetails(
             ProductDetails productDetails, SubscriptionProduct product) {

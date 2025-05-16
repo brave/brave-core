@@ -310,22 +310,25 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mNewsSettingsBar.setOnClickListener(view -> {});
 
         // Double tap on the settings bar to scroll back up
-        mNewsSettingsBar.setOnTouchListener(new OnTouchListener() {
-            private final GestureDetector mGestureDetector =
-                    new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
-                        @Override
-                        public boolean onDoubleTap(MotionEvent e) {
-                            mRecyclerView.smoothScrollToPosition(0);
-                            return super.onDoubleTap(e);
-                        }
-                    });
+        mNewsSettingsBar.setOnTouchListener(
+                new OnTouchListener() {
+                    private final GestureDetector mGestureDetector =
+                            new GestureDetector(
+                                    mActivity,
+                                    new GestureDetector.SimpleOnGestureListener() {
+                                        @Override
+                                        public boolean onDoubleTap(MotionEvent e) {
+                                            mRecyclerView.smoothScrollToPosition(0);
+                                            return super.onDoubleTap(e);
+                                        }
+                                    });
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mGestureDetector.onTouchEvent(event);
-                return true;
-            }
-        });
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        mGestureDetector.onTouchEvent(event);
+                        return true;
+                    }
+                });
         mNewContentLayout = findViewById(R.id.news_load_new_content);
         mNewContentText = findViewById(R.id.new_content_button_text);
         mNewContentProgressBar = findViewById(R.id.new_content_loading_spinner);
