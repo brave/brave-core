@@ -2489,7 +2489,7 @@ public class BytecodeTest {
 
     @Test
     @SmallTest
-    public void testClassInNotFinal() throws Exception {
+    public void testClassIsNotFinal() throws Exception {
         Assert.assertTrue(
                 checkClassIsNotFinal(
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference")); // presubmit: ignore-long-line
