@@ -18,13 +18,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
+import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
 /** Test for {@link BraveHomepageSettings} to check Brave related UI changes. */
 @Batch(Batch.PER_CLASS)
-@RunWith(BaseJUnit4ClassRunner.class)
+@RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveHomepageSettingsTest {
     private static final String PREF_HOMEPAGE_RADIO_GROUP = "homepage_radio_group";
 
