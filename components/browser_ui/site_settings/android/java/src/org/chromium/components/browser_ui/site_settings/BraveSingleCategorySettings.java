@@ -56,12 +56,14 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
             exception = true;
         }
         if (exception) {
+            boolean enableAddExceptionButton = !mCategory.isManaged();
             getPreferenceScreen()
                     .addPreference(
                             new AddExceptionPreference(
                                     getPreferenceManager().getContext(),
                                     ADD_EXCEPTION_KEY,
                                     getString(getAddExceptionDialogMessageResourceId()),
+                                    enableAddExceptionButton,
                                     mCategory,
                                     this));
         }
