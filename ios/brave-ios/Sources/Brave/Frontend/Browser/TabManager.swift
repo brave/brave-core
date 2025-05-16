@@ -90,7 +90,7 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int = 0
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
-  private var braveCore: BraveCoreMain?
+  private var braveCore: BraveProfileController?
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
@@ -118,7 +118,7 @@ class TabManager: NSObject {
     windowId: UUID,
     prefs: Prefs,
     rewards: BraveRewards?,
-    braveCore: BraveCoreMain?,
+    braveCore: BraveProfileController?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)

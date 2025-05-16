@@ -13,13 +13,53 @@ import Shared
 import Storage
 import os.log
 
+public class BraveProfileMigrations {
+  let profileController: BraveProfileController
+  public init(profileController: BraveProfileController) {
+    self.profileController = profileController
+  }
+
+  public func launchMigrations() {
+    migrateDeAmpPreferences()
+    migrateDebouncePreferences()
+    migrateDefaultUserAgentPreferences()
+    migrateBlockPopupsPreferences()
+  }
+
+  private func migrateDefaultUserAgentPreferences() {
+    Preferences.DeprecatedPreferences.alwaysRequestDesktopSite.migrate { value in
+      self.profileController.defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+    }
+  }
+
+  private func migrateBlockPopupsPreferences() {
+    Preferences.DeprecatedPreferences.blockPopups.migrate { value in
+      self.profileController.defaultHostContentSettings.popupsAllowed = !value
+    }
+  }
+
+  private func migrateDeAmpPreferences() {
+    guard let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value else {
+      return
+    }
+    profileController.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+    Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
+  }
+
+  private func migrateDebouncePreferences() {
+    guard let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value
+    else {
+      return
+    }
+    let debounceService = DebounceServiceFactory.get(privateMode: false)
+    debounceService?.isEnabled = isDebounceEnabled
+    Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
+  }
+}
+
 public class Migration {
 
-  private let braveCore: BraveCoreMain
-
-  public init(braveCore: BraveCoreMain) {
-    self.braveCore = braveCore
-  }
+  public init() {}
 
   public func launchMigrations(keyPrefix: String, profile: Profile) {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
@@ -39,58 +79,6 @@ public class Migration {
       Preferences.General.isUsingBottomBar.value = true
       Preferences.Playlist.firstLoadAutoPlay.value = true
     }
-
-    migrateDeAmpPreferences()
-    migrateDebouncePreferences()
-    migrateDefaultUserAgentPreferences()
-    migrateBlockPopupsPreferences()
-
-    // Adding Observer to enable sync types
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(enableUserSelectedTypesForSync),
-      name: BraveServiceStateObserver.coreServiceLoadedNotification,
-      object: nil
-    )
-  }
-
-  private func migrateDefaultUserAgentPreferences() {
-    Preferences.DeprecatedPreferences.alwaysRequestDesktopSite.migrate { value in
-      self.braveCore.defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
-    }
-  }
-
-  private func migrateBlockPopupsPreferences() {
-    Preferences.DeprecatedPreferences.blockPopups.migrate { value in
-      self.braveCore.defaultHostContentSettings.popupsAllowed = !value
-    }
-  }
-
-  private func migrateDeAmpPreferences() {
-    guard let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value else {
-      return
-    }
-    braveCore.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
-    Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
-  }
-
-  private func migrateDebouncePreferences() {
-    guard let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value
-    else {
-      return
-    }
-    let debounceService = DebounceServiceFactory.get(privateMode: false)
-    debounceService?.isEnabled = isDebounceEnabled
-    Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
-  }
-
-  @objc private func enableUserSelectedTypesForSync() {
-    guard braveCore.syncAPI.isInSyncGroup else {
-      Logger.module.info("Sync is not active")
-      return
-    }
-
-    braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
   }
 
   public static func migrateLostTabsActiveWindow() {
@@ -143,14 +131,14 @@ public class Migration {
     Preferences.Migration.lostTabsWindowIDMigration.value = true
   }
 
-  public static func migrateAdsConfirmations(for configruation: BraveRewards.Configuration) {
+  public static func migrateAdsConfirmations(for configuration: BraveRewards.Configuration) {
     // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
     // estimated payout remain correct.
     //
     // This hack is unfortunately neccessary due to a missed migration path when moving
     // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
     // state file and save it as a new file under the ads directory.
-    let base = configruation.storageURL
+    let base = configuration.storageURL
     let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
     let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
     let fm = FileManager.default

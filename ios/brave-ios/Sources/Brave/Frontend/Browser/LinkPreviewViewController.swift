@@ -35,7 +35,7 @@ class LinkPreviewViewController: UIViewController {
       with: .init(
         initialConfiguration: isPrivate
           ? TabManager.privateConfiguration : TabManager.defaultConfiguration,
-        braveCore: browserController.braveCore
+        braveCore: browserController.profileController
       )
     )
     tab.miscDelegate = browserController

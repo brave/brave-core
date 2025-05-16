@@ -23,6 +23,9 @@ source_set("app") {
     "brave_core_switches.mm",
     "brave_main_delegate.h",
     "brave_main_delegate.mm",
+    "brave_profile_controller+private.h",
+    "brave_profile_controller.h",
+    "brave_profile_controller.mm",
   ]
 
   deps = [
