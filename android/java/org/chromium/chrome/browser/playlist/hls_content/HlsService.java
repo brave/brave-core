@@ -11,7 +11,7 @@ import org.chromium.chrome.browser.base.SplitCompatService;
 /** See {@link HlsServiceImpl}. */
 public class HlsService extends SplitCompatService {
     @IdentifierNameString
-    private static final String sImplClassName =
+    private static String sImplClassName =
             "org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl";
 
     public HlsService() {
