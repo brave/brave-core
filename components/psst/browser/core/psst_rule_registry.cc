@@ -41,14 +41,9 @@ std::string ReadFile(const base::FilePath& file_path) {
 }
 
 std::optional<MatchedRule> CreateMatchedRule(
-    base::WeakPtr<PsstRuleRegistryImpl> registry,
-    RuleDataReader* rule_data_reader,
+    std::unique_ptr<RuleDataReader> rule_data_reader,
     const PsstRule& rule) {
-  if (!registry) {
-    return std::nullopt;
-  }
-  return MatchedRuleFactory(rule_data_reader, rule.Name(), rule.Version())
-      .Create(rule);
+  return MatchedRule::Create(std::move(rule_data_reader), rule);
 }
 
 }  // namespace
@@ -75,6 +70,14 @@ void PsstRuleRegistryAccessor::SetRegistryForTesting(
   impl_ = std::move(new_inst);
 }
 
+void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
+  component_path_ = path;
+}
+
+std::unique_ptr<RuleDataReader> PsstRuleRegistry::CreateRuleDataReader() {
+  return std::make_unique<RuleDataReader>(component_path_);
+}
+
 PsstRuleRegistryImpl::PsstRuleRegistryImpl() = default;
 PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 
@@ -85,8 +88,7 @@ void PsstRuleRegistryImpl::CheckIfMatch(
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
-          base::BindOnce(&CreateMatchedRule, weak_factory_.GetWeakPtr(),
-                         rule_data_reader_.get(), rule),
+          base::BindOnce(&CreateMatchedRule, CreateRuleDataReader(), rule),
           std::move(cb));
       // Only ever find one matching rule.
       return;
@@ -94,15 +96,11 @@ void PsstRuleRegistryImpl::CheckIfMatch(
   }
 }
 
-void PsstRuleRegistryImpl::SetRuleDataReaderForTest(
-    std::unique_ptr<RuleDataReader> rule_data_reader) {
-  rule_data_reader_ = std::move(rule_data_reader);
-}
-
 void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path) {
-  if (!rule_data_reader_) {
-    rule_data_reader_ = std::make_unique<RuleDataReader>(path);
+  if (path.empty() || !base::PathExists(path)) {
+    return;
   }
+  PsstRuleRegistry::LoadRules(path);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
