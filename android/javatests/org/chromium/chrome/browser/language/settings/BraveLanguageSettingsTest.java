@@ -15,10 +15,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.chromium.base.test.BaseJUnit4ClassRunner;
+import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
+import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
-@RunWith(BaseJUnit4ClassRunner.class)
+@Batch(Batch.PER_CLASS)
+@RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveLanguageSettingsTest {
     static final String TRANSLATION_SETTINGS_SECTION = "translation_settings_section";
 

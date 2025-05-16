@@ -27,6 +27,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
@@ -49,7 +50,6 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -77,6 +77,7 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
@@ -145,6 +146,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
+import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.bookmarks.BookmarkItem;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
@@ -158,6 +160,8 @@ import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher.WebsitePermissionsType;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
+import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
+import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
@@ -210,7 +214,7 @@ import java.util.function.Function;
  * should be whitelisted in 'brave/android/java/apk_for_test.flags'.
  */
 @Batch(Batch.PER_CLASS)
-@RunWith(BaseJUnit4ClassRunner.class)
+@RunWith(ChromeJUnit4ClassRunner.class)
 public class BytecodeTest {
     enum MethodModifier {
         REGULAR,
@@ -915,6 +919,46 @@ public class BytecodeTest {
                         "getAppHeaderCoordinator",
                         MethodModifier.REGULAR,
                         AppHeaderCoordinator.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "onCheckedChanged",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        RadioGroup.class,
+                        int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "getPreferenceValue",
+                        MethodModifier.REGULAR,
+                        BraveRadioButtonGroupHomepagePreference.getPreferenceValuesClass()));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "setupPreferenceValues",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        BraveRadioButtonGroupHomepagePreference.getPreferenceValuesClass()));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "onTextChanged",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        CharSequence.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "getCustomUriRadioButton",
+                        MethodModifier.REGULAR,
+                        RadioButtonWithEditText.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "getChromeNtpRadioButton",
+                        MethodModifier.REGULAR,
+                        RadioButtonWithDescription.class));
     }
 
     @Test
@@ -2433,6 +2477,22 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase",
                         "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "androidx/preference/Preference")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/homepage/settings/BraveRadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference")); // presubmit: ignore-long-line
+    }
+
+    @Test
+    @SmallTest
+    public void testClassIsNotFinal() throws Exception {
+        Assert.assertTrue(
+                checkClassIsNotFinal(
+                        "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -2627,5 +2687,13 @@ public class BytecodeTest {
             return false;
         }
         return c.getSuperclass().equals(s);
+    }
+
+    private boolean checkClassIsNotFinal(String className) {
+        Class c = getClassForPath(className);
+        if (c == null) {
+            return false;
+        }
+        return !Modifier.isFinal(c.getModifiers());
     }
 }
