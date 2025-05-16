@@ -22,7 +22,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 
 BASE_FEATURE(kBraveEphemeralStorage,
              "EphemeralStorage",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveEphemeralStorageKeepAlive,
              "BraveEphemeralStorageKeepAlive",
              base::FEATURE_ENABLED_BY_DEFAULT);
