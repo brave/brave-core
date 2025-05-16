@@ -10,8 +10,8 @@ import org.chromium.chrome.browser.base.SplitCompatService;
 
 /** See {@link WireguardServiceImpl}. */
 public class WireguardService extends SplitCompatService {
-    @IdentifierNameString
-    private static final String sImplClassName =
+    @SuppressWarnings("FieldCanBeFinal") // @IdentifierNameString requires non-final
+    private static @IdentifierNameString String sImplClassName =
             "org.chromium.chrome.browser.vpn.wireguard.WireguardServiceImpl";
 
     public WireguardService() {
