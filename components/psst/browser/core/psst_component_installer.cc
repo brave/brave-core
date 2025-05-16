@@ -172,7 +172,6 @@ bool PsstComponentInstallerPolicy::IsBraveComponent() const {
 
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
-    PsstComponentInstallerPolicy::DeleteComponent();
     return;
   }
 
