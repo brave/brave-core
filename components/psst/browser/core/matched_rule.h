@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_MATCHED_RULE_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_MATCHED_RULE_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -15,12 +16,18 @@
 
 namespace psst {
 
+class RuleDataReader;
+
 // Represents the loaded PSST data for PsstRule matched by the URL.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
  public:
   ~MatchedRule();
   MatchedRule(const MatchedRule&);
   MatchedRule& operator=(const MatchedRule&) = delete;
+
+  static std::optional<MatchedRule> Create(
+      std::unique_ptr<RuleDataReader> rule_reader,
+      const PsstRule& rule);
 
   // Getters.
   const std::string& UserScript() const { return user_script_; }
@@ -41,24 +48,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
   const std::string user_script_;
   const std::string policy_script_;
   int version_;
-};
-
-class RuleDataReader;
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRuleFactory {
- public:
-  explicit MatchedRuleFactory(RuleDataReader* rule_reader,
-                              const std::string& rule_name,
-                              const int version);
-  MatchedRuleFactory(const MatchedRuleFactory&) = delete;
-  MatchedRuleFactory& operator=(const MatchedRuleFactory&) = delete;
-  virtual ~MatchedRuleFactory() = default;
-
-  virtual std::optional<MatchedRule> Create(const PsstRule& rule);
-
- private:
-  raw_ptr<RuleDataReader> rule_reader_;
-  const std::string name_;
-  const int version_;
 };
 
 }  // namespace psst

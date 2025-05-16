@@ -39,10 +39,11 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
       base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) = 0;
 
   // Given a path to psst.json, loads the rules from the file into memory.
-  virtual void LoadRules(const base::FilePath& path) = 0;
+  virtual void LoadRules(const base::FilePath& path);
 
  protected:
   PsstRuleRegistry() = default;
+  virtual std::unique_ptr<RuleDataReader> CreateRuleDataReader();
 
  private:
   virtual void OnLoadRules(const std::string& data) = 0;
@@ -51,6 +52,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   friend class PsstTabHelperBrowserTest;
   friend class PsstTabHelperUnitTest;
   friend class PsstRuleRegistryUnitTest;
+
+  base::FilePath component_path_;
 };
 
 // Represents the singleton accessor to the PSST rule registry.
@@ -101,12 +104,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryImpl
   void OnLoadRules(const std::string& data) override;
 
  private:
-  void SetRuleDataReaderForTest(
-      std::unique_ptr<RuleDataReader> rule_data_reader);
-
-  std::unique_ptr<RuleDataReader> rule_data_reader_;
   std::vector<PsstRule> rules_;
-
   base::WeakPtrFactory<PsstRuleRegistryImpl> weak_factory_{this};
 
   // Needed for testing private methods.

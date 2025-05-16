@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/browser/core/matched_rule.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -28,26 +29,21 @@ MatchedRule::MatchedRule(const std::string& name,
 MatchedRule::~MatchedRule() = default;
 MatchedRule::MatchedRule(const MatchedRule&) = default;
 
-MatchedRuleFactory::MatchedRuleFactory(RuleDataReader* rule_reader,
-                                       const std::string& rule_name,
-                                       const int version)
-    : rule_reader_(rule_reader), name_(rule_name), version_(version) {}
+// static
+std::optional<MatchedRule> MatchedRule::Create(
+    std::unique_ptr<RuleDataReader> rule_reader,
+    const PsstRule& rule) {
+  CHECK(rule_reader);
 
-std::optional<MatchedRule> MatchedRuleFactory::Create(const PsstRule& rule) {
-  DCHECK(rule_reader_);
-  if (!rule_reader_) {
-    return std::nullopt;
-  }
-
-  auto user_script = rule_reader_->ReadUserScript(rule);
-  auto policy_script = rule_reader_->ReadPolicyScript(rule);
+  auto user_script = rule_reader->ReadUserScript(rule);
+  auto policy_script = rule_reader->ReadPolicyScript(rule);
 
   if (!user_script || !policy_script) {
     return std::nullopt;
   }
 
-  return MatchedRule(name_, user_script.value(), policy_script.value(),
-                     version_);
+  return MatchedRule(rule.Name(), user_script.value(), policy_script.value(),
+                     rule.Version());
 }
 
 }  // namespace psst
