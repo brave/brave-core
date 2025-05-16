@@ -30,7 +30,7 @@ import org.chromium.ui.KeyboardVisibilityDelegate;
 /** The preference used to reset transaction and nonce history in Brave Wallet. */
 public class BraveWalletResetTxHistoryAndNoncePreference extends Preference
         implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
-    private final String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
+    private static final String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
 
     private TxService mTxService;
     private final String mConfirmationPhrase;
