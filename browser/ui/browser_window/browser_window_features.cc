@@ -11,7 +11,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -54,7 +54,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
-    split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
+    tab_tile_model_ = std::make_unique<TabTileModel>(browser);
   }
 }
 

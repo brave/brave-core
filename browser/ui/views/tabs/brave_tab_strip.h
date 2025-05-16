@@ -11,7 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/tab_tile_model.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 class Tab;
@@ -24,7 +24,6 @@ class BraveTabStrip : public TabStrip {
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
 
   bool IsVerticalTabsFloating() const;
-  TabTiledState GetTiledStateForTab(int index) const;
 
   // TabStrip:
   void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;

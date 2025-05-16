@@ -9,7 +9,7 @@
 #include <memory>
 
 class BraveVPNController;
-class SplitViewBrowserData;
+class TabTileModel;
 
 namespace sidebar {
 class SidebarController;
@@ -36,9 +36,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return sidebar_controller_.get();
   }
   BraveVPNController* brave_vpn_controller();
-  SplitViewBrowserData* split_view_browser_data() {
-    return split_view_browser_data_.get();
-  }
+  TabTileModel* tab_tile_model() { return tab_tile_model_.get(); }
 
  protected:
   BrowserWindowFeatures();
@@ -46,7 +44,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
-  std::unique_ptr<SplitViewBrowserData> split_view_browser_data_;
+  std::unique_ptr<TabTileModel> tab_tile_model_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
