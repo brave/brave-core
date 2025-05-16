@@ -15,7 +15,7 @@ import androidx.core.widget.ImageViewCompat;
 import org.chromium.chrome.browser.omnibox.status.StatusView;
 
 public class BraveLocationBarLayout extends LocationBarLayout {
-    private ImageButton mQRButton;
+    private final ImageButton mQRButton;
 
     public BraveLocationBarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);

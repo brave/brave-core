@@ -31,7 +31,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private List<TwoLineItem> mValues;
     private final ExecutorService mExecutor;
     private final Handler mHandler;
-    private AdapterViewOrientation mItemViewOrientation;
+    private final AdapterViewOrientation mItemViewOrientation;
     private LayoutInflater mLayoutInflater;
     public int mSubTextAlignment;
     public int mDividerMargin;

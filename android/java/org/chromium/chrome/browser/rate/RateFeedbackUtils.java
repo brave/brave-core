@@ -42,9 +42,9 @@ public class RateFeedbackUtils {
     }
 
     public static class RateFeedbackWorkerTask extends AsyncTask<Void> {
-        private String mUserSelection;
-        private String mUserFeedback;
-        private RateFeedbackCallback mCallback;
+        private final String mUserSelection;
+        private final String mUserFeedback;
+        private final RateFeedbackCallback mCallback;
 
         public RateFeedbackWorkerTask(
                 String userSelection, String userFeedback, RateFeedbackCallback callback) {

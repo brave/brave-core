@@ -34,9 +34,9 @@ import org.chromium.chrome.browser.util.PackageUtils;
 public class BraveAdsSignupDialog {
     private static final String TAG = "BraveAdsSignupDialog";
 
-    private static String SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER =
+    private static final String SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER =
             "should_show_onboarding_dialog_view_counter";
-    private static String SHOULD_SHOW_ONBOARDING_DIALOG = "should_show_onboarding_dialog";
+    private static final String SHOULD_SHOW_ONBOARDING_DIALOG = "should_show_onboarding_dialog";
 
     private static final long TWENTY_FOUR_HOURS = 86_400_000;
     private static final long MOMENT_LATER = 2_500;

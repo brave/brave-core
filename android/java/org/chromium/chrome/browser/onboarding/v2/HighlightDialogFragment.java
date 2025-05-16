@@ -170,7 +170,7 @@ public class HighlightDialogFragment extends DialogFragment {
         }
     }
 
-    private HighlightDialogListener highlightDialogListener = new HighlightDialogListener() {
+    private final HighlightDialogListener highlightDialogListener = new HighlightDialogListener() {
         @Override
         public void onNextPage() {
             if (viewpager != null) {

@@ -26,10 +26,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private List<NetworkInfo> mNetworkInfoList;
-    private ExecutorService mExecutor;
-    private Handler mHandler;
+    private final ExecutorService mExecutor;
+    private final Handler mHandler;
 
     public NetworkSpinnerAdapter(Context context, List<NetworkInfo> networkInfoList) {
         mInflater = LayoutInflater.from(context);

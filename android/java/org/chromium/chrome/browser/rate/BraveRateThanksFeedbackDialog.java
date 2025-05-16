@@ -94,7 +94,7 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
         }
     }
 
-    private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback =
+    private final RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback =
             new RateFeedbackUtils.RateFeedbackCallback() {
                 @Override
                 public void rateFeedbackSubmitted() {

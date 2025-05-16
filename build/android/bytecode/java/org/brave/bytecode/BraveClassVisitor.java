@@ -28,7 +28,7 @@ import java.util.Map;
 
 class BraveClassVisitor extends ClassVisitor {
 
-    private ClassVisitor mTarget;
+    private final ClassVisitor mTarget;
 
     static class Method {
         public int access;
@@ -59,7 +59,7 @@ class BraveClassVisitor extends ClassVisitor {
 
     class BraveMethodVisitor extends MethodVisitor {
 
-        private Method mMethod;
+        private final Method mMethod;
 
         public BraveMethodVisitor(Method method, MethodVisitor mv) {
             super(ASM7, mv);
@@ -106,29 +106,29 @@ class BraveClassVisitor extends ClassVisitor {
     protected String mName = "";
     protected String mSuperName = "";
 
-    private Map<String, String> mSuperNames = new HashMap<String, String>();
-    private Map<String, ArrayList<String>> mDeleteMethods =
+    private final Map<String, String> mSuperNames = new HashMap<String, String>();
+    private final Map<String, ArrayList<String>> mDeleteMethods =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, ArrayList<String>> mDeleteFields =
+    private final Map<String, ArrayList<String>> mDeleteFields =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, ArrayList<String>> mDeleteInnerClasses =
+    private final Map<String, ArrayList<String>> mDeleteInnerClasses =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, ArrayList<String>> mMakePublicMethods =
+    private final Map<String, ArrayList<String>> mMakePublicMethods =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, ArrayList<String>> mMakePrivateMethods =
+    private final Map<String, ArrayList<String>> mMakePrivateMethods =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, ArrayList<String>> mMakePublicInnerClasses =
+    private final Map<String, ArrayList<String>> mMakePublicInnerClasses =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, Map<String, String>> mChangeOwnerMethods =
+    private final Map<String, Map<String, String>> mChangeOwnerMethods =
             new HashMap<String, Map<String, String>>();
-    private Map<String, ArrayList<String>> mMakeProtectedFields =
+    private final Map<String, ArrayList<String>> mMakeProtectedFields =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
+    private final Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
             new HashMap<String, Map<String, ArrayList<String>>>();
-    private Map<String, String> mRedirectConstructors = new HashMap<String, String>();
-    private Map<String, Map<String, Map<String, String>>> mRedirectMethodType =
+    private final Map<String, String> mRedirectConstructors = new HashMap<String, String>();
+    private final Map<String, Map<String, Map<String, String>>> mRedirectMethodType =
             new HashMap<String, Map<String, Map<String, String>>>();
-    private ArrayList<String> mMakeNonFinalClasses = new ArrayList<String>();
+    private final ArrayList<String> mMakeNonFinalClasses = new ArrayList<String>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
         super(ASM7, null);

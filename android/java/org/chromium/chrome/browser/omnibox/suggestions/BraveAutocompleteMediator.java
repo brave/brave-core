@@ -42,8 +42,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
     private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
-    private AutocompleteDelegate mDelegate;
-    private Supplier<@Nullable Tab> mActivityTabSupplier;
+    private final AutocompleteDelegate mDelegate;
+    private final Supplier<@Nullable Tab> mActivityTabSupplier;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
     @SuppressWarnings("NullAway") // Actual instance is at the parent

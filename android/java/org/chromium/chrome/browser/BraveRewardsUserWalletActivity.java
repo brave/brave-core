@@ -30,7 +30,7 @@ public class BraveRewardsUserWalletActivity
     private static final String TAG = "BraveRewards";
     public static final int UNDEFINED_WALLET_STATUS = -1;
 
-    private String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private final String mWalletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
 
     @Override
     protected void triggerLayoutInflation() {

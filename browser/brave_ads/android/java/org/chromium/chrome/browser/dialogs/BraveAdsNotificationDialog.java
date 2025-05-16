@@ -41,13 +41,13 @@ public class BraveAdsNotificationDialog {
         private static final int MIN_DISTANCE_FOR_DISMISS = 40;
         private static final int MAX_DISTANCE_FOR_TAP = 5;
 
-        private Context mContext;
+        private final Context mContext;
         private final String mOrigin;
-        private WindowManager.LayoutParams mLayoutParams;
+        private final WindowManager.LayoutParams mLayoutParams;
         private ValueAnimator mAnimator;
         // Track when touch events on the dialog are down and when they are up
         private int mXDown;
-        private int mWindowInitialPos;
+        private final int mWindowInitialPos;
 
         public AdsNotificationTouchListener(Context context, final String origin) {
             mContext = context;
