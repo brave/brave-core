@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
-index 74b0c2fb982b9d3f6f1c68c2a51ea3ab322c1162..49dc07b566924865d19958abd7ad5762c3f4164a 100644
+index e3c68986ae0d47a9b5779694b5a6ab66756d56f0..35ad1730774b83fdc0aed2bf8eae65e0c54db5ed 100644
 --- a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
 @@ -311,7 +311,7 @@ int GetMicrotasksScopeDepth(v8::Isolate* isolate,

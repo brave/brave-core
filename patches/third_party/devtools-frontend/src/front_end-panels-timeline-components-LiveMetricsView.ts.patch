@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/timeline/components/LiveMetricsView.ts b/front_end/panels/timeline/components/LiveMetricsView.ts
-index 405273e6a7eddb659d6a06bd02db0f5e60e7e316..107417e2341589c3b7f3e362907332f058bb3904 100644
+index e676eefcdbc42f25f6bde5b284c936e5f3385e03..c9321a9d8156cdf8a0400643eb7e39a374db5146 100644
 --- a/front_end/panels/timeline/components/LiveMetricsView.ts
 +++ b/front_end/panels/timeline/components/LiveMetricsView.ts
 @@ -1120,7 +1120,7 @@ export class LiveMetricsView extends LegacyWrapper.LegacyWrapper.WrappableCompon
