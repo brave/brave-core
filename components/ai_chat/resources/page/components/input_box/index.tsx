@@ -13,7 +13,7 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import { AttachmentImageItem, AttachmentSpinnerItem } from '../attachment_item'
+import { AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
 
 type Props = Pick<
   ConversationContext,
@@ -43,7 +43,7 @@ type Props = Pick<
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
-export interface InputBoxProps {
+interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
@@ -94,10 +94,8 @@ function InputBox(props: InputBoxProps) {
     if (!node) {
       return
     }
-    if (
-      props.context.selectedActionType ||
-      props.maybeShowSoftKeyboard?.(querySubmitted.current)
-    ) {
+    if (props.context.selectedActionType ||
+      props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
       node.focus()
     }
   }
@@ -128,8 +126,11 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {((props.context.pendingMessageImages.length > 0 ||
-        props.context.isUploadingFiles) || !!props.context.associatedContentInfo) && (
+      {(props.context.pendingMessageImages.length > 0 ||
+        props.context.isUploadingFiles ||
+        (props.context.associatedContentInfo &&
+          props.context.shouldSendPageContents &&
+          !props.conversationStarted)) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
@@ -138,19 +139,18 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {props.context.associatedContentInfo &&
+           {props.context.associatedContentInfo &&
             props.context.shouldSendPageContents &&
             !props.conversationStarted && (
-              <AttachmentItem
-                smallImage
-                thumbnailUrl={`chrome://favicon2?size=256&pageUrl=${encodeURIComponent(
-                  props.context.associatedContentInfo.url.url
-                )}`}
+              <AttachmentPageItem
                 title={props.context.associatedContentInfo.title}
-                subtitle={props.context.associatedContentInfo.url.url}
+                url={props.context.associatedContentInfo.url.url}
                 remove={() => props.context.updateShouldSendPageContents(false)}
               />
             )}
+          {props.context.isUploadingFiles && (
+            <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
+          )}
           {props.context.pendingMessageImages?.map((img, i) => (
             <AttachmentImageItem
               key={img.filename}
@@ -166,11 +166,9 @@ function InputBox(props: InputBoxProps) {
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(
-            props.conversationStarted
-              ? 'placeholderLabel'
-              : 'initialPlaceholderLabel'
-          )}
+          placeholder={getLocale(props.conversationStarted
+            ? 'placeholderLabel'
+            : 'initialPlaceholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -195,11 +193,13 @@ function InputBox(props: InputBoxProps) {
             fab
             kind='plain-faint'
             size='large'
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-            }}
+            onClick={(e) =>
+              {
+                e.preventDefault()
+                e.stopPropagation()
+                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+              }
+            }
             title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
@@ -225,12 +225,10 @@ function InputBox(props: InputBoxProps) {
             getScreenshots={props.context.getScreenshots}
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}
-            isMobile={props.context.isMobile}
             shouldSendPageContents={props.context.shouldSendPageContents}
-            updateShouldSendPageContents={
-              props.context.updateShouldSendPageContents
-            }
+            updateShouldSendPageContents={props.context.updateShouldSendPageContents}
             conversationStarted={props.conversationStarted}
+            isMobile={props.context.isMobile}
           />
         </div>
         <div>

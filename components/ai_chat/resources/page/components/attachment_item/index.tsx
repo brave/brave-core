@@ -27,7 +27,7 @@ type Props = {
   remove?: () => void
 }
 
-export function AttachmentItem(props: Props) {
+function AttachmentItem(props: Props) {
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
@@ -116,4 +116,15 @@ export function AttachmentSpinnerItem(props: { title: string }) {
       subtitle={''}
     />
   )
+}
+
+export function AttachmentPageItem(props: { title: string, url: string, remove?: () => void }) {
+  // We don't display the scheme in the subtitle.
+  const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
+
+  return <AttachmentItem
+    icon={<img src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`} />}
+    title={props.title}
+    subtitle={sansSchemeUrl}
+    remove={props.remove} />
 }

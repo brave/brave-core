@@ -9,7 +9,7 @@ import { getLocale } from '$web-common/locale'
 import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
-import {  AttachmentImageItem, AttachmentItem  } from '../../../page/components/attachment_item'
+import {  AttachmentImageItem, AttachmentPageItem  } from '../../../page/components/attachment_item'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
@@ -191,11 +191,9 @@ function ConversationEntries() {
                         </div>
                         {hasAttachments &&
                           <div className={styles.attachmentsContainer}>
-                          {hasTabAttachments && conversationContext.associatedContent.map(c => <AttachmentItem
+                          {conversationContext.associatedContent.map(c => <AttachmentPageItem
                             key={c.contentId}
-                            smallImage
-                            subtitle={c.url.url}
-                            thumbnailUrl={`//favicon2?size=256&pageUrl=${encodeURIComponent(c.url.url)}`}
+                            url={c.url.url}
                             title={c.title}
                           />)}
                             {imageFiles.map((img) => (
