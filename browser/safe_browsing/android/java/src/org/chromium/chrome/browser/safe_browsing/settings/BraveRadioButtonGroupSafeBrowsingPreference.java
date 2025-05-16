@@ -16,13 +16,14 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionAndAu
 
 public class BraveRadioButtonGroupSafeBrowsingPreference
         extends RadioButtonGroupSafeBrowsingPreference {
-    private final String noProtectionSummary;
+    private final String mNoProtectionSummary;
 
     public BraveRadioButtonGroupSafeBrowsingPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        noProtectionSummary = context.getResources().getString(
-                R.string.brave_safe_browsing_no_protection_summary);
+        mNoProtectionSummary =
+                context.getResources()
+                        .getString(R.string.brave_safe_browsing_no_protection_summary);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class BraveRadioButtonGroupSafeBrowsingPreference
                 (RadioButtonWithDescription) holder.findViewById(R.id.no_protection);
         assert noProtection != null : "Something has changed in the upstream!";
         if (noProtection != null) {
-            noProtection.setDescriptionText(noProtectionSummary);
+            noProtection.setDescriptionText(mNoProtectionSummary);
         }
     }
 }
