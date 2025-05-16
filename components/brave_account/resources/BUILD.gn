@@ -52,11 +52,8 @@ build_webui("build") {
     "//ui/webui/resources/mojo:build_ts",
   ]
 
-  mojo_files = [
-    "$root_gen_dir/brave/components/brave_account/core/mojom/brave_account.mojom-webui.ts",
-  ]
+  mojo_files = [ "$root_gen_dir/brave/components/brave_account/core/mojom/brave_account.mojom-webui.ts" ]
 
-  mojo_files_deps = [
-    "//brave/components/brave_account/core/mojom:mojom_ts__generator",
-  ]
+  mojo_files_deps =
+      [ "//brave/components/brave_account/core/mojom:mojom_ts__generator" ]
 }
