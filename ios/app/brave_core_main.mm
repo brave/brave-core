@@ -85,6 +85,7 @@
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
+#include "ios/chrome/browser/shared/model/profile/scoped_profile_keep_alive_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
@@ -122,7 +123,13 @@ ProfileIOS* CreateMainProfileIOS() {
   // state before creating the profile
   localState->SetString(prefs::kLastUsedProfile, profileName);
   ScopedAllowBlockingForProfile allow_blocking;
-  return profileManager->CreateProfile(profileName);
+  __block ProfileIOS* profile = nullptr;
+  profileManager->CreateProfileAsync(
+      profileName, base::BindOnce(^(ScopedProfileKeepAliveIOS keep_alive) {
+        profile = keep_alive.profile();
+      }),
+      {});
+  return profile;
 }
 }  // namespace brave
 
