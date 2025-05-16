@@ -5,8 +5,11 @@
 
 #include "extensions/browser/verified_contents.h"
 
+#include "base/containers/span.h"
+#include "base/memory/ptr_util.h"
+
 namespace {
-constexpr uint8_t kBraveVerifiedContentsPublicKey[] = {
+constexpr uint8_t kBraveVerifiedContentsPublicKeyRaw[] = {
     0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86,
     0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0f, 0x00,
     0x30, 0x82, 0x01, 0x0a, 0x02, 0x82, 0x01, 0x01, 0x00, 0xc3, 0x8a, 0x2d,
@@ -32,22 +35,82 @@ constexpr uint8_t kBraveVerifiedContentsPublicKey[] = {
     0x81, 0xfd, 0x2f, 0x1e, 0x92, 0x4a, 0x5e, 0xed, 0xef, 0x13, 0x9f, 0xed,
     0x88, 0x77, 0x2c, 0x84, 0xdd, 0x00, 0x87, 0x03, 0x49, 0x09, 0xb7, 0x4b,
     0xc7, 0x02, 0x03, 0x01, 0x00, 0x01};
+
+constexpr base::span<const uint8_t> kBraveVerifiedContentsPublicKey =
+    kBraveVerifiedContentsPublicKeyRaw;
+
 }  // namespace
 
 namespace extensions {
+
+VerifiedContents::VerifiedContents(
+    std::unique_ptr<VerifiedContents_ChromiumImpl> verified_contents)
+    : verified_contents_(std::move(verified_contents)) {}
+
+VerifiedContents::~VerifiedContents() = default;
+
+// static
+std::unique_ptr<VerifiedContents> VerifiedContents::CreateFromFile(
+    base::span<const uint8_t> public_key,
+    const base::FilePath& path) {
+  for (const auto& key : {public_key, kBraveVerifiedContentsPublicKey}) {
+    if (auto result =
+            VerifiedContents_ChromiumImpl::CreateFromFile(key, path)) {
+      return base::WrapUnique(new VerifiedContents(std::move(result)));
+    }
+  }
+  return nullptr;
+}
 
 // static
 std::unique_ptr<VerifiedContents> VerifiedContents::Create(
     base::span<const uint8_t> public_key,
     std::string_view contents) {
-  if (auto verified_contents = Create_ChromiumImpl(public_key, contents)) {
-    // Ok, the verified contents have been signed by the WebStore key.
-    return verified_contents;
+  for (const auto& key : {public_key, kBraveVerifiedContentsPublicKey}) {
+    if (auto result = VerifiedContents_ChromiumImpl::Create(key, contents)) {
+      return base::WrapUnique(new VerifiedContents(std::move(result)));
+    }
   }
-  // On failure, retry with Brave key.
-  return Create_ChromiumImpl(kBraveVerifiedContentsPublicKey, contents);
+  return nullptr;
+}
+
+int VerifiedContents::block_size() const {
+  return verified_contents_->block_size();
+}
+
+const ExtensionId& VerifiedContents::extension_id() const {
+  return verified_contents_->extension_id();
+}
+
+const base::Version& VerifiedContents::version() const {
+  return verified_contents_->version();
+}
+
+bool VerifiedContents::HasTreeHashRoot(
+    const base::FilePath& relative_path) const {
+  return verified_contents_->HasTreeHashRoot(relative_path);
+}
+
+bool VerifiedContents::TreeHashRootEquals(const base::FilePath& relative_path,
+                                          const std::string& expected) const {
+  return verified_contents_->TreeHashRootEquals(relative_path, expected);
+}
+
+bool VerifiedContents::TreeHashRootEqualsForCanonicalPath(
+    const CanonicalRelativePath& canonical_relative_path,
+    const std::string& expected) const {
+  return verified_contents_->TreeHashRootEqualsForCanonicalPath(
+      canonical_relative_path, expected);
+}
+
+bool VerifiedContents::valid_signature() {
+  return verified_contents_->valid_signature();
 }
 
 }  // namespace extensions
 
+#define VerifiedContents VerifiedContents_ChromiumImpl
+
 #include "src/extensions/browser/verified_contents.cc"
+
+#undef VerifiedContents
