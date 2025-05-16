@@ -30,7 +30,8 @@ namespace brave_wallet {
 
 namespace {
 
-mojom::CardanoBalancePtr BalanceFromUtxos(GetCardanoUtxosTask::UtxoMap& utxos) {
+mojom::CardanoBalancePtr BalanceFromUtxos(
+    const GetCardanoUtxosTask::UtxoMap& utxos) {
   auto result = mojom::CardanoBalance::New();
 
   for (const auto& items : utxos) {

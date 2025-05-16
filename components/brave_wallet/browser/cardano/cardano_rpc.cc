@@ -35,6 +35,9 @@
 
 namespace {
 
+constexpr char kNotFoundResponse[] = "Not Found";
+constexpr char kProjectIdHeader[] = "project_id";
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("cardano_rpc", R"(
       semantics {
@@ -59,21 +62,23 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 base::flat_map<std::string, std::string> MakeCardanoRpcHeaders(
-    const std::string& chain_id) {
-  constexpr char kProjectIdHeader[] = "project_id";
+    const std::string& chain_id,
+    const GURL& request_url) {
+  base::flat_map<std::string, std::string> request_headers =
+      brave_wallet::IsEndpointUsingBraveWalletProxy(request_url)
+          ? brave_wallet::MakeBraveServicesKeyHeaders()
+          : base::flat_map<std::string, std::string>();
 
   std::string cardano_project_id =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
           chain_id == brave_wallet::mojom::kCardanoMainnet
               ? brave_wallet::switches::kCardanoMainnetProjectId
               : brave_wallet::switches::kCardanoTestnetProjectId);
-
-  base::flat_map<std::string, std::string> result;
   if (!cardano_project_id.empty()) {
-    result.emplace(kProjectIdHeader, cardano_project_id);
+    request_headers.emplace(kProjectIdHeader, cardano_project_id);
   }
 
-  return result;
+  return request_headers;
 }
 
 bool UrlPathEndsWithSlash(const GURL& base_url) {
@@ -164,14 +169,9 @@ GURL MakeGetTransactionUrl(const GURL& base_url, std::string_view txid) {
   return base_url.ReplaceComponents(replacements);
 }
 
-GURL EndpointHost(const GURL& request_url) {
-  DCHECK(request_url.is_valid());
-  return request_url.GetWithEmptyPath();
-}
-
-bool ShouldThrottleEndpoint(const GURL& endpoint_host) {
+bool ShouldThrottleEndpoint(const GURL& request_url) {
   // Don't throttle requests if host matches brave proxy.
-  return !brave_wallet::IsEndpointUsingBraveWalletProxy(endpoint_host);
+  return !brave_wallet::IsEndpointUsingBraveWalletProxy(request_url);
 }
 
 template <class TCallback>
@@ -189,6 +189,17 @@ void ReplyWithInternalError(TCallback callback) {
 std::optional<std::string> ConvertJsonStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[", json, "]"});
+}
+
+std::optional<std::string> HandleGetUtxoListRawResponse(
+    const std::string& raw_response) {
+  // `404 Not Found` is returned for never transacted address. Covert HTTP error
+  // string to a valid json string so APIRequestHelper can handle that.
+  if (raw_response == kNotFoundResponse) {
+    return "{}";
+  }
+
+  return brave_wallet::ConvertAllNumbersToString("", raw_response);
 }
 
 }  // namespace
@@ -288,7 +299,7 @@ void CardanoRpc::GetUtxoList(const std::string& address,
       base::BindOnce(&CardanoRpc::OnGetUtxoList, weak_ptr_factory_.GetWeakPtr(),
                      std::move(callback), address);
   DoGetRequestInternal(request_url, std::move(internal_callback),
-                       base::BindOnce(&ConvertAllNumbersToString, ""));
+                       base::BindOnce(&HandleGetUtxoListRawResponse));
 }
 
 void CardanoRpc::OnGetUtxoList(GetUtxoListCallback callback,
@@ -450,8 +461,7 @@ void CardanoRpc::MaybeStartQueuedRequest() {
     return;
   }
   auto rpc_throttle = features::kCardanoRpcThrottle.Get();
-  if (ShouldThrottleEndpoint(
-          EndpointHost(requests_queue_.front().request_url)) &&
+  if (ShouldThrottleEndpoint(requests_queue_.front().request_url) &&
       rpc_throttle > 0 &&
       active_requests_ >= static_cast<uint32_t>(rpc_throttle)) {
     return;
@@ -461,14 +471,15 @@ void CardanoRpc::MaybeStartQueuedRequest() {
   requests_queue_.pop_front();
 
   active_requests_++;
-  api_request_helper_.Request(request.method, request.request_url,
-                              request.payload, request.payload_content_type,
-                              base::BindOnce(&CardanoRpc::OnRequestInternalDone,
-                                             weak_ptr_factory_.GetWeakPtr(),
-                                             std::move(request.callback)),
-                              MakeCardanoRpcHeaders(chain_id_),
-                              {.auto_retry_on_network_change = true},
-                              std::move(request.conversion_callback));
+  api_request_helper_.Request(
+      request.method, request.request_url, request.payload,
+      request.payload_content_type,
+      base::BindOnce(&CardanoRpc::OnRequestInternalDone,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(request.callback)),
+      MakeCardanoRpcHeaders(chain_id_, request.request_url),
+      {.auto_retry_on_network_change = true},
+      std::move(request.conversion_callback));
 }
 
 void CardanoRpc::SetUrlLoaderFactoryForTesting(
