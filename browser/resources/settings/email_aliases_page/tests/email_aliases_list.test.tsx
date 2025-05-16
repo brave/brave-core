@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { AliasList, ListIntroduction } from '../content/email_aliases_list'
 import { getLocale } from '$web-common/locale'
 import {
@@ -114,6 +114,27 @@ describe('AliasList', () => {
     })
 
     expect(mockOnCreateClicked).toHaveBeenCalled()
+  })
+
+  it ('calls the deleteAlias API when delete button is clicked', async () => {
+    render(
+      <AliasList
+        aliases={mockAliases}
+        authEmail={mockAuthEmail}
+        emailAliasesService={mockEmailAliasesService}
+      />
+    )
+
+    // Click delete button
+    const deleteTexts = screen.getAllByText(getLocale('emailAliasesDelete'))
+    if (deleteTexts.length === 0) throw new Error('Delete button not found')
+    const deleteButton = deleteTexts[0].closest('leo-menu-item')
+    if (!deleteButton) throw new Error('Delete button not found')
+    fireEvent.click(deleteButton)
+
+    expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalledWith(
+      mockAliases[0].email
+    )
   })
 
 })
