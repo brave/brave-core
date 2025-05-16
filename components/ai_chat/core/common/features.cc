@@ -16,9 +16,9 @@ namespace ai_chat::features {
 
 BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_ENABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
-    &kAIChat, "default_model", "chat-leo-expanded"};
+    &kAIChat, "default_model", "chat-basic"};
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
-    &kAIChat, "default_premium_model", "chat-leo-expanded"};
+    &kAIChat, "default_premium_model", kClaudeSonnetModelKey};
 const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
     &kAIChat, "default_vision_model", kClaudeHaikuModelKey};
 const base::FeatureParam<std::string> kAIModelsPremiumVisionDefaultKey{
