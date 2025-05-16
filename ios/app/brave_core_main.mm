@@ -85,6 +85,7 @@
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
+#include "ios/chrome/browser/shared/model/profile/scoped_profile_keep_alive_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
@@ -111,7 +112,7 @@
 class ScopedAllowBlockingForProfile : public base::ScopedAllowBlocking {};
 
 namespace brave {
-ProfileIOS* CreateMainProfileIOS() {
+ScopedProfileKeepAliveIOS CreateMainProfileIOS() {
   // Initialize and set the main browser state.
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profileManager = GetApplicationContext()->GetProfileManager();
@@ -122,7 +123,13 @@ ProfileIOS* CreateMainProfileIOS() {
   // state before creating the profile
   localState->SetString(prefs::kLastUsedProfile, profileName);
   ScopedAllowBlockingForProfile allow_blocking;
-  return profileManager->CreateProfile(profileName);
+  __block ScopedProfileKeepAliveIOS profile;
+  profileManager->CreateProfileAsync(
+      profileName, base::BindOnce(^(ScopedProfileKeepAliveIOS keep_alive) {
+        profile = std::move(keep_alive);
+      }),
+      {});
+  return std::move(profile);
 }
 }  // namespace brave
 
@@ -150,7 +157,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<ios_web_view::WebViewDownloadManager> _otrDownloadManager;
   raw_ptr<BrowserList> _browserList;
   raw_ptr<BrowserList> _otr_browserList;
-  raw_ptr<ProfileIOS> _main_profile;
+  ScopedProfileKeepAliveIOS _scopedProfileKeepAlive;
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }
@@ -260,7 +267,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _webMain = std::make_unique<web::WebMain>(std::move(params));
     _webMain->Startup();
 
-    ProfileIOS* profile = brave::CreateMainProfileIOS();
+    _scopedProfileKeepAlive = brave::CreateMainProfileIOS();
+    ProfileIOS* profile = _scopedProfileKeepAlive.profile();
+    CHECK(profile) << "Default profile must be created";
     [self profileLoaded:profile];
 
     // Initialize the provider UI global state.
@@ -324,7 +333,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   CloseAllWebStates(*_browser->GetWebStateList(), WebStateList::CLOSE_NO_FLAGS);
   _browser.reset();
 
-  _main_profile = nullptr;
+  _scopedProfileKeepAlive.Reset();
   _webMain.reset();
   _raw_args.reset();
   _argv_store = {};
@@ -335,14 +344,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)profileLoaded:(ProfileIOS*)profile {
-  _main_profile = profile;
-
   // Disable Safe-Browsing via Prefs
   profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, false);
 
   // Setup main browser
   _browserList = BrowserListFactory::GetForProfile(profile);
-  _browser = Browser::Create(_main_profile, {});
+  _browser = Browser::Create(profile, {});
   _browserList->AddBrowser(_browser.get());
 
   // Setup otr browser
@@ -427,7 +434,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
-    ProfileIOS* profile = ProfileIOS::FromBrowserState(_main_profile);
+    ProfileIOS* profile =
+        ProfileIOS::FromBrowserState(_scopedProfileKeepAlive.profile());
     bookmarks::BookmarkModel* bookmark_model =
         ios::BookmarkModelFactory::GetForProfile(profile);
     BookmarkUndoService* bookmark_undo_service =
@@ -442,7 +450,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
-    _historyAPI = [[BraveHistoryAPI alloc] initWithBrowserState:_main_profile];
+    _historyAPI = [[BraveHistoryAPI alloc]
+        initWithBrowserState:_scopedProfileKeepAlive.profile()];
   }
   return _historyAPI;
 }
@@ -450,10 +459,11 @@ static bool CustomLogHandler(int severity,
 - (BraveOpenTabsAPI*)openTabsAPI {
   if (!_openTabsAPI) {
     syncer::SyncService* sync_service_ =
-        SyncServiceFactory::GetForProfile(_main_profile);
+        SyncServiceFactory::GetForProfile(_scopedProfileKeepAlive.profile());
 
     sync_sessions::SessionSyncService* session_sync_service_ =
-        SessionSyncServiceFactory::GetForProfile(_main_profile);
+        SessionSyncServiceFactory::GetForProfile(
+            _scopedProfileKeepAlive.profile());
 
     _openTabsAPI =
         [[BraveOpenTabsAPI alloc] initWithSyncService:sync_service_
@@ -466,7 +476,8 @@ static bool CustomLogHandler(int severity,
   if (!_passwordAPI) {
     scoped_refptr<password_manager::PasswordStoreInterface> password_store_ =
         IOSChromeProfilePasswordStoreFactory::GetForProfile(
-            _main_profile, ServiceAccessType::EXPLICIT_ACCESS)
+            _scopedProfileKeepAlive.profile(),
+            ServiceAccessType::EXPLICIT_ACCESS)
             .get();
 
     _passwordAPI =
@@ -478,7 +489,8 @@ static bool CustomLogHandler(int severity,
 - (BraveSendTabAPI*)sendTabAPI {
   if (!_sendTabAPI) {
     send_tab_to_self::SendTabToSelfSyncService* sync_service_ =
-        SendTabToSelfSyncServiceFactory::GetForProfile(_main_profile);
+        SendTabToSelfSyncServiceFactory::GetForProfile(
+            _scopedProfileKeepAlive.profile());
 
     _sendTabAPI = [[BraveSendTabAPI alloc] initWithSyncService:sync_service_];
   }
@@ -487,7 +499,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveSyncAPI*)syncAPI {
   if (!_syncAPI) {
-    _syncAPI = [[BraveSyncAPI alloc] initWithBrowserState:_main_profile];
+    _syncAPI = [[BraveSyncAPI alloc]
+        initWithBrowserState:_scopedProfileKeepAlive.profile()];
   }
   return _syncAPI;
 }
@@ -495,7 +508,7 @@ static bool CustomLogHandler(int severity,
 - (BraveSyncProfileServiceIOS*)syncProfileService {
   if (!_syncProfileService) {
     syncer::SyncService* sync_service_ =
-        SyncServiceFactory::GetForProfile(_main_profile);
+        SyncServiceFactory::GetForProfile(_scopedProfileKeepAlive.profile());
     _syncProfileService = [[BraveSyncProfileServiceIOS alloc]
         initWithProfileSyncService:sync_service_];
   }
@@ -521,8 +534,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveWalletAPI*)braveWalletAPI {
   if (!_braveWalletAPI) {
-    _braveWalletAPI =
-        [[BraveWalletAPI alloc] initWithBrowserState:_main_profile];
+    _braveWalletAPI = [[BraveWalletAPI alloc]
+        initWithBrowserState:_scopedProfileKeepAlive.profile()];
   }
   return _braveWalletAPI;
 }
@@ -549,12 +562,14 @@ static bool CustomLogHandler(int severity,
 }
 
 - (BraveStats*)braveStats {
-  return [[BraveStats alloc] initWithBrowserState:_main_profile];
+  return [[BraveStats alloc]
+      initWithBrowserState:_scopedProfileKeepAlive.profile()];
 }
 
 - (id<IpfsAPI>)ipfsAPI {
   if (!_ipfsAPI) {
-    _ipfsAPI = [[IpfsAPIImpl alloc] initWithBrowserState:_main_profile];
+    _ipfsAPI = [[IpfsAPIImpl alloc]
+        initWithBrowserState:_scopedProfileKeepAlive.profile()];
   }
   return _ipfsAPI;
 }
@@ -583,14 +598,15 @@ static bool CustomLogHandler(int severity,
 
 - (DeAmpPrefs*)deAmpPrefs {
   if (!_deAmpPrefs) {
-    _deAmpPrefs =
-        [[DeAmpPrefs alloc] initWithProfileState:_main_profile->GetPrefs()];
+    _deAmpPrefs = [[DeAmpPrefs alloc]
+        initWithProfileState:_scopedProfileKeepAlive.profile()->GetPrefs()];
   }
   return _deAmpPrefs;
 }
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {
-  return [[AIChat alloc] initWithProfileIOS:_main_profile delegate:delegate];
+  return [[AIChat alloc] initWithProfileIOS:_scopedProfileKeepAlive.profile()
+                                   delegate:delegate];
 }
 
 + (bool)initializeICUForTesting {
@@ -631,7 +647,7 @@ static bool CustomLogHandler(int severity,
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 - (void)performFaviconsCleanup {
-  ProfileIOS* browserState = _main_profile;
+  ProfileIOS* browserState = _scopedProfileKeepAlive.profile();
   if (!browserState) {
     return;
   }
@@ -645,7 +661,8 @@ static bool CustomLogHandler(int severity,
 - (DefaultHostContentSettings*)defaultHostContentSettings {
   if (!_defaultHostContentSettings) {
     HostContentSettingsMap* map =
-        ios::HostContentSettingsMapFactory::GetForProfile(_main_profile);
+        ios::HostContentSettingsMapFactory::GetForProfile(
+            _scopedProfileKeepAlive.profile());
     _defaultHostContentSettings =
         [[DefaultHostContentSettings alloc] initWithSettingsMap:map];
   }
@@ -656,7 +673,8 @@ static bool CustomLogHandler(int severity,
   if (!_defaultWebViewConfiguration) {
     _defaultWebViewConfiguration = [[CWVWebViewConfiguration alloc]
         initWithBrowserState:ios_web_view::WebViewBrowserState::
-                                 FromBrowserState(_main_profile)];
+                                 FromBrowserState(
+                                     _scopedProfileKeepAlive.profile())];
   }
   return _defaultWebViewConfiguration;
 }
@@ -664,9 +682,9 @@ static bool CustomLogHandler(int severity,
 - (CWVWebViewConfiguration*)nonPersistentWebViewConfiguration {
   if (!_nonPersistentWebViewConfiguration) {
     _nonPersistentWebViewConfiguration = [[CWVWebViewConfiguration alloc]
-        initWithBrowserState:ios_web_view::WebViewBrowserState::
-                                 FromBrowserState(
-                                     _main_profile->GetOffTheRecordProfile())];
+        initWithBrowserState:
+            ios_web_view::WebViewBrowserState::FromBrowserState(
+                _scopedProfileKeepAlive.profile()->GetOffTheRecordProfile())];
   }
   return _nonPersistentWebViewConfiguration;
 }
@@ -677,7 +695,7 @@ static bool CustomLogHandler(int severity,
 // closed (i.e. if there are other incognito tabs open in another Scene, the
 // BrowserState must not be destroyed).
 - (BOOL)shouldDestroyAndRebuildIncognitoProfile {
-  return _main_profile->HasOffTheRecordProfile();
+  return _scopedProfileKeepAlive.profile()->HasOffTheRecordProfile();
 }
 
 // Matches lastIncognitoTabClosed from Chrome's SceneController
@@ -726,10 +744,11 @@ static bool CustomLogHandler(int severity,
 }
 
 - (void)destroyAndRebuildIncognitoProfile {
-  DCHECK(_main_profile->HasOffTheRecordProfile());
+  ProfileIOS* profile = _scopedProfileKeepAlive.profile();
+  DCHECK(profile->HasOffTheRecordProfile());
   _nonPersistentWebViewConfiguration = nil;
 
-  ProfileIOS* otrProfile = _main_profile->GetOffTheRecordProfile();
+  ProfileIOS* otrProfile = profile->GetOffTheRecordProfile();
 
   BrowsingDataRemover* browsingDataRemover =
       BrowsingDataRemoverFactory::GetForProfile(otrProfile);
@@ -741,9 +760,9 @@ static bool CustomLogHandler(int severity,
   _otr_browser.reset();
 
   // Destroy and recreate the off-the-record BrowserState.
-  _main_profile->DestroyOffTheRecordProfile();
+  profile->DestroyOffTheRecordProfile();
 
-  otrProfile = _main_profile->GetOffTheRecordProfile();
+  otrProfile = profile->GetOffTheRecordProfile();
   _otr_browser = Browser::Create(otrProfile, {});
 
   BrowserList* browserList = BrowserListFactory::GetForProfile(otrProfile);
