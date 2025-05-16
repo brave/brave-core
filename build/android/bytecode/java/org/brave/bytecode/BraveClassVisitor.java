@@ -361,8 +361,9 @@ class BraveClassVisitor extends ClassVisitor {
             for (Map.Entry<String, Map<String, String>> entryMethod : methodNames.entrySet()) {
                 String entryMethodName = entryMethod.getKey();
                 Map<String, String> typeNames = entryMethod.getValue();
-                if (className.equals(entryClassName) && entryMethodName.equals(methodName))
+                if (className.equals(entryClassName) && entryMethodName.equals(methodName)) {
                     return typeNames;
+                }
             }
         }
 
@@ -498,8 +499,9 @@ class BraveClassVisitor extends ClassVisitor {
     protected ClassNode process(ClassNode source) {
         Map<String, ArrayList<String>> annotationsForClass = mAddAnnotations.get(source.name);
 
-        if (annotationsForClass == null)
+        if (annotationsForClass == null) {
             return source;
+        }
 
         List<MethodNode> methods = source.methods;
         for (MethodNode method : methods) {
