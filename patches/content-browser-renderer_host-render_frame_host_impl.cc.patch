@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index ebf407904b9b9bc7f60a9c13a5c39ce64640189d..8e6cf02c418639b4e93beecf7ce8ae3be96c7d6d 100644
+index 8ec8da33fe2ba85e4689102375a2ba8d94aac2de..272f8708eb0bd17a8afc51b941484c3d1cd738eb 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -5235,6 +5235,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
