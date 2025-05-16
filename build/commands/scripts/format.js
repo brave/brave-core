@@ -85,7 +85,7 @@ const runFormat = async (options = {}) => {
     args.push('--dry-run', '--diff')
   }
 
-  let errors = []
+  let formatIssues = []
 
   const clFormatResult = util.run('git', [...args], {
     ...cmdOptions,
@@ -97,7 +97,7 @@ const runFormat = async (options = {}) => {
   const clFormatOutput = formatOutput(clFormatResult)
 
   if (clFormatResult.status === 2 && options.dryRun) {
-    errors.push(clFormatOutput)
+    formatIssues.push(clFormatOutput)
   } else if (clFormatResult.status !== 0) {
     Log.error('Fatal: git cl format failed:\n' + clFormatOutput)
     process.exit(clFormatResult.status)
@@ -109,10 +109,12 @@ const runFormat = async (options = {}) => {
     skipLogging
   )
 
-  errors = errors.concat(await runPrettier(changedFiles, options.dryRun))
+  formatIssues = formatIssues.concat(
+    await runPrettier(changedFiles, options.dryRun)
+  )
 
-  if (options.dryRun && errors.length > 0) {
-    console.error(errors.join('\n'))
+  if (options.dryRun && formatIssues.length > 0) {
+    console.error(formatIssues.join('\n'))
     process.exit(2)
   }
 }
@@ -124,7 +126,7 @@ const runPrettier = async (files, dryRun) => {
     throw new RuntimeError(`${ignorePath} file not found`)
   }
 
-  const errors = []
+  const prettierIssues = []
   for (const file of files) {
     const fileInfo = await prettier.getFileInfo(file, {
       ignorePath: ignorePath,
@@ -149,9 +151,9 @@ const runPrettier = async (files, dryRun) => {
         })
         if (diffResult.status === 1) {
           // Differences were found
-          errors.push(convertDiff(diffResult.stdout.toString(), file))
+          prettierIssues.push(convertDiff(diffResult.stdout.toString(), file))
         } else {
-          errors.push(
+          prettierIssues.push(
             `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
           )
         }
@@ -161,7 +163,7 @@ const runPrettier = async (files, dryRun) => {
     }
   }
 
-  return errors
+  return prettierIssues
 }
 
 runFormat(program.opts())
