@@ -35,7 +35,7 @@ class WaybackMachineURLFetcher final {
   WaybackMachineURLFetcher(
       Client* client,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  virtual ~WaybackMachineURLFetcher();
+  ~WaybackMachineURLFetcher();
 
   WaybackMachineURLFetcher(const WaybackMachineURLFetcher&) = delete;
   WaybackMachineURLFetcher& operator=(const WaybackMachineURLFetcher&) = delete;
