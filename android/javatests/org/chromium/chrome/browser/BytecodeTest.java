@@ -88,7 +88,6 @@ import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
-import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.notifications.BraveNotificationPlatformBridge;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
@@ -1226,8 +1225,7 @@ public class BytecodeTest {
                         boolean.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
-                        Supplier.class,
-                        DseNewTabUrlManager.class));
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
