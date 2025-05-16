@@ -229,7 +229,6 @@ build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.num-bigint]
-multiversion_cleanup_bug = 'https://github.com/brave/brave-browser/issues/45962'
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { raw_gn = '''
 if (target_cpu == "arm64" || target_cpu == "x64") {
@@ -250,9 +249,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.num-traits]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
-
-[crate.phf_shared]
-multiversion_cleanup_bug = 'https://github.com/brave/brave-browser/issues/45963'
 
 [crate.phf_macros]
 extra_kv = { raw_gn = '''
@@ -303,7 +299,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.siphasher]
 extra_input_roots = [ "../README.md" ]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-multiversion_cleanup_bug = 'https://github.com/brave/brave-browser/issues/45964'
 
 [crate.sta-rs]
 license_files = ['LICENSE']
