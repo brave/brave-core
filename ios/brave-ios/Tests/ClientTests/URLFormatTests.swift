@@ -14,7 +14,7 @@ import XCTest
 @MainActor class URLFormatTests: XCTestCase {
 
   override class func setUp() {
-    BraveProfileController.initializeICUForTesting()
+    BraveCoreMain.initializeICUForTesting()
   }
 
   func testURIFixup() {

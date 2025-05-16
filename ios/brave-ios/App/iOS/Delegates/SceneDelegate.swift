@@ -140,7 +140,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           return
         }
 
-        profileState = .init(profileController: profileController)
+        if profileState == nil {
+          profileState = .init(profileController: profileController)
+        }
 
         // Adding Observer to enable sync types
         NotificationCenter.default.addObserver(
@@ -228,55 +230,55 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       connectionOptions: connectionOptions
     )
 
-    // Handle Install Attribution Fetch at first launch
-    if SceneDelegate.shouldHandleInstallAttributionFetch {
-      SceneDelegate.shouldHandleInstallAttributionFetch = false
-
-      // First time user should send dau ping after onboarding last stage _ p3a consent screen
-      // The reason p3a user consent is necesserray to call search ad install attribution API methods
-      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
-        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
-        // User has not opted in to share private and anonymous product insights
-        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
-          Task { @MainActor in
-            do {
-              try await attributionManager.handleSearchAdsInstallAttribution()
-            } catch {
-              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
-              // Sending default organic install code for dau
-              attributionManager.setupReferralCodeAndPingServer()
-            }
-          }
-        } else {
-          // Sending default organic install code for dau
-          attributionManager.setupReferralCodeAndPingServer()
-        }
-      }
-    }
-
-    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
-      // Similarly to referral lookup, this prefrence should be set if it is a new user
-      // Trigger install attribution fetch only first launch
-      Preferences.URP.installAttributionLookupOutstanding.value =
-        Preferences.General.isFirstLaunch.value
-    }
-
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
-    PrivacyReportsManager.consolidateData()
-    PrivacyReportsManager.scheduleProcessingBlockedRequests(
-      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
-    )
-    PrivacyReportsManager.scheduleVPNAlertsTask()
-
-    // Handle Custom Activity and Intents
-    if let currentActivity = connectionOptions.userActivities.first {
-      handleCustomUserActivityActions(windowScene, userActivity: currentActivity)
-    }
-
-    if windowScene.activationState == .foregroundActive {
-      sendDAUPingIfNeeded()
-      refreshSKUsCredentials(in: windowScene)
-    }
+//    // Handle Install Attribution Fetch at first launch
+//    if SceneDelegate.shouldHandleInstallAttributionFetch {
+//      SceneDelegate.shouldHandleInstallAttributionFetch = false
+//
+//      // First time user should send dau ping after onboarding last stage _ p3a consent screen
+//      // The reason p3a user consent is necesserray to call search ad install attribution API methods
+//      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
+//        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
+//        // User has not opted in to share private and anonymous product insights
+//        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
+//          Task { @MainActor in
+//            do {
+//              try await attributionManager.handleSearchAdsInstallAttribution()
+//            } catch {
+//              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
+//              // Sending default organic install code for dau
+//              attributionManager.setupReferralCodeAndPingServer()
+//            }
+//          }
+//        } else {
+//          // Sending default organic install code for dau
+//          attributionManager.setupReferralCodeAndPingServer()
+//        }
+//      }
+//    }
+//
+//    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
+//      // Similarly to referral lookup, this prefrence should be set if it is a new user
+//      // Trigger install attribution fetch only first launch
+//      Preferences.URP.installAttributionLookupOutstanding.value =
+//        Preferences.General.isFirstLaunch.value
+//    }
+//
+//    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+//    PrivacyReportsManager.consolidateData()
+//    PrivacyReportsManager.scheduleProcessingBlockedRequests(
+//      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
+//    )
+//    PrivacyReportsManager.scheduleVPNAlertsTask()
+//
+//    // Handle Custom Activity and Intents
+//    if let currentActivity = connectionOptions.userActivities.first {
+//      handleCustomUserActivityActions(windowScene, userActivity: currentActivity)
+//    }
+//
+//    if windowScene.activationState == .foregroundActive {
+//      sendDAUPingIfNeeded()
+//      refreshSKUsCredentials(in: windowScene)
+//    }
   }
 
   private func sendDAUPingIfNeeded() {
@@ -392,7 +394,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       quickActions.launchedShortcutItem = nil
     }
 
-    if let profileState {
+    if profileState != nil {
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: scene)
     }

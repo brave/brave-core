@@ -40,7 +40,7 @@ final class ScriptExecutionTests: XCTestCase {
   }
 
   override class func setUp() {
-    BraveProfileController.initializeResourceBundleForTesting()
+    BraveCoreMain.initializeResourceBundleForTesting()
   }
 
   @MainActor func testSiteStateListenerScript() async throws {
