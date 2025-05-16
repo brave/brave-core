@@ -27,7 +27,7 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompat {
     public static final String TAG = "BravePreferenceDialogFragment";
     private RadioGroup mRadioGroup;
-    private BraveDialogPreference.DialogEntry[] mDialogEntries;
+
     private BraveDialogPreference mDialogPreference;
     private Preference.OnPreferenceChangeListener mOnPreferenceChangeListener;
     private int mNewValue;
@@ -171,10 +171,10 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         subTitle.setText(subtitle);
         subTitle.refreshDrawableState();
         mRadioGroup = view.findViewById(R.id.options);
-        mDialogEntries = mDialogPreference.getDialogEntries();
+        BraveDialogPreference.DialogEntry[] dialogEntries = mDialogPreference.getDialogEntries();
         int index = 0;
 
-        for (BraveDialogPreference.DialogEntry entry : mDialogEntries) {
+        for (BraveDialogPreference.DialogEntry entry : dialogEntries) {
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setLayoutParams(setParams());
             radioButton.setTextAppearance(R.style.BraveShieldsBlockCookieModeText);
