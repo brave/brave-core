@@ -116,13 +116,6 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
-// Determines whether page content should be attached automatically to new
-// conversations.
-// If the user has not set a preference, we'll fall back to the feature flag as
-// a default.
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-bool IsPageContextEnabledInitially(const PrefService& prefs);
-
 }  // namespace ai_chat::prefs
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREF_NAMES_H_

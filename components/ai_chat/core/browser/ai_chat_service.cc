@@ -552,8 +552,8 @@ void AIChatService::MaybeAssociateContentWithConversation(
   if (associated_content &&
       kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
     conversation->SetAssociatedContentDelegate(
-        associated_content,
-        prefs::IsPageContextEnabledInitially(*profile_prefs_));
+        associated_content, profile_prefs_->GetBoolean(
+                                prefs::kBraveChatPageContextEnabledInitially));
   }
   // Record that this is the latest conversation for this content. Even
   // if we don't call SetAssociatedContentDelegate, the conversation still

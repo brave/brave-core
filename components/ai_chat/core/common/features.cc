@@ -104,10 +104,6 @@ bool IsOpenAIChatFromBraveSearchEnabled() {
   return base::FeatureList::IsEnabled(features::kOpenAIChatFromBraveSearch);
 }
 
-BASE_FEATURE(kPageContextEnabledInitially,
-             "PageContextEnabledInitially",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kTabOrganization,
              "BraveTabOrganization",
              base::FEATURE_ENABLED_BY_DEFAULT);
