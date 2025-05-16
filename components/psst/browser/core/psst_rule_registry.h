@@ -26,7 +26,7 @@ namespace psst {
 // It allows to load the all items from the psst.json file and match them
 // against the URL. For matched rules, it loads rule data (the user.js and
 // policy.js script contents) with using of rule data reader.
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
+class PsstRuleRegistry {
  public:
   PsstRuleRegistry(const PsstRuleRegistry&) = delete;
   PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
