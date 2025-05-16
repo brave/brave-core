@@ -45,7 +45,8 @@ public class DappsModel implements KeyringServiceObserver {
     private final MutableLiveData<List<SignSolTransactionsRequest>> _mSignSolTransactionsRequests;
     private final LiveData<List<SignSolTransactionsRequest>> mSignSolTransactionsRequests;
     private final List<WalletAccountCreationRequest> mPendingWalletAccountCreationRequests;
-    private final MutableLiveData<WalletAccountCreationRequest> _mPendingWalletAccountCreationRequest;
+    private final MutableLiveData<WalletAccountCreationRequest>
+            _mPendingWalletAccountCreationRequest;
     public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
     public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =

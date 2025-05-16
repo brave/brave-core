@@ -38,11 +38,17 @@ public class WalletModel {
     private Context mContext;
     private final CryptoActions mCryptoActions;
 
-    public WalletModel(Context context, KeyringService keyringService,
-            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
-            TxService txService, EthTxManagerProxy ethTxManagerProxy,
-            SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService, SwapService swapService) {
+    public WalletModel(
+            Context context,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            TxService txService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            AssetRatioService assetRatioService,
+            BraveWalletService braveWalletService,
+            SwapService swapService) {
         mContext = context;
         mKeyringService = keyringService;
         mBlockchainRegistry = blockchainRegistry;
