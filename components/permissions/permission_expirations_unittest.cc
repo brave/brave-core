@@ -162,6 +162,21 @@ class PermissionExpirationsTest : public testing::Test {
       "https://brave1.com__3zuhutvg3ax8vd1r9j5klr41raa1fxxqtuqyksz6kkot"};
   const GURL kOrigin3WithSOLAccount{
       "https://brave2.com__3zuhutvg3ax8vd1r9j5klr41raa1fxxqtuqyksz6kkot"};
+  const GURL kOriginWithADAAccount{
+      "https://"
+      "example.com__"
+      "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qru"
+      "d2xlv9fgj53n6ds3t8cs4fvzs05yzmz"};
+  const GURL kOrigin2WithADAAccount{
+      "https://"
+      "brave1.com__"
+      "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qru"
+      "d2xlv9fgj53n6ds3t8cs4fvzs05yzmz"};
+  const GURL kOrigin3WithADAAccount{
+      "https://"
+      "brave2.com__"
+      "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qru"
+      "d2xlv9fgj53n6ds3t8cs4fvzs05yzmz"};
   const base::TimeDelta kLifetime{base::Seconds(5)};
   const base::TimeDelta kOneSecond{base::Seconds(1)};
 
@@ -180,7 +195,9 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveAfterExpiration) {
                {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
                 "brave_ethereum"},
                {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA,
-                "brave_solana"}};
+                "brave_solana"},
+               {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
+                "brave_cardano"}};
 
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ": " << entry.origin);
@@ -218,7 +235,9 @@ TEST_F(PermissionExpirationsTest, AddWithAllAndRemoveDataAfterExpiration) {
       {kOriginWithETHAccount, kOrigin2WithETHAccount,
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithSOLAccount, kOrigin2WithSOLAccount,
-       ContentSettingsType::BRAVE_SOLANA, "brave_solana"}};
+       ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+      {kOriginWithADAAccount, kOrigin2WithADAAccount,
+       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ": " << entry.origin
                                     << ", " << entry.origin2);
@@ -260,7 +279,9 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveExpiring) {
       {kOriginWithETHAccount, kOrigin2WithETHAccount,
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithSOLAccount, kOrigin2WithSOLAccount,
-       ContentSettingsType::BRAVE_SOLANA, "brave_solana"}};
+       ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+      {kOriginWithADAAccount, kOrigin2WithADAAccount,
+       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ": " << entry.origin
                                     << ", " << entry.origin2);
@@ -317,7 +338,8 @@ TEST_F(PermissionExpirationsTest, RemoveExpiredDifferentTypes) {
        "brave_ethereum", ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
       {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA, "brave_solana",
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
-  };
+      {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
+       "brave_cardano", ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ", " << entry.type_key2
                                     << ": " << entry.origin);
@@ -376,16 +398,17 @@ TEST_F(PermissionExpirationsTest, AddRemoveDomainExpiration) {
     const GURL origin2;
     ContentSettingsType type2;
     const char* type_key2;
-  } cases[] = {
-      {kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications", kOrigin2,
-       ContentSettingsType::GEOLOCATION, "geolocation"},
-      {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
-       "brave_ethereum", kOriginWithSOLAccount,
-       ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
-      {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA, "brave_solana",
-       kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
-       "brave_ethereum"},
-  };
+  } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
+                kOrigin2, ContentSettingsType::GEOLOCATION, "geolocation"},
+               {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
+                "brave_ethereum", kOriginWithSOLAccount,
+                ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+               {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA,
+                "brave_solana", kOriginWithETHAccount,
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
+               {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
+                "brave_cardano", kOriginWithETHAccount,
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ", " << entry.type_key2 << ": "
@@ -427,16 +450,17 @@ TEST_F(PermissionExpirationsTest, RemoveDomainThenTimeExpirations) {
     const GURL origin2;
     ContentSettingsType type2;
     const char* type_key2;
-  } cases[] = {
-      {kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications", kOrigin2,
-       ContentSettingsType::GEOLOCATION, "geolocation"},
-      {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
-       "brave_ethereum", kOriginWithSOLAccount,
-       ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
-      {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA, "brave_solana",
-       kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
-       "brave_ethereum"},
-  };
+  } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
+                kOrigin2, ContentSettingsType::GEOLOCATION, "geolocation"},
+               {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
+                "brave_ethereum", kOriginWithSOLAccount,
+                ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+               {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA,
+                "brave_solana", kOriginWithETHAccount,
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
+               {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
+                "brave_cardano", kOriginWithETHAccount,
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ", " << entry.type_key2 << ": "
@@ -478,16 +502,17 @@ TEST_F(PermissionExpirationsTest, RemoveTimeThenDomainExpirations) {
     const GURL origin2;
     ContentSettingsType type2;
     const char* type_key2;
-  } cases[] = {
-      {kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications", kOrigin2,
-       ContentSettingsType::GEOLOCATION, "geolocation"},
-      {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
-       "brave_ethereum", kOriginWithSOLAccount,
-       ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
-      {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA, "brave_solana",
-       kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
-       "brave_ethereum"},
-  };
+  } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
+                kOrigin2, ContentSettingsType::GEOLOCATION, "geolocation"},
+               {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
+                "brave_ethereum", kOriginWithSOLAccount,
+                ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+               {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA,
+                "brave_solana", kOriginWithETHAccount,
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
+               {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
+                "brave_cardano", kOriginWithETHAccount,
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ", " << entry.type_key2 << ": "
@@ -533,7 +558,9 @@ TEST_F(PermissionExpirationsTest, RemoveAllDomainExpirations) {
       {kOriginWithETHAccount, kOrigin2WithETHAccount, kOrigin3WithETHAccount,
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithSOLAccount, kOrigin2WithSOLAccount, kOrigin3WithSOLAccount,
-       ContentSettingsType::BRAVE_SOLANA, "brave_solana"}};
+       ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+      {kOriginWithADAAccount, kOrigin2WithADAAccount, kOrigin3WithADAAccount,
+       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ": " << entry.origin << ", "

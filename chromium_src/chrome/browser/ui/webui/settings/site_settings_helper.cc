@@ -29,6 +29,7 @@
   {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},                  \
   {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},                  \
   {ContentSettingsType::BRAVE_SOLANA, "solana"},                      \
+  {ContentSettingsType::BRAVE_CARDANO, "cardano"},                    \
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
@@ -122,6 +123,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_SOLANA) {
     return true;
   }
+  if (type == ContentSettingsType::BRAVE_CARDANO) {
+    return true;
+  }
   if (type == ContentSettingsType::BRAVE_SHIELDS) {
     return true;
   }
@@ -135,6 +139,7 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
       ContentSettingsType::AUTOPLAY,
       ContentSettingsType::BRAVE_ETHEREUM,
       ContentSettingsType::BRAVE_SOLANA,
+      // TODO(cypt4): Enable ContentSettingsType::BRAVE_CARDANO,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
       ContentSettingsType::BRAVE_OPEN_AI_CHAT,
