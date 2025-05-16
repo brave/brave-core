@@ -31,7 +31,7 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
     private OnViewPagerAction onViewPagerAction;
 
     private int progress;
-    private final int endTime = 3;
+    private static final int END_TIME_SECONDS = 3;
     private boolean mNativeInitialized;
 
     private LottieAnimationView animatedView;
@@ -140,17 +140,17 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
         progress = 0;
 
         countDownTimer =
-                new CountDownTimer((long) endTime * 1000, 100) {
+                new CountDownTimer((long) END_TIME_SECONDS * 1000, 100) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        setProgress(progress, endTime);
+                        setProgress(progress, END_TIME_SECONDS);
                         progress = progress + 100;
                         tvTimer.setText(String.valueOf((millisUntilFinished / 1000) + 1));
                     }
 
                     @Override
                     public void onFinish() {
-                        setProgress(progress, endTime);
+                        setProgress(progress, END_TIME_SECONDS);
                         tvTimer.setText("0");
 
                         OnboardingPrefManager.getInstance().onboardingNotification();
