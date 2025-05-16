@@ -1292,10 +1292,11 @@ public class BraveShieldsHandler
         }
     }
 
-    private final View.OnClickListener mDoneClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            hideBraveShieldsMenu();
-        }
-    };
+    private final View.OnClickListener mDoneClickListener =
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hideBraveShieldsMenu();
+                }
+            };
 }
