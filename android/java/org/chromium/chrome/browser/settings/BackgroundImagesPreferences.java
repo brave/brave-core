@@ -96,8 +96,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         if (mLearnMorePreference != null) {
             ChromeClickableSpan chromeClickableSpan =
                     new ChromeClickableSpan(
-                            getContext(),
-                            R.color.brave_link,
+                            getContext().getColor(R.color.brave_link),
                             sponsoredImagesLearnMoreClickedCallback());
             SpannableString spannableString =
                     new SpannableString(
