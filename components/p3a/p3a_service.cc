@@ -22,10 +22,12 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/message_manager.h"
+#include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p2a_protocols.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/p3a/remote_config_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -83,8 +85,11 @@ P3AService::P3AService(PrefService& local_state,
   if (first_run_time.is_null()) {
     first_run_time = base::Time::Now();
   }
+  remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
+
   pref_change_registrar_.Init(&local_state);
   pref_change_registrar_.Add(
       kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
@@ -217,11 +222,49 @@ void P3AService::OnMetricCycled(const std::string& histogram_name,
 }
 
 std::optional<MetricLogType> P3AService::GetDynamicMetricLogType(
-    const std::string& histogram_name) const {
+    std::string_view histogram_name) const {
   auto log_type_it = dynamic_metric_log_types_.find(histogram_name);
   return log_type_it != dynamic_metric_log_types_.end()
              ? log_type_it->second
              : std::optional<MetricLogType>();
+}
+
+const MetricConfig* P3AService::GetMetricConfig(
+    std::string_view histogram_name) const {
+  // First check if there's a remote config for this metric
+  if (remote_config_manager_) {
+    const auto* remote_config = remote_config_manager_->GetRemoteMetricConfig(
+        std::string(histogram_name));
+    if (remote_config) {
+      return remote_config;
+    }
+  }
+
+  // Fall back to the base config if no remote config exists
+  return GetBaseMetricConfig(histogram_name);
+}
+
+const MetricConfig* P3AService::GetBaseMetricConfig(
+    std::string_view histogram_name) const {
+  return p3a::GetBaseMetricConfig(histogram_name);
+}
+
+std::optional<MetricLogType> P3AService::GetLogTypeForHistogram(
+    std::string_view histogram_name) const {
+  if (remote_config_manager_) {
+    const auto* remote_config =
+        remote_config_manager_->GetRemoteMetricConfig(histogram_name);
+    if (remote_config && remote_config->cadence) {
+      return *remote_config->cadence;
+    }
+  }
+
+  auto dynamic_metric_log_type = GetDynamicMetricLogType(histogram_name);
+  if (dynamic_metric_log_type) {
+    return dynamic_metric_log_type;
+  }
+
+  return GetBaseLogTypeForHistogram(histogram_name);
 }
 
 void P3AService::LoadDynamicMetrics() {
@@ -315,8 +358,8 @@ void P3AService::HandleHistogramChange(
                                         only_update_for_constellation);
     return;
   }
-  const auto* metric_config = message_manager_->GetMetricConfig(histogram_name);
-  if (metric_config && *metric_config && (*metric_config)->constellation_only) {
+  const auto* metric_config = GetMetricConfig(histogram_name);
+  if (metric_config && metric_config->constellation_only) {
     only_update_for_constellation = true;
   }
   message_manager_->UpdateMetricValue(histogram_name, bucket,
