@@ -112,6 +112,7 @@ source_set("unit_tests") {
   deps = [
     "constellation/rs/cxx:rust_lib",
     "//base/test:test_support",
+    "//brave/components/brave_stats/browser",
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//components/cbor",

@@ -76,6 +76,7 @@ void HistogramsBraveizer::DoHistogramBravetization(
         return;
     }
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
+    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefaultDaily", answer);
   }
 
   if ("Extensions.LoadExtension" == histogram_name) {

@@ -17,6 +17,8 @@
 
 namespace p3a {
 
+constexpr char kTestExpressMetric[] = "Brave.Test.ExpressMetric";
+
 class P3AMetricLogStoreTest : public testing::Test,
                               public MetricLogStore::Delegate {
  public:
@@ -32,8 +34,14 @@ class P3AMetricLogStoreTest : public testing::Test,
            "_" + base::NumberToString(is_constellation) + "_" + upload_type;
   }
 
-  bool IsActualMetric(const std::string& histogram_name) const override {
-    return p3a::kCollectedTypicalHistograms.contains(histogram_name);
+  std::optional<MetricLogType> GetLogTypeForHistogram(
+      std::string_view histogram_name) const override {
+    if (histogram_name == kTestExpressMetric) {
+      return MetricLogType::kExpress;
+    }
+    return p3a::kCollectedTypicalHistograms.contains(histogram_name)
+               ? std::make_optional(MetricLogType::kTypical)
+               : std::nullopt;
   }
 
   bool IsEphemeralMetric(const std::string& histogram_name) const override {
@@ -110,6 +118,9 @@ TEST_F(P3AMetricLogStoreTest, GetAllLogsAfterTimeReset) {
 
 TEST_F(P3AMetricLogStoreTest, ShouldNotLoadUnknownMetric) {
   log_store->UpdateValue("Brave.UnknownMetric", 3);
+  log_store->UpdateValue(kTestExpressMetric, 4);
+
+  ASSERT_TRUE(log_store->has_unsent_logs());
 
   SetUpLogStore();
   log_store->LoadPersistedUnsentLogs();
