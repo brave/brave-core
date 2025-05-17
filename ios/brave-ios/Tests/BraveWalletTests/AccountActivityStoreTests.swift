@@ -36,6 +36,12 @@ class AccountActivityStoreTests: XCTestCase {
       price: "4.00",
       assetTimeframeChange: "-57.23"
     ),
+    .init(
+      fromAsset: BraveWallet.BlockchainToken.mockZECToken.assetRatioId.lowercased(),
+      toAsset: "usd",
+      price: "$31.10",
+      assetTimeframeChange: "0.12"
+    ),
   ]
   let solTestnetBalance: UInt64 = 1_000_000_000  // 1 SOL
   let solTestnetDecimalBalance: Double = 1  // 1 SOL
@@ -48,6 +54,7 @@ class AccountActivityStoreTests: XCTestCase {
     mockSplTokenBalances: [String: String] = [:],  // [tokenMintAddress: balance],
     mockFilBalance: String = "",
     mockFilTestnetBalance: String = "",
+    mockZecBalance: String = "",
     transactions: [BraveWallet.TransactionInfo]
   ) -> (
     BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
@@ -55,7 +62,8 @@ class AccountActivityStoreTests: XCTestCase {
     BraveWallet.TestAssetRatioService, BraveWallet.TestSwapService,
     BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy,
     IpfsAPI,
-    BraveWallet.TestBitcoinWalletService
+    BraveWallet.TestBitcoinWalletService,
+    BraveWallet.TestZCashWalletService
   ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -162,9 +170,23 @@ class AccountActivityStoreTests: XCTestCase {
       $1(.init(totalBalance: 1000, availableBalance: 1000, pendingBalance: 0, balances: [:]), nil)
     }
 
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
+    zcashWalletService._balance = { _, _, completion in
+      completion(
+        .init(
+          totalBalance: UInt64(mockZecBalance) ?? 0,
+          transparentBalance: UInt64(mockZecBalance) ?? 0,
+          shieldedBalance: 0,
+          shieldedPendingBalance: 0,
+          balances: [:]
+        ),
+        nil
+      )
+    }
+
     return (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService, zcashWalletService
     )
   }
 
@@ -214,7 +236,8 @@ class AccountActivityStoreTests: XCTestCase {
     )
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
@@ -264,6 +287,7 @@ class AccountActivityStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager
     )
 
@@ -414,7 +438,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService, zcashWalletService
     ) = setupServices(
       mockNFTBalances: [mockSolanaNFTTokenIdentifier: mockSolanaNFTTokenBalance],
       mockLamportBalance: mockLamportBalance,
@@ -464,6 +488,7 @@ class AccountActivityStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager
     )
 
@@ -636,7 +661,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
-      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService, zcashWalletService
     ) = setupServices(
       mockFilBalance: mockFilDecimalBalanceInWei,
       mockFilTestnetBalance: mockFilTestnetDecimalBalanceInWei,
@@ -680,6 +705,7 @@ class AccountActivityStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager
     )
 
@@ -747,6 +773,87 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, transaction)
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, transaction.chainId)
       }.store(in: &cancellables)
+
+    accountActivityStore.update()
+
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+
+  func testUpdateZcashAccount() {
+    let account: BraveWallet.AccountInfo = .mockZcashAccount
+
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let mockZecDecimalBalance: Double = 0.1
+    let zecBalanceInSatoshi =
+      formatter.weiString(
+        from: mockZecDecimalBalance,
+        radix: .decimal,
+        decimals: Int(BraveWallet.BlockchainToken.mockZECToken.decimals)
+      ) ?? ""
+
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService, zcashWalletService
+    ) = setupServices(
+      mockZecBalance: zecBalanceInSatoshi,
+      transactions: []
+    )
+
+    let mockAssetManager = TestableWalletUserAssetManager()
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
+      [
+        NetworkAssets(
+          network: .mockZcashMainnet,
+          tokens: [
+            BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken.copy(asVisibleAsset: true)
+          ],
+          sortOrder: 0
+        )
+      ]
+    }
+
+    let accountActivityStore = AccountActivityStore(
+      account: account,
+      isWalletPanel: false,
+      keyringService: keyringService,
+      walletService: walletService,
+      rpcService: rpcService,
+      assetRatioService: assetRatioService,
+      swapService: swapService,
+      txService: txService,
+      blockchainRegistry: blockchainRegistry,
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi,
+      bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
+      userAssetManager: mockAssetManager
+    )
+
+    let userAssetsExpectation = expectation(description: "accountActivityStore-userAssets")
+    accountActivityStore.$userAssets
+      .dropFirst()
+      .collect(3)
+      .sink { userAssets in
+        defer { userAssetsExpectation.fulfill() }
+        guard let lastUpdatedAssets = userAssets.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(lastUpdatedAssets.count, 1)
+
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.token.symbol,
+          BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken.symbol
+        )
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockZecDecimalBalance)
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 0]?.price,
+          self.mockAssetPrices[safe: 5]?.price ?? ""
+        )
+      }
+      .store(in: &cancellables)
 
     accountActivityStore.update()
 

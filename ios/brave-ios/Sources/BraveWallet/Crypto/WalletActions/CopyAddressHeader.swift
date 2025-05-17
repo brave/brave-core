@@ -14,30 +14,21 @@ import SwiftUI
 struct CopyAddressHeader: View {
 
   let displayText: String
-  let account: BraveWallet.AccountInfo
-  let btcAccountInfo: BraveWallet.BitcoinAccountInfo?
+  let address: String
 
   init(
     displayText: String,
-    account: BraveWallet.AccountInfo,
-    btcAccountInfo: BraveWallet.BitcoinAccountInfo?
+    address: String
   ) {
     self.displayText = displayText
-    self.account = account
-    self.btcAccountInfo = btcAccountInfo
+    self.address = address
   }
 
   var body: some View {
     HStack {
       Text(displayText)
       Spacer()
-      if account.coin == .btc {
-        if let btcAccountInfo {
-          addressMenu(for: btcAccountInfo.nextReceiveAddress.addressString)
-        }
-      } else {
-        addressMenu(for: account.address)
-      }
+      addressMenu(for: address)
     }
   }
 

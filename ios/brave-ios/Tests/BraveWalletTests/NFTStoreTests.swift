@@ -1076,8 +1076,8 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        // Solana mainnet, Ethereum mainnet, Polygon, Filecoin mainnet, Bitcoin mainnet
-        XCTAssertEqual(lastUpdatedUserNFTGroups.count, 5)
+        // Solana mainnet, Ethereum mainnet, Polygon, Filecoin mainnet, Bitcoin mainnet, Zcash mainnet
+        XCTAssertEqual(lastUpdatedUserNFTGroups.count, 6)
         guard
           let solNetworkGroupVisibleNFTs = lastUpdatedUserNFTGroups[safe: 0]?.assets.filter(
             \.token.visible
@@ -1173,8 +1173,8 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        // Solana mainnet, Ethereum mainnet, Polygon, Filecoin mainnet, Bitcoin mainnet
-        XCTAssertEqual(lastUpdatedNFTGroups.count, 5)
+        // Solana mainnet, Ethereum mainnet, Polygon, Filecoin mainnet, Bitcoin mainnet, Zcash mainnet
+        XCTAssertEqual(lastUpdatedNFTGroups.count, 6)
         guard
           let solNetworkGroup = lastUpdatedNFTGroups[safe: 0],
           let ethNetworkGroup = lastUpdatedNFTGroups[safe: 1]

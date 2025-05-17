@@ -199,6 +199,27 @@ extension BraveWallet.BlockchainToken {
     coin: .btc,
     isShielded: false
   )
+
+  static let mockZECToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "",
+    name: "Zcash",
+    logo: "",
+    isCompressed: false,
+    isErc20: false,
+    isErc721: false,
+    isErc1155: false,
+    splTokenProgram: .unsupported,
+    isNft: false,
+    isSpam: false,
+    symbol: "ZEC",
+    decimals: 8,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: BraveWallet.ZCashMainnet,
+    coin: .zec,
+    isShielded: false
+  )
 }
 
 extension BraveWallet.AccountInfo {

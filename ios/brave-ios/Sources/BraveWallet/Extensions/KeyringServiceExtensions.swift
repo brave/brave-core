@@ -21,12 +21,18 @@ extension BraveWalletKeyringService {
     return !allAccountsForKeyring.isEmpty
   }
 
-  /// Return a list of all accounts with checking if Bitcoin testnet is enabled
-  /// The list of account will not include Bitcoin Testnet Accounts if Bitcoin testnet is disabled.
-  func allAccountInfos(checkBTCTestnet: Bool = true) async -> [BraveWallet.AccountInfo] {
+  /// Return a list of all accounts with checking if Bitcoin/Zcash testnet is enabled
+  /// The list of account will not include Bitcoin/Zcash Testnet Accounts if Bitcoin/Zcash testnet is disabled.
+  func allAccountInfos(
+    checkBTCTestnet: Bool = true,
+    checkZcashTestnet: Bool = true
+  ) async -> [BraveWallet.AccountInfo] {
     var accounts = await self.allAccounts().accounts
     if checkBTCTestnet, !Preferences.Wallet.isBitcoinTestnetEnabled.value {
       accounts = accounts.filter({ $0.keyringId != BraveWallet.KeyringId.bitcoin84Testnet })
+    }
+    if checkZcashTestnet, !Preferences.Wallet.isZcashTestnetEnabled.value {
+      accounts = accounts.filter({ $0.keyringId != BraveWallet.KeyringId.zCashTestnet })
     }
     return accounts
   }

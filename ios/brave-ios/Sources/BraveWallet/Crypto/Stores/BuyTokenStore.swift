@@ -62,6 +62,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private var selectedNetwork: BraveWallet.NetworkInfo = .init()
   private(set) var orderedSupportedBuyOptions: OrderedSet<BraveWallet.OnRampProvider> = []
   private var prefilledToken: BraveWallet.BlockchainToken?
@@ -93,6 +94,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.blockchainRegistry = blockchainRegistry
@@ -101,6 +103,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     self.walletService = walletService
     self.assetRatioService = assetRatioService
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.prefilledToken = prefilledToken
     self.buyTokens = WalletConstants.supportedOnRampProviders.reduce(
       into: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]]()
@@ -198,6 +201,11 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
         await bitcoinWalletService.bitcoinAccountInfo(accountId: account.accountId)
     {
       accountAddress = bitcoinAccountInfo.nextChangeAddress.addressString
+    } else if account.coin == .zec,
+      let zcashAccountInfo =
+        await zcashWalletService.zCashAccountInfo(accountId: account.accountId)
+    {
+      accountAddress = zcashAccountInfo.nextTransparentChangeAddress.addressString
     }
     let (urlString, error) = await assetRatioService.buyUrlV1(
       provider: provider,
