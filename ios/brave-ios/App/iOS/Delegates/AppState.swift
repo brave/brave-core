@@ -216,7 +216,6 @@ public class AppState {
   private func setupCustomSchemeHandlers(profile: Profile) {
     let responders: [(String, InternalSchemeResponse)] = [
       (AboutHomeHandler.path, AboutHomeHandler()),
-      (AboutLicenseHandler.path, AboutLicenseHandler()),
       (ErrorPageHandler.path, ErrorPageHandler()),
       (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
       (Web3DomainHandler.path, Web3DomainHandler()),
