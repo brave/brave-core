@@ -7,14 +7,6 @@ import("//brave/components/common/typescript.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
 
-pack_web_resources("page_generated_resources") {
-  resource_name = "brave_rewards_page"
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
-
-  # need webpack and GRD generation first
-  deps = [ "page" ]
-}
-
 pack_web_resources("internals_generated_resources") {
   resource_name = "rewards_internals"
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
@@ -35,30 +27,17 @@ brave_grit("static_resources") {
 repack("resources") {
   public_deps = [
     ":internals_generated_resources",
-    ":page_generated_resources",
     ":static_resources",
     "creator_detection:creator_detection_generated",
     "rewards_page:rewards_page_generated",
   ]
 
   sources = [
-    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_page_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/creator_detection_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/rewards_internals_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/rewards_page_generated.pak",
   ]
-
-  if (!is_android) {
-    sources += [
-      "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_panel_generated.pak",
-      "$root_gen_dir/brave/components/brave_rewards/resources/tip_panel_generated.pak",
-    ]
-    public_deps += [
-      "rewards_panel:brave_rewards_panel_generated",
-      "tip_panel:tip_panel_generated",
-    ]
-  }
 
   output = "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak"
 }

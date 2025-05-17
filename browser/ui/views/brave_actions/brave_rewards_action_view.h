@@ -74,8 +74,7 @@ class BraveRewardsActionView
   void OnPublisherForTabUpdated(const std::string& publisher_id) override;
 
   // brave_rewards::RewardsPanelCoordinator::Observer:
-  void OnRewardsPanelRequested(
-      const brave_rewards::mojom::RewardsPanelArgs& args) override;
+  void OnRewardsPanelRequested() override;
 
   // brave_rewards::RewardsServiceObserver:
   void OnPublisherRegistryUpdated() override;
