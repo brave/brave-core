@@ -76,7 +76,9 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   VLOG(1) << "BraveExtensionProviderTest: Navigated to url = " << url.spec();
 
   EXPECT_EQ(true,
-            content::EvalJs(contents, "canGetCookie('test', 'https://a.com')"));
+            content::EvalJs(contents,
+                            "console.log(document.documentElement.innerHTML); "
+                            "canGetCookie('test', 'https://a.com')"));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {

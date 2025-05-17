@@ -107,7 +107,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
-    braveArgs.push('--v=1'/* + options.v*/)
+    braveArgs.push('--v=0'/* + options.v*/)
 
     if (options.vmodule) {
       braveArgs.push('--vmodule=' + options.vmodule)
