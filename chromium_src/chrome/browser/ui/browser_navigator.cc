@@ -7,8 +7,8 @@
 
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
-// Needed to prevent overriding url_typed_with_http_scheme
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
@@ -39,6 +39,18 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
   return true;
 }
 
+std::optional<content::StoragePartitionConfig> GetStoragePartitionConfig(
+    const NavigateParams& params) {
+  std::optional<content::StoragePartitionConfig> storage_partition_config =
+      params.storage_partition_config;
+  if (!storage_partition_config && params.source_site_instance &&
+      !params.source_site_instance->GetStoragePartitionConfig().is_default()) {
+    storage_partition_config =
+        params.source_site_instance->GetStoragePartitionConfig();
+  }
+  return storage_partition_config;
+}
+
 }  // namespace
 
 // We want URLs that were manually typed with HTTP scheme to be HTTPS
@@ -52,8 +64,15 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
 #define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO     \
   if (!IsURLAllowedInIncognitoBraveImpl(url)) \
     return false;
+
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
+
+#define GetSiteInstanceForNewTab(...) \
+  GetSiteInstanceForNewTab(__VA_ARGS__, GetStoragePartitionConfig(params))
+
 #include "src/chrome/browser/ui/browser_navigator.cc"
+
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
 #undef BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
 #undef url_typed_with_http_scheme
+#undef GetSiteInstanceForNewTab
