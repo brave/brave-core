@@ -281,7 +281,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
-                cus, GetApplicationContext()->GetLocalState())
+                GetApplicationContext()->GetVariationsService(), cus,
+                GetApplicationContext()->GetLocalState())
                             ads_service:brave_ads::AdsServiceFactoryIOS::
                                             GetForProfile(profile)];
   }
