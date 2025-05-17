@@ -107,7 +107,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
-    braveArgs.push('--v=' + options.v)
+    braveArgs.push('--v=0'/* + options.v*/)
 
     if (options.vmodule) {
       braveArgs.push('--vmodule=' + options.vmodule)
@@ -136,6 +136,14 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   if (options.test_launcher_jobs) {
     braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
+  }
+
+  if (suite === 'brave_browser_tests') {
+    braveArgs.push('--test-launcher-print-test-stdio=always')
+    // braveArgs.push('"--vmodule=*/extensions/*=5"')
+    braveArgs.push('--test-launcher-developer-mode=true')
+    braveArgs.push('--gtest_filter=BraveExtensionProviderTest.ExtensionsCanGetCookies')
+    braveArgs.push('--disable-brave-extension')
   }
 
   braveArgs = braveArgs.concat(passthroughArgs)

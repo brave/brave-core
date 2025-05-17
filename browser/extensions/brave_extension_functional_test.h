@@ -15,11 +15,25 @@ namespace extensions {
 class ExtensionFunctionalTest : public ExtensionBrowserTest {
  public:
   scoped_refptr<const Extension> InstallExtensionSilently(
-      ExtensionService* service,
-      const base::FilePath& path);
+      const char* filename,
+      const char* extension_id);
+  scoped_refptr<const Extension> InstallUnpackedExtensionSilently(
+      const char* path,
+      const char* public_key,
+      const char* extension_id);
+  base::FilePath GetTestDataDir() const { return test_data_dir_; }
+
+  // content::BrowserTestBase:
   void SetUp() override;
+  void SetUpOnMainThread() override;
+
+ private:
   void InitEmbeddedTestServer();
-  void GetTestDataDir(base::FilePath* test_data_dir);
+  void OverrideTestDataDir(base::FilePath* test_data_dir);
+  scoped_refptr<const Extension> InstallExtensionSilentlyInternal(
+      const char* filename,
+      const char* extension_id,
+      const char* public_key);
 };
 
 }  // namespace extensions

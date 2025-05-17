@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
@@ -18,36 +19,18 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-// Since Chromium 137 all these tests fail ONLY on Windows CI (not locally).
-// TODO(https://github.com/brave/brave-browser/issues/45944)
-#if BUILDFLAG(IS_WIN)
-#define MAYBE_BraveExtensionProviderTest DISABLED_BraveExtensionProviderTest
-#else
-#define MAYBE_BraveExtensionProviderTest BraveExtensionProviderTest
-#endif  // BUILDFLAG(IS_WIN)
-
-class MAYBE_BraveExtensionProviderTest
-    : public extensions::ExtensionFunctionalTest {
- public:
-  void SetUpOnMainThread() override {
-    extensions::ExtensionFunctionalTest::SetUpOnMainThread();
-  }
-};
-
 namespace extensions {
+
+using BraveExtensionProviderTest = ExtensionFunctionalTest;
 
 // Load an extension page with an ad image, and make sure it is NOT blocked.
 // It would otherwise be blocked though if it wasn't an extension.
-IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
                        AdsNotBlockedByDefaultBlockerInExtension) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
   scoped_refptr<const extensions::Extension> extension =
-      InstallExtensionSilently(
-          extension_service(),
-          test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
-  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
-                  extension->id() + "/blocking.html");
+      InstallExtensionSilently("extension-compat-test-extension.crx",
+                               "cdoagmgkjelodcdljmbjiifapnilecob");
+  GURL url = extension->GetResourceURL("blocking.html");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
@@ -60,36 +43,64 @@ IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
-                       ExtensionsCanGetCookies) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
+  base::FilePath src =
+      GetTestDataDir().AppendASCII("extension-compat-test-extension");
+  base::FilePath dest =
+      GetTestDataDir().AppendASCII("extension-compat-test-extension-copy");
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(base::CopyDirectory(src, dest, false));
+  }
   scoped_refptr<const extensions::Extension> extension =
-      InstallExtensionSilently(
-          extension_service(),
-          test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
-  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
-                  extension->id() + "/blocking.html");
+      InstallUnpackedExtensionSilently(
+          "extension-compat-test-extension-copy",
+          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnsTdWGAO7gvCgM/"
+          "ymAuEQ+OpT5T7zGj6UUR/ArzRvdM4RcU97O8Qnq86XSxwKdd/DjqsxGSimU5vw/"
+          "WS4Xvos7ZnrSKy9oqo1ahPa7IQKnPNbs4OVwuI7HBnuskONveGcSH3LL+"
+          "Vx5CDYpbjbgQMtOxEX3xO8u/"
+          "MjAyzkt26XKS1jlsKbwY5yD38IsB9ldBVTU7oHMCA0pJpyQ0J4eKFtb0GdqUlUgpK/"
+          "KYb+xP30Z81RzHXpdhXNN+"
+          "jMQV8M9zox7FeWTGoKkE2faZcXn7VP88Gw0i8enZpR9JGD9fSexJ/"
+          "IW9BzlkjEk8EI6pM309qGxe0ctj20a0MVcZDCLsGaQIDAQAB",
+          "amcdfjbbjngdcepnmopaocdhglmfmihc");
+  // InstallExtensionSilently("extension-compat-test-extension.crx",
+  //                          "cdoagmgkjelodcdljmbjiifapnilecob");
+  GURL url = extension->GetResourceURL("blocking.html");
+  LOG(ERROR) << "BraveExtensionProviderTest: url = " << url.spec();
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    auto resource = extension->GetResource("blocking.html");
+    LOG(ERROR) << "BraveExtensionProviderTest: resource extension id = "
+               << resource.extension_id();
+    LOG(ERROR) << "BraveExtensionProviderTest: resource root path = "
+               << resource.extension_root().value().c_str();
+    const base::FilePath& resource_path = resource.GetFilePath();
+    LOG(ERROR) << "BraveExtensionProviderTest: resource path = "
+               << resource_path.value().c_str();
+    EXPECT_TRUE(base::PathExists(resource_path));
+    std::optional<int64_t> file_size = base::GetFileSize(resource_path);
+    LOG(ERROR) << "BraveExtensionProviderTest: resource size = "
+               << file_size.value_or(0LL);
+  }
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
+  VLOG(1) << "BraveExtensionProviderTest: Navigated to url = " << url.spec();
 
   EXPECT_EQ(true,
-            content::EvalJs(contents, "canGetCookie('test', 'http://a.com')"));
+            content::EvalJs(contents,
+                            "console.log(document.documentElement.innerHTML); "
+                            "canGetCookie('test', 'https://a.com')"));
 }
 
-IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
-                       ExtensionsCanSetCookies) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
   scoped_refptr<const extensions::Extension> extension =
-      InstallExtensionSilently(
-          extension_service(),
-          test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
-  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
-                  extension->id() + "/blocking.html");
+      InstallExtensionSilently("extension-compat-test-extension.crx",
+                               "cdoagmgkjelodcdljmbjiifapnilecob");
+  GURL url = extension->GetResourceURL("blocking.html");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =

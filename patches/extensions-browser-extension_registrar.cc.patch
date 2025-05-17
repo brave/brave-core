@@ -1,0 +1,41 @@
+diff --git a/extensions/browser/extension_registrar.cc b/extensions/browser/extension_registrar.cc
+index 836ccbf0e45dff2f36c9e09385ff64e105f4e918..7f6ca6e10d437a810503b9fbe41ceba73c449371 100644
+--- a/extensions/browser/extension_registrar.cc
++++ b/extensions/browser/extension_registrar.cc
+@@ -208,6 +208,8 @@ void ExtensionRegistrar::AddExtension(
+ 
+ void ExtensionRegistrar::AddNewExtension(
+     scoped_refptr<const Extension> extension) {
++  VLOG(1) << "ExtensionRegistrar::AddNewExtension: id = "
++             << extension->id().c_str();
+   if (blocklist_prefs::IsExtensionBlocklisted(extension->id(),
+                                               extension_prefs_)) {
+     DCHECK(!Manifest::IsComponentLocation(extension->location()));
+@@ -223,6 +225,7 @@ void ExtensionRegistrar::AddNewExtension(
+   } else if (extension_prefs_->IsExtensionDisabled(extension->id())) {
+     registry_->AddDisabled(extension);
+   } else {  // Extension should be enabled.
++    VLOG(1) << "ExtensionRegistrar::AddNewExtension: adding enabled.";
+     registry_->AddEnabled(extension);
+     ActivateExtension(extension.get(), true);
+   }
+@@ -252,6 +255,8 @@ void ExtensionRegistrar::OnExtensionInstalled(
+     const syncer::StringOrdinal& page_ordinal,
+     int install_flags,
+     base::Value::Dict ruleset_install_prefs) {
++  VLOG(1) << "ExtensionRegistrar::OnExtensionInstalled: id = "
++             << extension->id().c_str();
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+   delegate_->OnExtensionInstalled(extension, page_ordinal, install_flags,
+                                   std::move(ruleset_install_prefs));
+@@ -1246,8 +1251,10 @@ bool ExtensionRegistrar::CanAddExtension(const Extension* extension) const {
+       !Manifest::ShouldAlwaysLoadExtension(extension->location(),
+                                            extension->is_theme()) &&
+       disable_flag_exempted_extensions_.count(extension->id()) == 0) {
++    VLOG(1) << "ExtensionRegistrar::CanAddExtension: false";
+     return false;
+   }
++  VLOG(1) << "ExtensionRegistrar::CanAddExtension: true";
+   return true;
+ }
+ 
