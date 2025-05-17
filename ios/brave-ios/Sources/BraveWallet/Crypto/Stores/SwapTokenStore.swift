@@ -60,7 +60,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         // price quote requested for a different amount
         priceQuoteTask?.cancel()
       }
-      guard !sellAmount.isEmpty, BDouble(sellAmount.normalizedDecimals) != nil else {
+      guard !sellAmount.isEmpty, BDouble(sellAmount) != nil else {
         state = .idle
         return
       }
@@ -83,7 +83,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         // price quote requested for a different amount
         priceQuoteTask?.cancel()
       }
-      guard !buyAmount.isEmpty, BDouble(buyAmount.normalizedDecimals) != nil else {
+      guard !buyAmount.isEmpty, BDouble(buyAmount) != nil else {
         state = .idle
         return
       }
@@ -119,6 +119,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   @Published var isMakingTx = false
   /// A boolean indicating if this store is fetching updated price quote
   @Published var isUpdatingPriceQuote = false
+  /// A boolean indicating if an error message would show up when user input invalid format sell amount
+  @Published var isShowingSwapSellAmountError = false
+  /// A boolean indicating if an error message would show up when user input invalid format buy amount
+  @Published var isShowingSwapBuyAmountError = false
 
   struct CurrentSwapQuoteInfo {
     /// If the quote was fetched based on sell/from amount or buy/to amount.
@@ -340,25 +344,25 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     case .perSellAsset:
       // make sure the base value should not be zero, otherwise, it will always return insufficient liquidity error.
       // following desktop to make a idle state
-      if let sellAmountValue = BDouble(sellAmount.normalizedDecimals), sellAmountValue == 0 {
+      if let sellAmountValue = BDouble(sellAmount), sellAmountValue == 0 {
         return nil
       }
       sellAmountInWei =
         walletAmountFormatter.weiString(
-          from: sellAmount.normalizedDecimals,
+          from: sellAmount,
           radix: .decimal,
           decimals: Int(sellToken.decimals)
         ) ?? "0"
       buyAmountInWei = ""
     case .perBuyAsset:
       // same as sell amount. make sure base value should not be zero
-      if let buyAmountValue = BDouble(buyAmount.normalizedDecimals), buyAmountValue == 0 {
+      if let buyAmountValue = BDouble(buyAmount), buyAmountValue == 0 {
         return nil
       }
       sellAmountInWei = ""
       buyAmountInWei =
         walletAmountFormatter.weiString(
-          from: buyAmount.normalizedDecimals,
+          from: buyAmount,
           radix: .decimal,
           decimals: Int(buyToken.decimals)
         ) ?? "0"
@@ -388,6 +392,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     sellAmount = ""
     buyAmount = ""
     selectedFromTokenPrice = "0"
+    isShowingSwapSellAmountError = false
+    isShowingSwapBuyAmountError = false
   }
 
   @MainActor private func createEthSwapTransaction() async -> Bool {
@@ -581,6 +587,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     base: SwapParamsBase,
     swapQuoteParams: BraveWallet.SwapQuoteParams
   ) async {
+    print("fetching eth price quote")
     self.isUpdatingPriceQuote = true
     defer { self.isUpdatingPriceQuote = false }
     let (swapQuoteUnion, swapFees, swapQuoteErrorUnion, _) = await swapService.quote(
@@ -593,10 +600,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       swapFees: swapFees
     )
     if let swapQuoteUnion = swapQuoteUnion {
+      print("1")
       await self.handleSwapQuote(base: base, swapQuoteUnion: swapQuoteUnion)
     } else if let swapQuoteErrorUnion = swapQuoteErrorUnion {
+      print("2")
       await self.handleSwapQuoteError(swapQuoteErrorUnion)
     } else {  // unknown error, ex failed parsing zerox quote.
+      print("failed to fetch swap quote, unknown error")
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
     }
@@ -687,7 +697,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     guard let accountInfo,
       let gasLimit = BDouble(zeroExQuote.gas),
       let gasPrice = BDouble(zeroExQuote.gasPrice, over: "1000000000000000000"),
-      let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
+      let sellAmountValue = BDouble(sellAmount),
       let fromToken = selectedFromToken
     else {
       self.state = .error(Strings.Wallet.unknownError)
@@ -779,7 +789,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     // Validate balance available
-    guard let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
+    guard let sellAmountValue = BDouble(sellAmount),
       let selectedFromTokenBalance
     else {
       self.state = .error(Strings.Wallet.unknownError)
@@ -826,7 +836,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     guard let accountInfo,
-      let sellAmountValue = BDouble(sellAmount.normalizedDecimals)
+      let sellAmountValue = BDouble(sellAmount)
     else {
       self.state = .error(Strings.Wallet.unknownError)
       return
@@ -900,7 +910,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   @MainActor private func handleSwapQuoteError(_ swapError: BraveWallet.SwapErrorUnion) async {
     // check balance first because error can cause by insufficient balance
     if let sellTokenBalance = self.selectedFromTokenBalance,
-      let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+      let sellAmountValue = BDouble(self.sellAmount),
       sellTokenBalance < sellAmountValue
     {
       self.state = .error(Strings.Wallet.insufficientBalance)
@@ -949,7 +959,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     guard let jupiterTransaction = swapTransactionUnion?.jupiterTransaction else {
       // check balance first because error can cause by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
-        let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+        let sellAmountValue = BDouble(self.sellAmount),
         sellTokenBalance < sellAmountValue
       {
         self.state = .error(Strings.Wallet.insufficientBalance)

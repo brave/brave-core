@@ -2326,6 +2326,14 @@ extension Strings {
       comment:
         "An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address."
     )
+    public static let sendAmountFormatError = NSLocalizedString(
+      "wallet.sendAmountFormatError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Wrong amount format",
+      comment:
+        "An error that appears below the send amount 4 grids when the user inputs an invalid amount format."
+    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",
