@@ -47,6 +47,7 @@
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
+#include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
@@ -206,6 +207,20 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (BOOL)shouldShowSearchResultAdClickedInfoBar {
   return self.profilePrefService->GetBoolean(
       brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar);
+}
+
+- (BOOL)shouldDisplayNewTabTakeoverInfobar {
+  return ntp_background_images::ShouldDisplayNewTabTakeoverInfobar(
+      self.profilePrefService);
+}
+
+- (void)recordNewTabTakeoverInfobarWasDisplayed {
+  ntp_background_images::RecordNewTabTakeoverInfobarWasDisplayed(
+      self.profilePrefService);
+}
+
+- (void)suppressNewTabTakeoverInfobar {
+  ntp_background_images::SuppressNewTabTakeoverInfobar(self.profilePrefService);
 }
 
 - (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled {
@@ -1508,11 +1523,13 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return completion(/*success=*/false);
   }
 
+  const brave_ads::mojom::NewTabPageAdEventType mojom_event_type =
+      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType);
+
   adsService->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId), shouldMetricsFallbackToP3a,
-      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
-      base::BindOnce(completion));
+      mojom_event_type, base::BindOnce(completion));
 }
 
 - (void)maybeGetNotificationAd:(NSString*)identifier

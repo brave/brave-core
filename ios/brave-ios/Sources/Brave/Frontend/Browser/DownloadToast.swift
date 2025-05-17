@@ -9,6 +9,7 @@ import UIKit
 import Web
 
 struct DownloadToastUX {
+  static let toastTapDismissalMode: Toast.TapDismissalMode = .noDismissal
   static let toastBackgroundColor = UIColor.braveInfoBorder
   static let toastProgressColor = UIColor.braveInfoLabel
 }
@@ -79,6 +80,8 @@ class DownloadToast: Toast {
 
   init(download: Download, completion: @escaping (_ buttonPressed: Bool) -> Void) {
     super.init(frame: .zero)
+
+    self.tapDismissalMode = DownloadToastUX.toastTapDismissalMode
 
     self.completionHandler = completion
     self.clipsToBounds = true
@@ -213,9 +216,5 @@ class DownloadToast: Toast {
     )
 
     viewController?.present(alert, animated: true, completion: nil)
-  }
-
-  @objc override func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
-    // Intentional NOOP to override superclass behavior for dismissing the toast.
   }
 }

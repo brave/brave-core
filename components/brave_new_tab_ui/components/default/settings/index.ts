@@ -117,6 +117,17 @@ export const SettingsText = styled('span')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
+export const LearnMoreText = styled('span')`
+  align-items: center;
+  font: ${font.small.regular};
+  color: ${color.text.secondary};
+`
+
+export const LearnMoreLink = styled('a')`
+  font: ${font.small.link};
+  color: ${color.text.secondary};
+`
+
 export const SettingsSectionTitle = styled('h3') <ControllableLayoutProps>`
   margin: 0 0 ${p => p.isLayoutControlled ? '0' : '8px'} 0;
   font-weight: 800;
@@ -332,12 +343,12 @@ export const StyledUploadIconContainer = styled('div') <SelectionProps>`
   justify-content: center;
   gap: 16px;
   ${p => p.selected
-    ? css`    
-      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'}; 
+    ? css`
+      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};
       border-radius: 8px;`
     : css`
-      border: 2px solid #E9E9F4; 
-      border-radius: 10px; 
+      border: 2px solid #E9E9F4;
+      border-radius: 10px;
   `}
 `
 

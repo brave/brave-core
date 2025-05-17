@@ -69,7 +69,17 @@ final public class LinkLabel: UITextView {
       self.linkTextAttributes = [
         .font: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
         .foregroundColor: self.linkColor ?? UX.linkColor,
-        .underlineStyle: 0,
+        .underlineStyle: linkUnderlineStyle ?? UX.linkUnderlineStyle,
+      ]
+    }
+  }
+
+  public var linkUnderlineStyle: Int? {
+    didSet {
+      self.linkTextAttributes = [
+        .font: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
+        .foregroundColor: self.linkColor ?? UX.linkColor,
+        .underlineStyle: linkUnderlineStyle ?? UX.linkUnderlineStyle,
       ]
     }
   }
@@ -116,7 +126,7 @@ final public class LinkLabel: UITextView {
     let linkAttributes: [NSAttributedString.Key: Any] = [
       .font: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
       .foregroundColor: self.linkColor ?? UX.linkColor,
-      .underlineStyle: 0,
+      .underlineStyle: linkUnderlineStyle ?? UX.linkUnderlineStyle,
     ]
 
     self.linkTextAttributes = linkAttributes
@@ -129,7 +139,7 @@ final public class LinkLabel: UITextView {
     self.linkTextAttributes = [
       .font: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
       .foregroundColor: self.linkColor ?? UX.linkColor,
-      .underlineStyle: 0,
+      .underlineStyle: linkUnderlineStyle ?? UX.linkUnderlineStyle,
     ]
 
     // For some odd reason.. changing only the `linkTextAttributes` does NOT change the font! (yet it works for colour)
@@ -187,6 +197,7 @@ final public class LinkLabel: UITextView {
   private struct UX {
     static let textColor = UIColor.braveLabel
     static let linkColor = UIColor.braveBlurpleTint
+    static let linkUnderlineStyle = 0
   }
 }
 
