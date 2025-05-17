@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/variations/buildflags.h"
+#include "chrome/common/chrome_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
@@ -46,9 +47,12 @@ TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine) {
   base::CommandLine& command_line = *base::CommandLine::ForCurrentProcess();
   const std::string override_sync_url = "https://sync.com";
   const std::string override_origin_trials_public_key = "public_key";
+  const std::string override_check_for_update_interval_sec = "12345";
   command_line.AppendSwitchASCII(syncer::kSyncServiceURL, override_sync_url);
   command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
                                  override_origin_trials_public_key);
+  command_line.AppendSwitchASCII(switches::kCheckForUpdateIntervalSec,
+                                 override_check_for_update_interval_sec);
 
   BraveMainDelegate::AppendCommandLineOptions();
 
@@ -58,5 +62,9 @@ TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine) {
   ASSERT_STREQ(
       override_origin_trials_public_key.c_str(),
       command_line.GetSwitchValueASCII(embedder_support::kOriginTrialPublicKey)
+          .c_str());
+  ASSERT_STREQ(
+      override_check_for_update_interval_sec.c_str(),
+      command_line.GetSwitchValueASCII(switches::kCheckForUpdateIntervalSec)
           .c_str());
 }
