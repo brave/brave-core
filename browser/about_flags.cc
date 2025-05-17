@@ -198,6 +198,14 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
       },                                                                      \
       {                                                                       \
+          "brave-wallet-cardano",                                             \
+          "Enable Brave Wallet Cardano support",                              \
+          "Cardano support for native Brave Wallet",                          \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletCardanoFeature),            \
+      },                                                                      \
+      {                                                                       \
           "brave-wallet-enable-ankr-balances",                                \
           "Enable Ankr balances",                                             \
           "Enable usage of Ankr Advanced API for fetching balances in Brave " \
