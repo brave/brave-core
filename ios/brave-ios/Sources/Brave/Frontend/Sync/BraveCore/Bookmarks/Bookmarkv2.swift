@@ -11,7 +11,21 @@ import Shared
 
 // A Lightweight wrapper around BraveCore bookmarks
 // with the same layout/interface as `Bookmark (from CoreData)`
-class Bookmarkv2: WebsitePresentable {
+class Bookmarkv2: WebsitePresentable, Identifiable, Equatable, Hashable {
+
+  // MARK: Operators
+
+  var id: Int {
+    Int(bookmarkNode.nodeId)
+  }
+
+  static func == (lhs: Bookmarkv2, rhs: Bookmarkv2) -> Bool {
+    return lhs.id == rhs.id
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
 
   // MARK: Lifecycle
 
@@ -57,16 +71,12 @@ class Bookmarkv2: WebsitePresentable {
     return nil
   }
 
-  public var children: [Bookmarkv2]? {
+  public var children: [Bookmarkv2] {
     return bookmarkNode.children.map({ Bookmarkv2($0) })
   }
 
   public var canBeDeleted: Bool {
     return bookmarkNode.isPermanentNode == false
-  }
-
-  public var objectID: Int {
-    return Int(bookmarkNode.nodeId)
   }
 
   public func update(customTitle: String?, url: URL?) {
