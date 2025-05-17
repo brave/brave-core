@@ -192,6 +192,10 @@ addStyles('app-global-styles', css`
         width: 100%;
       }
 
+      h4 {
+        padding: 10px 16px;
+      }
+
       @media (prefers-color-scheme: dark) {
         background-color: rgba(37, 37, 37, 0.58);
       }

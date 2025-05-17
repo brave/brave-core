@@ -7,10 +7,6 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
  export const style = scoped.css`
-  h4 {
-    padding: 16px;
-  }
-
   section {
     padding: 8px;
   }
