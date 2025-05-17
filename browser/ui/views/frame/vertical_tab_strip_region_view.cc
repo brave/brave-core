@@ -594,19 +594,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   width_animation_.Reset(1.0);
 
   header_view_ = AddChildView(std::make_unique<HeaderView>(
-      base::BindRepeating(
-          [](VerticalTabStripRegionView* container, const ui::Event& event) {
-            // Note that Calling SetValue() doesn't trigger
-            // OnCollapsedPrefChanged() for this view.
-            if (container->state_ == State::kExpanded) {
-              container->collapsed_pref_.SetValue(true);
-              container->SetState(State::kCollapsed);
-            } else {
-              container->collapsed_pref_.SetValue(false);
-              container->SetState(State::kExpanded);
-            }
-          },
-          this),
+      base::BindRepeating(&VerticalTabStripRegionView::ToggleState,
+                          base::Unretained(this)),
       this, browser_));
   contents_view_ =
       AddChildView(std::make_unique<VerticalTabStripScrollContentsView>());
@@ -699,6 +688,16 @@ VerticalTabStripRegionView::~VerticalTabStripRegionView() {
   DCHECK(fullscreen_observation_.IsObserving())
       << "We didn't start to observe FullscreenController from BrowserList's "
          "callback";
+}
+
+void VerticalTabStripRegionView::ToggleState() {
+  if (state_ == State::kExpanded) {
+    collapsed_pref_.SetValue(true);
+    SetState(State::kCollapsed);
+  } else {
+    collapsed_pref_.SetValue(false);
+    SetState(State::kExpanded);
+  }
 }
 
 void VerticalTabStripRegionView::OnWidgetActivationChanged(
