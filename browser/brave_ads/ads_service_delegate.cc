@@ -7,10 +7,12 @@
 
 #include <cstddef>
 #include <utility>
+#include <vector>
 
 #include "base/check_deref.h"
 #include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/version.h"
 #include "base/version_info/channel.h"
 #include "base/version_info/version_info.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
@@ -56,32 +58,65 @@ constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
 constexpr char kSkuOrderStatusKey[] = "status";
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
+int GetVersionComponent(size_t index) {
+  const base::Version& version = version_info::GetVersion();
+  const std::vector<uint32_t>& version_components = version.components();
+  return index < version_components.size()
+             ? static_cast<int>(version_components[index])
+             : 0;
+}
+
+int GetMajorVersion() {
+  return GetVersionComponent(0);
+}
+
+int GetMinorVersion() {
+  return GetVersionComponent(1);
+}
+
+int GetBuildVersion() {
+  return GetVersionComponent(2);
+}
+
+int GetPatchVersion() {
+  return GetVersionComponent(3);
+}
+
+bool IsMobilePlatform() {
+  std::string_view operating_system_name = version_info::GetOSType();
+  return operating_system_name == "Android" || operating_system_name == "iOS";
+}
+
 std::string StripSkuEnvironmentPrefix(const std::string& environment) {
   const size_t pos = environment.find(':');
   return environment.substr(pos + 1);
 }
 
 std::string NormalizeSkuStatus(const std::string& status) {
+  // Normalize the status field to use consistent (US) spelling, as the JSON
+  // source localizes it (e.g., "cancelled" vs "canceled").
   return status == "cancelled" ? "canceled" : status;
 }
 
 base::Value::Dict ParseSkuOrder(const base::Value::Dict& dict) {
   base::Value::Dict order;
 
-  if (const auto* const created_at = dict.FindString(kSkuOrderCreatedAtKey)) {
+  if (const std::string* const created_at =
+          dict.FindString(kSkuOrderCreatedAtKey)) {
     order.Set(kSkuOrderCreatedAtKey, *created_at);
   }
 
-  if (const auto* const expires_at = dict.FindString(kSkuOrderExpiresAtKey)) {
+  if (const std::string* const expires_at =
+          dict.FindString(kSkuOrderExpiresAtKey)) {
     order.Set(kSkuOrderExpiresAtKey, *expires_at);
   }
 
-  if (const auto* const last_paid_at =
+  if (const std::string* const last_paid_at =
           dict.FindString(kSkuOrderLastPaidAtKey)) {
     order.Set(kSkuOrderLastPaidAtKey, *last_paid_at);
   }
 
-  if (const auto* const status = dict.FindString(kSkuOrderStatusKey)) {
+  if (const std::string* const status = dict.FindString(kSkuOrderStatusKey)) {
     const std::string normalized_status = NormalizeSkuStatus(*status);
     order.Set(kSkuOrderStatusKey, normalized_status);
   }
@@ -99,7 +134,7 @@ base::Value::Dict ParseSkuOrders(const base::Value::Dict& dict) {
     }
 
     const std::string* const location = order->FindString(kSkuOrderLocationKey);
-    if (!location) {
+    if (!location || location->empty()) {
       continue;
     }
 
@@ -150,7 +185,8 @@ base::Value::Dict AdsServiceDelegate::GetSkus() const {
       continue;
     }
 
-    // Parse the SKUs JSON because it is stored as a string in local state.
+    // Deserialize the SKUs data from a JSON string stored in local state into a
+    // dictionary object for further processing.
     std::optional<base::Value::Dict> sku_state =
         base::JSONReader::ReadDict(value.GetString());
     if (!sku_state) {
@@ -297,12 +333,17 @@ base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
            base::Value::Dict()
                .Set("build_channel",
                     version_info::GetChannelString(chrome::GetChannel()))
-               .Set("version", version_info::GetVersionNumber()))
+               .Set("version", version_info::GetVersionNumber())
+               .Set("major_version", GetMajorVersion())
+               .Set("minor_version", GetMinorVersion())
+               .Set("build_version", GetBuildVersion())
+               .Set("patch_version", GetPatchVersion()))
       .Set("[virtual]:operating_system",
            base::Value::Dict()
                .Set("locale", base::Value::Dict()
                                   .Set("language", CurrentLanguageCode())
                                   .Set("region", CurrentCountryCode()))
+               .Set("is_mobile_platform", IsMobilePlatform())
                .Set("name", version_info::GetOSType()))
       .Set(
           "[virtual]:search_engine",
