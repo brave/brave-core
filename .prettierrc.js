@@ -19,7 +19,6 @@ module.exports = {
   'htmlWhitespaceSensitivity': 'css',
   'insertPragma': false,
   'plugins': [],
-  'pluginSearchDirs': false,
   'printWidth': 80,
   'proseWrap': 'always',
   'rangeEnd': Infinity,
@@ -27,7 +26,6 @@ module.exports = {
   'requirePragma': false,
   'useTabs': false,
   'vueIndentScriptAndStyle': false,
-  'jsxBracketSameLine': false,
-  'singleAttributePerLine': true,
-  'overrides': undefined
+  'bracketSameLine': false,
+  'singleAttributePerLine': true
 }
