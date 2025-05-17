@@ -709,6 +709,28 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
   testing::Mock::VerifyAndClearExpectations(&associated_content);
 }
 
+TEST_P(AIChatServiceUnitTest,
+       PageContextEnabledInitially_ControlsShouldSendPageContents) {
+  NiceMock<MockAssociatedContent> associated_content{};
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  {
+    prefs_.SetBoolean(prefs::kBraveChatPageContextEnabledInitially, true);
+    ConversationHandler* conversation1 =
+        ai_chat_service_->CreateConversationHandlerForContent(
+            associated_content.GetContentId(), associated_content.GetWeakPtr());
+    EXPECT_TRUE(conversation1->should_send_page_contents());
+  }
+  {
+    prefs_.SetBoolean(prefs::kBraveChatPageContextEnabledInitially, false);
+    ConversationHandler* conversation2 =
+        ai_chat_service_->CreateConversationHandlerForContent(
+            associated_content.GetContentId(), associated_content.GetWeakPtr());
+    EXPECT_FALSE(conversation2->should_send_page_contents());
+  }
+}
+
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   NiceMock<MockAssociatedContent> associated_content{};
   ConversationHandler* conversation =

@@ -440,15 +440,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "Enables opening Leo AI Chat from Brave Search",                     \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch),   \
-      },                                                                       \
-      {                                                                        \
-          "brave-ai-chat-web-content-association-default",                     \
-          "Brave AI Chat Web Content Association Default",                     \
-          "For AI Chat Conversations which are associated with web content, "  \
-          "allow the toggle for sending page content to be set to enabled "    \
-          "when the conversation is created.",                                 \
-          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
-          FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially), \
       })
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
