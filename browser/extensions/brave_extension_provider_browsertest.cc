@@ -67,7 +67,22 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   // InstallExtensionSilently("extension-compat-test-extension.crx",
   //                          "cdoagmgkjelodcdljmbjiifapnilecob");
   GURL url = extension->GetResourceURL("blocking.html");
-  VLOG(1) << "BraveExtensionProviderTest: url = " << url.spec();
+  LOG(ERROR) << "BraveExtensionProviderTest: url = " << url.spec();
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    auto resource = extension->GetResource("blocking.html");
+    LOG(ERROR) << "BraveExtensionProviderTest: resource extension id = "
+               << resource.extension_id();
+    LOG(ERROR) << "BraveExtensionProviderTest: resource root path = "
+               << resource.extension_root().value().c_str();
+    const base::FilePath& resource_path = resource.GetFilePath();
+    LOG(ERROR) << "BraveExtensionProviderTest: resource path = "
+               << resource_path.value().c_str();
+    EXPECT_TRUE(base::PathExists(resource_path));
+    std::optional<int64_t> file_size = base::GetFileSize(resource_path);
+    LOG(ERROR) << "BraveExtensionProviderTest: resource size = "
+               << file_size.value_or(0LL);
+  }
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
