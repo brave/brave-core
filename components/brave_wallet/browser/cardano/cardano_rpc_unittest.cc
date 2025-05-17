@@ -17,14 +17,17 @@
 #include "base/test/task_environment.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "net/http/http_status_code.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -32,6 +35,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::RunOnceClosure;
+using testing::_;
+using testing::DoAll;
+using testing::SaveArg;
 using testing::Truly;
 
 namespace brave_wallet {
@@ -164,6 +170,27 @@ TEST_F(CardanoRpcUnitTest, Throttling) {
     task_environment_.RunUntilQuit();
     testing::Mock::VerifyAndClearExpectations(&callback);
   }
+}
+
+TEST_F(CardanoRpcUnitTest, BraveServicesKey) {
+  base::MockCallback<cardano_rpc::CardanoRpc::GetLatestBlockCallback> callback;
+
+  network_manager_->SetNetworkURLForTesting(
+      mojom::kCardanoMainnet, GURL("https://cardano-test.example.com/api/"));
+  cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
+  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  EXPECT_FALSE(
+      url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
+          kBraveServicesKeyHeader));
+
+  url_loader_factory_.pending_requests()->clear();
+  network_manager_->SetNetworkURLForTesting(mojom::kCardanoMainnet, GURL());
+
+  cardano_mainnet_rpc_->GetLatestBlock(callback.Get());
+  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  EXPECT_TRUE(
+      url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
+          kBraveServicesKeyHeader));
 }
 
 TEST_F(CardanoRpcUnitTest, GetLatestBlock) {
@@ -356,6 +383,17 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
   cardano_mainnet_rpc_->GetUtxoList(address, callback.Get());
   task_environment_.RunUntilQuit();
   testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // HTTP 404 Not Found Error results in empty list.
+  base::expected<cardano_rpc::UnspentOutputs, std::string> captured_response;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(DoAll(SaveArg<0>(&captured_response),
+                      RunOnceClosure(task_environment_.QuitClosure())));
+  url_loader_factory_.AddResponse(req_url, "Not Found", net::HTTP_NOT_FOUND);
+  cardano_mainnet_rpc_->GetUtxoList(address, callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  EXPECT_TRUE(captured_response.value().empty());
 
   // Testnet works.
   EXPECT_CALL(callback,
