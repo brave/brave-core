@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -20,6 +21,7 @@ import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 
+@NullMarked
 public class BraveNewTabTakeoverInfobar {
     private static final String TAG = "NewTabTakeover";
     private static final String LEARN_MORE_URL =
