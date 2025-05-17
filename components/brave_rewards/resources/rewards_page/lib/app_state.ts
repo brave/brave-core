@@ -29,14 +29,12 @@ export interface AvailableCountryInfo {
 export type AdType =
   'new-tab-page' |
   'notification' |
-  'search-result' |
-  'inline-content'
+  'search-result'
 
 export interface AdsInfo {
   browserUpgradeRequired: boolean
   isSupportedRegion: boolean
   adsEnabled: Record<AdType, boolean>
-  adsReceivedThisMonth: number
   adTypesReceivedThisMonth: Record<AdType, number>
   minEarningsPreviousMonth: number
   nextPaymentDate: number
@@ -51,6 +49,7 @@ export type AdLikeStatus = 'liked' | 'disliked' | ''
 
 export interface AdsHistoryItem {
   id: string
+  type: AdType
   createdAt: number
   name: string
   text: string
