@@ -1,3 +1,4 @@
 include_rules = [
   "+services/network/public",
+  "+third_party/zxcvbn-cpp/native-src/zxcvbn",
 ]
