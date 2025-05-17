@@ -99,17 +99,17 @@ AIChatService::AIChatService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string,
     base::FilePath profile_path)
-    : model_service_(model_service),
-      tab_tracker_service_(tab_tracker_service),
-      profile_prefs_(profile_prefs),
-      ai_chat_metrics_(ai_chat_metrics),
-      os_crypt_async_(os_crypt_async),
-      url_loader_factory_(url_loader_factory),
+    : url_loader_factory_(url_loader_factory),
       feedback_api_(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
-      profile_path_(profile_path) {
+      profile_path_(profile_path),
+      model_service_(model_service),
+      tab_tracker_service_(tab_tracker_service),
+      profile_prefs_(profile_prefs),
+      ai_chat_metrics_(ai_chat_metrics),
+      os_crypt_async_(os_crypt_async) {
   DCHECK(profile_prefs_);
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
