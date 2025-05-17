@@ -251,3 +251,5 @@ components/skus/common/skus_utils.h @brave/sec-team
 
 # for brave_exec_script_allowlist
 build/dotfile_settings.gni @bridiver @goodov
+
+docs/keyed_services.md @bridiver
