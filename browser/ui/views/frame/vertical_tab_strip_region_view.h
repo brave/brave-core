@@ -72,6 +72,8 @@ class VerticalTabStripRegionView : public views::View,
 
   const Browser* browser() const { return browser_; }
 
+  void ToggleState();
+
   // Expand vertical tabstrip temporarily. When the returned
   // ScopedCallbackRunner is destroyed, the state will be restored to the
   // previous state.
