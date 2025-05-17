@@ -23,7 +23,8 @@ bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
   url::Origin origin_a;
   url::Origin origin_b;
   if (a->request_type() == RequestType::kBraveEthereum ||
-      a->request_type() == RequestType::kBraveSolana) {
+      a->request_type() == RequestType::kBraveSolana ||
+      a->request_type() == RequestType::kBraveCardano) {
     if (a->request_type() == b->request_type() &&
         brave_wallet::ParseRequestingOriginFromSubRequest(
             a->request_type(), url::Origin::Create(a->requesting_origin()),

@@ -29,7 +29,16 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
       {GURL("https://test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"),
        GURL("https://"
             "test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8:123"),
-       ContentSettingsType::BRAVE_SOLANA}};
+       ContentSettingsType::BRAVE_SOLANA},
+      {GURL("https://"
+            "test.com__"
+            "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n"
+            "4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz"),
+       GURL("https://"
+            "test.com__"
+            "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n"
+            "4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz:123"),
+       ContentSettingsType::BRAVE_CARDANO}};
 
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     GURL embedding_origin("https://test.com");

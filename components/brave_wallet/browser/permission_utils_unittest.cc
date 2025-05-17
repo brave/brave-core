@@ -83,7 +83,26 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOriginFromSubRequest) {
        "https://test.com--BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8/path",
        "https://test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        "https://test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8:123",
-       "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"}};
+       "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"},
+      {permissions::RequestType::kBraveCardano,
+       "https://"
+       "test.com--"
+       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+       "https://"
+       "test.com--"
+       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz/path",
+       "https://"
+       "test.com__"
+       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+       "https://"
+       "test.com__"
+       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz:123",
+       "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qr"
+       "ud2xlv9fgj53n6ds3t8cs4fvzs05yzmz"}};
 
   url::Origin requesting_origin;
   std::string account;
@@ -175,7 +194,40 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOrigin) {
        "test.com{addr=BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8&addr="
        "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV}:123",
        "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-       "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"}};
+       "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
+      {permissions::RequestType::kBraveCardano,
+       "https://"
+       "test.com--"
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d",
+       "https://"
+       "test.com__"
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d/path",
+       "https://"
+       "test.com{addr="
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d}",
+       "https://"
+       "test.com{addr="
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d}:123",
+       "https://"
+       "test.com{addr="
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d&addr="
+       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
+       "jv6xfhwzuyrujrsprx59dm9s2szdhn77}",
+       "https://"
+       "test.com{addr="
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d&addr="
+       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
+       "jv6xfhwzuyrujrsprx59dm9s2szdhn77}:123",
+       "addr1q9d5v8xz4d9w0cr5k0ac0rqhv3f70j5fsc4pz0t5uh6z9v8rrmkt32gfpl2k4ct7wr"
+       "x8rpruvgcmec8u07cqu2v5a6qsq4ht3d",
+       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
+       "jv6xfhwzuyrujrsprx59dm9s2szdhn77"}};
 
   std::string account;
   for (auto& test_case : cases) {
@@ -263,7 +315,18 @@ TEST(PermissionUtilsUnitTest, GetSubRequestOrigin) {
        "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        "https://test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
        "https://"
-       "test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8:123"}};
+       "test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8:123"},
+      {permissions::RequestType::kBraveCardano,
+       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
+       "jv6xfhwzuyrujrsprx59dm9s2szdhn77",
+       "https://"
+       "test.com__"
+       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
+       "jv6xfhwzuyrujrsprx59dm9s2szdhn77",
+       "https://"
+       "test.com__"
+       "addr1q9h4df7ms2r7qk6el7lgd78kr4xrgdvnhtqxgprq0yzpdd87tv7f3zhl8jq0hl9tuk"
+       "jv6xfhwzuyrujrsprx59dm9s2szdhn77:123"}};
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.account);
 
@@ -351,6 +414,9 @@ TEST(PermissionUtilsUnitTest, CoinTypeToPermissionType) {
   type = CoinTypeToPermissionType(mojom::CoinType::SOL);
   ASSERT_TRUE(type);
   EXPECT_EQ(*type, blink::PermissionType::BRAVE_SOLANA);
+  type = CoinTypeToPermissionType(mojom::CoinType::ADA);
+  ASSERT_TRUE(type);
+  EXPECT_EQ(*type, blink::PermissionType::BRAVE_CARDANO);
   EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::FIL));
   EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::BTC));
 }

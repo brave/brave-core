@@ -79,7 +79,8 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
                                    std::string* account,
                                    std::queue<std::string>* address_queue) {
   if (origin.opaque() || (type != permissions::RequestType::kBraveEthereum &&
-                          type != permissions::RequestType::kBraveSolana)) {
+                          type != permissions::RequestType::kBraveSolana &&
+                          type != permissions::RequestType::kBraveCardano)) {
     return false;
   }
 
@@ -169,7 +170,8 @@ std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
                                                const url::Origin& old_origin,
                                                std::string_view account) {
   if (type != permissions::RequestType::kBraveEthereum &&
-      type != permissions::RequestType::kBraveSolana) {
+      type != permissions::RequestType::kBraveSolana &&
+      type != permissions::RequestType::kBraveCardano) {
     return std::nullopt;
   }
   std::string account_with_separator;
@@ -214,6 +216,8 @@ std::optional<blink::PermissionType> CoinTypeToPermissionType(
       return blink::PermissionType::BRAVE_ETHEREUM;
     case mojom::CoinType::SOL:
       return blink::PermissionType::BRAVE_SOLANA;
+    case mojom::CoinType::ADA:
+      return blink::PermissionType::BRAVE_CARDANO;
     default:
       return std::nullopt;
   }
@@ -226,6 +230,8 @@ std::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
       return permissions::RequestType::kBraveEthereum;
     case mojom::CoinType::SOL:
       return permissions::RequestType::kBraveSolana;
+    case mojom::CoinType::ADA:
+      return permissions::RequestType::kBraveCardano;
     default:
       return std::nullopt;
   }
