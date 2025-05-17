@@ -5,24 +5,72 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../components/context/locale_context'
-import { AppModelContext } from '../components/context/app_model_context'
-import { createAppModel } from './sb_app_model'
-import { createLocale } from './sb_locale'
-import { App } from '../components/app'
+import { LocaleProvider } from '../context/locale_context'
+import { NewTabProvider } from '../context/new_tab_context'
+import { BackgroundProvider } from '../context/background_context'
+import { SearchProvider } from '../context/search_context'
+import { TopSitesProvider } from '../context/top_sites_context'
+import { VpnProvider } from '../context/vpn_context'
+import { RewardsProvider } from '../context/rewards_context'
+import { NewsProvider } from '../context/news_context'
+
+import { createLocale } from './storybook_locale'
+import { createBackgroundAPI } from './background_impl'
+import { createNewTabAPI } from './new_tab_impl'
+import { createRewardsAPI } from './rewards_impl'
+import { createSearchAPI } from './search_impl'
+import { createTopSitesAPI } from './top_sites_impl'
+import { createVpnAPI } from './vpn_impl'
+import { createNewsAPI } from './news_impl'
+
+import { App, NewsApp } from '../components/app'
 
 export default {
   title: 'New Tab/Refresh'
 }
 
+function AppProvider(props: { children: React.ReactNode }) {
+  return (
+    <LocaleProvider value={createLocale()}>
+      <NewTabProvider value={createNewTabAPI()}>
+        <BackgroundProvider value={createBackgroundAPI()}>
+            <SearchProvider value={createSearchAPI()}>
+              <TopSitesProvider value={createTopSitesAPI()}>
+                <VpnProvider value={createVpnAPI()}>
+                  <RewardsProvider value={createRewardsAPI()}>
+                    <NewsProvider value={createNewsAPI()}>
+                      {props.children}
+                    </NewsProvider>
+                  </RewardsProvider>
+                </VpnProvider>
+              </TopSitesProvider>
+            </SearchProvider>
+        </BackgroundProvider>
+      </NewTabProvider>
+    </LocaleProvider>
+  )
+}
+
 export function NTPRefresh() {
   return (
-    <LocaleContext locale={createLocale()}>
-      <AppModelContext model={createAppModel()}>
-        <div style={{ position: 'absolute', inset: 0 }}>
-          <App />
-        </div>
-      </AppModelContext>
-    </LocaleContext>
+    <AppProvider>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <App />
+      </div>
+    </AppProvider>
+  )
+}
+
+export function NewsOnly() {
+  React.useEffect(() => {
+    document.body.style.padding = '0'
+  }, [])
+
+  return (
+    <LocaleProvider value={createLocale()}>
+      <NewsProvider value={createNewsAPI()}>
+        <NewsApp />
+      </NewsProvider>
+    </LocaleProvider>
   )
 }

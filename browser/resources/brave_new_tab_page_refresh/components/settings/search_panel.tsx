@@ -8,8 +8,8 @@ import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { useSearchState, useSearchActions } from '../../context/search_context'
+import { useLocale } from '../../context/locale_context'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
 
@@ -17,11 +17,11 @@ import { style } from './search_panel.style'
 
 export function SearchPanel() {
   const { getString } = useLocale()
-  const actions = useAppActions()
+  const actions = useSearchActions()
 
-  const showSearchBox = useAppState((s) => s.showSearchBox)
-  const searchEngines = useAppState((s) => s.searchEngines)
-  const enabledSearchEngines = useAppState((s) => s.enabledSearchEngines)
+  const showSearchBox = useSearchState((s) => s.showSearchBox)
+  const searchEngines = useSearchState((s) => s.searchEngines)
+  const enabledSearchEngines = useSearchState((s) => s.enabledSearchEngines)
 
   return (
     <div data-css-scope={style.scope}>

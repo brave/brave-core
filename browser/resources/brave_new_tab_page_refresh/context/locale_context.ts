@@ -1,0 +1,174 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { LocaleInterface, createLocaleContext } from '../lib/locale_context'
+
+export type StringKey =
+  'addTopSiteLabel' |
+  'addTopSiteTitle' |
+  'backgroundSettingsTitle' |
+  'braveBackgroundLabel' |
+  'cancelButtonLabel' |
+  'clockFormatLabel' |
+  'clockFormatOption12HourText' |
+  'clockFormatOption24HourText' |
+  'clockFormatOptionAutomaticText' |
+  'clockSettingsTitle' |
+  'customBackgroundLabel' |
+  'customBackgroundTitle' |
+  'customizeSearchEnginesLink' |
+  'editTopSiteLabel' |
+  'editTopSiteTitle' |
+  'enabledSearchEnginesLabel' |
+  'gradientBackgroundLabel' |
+  'gradientBackgroundTitle' |
+  'hideTopSitesLabel' |
+  'newsAddSourcesButtonLabel' |
+  'newsBackButtonLabel' |
+  'newsCaughtUpText' |
+  'newsChannelBrave' |
+  'newsChannelBusiness' |
+  'newsChannelCars' |
+  'newsChannelCelebrities' |
+  'newsChannelCrypto' |
+  'newsChannelCulture' |
+  'newsChannelEducation' |
+  'newsChannelEntertainment' |
+  'newsChannelFashion' |
+  'newsChannelFilmAndTV' |
+  'newsChannelFood' |
+  'newsChannelFun' |
+  'newsChannelGaming' |
+  'newsChannelHealth' |
+  'newsChannelHome' |
+  'newsChannelLifestyle' |
+  'newsChannelMusic' |
+  'newsChannelPolitics' |
+  'newsChannelRegionalNews' |
+  'newsChannelScience' |
+  'newsChannelSports' |
+  'newsChannelTravel' |
+  'newsChannelTechnology' |
+  'newsChannelTopNews' |
+  'newsChannelTopSources' |
+  'newsChannelUKNews' |
+  'newsChannelUSNews' |
+  'newsChannelWeather' |
+  'newsChannelWorldNews' |
+  'newsConnectionErrorText' |
+  'newsConnectionErrorTitle' |
+  'newsContentAvailableButtonLabel' |
+  'newsDiscoverTitle' |
+  'newsEnableButtonLabel' |
+  'newsEnableText' |
+  'newsFeedAllTitle' |
+  'newsFeedChannelsTitle' |
+  'newsFeedFollowingTitle' |
+  'newsFeedPublishersTitle' |
+  'newsHidePublisherLabel' |
+  'newsManageFeedsButtonLabel' |
+  'newsNoArticlesText' |
+  'newsNoArticlesTitle' |
+  'newsNoFeedsText' |
+  'newsNoFeedsTitle' |
+  'newsNoMatchingFeedsText' |
+  'newsOptInDismissButtonLabel' |
+  'newsOptInText' |
+  'newsQueryTooShortText' |
+  'newsRefreshButtonLabel' |
+  'newsSearchFeedsButtonLabel' |
+  'newsSettingsChannelsTitle' |
+  'newsSettingsDiscoverTitle' |
+  'newsSettingsFollowingTitle' |
+  'newsSettingsPopularTitle' |
+  'newsSettingsQueryPlaceholder' |
+  'newsSettingsSourcesTitle' |
+  'newsSettingsSuggestionsText' |
+  'newsSettingsSuggestionsTitle' |
+  'newsSettingsTitle' |
+  'newsUnfollowButtonLabel' |
+  'newsViewAllButtonLabel' |
+  'newsWidgetTitle' |
+  'photoCreditsText' |
+  'randomizeBackgroundLabel' |
+  'removeTopSiteLabel' |
+  'rewardsBalanceTitle' |
+  'rewardsConnectButtonLabel' |
+  'rewardsConnectText' |
+  'rewardsConnectTitle' |
+  'rewardsFeatureText1' |
+  'rewardsFeatureText2' |
+  'rewardsOnboardingButtonLabel' |
+  'rewardsOnboardingLink' |
+  'rewardsWidgetTitle' |
+  'saveChangesButtonLabel' |
+  'searchAskLeoDescription' |
+  'searchBoxPlaceholderText' |
+  'searchBoxPlaceholderTextBrave' |
+  'searchCustomizeEngineListText' |
+  'searchSettingsTitle' |
+  'searchSuggestionsDismissButtonLabel' |
+  'searchSuggestionsEnableButtonLabel' |
+  'searchSuggestionsPromptText' |
+  'searchSuggestionsPromptTitle' |
+  'settingsTitle' |
+  'showBackgroundsLabel' |
+  'showClockLabel' |
+  'showNewsLabel' |
+  'showRewardsWidgetLabel' |
+  'showSearchBoxLabel' |
+  'showSponsoredImagesEarningText' |
+  'showSponsoredImagesLabel' |
+  'showStatsLabel' |
+  'showTalkWidgetLabel' |
+  'showTopSitesLabel' |
+  'showVpnWidgetLabel' |
+  'solidBackgroundLabel' |
+  'solidBackgroundTitle' |
+  'statsAdsBlockedText' |
+  'statsBandwidthSavedText' |
+  'statsTimeSavedText' |
+  'statsTitle' |
+  'talkDescriptionText' |
+  'talkDescriptionTitle' |
+  'talkStartCallLabel' |
+  'talkWidgetTitle' |
+  'topSiteRemovedText' |
+  'topSiteRemovedTitle' |
+  'topSitesCustomOptionText' |
+  'topSitesCustomOptionTitle' |
+  'topSitesMostVisitedOptionText' |
+  'topSitesMostVisitedOptionTitle' |
+  'topSitesSettingsTitle' |
+  'topSitesShowCustomLabel' |
+  'topSitesShowMostVisitedLabel' |
+  'topSitesTitleLabel' |
+  'topSitesURLLabel' |
+  'undoButtonLabel' |
+  'uploadBackgroundLabel' |
+  'vpnChangeRegionLabel' |
+  'vpnFeatureText1' |
+  'vpnFeatureText2' |
+  'vpnFeatureText3' |
+  'vpnOptimalText' |
+  'vpnPoweredByText' |
+  'vpnRestorePurchaseLabel' |
+  'vpnStartTrialLabel' |
+  'vpnStatusConnected' |
+  'vpnStatusConnecting' |
+  'vpnStatusDisconnected' |
+  'vpnStatusDisconnecting' |
+  'vpnWidgetTitle' |
+  'widgetSettingsTitle'
+
+export type PluralStringKey =
+  'newsSourceCountText'
+
+export type Locale = LocaleInterface<StringKey, PluralStringKey>
+
+export const {
+  LocaleProvider,
+  useLocale,
+  usePluralString } = createLocaleContext<StringKey, PluralStringKey>()
