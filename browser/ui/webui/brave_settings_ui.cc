@@ -37,6 +37,7 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -176,6 +177,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           ai_chat::IsAIChatEnabled(profile->GetPrefs()));
   html_source->AddBoolean("isLeoAssistantHistoryAllowed",
                           ai_chat::features::IsAIChatHistoryEnabled());
+
+  html_source->AddBoolean("isSurveyPanelistAllowed",
+                          base::FeatureList::IsEnabled(
+                              ntp_background_images::features::
+                                  kBraveNTPBrandedWallpaperSurveyPanelist));
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(

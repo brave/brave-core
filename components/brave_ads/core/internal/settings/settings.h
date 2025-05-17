@@ -20,6 +20,8 @@ int GetMaximumNotificationAdsPerHour();
 
 bool UserHasOptedInToSearchResultAds();
 
+bool UserHasOptedInToSurveyPanelist();
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_H_

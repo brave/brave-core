@@ -53,4 +53,9 @@ bool UserHasOptedInToSearchResultAds() {
   return GetProfileBooleanPref(prefs::kOptedInToSearchResultAds);
 }
 
+bool UserHasOptedInToSurveyPanelist() {
+  return GetProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
+}
+
 }  // namespace brave_ads
