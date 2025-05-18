@@ -1,0 +1,89 @@
+diff --git a/extensions/browser/sandboxed_unpacker.cc b/extensions/browser/sandboxed_unpacker.cc
+index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b186e202170 100644
+--- a/extensions/browser/sandboxed_unpacker.cc
++++ b/extensions/browser/sandboxed_unpacker.cc
+@@ -380,6 +380,7 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
+   // to do file IO on.
+   DCHECK(unpacker_io_task_runner_->RunsTasksInCurrentSequence());
+ 
++  LOG(ERROR) << "SandboxedUnpacker::StartWithDirectory: id = " << extension_id;
+   extension_id_ = extension_id;
+   public_key_ = public_key;
+   if (!CreateTempDirectory()) {
+@@ -387,6 +388,8 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
+   }
+ 
+   extension_root_ = temp_dir_.GetPath().AppendASCII(kTempExtensionName);
++  LOG(ERROR) << "SandboxedUnpacker::StartWithDirectory: extension_root = "
++             << extension_root_.value();
+ 
+   if (!base::Move(directory, extension_root_)) {
+     LOG(ERROR) << "Could not move " << directory.value() << " to "
+@@ -515,6 +518,8 @@ void SandboxedUnpacker::Unpack(const base::FilePath& directory) {
+   DCHECK(directory.DirName() == temp_dir_.GetPath());
+ 
+   base::FilePath manifest_path = extension_root_.Append(kManifestFilename);
++  LOG(ERROR) << "SandboxedUnpacker::Unpack: manifest path = "
++             << manifest_path.value();
+ 
+   ParseJsonFile(manifest_path,
+                 base::BindOnce(&SandboxedUnpacker::ReadManifestDone, this));
+@@ -533,6 +538,10 @@ void SandboxedUnpacker::ReadManifestDone(
+     return;
+   }
+ 
++  LOG(ERROR) << "SandboxedUnpacker::ReadManifestDone: creating extension with:"
++             << "\nid = " << extension_id_
++             << "\nroot = " << extension_root_.value()
++             << "\nlocation = " << location_;
+   std::string error_msg;
+   scoped_refptr<Extension> extension(
+       Extension::Create(extension_root_, location_, manifest->GetDict(),
+@@ -542,6 +551,7 @@ void SandboxedUnpacker::ReadManifestDone(
+     return;
+   }
+ 
++  LOG(ERROR) << "SandboxedUnpacker::ReadManifestDone: vlaidating extension.";
+   std::vector<InstallWarning> warnings;
+   if (!file_util::ValidateExtension(extension.get(), &error_msg, &warnings)) {
+     ReportUnpackExtensionFailed(error_msg);
+@@ -555,6 +565,8 @@ void SandboxedUnpacker::ReadManifestDone(
+ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
+   DCHECK(unpacker_io_task_runner_->RunsTasksInCurrentSequence());
+ 
++  LOG(ERROR) << "SandboxedUnpacker::UnpackExtensionSucceeded: rewriting final "
++                "manifest";
+   std::optional<base::Value::Dict> final_manifest(
+       RewriteManifestFile(manifest));
+   if (!final_manifest) {
+@@ -582,6 +594,12 @@ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
+     return;
+   }
+ 
++  LOG(ERROR) << "SandboxedUnpacker::UnpackExtensionSucceeded: creating an "
++                "extension object that refers to the temporary location the "
++                "extension was unpacked to:"
++             << "\nid = " << extension_id_
++             << "\nroot = " << extension_root_.value()
++             << "\nlocation = " << location_;
+   extension_ =
+       Extension::Create(extension_root_, location_, final_manifest.value(),
+                         Extension::REQUIRE_KEY | creation_flags_, &utf8_error);
+@@ -612,6 +630,8 @@ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
+ 
+   manifest_ = std::move(manifest);
+ 
++  LOG(ERROR)
++      << "SandboxedUnpacker::ReadManifestDone: creating image sanitizer.";
+   io_thread_state_->CreateImangeSanitizer(extension_.get(), extension_root_,
+                                           this, unpacker_io_task_runner_);
+ }
+@@ -1094,6 +1114,8 @@ void SandboxedUnpacker::ParseJsonFile(
+     return;
+   }
+ 
++  LOG(ERROR) << "SandboxedUnpacker::ParseJsonFile: read manifest from "
++             << path.value() << ". File size = " << contents.length();
+   GetJsonParserPtr()->Parse(contents, base::JSON_PARSE_CHROMIUM_EXTENSIONS,
+                             std::move(callback));
+ }

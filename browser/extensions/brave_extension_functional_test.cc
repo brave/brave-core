@@ -46,7 +46,7 @@ ExtensionFunctionalTest::InstallExtensionSilentlyInternal(
   installer->AddInstallerCallback(
       installer_done_future
           .GetCallback<const std::optional<CrxInstallError>&>());
-  VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+  LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
              << "calling InstallCrx on path = " << path.value().c_str();
   if (public_key) {
     installer->InstallUnpackedCrx(extension_id, public_key, path);
@@ -61,7 +61,7 @@ ExtensionFunctionalTest::InstallExtensionSilentlyInternal(
       registry_observer.WaitForExtensionReady();
   EXPECT_TRUE(extension);
   EXPECT_EQ(extension_id, extension->id());
-  VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+  LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
              << "extension is ready. Extension id = " << extension_id;
 
   size_t num_after = registry->enabled_extensions().size();
@@ -71,7 +71,7 @@ ExtensionFunctionalTest::InstallExtensionSilentlyInternal(
   UserScriptManager* user_script_manager =
       ExtensionSystem::Get(profile())->user_script_manager();
   if (!user_script_manager) {
-    VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+    LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
                << "UserScriptManager is NULL.";
   }
   if (user_script_manager &&
@@ -81,14 +81,14 @@ ExtensionFunctionalTest::InstallExtensionSilentlyInternal(
     if (!user_script_loader->HasLoadedScripts()) {
       ContentScriptLoadWaiter waiter(user_script_loader);
       waiter.Wait();
-      VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+      LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
                  << "ContentScriptLoadWaiter::Wait done.";
     } else {
-      VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+      LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
                  << "ExtensionUserScriptLoader already has loaded scripts.";
     }
   } else {
-    VLOG(1)
+    LOG(ERROR)
         << "ExtensionFunctionalTest::InstallExtensionSilently: "
         << "UserScriptManager check skipped: GetContentScripts is empty.";
   }
@@ -105,20 +105,20 @@ ExtensionFunctionalTest::InstallExtensionSilentlyInternal(
     if (ExtensionBackgroundPageWaiter::CanWaitFor(*extension, reason)) {
       ExtensionBackgroundPageWaiter(context_to_use, *extension)
           .WaitForBackgroundInitialized();
-      VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+      LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
                  << "WaitForBackgroundInitialized is done.";
     } else {
-      VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+      LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
                  << "ExtensionBackgroundPageWaiter can not wait. Reason: "
                  << reason.c_str();
     }
   } else {
-    VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+    LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
                << "RenderProcessHost check skipped.";
   }
 
   EXPECT_TRUE(WaitForExtensionViewsToLoad());
-  VLOG(1) << "ExtensionFunctionalTest::InstallExtensionSilently: "
+  LOG(ERROR) << "ExtensionFunctionalTest::InstallExtensionSilently: "
              << "WaitForExtensionViewsToLoad is done.";
 
   return extension;
