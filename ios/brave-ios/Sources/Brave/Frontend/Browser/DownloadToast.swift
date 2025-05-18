@@ -92,10 +92,7 @@ class DownloadToast: Toast {
 
     self.addSubview(createView(download.filename, descriptionText: self.descriptionText))
 
-    self.toastView.snp.makeConstraints { make in
-      make.left.right.height.equalTo(self)
-      self.animationConstraint = make.top.equalTo(self.snp.bottom).constraint
-    }
+    self.setupInitialToastConstraints()
 
     self.snp.makeConstraints { make in
       make.height.equalTo(ButtonToastUX.toastHeight)
