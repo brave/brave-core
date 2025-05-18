@@ -1,5 +1,5 @@
 diff --git a/extensions/common/extension.cc b/extensions/common/extension.cc
-index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a24b368fd 100644
+index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d581c49a730 100644
 --- a/extensions/common/extension.cc
 +++ b/extensions/common/extension.cc
 @@ -236,10 +236,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
@@ -71,15 +71,18 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a
      int slice = std::min<int>(input.length() - i, kPEMOutputColumns);
      output->append(input.substr(i, slice));
      output->append("\n");
-@@ -589,6 +591,7 @@ Extension::Extension(const base::FilePath& path,
+@@ -588,7 +590,10 @@ Extension::Extension(const base::FilePath& path,
+   path_ = crx_file::id_util::MaybeNormalizePath(path);
  }
  
++#include "base/debug/stack_trace.h"
  Extension::~Extension() {
 +  LOG(ERROR) << "Extension::~Extension: path_ = " << path_.value();
++  LOG(ERROR) << base::debug::StackTrace().ToString();
  }
  
  bool Extension::InitFromValue(int flags, std::u16string* error) {
-@@ -619,6 +622,10 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
+@@ -619,6 +624,10 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
  
    extension_origin_ = Extension::CreateOriginFromExtensionId(id());
    extension_url_ = Extension::GetBaseURLFromExtensionId(id());
@@ -90,7 +93,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a
  
    // Load App settings. LoadExtent at least has to be done before
    // ParsePermissions(), because the valid permissions depend on what type of
-@@ -631,10 +638,12 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
+@@ -631,10 +640,12 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
    if (!permissions_parser_->Parse(this, error)) {
      return false;
    }
@@ -103,7 +106,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a
  
    permissions_parser_->Finalize(this);
    permissions_parser_.reset();
-@@ -652,6 +661,7 @@ bool Extension::LoadRequiredFeatures(std::u16string* error) {
+@@ -652,6 +663,7 @@ bool Extension::LoadRequiredFeatures(std::u16string* error) {
    if (!LoadName(error) || !LoadVersion(error)) {
      return false;
    }
@@ -111,7 +114,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a
    return true;
  }
  
-@@ -693,8 +703,8 @@ bool Extension::LoadVersion(std::u16string* error) {
+@@ -693,8 +705,8 @@ bool Extension::LoadVersion(std::u16string* error) {
  }
  
  bool Extension::LoadAppFeatures(std::u16string* error) {
@@ -122,7 +125,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a
      return false;
    }
    return true;
-@@ -822,6 +832,7 @@ bool Extension::LoadManifestVersion(std::u16string* error) {
+@@ -822,6 +834,7 @@ bool Extension::LoadManifestVersion(std::u16string* error) {
      AddInstallWarning(InstallWarning(warning, keys::kManifestVersion));
    }
  
@@ -130,7 +133,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..b760d3b5e46ee499f9bf9bcd64de442a
    return true;
  }
  
-@@ -858,4 +869,4 @@ ExtensionInfo& ExtensionInfo::operator=(ExtensionInfo&&) = default;
+@@ -858,4 +871,4 @@ ExtensionInfo& ExtensionInfo::operator=(ExtensionInfo&&) = default;
  
  ExtensionInfo::~ExtensionInfo() = default;
  
