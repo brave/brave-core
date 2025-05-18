@@ -151,8 +151,6 @@ extension BrowserViewController: TabObserver {
         self.dismiss(animated: true)
       }
     }
-
-    hideToastsOnNavigationStartIfNeeded(tabManager)
   }
 
   public func tabDidCommitNavigation(_ tab: some TabState) {
