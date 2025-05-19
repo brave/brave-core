@@ -124,10 +124,11 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
   PsstRuleRegistry::GetInstance()->ResetRuleRegistryForTest();
-  PsstRuleRegistry::GetInstance()->LoadRules(base::FilePath(""));
+  PsstRuleRegistry::GetInstance()->LoadRules(
+      base::FilePath(FILE_PATH_LITERAL("")));
   ASSERT_TRUE(PsstRuleRegistry::GetInstance()->rules_.empty());
   PsstRuleRegistry::GetInstance()->LoadRules(
-      base::FilePath("non-existing-path"));
+      base::FilePath(FILE_PATH_LITERAL("non-existing-path")));
   ASSERT_TRUE(PsstRuleRegistry::GetInstance()->rules_.empty());
 
   base::MockCallback<base::OnceCallback<void(const std::string& data)>>
