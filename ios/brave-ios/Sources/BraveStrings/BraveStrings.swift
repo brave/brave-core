@@ -4172,8 +4172,16 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "'Sponsored' are additional branded backgrounds you can earn from with Brave Rewards enabled.",
+          "Sponsored images are branded backgrounds that appear in newly opened tabs in the browser. Enabling these Sponsored Images supports Brave's mission.",
         comment: "The text description of image type which is being used NTP"
+      )
+    public static let imageTypeSelectionDescriptionLearnMore =
+      NSLocalizedString(
+        "ntp.imageTypeSelectionDescriptionLearnMore",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Learn more",
+        comment: "The text label of image type learn more link"
       )
 
     public static let settingsTitle = NSLocalizedString(
@@ -8281,6 +8289,38 @@ extension Strings {
         value: "Brave Ads Data",
         comment:
           "Text for the toggle switch to clear 'Brave Ads' data in settings"
+      )
+
+    public static let searchResultAdClickedInfoBarMessage =
+      NSLocalizedString(
+        "searchResultAdClickedInfoBarMessage",
+        bundle: .module,
+        value: "Thanks for supporting Brave Search by clicking a private ad. Unlike Big Tech, we measure ad performance anonymously to preserve your privacy.",
+        comment: "The text label of creative search result ad infobar message."
+      )
+
+    public static let searchResultAdClickedInfoBarLearnMoreOptOutChoices =
+      NSLocalizedString(
+        "searchResultAdClickedInfoBarLearnMoreOptOutChoices",
+        bundle: .module,
+        value: "Learn more / opt out choices",
+        comment: "The text label of creative search result ad learn more / opt out choices link."
+      )
+
+    public static let newTabTakeoverInfoBarMessage =
+      NSLocalizedString(
+        "NewTabTakeoverInfoBarMessage",
+        bundle: .module,
+        value: "Sponsored background images support Brave's mission to build an independent, user-first Web. And unlike Big Tech, we measure ad performance anonymously to preserve your privacy.",
+        comment: "The text of new tab takeover infobar message."
+      )
+
+    public static let newTabTakeoverInfoBarLearnMoreOptOutChoices =
+      NSLocalizedString(
+        "newTabTakeoverInfoBarLearnMoreOptOutChoices",
+        bundle: .module,
+        value: "Learn more / opt out choices",
+        comment: "The text of new tab takeover learn more / opt out choices link."
       )
   }
 }

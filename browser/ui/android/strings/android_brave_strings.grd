@@ -1439,6 +1439,12 @@ Are you sure you want to do this?
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page
       </message>
+      <message name="IDS_NEW_TAB_TAKEOVER_INFOBAR_MESSAGE" desc="The text of new tab takeover infobar message.">
+        Sponsored background images support Brave's mission to build an independent, user-first Web. And unlike Big Tech, we measure ad performance anonymously to preserve your privacy.
+      </message>
+      <message name="IDS_NEW_TAB_TAKEOVER_INFOBAR_LEARN_MORE_OPT_OUT_CHOICES" desc="The text of new tab takeover infobar learn more / opt out choices link.">
+        Learn more / opt out choices
+      </message>
       <message name="IDS_BACKGROUND_IMAGES" desc= "Category title of background images option.">
         Background Images
       </message>
@@ -1447,6 +1453,9 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
         Show Sponsored Images
+      </message>
+      <message name="IDS_SPONSORED_IMAGES_LEARN_MORE" desc="Title of learn more about Sponsored images.">
+        Learn more about Sponsored images
       </message>
       <message name="IDS_WIDGETS" desc ="Categary of Widget option.">
         Widgets
