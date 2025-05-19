@@ -22,10 +22,10 @@ COMPONENT_EXPORT(PSST_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 COMPONENT_EXPORT(PSST_COMMON)
-bool GetEnablePsstFlag(PrefService* prefs);
+bool IsPsstEnabled(PrefService* prefs);
 
 COMPONENT_EXPORT(PSST_COMMON)
-void SetEnablePsstFlag(PrefService* prefs, const bool val);
+void SetPsstEnabledState(PrefService* prefs, const bool val);
 
 }  // namespace psst
 
