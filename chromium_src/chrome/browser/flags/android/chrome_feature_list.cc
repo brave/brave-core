@@ -8,6 +8,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search_conversion/features.h"
@@ -46,6 +47,7 @@
     &playlist::features::kPlaylist,                                     \
     &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
+    &preferences::features::kBravePictureInPictureForYouTubeVideos,     \
     &brave_rewards::features::kNewRewardsUIFeature,                     \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
@@ -60,7 +62,8 @@
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
     &brave_shields::features::kBlockAllCookiesToggle,                   \
     &brave_shields::features::kBraveShieldsElementPicker,               \
-    &features::kNewAndroidOnboarding
+    &features::kNewAndroidOnboarding,                                   \
+    &brave_ads::kNewTabPageAdFeature
 
 // clang-format on
 

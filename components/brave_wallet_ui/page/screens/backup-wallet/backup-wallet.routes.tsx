@@ -24,6 +24,7 @@ import {
 import {
   VerifyRecoveryPhrase //
 } from './verify-recovery-phrase/verify_recovery_phrase'
+import { PageNotFound } from '../page_not_found/page_not_found'
 
 export const WALLET_BACKUP_STEPS = [
   WalletRoutes.Backup,
@@ -72,7 +73,9 @@ export const BackupWalletRoutes = () => {
           <VerifyRecoveryPhrase />
         </Route>
       )}
-
+      <Route path='*'>
+        <PageNotFound />
+      </Route>
       <Redirect to={WalletRoutes.Backup} />
     </Switch>
   )

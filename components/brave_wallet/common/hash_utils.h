@@ -43,7 +43,7 @@ SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input);
 Ripemd160HashArray Hash160(base::span<const uint8_t> input);
 
 void Blake2bHash(
-    base::span<const uint8_t> payload,
+    std::initializer_list<base::span<const uint8_t>> payloads,
     base::span<uint8_t> hash_out,
     std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
         personalizer = std::nullopt);
@@ -51,11 +51,11 @@ void Blake2bHash(
 template <size_t T>
   requires(T > 0 && T <= kBlake2bMaxLength)
 std::array<uint8_t, T> Blake2bHash(
-    base::span<const uint8_t> payload,
+    std::initializer_list<base::span<const uint8_t>> payloads,
     std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
         personalizer = std::nullopt) {
   std::array<uint8_t, T> result;
-  Blake2bHash(payload, result, personalizer);
+  Blake2bHash(payloads, result, personalizer);
   return result;
 }
 

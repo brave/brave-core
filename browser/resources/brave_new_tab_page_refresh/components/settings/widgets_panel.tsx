@@ -6,14 +6,12 @@
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 
 import { style } from './widgets_panel.style'
 
 export function WidgetsPanel() {
-  const { getString } = useLocale()
-
   const actions = useAppActions()
 
   const showStats = useAppState((s) => s.showShieldsStats)
@@ -25,7 +23,7 @@ export function WidgetsPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='form-control-row'>
+      <div className='control-row'>
         <label>{getString('showStatsLabel')}</label>
         <Toggle
           size='small'
@@ -37,7 +35,7 @@ export function WidgetsPanel() {
       </div>
       {
         vpnFeatureEnabled &&
-          <div className='form-control-row'>
+          <div className='control-row'>
             <label>{getString('showVpnWidgetLabel')}</label>
             <Toggle
               size='small'
@@ -50,7 +48,7 @@ export function WidgetsPanel() {
       }
       {
         rewardsFeatureEnabled &&
-          <div className='form-control-row'>
+          <div className='control-row'>
             <label>{getString('showRewardsWidgetLabel')}</label>
             <Toggle
               size='small'
@@ -61,7 +59,7 @@ export function WidgetsPanel() {
             />
           </div>
       }
-      <div className='form-control-row'>
+      <div className='control-row'>
         <label>{getString('showTalkWidgetLabel')}</label>
         <Toggle
           size='small'

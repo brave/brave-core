@@ -52,6 +52,17 @@ export function isValidBtcAddress(value: string, testnet: boolean): boolean {
   }
 }
 
+export function isValidCardanoAddress(
+  value: string,
+  testnet: boolean
+): boolean {
+  if (testnet) {
+    return /^addr_test1[a-zA-HJ-NP-Z0-9]*$/.test(value)
+  } else {
+    return /^addr1[a-zA-HJ-NP-Z0-9]*$/.test(value)
+  }
+}
+
 export const suggestNewAccountName = (
   accounts: BraveWallet.AccountInfo[],
   network: Pick<BraveWallet.NetworkInfo, 'coin' | 'symbolName' | 'chainId'>

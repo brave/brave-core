@@ -3,53 +3,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export type BackgroundType = 'brave' | 'custom' | 'solid' | 'gradient'
+import { NewTabPageAdEventType } from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 
-export interface BraveBackground {
-  type: 'brave'
-  author: string
-  imageUrl: string
-  link: string
+import {
+  BraveBackground,
+  SponsoredImageBackground,
+  SelectedBackground,
+  SelectedBackgroundType } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
+
+export {
+  BraveBackground,
+  NewTabPageAdEventType,
+  SponsoredImageBackground,
+  SelectedBackgroundType
 }
-
-export interface ColorBackground {
-  type: 'solid' | 'gradient'
-  cssValue: string
-}
-
-export interface CustomBackground {
-  type: 'custom'
-  imageUrl: string
-}
-
-export interface SponsoredImageLogo {
-  alt: string
-  destinationUrl: string
-  imageUrl: string
-}
-
-export interface SponsoredImageBackground {
-  type: 'sponsored-image' | 'sponsored-rich-media'
-  imageUrl: string
-  creativeInstanceId: string
-  campaignId: string
-  wallpaperId: string
-  shouldMetricsFallbackToP3a: boolean
-  logo: SponsoredImageLogo | null
-}
-
-export type SponsoredRichMediaEventType =
-  'click' |
-  'interaction' |
-  'mediaPlay' |
-  'media25' |
-  'media100'
 
 export type Background =
-  BraveBackground |
-  ColorBackground |
-  CustomBackground |
-  SponsoredImageBackground
+  { type: 'brave' } & BraveBackground |
+  { type: 'color', cssValue: string } |
+  { type: 'custom', imageUrl: string } |
+  { type: 'sponsored-image' | 'sponsored-rich-media' }
+    & SponsoredImageBackground
 
 export interface BackgroundState {
   backgroundsEnabled: boolean
@@ -57,8 +31,7 @@ export interface BackgroundState {
   sponsoredImagesEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
-  selectedBackgroundType: BackgroundType
-  selectedBackground: string
+  selectedBackground: SelectedBackground
   currentBackground: Background | null
   sponsoredImageBackground: SponsoredImageBackground | null
   sponsoredRichMediaBaseUrl: string
@@ -78,7 +51,8 @@ export const gradientBackgrounds = [
   'linear-gradient(90deg, #4F30AB 0.64%, #845EF7 99.36%)',
   'linear-gradient(126.47deg, #A43CE4 16.99%, #A72B6D 86.15%)',
   'radial-gradient(' +
-    '69.45% 69.45% at 89.46% 81.73%, #641E0C 0%, #500F39 43.54%, #060141 100%)',
+    '69.45% 69.45% at 89.46% 81.73%, #641E0C 0%, #500F39 43.54%, ' +
+    '#060141 100%)',
   'radial-gradient(80% 80% at 101.61% 76.99%, #2D0264 0%, #030023 100%)',
   'linear-gradient(128.12deg, #43D4D4 6.66%, #1596A9 83.35%)',
   'linear-gradient(323.02deg, #DD7131 18.65%, #FBD460 82.73%)',
@@ -89,13 +63,6 @@ export const gradientBackgrounds = [
 
 export const gradientPreviewBackground = gradientBackgrounds[0]
 
-const defaultBackgroundType: BackgroundType = 'gradient'
-
-const defaultBackground: ColorBackground = {
-  type: defaultBackgroundType,
-  cssValue: gradientPreviewBackground
-}
-
 export function defaultBackgroundState(): BackgroundState {
   return {
     backgroundsEnabled: true,
@@ -103,8 +70,10 @@ export function defaultBackgroundState(): BackgroundState {
     sponsoredImagesEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
-    selectedBackgroundType: defaultBackgroundType,
-    selectedBackground: defaultBackground.cssValue,
+    selectedBackground: {
+      type: SelectedBackgroundType.kGradient,
+      value: gradientPreviewBackground
+    },
     currentBackground: null,
     sponsoredImageBackground: null,
     sponsoredRichMediaBaseUrl: ''
@@ -114,11 +83,11 @@ export function defaultBackgroundState(): BackgroundState {
 export interface BackgroundActions {
   setBackgroundsEnabled: (enabled: boolean) => void
   setSponsoredImagesEnabled: (enabled: boolean) => void
-  selectBackground: (type: BackgroundType, value: string) => void
+  selectBackground: (type: SelectedBackgroundType, value: string) => void
   showCustomBackgroundChooser: () => Promise<boolean>
   removeCustomBackground: (background: string) => Promise<void>
   notifySponsoredImageLogoClicked: () => void
-  notifySponsoredRichMediaEvent: (type: SponsoredRichMediaEventType) => void
+  notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
 }
 
 function chooseRandom<T>(list: T[]): T | null {
@@ -126,6 +95,11 @@ function chooseRandom<T>(list: T[]): T | null {
     return null
   }
   return list[Math.floor(Math.random() * list.length)]
+}
+
+const defaultBackground: Background = {
+  type: 'color',
+  cssValue: gradientPreviewBackground
 }
 
 export function getCurrentBackground(
@@ -136,48 +110,59 @@ export function getCurrentBackground(
     braveBackgrounds,
     customBackgrounds,
     selectedBackground,
-    selectedBackgroundType,
-    sponsoredImageBackground,
-    currentBackground } = state
+    currentBackground,
+    sponsoredImageBackground } = state
 
   if (!backgroundsEnabled) {
     return defaultBackground
   }
 
   if (sponsoredImageBackground) {
-    return sponsoredImageBackground
-  }
-
-  if (currentBackground &&
-      selectedBackgroundType === currentBackground.type &&
-      !selectedBackground) {
-    return currentBackground
-  }
-
-  switch (selectedBackgroundType) {
-    case 'brave': {
-      return chooseRandom(braveBackgrounds)
+    return {
+      type: sponsoredImageBackground.wallpaperType === 'richMedia' ?
+        'sponsored-rich-media' : 'sponsored-image',
+      ...sponsoredImageBackground
     }
-    case 'custom': {
-      const imageUrl = selectedBackground || chooseRandom(customBackgrounds)
+  }
+
+  const { type, value } = selectedBackground
+
+  switch (type) {
+    case SelectedBackgroundType.kBrave: {
+      if (currentBackground?.type === 'brave') {
+        return currentBackground
+      }
+      const braveBackground = chooseRandom(braveBackgrounds)
+      return braveBackground ? { type: 'brave', ...braveBackground } : null
+    }
+    case SelectedBackgroundType.kCustom: {
+      const imageUrl = value || chooseRandom(customBackgrounds)
       return imageUrl ? { type: 'custom', imageUrl } : null
     }
-    case 'solid': {
-      const cssValue = selectedBackground || chooseRandom(solidBackgrounds)
-      return cssValue ? { type: 'solid', cssValue } : null
+    case SelectedBackgroundType.kSolid: {
+      const cssValue = value || chooseRandom(solidBackgrounds)
+      return cssValue ? { type: 'color', cssValue } : null
     }
-    case 'gradient': {
-      const cssValue = selectedBackground || chooseRandom(gradientBackgrounds)
-      return cssValue ? { type: 'gradient', cssValue } : null
+    case SelectedBackgroundType.kGradient: {
+      const cssValue = value || chooseRandom(gradientBackgrounds)
+      return cssValue ? { type: 'color', cssValue } : null
+    }
+    default: {
+      console.error('Unhandled background type', type)
+      return defaultBackground
     }
   }
 }
 
-export function backgroundCSSValue(type: BackgroundType, value: string) {
+export function backgroundCSSValue(
+  type: SelectedBackgroundType,
+  value: string
+) {
   switch (type) {
-    case 'brave':
-    case 'custom': return `url(${CSS.escape(value)})`
-    case 'solid':
-    case 'gradient': return value
+    case SelectedBackgroundType.kBrave:
+    case SelectedBackgroundType.kCustom:
+      return `url(${CSS.escape(value)})`
+    default:
+      return value
   }
 }

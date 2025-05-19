@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/res/layout/radio_button_group_homepage_preference.xml b/chrome/android/java/res/layout/radio_button_group_homepage_preference.xml
+index 9f50c3de56b882ec146ab4c904171c51aac75299..5b29fa0d65e172c686aa800364e5b139bcda5909 100644
+--- a/chrome/android/java/res/layout/radio_button_group_homepage_preference.xml
++++ b/chrome/android/java/res/layout/radio_button_group_homepage_preference.xml
+@@ -36,6 +36,7 @@ found in the LICENSE file.
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:primaryText="@string/options_homepage_chrome_homepage" />
++    <include layout="@layout/brave_homepage_mobile_bookmarks_button" />
+ 
+     <org.chromium.components.browser_ui.widget.RadioButtonWithEditText
+         android:id="@+id/radio_button_uri_edit"

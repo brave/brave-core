@@ -18,16 +18,17 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_drag_context.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/layer_tree_owner.h"
@@ -101,19 +102,19 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
       scroll_animator_for_item_(std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
-  model_observed_.Observe(browser->sidebar_controller()->model());
+  model_observed_.Observe(browser->GetFeatures().sidebar_controller()->model());
   bounds_animator_observed_.AddObservation(scroll_animator_for_item_.get());
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
-  up_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>(
-      brave_l10n::GetLocalizedResourceUTF16String(
+  up_arrow_ = AddChildView(
+      std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
           IDS_SIDEBAR_ITEMS_SCROLL_UP_BUTTON_ACCESSIBLE_NAME)));
   up_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), up_arrow_));
-  down_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>(
-      brave_l10n::GetLocalizedResourceUTF16String(
+  down_arrow_ = AddChildView(
+      std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
           IDS_SIDEBAR_ITEMS_SCROLL_DOWN_BUTTON_ACCESSIBLE_NAME)));
   down_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,

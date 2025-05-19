@@ -16,6 +16,7 @@ public enum DeepLink: String {
   case playlist
   case browserMenu = "menu"
   case setDefaultBrowser = "set-default"
+  case importData = "import-data"
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -98,6 +99,8 @@ public enum NavigationPath: Equatable {
       bvc.presentMenu(from: bvc.navigationToolbar)
     case .setDefaultBrowser:
       bvc.presentDefaultBrowserScreenCallout(skipSafeGuards: true)
+    case .importData:
+      bvc.presentDataImporter()
     }
   }
 

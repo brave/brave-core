@@ -246,7 +246,6 @@ Só poderán ler os teus datos encriptados as persoas que coñezan a túa frase 
 <translation id="2172905120685242547">Queres pechar a ventá?</translation>
 <translation id="2173302385160625112">Comproba a túa conexión a Internet</translation>
 <translation id="2175927920773552910">Código QR</translation>
-<translation id="1203189419326478388">Mostra ou oculta a barra de marcadores</translation>
 <translation id="2184272387334793084">Inicia sesión para poder acceder aos teus contrasinais e moito máis en todos os teus dispositivos</translation>
 <translation id="218608176142494674">Uso compartido</translation>
 <translation id="219283042927675668">Pestanas no grupo</translation>
@@ -515,7 +514,6 @@ Só poderán ler os teus datos encriptados as persoas que coñezan a túa frase 
 <translation id="3474624961160222204">Continuar como <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Podes escoller o motor de busca</translation>
 <translation id="3479552764303398839">Agora non</translation>
-<translation id="5270319788820204019">Fai buscas co teclado, a voz, o modo de incógnito ou a cámara</translation>
 <translation id="6165882953768534820">Outras persoas (ou aplicacións) poden acceder ao ficheiro exportado. En canto o exportes, os teus contrasinais eliminaranse de Brave.</translation>
 <translation id="3488199663160411179">nome</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/> acerca do contido suxerido</translation>
@@ -1836,6 +1834,7 @@ Para cambiar esta opción de configuración, <ph name="BEGIN_LINK"/>elimina os d
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, separador privado</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/>, separador privado seleccionado</translation>
 <translation id="2280910239864711607">Abrir unha nova pestana no modo de incógnito</translation>
+<translation id="1203189419326478388">Mostrar ou agochar os marcadores</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> pestana de incógnito}
           other {<ph name="TAB_COUNT_NORMAL"/> pestanas de incógnito}}</translation>
@@ -1853,6 +1852,7 @@ Para cambiar esta opción de configuración, <ph name="BEGIN_LINK"/>elimina os d
 <translation id="7096147642287317420">Toca e mantén premido para saír de Privado</translation>
 <translation id="2331163878318921124">Toca dúas veces e mantén premido para saír de Privado</translation>
 <translation id="3947065058794437451">O modo de incógnito non está dispoñible neste dispositivo</translation>
+<translation id="5270319788820204019">Buscar usando o teclado, a voz, unha ventá privada ou a cámara</translation>
 <translation id="3095878721037212218">Poderás xestionar facilmente os controis multimedia, as sesións privadas, as descargas, etc.</translation>
 <translation id="5129323533070334129">Quere gardar o contrasinal fóra do modo de incógnito?</translation>
 <translation id="4325212706000356062">Busca nas túas pestanas de incógnito</translation>

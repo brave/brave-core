@@ -70,11 +70,18 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
    public:
-    using ExtractCallback = base::OnceCallback<void(std::string)>;
+    // Result is extracted text or error
+    using ExtractCallback =
+        base::OnceCallback<void(base::expected<std::string, std::string>)>;
+    // Result is image data of pdf pages or error
+    using CapturePdfCallback = base::OnceCallback<void(
+        base::expected<std::vector<std::vector<uint8_t>>, std::string>)>;
 
     virtual ~PrintPreviewExtractionDelegate() = default;
-    // Get the current text from the WebContents using Print Preview
-    virtual void Extract(bool is_pdf, ExtractCallback callback) = 0;
+    // Get the current text from the WebContents using Print Preview and OCR
+    virtual void Extract(ExtractCallback callback) = 0;
+    // Capture images of pdf without doing OCR
+    virtual void CapturePdf(CapturePdfCallback callback) = 0;
   };
 
   class PageContentFetcherDelegate {
@@ -192,8 +199,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                   bool is_video,
                                   std::string invalidation_token);
 
-  void OnExtractPrintPreviewContentComplete(GetPageContentCallback callback,
-                                            std::string content);
+  void OnExtractPrintPreviewContentComplete(
+      GetPageContentCallback callback,
+      base::expected<std::string, std::string>);
 
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>

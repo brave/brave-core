@@ -30,8 +30,10 @@ This is only an estimate. The **github** view may differ.
 ## Document Index
 
 ### Checking Out and Patching
-*   [Upgrading Chromium](chromium_version_upgrade.md) Upgrading `brave-core` to a newer
-    Chromium version.
+*   [Upgrading Chromium](chromium_version_upgrade.md) Upgrading `brave-core` to
+    a newer Chromium version.
+*   [Patching with `plaster`](plaster.md) A patching engine for semantical
+    patching of upstream Chromium.
 *   [WebUI Overriding](webui_overriding.md)
 *   [DevTools Frontend Patching](devtools_frontend_patching.md) Managing
     changes to the upstream project.
@@ -45,3 +47,5 @@ This is only an estimate. The **github** view may differ.
     Suggestions on how to make chromium test work on our test targets.
 *   [Ship a File to All Clients](ship_a_file_to_all_clients.md) - How to ship a
     file to all clients via component updater.
+*   [Git Configuration](git_configuration.md) - General recommendations for
+    setting up and optimizing your Git environment.

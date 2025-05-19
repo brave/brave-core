@@ -595,3 +595,13 @@ export const BraveRewardsIndicator = styled.div`
 export const LeoSquaredButton = styled(Button)`
   --leo-button-radius: 12px;
 `
+
+export const DefaultPageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  position: relative;
+`

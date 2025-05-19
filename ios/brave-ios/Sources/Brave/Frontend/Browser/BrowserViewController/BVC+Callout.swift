@@ -7,6 +7,7 @@ import BraveCore
 import BraveShared
 import BraveUI
 import BraveVPN
+import DataImporter
 import Onboarding
 import Preferences
 import SafariServices
@@ -348,5 +349,35 @@ extension BrowserViewController {
     }
 
     openBraveLeo()
+  }
+
+  func presentDataImporter() {
+    // DataImportView is typically presented from inside settings, so we need to:
+    //   1. Set up a UINavigationController container
+    //   2. Add a done button to the toolbar
+    let controller = UIHostingController(
+      rootView: DataImportView(
+        openURL: { [unowned self] url in
+          dismiss(animated: true)
+          openURLInNewTab(
+            url,
+            isPrivate: privateBrowsingManager.isPrivateBrowsing,
+            isPrivileged: url.scheme == InternalURL.scheme
+          )
+        },
+        dismiss: { [unowned self] in
+          dismiss(animated: true)
+        },
+        onDismiss: {}
+      )
+    )
+    controller.navigationItem.rightBarButtonItem = .init(
+      systemItem: .done,
+      primaryAction: .init(handler: { [unowned self] _ in
+        dismiss(animated: true)
+      })
+    )
+    let container = UINavigationController(rootViewController: controller)
+    present(container, animated: true)
   }
 }

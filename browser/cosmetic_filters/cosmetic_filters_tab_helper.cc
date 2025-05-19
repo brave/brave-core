@@ -12,7 +12,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
@@ -23,7 +22,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "components/tab_collections/public/tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/color/color_provider.h"
 #else
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
@@ -127,18 +126,18 @@ void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
 void CosmeticFiltersTabHelper::GetElementPickerLocalizedTexts(
     GetElementPickerLocalizedTextsCallback callback) {
   auto localization_data = mojom::ElementPickerLocalization::New(
-      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
           IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_ENABLED_LABEL)),
-      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
           IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_DISABLED_LABEL)),
-      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BRAVE_ELEMENT_PICKER_MANAGE_BTN_LABEL)),
-      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+      base::UTF16ToUTF8(
+          l10n_util::GetStringUTF16(IDS_BRAVE_ELEMENT_PICKER_MANAGE_BTN_LABEL)),
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
           IDS_BRAVE_ELEMENT_PICKER_SHOW_RULES_BTN_LABEL)),
-      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
           IDS_BRAVE_ELEMENT_PICKER_HIDE_RULES_BTN_LABEL)),
-      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BRAVE_ELEMENT_PICKER_QUIT_BTN_LABEL)));
+      base::UTF16ToUTF8(
+          l10n_util::GetStringUTF16(IDS_BRAVE_ELEMENT_PICKER_QUIT_BTN_LABEL)));
   std::move(callback).Run(std::move(localization_data));
 }
 

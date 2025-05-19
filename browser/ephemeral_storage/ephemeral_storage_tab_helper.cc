@@ -125,7 +125,8 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   auto* site_instance = web_contents()->GetSiteInstance();
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
-      browser_context, new_domain, site_instance->GetStoragePartitionConfig());
+      {browser_context, new_domain,
+       site_instance->GetStoragePartitionConfig()});
 }
 
 void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
@@ -145,8 +146,8 @@ void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
 
   provisional_tld_ephemeral_lifetimes_.emplace(
       TLDEphemeralLifetime::GetOrCreate(
-          browser_context, new_domain,
-          site_instance->GetStoragePartitionConfig()));
+          {browser_context, new_domain,
+           site_instance->GetStoragePartitionConfig()}));
 }
 
 void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {

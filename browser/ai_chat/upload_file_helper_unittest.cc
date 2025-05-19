@@ -9,6 +9,7 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/scoped_observation.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -22,12 +23,28 @@
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
-#include "testing/gmock/include/gmock/gmock-matchers.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image_unittest_util.h"
 
 namespace ai_chat {
+
+namespace {
+
+class MockObserver : UploadFileHelper::Observer {
+ public:
+  explicit MockObserver(UploadFileHelper* helper) { obs_.Observe(helper); }
+  ~MockObserver() override = default;
+
+  MOCK_METHOD(void, OnFilesSelected, (), (override));
+
+ private:
+  base::ScopedObservation<UploadFileHelper, UploadFileHelper::Observer> obs_{
+      this};
+};
+
+}  // namespace
 class UploadFileHelperTest : public content::RenderViewHostTestHarness {
  public:
   void SetUp() override {
@@ -84,6 +101,8 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
       std::make_unique<content::CancellingSelectFileDialogFactory>(
           &dialog_params_));
   // This also test cancel selection result
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(0);
   EXPECT_FALSE(UploadImageSync());
   EXPECT_EQ(dialog_params_.type, ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE);
   ASSERT_TRUE(dialog_params_.file_types);
@@ -109,14 +128,19 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ui::SelectFileDialog::SetFactory(
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path}));
+  testing::NiceMock<MockObserver> observer(file_helper_.get());
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
   EXPECT_FALSE(UploadImageSync());
+  testing::Mock::VerifyAndClearExpectations(&observer);
 
   base::FilePath path2 = temp_dir_.GetPath().AppendASCII("empty.png");
   ASSERT_TRUE(base::WriteFile(path2, base::span<uint8_t>()));
   ui::SelectFileDialog::SetFactory(
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path2}));
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
   EXPECT_FALSE(UploadImageSync());
+  testing::Mock::VerifyAndClearExpectations(&observer);
 
   constexpr uint8_t kSamplePng[] = {
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
@@ -132,7 +156,9 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ui::SelectFileDialog::SetFactory(
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path3}));
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
   auto sample_result = UploadImageSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
   ASSERT_TRUE(sample_result);
   ASSERT_EQ(1u, sample_result->size());
   EXPECT_EQ((*sample_result)[0]->filename, "sample_png.png");
@@ -151,7 +177,9 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ui::SelectFileDialog::SetFactory(
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path4}));
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
   auto large_result = UploadImageSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
   ASSERT_TRUE(large_result);
   ASSERT_EQ(1u, large_result->size());
   EXPECT_EQ((*large_result)[0]->filename, "large_png.png");
@@ -167,7 +195,9 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path3, path4}));
 
+  EXPECT_CALL(observer, OnFilesSelected).Times(1);
   auto result = UploadImageSync();
+  testing::Mock::VerifyAndClearExpectations(&observer);
 
   ASSERT_TRUE(result);
   ASSERT_EQ(2u, result->size());

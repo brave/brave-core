@@ -37,19 +37,6 @@ std::string GetDefaultISOLanguageCodeString() {
   return GetISOLanguageCode(GetDefaultLocaleString());
 }
 
-std::optional<std::string> GetISOScriptCode(std::string_view locale) {
-  std::string script = ParseLocaleSubtags(locale).script;
-  if (script.empty()) {
-    return std::nullopt;
-  }
-
-  return script;
-}
-
-std::optional<std::string> GetDefaultISOScriptCodeString() {
-  return GetISOScriptCode(GetDefaultLocaleString());
-}
-
 std::string GetISOCountryCode(std::string_view locale) {
   std::string country = ParseLocaleSubtags(locale).country;
   if (country.empty()) {
@@ -61,32 +48,6 @@ std::string GetISOCountryCode(std::string_view locale) {
 
 std::string GetDefaultISOCountryCodeString() {
   return GetISOCountryCode(GetDefaultLocaleString());
-}
-
-std::optional<std::string> GetCharSet(std::string_view locale) {
-  std::string charset = ParseLocaleSubtags(locale).charset;
-  if (charset.empty()) {
-    return std::nullopt;
-  }
-
-  return charset;
-}
-
-std::optional<std::string> GetDefaultCharSetString() {
-  return GetCharSet(GetDefaultLocaleString());
-}
-
-std::optional<std::string> GetVariant(std::string_view locale) {
-  std::string variant_code = ParseLocaleSubtags(locale).variant;
-  if (variant_code.empty()) {
-    return std::nullopt;
-  }
-
-  return variant_code;
-}
-
-std::optional<std::string> GetDefaultVariantString() {
-  return GetVariant(GetDefaultLocaleString());
 }
 
 }  // namespace brave_l10n

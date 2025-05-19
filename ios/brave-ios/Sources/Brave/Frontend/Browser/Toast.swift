@@ -6,6 +6,25 @@ import Foundation
 import SnapKit
 import UIKit
 
+/// A transparent overlay that captures taps outside the toast view and triggers a callback.
+/// Used specifically to handle taps in the URL toolbar area.
+class ToastTapInterceptingOverlay: UIView {
+  var didTapOutside: (() -> Void)?
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    didTapOutside?()
+    return nil
+  }
+}
+
 class ToastShadowView: UIView {
   private var shadowLayer: CAShapeLayer?
 
@@ -45,7 +64,9 @@ class Toast: UIView {
 
   var displayState = State.dismissed
 
-  var tapDismissalMode: TapDismissalMode = .anyTap
+  var tapDismissalMode: TapDismissalMode = .dismissOnOutsideTap
+
+  private lazy var tapInterceptingOverlay = ToastTapInterceptingOverlay()
 
   lazy var gestureRecognizer: UITapGestureRecognizer = {
     let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -62,6 +83,13 @@ class Toast: UIView {
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     superview?.addGestureRecognizer(gestureRecognizer)
+
+    if let superview = superview {
+      superview.insertSubview(tapInterceptingOverlay, belowSubview: self)
+      tapInterceptingOverlay.frame = superview.bounds
+    } else {
+      tapInterceptingOverlay.removeFromSuperview()
+    }
   }
 
   func showToast(
@@ -76,6 +104,13 @@ class Toast: UIView {
     self.displayState = .pendingShow
 
     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+      self.tapInterceptingOverlay.didTapOutside = { [weak self] in
+        if self?.tapDismissalMode == .noDismissal {
+          return
+        }
+        self?.dismiss(false, completion: completion)
+      }
+
       viewController?.view.addSubview(self)
 
       self.layer.removeAllAnimations()
@@ -119,6 +154,7 @@ class Toast: UIView {
       },
       completion: { finished in
         self.displayState = .dismissed
+        self.tapInterceptingOverlay.removeFromSuperview()
         self.removeFromSuperview()
         if !buttonPressed {
           self.completionHandler?(false)
@@ -130,7 +166,11 @@ class Toast: UIView {
   }
 
   @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
-    if tapDismissalMode == .outsideTap {
+    if tapDismissalMode == .noDismissal {
+      return
+    }
+
+    if tapDismissalMode == .dismissOnOutsideTap {
       let location = gestureRecognizer.location(in: self)
       // Check if the tap was inside the toast view
       if self.point(inside: location, with: nil) {
@@ -149,7 +189,8 @@ class Toast: UIView {
   }
 
   enum TapDismissalMode {
-    case outsideTap
-    case anyTap
+    case dismissOnOutsideTap
+    case dismissOnAnyTap
+    case noDismissal
   }
 }

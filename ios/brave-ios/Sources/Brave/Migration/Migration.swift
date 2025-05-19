@@ -42,6 +42,8 @@ public class Migration {
 
     migrateDeAmpPreferences()
     migrateDebouncePreferences()
+    migrateDefaultUserAgentPreferences()
+    migrateBlockPopupsPreferences()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -50,6 +52,18 @@ public class Migration {
       name: BraveServiceStateObserver.coreServiceLoadedNotification,
       object: nil
     )
+  }
+
+  private func migrateDefaultUserAgentPreferences() {
+    Preferences.DeprecatedPreferences.alwaysRequestDesktopSite.migrate { value in
+      self.braveCore.defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+    }
+  }
+
+  private func migrateBlockPopupsPreferences() {
+    Preferences.DeprecatedPreferences.blockPopups.migrate { value in
+      self.braveCore.defaultHostContentSettings.popupsAllowed = !value
+    }
   }
 
   private func migrateDeAmpPreferences() {
@@ -95,7 +109,7 @@ public class Migration {
     }
 
     let windowIds = UIApplication.shared.openSessions
-      .compactMap({ BrowserState.getWindowInfo(from: $0).windowId })
+      .compactMap({ BrowserState.getWindowId(from: $0) })
       .filter({ $0 != activeWindow.windowId.uuidString })
 
     let zombieTabs =
@@ -187,7 +201,7 @@ extension Migration {
 }
 
 extension Preferences {
-  private final class DeprecatedPreferences {
+  fileprivate final class DeprecatedPreferences {
     static let blockAdsAndTracking = Option<Bool>(
       key: "shields.block-ads-and-tracking",
       default: true
@@ -210,6 +224,16 @@ extension Preferences {
       key: "general.show-bookmark-toolbar-shortcut",
       default: UIDevice.isIpad
     )
+
+    /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only).
+    /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
+    static let alwaysRequestDesktopSite = Option<Bool>(
+      key: "general.always-request-desktop-site",
+      default: UIDevice.current.userInterfaceIdiom == .pad
+    )
+
+    /// Whether or not to block popups from websites automaticaly
+    static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
   }
 
   /// Migration preferences
@@ -305,7 +329,6 @@ extension Preferences {
 
     // General
     migrate(key: "saveLogins", to: Preferences.General.saveLogins)
-    migrate(key: "blockPopups", to: Preferences.General.blockPopups)
     migrate(key: "kPrefKeyTabsBarShowPolicy", to: Preferences.General.tabBarVisibility)
 
     // Search

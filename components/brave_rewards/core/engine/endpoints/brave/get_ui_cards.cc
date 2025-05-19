@@ -66,6 +66,24 @@ std::optional<std::vector<mojom::UICardPtr>> ReadResponseBody(
       if (auto* title = dict.FindString("title")) {
         card->title = *title;
       }
+      if (auto* section = dict.FindString("section")) {
+        card->section = *section;
+      }
+      if (auto order = dict.FindInt("order")) {
+        card->order = *order;
+      }
+      if (auto* banner_dict = dict.FindDict("banner")) {
+        auto banner = mojom::UICardBanner::New();
+        if (auto* image = banner_dict->FindString("image")) {
+          banner->image = *image;
+        }
+        if (auto* url = banner_dict->FindString("url")) {
+          banner->url = *url;
+        }
+        if (!banner->url.empty() && !banner->image.empty()) {
+          card->banner = std::move(banner);
+        }
+      }
       if (auto* list = dict.FindList("items")) {
         card->items = ReadItemList(*list);
       }

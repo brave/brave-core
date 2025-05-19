@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/enterprise/connectors/analysis/content_analysis_delegate.cc b/chrome/browser/enterprise/connectors/analysis/content_analysis_delegate.cc
+index 7954c76b8f9806622a5191605578817926994670..897675ff0243622236a73902df2ecd7c1d3b7df9 100644
+--- a/chrome/browser/enterprise/connectors/analysis/content_analysis_delegate.cc
++++ b/chrome/browser/enterprise/connectors/analysis/content_analysis_delegate.cc
+@@ -399,7 +399,7 @@ void ContentAnalysisDelegate::CreateForWebContents(
+         show_fail_closed_ui ? FinalContentAnalysisResult::FAIL_CLOSED
+                             : FinalContentAnalysisResult::SUCCESS;
+ 
+-#if BUILDFLAG(IS_WIN)
++#if BUILDFLAG(ENABLE_GLIC) && BUILDFLAG(IS_WIN)
+     content::WebContents* top_web_contents =
+         guest_view::GuestViewBase::GetTopLevelWebContents(
+             web_contents->GetResponsibleWebContents());

@@ -40,9 +40,8 @@ using extensions::mojom::ManifestLocation;
 
 namespace extensions {
 
-BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
-                                           Profile* profile)
-    : ComponentLoader(extension_system, profile),
+BraveComponentLoader::BraveComponentLoader(Profile* profile)
+    : ComponentLoader(profile),
       profile_(profile),
       profile_prefs_(profile->GetPrefs()) {
   pref_change_registrar_.Init(profile_prefs_);
@@ -77,19 +76,18 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
 
 void BraveComponentLoader::ReinstallAsNonComponent(
     const std::string& extension_id) {
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   const Extension* extension = registry->GetInstalledExtension(extension_id);
   DCHECK(extension);
   if (extension->location() == ManifestLocation::kComponent) {
-    service->RemoveComponentExtension(extension_id);
+    extensions::ExtensionRegistrar::Get(profile_)->RemoveComponentExtension(
+        extension_id);
     std::string error;
     scoped_refptr<Extension> normal_extension = Extension::Create(
         extension->path(), ManifestLocation::kExternalPref,
         *extension->manifest()->value(), extension->creation_flags(), &error);
-    service->AddExtension(normal_extension.get());
+    ExtensionRegistrar::Get(profile_)->AddExtension(normal_extension);
   }
 }
 
@@ -125,11 +123,9 @@ void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
 }
 
 void BraveComponentLoader::UnloadEthereumRemoteClientExtension() {
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  DCHECK(service);
-  service->UnloadExtension(kEthereumRemoteClientExtensionId,
-                           extensions::UnloadedExtensionReason::DISABLE);
+  extensions::ExtensionRegistrar::Get(profile_)->RemoveExtension(
+      kEthereumRemoteClientExtensionId,
+      extensions::UnloadedExtensionReason::DISABLE);
 }
 #endif
 

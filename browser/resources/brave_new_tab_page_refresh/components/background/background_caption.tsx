@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 import formatMessage from '$web-common/formatMessage'
 import { Link } from '../common/link'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { BraveBackground, SponsoredImageBackground } from '../../models/backgrounds'
 
@@ -40,7 +40,6 @@ interface BraveBackgroundCreditsProps {
 }
 
 function BraveBackgroundCredits(props: BraveBackgroundCreditsProps) {
-  const { getString } = useLocale()
   const { author, link } = props.background
   if (!author) {
     return null

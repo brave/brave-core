@@ -16,6 +16,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
@@ -90,8 +91,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     conversation_handler->MaybeUnlinkAssociatedContent();
 
     // Activate the panel.
-    auto* sidebar_controller =
-        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
   }
@@ -109,7 +109,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           std::nullopt /* selected_text */, std::nullopt /* events */,
           base::Time::Now(), std::nullopt /* edits */,
           std::nullopt /* uploaded images */,
-          false /* from_brave_search_SERP */);
+          false /* from_brave_search_SERP */, std::nullopt /* model_key */);
 
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(

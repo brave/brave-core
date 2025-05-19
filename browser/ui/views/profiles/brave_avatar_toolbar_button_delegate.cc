@@ -7,13 +7,13 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/color_palette.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_provider.h"
 
@@ -53,8 +53,7 @@ ui::ImageModel BraveAvatarToolbarButtonDelegate::GetAvatarIcon(
 
 std::u16string BraveAvatarToolbarButtonDelegate::GetAvatarTooltipText() const {
   if (browser_->profile()->IsTor()) {
-    return brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT);
+    return l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT);
   }
 
   return AvatarToolbarButtonDelegate::GetAvatarTooltipText();

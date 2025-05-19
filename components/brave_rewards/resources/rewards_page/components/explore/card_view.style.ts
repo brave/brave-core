@@ -8,7 +8,6 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   h4 {
-    padding: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -27,6 +26,21 @@ export const style = scoped.css`
     &:empty {
       display: none;
     }
+  }
+
+  .banner {
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  section:empty {
+    display: none;
   }
 
   section a {

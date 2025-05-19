@@ -67,20 +67,26 @@ constexpr char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
 const std::string GetChainSubdomain(std::string_view chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
-      subdomains({// EVM chains
-                  {mojom::kMainnetChainId, "ethereum-mainnet"},
-                  {mojom::kSepoliaChainId, "ethereum-sepolia"},
-                  {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
-                  {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
-                  {mojom::kBaseMainnetChainId, "base-mainnet"},
-                  {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
-                  {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
+      subdomains({
+          // EVM chains.
+          {mojom::kMainnetChainId, "ethereum-mainnet"},
+          {mojom::kSepoliaChainId, "ethereum-sepolia"},
+          {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
+          {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
+          {mojom::kBaseMainnetChainId, "base-mainnet"},
+          {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
+          {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
 
-                  // SVM chains
-                  {mojom::kSolanaMainnet, "solana-mainnet"},
+          // SVM chains.
+          {mojom::kSolanaMainnet, "solana-mainnet"},
 
-                  // Other chains
-                  {mojom::kBitcoinMainnet, "bitcoin-mainnet"}});
+          // Bitcoin chains.
+          {mojom::kBitcoinMainnet, "bitcoin-mainnet"},
+
+          // Cardano chains.
+          {mojom::kCardanoMainnet, "cardano-mainnet"},
+          {mojom::kCardanoTestnet, "cardano-preprod"},
+      });
 
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (subdomains->contains(chain_id_lower)) {
@@ -512,7 +518,7 @@ GURL CardanoMainnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL();
+  return GetURLForKnownChainId(mojom::kCardanoMainnet).value();
 }
 
 GURL CardanoTestnetRpcUrl() {
@@ -522,7 +528,7 @@ GURL CardanoTestnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL();
+  return GetURLForKnownChainId(mojom::kCardanoTestnet).value();
 }
 
 const mojom::NetworkInfo* GetBitcoinMainnet() {
@@ -601,7 +607,6 @@ const mojom::NetworkInfo* GetZCashTestnet() {
   return network_info.get();
 }
 
-// TODO(apaymyshev): Cardano. Fill the gaps.
 const mojom::NetworkInfo* GetCardanoMainnet() {
   const auto coin = mojom::CoinType::ADA;
   const auto* chain_id = mojom::kCardanoMainnet;
@@ -609,7 +614,7 @@ const mojom::NetworkInfo* GetCardanoMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Cardano Mainnet",
-       {""},
+       {"https://cexplorer.io"},
        {},
        0,
        {CardanoMainnetRpcUrl()},
@@ -627,8 +632,8 @@ const mojom::NetworkInfo* GetCardanoTestnet() {
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "Cardano Testnet",
-       {""},
+       "Cardano Preprod Testnet",
+       {"https://preprod.cexplorer.io"},
        {},
        0,
        {CardanoTestnetRpcUrl()},

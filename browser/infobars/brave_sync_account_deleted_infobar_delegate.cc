@@ -12,7 +12,6 @@
 #include "brave/browser/ui/views/infobars/brave_sync_account_deleted_infobar.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -103,7 +102,7 @@ int BraveSyncAccountDeletedInfoBarDelegate::GetButtons() const {
 
 std::u16string BraveSyncAccountDeletedInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
-  return brave_l10n::GetLocalizedResourceUTF16String(
+  return l10n_util::GetStringUTF16(
       IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_BUTTON);
 }
 

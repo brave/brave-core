@@ -3,23 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export type ConnectionState =
-  'connecting' |
-  'connected' |
-  'disconnecting' |
-  'disconnected'
+import { ConnectionState, Region} from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 
-interface ConnectionRegion {
-  country: string
-  name: string
-}
+export { ConnectionState, Region }
 
 export interface VPNState {
   vpnFeatureEnabled: boolean
   showVpnWidget: boolean
   vpnPurchased: boolean
   vpnConnectionState: ConnectionState
-  vpnConnectionRegion: ConnectionRegion | null
+  vpnConnectionRegion: Region | null
 }
 
 export function defaultVPNState(): VPNState {
@@ -27,7 +20,7 @@ export function defaultVPNState(): VPNState {
     vpnFeatureEnabled: false,
     showVpnWidget: false,
     vpnPurchased: false,
-    vpnConnectionState: 'disconnected',
+    vpnConnectionState: ConnectionState.DISCONNECTED,
     vpnConnectionRegion: null
   }
 }

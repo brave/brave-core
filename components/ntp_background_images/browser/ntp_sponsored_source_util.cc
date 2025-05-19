@@ -7,11 +7,22 @@
 
 #include "base/check.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
 namespace ntp_background_images {
 
 namespace {
+
+// Determines whether the `request_dir` is either the same as the
+// `parent_creative_dir` or a subdirectory of it. This validation ensures that
+// the requested directory is confined within the allowed directory hierarchy,
+// preventing unauthorized access to directories outside the intended scope.
+bool IsPathWithinParentDir(const base::FilePath& parent_creative_dir,
+                           const base::FilePath& request_dir) {
+  return parent_creative_dir == request_dir ||
+         parent_creative_dir.IsParent(request_dir);
+}
 
 std::optional<base::FilePath> MaybeGetChildCreativeSubdirectories(
     const base::FilePath& parent_creative_dir,
@@ -26,6 +37,14 @@ std::optional<base::FilePath> MaybeGetChildCreativeSubdirectories(
 }
 
 }  // namespace
+
+std::optional<std::string> ReadFileToString(const base::FilePath& path) {
+  std::string contents;
+  if (!base::ReadFileToString(path, &contents)) {
+    return std::nullopt;
+  }
+  return contents;
+}
 
 std::optional<base::FilePath> MaybeGetFilePathForRequestPath(
     const base::FilePath& request_path,
@@ -45,12 +64,7 @@ std::optional<base::FilePath> MaybeGetFilePathForRequestPath(
       base::FilePath creative_dir = creative.file_path.DirName();
       const base::FilePath parent_creative_dir = creative_dir.BaseName();
 
-      const bool is_within_allowed_dir =
-          parent_creative_dir == request_dir ||
-          parent_creative_dir.IsParent(request_dir);
-      if (!is_within_allowed_dir) {
-        // The creative parent directory did not match the request directory and
-        // is not a child of the request directory.
+      if (!IsPathWithinParentDir(parent_creative_dir, request_dir)) {
         continue;
       }
 

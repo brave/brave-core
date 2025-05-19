@@ -59,6 +59,7 @@ import {
   useSendFilTransactionMutation,
   useSendBtcTransactionMutation,
   useSendZecTransactionMutation,
+  useSendCardanoTransactionMutation,
   useGetZCashTransactionTypeQuery
 } from '../../../../common/slices/api.slice'
 import {
@@ -148,6 +149,7 @@ export const SendScreen = React.memo((props: Props) => {
   const [sendFilTransaction] = useSendFilTransactionMutation()
   const [sendBtcTransaction] = useSendBtcTransactionMutation()
   const [sendZecTransaction] = useSendZecTransactionMutation()
+  const [sendCardanoTransaction] = useSendCardanoTransactionMutation()
   const [sendERC20Transfer] = useSendERC20TransferMutation()
   const [sendERC721TransferFrom] = useSendERC721TransferFromMutation()
   const [sendETHFilForwarderTransfer] = useSendETHFilForwarderTransferMutation()
@@ -160,15 +162,16 @@ export const SendScreen = React.memo((props: Props) => {
   })
 
   const {
-    data : getZCashTransactionTypeResult = { txType : null, error : null }
+    data: getZCashTransactionTypeResult = { txType: null, error: null }
   } = useGetZCashTransactionTypeQuery(
-    networkFromParams?.coin === BraveWallet.CoinType.ZEC && accountFromParams &&
+    networkFromParams?.coin === BraveWallet.CoinType.ZEC &&
+      accountFromParams &&
       toAddressOrUrl
       ? {
+          chainId: networkFromParams.chainId,
           accountId: accountFromParams.accountId,
-          testnet: networkFromParams.chainId === BraveWallet.Z_CASH_TESTNET,
-          use_shielded_pool: query.get('isShielded') === 'true',
-          address: toAddressOrUrl,
+          useShieldedPool: query.get('isShielded') === 'true',
+          address: toAddressOrUrl
         }
       : skipToken
   )
@@ -222,8 +225,7 @@ export const SendScreen = React.memo((props: Props) => {
 
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
   const isShieldingFunds =
-    getZCashTransactionTypeResult.txType ===
-    BraveWallet.ZCashTxType.kShielding
+    getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -335,7 +337,7 @@ export const SendScreen = React.memo((props: Props) => {
           network: networkFromParams,
           fromAccount,
           to: toAddress,
-          sendingMaxValue: sendingMaxAmount,
+          sendingMaxAmount,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex()
@@ -464,11 +466,25 @@ export const SendScreen = React.memo((props: Props) => {
           network: networkFromParams,
           fromAccount,
           to: toAddress,
-          sendingMaxAmount: sendingMaxAmount,
+          sendingMaxAmount,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
           memo: memoArray ? Array.from(memoArray) : undefined
+        })
+        resetSendFields()
+        return
+      }
+
+      case BraveWallet.CoinType.ADA: {
+        await sendCardanoTransaction({
+          network: networkFromParams,
+          fromAccount,
+          to: toAddress,
+          sendingMaxAmount,
+          value: new Amount(sendAmount)
+            .multiplyByDecimals(tokenFromParams.decimals)
+            .toHex()
         })
         resetSendFields()
       }
@@ -491,7 +507,8 @@ export const SendScreen = React.memo((props: Props) => {
     sendFilTransaction,
     sendSolTransaction,
     sendSPLTransfer,
-    sendZecTransaction
+    sendZecTransaction,
+    sendCardanoTransaction
   ])
 
   const handleFromAssetValueChange = React.useCallback(
@@ -617,7 +634,7 @@ export const SendScreen = React.memo((props: Props) => {
                   (getZCashTransactionTypeResult.txType ===
                     BraveWallet.ZCashTxType.kTransparentToOrchard ||
                     getZCashTransactionTypeResult.txType ===
-                    BraveWallet.ZCashTxType.kOrchardToOrchard) && (
+                      BraveWallet.ZCashTxType.kOrchardToOrchard) && (
                     <AddMemo
                       memoText={memoText}
                       onUpdateMemoText={setMemoText}

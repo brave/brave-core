@@ -11,7 +11,7 @@ const path = require('path')
 // stored in the guard file.
 function getGuardCallStack() {
   const stack = new Error().stack.split('\n').slice(2)
-  for (const i in stack) {
+  for (let i = 0; i < stack.length; i++) {
     if (!stack[i].includes('at ActionGuard.')) {
       return 'GUARD_CALLSTACK:\n' + stack.slice(i).join('\n')
     }

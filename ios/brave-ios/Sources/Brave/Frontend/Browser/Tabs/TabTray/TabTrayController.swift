@@ -879,6 +879,10 @@ class TabTrayController: AuthenticationController {
     } else {
       tabTrayView.hidePrivateModeInfo()
 
+      if tabManager.tabsForCurrentMode.isEmpty {
+        tabManager.addTabAndSelect(isPrivate: false)
+      }
+
       // When you go back from private mode, a previous current tab is selected
       // Reloding the collection view in order to mark the selecte the tab
       let normalModeTabSelected =

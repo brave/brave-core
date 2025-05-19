@@ -11,6 +11,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -29,7 +30,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::RunOnceClosure;
 using testing::_;
+using testing::DoAll;
+using testing::SaveArg;
 using testing::Truly;
 
 namespace brave_wallet {
@@ -42,14 +46,12 @@ class CardanoWalletServiceUnitTest : public testing::Test {
   ~CardanoWalletServiceUnitTest() override = default;
 
   void SetUp() override {
+    CardanoCreateTransactionTask::SetArrangeTransactionForTesting(true);
+
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    network_manager_->SetNetworkURLForTesting(
-        mojom::kCardanoMainnet, GURL("https://wallet.brave.com/cardano/api/"));
-    network_manager_->SetNetworkURLForTesting(
-        mojom::kCardanoTestnet, GURL("https://cardano-test.example.com/api/"));
 
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
@@ -59,6 +61,10 @@ class CardanoWalletServiceUnitTest : public testing::Test {
         std::make_unique<CardanoTestRpcServer>(*cardano_wallet_service_);
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+  }
+
+  void TearDown() override {
+    CardanoCreateTransactionTask::SetArrangeTransactionForTesting(false);
   }
 
   AccountUtils GetAccountUtils() {
@@ -114,6 +120,90 @@ TEST_F(CardanoWalletServiceUnitTest, GetBalance) {
   cardano_wallet_service_->GetBalance(account_id(), callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(CardanoWalletServiceUnitTest, GetTransactionStatus) {
+  SetupCardanoAccount();
+
+  base::MockCallback<CardanoWalletService::GetTransactionStatusCallback>
+      callback;
+
+  EXPECT_CALL(callback,
+              Run(Truly([&](const base::expected<bool, std::string>& tx) {
+                EXPECT_FALSE(tx.value());
+                return true;
+              })))
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
+  cardano_wallet_service_->GetTransactionStatus(
+      mojom::kCardanoMainnet, kMockCardanoTxid, callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  cardano_test_rpc_server_->AddConfirmedTransaction(kMockCardanoTxid);
+
+  EXPECT_CALL(callback,
+              Run(Truly([&](const base::expected<bool, std::string>& tx) {
+                EXPECT_TRUE(tx.value());
+                return true;
+              })))
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
+  cardano_wallet_service_->GetTransactionStatus(
+      mojom::kCardanoMainnet, kMockCardanoTxid, callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
+  // TODO(https://github.com/brave/brave-browser/issues/45278): needs more tests
+  // for all corner cases.
+  SetupCardanoAccount();
+
+  base::MockCallback<CardanoWalletService::CardanoCreateTransactionTaskCallback>
+      callback;
+
+  base::expected<CardanoTransaction, std::string> captured_tx;
+
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(DoAll(SaveArg<0>(&captured_tx),
+                      RunOnceClosure(task_environment_.QuitClosure())));
+  cardano_wallet_service_->CreateCardanoTransaction(
+      account_id(), *CardanoAddress::FromString(kMockCardanoAddress1), 7400000,
+      false, callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  ASSERT_TRUE(captured_tx.has_value());
+
+  EXPECT_EQ(captured_tx->TotalInputsAmount(), 7600000u);
+  EXPECT_EQ(captured_tx->TotalOutputsAmount(), 7400000u);
+  EXPECT_EQ(captured_tx->EffectiveFeeAmount(), 200000u);
+  EXPECT_EQ(captured_tx->invalid_after(), 155486947u);
+
+  base::MockCallback<CardanoWalletService::SignAndPostTransactionCallback>
+      post_callback;
+
+  EXPECT_CALL(post_callback, Run(_, _, _))
+      .WillOnce(DoAll(RunOnceClosure(task_environment_.QuitClosure())));
+
+  cardano_wallet_service_->SignAndPostTransaction(
+      account_id(), captured_tx.value(), post_callback.Get());
+
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  EXPECT_EQ(
+      "84A400828258200100000000000000000000000000000000000000000000000000000000"
+      "0000000D8258200200000000000000000000000000000000000000000000000000000000"
+      "0000000D01818258390144E5E8699AB31DE351BE61DFEB7C220EFF61D29D9C88CA9D1599"
+      "B36DEB20324C1F3C7C6A216E551523FF7EF4E784F3FDE3606A5BACE785391A0070EA4002"
+      "1A00030D40031A09448AE3A1008282582039F9A9705B72246693CDACE42F68901109C805"
+      "362A98038749E2FF6ECA6BEBE358401D6573930D9BA49DD5660A63D97C57337211A89375"
+      "8085B99D1B9AD15C393055CE2429D51323608C79048254462D5FCF18D3B320B572BAAEB0"
+      "DB551F0398FF09825820D9E38698F13131246B9234BBDDE147AFBA999E34EFF03EEADDA5"
+      "A336ABCA72965840A5AA1EB88E79377464B64C9F8A4E0475F5EF68D93E5FAFB5EB63AEF8"
+      "3A8E092CF995F01CCF42C2DE1DA97BBE408FB700FBB1DD864954280E3076913798F79009"
+      "F5F6",
+      cardano_test_rpc_server_->captured_raw_tx());
 }
 
 }  // namespace brave_wallet

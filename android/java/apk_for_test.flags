@@ -157,6 +157,7 @@
     *** mCurrentOrientation;
     *** mInitializedWithNative;
     *** mTabGroupUiOneshotSupplier;
+    *** mUndoBarThrottle;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
@@ -291,7 +292,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
     <init>(...);
-    *** mBottomControlsHeight;
     *** mModel;
     *** mBottomControlsStacker;
 }
@@ -845,16 +845,6 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessorBase
 
--keep class org.chromium.chrome.browser.password_manager.settings.ExportFlow {
-    public <init>(...);
-    *** runSharePasswordsIntent(...);
-    *** runCreateFileOnDiskIntent(...);
-}
-
--keep class org.chromium.chrome.browser.password_manager.settings.BraveExportFlow {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
@@ -922,6 +912,7 @@
     *** mTabController;
     *** mMinimizationManagerHolder;
     *** mCustomTabFeatureOverridesManager;
+    *** getAppHeaderCoordinator(...);
     public <init>(...);
 }
 
@@ -975,3 +966,14 @@
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.TilesLinearLayout { *; }
+
+-keep class org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference {
+    *** onCheckedChanged(...);
+    *** getPreferenceValue(...);
+    *** setupPreferenceValues(...);
+    *** onTextChanged(...);
+    *** getCustomUriRadioButton(...);
+    *** getChromeNtpRadioButton(...);
+}
+
+-keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference

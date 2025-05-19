@@ -4,6 +4,7 @@ include_rules = [
   "+brave/components/ai_chat",
   "+brave/components/constants",
   "+brave/components/https_upgrade_exceptions/browser",
+  "+brave/components/static_redirect_helper",
   "+brave/ios/browser/application_context",
   "+components/component_updater",
   "+components/gcm_driver/gcm_driver.h",

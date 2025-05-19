@@ -19,6 +19,7 @@ namespace base {
 template <typename T>
 class NoDestructor;
 }  // namespace base
+class Profile;
 
 namespace brave {
 
@@ -30,7 +31,7 @@ class URLSanitizerServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
 #if BUILDFLAG(IS_ANDROID)
   static mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
-  GetForContext(content::BrowserContext* context);
+  GetRemoteForProfile(Profile* profile);
 #endif  // # BUILDFLAG(IS_ANDROID)
   static URLSanitizerServiceFactory* GetInstance();
 

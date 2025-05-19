@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 import {
   SearchEngineInfo,
-  SearchResultMatch,
+  AutocompleteMatch,
   ClickEvent,
   defaultSearchEngine,
   braveSearchHost } from '../../models/search'
@@ -16,7 +16,7 @@ import {
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { optional } from '../../lib/optional'
 import { urlFromInput } from '../../lib/url_input'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { Popover } from '../common/popover'
 import { EngineIcon } from './engine_icon'
 import { SearchResults, ResultOption } from './search_results'
@@ -29,7 +29,6 @@ interface Props {
 }
 
 export function SearchBox(props: Props) {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const searchFeatureEnabled = useAppState((s) => s.searchFeatureEnabled)
@@ -300,7 +299,7 @@ export function SearchBox(props: Props) {
 // Returns a list of `ResultOptions` for the specified query and corresponding
 // autocomplete matches. In addition to the autocomplete matches, the list may
 // also contain a URL match if the user typed in what appears to be a URL.
-function getResultOptions(query: string, matches: SearchResultMatch[]) {
+function getResultOptions(query: string, matches: AutocompleteMatch[]) {
   const options: ResultOption[] = []
   const inputURL = urlFromInput(query)
   if (inputURL) {

@@ -31,7 +31,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -44,6 +43,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "ui/base/accelerators/accelerator.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
 
@@ -55,8 +55,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPanelHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   for (const auto& str : brave_wallet::kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     source->AddString(str.name, l10n_str);
   }
   auto plural_string_handler = std::make_unique<PluralStringHandler>();

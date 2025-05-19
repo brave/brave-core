@@ -76,13 +76,13 @@ std::wstring HashString(base::wcstring_view input) {
   };
 
   auto magic_numbers_table = std::to_array<MagicBlock>(
-      {{{{base::numerics::U32FromNativeEndian(md5.first<4u>()) | 1,
-          0xCF98B111uL, 0x87085B9FuL, 0x12CEB96DuL, 0x257E1D83uL},
-         {base::numerics::U32FromNativeEndian(md5.first<4u>()) | 1,
-          0xEF0569FBuL, 0x689B6B9FuL, 0x79F8A395uL, 0xC3EFEA97uL}}},
-       {{{base::numerics::U32FromNativeEndian(md5.last<4u>()) | 1, 0xA27416F5uL,
+      {{{{base::U32FromNativeEndian(md5.first<4u>()) | 1, 0xCF98B111uL,
+          0x87085B9FuL, 0x12CEB96DuL, 0x257E1D83uL},
+         {base::U32FromNativeEndian(md5.first<4u>()) | 1, 0xEF0569FBuL,
+          0x689B6B9FuL, 0x79F8A395uL, 0xC3EFEA97uL}}},
+       {{{base::U32FromNativeEndian(md5.last<4u>()) | 1, 0xA27416F5uL,
           0xD38396FFuL, 0x7C932B89uL, 0xBFA49F69uL},
-         {base::numerics::U32FromNativeEndian(md5.last<4u>()) | 1, 0xC31713DBuL,
+         {base::U32FromNativeEndian(md5.last<4u>()) | 1, 0xC31713DBuL,
           0xDDCD1F0FuL, 0x59C3AF2DuL, 0x35BD1EC9uL}}}});
 
   // The checksums.
@@ -99,7 +99,7 @@ std::wstring HashString(base::wcstring_view input) {
 
     for (const auto& magic_block : magic_numbers_table) {
       const auto& [c0, c1] = magic_block.line;
-      uint32_t ui32 = base::numerics::U32FromNativeEndian(*reader.Read<4u>());
+      uint32_t ui32 = base::U32FromNativeEndian(*reader.Read<4u>());
 
       h0 += ui32;
       // Scramble 0

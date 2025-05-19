@@ -21,7 +21,6 @@
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -38,6 +37,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -138,8 +138,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   }
 
   for (const auto& str : kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
     source->AddString(str.name, l10n_str);
   }
 

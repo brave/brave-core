@@ -77,7 +77,8 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   removeImage: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
-  pendingMessageImages: Mojom.UploadedFile[] | null
+  pendingMessageImages: Mojom.UploadedFile[]
+  isUploadingFiles: boolean
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -125,7 +126,8 @@ const defaultContext: ConversationContext = {
   removeImage: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
-  pendingMessageImages: null,
+  pendingMessageImages: [],
+  isUploadingFiles: false,
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -488,7 +490,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     setPartialContext({
       inputText: '',
-      pendingMessageImages: null
+      pendingMessageImages: []
     })
     resetSelectedActionType()
   }
@@ -538,20 +540,23 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
             (getImageFiles(turn.uploadedFiles)?.length || 0),
           0
         )
-        const currentPendingImages = context.pendingMessageImages?.length || 0
+        const currentPendingImages = context.pendingMessageImages.length
         const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
         const newImages = images.slice(0, Math.max(0, maxNewImages))
 
         if (newImages.length > 0) {
           setPartialContext({
-            pendingMessageImages: context.pendingMessageImages
-              ? [...context.pendingMessageImages, ...newImages]
-              : [...newImages]
+            isUploadingFiles: false,
+            pendingMessageImages:
+              [...context.pendingMessageImages, ...newImages]
           })
         }
     }
 
   const getScreenshots = () => {
+    setPartialContext({
+      isUploadingFiles: true
+    })
     conversationHandler.getScreenshots()
     .then(({screenshots}) => {
       if (screenshots) {
@@ -570,22 +575,32 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const removeImage = (index: number) => {
-    if (!context.pendingMessageImages || context.pendingMessageImages.length === 0) {
-      return
+    const updatedImages = [...context.pendingMessageImages]
+    updatedImages.splice(index, 1)
+    setPartialContext({
+      pendingMessageImages: updatedImages
+    })
+  }
+
+  // Listen for user uploading files to display the uploading indicator.
+  React.useEffect(() => {
+    async function handleSetIsUploading() {
+      setPartialContext({
+        isUploadingFiles: true
+      })
     }
 
-    if (context.pendingMessageImages.length === 1) {
-      setPartialContext({
-        pendingMessageImages: null
-      })
-    } else {
-      const updatedImages = [...context.pendingMessageImages]
-      updatedImages.splice(index, 1)
-      setPartialContext({
-        pendingMessageImages: updatedImages
-      })
+    const listenerId = getAPI()
+      .uiObserver
+      .onUploadFilesSelected
+      .addListener(handleSetIsUploading)
+
+    return () => {
+      getAPI()
+        .uiObserver
+        .removeListener(listenerId)
     }
-  }
+  }, [])
 
   const ignoreExternalLinkWarningFromLocalStorage =
     React.useMemo(() => {

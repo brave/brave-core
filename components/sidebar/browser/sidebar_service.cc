@@ -23,7 +23,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -592,35 +591,34 @@ SidebarItem SidebarService::GetBuiltInItemForType(
     SidebarItem::BuiltInItemType type) const {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBraveTalk:
-      return SidebarItem::Create(GURL(kBraveTalkURL),
-                                 brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kBraveTalk,
-                                 /* open_in_panel = */ false);
+      return SidebarItem::Create(
+          GURL(kBraveTalkURL),
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kBraveTalk,
+          /* open_in_panel = */ false);
     case SidebarItem::BuiltInItemType::kWallet: {
       if (brave_wallet::IsAllowed(prefs_)) {
-        return SidebarItem::Create(GURL("chrome://wallet/"),
-                                   brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_SIDEBAR_WALLET_ITEM_TITLE),
-                                   SidebarItem::Type::kTypeBuiltIn,
-                                   SidebarItem::BuiltInItemType::kWallet,
-                                   /* open_in_panel = */ false);
+        return SidebarItem::Create(
+            GURL("chrome://wallet/"),
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
+            SidebarItem::Type::kTypeBuiltIn,
+            SidebarItem::BuiltInItemType::kWallet,
+            /* open_in_panel = */ false);
       }
       return SidebarItem();
     }
     case SidebarItem::BuiltInItemType::kBookmarks:
-      return SidebarItem::Create(brave_l10n::GetLocalizedResourceUTF16String(
-                                     IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
-                                 SidebarItem::Type::kTypeBuiltIn,
-                                 SidebarItem::BuiltInItemType::kBookmarks,
-                                 /* open_in_panel = */ true);
+      return SidebarItem::Create(
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
+          SidebarItem::Type::kTypeBuiltIn,
+          SidebarItem::BuiltInItemType::kBookmarks,
+          /* open_in_panel = */ true);
     case SidebarItem::BuiltInItemType::kReadingList:
       return SidebarItem::Create(
           // TODO(petemill): Have these items created under brave/browser
           // so that we can access common strings, like IDS_READ_LATER_TITLE.
-          brave_l10n::GetLocalizedResourceUTF16String(
-              IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kReadingList,
           /* open_in_panel = */ true);
@@ -628,35 +626,34 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       // TODO(sko) When should we show history item?
       constexpr bool kShowHistoryButton = false;
       if constexpr (kShowHistoryButton) {
-        return SidebarItem::Create(GURL("chrome://history/"),
-                                   brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_SIDEBAR_HISTORY_ITEM_TITLE),
-                                   SidebarItem::Type::kTypeBuiltIn,
-                                   SidebarItem::BuiltInItemType::kHistory,
-                                   /* open_in_panel = */ true);
+        return SidebarItem::Create(
+            GURL("chrome://history/"),
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_HISTORY_ITEM_TITLE),
+            SidebarItem::Type::kTypeBuiltIn,
+            SidebarItem::BuiltInItemType::kHistory,
+            /* open_in_panel = */ true);
       } else {
         return SidebarItem();
       }
     }
     case SidebarItem::BuiltInItemType::kPlaylist: {
       if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-        return SidebarItem::Create(GURL(kPlaylistURL),
-                                   brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
-                                   SidebarItem::Type::kTypeBuiltIn,
-                                   SidebarItem::BuiltInItemType::kPlaylist,
-                                   /* open_in_panel = */ true);
+        return SidebarItem::Create(
+            GURL(kPlaylistURL),
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
+            SidebarItem::Type::kTypeBuiltIn,
+            SidebarItem::BuiltInItemType::kPlaylist,
+            /* open_in_panel = */ true);
       }
 
       return SidebarItem();
     }
     case SidebarItem::BuiltInItemType::kChatUI: {
       if (ai_chat::IsAIChatEnabled(prefs_)) {
-        return SidebarItem::Create(
-            brave_l10n::GetLocalizedResourceUTF16String(IDS_CHAT_UI_TITLE),
-            SidebarItem::Type::kTypeBuiltIn,
-            SidebarItem::BuiltInItemType::kChatUI,
-            /* open_in_panel = */ true);
+        return SidebarItem::Create(l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE),
+                                   SidebarItem::Type::kTypeBuiltIn,
+                                   SidebarItem::BuiltInItemType::kChatUI,
+                                   /* open_in_panel = */ true);
       } else {
         return SidebarItem();
       }

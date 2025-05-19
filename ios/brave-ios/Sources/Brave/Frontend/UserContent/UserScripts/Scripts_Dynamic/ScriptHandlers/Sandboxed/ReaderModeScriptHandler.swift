@@ -4,7 +4,6 @@
 
 import Foundation
 import Shared
-import SwiftyJSON
 import Web
 import WebKit
 import os.log
@@ -120,10 +119,10 @@ struct ReaderModeStyle {
 
   /// Encode the style to a JSON dictionary that can be passed to ReaderMode.js
   func encode() -> String {
-    return JSON(
-      ["theme": theme.rawValue, "fontType": fontType.rawValue, "fontSize": fontSize.rawValue]
-        as [String: Any]
-    ).stringValue() ?? ""
+    guard let data = try? JSONSerialization.data(withJSONObject: encodeAsDictionary()) else {
+      return ""
+    }
+    return String(data: data, encoding: .utf8) ?? ""
   }
 
   /// Encode the style to a dictionary that can be stored in the profile
@@ -213,32 +212,6 @@ struct ReadabilityResult {
     }
   }
 
-  /// Initialize from a JSON encoded string
-  init?(string: String) {
-    let object = JSON(parseJSON: string)
-    let domain = object["domain"].string
-    let url = object["url"].string
-    let content = object["content"].string
-    let documentLanguage = object["documentLanguage"].string
-    let title = object["title"].string
-    let credits = object["credits"].string
-    let direction = object["dir"].string
-    let cspMetaTags = object["cspMetaTags"].arrayObject as? [String]
-
-    if domain == nil || url == nil || content == nil || title == nil || credits == nil {
-      return nil
-    }
-
-    self.domain = domain!
-    self.url = url!
-    self.content = content!
-    self.documentLanguage = documentLanguage ?? ""
-    self.title = title!
-    self.credits = credits!
-    self.direction = direction ?? "auto"
-    self.cspMetaTags = cspMetaTags ?? []
-  }
-
   /// Encode to a dictionary, which can then for example be json encoded
   func encode() -> [String: Any] {
     return [
@@ -251,7 +224,8 @@ struct ReadabilityResult {
   /// Encode to a JSON encoded string
   func encode() -> String {
     let dict: [String: Any] = self.encode()
-    return JSON(dict).stringValue()!
+    guard let data = try? JSONSerialization.data(withJSONObject: dict) else { return "" }
+    return String(decoding: data, as: UTF8.self)
   }
 }
 

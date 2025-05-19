@@ -3,7 +3,7 @@ URL: https://crates.io/crates/challenge-bypass-ristretto
 Version: 2.0.2
 Revision: 72856aea896dbcacb7ccda36e4b3a0ef234618c3
 License: Mozilla-Public-License-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/challenge-bypass-ristretto-2.0.2/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/challenge-bypass-ristretto-v2/LICENSE
 Shipped: yes
 Security Critical: yes
 

@@ -21,7 +21,8 @@ static jlong JNI_UrlSanitizerServiceFactory_GetInterfaceToUrlSanitizerService(
   }
 
   auto pending =
-      brave::URLSanitizerServiceFactory::GetInstance()->GetForContext(profile);
+      brave::URLSanitizerServiceFactory::GetInstance()->GetRemoteForProfile(
+          profile);
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }

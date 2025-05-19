@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js'
+
 import { Store } from '../lib/store'
 
 import {
@@ -78,19 +80,19 @@ export function initializeSearch(store: Store<SearchState>): SearchActions {
       store.update({
         searchMatches: [{
           allowedToBeDefaultMatch: false,
-          contents: 'contents 1',
-          description: 'description 1',
+          contents: stringToMojoString16('contents 1'),
+          description: stringToMojoString16('description 1'),
           iconUrl: '',
           imageUrl: '',
-          destinationUrl: ''
+          destinationUrl: { url: '' }
         },
         {
           allowedToBeDefaultMatch: true,
-          contents: 'contents 2',
-          description: 'Ask Leo',
+          contents: stringToMojoString16('contents 2'),
+          description: stringToMojoString16('Ask Leo'),
           iconUrl: '',
           imageUrl: '',
-          destinationUrl: ''
+          destinationUrl: { url: '' }
         }]
       })
     },

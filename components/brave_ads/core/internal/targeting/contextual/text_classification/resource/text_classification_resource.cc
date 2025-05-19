@@ -97,11 +97,10 @@ void TextClassificationResource::LoadCallback(
                                      << result.error() << ")");
   }
 
-  BLOG(1, "Successfully loaded "
-              << kTextClassificationResourceId << " "
-              << (/*is_neural*/ result.value() ? "neural" : "linear")
-              << " text classification resource version "
-              << kTextClassificationResourceVersion.Get());
+  BLOG(1, "Successfully loaded " << kTextClassificationResourceId << " "
+                                 << (result.value() ? "neural" : "linear")
+                                 << " text classification resource version "
+                                 << kTextClassificationResourceVersion.Get());
 }
 
 void TextClassificationResource::MaybeUnload() {

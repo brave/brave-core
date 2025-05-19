@@ -516,9 +516,9 @@ export const usePendingTransactions = () => {
       txAccount &&
       transactionDetails?.recipient
       ? {
+          chainId: transactionsNetwork.chainId,
           accountId: txAccount.accountId,
-          testnet: transactionsNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
-          use_shielded_pool: txToken.isShielded,
+          useShieldedPool: txToken.isShielded,
           address: transactionDetails.recipient
         }
       : skipToken
@@ -528,8 +528,7 @@ export const usePendingTransactions = () => {
   const fromOrb = useAccountOrb(txAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
   const isShieldingFunds =
-    getZCashTransactionTypeResult.txType ===
-    BraveWallet.ZCashTxType.kShielding
+    getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
 
   const transactionTitle = React.useMemo(
     (): string =>
@@ -548,10 +547,11 @@ export const usePendingTransactions = () => {
       return false
     }
 
-    // BTC and ZEC provide fee by txDataUnion
+    // BTC, ZEC and ADA provide fee by txDataUnion
     if (
       txCoinType === BraveWallet.CoinType.BTC ||
-      txCoinType === BraveWallet.CoinType.ZEC
+      txCoinType === BraveWallet.CoinType.ZEC ||
+      txCoinType === BraveWallet.CoinType.ADA
     ) {
       return false
     }

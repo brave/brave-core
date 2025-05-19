@@ -42,9 +42,9 @@ public class BraveNewsControllerFactory {
         mTaskRunner = PostTask.createSequencedTaskRunner(TaskTraits.UI_DEFAULT);
     }
 
-    public Promise<BraveNewsController> getBraveNewsController(
+    public Promise<@Nullable BraveNewsController> getForProfile(
             Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
-        final Promise<BraveNewsController> promise = new Promise<>();
+        final Promise<@Nullable BraveNewsController> promise = new Promise<>();
 
         mTaskRunner.execute(
                 () -> {
@@ -52,6 +52,10 @@ public class BraveNewsControllerFactory {
                             BraveNewsControllerFactoryJni.get()
                                     .getInterfaceToBraveNewsController(profile);
                     MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+                    if (!handle.isValid()) {
+                        promise.fulfill(null);
+                        return;
+                    }
                     BraveNewsController braveNewsController =
                             BraveNewsController.MANAGER.attachProxy(handle, 0);
                     if (connectionErrorHandler != null) {

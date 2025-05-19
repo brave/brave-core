@@ -60,11 +60,11 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
     };
   }
 
-  private syncCode: string | undefined;
-  private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null;
-  private isSubmittingSyncCode_: boolean;
-  private isGettingSyncCode_: boolean;
-  private syncCodeValidationError_: string;
+  private declare syncCode: string | undefined;
+  private declare syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null;
+  private declare isSubmittingSyncCode_: boolean;
+  private declare isGettingSyncCode_: boolean;
+  private declare syncCodeValidationError_: string;
 
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 

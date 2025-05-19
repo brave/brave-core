@@ -15,7 +15,6 @@ source_set("skus") {
 
   deps = [
     "//brave/components/constants",
-    "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/components/skus/browser",
     "//brave/components/skus/browser/resources:generated_resources",

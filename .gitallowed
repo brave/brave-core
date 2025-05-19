@@ -1,4 +1,4 @@
 test/data/import/chrome/default/Preferences
 test/data/import/chrome/default/Secure Preferences
 test/data/import/chrome/default/Secure_Preferences_for_extension_import
-third_party/ios_deps/JitsiMeet/
+ios/third_party/JitsiMeet/

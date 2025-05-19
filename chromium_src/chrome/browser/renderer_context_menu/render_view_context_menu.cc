@@ -27,6 +27,7 @@
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -48,11 +49,11 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -285,7 +286,8 @@ void OnRewriteSuggestionCompleted(
     base::WeakPtr<content::WebContents> web_contents,
     const std::string& selected_text,
     ai_chat::mojom::ActionType action_type,
-    base::expected<std::string, ai_chat::mojom::APIError> result) {
+    base::expected<ai_chat::EngineConsumer::GenerationResultData,
+                   ai_chat::mojom::APIError> result) {
   if (!web_contents) {
     return;
   }
@@ -327,8 +329,7 @@ void OnRewriteSuggestionCompleted(
     }
     conversation->MaybeUnlinkAssociatedContent();
 
-    auto* sidebar_controller =
-        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
     CHECK(sidebar_controller);
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
@@ -342,7 +343,7 @@ void OnRewriteSuggestionCompleted(
 
 bool CanOpenSplitViewForWebContents(
     base::WeakPtr<content::WebContents> web_contents) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+  if (!tabs::features::IsBraveSplitViewEnabled()) {
     return false;
   }
 
@@ -601,8 +602,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     conversation->MaybeUnlinkAssociatedContent();
 
     // Active the panel.
-    auto* sidebar_controller =
-        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    auto* sidebar_controller = browser->GetFeatures().sidebar_controller();
     CHECK(sidebar_controller);
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);

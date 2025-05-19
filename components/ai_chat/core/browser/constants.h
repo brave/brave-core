@@ -27,6 +27,7 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 inline constexpr auto kPrintPreviewRetrievalHosts =
     base::MakeFixedFlatSet<std::string_view>({
         "docs.google.com",
+        "watermark.silverchair.com",
     });
 
 inline constexpr uint8_t kMaxPreviewPages = 20;

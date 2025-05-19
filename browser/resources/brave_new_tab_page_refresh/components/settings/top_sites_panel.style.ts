@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
 import favoritesActive from '../../assets/favorites_active.svg'
@@ -19,19 +19,10 @@ export const style = scoped.css`
   & {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-  }
-
-  .toggle-row {
-    display: flex;
-    align-items: center;
-
-    label {
-      flex: 1 1 auto;
-    }
   }
 
   .list-view-options {
+    padding: 24px;
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
@@ -46,6 +37,12 @@ export const style = scoped.css`
 
   h4 {
     margin-top: 8px;
+    font: ${font.default.semibold};
+  }
+
+  p {
+    font: ${font.small.regular};
+    color: ${color.text.tertiary};
   }
 
   .list-view-image {

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 
+#include <algorithm>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -477,23 +478,32 @@ CardanoTransaction::TxOutput* CardanoTransaction::ChangeOutput() {
   return nullptr;
 }
 
-uint64_t CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
+bool CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
   auto* change = ChangeOutput();
-  if (!change) {
-    return 0;
-  }
+  CHECK(change);
   auto* target = TargetOutput();
   CHECK(target);
 
   auto total_input = TotalInputsAmount();
-  if (total_input > min_fee + target->amount) {
-    DCHECK_EQ(change->amount, 0u);
+  if (total_input >= min_fee + target->amount) {
     change->amount = total_input - (min_fee + target->amount);
     DCHECK_EQ(EffectiveFeeAmount(), min_fee);
-    return change->amount;
+    return true;
   }
+  return false;
+}
 
-  return 0;
+void CardanoTransaction::ArrangeTransactionForTesting() {
+  std::sort(inputs_.begin(), inputs_.end(),
+            [](const auto& input1, const auto& input2) {
+              return input1.utxo_outpoint < input2.utxo_outpoint;
+            });
+
+  DCHECK_LE(outputs_.size(), 2u);
+  std::sort(outputs_.begin(), outputs_.end(),
+            [](const auto& output1, const auto& output2) {
+              return output1.type < output2.type;
+            });
 }
 
 }  // namespace brave_wallet

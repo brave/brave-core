@@ -45,6 +45,7 @@
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/permission_controller.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
@@ -336,7 +337,6 @@ bool AIChatTabHelper::MaybePrintPreviewExtract(
     // When page is already loaded, fallback to print preview extraction
     DVLOG(1) << "extracting print preview content now";
     print_preview_extraction_delegate_->Extract(
-        IsPdf(web_contents()),
         base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
@@ -345,9 +345,14 @@ bool AIChatTabHelper::MaybePrintPreviewExtract(
 
 void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
     GetPageContentCallback callback,
-    std::string content) {
+    base::expected<std::string, std::string> result) {
   // Invalidation token not applicable for print preview OCR
-  std::move(callback).Run(std::move(content), false, "");
+  if (result.has_value()) {
+    std::move(callback).Run(std::move(result.value()), false, "");
+  } else {
+    VLOG(1) << result.error();
+    std::move(callback).Run("", false, "");
+  }
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
@@ -429,17 +434,26 @@ bool AIChatTabHelper::HasOpenAIChatPermission() const {
       web_contents()->GetBrowserContext()->GetPermissionController();
   content::PermissionResult permission_status =
       permission_controller->GetPermissionResultForCurrentDocument(
-          blink::PermissionType::BRAVE_OPEN_AI_CHAT, rfh);
+          content::PermissionDescriptorUtil::
+              CreatePermissionDescriptorForPermissionType(
+                  blink::PermissionType::BRAVE_OPEN_AI_CHAT),
+          rfh);
   return permission_status.status == content::PermissionStatus::GRANTED;
 }
 
 void AIChatTabHelper::GetScreenshots(
     mojom::ConversationHandler::GetScreenshotsCallback callback) {
-  full_screenshotter_ = std::make_unique<FullScreenshotter>();
-  full_screenshotter_->CaptureScreenshots(
-      web_contents(),
-      base::BindOnce(&AIChatTabHelper::OnScreenshotsCaptured,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  if (IsPdf(web_contents())) {
+    print_preview_extraction_delegate_->CapturePdf(
+        base::BindOnce(&AIChatTabHelper::OnScreenshotsCaptured,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  } else {
+    full_screenshotter_ = std::make_unique<FullScreenshotter>();
+    full_screenshotter_->CaptureScreenshots(
+        web_contents(),
+        base::BindOnce(&AIChatTabHelper::OnScreenshotsCaptured,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  }
 }
 
 void AIChatTabHelper::OnScreenshotsCaptured(

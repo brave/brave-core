@@ -8,8 +8,8 @@
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -29,10 +29,10 @@ base::Value::Dict BuildClickedSameAdMultipleTimesReminder() {
   return base::Value::Dict()
       .Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId)
       .Set(kNotificationAdTitleKey,
-           brave_l10n::GetLocalizedResourceUTF16String(
+           l10n_util::GetStringUTF16(
                IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE))
       .Set(kNotificationAdBodyKey,
-           brave_l10n::GetLocalizedResourceUTF16String(
+           l10n_util::GetStringUTF16(
                IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_BODY))
       .Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
 }
@@ -41,10 +41,10 @@ base::Value::Dict BuildExternalWalletConnectedReminder() {
   return base::Value::Dict()
       .Set(kNotificationAdPlacementIdKey, kReminderNotificationAdPlacementId)
       .Set(kNotificationAdTitleKey,
-           brave_l10n::GetLocalizedResourceUTF16String(
+           l10n_util::GetStringUTF16(
                IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE))
       .Set(kNotificationAdBodyKey,
-           brave_l10n::GetLocalizedResourceUTF16String(
+           l10n_util::GetStringUTF16(
                IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY))
       .Set(kNotificationAdTargetUrlKey, kReminderNotificationAdTargetUrl);
 }

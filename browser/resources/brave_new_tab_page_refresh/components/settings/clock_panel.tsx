@@ -8,14 +8,13 @@ import DropDown from '@brave/leo/react/dropdown'
 import Toggle from '@brave/leo/react/toggle'
 
 import { ClockFormat } from '../../models/new_tab'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import formatMessage from '$web-common/formatMessage'
 
 import { style } from './clock_panel.style'
 
 export function ClockPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const [showClock, clockFormat] = useAppState((state) => [
@@ -25,11 +24,11 @@ export function ClockPanel() {
 
   function formatOptionText(format: ClockFormat) {
     switch (format) {
-      case 'h12':
+      case ClockFormat.k12:
         return getString('clockFormatOption12HourText')
-      case 'h24':
+      case ClockFormat.k24:
         return getString('clockFormatOption24HourText')
-      case '':
+      default:
         return formatMessage(getString('clockFormatOptionAutomaticText'), [
           new Intl.DateTimeFormat(undefined).resolvedOptions().locale
         ]).join('')
@@ -38,13 +37,13 @@ export function ClockPanel() {
 
   function renderFormatOption(format: ClockFormat) {
     return (
-      <leo-option value={format}>{formatOptionText(format)}</leo-option>
+      <leo-option value={String(format)}>{formatOptionText(format)}</leo-option>
     )
   }
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='form-control-row'>
+      <div className='control-row'>
         <label>{getString('showClockLabel')}</label>
         <Toggle
           size='small'
@@ -52,18 +51,19 @@ export function ClockPanel() {
           onChange={({ checked }) => { actions.setShowClock(checked) }}
         />
       </div>
-      <div>
+      <div className='control-row'>
         <label>{getString('clockFormatLabel')}</label>
         <DropDown
-          value={formatOptionText(clockFormat)}
+          value={String(clockFormat)}
           positionStrategy='fixed'
           onChange={(detail) => {
-            actions.setClockFormat(detail.value as ClockFormat)
+            actions.setClockFormat(Number(detail.value) || 0 as ClockFormat)
           }}
         >
-          {renderFormatOption('')}
-          {renderFormatOption('h12')}
-          {renderFormatOption('h24')}
+          <span slot='value'>{formatOptionText(clockFormat)}</span>
+          {renderFormatOption(ClockFormat.kAuto)}
+          {renderFormatOption(ClockFormat.k12)}
+          {renderFormatOption(ClockFormat.k24)}
         </DropDown>
       </div>
     </div>

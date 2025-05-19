@@ -14,7 +14,6 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
@@ -98,8 +97,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   void ActivatePlaylistSidePanel() {
-    auto* sidebar_controller =
-        static_cast<BraveBrowser*>(browser())->sidebar_controller();
+    auto* sidebar_controller = browser()->GetFeatures().sidebar_controller();
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kPlaylist);
   }

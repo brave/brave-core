@@ -14,7 +14,6 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -73,7 +72,8 @@ SidebarControlView::SidebarControlView(Delegate* delegate,
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 
-  sidebar_model_observed_.Observe(browser_->sidebar_controller()->model());
+  sidebar_model_observed_.Observe(
+      browser_->GetFeatures().sidebar_controller()->model());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
 }
@@ -108,24 +108,21 @@ void SidebarControlView::ShowContextMenuForViewImpl(
   }
 
   context_menu_model_ = std::make_unique<ControlViewMenuModel>(this);
-  context_menu_model_->AddTitle(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_SIDEBAR_SHOW_OPTION_TITLE));
+  context_menu_model_->AddTitle(
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_TITLE));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowAlways),
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowOnMouseOver),
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowNever),
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_SHOW_OPTION_NEVER));
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   context_menu_model_->AddSeparator(
       ui::MenuSeparatorType::BOTH_SIDE_PADDED_SEPARATOR);
-  context_menu_model_->AddTitle(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE));
+  context_menu_model_->AddTitle(
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE));
   context_menu_model_->AddItemWithStringId(
       IDC_SIDEBAR_TOGGLE_POSITION,
       IsSidebarOnLeft(browser_)
@@ -177,8 +174,8 @@ void SidebarControlView::AddChildViews() {
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero)
           .WithOrder(2));
   sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
-      browser_, brave_l10n::GetLocalizedResourceUTF16String(
-                    IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP)));
+      browser_,
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP)));
   sidebar_item_add_view_->set_context_menu_controller(this);
   // Remove top margin as the last item view has bottom margin.
   sidebar_item_add_view_->GetProperty(views::kMarginsKey)->set_top(0);
@@ -193,8 +190,7 @@ void SidebarControlView::AddChildViews() {
           .WithOrder(1));
 
   sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
 
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,
@@ -220,7 +216,10 @@ void SidebarControlView::UpdateItemAddButtonState() {
   DCHECK(sidebar_item_add_view_);
   // Determine add button enabled state.
   bool should_enable = true;
-  if (browser_->sidebar_controller()->model()->IsSidebarHasAllBuiltInItems() &&
+  if (browser_->GetFeatures()
+          .sidebar_controller()
+          ->model()
+          ->IsSidebarHasAllBuiltInItems() &&
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     should_enable = false;
   }

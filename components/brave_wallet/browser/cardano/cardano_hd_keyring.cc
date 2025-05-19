@@ -67,9 +67,9 @@ mojom::CardanoAddressPtr CardanoHDKeyring::GetAddress(
   return mojom::CardanoAddress::New(
       CardanoAddress::FromParts(IsTestnet(),
                                 Blake2bHash<kPaymentKeyHashLength>(
-                                    payment_hd_key->GetPublicKeyAsSpan()),
+                                    {payment_hd_key->GetPublicKeyAsSpan()}),
                                 Blake2bHash<kStakeKeyHashLength>(
-                                    delegation_hd_key->GetPublicKeyAsSpan()))
+                                    {delegation_hd_key->GetPublicKeyAsSpan()}))
           .ToString(),
       payment_key_id.Clone());
 }

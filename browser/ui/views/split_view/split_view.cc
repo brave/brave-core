@@ -87,7 +87,7 @@ SplitView::SplitView(Browser& browser,
     : browser_(browser),
       contents_container_(contents_container),
       contents_web_view_(contents_web_view) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  CHECK(tabs::features::IsBraveSplitViewEnabled());
 
   // Re-parent the |contents_container| to this view.
   AddChildView(
@@ -99,6 +99,8 @@ SplitView::SplitView(Browser& browser,
 
   secondary_devtools_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<views::WebView>(browser_->profile()));
+  secondary_contents_scrim_view_ = secondary_contents_container_->AddChildView(
+      std::make_unique<ScrimView>());
   secondary_contents_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ActivatableContentsWebView>(browser_->profile()));
   secondary_contents_scrim_view_ = secondary_contents_container_->AddChildView(
@@ -122,9 +124,10 @@ SplitView::SplitView(Browser& browser,
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          secondary_devtools_web_view_, secondary_contents_web_view_,
-          secondary_lens_overlay_view_, secondary_contents_scrim_view_, nullptr,
-          nullptr, secondary_reader_mode_toolbar_));
+          secondary_devtools_web_view_, secondary_contents_scrim_view_,
+          secondary_contents_web_view_, secondary_lens_overlay_view_,
+          secondary_contents_scrim_view_, /*border_view*/ nullptr,
+          /*watermark_view*/ nullptr, secondary_reader_mode_toolbar_));
 #endif
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(

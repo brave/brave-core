@@ -177,16 +177,6 @@ platform :ios do
 
   private_lane :skipped_tests do
     [
-      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
-      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
-      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
-      "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
-      "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
-      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
-      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
-      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
-      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
-      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
       "CertificateUtilitiesTests/CertificatePinningTest/testBraveCoreLivePinningFailure"
     ]
   end

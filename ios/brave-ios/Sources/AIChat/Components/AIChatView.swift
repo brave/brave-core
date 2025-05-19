@@ -42,6 +42,12 @@ public struct AIChatView: View {
   private var feedbackToast: AIChatFeedbackToastType = .none
 
   @State
+  private var shouldShowFeedbackPrivacyWarningAlert = false
+
+  @State
+  private var feedbackPrivacyWarning: AIChatFeedbackInfo?
+
+  @State
   private var isShowingSlashTools = false
 
   @State
@@ -102,8 +108,10 @@ public struct AIChatView: View {
         },
         menuContent: {
           menuView
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
       )
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
@@ -384,6 +392,45 @@ public struct AIChatView: View {
         isModallyPresented: true
       )
     }
+    .bravePopup(isPresented: $shouldShowFeedbackPrivacyWarningAlert) {
+      AIChatFeedbackPrivacyWarningView {
+        shouldShowFeedbackPrivacyWarningAlert = false
+        feedbackPrivacyWarning = nil
+      } onSend: {
+        Task { @MainActor in
+          shouldShowFeedbackPrivacyWarningAlert = false
+          guard let warning = feedbackPrivacyWarning else {
+            return
+          }
+
+          feedbackPrivacyWarning = nil
+
+          let ratingId = await model.rateConversation(
+            isLiked: warning.isLiked,
+            turnId: warning.turnId
+          )
+          if let ratingId = ratingId {
+            feedbackToast = .success(
+              isLiked: warning.isLiked,
+              onAddFeedback: {
+                customFeedbackInfo = AIChatFeedbackModelToast(
+                  turnId: warning.turnIndex,
+                  ratingId: ratingId
+                )
+              }
+            )
+          } else {
+            feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+          }
+        }
+      } openURL: { url in
+        shouldShowFeedbackPrivacyWarningAlert = false
+        feedbackPrivacyWarning = nil
+        openURL(url)
+        dismiss()
+      }
+      .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
     .task {
       await model.getInitialState()
       await model.refreshPremiumStatus()
@@ -507,14 +554,26 @@ public struct AIChatView: View {
         title: Strings.AIChat.responseContextMenuLikeAnswerTitle,
         icon: Image(braveSystemName: "leo.thumb.up"),
         onSelected: {
-          Task { @MainActor in
-            guard let turnId = turn.uuid else { return }
+          guard let turnId = turn.uuid else { return }
 
-            let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
-            if ratingId != nil {
-              feedbackToast = .success(isLiked: true)
-            } else {
-              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+          if Preferences.AIChat.showFeedbackPrivacyWarning.value {
+            feedbackPrivacyWarning = AIChatFeedbackInfo(
+              isLiked: true,
+              turnId: turnId,
+              turnIndex: turnIndex
+            )
+
+            Task.delayed(bySeconds: 1.0) { @MainActor in
+              shouldShowFeedbackPrivacyWarningAlert = true
+            }
+          } else {
+            Task { @MainActor in
+              let ratingId = await model.rateConversation(isLiked: true, turnId: turnId)
+              if ratingId != nil {
+                feedbackToast = .success(isLiked: true)
+              } else {
+                feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+              }
             }
           }
         }
@@ -524,22 +583,34 @@ public struct AIChatView: View {
         title: Strings.AIChat.responseContextMenuDislikeAnswerTitle,
         icon: Image(braveSystemName: "leo.thumb.down"),
         onSelected: {
-          Task { @MainActor in
-            guard let turnId = turn.uuid else { return }
+          guard let turnId = turn.uuid else { return }
 
-            let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)
-            if let ratingId = ratingId {
-              feedbackToast = .success(
-                isLiked: false,
-                onAddFeedback: {
-                  customFeedbackInfo = AIChatFeedbackModelToast(
-                    turnId: turnIndex,
-                    ratingId: ratingId
-                  )
-                }
-              )
-            } else {
-              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+          if Preferences.AIChat.showFeedbackPrivacyWarning.value {
+            feedbackPrivacyWarning = AIChatFeedbackInfo(
+              isLiked: false,
+              turnId: turnId,
+              turnIndex: turnIndex
+            )
+
+            Task.delayed(bySeconds: 1.0) { @MainActor in
+              shouldShowFeedbackPrivacyWarningAlert = true
+            }
+          } else {
+            Task { @MainActor in
+              let ratingId = await model.rateConversation(isLiked: false, turnId: turnId)
+              if let ratingId = ratingId {
+                feedbackToast = .success(
+                  isLiked: false,
+                  onAddFeedback: {
+                    customFeedbackInfo = AIChatFeedbackModelToast(
+                      turnId: turnIndex,
+                      ratingId: ratingId
+                    )
+                  }
+                )
+              } else {
+                feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+              }
             }
           }
         }
@@ -784,7 +855,8 @@ struct AIChatView_Preview: PreviewProvider {
                   createdTime: Date.now,
                   edits: nil,
                   uploadedFiles: nil,
-                  fromBraveSearchSerp: false
+                  fromBraveSearchSerp: false,
+                  modelKey: nil
                 ),
               isEntryInProgress: false,
               lastEdited: nil,

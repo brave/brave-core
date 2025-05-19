@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
@@ -24,7 +25,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/template_url_service.h"
-#include "components/tab_collections/public/tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
 
@@ -116,7 +117,14 @@ void NewTabPageHandler::GetSelectedBackground(
 
 void NewTabPageHandler::GetSponsoredImageBackground(
     GetSponsoredImageBackgroundCallback callback) {
-  std::move(callback).Run(background_facade_->GetSponsoredImageBackground());
+  auto sponsored_background = background_facade_->GetSponsoredImageBackground();
+  if (sponsored_background) {
+    if (auto* web_contents = tab_->GetContents()) {
+      ntp_background_images::NewTabTakeoverInfoBarDelegate::
+          MaybeDisplayAndIncrementCounter(web_contents, &pref_service_.get());
+    }
+  }
+  std::move(callback).Run(std::move(sponsored_background));
 }
 
 void NewTabPageHandler::SelectBackground(
@@ -366,12 +374,34 @@ void NewTabPageHandler::SetShowClock(bool show_clock,
 }
 
 void NewTabPageHandler::GetClockFormat(GetClockFormatCallback callback) {
-  std::move(callback).Run(pref_service_->GetString(kNewTabPageClockFormat));
+  auto to_clock_format = [](const std::string& format_string) {
+    if (format_string == "h12") {
+      return mojom::ClockFormat::k12;
+    } else if (format_string == "h24") {
+      return mojom::ClockFormat::k24;
+    } else {
+      return mojom::ClockFormat::kAuto;
+    }
+  };
+
+  std::move(callback).Run(
+      to_clock_format(pref_service_->GetString(kNewTabPageClockFormat)));
 }
 
-void NewTabPageHandler::SetClockFormat(const std::string& clock_format,
+void NewTabPageHandler::SetClockFormat(mojom::ClockFormat clock_format,
                                        SetClockFormatCallback callback) {
-  pref_service_->SetString(kNewTabPageClockFormat, clock_format);
+  auto stringify_format = [](mojom::ClockFormat format) {
+    switch (format) {
+      case mojom::ClockFormat::k12:
+        return "h12";
+      case mojom::ClockFormat::k24:
+        return "h24";
+      case mojom::ClockFormat::kAuto:
+        return "";
+    }
+  };
+  pref_service_->SetString(kNewTabPageClockFormat,
+                           stringify_format(clock_format));
   std::move(callback).Run();
 }
 

@@ -14,12 +14,15 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/split_tab_visual_data.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
@@ -29,6 +32,7 @@
 #include "content/public/test/browser_test.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -48,6 +52,55 @@ IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
                        SplitViewDisabledStateTest) {
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
   EXPECT_FALSE(!!split_view_data);
+}
+
+class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
+ public:
+  SideBySideEnabledBrowserTest() {
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {features::kSideBySide}, {});
+  }
+  ~SideBySideEnabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
+                       BraveMultiContentsViewTest) {
+  // Check SplitView feature is not enabled.
+  EXPECT_FALSE(tabs::features::IsBraveSplitViewEnabled());
+  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
+  EXPECT_FALSE(!!split_view_data);
+
+  auto* multi_contents_view = static_cast<BraveMultiContentsView*>(
+      BrowserView::GetBrowserViewForBrowser(browser())
+          ->multi_contents_view_for_testing());
+  ASSERT_TRUE(multi_contents_view);
+
+  chrome::NewSplitTab(browser());
+
+  // Check corner radius.
+  auto* start_contents_web_view =
+      multi_contents_view->start_contents_view_for_testing();
+  auto* end_contents_web_view =
+      multi_contents_view->end_contents_view_for_testing();
+  ASSERT_TRUE(start_contents_web_view);
+  ASSERT_TRUE(end_contents_web_view);
+  EXPECT_EQ(start_contents_web_view->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF(multi_contents_view->GetCornerRadius()));
+  EXPECT_EQ(end_contents_web_view->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF(multi_contents_view->GetCornerRadius()));
+
+  // Check borders.
+  auto start_contents_container_view =
+      multi_contents_view->contents_container_views_for_testing()[0];
+  auto end_contents_container_view =
+      multi_contents_view->contents_container_views_for_testing()[1];
+  EXPECT_EQ(gfx::Insets(BraveMultiContentsView::kBorderThickness),
+            start_contents_container_view->GetBorder()->GetInsets());
+  EXPECT_EQ(gfx::Insets(BraveMultiContentsView::kBorderThickness),
+            end_contents_container_view->GetBorder()->GetInsets());
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {

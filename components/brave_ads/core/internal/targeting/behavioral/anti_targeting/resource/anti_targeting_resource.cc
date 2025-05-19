@@ -84,15 +84,13 @@ void AntiTargetingResource::Load() {
 }
 
 void AntiTargetingResource::LoadCallback(
-    ResourceComponentParsingErrorOr<AntiTargetingResourceInfo> result) {
-  if (!result.has_value()) {
+    std::optional<AntiTargetingResourceInfo> resource) {
+  if (!resource) {
     return BLOG(0, "Failed to load and parse " << kAntiTargetingResourceId
-                                               << " anti-targeting resource ("
-                                               << result.error() << ")");
+                                               << " anti-targeting resource");
   }
-  AntiTargetingResourceInfo& resource = result.value();
 
-  if (!resource.version) {
+  if (!resource->version) {
     return BLOG(1, kAntiTargetingResourceId
                        << " anti-targeting resource is unavailable");
   }

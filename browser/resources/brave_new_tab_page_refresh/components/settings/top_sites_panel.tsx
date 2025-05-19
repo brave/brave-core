@@ -9,23 +9,16 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { TopSitesListKind } from '../../models/top_sites'
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
+import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'
 
 export function TopSitesPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const showTopSites = useAppState((s) => s.showTopSites)
   const listKind = useAppState((s) => s.topSitesListKind)
-
-  function listOptionClassName(kind: TopSitesListKind) {
-    if (kind === listKind) {
-      return kind + ' active'
-    }
-    return kind
-  }
 
   function renderSelectedMarker(kind: TopSitesListKind) {
     if (kind === listKind) {
@@ -40,7 +33,7 @@ export function TopSitesPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='toggle-row'>
+      <div className='control-row'>
         <label>{getString('showTopSitesLabel')}</label>
         <Toggle
           size='small'
@@ -52,21 +45,31 @@ export function TopSitesPanel() {
         showTopSites && (
           <div className='list-view-options'>
             <button
-              className={listOptionClassName('custom')}
-              onClick={() => actions.setTopSitesListKind('custom')}
+              className={classNames({
+                'custom': true,
+                'active': listKind === TopSitesListKind.kCustom
+              })}
+              onClick={() => {
+                actions.setTopSitesListKind(TopSitesListKind.kCustom)
+              }}
             >
               <div className='list-view-image'>
-                {renderSelectedMarker('custom')}
+                {renderSelectedMarker(TopSitesListKind.kCustom)}
               </div>
               <h4>{getString('topSitesCustomOptionTitle')}</h4>
               <p>{getString('topSitesCustomOptionText')}</p>
             </button>
             <button
-              className={listOptionClassName('most-visited')}
-              onClick={() => actions.setTopSitesListKind('most-visited')}
+              className={classNames({
+                'most-visited': true,
+                'active': listKind === TopSitesListKind.kMostVisited
+              })}
+              onClick={() => {
+                actions.setTopSitesListKind(TopSitesListKind.kMostVisited)}
+              }
             >
               <div className='list-view-image'>
-                {renderSelectedMarker('most-visited')}
+                {renderSelectedMarker(TopSitesListKind.kMostVisited)}
               </div>
               <h4>{getString('topSitesMostVisitedOptionTitle')}</h4>
               <p>{getString('topSitesMostVisitedOptionText')}</p>

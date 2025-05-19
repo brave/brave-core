@@ -87,7 +87,7 @@ class BorderWithArrow : public views::BubbleBorder {
         GetVisibleArrowPath(arrow(), arrow_bounds, BubbleArrowPart::kBorder),
         flags);
 
-    flags.setColor(color().ConvertToSkColor(view.GetColorProvider()));
+    flags.setColor(color().ResolveToSkColor(view.GetColorProvider()));
     flags.setStyle(cc::PaintFlags::kFill_Style);
     flags.setStrokeWidth(1.0);
     flags.setAntiAlias(true);

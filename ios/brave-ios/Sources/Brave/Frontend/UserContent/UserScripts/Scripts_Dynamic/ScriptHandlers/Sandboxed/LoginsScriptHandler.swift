@@ -7,7 +7,6 @@ import Foundation
 import Preferences
 import Shared
 import Storage
-import SwiftyJSON
 import Web
 import WebKit
 import os.log
@@ -242,8 +241,9 @@ class LoginsScriptHandler: TabContentScript {
       return nil
     }
 
-    let json = JSON(jsonObj)
-    guard let jsonString = json.stringValue() else {
+    guard let json = try? JSONSerialization.data(withJSONObject: jsonObj),
+      let jsonString = String(data: json, encoding: .utf8)
+    else {
       return
     }
 

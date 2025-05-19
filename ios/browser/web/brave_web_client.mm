@@ -10,6 +10,7 @@
 #include "base/ios/ns_error_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/ios/browser/api/web_view/brave_web_view.h"
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
@@ -96,4 +97,19 @@ bool BraveWebClient::EnableWebInspector(
 
 void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
   legacy_user_agent_ = user_agent;
+}
+
+void BraveWebClient::BuildEditMenu(web::WebState* web_state,
+                                   id<UIMenuBuilder> builder) const {
+  BraveWebView* webView =
+      static_cast<BraveWebView*>([BraveWebView webViewForWebState:web_state]);
+  if (!webView) {
+    return;
+  }
+  id<BraveWebViewUIDelegate> uiDelegate = webView.UIDelegate;
+
+  if ([uiDelegate respondsToSelector:@selector(webView:
+                                         buildEditMenuWithBuilder:)]) {
+    return [uiDelegate webView:webView buildEditMenuWithBuilder:builder];
+  }
 }

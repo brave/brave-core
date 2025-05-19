@@ -612,6 +612,12 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ntp_background",
 ]
 
+if (toolkit_views) {
+  brave_chrome_browser_deps += [ "//brave/browser/ui/sidebar" ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ui/sidebar" ]
+}
+
 # https://github.com/brave/brave-browser/issues/41418
 if (enable_extensions) {
   brave_chrome_browser_deps +=

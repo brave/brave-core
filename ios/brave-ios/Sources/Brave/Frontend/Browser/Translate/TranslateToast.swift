@@ -24,7 +24,7 @@ private struct TranslationOptionsView: View {
         ForEach(filteredLanguages, id: \.self) { language in
           Button(
             action: {
-              self.language = language
+              self.language = Locale.Language(identifier: language)
               dismiss()
             },
             label: {
@@ -51,7 +51,7 @@ private struct TranslationOptionsView: View {
     )
   }
 
-  private var filteredLanguages: [Locale.Language] {
+  private var filteredLanguages: [String] {
     return searchText.isEmpty
       ? languages
       : languages.filter({
@@ -62,7 +62,7 @@ private struct TranslationOptionsView: View {
   // TODO: Take from Brave-Core's list
   // TODO: Take from Apple's list
   // https://github.com/brave/brave-browser/issues/42280
-  private var languages: [Locale.Language] {
+  private var languages: [String] {
     return [
       "af",  // Afrikaans
       "ak",  // Twi
@@ -196,18 +196,20 @@ private struct TranslationOptionsView: View {
       "zh-CN",  // Chinese (Simplified)
       "zh-TW",  // Chinese (Traditional)
       "zu",  // Zulu
-    ].map({
-      Locale.Language.init(identifier: $0)
+    ].sorted(by: {
+      languageName(for: $0) < languageName(for: $1)
     })
   }
 
-  private func languageName(for language: Locale.Language) -> String {
-    if let languageCode = language.languageCode?.identifier,
-      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
-    {
+  private func languageName(for identifier: String) -> String {
+    let locale = Locale(identifier: identifier)
+    if let languageName = Locale.current.localizedString(
+      forIdentifier: locale.region != nil
+        ? locale.language.maximalIdentifier : locale.language.minimalIdentifier
+    ) {
       return languageName
     }
-    return "Unknown Language"
+    return Strings.BraveTranslate.unknownLanguageTitle
   }
 }
 
@@ -319,7 +321,7 @@ struct TranslateToast: View {
 
   private var currentLanguageName: String {
     if let languageCode = languageInfo.currentLanguage.languageCode?.identifier,
-      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
+      let languageName = Locale.current.localizedString(forIdentifier: languageCode)
     {
       return languageName
     }
@@ -328,7 +330,7 @@ struct TranslateToast: View {
 
   private var pageLanguageName: String {
     if let languageCode = languageInfo.pageLanguage?.languageCode?.identifier,
-      let languageName = Locale.current.localizedString(forLanguageCode: languageCode)
+      let languageName = Locale.current.localizedString(forIdentifier: languageCode)
     {
       return languageName
     }

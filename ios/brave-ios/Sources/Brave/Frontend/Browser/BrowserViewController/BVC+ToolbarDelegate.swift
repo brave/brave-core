@@ -286,16 +286,16 @@ extension BrowserViewController: TopToolbarDelegate {
 
     if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
-      return handleChromiumWebUIURL(url)
+      if FeatureList.kUseChromiumWebViews.enabled {
+        finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+        return true
+      } else {
+        return handleChromiumWebUIURL(url)
+      }
     }
 
     guard let fixupURL = URIFixup.getURL(text) else {
       return false
-    }
-
-    if fixupURL.scheme == "brave" || fixupURL.scheme == "chrome" {
-      topToolbar.leaveOverlayMode()
-      return handleChromiumWebUIURL(fixupURL)
     }
 
     // check text is decentralized DNS supported domain
@@ -778,8 +778,12 @@ extension BrowserViewController: TopToolbarDelegate {
 
   private func displayFavoritesController() {
     if favoritesController == nil {
+      let dse = profile.searchEngines.defaultEngine(
+        forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
+      )
       let favoritesController = FavoritesViewController(
         privateBrowsingManager: privateBrowsingManager,
+        defaultSearchEngine: dse,
         bookmarkAction: { [weak self] bookmark, action in
           self?.handleFavoriteAction(favorite: bookmark, action: action)
         },
@@ -803,13 +807,28 @@ extension BrowserViewController: TopToolbarDelegate {
             }
 
             switch searchType {
-            case .text, .website:
+            case .text:
               if let text = recentSearch.text {
                 self.topToolbar.setLocation(text, search: false)
                 self.topToolbar(self.topToolbar, didEnterText: text)
 
                 if shouldSubmitSearch {
                   submitSearch(text)
+                }
+              }
+            case .website:
+              if let text = recentSearch.text {
+                self.topToolbar.setLocation(text, search: false)
+                self.topToolbar(self.topToolbar, didEnterText: text)
+
+                if shouldSubmitSearch {
+                  if let urlString = recentSearch.websiteUrl,
+                    let url = URL(string: urlString)
+                  {
+                    finishEditingAndSubmit(url)
+                  } else {
+                    submitSearch(text)
+                  }
                 }
               }
             case .qrCode:

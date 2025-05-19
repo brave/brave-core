@@ -7,6 +7,10 @@ script/uplift.py @bsclifton
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
+rewrite/ @bridiver @cdesouza-chromium
+
+# Views
+chromium_src/ui/views/view.h @bridiver
 
 # brave/browser/ui/BUILD.gn should not have new files added to it
 browser/ui/BUILD.gn @bridiver
@@ -177,7 +181,7 @@ build/ios/ @brave/ios
 android/android_browser_tests.gni @brave/android-tests-reviewers
 
 # Android res
-android/java/res @deeppandya
+android/java/res @brave/Android
 
 # BravePrefServiceBridge.java is going to be retired soon. We
 # have that owners record temporary to avoid people adding

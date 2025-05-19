@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_BRAVE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_BRAVE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
@@ -44,8 +42,7 @@ class BraveEphemeralStorageServiceDelegate :
 
   // EphemeralStorageServiceDelegate:
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
-  void CleanupFirstPartyStorageArea(
-      const std::string& registerable_domain) override;
+  void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
 
  private:

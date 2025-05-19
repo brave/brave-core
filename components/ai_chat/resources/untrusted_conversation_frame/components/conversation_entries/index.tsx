@@ -9,7 +9,7 @@ import { getLocale } from '$web-common/locale'
 import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
-import UploadedImgItem from '../../../page/components/uploaded_img_item'
+import { AttachmentImageItem } from '../../../page/components/attachment_item'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
@@ -91,6 +91,12 @@ function ConversationEntries() {
           const lastEditedTime = latestTurn.createdTime
           const hasReasoning = latestTurnText.includes('<think>')
 
+          const turnModelKey = turn.modelKey
+            ? conversationContext.allModels
+                .find(m => m.key === turn.modelKey)
+                ?.key ?? undefined
+            : undefined;
+
           const turnContainer = classnames({
             [styles.turnContainerMobile]: conversationContext.isMobile
           })
@@ -111,6 +117,9 @@ function ConversationEntries() {
               navigator.clipboard.writeText(latestTurnText)
             }
           }
+
+          const imageFiles =
+            getImageFiles(latestTurn.uploadedFiles) || []
 
           return (
             <div
@@ -176,19 +185,16 @@ function ConversationEntries() {
                             </div>
                           )}
                         </div>
-                        <div className={styles.uploadedImages}>
-                          {(() => {
-                            const imageFiles =
-                              getImageFiles(latestTurn.uploadedFiles) || [];
-                            return imageFiles.length > 0 &&
-                              imageFiles.map((img) => (
-                                <UploadedImgItem
-                                  key={img.filename}
-                                  uploadedImage={img}
-                                />
-                              ));
-                          })()}
-                        </div>
+                        {imageFiles.length > 0 &&
+                          <div className={styles.uploadedImages}>
+                            {imageFiles.map((img) => (
+                              <AttachmentImageItem
+                                key={img.filename}
+                                uploadedImage={img}
+                              />
+                            ))}
+                          </div>
+                        }
                       </div>
                     </>
                   )}
@@ -217,6 +223,7 @@ function ConversationEntries() {
                   !showEditInput && (
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
+                      turnModelKey={turnModelKey}
                       onEditAnswerClicked={() => setEditInputId(id)}
                       onCopyTextClicked={handleCopyText}
                     />

@@ -7,9 +7,14 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
@@ -48,7 +53,7 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+  if (tabs::features::IsBraveSplitViewEnabled()) {
     split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
   }
 }
@@ -61,4 +66,13 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
+}
+
+void BrowserWindowFeatures::InitPostWindowConstruction(Browser* browser) {
+  BrowserWindowFeatures_ChromiumImpl::InitPostWindowConstruction(browser);
+
+  if (sidebar::CanUseSidebar(browser)) {
+    sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
+        browser, browser->profile());
+  }
 }

@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { stringToMojoString16, mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
-import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
+import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js'
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
@@ -99,22 +99,12 @@ export function initializeSearch(store: Store<SearchState>): SearchActions {
 
   searchProxy.addListeners({
     autocompleteResultChanged(result) {
-      const searchMatches = result.matches.map((m) => {
-        const match = {
-          allowedToBeDefaultMatch: m.allowedToBeDefaultMatch,
-          contents: mojoString16ToString(m.contents),
-          description: mojoString16ToString(m.description),
-          iconUrl: m.iconUrl,
-          imageUrl: m.imageUrl,
-          destinationUrl: m.destinationUrl.url
-        }
-
-        if (m.swapContentsAndDescription) {
+      const searchMatches = result.matches.map((match) => {
+        if (match.swapContentsAndDescription) {
           const { contents } = match
           match.contents = match.description
           match.description = contents
         }
-
         return match
       })
       store.update({ searchMatches })
@@ -188,7 +178,7 @@ export function initializeSearch(store: Store<SearchState>): SearchActions {
       }
       searchProxy.handler.openAutocompleteMatch(
           index,
-          { url: match.destinationUrl },
+          match.destinationUrl,
           true,
           event.button,
           event.altKey,

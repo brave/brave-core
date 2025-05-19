@@ -26,7 +26,7 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-var packageConfig = function (key, sourceDir = braveCoreDir) {
+const packageConfig = function (key, sourceDir = braveCoreDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
   if (fs.existsSync(configAbsolutePath)) {
@@ -35,7 +35,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
 
   // packages.config should include version string.
   let obj = Object.assign({}, packages.config, { version: packages.version })
-  for (var i = 0, len = key.length; i < len; i++) {
+  for (let i = 0, len = key.length; i < len; i++) {
     if (!obj) {
       return obj
     }
@@ -44,7 +44,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
-const getEnvConfig = (key, default_value = undefined) => {
+const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
 
@@ -76,7 +76,7 @@ const getEnvConfig = (key, default_value = undefined) => {
   if (packageConfigValue !== undefined)
     return packageConfigValue
 
-  return default_value
+  return defaultValue
 }
 
 const getDepotToolsDir = (rootDir) => {
@@ -107,7 +107,7 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
   }
 
   const braveVersionParts = braveVersion.split('.')
-  assert(braveVersionParts.length == 3)
+  assert(braveVersionParts.length === 3)
   braveVersionParts[2] = '0'
   return braveVersionParts.join('.')
 }
@@ -326,10 +326,8 @@ Config.prototype.getBraveLogoIconName = function () {
 
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
-  let version_parts = version.split('+')[0]
-  version_parts = version_parts.split('.')
-
-  const chrome_version_parts = this.chromeVersion.split('.')
+  let versionParts = version.split('+')[0]
+  versionParts = versionParts.split('.')
 
   let args = {
     sardine_client_id: this.sardineClientId,
@@ -401,9 +399,9 @@ Config.prototype.buildArgs = function () {
     zebpay_sandbox_client_id: this.zebPaySandboxClientId,
     zebpay_sandbox_client_secret: this.zebPaySandboxClientSecret,
     zebpay_sandbox_oauth_url: this.zebPaySandboxOauthUrl,
-    brave_version_major: version_parts[0],
-    brave_version_minor: version_parts[1],
-    brave_version_build: version_parts[2],
+    brave_version_major: versionParts[0],
+    brave_version_minor: versionParts[1],
+    brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
     brave_sync_endpoint: this.braveSyncEndpoint,
     safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,
@@ -430,7 +428,7 @@ Config.prototype.buildArgs = function () {
     enable_updater: this.isOfficialBuild(),
     // Disable "Can't update Brave" notification on macOS until we have switched
     // to Omaha 4 and have background updates:
-    enable_update_notifications: this.isOfficialBuild() && this.getTargetOS() !== 'mac',
+    enable_update_notifications: this.isOfficialBuild(),
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
@@ -635,7 +633,7 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
-    if (this.targetArch == "arm64") {
+    if (this.targetArch === "arm64") {
       // Flag use_relr_relocations is incompatible with Android 8 arm64, but
       // makes huge optimizations on Android 9 and above.
       // Decision is to specify android:minSdkVersion=28 for arm64 and keep
@@ -647,8 +645,8 @@ Config.prototype.buildArgs = function () {
       args.default_min_sdk_version = 28
     }
 
-    if (args.target_android_output_format == 'apk' &&
-        (this.targetArch == "arm64" || this.targetArch == "x64")) {
+    if (args.target_android_output_format === 'apk' &&
+        (this.targetArch === "arm64" || this.targetArch === "x64")) {
       // We want to have both 32 and 64 bit native libs in arm64/x64 apks
       // Starting from cr136 it is defaulted to false.
       // For local build you can add --gn=enable_android_secondary_abi:false
@@ -666,7 +664,7 @@ Config.prototype.buildArgs = function () {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
-    if (this.braveIOSMarketingPatchVersion != '') {
+    if (this.braveIOSMarketingPatchVersion) {
       args.brave_ios_marketing_version_patch = this.braveIOSMarketingPatchVersion
     }
     args.enable_stripping = !this.isComponentBuild()
@@ -1084,7 +1082,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
     env.GSUTIL_ENABLE_LUCI_AUTH = '0'
 
-    if (this.channel != "") {
+    if (this.channel) {
       env.BRAVE_CHANNEL = this.channel
     }
 
@@ -1188,13 +1186,13 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     }
 
     let buildConfigDir = this.buildConfig
-    if (this.targetArch && this.targetArch != 'x64') {
+    if (this.targetArch && this.targetArch !== 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
     }
     if (this.targetOS && this.targetOS !== this.hostOS) {
       buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
-    if (this.targetEnvironment && this.targetEnvironment != 'device') {
+    if (this.targetEnvironment && this.targetEnvironment !== 'device') {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment
     }
     if (this.isChromium) {

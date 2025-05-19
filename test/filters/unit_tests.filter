@@ -55,6 +55,11 @@
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy/SearchEngineChoice*
 
+# These tests fail because we have different than expected default number of
+# prepopulated search engines
+-TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram/SearchEngineChoiceDisabled
+-TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram/SearchEngineChoiceEnabled
+
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
 -PinnedToolbarActionsContainerTest.*
@@ -86,8 +91,9 @@
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/BelgiumSearchEngineList
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/DefaultSearchEngineList
 
-# These tests crash because we have kOptimizationHints feature disabled, which
-# causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
+# These tests crash or fail because we have kOptimizationHints feature disabled,
+# which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
+# nullptr.
 -AILanguageModelHackyPrototypeTest.Basic
 -AILanguageModelTest.*
 -AIManagerTest.*
@@ -101,6 +107,9 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
+-PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
+-PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
+-PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
 -WallpaperSearchHandlerTest.*
 
 # These tests fail because we don't use upstream's material colors.
@@ -261,6 +270,8 @@
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
 -SignoutAllowed/SigninManagerTest.*
+-SyncPromoIdentityPillManagerTest.MaxShownCount
+-SyncPromoIdentityPillManagerTest.MaxUsedCount
 
 # Failed because we disabled upstream's entire client-side field trials.
 # See ChromeBrowserFieldTrials.
@@ -274,6 +285,8 @@
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/6
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/7
+-All/ClientSideDetectionServiceTest.TestExecutionSuccessButCallbackIsNotAlive/1
+-All/ClientSideDetectionServiceTest.TestExecutionSuccessButCallbackIsNotAlive/3
 -All/ClientSideDetectionServiceTest.TestModelEligibilityReasonCheckAtFailedInquiry/1
 -All/ClientSideDetectionServiceTest.TestModelEligibilityReasonCheckAtFailedInquiry/3
 -All/ClientSideDetectionServiceTest.TestOnDeviceModelFetchFailureCall/1
@@ -290,6 +303,8 @@
 -All/ClientSideDetectionServiceTest.TestSessionCreationFailure/3
 -All/ClientSideDetectionServiceTest.TestSessionCreationSuccess/1
 -All/ClientSideDetectionServiceTest.TestSessionCreationSuccess/3
+-All/ClientSideDetectionServiceTest.TestSessionCreationSuccessWithAPreviousAliveSession/1
+-All/ClientSideDetectionServiceTest.TestSessionCreationSuccessWithAPreviousAliveSession/3
 -All/ClientSideDetectionServiceTest.TestSessionExecutionAndResponseParseSuccess/1
 -All/ClientSideDetectionServiceTest.TestSessionExecutionAndResponseParseSuccess/3
 -All/ClientSideDetectionServiceTest.TestSessionExecutionFailure/1
@@ -312,9 +327,11 @@
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
+-ClientSideDetectionHostTest.NoRTLookupResponseInRedirectChainContainsForceRequest
 -ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
 -ClientSideDetectionHostTest.PhishingDetectionDoneEnhancedProtectionShouldHaveToken
 -ClientSideDetectionHostTest.RTLookupResponseForceRequestSendsCSPPPingWhenVerdictNotPhishing
+-ClientSideDetectionHostTest.RTLookupResponseOnFirstURLInRedirectChainTriggersForceRequest
 -ClientSideDetectionHostTest.TwoKeyboardLockRequestsOnSamePageOnlyLogsOnePreclassificationCheck
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestAlreadyPhishing
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestNoEnforcedPing
@@ -328,6 +345,7 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-NotificationTelemetryServiceTest.SendsTelemetryReport
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
@@ -390,6 +408,8 @@
 -ChromeHintsManagerFetchingTest.HintsFetched_*
 -PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
 -PasswordChangeDelegateImplTest.MetricsReportedWasPasswordChangeNewTabFocused
+-PasswordChangeDelegateImplTest.OtpDetectionIgnoredOnOriginalTab
+-PasswordChangeDelegateImplTest.OtpDetectionProcessed
 -PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
 -PasswordChangeDelegateImplTest.RestartPasswordChange
 
@@ -414,6 +434,7 @@
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
 # GetUkmSourceId override.
+-All/RevokedPermissionsServiceTest.RevokedPermissionsServiceTest/*
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/1
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/3
 -SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
@@ -563,6 +584,23 @@
 # created when the test profile is using the first-party NTP
 -NtpMicrosoftAuthResponseCaptureNavigationThrottleTest.*
 
+# These tests fail because we disable IsScreenAIOCREnabled and
+# features::IsScreenAIMainContentExtractionEnabled
+-ScreenAIInstallStateTest.AddingObserverTriggersDownload
+-ScreenAIInstallStateTest.ObservationAfterFailure
+-ScreenAIServiceShutdownHandlerTest.CrashCountBeforeResume
+-ScreenAIServiceShutdownHandlerTest.NotSuspendedAfterShutdown
+
+# These tests fail because we modify tab/strip dimentions
+-TabStripLayoutTest.*
+
+# These tests fail because we disable one time permission functionality in
+# components/content_settings/core/browser/content_settings_utils.cc override.
+-All/OneTimePermissionProviderExpiryTest.RenewContentSetting_Noop/*
+-OneTimePermissionProviderTest.*
+-PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
+-PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -581,7 +619,6 @@
 -BrowserCommandsTest.OnDefaultZoomLevelChanged
 -BrowserCommandsTest.OnMaxZoomIn
 -CastDialogCoordinatorTest.ShowAndHideDialog
--ChromeAutocompleteProviderClientTest.StartServiceWorker
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromeComponentUpdaterConfiguratorTest.*
 -ChromeDownloadManagerDelegateTest.*

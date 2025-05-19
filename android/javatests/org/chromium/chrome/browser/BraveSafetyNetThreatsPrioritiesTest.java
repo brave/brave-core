@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
+import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafetyNetJavaThreatType;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @Batch(Batch.PER_CLASS)
-@RunWith(BaseJUnit4ClassRunner.class)
+@RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveSafetyNetThreatsPrioritiesTest {
 
     @Test

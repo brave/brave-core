@@ -1,0 +1,80 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.itemWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-m)
+    var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
+}
+
+.image {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: var(--leo-radius-m);
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.loadingContainer {
+  --leo-progressring-color: var(--leo-color-icon-default);
+  --leo-progressring-size: 24px;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--leo-radius-m);
+  background-color: var(--leo-color-container-highlight);
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-xl);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.forEllipsis {
+  display: grid;
+}
+
+.title {
+  cursor: pointer;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploadingText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.subtitle {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.removeButton {
+  --leo-icon-color: var(--leo-color-icon-secondary);
+  flex-grow: 0;
+}

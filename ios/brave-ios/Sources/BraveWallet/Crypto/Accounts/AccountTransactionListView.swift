@@ -70,6 +70,9 @@ struct AccountTransactionListView: View {
         )
       }
     }
+    .onAppear {
+      activityStore.update()
+    }
   }
 }
 

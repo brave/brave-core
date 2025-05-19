@@ -119,8 +119,9 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class BraveNewTabPageLayout
-        extends NewTabPageLayout implements ConnectionErrorHandler, OnBraveNtpListener {
+@SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
+public class BraveNewTabPageLayout extends NewTabPageLayout
+        implements ConnectionErrorHandler, OnBraveNtpListener {
     private static final String TAG = "BraveNewTabPage";
 
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
@@ -163,6 +164,8 @@ public class BraveNewTabPageLayout
     private BraveNtpAdapter mNtpAdapter;
     private Bitmap mSponsoredLogo;
     private Wallpaper mWallpaper;
+
+    private BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
 
     private CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCard =
             new CopyOnWriteArrayList<FeedItemsCard>();
@@ -1261,9 +1264,13 @@ public class BraveNewTabPageLayout
             wasWallpaperShown = false;
         }
 
-        if (wasWallpaperShown && ntpImage instanceof Wallpaper) {
-            BraveNewTabTakeoverInfobar infobar = new BraveNewTabTakeoverInfobar(mProfile);
-            infobar.maybeCreate();
+        if (wasWallpaperShown
+                && ntpImage instanceof Wallpaper
+                && getTab() != null
+                && mNewTabTakeoverInfobar == null) {
+            mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
+            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(
+                    mActivity, getTab().getWebContents());
         }
     }
 
@@ -1537,9 +1544,12 @@ public class BraveNewTabPageLayout
         }
 
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(mProfile, this)
+                .getForProfile(mProfile, this)
                 .then(
                         braveNewsController -> {
+                            if (braveNewsController == null) {
+                                return;
+                            }
                             mBraveNewsController = braveNewsController;
                             if (mNtpAdapter != null) {
                                 mNtpAdapter.setBraveNewsController(mBraveNewsController);

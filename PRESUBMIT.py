@@ -53,93 +53,21 @@ def CheckLeoVariables(input_api, output_api):
 
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
-    # Use git cl format to format supported files with Chromium formatters.
-    git_cl_format_cmd = [
-        '-C',
-        input_api.change.RepositoryRoot(),
-        'cl',
-        'format',
-        '--presubmit',
+    cmd = [
+        brave_chromium_utils.wspath(
+            '//brave/build/commands/scripts/format.js'), '--presubmit'
     ]
-
-    # Keep in sync with `npm run format` command.
-    git_cl_format_cmd.extend([
-        '--python',
-        '--no-rust-fmt',
-    ])
-
-    # Make sure the passed --upstream branch is applied to git cl format.
-    if input_api.change.UpstreamBranch():
-        git_cl_format_cmd.extend(
-            ['--upstream', input_api.change.UpstreamBranch()])
-
-    # Do a dry run if --fix was not passed.
     if not input_api.PRESUBMIT_FIX:
-        git_cl_format_cmd.append('--dry-run')
-
-    # Pass a path where the current PRESUBMIT.py file is located.
-    git_cl_format_cmd.append(input_api.PresubmitLocalPath())
-
-    with brave_chromium_utils.sys_path("//brave/vendor/depot_tools"):
-        import git_cl
-
-    # Run git cl format and get return code.
-    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd)
-    if git_cl_format_code not in (0, 2):
+        cmd.append('--dry-run')
+    try:
+        brave_node.RunNode(cmd)
+        return []
+    except RuntimeError as err:
         return [
             output_api.PresubmitError(
-                f'Presubmit format check has failed, return code: {git_cl_format_code}'
-            )
+                f'The code requires formatting. '
+                f'Please run: npm run presubmit -- --fix.\n\n{err.args[1]}')
         ]
-
-    is_format_required = git_cl_format_code == 2
-
-    if not is_format_required or input_api.PRESUBMIT_FIX:
-        # Use Prettier to format other file types.
-        files_to_check = (
-            # Enable when files will be formatted.
-            # r'.+\.js$',
-            # r'.+\.ts$',
-            # r'.+\.tsx$',
-        )
-        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
-
-        file_filter = lambda f: input_api.FilterSourceFile(
-            f, files_to_check=files_to_check, files_to_skip=files_to_skip)
-        affected_files = input_api.AffectedFiles(file_filter=file_filter,
-                                                 include_deletes=False)
-        files_to_format = [f.AbsoluteLocalPath() for f in affected_files]
-
-        node_args = [
-            brave_node.PathInNodeModules('prettier', 'bin-prettier'),
-            '--write' if input_api.PRESUBMIT_FIX else '--check',
-        ]
-
-        files_per_command = 25 if input_api.is_windows else 1000
-        for i in range(0, len(files_to_format), files_per_command):
-            args = node_args + files_to_format[i:i + files_per_command]
-            try:
-                brave_node.RunNode(args)
-            except RuntimeError as err:
-                if 'Forgot to run Prettier?' in str(err):
-                    is_format_required = True
-                    break
-                # Raise on unexpected output. Could be node or prettier issues.
-                raise
-
-    if is_format_required:
-        if input_api.PRESUBMIT_FIX:
-            raise RuntimeError('--fix was passed, but format has failed')
-        short_path = input_api.basename(input_api.change.RepositoryRoot())
-        git_cl_format_cmd.remove('--dry-run')
-        git_cl_format_cmd.append('--diff')
-        _, diff_output = git_cl.RunGitWithCode(git_cl_format_cmd)
-        return [
-            output_api.PresubmitError(
-                f'The {short_path} directory requires source formatting. '
-                f'Please run: npm run presubmit -- --fix.\n\n{diff_output}')
-        ]
-    return []
 
 
 # Check and fix ESLint issues (supports --fix).
@@ -352,6 +280,19 @@ chromium_presubmit_overrides.inline_presubmit('//PRESUBMIT.py', globals(),
 
 # pyright: reportUnboundVariable=false, reportUndefinedVariable=false
 
+_BANNED_JAVA_FUNCTIONS += (BanRule(
+    r'/(BraveLeoPrefUtils|Utils)\.getProfile\(\)',
+    ('Prefer passing in the Profile reference instead of relying on the '
+     'static getProfile() call. Only top level entry points '
+     '(e.g. Activities) should call ProfileManager.getLastUsedRegularProfile '
+     'instead. Otherwise, the Profile should either be passed in explicitly '
+     'or retreived from an existing entity with a reference to the Profile '
+     '(e.g. WebContents). This is a warning only for existing usages, new '
+     'usages are strictly banned.', ),
+    False,
+    excluded_paths=(r'.*Test[A-Z]?.*\.java', ),
+), )
+
 _BANNED_CPP_FUNCTIONS += (
     BanRule(
         r'/\b(Basic|W)?StringPiece(16)?\b',
@@ -372,7 +313,15 @@ _BANNED_CPP_FUNCTIONS += (
         treat_as_error=True,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
-)
+    BanRule(
+        r'/\bAllowInjectingJavaScript\(\)',
+        ('ExecuteJavaScript() should not be used outside of chrome:// urls. If '
+         'you must inject into the main world, consider using '
+         'script_injector::ScriptInjector::RequestAsyncExecuteScript(...) '
+         'instead. This is a warning only for existing usages, new usages are '
+         'strictly banned.'),
+        treat_as_error=False,
+    ))
 
 
 # Extend BanRule exclude lists with Brave-specific paths.

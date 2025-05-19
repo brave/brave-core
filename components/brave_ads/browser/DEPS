@@ -8,3 +8,10 @@ include_rules = [
   "+ui/base",
   "+ui/message_center/public",
 ]
+
+specific_include_rules = {
+  "ads_service_impl\.cc": [
+    "+brave/components/l10n/common/country_code_util.h",
+    "!brave/components/l10n/common/prefs.h",
+  ],
+}

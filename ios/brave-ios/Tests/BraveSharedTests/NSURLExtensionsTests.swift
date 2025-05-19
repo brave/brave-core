@@ -21,7 +21,11 @@ extension String {
     }
 
     let registry = NSURL.domainAndRegistry(host: self)
-    return registry.isEmpty ? nil : registry
+    if !registry.isEmpty {
+      return registry
+    }
+
+    return URL(string: self)?.host
   }
 
   fileprivate var publicSuffix: String? {
@@ -172,19 +176,11 @@ class NSURLExtensionsTests: XCTestCase {
     XCTAssertEqual(url?.baseDomain, "domain.com.")
     XCTAssertEqual(url?.host?.baseDomain, "domain.com.")
 
-    url = URL(string: "https://test.domain.com..")
-    XCTAssertEqual(url?.baseDomain, nil)
-    XCTAssertEqual(url?.host?.baseDomain, nil)
-
     url = URL(string: "https://foo")
     XCTAssertEqual(url?.baseDomain, "foo")
     XCTAssertEqual(url?.host?.baseDomain, "foo")
 
     url = URL(string: "https://foo.")
-    XCTAssertEqual(url?.host?.baseDomain, nil)
-
-    url = URL(string: "https://.")
-    XCTAssertEqual(url?.baseDomain, nil)
     XCTAssertEqual(url?.host?.baseDomain, nil)
   }
 

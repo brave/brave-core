@@ -90,6 +90,7 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int = 0
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
+  private var braveCore: BraveCoreMain?
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
@@ -117,8 +118,7 @@ class TabManager: NSObject {
     windowId: UUID,
     prefs: Prefs,
     rewards: BraveRewards?,
-    tabGeneratorAPI: BraveTabGeneratorAPI?,
-    historyAPI: BraveHistoryAPI?,
+    braveCore: BraveCoreMain?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
@@ -126,13 +126,13 @@ class TabManager: NSObject {
     self.windowId = windowId
     self.prefs = prefs
     self.rewards = rewards
-    self.tabGeneratorAPI = tabGeneratorAPI
-    self.historyAPI = historyAPI
+    self.braveCore = braveCore
+    self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
+    self.historyAPI = braveCore?.historyAPI
     self.privateBrowsingManager = privateBrowsingManager
     super.init()
 
     Preferences.Shields.blockImages.observe(from: self)
-    Preferences.General.blockPopups.observe(from: self)
     Preferences.General.nightModeEnabled.observe(from: self)
 
     domainFrc.delegate = self
@@ -266,14 +266,13 @@ class TabManager: NSObject {
     }
   }
 
-  private static var defaultConfiguration = getNewConfiguration(isPrivate: false)
-  private static var privateConfiguration = getNewConfiguration(isPrivate: true)
+  private(set) static var defaultConfiguration = getNewConfiguration(isPrivate: false)
+  private(set) static var privateConfiguration = getNewConfiguration(isPrivate: true)
 
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
     let configuration: WKWebViewConfiguration = .init()
     configuration.processPool = WKProcessPool()
-    configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General
-      .blockPopups.value
+    configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
 
     // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
@@ -455,7 +454,7 @@ class TabManager: NSObject {
     let popup = TabStateFactory.create(
       with: .init(
         initialConfiguration: parentTab.configuration,
-        braveCore: nil
+        braveCore: braveCore
       )
     )
     configureTab(
@@ -549,7 +548,7 @@ class TabManager: NSObject {
         id: tabId,
         initialConfiguration: initialConfiguration,
         lastActiveTime: lastActiveTime,
-        braveCore: nil
+        braveCore: braveCore
       )
     )
     configureTab(
@@ -696,15 +695,6 @@ class TabManager: NSObject {
     }
   }
 
-  func removePrivateWindows() {
-    if Preferences.Privacy.privateBrowsingOnly.value
-      || (privateBrowsingManager.isPrivateBrowsing
-        && !Preferences.Privacy.persistentPrivateBrowsing.value)
-    {
-      SessionWindow.deleteAllWindows(privateOnly: true)
-    }
-  }
-
   func saveAllTabs() {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
@@ -777,9 +767,9 @@ class TabManager: NSObject {
   ) {
     guard FeatureList.kBraveShredFeature.enabled else { return }
     guard let url = url.urlToShred,
-      let etldP1 = url.baseDomain
+      let baseDomain = url.baseDomain
     else { return }
-    forgetTasks[tab.isPrivate]?[etldP1]?.cancel()
+    forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
     let siteDomain = Domain.getOrCreate(
       forUrl: url,
       persistent: !tab.isPrivate
@@ -796,7 +786,8 @@ class TabManager: NSObject {
         existingTab !== tab
       }
       // Ensure that no othe tabs are open for this domain
-      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.baseDomain == etldP1 }) else {
+      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.baseDomain == baseDomain })
+      else {
         return
       }
       forgetDataDelayed(for: url, in: tab, delay: 30)
@@ -805,7 +796,7 @@ class TabManager: NSObject {
 
   @MainActor func shredData(for url: URL, in tab: some TabState) {
     guard let url = url.urlToShred,
-      let etldP1 = url.baseDomain
+      let baseDomain = url.baseDomain
     else { return }
 
     // Select the next or previous tab that is not being destroyed
@@ -814,7 +805,7 @@ class TabManager: NSObject {
       // First seach down or up for a tab that is not being destroyed
       var increasingIndex = index + 1
       while nextTab == nil, increasingIndex < allTabs.count {
-        if allTabs[increasingIndex].visibleURL?.urlToShred?.baseDomain != etldP1
+        if allTabs[increasingIndex].visibleURL?.urlToShred?.baseDomain != baseDomain
           && allTabs[increasingIndex].isPrivate == tab.isPrivate
         {
           nextTab = allTabs[increasingIndex]
@@ -824,7 +815,7 @@ class TabManager: NSObject {
 
       var decreasingIndex = index - 1
       while nextTab == nil, decreasingIndex > 0 {
-        if allTabs[decreasingIndex].visibleURL?.urlToShred?.baseDomain != etldP1
+        if allTabs[decreasingIndex].visibleURL?.urlToShred?.baseDomain != baseDomain
           && allTabs[decreasingIndex].isPrivate == tab.isPrivate
         {
           nextTab = allTabs[decreasingIndex]
@@ -840,7 +831,7 @@ class TabManager: NSObject {
 
     // Remove all unwanted tabs
     for tab in allTabs {
-      guard tab.visibleURL?.urlToShred?.baseDomain == etldP1 else { continue }
+      guard tab.visibleURL?.urlToShred?.baseDomain == baseDomain else { continue }
       // The Tab's WebView is not deinitialized immediately, so it's possible the
       // WebView still stores data after we shred but before the WebView is deinitialized.
       // Delete the web view to prevent data being stored after data is Shred.
@@ -862,12 +853,12 @@ class TabManager: NSObject {
     delay: TimeInterval
   ) {
     guard let url = url.urlToShred,
-      let etldP1 = url.baseDomain
+      let baseDomain = url.baseDomain
     else { return }
     forgetTasks[tab.isPrivate] = forgetTasks[tab.isPrivate] ?? [:]
     // Start a task to delete all data for this etldP1
     // The task may be delayed in case we want to cancel it
-    forgetTasks[tab.isPrivate]?[etldP1] = Task {
+    forgetTasks[tab.isPrivate]?[baseDomain] = Task {
       try await Task.sleep(seconds: delay)
       await self.forgetData(for: url, in: tab)
     }
@@ -877,13 +868,13 @@ class TabManager: NSObject {
     await forgetData(for: [url], dataStore: tab?.configuration.websiteDataStore)
 
     ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
-    if let etldP1 = url.baseDomain, let tab {
-      forgetTasks[tab.isPrivate]?.removeValue(forKey: etldP1)
+    if let baseDomain = url.baseDomain, let tab {
+      forgetTasks[tab.isPrivate]?.removeValue(forKey: baseDomain)
     }
   }
 
   @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
-    var urls = urls.compactMap(\.urlToShred)
+    let urls = urls.compactMap(\.urlToShred)
     let baseDomains = Set(urls.compactMap { $0.baseDomain })
     guard !baseDomains.isEmpty else { return }
 
@@ -942,9 +933,9 @@ class TabManager: NSObject {
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
   @MainActor func cancelForgetData(for url: URL, in tab: some TabState) {
-    guard let etldP1 = url.urlToShred?.baseDomain else { return }
-    forgetTasks[tab.isPrivate]?[etldP1]?.cancel()
-    forgetTasks[tab.isPrivate]?.removeValue(forKey: etldP1)
+    guard let etldPlusOne = url.urlToShred?.baseDomain else { return }
+    forgetTasks[tab.isPrivate]?[etldPlusOne]?.cancel()
+    forgetTasks[tab.isPrivate]?.removeValue(forKey: etldPlusOne)
   }
 
   @MainActor func removeTab(_ tab: any TabState) {
@@ -1531,12 +1522,6 @@ extension TabManagerDelegate {
 extension TabManager: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     switch key {
-    case Preferences.General.blockPopups.key:
-      let allowPopups = !Preferences.General.blockPopups.value
-      // Each tab may have its own configuration, so we should tell each of them in turn.
-      allTabs.forEach {
-        $0.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-      }
     case Preferences.General.nightModeEnabled.key:
       DarkReaderScriptHandler.set(
         tabManager: self,

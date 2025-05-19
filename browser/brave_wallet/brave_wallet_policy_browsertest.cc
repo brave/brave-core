@@ -9,7 +9,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -21,6 +20,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -157,8 +157,8 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletPageAccess) {
 // Verify that the wallet item is not shown in the sidebar when Brave Wallet is
 // disabled by policy.
 IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletInSidebar) {
-  BraveBrowser* brave_browser = static_cast<BraveBrowser*>(browser());
-  sidebar::SidebarController* controller = brave_browser->sidebar_controller();
+  sidebar::SidebarController* controller =
+      browser()->GetFeatures().sidebar_controller();
   sidebar::SidebarModel* model = controller->model();
 
   const auto items = model->GetAllSidebarItems();

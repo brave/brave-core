@@ -15,6 +15,10 @@ class SendTokenStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = []
   private let batSymbol = "BAT"
 
+  override func tearDown() {
+    cancellables.removeAll()
+  }
+
   private let mockERC721Metadata: BraveWallet.NftMetadata = .init(
     name: "mock nft name",
     description: "mock nft description",
@@ -1026,6 +1030,7 @@ class SendTokenStoreTests: XCTestCase {
     store.sendAddress = domain
     // wait for resolved domain to populate
     wait(for: [resolvedAddressExpectation], timeout: 1)
+    cancellables.removeAll()
 
     let ex = expectation(description: "send-transaction")
     store.sendToken(amount: "0.01") { success, _ in
@@ -1232,6 +1237,7 @@ class SendTokenStoreTests: XCTestCase {
     store.sendAddress = domain
     // wait for resolved domain to populate
     wait(for: [resolvedAddressExpectation], timeout: 1)
+    cancellables.removeAll()
 
     let ex = expectation(description: "send-transaction")
     store.sendToken(amount: "0.01") { success, _ in
@@ -1361,6 +1367,7 @@ class SendTokenStoreTests: XCTestCase {
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$addressError
       .dropFirst()  // Initial value
+      .removeDuplicates()
       .sink { addressError in
         defer { addressErrorExpectation.fulfill() }
         XCTAssertEqual(addressError, .ensError(domain: domain))

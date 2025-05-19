@@ -224,7 +224,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   auto hd_key = HDKey::GenerateFromPrivateKey(private_key);
   auto signed_transaction = transaction->GetSignedTransaction(
       from,
-      hd_key->SignCompact(Blake2bHash<32>(*transaction->TransactionCid(from)))
+      hd_key->SignCompact(Blake2bHash<32>({*transaction->TransactionCid(from)}))
           ->bytes());
   ASSERT_TRUE(signed_transaction);
   auto signature_value = base::test::ParseJsonDict(*signed_transaction);
@@ -272,7 +272,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecpF1ToV4) {
   auto hd_key = HDKey::GenerateFromPrivateKey(private_key);
   auto signed_transaction = transaction->GetSignedTransaction(
       from,
-      hd_key->SignCompact(Blake2bHash<32>(*transaction->TransactionCid(from)))
+      hd_key->SignCompact(Blake2bHash<32>({*transaction->TransactionCid(from)}))
           ->bytes());
   ASSERT_TRUE(signed_transaction);
   auto signature_value = base::test::ParseJsonDict(*signed_transaction);

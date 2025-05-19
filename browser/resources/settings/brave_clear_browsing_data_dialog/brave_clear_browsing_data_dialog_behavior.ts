@@ -23,8 +23,8 @@ import {
 
 export class BraveSettingsClearBrowsingDataDialogElement
 extends SettingsClearBrowsingDataDialogElement {
-  braveRewardsEnabled_: Boolean = false
-  onClearBraveAdsDataClickHandler_: ((e: Event) => void) = () => {}
+  declare braveRewardsEnabled_: boolean
+  declare onClearBraveAdsDataClickHandler_: ((e: Event) => void)
 
   private clearDataBrowserProxy_: BraveClearBrowsingDataDialogBrowserProxy =
     BraveClearBrowsingDataDialogBrowserProxyImpl.getInstance()
@@ -34,6 +34,20 @@ extends SettingsClearBrowsingDataDialogElement {
   private updateSaveButtonStateCallback_: (() => void) | null = null
 
   private saveOnExitSettingsCallback_: (() => void) | null = null
+
+  static override get properties() {
+    return {
+      ...SettingsClearBrowsingDataDialogElement.properties,
+      braveRewardsEnabled_: {
+        type: Boolean,
+        value: false,
+      },
+      onClearBraveAdsDataClickHandler_: {
+        type: Function,
+        value: () => {},
+      },
+    }
+  }
 
   override ready() {
     super.ready()

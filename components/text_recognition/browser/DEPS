@@ -4,3 +4,9 @@ include_rules = [
   "+skia",
   "+third_party/skia",
 ]
+
+specific_include_rules = {
+  "text_recognition_win\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
+}

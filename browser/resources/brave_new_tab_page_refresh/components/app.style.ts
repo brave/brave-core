@@ -6,6 +6,8 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
+const narrowBreakpoint = '900px'
+
 export const style = scoped.css`
   & {
     --search-transition-duration: 120ms;
@@ -37,6 +39,7 @@ export const style = scoped.css`
 
   .clock {
     font: ${font.large.semibold};
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.20);
     color: #fff;
     opacity: .8;
   }
@@ -100,6 +103,36 @@ export const style = scoped.css`
   .spacer {
     flex: 1 1 auto;
     align-self: stretch;
+
+    @container (width > ${narrowBreakpoint}) {
+      min-height: 200px;
+    }
+  }
+
+  .caption-container {
+    @container (width > ${narrowBreakpoint}) {
+      position: absolute;
+      position-anchor: --ntp-widget-container;
+      inset-block-end: anchor(end);
+      inset-inline-end: anchor(start);
+      inset-inline-start: 0;
+      margin-inline-start: 16px;
+      margin-inline-end: 16px;
+
+      min-width: fit-content;
+      min-height: 30px;
+
+      position-try-fallbacks: --try-captions-above;
+    }
+  }
+
+  @position-try --try-captions-above {
+    inset-block-end: anchor(start);
+    inset-inline-start: anchor(start);
+    inset-inline-end: unset;
+    margin-block-end: 16px;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
   }
 
   .widget-container {
@@ -107,7 +140,8 @@ export const style = scoped.css`
     --widget-width: 420px;
     --widget-flex-basis: var(--widget-width);
 
-    align-self: stretch;
+    anchor-name: --ntp-widget-container;
+
     flex: 0 0 var(--widget-height);
 
     display: flex;
@@ -119,7 +153,7 @@ export const style = scoped.css`
       flex-basis: 0;
     }
 
-    @container (max-width: 900px) {
+    @container (width <= ${narrowBreakpoint}) {
       --widget-flex-basis: var(--widget-height);
 
       width: var(--widget-width);

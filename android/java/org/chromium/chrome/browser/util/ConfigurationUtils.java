@@ -12,10 +12,12 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
 
+@NullMarked
 public class ConfigurationUtils {
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
@@ -40,6 +42,12 @@ public class ConfigurationUtils {
         map.put(HEIGHT, deviceHeight);
 
         return map;
+    }
+
+    public static int getDisplayMetricsWidth(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 
     public static HashMap<String, Float> getDpDisplayMetrics(Activity activity) {

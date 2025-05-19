@@ -184,8 +184,8 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
 
   // Fee for typical 1 input -> 2 outputs transaction.
   uint32_t min_fee =
-      ApplyFeeRate(min_fee_coefficient(), min_fee_constant(), 283u);
-  EXPECT_EQ(min_fee, 167833u);
+      ApplyFeeRate(min_fee_coefficient(), min_fee_constant(), 285u);
+  EXPECT_EQ(min_fee, 167921u);
 
   {
     uint32_t total_input = send_amount() + min_fee + dust_change_threshold();

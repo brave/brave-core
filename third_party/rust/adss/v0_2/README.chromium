@@ -3,7 +3,7 @@ URL: https://crates.io/crates/adss
 Version: 0.2.3
 Revision: 4b5267d1faad0cb8c6e656c3547a306ea8d1b89f
 License: Mozilla-Public-License-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.3/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/adss-v0_2/LICENSE
 Shipped: yes
 Security Critical: yes
 

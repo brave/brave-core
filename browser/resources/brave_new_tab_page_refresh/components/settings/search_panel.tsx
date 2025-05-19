@@ -9,14 +9,13 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
 
 import { style } from './search_panel.style'
 
 export function SearchPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const showSearchBox = useAppState((s) => s.showSearchBox)
@@ -25,7 +24,7 @@ export function SearchPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='toggle-row'>
+      <div className='control-row'>
         <label>{getString('showSearchBoxLabel')}</label>
         <Toggle
           size='small'
@@ -34,36 +33,35 @@ export function SearchPanel() {
         />
       </div>
       {
-        showSearchBox && <>
-          <h4>{getString('enabledSearchEnginesLabel')}</h4>
-          <div className='divider' />
+        showSearchBox &&
           <div className='search-engines'>
-            {
-              searchEngines.map((engine) => (
-                <Checkbox
-                  key={engine.host}
-                  checked={enabledSearchEngines.has(engine.host)}
-                  onChange={({ checked }) => {
-                    actions.setSearchEngineEnabled(engine.host, checked)
-                  }}
-                >
-                  <span className='engine-name'>{engine.name}</span>
-                  <EngineIcon engine={engine} />
-                </Checkbox>
-              ))
-            }
+            <h4>{getString('enabledSearchEnginesLabel')}</h4>
+            <div className='search-engine-list'>
+              {
+                searchEngines.map((engine) => (
+                  <Checkbox
+                    key={engine.host}
+                    checked={enabledSearchEngines.has(engine.host)}
+                    onChange={({ checked }) => {
+                      actions.setSearchEngineEnabled(engine.host, checked)
+                    }}
+                  >
+                    <span className='engine-name'>{engine.name}</span>
+                    <EngineIcon engine={engine} />
+                  </Checkbox>
+                ))
+              }
+            </div>
+            <div>
+              <Link
+                className='customize-link'
+                url='chrome://settings/searchEngines'
+              >
+                {getString('customizeSearchEnginesLink')}
+                <Icon name='launch' />
+              </Link>
+            </div>
           </div>
-          <div className='divider' />
-          <div>
-            <Link
-              className='customize-link'
-              url='chrome://settings/searchEngines'
-            >
-              {getString('customizeSearchEnginesLink')}
-              <Icon name='launch' />
-            </Link>
-          </div>
-        </>
       }
     </div>
   )

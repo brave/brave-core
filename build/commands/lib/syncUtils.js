@@ -222,7 +222,7 @@ async function checkInternalDepsEndpoint() {
       `${config.internalDepsUrl}/windows-hermetic-toolchain/test.txt`,
       { method: 'HEAD', signal: AbortSignal.timeout(5000), redirect: 'manual' }
     )
-    return response.status == 302
+    return response.status === 302
   } catch (error) {
     return false
   }

@@ -18,7 +18,6 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
@@ -34,6 +33,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -69,8 +69,7 @@ void NewTabPageInitializer::Initialize() {
   AddSanitizedImageDataSource();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  web_ui_->OverrideTitle(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
+  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 }
 
 Profile* NewTabPageInitializer::GetProfile() {
@@ -237,6 +236,8 @@ void NewTabPageInitializer::AddStrings() {
       {"showNewsWidgetLabel", IDS_NEW_TAB_SHOW_NEWS_WIDGET_LABEL},
       {"showRewardsWidgetLabel", IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL},
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
+      {"showSponsoredImagesEarningText",
+       IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
       {"showStatsLabel", IDS_NEW_TAB_SHOW_STATS_LABEL},
       {"showTalkWidgetLabel", IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL},

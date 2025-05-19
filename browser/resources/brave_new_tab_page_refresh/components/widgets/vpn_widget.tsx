@@ -9,7 +9,9 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
+import { ConnectionState } from '../../models/vpn'
+import classNames from '$web-common/classnames'
 
 import { style } from './vpn_widget.style'
 
@@ -18,7 +20,6 @@ import vpnShieldDisconnectedURL from '../../assets/vpn_shield_disconnected.svg'
 import vpnShieldConnectedURL from '../../assets/vpn_shield_connected.svg'
 
 export function VPNWidget() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const purchased = useAppState((s) => s.vpnPurchased)
@@ -72,7 +73,7 @@ export function VPNWidget() {
   }
 
   function renderConnectionGraphic() {
-    const image = connectionState === 'connected'
+    const image = connectionState === ConnectionState.CONNECTED
       ? vpnShieldConnectedURL
       : vpnShieldDisconnectedURL
 
@@ -81,10 +82,17 @@ export function VPNWidget() {
 
   function connectionStateText() {
     switch (connectionState) {
-      case 'connected': return getString('vpnStatusConnected')
-      case 'disconnected': return getString('vpnStatusDisconnected')
-      case 'connecting': return getString('vpnStatusConnecting')
-      case 'disconnecting': return getString('vpnStatusDisconnecting')
+      case ConnectionState.CONNECTED:
+        return getString('vpnStatusConnected')
+      case ConnectionState.DISCONNECTED:
+        return getString('vpnStatusDisconnected')
+      case ConnectionState.CONNECTING:
+        return getString('vpnStatusConnecting')
+      case ConnectionState.DISCONNECTING:
+        return getString('vpnStatusDisconnecting')
+      default:
+        console.error('Unhandled ConnectionState', connectionState)
+        return ''
     }
   }
 
@@ -103,9 +111,9 @@ export function VPNWidget() {
         </div>
         <div>
           {
-            region.name === region.country
+            region.namePretty === region.country
               ? getString('vpnOptimalText')
-              : region.name
+              : region.namePretty
           }
         </div>
       </div>
@@ -119,7 +127,11 @@ export function VPNWidget() {
   return (
     <div data-css-scope={style.scope}>
       <div className='title'>{getString('vpnWidgetTitle')}</div>
-      <div className={`content ${connectionState}`}>
+      <div
+        className={classNames({
+          'content': true,
+          'connected': connectionState === ConnectionState.CONNECTED
+        })}>
         <div className='connection-graphic'>
           {renderConnectionGraphic()}
         </div>
@@ -130,8 +142,8 @@ export function VPNWidget() {
         <div className='connection-toggle'>
           <Toggle
             checked={
-              connectionState === 'connected' ||
-              connectionState === 'connecting'
+              connectionState === ConnectionState.CONNECTED ||
+              connectionState === ConnectionState.CONNECTING
             }
             onChange={() => actions.toggleVpnConnection()}
           />

@@ -74,6 +74,10 @@ extension URL {
       string:
         "https://support.brave.com/hc/en-us/articles/26727364100493-What-are-the-differences-between-Leo-s-AI-Models"
     )!
+    public static let braveLeoPrivacyFeedbackLearnMoreLinkUrl = URL(
+      string:
+        "https://brave.com/privacy/browser/#your-feedback"
+    )!
     public static let braveVPNSmartProxySupport = URL(
       string:
         "https://support.brave.com/hc/en-us/articles/32105253704333-What-is-Smart-Proxy-Routing"

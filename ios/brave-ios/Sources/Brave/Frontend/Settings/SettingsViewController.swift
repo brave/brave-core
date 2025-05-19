@@ -20,7 +20,6 @@ import Preferences
 import Shared
 import Static
 import SwiftUI
-import SwiftyJSON
 import UIKit
 import Web
 import WebKit
@@ -297,6 +296,9 @@ class SettingsViewController: TableViewController {
                   self.settingsDelegate?.settingsOpenURLInNewTab(url)
                   self.dismiss(animated: true)
                 },
+                dismiss: { [unowned self] in
+                  self.navigationController?.popViewController(animated: true)
+                },
                 onDismiss: { [weak self] in
                   self?.navigationController?.setNavigationBarHidden(false, animated: false)
                 }
@@ -519,26 +521,40 @@ class SettingsViewController: TableViewController {
       ]
     )
 
+    let defaultHostContentSettings = braveCore.defaultHostContentSettings
     if UIDevice.isIpad {
+      let defaultPageModeSwitch = SwitchAccessoryView(
+        initialValue: defaultHostContentSettings.defaultPageMode == .desktop,
+        valueChange: { value in
+          defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+        }
+      )
       general.rows.append(
-        .boolRow(
-          title: Strings.alwaysRequestDesktopSite,
-          option: Preferences.UserAgent.alwaysRequestDesktopSite,
-          image: UIImage(braveSystemNamed: "leo.window.cursor")
+        Row(
+          text: Strings.alwaysRequestDesktopSite,
+          image: UIImage(braveSystemNamed: "leo.window.cursor"),
+          cellClass: MultilineSubtitleCell.self
         )
       )
     }
 
+    let blockPopupsSwitch = SwitchAccessoryView(
+      initialValue: !defaultHostContentSettings.popupsAllowed,
+      valueChange: { value in
+        defaultHostContentSettings.popupsAllowed = !value
+      }
+    )
     general.rows.append(contentsOf: [
       .boolRow(
         title: Strings.enablePullToRefresh,
         option: Preferences.General.enablePullToRefresh,
         image: UIImage(braveSystemNamed: "leo.browser.refresh")
       ),
-      .boolRow(
-        title: Strings.blockPopups,
-        option: Preferences.General.blockPopups,
-        image: UIImage(braveSystemNamed: "leo.shield.block")
+      Row(
+        text: Strings.blockPopups,
+        image: UIImage(braveSystemNamed: "leo.shield.block"),
+        accessory: .view(blockPopupsSwitch),
+        cellClass: MultilineSubtitleCell.self
       ),
     ])
 
@@ -1243,15 +1259,21 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Load all QA Links",
           selection: { [unowned self] in
-            let url = URL(
-              string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
-            )!
-            let string = try? String(contentsOf: url)
-            let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap {
-              URL(string: $0.stringValue)
+            struct Links: Decodable {
+              var links: [String]
             }
-            self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
-            self.dismiss(animated: true)
+            Task.detached {
+              let url = URL(
+                string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
+              )!
+              let data = try Data(contentsOf: url)
+              let links = try JSONDecoder().decode(Links.self, from: data)
+              let urls = links.links.compactMap(URL.init)
+              await MainActor.run {
+                self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
+                self.dismiss(animated: true)
+              }
+            }
           },
           cellClass: MultilineButtonCell.self
         ),

@@ -31,10 +31,6 @@ const collect = (value, accumulator) => {
   return accumulator
 }
 
-function commaSeparatedList(value, dummyPrevious) {
-  return value.split(',')
-}
-
 // Use this wrapper function instead of JavaScript's parseInt() with option()
 // when defining integer optional parameters, or the default value might get
 // passed as well into the radix parameter of parseInt(), causing wrong results.
@@ -84,21 +80,24 @@ program
   .arguments('[build_config]')
   .action(async (buildConfig = config.defaultBuildConfig, options = {}) => {
     config.buildConfig = buildConfig
-    if (options.target_os == 'host_os')
+    if (options.target_os === 'host_os')
       delete options.target_os
 
-    if (options.target_arch == 'host_cpu')
+    if (options.target_arch === 'host_cpu')
       delete options.target_arch
 
     config.update(options)
-    const current_link = options.symlink_dir
-    if (!path.isAbsolute(current_link) && !path.relative(current_link, config.srcDir).startsWith('..')) {
+    const currentLink = options.symlink_dir
+    if (
+      !path.isAbsolute(currentLink) &&
+      !path.relative(currentLink, config.srcDir).startsWith('..')
+    ) {
       console.error('Symlink must be an absolute path in src')
       process.exit(1)
     }
 
-    fs.removeSync(current_link)
-    fs.symlinkSync(config.outputDir, current_link, 'junction')
+    fs.removeSync(currentLink)
+    fs.symlinkSync(config.outputDir, currentLink, 'junction')
     await util.generateNinjaFiles()
   })
 
@@ -250,13 +249,6 @@ program
   .option('--fix', 'try to fix found issues automatically')
   .option('--json <output>', 'An output file for a JSON report')
   .action(util.presubmit)
-
-program
-  .command('format')
-  .option('--base <base branch>', 'set the destination branch for the PR')
-  .option('--full', 'format all lines in changed files instead of only the changed lines')
-  .option('--diff', 'print diff to stdout rather than modifying files')
-  .action(util.format)
 
 program
   .command('mass_rename')

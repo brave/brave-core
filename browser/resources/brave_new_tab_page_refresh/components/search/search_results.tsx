@@ -7,8 +7,10 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { SearchResultMatch, ClickEvent } from '../../models/search'
-import { useLocale } from '../context/locale_context'
+import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
+
+import { AutocompleteMatch, ClickEvent } from '../../models/search'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { placeholderImageSrc } from '../../lib/image_loader'
 import { faviconURL } from '../../lib/favicon_url'
@@ -17,10 +19,15 @@ import { SafeImage } from '../common/safe_image'
 
 import { style } from './search_results.style'
 
-function MatchImage(props: { match: SearchResultMatch }) {
-  const { getString } = useLocale()
+function useMojoString16<T>(value: T) {
+  return React.useMemo(() => mojoString16ToString(value), [value])
+}
+
+function MatchImage(props: { match: AutocompleteMatch }) {
   const { imageUrl, iconUrl } = props.match
-  if (props.match.description === getString('searchAskLeoDescription')) {
+  const description = useMojoString16(props.match.description)
+
+  if (description === getString('searchAskLeoDescription')) {
     return <Icon name='product-brave-leo' className='brave-leo-icon' />
   }
   if (!imageUrl) {
@@ -32,6 +39,17 @@ function MatchImage(props: { match: SearchResultMatch }) {
   return <SafeImage src={imageUrl} />
 }
 
+function MatchText(props: { match: AutocompleteMatch }) {
+  const contents = useMojoString16(props.match.contents)
+  const description = useMojoString16(props.match.description)
+  return <>
+    {contents}
+    <span className='description'>
+      {description}
+    </span>
+  </>
+}
+
 interface URLResultOption {
   kind: 'url'
   url: string
@@ -40,7 +58,7 @@ interface URLResultOption {
 interface MatchResultOption {
   kind: 'match'
   matchIndex: number
-  match: SearchResultMatch
+  match: AutocompleteMatch
 }
 
 export type ResultOption = URLResultOption | MatchResultOption
@@ -55,7 +73,6 @@ interface Props {
 export function SearchResults(props: Props) {
   const { selectedOption, options } = props
 
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const searchSuggestionsEnabled =
@@ -135,8 +152,7 @@ export function SearchResults(props: Props) {
                 <MatchImage match={match} />
               </span>
               <span className='content'>
-                {match.contents}
-                <span className='description'>{match.description}</span>
+                <MatchText match={match} />
               </span>
             </button>
           )

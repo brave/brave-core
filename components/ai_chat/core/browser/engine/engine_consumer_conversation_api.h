@@ -40,7 +40,8 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   explicit EngineConsumerConversationAPI(
       const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      AIChatCredentialManager* credential_manager);
+      AIChatCredentialManager* credential_manager,
+      ModelService* model_service);
   EngineConsumerConversationAPI(const EngineConsumerConversationAPI&) = delete;
   EngineConsumerConversationAPI& operator=(
       const EngineConsumerConversationAPI&) = delete;

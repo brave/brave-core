@@ -10,26 +10,37 @@
  * #include=md-select-lit-chromium
  * #css_wrapper_metadata_end */
 
-.md-select {
+select.md-select:not(.z) {
   appearance: base-select;
 
   background: transparent;
-  border: 1px solid var(--leo-color-divider-strong);
+
+  /* Note: we force the background image to none to avoid situations where a
+   * specific background image is set on a page (i.e. to override the carat). */
+  background-image: none !important;
+
+  border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-m);
 
-  padding: 10px 7px;
-  font: var(--leo-font-default-regular);
+  padding: var(--leo-spacing-m);
   color: var(--leo-color-text-primary);
 
   display: flex;
   align-items: center;
 
+  min-width: var(--md-select-width, 240px);
   width: fit-content;
+  height: unset;
+
+  /* Note: Upstream sets the font-size to 12px, but we want to match content. */
+  font-size: inherit;
+
+  transition: border-color 0.12s ease-in-out;
 }
 
 .md-select:hover {
   background: transparent;
-  border-color: var(--leo-color-neutral-30);
+  border-color: var(--leo-color-divider-strong);
 }
 
 .md-select:open {
@@ -44,11 +55,13 @@
   background: var(--leo-color-container-background);
   border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-m);
+
+  position-area: block-end span-inline-end;
 }
 
 .md-select option:not(.z) {
   margin: var(--leo-spacing-s);
-  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+  padding: var(--leo-spacing-s) var(--leo-spacing-m);
   border-radius: var(--leo-radius-s);
   background-color: var(--leo-color-container-background);
 }
@@ -63,6 +76,21 @@
 
 .md-select option::checkmark {
   display: none;
+}
+
+.md-select::picker-icon {
+  content: '';
+
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  mask-image: url(//resources/brave-icons/carat-down.svg);
+
+  transition: transform 0.12s ease-in-out;
+}
+
+.md-select:open::picker-icon {
+  transform: rotate(180deg);
 }
 
 .md-select option:focus {

@@ -261,6 +261,12 @@ struct ConversationTurn {
 
   // Whether the turn was generated from Brave Search SERP.
   bool from_brave_search_SERP = false;
+
+  // Null in BYOM conversations.
+  // In assistant turns, it indicates which model generated this turn.
+  // In human turns, it indicates which model to be used for regenerating
+  // answers.
+  string? model_key;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a
@@ -440,6 +446,9 @@ interface ChatUI {
   // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
   OnNewDefaultConversation();
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
+  // Notifies that files are selected between AIChatUIHandler::UploadImage() is
+  // called and return of uploaded files after processed.
+  OnUploadFilesSelected();
 };
 
 struct ConversationState {
@@ -462,6 +471,8 @@ struct ConversationEntriesState {
   bool is_generating;
   // Whether the current model is a built-in Leo model
   bool is_leo_model;
+  array<Model> all_models;
+  string current_model_key;
   // How much of the content has been used by the AI engine, percentage,or null
   // if no content is associated.
   uint32? content_used_percentage;
@@ -550,6 +561,9 @@ interface UntrustedConversationHandler {
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
   ModifyConversation(uint32 turn_index, string new_text);
+
+  // Regenerate answer using specified model.
+  RegenerateAnswer(string turn_uuid, string model_key);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying

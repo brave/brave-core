@@ -607,9 +607,6 @@
       <message name="IDS_PAGE_INFO_COOKIES_THIRD_PARTY_COOKIES_LABEL" desc="The label used in the Page Info dialog to label a toggle button that when enabled allows third-party cookies and when disabled blocks third-party cookies.">
         Third-party cookies
       </message>
-      <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_TITLE" desc="The header label of Tracking Protection page.">
-        Tracking Protection
-      </message>
       <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_DESCRIPTION" desc="Description text for the 'Cookies and site data' subpage in the page info view. Contains a link to the 'Third-party cookies' settings page.">
         Brave limits most sites from using third-party cookies to track you as you browse. Visit settings to <ph name="BEGIN_LINK">&lt;link&gt;</ph>manage access to third-party cookies<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
@@ -706,6 +703,12 @@
       <message name="IDS_NOTIFICATION_CATEGORY_WEBRTC_CAM_AND_MIC" desc="Label for notifications shown when media is being recorded from a camera or microphone, within a list of notification categories. [CHAR_LIMIT=32]">
         Camera and microphone use
       </message>
+      <message name="IDS_TAB_CAPTURE_NOTIFICATION_TITLE" desc="Text to be shown as a notification when tab capture is in progress.">
+        Sharing a tab
+      </message>
+      <message name="IDS_WINDOW_CAPTURE_NOTIFICATION_TITLE" desc="Text to be shown as a notification when window capture is in progress.">
+        Sharing a window
+      </message>
       <message name="IDS_SCREEN_CAPTURE_NOTIFICATION_TITLE" desc="Text to be shown as a notification when screen capture is in progress.">
         Sharing your screen
       </message>
@@ -732,6 +735,17 @@
         Tap to return to <ph name="URL_OF_THE_CURRENT_TAB">%1$s<ex>https://webusb.github.io/arduino/demos/console/</ex></ph>
       </message>
       <message name="IDS_USB_NOTIFICATION_CONTENT_TEXT_INCOGNITO" desc="The notification will display this text for the user to return to the Private tab which has created the notification.">
+        Tap to return to the site
+      </message>
+
+      <!-- Serial port -->
+      <message name="IDS_CONNECTED_TO_SERIAL_PORT_NOTIFICATION_TITLE" desc="Text to be shown as a notification when a website is connected to a serial port.">
+        Connected to a serial port
+      </message>
+      <message name="IDS_SERIAL_NOTIFICATION_CONTENT_TEXT" desc="Url of the current tab. The notification will display this text for the user to identify the tab to return to.">
+        Tap to return to <ph name="URL_OF_THE_CURRENT_TAB">%1$s<ex>https://googlechromelabs.github.io/serial-terminal/</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_NOTIFICATION_CONTENT_TEXT_INCOGNITO" desc="The notification will display this text for the user to return to the Private tab which has created the notification.">
         Tap to return to the site
       </message>
 
@@ -921,8 +935,8 @@
       <message name="IDS_IMMERSIVE_FULLSCREEN_GESTURE_NAVIGATION_MODE_API_NOTIFICATION" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit when the system gesture navigation mode is on.">
         Drag from top and swipe from the left or right edge to exit full screen.
       </message>
-      <message name="IDS_IMMERSIVE_FULLSCREEN_API_NOTIFICATION_AUTOMOTIVE" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit.">
-        Press the back button to exit full screen.
+      <message name="IDS_IMMERSIVE_FULLSCREEN_API_NOTIFICATION_DESKTOP" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit when is on desktop.">
+        Drag from top or press Esc key to exit full screen.
       </message>
       <message name="IDS_IMMERSIVE_FULLSCREEN_AUTOMOTIVE_TOOLBAR_IMPROVEMENTS" desc="Notification message when a site has entered immersive fullscreen and the directions of how to exit by swiping left.">
         Drag from the side of the screen to exit full screen.
@@ -1086,6 +1100,9 @@
       <message name="IDS_TAB_RESUMPTION_MODULE_SEE_MORE" desc="Text of a link shown beside the title of the module. Clicking the link launches the &quot;Recent tabs&quot; page.">
         See more
       </message>
+      <message name="IDS_ACCESSIBILITY_TAB_RESUMPTION_MODULE_SEE_MORE" is_accessibility_with_no_ui="true" desc="Accessibility label of the see more button of the module.">
+        See more recent tabs
+      </message>
 
       <message name="IDS_ACCESSIBILITY_EXPANDED" is_accessibility_with_no_ui="true" desc="Content description when the search resumption module is expanded.">
         Expanded
@@ -1230,6 +1247,21 @@
       <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_BOTTOM_SHEET_ACCESSIBILITY_OPENED_FULL" desc="Accessibility string that describes that the default browser bottom sheet has fully opened.">
         Default browser bottom sheet opened at full height
       </message>
+      <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_TITLE" desc="Title of the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
+        Browse across devices
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_DESCRIPTION" desc="Description of the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
+        Get your history on all your devices, so you can easily pick up where you left off
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_BUTTON_TURN_ON" desc="Text on the clickable button on the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
+        Turn on
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_BUTTON_LETS_GO" desc="Text on the clickable button on the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
+        Let’s go
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_BUTTON_CONTINUE" desc="Text on the clickable button on the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
+        Continue
+      </message>
 
       <!-- Safety Hub Magic Stack strings -->
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_MODULE_NAME" desc="Title for the Magic Stack card for all Safety Check modules.">
@@ -1274,20 +1306,29 @@
       <message name="IDS_NTP_CUSTOMIZATION_SUBTITLE" desc="Subtitle of the new tab page customization bottom sheet">
         Quickly get to what matters to you
       </message>
-      <message name="IDS_NTP_CUSTOMIZATION_FEED_SETTING_TITLE" desc="Open setting page for feed section customization when clicked">
+      <message name="IDS_NTP_CUSTOMIZATION_FEED_SETTINGS_TITLE" desc="Open setting page for feed section customization when clicked">
         Discover feed
       </message>
-      <message name="IDS_NTP_CUSTOMIZATION_FEED_SECTION_ON" desc="This texts show the feed section is visible at the new tab page">
-        On
-      </message>
-      <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the new tab page customization main bottom sheet.">
-        Customize your new tab page bottom sheet
-      </message>
-      <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes fully opening the new tab page customization main bottom sheet.">
+      <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the new tab page customization main bottom sheet is fully opened.">
         Customize your new tab page bottom sheet opened at full height
       </message>
-      <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_CLOSED" desc="Accessibility string that describes closing the new tab page customization main bottom sheet">
+      <message name="IDS_NTP_CUSTOMIZATION_NTP_CARDS_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the new tab page cards bottom sheet is fully opened.">
+        New tab page cards bottom sheet opened at full height
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_FEED_BOTTOM_SHEET_OPENED_FULL" desc="Accessibility string that describes the feed bottom sheet is fully opened.">
+        Discover feed bottom sheet opened at full height
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_MAIN_BOTTOM_SHEET_CLOSED" desc="Accessibility string that describes a new tab page customization bottom sheet is closed">
         Customize your new tab page bottom sheet closed
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_FEED_LIST_ITEMS_TITLE" desc="Title of the list items in the new tab page customization discover feed bottom sheet">
+        Manage your feed
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_NTP_CARDS_BOTTOM_SHEET" desc="Accessibility string to announce the currently displaying bottom sheet is the new tab page cards bottom sheet.">
+        New tab page cards bottom sheet
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_FEED_BOTTOM_SHEET" desc="Accessibility string to announce the currently displaying bottom sheet is the feed bottom sheet.">
+        Discover feed bottom sheet
       </message>
 
       <!-- What's New page strings -->

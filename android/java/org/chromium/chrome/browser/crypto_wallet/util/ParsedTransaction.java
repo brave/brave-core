@@ -7,9 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOLANA_TRANSACTION_TYPES;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.util.Pair;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -24,16 +22,14 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
-import org.chromium.chrome.R;
+import org.chromium.brave_wallet.mojom.ZecTxData;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.crypto_wallet.presenters.SolanaInstructionPresenter;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,43 +40,33 @@ import java.util.regex.Pattern;
  * Transaction parser. Java version of
  * components/brave_wallet_ui/common/hooks/transaction-parser.ts.
  */
+@NullMarked
 public class ParsedTransaction extends ParsedTransactionFees {
     // Strings are initialized to empty string instead of null, as the default value from mojo
     // Common fields
+    public double marketPrice;
     private String hash = "";
     private String nonce = "";
-    private TimeDelta createdTime;
+    @Nullable private TimeDelta createdTime;
     private int status; // mojo loses enum type info in struct
     private int type; // mojo loses enum type info in struct
     private String sender = "";
-    private String senderLabel = "";
     private String recipient = "";
-    private String recipientLabel = "";
-    private double fiatValue;
     private double fiatTotal;
-    private double nativeCurrencyTotal; // Cannot format directly because format is in R
     private double value;
     private String symbol = "";
-    private BlockchainToken token;
+    @Nullable private BlockchainToken token;
     private int decimals;
-    private boolean insufficientFundsForGasError;
-    private boolean insufficientFundsError;
-    private String contractAddressError = "";
-    private String sameAddressError = "";
-    private BlockchainToken erc721BlockchainToken;
-    private String erc721TokenId = "";
+    @Nullable private BlockchainToken erc721BlockchainToken;
     private boolean isSwap;
-    public double marketPrice;
 
-    // Token approvals
-    private String approvalTarget = "";
-    private String approvalTargetLabel = "";
-    private boolean isApprovalUnlimited;
+    // ZCash
+    private boolean shielded;
 
     // Swap
-    private BlockchainToken sellToken;
+    @Nullable private BlockchainToken sellToken;
     private double sellAmount;
-    private BlockchainToken buyToken;
+    @Nullable private BlockchainToken buyToken;
     private double minBuyAmount;
 
     // Solana
@@ -102,6 +88,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 parsedTransactionFees.getGasFeeCap());
     }
 
+    @Nullable
     private static BlockchainToken findToken(
             BlockchainToken[] fullTokenList, String contractAddress) {
         if (contractAddress == null) return null;
@@ -114,31 +101,13 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return null;
     }
 
-    /** Checks if a given address is a known contract address from our token registry. */
-    private static String checkForContractAddressError(BlockchainToken[] fullTokenList, String to) {
-        BlockchainToken token = findToken(fullTokenList, to);
-        return token != null ? "braveWalletContractAddressError" : null;
-    }
-
-    /** Checks if a given set of sender and recipient addresses are the same. */
-    private static String checkForSameAddressError(String from, String to) {
-        if (from == null || to == null) {
-            return null;
-        }
-        return to.toLowerCase(Locale.getDefault()).equals(from.toLowerCase(Locale.getDefault()))
-                ? "braveWalletSameAddressError"
-                : null;
-    }
-
     public static ParsedTransaction parseTransaction(
             TransactionInfo txInfo,
             NetworkInfo txNetwork,
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
             long solFeeEstimatesFee,
-            BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+            BlockchainToken[] fullTokenList) {
         BlockchainToken nativeAsset = Utils.makeNetworkAsset(txNetwork);
         Double networkSpotPrice =
                 Utils.getOrDefault(
@@ -164,57 +133,56 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 txDataUnion.which() == TxDataUnion.Tag.BtcTxData
                         ? txDataUnion.getBtcTxData()
                         : null;
+        ZecTxData zecTxData =
+                txDataUnion.which() == TxDataUnion.Tag.ZecTxData
+                        ? txDataUnion.getZecTxData()
+                        : null;
 
-        final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction =
                 txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                         || txInfo.txType
                                 == TransactionType
                                         .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
-        final boolean isBtcTransaction = btcTxData != null;
 
-        final String value =
-                isSPLTransaction
-                        ? solTxData != null ? String.valueOf(solTxData.amount) : ""
-                        : isSolTransaction
-                                ? solTxData != null ? String.valueOf(solTxData.lamports) : ""
-                                : isFilTransaction
-                                        ? filTxData.value != null
-                                                ? Utils.toHex(filTxData.value)
-                                                : ""
-                                        : isBtcTransaction
-                                                ? String.valueOf(btcTxData.amount)
-                                                : txData != null ? txData.baseData.value : "";
+        String value = "";
+        if (isSPLTransaction && solTxData != null) {
+            value = String.valueOf(solTxData.amount);
+        } else if (isSolTransaction && solTxData != null) {
+            value = String.valueOf(solTxData.lamports);
+        } else if (filTxData != null && !TextUtils.isEmpty(filTxData.value)) {
+            value = Utils.toHex(filTxData.value);
+        } else if (btcTxData != null) {
+            value = String.valueOf(btcTxData.amount);
+        } else if (zecTxData != null) {
+            value = String.valueOf(zecTxData.amount);
+        } else if (txData != null) {
+            value = txData.baseData.value;
+        }
 
-        String to =
-                isSolTransaction
-                        ? solTxData != null ? solTxData.toWalletAddress : ""
-                        : isFilTransaction
-                                ? filTxData.to
-                                : isBtcTransaction ? btcTxData.to : txData.baseData.to;
+        String to = "";
+        if (isSolTransaction && solTxData != null) {
+            to = solTxData.toWalletAddress;
+        } else if (filTxData != null) {
+            to = filTxData.to;
+        } else if (btcTxData != null) {
+            to = btcTxData.to;
+        } else if (zecTxData != null) {
+            to = zecTxData.to;
+        } else if (txData != null) {
+            to = txData.baseData.to;
+        }
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
         AccountInfo account = Utils.findAccount(accounts, txInfo.fromAccountId);
-
-        final String accountAddressLower =
-                account != null ? account.address.toLowerCase(Locale.getDefault()) : "";
+        final String sender = account != null ? account.address : "";
+        assert account != null;
         final BlockchainToken token =
                 isSPLTransaction
                         ? findToken(fullTokenList, solTxData != null ? solTxData.tokenAddress : "")
                         : findToken(fullTokenList, to);
         final String tokenSymbolLower =
                 token != null ? token.symbol.toLowerCase(Locale.getDefault()) : "";
-        final double accountNativeBalance =
-                Utils.getOrDefault(nativeAssetsBalances, accountAddressLower, 0.0d);
-        final double accountTokenBalance =
-                Utils.getOrDefault(
-                        Utils.getOrDefault(
-                                blockchainTokensBalances,
-                                accountAddressLower,
-                                new HashMap<String, Double>()),
-                        Utils.tokenToString(token),
-                        0.0d);
 
         ParsedTransaction parsedTransaction = new ParsedTransaction(feeDetails);
         // Common fields
@@ -224,11 +192,13 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
-        parsedTransaction.sender = account.address;
-        parsedTransaction.senderLabel = account != null ? account.name : "";
+        parsedTransaction.sender = sender;
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
         parsedTransaction.marketPrice = networkSpotPrice;
+        if (zecTxData != null && zecTxData.useShieldedPool) {
+            parsedTransaction.shielded = true;
+        }
 
         int txType = txInfo.txType;
         if (txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION
@@ -237,9 +207,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 || (txType == TransactionType.OTHER && solTxData != null)) {
             if (solTxData == null) {
                 parsedTransaction.recipient = "";
-                parsedTransaction.recipientLabel = "";
                 parsedTransaction.fiatTotal = 0;
-                parsedTransaction.fiatValue = 0;
                 parsedTransaction.decimals = 0;
                 parsedTransaction.symbol = "";
                 return parsedTransaction;
@@ -312,25 +280,13 @@ public class ParsedTransaction extends ParsedTransactionFees {
                             lamportTransferredAmount.toPlainString());
             final double sendAmountFiat = sendAmount * price;
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
-            final boolean insufficientNativeFunds =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
-            final boolean insufficientTokenFunds = sendAmount > accountTokenBalance;
 
             parsedTransaction.recipient = to;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, to);
-            parsedTransaction.fiatValue = sendAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
             parsedTransaction.value = sendAmount;
             parsedTransaction.symbol = token != null ? token.symbol : "";
             parsedTransaction.decimals = Utils.SOL_DEFAULT_DECIMALS;
-            parsedTransaction.insufficientFundsError = insufficientTokenFunds;
-            parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
             parsedTransaction.isSwap = txType == TransactionType.SOLANA_SWAP;
-            parsedTransaction.contractAddressError =
-                    checkForContractAddressError(
-                            fullTokenList,
-                            solTxData.toWalletAddress != null ? solTxData.toWalletAddress : to);
             if (parsedTransaction.isSwap) {
                 parsedTransaction.sellToken = nativeAsset;
                 parsedTransaction.buyToken = nativeAsset;
@@ -345,75 +301,34 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
-            final boolean insufficientNativeFunds =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
-            final boolean insufficientTokenFunds = sendAmount > accountTokenBalance;
-
             parsedTransaction.recipient = address;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, address);
-            parsedTransaction.fiatValue = sendAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
             parsedTransaction.value = sendAmount;
             parsedTransaction.symbol = token != null ? token.symbol : "";
             parsedTransaction.decimals = decimals;
-            parsedTransaction.insufficientFundsError = insufficientTokenFunds;
-            parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
-            parsedTransaction.contractAddressError =
-                    checkForContractAddressError(fullTokenList, address);
-            parsedTransaction.sameAddressError = checkForSameAddressError(address, account.address);
         } else if ((txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
                         || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
                 && txInfo.txArgs.length > 2) {
-            final String owner = txInfo.txArgs[0];
             final String toAddress = txInfo.txArgs[1];
-            final String tokenID = txInfo.txArgs[2];
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat();
 
-            final boolean insufficientNativeFunds =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
-
             parsedTransaction.recipient = toAddress;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, toAddress);
-            parsedTransaction.fiatValue = 0; // Display NFT values in the future
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = totalAmountFiat / networkSpotPrice;
             parsedTransaction.value = 1; // Can only send 1 erc721 at a time
             parsedTransaction.symbol = token != null ? token.symbol : "";
             parsedTransaction.decimals = 0;
-            parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
-            parsedTransaction.insufficientFundsError = false;
             parsedTransaction.erc721BlockchainToken = token;
-            parsedTransaction.erc721TokenId = tokenID;
-            parsedTransaction.contractAddressError =
-                    checkForContractAddressError(fullTokenList, toAddress);
-            parsedTransaction.sameAddressError = checkForSameAddressError(toAddress, owner);
         } else if (txInfo.txType == TransactionType.ERC20_APPROVE && txInfo.txArgs.length > 1) {
-            final String address = txInfo.txArgs[0];
             final String amount = txInfo.txArgs[1];
 
             final int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat();
-            final BigInteger amountWrapped =
-                    new BigInteger(amount.startsWith("0x") ? amount.substring(2) : amount, 16);
-            final boolean insufficientNativeFunds =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
-
             parsedTransaction.recipient = to;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, to);
-            parsedTransaction.fiatValue = 0;
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = 0;
             parsedTransaction.value = Utils.fromHexWei(amount, decimals);
             parsedTransaction.symbol = token != null ? token.symbol : "";
             parsedTransaction.decimals = decimals;
-            parsedTransaction.approvalTarget = address;
-            parsedTransaction.approvalTargetLabel = getAddressLabel(accounts, address);
-            parsedTransaction.isApprovalUnlimited = amountWrapped.compareTo(Utils.MAX_UINT256) == 0;
-            parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
-            parsedTransaction.insufficientFundsError = false;
-            parsedTransaction.sameAddressError = checkForSameAddressError(address, account.address);
         } else if (txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                 || txInfo.txType
                         == TransactionType
@@ -425,26 +340,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
-            final boolean insufficientNativeFunds =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
-            final boolean insufficientTokenFunds = sendAmount > accountTokenBalance;
-
             parsedTransaction.recipient = to;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, to);
-            parsedTransaction.fiatValue = sendAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
             parsedTransaction.value = sendAmount;
             parsedTransaction.symbol = token != null ? token.symbol : "";
             parsedTransaction.decimals = decimals;
-            parsedTransaction.insufficientFundsError = insufficientTokenFunds;
-            parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
-            parsedTransaction.contractAddressError =
-                    checkForContractAddressError(
-                            fullTokenList, solTxData != null ? solTxData.toWalletAddress : "");
-            parsedTransaction.sameAddressError =
-                    checkForSameAddressError(
-                            solTxData != null ? solTxData.toWalletAddress : "", account.address);
         } else if (txInfo.txType == TransactionType.ETH_SWAP && txInfo.txArgs.length > 2) {
             final String fillPath = txInfo.txArgs[0];
             final String sellAmountArg = txInfo.txArgs[1];
@@ -477,31 +377,13 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sellAmountFiat;
 
-            final boolean insufficientNativeFunds =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
-
-            final double sellTokenBalance =
-                    Utils.getOrDefault(
-                            Utils.getOrDefault(
-                                    blockchainTokensBalances,
-                                    accountAddressLower,
-                                    new HashMap<String, Double>()),
-                            Utils.tokenToString(sellToken),
-                            0.0d);
-
             final double sellAmount = Utils.fromHexWei(sellAmountWei, sellToken.decimals);
-            final boolean insufficientTokenFunds = sellAmount > sellTokenBalance;
 
             parsedTransaction.recipient = to;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, to);
-            parsedTransaction.fiatValue = sellAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = sellAmountFiat / networkSpotPrice;
             parsedTransaction.value = sellAmount;
             parsedTransaction.symbol = sellToken.symbol;
             parsedTransaction.decimals = sellToken.decimals;
-            parsedTransaction.insufficientFundsError = insufficientTokenFunds;
-            parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
             parsedTransaction.isSwap = true;
             parsedTransaction.sellToken = sellToken;
             parsedTransaction.sellAmount = sellAmount;
@@ -512,8 +394,8 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final double price =
                     Utils.getOrDefault(
                             assetPrices, txNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d);
-            double sendAmount = 0;
-            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER) {
+            double sendAmount;
+            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER || zecTxData != null) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);
             } else {
                 sendAmount = Utils.fromHexWei(value, txNetwork.decimals);
@@ -524,27 +406,15 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final double totalAmountFiat = parsedTransaction.getGasFeeFiat() + sendAmountFiat;
 
             parsedTransaction.recipient = to;
-            parsedTransaction.recipientLabel = getAddressLabel(accounts, to);
-            parsedTransaction.fiatValue = sendAmountFiat;
             parsedTransaction.fiatTotal = totalAmountFiat;
-            parsedTransaction.nativeCurrencyTotal = sendAmountFiat / networkSpotPrice;
             parsedTransaction.value = sendAmount;
             parsedTransaction.symbol = txNetwork.symbol;
             parsedTransaction.decimals = txNetwork.decimals;
-            parsedTransaction.insufficientFundsError =
-                    parsedTransaction.value + parsedTransaction.getGasFee() > accountNativeBalance;
-            parsedTransaction.insufficientFundsForGasError =
-                    parsedTransaction.getGasFee() > accountNativeBalance;
             parsedTransaction.isSwap =
                     to.toLowerCase(Locale.getDefault()).equals(Utils.SWAP_EXCHANGE_PROXY);
         }
 
         return parsedTransaction;
-    }
-
-    private static String getAddressLabel(AccountInfo[] accounts, String address) {
-        final AccountInfo account = Utils.findAccountByAddress(accounts, address);
-        return account != null ? account.name : Utils.stripAccountAddress(address);
     }
 
     // TODO (Wengling): change it to reflect desktop Amount.format
@@ -565,74 +435,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
         }
     }
 
-    public Pair<String, String> makeTxListItemTitles(Context context) {
-        final DateFormat dateFormat =
-                new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
-        final String strDate = dateFormat.format(new Date(this.createdTime.microseconds / 1000));
-
-        String action = "";
-        String detailInfo = "";
-        String actionFiatValue = String.format(Locale.getDefault(), "%.2f", this.fiatValue);
-        if (this.type == TransactionType.ERC20_TRANSFER) {
-            action =
-                    String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_sent),
-                            this.senderLabel,
-                            this.formatValueToDisplay(),
-                            this.symbol,
-                            actionFiatValue,
-                            strDate);
-            detailInfo = this.senderLabel + " -> " + this.recipientLabel;
-        } else if (this.type == TransactionType.ERC721_TRANSFER_FROM
-                || this.type == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-            action =
-                    String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_sent_erc721),
-                            this.senderLabel,
-                            this.symbol,
-                            this.erc721TokenId,
-                            strDate);
-            detailInfo = this.senderLabel + " -> " + this.recipientLabel;
-        } else if (this.type == TransactionType.ERC20_APPROVE) {
-            action =
-                    String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_approved),
-                            this.senderLabel,
-                            this.symbol,
-                            strDate);
-            detailInfo =
-                    String.format(
-                            context.getResources()
-                                    .getString(R.string.wallet_tx_info_approved_unlimited),
-                            this.symbol,
-                            "0x Exchange Proxy"); // TODO: make unlimited work correctly
-        } else if (this.isSwap) {
-            action =
-                    String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_swap),
-                            this.senderLabel,
-                            strDate);
-            detailInfo = String.format(Locale.getDefault(), "%.4f", this.value);
-            if (this.type == TransactionType.SOLANA_SWAP) {
-                detailInfo += " SOL -> " + this.recipientLabel;
-            } else {
-                detailInfo += " ETH -> 0x Exchange Proxy";
-            }
-        } else {
-            action =
-                    String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_sent),
-                            this.senderLabel,
-                            this.formatValueToDisplay(),
-                            this.symbol,
-                            actionFiatValue,
-                            strDate);
-            detailInfo = this.senderLabel + " -> " + this.recipientLabel;
-        }
-
-        return new Pair<String, String>(action, detailInfo);
-    }
-
     public String getHash() {
         return this.hash;
     }
@@ -641,6 +443,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return this.nonce;
     }
 
+    @Nullable
     public TimeDelta getCreatedTime() {
         return this.createdTime;
     }
@@ -657,28 +460,12 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return this.sender;
     }
 
-    public String getSenderLabel() {
-        return this.senderLabel;
-    }
-
     public String getRecipient() {
         return this.recipient;
     }
 
-    public String getRecipientLabel() {
-        return this.recipientLabel;
-    }
-
-    public double getFiatValue() {
-        return this.fiatValue;
-    }
-
     public double getFiatTotal() {
         return this.fiatTotal;
-    }
-
-    public double getNativeCurrencyTotal() {
-        return this.nativeCurrencyTotal;
     }
 
     public double getValue() {
@@ -689,6 +476,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return this.symbol;
     }
 
+    @Nullable
     public BlockchainToken getToken() {
         return this.token;
     }
@@ -697,46 +485,16 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return this.decimals;
     }
 
-    public boolean getInsufficientFundsForGasError() {
-        return this.insufficientFundsForGasError;
-    }
-
-    public boolean getInsufficientFundsError() {
-        return this.insufficientFundsError;
-    }
-
-    public String getContractAddressError() {
-        return this.contractAddressError;
-    }
-
-    public String getSameAddressError() {
-        return this.sameAddressError;
-    }
-
+    @Nullable
     public BlockchainToken getErc721BlockchainToken() {
         return this.erc721BlockchainToken;
-    }
-
-    public String getErc721TokenId() {
-        return this.erc721TokenId;
     }
 
     public boolean getIsSwap() {
         return this.isSwap;
     }
 
-    public String getApprovalTarget() {
-        return this.approvalTarget;
-    }
-
-    public String getApprovalTargetLabel() {
-        return this.approvalTargetLabel;
-    }
-
-    public boolean getIsApprovalUnlimited() {
-        return this.isApprovalUnlimited;
-    }
-
+    @Nullable
     public BlockchainToken getSellToken() {
         return this.sellToken;
     }
@@ -745,6 +503,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         return this.sellAmount;
     }
 
+    @Nullable
     public BlockchainToken getBuyToken() {
         return this.buyToken;
     }
@@ -755,5 +514,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public boolean isSolChangeOfOwnership() {
         return solChangeOfOwnership;
+    }
+
+    public boolean isShielded() {
+        return shielded;
     }
 }

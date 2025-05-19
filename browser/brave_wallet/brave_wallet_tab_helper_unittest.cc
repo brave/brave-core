@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
@@ -21,8 +20,7 @@
 
 namespace {
 std::u16string BraveCreateTitleLabel() {
-  auto wallet_title =
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_WALLET);
+  auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
   return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT, wallet_title);
 }
 

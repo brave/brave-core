@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/notreached.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
@@ -22,13 +23,15 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
 
 namespace {
 
-mojom::CardanoBalancePtr BalanceFromUtxos(GetCardanoUtxosTask::UtxoMap& utxos) {
+mojom::CardanoBalancePtr BalanceFromUtxos(
+    const GetCardanoUtxosTask::UtxoMap& utxos) {
   auto result = mojom::CardanoBalance::New();
 
   for (const auto& items : utxos) {
@@ -48,7 +51,12 @@ CardanoWalletService::CardanoWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
       network_manager_(network_manager),
-      cardano_rpc_(network_manager, url_loader_factory) {}
+      cardano_mainnet_rpc_(mojom::kCardanoMainnet,
+                           network_manager,
+                           url_loader_factory),
+      cardano_testnet_rpc_(mojom::kCardanoTestnet,
+                           network_manager,
+                           url_loader_factory) {}
 
 CardanoWalletService::~CardanoWalletService() = default;
 
@@ -177,11 +185,12 @@ void CardanoWalletService::SignAndPostTransaction(
   auto serialized_transaction =
       CardanoSerializer::SerializeTransaction(cardano_transaction);
 
-  cardano_rpc_.PostTransaction(
-      GetNetworkForCardanoAccount(account_id), serialized_transaction,
-      base::BindOnce(&CardanoWalletService::OnPostTransaction,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     std::move(cardano_transaction), std::move(callback)));
+  GetCardanoRpc(GetNetworkForCardanoAccount(account_id))
+      ->PostTransaction(
+          serialized_transaction,
+          base::BindOnce(&CardanoWalletService::OnPostTransaction,
+                         weak_ptr_factory_.GetWeakPtr(),
+                         std::move(cardano_transaction), std::move(callback)));
 }
 
 bool CardanoWalletService::SignTransactionInternal(
@@ -237,9 +246,56 @@ void CardanoWalletService::OnPostTransaction(
   std::move(callback).Run(txid.value(), std::move(cardano_transaction), "");
 }
 
+void CardanoWalletService::GetTransactionStatus(
+    const std::string& chain_id,
+    const std::string& txid,
+    GetTransactionStatusCallback callback) {
+  CHECK(IsCardanoNetwork(chain_id));
+  GetCardanoRpc(chain_id)->GetTransaction(
+      txid, base::BindOnce(&CardanoWalletService::OnGetTransactionStatus,
+                           weak_ptr_factory_.GetWeakPtr(), txid,
+                           std::move(callback)));
+}
+
+void CardanoWalletService::OnGetTransactionStatus(
+    const std::string& txid,
+    GetTransactionStatusCallback callback,
+    base::expected<std::optional<cardano_rpc::Transaction>, std::string>
+        transaction) {
+  if (!transaction.has_value()) {
+    std::move(callback).Run(base::unexpected(transaction.error()));
+    return;
+  }
+
+  if (!transaction.value().has_value()) {
+    std::move(callback).Run(base::ok(false));
+    return;
+  }
+
+  if (HexEncodeLower(transaction.value()->tx_hash) != txid) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  std::move(callback).Run(base::ok(true));
+}
+
+cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
+    const std::string& chain_id) {
+  if (chain_id == mojom::kCardanoMainnet) {
+    return &cardano_mainnet_rpc_;
+  }
+  if (chain_id == mojom::kCardanoTestnet) {
+    return &cardano_testnet_rpc_;
+  }
+  NOTREACHED() << chain_id;
+}
+
 void CardanoWalletService::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  cardano_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
+  cardano_mainnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
+      std::move(url_loader_factory));
+  cardano_testnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
       std::move(url_loader_factory));
 }
 

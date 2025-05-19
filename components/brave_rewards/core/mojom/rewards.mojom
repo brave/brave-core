@@ -362,8 +362,16 @@ struct UICardItem {
   string thumbnail;
 };
 
+struct UICardBanner {
+  string url;
+  string image;
+};
+
 struct UICard {
   string name;
   string title;
+  string section;
+  int32 order;
+  UICardBanner? banner;
   array<UICardItem> items;
 };

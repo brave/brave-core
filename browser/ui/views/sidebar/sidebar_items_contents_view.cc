@@ -30,7 +30,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -40,9 +39,11 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/window_open_disposition_utils.h"
@@ -89,7 +90,7 @@ SidebarItemsContentsView::SidebarItemsContentsView(
     views::DragController* drag_controller)
     : browser_(browser),
       drag_controller_(drag_controller),
-      sidebar_model_(browser->sidebar_controller()->model()) {
+      sidebar_model_(browser->GetFeatures().sidebar_controller()->model()) {
   DCHECK(browser_);
   set_context_menu_controller(this);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -155,10 +156,10 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
     // will use colored one for normal state also.
     if (item.built_in_item_type ==
         sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
-      UpdateItemViewStateAt(
-          item_index,
-          browser_->sidebar_controller()->DoesBrowserHaveOpenedTabForItem(
-              item));
+      UpdateItemViewStateAt(item_index,
+                            browser_->GetFeatures()
+                                .sidebar_controller()
+                                ->DoesBrowserHaveOpenedTabForItem(item));
       continue;
     }
 
@@ -185,14 +186,11 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     icon_color = color_provider->GetColor(kColorSidebarButtonBase);
   }
   context_menu_model_->AddItemWithIcon(
-      kItemEdit,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
+      kItemEdit, l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
       ui::ImageModel::FromVectorIcon(kSidebarEditIcon, icon_color, 14));
   context_menu_model_->AddItemWithIcon(
       kItemRemove,
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
       ui::ImageModel::FromVectorIcon(kSidebarTrashIcon, icon_color));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU,
@@ -504,7 +502,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
 
 void SidebarItemsContentsView::OnItemPressed(const views::View* item,
                                              const ui::Event& event) {
-  auto* controller = browser_->sidebar_controller();
+  auto* controller = browser_->GetFeatures().sidebar_controller();
   auto index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
     controller->DeactivateCurrentPanel();

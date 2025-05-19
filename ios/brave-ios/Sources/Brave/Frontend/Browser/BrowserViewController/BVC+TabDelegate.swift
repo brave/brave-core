@@ -591,13 +591,15 @@ extension BrowserViewController {
 
   public func tab(
     _ tab: some TabState,
-    createNewTabWithRequest request: URLRequest
+    createNewTabWithRequest request: URLRequest,
+    isUserInitiated: Bool
   ) -> (any TabState)? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
+      isUserInitiated || braveCore.defaultHostContentSettings.popupsAllowed,
       navigationURL.shouldRequestBeOpenedAsPopup()
     else {
-      print("Denying popup from request: \(request)")
+      print("Denying popup from request: \(request); is user initiated: \(isUserInitiated)")
       return nil
     }
 
@@ -647,16 +649,14 @@ extension BrowserViewController {
       if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
         return mobile
       }
-      return UserAgent.shouldUseDesktopMode() ? desktop : mobile
+      return traitCollection.userInterfaceIdiom == .pad
+        && braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? desktop : mobile
     case .desktop: return desktop
     case .mobile: return mobile
     }
   }
 
   public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
-    if Preferences.UserAgent.alwaysRequestDesktopSite.value {
-      return .desktop
-    }
-    return .mobile
+    return braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? .desktop : .mobile
   }
 }

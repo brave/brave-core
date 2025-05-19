@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.shields;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -22,6 +24,8 @@ import android.widget.TextView;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -31,23 +35,26 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
+@NullMarked
 public class CreateCustomFiltersFragment extends BravePreferenceFragment
         implements ConnectionErrorHandler {
     public static final String BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE =
             "https://support.brave.com/hc/en-us/articles/6449369961741";
 
-    private FilterListAndroidHandler mFilterListAndroidHandler;
+    private @Nullable FilterListAndroidHandler mFilterListAndroidHandler;
     private EditText mEtCustomFilters;
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_create_custom_filters, container, false);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         mPageTitle.set(getString(R.string.create_custom_filters_title));
         super.onActivityCreated(savedInstanceState);
 
@@ -61,7 +68,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
 
     private void setData() {
         initFilterListAndroidHandler();
-        mEtCustomFilters = getView().findViewById(R.id.enter_custom_filters);
+        mEtCustomFilters = assumeNonNull(getView()).findViewById(R.id.enter_custom_filters);
         TextView tvSummary = getView().findViewById(R.id.summary);
         String summaryText =
                 String.format(
@@ -74,8 +81,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
         if (getActivity() != null) {
             ChromeClickableSpan summaryTextClickableSpan =
                     new ChromeClickableSpan(
-                            getActivity(),
-                            R.color.brave_link,
+                            getActivity().getColor(R.color.brave_link),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(
                                         getActivity(), BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE);

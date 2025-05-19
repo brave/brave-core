@@ -246,7 +246,6 @@ Solo las personas que tengan tu frase de contraseña podrán leer tus datos cifr
 <translation id="2172905120685242547">¿Cerrar ventana?</translation>
 <translation id="2173302385160625112">Comprueba tu conexión a Internet</translation>
 <translation id="2175927920773552910">Código QR</translation>
-<translation id="1203189419326478388">Mostrar u ocultar la barra de marcadores</translation>
 <translation id="2184272387334793084">Inicia sesión para acceder a tus contraseñas y más en todos tus dispositivos</translation>
 <translation id="218608176142494674">Compartir</translation>
 <translation id="219283042927675668">Pestañas en el grupo</translation>
@@ -515,7 +514,6 @@ Solo las personas que tengan tu frase de contraseña podrán leer tus datos cifr
 <translation id="3474624961160222204">Continuar como <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Puedes elegir tu buscador</translation>
 <translation id="3479552764303398839">Ahora no</translation>
-<translation id="5270319788820204019">Busca con el teclado, la voz, el modo Incógnito o la cámara</translation>
 <translation id="6165882953768534820">Es posible que otros, incluidas aplicaciones, puedan acceder al archivo exportado. Una vez que hayas exportado tus contraseñas, se eliminarán de Brave.</translation>
 <translation id="3488199663160411179">nombre</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/> sobre el contenido sugerido</translation>
@@ -1836,6 +1834,7 @@ Para cambiar este ajuste, <ph name="BEGIN_LINK"/>elimina los datos de Brave de t
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, Pestaña privada</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/>, Pestaña privada seleccionada</translation>
 <translation id="2280910239864711607">Abrir una nueva pestaña en modo Privado</translation>
+<translation id="1203189419326478388">Mostrar u ocultar los marcadores</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> pestaña privada}
           other {<ph name="TAB_COUNT_NORMAL"/> pestañas privadas}}</translation>
@@ -1853,6 +1852,7 @@ Para cambiar este ajuste, <ph name="BEGIN_LINK"/>elimina los datos de Brave de t
 <translation id="7096147642287317420">Mantenga pulsado el botón para salir del modo privado</translation>
 <translation id="2331163878318921124">Toque dos veces y mantenga pulsado el botón para salir del modo privado</translation>
 <translation id="3947065058794437451">El modo privado no está disponible en este dispositivo</translation>
+<translation id="5270319788820204019">Buscar usando teclado, voz, ventana de Incógnito o cámara</translation>
 <translation id="3095878721037212218">Podrás gestionar fácilmente los controles multimedia, las sesiones privadas, las descargas y muchas otras cosas</translation>
 <translation id="5129323533070334129">¿Guardar la clave de acceso fuera del modo privado?</translation>
 <translation id="4325212706000356062">Buscar en tus pestañas de incógnito</translation>

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
@@ -30,6 +31,7 @@ import org.chromium.ui.permissions.PermissionCallback;
 
 import java.util.function.BooleanSupplier;
 
+@NullUnmarked // Waiting for upstream parent class to be NullMarked
 public class BraveLocationBarMediator extends LocationBarMediator {
     private WindowAndroid mWindowAndroid;
     private LocationBarLayout mLocationBarLayout;
@@ -60,7 +62,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
             @NonNull OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            @Nullable BrowserControlsStateProvider browserControlsStateProvider) {
+            @Nullable BrowserControlsStateProvider browserControlsStateProvider,
+            @NonNull LocationBarCoordinator.OfflineDownloader offlineDownloader) {
         super(
                 context,
                 locationBarLayout,
@@ -79,7 +82,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 isToolbarMicEnabledSupplier,
                 dropdownEmbedder,
                 tabModelSelectorSupplier,
-                browserControlsStateProvider);
+                browserControlsStateProvider,
+                offlineDownloader);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {

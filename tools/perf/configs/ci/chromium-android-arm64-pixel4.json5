@@ -31,6 +31,24 @@
       "name": "speedometer3",
       "pageset-repeat": 10
     },
+        {
+      "name": "jetstream2",
+      "pageset-repeat": 5
+    },
+    {
+      "name": "rendering.mobile",
+      "pageset-repeat": 3,
+      "stories": [
+        "motionmark_ramp_canvas_arcs",
+        "motionmark_ramp_canvas_lines",
+        "motionmark_ramp_design",
+        "motionmark_ramp_leaves",
+        "motionmark_ramp_paths",
+        "motionmark_ramp_suits",
+
+        // "motionmark_ramp_images" is disabled, not enough buffer
+      ]
+    },
     {
       "name": "apk_size",
     },

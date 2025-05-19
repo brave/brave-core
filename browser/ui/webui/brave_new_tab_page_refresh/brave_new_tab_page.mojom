@@ -17,7 +17,7 @@ enum SelectedBackgroundType {
   kBrave,
   kCustom,
   kSolid,
-  kGradient,
+  kGradient
 };
 
 struct SelectedBackground {
@@ -32,7 +32,7 @@ struct SponsoredImageLogo {
 };
 
 struct SponsoredImageBackground {
-  string type;
+  string wallpaper_type;
   string wallpaper_id;
   string creative_instance_id;
   string campaign_id;
@@ -66,6 +66,8 @@ enum TopSitesListKind {
   kCustom,
   kMostVisited
 };
+
+enum ClockFormat { kAuto, k12, k24 };
 
 struct ShieldsStats {
   double ads_blocked;
@@ -202,8 +204,8 @@ interface NewTabPageHandler {
   SetShowClock(bool show_clock) => ();
 
   // Gets or sets the clock time format.
-  GetClockFormat() => (string clock_format);
-  SetClockFormat(string clock_format) => ();
+  GetClockFormat() => (ClockFormat clock_format);
+  SetClockFormat(ClockFormat clock_format) => ();
 
   // Gets or sets whether the shields stats widget is displayed.
   GetShowShieldsStats() => (bool show_shields_stats);

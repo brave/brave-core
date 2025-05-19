@@ -8,7 +8,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -21,6 +20,7 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -72,7 +72,7 @@ class AIChatPolicyTest : public InProcessBrowserTest,
   PrefService* prefs() { return profile()->GetPrefs(); }
 
   sidebar::SidebarModel* sidebar_model() const {
-    return static_cast<BraveBrowser*>(browser())->sidebar_controller()->model();
+    return browser()->GetFeatures().sidebar_controller()->model();
   }
 
   AutocompleteController* GetAutocompleteController() {

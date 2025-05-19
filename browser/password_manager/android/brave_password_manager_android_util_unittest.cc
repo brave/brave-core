@@ -56,10 +56,6 @@ class BravePasswordManagerAndroidUtilTest : public testing::Test {
              ".", syncer::DataTypeToStableLowerCaseString(syncer::PASSWORDS)}),
         false);
     pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::
-            kUserAcknowledgedLocalPasswordsMigrationWarning,
-        false);
-    pref_service_.registry()->RegisterBooleanPref(
         password_manager::prefs::kSettingsMigratedToUPMLocal, false);
 
     base::WriteFile(login_db_directory_.Append(
@@ -89,9 +85,6 @@ TEST_F(BravePasswordManagerAndroidUtilTest,
   // This is a state of a local user that has just been migrated.
   pref_service()->SetInteger(kPasswordsUseUPMLocalAndSeparateStores,
                              base::to_underlying(kOn));
-  pref_service()->SetBoolean(
-      password_manager::prefs::kUserAcknowledgedLocalPasswordsMigrationWarning,
-      true);
   pref_service()->SetBoolean(
       password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
 

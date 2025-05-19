@@ -2,10 +2,12 @@ include_rules = [
   "+brave/content/public/browser",
   "+brave/components/brave_shields/core/browser",
   "+brave/components/brave_shields/content/test",
+  "+brave/components/geolocation",
   "+brave/components/update_client/buildflags.h",
   "+brave/components/query_filter",
   "+brave/components/brave_service_keys",
   "+brave/components/speech_to_text/buildflags.h",
   "+brave/components/speech_to_text/features.h",
+  "+brave/components/static_redirect_helper",
   "+services/network/host_resolver.h",
 ]

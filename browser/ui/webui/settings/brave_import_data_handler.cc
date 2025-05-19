@@ -90,6 +90,8 @@ void BraveImportDataHandler::StartImportImpl(
   if (import_observers_.count(source_profile.source_path))
     import_observers_.erase(source_profile.source_path);
 
+  FireWebUIListener("import-data-status-changed", base::Value("inProgress"));
+
   // Using weak pointers because it destroys itself when finshed.
   auto* importer_host = new BraveExternalProcessImporterHost();
   import_observers_[source_profile.source_path] =

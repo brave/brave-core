@@ -3,7 +3,7 @@ URL: https://crates.io/crates/mime
 Version: 0.3.17
 Revision: ce5062d216bf757a0ed3fc70f0fe255d1c8d74ae
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/mime-0.3.17/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/mime-v0_3/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

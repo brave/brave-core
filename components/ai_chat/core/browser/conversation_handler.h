@@ -269,6 +269,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       mojom::ActionType action_type) override;
   void ModifyConversation(uint32_t turn_index,
                           const std::string& new_text) override;
+  void RegenerateAnswer(const std::string& turn_uuid,
+                        const std::string& model_key) override;
   void SubmitSummarizationRequest() override;
   void SubmitSuggestion(const std::string& suggestion_title) override;
   std::vector<std::string> GetSuggestedQuestionsForTest();
@@ -391,7 +393,8 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   bool is_video = false,
                                   std::string invalidation_token = "");
   void SetAPIError(const mojom::APIError& error);
-  void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
+  void UpdateOrCreateLastAssistantEntry(
+      EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration(std::string page_content,
                                  bool is_video,
@@ -421,7 +424,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::string page_content,
       bool is_video,
       base::expected<std::string, std::string> refined_page_content);
-  void OnEngineCompletionDataReceived(mojom::ConversationEntryEventPtr result);
+  void OnEngineCompletionDataReceived(
+      EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);

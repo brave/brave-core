@@ -147,7 +147,11 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   var isUsingBottomBar: Bool = false {
     didSet {
-      layoutSearchEngineScrollView()
+      if !dataSource.isAIChatAvailable && !dataSource.hasQuickSearchEngines {
+        layoutCollectionView()
+      } else {
+        layoutSearchEngineScrollView()
+      }
     }
   }
 
@@ -217,7 +221,11 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   public override func viewSafeAreaInsetsDidChange() {
     super.viewSafeAreaInsetsDidChange()
-    layoutSearchEngineScrollView()
+    if !dataSource.isAIChatAvailable && !dataSource.hasQuickSearchEngines {
+      layoutCollectionView()
+    } else {
+      layoutSearchEngineScrollView()
+    }
   }
 
   override public func viewDidLoad() {
@@ -363,7 +371,20 @@ public class SearchViewController: UIViewController, LoaderListener {
       make.top.equalTo(view.snp.top)
       make.leading.trailing.equalTo(view)
       if searchEngineScrollView.superview == nil {
-        make.bottom.equalTo(view.safeArea.bottom)
+        let keyboardHeight =
+          KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
+        if isUsingBottomBar {
+          let offset: CGFloat
+          if keyboardHeight > 0 {
+            offset =
+              keyboardHeight - abs(additionalSafeAreaInsets.bottom - view.safeAreaInsets.bottom)
+          } else {
+            offset = 0
+          }
+          make.bottom.equalTo(view.safeArea.bottom).offset(-offset)
+        } else {
+          make.bottom.equalTo(view).offset(-keyboardHeight)
+        }
       } else {
         make.bottom.equalTo(searchEngineScrollView.snp.top)
       }

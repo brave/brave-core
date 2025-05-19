@@ -337,6 +337,14 @@ TEST_F(FullScreenshotterTest, InvalidWebContentsAndView) {
   }
 }
 
+TEST_F(FullScreenshotterTest, NotSupportPdf) {
+  static_cast<content::TestWebContents*>(web_contents())
+      ->SetMainFrameMimeType("application/pdf");
+  auto result = CaptureScreenshots(web_contents());
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), "Do not support pdf capturing");
+}
+
 TEST_F(FullScreenshotterTest, CaptureFailedAllErrorStates) {
   const paint_preview::mojom::PaintPreviewStatus kErrorStatuses[] = {
       paint_preview::mojom::PaintPreviewStatus::kAlreadyCapturing,

@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.80.17",
+  "version": "1.80.79",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -24,13 +24,13 @@
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
     "presubmit": "node ./build/commands/scripts/commands.js presubmit",
-    "format": "node ./build/commands/scripts/commands.js format",
+    "format": "node ./build/commands/scripts/format.js",
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "docs": "node ./build/commands/scripts/commands.js docs",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
     "tslint": "npm run eslint",
-    "eslint": "eslint ./components",
+    "eslint": "eslint ./components ./build",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",
@@ -72,7 +72,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "136.0.7103.48",
+        "tag": "137.0.7151.27",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -155,7 +155,7 @@
     "mz": "2.7.0",
     "os-browserify": "0.3.0",
     "path-browserify": "1.0.1",
-    "prettier": "2.8.8",
+    "prettier": "3.5.3",
     "process": "0.11.10",
     "querystring-es3": "0.2.1",
     "react": "18.2.0",
@@ -186,9 +186,9 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#b8588c4d5e8aafecc63773a7df0bbd00f633c8b1",
+    "@brave/leo": "github:brave/leo#e792a59b6fda96c96e39b23cb32bed9a9454ad36",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#8685eec0851afa96d23dd424cd152854476e585d",
-    "@brave/wallet-standard-brave": "0.0.13",
+    "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "3.0.15",
@@ -198,7 +198,7 @@
     "@ledgerhq/hw-transport-webhid": "6.29.0",
     "@mozilla/readability": "^0.6.0",
     "@reduxjs/toolkit": "1.8.6",
-    "@solana/web3.js": "1.91.7",
+    "@solana/web3.js": "1.98.2",
     "@trezor/connect": "9.1.11",
     "@trezor/connect-web": "9.1.11",
     "@types/jszip": "^3.1.6",

@@ -317,8 +317,7 @@ public class BrowserViewController: UIViewController {
       windowId: windowId,
       prefs: profile.prefs,
       rewards: rewards,
-      tabGeneratorAPI: braveCore.tabGeneratorAPI,
-      historyAPI: braveCore.historyAPI,
+      braveCore: braveCore,
       privateBrowsingManager: privateBrowsingManager
     )
 
@@ -484,7 +483,6 @@ public class BrowserViewController: UIViewController {
     // Observe some user preferences
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
-    Preferences.UserAgent.alwaysRequestDesktopSite.observe(from: self)
     Preferences.General.mediaAutoBackgrounding.observe(from: self)
     Preferences.General.youtubeHighQuality.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
@@ -747,7 +745,6 @@ public class BrowserViewController: UIViewController {
 
   @objc func appWillTerminateNotification() {
     tabManager.saveAllTabs()
-    tabManager.removePrivateWindows()
   }
 
   @objc private func tappedCollapsedURLBar() {
@@ -1286,35 +1283,6 @@ public class BrowserViewController: UIViewController {
       show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
     }
     showQueuedAlertIfAvailable()
-
-    let isPrivateBrowsing = SessionWindow.from(windowId: windowId)?.isPrivate == true
-    var userActivity = view.window?.windowScene?.userActivity
-
-    if let userActivity = userActivity {
-      BrowserState.setWindowInfo(
-        for: userActivity,
-        windowId: windowId.uuidString,
-        isPrivate: isPrivateBrowsing
-      )
-    } else {
-      userActivity = BrowserState.userActivity(
-        for: windowId.uuidString,
-        isPrivate: isPrivateBrowsing
-      )
-    }
-
-    if let scene = view.window?.windowScene {
-      scene.userActivity = userActivity
-      BrowserState.setWindowInfo(
-        for: scene.session,
-        windowId: windowId.uuidString,
-        isPrivate: isPrivateBrowsing
-      )
-    }
-
-    for session in UIApplication.shared.openSessions {
-      UIApplication.shared.requestSceneSessionRefresh(session)
-    }
   }
 
   /// Whether or not to show the playlist onboarding callout this session
@@ -1338,8 +1306,6 @@ public class BrowserViewController: UIViewController {
   override public func viewWillDisappear(_ animated: Bool) {
     screenshotHelper.viewIsVisible = false
     super.viewWillDisappear(animated)
-
-    view.window?.windowScene?.userActivity = nil
   }
 
   /// A layout guide defining where the favorites and NTP overlay are placed
@@ -1992,8 +1958,7 @@ public class BrowserViewController: UIViewController {
   }
 
   func openInNewWindow(url: URL?, isPrivate: Bool) {
-    let activity = BrowserState.userActivity(
-      for: UUID().uuidString,
+    let activity = BrowserState.newWindowUserActivity(
       isPrivate: isPrivate,
       openURL: url
     )
@@ -2885,10 +2850,10 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
-    if !rewards.ads.shouldShowNewTabTakeoverInfoBar() {
+    if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
       return
     }
-    rewards.ads.recordNewTabTakeoverInfobarWasShown()
+    rewards.ads.recordNewTabTakeoverInfobarWasDisplayed()
 
     let newTabTakeoverInfoBar = NewTabTakeoverInfoBar(
       tabManager: self.tabManager,
@@ -2915,9 +2880,6 @@ extension BrowserViewController: PreferencesObserver {
       setupTabs()
       updateTabsBarVisibility()
       updateApplicationShortcuts()
-    case Preferences.UserAgent.alwaysRequestDesktopSite.key:
-      tabManager.reset()
-      tabManager.reloadSelectedTab()
     case Preferences.Shields.blockScripts.key,
       Preferences.Shields.blockImages.key,
       Preferences.Shields.useRegionAdBlock.key:

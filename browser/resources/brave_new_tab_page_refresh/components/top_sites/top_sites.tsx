@@ -6,8 +6,8 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { TopSite } from '../../models/top_sites'
-import { useLocale } from '../context/locale_context'
+import { TopSite, TopSitesListKind } from '../../models/top_sites'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { RemoveToast } from './remove_toast'
@@ -22,7 +22,6 @@ import {
   maxTileCount } from './top_sites.style'
 
 export function TopSites() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const showTopSites = useAppState((s) => s.showTopSites)
@@ -39,7 +38,7 @@ export function TopSites() {
 
   const rootRef = React.useRef<HTMLDivElement>(null)
 
-  const showAddButton = listKind === 'custom'
+  const showAddButton = listKind === TopSitesListKind.kCustom
   const tileCount = topSites.length + (showAddButton ? 1 : 0)
 
   function onTopSiteContextMenu(topSite: TopSite) {
@@ -101,15 +100,15 @@ export function TopSites() {
         >
           <div className='popover-menu'>
             {
-              listKind === 'custom' ?
+              listKind === TopSitesListKind.kCustom ?
                 <button onClick={topSitesMenuAction(() =>
-                  actions.setTopSitesListKind('most-visited'))
+                  actions.setTopSitesListKind(TopSitesListKind.kMostVisited))
                 }>
                   <Icon name='history' />
                   {getString('topSitesShowMostVisitedLabel')}
                 </button> :
                 <button onClick={topSitesMenuAction(() =>
-                  actions.setTopSitesListKind('custom'))
+                  actions.setTopSitesListKind(TopSitesListKind.kCustom))
                 }>
                   <Icon name='star-outline' />
                   {getString('topSitesShowCustomLabel')}
@@ -136,7 +135,7 @@ export function TopSites() {
                   <TopSitesTile
                     key={i}
                     topSite={topSite}
-                    canDrag={listKind === 'custom'}
+                    canDrag={listKind === TopSitesListKind.kCustom}
                     onRightClick={onTopSiteContextMenu(topSite)}
                     onDrop={onTileDrop(i)}
                   />
@@ -179,7 +178,7 @@ export function TopSites() {
         >
           <div className='popover-menu'>
             {
-              listKind === 'custom' &&
+              listKind === TopSitesListKind.kCustom &&
                 <button onClick={() => {
                   setEditSite(contextMenuSite)
                   setShowEditSite(true)

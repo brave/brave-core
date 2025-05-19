@@ -16,11 +16,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
+import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
-@RunWith(BaseJUnit4ClassRunner.class)
+@RunWith(ChromeJUnit4ClassRunner.class)
 @DoNotBatch(reason = "This test launches a Settings activity")
 public class BraveSafeBrowsingSettingsFragmentTest {
     @Rule

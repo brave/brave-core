@@ -36,6 +36,8 @@ import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SiweMessage;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.DappsModel;
@@ -46,7 +48,6 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerVie
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.url.mojom.Url;
@@ -56,17 +57,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /** Fragment used by DApps sign in operation */
+@NullMarked
 public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private static final String TAG = "SignMessageFragment";
 
-    private List<String> mTabTitles;
-    private SignMessageRequest mCurrentSignMessageRequest;
-    private SiweMessage mSiweMessageData;
+    @Nullable private SignMessageRequest mCurrentSignMessageRequest;
+    @Nullable private SiweMessage mSiweMessageData;
     private TextView mTvOrigin;
     private TextView mTvUrl;
     private ImageView mIvFav;
@@ -76,24 +78,24 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     protected Button mBtSign;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private WalletModel mWalletModel;
-    private DappsModel mDappsModel;
+    @Nullable private WalletModel mWalletModel;
+    @Nullable private DappsModel mDappsModel;
     private View mIvFavNetworkContainer;
     private RecyclerView mRvDetails;
     private TwoLineItemRecyclerViewAdapter mTwoLineAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        mTabTitles = new ArrayList<>();
-        mTabTitles.add(getString(R.string.details));
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-            mDappsModel = mWalletModel.getDappsModel();
-            registerKeyringObserver(mWalletModel.getKeyringModel());
+            if (mWalletModel != null) {
+                mDappsModel = mWalletModel.getDappsModel();
+                registerKeyringObserver(mWalletModel.getKeyringModel());
+            }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate ", e);
         }
@@ -101,7 +103,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_siwe, container, false);
         mIvFav = view.findViewById(R.id.frag_siwe_iv_fav);
         mTvOrigin = view.findViewById(R.id.frag_siwe_tv_origin);
@@ -115,20 +119,16 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
         mBtCancel = view.findViewById(R.id.frag_siwe_msg_btn_cancel);
         mBtSign = view.findViewById(R.id.frag_siwe_msg_btn_sign);
-        initComponents();
+        fillSignMessageInfo(true);
 
         mBtSign.setText(R.string.brave_wallet_sign_in_message_positive_button_action);
         return view;
     }
 
     private void notifySignMessageRequestProcessed(boolean isApproved) {
-        if (mDappsModel == null) return;
+        if (mDappsModel == null || mCurrentSignMessageRequest == null) return;
         mDappsModel.notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
         fillSignMessageInfo(false);
-    }
-
-    private void initComponents() {
-        fillSignMessageInfo(true);
     }
 
     private void fillSignMessageInfo(boolean init) {
@@ -137,8 +137,11 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 requests -> {
                     if (requests == null || requests.length == 0) {
                         Intent intent = new Intent();
-                        getActivity().setResult(Activity.RESULT_OK, intent);
-                        getActivity().finish();
+                        final Activity activity = getActivity();
+                        if (activity != null) {
+                            activity.setResult(Activity.RESULT_OK, intent);
+                            activity.finish();
+                        }
                         return;
                     }
 
@@ -148,14 +151,8 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                         mSiweMessageData = mCurrentSignMessageRequest.signData.getEthSiweData();
                     }
                     if (init) {
-                        mBtCancel.setOnClickListener(
-                                v -> {
-                                    notifySignMessageRequestProcessed(false);
-                                });
-                        mBtSign.setOnClickListener(
-                                v -> {
-                                    notifySignMessageRequestProcessed(true);
-                                });
+                        mBtCancel.setOnClickListener(v -> notifySignMessageRequestProcessed(false));
+                        mBtSign.setOnClickListener(v -> notifySignMessageRequestProcessed(true));
                     }
                     if (mCurrentSignMessageRequest.originInfo != null
                             && URLUtil.isValidUrl(
@@ -174,7 +171,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateDetails(String chainId, AccountId accountId) {
-        if (JavaUtils.anyNull(mWalletModel, chainId)) return;
+        if (mWalletModel == null || TextUtils.isEmpty(chainId)) {
+            return;
+        }
         NetworkInfo network = mWalletModel.getNetworkModel().getNetwork(chainId);
         if (network == null || accountId == null) return;
         assert (accountId.coin == CoinType.ETH);
@@ -190,7 +189,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         account.imgData = accountId.address;
         items.add(account);
 
-        if (mCurrentSignMessageRequest.originInfo != null) {
+        if (mCurrentSignMessageRequest != null && mCurrentSignMessageRequest.originInfo != null) {
             TwoLineItemRecyclerViewAdapter.TwoLineSingleText details =
                     new TwoLineItemRecyclerViewAdapter.TwoLineSingleText();
             String separator = System.getProperty(WalletConstants.LINE_SEPARATOR);
@@ -205,9 +204,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                     AndroidUtils.createClickableSpanString(
                             requireContext(),
                             R.string.brave_wallet_see_details,
-                            (view) -> {
-                                showSiweDetails();
-                            }));
+                            (view) -> showSiweDetails()));
             details.updateViewCb =
                     textView -> {
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -237,10 +234,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     @SuppressWarnings("NoStreams")
-    private String getSiweResources(Url[] urls) {
+    private String getSiweResources(Url @Nullable [] urls) {
         if (urls == null || urls.length == 0) return "";
         return Arrays.stream(urls)
-                .filter(url -> url != null)
+                .filter(Objects::nonNull)
                 .map(url -> url.url)
                 .collect(Collectors.joining(System.getProperty(WalletConstants.LINE_SEPARATOR)));
     }
@@ -261,11 +258,13 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateNetwork(String chainId) {
-        if (JavaUtils.anyNull(mWalletModel, chainId)) return;
+        if (mWalletModel == null || TextUtils.isEmpty(chainId)) {
+            return;
+        }
         NetworkInfo network = mWalletModel.getNetworkModel().getNetwork(chainId);
         if (network == null) return;
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        String logo = Utils.getNetworkIconName(network.chainId, network.coin);
+        String logo = Utils.getNetworkIconName(network);
         if (TextUtils.isEmpty(logo)) return;
         Utils.setBitmapResource(
                 mExecutor,
@@ -281,6 +280,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void showSiweDetails() {
+        if (mCurrentSignMessageRequest == null || mSiweMessageData == null) {
+            return;
+        }
         assert mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData;
 
         List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items = new ArrayList<>();
@@ -304,15 +306,14 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     private void addDetail(
             List<TwoLineItemRecyclerViewAdapter.TwoLineItem> allDetails,
             @StringRes int id,
-            String value) {
+            @Nullable String value) {
         if (TextUtils.isEmpty(value)) return;
         allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(getString(id), value));
         allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
     }
 
+    @Nullable
     private String getOriginJson(org.chromium.url.internal.mojom.Origin origin) {
-        if (origin == null) return null;
-
         try {
             JSONObject jsonObject = new JSONObject();
 
@@ -322,7 +323,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
             return jsonObject.toString();
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "Error when extracting Siwe message data origin.", e);
         }
 
         return null;

@@ -32,8 +32,30 @@
  public:                                                            \
   void set_desired_bounds_delegate
 
+namespace brave_ads {
+class NotificationAdPopup;
+}  // namespace brave_ads
+
+namespace brave_tooltips {
+class BraveTooltipPopup;
+}  // namespace brave_tooltips
+
+class MenuButtonDelegate;
+class SplitViewLocationBar;
+class VerticalTabStripWidgetDelegateView;
+
+#define CreatePassKey                                \
+  CreatePassKey_Unused();                            \
+  friend class ::brave_ads::NotificationAdPopup;     \
+  friend class ::brave_tooltips::BraveTooltipPopup;  \
+  friend class ::MenuButtonDelegate;                 \
+  friend class ::SplitViewLocationBar;               \
+  friend class ::VerticalTabStripWidgetDelegateView; \
+  static WdvPassKey CreatePassKey
+
 #include "src/ui/views/widget/widget_delegate.h"  // IWYU pragma: export
 
 #undef set_desired_bounds_delegate
+#undef CreatePassKey
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_WIDGET_WIDGET_DELEGATE_H_

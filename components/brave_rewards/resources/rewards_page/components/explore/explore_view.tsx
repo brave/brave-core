@@ -10,7 +10,7 @@ import { useLocaleContext } from '../../lib/locale_strings'
 import { useAppState } from '../../lib/app_model_context'
 import { useBreakpoint } from '../../lib/breakpoint'
 import { UICard } from '../../lib/app_state'
-import { CardView } from './card_view'
+import { CardView, sortCards, splitCardsIntoColumns } from './card_view'
 
 import { style } from './explore_view.style'
 
@@ -29,7 +29,7 @@ export function ExploreView() {
     )
   }
 
-  cards = getExploreCards(cards)
+  cards = sortCards(getExploreCards(cards))
 
   if (viewType === 'double') {
     const [left, right] = splitCardsIntoColumns(cards)
@@ -57,18 +57,10 @@ export function ExploreView() {
 }
 
 function getExploreCards(cards: UICard[]) {
-  return cards.filter((card) => card.name !== 'benefits-card')
-}
-
-function splitCardsIntoColumns(cards: UICard[]) {
-  const left: UICard[] = []
-  const right: UICard[] = []
-  for (const card of cards) {
-    if (left.length > right.length) {
-      right.push(card)
-    } else {
-      left.push(card)
+  return cards.filter((card) => {
+    if (!card.section) {
+      return card.name !== 'benefits-card'
     }
-  }
-  return [left, right]
+    return card.section === 'explore'
+  })
 }

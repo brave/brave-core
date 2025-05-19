@@ -324,13 +324,17 @@ export interface ApproveERC20Params {
 }
 
 export interface SendBtcTransactionParams extends BaseTransactionParams {
-  sendingMaxValue: boolean
+  sendingMaxAmount: boolean
 }
 
 export interface SendZecTransactionParams extends BaseTransactionParams {
   useShieldedPool: boolean
   sendingMaxAmount: boolean
   memo: number[] | undefined
+}
+
+export interface SendCardanoTransactionParams extends BaseTransactionParams {
+  sendingMaxAmount: boolean
 }
 
 /**
@@ -371,6 +375,7 @@ export type SerializableTxDataUnion = {
   filTxData?: BraveWallet.FilTxData
   btcTxData?: BraveWallet.BtcTxData
   zecTxData?: BraveWallet.ZecTxData
+  cardanoTxData?: BraveWallet.CardanoTxData
 }
 
 /**
@@ -563,6 +568,7 @@ export enum WalletRoutes {
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
   PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionName',
+  PortfolioNFTCollectionsStart = '/crypto/portfolio/collections/',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
   PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
   PortfolioActivity = '/crypto/portfolio/activity',
@@ -586,6 +592,10 @@ export enum WalletRoutes {
 
   // panel connection screen
   Connections = '/crypto/connections',
+
+  // Roots
+  Root = '/',
+  CryptoRoot = '/crypto',
 
   // Hashes
   AccountsHash = '#accounts',
@@ -663,7 +673,8 @@ export const emptyProviderErrorCodeUnion: BraveWallet.ProviderErrorUnion = {
   zcashProviderError: undefined,
   bitcoinProviderError: undefined,
   filecoinProviderError: undefined,
-  solanaProviderError: undefined
+  solanaProviderError: undefined,
+  cardanoProviderError: undefined
 }
 
 export interface TransactionProviderErrorRegistry {

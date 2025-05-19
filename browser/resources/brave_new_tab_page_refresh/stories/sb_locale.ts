@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StringKey, PluralStringKey, Locale } from '../models/locale_strings'
+import { provideStrings } from '../../../../.storybook/locale'
+
+import { StringKey } from '../lib/strings'
 
 const localeStrings: Record<StringKey, string>  = {
   addTopSiteLabel: 'Add site',
@@ -110,13 +112,14 @@ const localeStrings: Record<StringKey, string>  = {
   searchSuggestionsEnableButtonLabel: 'Enable',
   searchSuggestionsPromptText: 'When you search, what you type will be sent to your search engine for better suggestions.',
   searchSuggestionsPromptTitle: 'Enable search suggestions?',
-  settingsTitle: 'Customize Dashboard',
+  settingsTitle: 'Customize New Tab Page',
   showBackgroundsLabel: 'Show Background Images',
   showClockLabel: 'Show clock',
   showNewsWidgetLabel: 'News and RSS',
   showRewardsWidgetLabel: 'Brave Rewards',
   showSearchBoxLabel: 'Show search widget in new tabs',
-  showSponsoredImagesLabel: 'Show Sponsored Images',
+  showSponsoredImagesEarningText: 'With $1Brave Rewards$2, you can earn for seeing new tab page ads.',
+  showSponsoredImagesLabel: 'Show new tab page ads',
   showStatsLabel: 'Brave Stats',
   showTalkWidgetLabel: 'Brave Talk',
   showTopSitesLabel: 'Show top sites',
@@ -157,21 +160,7 @@ const localeStrings: Record<StringKey, string>  = {
   vpnStatusDisconnected: 'Disconnected',
   vpnStatusDisconnecting: 'Disconnecting',
   vpnWidgetTitle: 'BRAVE VPN',
-  widgetSettingsTitle: 'Widgets'
+  widgetSettingsTitle: 'Cards'
 }
 
-const pluralStrings: Record<PluralStringKey, string>  = {
-  newsSourceCountText: '# sources'
-}
-
-export function createLocale(): Locale {
-  return {
-    getString(key) {
-      return localeStrings[key] ?? 'MISSING'
-    },
-    async getPluralString (key, count) {
-      const message =  pluralStrings[key] ?? 'MISSING'
-      return message.replace('#', String(count))
-    }
-  }
-}
+provideStrings(localeStrings)

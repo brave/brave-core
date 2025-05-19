@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
@@ -62,6 +63,7 @@ import java.util.function.Function;
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     private AppCompatActivity mActivity;
     private OneshotSupplier<HubManager> mHubManagerSupplier;
+    private final ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
 
     public BraveTabbedRootUiCoordinator(
             @NonNull AppCompatActivity activity,
@@ -162,6 +164,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
 
         mActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
+        mEdgeToEdgeControllerSupplier = edgeToEdgeSupplier;
     }
 
     @Override
@@ -189,6 +192,11 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                                             .getResources()
                                             .getDimensionPixelSize(R.dimen.bottom_controls_height)
                                     * -1;
+                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled()
+                            && mEdgeToEdgeControllerSupplier.get() != null) {
+                        bottomToolbarHeight -=
+                                mEdgeToEdgeControllerSupplier.get().getBottomInsetPx();
+                    }
                     hubManager.setStatusIndicatorHeight(bottomToolbarHeight);
                 });
     }

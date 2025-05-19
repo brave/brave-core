@@ -9,10 +9,10 @@
 
 #include "base/values.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
 
@@ -26,7 +26,7 @@ namespace profiles {
 struct IconResourceInfo;
 
 const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
-      size_t chromium_index);
+    size_t chromium_index);
 
 size_t GetBraveAvatarIconStartIndex();
 
@@ -41,7 +41,7 @@ size_t GetBraveAvatarIconStartIndex();
       return brave_icon;                                         \
   }
 
-#define BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX  \
+#define BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX \
   return GetBraveAvatarIconStartIndex();
 
 #define BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN \
@@ -69,15 +69,18 @@ gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
   GetPlaceholderAvatarIconWithColors_ChromiumImpl
 #define GetDefaultProfileAvatarIconAndLabel \
   GetDefaultProfileAvatarIconAndLabel_ChromiumImpl
+#define GetPlaceholderAvatarIconVisibleAgainstBackground \
+  GetPlaceholderAvatarIconVisibleAgainstBackground_ChromiumImpl
 
 #include "src/chrome/browser/profiles/profile_avatar_icon_util.cc"
-#undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
-#undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
-#undef BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
-#undef IsDefaultAvatarIconUrl
-#undef GetGuestAvatar
-#undef GetPlaceholderAvatarIconWithColors
+#undef GetPlaceholderAvatarIconVisibleAgainstBackground
 #undef GetDefaultProfileAvatarIconAndLabel
+#undef GetPlaceholderAvatarIconWithColors
+#undef GetGuestAvatar
+#undef IsDefaultAvatarIconUrl
+#undef BRAVE_GET_ICONS_AND_LABELS_FOR_PROFILE_AVATAR_SELECTOR_NOT_SIGNED_IN
+#undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
+#undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 
 namespace profiles {
 
@@ -85,8 +88,7 @@ size_t GetBraveAvatarIconStartIndex() {
   return kDefaultAvatarIconsCount - kBraveDefaultAvatarIconsCount;
 }
 
-const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
-      size_t index) {
+const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(size_t index) {
 #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
   return nullptr;
 #else
@@ -200,6 +202,14 @@ gfx::Image GetPlaceholderAvatarIconWithColors(
       GetPlaceholderAvatarIconResourceID());
 }
 
+gfx::Image GetPlaceholderAvatarIconVisibleAgainstBackground(
+    SkColor profile_color_seed,
+    int size,
+    AvatarVisibilityAgainstBackground visibility) {
+  return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+      GetPlaceholderAvatarIconResourceID());
+}
+
 // Have to redo implementation here because of the re-definition of the
 // GetPlaceholderAvatarIconWithColors function above which is used in this
 // function. Also, changes the label from "Default Avatar" to our placeholder
@@ -210,10 +220,10 @@ base::Value::Dict GetDefaultProfileAvatarIconAndLabel(SkColor fill_color,
   gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
       fill_color, stroke_color, kAvatarIconSize);
   size_t index = profiles::GetPlaceholderAvatarIndex();
-  return GetAvatarIconAndLabelDict(webui::GetBitmapDataUrl(icon.AsBitmap()),
-                                   brave_l10n::GetLocalizedResourceUTF16String(
-                                       IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
-                                   index, selected, /*is_gaia_avatar=*/false);
+  return GetAvatarIconAndLabelDict(
+      webui::GetBitmapDataUrl(icon.AsBitmap()),
+      l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER), index,
+      selected, /*is_gaia_avatar=*/false);
 }
 base::Value::Dict GetDefaultProfileAvatarIconAndLabel_Brave(
     SkColor fill_color,

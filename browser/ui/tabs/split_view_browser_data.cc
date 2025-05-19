@@ -26,7 +26,7 @@ SplitViewBrowserData::SplitViewBrowserData(
     : tab_strip_model_adapter_(std::make_unique<SplitViewTabStripModelAdapter>(
           *this,
           browser_window_interface->GetTabStripModel())) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  CHECK(tabs::features::IsBraveSplitViewEnabled());
 }
 
 SplitViewBrowserData::~SplitViewBrowserData() {

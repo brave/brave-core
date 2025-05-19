@@ -119,8 +119,14 @@ public class NTPDataSource {
   }
 
   func getSponsoredMediaBackground() -> NTPWallpaper? {
-    guard let sponsoredImageData = service.sponsoredImageData,
-      let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
+    guard let sponsoredImageData = service.sponsoredImageData
+    else { return nil }
+
+    if !hasGracePeriodEnded(sponsoredImageData) {
+      return nil
+    }
+
+    guard let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
     else { return nil }
 
     let isSponsoredVideoAllowed =
@@ -229,6 +235,30 @@ public class NTPDataSource {
     {
       replaceFavoritesIfNeeded?(superReferralImageData.topSites)
     }
+  }
+
+  private func hasGracePeriodEnded(_ sponsoredImageData: NTPSponsoredImageData) -> Bool {
+    if BraveRewards.Configuration.current().isDebug == true {
+      // If debug mode is enabled, consider it ended.
+      return true
+    }
+
+    guard let gracePeriod = sponsoredImageData.gracePeriod?.doubleValue,
+      let installDate = Preferences.P3A.installationDate.value
+    else {
+      // If either the grace period or install date is not set, consider it ended.
+      return true
+    }
+
+    let gracePeriodEndAt = installDate + TimeInterval(gracePeriod)
+    if Date.now >= gracePeriodEndAt {
+      return true
+    }
+
+    Logger.module.info(
+      "Sponsored images not shown: Grace period after installation is still active until \(gracePeriodEndAt)"
+    )
+    return false
   }
 }
 

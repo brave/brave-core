@@ -68,6 +68,7 @@ import {
   PartnersConsentModal //
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 import { Connections } from '../components/extension/connections/connections'
+import { PageNotFound } from './screens/page_not_found/page_not_found'
 
 export const Container = () => {
   // routing
@@ -277,6 +278,31 @@ export const Container = () => {
           <DevZCash />
         </ProtectedRoute>
 
+        {/* Insures that we redirect to the default route if the user
+            manually navigates to the root url. */}
+        <Route
+          path={WalletRoutes.Root}
+          exact={true}
+          render={() => <Redirect to={defaultRedirect} />}
+        />
+
+        {/* Insures that we redirect to the default route if the user
+            manually navigates to the crypto route. */}
+        <Route
+          path={WalletRoutes.CryptoRoot}
+          exact={true}
+          render={() => <Redirect to={defaultRedirect} />}
+        />
+
+        {/* Display a 404 page if the user navigates to a route that
+            does not exist. */}
+        {isWalletCreated && (
+          <Route path='*'>
+            <PageNotFound />
+          </Route>
+        )}
+
+        {/* Fallback redirect to the default/session route on wallet load. */}
         <Redirect to={defaultRedirect} />
       </Switch>
       <PartnersConsentModal

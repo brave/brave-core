@@ -1244,4 +1244,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_AND_SEND_DAPP_TRANSACTION" desc="Blockchain function name for signing and sending a Solana DApp transaction">Sign and Send DApp transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_DAPP_TRANSACTION" desc="Blockchain function name for Solana Sign DApp transactions">Sign DApp Transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Blockchain function name for Solana SPL token transfer with associated token account creation">SPL Token Transfer With Associated Token Account Creation</message>
+  <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_TITLE" desc="Page not found title">We can’t find the page you’re looking for right now.</message>
+  <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION" desc="Page not found description">It may have moved to a different place or the URL may contain a typo.</message>
+  <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Go to portfolio button text">Go to Portfolio</message>
 </grit-part>

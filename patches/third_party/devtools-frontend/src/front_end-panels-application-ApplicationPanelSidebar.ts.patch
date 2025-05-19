@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 41f3ad5887f3676f529d80eb6fb1c1acde227add..7f4bfb85f64a02c5cfa9971b57ef8d08ede87d87 100644
+index d212d50fdb01a3963fa2ab0e1d47b1b21df497a9..9b0658bae8eef37f45d5f179ce457f2d4f759ac6 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
-@@ -569,6 +569,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+@@ -570,6 +570,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
          new Common.ObjectWrapper.ObjectWrapper<SharedStorageTreeElementDispatcher.EventTypes>();
  
      this.contentElement.style.contain = 'layout style';

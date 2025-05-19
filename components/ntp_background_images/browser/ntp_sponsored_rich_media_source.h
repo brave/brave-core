@@ -9,19 +9,24 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
 
 class GURL;
 
+namespace base {
+class FilePath;
+}  // namespace base
+
 namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
 
-// This class is responsible for serving sponsored rich media content from the
+// This class is responsible for providing sponsored rich media content from the
 // file system to the new tab page.
 
-class NTPSponsoredRichMediaSource : public content::URLDataSource {
+class NTPSponsoredRichMediaSource final : public content::URLDataSource {
  public:
   explicit NTPSponsoredRichMediaSource(
       NTPBackgroundImagesService* background_images_service);

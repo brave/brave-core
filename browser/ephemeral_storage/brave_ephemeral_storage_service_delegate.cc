@@ -83,6 +83,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
           kThirdPartiesOnly);
   filter_builder->AddOrigin(url::Origin::Create(https_url));
   filter_builder->AddOrigin(url::Origin::Create(http_url));
+  filter_builder->SetStoragePartitionConfig(key.second);
 
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
@@ -90,23 +91,16 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
 }
 
 void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
-    const std::string& registerable_domain) {
-  DVLOG(1) << __func__ << " " << registerable_domain;
+    const TLDEphemeralAreaKey& key) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   DCHECK(base::FeatureList::IsEnabled(
              net::features::kBraveForgetFirstPartyStorage) ||
          base::FeatureList::IsEnabled(
              net::features::kThirdPartyStoragePartitioning));
 
   content::BrowsingDataRemover::DataType data_to_remove =
-      content::BrowsingDataRemover::DATA_TYPE_COOKIES |
-      content::BrowsingDataRemover::DATA_TYPE_CACHE |
-      content::BrowsingDataRemover::DATA_TYPE_MEDIA_LICENSES |
-      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE |
-      content::BrowsingDataRemover::DATA_TYPE_ATTRIBUTION_REPORTING |
-      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX |
-      content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX_INTERNAL |
-      content::BrowsingDataRemover::DATA_TYPE_AVOID_CLOSING_CONNECTIONS |
-      chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
+      (content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
+       chrome_browsing_data_remover::FILTERABLE_DATA_TYPES);
 
   content::BrowsingDataRemover::OriginType origin_type =
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
@@ -114,7 +108,8 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kDelete);
-  filter_builder->AddRegisterableDomain(registerable_domain);
+  filter_builder->AddRegisterableDomain(key.first);
+  filter_builder->SetStoragePartitionConfig(key.second);
 
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,

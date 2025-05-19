@@ -9,6 +9,7 @@ import {
   BackgroundActions,
   BackgroundState,
   SponsoredImageBackground,
+  SelectedBackgroundType,
   getCurrentBackground } from '../models/backgrounds'
 
 function delay(ms: number) {
@@ -22,7 +23,7 @@ const sampleBackground =
 
 const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
   image: {
-    type: 'sponsored-image',
+    wallpaperType: '',
     imageUrl: sampleBackground,
     campaignId: '1234',
     creativeInstanceId: '',
@@ -36,7 +37,7 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
   },
 
   richMedia: {
-    type: 'sponsored-rich-media',
+    wallpaperType: 'richMedia',
     imageUrl: 'https://en.wikipedia.org/wiki/Main_Page',
     campaignId: '1234',
     creativeInstanceId: '',
@@ -57,7 +58,6 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
   store.update({
     braveBackgrounds: [
       {
-        type: 'brave',
         author: 'John Doe',
         imageUrl: sampleBackground,
         link: 'https://brave.com'
@@ -86,8 +86,7 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
 
     selectBackground(type, value) {
       store.update({
-        selectedBackgroundType: type,
-        selectedBackground: value
+        selectedBackground: { type, value }
       })
       store.update({
         currentBackground: getCurrentBackground(store.getState())
@@ -98,8 +97,10 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
       delay(200).then(() => {
         store.update((state) => ({
           customBackgrounds: [...state.customBackgrounds, sampleBackground],
-          selectedBackground: sampleBackground,
-          selectedBackgroundType: 'custom'
+          selectedBackground: {
+            type: SelectedBackgroundType.kCustom,
+            value: sampleBackground
+          }
         }))
 
         store.update({

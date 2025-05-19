@@ -87,6 +87,7 @@ export type TxDataPresence = {
   filTxData?: Partial<BraveWallet.TxDataUnion['filTxData']> | undefined
   btcTxData?: Partial<BraveWallet.TxDataUnion['btcTxData']> | undefined
   zecTxData?: Partial<BraveWallet.TxDataUnion['zecTxData']> | undefined
+  cardanoTxData?: Partial<BraveWallet.TxDataUnion['cardanoTxData']> | undefined
 }
 
 export const getCoinFromTxDataUnion = <T extends TxDataPresence>(
@@ -106,6 +107,9 @@ export const getCoinFromTxDataUnion = <T extends TxDataPresence>(
   }
   if (txDataUnion.zecTxData) {
     return BraveWallet.CoinType.ZEC
+  }
+  if (txDataUnion.cardanoTxData) {
+    return BraveWallet.CoinType.ADA
   }
 
   assertNotReached('Unknown transaction coin')

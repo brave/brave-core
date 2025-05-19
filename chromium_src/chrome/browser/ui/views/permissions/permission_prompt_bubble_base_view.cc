@@ -16,7 +16,6 @@
 #include "brave/browser/ui/views/infobars/custom_styled_label.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/components/permissions/permission_widevine_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -88,10 +87,10 @@ BEGIN_METADATA(DontAskAgainCheckbox)
 END_METADATA
 
 DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
-    : views::Checkbox(brave_l10n::GetLocalizedResourceUTF16String(
-                          IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
-                      base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
-                                          base::Unretained(this))),
+    : views::Checkbox(
+          l10n_util::GetStringUTF16(IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
+          base::BindRepeating(&DontAskAgainCheckbox::ButtonPressed,
+                              base::Unretained(this))),
       request_(request) {}
 
 void DontAskAgainCheckbox::ButtonPressed() {
@@ -127,12 +126,11 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 void AddWidevineFootnoteView(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     Browser* browser) {
-  const std::u16string footnote = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
+  const std::u16string footnote =
+      l10n_util::GetStringUTF16(IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
   const std::vector<std::u16string> replacements{
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_WIDEVINE_PERMISSIONS_BUBBLE_LEARN_MORE),
-      brave_l10n::GetLocalizedResourceUTF16String(
+      l10n_util::GetStringUTF16(IDS_WIDEVINE_PERMISSIONS_BUBBLE_LEARN_MORE),
+      l10n_util::GetStringUTF16(
           IDS_PERMISSIONS_BUBBLE_SETTINGS_EXTENSIONS_LINK)};
   const std::vector<GURL> urls{GURL(kWidevineLearnMoreUrl),
                                GURL(kExtensionSettingsURL)};
@@ -164,7 +162,7 @@ class PermissionLifetimeCombobox : public views::Combobox,
                                     base::Unretained(this)));
     SetModel(this);
     OnItemSelected();
-    SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
+    SetAccessibleName(l10n_util::GetStringUTF16(
         IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL));
   }
 
@@ -366,8 +364,7 @@ views::View* AddPermissionLifetimeComboboxIfNeeded(
 
   // Add the label.
   auto label = std::make_unique<views::Label>(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL),
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL),
       views::style::CONTEXT_LABEL, views::style::STYLE_SECONDARY);
   label->SetMultiLine(true);
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
@@ -403,12 +400,11 @@ void AddFootnoteViewIfNeeded(
     return;
   }
 
-  const std::u16string footnote = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
+  const std::u16string footnote =
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
   const std::vector<std::u16string> replacements{
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_LEARN_MORE)};
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
+      l10n_util::GetStringUTF16(IDS_LEARN_MORE)};
   const std::vector<GURL> urls{
       chrome::GetSettingsUrl(chrome::kContentSettingsSubPage),
       GURL(kPermissionPromptLearnMoreUrl)};

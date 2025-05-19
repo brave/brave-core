@@ -126,7 +126,14 @@
       div.textContent = `First local frame body: ${window.sval}`;
       localFrame.contentDocument.body.appendChild(div);
     }
-      
+
+    const addElementForProceduralFilter = () => {
+      const div = document.createElement('div');
+      div.id = "test-delayed-has-text";
+      div.innerText = 'Please hide me';
+      document.body.appendChild(div);
+    }
+
     const onload = () => {
       const localFrame = document.createElement('iframe');
       localFrame.id = 'local-iframe';
@@ -142,6 +149,7 @@
       
       setTimeout(displaySvalInBody, 100);
       setTimeout(displaySvalInLocalFrame, 200);
+      setTimeout(addElementForProceduralFilter, 500);
     };
     window.onload = onload;
     </script>

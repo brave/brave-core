@@ -29,7 +29,7 @@
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
-#include "components/tab_collections/public/tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
@@ -181,6 +181,7 @@ void AIChatUIPageHandler::UploadImage(bool use_media_capture,
   if (!upload_file_helper_) {
     upload_file_helper_ =
         std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
+    upload_file_helper_observation_.Observe(upload_file_helper_.get());
   }
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
@@ -295,6 +296,11 @@ void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
   // UI where it will keep a previous navigation's conversation active.
   chat_ui_->OnNewDefaultConversation();
 }
+
+void AIChatUIPageHandler::OnFilesSelected() {
+  chat_ui_->OnUploadFilesSelected();
+}
+
 void AIChatUIPageHandler::CloseUI() {
 #if !BUILDFLAG(IS_ANDROID)
   ai_chat::ClosePanel(owner_web_contents_);

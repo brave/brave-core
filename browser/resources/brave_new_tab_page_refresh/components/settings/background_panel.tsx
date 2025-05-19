@@ -9,12 +9,16 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
+import { optional } from '../../lib/optional'
 import { BackgroundTypePanel } from './background_type_panel'
+import { Link } from '../common/link'
+import formatMessage from '$web-common/formatMessage'
+import { settingsURL } from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
 import {
-  BackgroundType,
+  SelectedBackgroundType,
   backgroundCSSValue,
   gradientPreviewBackground,
   solidPreviewBackground } from '../../models/backgrounds'
@@ -22,44 +26,51 @@ import {
 import { style } from './background_panel.style'
 
 export function BackgroundPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const backgroundsEnabled = useAppState((s) => s.backgroundsEnabled)
   const backgroundsCustomizable = useAppState((s) => s.backgroundsCustomizable)
   const sponsoredImagesEnabled = useAppState((s) => s.sponsoredImagesEnabled)
-  const selectedBackgroundType = useAppState((s) => s.selectedBackgroundType)
   const selectedBackground = useAppState((s) => s.selectedBackground)
   const braveBackgrounds = useAppState((s) => s.braveBackgrounds)
   const customBackgrounds = useAppState((s) => s.customBackgrounds)
+  const rewardsEnabled = useAppState((s) => s.rewardsEnabled)
 
-  const [panelType, setPanelType] = React.useState<BackgroundType | null>(null)
+  const [panelType, setPanelType] =
+    React.useState(optional<SelectedBackgroundType>())
   const [uploading, setUploading] = React.useState(false)
 
   React.useEffect(() => {
     setUploading(false)
   }, [selectedBackground, customBackgrounds])
 
-  function getTypePreviewValue(type: BackgroundType) {
-    const isSelectedType = type === selectedBackgroundType
+  function setPanel(type?: SelectedBackgroundType) {
+    setPanelType(optional(type))
+  }
+
+  function getTypePreviewValue(type: SelectedBackgroundType) {
+    const isSelectedType = type === selectedBackground.type
     switch (type) {
-      case 'brave':
+      case SelectedBackgroundType.kBrave:
         return braveBackgrounds[0]?.imageUrl ?? ''
-      case 'custom':
-        if (isSelectedType && selectedBackground) {
-          return selectedBackground
+      case SelectedBackgroundType.kCustom:
+        if (isSelectedType && selectedBackground.value) {
+          return selectedBackground.value
         }
         return customBackgrounds[0] ?? ''
-      case 'solid':
-        if (isSelectedType && selectedBackground) {
-          return selectedBackground
+      case SelectedBackgroundType.kSolid:
+        if (isSelectedType && selectedBackground.value) {
+          return selectedBackground.value
         }
         return solidPreviewBackground
-      case 'gradient':
-        if (isSelectedType && selectedBackground) {
-          return selectedBackground
+      case SelectedBackgroundType.kGradient:
+        if (isSelectedType && selectedBackground.value) {
+          return selectedBackground.value
         }
         return gradientPreviewBackground
+      default:
+        console.error('Unhandled background type', type)
+        return ''
     }
   }
 
@@ -72,8 +83,9 @@ export function BackgroundPanel() {
     )
   }
 
-  function renderTypePreview(type: BackgroundType) {
-    if (type === 'custom' && customBackgrounds.length === 0) {
+  function renderTypePreview(type: SelectedBackgroundType) {
+    if (type === SelectedBackgroundType.kCustom &&
+        customBackgrounds.length === 0) {
       return renderUploadPreview()
     }
     return (
@@ -85,7 +97,7 @@ export function BackgroundPanel() {
         })}
       >
         {
-          type === selectedBackgroundType &&
+          type === selectedBackground.type &&
             <span className='selected-marker'>
               <Icon name='check-normal' />
             </span>
@@ -106,21 +118,21 @@ export function BackgroundPanel() {
     if (customBackgrounds.length === 0) {
       showCustomBackgroundChooser()
     } else {
-      setPanelType('custom')
+      setPanel(SelectedBackgroundType.kCustom)
     }
   }
 
-  if (panelType) {
+  if (panelType.hasValue()) {
     return (
       <div data-css-scope={style.scope}>
         <BackgroundTypePanel
-          backgroundType={panelType}
+          backgroundType={panelType.value()}
           renderUploadOption={() => (
             <button onClick={showCustomBackgroundChooser}>
               {renderUploadPreview()}
             </button>
           )}
-          onClose={() => { setPanelType(null) }}
+          onClose={() => setPanel()}
         />
       </div>
     )
@@ -128,7 +140,7 @@ export function BackgroundPanel() {
 
   return (
     <div data-css-scope={style.scope}>
-      <div className='toggle-row'>
+      <div className='control-row'>
         <label>{getString('showBackgroundsLabel')}</label>
         <Toggle
           size='small'
@@ -138,8 +150,29 @@ export function BackgroundPanel() {
       </div>
       {
         backgroundsEnabled &&
-          <div className='toggle-row'>
-            <label>{getString('showSponsoredImagesLabel')}</label>
+          <div className='control-row'>
+            <label>
+              {getString('showSponsoredImagesLabel')}
+              <div className='subtext'>
+                {
+                  !rewardsEnabled && formatMessage(
+                    getString('showSponsoredImagesEarningText'),
+                    {
+                      tags: {
+                        $1: (content) => (
+                          <Link
+                            key='learn-more'
+                            url={settingsURL}
+                            openInNewTab
+                          >
+                            {content}
+                          </Link>
+                        )
+                      }
+                    })
+                }
+              </div>
+            </label>
             <Toggle
               size='small'
               checked={sponsoredImagesEnabled}
@@ -154,25 +187,31 @@ export function BackgroundPanel() {
           <div className='background-options'>
             <div className='background-option'>
               <button onClick={onCustomPreviewClick}>
-                {renderTypePreview('custom')}
+                {renderTypePreview(SelectedBackgroundType.kCustom)}
                 {getString('customBackgroundLabel')}
               </button>
             </div>
             <div className='background-option'>
-              <button onClick={() => actions.selectBackground('brave', '')}>
-                {renderTypePreview('brave')}
+              <button
+                onClick={() => {
+                  actions.selectBackground(SelectedBackgroundType.kBrave, '')
+                }}
+              >
+                {renderTypePreview(SelectedBackgroundType.kBrave)}
                 {getString('braveBackgroundLabel')}
               </button>
             </div>
             <div className='background-option'>
-              <button onClick={() => setPanelType('solid')}>
-                {renderTypePreview('solid')}
+              <button onClick={() => setPanel(SelectedBackgroundType.kSolid)}>
+                {renderTypePreview(SelectedBackgroundType.kSolid)}
                 {getString('solidBackgroundLabel')}
               </button>
             </div>
             <div className='background-option'>
-              <button onClick={() => setPanelType('gradient')}>
-                {renderTypePreview('gradient')}
+              <button
+                onClick={() => setPanel(SelectedBackgroundType.kGradient)}
+              >
+                {renderTypePreview(SelectedBackgroundType.kGradient)}
                 {getString('gradientBackgroundLabel')}
               </button>
             </div>

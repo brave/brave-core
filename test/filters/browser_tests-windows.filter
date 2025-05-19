@@ -17,6 +17,8 @@
 -StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
 
 # These tests fail on CI but pass locally
+-All/CookieSettingsTest.AllowCookiesUsingExceptions/2
+-All/CookieSettingsTest.AllowCookiesUsingExceptions/5
 -AiDataKeyedServiceBrowserTest.TabInnerText
 -AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
 -AutomationApiTest.*
@@ -80,8 +82,6 @@
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
 -ExtensionInstalledBubbleViewsBrowserTest.*
 -FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
--FileSystemAccessBrowserSlowLoadTest.*
--FileSystemAccessBrowserTestForWebUI.*
 -IEImporterBrowserTest.*
 -ImageWriterUtilityClientTest.*
 -InfoBarUiTest.*

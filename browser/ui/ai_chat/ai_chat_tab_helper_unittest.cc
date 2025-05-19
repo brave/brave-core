@@ -10,6 +10,7 @@
 
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
@@ -34,7 +35,8 @@ class MockPrintPreviewExtractor
   MockPrintPreviewExtractor() = default;
   ~MockPrintPreviewExtractor() override = default;
 
-  MOCK_METHOD(void, Extract, (bool, ExtractCallback), (override));
+  MOCK_METHOD(void, Extract, (ExtractCallback), (override));
+  MOCK_METHOD(void, CapturePdf, (CapturePdfCallback), (override));
 };
 
 class MockPageContentFetcher
@@ -260,7 +262,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreview) {
   if (print_preview_extractor_) {
     // Fallback iniatiated on empty string then succeeded.
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
+        .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_text)));
   }
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
   EXPECT_CALL(callback,
@@ -278,7 +280,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_OnlyWhitespace) {
   if (print_preview_extractor_) {
     // Fallback iniatiated on white spaces and line breaks then succeeded.
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
+        .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_text)));
   }
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
   EXPECT_CALL(callback,
@@ -294,7 +296,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreviewFailed) {
       .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
   if (print_preview_extractor_) {
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(""));
+        .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
   }
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
   EXPECT_CALL(callback, Run("", false, ""));
@@ -317,20 +319,22 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_VideoContent) {
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
-  constexpr char expected_text[] = "This is the way.";
+  constexpr char kExpectedText[] = "This is the way.";
   // A url that does by itself trigger print preview extraction.
-  NavigateTo(GURL("https://docs.google.com"));
-  if (is_print_preview_supported_) {
-    // PrintPreview always initiated on URL
-    EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
-    EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
-  } else {
-    EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text, false, ""));
+  for (const auto& host : kPrintPreviewRetrievalHosts) {
+    NavigateTo(GURL(base::StrCat({"https://", host})));
+    if (is_print_preview_supported_) {
+      // PrintPreview always initiated on URL
+      EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
+      EXPECT_CALL(*print_preview_extractor_, Extract)
+          .WillOnce(base::test::RunOnceCallback<0>(base::ok(kExpectedText)));
+    } else {
+      EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+          .WillOnce(base::test::RunOnceCallback<1>(kExpectedText, false, ""));
+    }
+    EXPECT_CALL(callback, Run(kExpectedText, false, ""));
+    GetPageContent(callback.Get(), "");
   }
-  EXPECT_CALL(callback, Run(expected_text, false, ""));
-  GetPageContent(callback.Get(), "");
 }
 
 TEST_P(AIChatTabHelperUnitTest,
@@ -341,7 +345,7 @@ TEST_P(AIChatTabHelperUnitTest,
   if (print_preview_extractor_) {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(""));
+        .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
   } else {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
@@ -372,7 +376,7 @@ TEST_P(AIChatTabHelperUnitTest,
     EXPECT_CALL(callback, Run("", false, ""));
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(""));
+        .WillOnce(base::test::RunOnceCallback<0>(base::unexpected("")));
     SimulateLoadFinished();
 
     testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
@@ -427,7 +431,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_RetryAfterLoad) {
         .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
     // And if it has no content, it will finally try print preview extraction
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_content));
+        .WillOnce(base::test::RunOnceCallback<0>(base::ok(expected_content)));
   } else {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillOnce(base::test::RunOnceCallback<1>(expected_content, false, ""));

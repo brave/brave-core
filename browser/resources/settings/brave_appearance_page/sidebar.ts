@@ -9,6 +9,7 @@ import '../settings_vars.css.js'
 import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './sidebar.html.js'
 
@@ -38,21 +39,41 @@ export class SettingsBraveAppearanceSidebarElement extends SettingsBraveAppearan
         readOnly: false,
         type: String,
       },
+      sidebarShowOptions_: {
+        readyOnly: true,
+        type: Array,
+        value() {
+          return [
+            {
+              value: 0,
+              name: loadTimeData.getString(
+                'appearanceSettingsShowOptionAlways')
+            },
+            {
+              value: 1,
+              name: loadTimeData.getString(
+                'appearanceSettingsShowOptionMouseOver')
+            },
+            {
+              value: 3,
+              name: loadTimeData.getString(
+                'appearanceSettingsShowOptionNever')
+            },
+          ]
+        }
+      },
     }
   }
 
-  static get observers(){
+  static get observers() {
     return [
       'onShowOptionChanged_(prefs.brave.sidebar.sidebar_show_option.value)',
     ]
   }
 
-  private sidebarShowOptions_ = [
-    {value: 0, name: this.i18n('appearanceSettingsShowOptionAlways')},
-    {value: 1, name: this.i18n('appearanceSettingsShowOptionMouseOver')},
-    {value: 3, name: this.i18n('appearanceSettingsShowOptionNever')},
-  ]
-  private sidebarShowEnabledLabel_: string
+  private declare sidebarShowOptions_:
+    Array<{value: number, name: string}>
+  private declare sidebarShowEnabledLabel_: string
 
   private onShowOptionChanged_() {
     this.sidebarShowEnabledLabel_ = (this.get('prefs.brave.sidebar.sidebar_show_option.value') === 3)

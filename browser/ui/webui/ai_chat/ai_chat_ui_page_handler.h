@@ -31,7 +31,8 @@ class FaviconService;
 
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
-                            public AIChatTabHelper::Observer {
+                            public AIChatTabHelper::Observer,
+                            public UploadFileHelper::Observer {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
@@ -92,6 +93,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // AIChatTabHelper::Observer
   void OnAssociatedContentNavigated(int new_navigation_id) override;
 
+  // UploadFileHelper::Observer
+  void OnFilesSelected() override;
+
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
@@ -102,6 +106,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
   std::unique_ptr<UploadFileHelper> upload_file_helper_;
+  base::ScopedObservation<UploadFileHelper, UploadFileHelper::Observer>
+      upload_file_helper_observation_{this};
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;

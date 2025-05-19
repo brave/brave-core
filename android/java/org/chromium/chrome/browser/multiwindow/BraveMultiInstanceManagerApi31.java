@@ -9,9 +9,10 @@ import android.app.Activity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
-import org.chromium.chrome.browser.app.tabmodel.TabWindowManagerSingleton;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -23,6 +24,7 @@ import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateMa
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+@NullUnmarked // Waiting for upstream parent class to be NullMarked
 class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
 
     private static final String TAG = "MultiInstanceApi31";
@@ -62,7 +64,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
-            if (selector.getTotalTabCount() == 0) {
+            if (selector != null && selector.getTotalTabCount() == 0) {
                 closeInstance(mInstanceId, INVALID_TASK_ID);
             }
             if (MultiWindowUtils.getInstanceCount() == 1) {

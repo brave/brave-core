@@ -67,7 +67,6 @@ provideStrings({
   copyButtonLabel: 'Copy',
   likeAnswerButtonLabel: 'Like answer',
   dislikeAnswerButtonLabel: 'Dislike answer',
-  likeDislikeAnswerButtonTitle: 'Sends rating, conversation, model, language, version, and premium status',
   provideFeedbackTitle: 'Provide Brave AI Feedback',
   selectFeedbackTopic: 'Select your feedback topic',
   feedbackCategoryLabel: 'Whats your feedback about?',
@@ -123,6 +122,7 @@ provideStrings({
   toolsMenuButtonLabel: 'Leo tools',
   attachmentMenuButtonLabel: 'Attachment',
   uploadFileButtonLabel: 'Upload file...',
+  uploadingFileLabel: 'Uploading file...',
   takeAPictureButtonLabel: 'Take a picture...',
   screenshotButtonLabel: 'Screenshot',
   currentTabContentsButtonLabel: 'Current tab contents',
@@ -146,4 +146,12 @@ provideStrings({
     'Leo AI wants to open a website in a new tab. ' +
     'Do you want to continue?',
   openExternalLinkCheckboxLabel: 'Open links without asking me again',
+  sendButtonLabel: 'Send',
+  rateMessagePrivacyModalTitle: 'Response Feedback',
+  rateMessagePrivacyModalDescription:
+    'Liking or disliking an answer will send rating, conversation, ' +
+    'model, language, version, and premium status to Brave in order ' +
+    'to improve Leo. $1Learn more$1',
+  regenerateAnswerMenuTitle: 'Change model for answer',
+  regenerateAnswerButtonLabel: 'Regenerate'
 })

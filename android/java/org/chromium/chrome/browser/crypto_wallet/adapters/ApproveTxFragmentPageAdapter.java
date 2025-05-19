@@ -8,8 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 import android.app.Activity;
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -18,6 +16,8 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SolanaTxDetailsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TxDetailsFragment;
@@ -29,19 +29,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+@NullMarked
 public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
-    private List<String> mTitles;
-    private TransactionInfo mTxInfo;
-    private NetworkInfo mSelectedNetwork;
-    private AccountInfo[] mAccounts;
-    private HashMap<String, Double> mAssetPrices;
-    private BlockchainToken[] mFullTokenList;
-    private HashMap<String, Double> mNativeAssetsBalances;
-    private HashMap<String, HashMap<String, Double>> mBlockchainTokensBalances;
-    private boolean mUpdateTxObjectManually;
-    private long mSolanaEstimatedTxFee;
-    private Context mContext;
-    private Fragment mDetailsFragment;
+    private final List<String> mTitles;
+    private final TransactionInfo mTxInfo;
+    private final NetworkInfo mSelectedNetwork;
+    private final AccountInfo[] mAccounts;
+    private final HashMap<String, Double> mAssetPrices;
+    private final BlockchainToken[] mFullTokenList;
+    private final boolean mUpdateTxObjectManually;
+    private final long mSolanaEstimatedTxFee;
+    private final Context mContext;
+    @Nullable private Fragment mDetailsFragment;
 
     public ApproveTxFragmentPageAdapter(
             FragmentManager fm,
@@ -50,8 +49,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
             AccountInfo[] accounts,
             HashMap<String, Double> assetPrices,
             BlockchainToken[] fullTokenList,
-            HashMap<String, Double> nativeAssetsBalances,
-            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
             Activity activity,
             boolean updateTxObjectManually,
             long solanaEstimatedTxFee) {
@@ -61,8 +58,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         mAccounts = accounts;
         mAssetPrices = assetPrices;
         mFullTokenList = fullTokenList;
-        mNativeAssetsBalances = nativeAssetsBalances;
-        mBlockchainTokensBalances = blockchainTokensBalances;
         mContext = activity;
         mTitles =
                 new ArrayList<>(
@@ -73,7 +68,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         mSolanaEstimatedTxFee = solanaEstimatedTxFee;
     }
 
-    @NonNull
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
@@ -83,8 +77,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
                     mAccounts,
                     mAssetPrices,
                     mFullTokenList,
-                    mNativeAssetsBalances,
-                    mBlockchainTokensBalances,
                     mUpdateTxObjectManually,
                     mSolanaEstimatedTxFee);
         } else {
@@ -110,7 +102,6 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
         return mTitles.size();
     }
 
-    @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitles.get(position);

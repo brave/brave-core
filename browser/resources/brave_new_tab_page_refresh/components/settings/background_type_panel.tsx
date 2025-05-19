@@ -8,27 +8,25 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import classNames from '$web-common/classnames'
 
 import {
-  BackgroundType,
+  SelectedBackgroundType,
   backgroundCSSValue,
   solidBackgrounds,
   gradientBackgrounds } from '../../models/backgrounds'
 
 interface Props {
-  backgroundType: BackgroundType
+  backgroundType: SelectedBackgroundType
   renderUploadOption: () => React.ReactNode
   onClose: () => void
 }
 
 export function BackgroundTypePanel(props: Props) {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
-  const selectedBackgroundType = useAppState((s) => s.selectedBackgroundType)
   const selectedBackground = useAppState((s) => s.selectedBackground)
   const customBackgrounds = useAppState((s) => s.customBackgrounds)
   const currentBackground = useAppState((s) => s.currentBackground)
@@ -37,18 +35,22 @@ export function BackgroundTypePanel(props: Props) {
 
   function panelTitle() {
     switch (type) {
-      case 'custom': return getString('customBackgroundTitle')
-      case 'gradient': return getString('gradientBackgroundTitle')
-      case 'solid': return getString('solidBackgroundTitle')
-      default: return ''
+      case SelectedBackgroundType.kCustom:
+        return getString('customBackgroundTitle')
+      case SelectedBackgroundType.kGradient:
+        return getString('gradientBackgroundTitle')
+      case SelectedBackgroundType.kSolid:
+        return getString('solidBackgroundTitle')
+      default:
+        return ''
     }
   }
 
   function panelValues() {
     switch (type) {
-      case 'custom': return customBackgrounds
-      case 'gradient': return gradientBackgrounds
-      case 'solid': return solidBackgrounds
+      case SelectedBackgroundType.kCustom: return customBackgrounds
+      case SelectedBackgroundType.kGradient: return gradientBackgrounds
+      case SelectedBackgroundType.kSolid: return solidBackgrounds
       default: return []
     }
   }
@@ -61,8 +63,7 @@ export function BackgroundTypePanel(props: Props) {
         case 'custom':
           actions.selectBackground(type, currentBackground.imageUrl)
           break
-        case 'solid':
-        case 'gradient':
+        case 'color':
           actions.selectBackground(type, currentBackground.cssValue)
           break
         default:
@@ -80,11 +81,11 @@ export function BackgroundTypePanel(props: Props) {
         {panelTitle()}
       </button>
     </h4>
-    <div className='toggle-row'>
+    <div className='control-row'>
       <label>{getString('randomizeBackgroundLabel')}</label>
       <Toggle
         size='small'
-        checked={selectedBackgroundType === type && !selectedBackground}
+        checked={selectedBackground.type === type && !selectedBackground.value}
         disabled={values.length === 0}
         onChange={onRandomizeToggle}
       />
@@ -92,15 +93,15 @@ export function BackgroundTypePanel(props: Props) {
     <div className='background-options'>
       {values.map((value) => {
         const isSelected =
-          selectedBackgroundType === type &&
-          selectedBackground === value
+          selectedBackground.type === type &&
+          selectedBackground.value === value
 
         return (
           <div
             key={value}
             className={classNames({
               'background-option': true,
-              'can-remove': type === 'custom'
+              'can-remove': type === SelectedBackgroundType.kCustom
             })}
           >
             <button onClick={() => { actions.selectBackground(type, value) }}>
@@ -119,7 +120,7 @@ export function BackgroundTypePanel(props: Props) {
               </div>
             </button>
             {
-              type === 'custom' &&
+              type === SelectedBackgroundType.kCustom &&
                 <button
                   className='remove-image'
                   onClick={() => { actions.removeCustomBackground(value) }}
@@ -130,7 +131,7 @@ export function BackgroundTypePanel(props: Props) {
           </div>
         )
       })}
-      {type === 'custom' && props.renderUploadOption()}
+      {type === SelectedBackgroundType.kCustom && props.renderUploadOption()}
     </div>
   </>
 }

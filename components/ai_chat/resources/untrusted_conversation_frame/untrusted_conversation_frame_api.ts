@@ -19,6 +19,8 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   conversationHistory: [],
   isGenerating: false,
   isLeoModel: true,
+  allModels: [],
+  currentModelKey: '',
   contentUsedPercentage: undefined,
   isContentRefined: false,
   trimmedTokens: BigInt(0),

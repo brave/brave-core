@@ -11,7 +11,6 @@
 #include "base/test/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -25,6 +24,7 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -142,9 +142,23 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
                       auto event =
                           mojom::ConversationEntryEvent::NewCompletionEvent(
                               mojom::CompletionEvent::New(data));
-                      data_callback.Run(std::move(event));
+                      data_callback.Run(EngineConsumer::GenerationResultData(
+                          std::move(event), std::nullopt /* model_key */));
                     }
-                    std::move(callback).Run(completed_result);
+
+                    if (completed_result.has_value()) {
+                      auto event =
+                          mojom::ConversationEntryEvent::NewCompletionEvent(
+                              mojom::CompletionEvent::New(
+                                  completed_result.value()));
+                      std::move(callback).Run(
+                          base::ok(EngineConsumer::GenerationResultData(
+                              std::move(event), std::nullopt /* model_key */)));
+                    } else {
+                      std::move(callback).Run(
+                          base::unexpected(completed_result.error()));
+                    }
+
                     run_loop.Quit();
                   });
           base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
@@ -169,8 +183,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
   }
 
   sidebar::SidebarController* GetSidebarController() {
-    auto* controller =
-        static_cast<BraveBrowser*>(browser())->sidebar_controller();
+    auto* controller = browser()->GetFeatures().sidebar_controller();
     EXPECT_TRUE(controller);
     return controller;
   }

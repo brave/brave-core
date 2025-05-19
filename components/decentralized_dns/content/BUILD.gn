@@ -21,7 +21,6 @@ static_library("content") {
     "//base",
     "//brave/components/brave_wallet/common",
     "//brave/components/decentralized_dns/core",
-    "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//components/prefs",
@@ -30,6 +29,7 @@ static_library("content") {
     "//components/user_prefs",
     "//content/public/browser",
     "//net",
+    "//ui/base",
     "//url",
   ]
 }

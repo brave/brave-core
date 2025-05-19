@@ -160,7 +160,10 @@ void OAIAPIClient::OnQueryCompleted(
     }
 
     // May be an empty string if part of SSE request, and payload was invalid.
-    std::move(callback).Run(base::ok(std::move(completion)));
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(completion));
+    std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+        std::move(event), std::nullopt /* model_key */)));
     return;
   }
 
@@ -216,7 +219,7 @@ void OAIAPIClient::OnQueryDataReceived(
     if (content) {
       auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
           mojom::CompletionEvent::New(*content));
-      callback.Run(std::move(event));
+      callback.Run({std::move(event), std::nullopt /* model_key */});
     }
   }
 }

@@ -11,18 +11,28 @@
 #include "base/auto_reset.h"
 #include "base/containers/contains.h"
 #include "base/logging.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/website_settings_info.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
+#include "components/permissions/permission_request.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 using content_settings::WebsiteSettingsInfo;
 using content_settings::WebsiteSettingsRegistry;
 
 namespace permissions {
+
+namespace {
+
+constexpr char kLifetime24HoursHistogramName[] =
+    "Brave.PermissionLifetime.24Hours";
+constexpr char kLifetime7DaysHistogramName[] = "Brave.PermissionLifetime.7Days";
+
+}  // namespace
 
 // static
 void PermissionLifetimeManager::RegisterProfilePrefs(
@@ -88,6 +98,18 @@ void PermissionLifetimeManager::PermissionDecided(
   if (!lifetime) {
     // If no lifetime is set, then we don't need to do anything here.
     return;
+  }
+
+  if (content_setting == ContentSetting::CONTENT_SETTING_ALLOW) {
+    const char* histogram_name = nullptr;
+    if (*lifetime == base::Hours(24)) {
+      histogram_name = kLifetime24HoursHistogramName;
+    } else if (*lifetime == base::Days(7)) {
+      histogram_name = kLifetime7DaysHistogramName;
+    }
+    if (histogram_name) {
+      base::UmaHistogramExactLinear(histogram_name, 1, 2);
+    }
   }
 
   const ContentSettingsType content_type =

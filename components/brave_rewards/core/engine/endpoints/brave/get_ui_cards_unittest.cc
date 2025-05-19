@@ -41,6 +41,12 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
     }],
     "partner-promo-card": {
       "title": "$card-title",
+      "section": "explore",
+      "order": 1,
+      "banner": {
+        "image": "$banner-image",
+        "url": "$banner-url"
+      },
       "items": [{
         "title": "$title",
         "description": "$description",
@@ -56,6 +62,8 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
   auto& community_card = result->at(0);
   EXPECT_EQ(community_card->name, "community-card");
   EXPECT_EQ(community_card->title, "");
+  EXPECT_EQ(community_card->section, "");
+  EXPECT_EQ(community_card->order, 0);
   ASSERT_EQ(community_card->items.size(), static_cast<size_t>(1));
   EXPECT_EQ(community_card->items[0]->title, "$title");
   EXPECT_EQ(community_card->items[0]->description, "$description");
@@ -65,6 +73,11 @@ TEST_F(RewardsGetUICardsTest, ExpectedResponse) {
   auto& promo_card = result->at(1);
   EXPECT_EQ(promo_card->name, "partner-promo-card");
   EXPECT_EQ(promo_card->title, "$card-title");
+  EXPECT_EQ(promo_card->section, "explore");
+  EXPECT_EQ(promo_card->order, 1);
+  ASSERT_TRUE(promo_card->banner);
+  EXPECT_EQ(promo_card->banner->image, "$banner-image");
+  EXPECT_EQ(promo_card->banner->url, "$banner-url");
   ASSERT_EQ(promo_card->items.size(), static_cast<size_t>(1));
   EXPECT_EQ(promo_card->items[0]->title, "$title");
   EXPECT_EQ(promo_card->items[0]->description, "$description");

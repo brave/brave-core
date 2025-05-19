@@ -22,7 +22,6 @@
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -38,12 +37,13 @@
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/template_url.h"
-#include "components/tab_collections/public/tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/referrer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/base/window_open_disposition_utils.h"
@@ -141,7 +141,7 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("png"));
   file_types.extensions[0].push_back(FILE_PATH_LITERAL("gif"));
   file_types.extension_description_overrides.push_back(
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_UPLOAD_IMAGE_FORMAT));
+      l10n_util::GetStringUTF16(IDS_UPLOAD_IMAGE_FORMAT));
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),
       profile_->last_selected_directory(), &file_types, 0,

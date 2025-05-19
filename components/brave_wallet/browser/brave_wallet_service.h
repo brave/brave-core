@@ -356,6 +356,10 @@ class BraveWalletService : public KeyedService,
       GenerateReceiveAddressCallback callback,
       base::expected<mojom::ZCashAddressPtr, std::string> result);
 
+  void OnGenerateCardanoReceiveAddress(
+      GenerateReceiveAddressCallback callback,
+      base::expected<mojom::CardanoAddressPtr, std::string> result);
+
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
 
   void OnGetImportInfo(
