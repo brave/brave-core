@@ -34,13 +34,13 @@ function loadChromiumPathFilter(filePath) {
 
   return (s) => {
     if (s.length === 0)
-      return false;
+      { return false; }
     if (exactMatches.has(s))
-      return false;
+      { return false; }
     if (prefixes.some(prefix => s.startsWith(prefix)))
-      return false;
+      { return false; }
     if (suffixes.some(suffix => s.endsWith(suffix)))
-      return false;
+      { return false; }
     return true;
   };
 }

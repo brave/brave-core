@@ -105,7 +105,7 @@ function getGrdPartsFromGrd(path) {
 // Helper function to create a mapping for grd and all of its grdp parts.
 function addGrd(chromiumPath, bravePath, exclude = new Set()) {
   if (verboseLogFindGrd)
-    console.log("Adding mappings for GRD: " + chromiumPath)
+    { console.log("Adding mappings for GRD: " + chromiumPath) }
   if (!fs.existsSync(chromiumPath)) {
     const err = new Error(`addGrd: Error. File not found at path "${chromiumPath}"`)
     console.error(err)
@@ -128,7 +128,7 @@ function addGrd(chromiumPath, bravePath, exclude = new Set()) {
       mapping = { ...mapping, ...addGrd(chromiumGrdpPath, braveGrdpPath, exclude) }
     }
     if (verboseLogFindGrd)
-      console.log("  - Added " + (Object.keys(mapping).length - 1) + " GRDP.")
+      { console.log("  - Added " + (Object.keys(mapping).length - 1) + " GRDP.") }
   }
   mapping[chromiumPath] = bravePath
   return mapping

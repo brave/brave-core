@@ -45,7 +45,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
     util.generateXcodeWorkspace()
   } else {
     if (options.no_gn_gen === undefined)
-      await util.generateNinjaFiles()
+      { await util.generateNinjaFiles() }
     await util.buildTargets()
   }
 }

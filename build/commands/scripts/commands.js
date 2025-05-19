@@ -81,10 +81,10 @@ program
   .action(async (buildConfig = config.defaultBuildConfig, options = {}) => {
     config.buildConfig = buildConfig
     if (options.target_os === 'host_os')
-      delete options.target_os
+      { delete options.target_os }
 
     if (options.target_arch === 'host_cpu')
-      delete options.target_arch
+      { delete options.target_arch }
 
     config.update(options)
     const currentLink = options.symlink_dir

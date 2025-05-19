@@ -70,9 +70,9 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
     // Disable 'accept incoming network connections' and 'keychain access'
     // dialogs in MacOS. See //docs/mac_build_instructions.md for details.
     if (!options.use_real_keychain)
-      braveArgs.push('--use-mock-keychain')
+      { braveArgs.push('--use-mock-keychain') }
     if (!passthroughArgs.some((s) => s.startsWith('--disable-features')))
-      braveArgs.push('--disable-features=DialMediaRouteProvider')
+      { braveArgs.push('--disable-features=DialMediaRouteProvider') }
   }
 
   braveArgs = braveArgs.concat(passthroughArgs)

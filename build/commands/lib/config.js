@@ -70,11 +70,11 @@ const getEnvConfig = (key, defaultValue = undefined) => {
 
   const envConfigValue = envConfig[key.join('_')]
   if (envConfigValue !== undefined)
-    return envConfigValue
+    { return envConfigValue }
 
   const packageConfigValue = packageConfig(key)
   if (packageConfigValue !== undefined)
-    return packageConfigValue
+    { return packageConfigValue }
 
   return defaultValue
 }
@@ -973,22 +973,22 @@ Config.prototype.update = function (options) {
   }
 
   if (options.mac_signing_identifier)
-    this.mac_signing_identifier = options.mac_signing_identifier
+    { this.mac_signing_identifier = options.mac_signing_identifier }
 
   if (options.mac_installer_signing_identifier)
-    this.mac_installer_signing_identifier = options.mac_installer_signing_identifier
+    { this.mac_installer_signing_identifier = options.mac_installer_signing_identifier }
 
   if (options.mac_signing_keychain)
-    this.mac_signing_keychain = options.mac_signing_keychain
+    { this.mac_signing_keychain = options.mac_signing_keychain }
 
   if (options.notarize)
-    this.notarize = true
+    { this.notarize = true }
 
   if (options.gclient_verbose)
-    this.gClientVerbose = options.gclient_verbose
+    { this.gClientVerbose = options.gclient_verbose }
 
   if (options.ignore_compile_failure)
-    this.ignore_compile_failure = true
+    { this.ignore_compile_failure = true }
 
   if (options.xcode_gen) {
     assert(process.platform === 'darwin' || options.target_os === 'ios')
@@ -1034,7 +1034,7 @@ Config.prototype.update = function (options) {
 
 Config.prototype.getTargetOS = function() {
   if (this.targetOS)
-    return this.targetOS
+    { return this.targetOS }
   return this.hostOS
 }
 

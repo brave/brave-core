@@ -26,7 +26,7 @@ const pullL10n = (options) => {
         '--channel', options.channel,
         '--source_string_path', sourceStringPath]
       if (options.debug)
-        args.push('--debug')
+        { args.push('--debug') }
       util.run('python3', args, cmdOptions)
     }
   })

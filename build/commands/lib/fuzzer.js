@@ -27,7 +27,7 @@ const getBinary = (suite) => {
 
 const unzip = (zipFile, outdir) => {
   fs.readFile(zipFile, (err, data) => {
-    if (err) throw err
+    if (err) { throw err }
     jszip.loadAsync(data).then((zip) => { // Sensitive
       zip.forEach((relativePath, zipEntry) => {
         const resolvedPath = path.join(outdir, zipEntry.name)

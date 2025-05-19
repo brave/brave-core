@@ -20,9 +20,9 @@ const Log = require('./logging')
 const getOutputFilename = () => {
   const platform = (() => {
     if (config.getTargetOS() === 'win')
-      return 'win32'
+      { return 'win32' }
     if (config.getTargetOS() === 'mac')
-      return 'darwin'
+      { return 'darwin' }
     return config.getTargetOS()
   })()
   return `chromium-${config.chromeVersion}-${platform}-${config.targetArch}`
@@ -49,7 +49,7 @@ const chromiumConfigs = {
     buildTargets: ['chrome/installer/linux:stable_deb'],
     processArtifacts: () => {
       const debArch = (() => {
-        if (config.targetArch === 'x64') return 'amd64'
+        if (config.targetArch === 'x64') { return 'amd64' }
         return config.targetArch
       })()
       fs.moveSync(
@@ -133,7 +133,7 @@ function buildChromiumRelease(buildOptions = {}) {
 
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
   if (!chromiumConfig)
-    throw Error(`${config.getTargetOS()} is unsupported`)
+    { throw Error(`${config.getTargetOS()} is unsupported`) }
 
   depotTools.installDepotTools()
   syncUtil.buildDefaultGClientConfig(

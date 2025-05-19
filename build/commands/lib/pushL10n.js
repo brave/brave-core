@@ -28,7 +28,7 @@ const pushL10n = (options) => {
       !options.grd_path ||
       sourceStringPath.endsWith(path.sep + options.grd_path)
     )
-      util.run(
+      { util.run(
         'python3',
         [
           'script/push-l10n.py',
@@ -38,7 +38,7 @@ const pushL10n = (options) => {
           extraScriptOptions
         ],
         cmdOptions
-      )
+      ) }
   })
 }
 

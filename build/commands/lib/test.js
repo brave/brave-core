@@ -64,7 +64,7 @@ const getApplicableFilters = (suite) => {
   possibleFilters.forEach(filterName => {
     let filterFilePath = path.join(config.braveCoreDir, 'test', 'filters',  `${filterName}.filter`)
     if (fs.existsSync(filterFilePath))
-      filterFilePaths.push(filterFilePath)
+      { filterFilePaths.push(filterFilePath) }
   });
 
   return filterFilePaths
@@ -218,7 +218,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // produce an exit code, such as test compilation failures. By ignoring
         // the test exit code here, we give callers a chance to distinguish test
         // failures (by looking at the output file) from compilation errors.
-        runOptions.continueOnFail = true
+        { runOptions.continueOnFail = true }
       let prog = util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, runOptions)
       // Don't run other tests if one has failed already, especially because
       // this would overwrite the --output file (if given).
