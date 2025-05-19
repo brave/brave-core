@@ -27,7 +27,7 @@ module.exports = {
     'chrome': 'readonly'
   },
   'parserOptions': {
-    'project': './tsconfig-lint.json',
+    'project': './tsconfig-lint.json'
   },
   'rules': {
     'no-unsanitized/method': 'error',
@@ -176,12 +176,9 @@ module.exports = {
     // Note: Just using that plugin doesn't help as we opt back in to the rules
     // of hooks for wallet.
     {
-      'files': [
-        'components/**/*.stories.tsx',
-        'components/**/stories/*.tsx',
-      ],
+      'files': ['components/**/*.stories.tsx', 'components/**/stories/*.tsx'],
       'rules': {
-        'react-hooks/rules-of-hooks': 'off', // Don't check hooks
+        'react-hooks/rules-of-hooks': 'off' // Don't check hooks
       }
     }
   ]

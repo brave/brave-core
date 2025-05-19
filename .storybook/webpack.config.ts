@@ -14,7 +14,9 @@ import generatePathMap from '../components/webpack/path-map'
 import { genPath } from '../build/commands/lib/guessConfig'
 
 if (!fs.existsSync(genPath)) {
-  throw new Error("Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?")
+  throw new Error(
+    "Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?"
+  )
 }
 console.log(`Using brave-core generated dependency path of '${genPath}'`)
 
@@ -101,7 +103,12 @@ function useMockedModules(moduleNames) {
 
 // Export a function. Accept the base config as the only param.
 export default async ({ config, mode }) => {
-  const tsConfigPath = await genTsConfig(genPath, 'tsconfig-storybook.json', genPath, path.resolve(__dirname, '../tsconfig-storybook.json'))
+  const tsConfigPath = await genTsConfig(
+    genPath,
+    'tsconfig-storybook.json',
+    genPath,
+    path.resolve(__dirname, '../tsconfig-storybook.json')
+  )
   console.log(`Using generated tsconfig path of '${tsConfigPath}'`)
   const isDevMode = mode.toLowerCase() === 'development'
   // Make whatever fine-grained changes you need
@@ -166,11 +173,13 @@ export default async ({ config, mode }) => {
   // ForkTsCheckerWebpackPlugin ensures the Typescript errors are still shown at
   // development time.
   if (forkTsChecker) {
-    config.plugins.push(new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        configFile: tsConfigPath
-      }
-    }))
+    config.plugins.push(
+      new ForkTsCheckerWebpackPlugin({
+        typescript: {
+          configFile: tsConfigPath
+        }
+      })
+    )
   }
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config

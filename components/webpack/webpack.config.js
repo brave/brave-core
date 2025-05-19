@@ -10,7 +10,10 @@ const XHRCompileAsyncWasmPlugin = require('./xhr-compile-async-wasm-plugin.js')
 const { fallback, provideNodeGlobals } = require('./polyfill')
 const pathMap = require('./path-map')(process.env.ROOT_GEN_DIR)
 
-const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json')
+const tsConfigPath = path.join(
+  process.env.ROOT_GEN_DIR,
+  'tsconfig-webpack.json'
+)
 
 /**
  * Maps a prefix to a corresponding path. We need this as Webpack5 dropped
@@ -20,8 +23,11 @@ const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json'
  */
 const prefixReplacer = (prefix, replacement) => {
   const regex = new RegExp(`^${prefix}/(.*)`)
-  return new webpack.NormalModuleReplacementPlugin(regex, resource => {
-    resource.request = resource.request.replace(regex, path.join(replacement, '$1'))
+  return new webpack.NormalModuleReplacementPlugin(regex, (resource) => {
+    resource.request = resource.request.replace(
+      regex,
+      path.join(replacement, '$1')
+    )
   })
 }
 
@@ -32,7 +38,7 @@ module.exports = async function (env, argv) {
   const entry = {}
   if (!env.brave_entries) {
     throw new Error(
-      "Entry point(s) must be provided via env.brave_entries param."
+      'Entry point(s) must be provided via env.brave_entries param.'
     )
   }
   const entryInput = env.brave_entries.split(',').sort()
@@ -41,7 +47,7 @@ module.exports = async function (env, argv) {
     if (entryInputItemParts.length !== 2) {
       throw new Error(
         'Brave Webpack config could not parse entry env param item: ' +
-        entryInputItem
+          entryInputItem
       )
     }
     entry[entryInputItemParts[0]] = entryInputItemParts[1]
@@ -58,10 +64,7 @@ module.exports = async function (env, argv) {
 
   if (env.extra_modules) {
     const extraModules = env.extra_modules.split(',')
-    resolve.modules = [
-      ...extraModules,
-      ...resolve.modules
-    ]
+    resolve.modules = [...extraModules, ...resolve.modules]
   }
 
   if (env.webpack_aliases) {
@@ -91,7 +94,7 @@ module.exports = async function (env, argv) {
     experiments.syncWebAssembly = true
   } else {
     experiments.asyncWebAssembly = true
-    output.enabledWasmLoadingTypes = [ 'xhr' ]
+    output.enabledWasmLoadingTypes = ['xhr']
     output.wasmLoading = 'xhr'
   }
 
@@ -112,17 +115,18 @@ module.exports = async function (env, argv) {
       function ({ context, request }, callback) {
         if (env.output_module) {
           if (/^chrome(\-untrusted)?:\/\//.test(request)) {
-            return callback(null, 'module ' + request);
+            return callback(null, 'module ' + request)
           }
         }
-        callback();
-      },
+        callback()
+      }
     ],
     plugins: [
-      process.env.DEPFILE_SOURCE_NAME && new GenerateDepfilePlugin({
-        depfilePath: process.env.DEPFILE_PATH,
-        depfileSourceName: process.env.DEPFILE_SOURCE_NAME
-      }),
+      process.env.DEPFILE_SOURCE_NAME &&
+        new GenerateDepfilePlugin({
+          depfilePath: process.env.DEPFILE_PATH,
+          depfileSourceName: process.env.DEPFILE_SOURCE_NAME
+        }),
       // Generate module IDs relative to the gen dir since we want identical
       // output per-platform for mac Universal builds. If they remain relative
       // to the src/brave working directory then the paths could include the
@@ -135,20 +139,20 @@ module.exports = async function (env, argv) {
       // ConcatenatedModule class doesn't use this context configuration for
       // it's identifier construction.
       new webpack.ids.NamedModuleIdsPlugin({
-        context: process.env.ROOT_GEN_DIR,
+        context: process.env.ROOT_GEN_DIR
       }),
       // NamedChunkIdsPlugin doesn't seem to care if we don't give a common
       // context - it might if the chunk is directly loaded from the an output
       // path, so it's being provided anyway. Otherwise, it relies on the IDs of
       // the chunk's included modules.
       new webpack.ids.NamedChunkIdsPlugin({
-        context: process.env.ROOT_GEN_DIR,
+        context: process.env.ROOT_GEN_DIR
       }),
       provideNodeGlobals,
       ...Object.keys(pathMap)
-        .filter(p => p.startsWith('chrome://'))
-        .map(p => prefixReplacer(p, pathMap[p])),
-      !env.sync_wasm && new XHRCompileAsyncWasmPlugin(),
+        .filter((p) => p.startsWith('chrome://'))
+        .map((p) => prefixReplacer(p, pathMap[p])),
+      !env.sync_wasm && new XHRCompileAsyncWasmPlugin()
     ],
     module: {
       rules: [
@@ -157,10 +161,7 @@ module.exports = async function (env, argv) {
           // is just regular css converted to JS and injected to style elements
           test: /\.s?css$/,
           include: [/\.global\./, /node_modules/],
-          use: [
-            { loader: "style-loader" },
-            { loader: "css-loader" },
-          ],
+          use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
         },
         {
           // CSS imported in the source tree can use sass and css modules
@@ -169,31 +170,34 @@ module.exports = async function (env, argv) {
           exclude: [/\.global\./, /node_modules/],
           use: [
             // Injects the result into the DOM as a style block
-            { loader: "style-loader" },
+            { loader: 'style-loader' },
             // Converts the resulting CSS to Javascript to be bundled
             // (modules:true to rename CSS classes in output to cryptic identifiers,
             // except if wrapped in a :global(...) pseudo class).
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
                 importLoaders: 3,
                 sourceMap: false,
                 modules: {
                   localIdentName: isDevMode
-                    ? "[path][name]__[local]--[contenthash:base64:5]"
-                    : "[contenthash:base64]",
-                },
-              },
+                    ? '[path][name]__[local]--[contenthash:base64:5]'
+                    : '[contenthash:base64]'
+                }
+              }
             },
             // First, convert SASS to CSS
-            { loader: "sass-loader" },
-          ],
+            { loader: 'sass-loader' }
+          ]
         },
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           options: {
-            getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
+            getCustomTransformers: path.join(
+              __dirname,
+              './webpack-ts-transformers.js'
+            ),
             // Use generated tsconfig so that we can point at gen/ output in the
             // correct build configuration output directory.
             configFile: tsConfigPath
@@ -207,15 +211,16 @@ module.exports = async function (env, argv) {
         // it to provide file extensions (which it does not), so we need to
         // special case it here.
         {
-          test: p => p.includes(path.join('@brave', 'brave-ui')) && p.endsWith('.js'),
+          test: (p) =>
+            p.includes(path.join('@brave', 'brave-ui')) && p.endsWith('.js'),
           resolve: {
-              fullySpecified: false,
-          },
+            fullySpecified: false
+          }
         },
         {
           test: /\.html/,
-          type: 'asset/source',
-        },
+          type: 'asset/source'
+        }
       ]
     }
   }

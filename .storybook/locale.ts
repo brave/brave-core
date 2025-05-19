@@ -271,8 +271,9 @@ let locale: Record<string, string> = {
   initialPlaceholderLabel: 'How can I help you today?',
   searchTabsPlaceholder: 'Search tabs',
   attachmentsTitle: 'Attachments',
-  attachmentsDescription: 'Add your browser tabs to give Leo more context for the conversation',
-  attachmentsBrowserTabsTitle: 'Browser tabs',
+  attachmentsDescription:
+    'Add your browser tabs to give Leo more context for the conversation',
+  attachmentsBrowserTabsTitle: 'Browser tabs'
 }
 
 export function provideStrings(strings: Record<string, string>) {

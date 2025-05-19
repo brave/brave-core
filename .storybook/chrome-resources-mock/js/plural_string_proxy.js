@@ -12,9 +12,9 @@ export class PluralStringProxyImpl {
   }
 
   /**
-   * 
-   * @param {string} key 
-   * @param {number} count 
+   *
+   * @param {string} key
+   * @param {number} count
    * @returns {Promise<string>}
    */
   getPluralString(key, count) {

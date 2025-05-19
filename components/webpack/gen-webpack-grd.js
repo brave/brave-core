@@ -10,16 +10,19 @@ const fs = require('mz/fs')
  * @param {string[]} fileList
  * @returns {string}
  */
-function getIncludesString (fileList) {
-  return fileList.map(filePath => {
-    const relativePath = filePath.replace(targetDir, '')
-    const fileId = idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
-    const resourcePath = resourcePathPrefix
-      // Note: We want to use forwardslash regardless of platform.
-      ? path.posix.join(resourcePathPrefix, relativePath)
-      : relativePath
-    return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
-  }).join('\n')
+function getIncludesString(fileList) {
+  return fileList
+    .map((filePath) => {
+      const relativePath = filePath.replace(targetDir, '')
+      const fileId =
+        idPrefix + relativePath.replace(/[^a-z0-9]/gi, '_').toUpperCase()
+      const resourcePath = resourcePathPrefix
+        ? // Note: We want to use forwardslash regardless of platform.
+          path.posix.join(resourcePathPrefix, relativePath)
+        : relativePath
+      return `<include name="${fileId}" file="${filePath}" resource_path="${resourcePath}" use_base_dir="false" type="BINDATA" />`
+    })
+    .join('\n')
 }
 
 /**
@@ -27,7 +30,7 @@ function getIncludesString (fileList) {
  * @param {string[]} fileList
  * @returns {string}
  */
-function getGrdString (name, fileList) {
+function getGrdString(name, fileList) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1">
   <outputs>
@@ -64,11 +67,11 @@ function getGrdpString(fileList) {
  * @param {string} dirPath
  * @returns {Promise<string[]>}
  */
-async function getFileListDeep (dirPath) {
+async function getFileListDeep(dirPath) {
   const dirItems = await fs.readdir(dirPath)
   // get Array<string | string[]> of contents
-  const dirItemGroups = await Promise.all(dirItems.map(
-    async (dirItemRelativePath) => {
+  const dirItemGroups = await Promise.all(
+    dirItems.map(async (dirItemRelativePath) => {
       const itemPath = path.join(dirPath, dirItemRelativePath)
       const stats = await fs.stat(itemPath)
       if (stats.isDirectory()) {
@@ -77,8 +80,8 @@ async function getFileListDeep (dirPath) {
       if (stats.isFile()) {
         return itemPath
       }
-    }
-  ))
+    })
+  )
   // flatten to single string[]
   return dirItemGroups.reduce(
     (flatList, dirItemGroup) => flatList.concat(dirItemGroup),
@@ -86,7 +89,7 @@ async function getFileListDeep (dirPath) {
   )
 }
 
-async function createDynamicGDR () {
+async function createDynamicGDR() {
   const gdrPath = path.join(targetDir, grdName)
   // remove previously generated file
   try {
@@ -108,25 +111,24 @@ const grdName = process.env.GRD_NAME
 const resourcePathPrefix = process.env.RESOURCE_PATH_PREFIX
 
 if (!targetDir) {
-  throw new Error("TARGET_DIR env variable is required!")
+  throw new Error('TARGET_DIR env variable is required!')
 } else if (!targetDir.endsWith(path.sep)) {
   // normalize path so relative path ignores leading path.sep
   targetDir += path.sep
 }
 
 if (!idPrefix) {
-  throw new Error("ID_PREFIX env variable is required!")
+  throw new Error('ID_PREFIX env variable is required!')
 }
 if (!resourceName) {
-  throw new Error("RESOURCE_NAME env variable is required!")
+  throw new Error('RESOURCE_NAME env variable is required!')
 }
 if (!grdName) {
-  throw new Error("GRD_NAME env variable is required!")
+  throw new Error('GRD_NAME env variable is required!')
 }
 
 // main
-createDynamicGDR()
-.catch(err => {
+createDynamicGDR().catch((err) => {
   console.error(err)
   process.exit(1)
 })

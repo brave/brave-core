@@ -6,16 +6,16 @@
 import path from 'path'
 import { forkTsChecker } from './options'
 import { StorybookConfig } from '@storybook/react-webpack5'
-import type { Indexer } from '@storybook/types';
-import { loadCsf } from '@storybook/csf-tools';
-import { readFile } from 'fs/promises';
+import type { Indexer } from '@storybook/types'
+import { loadCsf } from '@storybook/csf-tools'
+import { readFile } from 'fs/promises'
 
 const slashStoriesIndexer: Indexer = {
   test: /stories\/.*\.tsx$/,
   createIndex: async (fileName, opts) => {
-    const code = (await readFile(fileName, 'utf-8')).toString();
+    const code = (await readFile(fileName, 'utf-8')).toString()
     const result = loadCsf(code, { ...opts, fileName }).parse()
-    return result.indexInputs;
+    return result.indexInputs
   }
 }
 
@@ -23,10 +23,10 @@ const config: StorybookConfig = {
   stories: process.env.STORYBOOK_STORYPATH
     ? [`../${process.env.STORYBOOK_STORYPATH}`]
     : [
-      '../components/**/stories/*.tsx',
-      '../components/**/*.stories.tsx',
-      '../browser/resources/**/stories/*.tsx'
-    ],
+        '../components/**/stories/*.tsx',
+        '../components/**/*.stories.tsx',
+        '../browser/resources/**/stories/*.tsx'
+      ],
   typescript: {
     check: false,
     reactDocgen: false,
@@ -37,7 +37,7 @@ const config: StorybookConfig = {
       }
     }
   },
-  addons: [ '@storybook/addon-knobs', '@storybook/addon-essentials' ],
+  addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
   framework: '@storybook/react-webpack5',
   staticDirs: [
     { from: '../node_modules/@brave/leo/icons', to: 'icons/' },

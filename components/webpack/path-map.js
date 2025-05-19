@@ -20,19 +20,22 @@ module.exports = function (genPath) {
     // them in the future for certain build configuration, just like chromium.
     'chrome://resources/brave/fonts': path.join(
       genPath,
-      'brave/ui/webui/resources/fonts'),
+      'brave/ui/webui/resources/fonts'
+    ),
     'chrome://resources/brave': path.join(
       genPath,
-      'brave/ui/webui/resources/tsc'),
-    'chrome://resources': path.join(
-      genPath, 'ui/webui/resources/tsc'),
+      'brave/ui/webui/resources/tsc'
+    ),
+    'chrome://resources': path.join(genPath, 'ui/webui/resources/tsc'),
     // We import brave-ui direct from source and not from package repo, so we need
     // direct path to the src/ directory.
     'brave-ui': path.resolve(__dirname, '../../node_modules/@brave/brave-ui'),
     // Force same styled-components module for brave-core and brave-ui
     // which ensure both repos code use the same singletons, e.g. ThemeContext.
     'styled-components': path.resolve(
-      __dirname, '../../node_modules/styled-components'),
+      __dirname,
+      '../../node_modules/styled-components'
+    ),
     // More helpful path for local web-components
     '$web-components': path.resolve(__dirname, '../web-components'),
     // TODO(petemill): Rename 'brave/components/common' dir to
@@ -40,6 +43,9 @@ module.exports = function (genPath) {
     '$web-common': path.resolve(__dirname, '../common'),
     // react-markdown uses this deep in its tree, and the browser variant uses innerHTML, conflicting with WebUIs that requires Trusted Types
     // We redirect to an alternative implementation that uses a lookup table to decode named chars instead of innerHTML
-    'decode-named-character-reference': path.resolve(__dirname, '../../node_modules/decode-named-character-reference/index.js'),
+    'decode-named-character-reference': path.resolve(
+      __dirname,
+      '../../node_modules/decode-named-character-reference/index.js'
+    )
   }
 }

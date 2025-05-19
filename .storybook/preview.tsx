@@ -23,9 +23,14 @@ import '../ui/webui/resources/fonts/inter.css'
 // Nala icons.
 if (!document.location.pathname.endsWith('/iframe.html')) {
   // Perhaps storybook was upgraded and this changed?
-  console.error('Could not ascertain path that the storybook is hosted at. Not able to set static icon path!')
+  console.error(
+    'Could not ascertain path that the storybook is hosted at. Not able to set static icon path!'
+  )
 } else {
-  const storybookPath = document.location.pathname.substring(0, document.location.pathname.lastIndexOf('/'))
+  const storybookPath = document.location.pathname.substring(
+    0,
+    document.location.pathname.lastIndexOf('/')
+  )
   setIconBasePath(`${storybookPath}/icons`)
 }
 
@@ -40,7 +45,7 @@ export const parameters = {
       { name: 'Grey900', value: '#1E2029' }
     ]
   }
-};
+}
 
 const global: any = window
 global.loadTimeData = {

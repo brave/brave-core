@@ -24,7 +24,7 @@ function writeDepfileContentSync(filePath, content) {
 }
 
 class GenerateDepfilePlugin {
-  constructor (options) {
+  constructor(options) {
     this.options = {
       depfilePath: 'depfile.d',
       depfileSourceName: '[UnknownOutputName]',
@@ -32,12 +32,17 @@ class GenerateDepfilePlugin {
     }
   }
 
-  apply (compiler) {
+  apply(compiler) {
     // These hooks cannot be used async, so must do sync ops.
     compiler.hooks.compilation.tap(this.constructor.name, (compilation) => {
       compilation.hooks.finishModules.tap(this.constructor.name, (modules) => {
-        const absoluteDepsPaths = Array.from(modules).map(module => module.resource)
-        const depfileContent = generateDepfileContent(this.options.depfileSourceName, absoluteDepsPaths)
+        const absoluteDepsPaths = Array.from(modules).map(
+          (module) => module.resource
+        )
+        const depfileContent = generateDepfileContent(
+          this.options.depfileSourceName,
+          absoluteDepsPaths
+        )
         writeDepfileContentSync(this.options.depfilePath, depfileContent)
       })
     })
