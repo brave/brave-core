@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 
-#include "base/types/to_address.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -16,10 +15,6 @@
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/views/border.h"
-
-namespace {
-constexpr int kBorderThickness = 2;
-}  // namespace
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
 
@@ -34,18 +29,12 @@ void BraveMultiContentsView::UpdateContentsBorder() {
     return;
   }
 
-  float corner_radius =
-      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-          base::to_address(browser_view_->browser()))
-          ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
-          : 0;
-
   // Draw active/inactive outlines around the contents areas.
   const auto set_contents_border =
-      [this, corner_radius,
-       cp](ContentsContainerView* contents_container_view) {
+      [this, cp](ContentsContainerView* contents_container_view) {
         const bool is_active = contents_container_view->GetContentsView() ==
                                GetActiveContentsView();
+        const float corner_radius = GetCornerRadius();
         if (is_active) {
           contents_container_view->SetBorder(views::CreateRoundedRectBorder(
               kBorderThickness, corner_radius,
@@ -77,22 +66,24 @@ void BraveMultiContentsView::Layout(PassKey) {
       gfx::Size(widths.resize_width, available_space.height()));
   gfx::Rect end_rect(resize_rect.top_right(),
                      gfx::Size(widths.end_width, available_space.height()));
-  float corner_radius =
-      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-          base::to_address(browser_view_->browser()))
-          ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
-          : 0;
-
-  gfx::RoundedCornersF corners(corner_radius);
+  gfx::RoundedCornersF corners(GetCornerRadius());
   for (auto* contents_container_view : contents_container_views_) {
     auto* contents_web_view = contents_container_view->GetContentsView();
     contents_web_view->layer()->SetRoundedCornerRadius(corners);
     contents_web_view->holder()->SetCornerRadii(corners);
     contents_web_view->holder()->SetCornerRadii(corners);
   }
+  CHECK(contents_container_views_.size() == 2);
   contents_container_views_[0]->SetBoundsRect(start_rect);
   resize_area_->SetBoundsRect(resize_rect);
   contents_container_views_[1]->SetBoundsRect(end_rect);
+}
+
+float BraveMultiContentsView::GetCornerRadius() const {
+  return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+             browser_view_->browser())
+             ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
+             : 0;
 }
 
 BEGIN_METADATA(BraveMultiContentsView)
