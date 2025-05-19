@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 5f249804ac421553cf12428f5d21cc739c51f7de..5c22505be2d92cb4c288c355b1d9f73a8788916d 100644
+index 11404220207d2283c33985f4bdb8f0daaf0bd047..7325c518ad56a06e10d292af77ab90c87f0096ed 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -753,6 +753,7 @@ static_library("ui") {
+@@ -744,6 +744,7 @@ static_library("ui") {
      # from //chrome/browser/ui/webui, which are not modularized yet.
-     "//chrome/browser/ui/webui/about",
+     "//chrome/browser/ui/webui/about:impl",
    ]
 +  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
-
+ 
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3573,7 +3574,10 @@ static_library("ui") {
+@@ -3562,7 +3563,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -21,8 +21,8 @@ index 5f249804ac421553cf12428f5d21cc739c51f7de..5c22505be2d92cb4c288c355b1d9f73a
 +      }
      }
    }
-
-@@ -5769,6 +5773,7 @@ static_library("ui_public_dependencies") {
+ 
+@@ -5772,6 +5776,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
