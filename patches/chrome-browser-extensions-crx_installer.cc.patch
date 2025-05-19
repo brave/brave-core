@@ -1,0 +1,185 @@
+diff --git a/chrome/browser/extensions/crx_installer.cc b/chrome/browser/extensions/crx_installer.cc
+index 1e395a63d2441db55074ea42ea4b9b2218c5aea1..d404851632d6603f0f26970bb5195b1a06cea416 100644
+--- a/chrome/browser/extensions/crx_installer.cc
++++ b/chrome/browser/extensions/crx_installer.cc
+@@ -17,6 +17,7 @@
+ #include "base/strings/string_util.h"
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/task/sequenced_task_runner.h"
++#include "base/threading/scoped_blocking_call.h"
+ #include "base/threading/thread_restrictions.h"
+ #include "base/time/time.h"
+ #include "base/version.h"
+@@ -313,8 +314,7 @@ std::optional<CrxInstallError> CrxInstaller::CheckExpectations(
+ 
+   // Make sure the expected ID matches if one was supplied or if we want to
+   // bypass the prompt.
+-  if ((approved_ || !expected_id_.empty()) &&
+-      expected_id_ != extension->id()) {
++  if ((approved_ || !expected_id_.empty()) && expected_id_ != extension->id()) {
+     return CrxInstallError(
+         CrxInstallErrorType::OTHER, CrxInstallErrorDetail::UNEXPECTED_ID,
+         l10n_util::GetStringFUTF16(IDS_EXTENSION_INSTALL_UNEXPECTED_ID,
+@@ -416,8 +416,7 @@ std::optional<CrxInstallError> CrxInstaller::AllowInstall(
+     // will be set.  In this case, check that it was served with the
+     // right mime type.  Make an exception for file URLs, which come
+     // from the users computer and have no headers.
+-    if (!download_url_.SchemeIsFile() &&
+-        apps_require_extension_mime_type_ &&
++    if (!download_url_.SchemeIsFile() && apps_require_extension_mime_type_ &&
+         original_mime_type_ != Extension::kMimeType) {
+       return CrxInstallError(
+           CrxInstallErrorType::OTHER,
+@@ -549,6 +548,9 @@ void CrxInstaller::OnUnpackSuccessOnSharedFileThread(
+     SkBitmap install_icon,
+     base::Value::Dict ruleset_install_prefs) {
+   DCHECK(shared_file_task_runner_->RunsTasksInCurrentSequence());
++  LOG(ERROR) << "CrxInstaller::OnUnpackSuccessOnSharedFileThread:"
++             << "\ntemp_dir = " << temp_dir.value()
++             << "\nextension_dir = " << extension_dir.value();
+ 
+   extension_ = extension;
+   temp_dir_ = temp_dir;
+@@ -595,6 +597,8 @@ void CrxInstaller::OnUnpackSuccessOnSharedFileThread(
+     ReportFailureFromSharedFileThread(*error);
+     return;
+   }
++  LOG(ERROR) << "CrxInstaller::OnUnpackSuccessOnSharedFileThread: call to "
++                "AllowInstall returned no errors.";
+ 
+   if (!content::GetUIThreadTaskRunner({})->PostTask(
+           FROM_HERE, base::BindOnce(&CrxInstaller::CheckInstall, this))) {
+@@ -620,6 +624,7 @@ void CrxInstaller::CheckInstall() {
+   if (!profile_ || browser_terminating_) {
+     return;
+   }
++  LOG(ERROR) << "CrxInstaller::CheckInstall";
+ 
+   // TODO(crbug.com/40387578): Move this code to a utility class to avoid
+   // duplication of SharedModuleService::CheckImports code.
+@@ -690,6 +695,7 @@ void CrxInstaller::OnInstallChecksComplete(const PreloadCheck::Errors& errors) {
+   if (!profile_) {
+     return;
+   }
++  LOG(ERROR) << "CrxInstaller::OnInstallChecksComplete";
+ 
+   if (errors.empty()) {
+     ConfirmInstall();
+@@ -758,6 +764,7 @@ void CrxInstaller::ConfirmInstall() {
+   if (!profile_ || browser_terminating_) {
+     return;
+   }
++  LOG(ERROR) << "CrxInstaller::ConfirmInstall";
+ 
+   if (KioskModeInfo::IsKioskOnly(extension())) {
+     bool in_kiosk_mode = false;
+@@ -797,8 +804,7 @@ void CrxInstaller::ConfirmInstall() {
+   current_version_ = base::Version(
+       ExtensionPrefs::Get(profile_)->GetVersionString(extension()->id()));
+ 
+-  if (client_ &&
+-      (!allow_silent_install_ || !approved_) &&
++  if (client_ && (!allow_silent_install_ || !approved_) &&
+       !update_from_settings_page_) {
+     AddRef();  // Balanced in OnInstallPromptDone().
+     client_->ShowDialog(
+@@ -811,6 +817,7 @@ void CrxInstaller::ConfirmInstall() {
+ 
+ void CrxInstaller::OnInstallPromptDone(
+     ExtensionInstallPrompt::DoneCallbackPayload payload) {
++  LOG(ERROR) << "CrxInstaller::OnInstallPromptDone";
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
+   // If update_from_settings_page_ boolean is true, this functions is
+@@ -886,6 +893,7 @@ void CrxInstaller::InitializeCreationFlagsForUpdate(const Extension* extension,
+ 
+ void CrxInstaller::UpdateCreationFlagsAndCompleteInstall(
+     WithholdingBehavior withholding_behavior) {
++  LOG(ERROR) << "CrxInstaller::UpdateCreationFlagsAndCompleteInstall";
+   creation_flags_ = extension()->creation_flags() | Extension::REQUIRE_KEY;
+   // If the extension was already installed and had file access, also grant file
+   // access to the updated extension.
+@@ -908,6 +916,7 @@ void CrxInstaller::UpdateCreationFlagsAndCompleteInstall(
+ 
+ void CrxInstaller::CompleteInstall(
+     bool updates_from_webstore_or_empty_update_url) {
++  LOG(ERROR) << "CrxInstaller::CompleteInstall";
+   DCHECK(shared_file_task_runner_->RunsTasksInCurrentSequence());
+ 
+   if (current_version_.IsValid() &&
+@@ -931,6 +940,17 @@ void CrxInstaller::CompleteInstall(
+ 
+ void CrxInstaller::ReloadExtensionAfterInstall(
+     const base::FilePath& version_dir) {
++  LOG(ERROR) << "CrxInstaller::ReloadExtensionAfterInstall: version_dir = "
++             << version_dir.value();
++  {
++    base::ScopedBlockingCall scoped_blocking_call(
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
++    LOG(ERROR) << "CrxInstaller::ReloadExtensionAfterInstall: path = "
++               << version_dir.AppendASCII("blocking.html").value().c_str()
++               << (base::PathExists(version_dir.AppendASCII("blocking.html"))
++                       ? " exists"
++                       : " does not exist");
++  }
+   DCHECK(shared_file_task_runner_->RunsTasksInCurrentSequence());
+ 
+   if (version_dir.empty()) {
+@@ -950,6 +970,9 @@ void CrxInstaller::ReloadExtensionAfterInstall(
+   // TODO(rdevlin.cronin): Continue removing std::string errors and replacing
+   // with std::u16string
+   ExtensionId extension_id = extension()->id();
++  LOG(ERROR) << "CrxInstaller::ReloadExtensionAfterInstall: reloading "
++                "extension from version_dir. id = "
++             << extension_id;
+   std::string error;
+   extension_ = file_util::LoadExtension(
+       version_dir, install_source_,
+@@ -964,6 +987,28 @@ void CrxInstaller::ReloadExtensionAfterInstall(
+         CrxInstallErrorType::OTHER, CrxInstallErrorDetail::CANT_LOAD_EXTENSION,
+         base::UTF8ToUTF16(error)));
+   }
++  LOG(ERROR) << "CrxInstaller::ReloadExtensionAfterInstall: reloaded "
++                "extension id = "
++             << extension()->id();
++  auto resource = extension()->GetResource("blocking.html");
++  resource.set_follow_symlinks_anywhere();
++  LOG(ERROR)
++      << "CrxInstaller::ReloadExtensionAfterInstall: resource extension id = "
++      << resource.extension_id();
++  LOG(ERROR)
++      << "CrxInstaller::ReloadExtensionAfterInstall: resource root path = "
++      << resource.extension_root().value().c_str();
++  const base::FilePath& resource_path = resource.GetFilePath();
++  LOG(ERROR) << "CrxInstaller::ReloadExtensionAfterInstall: resource path = "
++             << resource_path.value().c_str();
++  {
++    base::ScopedBlockingCall scoped_blocking_call(
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
++    LOG(ERROR) << "CrxInstaller::ReloadExtensionAfterInstall: path = "
++               << resource_path.value().c_str()
++               << (base::PathExists(resource_path) ? " exists"
++                                                   : " does not exist");
++  }
+ }
+ 
+ void CrxInstaller::ReportFailureFromSharedFileThread(
+@@ -1142,6 +1187,9 @@ void CrxInstaller::CleanupTempFiles() {
+     return;
+   }
+ 
++  LOG(ERROR) << "CrxInstaller::CleanupTempFiles: deleting temp_dir_ = "
++             << temp_dir_.value();
++
+   // Delete the temp directory and crx file as necessary.
+   if (!temp_dir_.value().empty()) {
+     base::DeletePathRecursively(temp_dir_);
+@@ -1149,6 +1197,8 @@ void CrxInstaller::CleanupTempFiles() {
+   }
+ 
+   if (delete_source_ && !source_file_.value().empty()) {
++    LOG(ERROR) << "CrxInstaller::CleanupTempFiles: deleting source_file_ = "
++               << source_file_.value();
+     base::DeleteFile(source_file_);
+     source_file_ = base::FilePath();
+   }

@@ -1,0 +1,97 @@
+diff --git a/extensions/common/extension_resource.cc b/extensions/common/extension_resource.cc
+index dac83d9048401a9e02c590acf9f76cc31f47c3d4..865035b00ba172ebbb9e30ae5146d4e13beef83c 100644
+--- a/extensions/common/extension_resource.cc
++++ b/extensions/common/extension_resource.cc
+@@ -32,19 +32,28 @@ void ExtensionResource::set_follow_symlinks_anywhere() {
+ }
+ 
+ const base::FilePath& ExtensionResource::GetFilePath() const {
++  LOG(ERROR) << "ExtensionResource::GetFilePath():"
++             << "\nextension_root_ = " << extension_root_.value()
++             << "\nrelative_path_ = " << relative_path_.value();
+   if (extension_root_.empty() || relative_path_.empty()) {
+     DCHECK(full_resource_path_.empty());
+     return full_resource_path_;
+   }
+ 
+   // We've already checked, just return last value.
+-  if (!full_resource_path_.empty())
++  if (!full_resource_path_.empty()) {
++    LOG(ERROR) << "ExtensionResource::GetFilePath(): full_resource_path_ is "
++                  "already not empty = "
++               << full_resource_path_.value();
+     return full_resource_path_;
++  }
+ 
+-  full_resource_path_ = GetFilePath(
+-      extension_root_, relative_path_,
+-      follow_symlinks_anywhere_ ?
+-          FOLLOW_SYMLINKS_ANYWHERE : SYMLINKS_MUST_RESOLVE_WITHIN_ROOT);
++  full_resource_path_ = GetFilePath(extension_root_, relative_path_,
++                                    follow_symlinks_anywhere_
++                                        ? FOLLOW_SYMLINKS_ANYWHERE
++                                        : SYMLINKS_MUST_RESOLVE_WITHIN_ROOT);
++  LOG(ERROR) << "ExtensionResource::GetFilePath(): full_resource_path_ = "
++             << full_resource_path_.value();
+   return full_resource_path_;
+ }
+ 
+@@ -53,10 +62,15 @@ base::FilePath ExtensionResource::GetFilePath(
+     const base::FilePath& extension_root,
+     const base::FilePath& relative_path,
+     SymlinkPolicy symlink_policy) {
++  LOG(ERROR) << "ExtensionResource::GetFilePath:"
++             << "\nextension_root = " << extension_root.value()
++             << "\nrelative_path = " << relative_path.value();
+   // We need to resolve the parent references in the extension_root
+   // path on its own because IsParent doesn't like parent references.
+   base::FilePath clean_extension_root(
+       base::MakeAbsoluteFilePath(extension_root));
++  LOG(ERROR) << "ExtensionResource::GetFilePath: clean_extension_root = "
++             << clean_extension_root.value();
+   if (clean_extension_root.empty())
+     return base::FilePath();
+ 
+@@ -84,12 +98,17 @@ base::FilePath ExtensionResource::GetFilePath(
+   if (base::FilePath full_path_normalized;
+       base::NormalizeFilePath(full_path, &full_path_normalized)) {
+     full_path = std::move(full_path_normalized);
++    LOG(ERROR) << "ExtensionResource::GetFilePath: full_path (normalized) = "
++               << full_path.value();
+   } else {
+ #if BUILDFLAG(IS_WIN)
+     // On Windows, if `NormalizeFilePath` fails, fall back to
+     // `MakeAbsoluteFilePath` and proceed if the file exists. This can happen
+     // if, for example, the file isn't accessible due to permissions.
+     full_path = base::MakeAbsoluteFilePath(full_path);
++    LOG(ERROR)
++        << "ExtensionResource::GetFilePath: full_path (MakeAbsoluteFilePath) = "
++        << full_path.value();
+     if (full_path.empty() || !base::PathExists(full_path)) {
+       return base::FilePath();
+     }
+@@ -100,6 +119,8 @@ base::FilePath ExtensionResource::GetFilePath(
+ 
+   if (symlink_policy != FOLLOW_SYMLINKS_ANYWHERE &&
+       !clean_extension_root.IsParent(full_path)) {
++    LOG(ERROR) << "ExtensionResource::GetFilePath: symlink_policy && "
++                  "!clean_extension_root.IsParent";
+     return base::FilePath();
+   }
+ 
+@@ -121,11 +142,15 @@ base::FilePath ExtensionResource::GetFilePath(
+       !relative_path.empty()) {
+     const char last_char = relative_path.value().back();
+     if (last_char == '.' || last_char == ' ') {
++      LOG(ERROR) << "ExtensionResource::GetFilePath: "
++                    "kWinRejectDotSpaceSuffixFilePaths";
+       return base::FilePath();
+     }
+   }
+ #endif
+ 
++  LOG(ERROR) << "ExtensionResource::GetFilePath: Done! full_path = "
++             << full_path.value();
+   return full_path;
+ }
+ 

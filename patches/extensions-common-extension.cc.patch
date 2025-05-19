@@ -1,5 +1,5 @@
 diff --git a/extensions/common/extension.cc b/extensions/common/extension.cc
-index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d581c49a730 100644
+index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..a0d503765ea38b96e92185b6ec0a16adc36e3e09 100644
 --- a/extensions/common/extension.cc
 +++ b/extensions/common/extension.cc
 @@ -236,10 +236,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
@@ -24,7 +24,15 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
    base::ElapsedTimer timer;
    DCHECK(utf8_error);
    std::u16string error;
-@@ -276,6 +276,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
+@@ -263,6 +263,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
+     *utf8_error = base::UTF16ToUTF8(error);
+     return nullptr;
+   }
++  LOG(ERROR) << "Extension::Create: Computed id = " << extension_id;
+ 
+   std::unique_ptr<extensions::Manifest> manifest;
+   if (flags & FOR_LOGIN_SCREEN) {
+@@ -276,6 +277,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
    std::vector<InstallWarning> install_warnings;
    manifest->ValidateManifest(&install_warnings);
  
@@ -32,7 +40,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
    scoped_refptr<Extension> extension = new Extension(path, std::move(manifest));
    extension->install_warnings_.swap(install_warnings);
  
-@@ -286,6 +287,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
+@@ -286,6 +288,7 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
        extension->guid_.AsLowercaseString());
  
    if (!extension->InitFromValue(flags, &error)) {
@@ -40,7 +48,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
      *utf8_error = base::UTF16ToUTF8(error);
      return nullptr;
    }
-@@ -294,8 +296,8 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
+@@ -294,8 +297,8 @@ scoped_refptr<Extension> Extension::Create(const base::FilePath& path,
  }
  
  Manifest::Type Extension::GetType() const {
@@ -51,7 +59,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
  }
  
  // static
-@@ -354,8 +356,8 @@ bool Extension::ParsePEMKeyBytes(std::string_view input, std::string* output) {
+@@ -354,8 +357,8 @@ bool Extension::ParsePEMKeyBytes(std::string_view input, std::string* output) {
    if (base::StartsWith(working, kKeyBeginHeaderMarker,
                         base::CompareCase::SENSITIVE)) {
      working = base::CollapseWhitespaceASCII(working, true);
@@ -62,7 +70,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
      if (header_pos == std::string::npos) {
        return false;
      }
-@@ -402,7 +404,7 @@ bool Extension::FormatPEMForFileOutput(std::string_view input,
+@@ -402,7 +405,7 @@ bool Extension::FormatPEMForFileOutput(std::string_view input,
    output->append(" ");
    output->append(kKeyInfoEndMarker);
    output->append("\n");
@@ -71,29 +79,17 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
      int slice = std::min<int>(input.length() - i, kPEMOutputColumns);
      output->append(input.substr(i, slice));
      output->append("\n");
-@@ -588,7 +590,10 @@ Extension::Extension(const base::FilePath& path,
+@@ -588,7 +591,9 @@ Extension::Extension(const base::FilePath& path,
    path_ = crx_file::id_util::MaybeNormalizePath(path);
  }
  
 +#include "base/debug/stack_trace.h"
  Extension::~Extension() {
 +  LOG(ERROR) << "Extension::~Extension: path_ = " << path_.value();
-+  LOG(ERROR) << base::debug::StackTrace().ToString();
  }
  
  bool Extension::InitFromValue(int flags, std::u16string* error) {
-@@ -619,6 +624,10 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
- 
-   extension_origin_ = Extension::CreateOriginFromExtensionId(id());
-   extension_url_ = Extension::GetBaseURLFromExtensionId(id());
-+  LOG(ERROR) << "Extension::InitFromValue:"
-+             << "\nextension_origin_ = "
-+             << extension_origin_.Serialize().c_str()
-+             << "\nextension_url_ = " << extension_url_.spec().c_str();
- 
-   // Load App settings. LoadExtent at least has to be done before
-   // ParsePermissions(), because the valid permissions depend on what type of
-@@ -631,10 +640,12 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
+@@ -631,10 +636,12 @@ bool Extension::InitFromValue(int flags, std::u16string* error) {
    if (!permissions_parser_->Parse(this, error)) {
      return false;
    }
@@ -106,7 +102,7 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
  
    permissions_parser_->Finalize(this);
    permissions_parser_.reset();
-@@ -652,6 +663,7 @@ bool Extension::LoadRequiredFeatures(std::u16string* error) {
+@@ -652,6 +659,7 @@ bool Extension::LoadRequiredFeatures(std::u16string* error) {
    if (!LoadName(error) || !LoadVersion(error)) {
      return false;
    }
@@ -114,7 +110,12 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
    return true;
  }
  
-@@ -693,8 +705,8 @@ bool Extension::LoadVersion(std::u16string* error) {
+@@ -689,12 +697,13 @@ bool Extension::LoadVersion(std::u16string* error) {
+     }
+     version_name_ = temp->GetString();
+   }
++  LOG(ERROR) << "Extension::LoadVersion: version = " << version_.GetString();
+   return true;
  }
  
  bool Extension::LoadAppFeatures(std::u16string* error) {
@@ -125,15 +126,16 @@ index cd6a7eb4b6d8dfe0c9b1a6d8c6b46c2ecbe8c89a..1116edd944afa24044bd6e21a0ea4d58
      return false;
    }
    return true;
-@@ -822,6 +834,7 @@ bool Extension::LoadManifestVersion(std::u16string* error) {
+@@ -822,6 +831,8 @@ bool Extension::LoadManifestVersion(std::u16string* error) {
      AddInstallWarning(InstallWarning(warning, keys::kManifestVersion));
    }
  
-+  LOG(ERROR) << "Extension::LoadManifestVersion: succeeded.";
++  LOG(ERROR) << "Extension::LoadManifestVersion: version = "
++             << manifest_version_;
    return true;
  }
  
-@@ -858,4 +871,4 @@ ExtensionInfo& ExtensionInfo::operator=(ExtensionInfo&&) = default;
+@@ -858,4 +869,4 @@ ExtensionInfo& ExtensionInfo::operator=(ExtensionInfo&&) = default;
  
  ExtensionInfo::~ExtensionInfo() = default;
  

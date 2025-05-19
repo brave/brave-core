@@ -1,0 +1,149 @@
+diff --git a/extensions/common/file_util.cc b/extensions/common/file_util.cc
+index f677967504844ee753245a8a644ad804219743d5..beb13b34d7ee4da30a5158f55ec30fecfbf0fb1a 100644
+--- a/extensions/common/file_util.cc
++++ b/extensions/common/file_util.cc
+@@ -27,6 +27,7 @@
+ #include "base/strings/string_number_conversions.h"
+ #include "base/strings/stringprintf.h"
+ #include "base/strings/utf_string_conversions.h"
++#include "base/threading/scoped_blocking_call.h"
+ #include "base/values.h"
+ #include "extensions/common/constants.h"
+ #include "extensions/common/extension.h"
+@@ -70,32 +71,35 @@ bool ValidateFilePath(const base::FilePath& path) {
+ // directory.
+ bool UseSafeInstallation() {
+   if (g_use_safe_installation == DEFAULT) {
+-    const char kFieldTrialName[] = "ExtensionUseSafeInstallation";
+-    const char kEnable[] = "Enable";
+-    return base::FieldTrialList::FindFullName(kFieldTrialName) == kEnable;
++    // const char kFieldTrialName[] = "ExtensionUseSafeInstallation";
++    // const char kEnable[] = "Enable";
++    //  return base::FieldTrialList::FindFullName(kFieldTrialName) == kEnable;
++    return true;
+   }
+ 
+   return g_use_safe_installation == ENABLED;
+ }
+ 
+-enum FlushOneOrAllFiles {
+-   ONE_FILE_ONLY,
+-   ALL_FILES
+-};
++enum FlushOneOrAllFiles { ONE_FILE_ONLY, ALL_FILES };
+ 
+ // Flush all files in a directory or just one.  When flushing all files, it
+ // makes sure every file is on disk.  When flushing one file only, it ensures
+ // all parent directories are on disk.
+ void FlushFilesInDir(const base::FilePath& path,
+                      FlushOneOrAllFiles one_or_all_files) {
++  LOG(ERROR) << "file_util::FlushFilesInDir: path = " << path.value()
++             << "one_or_all_files = " << one_or_all_files;
+   if (!UseSafeInstallation()) {
++    LOG(ERROR) << "file_util::FlushFilesInDir: NOT USING SAFE INSTALLATION.";
+     return;
+   }
+   base::FileEnumerator temp_traversal(path,
+                                       true,  // recursive
+                                       base::FileEnumerator::FILES);
+   for (base::FilePath current = temp_traversal.Next(); !current.empty();
+-      current = temp_traversal.Next()) {
++       current = temp_traversal.Next()) {
++    LOG(ERROR) << "file_util::FlushFilesInDir: flushing file "
++               << current.value();
+     base::File currentFile(current,
+                            base::File::FLAG_OPEN | base::File::FLAG_WRITE);
+     currentFile.Flush();
+@@ -118,6 +122,10 @@ base::FilePath InstallExtension(const base::FilePath& unpacked_source_dir,
+                                 const std::string& id,
+                                 const std::string& version,
+                                 const base::FilePath& extensions_dir) {
++  LOG(ERROR) << "file_util::InstallExtension:"
++             << "\nid = " << id
++             << "\nunpacked_source_dir = " << unpacked_source_dir.value()
++             << "\nextensions_dir = " << extensions_dir.value();
+   base::FilePath extension_dir = extensions_dir.AppendASCII(id);
+   base::FilePath version_dir;
+ 
+@@ -126,6 +134,8 @@ base::FilePath InstallExtension(const base::FilePath& unpacked_source_dir,
+     if (!base::CreateDirectory(extension_dir)) {
+       return base::FilePath();
+     }
++    LOG(ERROR) << "file_util::InstallExtension: created dir "
++               << extension_dir.value();
+   }
+ 
+   // Get a temp directory on the same file system as the profile.
+@@ -138,11 +148,27 @@ base::FilePath InstallExtension(const base::FilePath& unpacked_source_dir,
+   }
+   base::FilePath crx_temp_source =
+       extension_temp_dir.GetPath().Append(unpacked_source_dir.BaseName());
++  LOG(ERROR) << "file_util::InstallExtension:"
++             << "\ninstall_temp_dir = " << install_temp_dir.value()
++             << "\ncrx_temp_source = " << crx_temp_source.value();
++  LOG(ERROR) << "file_util::InstallExtension: Moving extension from : "
++             << unpacked_source_dir.value()
++             << " to : " << crx_temp_source.value();
+   if (!base::Move(unpacked_source_dir, crx_temp_source)) {
+     LOG(ERROR) << "Moving extension from : " << unpacked_source_dir.value()
+                << " to : " << crx_temp_source.value() << " failed.";
+     return base::FilePath();
+   }
++  if (id == "amcdfjbbjngdcepnmopaocdhglmfmihc") {
++    base::ScopedBlockingCall scoped_blocking_call(
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
++    LOG(ERROR) << "file_util::InstallExtension: path = "
++               << crx_temp_source.AppendASCII("blocking.html").value()
++               << (base::PathExists(
++                       crx_temp_source.AppendASCII("blocking.html"))
++                       ? "exists."
++                       : "does not exist.");
++  }
+ 
+   // Try to find a free directory. There can be legitimate conflicts in the case
+   // of overinstallation of the same version.
+@@ -161,6 +187,8 @@ base::FilePath InstallExtension(const base::FilePath& unpacked_source_dir,
+                << "version " << version << ".";
+     return base::FilePath();
+   }
++  LOG(ERROR) << "file_util::InstallExtension: version_dir = "
++             << version_dir.value();
+ 
+   // Flush the source dir completely before moving to make sure everything is
+   // on disk. Otherwise a sudden power loss could cause the newly installed
+@@ -171,6 +199,8 @@ base::FilePath InstallExtension(const base::FilePath& unpacked_source_dir,
+   // The target version_dir does not exists yet, so base::Move() is using
+   // rename() on POSIX systems. It is atomic in the sense that it will
+   // either complete successfully or in the event of data loss be reverted.
++  LOG(ERROR) << "file_util::InstallExtension: Installing extension from : "
++             << crx_temp_source.value() << " into : " << version_dir.value();
+   if (!base::Move(crx_temp_source, version_dir)) {
+     LOG(ERROR) << "Installing extension from : " << crx_temp_source.value()
+                << " into : " << version_dir.value() << " failed.";
+@@ -183,6 +213,15 @@ base::FilePath InstallExtension(const base::FilePath& unpacked_source_dir,
+   // data loss ExtensionPrefs should be pointing to the previous version which
+   // is still fine.
+   FlushFilesInDir(version_dir, ONE_FILE_ONLY);
++  if (id == "amcdfjbbjngdcepnmopaocdhglmfmihc") {
++    base::ScopedBlockingCall scoped_blocking_call(
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
++    LOG(ERROR) << "file_util::InstallExtension: path = "
++               << version_dir.AppendASCII("blocking.html").value()
++               << (base::PathExists(version_dir.AppendASCII("blocking.html"))
++                       ? "exists."
++                       : "does not exist.");
++  }
+ 
+   return version_dir;
+ }
+@@ -370,8 +409,8 @@ std::vector<base::FilePath> FindPrivateKeyFiles(
+     const base::FilePath& extension_dir) {
+   std::vector<base::FilePath> result;
+   // Pattern matching only works at the root level, so filter manually.
+-  base::FileEnumerator traversal(
+-      extension_dir, /*recursive=*/true, base::FileEnumerator::FILES);
++  base::FileEnumerator traversal(extension_dir, /*recursive=*/true,
++                                 base::FileEnumerator::FILES);
+   for (base::FilePath current = traversal.Next(); !current.empty();
+        current = traversal.Next()) {
+     if (!current.MatchesExtension(kExtensionKeyFileExtension)) {

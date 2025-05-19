@@ -71,6 +71,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     auto resource = extension->GetResource("blocking.html");
+    resource.set_follow_symlinks_anywhere();
     LOG(ERROR) << "BraveExtensionProviderTest: resource extension id = "
                << resource.extension_id();
     LOG(ERROR) << "BraveExtensionProviderTest: resource root path = "

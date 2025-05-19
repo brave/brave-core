@@ -1,8 +1,16 @@
 diff --git a/extensions/browser/sandboxed_unpacker.cc b/extensions/browser/sandboxed_unpacker.cc
-index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b186e202170 100644
+index 895ad5f13680d6a10dd43db6ae7e4d330386876c..9da59147566f401ae0b0995b0dba9cc279c1a405 100644
 --- a/extensions/browser/sandboxed_unpacker.cc
 +++ b/extensions/browser/sandboxed_unpacker.cc
-@@ -380,6 +380,7 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
+@@ -28,6 +28,7 @@
+ #include "base/strings/string_number_conversions.h"
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/task/sequenced_task_runner.h"
++#include "base/threading/scoped_blocking_call.h"
+ #include "base/timer/elapsed_timer.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+@@ -380,6 +381,7 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
    // to do file IO on.
    DCHECK(unpacker_io_task_runner_->RunsTasksInCurrentSequence());
  
@@ -10,7 +18,7 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
    extension_id_ = extension_id;
    public_key_ = public_key;
    if (!CreateTempDirectory()) {
-@@ -387,6 +388,8 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
+@@ -387,6 +389,8 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
    }
  
    extension_root_ = temp_dir_.GetPath().AppendASCII(kTempExtensionName);
@@ -19,7 +27,26 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
  
    if (!base::Move(directory, extension_root_)) {
      LOG(ERROR) << "Could not move " << directory.value() << " to "
-@@ -515,6 +518,8 @@ void SandboxedUnpacker::Unpack(const base::FilePath& directory) {
+@@ -398,6 +402,18 @@ void SandboxedUnpacker::StartWithDirectory(const ExtensionId& extension_id,
+     return;
+   }
+ 
++  if (extension_id_ == "amcdfjbbjngdcepnmopaocdhglmfmihc") {
++    base::ScopedBlockingCall scoped_blocking_call(
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
++    if (!base::PathExists(extension_root_.AppendASCII("blocking.html"))) {
++      LOG(ERROR) << "SandboxedUnpacker::StartWithDirectory: path = "
++                 << extension_root_.AppendASCII("blocking.html").value().c_str()
++                 << "does not exist";
++    }
++  } else {
++    LOG(ERROR) << "SandboxedUnpacker::StartWithDirectory: ??? extension_id_ = "
++               << extension_id_;
++  }
+   Unpack(extension_root_);
+ }
+ 
+@@ -515,6 +531,8 @@ void SandboxedUnpacker::Unpack(const base::FilePath& directory) {
    DCHECK(directory.DirName() == temp_dir_.GetPath());
  
    base::FilePath manifest_path = extension_root_.Append(kManifestFilename);
@@ -28,7 +55,7 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
  
    ParseJsonFile(manifest_path,
                  base::BindOnce(&SandboxedUnpacker::ReadManifestDone, this));
-@@ -533,6 +538,10 @@ void SandboxedUnpacker::ReadManifestDone(
+@@ -533,6 +551,10 @@ void SandboxedUnpacker::ReadManifestDone(
      return;
    }
  
@@ -39,15 +66,15 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
    std::string error_msg;
    scoped_refptr<Extension> extension(
        Extension::Create(extension_root_, location_, manifest->GetDict(),
-@@ -542,6 +551,7 @@ void SandboxedUnpacker::ReadManifestDone(
+@@ -542,6 +564,7 @@ void SandboxedUnpacker::ReadManifestDone(
      return;
    }
  
-+  LOG(ERROR) << "SandboxedUnpacker::ReadManifestDone: vlaidating extension.";
++  LOG(ERROR) << "SandboxedUnpacker::ReadManifestDone: validating extension.";
    std::vector<InstallWarning> warnings;
    if (!file_util::ValidateExtension(extension.get(), &error_msg, &warnings)) {
      ReportUnpackExtensionFailed(error_msg);
-@@ -555,6 +565,8 @@ void SandboxedUnpacker::ReadManifestDone(
+@@ -555,6 +578,8 @@ void SandboxedUnpacker::ReadManifestDone(
  void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
    DCHECK(unpacker_io_task_runner_->RunsTasksInCurrentSequence());
  
@@ -56,7 +83,7 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
    std::optional<base::Value::Dict> final_manifest(
        RewriteManifestFile(manifest));
    if (!final_manifest) {
-@@ -582,6 +594,12 @@ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
+@@ -582,6 +607,12 @@ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
      return;
    }
  
@@ -69,7 +96,7 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
    extension_ =
        Extension::Create(extension_root_, location_, final_manifest.value(),
                          Extension::REQUIRE_KEY | creation_flags_, &utf8_error);
-@@ -612,6 +630,8 @@ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
+@@ -612,6 +643,8 @@ void SandboxedUnpacker::UnpackExtensionSucceeded(base::Value::Dict manifest) {
  
    manifest_ = std::move(manifest);
  
@@ -78,7 +105,16 @@ index 895ad5f13680d6a10dd43db6ae7e4d330386876c..5022026531403798a8dcae3a86571b18
    io_thread_state_->CreateImangeSanitizer(extension_.get(), extension_root_,
                                            this, unpacker_io_task_runner_);
  }
-@@ -1094,6 +1114,8 @@ void SandboxedUnpacker::ParseJsonFile(
+@@ -1058,6 +1091,8 @@ std::optional<base::Value::Dict> SandboxedUnpacker::RewriteManifestFile(
+                                    u"ERROR_SERIALIZING_MANIFEST_JSON"));
+     return std::nullopt;
+   }
++  LOG(ERROR) << "SandboxedUnpacker::RewriteManifestFile: final manifest = "
++             << manifest_json.value_or("");
+ 
+   base::FilePath manifest_path = extension_root_.Append(kManifestFilename);
+   if (!base::WriteFile(manifest_path, *manifest_json)) {
+@@ -1094,6 +1129,8 @@ void SandboxedUnpacker::ParseJsonFile(
      return;
    }
  
