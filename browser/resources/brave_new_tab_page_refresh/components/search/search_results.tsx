@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
 
 import { AutocompleteMatch, ClickEvent } from '../../models/search'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { placeholderImageSrc } from '../../lib/image_loader'
 import { faviconURL } from '../../lib/favicon_url'
@@ -24,7 +24,6 @@ function useMojoString16<T>(value: T) {
 }
 
 function MatchImage(props: { match: AutocompleteMatch }) {
-  const { getString } = useLocale()
   const { imageUrl, iconUrl } = props.match
   const description = useMojoString16(props.match.description)
 
@@ -74,7 +73,6 @@ interface Props {
 export function SearchResults(props: Props) {
   const { selectedOption, options } = props
 
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const searchSuggestionsEnabled =

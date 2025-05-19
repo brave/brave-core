@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { Popover } from '../common/popover'
 
 import { style } from './remove_toast.style'
@@ -19,7 +19,6 @@ interface Props {
 }
 
 export function RemoveToast(props: Props) {
-  const { getString } = useLocale()
   const timeout: React.MutableRefObject<number> = React.useRef(0)
 
   function cancelTimer() {

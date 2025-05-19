@@ -7,7 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { TopSite, TopSitesListKind } from '../../models/top_sites'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { RemoveToast } from './remove_toast'
@@ -22,7 +22,6 @@ import {
   maxTileCount } from './top_sites.style'
 
 export function TopSites() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const showTopSites = useAppState((s) => s.showTopSites)

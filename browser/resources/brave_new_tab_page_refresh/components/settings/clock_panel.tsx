@@ -8,14 +8,13 @@ import DropDown from '@brave/leo/react/dropdown'
 import Toggle from '@brave/leo/react/toggle'
 
 import { ClockFormat } from '../../models/new_tab'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 import formatMessage from '$web-common/formatMessage'
 
 import { style } from './clock_panel.style'
 
 export function ClockPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const [showClock, clockFormat] = useAppState((state) => [

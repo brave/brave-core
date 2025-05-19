@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StringKey, PluralStringKey, Locale } from '../models/locale_strings'
+import { provideStrings } from '../../../../.storybook/locale'
+
+import { StringKey } from '../lib/strings'
 
 const localeStrings: Record<StringKey, string>  = {
   addTopSiteLabel: 'Add site',
@@ -161,18 +163,4 @@ const localeStrings: Record<StringKey, string>  = {
   widgetSettingsTitle: 'Cards'
 }
 
-const pluralStrings: Record<PluralStringKey, string>  = {
-  newsSourceCountText: '# sources'
-}
-
-export function createLocale(): Locale {
-  return {
-    getString(key) {
-      return localeStrings[key] ?? 'MISSING'
-    },
-    async getPluralString (key, count) {
-      const message =  pluralStrings[key] ?? 'MISSING'
-      return message.replace('#', String(count))
-    }
-  }
-}
+provideStrings(localeStrings)

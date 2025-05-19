@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppState } from '../context/app_model_context'
 import { Link, openLink } from '../common/link'
 
@@ -26,8 +26,6 @@ const exchangeAmountFormatter = new Intl.NumberFormat(undefined, {
 })
 
 export function RewardsWidget() {
-  const { getString } = useLocale()
-
   const rewardsEnabled = useAppState((s) => s.rewardsEnabled)
   const externalWallet = useAppState((s) => s.rewardsExternalWallet)
   const balance = useAppState((s) => s.rewardsBalance)

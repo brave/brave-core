@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { ConnectionState } from '../../models/vpn'
 import classNames from '$web-common/classnames'
 
@@ -20,7 +20,6 @@ import vpnShieldDisconnectedURL from '../../assets/vpn_shield_disconnected.svg'
 import vpnShieldConnectedURL from '../../assets/vpn_shield_connected.svg'
 
 export function VPNWidget() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const purchased = useAppState((s) => s.vpnPurchased)

@@ -9,14 +9,13 @@ import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
 
 import { style } from './search_panel.style'
 
 export function SearchPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const showSearchBox = useAppState((s) => s.showSearchBox)
