@@ -1,5 +1,5 @@
 diff --git a/extensions/common/extension_resource.cc b/extensions/common/extension_resource.cc
-index dac83d9048401a9e02c590acf9f76cc31f47c3d4..eb4041b243559f85e76de160d48a4f9fc3e6a892 100644
+index dac83d9048401a9e02c590acf9f76cc31f47c3d4..0f62a1c4e5408c4fba1804378697f2f7ba292792 100644
 --- a/extensions/common/extension_resource.cc
 +++ b/extensions/common/extension_resource.cc
 @@ -18,7 +18,7 @@ ExtensionResource::ExtensionResource(const ExtensionId& extension_id,
@@ -7,7 +7,7 @@ index dac83d9048401a9e02c590acf9f76cc31f47c3d4..eb4041b243559f85e76de160d48a4f9f
        extension_root_(extension_root),
        relative_path_(relative_path),
 -      follow_symlinks_anywhere_(false) {}
-+      follow_symlinks_anywhere_(/*false*/ true) {}
++      follow_symlinks_anywhere_(true) {}
  
  ExtensionResource::ExtensionResource(const ExtensionResource& other) = default;
  ExtensionResource::ExtensionResource(ExtensionResource&& other) = default;
@@ -79,16 +79,18 @@ index dac83d9048401a9e02c590acf9f76cc31f47c3d4..eb4041b243559f85e76de160d48a4f9f
      if (full_path.empty() || !base::PathExists(full_path)) {
        return base::FilePath();
      }
-@@ -100,6 +119,8 @@ base::FilePath ExtensionResource::GetFilePath(
+@@ -100,6 +119,10 @@ base::FilePath ExtensionResource::GetFilePath(
  
    if (symlink_policy != FOLLOW_SYMLINKS_ANYWHERE &&
        !clean_extension_root.IsParent(full_path)) {
 +    LOG(ERROR) << "ExtensionResource::GetFilePath: symlink_policy && "
-+                  "!clean_extension_root.IsParent";
++                  "!clean_extension_root.IsParent:"
++               << "\nclean_extension_root = " << clean_extension_root.value()
++               << "\nfull_path = " << full_path.value();
      return base::FilePath();
    }
  
-@@ -121,11 +142,15 @@ base::FilePath ExtensionResource::GetFilePath(
+@@ -121,11 +144,15 @@ base::FilePath ExtensionResource::GetFilePath(
        !relative_path.empty()) {
      const char last_char = relative_path.value().back();
      if (last_char == '.' || last_char == ' ') {
