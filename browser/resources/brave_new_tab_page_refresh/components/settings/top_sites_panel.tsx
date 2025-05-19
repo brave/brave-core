@@ -9,13 +9,12 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { TopSitesListKind } from '../../models/top_sites'
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'
 
 export function TopSitesPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const showTopSites = useAppState((s) => s.showTopSites)

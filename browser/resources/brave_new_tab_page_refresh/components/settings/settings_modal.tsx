@@ -15,7 +15,7 @@ import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
 import { ClockPanel } from './clock_panel'
 import { WidgetsPanel } from './widgets_panel'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 
 import { style } from './settings_modal.style'
 
@@ -33,8 +33,6 @@ interface Props {
 }
 
 export function SettingsModal(props: Props) {
-  const { getString } = useLocale()
-
   const searchFeatureEnabled =
       useAppState((state) => state.searchFeatureEnabled)
 

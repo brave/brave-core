@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 
 import { style } from './stats_widget.style'
 
@@ -16,8 +16,6 @@ const adsBlockedFormatter = new Intl.NumberFormat(undefined, {
 })
 
 export function StatsWidget() {
-  const { getString } = useLocale()
-
   const showStats = useAppState((s) => s.showShieldsStats)
   const stats = useAppState((s) => s.shieldsStats)
 

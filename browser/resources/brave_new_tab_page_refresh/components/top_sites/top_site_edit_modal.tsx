@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { TopSite } from '../../models/top_sites'
 import { Modal } from '../common/modal'
 
@@ -39,7 +39,6 @@ interface Props {
 }
 
 export function TopSiteEditModal(props: Props) {
-  const { getString } = useLocale()
   const [title, setTitle] = React.useState('')
   const [url, setURL] = React.useState('')
 

@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js'
-import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'

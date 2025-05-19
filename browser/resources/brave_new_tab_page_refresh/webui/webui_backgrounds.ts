@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
+import { loadTimeData } from '$web-common/loadTimeData'
 import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
-
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounceListener } from './debounce_listener'

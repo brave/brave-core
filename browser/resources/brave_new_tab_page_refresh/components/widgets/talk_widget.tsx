@@ -6,13 +6,12 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { openLink } from '../common/link'
 
 import { style } from './talk_widget.style'
 
 export function TalkWidget() {
-  const { getString } = useLocale()
   return (
     <div data-css-scope={style.scope}>
       <div className='title'>

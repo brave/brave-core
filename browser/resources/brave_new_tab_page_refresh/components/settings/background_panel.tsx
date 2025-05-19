@@ -9,7 +9,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import Toggle from '@brave/leo/react/toggle'
 
 import { useAppActions, useAppState } from '../context/app_model_context'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { optional } from '../../lib/optional'
 import { BackgroundTypePanel } from './background_type_panel'
@@ -26,7 +26,6 @@ import {
 import { style } from './background_panel.style'
 
 export function BackgroundPanel() {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const backgroundsEnabled = useAppState((s) => s.backgroundsEnabled)

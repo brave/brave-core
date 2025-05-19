@@ -6,14 +6,12 @@
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { useAppActions, useAppState } from '../context/app_model_context'
 
 import { style } from './widgets_panel.style'
 
 export function WidgetsPanel() {
-  const { getString } = useLocale()
-
   const actions = useAppActions()
 
   const showStats = useAppState((s) => s.showShieldsStats)

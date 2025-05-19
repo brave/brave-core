@@ -16,7 +16,7 @@ import {
 import { useAppActions, useAppState } from '../context/app_model_context'
 import { optional } from '../../lib/optional'
 import { urlFromInput } from '../../lib/url_input'
-import { useLocale } from '../context/locale_context'
+import { getString } from '../../lib/strings'
 import { Popover } from '../common/popover'
 import { EngineIcon } from './engine_icon'
 import { SearchResults, ResultOption } from './search_results'
@@ -29,7 +29,6 @@ interface Props {
 }
 
 export function SearchBox(props: Props) {
-  const { getString } = useLocale()
   const actions = useAppActions()
 
   const searchFeatureEnabled = useAppState((s) => s.searchFeatureEnabled)
