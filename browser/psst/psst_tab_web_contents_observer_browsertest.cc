@@ -77,10 +77,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
-    auto* registry = PsstRuleRegistryAccessor::GetInstance()->Registry();
-    if (registry) {
-      registry->LoadRules(test_data_dir.AppendASCII("psst-component-data"));
-    }
+    PsstRuleRegistry::GetInstance()->LoadRules(
+        test_data_dir.AppendASCII("psst-component-data"));
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
