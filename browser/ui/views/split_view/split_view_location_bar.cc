@@ -36,9 +36,8 @@
 #include "ui/views/widget/widget_delegate.h"
 
 SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
-                                           SplitView* split_view)
+                                           views::View* parent_web_view)
     : prefs_(prefs),
-      split_view_(split_view),
       location_bar_model_delegate_(
           std::make_unique<SplitViewLocationBarModelDelegate>()),
       location_bar_model_(std::make_unique<LocationBarModelImpl>(
@@ -46,8 +45,8 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
           content::kMaxURLDisplayChars)) {
   set_owned_by_client(OwnedByClientPassKey());
 
-  if (split_view_) {
-    view_observation_.Observe(split_view_->secondary_contents_container());
+  if (parent_web_view) {
+    view_observation_.Observe(parent_web_view);
   } else {
     CHECK_IS_TEST();
   }

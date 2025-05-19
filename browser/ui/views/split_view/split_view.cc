@@ -260,7 +260,7 @@ void SplitView::AddedToWidget() {
   widget_observation_.Observe(GetWidget());
 
   secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-      browser_->profile()->GetPrefs(), this);
+      browser_->profile()->GetPrefs(), secondary_contents_container_);
   secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
   secondary_location_bar_widget_->Init(
