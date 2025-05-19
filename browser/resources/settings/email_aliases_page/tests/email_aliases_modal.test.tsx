@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
 import { EmailAliasModal, EditState } from '../content/email_aliases_modal'
 
-import { clickLeoButton, localeRegex } from './test_utils'
+import { clickLeoButton } from './test_utils'
 import { EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
@@ -15,10 +15,10 @@ jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
     return key
   },
-  formatMessage: (key: string, params: Record<string, string>) => {
+  formatMessage: (key: string) => {
     return key
   },
-  formatLocale: (key: string, params: Record<string, string>) => {
+  formatLocale: (key: string) => {
     return key
   }
 }))
@@ -56,7 +56,7 @@ describe('EmailAliasModal', () => {
     )
 
     // Check title and description
-    expect(screen.getByText(localeRegex('emailAliasesCreateAliasTitle')))
+    expect(screen.getByText('emailAliasesCreateAliasTitle'))
       .toBeInTheDocument()
 
     // Check that generate alias was called
@@ -86,17 +86,16 @@ describe('EmailAliasModal', () => {
     )
 
     // Check title
-    expect(screen.getByText(localeRegex('emailAliasesEditAliasTitle')))
+    expect(screen.getByText('emailAliasesEditAliasTitle'))
       .toBeInTheDocument()
 
     // Check that existing alias is displayed
     expect(screen.getByText(/existing@brave\.com/)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(localeRegex(
-      'emailAliasesEditNotePlaceholder'))).toHaveValue('Existing Alias')
+    expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
+      .toHaveValue('Existing Alias')
   })
 
   it('handles alias creation', async () => {
-
     await act(async () => {
       render(
         <EmailAliasModal
@@ -115,17 +114,16 @@ describe('EmailAliasModal', () => {
 
     // Wait for loading to complete and alias to be generated
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(localeRegex(
-        'emailAliasesEditNotePlaceholder'))).toBeInTheDocument()
+      expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
+        .toBeInTheDocument()
       expect(screen.queryByTestId('loading-icon')).not.toBeInTheDocument()
-      const generatedEmailContainer = screen.getByText(localeRegex(
-        'emailAliasesAliasLabel')).closest('div')?.nextElementSibling
+      const generatedEmailContainer = screen.getByText('emailAliasesAliasLabel')
+        .closest('div')?.nextElementSibling
       expect(generatedEmailContainer).toHaveTextContent('generated@brave.com')
     })
 
     // Ensure the save button is enabled
-    const saveButton = screen.getByText(localeRegex(
-      'emailAliasesCreateAliasButton'))
+    const saveButton = screen.getByText('emailAliasesCreateAliasButton')
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
     // Click save button
@@ -184,7 +182,7 @@ describe('EmailAliasModal', () => {
 
     // Wait for limit check
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesBubbleLimitReached')))
+      expect(screen.getByText('emailAliasesBubbleLimitReached'))
         .toBeInTheDocument()
     })
   })
@@ -242,13 +240,12 @@ describe('EmailAliasModal', () => {
     // Wait for initial state to be set
     await waitFor(() => {
       expect(screen.getByText(/existing@brave\.com/)).toBeInTheDocument()
-      expect(screen.getByPlaceholderText(localeRegex(
-        'emailAliasesEditNotePlaceholder'))).toHaveValue('Existing Alias')
+      expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
+        .toHaveValue('Existing Alias')
     })
 
     // Ensure the save button is enabled
-    const saveButton = screen.getByText(localeRegex(
-      'emailAliasesSaveAliasButton'))
+    const saveButton = screen.getByText('emailAliasesSaveAliasButton')
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
     // Click save button

@@ -6,17 +6,16 @@
 import * as React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { AliasItem } from '../content/email_aliases_item'
-import { getLocale } from '$web-common/locale'
 import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
     return key
   },
-  formatMessage: (key: string, params: Record<string, string>) => {
+  formatMessage: (key: string) => {
     return key
   },
-  formatLocale: (key: string, params: Record<string, string>) => {
+  formatLocale: (key: string) => {
     return key
   }
 }))
@@ -104,7 +103,7 @@ describe('AliasItem', () => {
     )
 
     // Click delete button
-    const deleteButton = screen.getByText(getLocale('emailAliasesDelete'))
+    const deleteButton = screen.getByText('emailAliasesDelete')
     fireEvent.click(deleteButton)
 
     // Check if callback was called
@@ -121,7 +120,7 @@ describe('AliasItem', () => {
     )
 
     // Click edit button
-    const editButton = screen.getByText(getLocale('emailAliasesEdit'))
+    const editButton = screen.getByText('emailAliasesEdit')
     fireEvent.click(editButton)
 
     // Check if callback was called

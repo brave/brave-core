@@ -4,18 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { clickLeoButton } from './test_utils'
-import { getLocale } from '$web-common/locale'
 import { MainEmailDisplay } from '../content/email_aliases_main_email_display'
 import { render, screen, act } from '@testing-library/react'
 import * as React from 'react'
 import { EmailAliasesServiceInterface }
   from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-}))
 
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
@@ -37,8 +30,7 @@ describe('MainEmailDisplay', () => {
 
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
 
-    const signOutButton = screen.getByTitle(
-      getLocale('emailAliasesSignOutTitle'))
+    const signOutButton = screen.getByTitle('emailAliasesSignOutTitle')
     await act(async () => {
       clickLeoButton(signOutButton)
     })

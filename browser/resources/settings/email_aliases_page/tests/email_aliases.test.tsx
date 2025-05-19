@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
 import { ManagePageConnected } from '../email_aliases'
-import { localeRegex } from './test_utils'
 import {
   Alias,
   AuthenticationStatus,
@@ -18,10 +17,10 @@ jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
     return key
   },
-  formatMessage: (key: string, params: Record<string, string>) => {
+  formatMessage: (key: string) => {
     return key
   },
-  formatLocale: (key: string, params: Record<string, string>) => {
+  formatLocale: (key: string) => {
     return key
   }
 }))
@@ -80,8 +79,8 @@ describe('ManagePageConnected', () => {
     await waitFor(() => {
       expect(document.querySelector('leo-progressring'))
         .toBeInTheDocument()
-      expect(screen.getByText(localeRegex(
-        'emailAliasesConnectingToBraveAccount'))).toBeInTheDocument()
+      expect(screen.getByText(
+        'emailAliasesConnectingToBraveAccount')).toBeInTheDocument()
     })
   })
 
@@ -103,10 +102,10 @@ describe('ManagePageConnected', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesSignInOrCreateAccount')))
+      expect(screen.getByText('emailAliasesSignInOrCreateAccount'))
         .toBeInTheDocument()
-      expect(screen.getByPlaceholderText(localeRegex(
-        'emailAliasesEmailAddressPlaceholder'))).toBeInTheDocument()
+      expect(screen.getByPlaceholderText('emailAliasesEmailAddressPlaceholder'))
+        .toBeInTheDocument()
     })
   })
 
@@ -129,10 +128,9 @@ describe('ManagePageConnected', () => {
 
     await waitFor(() => {
       expect(screen.getByText(mockEmail)).toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesBraveAccount')))
+      expect(screen.getByText('emailAliasesBraveAccount'))
         .toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesSignOut')))
-        .toBeInTheDocument()
+      expect(screen.getByText('emailAliasesSignOut')).toBeInTheDocument()
     })
   })
 
@@ -154,11 +152,11 @@ describe('ManagePageConnected', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByText(localeRegex('emailAliasesLoginEmailOnTheWay')))
+      expect(screen.getByText('emailAliasesLoginEmailOnTheWay'))
         .toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesClickOnSecureLogin')))
+      expect(screen.getByText('emailAliasesClickOnSecureLogin'))
         .toBeInTheDocument()
-      expect(screen.getByText(localeRegex('emailAliasesDontSeeEmail')))
+      expect(screen.getByText('emailAliasesDontSeeEmail'))
         .toBeInTheDocument()
     })
   })
