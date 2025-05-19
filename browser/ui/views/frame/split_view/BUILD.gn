@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+source_set("split_view") {
+  sources = [
+    "brave_multi_contents_view.cc",
+    "brave_multi_contents_view.h",
+  ]
+
+  deps = [
+    "//chrome/browser/ui/color:mixers",
+    "//ui/base/metadata",
+    "//ui/compositor",
+    "//ui/views",
+  ]
+}
