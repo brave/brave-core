@@ -85,11 +85,13 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
                << file_size.value_or(0LL);
   }
 
+  LOG(ERROR) << "BraveExtensionProviderTest: Navigating to url = "
+             << url.spec();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  VLOG(1) << "BraveExtensionProviderTest: Navigated to url = " << url.spec();
+  LOG(ERROR) << "BraveExtensionProviderTest: Navigated to url = " << url.spec();
 
   EXPECT_EQ(true,
             content::EvalJs(contents,

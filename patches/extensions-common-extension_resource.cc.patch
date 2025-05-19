@@ -1,7 +1,16 @@
 diff --git a/extensions/common/extension_resource.cc b/extensions/common/extension_resource.cc
-index dac83d9048401a9e02c590acf9f76cc31f47c3d4..865035b00ba172ebbb9e30ae5146d4e13beef83c 100644
+index dac83d9048401a9e02c590acf9f76cc31f47c3d4..eb4041b243559f85e76de160d48a4f9fc3e6a892 100644
 --- a/extensions/common/extension_resource.cc
 +++ b/extensions/common/extension_resource.cc
+@@ -18,7 +18,7 @@ ExtensionResource::ExtensionResource(const ExtensionId& extension_id,
+     : extension_id_(extension_id),
+       extension_root_(extension_root),
+       relative_path_(relative_path),
+-      follow_symlinks_anywhere_(false) {}
++      follow_symlinks_anywhere_(/*false*/ true) {}
+ 
+ ExtensionResource::ExtensionResource(const ExtensionResource& other) = default;
+ ExtensionResource::ExtensionResource(ExtensionResource&& other) = default;
 @@ -32,19 +32,28 @@ void ExtensionResource::set_follow_symlinks_anywhere() {
  }
  
