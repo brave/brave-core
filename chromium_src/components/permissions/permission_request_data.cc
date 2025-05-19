@@ -18,14 +18,14 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
       return RequestType::kBraveEthereum;
     case ContentSettingsType::BRAVE_SOLANA:
       return RequestType::kBraveSolana;
-    case ContentSettingsType::BRAVE_CARDANO:
-      return RequestType::kBraveCardano;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return RequestType::kBraveOpenAIChat;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return RequestType::kBraveCardano;
     default:
       return ContentSettingsTypeToRequestTypeIfExists(content_settings_type);
   }

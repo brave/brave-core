@@ -53,14 +53,14 @@
     return ContentSettingsType::BRAVE_ETHEREUM;                  \
   case PermissionType::BRAVE_SOLANA:                             \
     return ContentSettingsType::BRAVE_SOLANA;                    \
-  case PermissionType::BRAVE_CARDANO:                            \
-    return ContentSettingsType::BRAVE_CARDANO;                   \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
     return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
     return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:                       \
-    return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
+    return ContentSettingsType::BRAVE_OPEN_AI_CHAT;              \
+  case PermissionType::BRAVE_CARDANO:                            \
+    return ContentSettingsType::BRAVE_CARDANO;
 
 #include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
@@ -78,14 +78,14 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveEthereum";
     case ContentSettingsType::BRAVE_SOLANA:
       return "BraveSolana";
-    case ContentSettingsType::BRAVE_CARDANO:
-      return "BraveCardano";
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return "BraveGoogleSignInPermission";
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return "BraveLocalhostAccessPermission";
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return "BraveOpenAIChatPermission";
+    case ContentSettingsType::BRAVE_CARDANO:
+      return "BraveCardano";
     default:
       return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
   }
@@ -156,14 +156,14 @@ PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
       return PermissionType::BRAVE_ETHEREUM;
     case ContentSettingsType::BRAVE_SOLANA:
       return PermissionType::BRAVE_SOLANA;
-    case ContentSettingsType::BRAVE_CARDANO:
-      return PermissionType::BRAVE_CARDANO;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return PermissionType::BRAVE_GOOGLE_SIGN_IN;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return PermissionType::BRAVE_LOCALHOST_ACCESS;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return PermissionType::BRAVE_OPEN_AI_CHAT;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return PermissionType::BRAVE_CARDANO;
     default:
       return PermissionUtil_ChromiumImpl::ContentSettingsTypeToPermissionType(
           permission);

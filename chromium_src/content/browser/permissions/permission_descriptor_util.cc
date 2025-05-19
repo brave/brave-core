@@ -38,9 +38,6 @@
   case blink::PermissionType::BRAVE_SOLANA:                                   \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_SOLANA);                          \
-  case blink::PermissionType::BRAVE_CARDANO:                                  \
-    return CreatePermissionDescriptor(                                        \
-        blink::mojom::PermissionName::BRAVE_CARDANO);                         \
   case blink::PermissionType::BRAVE_GOOGLE_SIGN_IN:                           \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_GOOGLE_SIGN_IN);                  \
@@ -50,6 +47,9 @@
   case blink::PermissionType::BRAVE_OPEN_AI_CHAT:                             \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_OPEN_AI_CHAT);                    \
+  case blink::PermissionType::BRAVE_CARDANO:                                  \
+    return CreatePermissionDescriptor(                                        \
+        blink::mojom::PermissionName::BRAVE_CARDANO);                         \
   case blink::PermissionType::NUM
 
 #include "src/content/browser/permissions/permission_descriptor_util.cc"

@@ -20,10 +20,10 @@
   case PermissionType::BRAVE_SPEEDREADER:               \
   case PermissionType::BRAVE_ETHEREUM:                  \
   case PermissionType::BRAVE_SOLANA:                    \
-  case PermissionType::BRAVE_CARDANO:                   \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
+  case PermissionType::BRAVE_CARDANO:                   \
   case PermissionType::NUM
 
 #include "src/content/browser/permissions/permission_controller_impl.cc"

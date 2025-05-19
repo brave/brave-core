@@ -45,8 +45,6 @@
     return network::mojom::PermissionsPolicyFeature::kEthereum; \
   case PermissionType::BRAVE_SOLANA:                            \
     return network::mojom::PermissionsPolicyFeature::kSolana;   \
-  case PermissionType::BRAVE_CARDANO:                           \
-    return network::mojom::PermissionsPolicyFeature::kCardano;  \
   case PermissionType::BRAVE_ADS:                               \
   case PermissionType::BRAVE_COSMETIC_FILTERING:                \
   case PermissionType::BRAVE_TRACKERS:                          \
@@ -59,15 +57,15 @@
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                    \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:                  \
   case PermissionType::BRAVE_OPEN_AI_CHAT:                      \
-    return std::nullopt
+    return std::nullopt;                                        \
+  case PermissionType::BRAVE_CARDANO:                           \
+    return network::mojom::PermissionsPolicyFeature::kCardano
 
 #define BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
   case PermissionName::BRAVE_ETHEREUM:                                      \
     return PermissionType::BRAVE_ETHEREUM;                                  \
   case PermissionName::BRAVE_SOLANA:                                        \
     return PermissionType::BRAVE_SOLANA;                                    \
-  case PermissionName::BRAVE_CARDANO:                                       \
-    return PermissionType::BRAVE_CARDANO;                                   \
   case PermissionName::BRAVE_ADS:                                           \
     return PermissionType::BRAVE_ADS;                                       \
   case PermissionName::BRAVE_COSMETIC_FILTERING:                            \
@@ -91,7 +89,9 @@
   case PermissionName::BRAVE_LOCALHOST_ACCESS:                              \
     return PermissionType::BRAVE_LOCALHOST_ACCESS;                          \
   case PermissionName::BRAVE_OPEN_AI_CHAT:                                  \
-    return PermissionType::BRAVE_OPEN_AI_CHAT;
+    return PermissionType::BRAVE_OPEN_AI_CHAT;                              \
+  case PermissionName::BRAVE_CARDANO:                                       \
+    return PermissionType::BRAVE_CARDANO;
 
 #include "src/third_party/blink/common/permissions/permission_utils.cc"
 #undef BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE

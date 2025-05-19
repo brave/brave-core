@@ -336,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   }
 
   scoped_mock_time_task_runner.task_runner()->FastForwardBy(
-      base::Seconds(30 * 3));
+      base::Seconds(30 * 4));
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
   EXPECT_TRUE(GetExpirationsPrefValue().empty());
   for (const auto& entry : kTestCases) {

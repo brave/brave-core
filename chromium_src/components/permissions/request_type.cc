@@ -120,10 +120,10 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
       return ContentSettingsType::BRAVE_ETHEREUM;
     case RequestType::kBraveSolana:
       return ContentSettingsType::BRAVE_SOLANA;
-    case RequestType::kBraveCardano:
-      return ContentSettingsType::BRAVE_CARDANO;
     case RequestType::kBraveOpenAIChat:
       return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
+    case RequestType::kBraveCardano:
+      return ContentSettingsType::BRAVE_CARDANO;
     default:
       return RequestTypeToContentSettingsType_ChromiumImpl(request_type);
   }
@@ -135,8 +135,8 @@ bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
-    case ContentSettingsType::BRAVE_CARDANO:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+    case ContentSettingsType::BRAVE_CARDANO:
       return true;
     default:
       return IsRequestablePermissionType_ChromiumImpl(content_settings_type);

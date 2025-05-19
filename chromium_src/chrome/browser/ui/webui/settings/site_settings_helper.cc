@@ -29,7 +29,6 @@
   {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},                  \
   {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},                  \
   {ContentSettingsType::BRAVE_SOLANA, "solana"},                      \
-  {ContentSettingsType::BRAVE_CARDANO, "cardano"},                    \
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
@@ -54,7 +53,8 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
-  {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
+  {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
+  {ContentSettingsType::BRAVE_CARDANO, "cardano"},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
@@ -139,10 +139,10 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
       ContentSettingsType::AUTOPLAY,
       ContentSettingsType::BRAVE_ETHEREUM,
       ContentSettingsType::BRAVE_SOLANA,
-      // TODO(cypt4): Enable ContentSettingsType::BRAVE_CARDANO,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
       ContentSettingsType::BRAVE_OPEN_AI_CHAT,
+      // TODO(cypt4): Enable ContentSettingsType::BRAVE_CARDANO,
   };
 
   auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);
