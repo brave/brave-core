@@ -17,6 +17,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_knapsack_solver.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_max_send_solver.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
@@ -147,7 +148,13 @@ void CardanoCreateTransactionTask::WorkOnTask() {
     base::expected<CardanoTransaction, std::string> solved_transaction;
     transaction_.set_invalid_after(latest_block_->slot + kTxValiditySeconds);
 
-    if (!sending_max_amount_) {
+    if (sending_max_amount_) {
+      transaction_.AddOutput(CreateTargetOutput());
+
+      CardanoMaxSendSolver solver(transaction_, *latest_epoch_parameters_,
+                                  TxInputsFromUtxoMap(*utxo_map_));
+      solved_transaction = solver.Solve();
+    } else {
       transaction_.AddOutput(CreateTargetOutput());
       transaction_.AddOutput(CreateChangeOutput());
 

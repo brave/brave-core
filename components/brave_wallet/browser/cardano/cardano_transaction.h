@@ -36,7 +36,7 @@ class CardanoTransaction {
     base::Value::Dict ToValue() const;
     static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
 
-    std::array<uint8_t, kCardanoTxHashSize> txid;
+    std::array<uint8_t, kCardanoTxHashSize> txid = {};
     uint32_t index = 0;
   };
 
@@ -76,8 +76,6 @@ class CardanoTransaction {
 
     base::Value::Dict ToValue() const;
     static std::optional<TxWitness> FromValue(const base::Value::Dict& value);
-
-    static TxWitness DummyTxWitness();
 
     std::array<uint8_t, kCardanoWitnessSize> witness_bytes = {};
   };
@@ -147,7 +145,6 @@ class CardanoTransaction {
   void ClearInputs();
 
   const std::vector<TxWitness>& witnesses() const { return witnesses_; }
-  void AddWitness(TxWitness witnesses);
   void SetWitnesses(std::vector<TxWitness> witnesses);
 
   const std::vector<TxOutput>& outputs() const { return outputs_; }

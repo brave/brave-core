@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
 
 #include <cstdint>
+#include <limits>
 #include <optional>
 #include <utility>
 
@@ -16,7 +17,18 @@
 
 namespace brave_wallet {
 
-cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx) {
+namespace {
+
+constexpr std::array<uint8_t, kCardanoWitnessSize> kDummyTxWitnessBytes = {};
+
+}  // namespace
+
+CardanoSerializer::CardanoSerializer() = default;
+CardanoSerializer::CardanoSerializer(CardanoSerializer::Options options)
+    : options_(options) {}
+
+cbor::Value::ArrayValue CardanoSerializer::SerializeInputs(
+    const CardanoTransaction& tx) {
   cbor::Value::ArrayValue result;
   for (const auto& input : tx.inputs()) {
     cbor::Value::ArrayValue input_value;
@@ -30,32 +42,49 @@ cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx) {
   return result;
 }
 
-cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx) {
+cbor::Value::ArrayValue CardanoSerializer::SerializeOutputs(
+    const CardanoTransaction& tx) {
   cbor::Value::ArrayValue result;
   for (const auto& output : tx.outputs()) {
     cbor::Value::ArrayValue output_value;
     output_value.emplace_back(output.address.ToCborBytes());
-    output_value.emplace_back(static_cast<int64_t>(output.amount));
+
+    bool serialize_as_max_value =
+        (output.type == CardanoTransaction::TxOutputType::kTarget &&
+         options_.max_value_for_target_output) ||
+        (output.type == CardanoTransaction::TxOutputType::kChange &&
+         options_.max_value_for_change_output);
+
+    if (serialize_as_max_value) {
+      output_value.emplace_back(std::numeric_limits<int64_t>::max());
+    } else {
+      output_value.emplace_back(static_cast<int64_t>(output.amount));
+    }
+
     result.emplace_back(std::move(output_value));
   }
 
   return result;
 }
 
-cbor::Value SerializeTxBody(const CardanoTransaction& tx) {
+cbor::Value CardanoSerializer::SerializeTxBody(const CardanoTransaction& tx) {
   // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionBody/TransactionBody.ts#L75-L250
 
   cbor::Value::MapValue body_map;
 
   body_map.emplace(0, SerializeInputs(tx));
   body_map.emplace(1, SerializeOutputs(tx));
-  body_map.emplace(2, static_cast<int64_t>(tx.EffectiveFeeAmount()));  // fee
-  body_map.emplace(3, static_cast<int64_t>(tx.invalid_after()));       // ttl
+  body_map.emplace(2,
+                   options_.max_value_for_fee
+                       ? std::numeric_limits<int64_t>::max()
+                       : static_cast<int64_t>(tx.EffectiveFeeAmount()));  // fee
+  body_map.emplace(3, static_cast<int64_t>(tx.invalid_after()));          // ttl
 
   return cbor::Value(body_map);
 }
 
-cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
+cbor::Value CardanoSerializer::SerializeWitnessSet(
+    const CardanoTransaction& tx) {
   // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionWitnessSet/TransactionWitnessSet.ts#L49-L116
 
   cbor::Value::MapValue witness_map;
@@ -63,16 +92,18 @@ cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
   // Verification Key Witness array
   cbor::Value::ArrayValue vk_witness_array;
 
-  if (tx.witnesses().empty()) {
+  if (options_.use_dummy_witness_set) {
     // Serialize with dummy signatures for size calculation.
     for (const auto& _ : tx.inputs()) {
       cbor::Value::ArrayValue input_array;
-      input_array.emplace_back(
-          CardanoTransaction::TxWitness::DummyTxWitness().witness_bytes);
+      auto [pubkey, signature] =
+          base::span(kDummyTxWitnessBytes).split_at<32>();
+      input_array.emplace_back(pubkey);
+      input_array.emplace_back(signature);
       vk_witness_array.emplace_back(std::move(input_array));
     }
   } else {
-    CHECK(tx.IsSigned());
+    DCHECK(tx.IsSigned());
 
     for (const auto& witness : tx.witnesses()) {
       cbor::Value::ArrayValue input_array;
@@ -89,7 +120,6 @@ cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
   return cbor::Value(witness_map);
 }
 
-// static
 std::vector<uint8_t> CardanoSerializer::SerializeTransaction(
     const CardanoTransaction& tx) {
   // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/Transaction.ts#L59-L84
@@ -107,17 +137,23 @@ std::vector<uint8_t> CardanoSerializer::SerializeTransaction(
   return *cbor_bytes;
 }
 
-// static
 uint32_t CardanoSerializer::CalcTransactionSize(const CardanoTransaction& tx) {
   return SerializeTransaction(tx).size();
 }
 
-// static
 std::array<uint8_t, kCardanoTxHashSize> CardanoSerializer::GetTxHash(
     const CardanoTransaction& tx) {
   auto cbor_bytes = cbor::Writer::Write(SerializeTxBody(tx));
   CHECK(cbor_bytes);
   return Blake2bHash<kCardanoTxHashSize>({*cbor_bytes});
+}
+
+uint64_t CardanoSerializer::CalcMinTransactionFee(
+    const CardanoTransaction& tx,
+    const cardano_rpc::EpochParameters& epoch_parameters) {
+  uint64_t tx_size = CalcTransactionSize(tx);
+  return tx_size * epoch_parameters.min_fee_coefficient +
+         epoch_parameters.min_fee_constant;
 }
 
 }  // namespace brave_wallet
