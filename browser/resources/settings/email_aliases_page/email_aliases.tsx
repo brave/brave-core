@@ -25,16 +25,27 @@ export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
       { status: AuthenticationStatus.kStartup, email: '' })
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
   React.useEffect(() => {
+    // Note: We keep track of the status here so we can avoid setting aliases
+    // when the user is not logged in.
+    let status: AuthenticationStatus = AuthenticationStatus.kStartup
     const observer : EmailAliasesServiceObserverInterface = {
       onAliasesUpdated: (aliases: Alias[]) => {
+        if (status !== AuthenticationStatus.kAuthenticated) {
+          return
+        }
         setAliasesState(aliases)
       },
       onAuthStateChanged: (state: AuthState) => {
+        status = state.status
+
         setAuthState(state)
+        if (status !== AuthenticationStatus.kAuthenticated) {
+          setAliasesState([])
+        }
       },
     }
     return bindObserver(observer)
-  }, [] /* Only run at mount. */)
+  }, [])
   return (
     <ManagePage
       authState={authState}
