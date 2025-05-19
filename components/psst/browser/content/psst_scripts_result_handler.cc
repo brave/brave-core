@@ -69,7 +69,7 @@ void PsstScriptsHandlerImpl::Start() {
   CHECK(web_contents_);
   auto url = web_contents_->GetLastCommittedURL();
 
-  PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+  PsstRuleRegistry::GetInstance()->CheckIfMatch(
       url, base::BindOnce(&PsstScriptsHandlerImpl::InsertUserScript,
                           weak_factory_.GetWeakPtr()));
 }
