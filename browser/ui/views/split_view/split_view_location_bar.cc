@@ -134,6 +134,18 @@ void SplitViewLocationBar::SetWebContents(content::WebContents* new_contents) {
   UpdateURLAndIcon();
 }
 
+void SplitViewLocationBar::SetParentWebView(views::View* parent_web_view) {
+  if (view_observation_.GetSource() == parent_web_view) {
+    return;
+  }
+
+  view_observation_.Reset();
+  view_observation_.Observe(parent_web_view);
+
+  UpdateVisibility();
+  UpdateBounds();
+}
+
 void SplitViewLocationBar::AddedToWidget() {
   WidgetDelegateView::AddedToWidget();
   UpdateVisibility();

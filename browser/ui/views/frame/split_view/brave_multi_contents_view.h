@@ -6,11 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+
+namespace views {
+class Widget;
+}  // namespace views
+
+class SplitViewLocationBar;
 
 class BraveMultiContentsView : public MultiContentsView {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
@@ -18,7 +25,10 @@ class BraveMultiContentsView : public MultiContentsView {
  public:
   static constexpr int kBorderThickness = 2;
 
-  using MultiContentsView::MultiContentsView;
+  BraveMultiContentsView(
+      BrowserView* browser_view,
+      WebContentsFocusedCallback inactive_contents_focused_callback,
+      WebContentsResizeCallback contents_resize_callback);
   ~BraveMultiContentsView() override;
 
  private:
@@ -28,13 +38,18 @@ class BraveMultiContentsView : public MultiContentsView {
   // MultiContentsView:
   void UpdateContentsBorder() override;
   void Layout(PassKey) override;
+  void SetActiveIndex(int index) override;
 
   float GetCornerRadius() const;
+  void UpdateSecondaryLocationBar();
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
     return contents_container_views_;
   }
+
+  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
+  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_

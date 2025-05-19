@@ -45,6 +45,7 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
       gfx::NativeView parent_native_view,
       views::WidgetDelegateView* delegate);
 
+  void SetParentWebView(views::View* parent_web_view);
   void SetWebContents(content::WebContents* web_contents);
 
   // views::WidgetDelegateView:
