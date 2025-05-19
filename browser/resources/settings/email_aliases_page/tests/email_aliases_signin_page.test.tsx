@@ -6,29 +6,12 @@
 import * as React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MainEmailEntryForm } from '../content/email_aliases_signin_page'
-import { getLocale } from '$web-common/locale'
 
 import {
   EmailAliasesServiceInterface,
   AuthenticationStatus
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { clickLeoButton } from './test_utils'
-
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string, params: Record<string, string>) => {
-    let result = key + " ";
-    for (const [key, value] of Object.entries(params)) {
-      result += `${key}: ${value} `;
-    }
-    return result;
-  },
-  formatLocale: (key: string, params: Record<string, string>) => {
-    return key
-  }
-}))
 
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
@@ -41,7 +24,6 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
 }
 
 describe('MainEmailEntryForm', () => {
-
   it('handles sign up via button click', async () => {
     const mockAuthEmail = 'test@example.com'
 
@@ -51,10 +33,9 @@ describe('MainEmailEntryForm', () => {
         email: mockAuthEmail }}
       emailAliasesService={mockEmailAliasesService} />)
 
-    const signUpButton = screen.getByText(
-      getLocale('emailAliasesGetLoginLinkButton'))
-    const emailInput = screen.getByPlaceholderText(
-      getLocale('emailAliasesEmailAddressPlaceholder'))
+    const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
+    const emailInput = screen
+      .getByPlaceholderText('emailAliasesEmailAddressPlaceholder')
     fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
     clickLeoButton(signUpButton)
     expect(mockEmailAliasesService.requestAuthentication)

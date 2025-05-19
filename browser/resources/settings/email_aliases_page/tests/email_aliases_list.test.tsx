@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { AliasList, ListIntroduction } from '../content/email_aliases_list'
-import { getLocale } from '$web-common/locale'
 import {
   Alias,
   EmailAliasesServiceInterface,
@@ -90,8 +89,7 @@ describe('AliasList', () => {
     )
 
     // Check if create button is disabled
-    const createButton = screen.getByText(getLocale(
-      'emailAliasesCreateAliasLabel'))
+    const createButton = screen.getByText('emailAliasesCreateAliasLabel')
     expect(createButton).toHaveAttribute('isdisabled', 'true')
   })
 
@@ -108,8 +106,7 @@ describe('AliasList', () => {
 
     await act(async () => {
       // Click create button
-      const createButton = screen.getByTitle(getLocale(
-        'emailAliasesCreateAliasTitle'))
+      const createButton = screen.getByTitle('emailAliasesCreateAliasTitle')
       clickLeoButton(createButton)
     })
 
@@ -126,15 +123,18 @@ describe('AliasList', () => {
     )
 
     // Click delete button
-    const deleteTexts = screen.getAllByText(getLocale('emailAliasesDelete'))
-    if (deleteTexts.length === 0) throw new Error('Delete button not found')
-    const deleteButton = deleteTexts[0].closest('leo-menu-item')
-    if (!deleteButton) throw new Error('Delete button not found')
-    fireEvent.click(deleteButton)
+    const deleteText = screen.queryAllByText('emailAliasesDelete')[0]
+    expect(deleteText).toBeInTheDocument()
+
+    const deleteMenuItem = deleteText?.closest('leo-menu-item')
+    expect(deleteMenuItem).toBeInTheDocument()
+
+    if (deleteMenuItem) {
+      fireEvent.click(deleteMenuItem)
+    }
 
     expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalledWith(
       mockAliases[0].email
     )
   })
-
 })
