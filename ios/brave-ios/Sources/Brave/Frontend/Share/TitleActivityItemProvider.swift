@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+import UniformTypeIdentifiers
 
 /// This Activity Item Provider subclass does two things that are non-standard behaviour:
 ///
@@ -12,29 +13,41 @@ import UIKit
 ///
 /// Note that not all applications use the Subject. For example OmniFocus ignores it, so we need to do both.
 
-class TitleActivityItemProvider: UIActivityItemProvider {
+class TitleActivityItemProvider: NSObject, UIActivityItemSource {
+  let title: String
+
   static let activityTypesToIgnore = [
     UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.message,
     UIActivity.ActivityType.mail,
   ]
 
   init(title: String) {
-    super.init(placeholderItem: title)
+    self.title = title
+    super.init()
   }
 
-  override var item: Any {
+  func activityViewControllerPlaceholderItem(
+    _ activityViewController: UIActivityViewController
+  ) -> Any {
+    return title
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
     if let activityType = activityType {
       if TitleActivityItemProvider.activityTypesToIgnore.contains(activityType) {
-        return NSNull()
+        return nil
       }
     }
-    return placeholderItem! as AnyObject
+    return title
   }
 
-  override func activityViewController(
+  func activityViewController(
     _ activityViewController: UIActivityViewController,
     subjectForActivityType activityType: UIActivity.ActivityType?
   ) -> String {
-    return placeholderItem as! String
+    UTType.text.identifier
   }
 }
