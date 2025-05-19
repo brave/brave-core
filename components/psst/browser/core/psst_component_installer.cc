@@ -137,10 +137,7 @@ void PsstComponentInstallerPolicy::OnCustomUninstall() {}
 void PsstComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
-  auto* registry = PsstRuleRegistryAccessor::GetInstance()->Registry();
-  if (registry) {
-    registry->LoadRules(path);
-  }
+  PsstRuleRegistry::GetInstance()->LoadRules(path);
 }
 
 bool PsstComponentInstallerPolicy::VerifyInstallation(
