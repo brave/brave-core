@@ -24,12 +24,12 @@ bool IsTor(content::NavigationHandle* handle) {
   return profile->IsTor();
 }
 
-bool NormalWindowHttpsOnly(content::NavigationHandle* handle,
+bool NormalWindowHttpsOnly(content::NavigationHandle& handle,
                            Profile* profile) {
   if (profile->IsIncognitoProfile()) {
     return false;
   }
-  const GURL& request_url = handle->GetURL();
+  const GURL& request_url = handle.GetURL();
   HostContentSettingsMap* map =
       HostContentSettingsMapFactory::GetForProfile(profile);
   return brave_shields::ShouldForceHttps(map, request_url);
@@ -48,4 +48,3 @@ bool NormalWindowHttpsOnly(content::NavigationHandle* handle,
 
 #undef GetBoolean
 #undef SetNavigationTimeout
-
