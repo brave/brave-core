@@ -18,6 +18,12 @@ coverage/
 /build/rustup/
 venv/
 .storybook-out
+.clang-format
+
+# Some files we don't want prettier to format
+**/*.yaml
+**/*.md
+**/*.json
 
 # Ignore version control files
 **/.git
@@ -81,3 +87,39 @@ chromium_presubmit_config.json5
 
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
+
+# Opt-out each existing component so new components are automatically formatted.
+# Be as specific as possible, to automatically opt-in new code.
+# If you remove a component from this list formatting will only be required on
+# modified files in that component.
+components/ai_chat/resources/
+components/ai_rewriter/resources/
+components/brave_adblock_ui/
+components/brave_ads/browser/
+components/brave_extension/extension/brave_extension/
+components/brave_new_tab_ui/
+components/brave_news/browser/resources/
+components/brave_private_new_tab_ui/resources/
+components/brave_rewards/resources/
+components/brave_shields/resources/
+components/brave_vpn/resources/
+components/brave_wallet/browser/
+components/brave_wallet_ui/
+components/brave_webtorrent/extension/
+components/brave_welcome_ui/
+components/common/
+components/cosmetic_filters/resources/
+components/decentralized_dns/content/resources/
+components/definitions/
+components/flags_ui/resources/
+components/new_tab_takeover/
+components/playlist/browser/resources/
+components/request_otr/resources/
+components/security_interstitials/core/common/resources/
+components/skus/browser/
+components/speedreader/resources/
+components/test/
+components/tor/resources/
+components/translate/core/browser/resources/
+components/web-components/
+components/webcompat_reporter/ui/

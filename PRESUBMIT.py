@@ -98,9 +98,12 @@ def CheckPatchFormatted(input_api, output_api):
         # Use Prettier to format other file types.
         files_to_check = (
             # Enable when files will be formatted.
-            # r'.+\.js$',
-            # r'.+\.ts$',
-            # r'.+\.tsx$',
+            r'.+\.js$',
+            r'.+\.ts$',
+            r'.+\.tsx$',
+            r'.+\.css$',
+            r'.+\.html$',
+            r'.+\.scss$',
         )
         files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
