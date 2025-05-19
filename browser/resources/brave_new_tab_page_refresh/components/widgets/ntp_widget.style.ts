@@ -8,7 +8,7 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    flex: 0 1 var(--widget-flex-basis, auto);
+    flex: 0 0 var(--widget-flex-basis, auto);
     color: ${color.text.primary};
     border-radius: 16px;
     background: rgba(0, 0, 0, 0.50);
