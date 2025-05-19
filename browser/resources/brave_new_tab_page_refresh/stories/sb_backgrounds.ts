@@ -118,6 +118,8 @@ export function initializeBackgrounds(store: Store<BackgroundState>)
       }))
     },
 
+    notifySponsoredImageLoadError() {},
+
     notifySponsoredImageLogoClicked() {},
 
     notifySponsoredRichMediaEvent(type) {}

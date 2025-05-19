@@ -86,6 +86,7 @@ export interface BackgroundActions {
   selectBackground: (type: SelectedBackgroundType, value: string) => void
   showCustomBackgroundChooser: () => Promise<boolean>
   removeCustomBackground: (background: string) => Promise<void>
+  notifySponsoredImageLoadError: () => void
   notifySponsoredImageLogoClicked: () => void
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
 }

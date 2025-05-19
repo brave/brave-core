@@ -115,6 +115,12 @@ export function initializeBackgrounds(
       await handler.removeCustomBackground(background)
     },
 
+    notifySponsoredImageLoadError() {
+      console.error('Sponsored image failed to load')
+      store.update({ sponsoredImageBackground: null })
+      updateCurrentBackground()
+    },
+
     notifySponsoredImageLogoClicked() {
       const { sponsoredImageBackground } = store.getState()
       if (sponsoredImageBackground && sponsoredImageBackground.logo) {

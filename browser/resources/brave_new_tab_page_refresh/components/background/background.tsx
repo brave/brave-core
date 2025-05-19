@@ -13,6 +13,7 @@ import { loadImage } from '../../lib/image_loader'
 import { style } from './background.style'
 
 export function Background() {
+  const actions = useAppActions()
   const currentBackground = useAppState((s) => s.currentBackground)
 
   function renderBackground() {
@@ -23,8 +24,14 @@ export function Background() {
     switch (currentBackground.type) {
       case 'brave':
       case 'custom':
-      case 'sponsored-image':
         return <ImageBackground url={currentBackground.imageUrl} />
+      case 'sponsored-image':
+        return (
+          <ImageBackground
+            url={currentBackground.imageUrl}
+            onLoadError={actions.notifySponsoredImageLoadError}
+          />
+        )
       case 'sponsored-rich-media':
         return <SponsoredRichMediaBackground background={currentBackground} />
       case 'color':
@@ -55,7 +62,7 @@ function setBackgroundVariable(value: string) {
   }
 }
 
-function ImageBackground(props: { url: string }) {
+function ImageBackground(props: { url: string, onLoadError?: () => void }) {
   // In order to avoid a "flash-of-unloaded-image", load the image in the
   // background and only update the background CSS variable when the image has
   // finished loading.
@@ -63,6 +70,8 @@ function ImageBackground(props: { url: string }) {
     loadImage(props.url).then((loaded) => {
       if (loaded) {
         setBackgroundVariable(`url(${CSS.escape(props.url)})`)
+      } else if (props.onLoadError) {
+        props.onLoadError()
       }
     })
   }, [props.url])
