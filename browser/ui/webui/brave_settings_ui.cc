@@ -20,7 +20,6 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
-#include "brave/browser/ui/webui/settings/brave_account_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -38,6 +37,7 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -216,8 +216,10 @@ void BraveSettingsUI::BindInterface(
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
+    mojo::PendingReceiver<
+        password_strength_meter::mojom::PasswordStrengthMeterHandler>
         pending_receiver) {
-  brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
-      std::move(pending_receiver));
+  password_strength_meter_handler_ =
+      std::make_unique<password_strength_meter::PasswordStrengthMeterHandler>(
+          std::move(pending_receiver));
 }

@@ -57,7 +57,6 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
-#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -90,6 +89,7 @@
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
+#include "brave/components/password_strength_meter/mojom/password_strength_meter.mojom.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -839,7 +839,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_account::mojom::BraveAccountHandler, BraveSettingsUI>(map);
+      password_strength_meter::mojom::PasswordStrengthMeterHandler,
+      BraveSettingsUI>(map);
 #endif
 
   auto* prefs =

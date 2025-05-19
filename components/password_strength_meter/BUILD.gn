@@ -1,0 +1,25 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("password_strength_meter") {
+  defines = [ "IS_PASSWORD_STRENGTH_METER_IMPL" ]
+
+  sources = [
+    "password_strength_meter.cc",
+    "password_strength_meter.h",
+    "zxcvbn_data_component_installer.cc",
+    "zxcvbn_data_component_installer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/password_strength_meter/mojom",
+    "//components/component_updater",
+    "//components/password_manager/core/browser/ui",
+    "//components/password_manager/core/common:features",
+    "//components/update_client",
+    "//third_party/zxcvbn-cpp",
+  ]
+}

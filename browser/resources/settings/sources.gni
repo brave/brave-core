@@ -186,12 +186,12 @@ brave_settings_mojo_files = [
   # ai_chat.mojom depends on tab_tracker.mojom even though it isn't used on settings
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
-  "$root_gen_dir/brave/components/brave_account/core/mojom/brave_account.mojom-webui.ts",
+  "$root_gen_dir/brave/components/password_strength_meter/mojom/password_strength_meter.mojom-webui.ts",
 ]
 
 brave_settings_mojo_files_deps = [
   "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
-  "//brave/components/brave_account/core/mojom:mojom_ts__generator",
+  "//brave/components/password_strength_meter/mojom:mojom_ts__generator",
 ]
 
 brave_settings_ts_deps = [

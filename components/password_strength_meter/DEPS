@@ -1,0 +1,6 @@
+include_rules = [
+  # Included via chromium_src/brave/components/password_strength_meter/zxcvbn_data_component_installer.{h,cc}.
+  # These are not real layering violations.
+  "+chrome/browser/component_updater/zxcvbn_data_component_installer.cc",
+  "+chrome/browser/component_updater/zxcvbn_data_component_installer.h",
+]
