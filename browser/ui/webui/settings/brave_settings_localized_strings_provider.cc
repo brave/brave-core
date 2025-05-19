@@ -19,7 +19,6 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
