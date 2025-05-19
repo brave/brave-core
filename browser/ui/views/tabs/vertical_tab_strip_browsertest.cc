@@ -27,6 +27,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -627,6 +628,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   EXPECT_EQ(State::kExpanded, region_view_1->state());
   EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
   EXPECT_EQ(State::kCollapsed, region_view_2->state());
+
+  // Check expanded state is toggled via command.
+  auto* command_controller = browser()->command_controller();
+  command_controller->ExecuteCommandWithDisposition(
+      IDC_TOGGLE_VERTICAL_TABS_EXPANDED, WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_EQ(State::kCollapsed, region_view_1->state());
 
   // And new browser should follow the preference.
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
