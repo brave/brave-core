@@ -161,11 +161,12 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
     }
   }
 
-  const auto slots_bounds = layout_helper_->CalculateIdealBounds(
-      available_width_callback_.is_null() ||
-              base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)
-          ? std::nullopt
-          : std::optional<int>(available_width_callback_.Run()));
+  const auto [slots_bounds, layout_domain] =
+      layout_helper_->CalculateIdealBounds(
+          available_width_callback_.is_null() ||
+                  base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)
+              ? std::nullopt
+              : std::optional<int>(available_width_callback_.Run()));
   height =
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
 
