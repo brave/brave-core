@@ -124,8 +124,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 // TESTS
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        DontStartScriptHandlerForSameDocument) {
-  psst::SetEnablePsstFlag(GetPrefs(), true);
-  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  psst::SetPsstEnabledState(GetPrefs(), true);
+  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
   auto* mocked_script_handler = MockPsstDialogTabHelperDelegate();
@@ -143,8 +143,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        DontStartScriptHandlerIfPsstDisabled) {
-  psst::SetEnablePsstFlag(GetPrefs(), false);
-  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), false);
+  psst::SetPsstEnabledState(GetPrefs(), false);
+  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), false);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
   auto* mocked_script_handler = MockPsstDialogTabHelperDelegate();
@@ -154,8 +154,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerOnlyInPrimaryMainFrame) {
-  psst::SetEnablePsstFlag(GetPrefs(), true);
-  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  psst::SetPsstEnabledState(GetPrefs(), true);
+  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/iframe_load.html");
   const GURL ifrave_url =
       GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
@@ -181,8 +181,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerBothScriptsExecuted) {
-  psst::SetEnablePsstFlag(GetPrefs(), true);
-  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  psst::SetPsstEnabledState(GetPrefs(), true);
+  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
   std::u16string expected_title(u"user-policy");
@@ -193,8 +193,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerJustUserScriptExecuted) {
-  psst::SetEnablePsstFlag(GetPrefs(), true);
-  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  psst::SetPsstEnabledState(GetPrefs(), true);
+  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("b.com", "/simple.html");
 
   std::u16string expected_title(u"user-");
@@ -205,8 +205,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerNoMatchedRule) {
-  psst::SetEnablePsstFlag(GetPrefs(), true);
-  EXPECT_EQ(psst::GetEnablePsstFlag(GetPrefs()), true);
+  psst::SetPsstEnabledState(GetPrefs(), true);
+  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("c.com", "/simple.html");
 
   std::u16string expected_title(u"OK");

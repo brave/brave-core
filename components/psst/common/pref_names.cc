@@ -24,7 +24,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   }
 }
 
-bool GetEnablePsstFlag(PrefService* prefs) {
+bool IsPsstEnabled(PrefService* prefs) {
   if (!prefs || !prefs->HasPrefPath(prefs::kPsstEnabled)) {
     return false;
   }
@@ -32,7 +32,7 @@ bool GetEnablePsstFlag(PrefService* prefs) {
   return prefs->GetBoolean(prefs::kPsstEnabled);
 }
 
-void SetEnablePsstFlag(PrefService* prefs, const bool val) {
+void SetPsstEnabledState(PrefService* prefs, const bool val) {
   if (!prefs) {
     return;
   }
