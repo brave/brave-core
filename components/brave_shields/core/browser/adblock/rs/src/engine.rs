@@ -186,7 +186,7 @@ impl Engine {
     /// A 0-length vector will be returned if there was any issue during serialization. Be sure to
     /// handle that case.
     pub fn serialize(&self) -> Vec<u8> {
-        match self.engine.serialize_raw() {
+        match self.engine.serialize() {
             Ok(v) => v,
             Err(_e) => vec![],
         }

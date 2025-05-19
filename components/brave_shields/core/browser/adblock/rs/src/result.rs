@@ -5,7 +5,7 @@
 
 use std::str::Utf8Error;
 
-use adblock::{blocker::BlockerError, resources::AddResourceError};
+use adblock::resources::AddResourceError;
 use thiserror::Error;
 
 use crate::engine::Engine;
@@ -18,8 +18,6 @@ pub(crate) enum InternalError {
     #[error("utf-8 encoding error: {0}")]
     Utf8(#[from] Utf8Error),
     #[error("{0}")]
-    Blocker(#[from] BlockerError),
-    #[error("{0}")]
     AddResource(#[from] AddResourceError),
 }
 
@@ -28,7 +26,7 @@ impl From<&InternalError> for ResultKind {
         match error {
             InternalError::Json(_) => Self::JsonError,
             InternalError::Utf8(_) => Self::Utf8Error,
-            InternalError::Blocker(_) | InternalError::AddResource(_) => Self::AdblockError,
+            InternalError::AddResource(_) => Self::AdblockError,
         }
     }
 }

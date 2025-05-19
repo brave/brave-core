@@ -9,9 +9,11 @@ use std::collections::{HashMap, HashSet};
 use rmp_serde as rmps;
 use serde::{Deserialize, Serialize};
 
-use crate::blocker::{Blocker, NetworkFilterList};
+use crate::blocker::Blocker;
 use crate::cosmetic_filter_cache::{CosmeticFilterCache, HostnameRuleDb, ProceduralOrActionFilter};
-use crate::filters::network::NetworkFilter;
+use crate::filters::fb_network::flat::fb;
+use crate::filters::network::{NetworkFilter, NetworkFilterMaskHelper};
+use crate::network_filter_list::NetworkFilterList;
 use crate::utils::Hash;
 
 use super::utils::{stabilize_hashmap_serialization, stabilize_hashset_serialization};
@@ -61,8 +63,12 @@ impl From<&HostnameRuleDb> for LegacyHostnameRuleDb {
         for (hash, bin) in v.uninject_script.0.iter() {
             for f in bin {
                 db.entry(*hash)
-                    .and_modify(|v| v.push(LegacySpecificFilterType::UnhideScriptInject(f.to_owned())))
-                    .or_insert_with(|| vec![LegacySpecificFilterType::UnhideScriptInject(f.to_owned())]);
+                    .and_modify(|v| {
+                        v.push(LegacySpecificFilterType::UnhideScriptInject(f.to_owned()))
+                    })
+                    .or_insert_with(|| {
+                        vec![LegacySpecificFilterType::UnhideScriptInject(f.to_owned())]
+                    });
             }
         }
         for (hash, bin) in v.procedural_action.0.iter() {
@@ -71,8 +77,15 @@ impl From<&HostnameRuleDb> for LegacyHostnameRuleDb {
                     Ok(f) => {
                         if let Some((selector, style)) = f.as_css() {
                             db.entry(*hash)
-                                .and_modify(|v| v.push(LegacySpecificFilterType::Style(selector.clone(), style.clone())))
-                                .or_insert_with(|| vec![LegacySpecificFilterType::Style(selector, style)]);
+                                .and_modify(|v| {
+                                    v.push(LegacySpecificFilterType::Style(
+                                        selector.clone(),
+                                        style.clone(),
+                                    ))
+                                })
+                                .or_insert_with(|| {
+                                    vec![LegacySpecificFilterType::Style(selector, style)]
+                                });
                         }
                     }
                     _ => (),
@@ -85,17 +98,25 @@ impl From<&HostnameRuleDb> for LegacyHostnameRuleDb {
                     Ok(f) => {
                         if let Some((selector, style)) = f.as_css() {
                             db.entry(*hash)
-                                .and_modify(|v| v.push(LegacySpecificFilterType::UnhideStyle(selector.to_owned(), style.to_owned())))
-                                .or_insert_with(|| vec![LegacySpecificFilterType::UnhideStyle(selector.to_owned(), style.to_owned())]);
+                                .and_modify(|v| {
+                                    v.push(LegacySpecificFilterType::UnhideStyle(
+                                        selector.to_owned(),
+                                        style.to_owned(),
+                                    ))
+                                })
+                                .or_insert_with(|| {
+                                    vec![LegacySpecificFilterType::UnhideStyle(
+                                        selector.to_owned(),
+                                        style.to_owned(),
+                                    )]
+                                });
                         }
                     }
                     _ => (),
                 }
             }
         }
-        LegacyHostnameRuleDb {
-            db,
-        }
+        LegacyHostnameRuleDb { db }
     }
 }
 
@@ -115,10 +136,22 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
                 match rule {
                     LegacySpecificFilterType::Hide(s) => hide.insert(&hash, s),
                     LegacySpecificFilterType::Unhide(s) => unhide.insert(&hash, s),
-                    LegacySpecificFilterType::Style(s, st) => procedural_action.insert_procedural_action_filter(&hash, &ProceduralOrActionFilter::from_css(s, st)),
-                    LegacySpecificFilterType::UnhideStyle(s, st) => procedural_action_exception.insert_procedural_action_filter(&hash, &ProceduralOrActionFilter::from_css(s, st)),
-                    LegacySpecificFilterType::ScriptInject(s) => inject_script.insert(&hash, (s, Default::default())),
-                    LegacySpecificFilterType::UnhideScriptInject(s) => uninject_script.insert(&hash, s),
+                    LegacySpecificFilterType::Style(s, st) => procedural_action
+                        .insert_procedural_action_filter(
+                            &hash,
+                            &ProceduralOrActionFilter::from_css(s, st),
+                        ),
+                    LegacySpecificFilterType::UnhideStyle(s, st) => procedural_action_exception
+                        .insert_procedural_action_filter(
+                            &hash,
+                            &ProceduralOrActionFilter::from_css(s, st),
+                        ),
+                    LegacySpecificFilterType::ScriptInject(s) => {
+                        inject_script.insert(&hash, (s, Default::default()))
+                    }
+                    LegacySpecificFilterType::UnhideScriptInject(s) => {
+                        uninject_script.insert(&hash, s)
+                    }
                 }
             }
         }
@@ -215,17 +248,20 @@ where
     S: serde::Serializer,
 {
     #[derive(Serialize, Default)]
-    struct NetworkFilterListV0SerializeFmt<'a> {
+    struct NetworkFilterListV0SerializeFmt {
+        flatbuffer_memory: Vec<u8>,
+
         #[serde(serialize_with = "stabilize_hashmap_serialization")]
-        filter_map: HashMap<crate::utils::Hash, Vec<NetworkFilterV0SerializeFmt<'a>>>,
+        filter_map: HashMap<Hash, Vec<u32>>,
+
+        #[serde(serialize_with = "stabilize_hashmap_serialization")]
+        unique_domains_hashes_map: HashMap<Hash, u16>,
     }
 
     let v0_list = NetworkFilterListV0SerializeFmt {
-        filter_map: list
-            .filter_map
-            .iter()
-            .map(|(k, v)| (*k, v.iter().map(|f| f.into()).collect()))
-            .collect(),
+        flatbuffer_memory: list.flatbuffer_memory.clone(),
+        filter_map: list.filter_map.clone(),
+        unique_domains_hashes_map: list.unique_domains_hashes_map.clone(),
     };
 
     v0_list.serialize(s)
@@ -337,26 +373,22 @@ impl From<NetworkFilterV0DeserializeFmt> for NetworkFilter {
 
 #[derive(Debug, Deserialize, Default)]
 pub(crate) struct NetworkFilterListV0DeserializeFmt {
-    pub filter_map: HashMap<crate::utils::Hash, Vec<NetworkFilterV0DeserializeFmt>>,
+    pub flatbuffer_memory: Vec<u8>,
+    pub filter_map: HashMap<crate::utils::Hash, Vec<u32>>,
+    pub unique_domains_hashes_map: HashMap<crate::utils::Hash, u16>,
 }
 
-impl From<NetworkFilterListV0DeserializeFmt> for NetworkFilterList {
-    fn from(v: NetworkFilterListV0DeserializeFmt) -> Self {
-        Self {
-            filter_map: v
-                .filter_map
-                .into_iter()
-                .map(|(k, v)| {
-                    (
-                        k,
-                        v.into_iter()
-                            .map(|f| std::sync::Arc::new(f.into()))
-                            .collect(),
-                    )
-                })
-                .collect(),
-        }
+impl TryFrom<NetworkFilterListV0DeserializeFmt> for NetworkFilterList {
+    fn try_from(v: NetworkFilterListV0DeserializeFmt) -> Result<Self, Self::Error> {
+        let _ = fb::root_as_network_filter_list(&v.flatbuffer_memory)?;
+        Ok(Self {
+            flatbuffer_memory: v.flatbuffer_memory,
+            filter_map: v.filter_map,
+            unique_domains_hashes_map: v.unique_domains_hashes_map,
+        })
     }
+
+    type Error = DeserializationError;
 }
 
 /// Structural representation of adblock engine data that can be built up from deserialization and
@@ -439,32 +471,30 @@ impl<'a> From<(&'a Blocker, &'a CosmeticFilterCache)> for SerializeFormat<'a> {
     }
 }
 
-impl From<DeserializeFormat> for (Blocker, CosmeticFilterCache) {
-    fn from(v: DeserializeFormat) -> Self {
+impl TryFrom<DeserializeFormat> for (Blocker, CosmeticFilterCache) {
+    fn try_from(v: DeserializeFormat) -> Result<Self, Self::Error> {
         use crate::cosmetic_filter_cache::HostnameFilterBin;
 
         let mut specific_rules: HostnameRuleDb = v.specific_rules.into();
         specific_rules.procedural_action = HostnameFilterBin(v.procedural_action);
-        specific_rules.procedural_action_exception = HostnameFilterBin(v.procedural_action_exception);
+        specific_rules.procedural_action_exception =
+            HostnameFilterBin(v.procedural_action_exception);
 
-        (
+        Ok((
             Blocker {
-                csp: v.csp.into(),
-                exceptions: v.exceptions.into(),
-                importants: v.importants.into(),
-                redirects: v.redirects.into(),
+                csp: v.csp.try_into()?,
+                exceptions: v.exceptions.try_into()?,
+                importants: v.importants.try_into()?,
+                redirects: v.redirects.try_into()?,
                 removeparam: NetworkFilterList::default(),
-                filters_tagged: v.filters_tagged.into(),
-                filters: v.filters.into(),
-                generic_hide: v.generic_hide.into(),
+                filters_tagged: v.filters_tagged.try_into()?,
+                filters: v.filters.try_into()?,
+                generic_hide: v.generic_hide.try_into()?,
 
                 tags_enabled: Default::default(),
                 tagged_filters_all: v.tagged_filters_all.into_iter().map(|f| f.into()).collect(),
 
                 enable_optimizations: v.enable_optimizations,
-
-                #[cfg(feature = "object-pooling")]
-                pool: Default::default(),
                 regex_manager: Default::default(),
             },
             CosmeticFilterCache {
@@ -477,6 +507,8 @@ impl From<DeserializeFormat> for (Blocker, CosmeticFilterCache) {
 
                 misc_generic_selectors: v.misc_generic_selectors,
             },
-        )
+        ))
     }
+
+    type Error = DeserializationError;
 }

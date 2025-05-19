@@ -36,7 +36,7 @@ pub(super) struct Hostname {
     serialization: String,
 
     // Components
-    pub(super) scheme_end: usize,   // Before ':'
+    pub(super) scheme_end: usize, // Before ':'
     pub(super) host_start: usize,
     pub(super) host_end: usize,
 }

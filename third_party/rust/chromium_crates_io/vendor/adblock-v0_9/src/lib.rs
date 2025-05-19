@@ -24,11 +24,13 @@ mod data_format;
 mod engine;
 pub mod filters;
 pub mod lists;
+mod network_filter_list;
 mod optimizer;
 pub mod regex_manager;
 pub mod request;
 pub mod resources;
 pub mod url_parser;
+
 #[doc(hidden)]
 pub mod utils;
 
@@ -49,7 +51,7 @@ mod sync_tests {
     }
 
     #[test]
-    #[cfg(not(any(feature = "object-pooling", feature = "unsync-regex-caching")))]
+    #[cfg(not(feature = "unsync-regex-caching"))]
     fn assert_engine_sync() {
         static_assert_sync::<crate::engine::Engine>();
     }

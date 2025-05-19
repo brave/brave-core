@@ -5,7 +5,7 @@ edition = "2021"
 license = "MPL-2.0"
 
 [dependencies]
-adblock = { version = "0.9.6", default-features = false, features = ["full-regex-handling", "regex-debug-info", "css-validation"] }
+adblock = { git="https://github.com/brave/adblock-rust.git", tag="v0.9.9-fb", default-features = false, features = ["full-regex-handling", "regex-debug-info", "css-validation"] }
 cxx = "1.0"
 serde_json = "1.0"
 thiserror = "1.0"

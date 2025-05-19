@@ -1,7 +1,5 @@
 //! Contains structures needed to describe network requests.
 
-use std::borrow::Cow;
-
 use thiserror::Error;
 
 use crate::url_parser;
@@ -90,23 +88,32 @@ pub struct Request {
     pub hostname: String,
     pub source_hostname_hashes: Option<Vec<utils::Hash>>,
 
+    pub(crate) url_lower_cased: String,
+    pub(crate) request_tokens: Vec<utils::Hash>,
     pub(crate) original_url: String,
 }
 
 impl Request {
-    pub(crate) fn get_url(&self, case_sensitive: bool) -> std::borrow::Cow<str> {
+    pub(crate) fn get_url(&self, case_sensitive: bool) -> &str {
         if case_sensitive {
-            Cow::Borrowed(&self.url)
+            &self.url
         } else {
-            Cow::Owned(self.url.to_ascii_lowercase())
+            &self.url_lower_cased
         }
     }
 
-    pub fn get_tokens(&self, token_buffer: &mut Vec<utils::Hash>) {
-        token_buffer.clear();
-        utils::tokenize_pooled(&self.url.to_ascii_lowercase(), token_buffer);
-        // Add zero token as a fallback to wildcard rule bucket
-        token_buffer.push(0);
+    pub fn get_tokens_for_match(&self) -> impl Iterator<Item = &utils::Hash> {
+        // We start matching with source_hostname_hashes for optimization,
+        // as it contains far fewer elements.
+        self.source_hostname_hashes
+            .as_ref()
+            .into_iter()
+            .flatten()
+            .chain(self.get_tokens().into_iter())
+    }
+
+    pub fn get_tokens(&self) -> &Vec<utils::Hash> {
+        &self.request_tokens
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -156,10 +163,14 @@ impl Request {
             None
         };
 
+        let url_lower_cased = url.to_ascii_lowercase();
+
         Request {
             request_type,
             url: url.to_owned(),
+            url_lower_cased: url_lower_cased.to_owned(),
             hostname: hostname.to_owned(),
+            request_tokens: calculate_tokens(&url_lower_cased),
             source_hostname_hashes,
             is_third_party: third_party,
             is_http,
@@ -170,11 +181,7 @@ impl Request {
     }
 
     /// Construct a new [`Request`].
-    pub fn new(
-        url: &str,
-        source_url: &str,
-        request_type: &str,
-    ) -> Result<Request, RequestError> {
+    pub fn new(url: &str, source_url: &str, request_type: &str) -> Result<Request, RequestError> {
         if let Some(parsed_url) = url_parser::parse_url(url) {
             if let Some(parsed_source) = url_parser::parse_url(source_url) {
                 let source_domain = parsed_source.domain();
@@ -231,202 +238,14 @@ impl Request {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn build_request(
-        raw_type: &str,
-        url: &str,
-        schema: &str,
-        hostname: &str,
-        domain: &str,
-        source_hostname: &str,
-        source_domain: &str,
-    ) -> Request {
-        let third_party = source_domain != domain;
-
-        Request::from_detailed_parameters(
-            raw_type,
-            url,
-            schema,
-            hostname,
-            source_hostname,
-            third_party,
-            url.to_string(),
-        )
-    }
-
-    #[test]
-    fn new_works() {
-        let simple_example = build_request(
-            "document",
-            "https://example.com/ad",
-            "https",
-            "example.com",
-            "example.com",
-            "example.com",
-            "example.com",
-        );
-        assert_eq!(simple_example.is_https, true);
-        assert_eq!(simple_example.is_supported, true);
-        assert_eq!(simple_example.is_third_party, false);
-        assert_eq!(simple_example.request_type, RequestType::Document);
-        assert_eq!(
-            simple_example.source_hostname_hashes,
-            Some(vec![
-                utils::fast_hash("example.com"),
-                utils::fast_hash("com")
-            ]),
-        );
-
-        let unsupported_example = build_request(
-            "document",
-            "file://example.com/ad",
-            "file",
-            "example.com",
-            "example.com",
-            "example.com",
-            "example.com",
-        );
-        assert_eq!(unsupported_example.is_https, false);
-        assert_eq!(unsupported_example.is_http, false);
-        assert_eq!(unsupported_example.is_supported, false);
-
-        let first_party = build_request(
-            "document",
-            "https://subdomain.example.com/ad",
-            "https",
-            "subdomain.example.com",
-            "example.com",
-            "example.com",
-            "example.com",
-        );
-        assert_eq!(first_party.is_https, true);
-        assert_eq!(first_party.is_supported, true);
-        assert_eq!(first_party.is_third_party, false);
-
-        let third_party = build_request(
-            "document",
-            "https://subdomain.anotherexample.com/ad",
-            "https",
-            "subdomain.anotherexample.com",
-            "anotherexample.com",
-            "example.com",
-            "example.com",
-        );
-        assert_eq!(third_party.is_https, true);
-        assert_eq!(third_party.is_supported, true);
-        assert_eq!(third_party.is_third_party, true);
-
-        let websocket = build_request(
-            "document",
-            "wss://subdomain.anotherexample.com/ad",
-            "wss",
-            "subdomain.anotherexample.com",
-            "anotherexample.com",
-            "example.com",
-            "example.com",
-        );
-        assert_eq!(websocket.is_https, false);
-        assert_eq!(websocket.is_https, false);
-        assert_eq!(websocket.is_supported, true);
-        assert_eq!(websocket.is_third_party, true);
-        assert_eq!(websocket.request_type, RequestType::Websocket);
-
-        let assumed_https = build_request(
-            "document",
-            "//subdomain.anotherexample.com/ad",
-            "",
-            "subdomain.anotherexample.com",
-            "anotherexample.com",
-            "example.com",
-            "example.com",
-        );
-        assert_eq!(assumed_https.is_https, true);
-        assert_eq!(assumed_https.is_http, false);
-        assert_eq!(assumed_https.is_supported, true);
-    }
-
-    fn tokenize(tokens: &[&str], extra_tokens: &[utils::Hash]) -> Vec<utils::Hash> {
-        let mut tokens: Vec<_> = tokens.into_iter().map(|t| utils::fast_hash(&t)).collect();
-        tokens.extend(extra_tokens);
-        tokens
-    }
-
-    #[test]
-    fn tokens_works() {
-        let simple_example = build_request(
-            "document",
-            "https://subdomain.example.com/ad",
-            "https",
-            "subdomain.example.com",
-            "example.com",
-            "subdomain.example.com",
-            "example.com",
-        );
-        assert_eq!(
-            simple_example
-                .source_hostname_hashes
-                .as_ref()
-                .unwrap()
-                .as_slice(),
-            tokenize(&["subdomain.example.com", "example.com", "com",], &[]).as_slice()
-        );
-        let mut tokens = Vec::new();
-        simple_example.get_tokens(&mut tokens);
-        assert_eq!(
-            tokens.as_slice(),
-            tokenize(&["https", "subdomain", "example", "com", "ad"], &[0]).as_slice()
-        )
-    }
-
-    #[test]
-    fn parses_urls() {
-        let parsed = Request::new(
-            "https://subdomain.example.com/ad",
-            "https://example.com/",
-            "document",
-        )
-        .unwrap();
-        assert_eq!(parsed.is_https, true);
-        assert_eq!(parsed.is_supported, true);
-        assert_eq!(parsed.is_third_party, false);
-        assert_eq!(parsed.request_type, RequestType::Document);
-
-        // assert_eq!(parsed.domain, "example.com");
-        assert_eq!(parsed.hostname, "subdomain.example.com");
-
-        // assert_eq!(parsed.source_domain, "example.com");
-        assert_eq!(
-            parsed.source_hostname_hashes,
-            Some(vec![
-                utils::fast_hash("example.com"),
-                utils::fast_hash("com")
-            ]),
-        );
-        // assert_eq!(parsed.source_hostname, "example.com");
-
-        let bad_url = Request::new(
-            "subdomain.example.com/ad",
-            "https://example.com/",
-            "document",
-        );
-        assert_eq!(bad_url.err(), Some(RequestError::HostnameParseError));
-    }
-
-    #[test]
-    fn fuzzing_errors() {
-        {
-            let parsed = Request::new("https://߶", "https://example.com", "other");
-            assert!(parsed.is_ok());
-        }
-        {
-            let parsed = Request::new(&format!(
-                "https://{}",
-                std::str::from_utf8(&[9, 9, 64]).unwrap()
-            ), "https://example.com", "other");
-            assert!(parsed.is_err());
-        }
-    }
+fn calculate_tokens(url_lower_cased: &str) -> Vec<utils::Hash> {
+    let mut tokens = vec![];
+    utils::tokenize_pooled(url_lower_cased, &mut tokens);
+    // Add zero token as a fallback to wildcard rule bucket
+    tokens.push(0);
+    tokens
 }
+
+#[cfg(test)]
+#[path = "../tests/unit/request.rs"]
+mod unit_tests;

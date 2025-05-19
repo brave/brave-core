@@ -151,13 +151,18 @@
 //! Joshua Landau suggested using the [PCG family of diffusions](http://www.pcg-random.org/),
 //! created by Melissa E. O'Neill. Sokolov Yura spotted multiple bugs in SeaHash.
 
-#![no_std]
 #![warn(missing_docs)]
+#![cfg_attr(all(not(test), not(feature = "use_std")), no_std)]
+#[cfg(all(not(test), not(feature = "use_std")))]
+extern crate core as std;
 
 pub use buffer::{hash, hash_seeded, State};
 pub use stream::SeaHasher;
 
-pub mod reference;
 mod buffer;
 mod helper;
+pub mod reference;
 mod stream;
+
+#[cfg(feature = "use_std")]
+mod impl_std;

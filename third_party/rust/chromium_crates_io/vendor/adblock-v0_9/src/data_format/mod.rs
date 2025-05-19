@@ -66,6 +66,13 @@ pub enum DeserializationError {
     /// crate. If you still need it for some reason, you can convert it using 0.7.x by
     /// deserializing and then reserializing it into the newer V0 format.
     LegacyFormatNoLongerSupported,
+    InvalidFlatBuffer(flatbuffers::InvalidFlatbuffer),
+}
+
+impl From<std::convert::Infallible> for DeserializationError {
+    fn from(x: std::convert::Infallible) -> Self {
+        match x {}
+    }
 }
 
 impl From<rmp_serde::decode::Error> for DeserializationError {
@@ -74,10 +81,16 @@ impl From<rmp_serde::decode::Error> for DeserializationError {
     }
 }
 
+impl From<flatbuffers::InvalidFlatbuffer> for DeserializationError {
+    fn from(e: flatbuffers::InvalidFlatbuffer) -> Self {
+        Self::InvalidFlatBuffer(e)
+    }
+}
+
 impl DeserializeFormat {
-    pub(crate) fn build(self) -> (Blocker, CosmeticFilterCache) {
+    pub(crate) fn build(self) -> Result<(Blocker, CosmeticFilterCache), DeserializationError> {
         match self {
-            Self::V0(v) => v.into(),
+            Self::V0(v) => v.try_into(),
         }
     }
 

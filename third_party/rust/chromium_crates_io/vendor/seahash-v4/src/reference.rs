@@ -35,8 +35,11 @@ use helper;
 
 /// Read an integer in little-endian.
 fn read_int(int: &[u8]) -> u64 {
-    debug_assert!(int.len() <= 8, "The buffer length of the integer must be less than or equal to \
-                  the one of an u64.");
+    debug_assert!(
+        int.len() <= 8,
+        "The buffer length of the integer must be less than or equal to \
+                  the one of an u64."
+    );
 
     // Start at 0.
     let mut x = 0;
@@ -90,7 +93,7 @@ impl State {
             self.a ^ self.b ^ self.c ^ self.d
             // We XOR in the number of written bytes to make it zero-sensitive when excessive bytes
             // are written (0u32.0u8 ≠ 0u16.0u8).
-            ^ total as u64
+            ^ total as u64,
         )
     }
 
@@ -118,7 +121,7 @@ pub fn hash(buf: &[u8]) -> u64 {
         0x16f11fe89b0d677c,
         0xb480a793d8e6c86c,
         0x6fe2e5aaf078ebc9,
-        0x14f994a4c5259381
+        0x14f994a4c5259381,
     )
 }
 

@@ -5,11 +5,12 @@ version = 4
 [[package]]
 name = "adblock"
 version = "0.9.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+source = "git+https://github.com/brave/adblock-rust.git?tag=v0.9.9-fb#50548c498d69a8c695e9eebb6f4f75eb7dc6eb80"
 dependencies = [
  "base64",
- "bitflags 1.3.2",
+ "bitflags 2.9.0",
  "cssparser 0.29.6",
+ "flatbuffers",
  "idna",
  "itertools",
  "memchr",
@@ -169,6 +170,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "bitflags"
 version = "2.9.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "bitvec"
@@ -1799,7 +1803,7 @@ dependencies = [
 
 [[package]]
 name = "seahash"
-version = "3.0.7"
+version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]

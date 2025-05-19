@@ -2,9 +2,15 @@
 //! the [`crate::Engine`], infrequently used regexes can be discarded. The [`RegexManager`] is
 //! responsible for managing the storage of regexes used by filters.
 
-use crate::filters::network::{compile_regex, CompiledRegex, NetworkFilter};
+use crate::filters::network::{NetworkFilterMask, NetworkFilterMaskHelper};
+
+use regex::{
+    bytes::Regex as BytesRegex, bytes::RegexBuilder as BytesRegexBuilder,
+    bytes::RegexSet as BytesRegexSet, bytes::RegexSetBuilder as BytesRegexSetBuilder, Regex,
+};
 
 use std::collections::HashMap;
+use std::fmt;
 use std::time::Duration;
 
 #[cfg(test)]
@@ -58,6 +64,40 @@ pub struct RegexDebugEntry {
     pub usage_count: usize,
 }
 
+#[derive(Debug, Clone)]
+pub enum CompiledRegex {
+    Compiled(BytesRegex),
+    CompiledSet(BytesRegexSet),
+    MatchAll,
+    RegexParsingError(regex::Error),
+}
+
+impl CompiledRegex {
+    pub fn is_match(&self, pattern: &str) -> bool {
+        match &self {
+            CompiledRegex::MatchAll => true, // simple case for matching everything, e.g. for empty filter
+            CompiledRegex::RegexParsingError(_e) => false, // no match if regex didn't even compile
+            CompiledRegex::Compiled(r) => r.is_match(pattern.as_bytes()),
+            CompiledRegex::CompiledSet(r) => {
+                // let matches: Vec<_> = r.matches(pattern).into_iter().collect();
+                // println!("Matching {} against RegexSet: {:?}", pattern, matches);
+                r.is_match(pattern.as_bytes())
+            }
+        }
+    }
+}
+
+impl fmt::Display for CompiledRegex {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match &self {
+            CompiledRegex::MatchAll => write!(f, ".*"), // simple case for matching everything, e.g. for empty filter
+            CompiledRegex::RegexParsingError(_e) => write!(f, "ERROR"), // no match if regex didn't even compile
+            CompiledRegex::Compiled(r) => write!(f, "{}", r.as_str()),
+            CompiledRegex::CompiledSet(r) => write!(f, "{}", r.patterns().join(" | ")),
+        }
+    }
+}
+
 struct RegexEntry {
     regex: Option<CompiledRegex>,
     last_used: Instant,
@@ -88,7 +128,7 @@ type RandomState = std::hash::BuildHasherDefault<seahash::SeaHasher>;
 ///
 /// The [`RegexManager`] is not thread safe, so any access to it must be synchronized externally.
 pub struct RegexManager {
-    map: HashMap<*const NetworkFilter, RegexEntry, RandomState>,
+    map: HashMap<u64, RegexEntry, RandomState>,
     compiled_regex_count: usize,
     now: Instant,
     #[cfg_attr(target_arch = "wasm32", allow(unused))]
@@ -108,23 +148,110 @@ impl Default for RegexManager {
     }
 }
 
-fn make_regexp(filter: &NetworkFilter) -> CompiledRegex {
+fn make_regexp<'a, FiltersIter>(mask: NetworkFilterMask, filters: FiltersIter) -> CompiledRegex
+where
+    FiltersIter: Iterator<Item = &'a str> + ExactSizeIterator,
+{
     compile_regex(
-        &filter.filter,
-        filter.is_right_anchor(),
-        filter.is_left_anchor(),
-        filter.is_complete_regex(),
+        filters,
+        mask.is_right_anchor(),
+        mask.is_left_anchor(),
+        mask.is_complete_regex(),
     )
+}
+
+/// Compiles a filter pattern to a regex. This is only performed *lazily* for
+/// filters containing at least a * or ^ symbol. Because Regexes are expansive,
+/// we try to convert some patterns to plain filters.
+#[allow(clippy::trivial_regex)]
+pub(crate) fn compile_regex<'a, I>(
+    filters: I,
+    is_right_anchor: bool,
+    is_left_anchor: bool,
+    is_complete_regex: bool,
+) -> CompiledRegex
+where
+    I: Iterator<Item = &'a str> + ExactSizeIterator,
+{
+    use once_cell::sync::Lazy;
+    // Escape special regex characters: |.$+?{}()[]\
+    static SPECIAL_RE: Lazy<Regex> =
+        Lazy::new(|| Regex::new(r"([\|\.\$\+\?\{\}\(\)\[\]])").unwrap());
+    // * can match anything
+    static WILDCARD_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\*").unwrap());
+    // ^ can match any separator or the end of the pattern
+    static ANCHOR_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\^(.)").unwrap());
+    // ^ can match any separator or the end of the pattern
+    static ANCHOR_RE_EOL: Lazy<Regex> = Lazy::new(|| Regex::new(r"\^$").unwrap());
+
+    let mut escaped_patterns = Vec::with_capacity(filters.len());
+    for filter_str in filters {
+        // If any filter is empty, the entire set matches anything
+        if filter_str.is_empty() {
+            return CompiledRegex::MatchAll;
+        }
+        if is_complete_regex {
+            // unescape unrecognised escaping sequences, otherwise a normal regex
+            let unescaped = filter_str[1..filter_str.len() - 1]
+                .replace("\\/", "/")
+                .replace("\\:", ":");
+
+            escaped_patterns.push(unescaped);
+        } else {
+            let repl = SPECIAL_RE.replace_all(&filter_str, "\\$1");
+            let repl = WILDCARD_RE.replace_all(&repl, ".*");
+            // in adblock rules, '^' is a separator.
+            // The separator character is anything but a letter, a digit, or one of the following: _ - . %
+            let repl = ANCHOR_RE.replace_all(&repl, "(?:[^\\w\\d\\._%-])$1");
+            let repl = ANCHOR_RE_EOL.replace_all(&repl, "(?:[^\\w\\d\\._%-]|$)");
+
+            // Should match start or end of url
+            let left_anchor = if is_left_anchor { "^" } else { "" };
+            let right_anchor = if is_right_anchor { "$" } else { "" };
+            let filter = format!("{}{}{}", left_anchor, repl, right_anchor);
+
+            escaped_patterns.push(filter);
+        }
+    }
+
+    if escaped_patterns.is_empty() {
+        CompiledRegex::MatchAll
+    } else if escaped_patterns.len() == 1 {
+        let pattern = &escaped_patterns[0];
+        match BytesRegexBuilder::new(pattern).unicode(false).build() {
+            Ok(compiled) => CompiledRegex::Compiled(compiled),
+            Err(e) => {
+                // println!("Regex parsing failed ({:?})", e);
+                CompiledRegex::RegexParsingError(e)
+            }
+        }
+    } else {
+        match BytesRegexSetBuilder::new(escaped_patterns)
+            .unicode(false)
+            .build()
+        {
+            Ok(compiled) => CompiledRegex::CompiledSet(compiled),
+            Err(e) => CompiledRegex::RegexParsingError(e),
+        }
+    }
 }
 
 impl RegexManager {
     /// Check whether or not a regex network filter matches a certain URL pattern, using the
     /// [`RegexManager`]'s managed regex storage.
-    pub fn matches(&mut self, filter: &NetworkFilter, pattern: &str) -> bool {
-        if !filter.is_regex() && !filter.is_complete_regex() {
+    pub fn matches<'a, FiltersIter>(
+        &mut self,
+        mask: NetworkFilterMask,
+        filters: FiltersIter,
+        key: u64,
+        pattern: &str,
+    ) -> bool
+    where
+        FiltersIter: Iterator<Item = &'a str> + ExactSizeIterator,
+    {
+        if !mask.is_regex() && !mask.is_complete_regex() {
             return true;
         }
-        let key = filter as *const NetworkFilter;
         use std::collections::hash_map::Entry;
         match self.map.entry(key) {
             Entry::Occupied(mut e) => {
@@ -133,7 +260,7 @@ impl RegexManager {
                 v.last_used = self.now;
                 if v.regex.is_none() {
                     // A discarded entry, recreate it:
-                    v.regex = Some(make_regexp(filter));
+                    v.regex = Some(make_regexp(mask, filters));
                     self.compiled_regex_count += 1;
                 }
                 return v.regex.as_ref().unwrap().is_match(pattern);
@@ -141,7 +268,7 @@ impl RegexManager {
             Entry::Vacant(e) => {
                 self.compiled_regex_count += 1;
                 let new_entry = RegexEntry {
-                    regex: Some(make_regexp(filter)),
+                    regex: Some(make_regexp(mask, filters)),
                     last_used: self.now,
                     usage_count: 1,
                 };
@@ -225,73 +352,6 @@ impl RegexManager {
     }
 }
 
-#[cfg(all(test, feature = "regex-debug-info"))]
-mod tests {
-    use super::*;
-
-    use crate::filters::network::NetworkMatchable;
-    use crate::request;
-
-    use mock_instant::global::MockClock;
-
-    fn make_filter(line: &str) -> NetworkFilter {
-        NetworkFilter::parse(line, true, Default::default()).unwrap()
-    }
-
-    fn make_request(url: &str) -> request::Request {
-        request::Request::new(url, "https://example.com", "other").unwrap()
-    }
-
-    fn get_active_regex_count(regex_manager: &RegexManager) -> usize {
-        regex_manager
-            .get_debug_regex_data()
-            .iter()
-            .filter(|x| x.regex.is_some())
-            .count()
-    }
-
-    #[test]
-    fn simple_match() {
-        let mut regex_manager = RegexManager::default();
-        regex_manager.update_time();
-
-        let filter = make_filter("||geo*.hltv.org^");
-        assert!(filter.matches(&make_request("https://geo2.hltv.org/"), &mut regex_manager));
-        assert_eq!(get_active_regex_count(&regex_manager), 1);
-        assert_eq!(regex_manager.get_debug_regex_data().len(), 1);
-    }
-
-    #[test]
-    fn discard_and_recreate() {
-        let mut regex_manager = RegexManager::default();
-        regex_manager.update_time();
-
-        let filter = make_filter("||geo*.hltv.org^");
-        assert!(filter.matches(&make_request("https://geo2.hltv.org/"), &mut regex_manager));
-        assert_eq!(regex_manager.get_compiled_regex_count(), 1);
-        assert_eq!(get_active_regex_count(&regex_manager), 1);
-
-        MockClock::advance(DEFAULT_DISCARD_UNUSED_TIME - Duration::from_secs(1));
-        regex_manager.update_time();
-        // The entry shouldn't be discarded because was used during
-        // last REGEX_MANAGER_DISCARD_TIME.
-        assert_eq!(get_active_regex_count(&regex_manager), 1);
-
-        // The entry is entry is outdated, but should be discarded only
-        // in the next cleanup() call. The call was 2 sec ago and is throttled
-        // now.
-        MockClock::advance(DEFAULT_CLEAN_UP_INTERVAL - Duration::from_secs(1));
-        regex_manager.update_time();
-        assert_eq!(get_active_regex_count(&regex_manager), 1);
-
-        MockClock::advance(Duration::from_secs(2));
-        regex_manager.update_time();
-        // The entry is now outdated & cleanup() should be called => discard.
-        assert_eq!(get_active_regex_count(&regex_manager), 0);
-
-        // The entry is recreated, get_compiled_regex_count() increased +1.
-        assert!(filter.matches(&make_request("https://geo2.hltv.org/"), &mut regex_manager));
-        assert_eq!(regex_manager.get_compiled_regex_count(), 2);
-        assert_eq!(get_active_regex_count(&regex_manager), 1);
-    }
-}
+#[cfg(test)]
+#[path = "../tests/unit/regex_manager.rs"]
+mod unit_tests;

@@ -1,0 +1,28 @@
+// flatc --rust --gen-object-api -o src/flatbuffers/ src/flatbuffers/fb_network_filter.fbs
+
+namespace fb;
+
+table NetworkFilter {
+  mask: uint32;  // NetworkFilterMask (network.rs)
+
+  // These arrays contain sorted (ascending) indices in the |unique_domains_hashes|
+  // instead of the hashes themselves. This approach saves memory, as there
+  // typically aren’t many unique hashes
+  opt_domains: [uint16];
+  opt_not_domains: [uint16];
+
+  patterns: [string];
+  modifier_option: string;
+  hostname: string;
+
+  tag: string;
+
+  raw_line: string;
+}
+
+table NetworkFilterList {
+  network_filters: [NetworkFilter] (required);
+  unique_domains_hashes: [uint64] (required);
+}
+
+root_type NetworkFilterList;

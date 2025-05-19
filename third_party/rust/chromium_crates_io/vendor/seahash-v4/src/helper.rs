@@ -16,38 +16,38 @@ pub fn read_int(buf: &[u8]) -> u64 {
             // u8.
             1 => *ptr as u64,
             // u16.
-            2 => (*(ptr as *const u16)).to_le() as u64,
+            2 => (ptr as *const u16).read_unaligned().to_le() as u64,
             // u16 + u8.
             3 => {
-                let a = (*(ptr as *const u16)).to_le() as u64;
+                let a = (ptr as *const u16).read_unaligned().to_le() as u64;
                 let b = *ptr.offset(2) as u64;
 
                 a | (b << 16)
-            },
+            }
             // u32.
-            4 => (*(ptr as *const u32)).to_le() as u64,
+            4 => (ptr as *const u32).read_unaligned().to_le() as u64,
             // u32 + u8.
             5 => {
-                let a = (*(ptr as *const u32)).to_le() as u64;
+                let a = (ptr as *const u32).read_unaligned().to_le() as u64;
                 let b = *ptr.offset(4) as u64;
 
                 a | (b << 32)
-            },
+            }
             // u32 + u16.
             6 => {
-                let a = (*(ptr as *const u32)).to_le() as u64;
-                let b = (*(ptr.offset(4) as *const u16)).to_le() as u64;
+                let a = (ptr as *const u32).read_unaligned().to_le() as u64;
+                let b = (ptr.offset(4) as *const u16).read_unaligned().to_le() as u64;
 
                 a | (b << 32)
-            },
+            }
             // u32 + u16 + u8.
             7 => {
-                let a = (*(ptr as *const u32)).to_le() as u64;
-                let b = (*(ptr.offset(4) as *const u16)).to_le() as u64;
+                let a = (ptr as *const u32).read_unaligned().to_le() as u64;
+                let b = (ptr.offset(4) as *const u16).read_unaligned().to_le() as u64;
                 let c = *ptr.offset(6) as u64;
 
                 a | (b << 32) | (c << 48)
-            },
+            }
             _ => 0,
         }
     }
@@ -60,12 +60,15 @@ pub unsafe fn read_u64(ptr: *const u8) -> u64 {
     {
         // We cannot be sure about the memory layout of a potentially emulated 64-bit integer, so
         // we read it manually. If possible, the compiler should emit proper instructions.
-        (*(ptr as *const u32)).to_le() as u64 | ((*(ptr.offset(4) as *const u32)).to_le() as u64) << 32
+        let a = (ptr as *const u32).read_unaligned().to_le();
+        let b = (ptr.offset(4) as *const u32).read_unaligned().to_le();
+
+        a as u64 | ((b as u64) << 32)
     }
 
     #[cfg(target_pointer_width = "64")]
     {
-        (*(ptr as *const u64)).to_le()
+        (ptr as *const u64).read_unaligned().to_le()
     }
 }
 
@@ -73,7 +76,7 @@ pub unsafe fn read_u64(ptr: *const u8) -> u64 {
 ///
 /// This is a bijective function emitting chaotic behavior. Such functions are used as building
 /// blocks for hash functions.
-pub fn diffuse(mut x: u64) -> u64 {
+pub const fn diffuse(mut x: u64) -> u64 {
     // These are derived from the PCG RNG's round. Thanks to @Veedrac for proposing this. The basic
     // idea is that we use dynamic shifts, which are determined by the input itself. The shift is
     // chosen by the higher bits, which means that changing those flips the lower bits, which
@@ -89,7 +92,7 @@ pub fn diffuse(mut x: u64) -> u64 {
 }
 
 /// Reverse the `diffuse` function.
-pub fn undiffuse(mut x: u64) -> u64 {
+pub const fn undiffuse(mut x: u64) -> u64 {
     // 0x2f72b4215a3d8caf is the modular multiplicative inverse of the constant used in `diffuse`.
 
     x = x.wrapping_mul(0x2f72b4215a3d8caf);

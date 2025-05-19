@@ -2,8 +2,8 @@
 
 use std::convert::TryFrom;
 
-use crate::filters::network::{NetworkFilter, NetworkFilterError};
 use crate::filters::cosmetic::{CosmeticFilter, CosmeticFilterError};
+use crate::filters::network::{NetworkFilter, NetworkFilterError};
 use crate::resources::PermissionMask;
 
 use itertools::{Either, Itertools};
@@ -154,14 +154,14 @@ impl TryFrom<&str> for ExpiresInterval {
                 if (1..=HOURS_MAX).contains(&amount) {
                     return Ok(Self::Hours(amount));
                 }
-            },
+            }
             "day" | "days" => {
                 let amount = amount.parse::<u8>().map_err(|_| ())?;
                 if (1..=DAYS_MAX).contains(&amount) {
-                    return Ok(Self::Days(amount))
+                    return Ok(Self::Days(amount));
                 }
             }
-            _ => ()
+            _ => (),
         }
         Err(())
     }
@@ -200,14 +200,18 @@ impl FilterListMetadata {
         if let Some(kv) = line.strip_prefix("! ") {
             if let Some((key, value)) = kv.split_once(": ") {
                 match key {
-                    "Homepage" if self.homepage.is_none() => self.homepage = Some(value.to_string()),
+                    "Homepage" if self.homepage.is_none() => {
+                        self.homepage = Some(value.to_string())
+                    }
                     "Title" if self.title.is_none() => self.title = Some(value.to_string()),
                     "Expires" if self.expires.is_none() => {
                         if let Ok(expires) = ExpiresInterval::try_from(value) {
                             self.expires = Some(expires);
                         }
                     }
-                    "Redirect" if self.redirect.is_none() => self.redirect = Some(value.to_string()),
+                    "Redirect" if self.redirect.is_none() => {
+                        self.redirect = Some(value.to_string())
+                    }
                     _ => (),
                 }
             }
@@ -236,8 +240,13 @@ impl FilterSet {
 
     /// Adds a collection of filter rules to this `FilterSet`. Filters that cannot be parsed
     /// successfully are ignored. Returns any discovered metadata about the list of rules added.
-    pub fn add_filters(&mut self, filters: impl IntoIterator<Item=impl AsRef<str>>, opts: ParseOptions) -> FilterListMetadata {
-        let (metadata, mut parsed_network_filters, mut parsed_cosmetic_filters) = parse_filters_with_metadata(filters, self.debug, opts);
+    pub fn add_filters(
+        &mut self,
+        filters: impl IntoIterator<Item = impl AsRef<str>>,
+        opts: ParseOptions,
+    ) -> FilterListMetadata {
+        let (metadata, mut parsed_network_filters, mut parsed_cosmetic_filters) =
+            parse_filters_with_metadata(filters, self.debug, opts);
         self.network_filters.append(&mut parsed_network_filters);
         self.cosmetic_filters.append(&mut parsed_cosmetic_filters);
         metadata
@@ -262,11 +271,13 @@ impl FilterSet {
     ///
     /// This function will fail if the `FilterSet` was not created in debug mode.
     #[cfg(feature = "content-blocking")]
-    pub fn into_content_blocking(self) -> Result<(Vec<crate::content_blocking::CbRule>, Vec<String>), ()> {
+    pub fn into_content_blocking(
+        self,
+    ) -> Result<(Vec<crate::content_blocking::CbRule>, Vec<String>), ()> {
         use crate::content_blocking;
 
         if !self.debug {
-            return Err(())
+            return Err(());
         }
 
         let mut ignore_previous_rules = vec![];
@@ -275,26 +286,37 @@ impl FilterSet {
         let mut filters_used = vec![];
 
         self.network_filters.into_iter().for_each(|filter| {
-            let original_rule = *filter.raw_line.clone().expect("All rules should be in debug mode");
-            if let Ok(equivalent) = TryInto::<content_blocking::CbRuleEquivalent>::try_into(filter) {
+            let original_rule = *filter
+                .raw_line
+                .clone()
+                .expect("All rules should be in debug mode");
+            if let Ok(equivalent) = TryInto::<content_blocking::CbRuleEquivalent>::try_into(filter)
+            {
                 filters_used.push(original_rule);
-                equivalent.into_iter().for_each(|cb_rule| {
-                    match &cb_rule.action.typ {
-                        content_blocking::CbType::IgnorePreviousRules => ignore_previous_rules.push(cb_rule),
+                equivalent
+                    .into_iter()
+                    .for_each(|cb_rule| match &cb_rule.action.typ {
+                        content_blocking::CbType::IgnorePreviousRules => {
+                            ignore_previous_rules.push(cb_rule)
+                        }
                         _ => other_rules.push(cb_rule),
-                    }
-                });
+                    });
             }
         });
 
         let add_fp_document_exception = !filters_used.is_empty();
 
         self.cosmetic_filters.into_iter().for_each(|filter| {
-            let original_rule = *filter.raw_line.clone().expect("All rules should be in debug mode");
+            let original_rule = *filter
+                .raw_line
+                .clone()
+                .expect("All rules should be in debug mode");
             if let Ok(cb_rule) = TryInto::<content_blocking::CbRule>::try_into(filter) {
                 filters_used.push(original_rule);
                 match &cb_rule.action.typ {
-                    content_blocking::CbType::IgnorePreviousRules => ignore_previous_rules.push(cb_rule),
+                    content_blocking::CbType::IgnorePreviousRules => {
+                        ignore_previous_rules.push(cb_rule)
+                    }
                     _ => other_rules.push(cb_rule),
                 }
             }
@@ -402,17 +424,19 @@ pub fn parse_filter(
     }
 
     match opts.format {
-        FilterFormat::Standard => {
-            match (detect_filter_type(filter), opts.rule_types) {
-                (FilterType::Network, RuleTypes::All | RuleTypes::NetworkOnly) => NetworkFilter::parse(filter, debug, opts)
+        FilterFormat::Standard => match (detect_filter_type(filter), opts.rule_types) {
+            (FilterType::Network, RuleTypes::All | RuleTypes::NetworkOnly) => {
+                NetworkFilter::parse(filter, debug, opts)
                     .map(|f| f.into())
-                    .map_err(|e| e.into()),
-                (FilterType::Cosmetic, RuleTypes::All | RuleTypes::CosmeticOnly) => CosmeticFilter::parse(filter, debug, opts.permissions)
-                    .map(|f| f.into())
-                    .map_err(|e| e.into()),
-                _ => Err(FilterParseError::Unsupported),
+                    .map_err(|e| e.into())
             }
-        }
+            (FilterType::Cosmetic, RuleTypes::All | RuleTypes::CosmeticOnly) => {
+                CosmeticFilter::parse(filter, debug, opts.permissions)
+                    .map(|f| f.into())
+                    .map_err(|e| e.into())
+            }
+            _ => Err(FilterParseError::Unsupported),
+        },
         FilterFormat::Hosts => {
             // Hosts-style rules can only ever be network rules
             if !opts.rule_types.loads_network_rules() {
@@ -437,7 +461,11 @@ pub fn parse_filter(
 
             // Take the last of at most 2 whitespace separated fields
             let mut filter_parts = filter.split_whitespace();
-            let hostname = match (filter_parts.next(), filter_parts.next(), filter_parts.next()) {
+            let hostname = match (
+                filter_parts.next(),
+                filter_parts.next(),
+                filter_parts.next(),
+            ) {
                 (None, None, None) => return Err(FilterParseError::Unsupported),
                 (Some(hostname), None, None) => hostname,
                 (Some(_ip), Some(hostname), None) => hostname,
@@ -461,22 +489,19 @@ pub fn parse_filter(
 
 /// Parse an entire list of filters, ignoring any errors
 pub fn parse_filters(
-    list: impl IntoIterator<Item=impl AsRef<str>>,
+    list: impl IntoIterator<Item = impl AsRef<str>>,
     debug: bool,
     opts: ParseOptions,
 ) -> (Vec<NetworkFilter>, Vec<CosmeticFilter>) {
-    let (_metadata, network_filters, cosmetic_filters) = parse_filters_with_metadata(
-        list,
-        debug,
-        opts,
-    );
+    let (_metadata, network_filters, cosmetic_filters) =
+        parse_filters_with_metadata(list, debug, opts);
 
     (network_filters, cosmetic_filters)
 }
 
 /// Parse an entire list of filters, ignoring any errors
 pub fn parse_filters_with_metadata(
-    list: impl IntoIterator<Item=impl AsRef<str>>,
+    list: impl IntoIterator<Item = impl AsRef<str>>,
     debug: bool,
     opts: ParseOptions,
 ) -> (FilterListMetadata, Vec<NetworkFilter>, Vec<CosmeticFilter>) {
@@ -523,7 +548,12 @@ fn detect_filter_type(filter: &str) -> FilterType {
         // Check the next few bytes for a second `#`
         // Indexing is safe here because it uses the filter's byte
         // representation and guards against short strings
-        if find_char(b'#', &filter.as_bytes()[after_sharp_index..(after_sharp_index+4).min(filter.len())]).is_some() {
+        if find_char(
+            b'#',
+            &filter.as_bytes()[after_sharp_index..(after_sharp_index + 4).min(filter.len())],
+        )
+        .is_some()
+        {
             return FilterType::Cosmetic;
         }
     }
@@ -538,302 +568,5 @@ fn detect_filter_type(filter: &str) -> FilterType {
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn parse_hosts_style() {
-        {
-            let input = "www.malware.com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_ok());
-        }
-        {
-            let input = "www.malware.com/virus.txt";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-        {
-            let input = "127.0.0.1 www.malware.com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_ok());
-        }
-        {
-            let input = "127.0.0.1\t\twww.malware.com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_ok());
-        }
-        {
-            let input = "0.0.0.0    www.malware.com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_ok());
-        }
-        {
-            let input = "0.0.0.0    www.malware.com     # replace after issue #289336 is addressed";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_ok());
-        }
-        {
-            let input = "! Title: list.txt";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-        {
-            let input = "127.0.0.1 localhost";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-        {
-            let input = "127.0.0.1 com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-        {
-            let input = ".com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-        {
-            let input = "*.com";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-        {
-            let input = "www.";
-            let result = parse_filter(input, true, ParseOptions { format: FilterFormat::Hosts, ..Default::default() });
-            assert!(result.is_err());
-        }
-    }
-
-    #[test]
-    fn adguard_cosmetic_detection() {
-        {
-            let input = r#"example.org$$script[data-src="banner"]"#;
-            let result = parse_filter(input, true, Default::default());
-            assert!(result.is_err());
-        }
-        {
-            let input = "example.org##+js(set-local-storage-item, Test, $$remove$$)";
-            let result = parse_filter(input, true, Default::default());
-            assert!(result.is_ok());
-        }
-        {
-            let input = "[$app=org.example.app]example.com##.textad";
-            let result = parse_filter(input, true, Default::default());
-            assert!(result.is_err());
-        }
-        {
-            let input = r#"[$domain=/^i\[a-z\]*\.strmrdr\[a-z\]+\..*/]##+js(set-constant, adscfg.enabled, false)"#;
-            let result = parse_filter(input, true, Default::default());
-            assert!(result.is_err());
-        }
-    }
-
-    #[test]
-    fn parse_filter_failed_fuzz_1() {
-        let input = "Ѥ";
-        let result = parse_filter(input, true, Default::default());
-        assert!(result.is_ok());
-    }
-
-    #[test]
-    fn parse_filter_failed_fuzz_2() {
-        assert!(parse_filter(r#"###\\\00DB \008D"#, true, Default::default()).is_ok());
-        assert!(parse_filter(r#"###\Û"#, true, Default::default()).is_ok());
-    }
-
-    #[test]
-    fn parse_filter_failed_fuzz_3() {
-        let input = "||$3p=/";
-        let result = parse_filter(input, true, Default::default());
-        assert!(result.is_ok());
-    }
-
-    #[test]
-    fn parse_filter_failed_fuzz_4() {
-        // \\##+js(,\xdd\x8d
-        let parsed = parse_filter(
-            &String::from_utf8(vec![92, 35, 35, 43, 106, 115, 40, 44, 221, 141]).unwrap(),
-            true,
-            Default::default(),
-        );
-        #[cfg(feature = "css-validation")]
-        assert!(parsed.is_err());
-        #[cfg(not(feature = "css-validation"))]
-        assert!(parsed.is_ok());
-    }
-
-    #[test]
-    #[cfg(feature = "css-validation")]
-    fn parse_filter_opening_comment() {
-        assert!(parse_filter(
-            "##input,input/*",
-            true,
-            Default::default(),
-        ).is_err());
-    }
-
-    #[test]
-    fn test_parse_expires_interval() {
-        assert_eq!(ExpiresInterval::try_from("0 hour"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("0 hours"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("1 hour"), Ok(ExpiresInterval::Hours(1)));
-        assert_eq!(ExpiresInterval::try_from("1 hours"), Ok(ExpiresInterval::Hours(1)));
-        assert_eq!(ExpiresInterval::try_from("2 hours"), Ok(ExpiresInterval::Hours(2)));
-        assert_eq!(ExpiresInterval::try_from("2 hour"), Ok(ExpiresInterval::Hours(2)));
-        assert_eq!(ExpiresInterval::try_from("3.5 hours"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("336 hours"), Ok(ExpiresInterval::Hours(336)));
-        assert_eq!(ExpiresInterval::try_from("337 hours"), Err(()));
-
-        assert_eq!(ExpiresInterval::try_from("0 day"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("0 days"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("1 day"), Ok(ExpiresInterval::Days(1)));
-        assert_eq!(ExpiresInterval::try_from("1 days"), Ok(ExpiresInterval::Days(1)));
-        assert_eq!(ExpiresInterval::try_from("2 days"), Ok(ExpiresInterval::Days(2)));
-        assert_eq!(ExpiresInterval::try_from("2 day"), Ok(ExpiresInterval::Days(2)));
-        assert_eq!(ExpiresInterval::try_from("3.5 days"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("14 days"), Ok(ExpiresInterval::Days(14)));
-        assert_eq!(ExpiresInterval::try_from("15 days"), Err(()));
-
-        assert_eq!(ExpiresInterval::try_from("-5 hours"), Err(()));
-        assert_eq!(ExpiresInterval::try_from("+5 hours"), Err(()));
-
-        assert_eq!(ExpiresInterval::try_from("2 days (update frequency)"), Ok(ExpiresInterval::Days(2)));
-        assert_eq!(ExpiresInterval::try_from("2 hours (update frequency)"), Ok(ExpiresInterval::Hours(2)));
-    }
-
-    #[test]
-    fn test_parsing_list_metadata() {
-        let list = [
-            "[Adblock Plus 2.0]",
-            "! Title: 0131 Block List",
-            "! Homepage: https://austinhuang.me/0131-block-list",
-            "! Licence: https://creativecommons.org/licenses/by-sa/4.0/",
-            "! Expires: 7 days",
-            "! Version: 20220411",
-            "",
-            "! => https://austinhuang.me/0131-block-list/list.txt",
-        ];
-
-        let mut filter_set = FilterSet::new(false);
-        let metadata = filter_set.add_filters(list, ParseOptions::default());
-
-        assert_eq!(metadata.title, Some("0131 Block List".to_string()));
-        assert_eq!(metadata.homepage, Some("https://austinhuang.me/0131-block-list".to_string()));
-        assert_eq!(metadata.expires, Some(ExpiresInterval::Days(7)));
-        assert_eq!(metadata.redirect, None);
-    }
-
-    #[test]
-    /// Some lists are formatted in unusual ways. This example has a version string with
-    /// non-numeric characters and an `Expires` field with extra information trailing afterwards.
-    /// Valid fields should still be recognized and parsed accordingly.
-    fn test_parsing_list_best_effort() {
-        let list = [
-            "[Adblock Plus 2]",
-            "!-----------------------------------",
-            "!             ABOUT",
-            "!-----------------------------------",
-            "! Version: 1.2.0.0",
-            "! Title: ABPVN Advanced",
-            "! Last modified: 09/03/2021",
-            "! Expires: 7 days (update frequency)",
-            "! Homepage: https://www.haopro.net/",
-        ];
-
-        let mut filter_set = FilterSet::new(false);
-        let metadata = filter_set.add_filters(list, ParseOptions::default());
-
-        assert_eq!(metadata.title, Some("ABPVN Advanced".to_string()));
-        assert_eq!(metadata.homepage, Some("https://www.haopro.net/".to_string()));
-        assert_eq!(metadata.expires, Some(ExpiresInterval::Days(7)));
-        assert_eq!(metadata.redirect, None);
-    }
-
-    #[test]
-    fn test_read_metadata() {
-        {
-            let list =
-r##"! Title: uBlock₀ filters – Annoyances
-! Description: Filters optimized for uBlock Origin, to be used with Fanboy's
-!              and/or Adguard's "Annoyances" list(s)
-! Expires: 4 days
-! Last modified: %timestamp%
-! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
-! Homepage: https://github.com/uBlockOrigin/uAssets
-! Forums: https://github.com/uBlockOrigin/uAssets/issues"##;
-            let metadata = read_list_metadata(&list);
-
-            assert_eq!(metadata.title, Some("uBlock₀ filters – Annoyances".to_string()));
-            assert_eq!(metadata.homepage, Some("https://github.com/uBlockOrigin/uAssets".to_string()));
-            assert_eq!(metadata.expires, Some(ExpiresInterval::Days(4)));
-            assert_eq!(metadata.redirect, None);
-        }
-        {
-            let list =
-r##"[uBlock Origin]
-! Title: PersianBlocker
-! Description: سرانجام، یک لیست بهینه و گسترده برای مسدودسازی تبلیغ ها و ردیاب ها در سایت های پارسی زبان!
-! Expires: 2 days
-! Last modified: 2022-12-11
-! Homepage: https://github.com/MasterKia/PersianBlocker
-! License: AGPLv3 (https://github.com/MasterKia/PersianBlocker/blob/main/LICENSE)
-
-! مشکل/پیشنهاد: https://github.com/MasterKia/PersianBlocker/issues
-! مشارکت: https://github.com/MasterKia/PersianBlocker/pulls
-
-!  لیستی برای برگرداندن آزادی کاربران، چون هر کاربر این آزادی را دارد که چه چیزی وارد مرورگرش می‌شود و چه چیزی وارد نمی‌شود
-!-------------------------v Experimental Generic Filters v-----------------------!
-! applicationha.com, androidgozar.com, downloadkral.com, gold-team.org, iranecar.com, icoff.ee, koolakmag.ir,
-!! mybia4music.com, my-film.pw, pedal.ir, vgdl.ir, sakhamusic.ir
-/wp-admin/admin-ajax.php?postviews_id=$xhr
-"##;
-            let metadata = read_list_metadata(&list);
-
-            assert_eq!(metadata.title, Some("PersianBlocker".to_string()));
-            assert_eq!(metadata.homepage, Some("https://github.com/MasterKia/PersianBlocker".to_string()));
-            assert_eq!(metadata.expires, Some(ExpiresInterval::Days(2)));
-            assert_eq!(metadata.redirect, None);
-        }
-    }
-
-    #[test]
-    fn parse_cosmetic_variants() {
-        {
-            let input = "example.com##.selector";
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Ok(ParsedFilter::Cosmetic(..))));
-        }
-        {
-            let input = "9gag.com#?#article:-abp-has(.promoted)";
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Ok(ParsedFilter::Cosmetic(..))));
-        }
-        #[cfg(feature = "css-validation")]
-        {
-            let input = "sportowefakty.wp.pl#@?#body > [class]:not([id]):matches-css(position: fixed):matches-css(top: 0px)";
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Ok(ParsedFilter::Cosmetic(..))));
-        }
-        {
-            let input = r#"odkrywamyzakryte.com#%#//scriptlet("abort-on-property-read", "sc_adv_out")"#;
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Err(FilterParseError::Cosmetic(CosmeticFilterError::UnsupportedSyntax))));
-        }
-        {
-            let input = "bikeradar.com,spiegel.de#@%#!function(){function b(){}function a(a){return{get:function(){return a},set:b}}function c(a)";
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Err(FilterParseError::Cosmetic(CosmeticFilterError::UnsupportedSyntax))));
-        }
-        {
-            let input = "nczas.com#$#.adsbygoogle { position: absolute!important; left: -3000px!important; }";
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Err(FilterParseError::Cosmetic(CosmeticFilterError::UnsupportedSyntax))));
-        }
-        {
-            let input = "kurnik.pl#@$#.adsbygoogle { height: 1px !important; width: 1px !important; }";
-            let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Err(FilterParseError::Cosmetic(CosmeticFilterError::UnsupportedSyntax))));
-        }
-    }
-}
+#[path = "../tests/unit/lists.rs"]
+mod unit_tests;
