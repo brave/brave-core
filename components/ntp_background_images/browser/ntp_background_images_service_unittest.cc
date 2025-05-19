@@ -449,7 +449,7 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicTest) {
   EXPECT_TRUE(service_->background_images_component_started);
 }
 
-TEST_F(NTPBackgroundImagesServiceTest, DISABLED_InternalDataTest) {
+TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   Init();
 
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
@@ -501,37 +501,24 @@ TEST_F(NTPBackgroundImagesServiceTest, DISABLED_InternalDataTest) {
   EXPECT_THAT(images_data->campaigns, ::testing::SizeIs(1));
   const Campaign campaign = images_data->campaigns[0];
   EXPECT_THAT(campaign.campaign_id, ::testing::Not(::testing::IsEmpty()));
-  EXPECT_THAT(campaign.creatives, ::testing::SizeIs(3));
-  EXPECT_EQ(696, campaign.creatives[0].focal_point.x());
-  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-1.jpg"),
+  EXPECT_THAT(campaign.creatives, ::testing::SizeIs(1));
+  EXPECT_EQ(25, campaign.creatives[0].focal_point.x());
+  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background.jpg"),
             campaign.creatives[0].file_path.BaseName());
-  // Check default value is set if "focalPoint" is missed.
-  EXPECT_EQ(0, campaign.creatives[1].focal_point.x());
-  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-2.jpg"),
-            campaign.creatives[1].file_path.BaseName());
-  EXPECT_EQ(0, campaign.creatives[2].focal_point.x());
-  EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-3.jpg"),
-            campaign.creatives[2].file_path.BaseName());
-  EXPECT_THAT(campaign.creatives[0].creative_instance_id, ::testing::IsEmpty());
-  EXPECT_THAT(campaign.creatives[1].creative_instance_id,
-              ::testing::Not(::testing::IsEmpty()));
-  EXPECT_THAT(campaign.creatives[2].creative_instance_id, ::testing::IsEmpty());
+  EXPECT_EQ(campaign.creatives[0].creative_instance_id,
+            "30244a36-561a-48f0-8d7a-780e9035c57a");
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
   EXPECT_THAT(
       observer_.sponsored_images_data->campaigns[0].creatives[0].logo.alt_text,
       ::testing::Not(::testing::IsEmpty()));
   EXPECT_TRUE(
       images_data->MaybeGetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
-  EXPECT_FALSE(
-      images_data->MaybeGetBackgroundAt(0, 0)->FindBool(kIsBackgroundKey));
+  EXPECT_FALSE(images_data->MaybeGetBackgroundAt(0, 0)
+                   ->FindBool(kIsBackgroundKey)
+                   .value());
 
-  // Default logo is used for wallpaper at 0.
-  EXPECT_EQ("logo.png",
+  EXPECT_EQ("30244a36-561a-48f0-8d7a-780e9035c57a/button.png",
             *images_data->MaybeGetBackgroundAt(0, 0)->FindStringByDottedPath(
-                kLogoImagePath));
-  // Per wallpaper logo is used for wallpaper at 1.
-  EXPECT_EQ("logo-2.png",
-            *images_data->MaybeGetBackgroundAt(0, 1)->FindStringByDottedPath(
                 kLogoImagePath));
 
   // Test BI data loading
@@ -566,7 +553,7 @@ TEST_F(NTPBackgroundImagesServiceTest, DISABLED_InternalDataTest) {
   // Invalid schema version
   const std::string test_json_string_higher_schema = R"(
     {
-      "schemaVersion": 2,
+      "schemaVersion": -1,
       "campaigns": [
         {
           "version": 1,
