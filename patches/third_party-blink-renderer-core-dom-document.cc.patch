@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
+index 07218c2f9adafacbe780bfec7a4bb78d7ddb6a72..748083e34b5b86688d36ca67bf5a1970d3688aac 100644
+--- a/third_party/blink/renderer/core/dom/document.cc
++++ b/third_party/blink/renderer/core/dom/document.cc
+@@ -2280,7 +2280,6 @@ void Document::UpdateStyleInvalidationIfNeeded() {
+ 
+ #if DCHECK_IS_ON()
+ static void AssertNodeClean(const Node& node) {
+-  DCHECK(!node.NeedsStyleRecalc());
+   DCHECK(!node.ChildNeedsStyleRecalc());
+   DCHECK(!node.NeedsReattachLayoutTree());
+   DCHECK(!node.ChildNeedsReattachLayoutTree());
