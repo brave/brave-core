@@ -36,9 +36,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
       delete;
 
  private:
-  PsstTabWebContentsObserver(content::WebContents* web_contents,
-                             PrefService* prefs,
-                             const int32_t world_id);
+  PsstTabWebContentsObserver(
+      content::WebContents* web_contents,
+      PrefService* prefs,
+      std::unique_ptr<PsstScriptsHandler> script_handler);
 
   // content::WebContentsObserver overrides
   void PrimaryPageChanged(content::Page& page) override;
