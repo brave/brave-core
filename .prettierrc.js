@@ -5,7 +5,7 @@
 
 /** @type {import("prettier").Config} */
 module.exports = {
-  'trailingComma': 'none',
+  'trailingComma': 'all',
   'tabWidth': 2,
   'semi': false,
   'singleQuote': true,
@@ -21,11 +21,9 @@ module.exports = {
   'plugins': [],
   'printWidth': 80,
   'proseWrap': 'always',
-  'rangeEnd': Infinity,
-  'rangeStart': 0,
   'requirePragma': false,
   'useTabs': false,
   'vueIndentScriptAndStyle': false,
-  'bracketSameLine': false,
-  'singleAttributePerLine': true
+  'singleAttributePerLine': true,
+  'experimentalOperatorPosition': 'start',
 }

@@ -53,6 +53,7 @@ README.md
 chromium_presubmit_config.json5
 jest.config.js
 snapcraft.yaml
+.eslintrc.js
 
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
@@ -62,6 +63,7 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/ai_rewriter/
 /components/brave_new_tab_ui/
 /components/brave_rewards/
+/components/brave_wallet/
 /components/brave_wallet_ui/
 /components/brave_shields/
 /components/brave_vpn/
