@@ -3,24 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("psst") {
-  sources = [
-    "psst_tab_web_contents_observer.cc",
-    "psst_tab_web_contents_observer.h",
-  ]
-
-  deps = [
-    "//brave/components/constants:constants",
-    "//brave/components/psst/browser/content",
-    "//brave/components/psst/browser/core:core",
-    "//brave/components/psst/common:common",
-    "//chrome/browser/profiles:profile",
-    "//components/prefs:prefs",
-    "//components/user_prefs:user_prefs",
-    "//content/public/browser",
-  ]
-}
-
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -29,7 +11,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
-    "//brave/browser/psst:psst",
+    "//brave/components/psst/browser/content",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/cosmetic_filters/browser",
