@@ -15,10 +15,14 @@
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/tabs/tab_group.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/tabs/public/tab_group.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/gfx/text_elider.h"
 
 namespace commander {
 
@@ -26,6 +30,19 @@ namespace {
 // TODO(lgrey): Just guessing for now! Not even sure if we need a max width,
 // but right now, the code that does "<title> and x other tabs" wants a max.
 double constexpr kMaxTitleWidth = 1000;
+
+// TODO(crbug.com/418774949) Move to TabGroupFeatures for desktop.
+std::u16string GetContentString(const TabGroup& group) {
+  constexpr size_t kContextMenuTabTitleMaxLength = 30;
+  std::u16string format_string = l10n_util::GetPluralStringFUTF16(
+      IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE, group.tab_count() - 1);
+  std::u16string short_title;
+  gfx::ElideString(
+      TabUIHelper::FromWebContents(group.GetFirstTab()->GetContents())
+          ->GetTitle(),
+      kContextMenuTabTitleMaxLength, &short_title);
+  return base::ReplaceStringPlaceholders(format_string, short_title, nullptr);
+}
 
 }  // namespace
 
@@ -181,7 +198,7 @@ std::vector<GroupMatch> GroupsMatchingInput(
     TabGroup* group = model->GetTabGroup(group_id);
     const std::u16string& group_title = group->visual_data()->title();
     const std::u16string& title =
-        group_title.empty() ? group->GetContentString() : group_title;
+        group_title.empty() ? GetContentString(*group) : group_title;
     if (input.empty()) {
       GroupMatch match(group_id, title, ordering_score);
       results.push_back(std::move(match));
