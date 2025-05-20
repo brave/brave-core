@@ -26,7 +26,7 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 public final class BraveRadioButtonGroupHomepagePreference
         extends BraveRadioButtonGroupHomepagePreferenceDummySuper {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    static final String MOBILE_BOOKMARKS_PATH = "chrome-native://bookmarks/folder/1";
+    static final String MOBILE_BOOKMARKS_PATH = "chrome-native://bookmarks/folder/3";
 
     @Nullable private RadioButtonWithDescription mMobileBookmarks;
     @Nullable private RadioButtonWithEditText mCustomUri;
