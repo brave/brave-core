@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
@@ -82,9 +83,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddResourcePath("manifest.webmanifest", IDR_AI_CHAT_UI_MANIFEST);
   source->AddResourcePath("pwa_icon.svg", IDR_AI_CHAT_UI_PWA_ICON);
 
-  for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
-  }
+  source->AddLocalizedStrings(ai_chat::GetLocalizedStrings());
+  source->AddLocalizedStrings(ai_chat::kLocalizedStrings);
 
   constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);

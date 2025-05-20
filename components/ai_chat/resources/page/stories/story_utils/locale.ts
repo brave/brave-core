@@ -5,6 +5,8 @@
 
 import { provideStrings } from '../../../../../../.storybook/locale'
 
+import '../../../common/strings'
+
 provideStrings({
   summarizeFailedLabel: 'The summarizer feature is currently available only for select articles and other long-form web pages.',
   placeholderLabel: 'Enter a prompt here',

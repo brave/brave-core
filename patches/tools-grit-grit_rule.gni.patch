@@ -1,0 +1,13 @@
+diff --git a/tools/grit/grit_rule.gni b/tools/grit/grit_rule.gni
+index 912fdae64996f353eedae2cbbbbb2d053f18a1c6..228645a5944ab9dcbd3c9313c29630084248093b 100644
+--- a/tools/grit/grit_rule.gni
++++ b/tools/grit/grit_rule.gni
+@@ -311,7 +311,7 @@ template("grit") {
+     foreach(_output, _grit_outputs) {
+       _extension = get_path_info(_output, "extension")
+       if (_extension != "json" && _extension != "gz" && _extension != "pak" &&
+-          _extension != "xml") {
++          _extension != "xml" && _extension != "ts") {
+         sources += [ _output ]
+       }
+     }
