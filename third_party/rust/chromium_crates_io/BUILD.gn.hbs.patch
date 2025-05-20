@@ -1,8 +1,8 @@
 diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-index 38a4bd496af..39908589b50 100644
+index 76e7da3cfbb..872f8ef765e 100644
 --- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
 +++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-@@ -58,14 +58,14 @@ cargo_crate("{{this.name}}") {
+@@ -54,14 +54,14 @@ cargo_crate("{{this.name}}") {
      ":lib",
      {{/if}}
      {{#each this.packages}}
@@ -19,7 +19,7 @@ index 38a4bd496af..39908589b50 100644
        {{/each}}
      ]
    }
-@@ -74,7 +74,7 @@ cargo_crate("{{this.name}}") {
+@@ -70,7 +70,7 @@ cargo_crate("{{this.name}}") {
    {{#if aliased_deps}}
    aliased_deps = {
      {{#each aliased_deps}}
@@ -28,7 +28,7 @@ index 38a4bd496af..39908589b50 100644
      {{/each}}
    }
    {{/if}}
-@@ -82,14 +82,14 @@ cargo_crate("{{this.name}}") {
+@@ -78,14 +78,14 @@ cargo_crate("{{this.name}}") {
    {{#if @first}}
    build_deps = [
      {{#each this.packages}}
@@ -45,9 +45,9 @@ index 38a4bd496af..39908589b50 100644
      {{/each}}
      ]
    }
-@@ -142,12 +142,37 @@ cargo_crate("{{this.name}}") {
-       {{/each}}
-     {{/with}}
+@@ -120,9 +120,36 @@ cargo_crate("{{this.name}}") {
+       ]
+     {{/if}}
    {{/if}}
 +  rustenv = [
 +    {{#if rustenv}}
@@ -61,8 +61,7 @@ index 38a4bd496af..39908589b50 100644
 +      {{/each}}
 +    {{/if}}
 +  ]
-   rustflags = [
-     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
++  rustflags = [
 +  {{#if rustflags}}
 +    {{#each rustflags}}
 +      "{{this}}",
@@ -73,7 +72,7 @@ index 38a4bd496af..39908589b50 100644
 +      "{{this}}",
 +    {{/each}}
 +  {{/if}}
-   ]
++  ]
    {{#if output_dir}}
    output_dir = "{{output_dir}}"
    {{/if}}
@@ -83,7 +82,7 @@ index 38a4bd496af..39908589b50 100644
    {{#if native_libs}}
    native_libs = [
    {{#each native_libs}}
-@@ -156,22 +181,6 @@ cargo_crate("{{this.name}}") {
+@@ -131,29 +158,13 @@ cargo_crate("{{this.name}}") {
    ]
    {{/if}}
    {{/with}}
@@ -106,3 +105,11 @@ index 38a4bd496af..39908589b50 100644
    {{#if gn_visibility.testonly}}
    testonly = true
    {{/if}}
+ 
+   {{#if detail.extra_kv.allow_unstable_features}}
+   # `gnrt_config.toml` for this crate specifies `allow_unstable_features`.
+-  rustflags = [
++  rustflags += [
+     {{#each detail.extra_kv.allow_unstable_features}}
+       "-Zallow-features={{this}}",
+     {{/each}}
