@@ -31,13 +31,6 @@ cargo_crate("lib") {
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "chacha20"
   cargo_pkg_description = "The ChaCha20 stream cipher (RFC 8439) implemented in pure Rust using traits from the RustCrypto `cipher` crate, with optional architecture-specific hardware acceleration (AVX2, SSE2). Additionally provides the ChaCha8, ChaCha12, XChaCha20, XChaCha12 and XChaCha8 stream ciphers, and also optional rand_core-compatible RNGs based on those ciphers."
-  library_configs -= [ "//build/config/coverage:default_coverage" ]
-  library_configs -= [ "//build/config/compiler:chromium_code" ]
-  library_configs += [ "//build/config/compiler:no_chromium_code" ]
-  executable_configs -= [ "//build/config/compiler:chromium_code" ]
-  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
-  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/cfg_if/v1:lib",
     "//brave/third_party/rust/cipher/v0_4:lib",
@@ -53,4 +46,32 @@ cargo_crate("lib") {
   if (target_cpu == "x64" || target_cpu == "x86") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
   }
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config and instead
+    # add `no_chromium_code` config (a few lines below).
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = [ "//build/config/compiler:no_chromium_code" ]
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
 }
