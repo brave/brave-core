@@ -20,11 +20,11 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/window_finder.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_group.h"
 #include "ui/views/view_utils.h"
 
 namespace {
