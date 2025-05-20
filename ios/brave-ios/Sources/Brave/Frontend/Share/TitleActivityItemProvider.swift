@@ -48,6 +48,56 @@ class TitleActivityItemProvider: NSObject, UIActivityItemSource {
     _ activityViewController: UIActivityViewController,
     subjectForActivityType activityType: UIActivity.ActivityType?
   ) -> String {
-    UTType.text.identifier
+    return title
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    return UTType.text.identifier
+  }
+}
+
+class URLActivityItemProvider: NSObject, UIActivityItemSource {
+  let title: String
+  let url: URL
+
+  init(title: String, url: URL) {
+    self.title = title
+    self.url = url
+    super.init()
+  }
+
+  func activityViewControllerPlaceholderItem(
+    _ activityViewController: UIActivityViewController
+  ) -> Any {
+    return url
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    if let activityType = activityType {
+      if TitleActivityItemProvider.activityTypesToIgnore.contains(activityType) {
+        return nil
+      }
+    }
+    return url
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    subjectForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    return title
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    return UTType.url.identifier
   }
 }
