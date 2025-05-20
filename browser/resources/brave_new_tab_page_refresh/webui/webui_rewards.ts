@@ -9,7 +9,7 @@ import { externalWalletFromExtensionData } from '../../../../components/brave_re
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { Optional } from '../lib/optional'
-import { debounceListener } from './debounce_listener'
+import { debounce } from '$web-common/debounce'
 
 import {
   RewardsState,
@@ -73,7 +73,7 @@ export function initializeRewards(store: Store<RewardsState>): RewardsActions {
   }
 
   newTabProxy.addListeners({
-    onRewardsStateUpdated: debounceListener(updatePrefs)
+    onRewardsStateUpdated: debounce(updatePrefs, 10)
   })
 
   rewardsProxy.callbackRouter.onRewardsStateUpdated.addListener(loadData)

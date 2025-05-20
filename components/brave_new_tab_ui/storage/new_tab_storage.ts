@@ -187,7 +187,7 @@ export const load = (): NewTab.State => {
   return cleanData(state)
 }
 
-export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
+export const debouncedSave = debounce((data: NewTab.State) => {
   if (data) {
     // TODO(petemill): This should be of type NewTab.PersistantState, and first
     // fix errors related to properties which shouldn't be defined as persistant
