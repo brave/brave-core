@@ -28,19 +28,18 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   CHECK(prefs);
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
-      new PsstTabWebContentsObserver(contents, prefs, world_id));
+      new PsstTabWebContentsObserver(
+          contents, prefs,
+          std::make_unique<PsstScriptsHandlerImpl>(
+              prefs, contents, contents->GetPrimaryMainFrame(), world_id)));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PrefService* prefs,
-    const int32_t world_id)
+    std::unique_ptr<PsstScriptsHandler> script_handler)
     : WebContentsObserver(web_contents),
-      script_handler_(std::make_unique<PsstScriptsHandlerImpl>(
-          prefs,
-          web_contents,
-          web_contents->GetPrimaryMainFrame(),
-          world_id)),
+      script_handler_(std::move(script_handler)),
       prefs_(prefs) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;

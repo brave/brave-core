@@ -8,7 +8,7 @@
     return "user1"
   }
   return new Promise((resolve) => {
-    document.title = 'user-';
+    document.title = 'a_user-';
     resolve({
       "user": getUserId(),
       "requests": [
