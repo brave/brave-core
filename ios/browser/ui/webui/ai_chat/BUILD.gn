@@ -3,8 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
@@ -25,10 +25,14 @@ source_set("ai_chat") {
     "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/ios/browser/api/ai_chat",
+    "//components/favicon/core",
     "//components/prefs",
     "//components/resources",
+    "//components/user_prefs",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/web_state_list",
     "//ios/chrome/browser/shared/ui/util:util",
     "//ios/web",
     "//ios/web:resources",

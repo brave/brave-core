@@ -93,22 +93,21 @@ void EnsureWebStateLoaded(
 }
 
 web::WebState* GetTabFromId(ProfileIOS* profile, int tab_id) {
-  BrowserList* browser_list =
-      BrowserListFactory::GetForProfile(profile);
+  BrowserList* browser_list = BrowserListFactory::GetForProfile(profile);
 
   for (Browser* browser : browser_list->BrowsersOfType(
            BrowserList::BrowserType::kRegular)) {  // kAll ???
     WebStateList* web_state_list = browser->GetWebStateList();
-   if (web_state_list->count() > tab_id) {
-     return web_state_list->GetWebStateAt(tab_id);
-   }
-             
-//    for (int i = 0; i < web_state_list->count(); ++i) {
-//      auto* tab = web_state_list->GetWebStateAt(i);
-//      if (tab_id == tab->GetUniqueIdentifier()) {
-//        return tab;
-//      }
+    if (web_state_list->count() > tab_id) {
+      return web_state_list->GetWebStateAt(tab_id);
     }
+
+    //    for (int i = 0; i < web_state_list->count(); ++i) {
+    //      auto* tab = web_state_list->GetWebStateAt(i);
+    //      if (tab_id == tab->GetUniqueIdentifier()) {
+    //        return tab;
+    //      }
+  }
   return nullptr;
 }
 
@@ -167,10 +166,10 @@ void AIChatUIPageHandler::UploadImage(bool use_media_capture,
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
   // TODO: Fix
-//  web::WebState* web_state_to_navigate =
-//      (active_chat_tab_helper_) ? active_chat_tab_helper_->web_state()
-//                                : owner_web_state_.get();
-//  ai_chat::ShowBraveLeoSettings(web_state_to_navigate);
+  //  web::WebState* web_state_to_navigate =
+  //      (active_chat_tab_helper_) ? active_chat_tab_helper_->web_state()
+  //                                : owner_web_state_.get();
+  //  ai_chat::ShowBraveLeoSettings(web_state_to_navigate);
 }
 
 void AIChatUIPageHandler::OpenConversationFullPage(
@@ -179,30 +178,29 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   CHECK(active_chat_tab_helper_);
 
   // TODO: Fix
-  
-//  active_chat_tab_helper_->web_state()->OpenURL(
-//      {
-//          ConversationUrl(conversation_uuid),
-//          web::Referrer(),
-//          WindowOpenDisposition::NEW_FOREGROUND_TAB,
-//          ui::PAGE_TRANSITION_TYPED,
-//          false,
-//      },
-//      {});
+
+  //  active_chat_tab_helper_->web_state()->OpenURL(
+  //      {
+  //          ConversationUrl(conversation_uuid),
+  //          web::Referrer(),
+  //          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+  //          ui::PAGE_TRANSITION_TYPED,
+  //          false,
+  //      },
+  //      {});
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
-  if (!url.SchemeIs(kChromeUIScheme) &&
-      !url.SchemeIs(url::kHttpsScheme)) {
+  if (!url.SchemeIs(kChromeUIScheme) && !url.SchemeIs(url::kHttpsScheme)) {
     return;
   }
 
   web::WebState* web_state_to_navigate =
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_state()
                                 : owner_web_state_.get();
-  web_state_to_navigate->OpenURL(
-      {url, url, web::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-       ui::PAGE_TRANSITION_LINK, false});
+  web_state_to_navigate->OpenURL({url, url, web::Referrer(),
+                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                  ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
@@ -211,10 +209,10 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 
 void AIChatUIPageHandler::GoPremium() {
   // TODO: Fix
-//  auto* web_state_to_navigate = (active_chat_tab_helper_)
-//                                    ? active_chat_tab_helper_->web_state()
-//                                    : owner_web_state_.get();
-//  ai_chat::GoPremium(web_state_to_navigate);
+  //  auto* web_state_to_navigate = (active_chat_tab_helper_)
+  //                                    ? active_chat_tab_helper_->web_state()
+  //                                    : owner_web_state_.get();
+  //  ai_chat::GoPremium(web_state_to_navigate);
 }
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
@@ -222,14 +220,14 @@ void AIChatUIPageHandler::RefreshPremiumSession() {
 }
 
 void AIChatUIPageHandler::ManagePremium() {
-//  auto* web_state_to_navigate = (active_chat_tab_helper_)
-//                                    ? active_chat_tab_helper_->web_state()
-//                                    : owner_web_state_.get();
-//  ai_chat::ManagePremium(web_state_to_navigate);
+  //  auto* web_state_to_navigate = (active_chat_tab_helper_)
+  //                                    ? active_chat_tab_helper_->web_state()
+  //                                    : owner_web_state_.get();
+  //  ai_chat::ManagePremium(web_state_to_navigate);
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
-//  OpenURL(GURL(kLeoModelSupportUrl));
+  //  OpenURL(GURL(kLeoModelSupportUrl));
 }
 
 void AIChatUIPageHandler::ChatContextObserver::WebStateDestroyed(
@@ -252,7 +250,7 @@ void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
 }
 void AIChatUIPageHandler::CloseUI() {
   // TODO: Fix
-//  ai_chat::CloseActivity(owner_web_state_);
+  //  ai_chat::CloseActivity(owner_web_state_);
 }
 
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
@@ -283,7 +281,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                        const std::string& conversation_uuid) {
   auto* web_state = GetTabFromId(profile_, mojom_tab->id);
-  
+
   if (!web_state) {
     return;
   }
@@ -298,7 +296,8 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
               return;
             }
 
-            AIChatServiceFactory::GetForProfile(ProfileIOS::FromBrowserState(web_state->GetBrowserState()))
+            AIChatServiceFactory::GetForProfile(
+                ProfileIOS::FromBrowserState(web_state->GetBrowserState()))
                 ->AssociateContent(tab_helper, conversation_uuid);
           },
           conversation_uuid));

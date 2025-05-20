@@ -49,10 +49,8 @@ class AIChatTabHelper : public web::WebStateObserver,
   AIChatTabHelper(const AIChatTabHelper&) = delete;
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
-                          
-  web::WebState* web_state() const {
-    return web_state_;
-  }
+
+  web::WebState* web_state() const { return web_state_; }
 
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;

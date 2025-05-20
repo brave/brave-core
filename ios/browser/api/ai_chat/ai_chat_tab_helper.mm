@@ -87,9 +87,7 @@ void AIChatTabHelper::DidStartNavigation(
 
 void AIChatTabHelper::DidRedirectNavigation(
     web::WebState* web_state,
-                           web::NavigationContext* navigation_context) {
-  
-}
+    web::NavigationContext* navigation_context) {}
 
 void AIChatTabHelper::DidFinishNavigation(
     web::WebState* web_state,
