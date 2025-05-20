@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/test/run_until.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -58,7 +59,8 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  public:
   SideBySideEnabledBrowserTest() {
     scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide}, {});
+        /*enabled_features*/ {features::kSideBySide},
+        /*disabled_features*/ {features::kBraveWebViewRoundedCorners});
   }
   ~SideBySideEnabledBrowserTest() override = default;
 
@@ -73,12 +75,21 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
   EXPECT_FALSE(!!split_view_data);
 
+  auto* browser_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser()));
   auto* multi_contents_view = static_cast<BraveMultiContentsView*>(
-      BrowserView::GetBrowserViewForBrowser(browser())
-          ->multi_contents_view_for_testing());
+      browser_view->multi_contents_view_for_testing());
   ASSERT_TRUE(multi_contents_view);
 
+  // separator should not be empty when split view is closed.
+  EXPECT_NE(gfx::Size(),
+            browser_view->contents_separator_for_testing()->GetPreferredSize());
+
   chrome::NewSplitTab(browser());
+
+  // separator should be empty when split view is opened.
+  EXPECT_EQ(gfx::Size(),
+            browser_view->contents_separator_for_testing()->GetPreferredSize());
 
   // Check corner radius.
   auto* start_contents_web_view =

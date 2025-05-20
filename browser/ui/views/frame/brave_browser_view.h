@@ -160,6 +160,8 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
+  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
+                           BraveMultiContentsViewTest);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -180,6 +182,8 @@ class BraveBrowserView : public BrowserView,
                                  bool update_devtools_web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
+  void ShowSplitView() override;
+  void HideSplitView() override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
@@ -202,6 +206,10 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
+
+  views::View* contents_separator_for_testing() const {
+    return contents_separator_;
+  }
 
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
