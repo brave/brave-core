@@ -5,5 +5,5 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="@color/gm3_baseline_surface"/>
+  <item android:color="?attr/colorSurface"/>
 </selector>
