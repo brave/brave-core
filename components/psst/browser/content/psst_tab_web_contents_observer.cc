@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/psst/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 #include <memory>
 #include <utility>
@@ -24,16 +24,13 @@ namespace psst {
 std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
-    Profile* profile,
+    PrefService* prefs,
     std::unique_ptr<PsstDialogDelegate> delegate,
     const int32_t world_id) {
-  if (!profile || contents->GetBrowserContext()->IsOffTheRecord() ||
-      !base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
-    return nullptr;
-  }
+  CHECK(prefs);
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
-      new PsstTabWebContentsObserver(contents, profile->GetPrefs(),
+      new PsstTabWebContentsObserver(contents, prefs,
                                      std::move(delegate), world_id));
 }
 
@@ -58,12 +55,10 @@ PsstDialogDelegate* PsstTabWebContentsObserver::GetPsstDialogDelegate() const {
 }
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  auto* entry = page.GetMainDocument().GetController().GetActiveEntry();
-  if (!entry) {
-    return;
-  }
-
-  should_process_ = !entry->IsRestored();
+  should_process_ = !page.GetMainDocument()
+                         .GetController()
+                         .GetLastCommittedEntry()
+                         ->IsRestored();
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {

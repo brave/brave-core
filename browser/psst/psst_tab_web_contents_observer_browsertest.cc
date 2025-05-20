@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/psst/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 #include <memory>
 
