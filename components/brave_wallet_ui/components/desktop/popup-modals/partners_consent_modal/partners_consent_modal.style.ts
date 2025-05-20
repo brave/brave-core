@@ -46,3 +46,9 @@ export const TermsButton = styled(WalletButton)`
   margin: 0px;
   padding: 0px;
 `
+
+export const Graphic = styled.img`
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+`
