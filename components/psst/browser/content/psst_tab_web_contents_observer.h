@@ -3,13 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_PSST_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
-#define BRAVE_BROWSER_PSST_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
+#define BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
 
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -29,7 +28,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
       PrefService* prefs,
-      std::unique_ptr<PsstDialogDelegate> delegate,
       const int32_t world_id);
 
   ~PsstTabWebContentsObserver() override;
@@ -37,12 +35,9 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
-  PsstDialogDelegate* GetPsstDialogDelegate() const;
-
  private:
   PsstTabWebContentsObserver(content::WebContents* web_contents,
                              PrefService* prefs,
-                             std::unique_ptr<PsstDialogDelegate> delegate,
                              const int32_t world_id);
 
   // content::WebContentsObserver overrides
@@ -66,4 +61,4 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
 
 }  // namespace psst
 
-#endif  // BRAVE_BROWSER_PSST_PSST_TAB_WEB_CONTENTS_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CONTENT_PSST_TAB_WEB_CONTENTS_OBSERVER_H_

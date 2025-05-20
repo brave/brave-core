@@ -13,8 +13,6 @@ component("core") {
     "matched_rule.h",
     "psst_component_installer.cc",
     "psst_component_installer.h",
-    "psst_dialog_delegate.cc",
-    "psst_dialog_delegate.h",
     "psst_rule.cc",
     "psst_rule.h",
     "psst_rule_registry.cc",

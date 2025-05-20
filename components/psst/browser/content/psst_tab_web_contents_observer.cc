@@ -11,7 +11,6 @@
 #include "brave/components/psst/browser/content/psst_scripts_result_handler.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -25,23 +24,19 @@ std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
     PrefService* prefs,
-    std::unique_ptr<PsstDialogDelegate> delegate,
     const int32_t world_id) {
   CHECK(prefs);
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
-      new PsstTabWebContentsObserver(contents, prefs,
-                                     std::move(delegate), world_id));
+      new PsstTabWebContentsObserver(contents, prefs, world_id));
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PrefService* prefs,
-    std::unique_ptr<PsstDialogDelegate> delegate,
     const int32_t world_id)
     : WebContentsObserver(web_contents),
       script_handler_(std::make_unique<PsstScriptsHandlerImpl>(
-          std::move(delegate),
           prefs,
           web_contents,
           web_contents->GetPrimaryMainFrame(),
@@ -49,10 +44,6 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       prefs_(prefs) {}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
-
-PsstDialogDelegate* PsstTabWebContentsObserver::GetPsstDialogDelegate() const {
-  return script_handler_->GetPsstDialogDelegate();
-}
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
   should_process_ = !page.GetMainDocument()
