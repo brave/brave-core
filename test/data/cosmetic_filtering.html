@@ -24,6 +24,20 @@ function addElementsDynamically() {
   }
 }
 
+function addElementWithChildDynamically() {
+  let root = document.documentElement;
+  const rootElement = document.createElement('div');
+  rootElement.setAttribute('id', 'procedural-filter-root-node-id');
+  const childNode = document.createElement('div');
+  childNode.setAttribute('id', 'procedural-filter-child-node-id');
+  const p = document.createElement('p');
+  p.setAttribute('id', 'procedural-filter-span-id');
+  p.textContent = 'View in App';
+  childNode.appendChild(p);
+  rootElement.appendChild(childNode);
+  root.appendChild(rootElement);
+}
+
 let didWait = false;
 
 function check(selector, predicate) {

@@ -2761,6 +2761,27 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterHasText) {
   }
 }
 
+// Test procedural filters matching child of dynamically added element
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       ProceduralFilterDynamicAddedChildHasText) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com###procedural-filter-child-node-id:has-text(View in App)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  auto result = EvalJs(contents,
+                       R"(
+        addElementWithChildDynamically();
+        waitCSSSelector('#procedural-filter-child-node-id', 'display', 'none')
+      )");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
+}
+
 // Test `matches-attr` procedural filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
   UpdateAdBlockInstanceWithRules(
