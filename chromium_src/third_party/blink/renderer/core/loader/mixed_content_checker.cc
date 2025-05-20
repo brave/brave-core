@@ -41,11 +41,23 @@ bool IsOnion(const T& obj) {
   if (auto result = IsMixedContentForOnion(security_origin, url)) \
     return *result;
 
+#define BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT_RESTRICTED_IN_FRAME_CONTEXT \
+  if (IsOnion(*top.GetSecurityContext()                                          \
+                   ->GetSecurityOrigin()                                         \
+                   ->GetOriginOrPrecursorOriginIfOpaque()) ||                    \
+      IsOnion(*frame->GetSecurityContext()                                       \
+                   ->GetSecurityOrigin()                                         \
+                   ->GetOriginOrPrecursorOriginIfOpaque())) {                    \
+    return true;                                                                 \
+  }
+
 #define UpgradeInsecureRequest UpgradeInsecureRequest_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/loader/mixed_content_checker.cc"
 
 #undef UpgradeInsecureRequest
+
+#undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT_RESTRICTED_IN_FRAME_CONTEXT
 
 #undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT
 
