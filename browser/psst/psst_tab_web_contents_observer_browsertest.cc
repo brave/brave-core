@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "base/base64.h"
+#include "base/base64url.h"
 #include "base/containers/contains.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
@@ -31,32 +33,23 @@
 
 namespace psst {
 
-class MockScriptHandler : public PsstScriptsHandler {
- public:
-  MockScriptHandler() = default;
-  ~MockScriptHandler() override = default;
+namespace {
+constexpr char kResetPageTitleScript[] =
+    R"(document.title='NO_TITLE'; document.title)";
+constexpr char kGetCurrentUrlScript[] = R"(window.location.href)";
 
-  MOCK_METHOD(void, Start, (), (override));
-  MOCK_METHOD(PsstDialogDelegate*, GetPsstDialogDelegate, (), (override));
-  MOCK_METHOD(mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&,
-              GetRemote,
-              (content::RenderFrameHost * rfh),
-              (override));
-  MOCK_METHOD(void,
-              InsertUserScript,
-              (const std::optional<MatchedRule>& rule),
-              (override));
-  MOCK_METHOD(void,
-              OnUserScriptResult,
-              (const MatchedRule& rule, base::Value script_result),
-              (override));
-  MOCK_METHOD(void,
-              InsertScriptInPage,
-              (const std::string& script,
-               std::optional<base::Value> value,
-               InsertScriptInPageCallback cb),
-              (override));
-};
+GURL url(const GURL& destination_url, const GURL& navigation_url) {
+  std::string encoded_destination;
+  base::Base64UrlEncode(destination_url.spec(),
+                        base::Base64UrlEncodePolicy::OMIT_PADDING,
+                        &encoded_destination);
+  const std::string query =
+      base::StringPrintf("url=%s", encoded_destination.c_str());
+  GURL::Replacements replacement;
+  replacement.SetQueryStr(query);
+  return navigation_url.ReplaceComponents(replacement);
+}
+}  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
  public:
@@ -104,17 +97,6 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
-  MockScriptHandler* MockPsstDialogTabHelperDelegate() {
-    auto* psst_tab_helper = browser()
-                                ->GetActiveTabInterface()
-                                ->GetTabFeatures()
-                                ->psst_web_contents_observer();
-    auto script_handler = std::make_unique<MockScriptHandler>();
-    MockScriptHandler* result = script_handler.get();
-    psst_tab_helper->SetScriptHandlerForTesting(std::move(script_handler));
-    return result;
-  }
-
  private:
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
@@ -128,17 +110,33 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
-  auto* mocked_script_handler = MockPsstDialogTabHelperDelegate();
-  EXPECT_CALL(*mocked_script_handler, Start()).Times(1).WillOnce([&]() {
-    EXPECT_TRUE(base::Contains(web_contents()->GetLastCommittedURL().spec(),
-                               "simple.html"));
-  });
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  {
+    std::u16string expected_title(u"a_user-a_policy");
+    content::TitleWatcher watcher(web_contents(), expected_title);
+    ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+    EXPECT_EQ(
+        url.spec(),
+        content::EvalJs(web_contents(), kGetCurrentUrlScript).ExtractString());
+  }
 
-  const GURL same_doc_url =
-      GetEmbeddedTestServer().GetURL("a.com", "/simple.html#1");
-  EXPECT_CALL(*mocked_script_handler, Start()).Times(0);
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), same_doc_url));
+  {
+    std::u16string expected_title(u"NO_TITLE");
+    content::TitleWatcher watcher(web_contents(), expected_title);
+    EXPECT_EQ(
+        "NO_TITLE",
+        content::EvalJs(web_contents(), kResetPageTitleScript).ExtractString());
+    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  }
+  {
+    std::u16string expected_title(u"OK");
+    content::TitleWatcher watcher(web_contents(), expected_title);
+    ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+    EXPECT_EQ(
+        url.spec(),
+        content::EvalJs(web_contents(), kGetCurrentUrlScript).ExtractString());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
@@ -147,36 +145,27 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), false);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
-  auto* mocked_script_handler = MockPsstDialogTabHelperDelegate();
-  EXPECT_CALL(*mocked_script_handler, Start()).Times(0);
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  EXPECT_EQ(
+      url.spec(),
+      content::EvalJs(web_contents(), kGetCurrentUrlScript).ExtractString());
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerOnlyInPrimaryMainFrame) {
   psst::SetPsstEnabledState(GetPrefs(), true);
   EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
-  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/iframe_load.html");
   const GURL ifrave_url =
       GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
-
-  auto* mocked_script_handler = MockPsstDialogTabHelperDelegate();
-  EXPECT_CALL(*mocked_script_handler, Start()).Times(1).WillOnce([&]() {
-    EXPECT_TRUE(base::Contains(web_contents()->GetLastCommittedURL().spec(),
-                               "iframe_load.html"));
-  });
-
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-  EXPECT_CALL(*mocked_script_handler, Start()).Times(0);
-  ASSERT_TRUE(content::NavigateIframeToURL(web_contents(), "test", ifrave_url));
-}
-
-IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
-                       StartScriptHandlerOnlyIfCommittedNavigation) {
-  const GURL url("https://unknows.address.com/simple.html");
-  auto* mocked_script_handler = MockPsstDialogTabHelperDelegate();
-  EXPECT_CALL(*mocked_script_handler, Start()).Times(0);
-  ASSERT_FALSE(content::NavigateToURL(web_contents(), url));
+  const GURL navigate_url = url(
+      ifrave_url, GetEmbeddedTestServer().GetURL("a.com", "/iframe_load.html"));
+  std::u16string expected_title(u"iframe test");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), navigate_url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
@@ -185,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
-  std::u16string expected_title(u"user-policy");
+  std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
@@ -197,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
   const GURL url = GetEmbeddedTestServer().GetURL("b.com", "/simple.html");
 
-  std::u16string expected_title(u"user-");
+  std::u16string expected_title(u"b_user-");
   content::TitleWatcher watcher(web_contents(), expected_title);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
