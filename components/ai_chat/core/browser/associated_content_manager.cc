@@ -21,8 +21,11 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
+
+const char kPageTagRegex[] = "</?page>";
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -310,19 +313,29 @@ std::string AssociatedContentManager::GetCachedTextContent() const {
   DVLOG(1) << __func__;
 
   auto cached_content = GetCachedContent();
+  std::vector<std::string> transformed_content;
+  std::ranges::transform(cached_content,
+                         std::back_inserter(transformed_content),
+                         [](const auto& content) {
+                           std::string text(content);
+                           while (RE2::GlobalReplace(&text, kPageTagRegex, ""))
+                             ;
+                           return text;
+                         });
 
   // If we only have one content delegate directly return the content.
   // Otherwise, wrap each content in <page> tags.
-  if (cached_content.size() == 1) {
-    return std::string(cached_content[0]);
+  if (transformed_content.size() == 1) {
+    return std::string(transformed_content[0]);
   }
 
-  if (cached_content.size() > 0) {
-    return base::StrCat({"<page>",
-                         base::JoinString(cached_content, "</page><page>"),
-                         "</page>"});
+  if (transformed_content.size() == 0) {
+    return "";
   }
-  return "";
+
+  return base::StrCat({"<page>",
+                       base::JoinString(transformed_content, "</page><page>"),
+                       "</page>"});
 }
 
 std::vector<std::string_view> AssociatedContentManager::GetCachedContent()
