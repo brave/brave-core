@@ -23,11 +23,12 @@ class PsstRuleRegistry;
 FORWARD_DECLARE_TEST(PsstTabWebContentsObserverBrowserTest,
                      RuleMatchTestScriptTrue);
 
-class PsstTabWebContentsObserver : public content::WebContentsObserver {
+class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
+    : public content::WebContentsObserver {
  public:
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
-      Profile* profile,
+      PrefService* prefs,
       std::unique_ptr<PsstDialogDelegate> delegate,
       const int32_t world_id);
 

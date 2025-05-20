@@ -11,6 +11,8 @@ component("content") {
   sources = [
     "psst_scripts_result_handler.cc",
     "psst_scripts_result_handler.h",
+    "psst_tab_web_contents_observer.cc",
+    "psst_tab_web_contents_observer.h",
   ]
 
   deps = [

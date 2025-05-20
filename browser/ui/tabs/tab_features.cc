@@ -19,7 +19,8 @@
 #include "components/tabs/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/psst/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/common/features.h"
 #endif
 
 namespace tabs {
@@ -61,10 +62,14 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   }
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst_web_contents_observer_ =
-      psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          tab.GetContents(), profile, nullptr, /* delegate implementation */
-          ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (!profile->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
+    psst_web_contents_observer_ =
+        psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
+            tab.GetContents(), profile->GetPrefs(),
+            nullptr, /* delegate implementation */
+            ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 #endif
 }
 
