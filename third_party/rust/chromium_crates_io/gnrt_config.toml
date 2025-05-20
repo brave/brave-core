@@ -163,14 +163,6 @@ license_files = ['LICENSE']
 
 [crate.curve25519-dalek]
 extra_input_roots = [ "../docs", "../README.md" ]
-extra_kv = { raw_gn = '''
-if (target_cpu == "x64") {
-    deps += [
-      "//brave/third_party/rust/cpufeatures/v0_2:lib",
-      "//brave/third_party/rust/curve25519_dalek_derive/v0_1:lib",
-    ]
-  }
-''' }
 
 [crate.curve25519-dalek-derive]
 extra_input_roots = [ "../README.md" ]
