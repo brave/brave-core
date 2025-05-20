@@ -8,6 +8,8 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
@@ -15,6 +17,15 @@
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/views/border.h"
+#include "ui/views/widget/widget.h"
+
+BraveMultiContentsView::BraveMultiContentsView(
+    BrowserView* browser_view,
+    WebContentsFocusedCallback inactive_contents_focused_callback,
+    WebContentsResizeCallback contents_resize_callback)
+    : MultiContentsView(browser_view,
+                        inactive_contents_focused_callback,
+                        contents_resize_callback) {}
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
 
@@ -79,11 +90,37 @@ void BraveMultiContentsView::Layout(PassKey) {
   contents_container_views_[1]->SetBoundsRect(end_rect);
 }
 
+void BraveMultiContentsView::SetActiveIndex(int index) {
+  MultiContentsView::SetActiveIndex(index);
+
+  UpdateSecondaryLocationBar();
+}
+
 float BraveMultiContentsView::GetCornerRadius() const {
   return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
              browser_view_->browser())
              ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
              : 0;
+}
+
+void BraveMultiContentsView::UpdateSecondaryLocationBar() {
+  if (!secondary_location_bar_) {
+    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
+        browser_view_->browser()->profile()->GetPrefs());
+    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
+
+    secondary_location_bar_widget_->Init(
+        SplitViewLocationBar::GetWidgetInitParams(
+            GetWidget()->GetNativeView(), secondary_location_bar_.get()));
+  }
+
+  // Inactive web contents/view should be set to secondary location bar
+  // as it's attached to inactive contents view.
+  int inactive_index = active_index_ == 0 ? 1 : 0;
+  secondary_location_bar_->SetWebContents(
+      GetInactiveContentsView()->GetWebContents());
+  secondary_location_bar_->SetParentWebView(
+      contents_container_views_[inactive_index]);
 }
 
 BEGIN_METADATA(BraveMultiContentsView)

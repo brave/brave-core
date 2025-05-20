@@ -16,27 +16,64 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
-class SplitViewLocationBarBrowserTest : public InProcessBrowserTest {
+// Run with two modes(brave split view or chromium side by side).
+class SplitViewLocationBarBrowserTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<bool> {
  public:
-  SplitViewLocationBarBrowserTest()
-      : scoped_features_(tabs::features::kBraveSplitView) {}
+  SplitViewLocationBarBrowserTest() {
+    if (IsSideBySideEnabled()) {
+      scoped_features_.InitAndEnableFeature(::features::kSideBySide);
+    }
+  }
   ~SplitViewLocationBarBrowserTest() override = default;
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
 
   SplitViewLocationBar& split_view_location_bar() {
-    return *static_cast<BraveBrowserView*>(
-                BrowserView::GetBrowserViewForBrowser(browser()))
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    if (IsSideBySideEnabled()) {
+      return *static_cast<BraveMultiContentsView*>(
+                  browser_view->multi_contents_view_for_testing())
+                  ->secondary_location_bar_;
+    }
+    return *static_cast<BraveBrowserView*>(browser_view)
                 ->split_view()
                 ->secondary_location_bar_;
+  }
+
+  bool IsSideBySideEnabled() const { return GetParam(); }
+
+  // Open split view active tab.
+  void OpenSplitView() {
+    if (IsSideBySideEnabled()) {
+      chrome::NewSplitTab(browser());
+    } else {
+      brave::NewSplitViewForTab(browser());
+    }
+  }
+
+  // Close active tab's split view.
+  void CloseSplitView() {
+    if (IsSideBySideEnabled()) {
+      tabs::TabInterface* tab = tab_strip_model().GetActiveTab();
+      ASSERT_TRUE(tab->IsSplit());
+      tab_strip_model().RemoveSplit(tab->GetSplit().value());
+    } else {
+      brave::BreakTiles(browser());
+    }
   }
 
   // InProcessBrowserTest:
@@ -51,13 +88,17 @@ class SplitViewLocationBarBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
+IN_PROC_BROWSER_TEST_P(SplitViewLocationBarBrowserTest,
                        VisibilityChangesWhenActiveTabChanges) {
   // Initially, the secondary location bar should be hidden
-  EXPECT_FALSE(split_view_location_bar().GetWidget()->IsVisible());
+  // In BraveMultiContentsView, location bar is initialized when
+  // first split view is opened.
+  if (!IsSideBySideEnabled()) {
+    EXPECT_FALSE(split_view_location_bar().GetWidget()->IsVisible());
+  }
 
   // When a new split view is created
-  brave::NewSplitViewForTab(browser());
+  OpenSplitView();
   ASSERT_EQ(1, tab_strip_model().GetIndexOfWebContents(
                    tab_strip_model().GetActiveWebContents()));
 
@@ -77,21 +118,29 @@ IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
   EXPECT_TRUE(split_view_location_bar().GetWidget()->IsVisible());
 
   // When breaking the split view
-  brave::BreakTiles(browser());
+  CloseSplitView();
 
   // Then the secondary location bar should be hidden
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(split_view_location_bar().GetWidget()->IsVisible());
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
+IN_PROC_BROWSER_TEST_P(SplitViewLocationBarBrowserTest,
                        URLShouldBeUpdated_WhenActiveTabChanges) {
-  brave::NewSplitViewForTab(browser());
+  OpenSplitView();
   ASSERT_EQ(1, tab_strip_model().GetIndexOfWebContents(
                    tab_strip_model().GetActiveWebContents()));
   ASSERT_EQ("about:blank",
             tab_strip_model().GetWebContentsAt(0)->GetVisibleURL().spec());
   ASSERT_EQ(u"about:blank", split_view_location_bar().url_->GetText());
+
+  // For now upstream's another page is loaded when split view is created
+  // with active tab. So, loaded newtab to use below url check.
+  if (IsSideBySideEnabled()) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), GURL("chrome://newtab/"), WindowOpenDisposition::CURRENT_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  }
 
   // When activating another tab in split view,
   tab_strip_model().ActivateTabAt(0);
@@ -102,9 +151,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
   EXPECT_EQ(u"chrome://newtab", split_view_location_bar().url_->GetText());
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
+IN_PROC_BROWSER_TEST_P(SplitViewLocationBarBrowserTest,
                        URLShouldBeUpdated_WhenNavigationHappens) {
-  brave::NewSplitViewForTab(browser());
+  OpenSplitView();
   ASSERT_EQ(1, tab_strip_model().GetIndexOfWebContents(
                    tab_strip_model().GetActiveWebContents()));
   ASSERT_EQ("about:blank",
@@ -192,3 +241,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
   EXPECT_FALSE(split_view_location_bar().https_with_strike_->GetVisible());
   EXPECT_FALSE(split_view_location_bar().scheme_separator_->GetVisible());
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SplitViewLocationBarBrowserTest,
+    ::testing::Bool());
