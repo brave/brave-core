@@ -27,6 +27,7 @@ if (!is_android) {
       "//brave/browser/ai_chat",
       "//brave/browser/ui/side_panel",
       "//brave/components/psst/browser/content",
+      "//brave/components/psst/common:common",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
     ]

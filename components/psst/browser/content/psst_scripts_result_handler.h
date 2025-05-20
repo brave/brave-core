@@ -11,7 +11,6 @@
 
 #include "base/component_export.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
-#include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/global_routing_id.h"
@@ -32,8 +31,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
 
   virtual void Start() = 0;
 
-  virtual PsstDialogDelegate* GetPsstDialogDelegate() = 0;
-
  private:
   virtual void InsertUserScript(const std::optional<MatchedRule>& rule) = 0;
 
@@ -52,7 +49,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
     : public PsstScriptsHandler {
  public:
   explicit PsstScriptsHandlerImpl(
-      std::unique_ptr<PsstDialogDelegate> delegate,
       PrefService* prefs,
       content::WebContents* web_contents,
       const content::RenderFrameHost* render_frame_host,
@@ -60,8 +56,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
   ~PsstScriptsHandlerImpl() override;
 
   void Start() override;
-
-  PsstDialogDelegate* GetPsstDialogDelegate() override;
 
  private:
   void InsertUserScript(const std::optional<MatchedRule>& rule) override;
@@ -77,7 +71,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
       content::RenderFrameHost* rfh) override;
 
-  std::unique_ptr<PsstDialogDelegate> delegate_;
   const raw_ptr<PrefService> prefs_;
 
   const content::GlobalRenderFrameHostId render_frame_host_id_;

@@ -48,13 +48,11 @@ PsstScriptsHandler::PsstScriptsHandler() = default;
 PsstScriptsHandler::~PsstScriptsHandler() = default;
 
 PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
-    std::unique_ptr<PsstDialogDelegate> delegate,
     PrefService* prefs,
     content::WebContents* web_contents,
     const content::RenderFrameHost* render_frame_host,
     const int32_t world_id)
-    : delegate_(std::move(delegate)),
-      prefs_(prefs),
+    : prefs_(prefs),
       render_frame_host_id_(render_frame_host->GetGlobalId()),
       web_contents_(web_contents),
       world_id_(world_id) {
@@ -72,10 +70,6 @@ void PsstScriptsHandlerImpl::Start() {
   PsstRuleRegistry::GetInstance()->CheckIfMatch(
       url, base::BindOnce(&PsstScriptsHandlerImpl::InsertUserScript,
                           weak_factory_.GetWeakPtr()));
-}
-
-PsstDialogDelegate* PsstScriptsHandlerImpl::GetPsstDialogDelegate() {
-  return delegate_.get();
 }
 
 void PsstScriptsHandlerImpl::InsertUserScript(
