@@ -1,11 +1,11 @@
 diff --git a/components/metrics/machine_id_provider_win.cc b/components/metrics/machine_id_provider_win.cc
-index f26a7ba523bc2e43dd0f441bc38653bfde74ff46..04d7bbbb9ecb25e43a231585d12970f2902cacac 100644
+index 0090f5c60c2aa8a29e9b1bf83138221dcbbabf99..d8ccbdc1dc757b7248a9a0ef07956501479c2b33 100644
 --- a/components/metrics/machine_id_provider_win.cc
 +++ b/components/metrics/machine_id_provider_win.cc
-@@ -20,7 +20,7 @@ namespace metrics {
+@@ -23,7 +23,7 @@ MachineIdProvider::MachineIdProvider() = default;
+ MachineIdProvider::~MachineIdProvider() = default;
  
- // static
- bool MachineIdProvider::HasId() {
+ bool MachineIdProvider::HasId() const {
 -  return true;
 +  return !IsMachineIdDisabled();
  }
