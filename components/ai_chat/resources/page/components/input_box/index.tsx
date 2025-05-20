@@ -135,7 +135,7 @@ function InputBox(props: InputBoxProps) {
           ref={attachmentWrapperRef}
         >
           {props.context.isUploadingFiles && (
-            <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
+            <AttachmentSpinnerItem title={getLocale(StringIds.UploadingFileLabel)} />
           )}
           {props.context.pendingMessageImages?.map((img, i) => (
             <AttachmentImageItem
@@ -186,7 +186,7 @@ function InputBox(props: InputBoxProps) {
                 props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
               }
             }
-            title={getLocale('toolsMenuButtonLabel')}
+            title={getLocale(StringIds.LeoToolsButtonLabel)}
           >
             <Icon
               className={classnames({
@@ -201,7 +201,7 @@ function InputBox(props: InputBoxProps) {
               kind='plain-faint'
               onClick={handleMic}
               disabled={props.context.shouldDisableUserInput}
-              title={getLocale('useMicButtonLabel')}
+              title={getLocale(StringIds.UseMicrophoneButtonLabel)}
             >
               <Icon name='microphone' />
             </Button>
@@ -220,7 +220,7 @@ function InputBox(props: InputBoxProps) {
               fab
               kind='plain-faint'
               onClick={handleStopGenerating}
-              title={getLocale('stopGenerationButtonLabel')}
+              title={getLocale(StringIds.StopGenerationButtonLabel)}
             >
               <Icon name='stop-circle' />
             </Button>
@@ -230,7 +230,7 @@ function InputBox(props: InputBoxProps) {
               kind='plain-faint'
               onClick={handleSubmit}
               disabled={props.context.shouldDisableUserInput}
-              title={getLocale('sendChatButtonLabel')}
+              title={getLocale(StringIds.SendChatButtonLabel)}
             >
               <Icon name='send' />
             </Button>

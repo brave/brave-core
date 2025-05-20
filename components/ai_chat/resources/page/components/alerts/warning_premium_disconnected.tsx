@@ -18,13 +18,13 @@ export default function WarningPremiumDisconnected() {
       <Alert
         type='warning'
       >
-        {getLocale('premiumRefreshWarningDescription')}
+        {getLocale(StringIds.PremiumRefreshWarningDescription)}
         <Button
           slot='actions'
           kind='filled'
           onClick={context.userRefreshPremiumSession}
         >
-            {getLocale('premiumRefreshWarningAction')}
+            {getLocale(StringIds.PremiumRefreshWarningAction)}
         </Button>
       </Alert>
     </div>

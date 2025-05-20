@@ -59,7 +59,7 @@ function Block(props: CodeBlockProps) {
           <div slot="icon-before">
             <Icon className={styles.icon} name={hasCopied ? 'check-circle-outline' : 'copy'} />
           </div>
-          <div>{getLocale('copyButtonLabel')}</div>
+          <div>{getLocale(StringIds.CopyButtonLabel)}</div>
         </Button>
       </div>
       <SyntaxHighlighter

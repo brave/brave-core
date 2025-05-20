@@ -6,8 +6,9 @@
 import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
-import { getLocale } from '$web-common/locale'
 import styles from './alerts.module.scss'
+
+import { getLocale } from '$web-common/locale'
 
 interface PromptAutoSuggestionProps {
   onRetry?: () => void
@@ -19,13 +20,13 @@ function ErrorConnection (props: PromptAutoSuggestionProps) {
       <Alert
         type='error'
       >
-        {getLocale('errorNetworkLabel')}
+        {getLocale(StringIds.ErrorNetwork)}
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale('retryButtonLabel')}
+            {getLocale(StringIds.RetryButtonLabel)}
         </Button>
       </Alert>
     </div>

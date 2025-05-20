@@ -19,35 +19,35 @@ function WelcomeGuide() {
   return (
     <div className={styles.box}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{getLocale('welcomeGuideTitle')}</h1>
-        <h2 className={styles.subtitle}>{getLocale('welcomeGuideSubtitle')}</h2>
+        <h1 className={styles.title}>{getLocale(StringIds.WelcomeGuideTitle)}</h1>
+        <h2 className={styles.subtitle}>{getLocale(StringIds.WelcomeGuideSubtitle)}</h2>
       </div>
       <div className={`${styles.card} ${styles.siteHelpCard}`}>
         <h4 className={styles.cardTitle}>
-          {getLocale('welcomeGuideSiteHelpCardTitle')}
+          {getLocale(StringIds.WelcomeGuideSiteHelpCardTitle)}
         </h4>
         {conversationContext.associatedContentInfo &&
         conversationContext.shouldSendPageContents ? (
           <>
-            <p>{getLocale('welcomeGuideSiteHelpCardDescWithAction')}</p>
+            <p>{getLocale(StringIds.WelcomeGuideSiteHelpCardWithAction)}</p>
             <div className={styles.actions}>
               <Button
                 kind='outline'
                 onClick={summarizeNow}
               >
-                {getLocale('summarizePageButtonLabel')}
+                {getLocale(StringIds.SummarizeButtonLabel)}
               </Button>
             </div>
           </>
         ) : (
-          <p>{getLocale('welcomeGuideSiteHelpCardDesc')}</p>
+          <p>{getLocale(StringIds.WelcomeGuideSiteHelpCardDesc)}</p>
         )}
       </div>
       <div className={`${styles.card} ${styles.chatCard}`}>
         <h4 className={styles.cardTitle}>
-          {getLocale('welcomeGuideShatCardTitle')}
+          {getLocale(StringIds.WelcomeGuideChatCardTitle)}
         </h4>
-        <p>{getLocale('welcomeGuideShatCardDesc')}</p>
+        <p>{getLocale(StringIds.WelcomeGuideChatCardDesc)}</p>
       </div>
     </div>
   )

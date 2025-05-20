@@ -14,17 +14,18 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
+import { camelCase } from '$web-common/camelCase'
 
 function getCategoryName(category: Mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
   // on the enum name rather than the number value, e.g. "CHAT" vs 0
   const categoryKey = getKeysForMojomEnum(Mojom.ModelCategory)[category]
-  const key = `modelCategory-${categoryKey.toLowerCase()}`
+  const key = `modelCategory${camelCase(categoryKey, { uppercaseFirstWord: true })}`
   return getLocale(key)
 }
 
 function getIntroMessage(model: Mojom.Model) {
-  const key = `introMessage-${model.key}`
+  const key = `introMessage${camelCase(model.key, { uppercaseFirstWord: true })}`
   return getLocale(key)
 }
 

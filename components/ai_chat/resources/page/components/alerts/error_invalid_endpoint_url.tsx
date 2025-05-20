@@ -20,13 +20,13 @@ export default function ErrorInvalidEndpointURL() {
   return (
     <div className={styles.alert}>
       <Alert type='error'>
-        {getLocale('customModelInvalidEndpoint')}
+        {getLocale(StringIds.CustomModelEndpointInvalidError)}
         <Button
           slot='actions'
           kind='filled'
           onClick={handleConfigureClick}
         >
-          {getLocale('customModelModifyConfigurationLabel')}
+          {getLocale(StringIds.ModifyConfigurationLabel)}
         </Button>
       </Alert>
     </div>

@@ -24,20 +24,20 @@ export default function ErrorInvalidAPIKey(props: ElementProps) {
   return (
     <div className={styles.alert}>
       <Alert type='warning'>
-        {getLocale('errorInvalidAPIKey')}
+        {getLocale(StringIds.ErrorInvalidApiKey)}
         <Button
           slot='actions'
           kind='filled'
           onClick={handleConfigureClick}
         >
-          {getLocale('customModelModifyConfigurationLabel')}
+          {getLocale(StringIds.ModifyConfigurationLabel)}
         </Button>
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-          {getLocale('retryButtonLabel')}
+          {getLocale(StringIds.RetryButtonLabel)}
         </Button>
       </Alert>
     </div>

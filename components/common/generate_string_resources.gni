@@ -1,0 +1,74 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/resources/brave_grit.gni")
+
+template("generate_string_resources") {
+  name = target_name
+  action(name) {
+    assert(defined(invoker.cpp_namespace), "cpp_namespace is required")
+
+    script = "//brave/script/generate_string_resources.py"
+
+    inputs = [ invoker.input_grdp ]
+
+    outputs = []
+    args = [
+      "--input_grdp",
+      rebase_path(invoker.input_grdp),
+      "--target_gen_dir",
+      rebase_path(target_gen_dir),
+      "--cpp_namespace",
+      invoker.cpp_namespace,
+    ]
+
+    if (defined(invoker.string_include_path)) {
+      args += [
+        "--string_include_path",
+        invoker.string_include_path,
+      ]
+    }
+
+    if (defined(invoker.generate_ts) && invoker.generate_ts) {
+      outputs += [ "$target_gen_dir/locale.ts" ]
+      args += [ "--generate_ts" ]
+    }
+
+    if (defined(invoker.strip_string_prefixes)) {
+      args += [ "--strip_string_prefixes" ] + invoker.strip_string_prefixes
+    }
+
+    if (defined(invoker.generate_localized_strings) &&
+        invoker.generate_localized_strings) {
+      outputs += [
+        "$target_gen_dir/localized_strings.h",
+        "$target_gen_dir/localized_strings.cc",
+      ]
+      args += [ "--generate_localized_strings" ]
+    }
+  }
+
+  source_set(name + "__localized_strings") {
+    sources = [
+      "$target_gen_dir/localized_strings.cc",
+      "$target_gen_dir/localized_strings.h",
+    ]
+
+    deps = [
+      ":$name",
+      "//base",
+    ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    forward_variables_from(invoker,
+                           [
+                             "public_deps",
+                             "testonly",
+                             "visibility",
+                           ])
+  }
+}

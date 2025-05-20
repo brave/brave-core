@@ -14,10 +14,10 @@ import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 
 const CATEGORY_OPTIONS = new Map([
-  ['not-helpful', getLocale('optionNotHelpful')],
-  ['incorrect', getLocale('optionIncorrect')],
-  ['unsafe-harmful', getLocale('optionUnsafeHarmful')],
-  ['other', getLocale('optionOther')]
+  ['not-helpful', getLocale(StringIds.OptionNotHelpful)],
+  ['incorrect', getLocale(StringIds.OptionIncorrect)],
+  ['unsafe-harmful', getLocale(StringIds.OptionUnsafeHarmful)],
+  ['other', getLocale(StringIds.OptionOther)]
 ])
 
 const getHostName = (url: string) => {
@@ -63,17 +63,17 @@ function FeedbackForm() {
 
   return (
     <div ref={ref} className={styles.form}>
-      <h4>{getLocale('provideFeedbackTitle')}</h4>
+      <h4>{getLocale(StringIds.ProvideFeedbackTitle)}</h4>
       <form>
         <fieldset>
           <DropDown
             className={styles.dropdown}
-            placeholder={getLocale('selectFeedbackTopic')}
+            placeholder={getLocale(StringIds.SelectFeedbackTopic)}
             onChange={handleSelectOnChange}
             required={true}
             value={CATEGORY_OPTIONS.get(category)}
           >
-            <div slot='label'>{getLocale('feedbackCategoryLabel')}</div>
+            <div slot='label'>{getLocale(StringIds.FeedbackCategoryLabel)}</div>
             {[...CATEGORY_OPTIONS.keys()].map((key) => {
               return (
                 <leo-option key={key} value={key}>
@@ -85,10 +85,10 @@ function FeedbackForm() {
         </fieldset>
         <fieldset>
           <label>
-            {getLocale('feedbackDescriptionLabel')}
+            {getLocale(StringIds.FeedbackDescriptionLabel)}
             <textarea
               onChange={handleInputChange}
-              placeholder={getLocale('feedbackDescriptionLabel')}
+              placeholder={getLocale(StringIds.FeedbackDescriptionLabel)}
             />
           </label>
         </fieldset>
@@ -96,7 +96,7 @@ function FeedbackForm() {
           <fieldset>
             <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
               <label>{
-                formatMessage(getLocale('sendSiteHostnameLabel'), {
+                formatMessage(getLocale(StringIds.SendSiteHostnameLabel), {
                   placeholders: {
                     $1: conversationContext.associatedContentInfo.map(c => getHostName(c.url.url)).join(', ')
                   }
@@ -107,7 +107,7 @@ function FeedbackForm() {
         )}
         {!aiChatContext.isPremiumUser && (
           <div className={styles.premiumNote}>
-            {formatMessage(getLocale('feedbackPremiumNote'), {
+            {formatMessage(getLocale(StringIds.FeedbackPremiumNote), {
               tags: {
                 $1: (linkText) => (
                   <Button kind='plain' size='medium' onClick={aiChatContext.goPremium}>
@@ -120,10 +120,10 @@ function FeedbackForm() {
         )}
         <fieldset className={styles.actions}>
           <Button onClick={conversationContext.handleFeedbackFormCancel} kind='plain-faint'>
-            {getLocale('cancelButtonLabel')}
+            {getLocale(StringIds.CancelButtonLabel)}
           </Button>
           <Button isDisabled={!canSubmit} onClick={handleSubmit}>
-            {getLocale('submitButtonLabel')}
+            {getLocale(StringIds.SubmitButtonLabel)}
           </Button>
         </fieldset>
       </form>

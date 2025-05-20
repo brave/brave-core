@@ -21,68 +21,68 @@ function getCategoryAndItem(actionType: Mojom.ActionType): {
 } {
   switch (actionType) {
       case Mojom.ActionType.SUMMARIZE_SELECTED_TEXT:
-        return { category: undefined, item: getLocale('summarizeLabel')}
+        return { category: undefined, item: getLocale(StringIds.ContextSummarizeText)}
       case Mojom.ActionType.EXPLAIN:
-        return { category: undefined, item: getLocale('explainLabel')}
+        return { category: undefined, item: getLocale(StringIds.ContextExplain)}
       case Mojom.ActionType.CREATE_TAGLINE:
         return {
-          category: getLocale('createCategoryTitle'),
-          item: getLocale('taglineLabel')
+          category: getLocale(StringIds.ContextCreateTagline),
+          item: getLocale(StringIds.ContextCreateTagline)
         }
       case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
         return {
-          category: getLocale('socialMediaPostLabel'),
-          item: getLocale('socialMediaShortLabel')
+          category: getLocale(StringIds.ContextCreateSocialMediaPost),
+          item: getLocale(StringIds.ContextCreateSocialMediaCommentShort)
         }
       case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG:
         return {
-          category: getLocale('socialMediaPostLabel'),
-          item: getLocale('socialMediaLongLabel')
+          category: getLocale(StringIds.ContextCreateSocialMediaPost),
+          item: getLocale(StringIds.ContextCreateSocialMediaCommentLong)
         }
       case Mojom.ActionType.PARAPHRASE:
         return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('paraphraseLabel')
+          category: getLocale(StringIds.ContextRewrite),
+          item: getLocale(StringIds.ContextParaphrase)
         }
       case Mojom.ActionType.IMPROVE:
         return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('improveLabel')
+          category: getLocale(StringIds.ContextRewrite),
+          item: getLocale(StringIds.ContextImprove)
         }
       case Mojom.ActionType.ACADEMICIZE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('academicizeLabel')
+          category: getLocale(StringIds.ContextChangeTone),
+          item: getLocale(StringIds.ContextAcademicize)
         }
       case Mojom.ActionType.PROFESSIONALIZE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('professionalizeLabel')
+          category: getLocale(StringIds.ContextChangeTone),
+          item: getLocale(StringIds.ContextProfessionalize)
         }
       case Mojom.ActionType.PERSUASIVE_TONE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('persuasiveToneLabel')
+          category: getLocale(StringIds.ContextChangeTone),
+          item: getLocale(StringIds.ContextPersuasiveTone)
         }
       case Mojom.ActionType.CASUALIZE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('casualizeLabel')
+          category: getLocale(StringIds.ContextChangeTone),
+          item: getLocale(StringIds.ContextCasualize)
         }
       case Mojom.ActionType.FUNNY_TONE:
         return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('funnyToneLabel')
+          category: getLocale(StringIds.ContextChangeTone),
+          item: getLocale(StringIds.ContextFunnyTone)
         }
       case Mojom.ActionType.SHORTEN:
         return {
-          category: getLocale('changeLengthLabel'),
-          item: getLocale('shortenLabel')
+          category: getLocale(StringIds.ContextChangeLength),
+          item: getLocale(StringIds.ContextShorten)
         }
       case Mojom.ActionType.EXPAND:
         return {
-          category: getLocale('changeLengthLabel'),
-          item: getLocale('expandLabel')
+          category: getLocale(StringIds.ContextChangeLength),
+          item: getLocale(StringIds.ContextExpand)
         }
       default:
         return { category: undefined, item: undefined }

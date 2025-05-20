@@ -31,7 +31,7 @@ export function GenerateSuggestionsButton() {
       className={styles.questionButton}
     >
       <span className={styles.generateButtonText}>
-        {getLocale('suggestQuestionsLabel')}
+        {getLocale(StringIds.SuggestQuestionsLabel)}
       </span>
     </SuggestionButton>
   )

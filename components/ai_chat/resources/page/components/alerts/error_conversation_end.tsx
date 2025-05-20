@@ -18,13 +18,13 @@ function ErrorConversationEnd() {
       <Alert
         type='error'
       >
-        {getLocale('errorConversationEnd')}
+        {getLocale(StringIds.ConversationEndError)}
         <Button
           slot='actions'
           kind='plain-faint'
           onClick={createNewConversation}
         >
-          {getLocale('menuNewChat')}
+          {getLocale(StringIds.MenuNewChat)}
         </Button>
       </Alert>
     </div>

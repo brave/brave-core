@@ -48,7 +48,7 @@ export function RegenerateAnswerMenu(props: Props) {
       onClose={onClose}
     >
       <div className={styles.menuHeader}>
-        {getLocale('regenerateAnswerMenuTitle')}
+        {getLocale(StringIds.RegenerateAnswerMenuTitle)}
       </div>
       <div className={styles.headerGap} />
       <Button
@@ -85,7 +85,7 @@ export function RegenerateAnswerMenu(props: Props) {
           data-key='regenerate'
         >
           <Icon name='refresh' />
-          {getLocale('regenerateAnswerButtonLabel')}
+          {getLocale(StringIds.RegenerateAnswerButtonLabel)}
         </leo-menu-item>
       </div>
     </ButtonMenu>

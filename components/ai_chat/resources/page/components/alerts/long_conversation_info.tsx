@@ -26,9 +26,9 @@ export default function LongConversationInfo() {
         <Icon name='info-outline' />
       </div>
       <div className={styles.infoText}>
-        {getLocale('errorContextLimitReaching')}
+        {getLocale(StringIds.ErrorContextLimitReaching)}
         <Button kind="plain-faint" className={styles.link} onClick={handleClearChat}>
-          <span>{getLocale('clearChatButtonLabel')}</span>
+          <span>{getLocale(StringIds.ClearChatButtonLabel)}</span>
         </Button>
       </div>
     </div>

@@ -63,7 +63,7 @@ function EditInput(props: Props) {
           onClick={props.onCancel}
         >
         <span className={styles.buttonText}>
-          {getLocale('cancelButtonLabel')}
+          {getLocale(StringIds.CancelButtonLabel)}
         </span>
         </Button>
         <Button
@@ -72,7 +72,7 @@ function EditInput(props: Props) {
           isDisabled={props.isSubmitDisabled}
           onClick={() => props.onSubmit(text)}
         >
-        {getLocale('saveButtonLabel')}
+        {getLocale(StringIds.SaveButtonLabel)}
         </Button>
       </div>
     </div>

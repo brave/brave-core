@@ -21,6 +21,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/ai_chat/resources/localized_strings.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -158,7 +159,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
-  for (const auto& str : ai_chat::GetLocalizedStrings()) {
+  for (const auto& str : ai_chat_ui::GetLocalizedStrings()) {
     source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
   }
 
