@@ -7,10 +7,10 @@ Subject: [PATCH] Make ExtendedSpendingKey public
  .../chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs    | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs b/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
+diff --git a/brave/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs b/brave/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
 index 31f318b111d..c37aeebf6ba 100644
---- a/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
-+++ b/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
+--- a/brave/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
++++ b/brave/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
 @@ -122,7 +122,7 @@ impl KeyIndex {
  ///
  /// [orchardextendedkeys]: https://zips.z.cash/zip-0032#orchard-extended-keys
