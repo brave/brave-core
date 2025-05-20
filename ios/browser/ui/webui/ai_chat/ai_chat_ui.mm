@@ -80,7 +80,8 @@ web::WebState* GetActiveWebState(web::WebUIIOS* web_ui) {
     web::WebState* active_web_state =
         browser->GetWebStateList()->GetActiveWebState();
     if (active_web_state) {
-      DCHECK_EQ(active_web_state, web_ui->GetWebState());
+      //      DCHECK_EQ(active_web_state, web_ui->GetWebState());  // TODO: iOS
+      //      doesn't currently set WebStates as active.
       return active_web_state;
     }
   }

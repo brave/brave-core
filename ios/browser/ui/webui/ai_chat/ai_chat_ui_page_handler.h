@@ -80,6 +80,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
     ~ChatContextObserver() override;
 
    private:
+    raw_ptr<web::WebState> web_state_;
+
     // web::WebStateObserver
     void WebStateDestroyed(web::WebState* web_state) override;
     raw_ref<AIChatUIPageHandler> page_handler_;

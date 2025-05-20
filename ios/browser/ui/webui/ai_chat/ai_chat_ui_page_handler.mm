@@ -119,11 +119,15 @@ using mojom::ConversationTurn;
 AIChatUIPageHandler::ChatContextObserver::ChatContextObserver(
     web::WebState* web_state,
     AIChatUIPageHandler& page_handler)
-    : web::WebStateObserver(), page_handler_(page_handler) {
+    : web::WebStateObserver(),
+      web_state_(web_state),
+      page_handler_(page_handler) {
   web_state->AddObserver(this);
 }
 
-AIChatUIPageHandler::ChatContextObserver::~ChatContextObserver() = default;
+AIChatUIPageHandler::ChatContextObserver::~ChatContextObserver() {
+  web_state_->RemoveObserver(this);
+}
 
 AIChatUIPageHandler::AIChatUIPageHandler(
     web::WebState* owner_web_state,
