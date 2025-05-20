@@ -277,7 +277,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define PSST_FEATURE_ENTRIES                                           \
   IF_BUILDFLAG(ENABLE_PSST,                                            \
                EXPAND_FEATURE_ENTRIES({                                \
-                   "brave-psst",                                       \
+                   "enable-psst",                                      \
                    "Enable PSST (Privacy Site Settings Tool) feature", \
                    "Enable PSST feature",                              \
                    kOsAll,                                             \

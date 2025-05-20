@@ -45,6 +45,7 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
+  // Continue to process if the page is not restored.
   should_process_ = !page.GetMainDocument()
                          .GetController()
                          .GetLastCommittedEntry()

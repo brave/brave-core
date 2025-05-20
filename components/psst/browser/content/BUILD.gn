@@ -15,15 +15,18 @@ component("content") {
     "psst_tab_web_contents_observer.h",
   ]
 
-  deps = [
+  public_deps = [
     "//base",
+    "//brave/components/script_injector/common/mojom",
+    "//content/public/browser",
+  ]
+
+  deps = [
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
-    "//brave/components/script_injector/common/mojom",
     "//components/prefs:prefs",
     "//components/sessions",
     "//components/user_prefs:user_prefs",
-    "//content/public/browser",
     "//url",
   ]
 }
