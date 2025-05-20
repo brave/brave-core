@@ -32,6 +32,7 @@ class BraveMultiContentsView : public MultiContentsView {
   ~BraveMultiContentsView() override;
 
  private:
+  friend class SplitViewLocationBarBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
 
