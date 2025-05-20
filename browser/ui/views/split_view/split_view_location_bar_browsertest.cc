@@ -134,14 +134,6 @@ IN_PROC_BROWSER_TEST_P(SplitViewLocationBarBrowserTest,
             tab_strip_model().GetWebContentsAt(0)->GetVisibleURL().spec());
   ASSERT_EQ(u"about:blank", split_view_location_bar().url_->GetText());
 
-  // For now upstream's another page is loaded when split view is created
-  // with active tab. So, loaded newtab to use below url check.
-  if (IsSideBySideEnabled()) {
-    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-        browser(), GURL("chrome://newtab/"), WindowOpenDisposition::CURRENT_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  }
-
   // When activating another tab in split view,
   tab_strip_model().ActivateTabAt(0);
 
