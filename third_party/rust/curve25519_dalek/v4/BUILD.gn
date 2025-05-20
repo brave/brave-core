@@ -104,21 +104,6 @@ cargo_crate("lib") {
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/build.rs" ]
   rustenv = []
   rustflags = []
-
-  #####################################################################
-  # Tweaking which GN `config`s apply to this target.
-
-  # Config changes that apply to all `//third_party/rust` crates.
-  _configs_to_remove = [
-    # We don't need code coverage data for any `chromium_crates_io` crates.
-    "//build/config/coverage:default_coverage",
-
-    # This is third-party code, so remove `chromium_code` config.  We are not
-    # at the same time adding `//build/config/compiler:no_chromium_code`,
-    # because 1) we don't want to pull how warnings are handled by that config
-    # and 2) that config doesn't have any non-warnings-related stuff.
-    "//build/config/compiler:chromium_code",
-  ]
   if (target_cpu == "x64") {
     deps += [
       "//brave/third_party/rust/cpufeatures/v0_2:lib",
@@ -134,11 +119,13 @@ cargo_crate("lib") {
     # We don't need code coverage data for any `chromium_crates_io` crates.
     "//build/config/coverage:default_coverage",
 
-    # This is third-party code, so remove `chromium_code` config and instead
-    # add `no_chromium_code` config (a few lines below).
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
     "//build/config/compiler:chromium_code",
   ]
-  _configs_to_add = [ "//build/config/compiler:no_chromium_code" ]
+  _configs_to_add = []
 
   # Changing (if needed) which configs apply to this specific crate (based on
   # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
