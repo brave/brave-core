@@ -24,7 +24,8 @@
       'upwardSelector': results.upwardSelector,
       'localFrameElement': results.localFrameElement,
       'hasTextDisplayIsNone': results.hasTextDisplayIsNone,
-      'hasDisplayIsNone': results.hasDisplayIsNone
+      'hasDisplayIsNone': results.hasDisplayIsNone,
+      'delayedHasTextHidden': results.delayedHasTextHidden
     })
   }
 
@@ -45,7 +46,8 @@
       upwardSelector: false,
       localFrameElement: false,
       hasTextDisplayIsNone: false,
-      hasDisplayIsNone: false
+      hasDisplayIsNone: false,
+      delayedHasTextHidden: false
     }
 
     elements.forEach((node) => {
@@ -86,6 +88,11 @@
       if (node.id === 'test-has-text') {
         const nodeDisplay = window.getComputedStyle(node).display
         results.hasTextDisplayIsNone = nodeDisplay === 'none'
+      }
+
+      if (node.id === 'test-delayed-has-text') {
+        const nodeDisplay = window.getComputedStyle(node).display
+        results.delayedHasTextHidden = nodeDisplay === 'none'
       }
 
       if (node.id === 'test-has') {
