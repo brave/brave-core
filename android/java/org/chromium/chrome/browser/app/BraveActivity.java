@@ -2494,11 +2494,6 @@ public abstract class BraveActivity extends ChromeActivity
      * bytecode changes.
      */
     public boolean maybeHandleUrlIntent(Intent intent) {
-        // Redirect requests if necessary
-        String url = IntentHandler.getUrlFromIntent(intent);
-        if (url != null && url.equals(BraveIntentHandler.CONNECTION_INFO_HELP_URL)) {
-            intent.setData(Uri.parse(BraveIntentHandler.BRAVE_CONNECTION_INFO_HELP_URL));
-        }
         String appLinkAction = intent.getAction();
         Uri appLinkData = intent.getData();
 
@@ -2716,6 +2711,26 @@ public abstract class BraveActivity extends ChromeActivity
                 currentActivity = this;
             }
             BraveRelaunchUtils.askForRelaunch(currentActivity);
+        }
+    }
+
+    @Override
+    public void onNewIntentWithNative(Intent intent) {
+        // If intent comes from our own package, check if we need to redirect upstream's urls (for
+        // help, support, etc.).
+        if (intent != null
+                && intent.getAction() != null
+                && Intent.ACTION_VIEW.equals(intent.getAction())
+                && intent.getPackage() != null
+                && intent.getPackage().equals(getPackageName())) {
+            String url = IntentHandler.getUrlFromIntent(intent);
+            if (url != null) {
+                if (url.equals(BraveIntentHandler.CONNECTION_INFO_HELP_URL)) {
+                    intent.setData(Uri.parse(BraveIntentHandler.BRAVE_CONNECTION_INFO_HELP_URL));
+                } else if (url.equals(BraveIntentHandler.FALLBACK_SUPPORT_URL)) {
+                    intent.setData(Uri.parse(BraveIntentHandler.BRAVE_FALLBACK_SUPPORT_URL));
+                }
+            }
         }
     }
 }
