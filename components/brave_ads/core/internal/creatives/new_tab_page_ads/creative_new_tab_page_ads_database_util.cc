@@ -135,7 +135,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       BLOG(0, "Campaign ID is required, skipping campaign");
       continue;
     }
-    creative_ad.campaign_id = *campaign_id;
 
     const std::string* const advertiser_id =
         campaign_dict->FindString(kCampaignAdvertiserIdKey);
@@ -143,40 +142,40 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       BLOG(0, "Advertiser ID is required, skipping campaign");
       continue;
     }
-    creative_ad.advertiser_id = *advertiser_id;
 
-    if (const std::string* const start_at =
+    base::Time start_at;
+    if (const std::string* const value =
             campaign_dict->FindString(kCampaignStartAtKey)) {
       // Start at is optional.
-      if (!base::Time::FromUTCString(start_at->c_str(),
-                                     &creative_ad.start_at)) {
+      if (!base::Time::FromUTCString(value->c_str(), &start_at)) {
         BLOG(0, "Failed to parse campaign start at, skipping campaign");
         continue;
       }
     } else {
       // Default to starting immediately.
-      creative_ad.start_at = base::Time::Now();
+      start_at = base::Time::Now();
     }
 
-    if (const std::string* const end_at =
+    base::Time end_at;
+    if (const std::string* const value =
             campaign_dict->FindString(kCampaignEndAtKey)) {
       // End at is optional.
-      if (!base::Time::FromUTCString(end_at->c_str(), &creative_ad.end_at)) {
+      if (!base::Time::FromUTCString(value->c_str(), &end_at)) {
         BLOG(0, "Failed to parse campaign end at, skipping campaign");
         continue;
       }
     } else {
       // Default to running indefinitely.
-      creative_ad.end_at = base::Time::Max();
+      end_at = base::Time::Max();
     }
 
-    creative_ad.daily_cap =
+    const int daily_cap =
         campaign_dict->FindInt(kCampaignDailyCapKey).value_or(0);
 
-    creative_ad.priority =
+    const int priority =
         campaign_dict->FindInt(kCampaignPriorityKey).value_or(10);
 
-    creative_ad.pass_through_rate =
+    const int pass_through_rate =
         campaign_dict->FindInt(kCampaignPassThroughRateKey).value_or(1.0);
 
     // Geo targets.
@@ -197,7 +196,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
 
       geo_targets.insert(*geo_target);
     }
-    creative_ad.geo_targets = geo_targets;
 
     // Dayparts.
     CreativeDaypartSet dayparts;
@@ -235,7 +233,6 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       CreativeDaypartInfo daypart;
       dayparts.insert(daypart);
     }
-    creative_ad.dayparts = dayparts;
 
     // Creative sets.
     const base::Value::List* const creative_set_list =
@@ -252,6 +249,17 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
         BLOG(0, "Malformed creative set, skipping creative set");
         continue;
       }
+
+      CreativeNewTabPageAdInfo creative_ad;
+      creative_ad.campaign_id = *campaign_id;
+      creative_ad.advertiser_id = *advertiser_id;
+      creative_ad.start_at = start_at;
+      creative_ad.end_at = end_at;
+      creative_ad.daily_cap = daily_cap;
+      creative_ad.priority = priority;
+      creative_ad.pass_through_rate = pass_through_rate;
+      creative_ad.geo_targets = geo_targets;
+      creative_ad.dayparts = dayparts;
 
       // Creative set.
       const std::string* const creative_set_id =
@@ -438,6 +446,8 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
             creative_dict->FindList(kCreativeConditionMatchersKey);
         if (condition_matcher_list) {
           // Condition matchers are optional.
+          ConditionMatcherMap condition_matchers;
+
           for (const auto& condition_matcher_value : *condition_matcher_list) {
             const base::Value::Dict* const condition_matcher_dict =
                 condition_matcher_value.GetIfDict();
@@ -463,8 +473,10 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
               continue;
             }
 
-            creative_ad.condition_matchers.emplace(*pref_path, *condition);
+            condition_matchers.emplace(*pref_path, *condition);
           }
+
+          creative_ad.condition_matchers = condition_matchers;
         }
 
         for (const auto& segment : segments) {
