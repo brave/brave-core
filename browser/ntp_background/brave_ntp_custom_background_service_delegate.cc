@@ -75,8 +75,8 @@ void BraveNTPCustomBackgroundServiceDelegate::MigrateCustomImage(
 
 bool BraveNTPCustomBackgroundServiceDelegate::IsCustomImageBackgroundEnabled()
     const {
-  if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
-          ThemePrefInMigration::kNtpCustomBackgroundDict))) {
+  if (profile_->GetPrefs()->IsManagedPreference(
+          prefs::kNtpCustomBackgroundDict)) {
     return false;
   }
 
