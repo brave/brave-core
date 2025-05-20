@@ -104,11 +104,9 @@ float BraveMultiContentsView::GetCornerRadius() const {
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {
-  int inactive_index = active_index_ == 0 ? 1 : 0;
   if (!secondary_location_bar_) {
     secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-        browser_view_->browser()->profile()->GetPrefs(),
-        contents_container_views_[inactive_index]);
+        browser_view_->browser()->profile()->GetPrefs());
     secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
     secondary_location_bar_widget_->Init(
@@ -118,6 +116,7 @@ void BraveMultiContentsView::UpdateSecondaryLocationBar() {
 
   // Inactive web contents/view should be set to secondary location bar
   // as it's attached to inactive contents view.
+  int inactive_index = active_index_ == 0 ? 1 : 0;
   secondary_location_bar_->SetWebContents(
       GetInactiveContentsView()->GetWebContents());
   secondary_location_bar_->SetParentWebView(

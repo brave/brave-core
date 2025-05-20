@@ -35,8 +35,7 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget_delegate.h"
 
-SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
-                                           views::View* parent_web_view)
+SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs)
     : prefs_(prefs),
       location_bar_model_delegate_(
           std::make_unique<SplitViewLocationBarModelDelegate>()),
@@ -44,12 +43,6 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
           location_bar_model_delegate_.get(),
           content::kMaxURLDisplayChars)) {
   set_owned_by_client(OwnedByClientPassKey());
-
-  if (parent_web_view) {
-    view_observation_.Observe(parent_web_view);
-  } else {
-    CHECK_IS_TEST();
-  }
 
   constexpr auto kChildSpacing = 8;
   views::Builder<SplitViewLocationBar>(this)
@@ -142,8 +135,10 @@ void SplitViewLocationBar::SetParentWebView(views::View* parent_web_view) {
   view_observation_.Reset();
   view_observation_.Observe(parent_web_view);
 
-  UpdateVisibility();
-  UpdateBounds();
+  if (GetWidget()) {
+    UpdateVisibility();
+    UpdateBounds();
+  }
 }
 
 void SplitViewLocationBar::AddedToWidget() {
