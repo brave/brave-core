@@ -46,6 +46,19 @@ NSString* GetUserAgentForRequest(web::WebState* webState,
           preferences.allowsContentJavaScript = false;
         }
 
+        if (@available(iOS 18, *)) {
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+          // In prior versions of iOS,
+          // `WKWebpagePreferences.allowsContentJavaScript` does not work
+          // correctly in all cases:
+          // https://github.com/brave/brave-ios/issues/8585
+          webView.configuration.preferences.javaScriptEnabled =
+              preferences.allowsContentJavaScript;
+#pragma clang diagnostic pop
+        }
+
         const web::UserAgentType userAgentType =
             [self userAgentForNavigationAction:action webView:webView];
         if (userAgentType != web::UserAgentType::NONE) {
