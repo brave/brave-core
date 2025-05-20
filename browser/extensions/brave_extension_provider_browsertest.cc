@@ -18,16 +18,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-// Since Chromium 137 all these tests fail ONLY on Windows CI (not locally).
-// TODO(https://github.com/brave/brave-browser/issues/45944)
-#if BUILDFLAG(IS_WIN)
-#define MAYBE_BraveExtensionProviderTest DISABLED_BraveExtensionProviderTest
-#else
-#define MAYBE_BraveExtensionProviderTest BraveExtensionProviderTest
-#endif  // BUILDFLAG(IS_WIN)
-
-class MAYBE_BraveExtensionProviderTest
-    : public extensions::ExtensionFunctionalTest {
+class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
  public:
   void SetUpOnMainThread() override {
     extensions::ExtensionFunctionalTest::SetUpOnMainThread();
@@ -38,7 +29,7 @@ namespace extensions {
 
 // Load an extension page with an ad image, and make sure it is NOT blocked.
 // It would otherwise be blocked though if it wasn't an extension.
-IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
                        AdsNotBlockedByDefaultBlockerInExtension) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
@@ -60,8 +51,7 @@ IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
-                       ExtensionsCanGetCookies) {
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
   scoped_refptr<const extensions::Extension> extension =
@@ -80,8 +70,7 @@ IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
             content::EvalJs(contents, "canGetCookie('test', 'http://a.com')"));
 }
 
-IN_PROC_BROWSER_TEST_F(MAYBE_BraveExtensionProviderTest,
-                       ExtensionsCanSetCookies) {
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
   scoped_refptr<const extensions::Extension> extension =
