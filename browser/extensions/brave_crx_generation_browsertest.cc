@@ -91,7 +91,7 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
                         crx_file::VerifierFormat format) {
     auto installer = CrxInstaller::CreateSilent(browser()->profile());
     installer->set_allow_silent_install(true);
-    installer->set_install_cause(extension_misc::INSTALL_CAUSE_USER_DOWNLOAD);
+    installer->set_was_triggered_by_user_download();
     installer->set_creation_flags(Extension::FROM_WEBSTORE);
 
     InstallCrxFileWaiter waiter(browser()->profile());
