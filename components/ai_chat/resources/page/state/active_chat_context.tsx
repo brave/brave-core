@@ -6,7 +6,7 @@
 import * as React from 'react'
 import * as Mojom from '../../common/mojom'
 import getAPI, * as API from '../api'
-import { useRoute } from '$web-common/useRoute'
+// import { useRoute } from '$web-common/useRoute'
 import { useAIChat } from './ai_chat_context'
 
 export const tabAssociatedChatId = 'tab'
@@ -36,9 +36,9 @@ const updateSelectedConversation = (selectedId: string | undefined) => {
 
 export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
   // Register the empty route, so we don't reload the page when navigating to '/'
-  useRoute('/')
+  // useRoute('/')
 
-  const selectedConversationId = useRoute(`/{chatId}`)?.chatId
+  const selectedConversationId = "1" //useRoute(`/{chatId}`)?.chatId
   return <ActiveChatProvider selectedConversationId={selectedConversationId} updateSelectedConversationId={updateSelectedConversation}>
     {props.children}
   </ActiveChatProvider>
