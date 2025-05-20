@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index ce709861ac7426e12981cb90c31891dc39dea4e4..73e3d346332ecf907b7d9f5fb84341b2e0fe8455 100644
+index 9767f1cd8c47ff6e46c4031ffc9ece797c489222..8046bdc1e58f961ca128c7a10637ecc4451e39c3 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -694,6 +694,7 @@ void LocationBarView::Layout(PassKey) {
-   const bool should_indent = GetOmniboxPopupView()->IsOpen() &&
+@@ -698,6 +698,7 @@ void LocationBarView::Layout(PassKey) {
+                                   .indent_input_when_popup_closed) &&
                               !location_icon_view_->ShouldShowLabel() &&
                               !ShouldShowKeywordBubble();
 +  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS
    if (should_indent) {
      icon_left += 7 /*icon_indent*/;
-     text_left += 6 /*text_indent*/;
-@@ -771,6 +772,7 @@ void LocationBarView::Layout(PassKey) {
+     icon_left += omnibox_feature_configs::AdjustOmniboxIndent()
+@@ -784,6 +785,7 @@ void LocationBarView::Layout(PassKey) {
        }
        selected_keyword_view_->SetCustomImage(image);
      }
@@ -18,7 +18,7 @@ index ce709861ac7426e12981cb90c31891dc39dea4e4..73e3d346332ecf907b7d9f5fb84341b2
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -818,6 +820,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -831,6 +833,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
@@ -26,7 +26,7 @@ index ce709861ac7426e12981cb90c31891dc39dea4e4..73e3d346332ecf907b7d9f5fb84341b2
    add_trailing_decoration(page_action_icon_container_,
                            /*intra_item_padding=*/0);
    add_trailing_decoration(page_action_container_,
-@@ -833,6 +836,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -846,6 +849,7 @@ void LocationBarView::Layout(PassKey) {
    }
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0);
