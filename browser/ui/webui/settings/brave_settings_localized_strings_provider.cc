@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -1066,6 +1067,73 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
                          passphraseDecryptionErrorMessage);
 }
 
+void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
+  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    return;
+  }
+  webui::LocalizedString localized_strings[] = {
+      {"emailAliasesShortDescription",
+       IDS_SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION},
+      {"emailAliasesDescription", IDS_SETTINGS_EMAIL_ALIASES_DESCRIPTION},
+      {"emailAliasesLearnMore", IDS_SETTINGS_EMAIL_ALIASES_LEARN_MORE},
+      {"emailAliasesSignOut", IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT},
+      {"emailAliasesSignOutTitle", IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE},
+      {"emailAliasesConnectingToBraveAccount",
+       IDS_SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT},
+      {"emailAliasesBraveAccount", IDS_SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT},
+      {"emailAliasesCopiedToClipboard",
+       IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD},
+      {"emailAliasesClickToCopyAlias",
+       IDS_SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS},
+      {"emailAliasesUsedBy", IDS_SETTINGS_EMAIL_ALIASES_USED_BY},
+      {"emailAliasesEdit", IDS_SETTINGS_EMAIL_ALIASES_EDIT},
+      {"emailAliasesDelete", IDS_SETTINGS_EMAIL_ALIASES_DELETE},
+      {"emailAliasesCreateDescription",
+       IDS_SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION},
+      {"emailAliasesListTitle", IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE},
+      {"emailAliasesCreateAliasTitle",
+       IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE},
+      {"emailAliasesBubbleDescription",
+       IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION},
+      {"emailAliasesBubbleLimitReached",
+       IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED},
+      {"emailAliasesCreateAliasLabel",
+       IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL},
+      {"emailAliasesRefreshButtonTitle",
+       IDS_SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE},
+      {"emailAliasesGeneratingNewAlias",
+       IDS_SETTINGS_EMAIL_ALIASES_GENERATING_NEW_ALIAS},
+      {"emailAliasesNoteLabel", IDS_SETTINGS_EMAIL_ALIASES_NOTE_LABEL},
+      {"emailAliasesEditNotePlaceholder",
+       IDS_SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER},
+      {"emailAliasesCancelButton", IDS_SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON},
+      {"emailAliasesManageButton", IDS_SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON},
+      {"emailAliasesAliasLabel", IDS_SETTINGS_EMAIL_ALIASES_ALIAS_LABEL},
+      {"emailAliasesEmailsWillBeForwardedTo",
+       IDS_SETTINGS_EMAIL_ALIASES_EMAILS_WILL_BE_FORWARDED_TO},
+      {"emailAliasesEditAliasTitle",
+       IDS_SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE},
+      {"emailAliasesCreateAliasButton",
+       IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON},
+      {"emailAliasesSaveAliasButton",
+       IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON},
+      {"emailAliasesSignInOrCreateAccount",
+       IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT},
+      {"emailAliasesEnterEmailToGetLoginLink",
+       IDS_SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK},
+      {"emailAliasesGetLoginLinkButton",
+       IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON},
+      {"emailAliasesEmailAddressPlaceholder",
+       IDS_SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER},
+      {"emailAliasesLoginEmailOnTheWay",
+       IDS_SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY},
+      {"emailAliasesClickOnSecureLogin",
+       IDS_SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN},
+      {"emailAliasesDontSeeEmail", IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL},
+  };
+  html_source->AddLocalizedStrings(localized_strings);
+}
+
 }  // namespace
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
@@ -1075,6 +1143,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
+  BraveAddEmailAliasesStrings(html_source);
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
