@@ -51,7 +51,7 @@ using OnRuleMatchedCallback = base::RepeatingCallback<void(
 class PsstRuleRegistryUnitTest : public testing::Test {
  public:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(features::kBravePsst);
+    scoped_feature_list_.InitAndEnableFeature(features::kEnablePsst);
 
     base::FilePath test_data_dir(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));

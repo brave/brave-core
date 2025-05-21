@@ -274,7 +274,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
                    "Enable PSST (Privacy Site Settings Tool) feature", \
                    "Enable PSST feature",                              \
                    kOsAll,                                             \
-                   FEATURE_VALUE_TYPE(psst::features::kBravePsst),     \
+                   FEATURE_VALUE_TYPE(psst::features::kEnablePsst),    \
                }))
 
 #if !BUILDFLAG(IS_ANDROID)
