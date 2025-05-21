@@ -182,12 +182,12 @@ TEST_F(WidevinePermissionAndroidTest, PermissionWidevineUtilsTest) {
   profile()->GetPrefs()->SetBoolean(kAskEnableWidvine, true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(kAskEnableWidvine));
 
-  std::vector<raw_ptr<permissions::PermissionRequest, VectorExperimental>>
-      requests;
-  requests.push_back(new WidevinePermissionRequest(web_contents(), false));
+  std::vector<std::unique_ptr<permissions::PermissionRequest>> requests;
+  requests.push_back(
+      std::make_unique<WidevinePermissionRequest>(web_contents(), false));
   EXPECT_TRUE(HasWidevinePermissionRequest(requests));
 
-  requests.push_back(new DownloadPermissionRequest(
+  requests.push_back(std::make_unique<DownloadPermissionRequest>(
       nullptr, url::Origin::Create(GURL("https://example.com"))));
   EXPECT_FALSE(HasWidevinePermissionRequest(requests));
 
