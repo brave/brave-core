@@ -183,7 +183,7 @@ class PermissionLifetimeManagerTest : public testing::Test {
             std::make_unique<permissions::ContentSettingPermissionResolver>(
                 ContentSettingsTypeToRequestType(content_type)),
             /*user_gesture=*/true, origin),
-        PermissionDecidedCallback(), base::OnceClosure());
+        PermissionDecidedCallback());
     request->SetLifetime(lifetime);
     return request;
   }

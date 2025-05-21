@@ -70,12 +70,11 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
     GroupedPermissionRequests();
     ~GroupedPermissionRequests();
 
-    using GroupedRequests =
-        std::vector<std::pair<std::unique_ptr<PermissionRequest>,
-                              BrowserPermissionCallback>>;
+    using GroupedRequests = std::vector<
+        std::pair<base::WeakPtr<PermissionRequest>, BrowserPermissionCallback>>;
 
     bool IsDone() const;
-    void AddRequest(std::pair<std::unique_ptr<PermissionRequest>,
+    void AddRequest(std::pair<base::WeakPtr<PermissionRequest>,
                               BrowserPermissionCallback> request);
     BrowserPermissionCallback GetNextCallback();
     void RequestFinished();

@@ -46,7 +46,6 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
       bool is_one_time,
       bool is_final_decision,
       const permissions::PermissionRequestData& request_data);
-  void DeleteRequest();
 
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.

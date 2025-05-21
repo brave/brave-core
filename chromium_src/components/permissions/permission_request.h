@@ -29,10 +29,11 @@ namespace permissions {
 
 class PermissionRequest : public PermissionRequest_ChromiumImpl {
  public:
-  PermissionRequest(std::unique_ptr<PermissionRequestData> request_data,
-                    PermissionDecidedCallback permission_decided_callback,
-                    base::OnceClosure delete_callback,
-                    bool uses_automatic_embargo = true);
+  PermissionRequest(
+      std::unique_ptr<PermissionRequestData> request_data,
+      PermissionDecidedCallback permission_decided_callback,
+      base::OnceClosure request_finished_callback = base::DoNothing(),
+      bool uses_automatic_embargo = true);
 
   PermissionRequest(const PermissionRequest&) = delete;
   PermissionRequest& operator=(const PermissionRequest&) = delete;
