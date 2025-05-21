@@ -1894,7 +1894,7 @@
 -ServiceWorkerEventAckBrowserTest.RendererProcessGoesAway_ClearsUnackedEventData
 
 # These tests fail because we disable
-# metrics::structured::kEnabledStructuredMetricsService
+# ::features::kChromeStructuredMetrics
 -TestStructuredMetricsService.*
 
 # These tests fail because we stub out the ThirdPartyCookieDeprecation component
