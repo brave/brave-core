@@ -815,6 +815,18 @@ void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
   }
 }
 
+void BraveBrowserView::ShowSplitView() {
+  BrowserView::ShowSplitView();
+
+  UpdateContentsSeparatorVisibility();
+}
+
+void BraveBrowserView::HideSplitView() {
+  BrowserView::HideSplitView();
+
+  UpdateContentsSeparatorVisibility();
+}
+
 bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (BrowserView::ShouldShowWindowTitle()) {
     return true;
@@ -881,7 +893,8 @@ void BraveBrowserView::UpdateContentsSeparatorVisibility() {
   // refers it's preferred size.
   // Don't show that separator as split view has border around contents
   // container.
-  if (split_view_ && split_view_->IsSplitViewActive()) {
+  if ((split_view_ && split_view_->IsSplitViewActive()) ||
+      (multi_contents_view_ && multi_contents_view_->IsInSplitView())) {
     contents_separator_->SetPreferredSize({});
     return;
   }

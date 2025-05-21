@@ -50,9 +50,13 @@
 #undef LoadAccelerators
 #endif
 #define LoadAccelerators virtual LoadAccelerators
+#define ShowSplitView virtual ShowSplitView
+#define HideSplitView virtual HideSplitView
 
 #include "src/chrome/browser/ui/views/frame/browser_view.h"  // IWYU pragma: export
 
+#undef HideSplitView
+#undef ShowSplitView
 #undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
 // #pragma pop_macro("LoadAccelerators")
