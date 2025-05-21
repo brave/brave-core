@@ -3,15 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { RegisterPolymerPrototypeModification } from 'chrome://resources/brave/polymer_overriding.js'
-import { PowerBookmarksService } from '../power_bookmarks_service.js';
-import type {BookmarksTreeNode} from '../bookmarks.mojom-webui.js';
+import { RegisterPolymerPrototypeModification } from '//resources/brave/polymer_overriding.js'
+import { PowerBookmarksService } from './power_bookmarks_service.js';
+import type {BookmarksTreeNode} from './bookmarks.mojom-webui.js';
+
+export * from './power_bookmarks_list-chromium.js'
 
 const originalSortBookmarks = PowerBookmarksService.prototype.sortBookmarks
 PowerBookmarksService.prototype.sortBookmarks = function(
     bookmarks: BookmarksTreeNode[],
     activeSortIndex: number): boolean {
-    if (activeSortIndex === /*custom order*/5) {
+    if (activeSortIndex === /* custom order */5) {
       return false
     }
     return originalSortBookmarks.apply(this, [bookmarks, activeSortIndex])
@@ -31,7 +33,7 @@ RegisterPolymerPrototypeModification({
       // custom order. Moving in same direcotry doesn't affect with upstream's
       // sort orders.
       if (oldParent === newParent && shouldShow &&
-          this.activeSortIndex_ == /*customOrder*/5) {
+          this.activeSortIndex_ === /* customOrder */5) {
         prototype.updateDisplayLists_.apply(this)
       }
     }
