@@ -40,6 +40,20 @@ bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
           // Only ever update it to false
           preferences.allowsContentJavaScript = false;
         }
+
+        if (@available(iOS 18, *)) {
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+          // In prior versions of iOS,
+          // `WKWebpagePreferences.allowsContentJavaScript` does not work
+          // correctly in all cases:
+          // https://github.com/brave/brave-ios/issues/8585
+          webView.configuration.preferences.javaScriptEnabled =
+              preferences.allowsContentJavaScript;
+#pragma clang diagnostic pop
+        }
+
         if (policy == WKNavigationActionPolicyAllow) {
           // Check if we want to explicitly block universal links
           bool forceBlockUniversalLinks = brave::ShouldBlockUniversalLinks(
