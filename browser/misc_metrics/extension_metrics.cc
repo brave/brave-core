@@ -7,7 +7,7 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 #include "extensions/browser/extension_registry.h"
 
 namespace misc_metrics {

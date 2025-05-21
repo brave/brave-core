@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 
 #include <string>
 #include <string_view>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
@@ -18,6 +19,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_install_prompt.h"
+#include "chrome/browser/extensions/updater/extension_updater.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/crx_file/crx_verifier.h"
 #include "components/update_client/update_query_params.h"
@@ -33,11 +35,12 @@ namespace extensions_mv2 {
 
 namespace {
 
-bool IsKnownMV2Extension(std::string_view id) {
+bool IsKnownMV2Extension(const extensions::ExtensionId& id) {
   return kPreconfiguredManifestV2Extensions.contains(id);
 }
 
-GURL GetUpdaterExtensionDownloadUrl(std::string_view extenion_id) {
+GURL GetUpdaterExtensionDownloadUrl(
+    const extensions::ExtensionId& extenion_id) {
   const std::string params[] = {base::JoinString({"id", extenion_id}, "="),
                                 "installsource=ondemand", "uc"};
   const GURL url(
@@ -81,6 +84,11 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
     }
     const GURL url(*codebase);
     if (!url.is_valid() || !brave::ShouldAddBraveServicesKeyHeader(url)) {
+      // URL is not valid or doest't point to the Brave's server.
+      if (url.host_piece().ends_with(".test")) {
+        CHECK_IS_TEST();
+        return url;
+      }
       break;
     }
     return url;
@@ -94,14 +102,13 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
 ExtensionManifestV2Installer::ExtensionManifestV2Installer(
     const std::string& extension_id,
     content::WebContents* web_contents,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     extensions::WebstoreInstallWithPrompt::Callback callback)
     : extension_id_(extension_id),
       web_contents_(web_contents->GetWeakPtr()),
+      url_loader_factory_(std::move(url_loader_factory)),
       callback_(std::move(callback)) {
   CHECK(IsKnownMV2Extension(extension_id));
-  auto* profile =
-      Profile::FromBrowserContext(web_contents_->GetBrowserContext());
-  url_loader_factory_ = profile->GetURLLoaderFactory();
 }
 
 ExtensionManifestV2Installer::~ExtensionManifestV2Installer() = default;
@@ -215,8 +222,14 @@ void ExtensionManifestV2Installer::OnInstalled(
                                     extensions::webstore_install::SUCCESS);
   }
 
-  std::move(callback_).Run(false, base::UTF16ToUTF8(error->message()),
-                           extensions::webstore_install::OTHER_ERROR);
+  if (error->detail() == extensions::CrxInstallErrorDetail::USER_ABORTED ||
+      error->detail() == extensions::CrxInstallErrorDetail::USER_CANCELED) {
+    std::move(callback_).Run(false, base::UTF16ToUTF8(error->message()),
+                             extensions::webstore_install::USER_CANCELLED);
+  } else {
+    std::move(callback_).Run(false, base::UTF16ToUTF8(error->message()),
+                             extensions::webstore_install::OTHER_ERROR);
+  }
 }
 
 }  // namespace extensions_mv2

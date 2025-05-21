@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -180,9 +180,15 @@ void BraveExtensionsManifestV2Handler::EnableExtensionManifestV2(
 
   if (enable) {
     if (!installed) {
+      if (installer_) {
+        // Shouldn't happen, but reject the installation request if there is a
+        // pending one.
+        ResolveJavascriptCallback(args[0], base::Value(false));
+        return;
+      }
       installer_ = std::make_unique<
           extensions_mv2::ExtensionManifestV2Installer>(
-          id, web_ui()->GetWebContents(),
+          id, web_ui()->GetWebContents(), profile->GetURLLoaderFactory(),
           base::BindOnce(
               &BraveExtensionsManifestV2Handler::OnExtensionManifestV2Installed,
               weak_factory_.GetWeakPtr(), args[0].Clone()));
@@ -240,6 +246,7 @@ void BraveExtensionsManifestV2Handler::OnExtensionManifestV2Installed(
     bool success,
     const std::string& error,
     extensions::webstore_install::Result result) {
+  installer_.reset();
   AllowJavascript();
   if (!success &&
       result != extensions::webstore_install::Result::USER_CANCELLED) {
