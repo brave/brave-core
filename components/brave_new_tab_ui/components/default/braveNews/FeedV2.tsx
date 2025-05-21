@@ -27,7 +27,7 @@ const Root = styled(Variables)`
   padding-top: ${spacing.xl};
 
   display: grid;
-  grid-template-columns: 1fr max-content 1fr;
+  grid-template-columns: 1fr 540px 1fr;
   gap: ${spacing['3Xl']};
 `
 
@@ -116,7 +116,7 @@ export default function FeedV2() {
     <SidebarContainer>
       {!isSmall && <React.Suspense fallback={null}><FeedNavigation /></React.Suspense>}
     </SidebarContainer>
-    <Flex align='center' direction='column' gap={spacing.l}>
+    <Flex direction='column' gap={spacing.l}>
       {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
         {getLocale('braveNewsNewContentAvailable')}
       </LoadNewContentButton>}
