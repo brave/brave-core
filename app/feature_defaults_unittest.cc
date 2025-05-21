@@ -187,9 +187,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
-#if BUILDFLAG(ENABLE_MIRROR)
-      &kVerifyRequestInitiatorForMirrorHeaders,
-#endif
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &manta::features::kMantaService,
