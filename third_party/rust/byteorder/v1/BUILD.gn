@@ -21,11 +21,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.5.0"
   cargo_pkg_authors = "Andrew Gallant <jamslam@gmail.com>"
   cargo_pkg_name = "byteorder"
   cargo_pkg_description =
       "Library for reading/writing numbers in big-endian and little-endian."
+  cargo_pkg_version = "1.5.0"
+
   features = [
     "default",
     "std",

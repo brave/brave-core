@@ -44,11 +44,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.5.1"
   cargo_pkg_authors = "Henry de Valence <hdevalence@hdevalence.ca>, Deirdre Connolly <durumcrustulum@gmail.com>, Chelsea Komlo <me@chelseakomlo.com>, Jack Grigg <jack@electriccoin.co>, Conrado Gouvea <conradoplg@gmail.com>"
   cargo_pkg_name = "reddsa"
   cargo_pkg_description =
       "A standalone implementation of the RedDSA signature scheme."
+  cargo_pkg_version = "0.5.1"
+
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/byteorder/v1:lib",

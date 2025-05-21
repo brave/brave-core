@@ -22,11 +22,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.0"
   cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing-log"
   cargo_pkg_description =
       "Provides compatibility between `tracing` and the `log` crate."
+  cargo_pkg_version = "0.2.0"
+
   deps = [
     "//brave/third_party/rust/log/v0_4:lib",
     "//brave/third_party/rust/once_cell/v1:lib",

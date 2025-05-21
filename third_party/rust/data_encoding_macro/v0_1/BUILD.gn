@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.15"
   cargo_pkg_authors = "Julien Cretin <cretin@google.com>"
   cargo_pkg_name = "data-encoding-macro"
   cargo_pkg_description = "Macros for data-encoding"
+  cargo_pkg_version = "0.1.15"
+
   deps = [
     "//brave/third_party/rust/data_encoding/v2:lib",
     "//brave/third_party/rust/data_encoding_macro_internal/v0_1:lib",

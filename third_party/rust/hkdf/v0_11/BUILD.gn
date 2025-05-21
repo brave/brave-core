@@ -20,11 +20,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.11.0"
   cargo_pkg_authors = "vladikoff, warner, RustCrypto Developers"
   cargo_pkg_name = "hkdf"
   cargo_pkg_description =
       "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"
+  cargo_pkg_version = "0.11.0"
+
   deps = [
     "//brave/third_party/rust/digest/v0_9:lib",
     "//brave/third_party/rust/hmac/v0_11:lib",

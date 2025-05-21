@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "2.0.11"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "thiserror"
   cargo_pkg_description = "derive(Error)"
+  cargo_pkg_version = "2.0.11"
+
   deps = [ "//brave/third_party/rust/thiserror_impl/v2:lib" ]
   features = [
     "default",

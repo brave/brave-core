@@ -24,12 +24,13 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.5.1"
   cargo_pkg_authors =
       "Sean Bowe <ewillbefull@gmail.com>, Kris Nuttycombe <kris@nutty.land>"
   cargo_pkg_name = "incrementalmerkletree"
   cargo_pkg_description =
       "Common types, interfaces, and utilities for Merkle tree data structures"
+  cargo_pkg_version = "0.5.1"
+
   deps = [ "//brave/third_party/rust/either/v1:lib" ]
   features = [ "legacy-api" ]
   rustenv = []

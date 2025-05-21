@@ -28,10 +28,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.14.6"
   cargo_pkg_authors = "Bartłomiej Kamiński <fizyk20@gmail.com>, Aaron Trent <novacrazy@gmail.com>"
   cargo_pkg_name = "generic-array"
   cargo_pkg_description = "Generic types implementing functionality of arrays"
+  cargo_pkg_version = "0.14.6"
+
   deps = [ "//brave/third_party/rust/typenum/v1:lib" ]
   build_deps = [ "//brave/third_party/rust/version_check/v0_9:buildrs_support" ]
   features = [ "more_lengths" ]

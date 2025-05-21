@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.6.1"
   cargo_pkg_authors = "Zack Slayton <zack.slayton@gmail.com>"
   cargo_pkg_name = "lifeguard"
   cargo_pkg_description = "An object pool manager in Rust."
+  cargo_pkg_version = "0.6.1"
+
   rustenv = []
   rustflags = []
 

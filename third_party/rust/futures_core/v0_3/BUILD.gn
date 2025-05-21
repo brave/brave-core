@@ -26,10 +26,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-core"
   cargo_pkg_description =
       "The core traits and types in for the `futures` library."
+  cargo_pkg_version = "0.3.31"
+
   features = [
     "alloc",
     "std",

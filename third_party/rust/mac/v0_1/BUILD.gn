@@ -28,10 +28,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.1"
   cargo_pkg_authors = "Jonathan Reem <jonathan.reem@gmail.com>"
   cargo_pkg_name = "mac"
   cargo_pkg_description = "A collection of great and ubiqutitous macros."
+  cargo_pkg_version = "0.1.1"
+
   rustenv = []
   rustflags = []
 

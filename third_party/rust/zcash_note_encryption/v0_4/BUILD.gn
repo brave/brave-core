@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.4.0"
   cargo_pkg_authors = "Jack Grigg <jack@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
   cargo_pkg_name = "zcash_note_encryption"
   cargo_pkg_description = "Note encryption for Zcash transactions"
+  cargo_pkg_version = "0.4.0"
+
   deps = [
     "//brave/third_party/rust/chacha20/v0_9:lib",
     "//brave/third_party/rust/chacha20poly1305/v0_10:lib",

@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.1"
   cargo_pkg_authors = "Jack Grigg <jack@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
   cargo_pkg_name = "zip32"
   cargo_pkg_description = "Common types for implementing shielded hierarchical deterministic wallets"
+  cargo_pkg_version = "0.1.1"
+
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",

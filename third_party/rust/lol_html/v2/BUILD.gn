@@ -97,11 +97,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "2.2.0"
   cargo_pkg_authors = "Ivan Nikulin <inikulin@cloudflare.com, ifaaan@gmail.com>"
   cargo_pkg_name = "lol_html"
   cargo_pkg_description =
       "Streaming HTML rewriter/parser with CSS selector-based API"
+  cargo_pkg_version = "2.2.0"
+
   deps = [
     "//brave/third_party/rust/bitflags/v2:lib",
     "//brave/third_party/rust/cfg_if/v1:lib",

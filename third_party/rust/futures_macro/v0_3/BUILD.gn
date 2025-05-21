@@ -24,9 +24,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-macro"
   cargo_pkg_description = "The futures-rs procedural macro implementations."
+  cargo_pkg_version = "0.3.31"
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",

@@ -22,11 +22,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.7.0"
   cargo_pkg_authors =
       "Nika Layzell <nika@thelayzells.com>, myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "radium"
   cargo_pkg_description = "Portable interfaces for maybe-atomic types"
+  cargo_pkg_version = "0.7.0"
+
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/radium-v0_7/build.rs"
   build_sources = [

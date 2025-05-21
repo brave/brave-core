@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.6"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "crypto-common"
   cargo_pkg_description = "Common cryptographic traits"
+  cargo_pkg_version = "0.1.6"
+
   deps = [
     "//brave/third_party/rust/generic_array/v0_14:lib",
     "//brave/third_party/rust/typenum/v1:lib",

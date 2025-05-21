@@ -18,10 +18,11 @@ cargo_crate("buildrs_support") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.0"
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf_codegen"
   cargo_pkg_description = "Codegen library for PHF types"
+  cargo_pkg_version = "0.8.0"
+
   deps = [
     "//brave/third_party/rust/phf_generator/v0_8:lib",
     "//brave/third_party/rust/phf_shared/v0_8:lib",

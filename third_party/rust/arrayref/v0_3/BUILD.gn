@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.3.7"
   cargo_pkg_authors = "David Roundy <roundyd@physics.oregonstate.edu>"
   cargo_pkg_name = "arrayref"
   cargo_pkg_description = "Macros to take array references of slices"
+  cargo_pkg_version = "0.3.7"
+
   rustenv = []
   rustflags = []
 

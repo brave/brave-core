@@ -23,10 +23,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.5.2"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "aead"
   cargo_pkg_description = "Traits for Authenticated Encryption with Associated Data (AEAD) algorithms, such as AES-GCM as ChaCha20Poly1305, which provide a high-level API"
+  cargo_pkg_version = "0.5.2"
+
   deps = [
     "//brave/third_party/rust/crypto_common/v0_1:lib",
     "//brave/third_party/rust/generic_array/v0_14:lib",

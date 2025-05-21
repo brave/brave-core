@@ -25,11 +25,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.2.21"
   cargo_pkg_authors = "The CryptoCorrosion Contributors"
   cargo_pkg_name = "ppv-lite86"
   cargo_pkg_description =
       "Cross-platform cryptography-oriented low-level SIMD library."
+  cargo_pkg_version = "0.2.21"
+
   deps = [ "//brave/third_party/rust/zerocopy/v0_8:lib" ]
   features = [
     "simd",

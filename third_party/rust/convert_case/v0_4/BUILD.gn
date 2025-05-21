@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.4.0"
   cargo_pkg_authors = "David Purdum <purdum41@gmail.com>"
   cargo_pkg_name = "convert_case"
   cargo_pkg_description = "Convert strings into any case"
+  cargo_pkg_version = "0.4.0"
+
   rustenv = []
   rustflags = []
 

@@ -29,10 +29,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.9.9"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "sha2"
   cargo_pkg_description = "Pure Rust implementation of the SHA-2 hash function family including SHA-224, SHA-256, SHA-384, and SHA-512."
+  cargo_pkg_version = "0.9.9"
+
   deps = [
     "//brave/third_party/rust/block_buffer/v0_9:lib",
     "//brave/third_party/rust/cfg_if/v1:lib",

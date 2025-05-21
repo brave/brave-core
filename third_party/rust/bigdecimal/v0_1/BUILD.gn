@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.2"
   cargo_pkg_authors = "Andrew Kubera"
   cargo_pkg_name = "bigdecimal"
   cargo_pkg_description = "Arbitrary percision decimal numbers"
+  cargo_pkg_version = "0.1.2"
+
   deps = [
     "//brave/third_party/rust/num_bigint/v0_2:lib",
     "//brave/third_party/rust/num_integer/v0_1:lib",

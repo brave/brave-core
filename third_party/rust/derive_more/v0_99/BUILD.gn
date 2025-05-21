@@ -46,10 +46,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.99.17"
   cargo_pkg_authors = "Jelte Fennema <github-tech@jeltef.nl>"
   cargo_pkg_name = "derive_more"
   cargo_pkg_description = "Adds #[derive(x)] macros for more traits"
+  cargo_pkg_version = "0.99.17"
+
   deps = [
     "//brave/third_party/rust/convert_case/v0_4:lib",
     "//brave/third_party/rust/proc_macro2/v1:lib",

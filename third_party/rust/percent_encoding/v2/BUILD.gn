@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "2.2.0"
   cargo_pkg_authors = "The rust-url developers"
   cargo_pkg_name = "percent-encoding"
   cargo_pkg_description = "Percent encoding and decoding"
+  cargo_pkg_version = "2.2.0"
+
   features = [
     "alloc",
     "default",

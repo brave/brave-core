@@ -23,11 +23,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.2"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "cbc"
   cargo_pkg_description =
       "Cipher Block Chaining (CBC) block cipher mode of operation"
+  cargo_pkg_version = "0.1.2"
+
   deps = [ "//brave/third_party/rust/cipher/v0_4:lib" ]
   rustenv = []
   rustflags = []

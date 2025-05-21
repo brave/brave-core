@@ -27,10 +27,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.0.1"
   cargo_pkg_authors = "Jack O'Connor"
   cargo_pkg_name = "blake2b_simd"
   cargo_pkg_description = "a pure Rust BLAKE2b implementation with dynamic SIMD"
+  cargo_pkg_version = "1.0.1"
+
   deps = [
     "//brave/third_party/rust/arrayref/v0_3:lib",
     "//brave/third_party/rust/arrayvec/v0_7:lib",

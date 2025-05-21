@@ -18,9 +18,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.4.30"
   cargo_pkg_name = "pin-project"
   cargo_pkg_description = "A crate for safe and ergonomic pin-projection."
+  cargo_pkg_version = "0.4.30"
+
   deps = [ "//brave/third_party/rust/pin_project_internal/v0_4:lib" ]
   rustenv = []
   rustflags = []

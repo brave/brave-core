@@ -18,9 +18,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.0"
   cargo_pkg_name = "match_token"
   cargo_pkg_description = "Procedural macro for html5ever."
+  cargo_pkg_version = "0.1.0"
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",

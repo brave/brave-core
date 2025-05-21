@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "2.6.0"
   cargo_pkg_authors = "Julien Cretin <git@ia0.eu>"
   cargo_pkg_name = "data-encoding"
   cargo_pkg_description = "Efficient and customizable data-encoding functions like base64, base32, and hex"
+  cargo_pkg_version = "2.6.0"
+
   features = [
     "alloc",
     "default",

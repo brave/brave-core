@@ -29,10 +29,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.3.2"
   cargo_pkg_authors = "Kris Nuttycombe <kris@nutty.land>"
   cargo_pkg_name = "shardtree"
   cargo_pkg_description = "A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration."
+  cargo_pkg_version = "0.3.2"
+
   deps = [
     "//brave/third_party/rust/bitflags/v2:lib",
     "//brave/third_party/rust/either/v1:lib",

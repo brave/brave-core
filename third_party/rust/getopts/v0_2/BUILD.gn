@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.2.21"
   cargo_pkg_authors = "The Rust Project Developers"
   cargo_pkg_name = "getopts"
   cargo_pkg_description = "getopts-like option parsing."
+  cargo_pkg_version = "0.2.21"
+
   deps = [ "//brave/third_party/rust/unicode_width/v0_1:lib" ]
   rustenv = []
   rustflags = []

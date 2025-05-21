@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.0.4"
   cargo_pkg_authors = "Matt Brubeck <mbrubeck@limpet.net>, Jonathan Reem <jonathan.reem@gmail.com>"
   cargo_pkg_name = "new_debug_unreachable"
   cargo_pkg_description = "panic in debug, intrinsics::unreachable() in release (fork of debug_unreachable)"
+  cargo_pkg_version = "1.0.4"
+
   rustenv = []
   rustflags = []
 

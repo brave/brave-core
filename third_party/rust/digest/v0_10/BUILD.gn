@@ -33,11 +33,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.10.7"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "digest"
   cargo_pkg_description =
       "Traits for cryptographic hash functions and message authentication codes"
+  cargo_pkg_version = "0.10.7"
+
   deps = [
     "//brave/third_party/rust/block_buffer/v0_10:lib",
     "//brave/third_party/rust/crypto_common/v0_1:lib",

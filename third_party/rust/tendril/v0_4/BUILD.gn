@@ -27,10 +27,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.4.3"
   cargo_pkg_authors = "Keegan McAllister <mcallister.keegan@gmail.com>, Simon Sapin <simon.sapin@exyr.org>, Chris Morgan <me@chrismorgan.info>"
   cargo_pkg_name = "tendril"
   cargo_pkg_description = "Compact buffer/string type for zero-copy parsing"
+  cargo_pkg_version = "0.4.3"
+
   deps = [
     "//brave/third_party/rust/futf/v0_1:lib",
     "//brave/third_party/rust/mac/v0_1:lib",

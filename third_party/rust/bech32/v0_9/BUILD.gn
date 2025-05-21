@@ -20,10 +20,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.9.1"
   cargo_pkg_authors = "Clark Moody"
   cargo_pkg_name = "bech32"
   cargo_pkg_description = "Encodes and decodes the Bech32 format"
+  cargo_pkg_version = "0.9.1"
+
   features = [
     "default",
     "std",

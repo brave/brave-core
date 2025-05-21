@@ -72,10 +72,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "4.1.3"
   cargo_pkg_authors = "Isis Lovecruft <isis@patternsinthevoid.net>, Henry de Valence <hdevalence@hdevalence.ca>"
   cargo_pkg_name = "curve25519-dalek"
   cargo_pkg_description = "A pure-Rust implementation of group operations on ristretto255 and Curve25519"
+  cargo_pkg_version = "4.1.3"
+
   deps = [
     "//brave/third_party/rust/cfg_if/v1:lib",
     "//brave/third_party/rust/digest/v0_10:lib",
@@ -104,12 +105,6 @@ cargo_crate("lib") {
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/build.rs" ]
   rustenv = []
   rustflags = []
-  if (target_cpu == "x64") {
-    deps += [
-      "//brave/third_party/rust/cpufeatures/v0_2:lib",
-      "//brave/third_party/rust/curve25519_dalek_derive/v0_1:lib",
-    ]
-  }
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.

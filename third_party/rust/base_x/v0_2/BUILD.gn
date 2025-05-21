@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.2.11"
   cargo_pkg_authors = "Alex R. <alexei.rudenko@gmail.com>"
   cargo_pkg_name = "base-x"
   cargo_pkg_description = "Encode/decode any base"
+  cargo_pkg_version = "0.2.11"
+
   rustenv = []
   rustflags = []
 

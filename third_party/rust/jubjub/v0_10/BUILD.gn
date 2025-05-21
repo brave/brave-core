@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.10.0"
   cargo_pkg_authors = "Sean Bowe <ewillbefull@gmail.com>, Eirik Ogilvie-Wigley <eowigley@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "jubjub"
   cargo_pkg_description = "Implementation of the Jubjub elliptic curve group"
+  cargo_pkg_version = "0.10.0"
+
   deps = [
     "//brave/third_party/rust/bitvec/v1:lib",
     "//brave/third_party/rust/bls12_381/v0_8:lib",

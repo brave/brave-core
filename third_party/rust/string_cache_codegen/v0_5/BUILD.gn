@@ -21,10 +21,11 @@ cargo_crate("buildrs_support") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.5.2"
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "string_cache_codegen"
   cargo_pkg_description = "A codegen library for string-cache, developed as part of the Servo project."
+  cargo_pkg_version = "0.5.2"
+
   deps = [
     "//brave/third_party/rust/phf_generator/v0_10:lib",
     "//brave/third_party/rust/phf_shared/v0_10:lib",

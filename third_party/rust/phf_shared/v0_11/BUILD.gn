@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.11.3"
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf_shared"
   cargo_pkg_description = "Support code shared by PHF libraries"
+  cargo_pkg_version = "0.11.3"
+
   deps = [ "//brave/third_party/rust/siphasher/v1:lib" ]
   features = [
     "default",

@@ -37,10 +37,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.8.24"
   cargo_pkg_authors = "Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@amazon.com>"
   cargo_pkg_name = "zerocopy"
   cargo_pkg_description = "Zerocopy makes zero-cost memory manipulation effortless. We write \"unsafe\" so you don't have to."
+  cargo_pkg_version = "0.8.24"
+
   features = [ "simd" ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/build.rs"
   build_sources = [

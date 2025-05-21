@@ -45,9 +45,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.27.1"
   cargo_pkg_name = "quick-xml"
   cargo_pkg_description = "High performance xml reader and writer"
+  cargo_pkg_version = "0.27.1"
+
   deps = [
     "//brave/third_party/rust/encoding_rs/v0_8:lib",
     "//brave/third_party/rust/memchr/v2:lib",

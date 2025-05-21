@@ -200,10 +200,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-util"
   cargo_pkg_description =
       "Common utilities and extension traits for the futures-rs library."
+  cargo_pkg_version = "0.3.31"
+
   deps = [
     "//brave/third_party/rust/futures_channel/v0_3:lib",
     "//brave/third_party/rust/futures_core/v0_3:lib",

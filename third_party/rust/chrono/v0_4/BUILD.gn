@@ -58,9 +58,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.4.39"
   cargo_pkg_name = "chrono"
   cargo_pkg_description = "Date and time library for Rust"
+  cargo_pkg_version = "0.4.39"
+
   deps = [
     "//brave/third_party/rust/num_traits/v0_2:lib",
     "//brave/third_party/rust/serde/v1:lib",

@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.5.1"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "universal-hash"
   cargo_pkg_description = "Traits which describe the functionality of universal hash functions (UHFs)"
+  cargo_pkg_version = "0.5.1"
+
   deps = [
     "//brave/third_party/rust/crypto_common/v0_1:lib",
     "//brave/third_party/rust/subtle/v2:lib",

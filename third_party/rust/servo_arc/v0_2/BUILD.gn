@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.2.0"
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "servo_arc"
   cargo_pkg_description = "A fork of std::sync::Arc with some extra functionality and without weak references"
+  cargo_pkg_version = "0.2.0"
+
   deps = [
     "//brave/third_party/rust/nodrop/v0_1:lib",
     "//brave/third_party/rust/stable_deref_trait/v1:lib",

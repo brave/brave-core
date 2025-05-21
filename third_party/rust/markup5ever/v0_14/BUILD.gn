@@ -31,10 +31,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.14.1"
   cargo_pkg_authors = "The html5ever Project Developers"
   cargo_pkg_name = "markup5ever"
   cargo_pkg_description = "Common code for xml5ever and html5ever"
+  cargo_pkg_version = "0.14.1"
+
   deps = [
     "//brave/third_party/rust/log/v0_4:lib",
     "//brave/third_party/rust/phf/v0_11:lib",

@@ -21,11 +21,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.2"
   cargo_pkg_authors = "Alex Davidson <coela@alxdavids.xyz>"
   cargo_pkg_name = "sta-rs"
   cargo_pkg_description =
       "Distributed Secret-Sharing for Threshold Aggregation Reporting"
+  cargo_pkg_version = "0.3.2"
+
   deps = [
     "//brave/third_party/rust/adss/v0_2:lib",
     "//brave/third_party/rust/ppoprf/v0_4:lib",

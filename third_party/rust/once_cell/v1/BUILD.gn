@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.16.0"
   cargo_pkg_authors = "Aleksey Kladov <aleksey.kladov@gmail.com>"
   cargo_pkg_name = "once_cell"
   cargo_pkg_description = "Single assignment cells and lazy values."
+  cargo_pkg_version = "1.16.0"
+
   features = [
     "alloc",
     "default",

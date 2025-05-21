@@ -248,10 +248,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.0.1"
   cargo_pkg_name = "bitvec"
   cargo_pkg_description =
       "Addresses memory by bits, for packed collections and bitfields"
+  cargo_pkg_version = "1.0.1"
+
   deps = [
     "//brave/third_party/rust/funty/v2:lib",
     "//brave/third_party/rust/radium/v0_7:lib",

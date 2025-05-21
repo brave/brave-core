@@ -23,12 +23,13 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.4.2"
   cargo_pkg_authors =
       "Alex Davidson <coela@alxdavids.xyz>, Ralph Ankele <rankele@brave.com>"
   cargo_pkg_name = "ppoprf"
   cargo_pkg_description =
       "Puncturable Partially-Oblivious Pseudo-Random Function"
+  cargo_pkg_version = "0.4.2"
+
   deps = [
     "//brave/third_party/rust/base64/v0_22:lib",
     "//brave/third_party/rust/bincode/v1:lib",

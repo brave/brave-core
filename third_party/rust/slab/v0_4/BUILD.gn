@@ -23,10 +23,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.4.8"
   cargo_pkg_authors = "Carl Lerche <me@carllerche.com>"
   cargo_pkg_name = "slab"
   cargo_pkg_description = "Pre-allocated storage for a uniform data type"
+  cargo_pkg_version = "0.4.8"
+
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
   features = [
     "default",

@@ -22,11 +22,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.3.3"
   cargo_pkg_authors =
       "Kornel <kornel@geekhood.net>, Bertram Truong <b@bertramtruong.com>"
   cargo_pkg_name = "urlencoding"
   cargo_pkg_description = "A Rust library for doing URL percentage encoding."
+  cargo_pkg_version = "1.3.3"
+
   rustenv = []
   rustflags = []
 

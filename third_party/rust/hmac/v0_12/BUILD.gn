@@ -23,11 +23,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.12.1"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "hmac"
   cargo_pkg_description =
       "Generic implementation of Hash-based Message Authentication Code (HMAC)"
+  cargo_pkg_version = "0.12.1"
+
   deps = [ "//brave/third_party/rust/digest/v0_10:lib" ]
   rustenv = []
   rustflags = []

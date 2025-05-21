@@ -29,11 +29,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.16.0"
   cargo_pkg_authors =
       "Paho Lurie-Gregg <paho@paholg.com>, Andre Bogus <bogusandre@gmail.com>"
   cargo_pkg_name = "typenum"
   cargo_pkg_description = "Typenum is a Rust library for type-level numbers evaluated at     compile time. It currently supports bits, unsigned integers, and signed     integers. It also provides a type-level array of type-level numbers, but its     implementation is incomplete."
+  cargo_pkg_version = "1.16.0"
+
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build/main.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build/main.rs" ]
   build_script_inputs = [

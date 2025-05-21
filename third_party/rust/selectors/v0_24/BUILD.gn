@@ -35,10 +35,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.24.0"
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "selectors"
   cargo_pkg_description = "CSS Selectors matching for Rust"
+  cargo_pkg_version = "0.24.0"
+
   deps = [
     "//brave/third_party/rust/bitflags/v1:lib",
     "//brave/third_party/rust/cssparser/v0_29:lib",

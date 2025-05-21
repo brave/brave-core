@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.3"
   cargo_pkg_authors = "eV <ev@7pr.xyz>, Alex Davidson <coela@alxdavids.xyz>"
   cargo_pkg_name = "adss"
   cargo_pkg_description = "Adept Secret Sharing framework"
+  cargo_pkg_version = "0.2.3"
+
   deps = [
     "//brave/third_party/rust/rand/v0_8:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",

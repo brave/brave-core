@@ -2,7 +2,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# This file configures how to generate GN rules for third-party Rust crates.
+# This file configures how `gnrt` vendors and generates `BUILD.gn` files for
+# third-party Rust crates.  After modifying this file you probably want to run
+# either `tools/crates/run_gnrt.py vendor` or `tools/crates/run_gnrt.py gen` to
+# regenerate `gnrt`-managed files with the new `gnrt_config.toml` contents.
 #
 # `[crate.foo]` sections below can configure generation of `BUILD.gn` and/or
 # `README.chromium` by specifying the following options:
@@ -60,6 +63,8 @@
 # extra_kv: A dictionary with arbitrary data (i.e. that doesn't come from
 #   `gnrt`).  The following enries are currently supported/used by
 #   `BUILD.gn.hbs`:
+#
+#     allow_unsafe: If true, then the crate is allowed to use `unsafe` Rust.
 #
 #     allow_unstable_features: A list of unstable feature names to allow
 #       in a given crate.  (Using unstable features adds extra risk
@@ -258,7 +263,7 @@ rustflags += [
   "-A",
   "unused_variables",
 ]
-''' }
+''', allow_unsafe = true }
 
 [crate.num-integer]
 license_files = ['../../../../../common/licenses/Apache-2.0']

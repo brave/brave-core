@@ -25,10 +25,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.3"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "inout"
   cargo_pkg_description = "Custom reference types for code generic over in-place and buffer-to-buffer modes of operation."
+  cargo_pkg_version = "0.1.3"
+
   deps = [ "//brave/third_party/rust/generic_array/v0_14:lib" ]
   rustenv = []
   rustflags = []

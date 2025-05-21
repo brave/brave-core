@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.9"
   cargo_pkg_name = "pin-project-lite"
   cargo_pkg_description =
       "A lightweight version of pin-project written with declarative macros."
+  cargo_pkg_version = "0.2.9"
+
   rustenv = []
   rustflags = []
 

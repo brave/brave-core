@@ -26,10 +26,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.11"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "cpufeatures"
   cargo_pkg_description = "Lightweight runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets,  with no_std support and support for mobile targets including Android and iOS"
+  cargo_pkg_version = "0.2.11"
+
   deps = []
   if (current_cpu == "arm64" &&
       (is_linux || is_chromeos || is_android || is_ios || is_mac)) {

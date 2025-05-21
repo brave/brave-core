@@ -70,11 +70,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.3.0"
   cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Ying Tong Lai <yingtong@electriccoin.co>, Daira Hopwood <daira@electriccoin.co>, Jack Grigg <jack@electriccoin.co>"
   cargo_pkg_name = "halo2_proofs"
   cargo_pkg_description =
       "Fast PLONK-based zero-knowledge proving system with no trusted setup"
+  cargo_pkg_version = "0.3.0"
+
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/ff/v0_13:lib",

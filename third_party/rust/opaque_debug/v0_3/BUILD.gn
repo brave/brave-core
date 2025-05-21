@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.0"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "opaque-debug"
   cargo_pkg_description = "Macro for opaque Debug trait implementation"
+  cargo_pkg_version = "0.3.0"
+
   rustenv = []
   rustflags = []
 

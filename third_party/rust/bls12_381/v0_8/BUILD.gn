@@ -38,11 +38,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.8.0"
   cargo_pkg_authors =
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "bls12_381"
   cargo_pkg_description = "Implementation of the BLS12-381 pairing-friendly elliptic curve construction"
+  cargo_pkg_version = "0.8.0"
+
   deps = [
     "//brave/third_party/rust/digest/v0_9:lib",
     "//brave/third_party/rust/ff/v0_13:lib",

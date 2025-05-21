@@ -25,10 +25,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "3.0.7"
   cargo_pkg_authors = "ticki <ticki@users.noreply.github.com>"
   cargo_pkg_name = "seahash"
   cargo_pkg_description = "A blazingly fast, portable hash function with proven statistical guarantees."
+  cargo_pkg_version = "3.0.7"
+
   rustenv = []
   rustflags = []
 

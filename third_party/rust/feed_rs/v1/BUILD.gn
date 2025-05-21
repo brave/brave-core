@@ -41,11 +41,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.3.0"
   cargo_pkg_authors =
       "Hiroki Kumamoto <kumabook@live.jp>, Mark Pritchard <mpritcha@gmail.com>"
   cargo_pkg_name = "feed-rs"
   cargo_pkg_description = "A unified feed parser that handles Atom, RSS 2.0, RSS 1.0, RSS 0.x and JSON Feed"
+  cargo_pkg_version = "1.3.0"
+
   deps = [
     "//brave/third_party/rust/chrono/v0_4:lib",
     "//brave/third_party/rust/lazy_static/v1:lib",
