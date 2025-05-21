@@ -6,6 +6,9 @@
 import * as React from 'react'
 
 import './storybook_locale'
+import './mock_news_controller'
+
+import { BraveNewsContextProvider } from '../../../../components/brave_news/browser/resources/shared/Context'
 
 import { NewTabProvider } from '../context/new_tab_context'
 import { BackgroundProvider } from '../context/background_context'
@@ -21,7 +24,7 @@ import { createSearchHandler } from './search_handler'
 import { createTopSitesHandler } from './top_sites_handler'
 import { createVpnHandler } from './vpn_handler'
 
-import { App } from '../components/app'
+import { App, NewsApp } from '../components/app'
 
 export default {
   title: 'New Tab/Refresh'
@@ -35,7 +38,9 @@ function StorybookAppProvider(props: { children: React.ReactNode }) {
             <TopSitesProvider createHandler={createTopSitesHandler}>
               <VpnProvider createHandler={createVpnHandler}>
                 <RewardsProvider createHandler={createRewardsHandler}>
-                  {props.children}
+                  <BraveNewsContextProvider>
+                    {props.children}
+                  </BraveNewsContextProvider>
                 </RewardsProvider>
               </VpnProvider>
             </TopSitesProvider>
@@ -52,5 +57,17 @@ export function NTPRefresh() {
         <App />
       </div>
     </StorybookAppProvider>
+  )
+}
+
+export function NewsOnly() {
+  React.useEffect(() => {
+    document.body.style.padding = '0'
+  }, [])
+
+  return (
+    <BraveNewsContextProvider>
+      <NewsApp />
+    </BraveNewsContextProvider>
   )
 }

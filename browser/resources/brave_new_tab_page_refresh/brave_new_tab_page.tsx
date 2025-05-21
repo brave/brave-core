@@ -13,8 +13,9 @@ import { SearchProvider } from './context/search_context'
 import { TopSitesProvider } from './context/top_sites_context'
 import { VpnProvider } from './context/vpn_context'
 import { RewardsProvider } from './context/rewards_context'
+import { BraveNewsContextProvider } from '../../../components/brave_news/browser/resources/shared/Context'
 
-import { App } from './components/app'
+import { App, NewsApp } from './components/app'
 
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -26,7 +27,9 @@ function AppProvider(props: { children: React.ReactNode }) {
           <TopSitesProvider name='topSites'>
             <VpnProvider name='vpn'>
               <RewardsProvider name='rewards'>
-                {props.children}
+                <BraveNewsContextProvider>
+                  {props.children}
+                </BraveNewsContextProvider>
               </RewardsProvider>
             </VpnProvider>
           </TopSitesProvider>
@@ -37,7 +40,15 @@ function AppProvider(props: { children: React.ReactNode }) {
 }
 
 createRoot(document.getElementById('root')!).render(
-  <AppProvider>
-    <App />
-  </AppProvider>
+  isNewsOnlyURL() ?
+    <BraveNewsContextProvider>
+      <NewsApp />
+    </BraveNewsContextProvider> :
+    <AppProvider>
+      <App />
+    </AppProvider>
 )
+
+function isNewsOnlyURL() {
+  return /^\/news(\/|$)/i.test(location.pathname)
+}

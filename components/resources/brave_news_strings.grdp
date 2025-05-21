@@ -16,7 +16,7 @@
     No thanks
   </message>
   <message name="IDS_BRAVE_NEWS_SETTINGS_TITLE" desc="Title for the News settings dialog">
-    News and RSS
+    Brave News
   </message>
   <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
     Back to <ph name="BEGIN_BOLD">$1</ph>Dashboard<ph name="END_BOLD">$2</ph>
