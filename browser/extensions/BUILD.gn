@@ -60,6 +60,26 @@ source_set("brave_prefs_util_impl") {
   ]
 }
 
+source_set("extenions_manifest_v2") {
+  sources = [
+    "manifest_v2/brave_extensions_manifest_v2_installer.cc",
+    "manifest_v2/brave_extensions_manifest_v2_installer.h",
+  ]
+
+  deps = [
+    "//brave/components/constants:brave_service_key_helper",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles",
+    "//components/crx_file",
+    "//components/update_client",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//extensions/common:common",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+  ]
+}
+
 source_set("extensions") {
   sources = [
     "api/brave_extensions_api_client.cc",

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
+#ifndef BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
+#define BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
 
 #include <memory>
 #include <string>
@@ -46,8 +46,9 @@ inline constexpr auto kPreconfiguredManifestV2Extensions =
 class ExtensionManifestV2Installer {
  public:
   ExtensionManifestV2Installer(
-      const std::string& extension_id,
+      const extensions::ExtensionId& extension_id,
       content::WebContents* web_contents,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       extensions::WebstoreInstallWithPrompt::Callback callback);
   ~ExtensionManifestV2Installer();
 
@@ -59,16 +60,16 @@ class ExtensionManifestV2Installer {
   void OnCrxDownloaded(base::FilePath path);
   void OnInstalled(const std::optional<extensions::CrxInstallError>& error);
 
-  const std::string extension_id_;
+  const extensions::ExtensionId extension_id_;
   base::WeakPtr<content::WebContents> web_contents_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   extensions::WebstoreInstallWithPrompt::Callback callback_;
 
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<extensions::CrxInstaller> crx_installer_;
   base::WeakPtrFactory<ExtensionManifestV2Installer> weak_factory_{this};
 };
 
 }  // namespace extensions_mv2
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_EXTENSIONS_MANIFEST_V2_INSTALLER_H_
