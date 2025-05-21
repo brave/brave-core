@@ -55,7 +55,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
  public:
   PsstTabWebContentsObserverBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(psst::features::kBravePsst);
+    feature_list_.InitAndEnableFeature(psst::features::kEnablePsst);
   }
 
   void SetUpOnMainThread() override {

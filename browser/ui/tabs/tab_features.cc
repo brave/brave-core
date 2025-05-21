@@ -63,7 +63,7 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
 
 #if BUILDFLAG(ENABLE_PSST)
   if (!profile->IsOffTheRecord() &&
-      base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     psst_web_contents_observer_ =
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab.GetContents(), profile->GetPrefs(),
