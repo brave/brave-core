@@ -101,3 +101,11 @@ export function App() {
     </div>
   )
 }
+
+export function NewsApp() {
+  return (
+    <div data-css-scope={style.scope}>
+      <NewsFeed standalone />
+    </div>
+  )
+}

@@ -9,13 +9,12 @@ import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
-import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
-
-import { useNewTabState } from '../../context/new_tab_context'
+import { useNewsState } from '../../context/news_context'
 import { useSearchState } from '../../context/search_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
+import { NewsPanel } from './news_panel'
 import { ClockPanel } from './clock_panel'
 import { WidgetsPanel } from './widgets_panel'
 import { getString } from '../../lib/strings'
@@ -37,21 +36,15 @@ interface Props {
 }
 
 export function SettingsModal(props: Props) {
-  const braveNews = useBraveNews()
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
-  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
+  const newsFeatureEnabled = useNewsState((s) => s.newsFeatureEnabled)
 
   const [currentView, setCurrentView] =
       React.useState<SettingsView>(props.initialView || 'background')
 
   React.useEffect(() => {
     if (props.isOpen) {
-      if (props.initialView === 'news') {
-        braveNews.setCustomizePage('news')
-        setCurrentView('background')
-      } else {
-        setCurrentView(props.initialView ?? 'background')
-      }
+      setCurrentView(props.initialView ?? 'background')
     }
   }, [props.isOpen, props.initialView])
 
@@ -71,7 +64,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <BackgroundPanel />
       case 'search': return <SearchPanel />
       case 'top-sites': return <TopSitesPanel />
-      case 'news': return null
+      case 'news': return <NewsPanel />
       case 'clock': return <ClockPanel />
       case 'widgets': return <WidgetsPanel />
     }
@@ -106,13 +99,7 @@ export function SettingsModal(props: Props) {
     return (
       <NavigationItem
         isCurrent={view === currentView}
-        onClick={() => {
-          if (view === 'news') {
-            braveNews.setCustomizePage('news')
-          } else {
-            setCurrentView(view)
-          }
-        }}
+        onClick={() => setCurrentView(view)}
       >
         {getNavItemIcon(view)}
         {getNavItemText(view)}
@@ -122,18 +109,7 @@ export function SettingsModal(props: Props) {
 
   return (
     <div data-css-scope={style.scope}>
-      <Dialog
-        isOpen={props.isOpen}
-        showClose
-        onClose={() => {
-          // If the News dialog is open, keep the settings dialog open so that
-          // closing the News dialog will bring the user back to the settings
-          // dialog.
-          if (!braveNews.customizePage) {
-            props.onClose()
-          }
-        }}
-      >
+      <Dialog isOpen={props.isOpen} showClose onClose={props.onClose}>
         <h3>
           {getString('settingsTitle')}
         </h3>
