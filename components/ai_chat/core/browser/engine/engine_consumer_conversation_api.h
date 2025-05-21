@@ -49,13 +49,11 @@ class EngineConsumerConversationAPI : public EngineConsumer {
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      const std::vector<AssociatedContent>& associated_content,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      const std::vector<AssociatedContent>& associated_content,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       GenerationDataCallback data_received_callback,

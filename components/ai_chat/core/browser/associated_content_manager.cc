@@ -21,11 +21,8 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
-
-const char kPageTagRegex[] = "</?page>";
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -318,8 +315,6 @@ std::string AssociatedContentManager::GetCachedTextContent() const {
                          std::back_inserter(transformed_content),
                          [](const auto& content) {
                            std::string text(content);
-                           while (RE2::GlobalReplace(&text, kPageTagRegex, ""))
-                             ;
                            return text;
                          });
 

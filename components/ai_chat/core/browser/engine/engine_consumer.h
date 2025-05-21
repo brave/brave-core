@@ -34,6 +34,10 @@ class EngineConsumer {
       base::expected<std::vector<std::string>, mojom::APIError>;
   using SuggestedQuestionsCallback =
       base::OnceCallback<void(SuggestedQuestionResult)>;
+  struct AssociatedContent {
+    std::string text;
+    bool is_video;
+  };
 
   struct GenerationResultData {
     GenerationResultData(mojom::ConversationEntryEventPtr event,
@@ -75,14 +79,12 @@ class EngineConsumer {
   virtual ~EngineConsumer();
 
   virtual void GenerateQuestionSuggestions(
-      const bool& is_video,
-      const std::string& page_content,
+      const std::vector<AssociatedContent>& associated_content,
       const std::string& selected_language,
       SuggestedQuestionsCallback callback) = 0;
 
   virtual void GenerateAssistantResponse(
-      const bool& is_video,
-      const std::string& page_content,
+      const std::vector<AssociatedContent>& associated_content,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       GenerationDataCallback data_received_callback,

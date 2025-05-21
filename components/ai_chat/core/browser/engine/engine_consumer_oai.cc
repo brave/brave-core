@@ -30,12 +30,34 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
-
 namespace {
+
 constexpr char kQuestionPrompt[] =
     "Propose up to 3 very short questions that a reader may ask about the "
     "content. Wrap each in <question> tags.";
+
+const char kPageTagRegex[] = "</?page>";
+
+std::string GetTruncatedPageContent(
+    const std::vector<ai_chat::EngineConsumer::AssociatedContent>&
+        associated_content,
+    uint32_t max_length) {
+  std::string page_content;
+  for (const auto& content : associated_content) {
+    std::string text(content.text);
+    while (RE2::GlobalReplace(&text, kPageTagRegex, ""))
+      ;
+    if (associated_content.size() > 1) {
+      page_content += "<page>" + text + "</page>";
+    } else {
+      page_content += text;
+    }
+  }
+  return page_content.substr(0, max_length);
+}
+
 }  // namespace
 
 namespace ai_chat {
@@ -215,12 +237,14 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
-    const bool& is_video,
-    const std::string& page_content,
+    const std::vector<AssociatedContent>& associated_content,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  const std::string& truncated_page_content =
-      page_content.substr(0, max_associated_content_length_);
+  bool is_video = std::ranges::any_of(
+      associated_content, [](const auto& content) { return content.is_video; });
+  auto truncated_page_content = GetTruncatedPageContent(
+      associated_content, max_associated_content_length_);
+
   std::string content_segment = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(is_video
                                    ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
@@ -292,8 +316,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
-    const bool& is_video,
-    const std::string& page_content,
+    const std::vector<AssociatedContent>& associated_content,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
@@ -310,9 +333,13 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
         last_turn->selected_text->substr(0, max_associated_content_length_);
   }
 
-  const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_associated_content_length_ - selected_text->size()
-                       : max_associated_content_length_);
+  auto is_video = std::ranges::any_of(
+      associated_content, [](const auto& content) { return content.is_video; });
+  auto max_length = selected_text
+                        ? max_associated_content_length_ - selected_text->size()
+                        : max_associated_content_length_;
+  auto truncated_page_content =
+      GetTruncatedPageContent(associated_content, max_length);
 
   base::Value::List messages =
       BuildMessages(model_options_, truncated_page_content, selected_text,

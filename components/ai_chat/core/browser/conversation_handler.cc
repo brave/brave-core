@@ -44,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
@@ -967,8 +968,18 @@ void ConversationHandler::PerformQuestionGeneration(
     std::string page_content,
     bool is_video,
     std::string invalidation_token) {
-  engine_->GenerateQuestionSuggestions(
-      is_video, page_content, selected_language_,
+  auto associated_content_info = associated_content_manager_->GetAssociatedContent();
+  auto content = associated_content_manager_->GetCachedContent();
+  CHECK_EQ(associated_content_info.size(), content.size());
+  std::vector<EngineConsumer::AssociatedContent> associated_content;
+  for (size_t i = 0; i < associated_content_info.size(); ++i) {
+    associated_content.push_back({
+      .text = std::string(content[i]),
+      .is_video = associated_content_info[i]->content_type ==
+                  mojom::ContentType::VideoTranscript,
+    });
+  }
+  engine_->GenerateQuestionSuggestions(std::move(associated_content), selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1180,8 +1191,20 @@ void ConversationHandler::PerformAssistantGeneration(
     OnAssociatedContentUpdated();
   }
 
+  auto associated_content_info =
+      associated_content_manager_->GetAssociatedContent();
+  auto content = associated_content_manager_->GetCachedContent();
+  CHECK_EQ(associated_content_info.size(), content.size());
+  std::vector<EngineConsumer::AssociatedContent> associated_content;
+  for (size_t i = 0; i < associated_content_info.size(); ++i) {
+    associated_content.push_back({
+        .text = std::string(content[i]),
+        .is_video = associated_content_info[i]->content_type ==
+                    mojom::ContentType::VideoTranscript,
+    });
+  }
   engine_->GenerateAssistantResponse(
-      is_video, page_content, chat_history_, selected_language_,
+      std::move(associated_content), chat_history_, selected_language_,
       std::move(data_received_callback), std::move(data_completed_callback));
 }
 
@@ -1485,8 +1508,21 @@ void ConversationHandler::OnGetRefinedPageContent(
       OnAssociatedContentUpdated();
     }
   }
+
+  auto associated_content_info =
+      associated_content_manager_->GetAssociatedContent();
+  auto content = associated_content_manager_->GetCachedContent();
+  CHECK_EQ(associated_content_info.size(), content.size());
+  std::vector<EngineConsumer::AssociatedContent> associated_content;
+  for (size_t i = 0; i < associated_content_info.size(); ++i) {
+    associated_content.push_back({
+        .text = std::string(content[i]),
+        .is_video = associated_content_info[i]->content_type ==
+                    mojom::ContentType::VideoTranscript,
+    });
+  }
   engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, selected_language_,
+      std::move(associated_content), chat_history_, selected_language_,
       std::move(data_received_callback), std::move(data_completed_callback));
 }
 

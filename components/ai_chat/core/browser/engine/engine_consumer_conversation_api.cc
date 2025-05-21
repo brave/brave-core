@@ -148,15 +148,17 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
 }
 
 void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
-    const bool& is_video,
-    const std::string& page_content,
+    const std::vector<AssociatedContent>& associated_content,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  std::vector<ConversationEvent> conversation{
-      GetAssociatedContentConversationEvent(page_content, is_video),
-      {mojom::CharacterType::HUMAN,
-       ConversationEventType::RequestSuggestedActions,
-       {""}}};
+  std::vector<ConversationEvent> conversation;
+  for (const auto& content : associated_content) {
+    conversation.push_back(GetAssociatedContentConversationEvent(
+        content.text, content.is_video));
+  }
+  conversation.push_back({mojom::CharacterType::HUMAN,
+                          ConversationEventType::RequestSuggestedActions,
+                          {""}});
 
   auto on_response = base::BindOnce(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
@@ -191,8 +193,7 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 }
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
-    const bool& is_video,
-    const std::string& page_content,
+    const std::vector<AssociatedContent>& associated_content,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
@@ -204,9 +205,9 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
   std::vector<ConversationEvent> conversation;
   // associated content
-  if (!page_content.empty()) {
-    conversation.push_back(
-        GetAssociatedContentConversationEvent(page_content, is_video));
+  for (const auto& content : associated_content) {
+    conversation.push_back(GetAssociatedContentConversationEvent(
+        content.text, content.is_video));
   }
   // history
   for (const auto& message : conversation_history) {
