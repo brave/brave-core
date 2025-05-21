@@ -9,7 +9,7 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 
 #define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
-  if (!ShouldBeGrouppedInRequests(request))
+  if (!ShouldBeGrouppedInRequests(request.get()))
 
 #include "src/components/permissions/permission_request_manager.cc"
 #undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
