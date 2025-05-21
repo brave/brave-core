@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/hashbrown/v0_15/BUILD.gn b/third_party/rust/hashbrown/v0_15/BUILD.gn
-index 2ce2a2d53373558e579d2de4b14a8b8a96a9a6fa..536c2c018c7f9038b02fb180ec548cc02b11309e 100644
+index 96f1f35912f55be83185bc820b41945670fc76ec..b438ccc4e93bfbc1d2ac8f8f91536c55eb0c64a3 100644
 --- a/third_party/rust/hashbrown/v0_15/BUILD.gn
 +++ b/third_party/rust/hashbrown/v0_15/BUILD.gn
 @@ -45,6 +45,7 @@ cargo_crate("lib") {
@@ -9,4 +9,4 @@ index 2ce2a2d53373558e579d2de4b14a8b8a96a9a6fa..536c2c018c7f9038b02fb180ec548cc0
 +  import("//brave/third_party/rust/hashbrown/v0_15/sources.gni") deps = [] deps += brave_third_party_rust_hashbrown_v0_15_deps features = [] features += brave_third_party_rust_hashbrown_v0_15_features
    build_native_rust_unit_tests = false
    edition = "2021"
-   cargo_pkg_version = "0.15.3"
+   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
