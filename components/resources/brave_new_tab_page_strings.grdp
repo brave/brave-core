@@ -69,6 +69,10 @@
     Hide top sites
   </message>
 
+  <message name="IDS_NEW_TAB_NEWS_MANAGE_FEEDS_BUTTON_LABEL" desc="Label for button that opens the feed management dialog">
+    Manage Feeds
+  </message>
+
   <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget">
     NEWS
   </message>
@@ -171,6 +175,10 @@
 
   <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="Label for enabling the clock on the NTP">
     Show clock
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_NEWS_LABEL" desc="Label for showing the News on the NTP">
+    Show news
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP">

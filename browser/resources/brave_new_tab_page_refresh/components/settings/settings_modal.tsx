@@ -15,6 +15,7 @@ import { useSearchState } from '../../context/search_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
+import { NewsPanel } from './news_panel'
 import { ClockPanel } from './clock_panel'
 import { WidgetsPanel } from './widgets_panel'
 import { getString } from '../../lib/strings'
@@ -68,7 +69,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <BackgroundPanel />
       case 'search': return <SearchPanel />
       case 'top-sites': return <TopSitesPanel />
-      case 'news': return null
+      case 'news': return <NewsPanel />
       case 'clock': return <ClockPanel />
       case 'widgets': return <WidgetsPanel />
     }

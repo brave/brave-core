@@ -27,7 +27,35 @@ export type StringKey =
   'hideTopSitesLabel' |
   'newsEnableButtonLabel' |
   'newsEnableText' |
+  'newsFeedAllTitle' |
+  'newsFeedChannelsTitle' |
+  'newsFeedFollowingTitle' |
+  'newsFeedPublishersTitle' |
+  'newsHidePublisherLabel' |
+  'newsManageFeedsButtonLabel' |
+  'newsNoArticlesText' |
+  'newsNoArticlesTitle' |
+  'newsNoFeedsText' |
+  'newsNoFeedsTitle' |
+  'newsNoMatchingFeedsText' |
+  'newsOptInDismissButtonLabel' |
+  'newsOptInText' |
+  'newsQueryTooShortText' |
+  'newsRefreshButtonLabel' |
+  'newsSearchFeedsButtonLabel' |
+  'newsSettingsChannelsTitle' |
+  'newsSettingsDiscoverTitle' |
+  'newsSettingsFollowingTitle' |
+  'newsSettingsPopularTitle' |
+  'newsSettingsQueryPlaceholder' |
+  'newsSettingsSourcesTitle' |
+  'newsSettingsSuggestionsText' |
+  'newsSettingsSuggestionsTitle' |
   'newsSettingsTitle' |
+  'newsShowAllButtonLabel' |
+  'newsShowLessButtonLabel' |
+  'newsUnfollowButtonLabel' |
+  'newsViewAllButtonLabel' |
   'newsWidgetTitle' |
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
@@ -58,6 +86,7 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
+  'showNewsLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesEarningText' |
