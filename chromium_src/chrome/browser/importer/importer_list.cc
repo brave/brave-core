@@ -24,8 +24,9 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          importer::ImporterType type) {
   for (const auto& value : chrome_profiles) {
     const auto* dict = value.GetIfDict();
-    if (!dict)
+    if (!dict) {
       continue;
+    }
     uint16_t items = importer::NONE;
     auto* profile = dict->FindString("id");
     auto* name = dict->FindString("name");
@@ -34,15 +35,9 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     base::FilePath path = user_data_folder;
     if (!ChromeImporterCanImport(path.Append(base::FilePath::StringType(
                                      profile->begin(), profile->end())),
-                                 &items))
+                                 type, &items)) {
       continue;
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-    // We can import password from Whale only on macOS.
-    // Decryption failed on Windows and Linux.
-    if (type == importer::TYPE_WHALE && (items & importer::PASSWORDS)) {
-      items ^= importer::PASSWORDS;
     }
-#endif
     importer::SourceProfile chrome;
     chrome.importer_name = base::UTF8ToUTF16(base::StrCat({brand, " ", *name}));
     chrome.importer_type = type;

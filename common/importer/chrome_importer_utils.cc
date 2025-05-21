@@ -148,6 +148,25 @@ bool IsLastActiveProfile(const std::string& profile,
   return false;
 }
 
+bool CanImportPasswordsForType(importer::ImporterType type) {
+  // We can't import passwords from Chrome due to encryption. See
+  // https://github.com/brave/brave-browser/issues/34046
+  // #issuecomment-2857856039
+  if (type == importer::TYPE_CHROME) {
+    return false;
+  }
+
+  // We can import password from Whale only on macOS. Decryption fails on
+  // Windows and Linux.
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+  if (type == importer::TYPE_WHALE) {
+    return false;
+  }
+#endif
+
+  return true;
+}
+
 }  // namespace
 
 base::Value::List GetChromeSourceProfiles(
@@ -207,27 +226,38 @@ base::Value::List GetChromeSourceProfiles(
 }
 
 bool ChromeImporterCanImport(const base::FilePath& profile,
+                             importer::ImporterType type,
                              uint16_t* services_supported) {
   DCHECK(services_supported);
   *services_supported = importer::NONE;
 
-  base::FilePath bookmarks =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
-  base::FilePath history =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
-  base::FilePath passwords = profile.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
-  base::FilePath passwords_for_account = profile.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("Login Data For Account")));
-  if (base::PathExists(bookmarks))
+  base::FilePath bookmarks = profile.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
+  if (base::PathExists(bookmarks)) {
     *services_supported |= importer::FAVORITES;
-  if (base::PathExists(history))
-    *services_supported |= importer::HISTORY;
-  if (base::PathExists(passwords) || base::PathExists(passwords_for_account)) {
-    *services_supported |= importer::PASSWORDS;
   }
+
+  base::FilePath history =
+      profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
+  if (base::PathExists(history)) {
+    *services_supported |= importer::HISTORY;
+  }
+
+  if (CanImportPasswordsForType(type)) {
+    base::FilePath passwords = profile.Append(
+        base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
+    base::FilePath passwords_for_account =
+        profile.Append(base::FilePath::StringType(
+            FILE_PATH_LITERAL("Login Data For Account")));
+    if (base::PathExists(passwords) ||
+        base::PathExists(passwords_for_account)) {
+      *services_supported |= importer::PASSWORDS;
+    }
+  }
+
   if (HasPaymentMethods(profile.Append(kWebDataFilename)))
     *services_supported |= importer::PAYMENTS;
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (HasImportableExtensions(profile))
     *services_supported |= importer::EXTENSIONS;
