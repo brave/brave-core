@@ -157,7 +157,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest, InstallFail) {
       browser(), GURL("brave://settings/extensions/v2")));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   content::WebContentsConsoleObserver console_observer(web_contents);
-  console_observer.SetPattern("Failed to download extension.");
+  console_observer.SetPattern("Failed to download extension manifest.");
   ClickExtensionToggle(web_contents);
   ASSERT_TRUE(console_observer.Wait());
 
