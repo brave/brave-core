@@ -194,8 +194,10 @@ public class BraveAdsNotificationDialog {
         // We want to show ads only when activity is in started or resumed
         // state
         int state = ApplicationStatus.getStateForActivity(activity);
-        if (activity == null || (state != ActivityState.STARTED && state != ActivityState.RESUMED))
+        if (activity == null
+                || (state != ActivityState.STARTED && state != ActivityState.RESUMED)) {
             return;
+        }
 
         BraveAdsNotificationDialog.showNotificationAd(
                 activity, notificationId, origin, title, body);

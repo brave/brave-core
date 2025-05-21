@@ -147,19 +147,27 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mContentLayout.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
         mContentLayout.getViewTreeObserver().addOnGlobalLayoutListener(mAutoDismissLayoutListener);
 
-        mRootView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mRootView.isShown()) {
-                    mPopupWindow.showAtLocation(mRootView, Gravity.NO_GRAVITY, mRootView.getWidth(),
-                            mRootView.getHeight());
-                    if (!mBackgroundDimDisabled) {
-                        dimBackgroundPopupWindow();
+        mRootView.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mRootView.isShown()) {
+                            mPopupWindow.showAtLocation(
+                                    mRootView,
+                                    Gravity.NO_GRAVITY,
+                                    mRootView.getWidth(),
+                                    mRootView.getHeight());
+                            if (!mBackgroundDimDisabled) {
+                                dimBackgroundPopupWindow();
+                            }
+                        } else {
+                            Log.e(
+                                    TAG,
+                                    "Tooltip cannot be shown, root view is invalid or has been"
+                                            + " closed.");
+                        }
                     }
-                } else
-                    Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed.");
-            }
-        });
+                });
     }
 
     private void dimBackgroundPopupWindow() {
@@ -436,14 +444,18 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
             if (padding < 0) {
                 padding = context.getResources().getDimension(DEFAULT_PADDING_RES);
             }
-            if (arrowDirection == ArrowColorDrawable.AUTO)
+            if (arrowDirection == ArrowColorDrawable.AUTO) {
                 arrowDirection = PopupWindowTooltipUtils.tooltipGravityToArrowDirection(gravity);
-            if (arrowColorDrawable == null)
+            }
+            if (arrowColorDrawable == null) {
                 arrowColorDrawable = new ArrowColorDrawable(arrowColor, arrowDirection);
-            if (arrowWidth == 0)
+            }
+            if (arrowWidth == 0) {
                 arrowWidth = context.getResources().getDimension(DEFAULT_ARROW_WIDTH_RES);
-            if (arrowHeight == 0)
+            }
+            if (arrowHeight == 0) {
                 arrowHeight = context.getResources().getDimension(DEFAULT_ARROW_HEIGHT_RES);
+            }
             return new PopupWindowTooltip(this);
         }
 
