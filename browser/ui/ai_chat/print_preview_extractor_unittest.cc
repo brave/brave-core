@@ -18,6 +18,9 @@
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
 #include "brave/browser/ui/ai_chat/print_preview_extractor_internal.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/text_recognition/common/buildflags/buildflags.h"
+#include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
@@ -32,6 +35,7 @@
 #include "printing/print_job_constants.h"
 #include "printing/units.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "ui/gfx/image/image_unittest_util.h"
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
 
@@ -186,7 +190,57 @@ class MockPreviewPageTextExtractor : public PreviewPageTextExtractor {
   bool expected_error_ = false;
 };
 
+class MockPdfToBitmapConverter : public printing::mojom::PdfToBitmapConverter {
+ public:
+  MockPdfToBitmapConverter() = default;
+  ~MockPdfToBitmapConverter() override = default;
+
+  MockPdfToBitmapConverter(const MockPdfToBitmapConverter&) = delete;
+  MockPdfToBitmapConverter& operator=(const MockPdfToBitmapConverter&) = delete;
+
+  // printing::mojom::PdfToBitmapConverter:
+  void GetPdfPageCount(base::ReadOnlySharedMemoryRegion pdf_region,
+                       GetPdfPageCountCallback callback) override {
+    std::move(callback).Run(expected_page_count_);
+  }
+
+  void GetBitmap(base::ReadOnlySharedMemoryRegion pdf_region,
+                 uint32_t page_index,
+                 GetBitmapCallback callback) override {
+    if (expected_empty_bitmap_) {
+      std::move(callback).Run(SkBitmap());
+    } else {
+      // Set dimension <= 2x2 to fail OCR intentionally
+      std::move(callback).Run(gfx::test::CreateBitmap(2));
+    }
+  }
+
+  void SetUseSkiaRendererPolicy(bool use_skia) override {}
+
+  mojo::PendingRemote<printing::mojom::PdfToBitmapConverter> Bind() {
+    return receiver_.BindNewPipeAndPassRemote();
+  }
+
+  void SetExpectedPageCount(std::optional<uint32_t> count) {
+    expected_page_count_ = count;
+  }
+
+  void SetExpectedEmptyBitmap(bool empty_bitmap) {
+    expected_empty_bitmap_ = empty_bitmap;
+  }
+
+ private:
+  std::optional<uint32_t> expected_page_count_;
+  bool expected_empty_bitmap_ = true;
+  mojo::Receiver<printing::mojom::PdfToBitmapConverter> receiver_{this};
+};
+
 }  // namespace
+
+using ImageResult =
+    base::expected<std::vector<std::vector<uint8_t>>, std::string>;
+using TextResult = base::expected<std::string, std::string>;
+
 class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
  public:
   PrintPreviewExtractorTest() = default;
@@ -197,10 +251,6 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
       delete;
 
  protected:
-  using ImageResult =
-      base::expected<std::vector<std::vector<uint8_t>>, std::string>;
-  using TextResult = base::expected<std::string, std::string>;
-
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
     NavigateAndCommit(GURL("https://brave.com/"),
@@ -555,6 +605,139 @@ TEST_F(PrintPreviewExtractorTest, PrintPreviewData) {
                   test_case.simulate_partial_composition);
     }
   }
+}
+
+class PreviewPageTextExtractorTest : public testing::Test {
+ public:
+  PreviewPageTextExtractorTest() = default;
+  ~PreviewPageTextExtractorTest() override = default;
+
+  void SetUp() override {
+    extractor_ = std::make_unique<PreviewPageTextExtractor>();
+    converter_ = std::make_unique<MockPdfToBitmapConverter>();
+    extractor()->BindForTesting(converter()->Bind());
+  }
+
+  PreviewPageTextExtractor* extractor() { return extractor_.get(); }
+
+  MockPdfToBitmapConverter* converter() { return converter_.get(); }
+
+  void RunErrorTest(const std::string& expected_error,
+                    const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    {
+      base::test::TestFuture<ImageResult> future;
+      extractor()->StartExtract(CreatePageRegion(50).region,
+                                future.GetCallback(), std::nullopt);
+      auto result = future.Take();
+      ASSERT_FALSE(result.has_value());
+      EXPECT_EQ(result.error(), expected_error);
+    }
+    {
+      base::test::TestFuture<TextResult> future;
+      extractor()->StartExtract(CreatePageRegion(50).region,
+                                future.GetCallback(), std::nullopt);
+      auto result = future.Take();
+      ASSERT_FALSE(result.has_value());
+      EXPECT_EQ(result.error(), expected_error);
+    }
+  }
+
+  void RunCaptureImageTest(uint32_t expected_page_count,
+                           const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    converter()->SetExpectedPageCount(expected_page_count);
+    base::test::TestFuture<ImageResult> future;
+    extractor()->StartExtract(CreatePageRegion(50).region, future.GetCallback(),
+                              std::nullopt);
+    auto result = future.Take();
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value().size(), expected_page_count);
+    EXPECT_TRUE(std::ranges::any_of(result.value(), [](const auto& image) {
+      return image.empty() ? false : true;
+    }));
+  }
+
+  void RunExtractTextTest(uint32_t page_count,
+                          const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    converter()->SetExpectedPageCount(page_count);
+    base::test::TestFuture<TextResult> future;
+    extractor()->StartExtract(CreatePageRegion(50).region, future.GetCallback(),
+                              std::nullopt);
+    auto result = future.Take();
+    ASSERT_TRUE(result.has_value());
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+    // OCR will fail intentionally so we are testing if each page is processed
+    // as expected.
+    std::string expected;
+    if (page_count == 1) {
+      expected = "";
+    } else if (page_count > kMaxPreviewPages) {
+      expected = std::string(kMaxPreviewPages - 1, '\n');
+    } else {
+      expected = std::string(page_count - 1, '\n');
+    }
+    EXPECT_EQ(result.value(), expected);
+#else
+    EXPECT_EQ(result.value(), "");
+#endif
+  }
+
+ private:
+  base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<PreviewPageTextExtractor> extractor_;
+  std::unique_ptr<MockPdfToBitmapConverter> converter_;
+};
+
+TEST_F(PreviewPageTextExtractorTest, GetPdfPageCountError) {
+  converter()->SetExpectedPageCount(std::nullopt);
+  RunErrorTest("Failed to get page count");
+}
+
+TEST_F(PreviewPageTextExtractorTest, GetBitmapError) {
+  converter()->SetExpectedPageCount(1);
+  converter()->SetExpectedEmptyBitmap(true);
+  RunErrorTest("Invalid bitmap");
+
+  converter()->SetExpectedPageCount(3);
+  RunErrorTest("Invalid bitmap");
+}
+
+TEST_F(PreviewPageTextExtractorTest, CaptureImages) {
+  converter()->SetExpectedEmptyBitmap(false);
+
+  // Test with single page
+  RunCaptureImageTest(1);
+
+  // Test with multiple pages
+  RunCaptureImageTest(3);
+
+  // Test with max pages
+  RunCaptureImageTest(kMaxPreviewPages);
+
+  // Test exceeding max pages
+  RunCaptureImageTest(kMaxPreviewPages + 1);
+}
+
+TEST_F(PreviewPageTextExtractorTest, ExtractText) {
+  converter()->SetExpectedEmptyBitmap(false);
+
+  // Test single page (empty string expected)
+  RunExtractTextTest(1);
+
+  // Test two pages (one newline)
+  RunExtractTextTest(2);
+
+  // Test max pages
+  RunExtractTextTest(kMaxPreviewPages);
+
+  // Test less than max pages
+  RunExtractTextTest(kMaxPreviewPages - 1);
+
+  // Test exceeding max pages (should be capped)
+  RunExtractTextTest(kMaxPreviewPages + 1);
 }
 
 }  // namespace ai_chat

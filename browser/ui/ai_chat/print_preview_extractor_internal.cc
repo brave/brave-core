@@ -38,6 +38,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "pdf/buildflags.h"
 #include "printing/mojom/print.mojom.h"
 #include "printing/print_job_constants.h"
@@ -93,9 +94,10 @@ void PreviewPageTextExtractor::StartExtract(
     std::optional<bool> pdf_use_skia_renderer_enabled) {
   pdf_region_ = std::move(pdf_region);
   callback_ = std::move(callback);
-  DCHECK(!pdf_to_bitmap_converter_.is_bound());
-  GetPrintingService()->BindPdfToBitmapConverter(
-      pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
+  if (!pdf_to_bitmap_converter_.is_bound()) {
+    GetPrintingService()->BindPdfToBitmapConverter(
+        pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
+  }
   pdf_to_bitmap_converter_.set_disconnect_handler(
       base::BindOnce(&PreviewPageTextExtractor::BitmapConverterDisconnected,
                      base::Unretained(this)));
@@ -103,10 +105,18 @@ void PreviewPageTextExtractor::StartExtract(
     pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(
         pdf_use_skia_renderer_enabled.value());
   }
+  current_page_index_ = 0;
+  preview_text_.clear();
   pdf_to_bitmap_converter_->GetPdfPageCount(
       pdf_region_.Duplicate(),
       base::BindOnce(&PreviewPageTextExtractor::OnGetPageCount,
                      base::Unretained(this)));
+}
+
+void PreviewPageTextExtractor::BindForTesting(
+    mojo::PendingRemote<printing::mojom::PdfToBitmapConverter> converter) {
+  CHECK_IS_TEST();
+  pdf_to_bitmap_converter_.Bind(std::move(converter));
 }
 
 void PreviewPageTextExtractor::ScheduleNextPageOrComplete() {
