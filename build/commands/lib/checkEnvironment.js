@@ -40,7 +40,7 @@ function checkNpmVersion() {
 function checkVersion(type, version, requiredVersion, instruction) {
   if (!semver.satisfies(version, requiredVersion)) {
     Log.error(
-      `Error: ${type} version must be "${requiredVersion}". Current version: ${version}\n${instruction}`
+      `Error: ${type} version must be "${requiredVersion}". Current version: ${version}\n${instruction}`,
     )
     process.exit(1)
   }

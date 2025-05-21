@@ -7,11 +7,9 @@ const util = require('../lib/util')
 const config = require('../lib/config')
 const path = require('path')
 
-
 const runPerfTests = (passthroughArgs, perfConfig, targets) => {
   args = [
-    path.join(
-      config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
+    path.join(config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),
     perfConfig,
   ]
 
@@ -24,10 +22,7 @@ const runPerfTests = (passthroughArgs, perfConfig, targets) => {
 
   args.push(...passthroughArgs)
   console.log(args)
-  util.run(
-    'vpython3',
-    args,
-    config.defaultOptions)
+  util.run('vpython3', args, config.defaultOptions)
 }
 
 module.exports = { runPerfTests }

@@ -18,7 +18,7 @@ const util = require('./util')
 // Python, and other dependencies.
 const disableAutoUpdateFilePath = path.join(
   config.depotToolsDir,
-  '.disable_auto_update'
+  '.disable_auto_update',
 )
 
 function isDepotToolsRefValid(ref) {
@@ -54,7 +54,7 @@ function bootstrapDepotTools(options) {
     util.run(
       path.join(config.depotToolsDir, 'bootstrap', 'win_tools.bat'),
       [],
-      options
+      options,
     )
   } else {
     util.run(path.join(config.depotToolsDir, 'ensure_bootstrap'), [], options)
@@ -74,8 +74,8 @@ function installDepotTools(options = config.defaultOptions) {
   const enforcedDepotToolsRef = config.getProjectRef('depot_tools', null)
   if (enforcedDepotToolsRef && !isDepotToolsRefValid(enforcedDepotToolsRef)) {
     Log.error(
-      `Invalid depot_tools ref: ${enforcedDepotToolsRef}. ` +
-        'Only full git revision is supported.'
+      `Invalid depot_tools ref: ${enforcedDepotToolsRef}. `
+        + 'Only full git revision is supported.',
     )
     process.exit(1)
   }
@@ -87,19 +87,19 @@ function installDepotTools(options = config.defaultOptions) {
     () => {
       Log.status('depot_tools checkout was interrupted. Cleaning up...')
       removeDepotTools()
-    }
+    },
   )
 
   depotToolsGuard.run((wasInterrupted) => {
     // If we're modifying depot_tools reference, it's important to ensure a
     // clean checkout to re-bootstrap CIPD, Python and other dependencies.
     if (
-      fs.existsSync(config.depotToolsDir) &&
-      enforcedDepotToolsRef !== readEnforcedDepotToolsRef()
+      fs.existsSync(config.depotToolsDir)
+      && enforcedDepotToolsRef !== readEnforcedDepotToolsRef()
     ) {
       Log.status(
-        'depot_tools ref is updated. Removing existing checkout to ' +
-          're-bootstrap all dependencies.'
+        'depot_tools ref is updated. Removing existing checkout to '
+          + 're-bootstrap all dependencies.',
       )
       removeDepotTools()
     }
@@ -109,7 +109,7 @@ function installDepotTools(options = config.defaultOptions) {
         util.run(
           'git',
           ['clone', config.depotToolsRepo, config.depotToolsDir],
-          options
+          options,
         )
       })
     }
@@ -124,11 +124,11 @@ function installDepotTools(options = config.defaultOptions) {
           () => {
             util.fetchAndCheckoutRef(
               config.depotToolsDir,
-              enforcedDepotToolsRef
+              enforcedDepotToolsRef,
             )
             // Bootstrap CIPD, Python and other dependencies manually.
             bootstrapDepotTools(options)
-          }
+          },
         )
       }
     }
@@ -137,7 +137,7 @@ function installDepotTools(options = config.defaultOptions) {
       // Bootstrap gsutil on Windows manually to fix random LockFile issues.
       util.run(path.join(config.depotToolsDir, 'gsutil.py.bat'), [], {
         ...options,
-        stdio: 'pipe'
+        stdio: 'pipe',
       })
     }
   })
@@ -146,23 +146,30 @@ function installDepotTools(options = config.defaultOptions) {
 // Opt-out of chromium build telemetry. See for details:
 // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
 function optOutOfBuildTelemetry() {
-  const buildTelemetryPath =
-    path.join(config.depotToolsDir, 'build_telemetry.py')
+  const buildTelemetryPath = path.join(
+    config.depotToolsDir,
+    'build_telemetry.py',
+  )
   if (fs.existsSync(buildTelemetryPath)) {
     util.run('vpython3', [buildTelemetryPath, 'opt-out'], config.defaultOptions)
   }
 
   // The old way to opt-out of chromium build telemetry.
   // Could be removed after https://crrev.com/c/5669094 is merged.
-  const ninjalogUploaderWrapperPath =
-    path.join(config.depotToolsDir, 'ninjalog_uploader_wrapper.py')
+  const ninjalogUploaderWrapperPath = path.join(
+    config.depotToolsDir,
+    'ninjalog_uploader_wrapper.py',
+  )
   if (fs.existsSync(ninjalogUploaderWrapperPath)) {
-    util.run('vpython3', [ninjalogUploaderWrapperPath, 'opt-out'],
-      config.defaultOptions)
+    util.run(
+      'vpython3',
+      [ninjalogUploaderWrapperPath, 'opt-out'],
+      config.defaultOptions,
+    )
   }
 }
 
 module.exports = {
   installDepotTools,
-  optOutOfBuildTelemetry
+  optOutOfBuildTelemetry,
 }

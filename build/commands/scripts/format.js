@@ -15,24 +15,24 @@ const Log = require('../lib/logging')
 
 program
   .description(
-    'Format changed code with git cl format and prettier.\n' +
-      'The changed code is the difference between the current files on disk\n' +
-      'and the base branch (origin/master by default).\n' +
-      'This script is also called as part of presubmit checks.'
+    'Format changed code with git cl format and prettier.\n'
+      + 'The changed code is the difference between the current files on disk\n'
+      + 'and the base branch (origin/master by default).\n'
+      + 'This script is also called as part of presubmit checks.',
   )
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option(
     '--full',
-    'format all lines in changed files instead of only the changed lines'
+    'format all lines in changed files instead of only the changed lines',
   )
   .option(
     '--presubmit',
-    'filter out formatters that have dedicated presubmit checks.' +
-      'Used when running the script from a presubmit'
+    'filter out formatters that have dedicated presubmit checks.'
+      + 'Used when running the script from a presubmit',
   )
   .option(
     '--dry-run',
-    "dry run, don't format files, just check if they are formatted"
+    "dry run, don't format files, just check if they are formatted",
   )
   .parse(process.argv)
 
@@ -44,8 +44,8 @@ const convertDiff = (diffOutput, file) => {
     pos = diffOutput.indexOf('\n', pos + 1)
   }
   const diffOutputWithHeader =
-    `--- ${file} (original)\n+++ ${file} (reformatted)\n` +
-    diffOutput.slice(pos + 1)
+    `--- ${file} (original)\n+++ ${file} (reformatted)\n`
+    + diffOutput.slice(pos + 1)
   return diffOutputWithHeader
 }
 
@@ -91,7 +91,7 @@ const runFormat = async (options = {}) => {
     ...cmdOptions,
     continueOnFail: true,
     skipLogging,
-    stdio: 'pipe'
+    stdio: 'pipe',
   })
 
   const clFormatOutput = formatOutput(clFormatResult)
@@ -106,11 +106,11 @@ const runFormat = async (options = {}) => {
   const changedFiles = util.getChangedFiles(
     config.braveCoreDir,
     options.base,
-    skipLogging
+    skipLogging,
   )
 
   formatIssues = formatIssues.concat(
-    await runPrettier(changedFiles, options.dryRun)
+    await runPrettier(changedFiles, options.dryRun),
   )
 
   if (options.dryRun && formatIssues.length > 0) {
@@ -130,7 +130,7 @@ const runPrettier = async (files, dryRun) => {
   for (const file of files) {
     const fileInfo = await prettier.getFileInfo(file, {
       ignorePath: ignorePath,
-      withNodeModules: false
+      withNodeModules: false,
     })
 
     if (fileInfo.ignored || !fileInfo.inferredParser) {
@@ -140,7 +140,7 @@ const runPrettier = async (files, dryRun) => {
     const content = await fs.readFile(file, { encoding: 'utf-8' })
     const formatted = await prettier.format(content, {
       ...options,
-      parser: fileInfo.inferredParser
+      parser: fileInfo.inferredParser,
     })
     if (content !== formatted) {
       if (dryRun) {
@@ -154,7 +154,7 @@ const runPrettier = async (files, dryRun) => {
           prettierIssues.push(convertDiff(diffResult.stdout.toString(), file))
         } else {
           prettierIssues.push(
-            `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
+            `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`,
           )
         }
       } else {

@@ -8,16 +8,17 @@ const fs = require('fs-extra')
 const config = require('../lib/config')
 const util = require('../lib/util')
 
-const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options) => {
+const start = (
+  passthroughArgs,
+  buildConfig = config.defaultBuildConfig,
+  options,
+) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  let braveArgs = [
-    '--enable-logging',
-    '--v=' + options.v,
-  ]
+  let braveArgs = ['--enable-logging', '--v=' + options.v]
   if (options.vmodule) {
-    braveArgs.push('--vmodule=' + options.vmodule);
+    braveArgs.push('--vmodule=' + options.vmodule)
   }
   if (options.no_sandbox) {
     braveArgs.push('--no-sandbox')
@@ -69,10 +70,12 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
   if (process.platform === 'darwin') {
     // Disable 'accept incoming network connections' and 'keychain access'
     // dialogs in MacOS. See //docs/mac_build_instructions.md for details.
-    if (!options.use_real_keychain)
-      { braveArgs.push('--use-mock-keychain') }
-    if (!passthroughArgs.some((s) => s.startsWith('--disable-features')))
-      { braveArgs.push('--disable-features=DialMediaRouteProvider') }
+    if (!options.use_real_keychain) {
+      braveArgs.push('--use-mock-keychain')
+    }
+    if (!passthroughArgs.some((s) => s.startsWith('--disable-features'))) {
+      braveArgs.push('--disable-features=DialMediaRouteProvider')
+    }
   }
 
   braveArgs = braveArgs.concat(passthroughArgs)
@@ -85,23 +88,23 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
         'Library',
         'Application\\ Support',
         'BraveSoftware',
-        options.user_data_dir_name
+        options.user_data_dir_name,
       )
     } else if (process.platform === 'win32') {
       userDataDir = path.join(
         process.env.LocalAppData,
         'BraveSoftware',
-        options.user_data_dir_name
+        options.user_data_dir_name,
       )
     } else {
       userDataDir = path.join(
         process.env.HOME,
         '.config',
         'BraveSoftware',
-        options.user_data_dir_name
+        options.user_data_dir_name,
       )
     }
-    braveArgs.push('--user-data-dir=' + userDataDir);
+    braveArgs.push('--user-data-dir=' + userDataDir)
   }
 
   let cmdOptions = {
@@ -109,7 +112,7 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
     timeout: undefined,
     continueOnFail: false,
     shell: process.platform === 'darwin',
-    killSignal: 'SIGTERM'
+    killSignal: 'SIGTERM',
   }
 
   let outputPath = options.output_path
@@ -118,7 +121,10 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
     if (process.platform === 'win32') {
       outputPath = outputPath + '.exe'
     } else if (process.platform === 'darwin') {
-      outputPath = fs.readFileSync(outputPath + '_helper').toString().trim()
+      outputPath = fs
+        .readFileSync(outputPath + '_helper')
+        .toString()
+        .trim()
     }
   }
   util.run(outputPath, braveArgs, cmdOptions)

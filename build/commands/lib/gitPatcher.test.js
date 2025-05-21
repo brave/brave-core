@@ -16,12 +16,18 @@ const file1ModifiedContent = 'this is modified'
 const file1Name = 'file1'
 const writeReadFileOptions = { encoding: 'utf8' }
 
-function runGitAsyncWithErrorLog (repoPath, gitArgs) {
+function runGitAsyncWithErrorLog(repoPath, gitArgs) {
   return runGitAsync(repoPath, gitArgs, false, true)
 }
 
-function getPatch (gitRepoPath, modifiedFilePath) {
-  const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--full-index', modifiedFilePath]
+function getPatch(gitRepoPath, modifiedFilePath) {
+  const singleDiffArgs = [
+    'diff',
+    '--src-prefix=a/',
+    '--dst-prefix=b/',
+    '--full-index',
+    modifiedFilePath,
+  ]
   return runGitAsyncWithErrorLog(gitRepoPath, singleDiffArgs)
 }
 
@@ -30,17 +36,31 @@ describe('Apply Patches', function () {
 
   beforeEach(async function () {
     // Setup test Git repo and test Patch directory
-    patchPath = await fs.mkdtemp(path.join(os.tmpdir(), dirPrefixTmp + 'patches-'))
+    patchPath = await fs.mkdtemp(
+      path.join(os.tmpdir(), dirPrefixTmp + 'patches-'),
+    )
     repoPath = await fs.mkdtemp(path.join(os.tmpdir(), dirPrefixTmp))
     testFile1Path = path.join(repoPath, file1Name)
     await runGitAsyncWithErrorLog(repoPath, ['init'])
-    await runGitAsyncWithErrorLog(repoPath, ['config', 'user.email', 'unittests@local'])
-    await runGitAsyncWithErrorLog(repoPath, ['config', 'user.name', 'Unit Tests'])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'config',
+      'user.email',
+      'unittests@local',
+    ])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'config',
+      'user.name',
+      'Unit Tests',
+    ])
     await fs.writeFile(testFile1Path, file1InitialContent, writeReadFileOptions)
     await runGitAsyncWithErrorLog(repoPath, ['add', '.'])
     await runGitAsyncWithErrorLog(repoPath, ['commit', '-m', '"file1 initial"'])
     // modify content file
-    await fs.writeFile(testFile1Path, file1ModifiedContent, writeReadFileOptions)
+    await fs.writeFile(
+      testFile1Path,
+      file1ModifiedContent,
+      writeReadFileOptions,
+    )
     // get patch
     const file1PatchContent = await getPatch(repoPath, file1Name)
     // write patch
@@ -49,11 +69,13 @@ describe('Apply Patches', function () {
     // reset file change
     await runGitAsyncWithErrorLog(repoPath, ['reset', '--hard', 'HEAD'])
     // sanity test
-    const testFile1Content = await fs.readFile(testFile1Path, writeReadFileOptions)
+    const testFile1Content = await fs.readFile(
+      testFile1Path,
+      writeReadFileOptions,
+    )
     try {
       expect(testFile1Content).toBe(file1InitialContent)
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Setup fail: file was not reset - ' + testFile1Path)
       throw new Error(err)
     }
@@ -69,14 +91,12 @@ describe('Apply Patches', function () {
   afterEach(async function () {
     try {
       await fs.remove(repoPath)
-    }
-    catch (err) {
+    } catch (err) {
       console.warn(`Test cleanup: could not remove directory at ${repoPath}`)
     }
     try {
       await fs.remove(patchPath)
-    }
-    catch (err) {
+    } catch (err) {
       console.warn(`Test cleanup: could not remove directory at ${patchPath}`)
     }
   })
@@ -85,13 +105,19 @@ describe('Apply Patches', function () {
     validate()
     const affectedPaths = await gitPatcher.applyPatches()
     // test file contents
-    const testFile1Content = await fs.readFile(testFile1Path, writeReadFileOptions)
+    const testFile1Content = await fs.readFile(
+      testFile1Path,
+      writeReadFileOptions,
+    )
     expect(testFile1Content).toBe(file1ModifiedContent)
     // test reporting
     expect(affectedPaths).toHaveLength(1)
     expect(affectedPaths[0]).toHaveProperty('path', file1Name)
     expect(affectedPaths[0]).toHaveProperty('error', undefined)
-    expect(affectedPaths[0]).toHaveProperty('reason', GitPatcher.patchApplyReasons.NO_PATCH_INFO)
+    expect(affectedPaths[0]).toHaveProperty(
+      'reason',
+      GitPatcher.patchApplyReasons.NO_PATCH_INFO,
+    )
   })
 
   test('does not apply patch to still-patched', async function () {
@@ -109,7 +135,9 @@ describe('Apply Patches', function () {
     const testFile1StatsAgain = await fs.stat(testFile1Path)
     expect(testFile1StatsAgain.mtimeMs).toBe(testFile1StatsModified.mtimeMs)
     // Sanity check the file was modified the first time
-    expect(testFile1StatsModified.mtimeMs).toBeGreaterThan(testFile1StatsInitial.mtimeMs)
+    expect(testFile1StatsModified.mtimeMs).toBeGreaterThan(
+      testFile1StatsInitial.mtimeMs,
+    )
   })
 
   test('resets target file if patch file is removed', async function () {
@@ -125,7 +153,10 @@ describe('Apply Patches', function () {
     expect(status[0].error).toBeUndefined()
     expect(status[0].reason).toBe(GitPatcher.patchApplyReasons.PATCH_REMOVED)
     // check file was reset
-    const testFile1Content = await fs.readFile(testFile1Path, writeReadFileOptions)
+    const testFile1Content = await fs.readFile(
+      testFile1Path,
+      writeReadFileOptions,
+    )
     expect(testFile1Content).toBe(file1InitialContent)
   })
 
@@ -138,13 +169,21 @@ describe('Apply Patches', function () {
     // remove target file
     await fs.unlink(testFile1Path)
     await runGitAsyncWithErrorLog(repoPath, ['rm', testFile1Path])
-    await runGitAsyncWithErrorLog(repoPath, ['commit', '-a', '-m', '"remove target"'])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'commit',
+      '-a',
+      '-m',
+      '"remove target"',
+    ])
     // apply again
     const status = await gitPatcher.applyPatches()
     expect(status).toHaveLength(1)
     expect(status[0]).toHaveProperty('path', file1Name)
     expect(status[0]).toHaveProperty('warning')
-    expect(status[0]).toHaveProperty('reason', GitPatcher.patchApplyReasons.PATCH_REMOVED)
+    expect(status[0]).toHaveProperty(
+      'reason',
+      GitPatcher.patchApplyReasons.PATCH_REMOVED,
+    )
   })
 
   test('handles missing file when patch file is still present', async function () {
@@ -154,13 +193,21 @@ describe('Apply Patches', function () {
     // remove target file
     await fs.unlink(testFile1Path)
     await runGitAsyncWithErrorLog(repoPath, ['rm', testFile1Path])
-    await runGitAsyncWithErrorLog(repoPath, ['commit', '-a', '-m', '"remove target"'])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'commit',
+      '-a',
+      '-m',
+      '"remove target"',
+    ])
     // apply again
     const status = await gitPatcher.applyPatches()
     expect(status).toHaveLength(1)
     expect(status[0]).toHaveProperty('patchPath', testFile1PatchPath)
     expect(status[0]).toHaveProperty('error')
-    expect(status[0]).toHaveProperty('reason', GitPatcher.patchApplyReasons.SRC_REMOVED)
+    expect(status[0]).toHaveProperty(
+      'reason',
+      GitPatcher.patchApplyReasons.SRC_REMOVED,
+    )
   })
 
   test('handles bad patch file', async function () {
@@ -187,7 +234,7 @@ describe('Apply Patches', function () {
     expect(status[0].path).toBe(file1Name)
     expect(status[0].error).toBeUndefined()
     expect(status[0].reason).toBe(
-      GitPatcher.patchApplyReasons.PATCH_INFO_OUTDATED
+      GitPatcher.patchApplyReasons.PATCH_INFO_OUTDATED,
     )
 
     // Verify the file content
@@ -206,7 +253,6 @@ describe('Apply Patches', function () {
   test('handles no repo dir', async function () {
     const badRepoPath = path.join(repoPath, 'not-exist')
     const noRepoPatcher = new GitPatcher(patchPath, badRepoPath)
-    await expect(noRepoPatcher.applyPatches())
-      .rejects.toThrowError()
+    await expect(noRepoPatcher.applyPatches()).rejects.toThrowError()
   })
 })

@@ -82,7 +82,7 @@ describe('ActionGuard', () => {
         expect(() => {
           actionGuard.wasInterrupted()
         }).toThrow(
-          'Cannot check if the action was interrupted while it is running.'
+          'Cannot check if the action was interrupted while it is running.',
         )
       })
     })
@@ -96,7 +96,7 @@ describe('ActionGuard', () => {
       expect(fs.ensureDirSync).toHaveBeenCalledWith(path.dirname(guardFilePath))
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         guardFilePath,
-        expect.anything()
+        expect.anything(),
       )
       expect(actionClosure).toHaveBeenCalledWith(false)
       expect(fs.unlinkSync).toHaveBeenCalledWith(guardFilePath)
@@ -162,7 +162,7 @@ describe('ActionGuard', () => {
       expect(actionClosure).toHaveBeenCalledWith(false)
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         guardFilePath,
-        expect.anything()
+        expect.anything(),
       )
       expect(fs.unlinkSync).toHaveBeenCalledWith(guardFilePath)
     })
@@ -177,7 +177,7 @@ describe('ActionGuard', () => {
       expect(actionClosure).toHaveBeenCalledWith(true)
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         guardFilePath,
-        expect.anything()
+        expect.anything(),
       )
       expect(fs.unlinkSync).toHaveBeenCalledWith(guardFilePath)
     })

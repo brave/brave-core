@@ -12,7 +12,7 @@ const tsm =
     : undefined
 
 let divider
-function setLineLength () {
+function setLineLength() {
   divider = Array(process.stdout.columns || 32).join('-')
 }
 setLineLength()
@@ -96,7 +96,7 @@ function status(message, alreadyStyled = false) {
 
 function error(message) {
   if (tsm) {
-    tsm.message({text: message, status: 'ERROR'})
+    tsm.message({ text: message, status: 'ERROR' })
   } else {
     console.error(errorStyle(message))
   }
@@ -104,54 +104,65 @@ function error(message) {
 
 function warn(message) {
   if (tsm) {
-    tsm.message({text: message, status: 'WARNING'})
+    tsm.message({ text: message, status: 'WARNING' })
   } else {
     console.error(warningStyle(message))
   }
 }
 
-function updateStatus (projectUpdateStatus) {
-  const statusLines = Object.values(projectUpdateStatus).map(entry =>
-    `${chalk.bold(entry.name)} (${entry.ref}): ${chalk.green.italic(entry.phase)}`
+function updateStatus(projectUpdateStatus) {
+  const statusLines = Object.values(projectUpdateStatus).map(
+    (entry) =>
+      `${chalk.bold(entry.name)} (${entry.ref}): ${chalk.green.italic(
+        entry.phase,
+      )}`,
   )
   logUpdate(statusLines.join(os.EOL))
 }
 
-function command (dir, cmd, args) {
+function command(dir, cmd, args) {
   console.log(divider)
-  if (dir)
-    { console.log(cmdDirStyle(dir)) }
+  if (dir) {
+    console.log(cmdDirStyle(dir))
+  }
   status(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`, true)
 }
 
 function printFailedPatchesInJsonFormat(allPatchStatus, bravePath) {
   const failedPatches = allPatchStatus.filter((patch) => patch.error)
   if (!failedPatches.length) {
-    return;
+    return
   }
 
   const GitPatcher = require('./gitPatcher')
 
-  const patchFailuresOutput = failedPatches.map(({path, patchPath, reason}) => {
-    return {
-      // Trimming the patch path to be relative to the brave core repo. We skip
-      // the first character to avoid the trailing slash from the absolute
-      // path.
-      patchPath:
-        patchPath.replace(bravePath, '').substring(1),
-      reason: GitPatcher.getReasonName(reason),
-      path: path
-    }
-  })
+  const patchFailuresOutput = failedPatches.map(
+    ({ path, patchPath, reason }) => {
+      return {
+        // Trimming the patch path to be relative to the brave core repo. We skip
+        // the first character to avoid the trailing slash from the absolute
+        // path.
+        patchPath: patchPath.replace(bravePath, '').substring(1),
+        reason: GitPatcher.getReasonName(reason),
+        path: path,
+      }
+    },
+  )
 
-  console.log(chalk.red(`${failedPatches.length} Failed patches json breakdown:`))
+  console.log(
+    chalk.red(`${failedPatches.length} Failed patches json breakdown:`),
+  )
   console.log(JSON.stringify(patchFailuresOutput))
   console.log(divider)
 }
 
 function allPatchStatus(allPatchStatus, patchGroupName) {
   if (!allPatchStatus.length) {
-    console.log(chalk.bold.italic(`There were no ${patchGroupName} code patch updates to apply.`))
+    console.log(
+      chalk.bold.italic(
+        `There were no ${patchGroupName} code patch updates to apply.`,
+      ),
+    )
   } else {
     const successfulPatches = []
     const failedPatches = []
@@ -162,9 +173,15 @@ function allPatchStatus(allPatchStatus, patchGroupName) {
         failedPatches.push(patchStatus)
       }
     }
-    console.log(chalk.bold(`There were ${allPatchStatus.length} ${patchGroupName} code patch updates to apply.`))
+    console.log(
+      chalk.bold(
+        `There were ${allPatchStatus.length} ${patchGroupName} code patch updates to apply.`,
+      ),
+    )
     if (successfulPatches.length) {
-      console.log(chalk.green(`${successfulPatches.length} successful patches:`))
+      console.log(
+        chalk.green(`${successfulPatches.length} successful patches:`),
+      )
       successfulPatches.forEach(logPatchStatus)
     }
     if (failedPatches.length) {
@@ -174,19 +191,21 @@ function allPatchStatus(allPatchStatus, patchGroupName) {
   }
 }
 
-function logPatchStatus ({ reason, path, patchPath, error, warning }) {
+function logPatchStatus({ reason, path, patchPath, error, warning }) {
   const GitPatcher = require('./gitPatcher')
   const success = !error
   const statusColor = success ? chalk.green : chalk.red
   console.log(statusColor.bold.underline(path || patchPath))
-  console.log(`  - Patch applied because: ${GitPatcher.patchApplyReasonMessages[reason]}`)
+  console.log(
+    `  - Patch applied because: ${GitPatcher.patchApplyReasonMessages[reason]}`,
+  )
   if (error) {
     console.log(chalk.red(`  - Error - ${error.message}`))
   }
   if (warning) {
     console.warn(chalk.yellow(`  - Warning - ${warning}`))
   }
-  if (error)  {
+  if (error) {
     if (error.stdout) {
       console.log(chalk.blue(error.stdout))
     }
@@ -208,5 +227,5 @@ module.exports = {
   command,
   updateStatus,
   printFailedPatchesInJsonFormat,
-  allPatchStatus
+  allPatchStatus,
 }

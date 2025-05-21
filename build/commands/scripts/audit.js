@@ -17,8 +17,5 @@ if (process.argv.includes('--audit_dev_deps')) {
 }
 util.runGnGen(outputDir, args, [], options)
 
-let ninjaOpts = [
-  '-C', outputDir, 'brave:audit_deps',
-  ...config.extraNinjaOpts
-]
+let ninjaOpts = ['-C', outputDir, 'brave:audit_deps', ...config.extraNinjaOpts]
 util.run('autoninja', ninjaOpts, options)

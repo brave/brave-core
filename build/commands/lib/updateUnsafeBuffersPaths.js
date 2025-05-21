@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-
 const config = require('./config')
-const fs = require('fs/promises');
+const fs = require('fs/promises')
 const path = require('path')
 
 // This function is used to modify build/config/unsafe_buffers_paths.txt, to
@@ -15,14 +14,19 @@ const path = require('path')
 // unsafe_buffers_paths.txt are duplicated at the end with `src/` prepended to
 // them.
 async function updateUnsafeBuffersPaths() {
-  const relativeBuffersPath = ['build', 'config', 'unsafe_buffers_paths.txt'];
-  const chromiumRepoConfigPath =
-      path.join(config.srcDir, ...relativeBuffersPath);
-  const braveGenConfigPath =
-      path.join(config.srcDir, ...['brave', ...relativeBuffersPath]);
+  const relativeBuffersPath = ['build', 'config', 'unsafe_buffers_paths.txt']
+  const chromiumRepoConfigPath = path.join(
+    config.srcDir,
+    ...relativeBuffersPath,
+  )
+  const braveGenConfigPath = path.join(
+    config.srcDir,
+    ...['brave', ...relativeBuffersPath],
+  )
 
-  const repoContent =
-      await fs.readFile(chromiumRepoConfigPath, {encoding: 'utf8'})
+  const repoContent = await fs.readFile(chromiumRepoConfigPath, {
+    encoding: 'utf8',
+  })
 
   // Adding exlusion paths for brave as well, which are also to be corrected
   // for src prefix
@@ -36,23 +40,27 @@ async function updateUnsafeBuffersPaths() {
     '-brave/third_party/argon2/',
     '-brave/third_party/ethash/',
     '-brave/third_party/bitcoin-core/',
-    '-brave/vendor/bat-native-tweetnacl/'
-  ];
+    '-brave/vendor/bat-native-tweetnacl/',
+  ]
 
   updatedPathLines = bufferPathLines.filter(
-      (line) => line.startsWith('-') || line.startsWith('+'));
-  updatedPathLines = updatedPathLines.map(
-      (line) => { return line.slice(0, 1) + 'src/' + line.slice(1) });
+    (line) => line.startsWith('-') || line.startsWith('+'),
+  )
+  updatedPathLines = updatedPathLines.map((line) => {
+    return line.slice(0, 1) + 'src/' + line.slice(1)
+  })
 
-  const updatedContents =
-      [...bufferPathLines, ...updatedPathLines, ''].join('\n');
+  const updatedContents = [...bufferPathLines, ...updatedPathLines, ''].join(
+    '\n',
+  )
 
   // To avoid invalidating a lot of objects that might already have been built,
   // the file is only updated if there are any changes between the proposed and
   // current contents.
   try {
-    currentFileContents =
-        await fs.readFile(braveGenConfigPath, {encoding: 'utf8'});
+    currentFileContents = await fs.readFile(braveGenConfigPath, {
+      encoding: 'utf8',
+    })
   } catch (err) {
     // File doesn't exist
     currentFileContents = ''

@@ -1,8 +1,8 @@
 # Cross-compiling Brave
 
-Out of the box, it is possible to compile unsigned Brave for macOS in Linux.
-The code in this folder additionally makes it possible to codesign Brave, and
-build DMG and PKG installers.
+Out of the box, it is possible to compile unsigned Brave for macOS in Linux. The
+code in this folder additionally makes it possible to codesign Brave, and build
+DMG and PKG installers.
 
 ## Initialization
 

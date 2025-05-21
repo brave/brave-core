@@ -13,7 +13,7 @@ const testFile1Name = 'file1'
 const testFile1InitialContent = 'this is a test'
 const encoding = 'utf8'
 
-describe('calculateFileChecksum', function() {
+describe('calculateFileChecksum', function () {
   let testDirPath, testFile1Path
 
   beforeEach(async function () {
@@ -29,7 +29,9 @@ describe('calculateFileChecksum', function() {
     try {
       await fs.remove(testDirPath)
     } catch (err) {
-      console.warn('Test cleanup: could not remove temp directory at ' + testDirPath)
+      console.warn(
+        'Test cleanup: could not remove temp directory at ' + testDirPath,
+      )
     }
   })
 
@@ -46,7 +48,11 @@ describe('calculateFileChecksum', function() {
 
   test('checksum changes when file contents change', async function () {
     const checksum1 = await calculateFileChecksum(testFile1Path)
-    await fs.writeFile(testFile1Path, testFile1InitialContent + testFile1InitialContent, encoding)
+    await fs.writeFile(
+      testFile1Path,
+      testFile1InitialContent + testFile1InitialContent,
+      encoding,
+    )
     const checksum2 = await calculateFileChecksum(testFile1Path)
     expect(checksum2).not.toBe(checksum1)
   })
