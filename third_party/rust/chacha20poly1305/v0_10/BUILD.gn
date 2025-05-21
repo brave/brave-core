@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.10.1"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "chacha20poly1305"
   cargo_pkg_description = "Pure Rust implementation of the ChaCha20Poly1305 Authenticated Encryption with Additional Data Cipher (RFC 8439) with optional architecture-specific hardware acceleration. Also contains implementations of the XChaCha20Poly1305 extended nonce variant of ChaCha20Poly1305, and the reduced-round ChaCha8Poly1305 and ChaCha12Poly1305 lightweight variants."
+  cargo_pkg_version = "0.10.1"
+
   deps = [
     "//brave/third_party/rust/aead/v0_5:lib",
     "//brave/third_party/rust/chacha20/v0_9:lib",

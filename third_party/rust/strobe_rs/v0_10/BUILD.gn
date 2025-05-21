@@ -24,11 +24,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.10.0"
   cargo_pkg_authors = "Michael Rosenberg <michael@mrosenberg.pub>"
   cargo_pkg_name = "strobe-rs"
   cargo_pkg_description =
       "An implementation of the Strobe protocol framework in pure Rust"
+  cargo_pkg_version = "0.10.0"
+
   deps = [
     "//brave/third_party/rust/bitflags/v1:lib",
     "//brave/third_party/rust/byteorder/v1:lib",

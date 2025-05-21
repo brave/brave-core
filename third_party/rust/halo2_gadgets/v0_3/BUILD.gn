@@ -74,10 +74,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.3.0"
   cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira Hopwood <daira@jacaranda.org>, Ying Tong Lai <yingtong@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
   cargo_pkg_name = "halo2_gadgets"
   cargo_pkg_description = "Reusable gadgets and chip implementations for Halo 2"
+  cargo_pkg_version = "0.3.0"
+
   deps = [
     "//brave/third_party/rust/arrayvec/v0_7:lib",
     "//brave/third_party/rust/bitvec/v1:lib",

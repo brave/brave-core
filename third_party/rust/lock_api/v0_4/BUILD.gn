@@ -23,10 +23,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.4.9"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
   cargo_pkg_name = "lock_api"
   cargo_pkg_description = "Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std."
+  cargo_pkg_version = "0.4.9"
+
   deps = [ "//brave/third_party/rust/scopeguard/v1:lib" ]
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/build.rs"

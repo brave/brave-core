@@ -21,11 +21,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.0"
   cargo_pkg_authors = "Jack Grigg <jack@electriccoin.co>"
   cargo_pkg_name = "zcash_spec"
   cargo_pkg_description =
       "Low-level types for implementing Zcash specifications"
+  cargo_pkg_version = "0.1.0"
+
   deps = [ "//brave/third_party/rust/blake2b_simd/v1:lib" ]
   rustenv = []
   rustflags = []

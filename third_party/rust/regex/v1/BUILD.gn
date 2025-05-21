@@ -32,11 +32,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.11.1"
   cargo_pkg_authors =
       "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
   cargo_pkg_name = "regex"
   cargo_pkg_description = "An implementation of regular expressions for Rust. This implementation uses finite automata and guarantees linear time matching on all inputs."
+  cargo_pkg_version = "1.11.1"
+
   deps = [
     "//brave/third_party/rust/aho_corasick/v1:lib",
     "//brave/third_party/rust/memchr/v2:lib",
@@ -119,11 +120,12 @@ cargo_crate("buildrs_support") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.11.1"
   cargo_pkg_authors =
       "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
   cargo_pkg_name = "regex"
   cargo_pkg_description = "An implementation of regular expressions for Rust. This implementation uses finite automata and guarantees linear time matching on all inputs."
+  cargo_pkg_version = "1.11.1"
+
   deps = [
     "//brave/third_party/rust/aho_corasick/v1:lib",
     "//brave/third_party/rust/memchr/v2:lib",

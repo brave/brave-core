@@ -18,11 +18,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.2.2"
   cargo_pkg_authors = "Vurich <jackefransham@hotmail.co.uk>"
   cargo_pkg_name = "crunchy"
   cargo_pkg_description =
       "Crunchy unroller: deterministically unroll constant loops"
+  cargo_pkg_version = "0.2.2"
+
   features = [ "std" ]
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs"

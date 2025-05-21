@@ -23,11 +23,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.7.6"
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "utf-8"
   cargo_pkg_description =
       "Incremental, zero-copy UTF-8 decoding with error handling"
+  cargo_pkg_version = "0.7.6"
+
   rustenv = []
   rustflags = []
 

@@ -32,10 +32,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.29.6"
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "cssparser"
   cargo_pkg_description = "Rust implementation of CSS Syntax Level 3"
+  cargo_pkg_version = "0.29.6"
+
   deps = [
     "//brave/third_party/rust/cssparser_macros/v0_6:lib",
     "//brave/third_party/rust/dtoa_short/v0_3:lib",

@@ -29,11 +29,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.0.26"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "semver"
   cargo_pkg_description =
       "Parser and evaluator for Cargo's flavor of Semantic Versioning"
+  cargo_pkg_version = "1.0.26"
+
   features = [
     "default",
     "std",

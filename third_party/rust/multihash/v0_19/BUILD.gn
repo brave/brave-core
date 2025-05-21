@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.19.2"
   cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>, David Craven <david@craven.ch>, Volker Mische <volker.mische@gmail.com>"
   cargo_pkg_name = "multihash"
   cargo_pkg_description = "Implementation of the multihash format"
+  cargo_pkg_version = "0.19.2"
+
   deps = [
     "//brave/third_party/rust/core2/v0_4:lib",
     "//brave/third_party/rust/unsigned_varint/v0_8:lib",

@@ -18,11 +18,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.2.5"
   cargo_pkg_authors = "Cesar Eduardo Barros <cesarb@cesarb.eti.br>"
   cargo_pkg_name = "constant_time_eq"
   cargo_pkg_description =
       "Compares two equal-sized byte strings in constant time."
+  cargo_pkg_version = "0.2.5"
+
   rustenv = []
   rustflags = []
 

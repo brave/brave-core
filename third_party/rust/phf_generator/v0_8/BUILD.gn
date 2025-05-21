@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.0"
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf_generator"
   cargo_pkg_description = "PHF generation logic"
+  cargo_pkg_version = "0.8.0"
+
   deps = [
     "//brave/third_party/rust/phf_shared/v0_8:lib",
     "//brave/third_party/rust/rand/v0_7:lib",

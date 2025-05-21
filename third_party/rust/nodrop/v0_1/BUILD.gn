@@ -20,10 +20,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.14"
   cargo_pkg_authors = "bluss"
   cargo_pkg_name = "nodrop"
   cargo_pkg_description = "A wrapper type to inhibit drop (destructor).  ***Deprecated: Use ManuallyDrop or MaybeUninit instead!***"
+  cargo_pkg_version = "0.1.14"
+
   features = [
     "default",
     "std",

@@ -23,10 +23,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.15.5"
   cargo_pkg_authors = "Evgeny Safronov <division494@gmail.com>"
   cargo_pkg_name = "rmp-serde"
   cargo_pkg_description = "Serde bindings for RMP"
+  cargo_pkg_version = "0.15.5"
+
   deps = [
     "//brave/third_party/rust/byteorder/v1:lib",
     "//brave/third_party/rust/rmp/v0_8:lib",

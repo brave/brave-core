@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.6.1"
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "cssparser-macros"
   cargo_pkg_description = "Procedural macros for cssparser"
+  cargo_pkg_version = "0.6.1"
+
   deps = [
     "//brave/third_party/rust/quote/v1:lib",
     "//brave/third_party/rust/syn/v2:lib",

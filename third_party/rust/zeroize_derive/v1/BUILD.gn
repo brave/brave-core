@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.3.3"
   cargo_pkg_authors = "The RustCrypto Project Developers"
   cargo_pkg_name = "zeroize_derive"
   cargo_pkg_description = "Custom derive support for zeroize"
+  cargo_pkg_version = "1.3.3"
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",

@@ -23,10 +23,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.15.0"
   cargo_pkg_authors = "dignifiedquire <dignifiedquire@gmail.com>"
   cargo_pkg_name = "bls-signatures"
   cargo_pkg_description = "Aggregate BLS Signatures"
+  cargo_pkg_version = "0.15.0"
+
   deps = [
     "//brave/third_party/rust/bls12_381/v0_8:lib",
     "//brave/third_party/rust/ff/v0_13:lib",

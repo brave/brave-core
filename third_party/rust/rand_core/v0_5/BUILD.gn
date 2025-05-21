@@ -25,11 +25,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.5.1"
   cargo_pkg_authors = "The Rand Project Developers, The Rust Project Developers"
   cargo_pkg_name = "rand_core"
   cargo_pkg_description =
       "Core random number generator traits and tools for implementation."
+  cargo_pkg_version = "0.5.1"
+
   deps = [ "//brave/third_party/rust/getrandom/v0_1:lib" ]
   features = [
     "alloc",

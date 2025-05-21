@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.2.4"
   cargo_pkg_authors = "erick.tryzelaar <erick.tryzelaar@gmail.com>, kwantam <kwantam@gmail.com>, Manish Goregaokar <manishsmail@gmail.com>"
   cargo_pkg_name = "unicode-xid"
   cargo_pkg_description = "Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31."
+  cargo_pkg_version = "0.2.4"
+
   features = [ "default" ]
   rustenv = []
   rustflags = []

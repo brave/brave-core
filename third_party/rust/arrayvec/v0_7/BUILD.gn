@@ -26,10 +26,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.7.2"
   cargo_pkg_authors = "bluss"
   cargo_pkg_name = "arrayvec"
   cargo_pkg_description = "A vector with fixed capacity, backed by an array (it can be stored on the stack too). Implements fixed capacity ArrayVec and ArrayString."
+  cargo_pkg_version = "0.7.2"
+
   features = [
     "default",
     "std",

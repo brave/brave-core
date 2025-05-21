@@ -26,11 +26,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.8.0"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "poly1305"
   cargo_pkg_description =
       "The Poly1305 universal hash function and message authentication code"
+  cargo_pkg_version = "0.8.0"
+
   deps = [
     "//brave/third_party/rust/opaque_debug/v0_3:lib",
     "//brave/third_party/rust/universal_hash/v0_5:lib",

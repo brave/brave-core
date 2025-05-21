@@ -34,10 +34,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.22.0"
   cargo_pkg_authors = "June McEnroe <june@causal.agency>"
   cargo_pkg_name = "scraper"
   cargo_pkg_description = "HTML parsing and querying with CSS selectors"
+  cargo_pkg_version = "0.22.0"
+
   deps = [
     "//brave/third_party/rust/cssparser/v0_34:lib",
     "//brave/third_party/rust/ego_tree/v0_10:lib",

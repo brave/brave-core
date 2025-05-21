@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.1"
   cargo_pkg_authors = "The Rand Project Developers"
   cargo_pkg_name = "rand_pcg"
   cargo_pkg_description = "Selected PCG random number generators"
+  cargo_pkg_version = "0.2.1"
+
   deps = [ "//brave/third_party/rust/rand_core/v0_5:lib" ]
   rustenv = []
   rustflags = []

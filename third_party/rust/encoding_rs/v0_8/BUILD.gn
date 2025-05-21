@@ -40,11 +40,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.32"
   cargo_pkg_authors = "Henri Sivonen <hsivonen@hsivonen.fi>"
   cargo_pkg_name = "encoding_rs"
   cargo_pkg_description =
       "A Gecko-oriented implementation of the Encoding Standard"
+  cargo_pkg_version = "0.8.32"
+
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   features = [
     "alloc",

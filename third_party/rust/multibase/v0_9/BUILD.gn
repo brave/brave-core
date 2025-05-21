@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.9.1"
   cargo_pkg_authors = "Friedel Ziegelmayer <dignifiedquire@gmail.com>"
   cargo_pkg_name = "multibase"
   cargo_pkg_description = "multibase in rust"
+  cargo_pkg_version = "0.9.1"
+
   deps = [
     "//brave/third_party/rust/base_x/v0_2:lib",
     "//brave/third_party/rust/data_encoding/v2:lib",

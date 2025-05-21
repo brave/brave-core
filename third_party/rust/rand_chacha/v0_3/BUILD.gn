@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.1"
   cargo_pkg_authors = "The Rand Project Developers, The Rust Project Developers, The CryptoCorrosion Contributors"
   cargo_pkg_name = "rand_chacha"
   cargo_pkg_description = "ChaCha random number generator"
+  cargo_pkg_version = "0.3.1"
+
   deps = [
     "//brave/third_party/rust/ppv_lite86/v0_2:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",

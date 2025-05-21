@@ -1,8 +1,17 @@
 diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
-index 4d7fb533d9fe556e1e3064f7f900e4ea32911edc..e5395b6532e9531a5601a2f333b582fa7292cce5 100644
+index f69a57b9c7e6d03538fb72f792ad83ee9cf7b286..5e84007cb6a8a19e65ab91a1d8aadb731d34d540 100644
 --- a/third_party/rust/regex_automata/v0_4/BUILD.gn
 +++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
-@@ -131,4 +131,6 @@ cargo_crate("lib") {
+@@ -96,7 +96,7 @@ cargo_crate("lib") {
+       "Automata construction and matching using regular expressions."
+   cargo_pkg_version = "0.4.9"
+
+-  allow_unsafe = false
++  allow_unsafe = true
+
+   features = [ "dfa-search" ]
+
+@@ -134,4 +134,6 @@ cargo_crate("lib") {
    executable_configs += _configs_to_add
    proc_macro_configs -= _configs_to_remove
    proc_macro_configs += _configs_to_add

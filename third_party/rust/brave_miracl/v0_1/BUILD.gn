@@ -51,11 +51,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.3"
   cargo_pkg_authors = "Mike Scott <mike.scott@miracl.com>"
   cargo_pkg_name = "brave-miracl"
   cargo_pkg_description =
       "Subset of the MIRACL Core library that includes the bn254 elliptic curve"
+  cargo_pkg_version = "0.1.3"
+
   features = [
     "default",
     "std",

@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "1.0.7"
   cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>"
   cargo_pkg_name = "fnv"
   cargo_pkg_description = "Fowler–Noll–Vo hash function"
+  cargo_pkg_version = "1.0.7"
+
   features = [
     "default",
     "std",

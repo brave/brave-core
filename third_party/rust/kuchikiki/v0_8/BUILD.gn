@@ -29,10 +29,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.8-speedreader"
   cargo_pkg_authors = "Brave Authors, Ralph Giles <rgiles@brave.com>, Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "kuchikiki"
   cargo_pkg_description = "(口利き) HTML tree manipulation library"
+  cargo_pkg_version = "0.8.8-speedreader"
+
   deps = [
     "//brave/third_party/rust/cssparser/v0_29:lib",
     "//brave/third_party/rust/html5ever/v0_29:lib",
