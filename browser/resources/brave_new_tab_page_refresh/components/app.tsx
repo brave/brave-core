@@ -13,7 +13,7 @@ import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
-import { LazyNewsFeed } from './news/lazy_news_feed'
+import { NewsFeed } from './news/news_feed'
 import { WidgetStack } from './widgets/widget_stack'
 import { useSearchLayoutReady, useWidgetLayoutReady } from './app_layout_ready'
 import useMediaQuery from '$web-common/useMediaQuery'
@@ -107,13 +107,21 @@ export function App() {
         </div>
       </main>
       <div className='news-container'>
-        <LazyNewsFeed />
+        <NewsFeed />
       </div>
       <SettingsModal
         isOpen={settingsView !== null}
         initialView={settingsView}
         onClose={() => setSettingsView(null)}
       />
+    </div>
+  )
+}
+
+export function NewsApp() {
+  return (
+    <div data-css-scope={style.scope}>
+      <NewsFeed standalone />
     </div>
   )
 }

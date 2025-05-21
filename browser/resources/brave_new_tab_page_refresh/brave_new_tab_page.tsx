@@ -15,7 +15,7 @@ import { VpnProvider } from './context/vpn_context'
 import { RewardsProvider } from './context/rewards_context'
 import { NewsProvider } from './context/news_context'
 
-import { App } from './components/app'
+import { App, NewsApp } from './components/app'
 
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -27,7 +27,7 @@ function AppProvider(props: { children: React.ReactNode }) {
           <TopSitesProvider name='topSites'>
             <VpnProvider name='vpn'>
               <RewardsProvider name='rewards'>
-                <NewsProvider>{props.children}</NewsProvider>
+                <NewsProvider name='news'>{props.children}</NewsProvider>
               </RewardsProvider>
             </VpnProvider>
           </TopSitesProvider>
@@ -38,7 +38,17 @@ function AppProvider(props: { children: React.ReactNode }) {
 }
 
 createRoot(document.getElementById('root')!).render(
-  <AppProvider>
-    <App />
-  </AppProvider>,
+  isNewsOnlyURL() ? (
+    <NewsProvider name='news'>
+      <NewsApp />
+    </NewsProvider>
+  ) : (
+    <AppProvider>
+      <App />
+    </AppProvider>
+  ),
 )
+
+function isNewsOnlyURL() {
+  return /^\/news(\/|$)/i.test(location.pathname)
+}

@@ -15,6 +15,7 @@ import {
 
 declare global {
   interface Strings {
+    BraveNewsStrings: typeof BraveNewsStrings
     BraveNewTabPageStrings: typeof BraveNewTabPageStrings
     BraveRewardsStrings: typeof BraveRewardsStrings
     BraveOmniboxStrings: typeof BraveOmniboxStrings

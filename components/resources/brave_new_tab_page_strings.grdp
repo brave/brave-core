@@ -97,6 +97,10 @@
     Hide News
   </message>
 
+  <message name="IDS_NEW_TAB_NEWS_MANAGE_FEEDS_BUTTON_LABEL" desc="Label for button that opens the feed management dialog" formatter_data="webui=BraveNewTabPage">
+    Manage Feeds
+  </message>
+
   <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget" formatter_data="webui=BraveNewTabPage">
     NEWS
   </message>
@@ -203,6 +207,10 @@
 
   <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="Label for enabling the clock on the NTP" formatter_data="webui=BraveNewTabPage">
     Show clock
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_NEWS_LABEL" desc="Label for showing the News on the NTP" formatter_data="webui=BraveNewTabPage">
+    Show news
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP" formatter_data="webui=BraveNewTabPage">
