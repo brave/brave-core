@@ -7,8 +7,8 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
-import { debounceListener } from './debounce_listener'
 import { VPNState, VPNActions, defaultVPNActions, ConnectionState } from '../models/vpn'
+import { debounce } from '$web-common/debounce'
 
 export function initializeVPN(store: Store<VPNState>): VPNActions {
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
@@ -63,7 +63,7 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
   }
 
   newTabProxy.addListeners({
-    onVPNStateUpdated: debounceListener(updatePrefs)
+    onVPNStateUpdated: debounce(updatePrefs, 10)
   })
 
   const vpnServiceObserver = new mojom.ServiceObserverReceiver({

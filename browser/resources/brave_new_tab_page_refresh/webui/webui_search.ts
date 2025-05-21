@@ -9,7 +9,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
-import { debounceListener } from './debounce_listener'
+import { debounce } from '$web-common/debounce'
 
 import {
   SearchState,
@@ -112,7 +112,7 @@ export function initializeSearch(store: Store<SearchState>): SearchActions {
   })
 
   newTabProxy.addListeners({
-    onSearchStateUpdated: debounceListener(updatePrefs)
+    onSearchStateUpdated: debounce(updatePrefs, 10)
   })
 
   async function loadData() {

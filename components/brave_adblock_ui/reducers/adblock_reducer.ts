@@ -9,7 +9,7 @@ import { types } from '../constants/adblock_types'
 
 // Utils
 import * as storage from '../storage'
-import { debounce } from '../../common/debounce'
+import { debounce } from '$web-common/debounce'
 
 const updateCustomFilters = debounce((customFilters: string) => {
   chrome.send('brave_adblock.updateCustomFilters', [customFilters])

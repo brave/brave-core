@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Utils
-import { debounce } from '../../common/debounce'
+import { debounce } from '$web-common/debounce'
 const oldkeyName = 'grid-sites-data-v1'
 const newkeyName = 'grid-sites-data-v2'
 const defaultSuperReferralTopSitesKeyName = 'default-super-referral-top-sites'
@@ -47,7 +47,7 @@ export const load = (): NewTab.GridSitesState => {
 // Saving the state is useful so that something will show when opening
 // a new tab. There is a delay before MostVisitedInfoChanged() is called.
 // Using `sessionStorage` won't persist to disk.
-export const debouncedSave = debounce<NewTab.GridSitesState>((data: NewTab.GridSitesState) => {
+export const debouncedSave = debounce((data: NewTab.GridSitesState) => {
   if (data) {
     window.sessionStorage.setItem(newkeyName, JSON.stringify(data))
   }

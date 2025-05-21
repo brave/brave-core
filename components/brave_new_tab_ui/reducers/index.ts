@@ -29,7 +29,7 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
   state = rewardsReducer(state, action)
   state = stackWidgetReducer(state, action)
 
-  if (state !== startingState) {
+  if (state && state !== startingState) {
     storage.debouncedSave(state)
   }
 

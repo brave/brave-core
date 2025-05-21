@@ -1,17 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-'use strict'
-
-export const debounce = function <T>(fn: (data: T) => void, bufferInterval: number, ...args: any[]) {
+export const debounce = function <T extends unknown[]>(fn: (...args: T) => void, bufferInterval?: number) {
   let timeout: any
-  return (...args2: any[]) => {
+  return (...args: T) => {
     clearTimeout(timeout)
-    let a: string[] = args || []
-    if (args2 && args2.constructor === Array) {
-      a = a.concat(args2)
-    }
-    timeout = setTimeout(fn.apply.bind(fn, this, a), bufferInterval)
+    timeout = setTimeout(fn.apply.bind(fn, this, args), bufferInterval)
   }
 }
