@@ -6,10 +6,10 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 import { useNewTabState } from '../../context/new_tab_context'
 import { useRewardsState } from '../../context/rewards_context'
 import { useVpnState } from '../../context/vpn_context'
+import { useNewsState } from '../../context/news_context'
 import { NtpWidget } from './ntp_widget'
 import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'
@@ -34,8 +34,8 @@ export function WidgetStack(props: Props) {
   const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
-  const showNews = useBraveNews().isShowOnNTPPrefEnabled
-  const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
+  const showNewsFeed = useNewsState((s) => s.showOnNTP)
+  const newsFeatureEnabled = useNewsState((s) => s.newsFeatureEnabled)
 
   const [currentTab, setCurrentTab] = React.useState(loadCurrentTab(props.name))
 
@@ -46,7 +46,7 @@ export function WidgetStack(props: Props) {
         case 'talk': return talkFeatureEnabled && showTalkWidget
         case 'vpn': return vpnFeatureEnabled && showVpnWidget
         case 'stats': return showShieldsStats
-        case 'news': return newsFeatureEnabled && showNews
+        case 'news': return newsFeatureEnabled && showNewsFeed
       }
     })
   }, [
@@ -57,7 +57,7 @@ export function WidgetStack(props: Props) {
     vpnFeatureEnabled,
     showVpnWidget,
     showShieldsStats,
-    showNews
+    showNewsFeed
   ])
 
   function renderTabButton(tab: TabName) {
