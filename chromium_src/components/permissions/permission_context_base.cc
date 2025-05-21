@@ -168,7 +168,7 @@ bool PermissionContextBase::GroupedPermissionRequests::IsDone() const {
 }
 
 void PermissionContextBase::GroupedPermissionRequests::AddRequest(
-    std::pair<std::unique_ptr<PermissionRequest>, BrowserPermissionCallback>
+    std::pair<base::WeakPtr<PermissionRequest>, BrowserPermissionCallback>
         request) {
   requests_.push_back(std::move(request));
 }

@@ -42,13 +42,14 @@ bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
 
 bool PermissionRequestManager::ShouldBeGrouppedInRequests(
     PermissionRequest* a) const {
+  DCHECK(!requests_.empty());
   // Called from PermissionRequestManager::GetRequestingOrigin when DCHECK IS ON
   // to adjust the check for grouped requests. |requests_| is cheked by the
   // caller to not be empty.
-  if (requests_[0] == a) {
+  if (requests_.front().get() == a) {
     return true;
   }
-  return ShouldGroupRequests(requests_[0], a);
+  return ShouldGroupRequests(requests_.front().get(), a);
 }
 
 // Accept/Deny/Cancel each sub-request, total size of all passed in requests
@@ -67,12 +68,13 @@ void PermissionRequestManager::AcceptDenyCancel(
           cancelled_requests.size()) == requests_.size());
 
   for (const auto& request : requests_) {
-    if (base::Contains(accepted_requests, request)) {
-      PermissionGrantedIncludingDuplicates(request, /*is_one_time=*/false);
-    } else if (base::Contains(denied_requests, request)) {
-      PermissionDeniedIncludingDuplicates(request);
+    if (base::Contains(accepted_requests, request.get())) {
+      PermissionGrantedIncludingDuplicates(request.get(),
+                                           /*is_one_time=*/false);
+    } else if (base::Contains(denied_requests, request.get())) {
+      PermissionDeniedIncludingDuplicates(request.get());
     } else {
-      CancelledIncludingDuplicates(request);
+      CancelledIncludingDuplicates(request.get());
     }
   }
 

@@ -135,13 +135,13 @@ void BraveWalletPermissionContext::AcceptOrCancel(
 
   std::vector<PermissionRequest*> allowed_requests;
   std::vector<PermissionRequest*> cancelled_requests;
-  for (PermissionRequest* request : manager->Requests()) {
-    if (IsAccepted(request, accounts)) {
+  for (const auto& request : manager->Requests()) {
+    if (IsAccepted(request.get(), accounts)) {
       const auto options = CreatePermissionLifetimeOptions();
-      SetRequestLifetime(options, static_cast<size_t>(option), request);
-      allowed_requests.push_back(request);
+      SetRequestLifetime(options, static_cast<size_t>(option), request.get());
+      allowed_requests.push_back(request.get());
     } else {
-      cancelled_requests.push_back(request);
+      cancelled_requests.push_back(request.get());
     }
   }
 
