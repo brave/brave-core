@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
+index 80c73ae006bcc6aa79947875d5ba61dba60cd22a..592bb9f067f26bc6de212dc8929abcd1a095f0c9 100644
+--- a/chrome/browser/ui/tabs/tab_strip_model.h
++++ b/chrome/browser/ui/tabs/tab_strip_model.h
+@@ -195,6 +195,7 @@ class TabStripModel {
+   TabStripModel(const TabStripModel&) = delete;
+   TabStripModel& operator=(const TabStripModel&) = delete;
+ 
++  virtual
+   ~TabStripModel();
+ 
+   // Retrieves the TabStripModelDelegate associated with this TabStripModel.
