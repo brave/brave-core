@@ -164,9 +164,9 @@ public class CameraSource {
     @SuppressWarnings("ArrayAsKeyOfSetOrMap")
     private final Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
 
-    // ==============================================================================================
+    // ============================================================================================
     // Builder
-    // ==============================================================================================
+    // ============================================================================================
 
     /** Builder for configuring and creating an associated camera source. */
     public static class Builder {
