@@ -188,6 +188,10 @@ void GetMacAddress(IsValidMacAddressCallback is_valid_mac_address_callback,
       FROM_HERE, base::BindOnce(std::move(callback), mac_address));
 }
 
+std::string GetMachineId() {
+  return metrics::MachineIdProvider().GetMachineId();
+}
+
 void GetMachineIdCallback(std::string mac_address,
                           DeviceIdCallback callback,
                           std::string machine_id) {
@@ -206,7 +210,7 @@ void GetMacAddressCallback(DeviceIdCallback callback, std::string mac_address) {
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(&metrics::MachineIdProvider::GetMachineId),
+      base::BindOnce(&GetMachineId),
       base::BindOnce(&GetMachineIdCallback, mac_address, std::move(callback)));
 }
 
