@@ -10,7 +10,24 @@ component("common") {
   sources = [
     "features.cc",
     "features.h",
+    "psst_constants.h",
+    "psst_prefs.cc",
+    "psst_prefs.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/pref_registry",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "psst_prefs_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/psst/common",
+    "//components/sync_preferences:test_support",
+  ]
 }

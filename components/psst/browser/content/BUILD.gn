@@ -9,17 +9,33 @@ component("content") {
   defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "psst_tab_helper.cc",
-    "psst_tab_helper.h",
+    "psst_scripts_result_handler.cc",
+    "psst_scripts_result_handler.h",
   ]
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//brave/components/script_injector/common/mojom",
+    "//components/prefs:prefs",
     "//components/sessions",
     "//content/public/browser",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "psst_scripts_result_handler_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/constants:constants",
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
   ]
 }
