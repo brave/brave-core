@@ -450,12 +450,12 @@ class BadOutcomeException(Exception):
         logging.warning(message)
 
 
-class TaskFailureException(Exception):
+class ActionNeededException(Exception):
     """An expected failure along the way that results on task termination."""
 
     def __init__(self, message: str):
         super().__init__(message)
-        logging.info(message)
+        console.log(message)
 
 class Task:
     """ Base class for all tasks in brockit.
@@ -1044,6 +1044,7 @@ class Upgrade(Versioned):
             self.target_version)
         with open(versioning.PACKAGE_FILE, "w") as package_file:
             json.dump(package, package_file, indent=2)
+            package_file.write("\n")
 
         repository.brave.run_git('add', versioning.PACKAGE_FILE)
 
@@ -1415,7 +1416,7 @@ class Upgrade(Versioned):
             self.target_version.get_googlesource_diff_link(self.base_version))
 
         if not ack_advisory and not self._prerun_checks():
-            raise TaskFailureException(
+            raise ActionNeededException(
                 '👋 (Address advisories and then rerun with '
                 '[bold cyan]--ack-advisory[/])')
 
@@ -1442,7 +1443,7 @@ class Upgrade(Versioned):
                     launch_vscode=launch_vscode)
                 if apply_record.requires_conflict_resolution():
                     # Manual resolution required.
-                    raise TaskFailureException(
+                    raise ActionNeededException(
                         '👋 (Address all sections with '
                         f'{ACTION_NEEDED_DECORATOR} above, and then rerun '
                         '[italic]🚀Brockit![/] with [bold cyan]--continue[/])'
@@ -2050,7 +2051,7 @@ def main():
             console.print(Markdown(__doc__))
         if args.command == 'show':
             show(args)
-    except (InvalidInputException, BadOutcomeException, TaskFailureException):
+    except (InvalidInputException, BadOutcomeException, ActionNeededException):
         return 1
 
     return 0
