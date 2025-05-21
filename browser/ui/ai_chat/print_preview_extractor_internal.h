@@ -26,6 +26,7 @@
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "printing/buildflags/buildflags.h"
 #include "printing/mojom/print.mojom.h"
@@ -53,6 +54,9 @@ class PreviewPageTextExtractor {
   virtual void StartExtract(base::ReadOnlySharedMemoryRegion pdf_region,
                             CallbackVariant callback,
                             std::optional<bool> pdf_use_skia_renderer_enabled);
+
+  void BindForTesting(
+      mojo::PendingRemote<printing::mojom::PdfToBitmapConverter> converter);
 
  private:
   void ScheduleNextPageOrComplete();

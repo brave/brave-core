@@ -34,6 +34,8 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/text_recognition/common/buildflags",
+    "//chrome/services/printing/public/mojom",
     "//chrome/test:test_support",
     "//components/favicon/content",
     "//components/favicon/core/test:test_support",
