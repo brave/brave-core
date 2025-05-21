@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/strings/stringprintf.h"
 #include "base/test/test_future.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/paint_preview/common/mojom/paint_preview_recorder.mojom.h"
