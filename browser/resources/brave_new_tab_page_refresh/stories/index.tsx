@@ -13,6 +13,7 @@ import { SearchProvider } from '../context/search_context'
 import { TopSitesProvider } from '../context/top_sites_context'
 import { VpnProvider } from '../context/vpn_context'
 import { RewardsProvider } from '../context/rewards_context'
+import { NewsProvider } from '../context/news_context'
 
 import { createNewTabHandler } from './new_tab_handler'
 import { createBackgroundHandler } from './background_handler'
@@ -20,8 +21,9 @@ import { createRewardsHandler } from './rewards_handler'
 import { createSearchHandler } from './search_handler'
 import { createTopSitesHandler } from './top_sites_handler'
 import { createVpnHandler } from './vpn_handler'
+import { createNewsHandler } from './news_handler'
 
-import { App } from '../components/app'
+import { App, NewsApp } from '../components/app'
 
 export default {
   title: 'New Tab/Refresh'
@@ -35,7 +37,9 @@ function StorybookAppProvider(props: { children: React.ReactNode }) {
             <TopSitesProvider createHandler={createTopSitesHandler}>
               <VpnProvider createHandler={createVpnHandler}>
                 <RewardsProvider createHandler={createRewardsHandler}>
-                  {props.children}
+                  <NewsProvider createHandler={createNewsHandler}>
+                    {props.children}
+                  </NewsProvider>
                 </RewardsProvider>
               </VpnProvider>
             </TopSitesProvider>
@@ -52,5 +56,17 @@ export function NTPRefresh() {
         <App />
       </div>
     </StorybookAppProvider>
+  )
+}
+
+export function NewsOnly() {
+  React.useEffect(() => {
+    document.body.style.padding = '0'
+  }, [])
+
+  return (
+    <NewsProvider createHandler={createNewsHandler}>
+      <NewsApp />
+    </NewsProvider>
   )
 }
