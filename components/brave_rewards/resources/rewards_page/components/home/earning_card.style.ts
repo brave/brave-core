@@ -92,6 +92,7 @@ export const style = scoped.css`
 
     display: flex;
     justify-content: space-between;
+    gap: 4px;
 
     button {
       font: ${font.components.buttonSmall};
