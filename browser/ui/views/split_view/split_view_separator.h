@@ -6,8 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_SEPARATOR_H_
 #define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_SEPARATOR_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_separator_delegate.h"
 #include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/controls/resize_area_delegate.h"
@@ -30,6 +33,11 @@ class SplitViewSeparator : public views::ResizeArea,
 
   void set_delegate(SplitViewSeparatorDelegate* delegate) {
     resize_area_delegate_ = delegate;
+  }
+
+  void set_separator_delegate(
+      BraveMultiContentsViewSeparatorDelegate* delegate) {
+    separator_delegate_ = delegate;
   }
 
   // views::View:
@@ -59,6 +67,9 @@ class SplitViewSeparator : public views::ResizeArea,
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<SplitViewSeparatorDelegate, DanglingUntriaged> resize_area_delegate_ =
+      nullptr;
+
+  raw_ptr<BraveMultiContentsViewSeparatorDelegate> separator_delegate_ =
       nullptr;
 
   std::unique_ptr<views::Widget> menu_button_widget_;

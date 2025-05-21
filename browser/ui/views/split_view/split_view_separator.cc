@@ -141,6 +141,10 @@ void SplitViewSeparator::AddedToWidget() {
 
 void SplitViewSeparator::VisibilityChanged(views::View* starting_from,
                                            bool is_visible) {
+  if (!menu_button_widget_) {
+    return;
+  }
+
   if (starting_from != this) {
     return;
   }
@@ -158,6 +162,11 @@ bool SplitViewSeparator::OnMousePressed(const ui::MouseEvent& event) {
     if (resize_area_delegate_) {
       resize_area_delegate_->OnDoubleClicked();
     }
+
+    if (separator_delegate_) {
+      separator_delegate_->OnSeparatorDoubleClicked();
+    }
+
     return true;
   }
 
@@ -198,6 +207,10 @@ void SplitViewSeparator::OnResize(int resize_amount, bool done_resizing) {
   GetWidget()->SetCursor(ui::Cursor(ui::mojom::CursorType::kEastWestResize));
   if (resize_area_delegate_) {
     resize_area_delegate_->OnResize(resize_amount, done_resizing);
+  }
+
+  if (separator_delegate_) {
+    separator_delegate_->OnSeparatorResize(resize_amount, done_resizing);
   }
 
   if (done_resizing == menu_button_widget_->IsVisible()) {

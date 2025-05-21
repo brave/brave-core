@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
+#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -34,9 +35,12 @@
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
 #include "ui/compositor/layer.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/view_utils.h"
 
 class SplitViewDisabledBrowserTest : public InProcessBrowserTest {
  public:
@@ -81,6 +85,12 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
       browser_view->multi_contents_view_for_testing());
   ASSERT_TRUE(multi_contents_view);
 
+  // Check MultiContentsView uses our separator and initially hidden.
+  auto* split_view_separator = views::AsViewClass<SplitViewSeparator>(
+      multi_contents_view->resize_area_for_testing());
+  ASSERT_TRUE(split_view_separator);
+  EXPECT_FALSE(split_view_separator->GetVisible());
+
   // separator should not be empty when split view is closed.
   EXPECT_NE(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
@@ -90,6 +100,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // separator should be empty when split view is opened.
   EXPECT_EQ(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
+  EXPECT_TRUE(split_view_separator->GetVisible());
 
   // Check corner radius.
   auto* start_contents_web_view =
@@ -112,6 +123,28 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
             start_contents_container_view->GetBorder()->GetInsets());
   EXPECT_EQ(gfx::Insets(BraveMultiContentsView::kBorderThickness),
             end_contents_container_view->GetBorder()->GetInsets());
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return start_contents_web_view->width() == end_contents_web_view->width();
+  }));
+
+  split_view_separator->OnResize(30, false);
+  split_view_separator->OnResize(30, true);
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return start_contents_web_view->width() != end_contents_web_view->width();
+  }));
+
+  // Check double click makes both contents view have same width.
+  const gfx::Point point(0, 0);
+  ui::MouseEvent event(ui::EventType::kMousePressed, point, point,
+                       ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
+                       ui::EF_LEFT_MOUSE_BUTTON);
+  event.SetClickCount(2);
+  split_view_separator->OnMousePressed(event);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return start_contents_web_view->width() == end_contents_web_view->width();
+  }));
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
@@ -155,6 +188,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
       static_cast<BraveBrowserViewLayout*>(browser_view().GetLayoutManager())
           ->contents_container(),
       &split_view());
+
+  // MultiContentsView is not initialized if we don't enable
+  // features::kSideBySide.
+  EXPECT_FALSE(browser_view().multi_contents_view_for_testing());
 }
 
 // MacOS does not need views window scrim. We use sheet to show window modals

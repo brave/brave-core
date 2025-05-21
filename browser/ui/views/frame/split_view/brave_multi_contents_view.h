@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_separator_delegate.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -19,7 +20,8 @@ class Widget;
 
 class SplitViewLocationBar;
 
-class BraveMultiContentsView : public MultiContentsView {
+class BraveMultiContentsView : public MultiContentsView,
+                               public BraveMultiContentsViewSeparatorDelegate {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
  public:
@@ -40,6 +42,10 @@ class BraveMultiContentsView : public MultiContentsView {
   void UpdateContentsBorder() override;
   void Layout(PassKey) override;
   void SetActiveIndex(int index) override;
+
+  // BraveMultiContentsViewSeparatorDelegate:
+  void OnSeparatorResize(int resize_amount, bool done_resizing) override;
+  void OnSeparatorDoubleClicked() override;
 
   float GetCornerRadius() const;
   void UpdateSecondaryLocationBar();
