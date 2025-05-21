@@ -18,7 +18,6 @@ import useMediaQuery from '$web-common/useMediaQuery'
 const SidebarMenu = React.lazy(() => import('./SidebarMenu'))
 const FeedNavigation = React.lazy(() => import('./FeedNavigation'))
 
-const CLASSNAME_PAGE_STUCK = 'page-stuck'
 const isSmallQuery = '(max-width: 1024px)'
 
 const Root = styled(Variables)`
@@ -32,31 +31,15 @@ const Root = styled(Variables)`
 `
 
 const SidebarContainer = styled.div`
-  visibility: hidden;
   position: sticky;
   top: ${spacing.xl};
-
-  opacity: calc(var(--ntp-extra-content-effect-multiplier));
-
-  .${CLASSNAME_PAGE_STUCK} & {
-    visibility: visible;
-  }
 `
 
 const ButtonsContainer = styled.div`
-  visibility: hidden;
-
   position: fixed;
   bottom: ${spacing['5Xl']};
   right: ${spacing['5Xl']};
   border-radius: ${radius.m};
-
-  opacity: calc((var(--ntp-scroll-percent) - 0.5) / 0.5);
-
-  .${CLASSNAME_PAGE_STUCK} & {
-    visibility: visible;
-  }
-
   padding: ${spacing.m};
 
   background: var(--bn-glass-container);
@@ -104,16 +87,16 @@ export default function FeedV2() {
   // Note: Whenever the feed is updated, if we're viewing the feed, scroll to
   // the top.
   React.useLayoutEffect(() => {
-    const root = document.querySelector<HTMLElement>('#root')
-    if (!root?.classList.contains(CLASSNAME_PAGE_STUCK)) {
-      return
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect()
+      if (rect.top < window.innerHeight / 2) {
+        ref.current.scrollIntoView()
+      }
     }
-
-    ref.current?.scrollIntoView()
   }, [feedV2?.items])
 
   return <Root ref={ref as any} data-theme="dark">
-    <SidebarContainer>
+    <SidebarContainer className='brave-news-sidebar'>
       {!isSmall && <React.Suspense fallback={null}><FeedNavigation /></React.Suspense>}
     </SidebarContainer>
     <Flex align='center' direction='column' gap={spacing.l}>
@@ -123,7 +106,7 @@ export default function FeedV2() {
       <Feed feed={feedV2} onViewCountChange={reportViewCount} onSessionStart={reportSessionStart} />
     </Flex>
 
-    <ButtonsContainer>
+    <ButtonsContainer className='brave-news-feed-controls'>
       <ButtonSpacer>
         {isSmall && <React.Suspense fallback={null}><SidebarMenu /></React.Suspense>}
         <SettingsButton onClick={() => setCustomizePage('news')} title={getLocale('braveNewsCustomizeFeed')}>
