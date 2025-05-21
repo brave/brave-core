@@ -44,5 +44,6 @@ _BRAVE_VALUES = {
 def _merge_dicts(src, dst):
     result = dict(dst)
     for k, v in src.items():
-        result[k] = _merge_dicts(v, dst.get(k, {})) if isinstance(v, dict) else v
+        result[k] = _merge_dicts(v, dst.get(k, {})) if isinstance(v,
+                                                                  dict) else v
     return result
