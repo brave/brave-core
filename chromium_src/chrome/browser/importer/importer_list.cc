@@ -39,16 +39,16 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     // We can't import passwords from Chrome due to encryption. See
     // https://github.com/brave/brave-browser/issues/34046
     // #issuecomment-2857856039
-    if (type == importer::TYPE_CHROME && (items & importer::PASSWORDS)) {
-      items ^= importer::PASSWORDS;
-    }
+    // We can import password from Whale only on macOS; decryption fails on
+    // Windows and Linux.
+    if ((type == importer::TYPE_CHROME
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-    // We can import password from Whale only on macOS.
-    // Decryption failed on Windows and Linux.
-    else if (type == importer::TYPE_WHALE && (items & importer::PASSWORDS)) {
+         || type == importer::TYPE_WHALE
+#endif
+         ) &&
+        (items & importer::PASSWORDS)) {
       items ^= importer::PASSWORDS;
     }
-#endif
     importer::SourceProfile chrome;
     chrome.importer_name = base::UTF8ToUTF16(base::StrCat({brand, " ", *name}));
     chrome.importer_type = type;
