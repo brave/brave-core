@@ -1044,6 +1044,7 @@ class Upgrade(Versioned):
             self.target_version)
         with open(versioning.PACKAGE_FILE, "w") as package_file:
             json.dump(package, package_file, indent=2)
+            package_file.write("\n")
 
         repository.brave.run_git('add', versioning.PACKAGE_FILE)
 
