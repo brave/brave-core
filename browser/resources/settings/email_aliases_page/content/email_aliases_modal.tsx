@@ -8,6 +8,7 @@ import { color, font, radius, spacing, typography } from
 import { formatLocale, getLocale } from '$web-common/locale'
 import { onEnterKeyForInput } from "./on_enter_key"
 import * as React from 'react'
+import Alert from "@brave/leo/react/alert"
 import Button from "@brave/leo/react/button"
 import Col from "./styles/Col"
 import Icon from "@brave/leo/react/icon"
@@ -152,6 +153,8 @@ export const EmailAliasModal = (
     editState?.alias?.note ?? '')
   const [awaitingProposedAlias, setAwaitingProposedAlias] =
     React.useState<boolean>(true)
+  const [generationErrorMessage, setGenerationErrorMessage] =
+    React.useState<string | null>(null)
   const createOrSave = async () => {
     if (proposedAlias) {
       emailAliasesService.updateAlias(proposedAlias, proposedNote)
@@ -160,11 +163,18 @@ export const EmailAliasModal = (
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
-    const { aliasEmail } = await emailAliasesService.generateAlias()
-    if (editState.mode === 'Create' || editState.mode === 'Edit') {
-      setProposedAlias(aliasEmail)
-      setAwaitingProposedAlias(false)
+    setProposedAlias('')
+    setGenerationErrorMessage(null)
+    const { aliasEmail, errorMessage } =
+      await emailAliasesService.generateAlias()
+    if (errorMessage) {
+      setGenerationErrorMessage(errorMessage)
+    } else {
+      if (aliasEmail) {
+        setProposedAlias(aliasEmail)
+      }
     }
+    setAwaitingProposedAlias(false)
   }
   React.useEffect(() => {
     if (bubble) {
@@ -196,6 +206,10 @@ export const EmailAliasModal = (
                                 onClick={regenerateAlias}
                                 waiting={awaitingProposedAlias} />}
               </GeneratedEmailContainer>
+              {generationErrorMessage &&
+                <Alert>
+                  {generationErrorMessage}
+                </Alert>}
               <ModalDetails>
                 {formatLocale('emailAliasesEmailsWillBeForwardedTo',
                   { $1: mainEmail })}
@@ -227,7 +241,8 @@ export const EmailAliasModal = (
           <Button
             kind='filled'
             isDisabled={editState.mode === 'Create'
-                         && (limitReached || awaitingProposedAlias)}
+                         && (limitReached || awaitingProposedAlias ||
+                             !proposedAlias)}
             onClick={createOrSave}>
             {editState.mode === 'Create'
               ? getLocale('emailAliasesCreateAliasButton')

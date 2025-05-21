@@ -10,6 +10,7 @@ import { EmailAliasModal, EditState } from '../content/email_aliases_modal'
 import { clickLeoButton } from './test_utils'
 import { EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
+import { getLocale } from '$web-common/locale'
 
 jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
@@ -188,8 +189,9 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows loading state while generating alias', async () => {
+    const aliasEmail = 'new@brave.com'
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve('new@brave.com'))
+      () => Promise.resolve({ aliasEmail }))
 
     render(
       <EmailAliasModal
@@ -214,6 +216,44 @@ describe('EmailAliasModal', () => {
       const regenerateButton = screen.queryByTitle(
         'emailAliasesRefreshButtonTitle')
       expect(regenerateButton).toBeInTheDocument()
+      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      expect(saveButton).toHaveAttribute('isdisabled', 'false')
+      const aliasEmailBox = screen.getByText('emailAliasesAliasLabel')
+        .closest('div')?.nextElementSibling
+      expect(aliasEmailBox).toHaveTextContent(aliasEmail)
+    })
+  })
+
+  it("shows error message when generating alias fails", async () => {
+    mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
+      () => Promise.resolve({
+        errorMessage: getLocale('emailAliasesGenerateError'),
+      }))
+
+    render(
+      <EmailAliasModal
+        editState={{ mode: 'Create' }}
+        mainEmail={mockEmail}
+        aliasCount={0}
+        onReturnToMain={mockOnReturnToMain}
+        emailAliasesService={mockEmailAliasesService}
+      />
+    )
+
+    // Wait for error message to be displayed. Create button should be disabled.
+    await waitFor(() => {
+      const loadingIcon = document.querySelector('leo-progressring')
+      expect(loadingIcon).not.toBeInTheDocument()
+      const regenerateButton = screen.queryByTitle(
+        'emailAliasesRefreshButtonTitle')
+      expect(regenerateButton).toBeInTheDocument()
+      expect(screen.getByText(getLocale('emailAliasesGenerateError')))
+        .toBeInTheDocument()
+      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      expect(saveButton).toHaveAttribute('isdisabled', 'true')
+      const aliasEmailBox = screen.getByText('emailAliasesAliasLabel')
+        .closest('div')?.nextElementSibling
+      expect(aliasEmailBox).toHaveTextContent('')
     })
   })
 

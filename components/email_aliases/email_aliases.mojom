@@ -51,7 +51,7 @@ interface EmailAliasesService {
   CancelAuthenticationOrLogout();
 
   // Generate a proposed email alias.
-  GenerateAlias() => (string alias_email);
+  GenerateAlias() => (string? alias_email, string? error_message);
 
   // Create or Update an existing email alias.
   UpdateAlias(string alias_email, string? note);
