@@ -8,6 +8,7 @@
 #include "base/functional/function_ref.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "base/version.h"

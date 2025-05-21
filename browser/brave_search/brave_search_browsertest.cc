@@ -8,7 +8,6 @@
 #include "base/functional/callback.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -35,6 +34,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using extensions::ExtensionBrowserTest;
 using RequestExpectationsCallback =
