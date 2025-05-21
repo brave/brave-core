@@ -14,6 +14,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
+#include "brave/components/psst/browser/core/psst_opeartion_context.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "content/public/browser/web_contents.h"
@@ -46,15 +47,22 @@ std::string GetScriptWithParams(const std::string& script,
 
 }  // namespace
 
-PsstScriptsHandler::PsstScriptsHandler() = default;
+PsstScriptsHandler::PsstScriptsHandler(
+    std::unique_ptr<PsstOperationContext> context)
+    : context_(std::move(context)) {}
 PsstScriptsHandler::~PsstScriptsHandler() = default;
+
+PsstOperationContext* PsstScriptsHandler::GetOperationContext() {
+  return context_.get();
+}
 
 PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     PrefService* prefs,
     content::WebContents* web_contents,
     const content::RenderFrameHost* render_frame_host,
     const int32_t world_id)
-    : prefs_(prefs),
+    : PsstScriptsHandler(std::make_unique<PsstOperationContext>()),
+      prefs_(prefs),
       render_frame_host_id_(render_frame_host->GetGlobalId()),
       web_contents_(web_contents),
       world_id_(world_id) {
@@ -70,7 +78,9 @@ void PsstScriptsHandlerImpl::Start() {
   auto url = web_contents_->GetLastCommittedURL();
 
   PsstRuleRegistry::GetInstance()->CheckIfMatch(
-      url, base::BindOnce(&PsstScriptsHandlerImpl::InsertUserScript,
+      url, base::BindOnce(GetOperationContext()->IsUserScriptExecuted()
+                              ? &PsstScriptsHandlerImpl::InsertPolicyScript
+                              : &PsstScriptsHandlerImpl::InsertUserScript,
                           weak_factory_.GetWeakPtr()));
 }
 
@@ -92,6 +102,13 @@ void PsstScriptsHandlerImpl::OnUserScriptResult(const MatchedRule& rule,
   }
 
   InsertScriptInPage(rule.PolicyScript(), std::nullopt, base::DoNothing());
+}
+
+void PsstScriptsHandlerImpl::InsertPolicyScript(
+    const std::optional<MatchedRule>& rule) {
+  if (!rule) {
+    return;
+  }
 }
 
 void PsstScriptsHandlerImpl::InsertScriptInPage(

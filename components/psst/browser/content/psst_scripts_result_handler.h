@@ -18,6 +18,7 @@ class PrefService;
 
 namespace psst {
 
+class PsstOperationContext;
 class MatchedRule;
 
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
@@ -27,13 +28,16 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
   PsstScriptsHandler(const PsstScriptsHandler&) = delete;
   PsstScriptsHandler& operator=(const PsstScriptsHandler&) = delete;
 
-  PsstScriptsHandler();
+  explicit PsstScriptsHandler(std::unique_ptr<PsstOperationContext> context);
   virtual ~PsstScriptsHandler();
 
   virtual void Start() = 0;
 
+  PsstOperationContext* GetOperationContext();
+
  private:
   virtual void InsertUserScript(const std::optional<MatchedRule>& rule) = 0;
+  virtual void InsertPolicyScript(const std::optional<MatchedRule>& rule) = 0;
 
   virtual void OnUserScriptResult(const MatchedRule& rule,
                                   base::Value script_result) = 0;
@@ -44,6 +48,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandler {
 
   virtual mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
   GetRemote(content::RenderFrameHost* rfh) = 0;
+
+  std::unique_ptr<PsstOperationContext> context_;
 };
 
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
@@ -60,6 +66,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstScriptsHandlerImpl
 
  private:
   void InsertUserScript(const std::optional<MatchedRule>& rule) override;
+  void InsertPolicyScript(const std::optional<MatchedRule>& rule) override;
 
   void OnUserScriptResult(const MatchedRule& rule,
                           base::Value script_result) override;
