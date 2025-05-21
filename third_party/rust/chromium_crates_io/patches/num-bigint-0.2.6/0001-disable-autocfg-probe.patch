@@ -7,10 +7,10 @@ Subject: [PATCH] disable autocfg probe
  .../rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs     | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
+diff --git a/brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs b/brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
 index e483c15fd7f..3ea385c1c4e 100644
---- a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
-+++ b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
+--- a/brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
++++ b/brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs
 @@ -3,6 +3,7 @@ extern crate autocfg;
  use std::env;
 

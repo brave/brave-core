@@ -7,10 +7,10 @@ Subject: [PATCH] disable autocfg probe
  third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs b/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs
+diff --git a/brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs b/brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs
 index b60351aaf2a..6a56d349119 100644
---- a/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs
-+++ b/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs
+--- a/brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs
++++ b/brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs
 @@ -1,4 +1,5 @@
  fn main() {
 +    return; #[allow(unused)]
