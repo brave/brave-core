@@ -138,10 +138,11 @@ void ExtensionManifestV2Installer::BeginInstall() {
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), kExtensionsMV2ManifestAnnotationTag);
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&ExtensionManifestV2Installer::OnUpdateManifestResponse,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()),
+      4096);
 }
 
 void ExtensionManifestV2Installer::OnUpdateManifestResponse(
@@ -156,7 +157,7 @@ void ExtensionManifestV2Installer::OnUpdateManifestResponse(
     }
   }
 
-  std::move(callback_).Run(false, "Failed to download extension.",
+  std::move(callback_).Run(false, "Failed to download extension manifest.",
                            extensions::webstore_install::Result::OTHER_ERROR);
 }
 
