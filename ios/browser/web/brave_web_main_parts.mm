@@ -15,6 +15,7 @@
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
+#include "chrome/browser/component_updater/zxcvbn_data_component_installer.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
@@ -30,6 +31,7 @@ void RegisterComponentsForUpdate(
           cus, GetApplicationContext()->GetLocalState());
   ai_chat::ManageLocalModelsComponentRegistration(cus);
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
+  RegisterZxcvbnDataComponent(cus);
 }
 }  // namespace
 
