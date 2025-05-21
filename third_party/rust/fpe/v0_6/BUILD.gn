@@ -26,10 +26,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.6.1"
   cargo_pkg_authors = "Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "fpe"
   cargo_pkg_description = "Format-preserving encryption"
+  cargo_pkg_version = "0.6.1"
+
   deps = [
     "//brave/third_party/rust/cbc/v0_1:lib",
     "//brave/third_party/rust/cipher/v0_4:lib",

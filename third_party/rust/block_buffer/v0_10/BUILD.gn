@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.10.4"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "block-buffer"
   cargo_pkg_description = "Buffer type for block processing of data"
+  cargo_pkg_version = "0.10.4"
+
   deps = [ "//brave/third_party/rust/generic_array/v0_14:lib" ]
   rustenv = []
   rustflags = []

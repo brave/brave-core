@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.1"
   cargo_pkg_authors = "Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "memuse"
   cargo_pkg_description = "Traits for measuring dynamic memory usage of types"
+  cargo_pkg_version = "0.2.1"
+
   deps = [ "//brave/third_party/rust/nonempty/v0_7:lib" ]
   features = [ "nonempty" ]
   rustenv = []

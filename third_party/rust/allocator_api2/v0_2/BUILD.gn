@@ -36,10 +36,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.21"
   cargo_pkg_authors = "Zakarum <zaq.dev@icloud.com>"
   cargo_pkg_name = "allocator-api2"
   cargo_pkg_description = "Mirror of Rust's allocator API"
+  cargo_pkg_version = "0.2.21"
+
   features = [ "alloc" ]
   rustenv = []
   rustflags = []

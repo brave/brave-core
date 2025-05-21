@@ -41,11 +41,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.0.0"
   cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>, Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>"
   cargo_pkg_name = "http"
   cargo_pkg_description =
       "A set of types for representing HTTP requests and responses."
+  cargo_pkg_version = "1.0.0"
+
   deps = [
     "//brave/third_party/rust/bytes/v1:lib",
     "//brave/third_party/rust/fnv/v1:lib",

@@ -29,10 +29,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "3.0.2"
   cargo_pkg_authors = "Alex Crichton <alex@alexcrichton.com>"
   cargo_pkg_name = "futures-timer"
   cargo_pkg_description = "Timeouts for futures."
+  cargo_pkg_version = "3.0.2"
+
   rustenv = []
   rustflags = []
 

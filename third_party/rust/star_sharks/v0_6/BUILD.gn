@@ -21,11 +21,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.6.1"
   cargo_pkg_authors = "Aitor Ruano <codearm@pm.me>, Alex Davidson <coela@alxdavids.xyz>, Ralph Giles <rgiles@brave.com>"
   cargo_pkg_name = "star-sharks"
   cargo_pkg_description =
       "Shamir's Secret Sharing library for the STAR protocol"
+  cargo_pkg_version = "0.6.1"
+
   deps = [
     "//brave/third_party/rust/bitvec/v1:lib",
     "//brave/third_party/rust/byteorder/v1:lib",

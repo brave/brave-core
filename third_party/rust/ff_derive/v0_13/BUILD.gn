@@ -21,11 +21,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.13.0"
   cargo_pkg_authors =
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "ff_derive"
   cargo_pkg_description = "Procedural macro library used to build custom prime field implementations"
+  cargo_pkg_version = "0.13.0"
+
   deps = [
     "//brave/third_party/rust/addchain/v0_2:lib",
     "//brave/third_party/rust/cfg_if/v1:lib",

@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.7"
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "string_cache"
   cargo_pkg_description = "A string interning library for Rust, developed as part of the Servo project."
+  cargo_pkg_version = "0.8.7"
+
   deps = [
     "//brave/third_party/rust/new_debug_unreachable/v1:lib",
     "//brave/third_party/rust/once_cell/v1:lib",

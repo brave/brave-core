@@ -18,9 +18,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-io"
   cargo_pkg_description = "The `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library."
+  cargo_pkg_version = "0.3.31"
+
   features = [ "std" ]
   rustenv = []
   rustflags = []

@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.3.17"
   cargo_pkg_authors = "Sean McArthur <sean@seanmonstar.com>"
   cargo_pkg_name = "mime"
   cargo_pkg_description = "Strongly Typed Mimes"
+  cargo_pkg_version = "0.3.17"
+
   rustenv = []
   rustflags = []
 

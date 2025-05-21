@@ -28,11 +28,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.41"
   cargo_pkg_authors =
       "Eliza Weisman <eliza@buoyant.io>, Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing"
   cargo_pkg_description = "Application-level tracing for Rust."
+  cargo_pkg_version = "0.1.41"
+
   deps = [
     "//brave/third_party/rust/pin_project_lite/v0_2:lib",
     "//brave/third_party/rust/tracing_attributes/v0_1:lib",

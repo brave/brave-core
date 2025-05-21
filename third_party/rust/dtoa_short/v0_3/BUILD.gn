@@ -18,11 +18,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.3.3"
   cargo_pkg_authors = "Xidorn Quan <me@upsuper.org>"
   cargo_pkg_name = "dtoa-short"
   cargo_pkg_description =
       "Serialize float number and truncate to certain precision"
+  cargo_pkg_version = "0.3.3"
+
   deps = [ "//brave/third_party/rust/dtoa/v0_4:lib" ]
   rustenv = []
   rustflags = []

@@ -22,11 +22,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.28"
   cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>, Eliza Weisman <eliza@buoyant.io>, David Barsky <dbarsky@amazon.com>"
   cargo_pkg_name = "tracing-attributes"
   cargo_pkg_description =
       "Procedural macro attributes for automatically instrumenting functions."
+  cargo_pkg_version = "0.1.28"
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",

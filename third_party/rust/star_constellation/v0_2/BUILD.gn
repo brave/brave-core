@@ -24,11 +24,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.2.5"
   cargo_pkg_authors = "Alex Davidson <coela@alxdavids.xyz>"
   cargo_pkg_name = "star-constellation"
   cargo_pkg_description =
       "Nested threshold aggregation built on the STAR protocol"
+  cargo_pkg_version = "0.2.5"
+
   deps = [
     "//brave/third_party/rust/bincode/v1:lib",
     "//brave/third_party/rust/lazy_static/v1:lib",

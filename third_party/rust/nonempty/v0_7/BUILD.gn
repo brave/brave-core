@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.7.0"
   cargo_pkg_authors = "Alexis Sellier <self@cloudhead.io>"
   cargo_pkg_name = "nonempty"
   cargo_pkg_description = "Correct by construction non-empty vector"
+  cargo_pkg_version = "0.7.0"
+
   rustenv = []
   rustflags = []
 

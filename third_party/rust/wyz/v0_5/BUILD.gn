@@ -27,10 +27,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.5.1"
   cargo_pkg_authors = "myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "wyz"
   cargo_pkg_description = "myrrlyn’s utility collection"
+  cargo_pkg_version = "0.5.1"
+
   deps = [ "//brave/third_party/rust/tap/v1:lib" ]
   rustenv = []
   rustflags = []

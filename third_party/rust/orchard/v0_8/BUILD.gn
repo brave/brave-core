@@ -58,10 +58,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.8.0"
   cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira-Emma Hopwood <daira@jacaranda.org>, Ying Tong Lai, Kris Nuttycombe <kris@electriccoin.co>"
   cargo_pkg_name = "orchard"
   cargo_pkg_description = "The Orchard shielded transaction protocol"
+  cargo_pkg_version = "0.8.0"
+
   deps = [
     "//brave/third_party/rust/aes/v0_8:lib",
     "//brave/third_party/rust/bitvec/v1:lib",

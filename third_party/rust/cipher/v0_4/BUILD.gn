@@ -28,11 +28,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.4.4"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "cipher"
   cargo_pkg_description =
       "Traits for describing block ciphers and stream ciphers"
+  cargo_pkg_version = "0.4.4"
+
   deps = [
     "//brave/third_party/rust/crypto_common/v0_1:lib",
     "//brave/third_party/rust/inout/v0_1:lib",

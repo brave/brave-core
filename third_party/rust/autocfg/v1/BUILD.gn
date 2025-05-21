@@ -24,10 +24,11 @@ cargo_crate("buildrs_support") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "1.2.0"
   cargo_pkg_authors = "Josh Stone <cuviper@gmail.com>"
   cargo_pkg_name = "autocfg"
   cargo_pkg_description = "Automatic cfg for Rust compiler features"
+  cargo_pkg_version = "1.2.0"
+
   rustenv = []
   rustflags = []
 

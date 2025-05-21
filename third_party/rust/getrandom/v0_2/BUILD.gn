@@ -43,10 +43,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.15"
   cargo_pkg_authors = "The Rand Project Developers"
   cargo_pkg_name = "getrandom"
   cargo_pkg_description = "A small cross-platform library for retrieving random data from system source"
+  cargo_pkg_version = "0.2.15"
+
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   if (!is_win) {
     deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]

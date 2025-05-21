@@ -42,10 +42,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.9.6"
   cargo_pkg_authors = "Anton Lazarev <alazarev@brave.com>, Andrius Aucinas"
   cargo_pkg_name = "adblock"
   cargo_pkg_description = "Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching."
+  cargo_pkg_version = "0.9.6"
+
   deps = [
     "//brave/third_party/rust/base64/v0_22:lib",
     "//brave/third_party/rust/bitflags/v1:lib",

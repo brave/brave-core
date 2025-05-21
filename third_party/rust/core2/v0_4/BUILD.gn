@@ -29,10 +29,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.4.0"
   cargo_pkg_authors = "Brendan Molloy <brendan@bbqsrc.net>"
   cargo_pkg_name = "core2"
   cargo_pkg_description = "The bare essentials of std::io for use in no_std. Alloc support is optional."
+  cargo_pkg_version = "0.4.0"
+
   deps = [ "//brave/third_party/rust/memchr/v2:lib" ]
   features = [ "alloc" ]
   rustenv = []

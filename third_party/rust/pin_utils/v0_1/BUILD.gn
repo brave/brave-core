@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.0"
   cargo_pkg_authors = "Josef Brandl <mail@josefbrandl.de>"
   cargo_pkg_name = "pin-utils"
   cargo_pkg_description = "Utilities for pinning"
+  cargo_pkg_version = "0.1.0"
+
   rustenv = []
   rustflags = []
 

@@ -32,18 +32,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "25.2.10"
   cargo_pkg_authors =
       "Robert Winslow <hello@rwinslow.com>, FlatBuffers Maintainers"
   cargo_pkg_name = "flatbuffers"
   cargo_pkg_description = "Official FlatBuffers Rust runtime library."
-  library_configs -= [ "//build/config/coverage:default_coverage" ]
-  library_configs -= [ "//build/config/compiler:chromium_code" ]
-  library_configs += [ "//build/config/compiler:no_chromium_code" ]
-  executable_configs -= [ "//build/config/compiler:chromium_code" ]
-  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
-  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  cargo_pkg_version = "25.2.10"
+
   deps = [ "//brave/third_party/rust/bitflags/v2:lib" ]
   build_deps = [ "//brave/third_party/rust/rustc_version/v0_4:buildrs_support" ]
   features = [

@@ -27,9 +27,10 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.10"
   cargo_pkg_name = "matches"
   cargo_pkg_description = "A macro to evaluate, as a boolean, whether an expression matches a pattern."
+  cargo_pkg_version = "0.1.10"
+
   rustenv = []
   rustflags = []
 

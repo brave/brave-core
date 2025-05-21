@@ -22,11 +22,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.11.0"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "crypto-mac"
   cargo_pkg_description =
       "Trait for Message Authentication Code (MAC) algorithms"
+  cargo_pkg_version = "0.11.0"
+
   deps = [
     "//brave/third_party/rust/generic_array/v0_14:lib",
     "//brave/third_party/rust/subtle/v2:lib",

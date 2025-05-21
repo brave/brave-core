@@ -55,11 +55,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.7.3"
   cargo_pkg_authors = "The Rand Project Developers, The Rust Project Developers"
   cargo_pkg_name = "rand"
   cargo_pkg_description =
       "Random number generators and other randomness functionality."
+  cargo_pkg_version = "0.7.3"
+
   deps = [
     "//brave/third_party/rust/getrandom/v0_1:lib",
     "//brave/third_party/rust/rand_chacha/v0_2:lib",

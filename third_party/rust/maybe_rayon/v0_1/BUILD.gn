@@ -18,10 +18,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.1"
   cargo_pkg_name = "maybe-rayon"
   cargo_pkg_description =
       "Either acts as rayon or creates a single-threaded facade"
+  cargo_pkg_version = "0.1.1"
+
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   rustenv = []
   rustflags = []

@@ -24,11 +24,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "1.0.1"
   cargo_pkg_authors =
       "Elliott Linder <elliott.darfink@gmail.com>, myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "tap"
   cargo_pkg_description = "Generic extensions for tapping values in Rust"
+  cargo_pkg_version = "1.0.1"
+
   rustenv = []
   rustflags = []
 

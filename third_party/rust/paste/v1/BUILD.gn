@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.0.12"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "paste"
   cargo_pkg_description = "Macros for all your token pasting needs"
+  cargo_pkg_version = "1.0.12"
+
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/build.rs"
   build_sources =

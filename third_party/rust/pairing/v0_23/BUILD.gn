@@ -18,11 +18,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.23.0"
   cargo_pkg_authors =
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <jack@z.cash>"
   cargo_pkg_name = "pairing"
   cargo_pkg_description = "Pairing-friendly elliptic curve library"
+  cargo_pkg_version = "0.23.0"
+
   deps = [ "//brave/third_party/rust/group/v0_13:lib" ]
   rustenv = []
   rustflags = []

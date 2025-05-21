@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.5"
   cargo_pkg_authors = "Keegan McAllister <kmcallister@mozilla.com>"
   cargo_pkg_name = "futf"
   cargo_pkg_description = "Handling fragments of UTF-8"
+  cargo_pkg_version = "0.1.5"
+
   deps = [
     "//brave/third_party/rust/mac/v0_1:lib",
     "//brave/third_party/rust/new_debug_unreachable/v1:lib",

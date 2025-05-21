@@ -23,11 +23,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.4.8"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "dtoa"
   cargo_pkg_description =
       "Fast functions for printing floating-point primitives to an io::Write"
+  cargo_pkg_version = "0.4.8"
+
   rustenv = []
   rustflags = []
 

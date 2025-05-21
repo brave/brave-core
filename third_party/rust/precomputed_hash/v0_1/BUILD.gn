@@ -18,11 +18,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.1"
   cargo_pkg_authors = "Emilio Cobos Álvarez <emilio@crisal.io>"
   cargo_pkg_name = "precomputed-hash"
   cargo_pkg_description =
       "A library intending to be a base dependency to expose a precomputed hash"
+  cargo_pkg_version = "0.1.1"
+
   rustenv = []
   rustflags = []
 

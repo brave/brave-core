@@ -22,10 +22,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2015"
-  cargo_pkg_version = "0.1.3"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "keccak"
   cargo_pkg_description = "Pure Rust implementation of the Keccak sponge function including the keccak-f and keccak-p variants"
+  cargo_pkg_version = "0.1.3"
+
   deps = []
   if (current_cpu == "arm64") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]

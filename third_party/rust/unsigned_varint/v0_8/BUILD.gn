@@ -26,10 +26,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.8.0"
   cargo_pkg_authors = "Parity Technologies <admin@parity.io>"
   cargo_pkg_name = "unsigned-varint"
   cargo_pkg_description = "unsigned varint encoding"
+  cargo_pkg_version = "0.8.0"
+
   rustenv = []
   rustflags = []
 

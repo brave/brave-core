@@ -25,11 +25,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.11.3"
   cargo_pkg_authors = "Steven Fackler <sfackler@gmail.com>"
   cargo_pkg_name = "phf"
   cargo_pkg_description =
       "Runtime support for perfect hash function data structures"
+  cargo_pkg_version = "0.11.3"
+
   deps = [
     "//brave/third_party/rust/phf_macros/v0_11:lib",
     "//brave/third_party/rust/phf_shared/v0_11:lib",

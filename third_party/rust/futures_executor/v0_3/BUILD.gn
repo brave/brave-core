@@ -24,10 +24,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-executor"
   cargo_pkg_description =
       "Executors for asynchronous tasks based on the futures-rs library."
+  cargo_pkg_version = "0.3.31"
+
   deps = [
     "//brave/third_party/rust/futures_core/v0_3:lib",
     "//brave/third_party/rust/futures_task/v0_3:lib",

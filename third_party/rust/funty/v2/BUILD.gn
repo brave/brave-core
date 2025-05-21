@@ -21,10 +21,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "2.0.0"
   cargo_pkg_authors = "myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "funty"
   cargo_pkg_description = "Trait generalization over the primitive types"
+  cargo_pkg_version = "2.0.0"
+
   rustenv = []
   rustflags = []
 

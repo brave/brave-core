@@ -27,10 +27,11 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.9.1"
   cargo_pkg_authors = "RustCrypto Developers"
   cargo_pkg_name = "chacha20"
   cargo_pkg_description = "The ChaCha20 stream cipher (RFC 8439) implemented in pure Rust using traits from the RustCrypto `cipher` crate, with optional architecture-specific hardware acceleration (AVX2, SSE2). Additionally provides the ChaCha8, ChaCha12, XChaCha20, XChaCha12 and XChaCha8 stream ciphers, and also optional rand_core-compatible RNGs based on those ciphers."
+  cargo_pkg_version = "0.9.1"
+
   deps = [
     "//brave/third_party/rust/cfg_if/v1:lib",
     "//brave/third_party/rust/cipher/v0_4:lib",
