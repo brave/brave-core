@@ -160,8 +160,9 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
                                             @Override
                                             public void run() {
                                                 assert onViewPagerAction != null;
-                                                if (onViewPagerAction != null)
+                                                if (onViewPagerAction != null) {
                                                     onViewPagerAction.onNext();
+                                                }
                                             }
                                         },
                                         1000);
