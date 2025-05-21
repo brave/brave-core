@@ -1,15 +1,15 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 0aae1d3b2777d5f6db711d1ade99b4bde24e76bf..4b3a0d5795939b2c0c36b22be0172e39ba8192d5 100644
+index b379cc24f772260ea360779b26ca0836d21c89c4..f9960d6f4954b541aae87a94d53ba21d394a32b3 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
-@@ -104,6 +104,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
-     return RequestTypeForUma::MULTIPLE_KEYBOARD_AND_POINTER_LOCK;
+@@ -112,6 +112,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
+   if (requests.size() == 1) {
+     return GetUmaValueForRequestType(request_type);
    }
- #endif
 +  BRAVE_GET_UMA_VALUE_FOR_REQUESTS
-   return RequestTypeForUma::UNKNOWN;
+   return permissions::GetUmaValueForRequests(request_type);
  }
- 
+
 @@ -192,6 +193,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
  #endif
      case RequestType::kIdentityProvider:
@@ -17,12 +17,12 @@ index 0aae1d3b2777d5f6db711d1ade99b4bde24e76bf..4b3a0d5795939b2c0c36b22be0172e39
 +    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
    }
  }
- 
+
 @@ -504,6 +506,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOCAL_NETWORK_ACCESS;
      case PermissionType::NUM:
        break;
 +    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
    }
- 
+
    return ContentSettingsType::DEFAULT;

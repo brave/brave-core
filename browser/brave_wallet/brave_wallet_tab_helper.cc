@@ -220,7 +220,7 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   // Handle ConnectWithSite (ethereum permission) request.
   std::vector<std::string> accounts;
   url::Origin requesting_origin;
-  for (permissions::PermissionRequest* request : manager->Requests()) {
+  for (const auto& request : manager->Requests()) {
     std::string account;
     if (!ParseRequestingOriginFromSubRequest(
             request->request_type(),

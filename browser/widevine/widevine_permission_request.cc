@@ -34,9 +34,7 @@ WidevinePermissionRequest::WidevinePermissionRequest(
               false,
               web_contents->GetVisibleURL()),
           base::BindRepeating(&WidevinePermissionRequest::PermissionDecided,
-                              base::Unretained(this)),
-          base::BindOnce(&WidevinePermissionRequest::DeleteRequest,
-                         base::Unretained(this))),
+                              base::Unretained(this))),
       web_contents_(web_contents),
       for_restart_(for_restart) {}
 
@@ -92,10 +90,6 @@ void WidevinePermissionRequest::PermissionDecided(
     DCHECK(result == CONTENT_SETTING_DEFAULT);
     // Do nothing.
   }
-}
-
-void WidevinePermissionRequest::DeleteRequest() {
-  delete this;
 }
 
 std::u16string WidevinePermissionRequest::GetExplanatoryMessageText() const {
