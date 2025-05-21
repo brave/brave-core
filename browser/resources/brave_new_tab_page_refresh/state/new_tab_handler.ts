@@ -16,7 +16,6 @@ export function createNewTabHandler(
   const { handler } = newTabProxy
 
   store.update({
-    newsFeatureEnabled: loadTimeData.getBoolean('newsFeatureEnabled'),
     talkFeatureEnabled: loadTimeData.getBoolean('talkFeatureEnabled')
   })
 

@@ -15,7 +15,6 @@ export interface NewTabState {
   shieldsStats: ShieldsStats | null
   showTalkWidget: boolean
   talkFeatureEnabled: boolean
-  newsFeatureEnabled: boolean
 }
 
 export function defaultNewTabState(): NewTabState {
@@ -26,8 +25,7 @@ export function defaultNewTabState(): NewTabState {
     showShieldsStats: false,
     shieldsStats: null,
     showTalkWidget: false,
-    talkFeatureEnabled: false,
-    newsFeatureEnabled: false
+    talkFeatureEnabled: false
   }
 }
 

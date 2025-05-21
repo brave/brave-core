@@ -29,11 +29,75 @@ export type StringKey =
   'hideTalkWidgetLabel' |
   'hideTopSitesLabel' |
   'hideVpnWidgetLabel' |
+  'newsAddSourcesButtonLabel' |
+  'newsBackButtonLabel' |
+  'newsCaughtUpText' |
+  'newsChannelBrave' |
+  'newsChannelBusiness' |
+  'newsChannelCars' |
+  'newsChannelCelebrities' |
+  'newsChannelCrypto' |
+  'newsChannelCulture' |
+  'newsChannelEducation' |
+  'newsChannelEntertainment' |
+  'newsChannelFashion' |
+  'newsChannelFilmAndTV' |
+  'newsChannelFood' |
+  'newsChannelFun' |
+  'newsChannelGaming' |
+  'newsChannelHealth' |
+  'newsChannelHome' |
+  'newsChannelLifestyle' |
+  'newsChannelMusic' |
+  'newsChannelPolitics' |
+  'newsChannelRegionalNews' |
+  'newsChannelScience' |
+  'newsChannelSports' |
+  'newsChannelTravel' |
+  'newsChannelTechnology' |
+  'newsChannelTopNews' |
+  'newsChannelTopSources' |
+  'newsChannelUKNews' |
+  'newsChannelUSNews' |
+  'newsChannelWeather' |
+  'newsChannelWorldNews' |
+  'newsConnectionErrorText' |
+  'newsConnectionErrorTitle' |
+  'newsContentAvailableButtonLabel' |
   'newsCustomizeButtonLabel' |
   'newsDisableButtonLabel' |
+  'newsDiscoverTitle' |
   'newsEnableButtonLabel' |
   'newsEnableText' |
+  'newsFeedAllTitle' |
+  'newsFeedChannelsTitle' |
+  'newsFeedFollowingTitle' |
+  'newsFeedPublishersTitle' |
+  'newsHidePublisherLabel' |
+  'newsManageFeedsButtonLabel' |
+  'newsNoArticlesText' |
+  'newsNoArticlesTitle' |
+  'newsNoFeedsText' |
+  'newsNoFeedsTitle' |
+  'newsNoMatchingFeedsText' |
+  'newsOptInDismissButtonLabel' |
+  'newsOptInText' |
+  'newsQueryTooShortText' |
+  'newsRefreshButtonLabel' |
+  'newsSearchFeedsButtonLabel' |
+  'newsSettingsChannelsTitle' |
+  'newsSettingsDiscoverTitle' |
+  'newsSettingsFollowingTitle' |
+  'newsSettingsPopularTitle' |
+  'newsSettingsQueryPlaceholder' |
+  'newsSettingsSourcesTitle' |
+  'newsSettingsSuggestionsText' |
+  'newsSettingsSuggestionsTitle' |
   'newsSettingsTitle' |
+  'newsShowAllButtonLabel' |
+  'newsShowLessButtonLabel' |
+  'newsUnfollowButtonLabel' |
+  'newsViewAllButtonLabel' |
   'newsWidgetTitle' |
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
@@ -70,6 +134,7 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
+  'showNewsLabel' |
   'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesEarningText' |
