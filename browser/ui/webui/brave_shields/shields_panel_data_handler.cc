@@ -186,16 +186,24 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
 
 void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(
     AreAnyBlockedElementsPresentCallback callback) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
   std::move(callback).Run(
       g_brave_browser_process->ad_block_service()->AreAnyBlockedElementsPresent(
           active_shields_data_controller_->web_contents()->GetURL().host()));
 }
 
 void ShieldsPanelDataHandler::ResetBlockedElements() {
+  webui_controller_->embedder()->CloseUI();
+
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
   g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
       active_shields_data_controller_->web_contents()->GetURL().host());
-
-  webui_controller_->embedder()->CloseUI();
 
   active_shields_data_controller_->web_contents()->GetController().Reload(
       content::ReloadType::NORMAL, true);
