@@ -124,8 +124,8 @@ TEST_F(BraveChromeImporterUtilsTest, ChromeImporterCanImport) {
                         kChromeSecurePreferencesFile);
   CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
   uint16_t services_supported = importer::NONE;
-  EXPECT_TRUE(
-      ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
+  EXPECT_TRUE(ChromeImporterCanImport(
+      GetTestProfilePath(), importer::TYPE_CHROME, &services_supported));
   EXPECT_EQ(services_supported, importer::EXTENSIONS);
 }
 
@@ -133,15 +133,15 @@ TEST_F(BraveChromeImporterUtilsTest, BadFiles) {
   CopyTestFileToProfile("non_json_preferences", kChromeSecurePreferencesFile);
   CopyTestFileToProfile("non_json_preferences", kChromePreferencesFile);
   uint16_t services_supported = importer::NONE;
-  EXPECT_FALSE(
-      ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
+  EXPECT_FALSE(ChromeImporterCanImport(
+      GetTestProfilePath(), importer::TYPE_CHROME, &services_supported));
   EXPECT_EQ(services_supported, importer::NONE);
 
   CopyTestFileToProfile("non_dict_extension", kChromeSecurePreferencesFile);
   CopyTestFileToProfile("non_dict_extension", kChromePreferencesFile);
   services_supported = importer::NONE;
   // Empty list is anyway considered as something to import.
-  EXPECT_TRUE(
-      ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
+  EXPECT_TRUE(ChromeImporterCanImport(
+      GetTestProfilePath(), importer::TYPE_CHROME, &services_supported));
   EXPECT_EQ(services_supported, importer::EXTENSIONS);
 }
