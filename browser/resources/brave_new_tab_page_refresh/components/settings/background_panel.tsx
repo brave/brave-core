@@ -8,7 +8,8 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppActions, useAppState } from '../context/app_model_context'
+import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
+import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { optional } from '../../lib/optional'
@@ -21,20 +22,22 @@ import {
   SelectedBackgroundType,
   backgroundCSSValue,
   gradientPreviewBackground,
-  solidPreviewBackground } from '../../models/backgrounds'
+  solidPreviewBackground } from '../../state/background_state'
 
 import { style } from './background_panel.style'
 
 export function BackgroundPanel() {
-  const actions = useAppActions()
+  const actions = useBackgroundActions()
 
-  const backgroundsEnabled = useAppState((s) => s.backgroundsEnabled)
-  const backgroundsCustomizable = useAppState((s) => s.backgroundsCustomizable)
-  const sponsoredImagesEnabled = useAppState((s) => s.sponsoredImagesEnabled)
-  const selectedBackground = useAppState((s) => s.selectedBackground)
-  const braveBackgrounds = useAppState((s) => s.braveBackgrounds)
-  const customBackgrounds = useAppState((s) => s.customBackgrounds)
-  const rewardsEnabled = useAppState((s) => s.rewardsEnabled)
+  const backgroundsEnabled = useBackgroundState((s) => s.backgroundsEnabled)
+  const backgroundsCustomizable =
+    useBackgroundState((s) => s.backgroundsCustomizable)
+  const sponsoredImagesEnabled =
+    useBackgroundState((s) => s.sponsoredImagesEnabled)
+  const selectedBackground = useBackgroundState((s) => s.selectedBackground)
+  const braveBackgrounds = useBackgroundState((s) => s.braveBackgrounds)
+  const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
+  const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
 
   const [panelType, setPanelType] =
     React.useState(optional<SelectedBackgroundType>())

@@ -9,15 +9,14 @@ import {
   TopSitesState,
   TopSitesActions,
   TopSite,
-  TopSitesListKind,
-  defaultTopSitesState } from '../models/top_sites'
+  TopSitesListKind } from '../state/top_sites_state'
 
-export function initializeTopSites(
-    store: Store<TopSitesState>): TopSitesActions {
+export function createTopSitesHandler(
+  store: Store<TopSitesState>
+): TopSitesActions {
   let lastRemovedSite: TopSite | null = null
 
   store.update({
-    ...defaultTopSitesState(),
 
     showTopSites: true,
 
@@ -40,6 +39,7 @@ export function initializeTopSites(
   })
 
   return {
+
     setShowTopSites(showTopSites) {
       store.update({ showTopSites })
     },

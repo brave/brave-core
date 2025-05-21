@@ -11,9 +11,9 @@ import {
   AutocompleteMatch,
   ClickEvent,
   defaultSearchEngine,
-  braveSearchHost } from '../../models/search'
+  braveSearchHost } from '../../state/search_state'
 
-import { useAppActions, useAppState } from '../context/app_model_context'
+import { useSearchState, useSearchActions } from '../../context/search_context'
 import { optional } from '../../lib/optional'
 import { urlFromInput } from '../../lib/url_input'
 import { getString } from '../../lib/strings'
@@ -29,14 +29,14 @@ interface Props {
 }
 
 export function SearchBox(props: Props) {
-  const actions = useAppActions()
+  const actions = useSearchActions()
 
-  const searchFeatureEnabled = useAppState((s) => s.searchFeatureEnabled)
-  const showSearchBox = useAppState((s) => s.showSearchBox)
-  const searchEngines = useAppState((s) => s.searchEngines)
-  const enabledSearchEngines = useAppState((s) => s.enabledSearchEngines)
-  const lastUsedSearchEngine = useAppState((s) => s.lastUsedSearchEngine)
-  const searchMatches = useAppState((s) => s.searchMatches)
+  const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
+  const showSearchBox = useSearchState((s) => s.showSearchBox)
+  const searchEngines = useSearchState((s) => s.searchEngines)
+  const enabledSearchEngines = useSearchState((s) => s.enabledSearchEngines)
+  const lastUsedSearchEngine = useSearchState((s) => s.lastUsedSearchEngine)
+  const searchMatches = useSearchState((s) => s.searchMatches)
 
   const inputRef = React.useRef<HTMLInputElement>(null)
 

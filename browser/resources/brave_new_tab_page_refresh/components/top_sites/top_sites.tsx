@@ -6,9 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { TopSite, TopSitesListKind } from '../../models/top_sites'
+import { TopSite, TopSitesListKind } from '../../state/top_sites_state'
+import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
-import { useAppActions, useAppState } from '../context/app_model_context'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { RemoveToast } from './remove_toast'
 import { TopSitesTile, DropLocation } from './top_site_tile'
@@ -22,11 +22,11 @@ import {
   maxTileCount } from './top_sites.style'
 
 export function TopSites() {
-  const actions = useAppActions()
+  const actions = useTopSitesActions()
 
-  const showTopSites = useAppState((s) => s.showTopSites)
-  const listKind = useAppState((s) => s.topSitesListKind)
-  const topSites = useAppState((s) => s.topSites)
+  const showTopSites = useTopSitesState((s) => s.showTopSites)
+  const listKind = useTopSitesState((s) => s.topSitesListKind)
+  const topSites = useTopSitesState((s) => s.topSites)
 
   const [expanded, setExpanded] = React.useState(loadExpandedState())
   const [showEditSite, setShowEditSite] = React.useState(false)

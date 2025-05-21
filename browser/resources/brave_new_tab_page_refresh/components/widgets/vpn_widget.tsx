@@ -8,9 +8,9 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppActions, useAppState } from '../context/app_model_context'
 import { getString } from '../../lib/strings'
-import { ConnectionState } from '../../models/vpn'
+import { ConnectionState } from '../../state/vpn_state'
+import { useVpnState, useVpnActions } from '../../context/vpn_context'
 import classNames from '$web-common/classnames'
 
 import { style } from './vpn_widget.style'
@@ -19,12 +19,12 @@ import guardianLogoURL from '../../assets/guardian_vpn_logo.svg'
 import vpnShieldDisconnectedURL from '../../assets/vpn_shield_disconnected.svg'
 import vpnShieldConnectedURL from '../../assets/vpn_shield_connected.svg'
 
-export function VPNWidget() {
-  const actions = useAppActions()
+export function VpnWidget() {
+  const actions = useVpnActions()
 
-  const purchased = useAppState((s) => s.vpnPurchased)
-  const connectionState = useAppState((s) => s.vpnConnectionState)
-  const region = useAppState((s) => s.vpnConnectionRegion)
+  const purchased = useVpnState((s) => s.vpnPurchased)
+  const connectionState = useVpnState((s) => s.vpnConnectionState)
+  const region = useVpnState((s) => s.vpnConnectionRegion)
 
   function renderPromo() {
     return (
