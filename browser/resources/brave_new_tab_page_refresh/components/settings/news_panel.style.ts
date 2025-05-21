@@ -6,7 +6,12 @@
 import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
-  .loading {
-    min-height: 100vh;
+  & {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .actions {
+    padding: 24px;
   }
 `

@@ -7,33 +7,50 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import * as mojom from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
-import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
-import { getTranslatedChannelName } from '../../../../../components/brave_news/browser/resources/shared/channel'
-import { channelIcons } from '../../../../../components/brave_news/browser/resources/shared/Icons'
-
 import { getString } from '../../lib/strings'
 import { WidgetMenu } from './widget_menu'
 import { SafeImage } from '../common/safe_image'
 import { Link } from '../common/link'
+import { CategoryIcon } from '../news/category_icon'
+import { CategoryName } from '../news/category_name'
+import { useNewsState, useNewsActions } from '../../context/news_context'
+import { dispatchCustomEvent } from '../../lib/custom_event'
+
+import {
+  FeedItemMetadata,
+  FeedItemV2,
+  getNewsPublisherName,
+  getNewsItemImage } from '../../state/news_state'
 
 import { style } from './news_widget.style'
 
 export function NewsWidget() {
-  const braveNews = useBraveNews()
+  const actions = useNewsActions()
+  const isOptedIn = useNewsState((s) => s.isOptedIn)
+
+  React.useEffect(() => {
+    if (isOptedIn) {
+      setTimeout(() => actions.onNewsVisible(), 250)
+    }
+  }, [isOptedIn])
+
   return (
     <div data-css-scope={style.scope}>
       <WidgetMenu>
         {
-          braveNews.isOptInPrefEnabled &&
-            <leo-menu-item onClick={() => braveNews.setCustomizePage('news')}>
+          isOptedIn &&
+            <leo-menu-item
+              onClick={() => {
+                dispatchCustomEvent('ntp-open-news-feed-settings')
+              }}
+            >
               <Icon name='tune' /> {getString('newsCustomizeButtonLabel')}
             </leo-menu-item>
         }
-        <leo-menu-item onClick={() => braveNews.toggleBraveNewsOnNTP(false)}>
+        <leo-menu-item onClick={() => actions.setShowOnNTP(false)}>
           <Icon name='disable-outline' />
           {
-            braveNews.isOptInPrefEnabled
+            isOptedIn
               ? getString('newsDisableButtonLabel')
               : getString('newsHideButtonLabel')
           }
@@ -42,17 +59,22 @@ export function NewsWidget() {
       <div className='title'>
         {getString('newsWidgetTitle')}
       </div>
-      {braveNews.isOptInPrefEnabled ? <PeekItem /> : <OptIn />}
+      {isOptedIn ? <PeekItem /> : <OptIn />}
     </div>
   )
 }
 
 function PeekItem() {
-  const braveNews = useBraveNews()
-  const feedItems = braveNews.feedV2?.items
+  const feedItems = useNewsState((s) => s.feedItems)
+
+  React.useEffect(() => {
+    if (feedItems) {
+      cacheNewsItem(getPeekItem(feedItems))
+    }
+  }, [feedItems])
 
   const peekItem = React.useMemo(() => {
-    return feedItems ? getPeekItem(feedItems) : null
+    return feedItems ? getPeekItem(feedItems) : loadCachedNewsItem()
   }, [feedItems])
 
   if (!peekItem) {
@@ -74,10 +96,8 @@ function PeekItem() {
         <div className='meta'>
           <span>{getNewsPublisherName(peekItem)}</span>
           <span>•</span>
-          {channelIcons[peekItem.categoryName] ?? channelIcons.default}
-          <span>
-            {getTranslatedChannelName(peekItem.categoryName)}
-          </span>
+          <CategoryIcon category={peekItem.categoryName} />
+          <span><CategoryName category={peekItem.categoryName} /></span>
         </div>
         <div className='item-title'>
           {peekItem.title}
@@ -88,7 +108,7 @@ function PeekItem() {
 }
 
 function OptIn() {
-  const braveNews = useBraveNews()
+  const actions = useNewsActions()
   return (
     <div className='opt-in'>
       <div className='graphic' />
@@ -98,7 +118,7 @@ function OptIn() {
       <div className='actions'>
         <Button
           size='small'
-          onClick={() => { braveNews.toggleBraveNewsOnNTP(true) }}
+          onClick={() => { actions.setIsOptedIn(true) }}
         >
           {getString('newsEnableButtonLabel')}
         </Button>
@@ -107,9 +127,7 @@ function OptIn() {
   )
 }
 
-function getPeekItem(
-  feedItems: mojom.FeedItemV2[]
-): mojom.FeedItemMetadata | null {
+function getPeekItem(feedItems: FeedItemV2[]): FeedItemMetadata | null {
   if (!feedItems) {
     return null
   }
@@ -124,17 +142,25 @@ function getPeekItem(
   return null
 }
 
-function getNewsPublisherName(item: mojom.FeedItemMetadata) {
-  if (item.publisherName) {
-    return item.publisherName
-  }
-  try {
-    return new URL(item.url.url).hostname
-  } catch {
-    return ''
-  }
+const cacheKey = 'ntp-news-widget-item'
+
+function cacheNewsItem(data: FeedItemMetadata | null) {
+  const value = { cachedAt: Date.now(), data }
+  localStorage.setItem(cacheKey, JSON.stringify(value, (_, value) => {
+    return typeof value === 'bigint' ? value.toString() : value
+  }))
 }
 
-function getNewsItemImage(data: mojom.FeedItemMetadata) {
-  return data.image.imageUrl?.url ?? data.image.paddedImageUrl?.url ?? ''
+function loadCachedNewsItem(): FeedItemMetadata | null {
+  let entry: any = null
+  try { entry = JSON.parse(localStorage.getItem(cacheKey) ?? '') } catch {}
+  if (!entry) {
+    return null
+  }
+  const cachedAt = Number(entry.cachedAt) || 0
+  if (cachedAt < Date.now() - (1000 * 60 * 60)) {
+    return null
+  }
+  const { data } = entry
+  return data as FeedItemMetadata | null
 }
