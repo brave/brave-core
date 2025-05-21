@@ -17,6 +17,7 @@ const { buildFuzzer, runFuzzer } = require('../lib/fuzzer')
 const versions = require('../lib/versions')
 const start = require('../lib/start')
 const applyPatches = require('../lib/applyPatches')
+const fixPatches = require('../lib/fixPatches')
 const updatePatches = require('./updatePatches')
 const pullL10n = require('../lib/pullL10n')
 const pushL10n = require('../lib/pushL10n')
@@ -70,6 +71,11 @@ program.command('apply_patches')
         'Emits a JSON structure with a list of patch files that failed to apply')
     .arguments('[build_config]')
     .action(applyPatches)
+
+program
+  .command('fix_patches')
+  .arguments('[build_config]')
+  .action(fixPatches)
 
 program
   .command('update_symlink')
