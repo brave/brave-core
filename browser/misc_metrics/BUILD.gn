@@ -126,6 +126,7 @@ source_set("unit_tests") {
 
     deps += [
       ":usage_clock",
+      "//brave/browser/extensions:extenions_manifest_v2",
       "//brave/browser/themes",
       "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
       "//chrome/browser/themes",

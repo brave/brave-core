@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_installer.h"
+#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 #include "content/public/test/browser_task_environment.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/uninstall_reason.h"
