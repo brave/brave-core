@@ -156,11 +156,19 @@ export const EmailAliasModal = (
       aliasEmail: editState?.alias?.email ?? '',
       errorMessage: undefined
     })
+  const [updateErrorMessage, setUpdateErrorMessage] =
+    React.useState<string | null>(null)
   const createOrSave = async () => {
     if (generateAliasResult.aliasEmail) {
-      emailAliasesService.updateAlias(
+      // Clear any existing error message
+      setUpdateErrorMessage(null)
+      const { errorMessage } = await emailAliasesService.updateAlias(
         generateAliasResult.aliasEmail, proposedNote)
-      onReturnToMain()
+      if (errorMessage) {
+        setUpdateErrorMessage(errorMessage)
+      } else {
+        onReturnToMain()
+      }
     }
   }
   const regenerateAlias = async () => {
@@ -246,6 +254,10 @@ export const EmailAliasModal = (
           </Button>
         </span>
       </ButtonRow>
+      {updateErrorMessage &&
+        <Alert>
+          {updateErrorMessage}
+        </Alert>}
     </ModalCol>
   )
 }

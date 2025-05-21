@@ -50,6 +50,8 @@ provideStrings({
   emailAliasesEmailsWillBeForwardedTo: 'Emails will be forwarded to $1',
   emailAliasesEditAliasTitle: 'Edit email alias',
   emailAliasesCreateAliasButton: 'Create alias',
+  emailAliasesUpdateAliasError: 'Error saving alias. Check your internet ' +
+    'connection and try again.',
   emailAliasesSaveAliasButton: 'Save',
   emailAliasesSignInOrCreateAccount: 'To get started, sign in or create a ' +
     'Brave account',
@@ -123,12 +125,16 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     this.observers.delete(observer)
   }
 
-  updateAlias (email: string, note: string) {
+  async updateAlias (email: string, note: string) {
     const alias = { email, note, domains: undefined }
     this.aliases.set(email, alias)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
+    const errorMessage = Math.random() < 1/3
+      ? getLocale('emailAliasesUpdateAliasError')
+      : null
+    return { errorMessage }
   }
 
   deleteAlias (email: string) {

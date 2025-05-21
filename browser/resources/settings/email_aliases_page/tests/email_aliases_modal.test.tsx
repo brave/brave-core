@@ -40,9 +40,14 @@ describe('EmailAliasModal', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    mockEmailAliasesService.updateAlias = jest.fn().mockResolvedValue(
+      Promise.resolve({ errorMessage: null }))
     mockEmailAliasesService.generateAlias = jest.fn()
-      .mockResolvedValue({ result: {
-        errorMessage: null, aliasEmail: 'generated@brave.com' } })
+      .mockResolvedValue({
+        result: {
+          errorMessage: null, aliasEmail: 'generated@brave.com'
+        }
+      })
   })
 
   it('renders create mode correctly', async () => {
@@ -299,6 +304,111 @@ describe('EmailAliasModal', () => {
         'Existing Alias'
       )
       expect(mockOnReturnToMain).toHaveBeenCalled()
+    })
+  })
+
+  it('shows error message when creating alias fails', async () => {
+    mockEmailAliasesService.updateAlias = jest.fn().mockImplementation(
+      () => Promise.resolve({ errorMessage: 'emailAliasesUpdateAliasError' }))
+
+    const mockEditState: EditState = {
+      mode: 'Create',
+      alias: {
+        email: 'new@brave.com',
+        note: 'New Alias',
+        domains: undefined
+      }
+    }
+
+    render(
+      <EmailAliasModal
+        editState={mockEditState}
+        mainEmail={mockEmail}
+        aliasCount={0}
+        onReturnToMain={mockOnReturnToMain}
+        emailAliasesService={mockEmailAliasesService}
+      />
+    )
+
+    // Wait for error message to be displayed. Create button should be disabled.
+    const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+    await waitFor(() => {
+      expect(saveButton).toHaveAttribute('isdisabled', 'false')
+    })
+
+    await act(async () => {
+      // Click save button
+      saveButton.shadowRoot?.querySelector('button')?.click()
+    })
+
+    // Check that updateAlias was called and returned an error
+    await waitFor(() => {
+      expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
+      expect(mockEmailAliasesService.updateAlias).toHaveReturnedWith(
+        Promise.resolve({
+          errorMessage: 'emailAliasesUpdateAliasError'
+        })
+      )
+    })
+
+    // Wait for error message to be displayed. Create button should be
+    // disabled.
+    await waitFor(() => {
+      expect(screen.getByText('emailAliasesUpdateAliasError'))
+        .toBeInTheDocument()
+    })
+  })
+
+
+  it('shows error message when editing alias fails', async () => {
+    mockEmailAliasesService.updateAlias = jest.fn().mockImplementation(
+      () => Promise.resolve({ errorMessage: 'emailAliasesUpdateAliasError' }))
+
+    const mockEditState: EditState = {
+      mode: 'Edit',
+      alias: {
+        email: 'existing@brave.com',
+        note: 'Existing Alias',
+        domains: ['brave.com']
+      }
+    }
+
+    render(
+      <EmailAliasModal
+        editState={mockEditState}
+        mainEmail={mockEmail}
+        aliasCount={0}
+        onReturnToMain={mockOnReturnToMain}
+        emailAliasesService={mockEmailAliasesService}
+      />
+    )
+
+    // Wait for error message to be displayed. Create button should be disabled.
+    const saveButton = screen.getByText('emailAliasesSaveAliasButton')
+    await waitFor(() => {
+      expect(saveButton).toHaveAttribute('isdisabled', 'false')
+    })
+
+    await act(async () => {
+      // Click save button
+      saveButton.shadowRoot?.querySelector('button')?.click()
+    })
+
+    // Check that updateAlias was called and returned an error
+    await waitFor(() => {
+      expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
+      expect(mockEmailAliasesService.updateAlias).toHaveReturnedWith(
+        Promise.resolve({
+          errorMessage: 'emailAliasesUpdateAliasError'
+        })
+      )
+    })
+
+    // Wait for error message to be displayed. Create button should be
+    // disabled.
+    await waitFor(() => {
+      expect(screen.getByText('emailAliasesUpdateAliasError'))
+        .toBeInTheDocument()
     })
   })
 })
