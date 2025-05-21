@@ -21,7 +21,7 @@ export const style = scoped.css`
       border-bottom: solid 1px ${color.container.background};
 
       > :first-child {
-        flex: 1 0 auto;
+        flex: 1 1 auto;
       }
     }
 
