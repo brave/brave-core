@@ -14,6 +14,7 @@ import { SearchProvider } from '../context/search_context'
 import { TopSitesProvider } from '../context/top_sites_context'
 import { VpnProvider } from '../context/vpn_context'
 import { RewardsProvider } from '../context/rewards_context'
+import { NewsProvider } from '../context/news_context'
 
 import { createNewTabHandler } from './new_tab_handler'
 import { createBackgroundHandler } from './background_handler'
@@ -21,10 +22,11 @@ import { createRewardsHandler } from './rewards_handler'
 import { createSearchHandler } from './search_handler'
 import { createTopSitesHandler } from './top_sites_handler'
 import { createVpnHandler } from './vpn_handler'
+import { createNewsHandler } from './news_handler'
 
 import { StorybookArgs } from './storybook_args'
 
-import { App } from '../components/app'
+import { App, NewsApp } from '../components/app'
 
 function StorybookApp(props: StorybookArgs) {
   return (
@@ -36,9 +38,11 @@ function StorybookApp(props: StorybookArgs) {
           <TopSitesProvider createHandler={createTopSitesHandler}>
             <VpnProvider createHandler={createVpnHandler}>
               <RewardsProvider createHandler={createRewardsHandler}>
-                <div style={{ position: 'absolute', inset: 0 }}>
-                  <App />
-                </div>
+                <NewsProvider createHandler={createNewsHandler}>
+                  <div style={{ position: 'absolute', inset: 0 }}>
+                    <App />
+                  </div>
+                </NewsProvider>
               </RewardsProvider>
             </VpnProvider>
           </TopSitesProvider>
@@ -60,4 +64,16 @@ export const NewTabPage: StoryObj<typeof StorybookApp> = {
       options: ['none', 'image', 'rich'],
     },
   },
+}
+
+export function NewsOnly() {
+  React.useEffect(() => {
+    document.body.style.padding = '0'
+  }, [])
+
+  return (
+    <NewsProvider createHandler={createNewsHandler}>
+      <NewsApp />
+    </NewsProvider>
+  )
 }
