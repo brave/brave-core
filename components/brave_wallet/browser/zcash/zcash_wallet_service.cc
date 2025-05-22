@@ -95,6 +95,7 @@ ZCashWalletService::~ZCashWalletService() = default;
 void ZCashWalletService::GetBalance(const std::string& chain_id,
                                     mojom::AccountIdPtr account_id,
                                     GetBalanceCallback callback) {
+  LOG(ERROR) << "ZCASH DEBUG: GetBalance " << chain_id << " " << account_id->unique_key;
   auto [task_it, inserted] =
       resolve_balance_tasks_.insert(std::make_unique<ZCashResolveBalanceTask>(
           base::PassKey<ZCashWalletService>(), *this,
@@ -294,7 +295,8 @@ void ZCashWalletService::OnRunDiscoveryDone(
       UpdateNextUnusedAddressForAccount(account_id, *item);
       result.push_back(item->Clone());
     } else {
-      std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+      LOG(ERROR) << "ZCASH DEBUG: Empty discovery address";
+      std::move(callback).Run(base::unexpected("Empty discovery address"));
       return;
     }
   }
@@ -340,13 +342,15 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
                                   GetUtxosCallback callback) {
   if (!IsZCashNetwork(chain_id)) {
     // Desktop frontend sometimes does that.
-    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    LOG(ERROR) << "ZCASH DEBUG: Not zcash network";
+    std::move(callback).Run(base::unexpected("Not zcash network"));
     return;
   }
 
   const auto& addresses = keyring_service_->GetZCashAddresses(account_id);
   if (!addresses) {
-    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    LOG(ERROR) << "ZCASH DEBUG: No zcash addresses for account";
+    std::move(callback).Run(base::unexpected("No zcash addresses for account"));
     return;
   }
 
@@ -530,6 +534,7 @@ void ZCashWalletService::OnGetUtxos(
   DCHECK(!context->utxos.contains(address));
 
   if (!result.has_value() || !result.value()) {
+    LOG(ERROR) << "ZCASH DEBUG: Utxos resolve error";
     context->SetError(result.error());
     WorkOnGetUtxos(std::move(context));
     return;

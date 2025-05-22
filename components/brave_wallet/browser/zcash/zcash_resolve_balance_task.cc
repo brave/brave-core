@@ -83,7 +83,8 @@ void ZCashResolveBalanceTask::OnGetSpendableNotes(
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
   if (!result.has_value()) {
-    error_ = result.error().message;
+    LOG(ERROR) << "ZCASH DEBUG: Failed to resolve spendable notes " << result.error().message;
+    error_ = "Failed to resolve spendable notes : " + result.error().message;
     ScheduleWorkOnTask();
     return;
   }
@@ -125,6 +126,7 @@ void ZCashResolveBalanceTask::CreateBalance() {
         result->shielded_balance += note.amount;
       }
       if (result->shielded_pending_balance < result->shielded_balance) {
+        LOG(ERROR) << "ZCASH DEBUG: Pending balance error";
         error_ = "Pending balance error";
         ScheduleWorkOnTask();
         return;
@@ -142,7 +144,8 @@ void ZCashResolveBalanceTask::CreateBalance() {
 void ZCashResolveBalanceTask::OnDiscoveryDoneForBalance(
     ZCashWalletService::RunDiscoveryResult discovery_result) {
   if (!discovery_result.has_value()) {
-    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    LOG(ERROR) << "ZCASH DEBUG: Discovery balance task error " << discovery_result.error();
+    error_ = "Discovery balance task error : " + discovery_result.error();
     ScheduleWorkOnTask();
     return;
   }
@@ -154,7 +157,8 @@ void ZCashResolveBalanceTask::OnDiscoveryDoneForBalance(
 void ZCashResolveBalanceTask::OnUtxosResolvedForBalance(
     base::expected<ZCashWalletService::UtxoMap, std::string> result) {
   if (!result.has_value()) {
-    error_ = result.error();
+    LOG(ERROR) << "ZCASH DEBUG: Resolve utxos error " << result.error();
+    error_ = "Resolve utxos error : " + result.error();
     ScheduleWorkOnTask();
     return;
   }
