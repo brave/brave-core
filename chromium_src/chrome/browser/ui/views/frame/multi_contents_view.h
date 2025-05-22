@@ -10,10 +10,10 @@ namespace views {
 class ResizeArea;
 }  // namespace views
 
-#define UpdateContentsBorder           \
+#define UpdateContentsBorderAndOverlay \
   UnUsed() {}                          \
   friend class BraveMultiContentsView; \
-  virtual void UpdateContentsBorder
+  virtual void UpdateContentsBorderAndOverlay
 
 #define SetActiveIndex virtual SetActiveIndex
 
@@ -24,6 +24,6 @@ class ResizeArea;
 
 #undef MultiContentsResizeArea
 #undef SetActiveIndex
-#undef UpdateContentsBorder
+#undef UpdateContentsBorderAndOverlay
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_H_
