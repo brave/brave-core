@@ -357,6 +357,7 @@ dependencies = [
  "constellation-cxx",
  "document-extractor",
  "filecoin-cxx",
+ "flatbuffers",
  "json-cxx",
  "skus-cxx",
  "speedreader-ffi",
@@ -731,6 +732,15 @@ version = "1.0.0"
 dependencies = [
  "cid",
  "cxx",
+]
+
+[[package]]
+name = "flatbuffers"
+version = "25.2.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "bitflags 2.9.0",
+ "rustc_version",
 ]
 
 [[package]]

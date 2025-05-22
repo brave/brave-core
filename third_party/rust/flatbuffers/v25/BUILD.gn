@@ -1,0 +1,59 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "flatbuffers"
+  epoch = "25"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/endian_scalar.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/follow.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/get_root.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/push.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/vector.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/verifier.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/vtable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/src/vtable_writer.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "25.2.10"
+  cargo_pkg_authors =
+      "Robert Winslow <hello@rwinslow.com>, FlatBuffers Maintainers"
+  cargo_pkg_name = "flatbuffers"
+  cargo_pkg_description = "Official FlatBuffers Rust runtime library."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/bitflags/v2:lib" ]
+  build_deps = [ "//brave/third_party/rust/rustc_version/v0_4:buildrs_support" ]
+  features = [
+    "default",
+    "std",
+  ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/flatbuffers-v25/build.rs" ]
+  rustenv = []
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
+}
