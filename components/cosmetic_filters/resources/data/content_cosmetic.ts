@@ -299,9 +299,12 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
   if (CC.hasProceduralActions) {
     const addedElements : Element[] = [];
     mutations.forEach(mutation =>
-      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
+      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
         n.nodeType === Node.ELEMENT_NODE && addedElements.push(n as Element)
-      )
+        n.childNodes.length !== 0 && n.childNodes.forEach(c => {
+          c.nodeType === Node.ELEMENT_NODE && addedElements.push(c as Element)
+        })
+      })
     )
     if (addedElements.length !== 0) {
       executeProceduralActions(addedElements);

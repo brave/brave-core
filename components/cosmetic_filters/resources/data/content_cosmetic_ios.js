@@ -357,9 +357,12 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     if (CC.hasProceduralActions) {
       const addedElements = [];
       mutations.forEach(mutation =>
-        mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
+        mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
           n.nodeType === Node.ELEMENT_NODE && addedElements.push(n)
-        )
+          n.childNodes.length !== 0 && n.childNodes.forEach(c => {
+            c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
+          })
+        })
       )
       if (addedElements.length !== 0) {
         executeProceduralActions(addedElements);
