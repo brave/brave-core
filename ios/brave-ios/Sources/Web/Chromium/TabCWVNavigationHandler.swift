@@ -72,7 +72,7 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
 
   public func webView(
     _ webView: CWVWebView,
-    decidePolicyFor navigationAction: CWVNavigationAction,
+    decidePolicyFor navigationAction: BraveNavigationAction,
     decisionHandler: @escaping (CWVNavigationActionPolicy) -> Void
   ) {
     guard let tab else { return }
@@ -97,7 +97,7 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
         navigationAction.request,
         requestInfo: .init(
           navigationType: navigationType,
-          isMainFrame: navigationAction.navigationType.isMainFrame,
+          isMainFrame: navigationAction.isTargetFrameMain,
           isNewWindow: navigationAction.navigationType == .newWindow,
           isUserInitiated: navigationAction.isUserInitiated
         )
