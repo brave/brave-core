@@ -28,7 +28,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"

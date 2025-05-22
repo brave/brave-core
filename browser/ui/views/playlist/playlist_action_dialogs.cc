@@ -10,7 +10,6 @@
 #include <utility>
 #include <variant>
 
-#include "base/strings/stringprintf.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/playlist/playlist_browser_finder.h"

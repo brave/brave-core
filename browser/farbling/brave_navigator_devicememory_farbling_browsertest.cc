@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"

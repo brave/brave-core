@@ -9,6 +9,7 @@
 
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
