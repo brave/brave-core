@@ -1,5 +1,11 @@
 include_rules = [
   "+crypto",
-  "+content/public/test",
   "+extensions/common",
 ]
+
+specific_include_rules = {
+  "psst_rule_registry_unittest\.cc": [
+    # don't use content deps in core
+    "!content/public/test/browser_task_environment.h"
+  ],
+}
