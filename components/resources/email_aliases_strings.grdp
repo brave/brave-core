@@ -60,6 +60,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATING_NEW_ALIAS" desc="The label for the generating new alias">
     Generating new alias...
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATE_ERROR" desc="The label for the generate error">
+    Error generating alias. Check your internet connection and try again.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_NOTE_LABEL" desc="The label for the note">
     Note
   </message>

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { ManagePageConnected } from '../email_aliases'
 import { EmailAliasModal } from '../content/email_aliases_modal'
+import { getLocale } from '$web-common/locale'
 import {
   Alias,
   AuthenticationStatus,
@@ -39,6 +40,8 @@ provideStrings({
   emailAliasesCreateAliasLabel: 'New alias',
   emailAliasesRefreshButtonTitle: 'Suggest another email alias',
   emailAliasesGeneratingNewAlias: 'Generating new alias...',
+  emailAliasesGenerateError: 'Error generating alias. Check your internet ' +
+    'connection and try again.',
   emailAliasesNoteLabel: 'Note',
   emailAliasesEditNotePlaceholder: 'Enter a note for your address (optional)',
   emailAliasesCancelButton: 'Cancel',
@@ -136,13 +139,18 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   }
 
   async generateAlias () {
-    let generated: string = ''
+    let generatedAlias: string | undefined = undefined
     do {
-      generated = "mock-" + Math.random().toString().slice(2,6) +
+      generatedAlias = "mock-" + Math.random().toString().slice(2,6) +
         "@bravealias.com"
-    } while (this.aliases.has(generated))
+    } while (this.aliases.has(generatedAlias))
     await new Promise(resolve => setTimeout(resolve, 1000))
-    return { aliasEmail: generated }
+    const error : boolean = Math.random() < 1/3
+    const errorMessage = error
+      ? getLocale('emailAliasesGenerateError')
+      : undefined
+    const aliasEmail = error ? undefined : generatedAlias
+    return { result: { errorMessage, aliasEmail } }
   }
 
   requestAuthentication (email: string) {

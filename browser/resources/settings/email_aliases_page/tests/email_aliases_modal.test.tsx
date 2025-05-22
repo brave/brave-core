@@ -8,7 +8,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import { EmailAliasModal, EditState } from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
-import { EmailAliasesServiceInterface }
+import { EmailAliasesServiceInterface, GenerateAliasResult }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 jest.mock('$web-common/locale', () => ({
@@ -41,7 +41,8 @@ describe('EmailAliasModal', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockEmailAliasesService.generateAlias = jest.fn()
-      .mockResolvedValue({ aliasEmail: 'generated@brave.com' })
+      .mockResolvedValue({ result: {
+        errorMessage: null, aliasEmail: 'generated@brave.com' } })
   })
 
   it('renders create mode correctly', async () => {
@@ -117,8 +118,7 @@ describe('EmailAliasModal', () => {
       expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
         .toBeInTheDocument()
       expect(screen.queryByTestId('loading-icon')).not.toBeInTheDocument()
-      const generatedEmailContainer = screen.getByText('emailAliasesAliasLabel')
-        .closest('div')?.nextElementSibling
+      const generatedEmailContainer = screen.getByTestId('generated-email')
       expect(generatedEmailContainer).toHaveTextContent('generated@brave.com')
     })
 
@@ -188,8 +188,10 @@ describe('EmailAliasModal', () => {
   })
 
   it('shows loading state while generating alias', async () => {
+    const aliasEmail = 'new@brave.com'
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve('new@brave.com'))
+      () => Promise.resolve<{ result: GenerateAliasResult }>({
+        result: { aliasEmail, errorMessage: undefined } }))
 
     render(
       <EmailAliasModal
@@ -214,6 +216,45 @@ describe('EmailAliasModal', () => {
       const regenerateButton = screen.queryByTitle(
         'emailAliasesRefreshButtonTitle')
       expect(regenerateButton).toBeInTheDocument()
+      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      expect(saveButton).toHaveAttribute('isdisabled', 'false')
+      const aliasEmailBox = screen.getByTestId('generated-email')
+      expect(aliasEmailBox).toHaveTextContent(aliasEmail)
+    })
+  })
+
+  it("shows error message when generating alias fails", async () => {
+    mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
+      () => Promise.resolve<{ result: GenerateAliasResult }>({
+        result: {
+          errorMessage: 'emailAliasesGenerateError',
+          aliasEmail: undefined
+        }
+      }))
+
+    render(
+      <EmailAliasModal
+        editState={{ mode: 'Create' }}
+        mainEmail={mockEmail}
+        aliasCount={0}
+        onReturnToMain={mockOnReturnToMain}
+        emailAliasesService={mockEmailAliasesService}
+      />
+    )
+
+    // Wait for error message to be displayed. Create button should be disabled.
+    await waitFor(() => {
+      const loadingIcon = document.querySelector('leo-progressring')
+      expect(loadingIcon).not.toBeInTheDocument()
+      const regenerateButton = screen.queryByTitle(
+        'emailAliasesRefreshButtonTitle')
+      expect(regenerateButton).toBeInTheDocument()
+      expect(screen.getByText('emailAliasesGenerateError'))
+        .toBeInTheDocument()
+      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      expect(saveButton).toHaveAttribute('isdisabled', 'true')
+      const aliasEmailBox = screen.getByTestId('generated-email')
+      expect(aliasEmailBox).toHaveTextContent('')
     })
   })
 

@@ -29,6 +29,12 @@ struct Alias {
   array<string>? domains;
 };
 
+// Return value for EmailAliasesService::GenerateAlias()
+union GenerateAliasResult {
+  string alias_email;
+  string error_message;
+};
+
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
 
@@ -51,7 +57,7 @@ interface EmailAliasesService {
   CancelAuthenticationOrLogout();
 
   // Generate a proposed email alias.
-  GenerateAlias() => (string alias_email);
+  GenerateAlias() => (GenerateAliasResult result);
 
   // Create or Update an existing email alias.
   UpdateAlias(string alias_email, string? note);
