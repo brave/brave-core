@@ -11,8 +11,10 @@ import { useNewsState, useNewsActions } from '../../context/news_context'
 import { getString } from '../../lib/strings'
 import { FeedNav } from './feed_nav'
 import { NewsOptIn } from './news_opt_in'
+import { NewsSettingsModal, NewsSettingsView } from './settings/news_settings_modal'
 import { Popover } from '../common/popover'
 import { VisibilityTracker } from '../common/visibility_tracker'
+import { addCustomEventListener } from '../../lib/custom_event'
 
 import { style } from './news_feed.style'
 
@@ -30,6 +32,8 @@ export function NewsFeed(props: Props) {
   const updateAvailable = useNewsState((s) => s.feedUpdateAvailable)
 
   const [navPopoverOpen, setNavPopoverOpen] = React.useState(false)
+  const [settingsView, setSettingsView] =
+    React.useState<NewsSettingsView | null>(null)
 
   React.useEffect(() => {
     const listener = () => {
@@ -40,6 +44,15 @@ export function NewsFeed(props: Props) {
     document.addEventListener('visibilitychange', listener)
     return () => document.removeEventListener('visibilitychange', listener)
   }, [])
+
+  React.useEffect(() => {
+    // Allow opening the feed settings modal from anywhere on the page.
+    return addCustomEventListener('ntp-open-news-feed-settings', () => {
+      if (isOptedIn) {
+        setSettingsView('default')
+      }
+    })
+  }, [isOptedIn])
 
   if (newsInitializing) {
     return null
@@ -64,8 +77,8 @@ export function NewsFeed(props: Props) {
   function renderFeedNav() {
     return (
       <FeedNav
-        onAddChannelClick={() => {}}
-        onAddPublisherClick={() => {}}
+        onAddChannelClick={() => setSettingsView('default')}
+        onAddPublisherClick={() => setSettingsView('popular')}
         onFeedSelect={() => setNavPopoverOpen(false)}
       />
     )
@@ -118,7 +131,7 @@ export function NewsFeed(props: Props) {
             <Button
               fab
               kind='outline'
-              onClick={() => {}}
+              onClick={() => setSettingsView('default')}
             >
               <Icon name='tune' />
             </Button>
@@ -134,6 +147,13 @@ export function NewsFeed(props: Props) {
         </div>
       </div>
     </FeedContainer>
+    {
+      settingsView &&
+        <NewsSettingsModal
+          initialView={settingsView}
+          onClose={() => setSettingsView(null)}
+        />
+    }
   </>
 }
 
