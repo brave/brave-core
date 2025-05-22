@@ -106,8 +106,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       }
 
       guard
-        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier(.alpha2),
-        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier(.alpha2),
+        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode,
+        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode,
         currentLanguage != pageLanguage
       else {
         throw BraveTranslateError.invalidLanguage
@@ -172,9 +172,20 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       // We don't current use the components/language/ios/browser/language_detection_java_script_feature.mm
       // Supported List of Languages is from: components/translate/core/browser/translate_language_list.cc
       // So we have to do this for now.
+      var currentLanguageNormalized = currentLanguage.identifier(.alpha2) ?? currentLanguage.identifier
+      var pageLanguageNormalized = pageLanguage.identifier(.alpha2) ?? pageLanguage.identifier
+      
+      if currentLanguageNormalized == "zh" {
+        currentLanguageNormalized = pageLanguage.identifier
+      }
+      
+      if pageLanguageNormalized == "zh" {
+        pageLanguageNormalized = pageLanguage.identifier
+      }
+      
       let didStartTranslation = await translate(
-        from: pageLanguage == "zh" ? "zh-CN" : pageLanguage,
-        to: currentLanguage == "zh" ? "zh-CN" : currentLanguage
+        from: pageLanguageNormalized,
+        to: currentLanguageNormalized
       )
 
       try Task.checkCancellation()
