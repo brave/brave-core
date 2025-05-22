@@ -100,8 +100,8 @@ IN_PROC_BROWSER_TEST_F(BookmarkBarTest, InstructionsViewTest) {
 
   bookmarks::BookmarkModel* model =
       BookmarkModelFactory::GetForBrowserContext(browser()->profile());
-  bookmarks::AddIfNotBookmarked(model, GURL("http://example.com/"),
-                                u"bookmark");
+  model->AddURL(model->bookmark_bar_node(), 0, u"bookmark",
+                GURL("http://example.com"));
   observer.Wait();
   EXPECT_FALSE(GetInstructionView()->GetVisible());
 }
@@ -117,8 +117,8 @@ IN_PROC_BROWSER_TEST_F(BookmarkBarTest, AllBookmarksButtonVisibility) {
 
   bookmarks::BookmarkModel* model =
       BookmarkModelFactory::GetForBrowserContext(browser()->profile());
-  auto* node = bookmarks::AddIfNotBookmarked(model, GURL("http://example.com/"),
-                                             u"bookmark");
+  const auto* node = model->AddURL(model->bookmark_bar_node(), 0, u"bookmark",
+                                   GURL("http://example.com"));
   model->Move(node, model->other_node(), 0);
   EXPECT_TRUE(is_all_bookmarks_button_visible());
 
