@@ -62,8 +62,6 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
 import org.chromium.components.version_info.BraveVersionConstants;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.ChromeImageButton;
 import org.chromium.webcompat_reporter.mojom.ReportInfo;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
@@ -74,8 +72,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** Object responsible for handling the creation, showing, hiding of the BraveShields menu. */
-public class BraveShieldsHandler
-        implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
+public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
     private static final String TAG = "BraveShieldsHandler";
     private static final String CHROME_ERROR = "chrome-error://";
 
@@ -343,23 +340,6 @@ public class BraveShieldsHandler
         return popupWindow;
     }
 
-    @Override
-    public void onConnectionError(MojoException e) {
-        initWebcompatReporterService();
-    }
-
-    private void initWebcompatReporterService() {
-        if (mWebcompatReporterHandler != null) {
-            mWebcompatReporterHandler.close();
-        }
-        Tab currentActiveTab = mIconFetcher.getTab();
-        final boolean isPrivateWindow =
-                currentActiveTab != null ? currentActiveTab.isIncognito() : false;
-        mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance()
-                        .getWebcompatReporterHandler(this, isPrivateWindow);
-    }
-
     public void updateUrlSpec(String urlSpec) {
         mUrlSpec = urlSpec;
     }
@@ -443,8 +423,9 @@ public class BraveShieldsHandler
         if (isShowing()) {
             mPopupWindow.dismiss();
         }
-        if (null != mWebcompatReporterHandler) {
+        if (mWebcompatReporterHandler != null) {
             mWebcompatReporterHandler.close();
+            mWebcompatReporterHandler = null;
         }
     }
 
@@ -548,7 +529,9 @@ public class BraveShieldsHandler
 
         setupMainSwitchClick(mShieldMainSwitch);
 
-        initWebcompatReporterService();
+        mWebcompatReporterHandler =
+                WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(mProfile, null);
     }
 
     private void setToggleView(boolean shouldShow) {
@@ -906,21 +889,23 @@ public class BraveShieldsHandler
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // Profile.getLastUsedRegularProfile requires to run in UI thread,
-                        // so get api key here and pass it to IO worker task
-                        mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl));
+                        if (mWebcompatReporterHandler != null) {
+                            mWebcompatReporterHandler.submitWebcompatReport(getReportInfo(siteUrl));
+                        }
                         mReportBrokenSiteLayout.setVisibility(View.GONE);
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
-        mWebcompatReporterHandler.getContactInfo(
-                (contactInfo, contactInfoSaveFlag) -> {
-                    if (contactInfo != null && !contactInfo.isEmpty()) {
-                        mEditTextContact.setText(contactInfo);
-                    }
-                    mTextContactInfoApopup.setVisibility(
-                            contactInfoSaveFlag ? View.VISIBLE : View.GONE);
-                });
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.getContactInfo(
+                    (contactInfo, contactInfoSaveFlag) -> {
+                        if (contactInfo != null && !contactInfo.isEmpty()) {
+                            mEditTextContact.setText(contactInfo);
+                        }
+                        mTextContactInfoApopup.setVisibility(
+                                contactInfoSaveFlag ? View.VISIBLE : View.GONE);
+                    });
+        }
     }
 
     private ReportInfo getReportInfo(String siteUrl) {

@@ -220,13 +220,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mFingerprntLanguagePref;
     private ChromeSwitchPreference mBraveShieldsSaveContactInfoPref;
     private @Nullable FilterListAndroidHandler mFilterListAndroidHandler;
-    private WebcompatReporterHandler mWebcompatReporterHandler;
 
     @Override
     public void onConnectionError(MojoException e) {
         mFilterListAndroidHandler = null;
         initFilterListAndroidHandler();
-        initWebcompatReporterHandler();
     }
 
     private void initFilterListAndroidHandler() {
@@ -238,22 +236,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
     }
 
-    private void initWebcompatReporterHandler() {
-        if (mWebcompatReporterHandler != null) {
-            return;
-        }
-        mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance()
-                        .getWebcompatReporterHandler(this, false);
-    }
-
     @Override
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
-        }
-        if (mWebcompatReporterHandler != null) {
-            mWebcompatReporterHandler.close();
         }
         super.onDestroy();
     }
@@ -267,7 +253,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
         initFilterListAndroidHandler();
-        initWebcompatReporterHandler();
 
         mDeAmpPref = (ChromeSwitchPreference) findPreference(PREF_DE_AMP);
         mDeAmpPref.setOnPreferenceChangeListener(this);
@@ -569,7 +554,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
         } else if (PREF_SHIELDS_SAVE_CONTACT_INFO.equals(key)) {
-            mWebcompatReporterHandler.setContactInfoSaveFlag((boolean) newValue);
+            handleShieldsSaveContactInfo((boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
             mBlockCrosssiteCookies.setVisibleEntry(
                     0,
@@ -668,6 +653,21 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         sharedPreferencesEditor.apply();
 
         return true;
+    }
+
+    private void handleShieldsSaveContactInfo(boolean value) {
+        // Settings UI uses getOriginalProfile always as the service is
+        // available for OTR profiles, but we don't save any pref in that case
+        // and we still want to control the feature for original profile.
+        WebcompatReporterHandler webcompatReporterHandler =
+                WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(getProfile().getOriginalProfile(), null);
+        assert webcompatReporterHandler != null
+                : "The service should always be available for original profile";
+        if (webcompatReporterHandler != null) {
+            webcompatReporterHandler.setContactInfoSaveFlag((boolean) value);
+            webcompatReporterHandler.close();
+        }
     }
 
     private void updateClearBrowsingFragment() {

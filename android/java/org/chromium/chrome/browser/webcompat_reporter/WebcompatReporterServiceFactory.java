@@ -8,7 +8,8 @@ package org.chromium.chrome.browser.webcompat_reporter;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -18,9 +19,10 @@ import org.chromium.mojo.system.impl.CoreImpl;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 @JNINamespace("chrome::android")
+@NullMarked
 public class WebcompatReporterServiceFactory {
     private static final Object sLock = new Object();
-    private static WebcompatReporterServiceFactory sInstance;
+    private static @Nullable WebcompatReporterServiceFactory sInstance;
 
     public static WebcompatReporterServiceFactory getInstance() {
         synchronized (sLock) {
@@ -33,20 +35,21 @@ public class WebcompatReporterServiceFactory {
 
     private WebcompatReporterServiceFactory() {}
 
-    public WebcompatReporterHandler getWebcompatReporterHandler(
-            ConnectionErrorHandler connectionErrorHandler, boolean isIncognito) {
-        Profile profile = Utils.getProfile(isIncognito);
+    public @Nullable WebcompatReporterHandler getWebcompatReporterHandler(
+            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         long nativeHandle =
                 WebcompatReporterServiceFactoryJni.get()
                         .getInterfaceToWebcompatReporterService(profile);
-        if (nativeHandle == -1) {
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        if (!handle.isValid()) {
             return null;
         }
-        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         WebcompatReporterHandler webcompatReporterHandler =
                 WebcompatReporterHandler.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) webcompatReporterHandler).getProxyHandler();
-        handler.setErrorHandler(connectionErrorHandler);
+        if (connectionErrorHandler != null) {
+            Handler handler = ((Interface.Proxy) webcompatReporterHandler).getProxyHandler();
+            handler.setErrorHandler(connectionErrorHandler);
+        }
 
         return webcompatReporterHandler;
     }
