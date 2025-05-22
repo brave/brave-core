@@ -119,8 +119,7 @@ describe('EmailAliasModal', () => {
       expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
         .toBeInTheDocument()
       expect(screen.queryByTestId('loading-icon')).not.toBeInTheDocument()
-      const generatedEmailContainer = screen.getByText('emailAliasesAliasLabel')
-        .closest('div')?.nextElementSibling
+      const generatedEmailContainer = screen.getByTestId('generated-email')
       expect(generatedEmailContainer).toHaveTextContent('generated@brave.com')
     })
 
@@ -219,8 +218,7 @@ describe('EmailAliasModal', () => {
       expect(regenerateButton).toBeInTheDocument()
       const saveButton = screen.getByText('emailAliasesCreateAliasButton')
       expect(saveButton).toHaveAttribute('isdisabled', 'false')
-      const aliasEmailBox = screen.getByText('emailAliasesAliasLabel')
-        .closest('div')?.nextElementSibling
+      const aliasEmailBox = screen.getByTestId('generated-email')
       expect(aliasEmailBox).toHaveTextContent(aliasEmail)
     })
   })
@@ -253,10 +251,10 @@ describe('EmailAliasModal', () => {
       expect(regenerateButton).toBeInTheDocument()
       expect(screen.getByText('emailAliasesGenerateError'))
         .toBeInTheDocument()
-      const saveButton = screen.getByText(getLocale('emailAliasesCreateAliasButton'))
+      const saveButton = screen.getByText(
+        getLocale('emailAliasesCreateAliasButton'))
       expect(saveButton).toHaveAttribute('isdisabled', 'true')
-      const aliasEmailBox = screen.getByText(getLocale('emailAliasesAliasLabel'))
-        .closest('div')?.nextElementSibling
+      const aliasEmailBox = screen.getByTestId('generated-email')
       expect(aliasEmailBox).toHaveTextContent('')
     })
   })

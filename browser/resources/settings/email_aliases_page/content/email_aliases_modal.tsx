@@ -200,7 +200,7 @@ export const EmailAliasModal = (
             <ModalSectionCol>
               <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
               <GeneratedEmailContainer>
-                <div className='generated-email'>{proposedAlias}</div>
+                <div data-testid='generated-email'>{proposedAlias}</div>
                 {editState.mode === 'Create' &&
                  <RefreshButton data-testid='regenerate-button'
                                 onClick={regenerateAlias}
