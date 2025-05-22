@@ -63,7 +63,6 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_browser_tests --filter=BraveAds*

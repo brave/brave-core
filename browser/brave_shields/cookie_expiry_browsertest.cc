@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -23,7 +24,6 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
