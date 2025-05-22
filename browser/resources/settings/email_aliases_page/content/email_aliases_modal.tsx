@@ -153,11 +153,11 @@ export const EmailAliasModal = (
     React.useState<boolean>(true)
   const [generateAliasResult, setGenerateAliasResult] =
     React.useState<GenerateAliasResult>({
-      aliasEmail: editState?.alias?.email ?? undefined,
+      aliasEmail: editState?.alias?.email ?? '',
       errorMessage: undefined
     })
   const createOrSave = async () => {
-    if (generateAliasResult?.aliasEmail) {
+    if (generateAliasResult.aliasEmail) {
       emailAliasesService.updateAlias(
         generateAliasResult.aliasEmail, proposedNote)
       onReturnToMain()
@@ -165,7 +165,7 @@ export const EmailAliasModal = (
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
-    setGenerateAliasResult(undefined)
+    setGenerateAliasResult({ aliasEmail: '', errorMessage: undefined})
     const { result } = await emailAliasesService.generateAlias()
     setGenerateAliasResult(result)
     setAwaitingProposedAlias(false)
@@ -195,14 +195,14 @@ export const EmailAliasModal = (
               <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
               <GeneratedEmailContainer>
                 <div data-testid='generated-email'>
-                  {generateAliasResult?.aliasEmail}
+                  {generateAliasResult.aliasEmail}
                 </div>
                 {editState.mode === 'Create' &&
                  <RefreshButton data-testid='regenerate-button'
                                 onClick={regenerateAlias}
                                 waiting={awaitingProposedAlias} />}
               </GeneratedEmailContainer>
-              {generateAliasResult?.errorMessage &&
+              {generateAliasResult.errorMessage &&
                 <Alert>
                   {generateAliasResult.errorMessage}
                 </Alert>}
