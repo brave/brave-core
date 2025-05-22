@@ -425,7 +425,7 @@ Config.prototype.buildArgs = function () {
     enable_updater: this.isOfficialBuild(),
     // Disable "Can't update Brave" notification on macOS until we have switched
     // to Omaha 4 and have background updates:
-    enable_update_notifications: this.isOfficialBuild() && this.getTargetOS() !== 'mac',
+    enable_update_notifications: this.isOfficialBuild(),
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
