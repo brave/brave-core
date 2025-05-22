@@ -5,6 +5,7 @@
 
 #include "brave/net/decentralized_dns/constants.h"
 
+#include "base/strings/string_split.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -13,14 +14,23 @@ using testing::Optional;
 namespace decentralized_dns {
 
 TEST(DecentralisedDnsConstantsTest, UnstoppableDomainsSuffixLookup) {
-  EXPECT_THAT(GetUnstoppableDomainSuffix("https://foo.crypto"),
-              Optional(std::string_view(".crypto")));
-  EXPECT_THAT(GetUnstoppableDomainSuffix("https://foo.bar.crypto"),
-              Optional(std::string_view(".crypto")));
+  std::string full_list = GetUnstoppableDomainSuffixFullList();
+  EXPECT_FALSE(full_list.empty());
+
+  // Split the full list into individual TLDs
+  std::vector<std::string> domains = base::SplitString(
+      full_list, ", ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  for (const auto& domain : domains) {
+    std::string url = "https://example" + domain;
+    EXPECT_THAT(GetUnstoppableDomainSuffix(url),
+                Optional(std::string_view(domain)))
+        << "Failed to recognize domain: " << domain;
+  }
+
+  // Test invalid cases
   EXPECT_FALSE(
       GetUnstoppableDomainSuffix("https://foo.bar.crypto.unknown").has_value());
-  EXPECT_THAT(GetUnstoppableDomainSuffix("https://foo.unstoppable"),
-              Optional(std::string_view(".unstoppable")));
   EXPECT_FALSE(GetUnstoppableDomainSuffix("https://unstoppable").has_value());
 }
 

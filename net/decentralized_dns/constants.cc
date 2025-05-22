@@ -57,14 +57,25 @@ struct SuffixComparator {
 
 inline constexpr auto kUnstoppableDomains =
     base::MakeFixedFlatSet<std::string_view>(
-        {".crypto",     ".x",          ".nft",     ".dao",         ".wallet",
-         ".blockchain", ".bitcoin",    ".zil",     ".altimist",    ".anime",
-         ".klever",     ".manga",      ".polygon", ".unstoppable", ".pudgy",
-         ".tball",      ".stepn",      ".secret",  ".raiin",       ".pog",
-         ".clay",       ".metropolis", ".witg",    ".ubu",         ".kryptic",
-         ".farms",      ".dfz",        ".kresus",  ".binanceus",   ".austin",
-         ".bitget",     ".wrkx",       ".bald",    ".benji",       ".chomp",
-         ".dream",      ".ethermail",  ".lfg",     ".propykeys",   ".smobler"},
+        {".altimist",   ".anime",       ".ask",       ".austin",
+         ".bald",       ".basenji",     ".bay",       ".benji",
+         ".binanceus",  ".bitcoin",     ".bitget",    ".bitscrunch",
+         ".blockchain", ".boomer",      ".brave",     ".calicoin",
+         ".caw",        ".chomp",       ".clay",      ".crypto",
+         ".dao",        ".dfz",         ".doga",      ".donut",
+         ".dream",      ".emir",        ".ethermail", ".farms",
+         ".grow",       ".her",         ".kingdom",   ".klever",
+         ".kresus",     ".kryptic",     ".lfg",       ".ltc",
+         ".manga",      ".metropolis",  ".miku",      ".ministry",
+         ".moon",       ".mumu",        ".nft",       ".nibi",
+         ".npc",        ".onchain",     ".pastor",    ".podcast",
+         ".pog",        ".polygon",     ".privacy",   ".propykeys",
+         ".pudgy",      ".quantum",     ".rad",       ".raiin",
+         ".secret",     ".smobler",     ".south",     ".stepn",
+         ".tball",      ".tea",         ".tribe",     ".u",
+         ".ubu",        ".unstoppable", ".wallet",    ".wifi",
+         ".witg",       ".wrkx",        ".x",         ".xec",
+         ".xmr",        ".zil"},
         SuffixComparator());
 
 // Ensure all domain suffixes start with `.`
