@@ -36,8 +36,8 @@ web::WebUIIOSDataSource* CreateWebUIDataSource(
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  web::WebUIIOSDataSource* source = BraveWebUIIOSDataSource::Create(name);
-  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
+  web::WebUIIOSDataSource* source = BraveWebUIIOSDataSource::CreateAndAdd(
+      ProfileIOS::FromWebUIIOS(web_ui), name);
 
   source->UseStringsJs();
   source->AddResourcePaths(resource_paths);
