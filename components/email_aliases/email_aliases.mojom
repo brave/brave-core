@@ -31,8 +31,8 @@ struct Alias {
 
 // Return value for EmailAliasesService::GenerateAlias()
 union GenerateAliasResult {
-  string? alias_email;
-  string? error_message;
+  string alias_email;
+  string error_message;
 };
 
 // Observer for change in email aliases state

@@ -10,19 +10,6 @@ import { EmailAliasModal, EditState } from '../content/email_aliases_modal'
 import { clickLeoButton } from './test_utils'
 import { EmailAliasesServiceInterface }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
-import { getLocale } from '$web-common/locale'
-
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string) => {
-    return key
-  },
-  formatLocale: (key: string) => {
-    return key
-  }
-}))
 
 // Mock the email aliases service
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
@@ -251,8 +238,7 @@ describe('EmailAliasModal', () => {
       expect(regenerateButton).toBeInTheDocument()
       expect(screen.getByText('emailAliasesGenerateError'))
         .toBeInTheDocument()
-      const saveButton = screen.getByText(
-        getLocale('emailAliasesCreateAliasButton'))
+      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
       expect(saveButton).toHaveAttribute('isdisabled', 'true')
       const aliasEmailBox = screen.getByTestId('generated-email')
       expect(aliasEmailBox).toHaveTextContent('')
