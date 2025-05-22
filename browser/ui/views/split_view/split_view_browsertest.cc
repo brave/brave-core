@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -202,6 +203,13 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
   EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsStackedAbove(
       secondary_location_bar_widget()->GetNativeView()));
+
+  // Chromium's mini toolbar should be hidden always as we're using own own mini
+  // urlbar.
+  EXPECT_FALSE(
+      brave_multi_contents_view()->mini_toolbar_for_testing(0)->GetVisible());
+  EXPECT_FALSE(
+      brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
 
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
