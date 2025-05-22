@@ -15,7 +15,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/tabs/public/tab_features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/psst/browser/content/psst_scripts_result_handler.h"
+#include "brave/components/psst/browser/content/psst_scripts_handler.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"

@@ -15,7 +15,6 @@ source_set("browser_tests") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/cosmetic_filters/browser",
     "//brave/components/psst/browser/content",
-    "//brave/components/psst/browser/content:content",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//chrome/test:test_support",
@@ -29,4 +28,20 @@ source_set("browser_tests") {
   } else {
     deps += [ "//chrome/test:test_support_ui" ]
   }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/common:common",
+    "//chrome/browser/prefs",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//url:url",
+  ]
 }

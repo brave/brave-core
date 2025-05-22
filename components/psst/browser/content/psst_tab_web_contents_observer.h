@@ -22,10 +22,21 @@ class PsstRuleRegistry;
 FORWARD_DECLARE_TEST(PsstTabWebContentsObserverBrowserTest,
                      RuleMatchTestScriptTrue);
 
+class PsstShouldProcessPageChecker {
+ public:
+  PsstShouldProcessPageChecker() = default;
+  virtual ~PsstShouldProcessPageChecker() = default;
+  PsstShouldProcessPageChecker(const PsstShouldProcessPageChecker&) = delete;
+  PsstShouldProcessPageChecker& operator=(const PsstShouldProcessPageChecker&) =
+      delete;
+
+  virtual bool ShouldProcess(content::NavigationEntry* entry) const = 0;
+};
+
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
     : public content::WebContentsObserver {
  public:
-  static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
+  static std::unique_ptr<PsstTabWebContentsObserver> CreateForWebContents(
       content::WebContents* contents,
       PrefService* prefs,
       const int32_t world_id);
@@ -39,6 +50,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   PsstTabWebContentsObserver(
       content::WebContents* web_contents,
       PrefService* prefs,
+      std::unique_ptr<PsstShouldProcessPageChecker> page_checker,
       std::unique_ptr<PsstScriptsHandler> script_handler);
 
   // content::WebContentsObserver overrides
@@ -48,11 +60,17 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabWebContentsObserver
   void SetScriptHandlerForTesting(
       std::unique_ptr<PsstScriptsHandler> script_handler);
 
+  std::unique_ptr<PsstShouldProcessPageChecker> page_checker_;
   std::unique_ptr<PsstScriptsHandler> script_handler_;
   const raw_ptr<PrefService> prefs_;
   const raw_ptr<PsstRuleRegistry> psst_rule_registry_;
   bool should_process_ = false;
 
+  friend class PsstTabWebContentsObserverUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
+                           PrimaryPageChanged);
+  FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverUnitTest,
+                           DocumentOnLoadCompletedScriptStart);
   FRIEND_TEST_ALL_PREFIXES(PsstTabWebContentsObserverBrowserTest,
                            RuleMatchTestScriptTrue);
   friend class PsstTabWebContentsObserverBrowserTest;
