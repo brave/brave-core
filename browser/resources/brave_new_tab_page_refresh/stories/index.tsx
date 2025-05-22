@@ -37,7 +37,9 @@ function StorybookAppProvider(props: { children: React.ReactNode }) {
             <TopSitesProvider createHandler={createTopSitesHandler}>
               <VpnProvider createHandler={createVpnHandler}>
                 <RewardsProvider createHandler={createRewardsHandler}>
-                  {props.children}
+                  <NewsProvider createHandler={createNewsHandler}>
+                    {props.children}
+                  </NewsProvider>
                 </RewardsProvider>
               </VpnProvider>
             </TopSitesProvider>
