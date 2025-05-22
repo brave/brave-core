@@ -39,7 +39,7 @@ class BraveMultiContentsView : public MultiContentsView,
                            BraveMultiContentsViewTest);
 
   // MultiContentsView:
-  void UpdateContentsBorder() override;
+  void UpdateContentsBorderAndOverlay() override;
   void Layout(PassKey) override;
   void SetActiveIndex(int index) override;
 
