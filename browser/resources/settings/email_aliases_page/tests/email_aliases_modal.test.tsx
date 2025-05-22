@@ -8,7 +8,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import { EmailAliasModal, EditState } from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
-import { EmailAliasesServiceInterface }
+import { EmailAliasesServiceInterface, GenerateAliasResult }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 jest.mock('$web-common/locale', () => ({
@@ -190,7 +190,8 @@ describe('EmailAliasModal', () => {
   it('shows loading state while generating alias', async () => {
     const aliasEmail = 'new@brave.com'
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve({ result: { errorMessage: null, aliasEmail } }))
+      () => Promise.resolve<{ result: GenerateAliasResult }>({
+        result: { aliasEmail, errorMessage: undefined } }))
 
     render(
       <EmailAliasModal
@@ -224,10 +225,10 @@ describe('EmailAliasModal', () => {
 
   it("shows error message when generating alias fails", async () => {
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve({
+      () => Promise.resolve<{ result: GenerateAliasResult }>({
         result: {
           errorMessage: 'emailAliasesGenerateError',
-          aliasEmail: null
+          aliasEmail: undefined
         }
       }))
 
