@@ -153,7 +153,9 @@ export const EmailAliasModal = (
     React.useState<boolean>(true)
   const [generateAliasResult, setGenerateAliasResult] =
     React.useState<GenerateAliasResult>({
-      aliasEmail: editState?.alias?.email ?? undefined, errorMessage: undefined })
+      aliasEmail: editState?.alias?.email ?? undefined,
+      errorMessage: undefined
+    })
   const createOrSave = async () => {
     if (generateAliasResult?.aliasEmail) {
       emailAliasesService.updateAlias(
