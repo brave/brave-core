@@ -25,7 +25,8 @@
       'localFrameElement': results.localFrameElement,
       'hasTextDisplayIsNone': results.hasTextDisplayIsNone,
       'hasDisplayIsNone': results.hasDisplayIsNone,
-      'delayedHasTextHidden': results.delayedHasTextHidden
+      'delayedHasTextHidden': results.delayedHasTextHidden,
+      'delayedChildHasTextHidden': results.delayedChildHasTextHidden,
     })
   }
 
@@ -47,7 +48,8 @@
       localFrameElement: false,
       hasTextDisplayIsNone: false,
       hasDisplayIsNone: false,
-      delayedHasTextHidden: false
+      delayedHasTextHidden: false,
+      delayedChildHasTextHidden: []
     }
 
     elements.forEach((node) => {
@@ -93,6 +95,14 @@
       if (node.id === 'test-delayed-has-text') {
         const nodeDisplay = window.getComputedStyle(node).display
         results.delayedHasTextHidden = nodeDisplay === 'none'
+      }
+
+      if (node.id === 'procedural-filter-child-node-id') {
+        const nodeDisplay = window.getComputedStyle(node).display
+        // 2 elements have this id, we want to test both their display values
+        const delayedChildHasTextHidden = results.delayedChildHasTextHidden
+        delayedChildHasTextHidden.push(nodeDisplay === 'none')
+        results.delayedChildHasTextHidden = delayedChildHasTextHidden
       }
 
       if (node.id === 'test-has') {

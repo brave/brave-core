@@ -37,6 +37,7 @@ final class ScriptExecutionTests: XCTestCase {
     let hasTextDisplayIsNone: Bool
     let hasDisplayIsNone: Bool
     let delayedHasTextHidden: Bool
+    let delayedChildHasTextHidden: [Bool]
   }
 
   override class func setUp() {
@@ -263,6 +264,7 @@ final class ScriptExecutionTests: XCTestCase {
         "brave.com###test-has-text:has-text(hide me)",
         "brave.com###test-has:has(a.banner-link)",
         "brave.com###test-delayed-has-text:has-text(hide me)",
+        "brave.com###procedural-filter-child-node-id:has-text(View in App)",
       ].joined(separator: "\n")
     )
     let cosmeticFilterModel = try engine.cosmeticFilterModel(forFrameURL: siteURL)!
@@ -407,6 +409,12 @@ final class ScriptExecutionTests: XCTestCase {
     // Now wait for the pump which takes a few seconds (The pump unhides 1st party elements).
     try await Task.sleep(seconds: 5)
 
+    let addDynamicElementsJavascript = """
+        addElementForProceduralFilter();
+        addElementWithChildDynamically();
+      """
+    try await viewController.webView.evaluateJavaScript(addDynamicElementsJavascript)
+
     // Execute a script that will test the cosmetic filters page
     let testURL = Bundle.module.url(forResource: "cosmetic-filter-tests", withExtension: "js")!
     let source = try String(contentsOf: testURL)
@@ -469,6 +477,13 @@ final class ScriptExecutionTests: XCTestCase {
     XCTAssertTrue(resultsAfterPump?.hasTextDisplayIsNone ?? false)
     XCTAssertTrue(resultsAfterPump?.hasDisplayIsNone ?? false)
     XCTAssertTrue(resultsAfterPump?.delayedHasTextHidden ?? false)
+    if let delayedChildHasTextHidden = resultsAfterPump?.delayedChildHasTextHidden {
+      // expecting 2 elements with the same id to be hidden
+      XCTAssertEqual(delayedChildHasTextHidden.count, 2)
+      XCTAssertTrue(delayedChildHasTextHidden.allSatisfy({ $0 }))
+    } else {
+      XCTFail("delayedChildHasTextHidden missing in results")
+    }
     // Test for local frames
     XCTAssertTrue(resultsAfterPump?.localFrameElement ?? false)
   }

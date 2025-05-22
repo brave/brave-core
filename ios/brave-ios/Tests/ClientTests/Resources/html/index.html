@@ -134,6 +134,28 @@
       document.body.appendChild(div);
     }
 
+    const addElementWithChildDynamically = () => {
+      let root = document.documentElement;
+      const rootElement = document.createElement('div');
+      rootElement.setAttribute('id', 'procedural-filter-root-node-id');
+
+      const childNode = document.createElement('div');
+      childNode.setAttribute('id', 'procedural-filter-child-node-id');
+      rootElement.appendChild(childNode);
+      const p = document.createElement('p');
+      p.textContent = 'View in App';
+      childNode.appendChild(p);
+
+      const childNode2 = document.createElement('div');
+      childNode2.setAttribute('id', 'procedural-filter-child-node-id');
+      rootElement.appendChild(childNode2);
+      const span = document.createElement('span');
+      span.textContent = 'View in App';
+      childNode2.appendChild(span);
+
+      root.appendChild(rootElement);
+    }
+
     const onload = () => {
       const localFrame = document.createElement('iframe');
       localFrame.id = 'local-iframe';
@@ -149,7 +171,6 @@
       
       setTimeout(displaySvalInBody, 100);
       setTimeout(displaySvalInLocalFrame, 200);
-      setTimeout(addElementForProceduralFilter, 500);
     };
     window.onload = onload;
     </script>
