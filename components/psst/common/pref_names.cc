@@ -5,11 +5,8 @@
 
 #include "brave/components/psst/common/pref_names.h"
 
-#include <optional>
-
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
-#include "base/values.h"
 #include "brave/components/psst/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"

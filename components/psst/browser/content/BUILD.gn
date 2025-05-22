@@ -9,8 +9,10 @@ component("content") {
   defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "psst_scripts_result_handler.cc",
-    "psst_scripts_result_handler.h",
+    "psst_scripts_handler.cc",
+    "psst_scripts_handler.h",
+    "psst_scripts_handler_impl.cc",
+    "psst_scripts_handler_impl.h",
     "psst_tab_web_contents_observer.cc",
     "psst_tab_web_contents_observer.h",
   ]

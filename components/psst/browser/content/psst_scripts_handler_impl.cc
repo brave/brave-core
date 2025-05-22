@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/psst/browser/content/psst_scripts_result_handler.h"
+#include "brave/components/psst/browser/content/psst_scripts_handler_impl.h"
 
 #include <memory>
 #include <optional>
@@ -16,6 +16,7 @@
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/pref_names.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
@@ -46,8 +47,13 @@ std::string GetScriptWithParams(const std::string& script,
 
 }  // namespace
 
-PsstScriptsHandler::PsstScriptsHandler() = default;
-PsstScriptsHandler::~PsstScriptsHandler() = default;
+std::unique_ptr<PsstScriptsHandler> PsstScriptsHandler::Create(
+    content::WebContents* contents,
+    PrefService* prefs,
+    const int32_t world_id) {
+  return std::make_unique<PsstScriptsHandlerImpl>(
+      prefs, contents, contents->GetPrimaryMainFrame(), world_id);
+}
 
 PsstScriptsHandlerImpl::PsstScriptsHandlerImpl(
     PrefService* prefs,
