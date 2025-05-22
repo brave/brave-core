@@ -165,7 +165,7 @@ export const EmailAliasModal = (
     setAwaitingProposedAlias(true)
     setProposedAlias('')
     setGenerationErrorMessage(null)
-    const { aliasEmail, errorMessage } =
+    const { result: { errorMessage, aliasEmail } } =
       await emailAliasesService.generateAlias()
     if (errorMessage) {
       setGenerationErrorMessage(errorMessage)

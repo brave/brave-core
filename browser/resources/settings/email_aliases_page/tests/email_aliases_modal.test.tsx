@@ -42,7 +42,8 @@ describe('EmailAliasModal', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockEmailAliasesService.generateAlias = jest.fn()
-      .mockResolvedValue({ aliasEmail: 'generated@brave.com' })
+      .mockResolvedValue({ result: {
+        errorMessage: null, aliasEmail: 'generated@brave.com' } })
   })
 
   it('renders create mode correctly', async () => {
@@ -191,7 +192,7 @@ describe('EmailAliasModal', () => {
   it('shows loading state while generating alias', async () => {
     const aliasEmail = 'new@brave.com'
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
-      () => Promise.resolve({ aliasEmail }))
+      () => Promise.resolve({ result: { errorMessage: null, aliasEmail } }))
 
     render(
       <EmailAliasModal
@@ -227,7 +228,10 @@ describe('EmailAliasModal', () => {
   it("shows error message when generating alias fails", async () => {
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
       () => Promise.resolve({
-        errorMessage: getLocale('emailAliasesGenerateError'),
+        result: {
+          errorMessage: getLocale('emailAliasesGenerateError'),
+          aliasEmail: null
+        }
       }))
 
     render(

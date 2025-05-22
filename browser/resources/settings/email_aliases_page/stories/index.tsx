@@ -148,7 +148,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     const errorMessage = Math.random() < 1/3
       ? getLocale('emailAliasesGenerateError')
       : null
-    return { errorMessage, aliasEmail }
+    return { result: { errorMessage, aliasEmail } }
   }
 
   requestAuthentication (email: string) {
