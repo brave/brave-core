@@ -10,6 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { useNewsState, useNewsActions } from '../../context/news_context'
 import { getString } from '../../lib/strings'
 import { FeedNav } from './feed_nav'
+import { FeedItemList } from './feed_item_list'
 import { NewsOptIn } from './news_opt_in'
 import { NewsSettingsModal, NewsSettingsView } from './settings/news_settings_modal'
 import { Popover } from '../common/popover'
@@ -28,6 +29,7 @@ export function NewsFeed(props: Props) {
   const newsInitializing = useNewsState((s) => s.newsInitializing)
   const isOptedIn = useNewsState((s) => s.isOptedIn)
   const showOnNTP = useNewsState((s) => s.showOnNTP)
+  const feedError = useNewsState((s) => s.feedError)
   const feedItems = useNewsState((s) => s.feedItems)
   const updateAvailable = useNewsState((s) => s.feedUpdateAvailable)
 
@@ -106,7 +108,7 @@ export function NewsFeed(props: Props) {
             {renderFeedNav()}
           </div>
         </div>
-        <div className='feed-item-list' />
+        <FeedItemList feedItems={feedItems} feedError={feedError} />
         <div className='controls-container'>
           <div className='controls hidden-above-fold'>
             <div className='popover-nav-control'>
