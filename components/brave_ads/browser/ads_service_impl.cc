@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <utility>
 
@@ -39,6 +40,7 @@
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
+#include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -179,6 +181,8 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<Delegate> delegate,
     PrefService* prefs,
     PrefService* local_state,
+    std::unique_ptr<VirtualPrefProvider::Delegate>
+        virtual_pref_provider_delegate,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader,
     std::string_view channel_name,
     const base::FilePath& profile_path,
@@ -192,6 +196,9 @@ AdsServiceImpl::AdsServiceImpl(
     : AdsService(std::move(delegate)),
       prefs_(prefs),
       local_state_(local_state),
+      virtual_pref_provider_(std::make_unique<VirtualPrefProvider>(
+          local_state_,
+          std::move(virtual_pref_provider_delegate))),
       url_loader_(std::move(url_loader)),
       channel_name_(channel_name),
       history_service_(history_service),
@@ -1883,7 +1890,7 @@ void AdsServiceImpl::HasLocalStatePrefPath(
 }
 
 void AdsServiceImpl::GetVirtualPrefs(GetVirtualPrefsCallback callback) {
-  std::move(callback).Run(delegate_->GetVirtualPrefs());
+  std::move(callback).Run(virtual_pref_provider_->GetVirtualPrefs());
 }
 
 void AdsServiceImpl::Log(const std::string& file,

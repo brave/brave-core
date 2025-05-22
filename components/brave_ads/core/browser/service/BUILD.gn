@@ -10,6 +10,8 @@ source_set("service") {
     "ads_service_observer.h",
     "new_tab_page_ad_prefetcher.cc",
     "new_tab_page_ad_prefetcher.h",
+    "virtual_pref_provider.cc",
+    "virtual_pref_provider.h",
   ]
 
   public_deps = [
@@ -18,7 +20,13 @@ source_set("service") {
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/keyed_service/core",
+    "//components/prefs",
     "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    "//base/version_info",
+    "//brave/components/skus/browser",
   ]
 }
 

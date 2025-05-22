@@ -56,6 +56,7 @@
 #include "ios/chrome/browser/safe_browsing/model/safe_browsing_metrics_collector_factory.h"
 #include "ios/chrome/browser/saved_tab_groups/model/tab_group_service_factory.h"
 #include "ios/chrome/browser/saved_tab_groups/model/tab_group_sync_service_factory.h"
+#include "ios/chrome/browser/search_engines/model/template_url_prepopulate_data_resolver_factory.h"
 #include "ios/chrome/browser/search_engines/model/template_url_service_factory.h"
 #include "ios/chrome/browser/segmentation_platform/model/segmentation_platform_service_factory.h"
 #include "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
@@ -101,6 +102,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   ios::LocalOrSyncableBookmarkSyncServiceFactory::GetInstance();
   ios::PasswordManagerLogRouterFactory::GetInstance();
   ios::TemplateURLServiceFactory::GetInstance();
+  ios::TemplateURLPrepopulateDataResolverFactory::GetInstance();
   ios::TopSitesFactory::GetInstance();
   ios::WebDataServiceFactory::GetInstance();
   ios::WebHistoryServiceFactory::GetInstance();
