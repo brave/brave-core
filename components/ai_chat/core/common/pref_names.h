@@ -8,6 +8,7 @@
 
 #include "base/component_export.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
 
 class PrefRegistrySimple;
 
@@ -15,6 +16,8 @@ namespace ai_chat::prefs {
 
 inline constexpr char kLastAcceptedDisclaimer[] =
     "brave.ai_chat.last_accepted_disclaimer";
+inline constexpr char kBraveChatPageContextEnabledInitially[] =
+    "brave.ai_chat.page_context_enabled_initially";
 inline constexpr char kBraveChatStorageEnabled[] =
     "brave.ai_chat.storage_enabled";
 inline constexpr char kBraveChatAutocompleteProviderEnabled[] =
