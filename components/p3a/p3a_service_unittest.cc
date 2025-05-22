@@ -300,7 +300,7 @@ TEST_F(P3AServiceTest, MAYBE_UpdateLogsAndSendSlow) {
     task_environment_.RunUntilIdle();
   }
 
-  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 400));
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 600));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
