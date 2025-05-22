@@ -22,7 +22,6 @@
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/base/process/process_launcher.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
