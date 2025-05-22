@@ -5,9 +5,9 @@
 import * as React from 'react'
 import styles from './style.module.scss'
 import Button from '@brave/leo/react/button'
+import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
-import RadioButton from '@brave/leo/react/radioButton'
 import Flex from '$web-common/Flex'
 import { useAIChat } from '../../state/ai_chat_context'
 import { TabData } from 'components/ai_chat/resources/common/mojom'
@@ -17,12 +17,16 @@ import { getLocale } from '$web-common/locale'
 function TabItem({ tab }: { tab: TabData }) {
     const aiChat = useAIChat()
     const { conversationUuid, associatedContentInfo } = useConversation()
-    return <RadioButton className={styles.tabItem} currentValue={associatedContentInfo?.contentId} value={tab.contentId} name='tab-item' onChange={() => {
-        aiChat.uiHandler?.associateTab(tab, conversationUuid!)
+    return <Checkbox className={styles.tabItem} checked={associatedContentInfo.some(c => c.contentId === tab.contentId)} onChange={(e) => {
+        if (e.checked) {
+            aiChat.uiHandler?.associateTab(tab, conversationUuid!)
+        } else {
+            aiChat.uiHandler?.disassociateTab(tab, conversationUuid!)
+        }
     }}>
         <span className={styles.title}>{tab.title}</span>
         <img key={tab.contentId} className={styles.icon} src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(tab.url.url)}`} />
-    </RadioButton>
+    </Checkbox>
 }
 
 export default function Attachments() {
