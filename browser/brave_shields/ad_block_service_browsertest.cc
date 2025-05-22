@@ -2825,8 +2825,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesPath) {
   UpdateAdBlockInstanceWithRules(
       "a.com##section .positive-string-case "
       "p.odd:matches-path(cosmetic_filtering.html)\n"
-      "a.com##section .positive-regex-case "
-      "p.odd:matches-path(/c[aeiou]smetic\\_[a-z]{9}/)\n"
+      "a.com##:matches-path(/c[aeiou]smetic\\_[a-z]{9}/) section "
+      ".positive-regex-case p.odd\n"
       "a.com##section .negative-case:matches-path(/some-other-page.html)");
 
   GURL tab_url =
