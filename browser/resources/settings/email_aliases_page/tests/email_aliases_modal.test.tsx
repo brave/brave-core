@@ -229,7 +229,7 @@ describe('EmailAliasModal', () => {
     mockEmailAliasesService.generateAlias = jest.fn().mockImplementation(
       () => Promise.resolve({
         result: {
-          errorMessage: getLocale('emailAliasesGenerateError'),
+          errorMessage: 'emailAliasesGenerateError',
           aliasEmail: null
         }
       }))
@@ -251,11 +251,11 @@ describe('EmailAliasModal', () => {
       const regenerateButton = screen.queryByTitle(
         'emailAliasesRefreshButtonTitle')
       expect(regenerateButton).toBeInTheDocument()
-      expect(screen.getByText(getLocale('emailAliasesGenerateError')))
+      expect(screen.getByText('emailAliasesGenerateError'))
         .toBeInTheDocument()
-      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      const saveButton = screen.getByText(getLocale('emailAliasesCreateAliasButton'))
       expect(saveButton).toHaveAttribute('isdisabled', 'true')
-      const aliasEmailBox = screen.getByText('emailAliasesAliasLabel')
+      const aliasEmailBox = screen.getByText(getLocale('emailAliasesAliasLabel'))
         .closest('div')?.nextElementSibling
       expect(aliasEmailBox).toHaveTextContent('')
     })
