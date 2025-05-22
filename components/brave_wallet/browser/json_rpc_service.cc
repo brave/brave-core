@@ -142,7 +142,9 @@ constexpr char kUDPattern[] =
     "altimist|anime|klever|manga|polygon|unstoppable|pudgy|tball|stepn|secret|"
     "raiin|pog|clay|metropolis|witg|ubu|kryptic|farms|dfz|kresus|binanceus|"
     "austin|bitget|wrkx|bald|benji|chomp|dream|ethermail|lfg|propykeys|"
-    "smobler)";
+    "smobler|ask|bay|basenji|bitscrunch|boomer|calicoin|caw|doga|donut|emir|"
+    "grow|her|kingdom|ltc|miku|ministry|moon|mumu|nibi|npc|onchain|pastor|"
+    "podcast|privacy|rad|quantum|south|tea|tribe|u|wifi|xec|xmr|brave)";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
