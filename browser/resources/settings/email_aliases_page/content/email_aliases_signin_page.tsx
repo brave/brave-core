@@ -7,6 +7,7 @@ import { formatLocale, getLocale } from "$web-common/locale";
 import { onEnterKeyForInput } from "./on_enter_key"
 import { spacing } from "@brave/leo/tokens/css/variables";
 import * as React from 'react'
+import Alert from "@brave/leo/react/alert"
 import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
 import Card from "./styles/Card"
@@ -45,25 +46,34 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
   { suggestedAuthEmail: string,
     emailAliasesService: EmailAliasesServiceInterface }) => {
   const [email, setEmail] = React.useState<string>(suggestedAuthEmail)
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
+  const requestAuthentication = async () => {
+    setErrorMessage(null)
+    const { errorMessage } =
+      await emailAliasesService.requestAuthentication(email)
+    setErrorMessage(errorMessage)
+  }
   return <SpacedCol>
     <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>
     <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
     <LoginRow>
       <StretchyInput autofocus
         onChange={(detail) => setEmail(detail.value)}
-        onKeyDown={onEnterKeyForInput((value) =>
-                    emailAliasesService.requestAuthentication(value))}
+        onKeyDown={onEnterKeyForInput(requestAuthentication)}
         name='email'
         type='text'
         placeholder={getLocale('emailAliasesEmailAddressPlaceholder')}
         value={email} />
       <Button
-        onClick={() =>
-                  emailAliasesService.requestAuthentication(email)}
+        onClick={requestAuthentication}
         type='submit' kind='filled'>
         {getLocale('emailAliasesGetLoginLinkButton')}
       </Button>
     </LoginRow>
+    {errorMessage && <Alert>
+      {getLocale('emailAliasesRequestAuthenticationErrorPreamble') + ' ' +
+        errorMessage}
+    </Alert>}
   </SpacedCol>
 }
 

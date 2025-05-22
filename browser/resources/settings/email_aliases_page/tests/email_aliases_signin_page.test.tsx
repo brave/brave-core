@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { MainEmailEntryForm } from '../content/email_aliases_signin_page'
 
 import {
@@ -24,8 +24,15 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
 }
 
 describe('MainEmailEntryForm', () => {
+  beforeEach(() => {
+    mockEmailAliasesService.requestAuthentication.mockClear()
+  })
+
   it('handles sign up via button click', async () => {
     const mockAuthEmail = 'test@example.com'
+
+    mockEmailAliasesService.requestAuthentication = jest.fn()
+      .mockResolvedValue({ errorMessage: 'mockErrorMessage' })
 
     render(<MainEmailEntryForm
       authState={
@@ -40,6 +47,33 @@ describe('MainEmailEntryForm', () => {
     clickLeoButton(signUpButton)
     expect(mockEmailAliasesService.requestAuthentication)
       .toHaveBeenCalledWith(mockAuthEmail)
+  })
+
+  it('handles error when requesting authentication', async () => {
+    const mockAuthEmail = 'test@example.com'
+
+    mockEmailAliasesService.requestAuthentication = jest.fn()
+      .mockResolvedValue({ errorMessage: 'mockErrorMessage' })
+
+    render(<MainEmailEntryForm
+      authState={{
+        status: AuthenticationStatus.kUnauthenticated,
+        email: mockAuthEmail
+      }}
+      emailAliasesService={mockEmailAliasesService} />)
+
+    const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
+    const emailInput = screen
+      .getByPlaceholderText('emailAliasesEmailAddressPlaceholder')
+    await act(async () => {
+      fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
+      clickLeoButton(signUpButton)
+    })
+    await waitFor(() => {
+      expect(mockEmailAliasesService.requestAuthentication)
+        .toHaveBeenCalledWith(mockAuthEmail)
+      expect(screen.getByText(/mockErrorMessage/i)).toBeInTheDocument()
+    })
   })
 
 })

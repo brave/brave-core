@@ -58,6 +58,10 @@ provideStrings({
     'create or access a Brave Account and let you use the free Email Aliases ' +
     'service.',
   emailAliasesGetLoginLinkButton: 'Get login link',
+  emailAliasesRequestAuthenticationErrorPreamble:
+    'Error requesting authentication.',
+  emailAliasesCheckYourInternetConnectionAndTryAgain:
+    'Check your internet connection and try again.',
   emailAliasesEmailAddressPlaceholder: 'Email address',
   emailAliasesLoginEmailOnTheWay: 'A login email is on the way to $1',
   emailAliasesClickOnSecureLogin: 'Click on the secure login link in the ' +
@@ -153,21 +157,28 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { result: { errorMessage, aliasEmail } }
   }
 
-  requestAuthentication (email: string) {
-    this.observers.forEach(observer => {
-      observer.onAuthStateChanged({
-        status: AuthenticationStatus.kAuthenticating,
-        email: email
-      })
-    })
-    this.accountRequestId = window.setTimeout(() => {
+  async requestAuthentication (email: string) {
+    const error : boolean = Math.random() < 1/3
+    if (!error) {
       this.observers.forEach(observer => {
         observer.onAuthStateChanged({
-          status: AuthenticationStatus.kAuthenticated,
+          status: AuthenticationStatus.kAuthenticating,
           email: email
         })
       })
-    }, 5000);
+      this.accountRequestId = window.setTimeout(() => {
+        this.observers.forEach(observer => {
+          observer.onAuthStateChanged({
+            status: AuthenticationStatus.kAuthenticated,
+            email: email
+          })
+        })
+      }, 5000);
+    }
+    const errorMessage = error
+      ? getLocale('emailAliasesCheckYourInternetConnectionAndTryAgain')
+      : null
+    return { errorMessage }
   }
 
   cancelAuthenticationOrLogout () {

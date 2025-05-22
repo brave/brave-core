@@ -51,7 +51,7 @@ interface EmailAliasesServiceObserver {
 interface EmailAliasesService {
 
   // Initiate authentication using the user's auth email.
-  RequestAuthentication(string auth_email);
+  RequestAuthentication(string auth_email) => (string? error_message);
 
   // Cancel pending authentication or log out if already authenticated.
   CancelAuthenticationOrLogout();
