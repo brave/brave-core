@@ -31,7 +31,8 @@ import org.chromium.mojo.system.MojoException;
 public class MediaPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     public static final String PREF_WIDEVINE_ENABLED = "widevine_enabled";
-    public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
+    public static final String PREF_BACKGROUND_YOUTUBE_VIDEO_PLAYBACK =
+            "background_youtube_video_playback";
     public static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
     private static final String PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT =
             "hide_youtube_recommended_content";
@@ -72,14 +73,15 @@ public class MediaPreferences extends BravePreferenceFragment
             enableWidevinePref.setOnPreferenceChangeListener(this);
         }
 
-        ChromeSwitchPreference backgroundVideoPlaybackPref =
-                (ChromeSwitchPreference) findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
-        if (backgroundVideoPlaybackPref != null) {
-            backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
+        ChromeSwitchPreference backgroundYouTubeVideoPlaybackPref =
+                findPreference(PREF_BACKGROUND_YOUTUBE_VIDEO_PLAYBACK);
+        if (backgroundYouTubeVideoPlaybackPref != null) {
+            backgroundYouTubeVideoPlaybackPref.setOnPreferenceChangeListener(this);
             boolean enabled =
                     ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                    || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled();
-            backgroundVideoPlaybackPref.setChecked(enabled);
+                            || BravePrefServiceBridge.getInstance()
+                                    .getBackgroundVideoPlaybackEnabled();
+            backgroundYouTubeVideoPlaybackPref.setChecked(enabled);
         }
 
         ChromeSwitchPreference openYoutubeLinksBravePref =
@@ -142,7 +144,7 @@ public class MediaPreferences extends BravePreferenceFragment
                             BravePref.WIDEVINE_ENABLED,
                             !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;
-        } else if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
+        } else if (PREF_BACKGROUND_YOUTUBE_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL,
                     (boolean) newValue,

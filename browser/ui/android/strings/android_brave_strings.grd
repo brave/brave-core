@@ -820,14 +820,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SECTION_CLEAR_DATA" desc="Title for Clear private data automatically section in the privacy preferences screen">
         Clear browsing data
       </message>
-      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
-        Background play
+      <message name="IDS_PREFS_BACKGROUND_YOUTUBE_VIDEO_PLAYBACK" desc="Title for background YouTube video playback preference in controls section">
+        Background YouTube play
       </message>
       <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE" desc="Title for closing all tabs closes brave in controls section">
         Closing all tabs closes Brave
       </message>
-      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
-        Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
+      <message name="IDS_PREFS_BACKGROUND_YOUTUBE_VIDEO_PLAYBACK_DESCRIPTION" desc="Description for background YouTube video playback preference in controls section">
+        Allows YouTube videos to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
       <message name="IDS_PREFS_OPEN_YOUTUBE_LINKS_BRAVE" desc="Text for open youtube links in brave">
         Open YouTube links in Brave

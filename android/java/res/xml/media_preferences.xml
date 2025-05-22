@@ -13,16 +13,16 @@
             android:key="widevine_enabled"
             android:title="@string/prefs_enable_widevine_title"
             android:summary="@string/prefs_enable_widevine_summary" />
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="background_video_playback"
-            android:defaultValue="false"
-            android:title="@string/prefs_background_video_playback"
-            android:summary="@string/prefs_background_video_playback_on" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="youtube_section"
         android:title="@string/youtube">
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="background_youtube_video_playback"
+            android:defaultValue="false"
+            android:title="@string/prefs_background_youtube_video_playback"
+            android:summary="@string/prefs_background_youtube_video_playback_description" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="play_yt_video_in_browser"
             android:title="@string/prefs_open_youtube_links_brave" />
