@@ -580,7 +580,7 @@ const applyCompiledSelector = (selector: CompiledProceduralSelector,
       // Note that unless we've taken the if-true branch above, then
       // the nodesToConsider array will still have all the elements
       // it started with.
-      break
+      continue
     }
 
     let newNodesToConsider: HTMLElement[] = []
