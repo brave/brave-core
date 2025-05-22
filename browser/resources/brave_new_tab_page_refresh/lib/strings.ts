@@ -73,6 +73,8 @@ export type StringKey =
   'newsNoFeedsText' |
   'newsNoFeedsTitle' |
   'newsNoMatchingFeedsText' |
+  'newsOptInDismissButtonLabel' |
+  'newsOptInText' |
   'newsQueryTooShortText' |
   'newsRefreshButtonLabel' |
   'newsSearchFeedsButtonLabel' |
@@ -85,6 +87,8 @@ export type StringKey =
   'newsSettingsSuggestionsText' |
   'newsSettingsSuggestionsTitle' |
   'newsSettingsTitle' |
+  'newsShowAllButtonLabel' |
+  'newsShowLessButtonLabel' |
   'newsUnfollowButtonLabel' |
   'newsViewAllButtonLabel' |
   'newsWidgetTitle' |

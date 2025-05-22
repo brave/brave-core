@@ -13,6 +13,7 @@ import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
 import { WidgetStack } from './widgets/widget_stack'
+import { NewsFeed } from './news/news_feed'
 
 import { style } from './app.style'
 
@@ -70,6 +71,14 @@ export function App() {
         initialView={settingsView}
         onClose={() => setSettingsView(null)}
       />
+    </div>
+  )
+}
+
+export function NewsApp() {
+  return (
+    <div data-css-scope={style.scope}>
+      <NewsFeed standalone />
     </div>
   )
 }
