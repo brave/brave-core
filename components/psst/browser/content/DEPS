@@ -2,3 +2,14 @@ include_rules = [
   "+content/public/browser",
   "+third_party/blink/public"
 ]
+
+specific_include_rules = {
+  "psst_tab_web_contents_observer_unittest\.cc": [
+    "!chrome/browser/prefs/browser_prefs.h",
+    "!chrome/browser/profiles/profile.h",
+    "!chrome/test/base/testing_profile.h",
+    "!content/public/test/navigation_simulator.h",
+    "!content/public/test/test_renderer_host.h",
+    "!content/public/test/web_contents_tester.h",
+  ],
+}

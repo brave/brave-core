@@ -29,19 +29,3 @@ source_set("browser_tests") {
     deps += [ "//chrome/test:test_support_ui" ]
   }
 }
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
-
-  deps = [
-    "//base/test:test_support",
-    "//brave/components/psst/browser/content",
-    "//brave/components/psst/common:common",
-    "//chrome/browser/prefs",
-    "//chrome/test:test_support",
-    "//content/test:test_support",
-    "//url:url",
-  ]
-}

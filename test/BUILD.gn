@@ -346,7 +346,7 @@ test("brave_unit_tests") {
 
   if (enable_psst) {
     deps += [
-      "//brave/browser/psst:unit_tests",
+      "//brave/components/psst/browser/content:unit_tests",
       "//brave/components/psst/browser/core:unit_tests",
     ]
   }
