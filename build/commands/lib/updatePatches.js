@@ -19,20 +19,30 @@ const patchExtension = '.patch'
  */
 async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
   const onlyFilesSet = new Set(onlyFiles)
-  const modifiedDiffArgs = ['diff', '--ignore-submodules', '--diff-filter=M',
-    '--name-only', '--ignore-space-at-eol']
-  const cmdOutput = await util.runAsync('git', modifiedDiffArgs, { cwd: gitRepoPath, verbose: false })
-  return cmdOutput.split('\n').filter(s => s)
-    .filter(s => onlyFilesSet.size
-      ? onlyFilesSet.has(s)
-      : true)
+  const modifiedDiffArgs = [
+    'diff',
+    '--ignore-submodules',
+    '--diff-filter=M',
+    '--name-only',
+    '--ignore-space-at-eol',
+  ]
+  const cmdOutput = await util.runAsync('git', modifiedDiffArgs, {
+    cwd: gitRepoPath,
+    verbose: false,
+  })
+  return cmdOutput
+    .split('\n')
+    .filter((s) => s)
+    .filter((s) => (onlyFilesSet.size ? onlyFilesSet.has(s) : true))
     .filter(filter ?? (() => true))
 }
 
 async function writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath) {
   // replacing forward slashes and adding the patch extension to get nice filenames
   // since git on Windows doesn't use backslashes, this is sufficient
-  const patchFilenames = modifiedPaths.map(s => s.replace(/\//g, desiredReplacementSeparator) + patchExtension)
+  const patchFilenames = modifiedPaths.map(
+    (s) => s.replace(/\//g, desiredReplacementSeparator) + patchExtension,
+  )
 
   // When splitting one large diff into a per-file diff, there are a few ways
   // you can go about it. Because different files can have the same name
@@ -50,15 +60,25 @@ async function writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath) {
 
   let writeOpsDoneCount = 0
   let writePatchOps = modifiedPaths.map(async (old, i) => {
-    const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--default-prefix', '--full-index', old]
-    const patchContents = await util.runAsync('git', singleDiffArgs, { cwd: gitRepoPath, verbose: false })
+    const singleDiffArgs = [
+      'diff',
+      '--src-prefix=a/',
+      '--dst-prefix=b/',
+      '--default-prefix',
+      '--full-index',
+      old,
+    ]
+    const patchContents = await util.runAsync('git', singleDiffArgs, {
+      cwd: gitRepoPath,
+      verbose: false,
+    })
     const patchFilename = patchFilenames[i]
     await fs.writeFile(path.join(patchDirPath, patchFilename), patchContents)
 
     writeOpsDoneCount++
     const logRepoName = path.basename(gitRepoPath)
     console.log(
-      `updatePatches [${logRepoName}] wrote ${writeOpsDoneCount} / ${modifiedPaths.length}: ${patchFilename}`
+      `updatePatches [${logRepoName}] wrote ${writeOpsDoneCount} / ${modifiedPaths.length}: ${patchFilename}`,
     )
   })
 
@@ -66,21 +86,27 @@ async function writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath) {
   return patchFilenames
 }
 
-const readDirPromise = (pathName) => new Promise((resolve, reject) =>
-  fs.readdir(pathName, (err, fileList) => {
-    if (err) {
-      return reject(err)
-    }
-    return resolve(fileList)
-  })
-)
+const readDirPromise = (pathName) =>
+  new Promise((resolve, reject) =>
+    fs.readdir(pathName, (err, fileList) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(fileList)
+    }),
+  )
 
-async function removeStalePatchFiles(patchFilenames, patchDirPath, keepPatchFilenames) {
+async function removeStalePatchFiles(
+  patchFilenames,
+  patchDirPath,
+  keepPatchFilenames,
+) {
   // grab every existing patch file in the dir (at this point, patchfiles for now-unmodified files live on)
   let existingPathFilenames
   try {
-    existingPathFilenames = ((await readDirPromise(patchDirPath)) || [])
-      .filter(s => s.endsWith('.patch'))
+    existingPathFilenames = ((await readDirPromise(patchDirPath)) || []).filter(
+      (s) => s.endsWith('.patch'),
+    )
   } catch (err) {
     if (err.code === 'ENOENT') {
       console.log(`Path at ${patchDirPath} does not exist.`)
@@ -91,7 +117,9 @@ async function removeStalePatchFiles(patchFilenames, patchDirPath, keepPatchFile
 
   // Subtract to find which patchfiles no longer have diffs, yet still exist
   const validFilenames = patchFilenames.concat(keepPatchFilenames)
-  const toRemoveFilenames = existingPathFilenames.filter(x => !validFilenames.includes(x))
+  const toRemoveFilenames = existingPathFilenames.filter(
+    (x) => !validFilenames.includes(x),
+  )
 
   // regular rm patchfiles whose target is no longer modified
   let removedProgress = 0
@@ -99,7 +127,9 @@ async function removeStalePatchFiles(patchFilenames, patchDirPath, keepPatchFile
     const fullPath = path.join(patchDirPath, filename)
     fs.removeSync(fullPath)
     removedProgress++
-    console.log(`updatePatches *REMOVED* ${removedProgress}/${toRemoveFilenames.length}: ${filename}`)
+    console.log(
+      `updatePatches *REMOVED* ${removedProgress}/${toRemoveFilenames.length}: ${filename}`,
+    )
   }
 }
 
@@ -113,12 +143,30 @@ async function removeStalePatchFiles(patchFilenames, patchDirPath, keepPatchFile
  * @param {(file: string) => boolean} [repoPathFilter] Filter function for repo file paths to include or exclude (all included by default)
  * @param {string[]} [keepPatchFilenames=[]] Patch filenames to never delete
  */
-async function updatePatches(gitRepoPath, patchDirPath, onlyFiles, repoPathFilter, keepPatchFilenames = []) {
-  const modifiedPaths = await getModifiedPaths(gitRepoPath, repoPathFilter, onlyFiles)
-  const patchFilenames = await writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath)
+async function updatePatches(
+  gitRepoPath,
+  patchDirPath,
+  onlyFiles,
+  repoPathFilter,
+  keepPatchFilenames = [],
+) {
+  const modifiedPaths = await getModifiedPaths(
+    gitRepoPath,
+    repoPathFilter,
+    onlyFiles,
+  )
+  const patchFilenames = await writePatchFiles(
+    modifiedPaths,
+    gitRepoPath,
+    patchDirPath,
+  )
   // We only remove stale patch files if we're updating everything.
   if (onlyFiles.length === 0) {
-    await removeStalePatchFiles(patchFilenames, patchDirPath, keepPatchFilenames)
+    await removeStalePatchFiles(
+      patchFilenames,
+      patchDirPath,
+      keepPatchFilenames,
+    )
   }
 }
 

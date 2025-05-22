@@ -26,7 +26,7 @@ function updateChromeVersion() {
   for (let line = 0; line < 4; ++line) {
     assert(
       versionLines[line].search(versionLineRegex) === 0,
-      `${versionLines[line]} (${line}) doesn't match ${versionLineRegex}`
+      `${versionLines[line]} (${line}) doesn't match ${versionLineRegex}`,
     )
     if (line === 0) {
       // Keep MAJOR.
@@ -35,7 +35,7 @@ function updateChromeVersion() {
       // Set MINOR, BUILD, PATCH to Brave version.
       versionLines[line] = versionLines[line].replace(
         versionLineRegex,
-        `$1=${braveVersionParts[line - 1]}`
+        `$1=${braveVersionParts[line - 1]}`,
       )
     }
   }

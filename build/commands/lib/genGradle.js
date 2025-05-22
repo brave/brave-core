@@ -7,8 +7,12 @@ const config = require('./config')
 const util = require('./util')
 const Log = require('./logging')
 
-const genGradle = (passthroughArgs, buildConfig = config.defaultBuildConfig, options) => {
-  options.target_os = "android"
+const genGradle = (
+  passthroughArgs,
+  buildConfig = config.defaultBuildConfig,
+  options,
+) => {
+  options.target_os = 'android'
   options.continueOnFail = false
   config.buildConfig = buildConfig
   config.update(options)
@@ -16,10 +20,12 @@ const genGradle = (passthroughArgs, buildConfig = config.defaultBuildConfig, opt
     braveArgs = [
       'build/android/gradle/generate_gradle.py',
       '--output-directory',
-      config.outputDir
+      config.outputDir,
     ]
-    
-    const filteredArgs = passthroughArgs.filter(arg => !arg.includes('target_arch'))
+
+    const filteredArgs = passthroughArgs.filter(
+      (arg) => !arg.includes('target_arch'),
+    )
     braveArgs = braveArgs.concat(filteredArgs)
 
     util.run('python3', braveArgs, config.defaultOptions)

@@ -12,7 +12,6 @@
 /base
 /brave_domains
 /browser
-/build
 /chromium_src
 /common
 /content
@@ -55,6 +54,8 @@ jest.config.js
 snapcraft.yaml
 .eslintrc.js
 
+# Needs to be refactored before being formatted
+/build/commands/lib/util.js
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
 

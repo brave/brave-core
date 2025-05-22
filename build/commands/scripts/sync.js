@@ -20,14 +20,27 @@ program
   .option('--gclient_file <file>', 'gclient config file location')
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'comma-separated target OS list')
-  .option('--target_arch <target_arch>', 'comma-separated target architecture list')
+  .option(
+    '--target_arch <target_arch>',
+    'comma-separated target architecture list',
+  )
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--fetch_all', 'fetch all tags and branch heads')
-  .option('-C, --sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
-  .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
+  .option(
+    '-C, --sync_chromium [arg]',
+    'force or skip chromium sync (true/false/1/0)',
+    JSON.parse,
+  )
+  .option(
+    '-D, --delete_unused_deps',
+    'delete from the working copy any dependencies that have been removed since the last sync',
+  )
   .option('--nohooks', 'Do not run hooks after updating')
-  .option('--with_issue_44921', 'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921')
+  .option(
+    '--with_issue_44921',
+    'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921',
+  )
 
 function syncBrave(program) {
   let args = ['sync', '--nohooks']
@@ -41,8 +54,10 @@ function syncBrave(program) {
   }
 
   util.runGClient(
-      args, {cwd: config.braveCoreDir},
-      path.join(config.braveCoreDir, '.brave_gclient'))
+    args,
+    { cwd: config.braveCoreDir },
+    path.join(config.braveCoreDir, '.brave_gclient'),
+  )
 }
 
 async function RunCommand() {
@@ -65,10 +80,10 @@ async function RunCommand() {
   depotTools.installDepotTools()
 
   if (
-    program.init ||
-    program.target_os ||
-    program.target_arch ||
-    !fs.existsSync(config.defaultGClientFile)
+    program.init
+    || program.target_os
+    || program.target_arch
+    || !fs.existsSync(config.defaultGClientFile)
   ) {
     syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
   }
@@ -90,9 +105,9 @@ async function RunCommand() {
   await util.applyPatches()
 
   if (!program.nohooks) {
-    if (!await syncUtil.checkInternalDepsEndpoint()) {
+    if (!(await syncUtil.checkInternalDepsEndpoint())) {
       Log.warn(
-        'The internal dependencies endpoint is unreachable, which may block toolchain downloads. Please check your VPN connection.'
+        'The internal dependencies endpoint is unreachable, which may block toolchain downloads. Please check your VPN connection.',
       )
     }
     // Run hooks for the root .gclient, this will include Chromium and Brave
@@ -104,8 +119,7 @@ async function RunCommand() {
   }
 }
 
-RunCommand()
-.catch((err) => {
+RunCommand().catch((err) => {
   Log.error('Brave Browser Sync ERROR:')
   console.error(err)
   process.exit(1)

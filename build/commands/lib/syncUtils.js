@@ -14,7 +14,7 @@ function toGClientConfigItem(name, value, pretty = true) {
   const valueMap = {
     true: '%True%',
     false: '%False%',
-    null: '%None%'
+    null: '%None%',
   }
 
   const replacer = (_, value) => valueMap[value] || value
@@ -22,7 +22,7 @@ function toGClientConfigItem(name, value, pretty = true) {
   const pythonLikeValue = JSON.stringify(
     value,
     replacer,
-    pretty ? 2 : 0
+    pretty ? 2 : 0,
   ).replace(/"%(.*?)%"/gm, '$1')
   return `${name} = ${pythonLikeValue}\n`
 }
@@ -30,7 +30,7 @@ function toGClientConfigItem(name, value, pretty = true) {
 function buildDefaultGClientConfig(
   targetOSList,
   targetArchList,
-  onlyChromium = false
+  onlyChromium = false,
 ) {
   const items = [
     {
@@ -41,12 +41,12 @@ function buildDefaultGClientConfig(
         // wasm_corpus has around 50k files, not used in the build.
         'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
         // chromium-variations .git takes ~4 GB, not used in the build.
-        'src/third_party/chromium-variations': null
+        'src/third_party/chromium-variations': null,
       },
       custom_vars: {
-        'checkout_pgo_profiles': config.isBraveReleaseBuild()
-      }
-    }
+        'checkout_pgo_profiles': config.isBraveReleaseBuild(),
+      },
+    },
   ]
 
   if (!onlyChromium) {
@@ -55,7 +55,7 @@ function buildDefaultGClientConfig(
       name: 'src/brave',
       // We do not use gclient to manage brave-core, so this should not
       // actually get used.
-      url: 'https://github.com/brave/brave-core.git'
+      url: 'https://github.com/brave/brave-core.git',
     })
   }
 
@@ -79,33 +79,33 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
   const needsUpdate =
-    targetSHA !== headSHA ||
-    (!headSHA && !targetSHA) ||
-    JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
+    targetSHA !== headSHA
+    || (!headSHA && !targetSHA)
+    || JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
     console.log(
       `Chromium repo ${chalk.blue.bold(
-        'needs sync'
+        'needs sync',
       )}.\n  target is ${chalk.italic(chromiumRef)} at commit ${
         targetSHA || '[missing]'
       }\n  current commit is ${chalk.italic(
-        currentRef || '[unknown]'
+        currentRef || '[unknown]',
       )} at commit ${chalk.inverse(
-        headSHA || '[missing]'
+        headSHA || '[missing]',
       )}\n  latest successful sync is ${JSON.stringify(
         latestSyncInfo,
         null,
-        4
-      )}`
+        4,
+      )}`,
     )
   } else {
     console.log(
       chalk.green.bold(
         `Chromium repo does not need sync as it is already ${chalk.italic(
-          chromiumRef
-        )} at commit ${targetSHA || '[missing]'}.`
-      )
+          chromiumRef,
+        )} at commit ${targetSHA || '[missing]'}.`,
+      ),
     )
   }
   return needsUpdate
@@ -118,12 +118,7 @@ function syncChromium(program) {
   const gclientWithoutRevision = program.with_issue_44921
 
   const requiredChromiumRef = config.getProjectRef('chrome')
-  let args = [
-    'sync',
-    '--nohooks',
-    '--reset',
-    '--upstream'
-  ]
+  let args = ['sync', '--nohooks', '--reset', '--upstream']
 
   if (!gclientWithoutRevision) {
     args.push('--revision')
@@ -141,24 +136,24 @@ function syncChromium(program) {
 
   const latestSyncInfoFilePath = path.join(
     config.rootDir,
-    '.brave_latest_successful_sync.json'
+    '.brave_latest_successful_sync.json',
   )
   const latestSyncInfo = util.readJSON(latestSyncInfoFilePath, {})
   const expectedSyncInfo = {
     chromiumRef: requiredChromiumRef,
-    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString()
+    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString(),
   }
 
   const chromiumNeedsUpdate = shouldUpdateChromium(
     latestSyncInfo,
-    expectedSyncInfo
+    expectedSyncInfo,
   )
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
   if (!shouldSyncChromium && !syncChromiumValue) {
     if (deleteUnusedDeps && !config.isCI) {
       Log.warn(
-        '--delete_unused_deps is ignored for src/ dir because Chromium sync ' +
-          'is required. Pass --sync_chromium to force it.'
+        '--delete_unused_deps is ignored for src/ dir because Chromium sync '
+          + 'is required. Pass --sync_chromium to force it.',
       )
     }
     return false
@@ -169,9 +164,9 @@ function syncChromium(program) {
       args.push('-D')
     } else if (!config.isCI) {
       Log.warn(
-        '--delete_unused_deps is ignored because sync has not yet added ' +
-          'the exclusion for the src/brave/ directory, likely because sync ' +
-          'has not previously successfully run before.'
+        '--delete_unused_deps is ignored because sync has not yet added '
+          + 'the exclusion for the src/brave/ directory, likely because sync '
+          + 'has not previously successfully run before.',
       )
     }
   }
@@ -179,26 +174,33 @@ function syncChromium(program) {
   if (syncChromiumValue !== undefined) {
     if (!syncChromiumValue) {
       Log.warn(
-        'Chromium needed sync but received the flag to skip performing the ' +
-          'update. Working directory may not compile correctly.'
+        'Chromium needed sync but received the flag to skip performing the '
+          + 'update. Working directory may not compile correctly.',
       )
       return false
     } else if (!shouldSyncChromium) {
       Log.warn(
-        "Chromium doesn't need sync but received the flag to do it anyway."
+        "Chromium doesn't need sync but received the flag to do it anyway.",
       )
     }
   }
 
-  if ((gclientWithoutRevision && (syncWithForce || chromiumNeedsUpdate)) &&
-      fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))) {
+  if (
+    gclientWithoutRevision
+    && (syncWithForce || chromiumNeedsUpdate)
+    && fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))
+  ) {
     // Checking out chromium manually if necessary, as no `--revsion` flag is
     // being passed to gclient.
-    if (util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true) ==
-        null) {
-      util.runGit(
-          config.srcDir,
-          ['fetch', 'origin', requiredChromiumRef + ':' + requiredChromiumRef])
+    if (
+      util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true)
+      == null
+    ) {
+      util.runGit(config.srcDir, [
+        'fetch',
+        'origin',
+        requiredChromiumRef + ':' + requiredChromiumRef,
+      ])
     }
     util.runGit(config.srcDir, ['reset', '--hard', requiredChromiumRef])
   }
@@ -220,7 +222,7 @@ async function checkInternalDepsEndpoint() {
   try {
     const response = await fetch(
       `${config.internalDepsUrl}/windows-hermetic-toolchain/test.txt`,
-      { method: 'HEAD', signal: AbortSignal.timeout(5000), redirect: 'manual' }
+      { method: 'HEAD', signal: AbortSignal.timeout(5000), redirect: 'manual' },
     )
     return response.status === 302
   } catch (error) {
@@ -231,5 +233,5 @@ async function checkInternalDepsEndpoint() {
 module.exports = {
   buildDefaultGClientConfig,
   syncChromium,
-  checkInternalDepsEndpoint
+  checkInternalDepsEndpoint,
 }

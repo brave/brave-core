@@ -1,7 +1,7 @@
- // Copyright (c) 2018 The Brave Authors. All rights reserved.
- // This Source Code Form is subject to the terms of the Mozilla Public
- // License, v. 2.0. If a copy of the MPL was not distributed with this file,
- // You can obtain one at https://mozilla.org/MPL/2.0/.
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const fs = require('fs-extra')
 const path = require('path')
@@ -12,7 +12,7 @@ const util = require('../lib/util')
 const assert = require('assert')
 
 const getTestBinary = (suite) => {
-  return (process.platform === 'win32') ? `${suite}.exe` : suite
+  return process.platform === 'win32' ? `${suite}.exe` : suite
 }
 
 const getChromiumUnitTestsSuites = () => {
@@ -50,10 +50,10 @@ const getApplicableFilters = (suite) => {
   let filterFilePaths = []
 
   let targetPlatform = process.platform
-  if (targetPlatform === "win32") {
-    targetPlatform = "windows"
-  } else if (targetPlatform === "darwin") {
-    targetPlatform = "macos"
+  if (targetPlatform === 'win32') {
+    targetPlatform = 'windows'
+  } else if (targetPlatform === 'darwin') {
+    targetPlatform = 'macos'
   }
 
   let possibleFilters = [
@@ -61,21 +61,36 @@ const getApplicableFilters = (suite) => {
     [suite, targetPlatform].join('-'),
     [suite, targetPlatform, config.targetArch].join('-'),
   ]
-  possibleFilters.forEach(filterName => {
-    let filterFilePath = path.join(config.braveCoreDir, 'test', 'filters',  `${filterName}.filter`)
-    if (fs.existsSync(filterFilePath))
+  possibleFilters.forEach((filterName) => {
+    let filterFilePath = path.join(
+      config.braveCoreDir,
+      'test',
+      'filters',
+      `${filterName}.filter`,
+    )
+    if (fs.existsSync(filterFilePath)) {
       filterFilePaths.push(filterFilePath)
-  });
+    }
+  })
 
   return filterFilePaths
 }
 
-const test = async (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+const test = async (
+  passthroughArgs,
+  suite,
+  buildConfig = config.defaultBuildConfig,
+  options = {},
+) => {
   await buildTests(suite, buildConfig, options)
   runTests(passthroughArgs, suite, buildConfig, options)
 }
 
-const buildTests = async (suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+const buildTests = async (
+  suite,
+  buildConfig = config.defaultBuildConfig,
+  options = {},
+) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -101,9 +116,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  let braveArgs = [
-    '--enable-logging=stderr'
-  ]
+  let braveArgs = ['--enable-logging=stderr']
 
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
@@ -141,39 +154,47 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   braveArgs = braveArgs.concat(passthroughArgs)
 
   if (
-    suite === 'brave_unit_tests' &&
-    config.isTeamcity &&
-    config.targetOS !== 'android' &&
-    config.targetOS !== 'ios'
+    suite === 'brave_unit_tests'
+    && config.isTeamcity
+    && config.targetOS !== 'android'
+    && config.targetOS !== 'ios'
   ) {
     runChromiumTestLauncherTeamcityReporterIntegrationTests()
   }
 
   if (config.targetOS === 'ios') {
-    util.run(path.join(config.outputDir, "iossim"), [
-      "-d", "\"iPhone 16\"",
-      path.join(config.outputDir, `${suite}.app`),
-      path.join(config.outputDir, `${suite}.app/PlugIns/${suite}_module.xctest`)
-    ], config.defaultOptions)
+    util.run(
+      path.join(config.outputDir, 'iossim'),
+      [
+        '-d',
+        '"iPhone 16"',
+        path.join(config.outputDir, `${suite}.app`),
+        path.join(
+          config.outputDir,
+          `${suite}.app/PlugIns/${suite}_module.xctest`,
+        ),
+      ],
+      config.defaultOptions,
+    )
   } else {
     const upstreamTestSuites = [
       'browser_tests',
-       ...getChromiumUnitTestsSuites()
+      ...getChromiumUnitTestsSuites(),
     ]
     // Run the tests
     getTestsToRun(config, suite).every((testSuite) => {
       // Filter out upstream tests that are known to fail for Brave
       if (upstreamTestSuites.includes(testSuite)) {
         const previousFilters = braveArgs.findIndex((arg) => {
-            return arg.startsWith('--test-launcher-filter-file=')
+          return arg.startsWith('--test-launcher-filter-file=')
         })
         if (previousFilters !== -1) {
-            braveArgs.splice(previousFilters, 1)
+          braveArgs.splice(previousFilters, 1)
         }
         const filterFilePaths = getApplicableFilters(testSuite)
         if (filterFilePaths.length > 0) {
           braveArgs.push(
-            `--test-launcher-filter-file=${filterFilePaths.join(';')}`
+            `--test-launcher-filter-file=${filterFilePaths.join(';')}`,
           )
         }
         if (config.isTeamcity) {
@@ -186,22 +207,28 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       }
       if (options.output) {
         const previousOutput = braveArgs.findIndex((arg) => {
-            return arg.startsWith('--gtest_output=xml:')
+          return arg.startsWith('--gtest_output=xml:')
         })
         if (previousOutput !== -1) {
-            braveArgs.splice(previousOutput, 1)
+          braveArgs.splice(previousOutput, 1)
         }
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
       if (config.targetOS === 'android') {
         assert(
-            config.targetArch === 'x86' || config.targetArch === 'x64' || options.manual_android_test_device,
-            'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.')
+          config.targetArch === 'x86'
+            || config.targetArch === 'x64'
+            || options.manual_android_test_device,
+          'Only x86 and x64 builds can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.',
+        )
       }
-      if (config.targetOS === 'android' && !options.manual_android_test_device) {
+      if (
+        config.targetOS === 'android'
+        && !options.manual_android_test_device
+      ) {
         // Specify emulator to run tests on
         braveArgs.push(
-          `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`
+          `--avd-config=tools/android/avd/proto/${options.android_test_emulator_name}.textpb`,
         )
       }
       let runOptions = config.defaultOptions
@@ -209,7 +236,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Stdout and stderr must be separate for a test launcher.
         runOptions.stdio = 'inherit'
       }
-      if (options.output)
+      if (options.output) {
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
         // not interested in the exit code of running the tests, because they
@@ -219,7 +246,12 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // the test exit code here, we give callers a chance to distinguish test
         // failures (by looking at the output file) from compilation errors.
         runOptions.continueOnFail = true
-      let prog = util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, runOptions)
+      }
+      let prog = util.run(
+        path.join(config.outputDir, getTestBinary(testSuite)),
+        braveArgs,
+        runOptions,
+      )
       // Don't run other tests if one has failed already, especially because
       // this would overwrite the --output file (if given).
       return prog.status === 0
@@ -260,14 +292,14 @@ const runChromiumTestLauncherTeamcityReporterIntegrationTests = () => {
       "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
       "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
       "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
-      "##teamcity[testSuiteFinished name='brave_unit_tests']"
-    ]
+      "##teamcity[testSuiteFinished name='brave_unit_tests']",
+    ],
   }
 
   const ignorePreliminaryFailuresTestCase = {
     args: [
       ...generalTestCase.args,
-      '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
+      '--test-launcher-teamcity-reporter-ignore-preliminary-failures',
     ],
 
     expectedLines: [
@@ -292,8 +324,8 @@ const runChromiumTestLauncherTeamcityReporterIntegrationTests = () => {
       "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
       "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
       "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
-      "##teamcity[testSuiteFinished name='brave_unit_tests']"
-    ]
+      "##teamcity[testSuiteFinished name='brave_unit_tests']",
+    ],
   }
 
   const runOptions = config.defaultOptions
@@ -304,7 +336,7 @@ const runChromiumTestLauncherTeamcityReporterIntegrationTests = () => {
     const prog = util.run(
       path.join(config.outputDir, 'brave_unit_tests'),
       testCase.args,
-      runOptions
+      runOptions,
     )
     const outputLines = prog.stdout.toString().split('\n')
     checkTeamcityReporterOutput(outputLines, testCase.expectedLines)
@@ -313,12 +345,12 @@ const runChromiumTestLauncherTeamcityReporterIntegrationTests = () => {
 
 const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
   const outputTeamcityLines = outputLines.filter((line) =>
-    line.startsWith('##teamcity')
+    line.startsWith('##teamcity'),
   )
 
   const isMatched =
-    outputTeamcityLines.length === expectedTeamcityLines.length &&
-    expectedTeamcityLines.every((expectedLine, index) => {
+    outputTeamcityLines.length === expectedTeamcityLines.length
+    && expectedTeamcityLines.every((expectedLine, index) => {
       const outputLine = outputTeamcityLines[index]
       return outputLine.startsWith(expectedLine)
     })
@@ -328,18 +360,18 @@ const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
       (outputLine, index) => {
         const expectedLine = expectedTeamcityLines[index]
         return !outputLine.startsWith(expectedLine)
-      }
+      },
     )
 
     const notMatchedExpectedLines = expectedTeamcityLines.filter(
       (expectedLine, index) => {
         const outputLine = outputTeamcityLines[index]
         return !outputLine?.startsWith(expectedLine)
-      }
+      },
     )
 
     Log.error(
-      'TeamcityReporter output test failed, output ##teamcity lines do not match expected lines (note ##teamcity was replaced with %%teamcity):'
+      'TeamcityReporter output test failed, output ##teamcity lines do not match expected lines (note ##teamcity was replaced with %%teamcity):',
     )
     console.error(
       [
@@ -352,10 +384,10 @@ const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
         '\nExpected lines:',
         ...expectedTeamcityLines,
         '\nFull test output:',
-        ...outputLines
+        ...outputLines,
       ]
         .join('\n')
-        .replace(/##teamcity/gm, '%%teamcity')
+        .replace(/##teamcity/gm, '%%teamcity'),
     )
     process.exit(1)
   } else {

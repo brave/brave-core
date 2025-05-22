@@ -7,5 +7,15 @@ const config = require('../lib/config')
 const path = require('path')
 const util = require('../lib/util')
 
-args = [path.join(config.srcDir, 'brave', 'ui', 'webui', 'resources', 'wasm', 'update.py')]
+args = [
+  path.join(
+    config.srcDir,
+    'brave',
+    'ui',
+    'webui',
+    'resources',
+    'wasm',
+    'update.py',
+  ),
+]
 util.run('vpython3', args, config.defaultOptions)

@@ -19,10 +19,12 @@ const Log = require('./logging')
 // Use the same filename as for Brave archive.
 const getOutputFilename = () => {
   const platform = (() => {
-    if (config.getTargetOS() === 'win')
+    if (config.getTargetOS() === 'win') {
       return 'win32'
-    if (config.getTargetOS() === 'mac')
+    }
+    if (config.getTargetOS() === 'mac') {
       return 'darwin'
+    }
     return config.getTargetOS()
   })()
   return `chromium-${config.chromeVersion}-${platform}-${config.targetArch}`
@@ -35,55 +37,70 @@ const chromiumConfigs = {
       // Repack it to reduce the size and use .zip instead of .7z.
       input = path.join(config.outputDir, 'chrome.7z')
       output = path.join(config.outputDir, `${getOutputFilename()}.zip`)
-      util.run('python3',
+      util.run(
+        'python3',
         [
           path.join(config.braveCoreDir, 'script', 'repack-archive.py'),
           `--input=${input}`,
           `--output=${output}`,
           '--target_dir=Chrome-bin',
         ],
-        config.defaultOptions)
-    }
+        config.defaultOptions,
+      )
+    },
   },
   'linux': {
     buildTargets: ['chrome/installer/linux:stable_deb'],
     processArtifacts: () => {
       const debArch = (() => {
-        if (config.targetArch === 'x64') return 'amd64'
+        if (config.targetArch === 'x64') {
+          return 'amd64'
+        }
         return config.targetArch
       })()
       fs.moveSync(
-        path.join(config.outputDir,
-          `chromium-browser-stable_${config.chromeVersion}-1_${debArch}.deb`),
-        path.join(config.outputDir, `${getOutputFilename()}.deb`))
-    }
+        path.join(
+          config.outputDir,
+          `chromium-browser-stable_${config.chromeVersion}-1_${debArch}.deb`,
+        ),
+        path.join(config.outputDir, `${getOutputFilename()}.deb`),
+      )
+    },
   },
   'mac': {
     buildTargets: ['chrome'],
     extraHooks: () => {
       Log.progressScope('download_hermetic_xcode', () => {
-        util.run('vpython3',
+        util.run(
+          'vpython3',
           [
-            path.join(config.braveCoreDir,
-              'build', 'mac', 'download_hermetic_xcode.py'),
+            path.join(
+              config.braveCoreDir,
+              'build',
+              'mac',
+              'download_hermetic_xcode.py',
+            ),
           ],
-          config.defaultOptions)
+          config.defaultOptions,
+        )
       })
     },
     processArtifacts: () => {
-      util.run('zip',
+      util.run(
+        'zip',
         ['-r', '-y', `${getOutputFilename()}.zip`, 'Chromium.app'],
-        { cwd: config.outputDir }
+        { cwd: config.outputDir },
       )
-    }
+    },
   },
   'android': {
     buildTargets: ['monochrome_64_public_apk'],
     processArtifacts: () => {
       fs.moveSync(
         path.join(config.outputDir, 'apks', 'MonochromePublic64.apk'),
-        path.join(config.outputDir, `${getOutputFilename()}.apk`))
-    }
+        path.join(config.outputDir, `${getOutputFilename()}.apk`),
+      )
+    },
   },
 }
 
@@ -123,8 +140,9 @@ function getChromiumGnArgs() {
 function buildChromiumRelease(buildOptions = {}) {
   if (!config.isCI && !buildOptions.force) {
     console.error(
-      'Warning: the command resets all changes in src/ folder.\n' +
-      'src/brave stays untouched. Pass --force to continue.')
+      'Warning: the command resets all changes in src/ folder.\n'
+        + 'src/brave stays untouched. Pass --force to continue.',
+    )
     return 1
   }
   config.buildConfig = 'Release'
@@ -132,15 +150,18 @@ function buildChromiumRelease(buildOptions = {}) {
   config.update(buildOptions)
 
   const chromiumConfig = chromiumConfigs[config.getTargetOS()]
-  if (!chromiumConfig)
+  if (!chromiumConfig) {
     throw Error(`${config.getTargetOS()} is unsupported`)
+  }
 
   depotTools.installDepotTools()
   syncUtil.buildDefaultGClientConfig(
-    [config.getTargetOS()], [config.targetArch], true)
+    [config.getTargetOS()],
+    [config.targetArch],
+    true,
+  )
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
-
 
   Log.progressScope('gclient sync', () => {
     syncUtil.syncChromium({ force: true, sync_chromium: true })
@@ -160,18 +181,23 @@ function buildChromiumRelease(buildOptions = {}) {
     // node_modules could have a symlink to src/brave. The recursive symlinks
     // break the logic of some chromium scripts and should be remove before
     // the build.
-    const linkPath = path.join(config.braveCoreDir, 'node_modules',
-      'brave-core')
+    const linkPath = path.join(
+      config.braveCoreDir,
+      'node_modules',
+      'brave-core',
+    )
     if (fs.existsSync(linkPath)) {
-      fs.unlinkSync(linkPath);
+      fs.unlinkSync(linkPath)
     }
   })
 
   Log.progressScope(`ninja`, () => {
     const target = chromiumConfig.buildTargets
     const ninjaOpts = [
-      '-C', config.outputDir, target.join(' '),
-      ...config.extraNinjaOpts
+      '-C',
+      config.outputDir,
+      target.join(' '),
+      ...config.extraNinjaOpts,
     ]
     util.run('autoninja', ninjaOpts, config.defaultOptions)
   })
