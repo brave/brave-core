@@ -286,11 +286,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             return;
         }
 
-        // Settings UI uses getOriginalProfile always as the service isn't
-        // available for OTR profiles and we still want to control the feature
-        // for original profile.
         BraveNewsControllerFactory.getInstance()
-                .getForProfile(getProfile().getOriginalProfile(), this)
+                .getForProfile(getProfile(), this)
                 .then(
                         braveNewsController -> {
                             // If there are future cases where this could be

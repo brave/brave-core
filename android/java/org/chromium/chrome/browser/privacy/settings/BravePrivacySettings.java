@@ -651,12 +651,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     }
 
     private void handleShieldsSaveContactInfo(boolean value) {
-        // Settings UI uses getOriginalProfile always as the service is
-        // available for OTR profiles, but we don't save any pref in that case
-        // and we still want to control the feature for original profile.
         WebcompatReporterHandler webcompatReporterHandler =
                 WebcompatReporterServiceFactory.getInstance()
-                        .getWebcompatReporterHandler(getProfile().getOriginalProfile(), null);
+                        .getWebcompatReporterHandler(getProfile(), null);
         assert webcompatReporterHandler != null
                 : "The service should always be available for original profile";
         if (webcompatReporterHandler != null) {
