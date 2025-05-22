@@ -261,11 +261,7 @@ const operatorCssSelector = (selector: CSSSelector,
     return [element]
   } else {
     const allChildNodes = _allChildren(element);
-    for (const aNode of allChildNodes) {
-      if (aNode.matches(selector)) {
-        return [aNode]
-      }
-    }
+    return allChildNodes.filter(x => x.matches(selector));
   }
   return []
 }

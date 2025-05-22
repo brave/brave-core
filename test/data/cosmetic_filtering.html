@@ -28,13 +28,21 @@ function addElementWithChildDynamically() {
   let root = document.documentElement;
   const rootElement = document.createElement('div');
   rootElement.setAttribute('id', 'procedural-filter-root-node-id');
+
   const childNode = document.createElement('div');
   childNode.setAttribute('id', 'procedural-filter-child-node-id');
+  rootElement.appendChild(childNode);
   const p = document.createElement('p');
-  p.setAttribute('id', 'procedural-filter-span-id');
   p.textContent = 'View in App';
   childNode.appendChild(p);
-  rootElement.appendChild(childNode);
+
+  const childNode2 = document.createElement('div');
+  childNode2.setAttribute('id', 'procedural-filter-child-node-id');
+  rootElement.appendChild(childNode2);
+  const span = document.createElement('span');
+  span.textContent = 'View in App';
+  childNode2.appendChild(span);
+
   root.appendChild(rootElement);
 }
 
