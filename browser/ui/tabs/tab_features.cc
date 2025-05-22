@@ -65,7 +65,7 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   if (!profile->IsOffTheRecord() &&
       base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     psst_web_contents_observer_ =
-        psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
+        psst::PsstTabWebContentsObserver::CreateForWebContents(
             tab.GetContents(), profile->GetPrefs(),
             ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
