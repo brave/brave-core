@@ -25,6 +25,7 @@ if (!is_android) {
       "///brave/components/de_amp/common",
       "//chrome/browser:browser",
       "//chrome/browser/profiles:profile",
+      "//chrome/browser/profiles/keep_alive",
       "//chrome/browser/ui:ui",
       "//chrome/test:test_support_ui",
       "//components/keep_alive_registry:keep_alive_registry",
