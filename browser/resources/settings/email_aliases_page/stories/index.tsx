@@ -139,15 +139,17 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   }
 
   async generateAlias () {
-    let aliasEmail: string | null = null
+    let generatedAlias: string | null = null
     do {
-      aliasEmail = "mock-" + Math.random().toString().slice(2,6) +
+      generatedAlias = "mock-" + Math.random().toString().slice(2,6) +
         "@bravealias.com"
-    } while (this.aliases.has(aliasEmail))
+    } while (this.aliases.has(generatedAlias))
     await new Promise(resolve => setTimeout(resolve, 1000))
-    const errorMessage = Math.random() < 1/3
+    const error : boolean = Math.random() < 1/3
+    const errorMessage = error
       ? getLocale('emailAliasesGenerateError')
       : null
+    const aliasEmail = error ? null : generatedAlias
     return { result: { errorMessage, aliasEmail } }
   }
 
