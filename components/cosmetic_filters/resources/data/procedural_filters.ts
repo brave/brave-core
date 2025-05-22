@@ -5,15 +5,6 @@
 
 /**
  *
- *  This file should be kept up to date with
- *  https://github.com/brave-experiments/procedural-filters-js
- *  until the full implementation can be shared with iOS inside
- *  the brave-core repo.
- *
- */
-
-/**
- *
  * src/declarations.d.ts
  *
  * note: `ProceduralOperator` and `ProceduralSelector`
