@@ -126,7 +126,6 @@ if (!is_ios) {
       "engine/oai_api_client_unittest.cc",
       "engine/test_utils.cc",
       "engine/test_utils.h",
-      "local_models_updater_unittest.cc",
       "model_service_unittest.cc",
       "model_validator_unittest.cc",
       "tab_tracker_service_unittest.cc",

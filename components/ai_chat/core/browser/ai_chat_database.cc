@@ -349,7 +349,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       associated_content->content_used_percentage =
           statement.ColumnInt(index++);
 
-          conversation->associated_content.push_back(std::move(associated_content));
+      conversation->associated_content.push_back(std::move(associated_content));
     }
   }
 
