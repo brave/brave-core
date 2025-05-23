@@ -359,7 +359,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
       mutations.forEach(mutation =>
         mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
           n.nodeType === Node.ELEMENT_NODE && addedElements.push(n)
-          n.childNodes.length !== 0 && n.childNodes.forEach(c => {
+          const childNodes = n.querySelectorAll('*')
+          childNodes.length !== 0 && childNodes.forEach(c => {
             c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
           })
         })
