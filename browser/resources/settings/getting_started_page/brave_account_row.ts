@@ -12,14 +12,6 @@ import {
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
-export enum Dialog {
-  NONE,
-  CREATE,
-  ENTRY,
-  FORGOT_PASSWORD,
-  SIGN_IN
-}
-
 export class SettingsBraveAccountRow extends CrLitElement {
   static get is() {
     return 'settings-brave-account-row'
@@ -35,7 +27,6 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: Dialog },
       signedIn: { type: Boolean, reflect: true },
     }
   }
@@ -44,22 +35,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
     this.browserProxy.account_handler.openDialog()
   }
 
-  protected onBackButtonClicked() {
-    switch (this.dialog) {
-      case Dialog.CREATE:
-        this.dialog = Dialog.ENTRY
-        break
-      case Dialog.FORGOT_PASSWORD:
-        this.dialog = Dialog.SIGN_IN
-        break
-      case Dialog.SIGN_IN:
-        this.dialog = Dialog.ENTRY
-        break
-    }
-  }
-
   private browserProxy: BraveAccountBrowserProxy = BraveAccountBrowserProxyImpl.getInstance()
-  protected accessor dialog: Dialog = Dialog.NONE
   protected accessor signedIn: boolean = false
 }
 

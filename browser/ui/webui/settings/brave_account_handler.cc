@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
-#include "components/password_manager/core/browser/ui/weak_check_utility.h"
 
 namespace brave_account {
 BraveAccountHandler::BraveAccountHandler(
