@@ -20,19 +20,4 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   }
 }
 
-bool IsPsstEnabled(PrefService* prefs) {
-  if (!prefs || !prefs->HasPrefPath(prefs::kPsstEnabled)) {
-    return false;
-  }
-
-  return prefs->GetBoolean(prefs::kPsstEnabled);
-}
-
-void SetPsstEnabledState(PrefService* prefs, const bool val) {
-  if (!prefs) {
-    return;
-  }
-  prefs->SetBoolean(prefs::kPsstEnabled, val);
-}
-
 }  // namespace psst

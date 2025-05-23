@@ -6,6 +6,7 @@
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/base64.h"
 #include "base/base64url.h"
@@ -49,13 +50,36 @@ GURL url(const GURL& destination_url, const GURL& navigation_url) {
   replacement.SetQueryStr(query);
   return navigation_url.ReplaceComponents(replacement);
 }
+
+constexpr const char* kEnabledFeaturesForTestNamesArray[] = {
+    "DontStartScriptHandlerForSameDocument",
+    "DontStartScriptHandlerIfPsstDisabled",
+    "StartScriptHandlerOnlyInPrimaryMainFrame",
+    "StartScriptHandlerBothScriptsExecuted",
+    "PsstPrefsNotExistBothScriptsExecuted",
+    "StartScriptHandlerJustUserScriptExecuted",
+    "StartScriptHandlerNoMatchedRule"};
+
+constexpr base::span<const char* const> kEnabledFeaturesForTestNames =
+    kEnabledFeaturesForTestNamesArray;
+
 }  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
  public:
   PsstTabWebContentsObserverBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(psst::features::kEnablePsst);
+    const auto* test_info =
+        testing::UnitTest::GetInstance()->current_test_info();
+    std::optional<std::string> current_test_name;
+    if (test_info) {
+      current_test_name = test_info->name();
+    }
+    feature_list_.InitWithFeatureState(
+        psst::features::kEnablePsst,
+        current_test_name ? base::Contains(kEnabledFeaturesForTestNames,
+                                           current_test_name.value())
+                          : false);
   }
 
   void SetUpOnMainThread() override {
@@ -106,8 +130,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 // TESTS
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        DontStartScriptHandlerForSameDocument) {
-  psst::SetPsstEnabledState(GetPrefs(), true);
-  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
   {
@@ -141,8 +165,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        DontStartScriptHandlerIfPsstDisabled) {
-  psst::SetPsstEnabledState(GetPrefs(), false);
-  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), false);
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, false);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), false);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
   std::u16string expected_title(u"OK");
@@ -156,8 +180,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerOnlyInPrimaryMainFrame) {
-  psst::SetPsstEnabledState(GetPrefs(), true);
-  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL ifrave_url =
       GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
   const GURL navigate_url = url(
@@ -170,8 +194,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerBothScriptsExecuted) {
-  psst::SetPsstEnabledState(GetPrefs(), true);
-  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
 
   std::u16string expected_title(u"a_user-a_policy");
@@ -181,9 +205,30 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       PsstPrefsNotExistBothScriptsExecuted) {
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
+  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
+
+  std::u16string expected_title(u"a_user-a_policy");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       PsstPrefsNotExistFeatureDisabledNothingExecuted) {
+  const GURL url = GetEmbeddedTestServer().GetURL("a.com", "/simple.html");
+
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerJustUserScriptExecuted) {
-  psst::SetPsstEnabledState(GetPrefs(), true);
-  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
   const GURL url = GetEmbeddedTestServer().GetURL("b.com", "/simple.html");
 
   std::u16string expected_title(u"b_user-");
@@ -194,8 +239,9 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        StartScriptHandlerNoMatchedRule) {
-  psst::SetPsstEnabledState(GetPrefs(), true);
-  EXPECT_EQ(psst::IsPsstEnabled(GetPrefs()), true);
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  EXPECT_EQ(GetPrefs()->GetBoolean(prefs::kPsstEnabled), true);
+
   const GURL url = GetEmbeddedTestServer().GetURL("c.com", "/simple.html");
 
   std::u16string expected_title(u"OK");
