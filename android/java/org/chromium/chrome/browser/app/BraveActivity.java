@@ -1476,20 +1476,22 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void migrateBgPlaybackToFeature() {
+        // Settings UI uses original profile always, so we must
+        // use mTabModelProfileSupplier.get().getOriginalProfile().
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(
                         BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
                         false)) {
-            if (UserPrefs.get(getCurrentProfile())
+            if (UserPrefs.get(mTabModelProfileSupplier.get().getOriginalProfile())
                             .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED)
                     && ChromeFeatureList.isEnabled(
                             BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
-                UserPrefs.get(getCurrentProfile())
+                UserPrefs.get(mTabModelProfileSupplier.get().getOriginalProfile())
                         .setBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED, false);
             }
             return;
         }
-        if (UserPrefs.get(getCurrentProfile())
+        if (UserPrefs.get(mTabModelProfileSupplier.get().getOriginalProfile())
                 .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, true, true);
