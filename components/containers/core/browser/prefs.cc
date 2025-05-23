@@ -19,12 +19,10 @@ namespace containers {
 //   ]
 // }
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterListPref(prefs::kContainersList);
-}
+namespace {
 
-std::vector<mojom::ContainerPtr> GetContainersList(const PrefService& prefs) {
-  std::vector<mojom::ContainerPtr> containers;
+template <typename Callback>
+void ForEachValidContainer(const PrefService& prefs, Callback&& callback) {
   for (const auto& container : prefs.GetList(prefs::kContainersList)) {
     if (!container.is_dict()) {
       continue;
@@ -35,8 +33,25 @@ std::vector<mojom::ContainerPtr> GetContainersList(const PrefService& prefs) {
     if (!id || !name) {
       continue;
     }
-    containers.push_back(mojom::Container::New(*id, *name));
+    if (!std::forward<Callback>(callback)(*id, *name)) {
+      break;
+    }
   }
+}
+
+}  // namespace
+
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterListPref(prefs::kContainersList);
+}
+
+std::vector<mojom::ContainerPtr> GetContainersList(const PrefService& prefs) {
+  std::vector<mojom::ContainerPtr> containers;
+  ForEachValidContainer(prefs,
+                        [&](const std::string& id, const std::string& name) {
+                          containers.push_back(mojom::Container::New(id, name));
+                          return true;
+                        });
   return containers;
 }
 
@@ -49,6 +64,20 @@ void SetContainersList(PrefService& prefs,
                     .Set("name", container->name));
   }
   prefs.SetList(prefs::kContainersList, std::move(list));
+}
+
+std::string GetContainerName(const PrefService& prefs,
+                             const std::string& container_id) {
+  std::string container_name;
+  ForEachValidContainer(prefs,
+                        [&](const std::string& id, const std::string& name) {
+                          if (id == container_id) {
+                            container_name = name;
+                            return false;
+                          }
+                          return true;
+                        });
+  return container_name;
 }
 
 }  // namespace containers

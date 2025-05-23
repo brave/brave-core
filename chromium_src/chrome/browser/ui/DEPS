@@ -6,4 +6,5 @@ include_rules += [
   "+brave/components/commander/common",
   "+brave/components/constants",
   "+brave/components/brave_webtorrent/browser",
+  "+brave/components/containers/core/browser",
 ]

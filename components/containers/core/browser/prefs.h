@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_H_
 
+#include <string>
 #include <vector>
 
 #include "brave/components/containers/core/mojom/containers.mojom.h"
@@ -24,6 +25,9 @@ std::vector<mojom::ContainerPtr> GetContainersList(const PrefService& prefs);
 
 void SetContainersList(PrefService& prefs,
                        const std::vector<mojom::ContainerPtr>& containers);
+
+std::string GetContainerName(const PrefService& prefs,
+                             const std::string& container_id);
 
 }  // namespace containers
 
