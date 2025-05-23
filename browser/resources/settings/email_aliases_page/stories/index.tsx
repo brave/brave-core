@@ -69,6 +69,8 @@ provideStrings({
     'email to access your account.',
   emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder ' +
     'or $1try again$2.',
+  emailAliasesAuthError: 'Error authenticating with Brave Account.',
+  emailAliasesAuthTryAgain: 'Please $1try again$2.',
   emailAliasesBubbleDescription: 'Create a random email address that ' +
     'forwards to your inbox while keeping your personal email private.',
   emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free ' +
@@ -162,25 +164,28 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { result: { errorMessage, aliasEmail } }
   }
 
-  async requestAuthentication (email: string) {
-    const error : boolean = Math.random() < 1/3
-    if (!error) {
+  requestAuthentication (email: string) {
+    this.observers.forEach(observer => {
+      observer.onAuthStateChanged({
+        status: AuthenticationStatus.kAuthenticating,
+        email: email,
+        errorMessage: undefined
+      })
+    })
+    this.accountRequestId = window.setTimeout(() => {
       this.observers.forEach(observer => {
-        observer.onAuthStateChanged({
+        observer.onAuthStateChanged(Math.random() < 1/3 ? {
+          status: AuthenticationStatus.kAuthenticated,
+          email: email,
+          errorMessage: undefined
+        } : {
           status: AuthenticationStatus.kAuthenticating,
-          email: email
+          email: '',
+          errorMessage: getLocale('emailAliasesAuthError')
         })
       })
-      this.accountRequestId = window.setTimeout(() => {
-        this.observers.forEach(observer => {
-          observer.onAuthStateChanged({
-            status: AuthenticationStatus.kAuthenticated,
-            email: email
-          })
-        })
-      }, 5000);
-    }
-    const errorMessage = error
+    }, 5000);
+    const errorMessage = Math.random() < 1/3
       ? getLocale('emailAliasesRequestAuthenticationError')
       : null
     return { errorMessage }
@@ -191,7 +196,8 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kUnauthenticated,
-        email: ''
+        email: '',
+        errorMessage: undefined
       })
     })
   }
