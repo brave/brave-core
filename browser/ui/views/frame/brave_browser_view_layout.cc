@@ -199,26 +199,30 @@ int BraveBrowserViewLayout::LayoutInfoBar(int top) {
 }
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(int top, int bottom) {
-  if (!vertical_tab_strip_host_) {
-    BrowserViewLayout::LayoutContentsContainerView(top, bottom);
-    return;
+  auto new_rect = vertical_layout_rect_;
+  if (vertical_tab_strip_host_) {
+    new_rect.Inset(GetInsetsConsideringVerticalTabHost());
   }
+  base::AutoReset resetter(&vertical_layout_rect_, new_rect);
 
   gfx::Rect contents_container_bounds(vertical_layout_rect_.x(), top,
                                       vertical_layout_rect_.width(),
                                       std::max(0, bottom - top));
+  if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
+    // The WebUI tab strip container should "push" the tab contents down without
+    // resizing it.
+    contents_container_bounds.Inset(
+        gfx::Insets().set_bottom(-webui_tab_strip_->size().height()));
+  }
+
   if (contents_background_) {
     contents_background_->SetBoundsRect(contents_container_bounds);
   }
 
   LayoutSideBar(contents_container_bounds);
-
   UpdateContentsContainerInsets(contents_container_bounds);
 
-  auto new_rect = vertical_layout_rect_;
-  new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  base::AutoReset resetter(&vertical_layout_rect_, new_rect);
-  return BrowserViewLayout::LayoutContentsContainerView(top, bottom);
+  contents_container_->SetBoundsRect(contents_container_bounds);
 }
 
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
