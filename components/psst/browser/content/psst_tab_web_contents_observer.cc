@@ -67,7 +67,7 @@ void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
 }
 
 void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  if (!IsPsstEnabled(prefs_)) {
+  if (!prefs_->GetBoolean(prefs::kPsstEnabled)) {
     return;
   }
 

@@ -43,7 +43,6 @@ namespace psst {
 // This class describes a single rule in the psst.json file.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
  public:
-  PsstRule();
   ~PsstRule();
   PsstRule(const PsstRule& other);  // needed for std::vector<PsstRule>
 
@@ -65,6 +64,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
   int Version() const { return version_; }
 
  private:
+  PsstRule();
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;
   std::string name_;
