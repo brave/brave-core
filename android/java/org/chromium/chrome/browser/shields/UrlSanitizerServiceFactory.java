@@ -22,15 +22,15 @@ import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 @JNINamespace("chrome::android")
 public class UrlSanitizerServiceFactory {
     private static final Object sLock = new Object();
-    private static @Nullable UrlSanitizerServiceFactory instance;
+    private static @Nullable UrlSanitizerServiceFactory sInstance;
 
     public static UrlSanitizerServiceFactory getInstance() {
         synchronized (sLock) {
-            if (instance == null) {
-                instance = new UrlSanitizerServiceFactory();
+            if (sInstance == null) {
+                sInstance = new UrlSanitizerServiceFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private UrlSanitizerServiceFactory() {}
