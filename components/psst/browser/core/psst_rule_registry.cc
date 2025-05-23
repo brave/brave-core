@@ -60,12 +60,6 @@ void PsstRuleRegistry::SetOnLoadCallbackForTest(
   onload_test_callback_ = std::move(callback);
 }
 
-void PsstRuleRegistry::ResetRuleRegistryForTest() {
-  rules_.clear();
-  component_path_.clear();
-  onload_test_callback_.reset();
-}
-
 PsstRuleRegistry::PsstRuleRegistry() = default;
 PsstRuleRegistry::~PsstRuleRegistry() = default;
 
