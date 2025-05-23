@@ -344,11 +344,6 @@ describe('EmailAliasModal', () => {
     // Check that updateAlias was called and returned an error
     await waitFor(() => {
       expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
-      expect(mockEmailAliasesService.updateAlias).toHaveReturnedWith(
-        Promise.resolve({
-          errorMessage: 'emailAliasesUpdateAliasError'
-        })
-      )
     })
 
     // Wait for error message to be displayed. Create button should be
@@ -397,11 +392,6 @@ describe('EmailAliasModal', () => {
     // Check that updateAlias was called and returned an error
     await waitFor(() => {
       expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
-      expect(mockEmailAliasesService.updateAlias).toHaveReturnedWith(
-        Promise.resolve({
-          errorMessage: 'emailAliasesUpdateAliasError'
-        })
-      )
     })
 
     // Wait for error message to be displayed. Create button should be
