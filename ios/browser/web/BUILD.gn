@@ -19,6 +19,7 @@ source_set("web") {
     "//brave/components/constants",
     "//brave/ios/browser/api/web_view",
     "//brave/ios/browser/application_context",
+    "//brave/ios/browser/component_updater:zxcvbn_data_component_installer",
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
     "//ios/chrome/browser/application_context/model",
