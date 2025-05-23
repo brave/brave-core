@@ -71,13 +71,12 @@ class PsstRuleRegistryUnitTest : public testing::Test {
 };
 
 TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
-  PsstRuleRegistry::GetInstance()->ResetRuleRegistryForTest();
+  PsstRuleRegistry registry;
   {
     base::MockCallback<base::OnceCallback<void(
         const std::string& data, const std::vector<PsstRule>& rules)>>
         mock_callback;
-    PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTest(
-        mock_callback.Get());
+    registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -91,7 +90,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
           run_loop.Quit();
         });
 
-    PsstRuleRegistry::GetInstance()->LoadRules(GetTestDataDirBase());
+    registry.LoadRules(GetTestDataDirBase());
     run_loop.Run();
   }
 
@@ -116,27 +115,22 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
         run_loop.Quit();
       });
 
-  PsstRuleRegistry::GetInstance()->CheckIfMatch(GURL("https://a.com"),
-                                                mock_callback.Get());
+  registry.CheckIfMatch(GURL("https://a.com"), mock_callback.Get());
   run_loop.Run();
-  ASSERT_EQ(PsstRuleRegistry::GetInstance()->component_path_,
-            GetTestDataDirBase());
+  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
-  PsstRuleRegistry::GetInstance()->ResetRuleRegistryForTest();
-  PsstRuleRegistry::GetInstance()->LoadRules(
-      base::FilePath(FILE_PATH_LITERAL("")));
-  ASSERT_TRUE(PsstRuleRegistry::GetInstance()->rules_.empty());
-  PsstRuleRegistry::GetInstance()->LoadRules(
-      base::FilePath(FILE_PATH_LITERAL("non-existing-path")));
-  ASSERT_TRUE(PsstRuleRegistry::GetInstance()->rules_.empty());
+  PsstRuleRegistry registry;
+  registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
+  ASSERT_TRUE(registry.rules_.empty());
+  registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("non-existing-path")));
+  ASSERT_TRUE(registry.rules_.empty());
 
   base::MockCallback<base::OnceCallback<void(
       const std::string& data, const std::vector<PsstRule>& rules)>>
       mock_callback;
-  PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTest(
-      mock_callback.Get());
+  registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(mock_callback, Run)
@@ -150,20 +144,18 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
             run_loop.Quit();
           });
 
-  PsstRuleRegistry::GetInstance()->LoadRules(GetTestDataDirBase());
+  registry.LoadRules(GetTestDataDirBase());
   run_loop.Run();
-  ASSERT_EQ(PsstRuleRegistry::GetInstance()->component_path_,
-            GetTestDataDirBase());
+  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
-  PsstRuleRegistry::GetInstance()->ResetRuleRegistryForTest();
+  PsstRuleRegistry registry;
   {
     base::MockCallback<base::OnceCallback<void(
         const std::string& data, const std::vector<PsstRule>& rules)>>
         mock_callback;
-    PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTest(
-        mock_callback.Get());
+    registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -177,7 +169,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
           run_loop.Quit();
         });
 
-    PsstRuleRegistry::GetInstance()->LoadRules(GetTestDataDirBase());
+    registry.LoadRules(GetTestDataDirBase());
     run_loop.Run();
   }
 
@@ -194,21 +186,18 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
         run_loop.Quit();
       });
 
-  PsstRuleRegistry::GetInstance()->CheckIfMatch(GURL("https://url.com"),
-                                                mock_callback.Get());
+  registry.CheckIfMatch(GURL("https://url.com"), mock_callback.Get());
   run_loop.Run();
-  ASSERT_EQ(PsstRuleRegistry::GetInstance()->component_path_,
-            GetTestDataDirBase());
+  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
-  PsstRuleRegistry::GetInstance()->ResetRuleRegistryForTest();
+  PsstRuleRegistry registry;
   {
     base::MockCallback<base::OnceCallback<void(
         const std::string& data, const std::vector<PsstRule>& rules)>>
         mock_callback;
-    PsstRuleRegistry::GetInstance()->SetOnLoadCallbackForTest(
-        mock_callback.Get());
+    registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
     base::RunLoop run_loop;
     EXPECT_CALL(mock_callback, Run)
@@ -222,7 +211,7 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
           run_loop.Quit();
         });
 
-    PsstRuleRegistry::GetInstance()->LoadRules(GetTestDataDirBase());
+    registry.LoadRules(GetTestDataDirBase());
     run_loop.Run();
   }
 
@@ -230,10 +219,8 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
       base::OnceCallback<void(const std::optional<MatchedRule>&)>>
       mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
-  PsstRuleRegistry::GetInstance()->CheckIfMatch(GURL("https://notexisted.com"),
-                                                mock_callback.Get());
-  ASSERT_EQ(PsstRuleRegistry::GetInstance()->component_path_,
-            GetTestDataDirBase());
+  registry.CheckIfMatch(GURL("https://notexisted.com"), mock_callback.Get());
+  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 }  // namespace psst

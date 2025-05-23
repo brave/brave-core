@@ -16,6 +16,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 
@@ -29,7 +30,6 @@ namespace psst {
 // policy.js script contents) with using of rule data reader.
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
  public:
-  PsstRuleRegistry();
   PsstRuleRegistry(const PsstRuleRegistry&) = delete;
   PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
 
@@ -45,7 +45,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   void LoadRules(const base::FilePath& path);
 
  private:
-  friend struct base::DefaultSingletonTraits<PsstRuleRegistry>;
+  PsstRuleRegistry();
+  friend base::NoDestructor<PsstRuleRegistry>;
 
   friend class PsstTabHelperBrowserTest;
   friend class PsstRuleRegistryUnitTest;
@@ -59,7 +60,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   void SetOnLoadCallbackForTest(
       base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
           callback);
-  void ResetRuleRegistryForTest();
   std::optional<base::OnceCallback<void(const std::string&,
                                         const std::vector<PsstRule>&)>>
       onload_test_callback_;
