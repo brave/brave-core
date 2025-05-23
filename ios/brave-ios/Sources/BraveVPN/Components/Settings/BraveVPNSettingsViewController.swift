@@ -28,12 +28,17 @@ public class BraveVPNSettingsViewController: TableViewController {
   @available(*, unavailable)
   required init(coder: NSCoder) { fatalError() }
 
+  private var credentialSummary: SkusCredentialSummary?
+
   // Cell/section tags so we can update them dynamically.
   private let serverSectionId = "server"
+  private let subscriptionStatusSectionId = "subscriptionStatus"
   private let locationCellId = "location"
   private let protocolCellId = "protocol"
   private let resetCellId = "reset"
   private let vpnStatusSectionCellId = "vpnStatus"
+  private let vpnStatusProductTypeCellId = "vpnStatusProductType"
+  private let vpnStatusExpiryDateCellId = "vpnStatusExpiryDate"
   private let vpnSmartProxySectionCellId = "vpnSmartProxy"
   private let vpnKillSwitchSectionCellId = "vpnKillSwitch"
 
@@ -73,6 +78,38 @@ public class BraveVPNSettingsViewController: TableViewController {
 
       overlayView = overlay
     }
+  }
+
+  private var vpnProductStatusInfo: (subscriptionStatus: String, statusDetailColor: UIColor) {
+    if Preferences.VPN.vpnReceiptStatus.value
+      == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
+    {
+      return (Strings.VPN.vpnActionUpdatePaymentMethodSettingsText, .braveErrorLabel)
+    }
+
+    if BraveVPN.vpnState == .expired {
+      return (Strings.VPN.subscriptionStatusExpired, .braveErrorLabel)
+    } else {
+      return (BraveVPN.subscriptionName, .braveLabel)
+    }
+  }
+
+  @MainActor
+  func fetchCredentialSummary() async -> SkusCredentialSummary? {
+    self.isLoading = true
+    defer { self.isLoading = false }
+
+    if BraveStoreSDK.shared.vpnSubscriptionStatus != nil {
+      return nil
+    }
+
+    do {
+      return try await BraveSkusSDK.shared.credentialsSummary(for: .vpn)
+    } catch {
+      Logger.module.error("Error Fetching VPN Skus Credential Summary: \(error)")
+    }
+
+    return nil
   }
 
   private var linkReceiptRows: [Row] {
@@ -207,20 +244,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       uuid: vpnStatusSectionCellId
     )
 
-    let (subscriptionStatus, statusDetailColor) = { () -> (String, UIColor) in
-      if Preferences.VPN.vpnReceiptStatus.value
-        == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
-      {
-        return (Strings.VPN.vpnActionUpdatePaymentMethodSettingsText, .braveErrorLabel)
-      }
-
-      if BraveVPN.vpnState == .expired {
-        return (Strings.VPN.subscriptionStatusExpired, .braveErrorLabel)
-      } else {
-        return (BraveVPN.subscriptionName, .braveLabel)
-      }
-    }()
-
+    let (subscriptionStatus, statusDetailColor) = vpnProductStatusInfo
     let expiration = BraveVPN.vpnState == .expired ? "-" : expirationDate
 
     let subscriptionSection =
@@ -231,9 +255,14 @@ public class BraveVPNSettingsViewController: TableViewController {
             text: Strings.VPN.settingsSubscriptionStatus,
             detailText: subscriptionStatus,
             cellClass: ColoredDetailCell.self,
-            context: [ColoredDetailCell.colorKey: statusDetailColor]
+            context: [ColoredDetailCell.colorKey: statusDetailColor],
+            uuid: vpnStatusProductTypeCellId
           ),
-          Row(text: Strings.VPN.settingsSubscriptionExpiration, detailText: expiration),
+          Row(
+            text: Strings.VPN.settingsSubscriptionExpiration,
+            detailText: expiration,
+            uuid: vpnStatusExpiryDateCellId
+          ),
           Row(
             text: Strings.VPN.settingsManageSubscription,
             selection: {
@@ -255,7 +284,8 @@ public class BraveVPNSettingsViewController: TableViewController {
             cellClass: ButtonCell.self
           ),
         ] + linkReceiptRows,
-        footer: .title(Strings.VPN.settingsLinkReceiptFooter)
+        footer: .title(Strings.VPN.settingsLinkReceiptFooter),
+        uuid: subscriptionStatusSectionId
       )
 
     let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
@@ -328,6 +358,12 @@ public class BraveVPNSettingsViewController: TableViewController {
       serverSection,
       techSupportSection,
     ]
+
+    Task { @MainActor in
+      self.credentialSummary = await fetchCredentialSummary()
+      self.updateSubscriptionStatus()
+      self.updateSubscriptionExpiryDate()
+    }
   }
 
   deinit {
@@ -339,13 +375,18 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private var expirationDate: String {
-    guard let expirationDate = Preferences.VPN.expirationDate.value else {
-      return ""
-    }
-
     let dateFormatter = DateFormatter().then {
       $0.locale = Locale.current
       $0.dateStyle = .short
+    }
+
+    if let order = credentialSummary?.order, let expiresAt = order.expiresAt {
+      Preferences.VPN.expirationDate.value = expiresAt
+      return dateFormatter.string(from: expiresAt)
+    }
+
+    guard let expirationDate = Preferences.VPN.expirationDate.value else {
+      return ""
     }
 
     return dateFormatter.string(from: expirationDate)
@@ -376,6 +417,38 @@ public class BraveVPNSettingsViewController: TableViewController {
       .detailText = GRDTransportProtocol.prettyTransportProtocolString(
         for: GRDTransportProtocol.getUserPreferredTransportProtocol()
       )
+  }
+
+  private func updateSubscriptionStatus() {
+    if let credentialSummary = credentialSummary {
+      Preferences.VPN.subscriptionProductId.value = credentialSummary.order.items.first?.sku
+
+      guard
+        let statusIndexPath =
+          dataSource
+          .indexPath(rowUUID: vpnStatusProductTypeCellId, sectionUUID: subscriptionStatusSectionId)
+      else { return }
+
+      let (subscriptionStatus, statusDetailColor) = vpnProductStatusInfo
+      dataSource.sections[statusIndexPath.section].rows[statusIndexPath.row]
+        .detailText = subscriptionStatus
+      dataSource.sections[statusIndexPath.section].rows[statusIndexPath.row]
+        .context = [ColoredDetailCell.colorKey: statusDetailColor]
+    }
+  }
+
+  private func updateSubscriptionExpiryDate() {
+    guard
+      let expiryDateIndexPath =
+        dataSource
+        .indexPath(rowUUID: vpnStatusExpiryDateCellId, sectionUUID: subscriptionStatusSectionId)
+    else { return }
+
+    let expiration = BraveVPN.vpnState == .expired ? "-" : expirationDate
+    dataSource.sections[expiryDateIndexPath.section].rows[expiryDateIndexPath.row]
+      .text = Strings.VPN.settingsSubscriptionExpiration
+    dataSource.sections[expiryDateIndexPath.section].rows[expiryDateIndexPath.row]
+      .detailText = expiration
   }
 
   private func sendContactSupportEmail() {

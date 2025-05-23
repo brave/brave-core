@@ -44,6 +44,13 @@ extension BraveVPN {
       return Strings.VPN.vpnSettingsYearlySubName
     case BraveVPNProductInfo.ProductIdentifiers.monthlySubSKU:
       return Strings.VPN.vpnSettingsMonthlySubName
+
+    // Honestly, no idea what's correct anymore.
+    // `brave-premium`, `brave-vpn-premium`, `brave-firewall-vpn-premium`, `brave-firewall-vpn-premium-year`
+    // Backend has all of these somehow
+    // As of writing: May 23, 2025, I'm receiving brave-vpn-premium
+    case BraveVPNProductInfo.ProductIdentifiers.monthlySubSKU2:
+      return Strings.VPN.vpnSettingsMonthlySubName
     default:
       assertionFailure("Can't get product id")
       return ""

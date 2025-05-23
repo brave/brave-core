@@ -42,6 +42,8 @@ public class BraveVPNProductInfo: NSObject {
     static let yearlySub = BraveStoreProduct.vpnYearly.rawValue
     /// account.brave.com  monthly subscription product
     static let monthlySubSKU = "brave-premium"
+    /// account.brave.com  monthly subscription product
+    static let monthlySubSKU2 = "brave-vpn-premium"
 
     static let all = Set<String>(arrayLiteral: monthlySub, yearlySub)
   }
