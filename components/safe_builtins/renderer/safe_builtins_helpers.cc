@@ -5,6 +5,7 @@
 
 #include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_console_message.h"

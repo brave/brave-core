@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"

@@ -5,6 +5,7 @@
 
 #include "base/base64.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/pref_names.h"
