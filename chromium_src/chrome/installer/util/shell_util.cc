@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <ostream>
+
 #include "base/notreached.h"
 #include "brave/installer/util/brave_shell_util.h"
 #include "chrome/common/chrome_icon_resources_win.h"
