@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_forward.h"
@@ -54,7 +55,8 @@ PsstRuleRegistry* PsstRuleRegistry::GetInstance() {
 }
 
 void PsstRuleRegistry::SetOnLoadCallbackForTest(
-    base::OnceCallback<void(const std::string&)> callback) {
+    base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
+        callback) {
   onload_test_callback_ = std::move(callback);
 }
 
@@ -99,13 +101,13 @@ void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
 
 void PsstRuleRegistry::OnLoadRules(const std::string& contents) {
   auto parsed_rules = PsstRule::ParseRules(contents);
-  if (!parsed_rules) {
-    return;
+  if (parsed_rules) {
+    rules_ = std::move(parsed_rules.value());
   }
-  rules_ = std::move(parsed_rules.value());
 
   if (onload_test_callback_) {
-    std::move(*onload_test_callback_).Run(contents);
+    CHECK_IS_TEST();
+    std::move(*onload_test_callback_).Run(contents, rules_);
   }
 }
 
