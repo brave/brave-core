@@ -105,7 +105,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void OnMetricCycled(const std::string& histogram_name,
                       bool is_constellation) override;
   std::optional<MetricLogType> GetDynamicMetricLogType(
-      const std::string& histogram_name) const override;
+      std::string_view histogram_name) const override;
 
   void DisableStarAttestationForTesting();
 
