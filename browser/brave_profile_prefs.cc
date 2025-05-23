@@ -269,7 +269,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
-  registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
+  registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, true);
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
   registry->RegisterStringPref(kSafetynetStatus, "");
   // clear default popular sites
