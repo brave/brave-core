@@ -49,15 +49,13 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
 @NullMarked
-public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
+public class BravePrivacySettings extends PrivacySettings {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
 
@@ -220,25 +218,21 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mBraveShieldsSaveContactInfoPref;
     private @Nullable FilterListAndroidHandler mFilterListAndroidHandler;
 
-    @Override
-    public void onConnectionError(MojoException e) {
-        mFilterListAndroidHandler = null;
-        initFilterListAndroidHandler();
-    }
-
     private void initFilterListAndroidHandler() {
         if (mFilterListAndroidHandler != null) {
             return;
         }
 
         mFilterListAndroidHandler =
-                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
+                FilterListServiceFactory.getInstance()
+                        .getFilterListAndroidHandler(getProfile(), null);
     }
 
     @Override
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
+            mFilterListAndroidHandler = null;
         }
         super.onDestroy();
     }

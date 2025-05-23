@@ -24,12 +24,10 @@ import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 
 /* Class for Media section of main preferences */
 public class MediaPreferences extends BravePreferenceFragment
-        implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
+        implements Preference.OnPreferenceChangeListener {
     public static final String PREF_WIDEVINE_ENABLED = "widevine_enabled";
     public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
     public static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
@@ -179,25 +177,21 @@ public class MediaPreferences extends BravePreferenceFragment
         return true;
     }
 
-    @Override
-    public void onConnectionError(MojoException e) {
-        mFilterListAndroidHandler = null;
-        initFilterListAndroidHandler();
-    }
-
     private void initFilterListAndroidHandler() {
         if (mFilterListAndroidHandler != null) {
             return;
         }
 
         mFilterListAndroidHandler =
-                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
+                FilterListServiceFactory.getInstance()
+                        .getFilterListAndroidHandler(getProfile(), null);
     }
 
     @Override
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
+            mFilterListAndroidHandler = null;
         }
         super.onDestroy();
     }

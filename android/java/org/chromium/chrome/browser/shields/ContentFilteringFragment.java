@@ -31,8 +31,6 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.BraveSettingsActivity;
 import org.chromium.components.browser_ui.settings.FragmentSettingsNavigation;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo_base.mojom.Value;
 import org.chromium.ui.widget.Toast;
 
@@ -40,9 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ContentFilteringFragment extends BravePreferenceFragment
-        implements FragmentSettingsNavigation,
-                BraveContentFilteringListener,
-                ConnectionErrorHandler {
+        implements FragmentSettingsNavigation, BraveContentFilteringListener {
     private RecyclerView mRecyclerView;
 
     private ContentFilteringAdapter mAdapter;
@@ -192,19 +188,14 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         mSettingsLauncher = settingsLauncher;
     }
 
-    @Override
-    public void onConnectionError(MojoException e) {
-        mFilterListAndroidHandler = null;
-        initFilterListAndroidHandler();
-    }
-
     private void initFilterListAndroidHandler() {
         if (mFilterListAndroidHandler != null) {
             return;
         }
 
         mFilterListAndroidHandler =
-                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
+                FilterListServiceFactory.getInstance()
+                        .getFilterListAndroidHandler(getProfile(), null);
     }
 
     @Override
@@ -262,6 +253,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
+            mFilterListAndroidHandler = null;
         }
         super.onDestroy();
     }

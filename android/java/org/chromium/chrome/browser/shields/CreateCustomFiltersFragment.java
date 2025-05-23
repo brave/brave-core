@@ -30,14 +30,11 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
 @NullMarked
-public class CreateCustomFiltersFragment extends BravePreferenceFragment
-        implements ConnectionErrorHandler {
+public class CreateCustomFiltersFragment extends BravePreferenceFragment {
     public static final String BRAVE_ADBLOCK_FILTER_SYNTAX_PAGE =
             "https://support.brave.com/hc/en-us/articles/6449369961741";
 
@@ -105,19 +102,14 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
         getCustomFilters();
     }
 
-    @Override
-    public void onConnectionError(MojoException e) {
-        mFilterListAndroidHandler = null;
-        initFilterListAndroidHandler();
-    }
-
     private void initFilterListAndroidHandler() {
         if (mFilterListAndroidHandler != null) {
             return;
         }
 
         mFilterListAndroidHandler =
-                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
+                FilterListServiceFactory.getInstance()
+                        .getFilterListAndroidHandler(getProfile(), null);
     }
 
     private void getCustomFilters() {
@@ -157,6 +149,7 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
+            mFilterListAndroidHandler = null;
         }
         super.onDestroy();
     }
