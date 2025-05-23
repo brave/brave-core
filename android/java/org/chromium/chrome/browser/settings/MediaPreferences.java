@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
@@ -78,7 +79,8 @@ public class MediaPreferences extends BravePreferenceFragment
             backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
             boolean enabled =
                     ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                    || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled();
+                            || UserPrefs.get(getProfile())
+                                    .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED);
             backgroundVideoPlaybackPref.setChecked(enabled);
         }
 

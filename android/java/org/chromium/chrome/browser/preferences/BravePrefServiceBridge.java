@@ -60,14 +60,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getDesktopModeEnabled();
     }
 
-    public void setBackgroundVideoPlaybackEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setBackgroundVideoPlaybackEnabled(enabled);
-    }
-
-    public boolean getBackgroundVideoPlaybackEnabled() {
-        return BravePrefServiceBridgeJni.get().getBackgroundVideoPlaybackEnabled();
-    }
-
     public long getTrackersBlockedCount(Profile profile) {
         return BravePrefServiceBridgeJni.get().getTrackersBlockedCount(profile);
     }
@@ -130,16 +122,17 @@ public class BravePrefServiceBridge {
         String getCookiesBlockType();
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
+
         boolean getPlayYTVideoInBrowserEnabled();
 
         void setDesktopModeEnabled(boolean enabled);
+
         boolean getDesktopModeEnabled();
 
-        void setBackgroundVideoPlaybackEnabled(boolean enabled);
-        boolean getBackgroundVideoPlaybackEnabled();
-
         long getTrackersBlockedCount(Profile profile);
+
         long getAdsBlockedCount(Profile profile);
+
         long getDataSaved(Profile profile);
 
         // Used to pass total stat from upgrading old tabs based browser
