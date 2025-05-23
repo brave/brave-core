@@ -108,6 +108,8 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         return
       }
 
+      print(Thread.current.name ?? "Unknown Thread")
+
       defer {
         self.tasks.removeValue(forKey: taskId)
       }
