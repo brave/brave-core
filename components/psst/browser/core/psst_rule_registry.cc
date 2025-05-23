@@ -81,9 +81,6 @@ void PsstRuleRegistry::CheckIfMatch(
 }
 
 void PsstRuleRegistry::LoadRules(const base::FilePath& path) {
-  if (path.empty() || !base::PathExists(path)) {
-    return;
-  }
   component_path_ = path;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
