@@ -55,6 +55,7 @@ import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'
 import { getAssetIdKey, isTokenWatchOnly } from '../../../../utils/asset-utils'
+import { loadTimeData } from '../../../../../common/loadTimeData'
 
 // Styled Components
 import {
@@ -166,7 +167,7 @@ export const Account = () => {
     WalletSelectors.isZCashShieldedTransactionsEnabled
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
   // mutations
   const [startShieldSync] = useStartShieldSyncMutation()
   const [stopShieldSync] = useStopShieldSyncMutation()
@@ -598,6 +599,8 @@ export const Account = () => {
           account={selectedAccount}
           onClickMenuOption={onClickMenuOption}
           tokenBalancesRegistry={tokenBalancesRegistry}
+          isAndroid={isAndroid}
+          isPanel={isPanel}
         />
       }
     >

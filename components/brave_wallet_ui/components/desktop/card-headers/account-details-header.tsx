@@ -20,10 +20,6 @@ import {
   AccountDetailsMenuOptions //
 } from '../../../options/account-details-menu-options'
 
-// Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
-
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getBalance } from '../../../utils/balance-utils'
@@ -81,16 +77,21 @@ interface Props {
   account: BraveWallet.AccountInfo
   onClickMenuOption: (option: AccountModalTypes) => void
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  isAndroid: boolean
+  isPanel: boolean
 }
 
 export const AccountDetailsHeader = (props: Props) => {
-  const { account, onClickMenuOption, tokenBalancesRegistry } = props
+  const {
+    account,
+    onClickMenuOption,
+    tokenBalancesRegistry,
+    isAndroid,
+    isPanel
+  } = props
 
   // routing
   const history = useHistory()
-
-  // Selectors
-  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // Queries
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
@@ -211,14 +212,26 @@ export const AccountDetailsHeader = (props: Props) => {
     return options
   }, [account])
 
+  const headerPadding = React.useMemo(() => {
+    if (isAndroid) {
+      return '16px 0px 0px 0px'
+    }
+    if (isPanel) {
+      return '16px'
+    }
+    return '24px 0px'
+  }, [isAndroid, isPanel])
+
+  // Methods
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
   }, [history])
 
   return (
     <Row
-      padding={isPanel ? '16px' : '24px 0px'}
+      padding={headerPadding}
       justifyContent='space-between'
+      data-key='account-details-header'
     >
       <Row width='unset'>
         {isPanel ? (
@@ -272,9 +285,12 @@ export const AccountDetailsHeader = (props: Props) => {
       </Row>
 
       <Row width='unset'>
-        {!isPanel && (
+        {!isPanel && !isAndroid && (
           <>
-            <Column alignItems='flex-end'>
+            <Column
+              alignItems='flex-end'
+              data-key='account-balance-column'
+            >
               <AccountsNetworkText>
                 {getLocale('braveWalletAccountBalance')}
               </AccountsNetworkText>
