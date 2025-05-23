@@ -22,6 +22,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -154,9 +155,13 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     int command_id) const {
   CHECK(IsValidContextMenu());
 
+  if (command_id >= BraveTabMenuModel::CommandOpenInContainerListBegin &&
+      command_id < BraveTabMenuModel::CommandOpenInContainerListEnd) {
+    return true;
+  }
+
   switch (command_id) {
-    case BraveTabMenuModel::CommandIsolateTab1:
-    case BraveTabMenuModel::CommandIsolateTab2:
+    case BraveTabMenuModel::CommandOpenInContainerSubmenu:
       return true;
     case BraveTabMenuModel::CommandRestoreTab:
       return restore_service_ && (!restore_service_->IsLoaded() ||
@@ -197,11 +202,12 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
 void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
   CHECK(IsValidContextMenu());
 
+  if (command_id >= BraveTabMenuModel::CommandOpenInContainerListBegin &&
+      command_id < BraveTabMenuModel::CommandOpenInContainerListEnd) {
+    return ExecuteOpenInContainerCommand(command_id);
+  }
+
   switch (command_id) {
-    case BraveTabMenuModel::CommandIsolateTab1:
-    case BraveTabMenuModel::CommandIsolateTab2:
-      IsolateTab(command_id);
-      return;
     case BraveTabMenuModel::CommandRestoreTab:
       chrome::RestoreTab(browser_);
       return;
@@ -269,13 +275,19 @@ void BraveTabContextMenuContents::OnMenuClosed() {
   menu_closed_ = true;
 }
 
-void BraveTabContextMenuContents::IsolateTab(int command_id) {
+void BraveTabContextMenuContents::ExecuteOpenInContainerCommand(
+    int command_id) {
+  auto containers =
+      containers::GetContainersList(*browser_->profile()->GetPrefs());
+  const size_t container_idx =
+      command_id - BraveTabMenuModel::CommandOpenInContainerListBegin;
+  if (container_idx >= containers.size()) {
+    return;
+  }
+
   auto* model = browser_->tab_strip_model();
   auto* tab = model->GetTabAtIndex(tab_index_);
-  brave::IsolateTab(browser_, tab->GetHandle(),
-                    command_id == BraveTabMenuModel::CommandIsolateTab1
-                        ? "partition1"
-                        : "partition2");
+  brave::IsolateTab(browser_, tab->GetHandle(), containers[container_idx]->id);
 }
 
 void BraveTabContextMenuContents::NewSplitView() {

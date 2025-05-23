@@ -9,10 +9,12 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/components/containers/core/browser/prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -100,15 +102,25 @@ void BraveTabMenuModel::Build(Browser* browser,
   auto mute_site_index =
       GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted);
 
-  auto move_tab_to_new_window_index =
-      GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow);
-  if (move_tab_to_new_window_index) {
-    InsertItemAt(move_tab_to_new_window_index.value(), CommandIsolateTab1,
-                 u"Isolate Tab 🏠");
-    InsertItemAt(move_tab_to_new_window_index.value() + 1, CommandIsolateTab2,
-                 u"Isolate Tab 🏢");
+  containers_ =
+      containers::GetContainersList(*tab_strip_model->profile()->GetPrefs());
+  if (containers_.size() > 0) {
+    container_menu_model_ = std::make_unique<ui::SimpleMenuModel>(delegate());
+    size_t idx = 0;
+    for (const auto& container : containers_) {
+      container_menu_model_->AddItem(CommandOpenInContainerListBegin + idx++,
+                                     base::UTF8ToUTF16(container->name));
+    }
+    auto insert_index =
+        GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow);
+    if (!insert_index) {
+      insert_index =
+          GetIndexOfCommandId(TabStripModel::CommandMoveToExistingWindow);
+    }
+    InsertSubMenuAt(insert_index.value_or(GetItemCount()) + 1,
+                    CommandOpenInContainerSubmenu, u"Open in Container",
+                    container_menu_model_.get());
   }
-
   auto toggle_tab_mute_label = l10n_util::GetPluralStringFUTF16(
       all_muted() ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
                   : IDS_TAB_CXMENU_SOUND_MUTE_TAB,

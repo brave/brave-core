@@ -1,0 +1,33 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module containers.mojom;
+
+struct Container {
+  string id;
+  string name;
+};
+
+interface SettingsPageHandlerFactory {
+  CreateSettingsPageHandler(
+      pending_remote<SettingsPage> page,
+      pending_receiver<SettingsPageHandler> page_handler);
+};
+
+// Called from C++ side (Browser -> Renderer)
+interface SettingsPage {
+  OnContainersChanged(array<Container> containers);
+};
+
+// Called from TS side (Renderer -> Browser)
+interface SettingsPageHandler {
+  GetContainers() => (array<Container> containers);
+
+  AddContainer(Container container);
+
+  UpdateContainer(Container container);
+
+  RemoveContainer(string id);
+};

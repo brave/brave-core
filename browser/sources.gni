@@ -186,6 +186,8 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
+  "//brave/components/containers/core/browser",
+  "//brave/components/containers/core/common",
   "//brave/components/cosmetic_filters/browser",
   "//brave/components/cosmetic_filters/common:mojom",
   "//brave/components/de_amp/browser",

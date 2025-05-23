@@ -6,6 +6,7 @@
 import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/tabs.js'
 import '../brave_appearance_page/toolbar.js'
+import '../brave_content_page/containers.js'
 import '../brave_content_page/content.js'
 import '../brave_content_page/playlist.js'
 import '../brave_content_page/speedreader.js'
@@ -322,6 +323,21 @@ RegisterPolymerTemplateModifications({
         'content',
         'contentSettingsContentSection',
         'settings-brave-content-content',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+
+      const sectionContainers = document.createElement('template')
+      sectionContainers.setAttribute('is', 'dom-if')
+      sectionContainers.setAttribute('restamp', 'true')
+      sectionContainers.setAttribute('if', '[[showPage_(pageVisibility.containers)]]')
+      sectionContent.content.appendChild(createNestedSectionElement(
+        'containers',
+        'content',
+        'contentSettingsContainersSection',
+        'settings-brave-content-containers',
         {
           prefs: '{{prefs}}',
           'page-visibility': '[[pageVisibility]]'

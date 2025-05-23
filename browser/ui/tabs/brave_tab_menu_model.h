@@ -6,9 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -36,8 +38,9 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandTileTabs,
     CommandBreakTile,
     CommandSwapTabsInTile,
-    CommandIsolateTab1,
-    CommandIsolateTab2,
+    CommandOpenInContainerSubmenu,
+    CommandOpenInContainerListBegin,
+    CommandOpenInContainerListEnd = CommandOpenInContainerListBegin + 100,
     CommandLast,
   };
 
@@ -67,6 +70,10 @@ class BraveTabMenuModel : public TabMenuModel {
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   bool all_muted_;
+
+  // This is used to store the container menu model.
+  std::unique_ptr<ui::SimpleMenuModel> container_menu_model_;
+  std::vector<containers::mojom::ContainerPtr> containers_;
 
   bool is_vertical_tab_ = false;
 };

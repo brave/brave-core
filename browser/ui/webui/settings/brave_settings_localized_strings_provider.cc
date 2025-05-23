@@ -69,6 +69,9 @@ constexpr char16_t kGoogleLoginLearnMoreURL[] =
 constexpr char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Resolve-Methods-for-Unstoppable-Domains";
+constexpr char16_t kContainersLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Containers";
 constexpr char16_t kEnsOffchainLookupLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
 constexpr char16_t kBraveSyncGuideUrl[] =
@@ -321,6 +324,20 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
       {"contentSettingsContentSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
+      {"contentSettingsContainersSection",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_SECTION},
+      {"containersAddContainer",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_ADD_CONTAINER},
+      {"containersEditContainer",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_EDIT_CONTAINER},
+      {"containersContainerName",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME},
+      {"containersContainerNamePlaceholder",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME_PLACEHOLDER},
+      {"containersDeleteContainer",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER},
+      {"containersDeleteContainerDescription",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER_DESCRIPTION},
 #endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
@@ -1021,6 +1038,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC,
                              kUnstoppableDomainsLearnMoreURL));
+
+  html_source->AddString("containersDesc",
+                         l10n_util::GetStringFUTF16(
+                             IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_DESC,
+                             kContainersLearnMoreURL));
 
   html_source->AddString(
       "ensOffchainLookupDesc",

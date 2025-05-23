@@ -16,6 +16,9 @@ brave_browser_ui_webui_configs_deps = [
   "//brave/components/brave_private_cdn",
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_vpn/common/buildflags",
+  "//brave/components/containers/core/browser",
+  "//brave/components/containers/core/common",
+  "//brave/components/containers/core/mojom",
   "//brave/components/playlist/common/buildflags",
 ]
 

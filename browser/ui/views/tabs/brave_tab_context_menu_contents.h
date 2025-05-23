@@ -68,7 +68,7 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   bool IsValidContextMenu() const;
   void OnMenuClosed();
 
-  void IsolateTab(int command_id);
+  void ExecuteOpenInContainerCommand(int command_id);
   void NewSplitView();
   void TileSelectedTabs();
   void BreakSelectedTile();

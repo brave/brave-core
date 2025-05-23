@@ -10,6 +10,9 @@ brave_browser_containers_sources = [
 
 brave_browser_containers_deps = [
   "//base",
+  "//brave/components/containers/core/browser",
+  "//brave/components/containers/core/common",
+  "//brave/components/containers/core/mojom",
   "//components/sessions",
   "//content",
 ]

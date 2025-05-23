@@ -37,6 +37,8 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/containers/core/browser/settings_page_handler.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -47,10 +49,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -173,6 +177,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("extensionsManifestV2Feature",
                           base::FeatureList::IsEnabled(kExtensionsManifestV2));
 
+  html_source->AddBoolean(
+      "isContainersEnabled",
+      base::FeatureList::IsEnabled(containers::features::kBraveContainers));
+
   html_source->AddBoolean("isLeoAssistantAllowed",
                           ai_chat::IsAIChatEnabled(profile->GetPrefs()));
   html_source->AddBoolean("isLeoAssistantHistoryAllowed",
@@ -224,4 +232,22 @@ void BraveSettingsUI::BindInterface(
         pending_receiver) {
   brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
       std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<containers::mojom::SettingsPageHandlerFactory>
+        pending_receiver) {
+  containers_page_handler_factory_receiver_.reset();
+  containers_page_handler_factory_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::CreateSettingsPageHandler(
+    mojo::PendingRemote<containers::mojom::SettingsPage> page,
+    mojo::PendingReceiver<containers::mojom::SettingsPageHandler> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<containers::SettingsPageHandler>(
+          std::move(page),
+          user_prefs::UserPrefs::Get(
+              web_ui()->GetWebContents()->GetBrowserContext())),
+      std::move(receiver));
 }
