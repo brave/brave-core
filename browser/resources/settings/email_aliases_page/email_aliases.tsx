@@ -22,7 +22,8 @@ export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
     bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   }) => {
   const [authState, setAuthState] = React.useState<AuthState>(
-      { status: AuthenticationStatus.kStartup, email: '' })
+      { status: AuthenticationStatus.kStartup, email: '',
+        errorMessage: undefined })
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
   React.useEffect(() => {
     // Note: We keep track of the status here so we can avoid setting aliases

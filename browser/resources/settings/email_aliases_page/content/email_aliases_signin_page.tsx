@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { formatLocale, getLocale } from "$web-common/locale";
+import { formatLocale, getLocale } from "$web-common/locale"
 import { onEnterKeyForInput } from "./on_enter_key"
-import { spacing } from "@brave/leo/tokens/css/variables";
+import { spacing } from "@brave/leo/tokens/css/variables"
 import * as React from 'react'
 import Alert from "@brave/leo/react/alert"
 import BraveIconCircle from "./styles/brave_icon_circle"
@@ -74,19 +74,29 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
   </SpacedCol>
 }
 
-const AfterSendingEmailMessage = ({ authEmail, emailAliasesService }:
-  { authEmail: string, emailAliasesService: EmailAliasesServiceInterface }) => {
-  const onClick = () => {
+const AfterSendingEmailMessage = (
+  { authEmail, emailAliasesService, errorMessage }:
+  { authEmail: string, emailAliasesService: EmailAliasesServiceInterface,
+    errorMessage: string | undefined }) => {
+  const onClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    // Use preventDefault to avoid navigating to the hash
+    event.preventDefault()
     emailAliasesService.cancelAuthenticationOrLogout()
   }
+  const tryAgainLink = (msg: string) => formatMessage(
+    getLocale(msg),
+    { tags: { $1: (content) => <a href='#'
+                                  onClick={onClick}>{content}</a> } })
   return <SpacedCol>
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div>
-      {formatMessage(getLocale('emailAliasesDontSeeEmail'),
-       { tags: { $1: (content) => <a href='#'
-                                     onClick={onClick}>{content}</a> } })}
+      {tryAgainLink('emailAliasesDontSeeEmail')}
     </div>
+    {errorMessage && <Alert>
+      {errorMessage + ' '}
+      {tryAgainLink('emailAliasesAuthTryAgain')}
+    </Alert>}
   </SpacedCol>
 }
 
@@ -103,6 +113,7 @@ export const MainEmailEntryForm = (
           emailAliasesService={emailAliasesService} /> :
         <AfterSendingEmailMessage
           authEmail={authState.email}
+          errorMessage={authState.errorMessage}
           emailAliasesService={emailAliasesService} />}
     </SignupRow>
   </Card>

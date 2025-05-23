@@ -39,9 +39,12 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
     this.observer?.onAliasesUpdated(aliases)
   }
 
-  notifyObserverAuthStateChanged(status: AuthenticationStatus, email: string) {
+  notifyObserverAuthStateChanged(status: AuthenticationStatus,
+                                 email: string,
+                                 errorMessage?: string) {
     expect(this.observer).toBeDefined()
-    this.observer?.onAuthStateChanged({ status, email })
+    this.observer?.onAuthStateChanged(
+      { status, email, errorMessage: errorMessage ?? undefined })
   }
 
   removeObserver() { }
@@ -540,4 +543,28 @@ describe('ManagePageConnected', () => {
       expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
     })
   })
+
+  it('shows error message when auth fails', async () => {
+    const mockEmailAliasesService = new MockEmailAliasesService()
+
+    await act(async () => {
+      render(<ManagePageConnected
+        emailAliasesService={mockEmailAliasesService}
+        bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticating,
+        'test@brave.com',
+        'mockErrorMessage'
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText(/mockErrorMessage/)).toBeInTheDocument()
+    })
+  })
+
 })
