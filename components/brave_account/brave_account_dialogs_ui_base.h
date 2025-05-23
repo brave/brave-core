@@ -13,7 +13,7 @@
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/password_strength_meter/mojom/password_strength_meter.mojom.h"
+#include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/password_strength_meter/mojom/password_strength_meter.mojom.h"
+#include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 

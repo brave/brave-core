@@ -11,7 +11,7 @@
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
-#include "brave/components/password_strength_meter/mojom/password_strength_meter.mojom.h"
+#include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
