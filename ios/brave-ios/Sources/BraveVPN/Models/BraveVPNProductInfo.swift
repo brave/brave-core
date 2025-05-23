@@ -40,6 +40,8 @@ public class BraveVPNProductInfo: NSObject {
     static let monthlySub = BraveStoreProduct.vpnMonthly.rawValue
     /// Apple's yearly IAP
     static let yearlySub = BraveStoreProduct.vpnYearly.rawValue
+    /// account.brave.com  yearly subscription product
+    static let yearlySubSku = "brave-vpn-premium-year"
     /// account.brave.com  monthly subscription product
     static let monthlySubSKU = "brave-premium"
     /// account.brave.com  monthly subscription product
