@@ -1116,6 +1116,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE},
       {"emailAliasesCreateAliasButton",
        IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON},
+      {"emailAliasesUpdateAliasError",
+       IDS_SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR},
       {"emailAliasesSaveAliasButton",
        IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON},
       {"emailAliasesSignInOrCreateAccount",

@@ -87,6 +87,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON" desc="The label for the create alias button">
     Create alias
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR" desc="The label for the update alias error">
+    Error saving alias. Check your internet connection and try again.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON" desc="The label for the save alias button">
     Save
   </message>
