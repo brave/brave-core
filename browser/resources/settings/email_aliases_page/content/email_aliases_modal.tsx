@@ -111,7 +111,7 @@ const LoadingIcon = styled(ProgressRing)`
   --leo-progressring-size: 24px;
 `
 
-type EditMode =
+export type EditMode =
   | 'None'
   | 'Create'
   | 'Edit'
