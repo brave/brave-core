@@ -105,6 +105,8 @@ class BraveWalletService : public KeyedService,
   void GetUserAssets(const std::string& chain_id,
                      mojom::CoinType coin,
                      GetUserAssetsCallback callback) override;
+  // Deprecated, use GetUserAssets instead that ensures native tokens for some
+  // coins.
   void GetAllUserAssets(GetUserAssetsCallback callback) override;
   void AddUserAsset(mojom::BlockchainTokenPtr token,
                     AddUserAssetCallback callback) override;
