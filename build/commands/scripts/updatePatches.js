@@ -65,7 +65,6 @@ module.exports = function RunCommand(filePaths, options) {
     'devtools-frontend',
     'src',
   )
-  const tfliteDir = path.join(config.srcDir, 'third_party', 'tflite', 'src')
   const searchEngineDataDir = path.join(
     config.srcDir,
     'third_party',
@@ -81,7 +80,6 @@ module.exports = function RunCommand(filePaths, options) {
     'devtools-frontend',
     'src',
   )
-  const tflitePatchDir = path.join(patchDir, 'third_party', 'tflite', 'src')
   const searchEngineDataPatchDir = path.join(
     patchDir,
     'third_party',
@@ -98,8 +96,6 @@ module.exports = function RunCommand(filePaths, options) {
     updatePatches(catapultDir, catapultPatchDir, filePaths),
     // third_party/devtools-frontend/src
     updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir, filePaths),
-    // third_party/tflite/src
-    updatePatches(tfliteDir, tflitePatchDir, filePaths),
     // third_party/search_engines_data
     updatePatches(searchEngineDataDir, searchEngineDataPatchDir, filePaths),
   ])

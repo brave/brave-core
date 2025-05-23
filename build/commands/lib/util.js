@@ -35,12 +35,6 @@ async function applyPatches(printPatchFailuresInJson) {
     'devtools-frontend',
     'src',
   )
-  const tflitePatchesPath = path.join(
-    patchesPath,
-    'third_party',
-    'tflite',
-    'src',
-  )
   const searchEngineDataPatchesPath = path.join(
     patchesPath,
     'third_party',
@@ -61,12 +55,6 @@ async function applyPatches(printPatchFailuresInJson) {
     'devtools-frontend',
     'src',
   )
-  const tfliteRepoPath = path.join(
-    chromiumRepoPath,
-    'third_party',
-    'tflite',
-    'src',
-  )
   const searchEngineDataRepoPath = path.join(
     chromiumRepoPath,
     'third_party',
@@ -81,7 +69,6 @@ async function applyPatches(printPatchFailuresInJson) {
     devtoolsFrontendPatchesPath,
     devtoolsFrontendRepoPath,
   )
-  const tflitePatcher = new GitPatcher(tflitePatchesPath, tfliteRepoPath)
   const searchEngineDataPatcher = new GitPatcher(
     searchEngineDataPatchesPath,
     searchEngineDataRepoPath,
@@ -92,7 +79,6 @@ async function applyPatches(printPatchFailuresInJson) {
   const catapultPatchStatus = await catapultPatcher.applyPatches()
   const devtoolsFrontendPatchStatus =
     await devtoolsFrontendPatcher.applyPatches()
-  const tflitePatchStatus = await tflitePatcher.applyPatches()
   const searchEngineDataPatchStatus =
     await searchEngineDataPatcher.applyPatches()
 
@@ -111,7 +97,6 @@ async function applyPatches(printPatchFailuresInJson) {
     ...v8PatchStatus,
     ...catapultPatchStatus,
     ...devtoolsFrontendPatchStatus,
-    ...tflitePatchStatus,
     ...searchEngineDataPatchStatus,
   ]
   if (printPatchFailuresInJson) {
