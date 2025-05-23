@@ -422,6 +422,32 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
+
+  // ZEC Shielded token
+  json_value = base::test::ParseJsonDict(R"({
+      "coin": 133,
+      "chain_id": "zcash_mainnet",
+      "address": "",
+      "name": "zec",
+      "symbol": "ZEC",
+      "logo": "zec.png",
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_erc1155": false,
+      "is_nft": false,
+      "is_spam": false,
+      "decimals": 8,
+      "visible": true,
+      "is_shielded": true,
+  })");
+
+  expected_token = mojom::BlockchainToken::New(
+      "", "zec", "zec.png", false, false, false, false,
+      mojom::SPLTokenProgram::kUnsupported, false, false, "ZEC", 8, true, "",
+      "", "zcash_mainnet", mojom::CoinType::ZEC, true);
+
+  token = ValueToBlockchainToken(json_value);
+  EXPECT_EQ(token, expected_token);
 }
 
 TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {

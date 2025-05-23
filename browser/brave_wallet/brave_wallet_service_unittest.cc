@@ -67,6 +67,7 @@
 #include "url/origin.h"
 
 using content::StoragePartition;
+using testing::Contains;
 using testing::ElementsAre;
 using testing::Eq;
 
@@ -977,30 +978,85 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForZec) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "false"}});
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "false"}});
 
-  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
 
-  auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
-  auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
+    auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
+    auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
 
-  EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_mainnet_token))));
-  EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_testnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                ElementsAre(Eq(std::ref(zec_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                ElementsAre(Eq(std::ref(zec_testnet_token))));
 
-  zec_mainnet_token->visible = false;
-  zec_testnet_token->visible = false;
-  AddUserAsset(zec_mainnet_token.Clone());
-  AddUserAsset(zec_testnet_token.Clone());
+    zec_mainnet_token->visible = false;
+    zec_testnet_token->visible = false;
+    AddUserAsset(zec_mainnet_token.Clone());
+    AddUserAsset(zec_testnet_token.Clone());
 
-  EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_mainnet_token))));
-  EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
-              ElementsAre(Eq(std::ref(zec_testnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                ElementsAre(Eq(std::ref(zec_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                ElementsAre(Eq(std::ref(zec_testnet_token))));
+  }
+
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+
+    auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
+    auto zec_testnet_token = GetZcashNativeToken(mojom::kZCashTestnet);
+    auto zec_shielded_mainnet_token =
+        GetZcashNativeShieldedToken(mojom::kZCashMainnet);
+    auto zec_shielded_testnet_token =
+        GetZcashNativeShieldedToken(mojom::kZCashTestnet);
+
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_testnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_shielded_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_shielded_testnet_token))));
+
+    zec_mainnet_token->visible = false;
+    zec_testnet_token->visible = false;
+    AddUserAsset(zec_mainnet_token.Clone());
+    AddUserAsset(zec_testnet_token.Clone());
+
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_testnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_shielded_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_shielded_testnet_token))));
+
+    zec_shielded_mainnet_token->visible = false;
+    zec_shielded_testnet_token->visible = false;
+    AddUserAsset(zec_shielded_mainnet_token.Clone());
+    AddUserAsset(zec_shielded_testnet_token.Clone());
+
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_testnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashMainnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_shielded_mainnet_token))));
+    EXPECT_THAT(GetUserAssets(mojom::kZCashTestnet, mojom::CoinType::ZEC),
+                Contains(Eq(std::ref(zec_shielded_testnet_token))));
+  }
 }
 
 TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
