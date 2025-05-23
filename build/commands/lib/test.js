@@ -32,6 +32,8 @@ const getTestsToRun = (config, suite) => {
     }
   } else if (suite === 'brave_java_unit_tests') {
     testsToRun = ['bin/run_brave_java_unit_tests']
+  } else if (suite === 'brave_robolectric_junit_tests') {
+    testsToRun = ['bin/run_brave_robolectric_junit_tests']
   } else if (suite === 'chromium_unit_tests') {
     testsToRun = getChromiumUnitTestsSuites()
   }
@@ -98,6 +100,7 @@ const buildTests = async (
     'brave_unit_tests',
     'brave_browser_tests',
     'brave_java_unit_tests',
+    'brave_robolectric_junit_tests',
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
@@ -116,7 +119,11 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  let braveArgs = ['--enable-logging=stderr']
+  let braveArgs = []
+
+  if (suite !== 'brave_robolectric_junit_tests') {
+    braveArgs.push('--enable-logging=stderr')
+  }
 
   // Android doesn't support --v
   if (config.targetOS !== 'android') {
@@ -147,11 +154,13 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     braveArgs.push('--single_process')
   }
 
-  if (options.test_launcher_jobs) {
+  if (suite !== 'brave_robolectric_junit_tests' && options.test_launcher_jobs) {
     braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
   }
 
-  braveArgs = braveArgs.concat(passthroughArgs)
+  if (suite !== 'brave_robolectric_junit_tests') {
+    braveArgs = braveArgs.concat(passthroughArgs)
+  }
 
   if (
     suite === 'brave_unit_tests'
@@ -214,7 +223,10 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         }
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
-      if (config.targetOS === 'android') {
+      if (
+        config.targetOS === 'android'
+        && suite !== 'brave_robolectric_junit_tests'
+      ) {
         assert(
           config.targetArch === 'x86'
             || config.targetArch === 'x64'
@@ -224,6 +236,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       }
       if (
         config.targetOS === 'android'
+        && suite !== 'brave_robolectric_junit_tests'
         && !options.manual_android_test_device
       ) {
         // Specify emulator to run tests on

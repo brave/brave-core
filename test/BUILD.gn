@@ -1379,4 +1379,22 @@ if (is_android) {
       "//url/mojom:url_mojom_gurl_java",
     ]
   }
+
+  robolectric_binary("brave_robolectric_junit_tests") {
+    # Needed by androidx.test.core.app.ActivityScenario
+    android_manifest = "//chrome/android/junit/AndroidManifest.xml"
+    package_name = "brave.robolectric.junit.tests"
+
+    shared_libraries = [
+      "//chrome/android/junit:libchrome_junit_tests($robolectric_toolchain)",
+    ]
+
+    # Should not have any deps native targets since junit tests are java-only.
+    assert_no_deps = [
+      "//content",
+      "//mojo/public/mojom/base",
+    ]
+
+    deps = [ "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage" ]
+  }
 }  # if (is_android) {
