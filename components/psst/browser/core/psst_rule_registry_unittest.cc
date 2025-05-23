@@ -68,6 +68,10 @@ class PsstRuleRegistryUnitTest : public testing::Test {
     return GetTestDataDirBase().Append(
         base::FilePath::FromUTF8Unsafe("scripts"));
   }
+  base::FilePath GetBrokenTestDataDirBase() const {
+    return GetTestDataDirBase().Append(
+        base::FilePath::FromUTF8Unsafe("wrong_psst"));
+  }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -161,6 +165,28 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
   registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
   run_loop.Run();
   ASSERT_TRUE(registry.component_path_.empty());
+}
+
+TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
+  PsstRuleRegistry registry;
+  LoadRulesTestCallback mock_callback;
+  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_callback, Run)
+      .Times(1)
+      .WillOnce(
+          [&](const std::string& data, const std::vector<PsstRule>& rules) {
+            EXPECT_TRUE(rules.empty());
+            EXPECT_EQ(data,
+                      ReadFile(GetBrokenTestDataDirBase().Append(
+                          base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
+            run_loop.Quit();
+          });
+
+  registry.LoadRules(GetBrokenTestDataDirBase());
+  run_loop.Run();
+  ASSERT_FALSE(registry.component_path_.empty());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
