@@ -57,9 +57,11 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
 
   void OnLoadRules(const std::string& data);
   void SetOnLoadCallbackForTest(
-      base::OnceCallback<void(const std::string&)> callback);
+      base::OnceCallback<void(const std::string&, const std::vector<PsstRule>&)>
+          callback);
   void ResetRuleRegistryForTest();
-  std::optional<base::OnceCallback<void(const std::string&)>>
+  std::optional<base::OnceCallback<void(const std::string&,
+                                        const std::vector<PsstRule>&)>>
       onload_test_callback_;
 
   std::vector<PsstRule> rules_;

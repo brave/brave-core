@@ -36,9 +36,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
   const std::string& Name() const { return name_; }
 
  private:
-  friend class MatchedRuleFactory;
   friend class RuleDataReaderUnitTest;
-  friend class PsstOperationContextUnitTest;
   MatchedRule(const std::string& name,
               const std::string& user_script,
               const std::string& policy_script,
