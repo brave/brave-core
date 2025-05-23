@@ -61,6 +61,17 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                         account_id.keyring_id);
 }
 
+bool ContainsToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
+                   mojom::CoinType coin,
+                   const std::string& chain_id,
+                   bool is_shielded) {
+  return std::ranges::find_if(
+             tokens, [&](const mojom::BlockchainTokenPtr& token) {
+               return token->coin == coin && token->chain_id == chain_id &&
+                      token->is_shielded == is_shielded;
+             }) != tokens.end();
+}
+
 // Ensure token list contains native tokens when appears empty. Only for BTC,
 // ZEC and ADA by now.
 std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
@@ -72,19 +83,26 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     return tokens;
   }
 
-  if (!tokens.empty()) {
-    return tokens;
-  }
-
-  if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id)) {
+  if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id) &&
+      !ContainsToken(tokens, coin, chain_id, false)) {
     tokens.push_back(GetBitcoinNativeToken(chain_id));
   }
 
   if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
-    tokens.push_back(GetZcashNativeToken(chain_id));
+    if (!ContainsToken(tokens, coin, chain_id, false)) {
+      tokens.push_back(GetZcashNativeToken(chain_id));
+    }
+#if BUILDFLAG(ENABLE_ORCHARD)
+    if (IsZCashShieldedTransactionsEnabled()) {
+      if (!ContainsToken(tokens, coin, chain_id, true)) {
+        tokens.push_back(GetZcashNativeShieldedToken(chain_id));
+      }
+    }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
   }
 
-  if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id)) {
+  if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id) &&
+      !ContainsToken(tokens, coin, chain_id, false)) {
     tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
