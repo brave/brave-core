@@ -123,6 +123,7 @@ const _extractKeyMatchRuleFromStr = (text: string): [TextMatchRule, number] => {
 }
 
 const _extractValueMatchRuleFromStr = (text: string,
+                                       uriEncode = false,
                                        needlePosition = 0): TextMatchRule => {
   const isQuotedCase = text[needlePosition] === '"'
   let endIndex
@@ -140,7 +141,10 @@ const _extractValueMatchRuleFromStr = (text: string,
     endIndex = text.length
   }
 
-  const testCaseStr = text.slice(needlePosition, endIndex)
+  let testCaseStr = text.slice(needlePosition, endIndex)
+  if (uriEncode) {
+    testCaseStr = testCaseStr.replace(/\P{ASCII}/gu, c => encodeURIComponent(c))
+  }
   const testCaseFunc = _testMatches.bind(undefined, testCaseStr)
   return testCaseFunc
 }
@@ -159,7 +163,7 @@ const _extractValueMatchRuleFromStr = (text: string,
 // }
 const _parseKeyValueMatchRules = (arg: string): KeyValueMatchRules => {
   const [keyMatchRule, needlePos] = _extractKeyMatchRuleFromStr(arg)
-  const valueMatchRule = _extractValueMatchRuleFromStr(arg, needlePos)
+  const valueMatchRule = _extractValueMatchRuleFromStr(arg, false, needlePos)
   return [keyMatchRule, valueMatchRule]
 }
 
@@ -387,7 +391,7 @@ const operatorMatchesMedia = (instruction: string,
 const operatorMatchesPath = (instruction: string,
                              element: HTMLElement): OperatorResult => {
   const pathAndQuery = W.location.pathname + W.location.search
-  const matchRule = _extractValueMatchRuleFromStr(instruction)
+  const matchRule = _extractValueMatchRuleFromStr(instruction, true)
   return matchRule(pathAndQuery) ? [element] : []
 }
 

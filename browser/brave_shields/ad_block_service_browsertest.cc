@@ -2827,10 +2827,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesPath) {
       "p.odd:matches-path(cosmetic_filtering.html)\n"
       "a.com##:matches-path(/c[aeiou]smetic\\_[a-z]{9}/) section "
       ".positive-regex-case p.odd\n"
-      "a.com##section .negative-case:matches-path(/some-other-page.html)");
+      "a.com##section .negative-case:matches-path(/some-other-page.html)\n"
+      "a.com##:matches-path(😎) section .positive-unicode-case p.odd");
 
-  GURL tab_url =
-      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  GURL::Replacements replacements;
+  replacements.SetQueryStr("😎");
+  GURL tab_url = embedded_test_server()
+                     ->GetURL("a.com", "/cosmetic_filtering.html")
+                     .ReplaceComponents(replacements);
   NavigateToURL(tab_url);
 
   content::WebContents* contents = web_contents();
