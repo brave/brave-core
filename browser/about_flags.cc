@@ -313,8 +313,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
       "brave-background-video-playback",                                       \
       "Background video playback",                                             \
       "Enables play audio from video in background when tab is not active or " \
-      "device screen is turned off. Try to switch to desktop mode if this "    \
-      "feature is not working.",                                               \
+      "device screen is turned off.",                                          \
       kOsAndroid,                                                              \
       FEATURE_VALUE_TYPE(                                                      \
           preferences::features::kBraveBackgroundVideoPlayback),               \
