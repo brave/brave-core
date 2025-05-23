@@ -98,7 +98,7 @@ class PsstTabWebContentsObserverUnitTest
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrimaryPageChanged) {
   const GURL native_url("https://example1.com");
-  SetPsstEnabledState(profile()->GetPrefs(), false);
+  profile()->GetPrefs()->SetBoolean(prefs::kPsstEnabled, false);
 
   EXPECT_CALL(*GetPageChecker(), ShouldProcess)
       .WillOnce(testing::Return(false));
@@ -113,7 +113,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, PrimaryPageChanged) {
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, DocumentOnLoadCompletedScriptStart) {
-  SetPsstEnabledState(profile()->GetPrefs(), true);
+  profile()->GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_CALL(*GetPageChecker(), ShouldProcess).WillOnce(testing::Return(true));
   EXPECT_CALL(*GetScriptHandler(), Start).Times(1);
   const GURL native_url("https://example1.com");
@@ -121,14 +121,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, DocumentOnLoadCompletedScriptStart) {
                                                              native_url);
   EXPECT_FALSE(GetObserver()->should_process_);
 
-  SetPsstEnabledState(profile()->GetPrefs(), false);
+  profile()->GetPrefs()->SetBoolean(prefs::kPsstEnabled, false);
   EXPECT_CALL(*GetPageChecker(), ShouldProcess).WillOnce(testing::Return(true));
   EXPECT_CALL(*GetScriptHandler(), Start).Times(0);
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
                                                              native_url);
   EXPECT_TRUE(GetObserver()->should_process_);
 
-  SetPsstEnabledState(profile()->GetPrefs(), true);
+  profile()->GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
   EXPECT_CALL(*GetPageChecker(), ShouldProcess)
       .WillOnce(testing::Return(false));
   EXPECT_CALL(*GetScriptHandler(), Start).Times(0);
