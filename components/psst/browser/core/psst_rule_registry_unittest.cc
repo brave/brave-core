@@ -58,6 +58,11 @@ class PsstRuleRegistryUnitTest : public testing::Test {
     test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
   }
 
+  using LoadRulesTestCallback = base::MockCallback<base::OnceCallback<
+      void(const std::string& data, const std::vector<PsstRule>& rules)>>;
+  using CheckIfMatchTestCallback = base::MockCallback<
+      base::OnceCallback<void(const std::optional<MatchedRule>&)>>;
+
   base::FilePath GetTestDataDirBase() const { return test_data_dir_base_; }
   base::FilePath GetScriptsTestDataDir() const {
     return GetTestDataDirBase().Append(
@@ -73,9 +78,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
 TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
   PsstRuleRegistry registry;
   {
-    base::MockCallback<base::OnceCallback<void(
-        const std::string& data, const std::vector<PsstRule>& rules)>>
-        mock_callback;
+    LoadRulesTestCallback mock_callback;
     registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
     base::RunLoop run_loop;
@@ -98,9 +101,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
       GetScriptsTestDataDir().Append(base::FilePath::FromUTF8Unsafe("a"));
 
   base::RunLoop run_loop;
-  base::MockCallback<
-      base::OnceCallback<void(const std::optional<MatchedRule>&)>>
-      mock_callback;
+  CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run)
       .Times(1)
       .WillOnce([&](const std::optional<MatchedRule>& matched_rule) {
@@ -122,14 +123,7 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
   PsstRuleRegistry registry;
-  registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
-  ASSERT_TRUE(registry.rules_.empty());
-  registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("non-existing-path")));
-  ASSERT_TRUE(registry.rules_.empty());
-
-  base::MockCallback<base::OnceCallback<void(
-      const std::string& data, const std::vector<PsstRule>& rules)>>
-      mock_callback;
+  LoadRulesTestCallback mock_callback;
   registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
   base::RunLoop run_loop;
@@ -149,12 +143,52 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
   ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
+TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
+  PsstRuleRegistry registry;
+  LoadRulesTestCallback mock_callback;
+  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_callback, Run)
+      .Times(1)
+      .WillOnce(
+          [&](const std::string& data, const std::vector<PsstRule>& rules) {
+            EXPECT_TRUE(rules.empty());
+            EXPECT_TRUE(data.empty());
+            run_loop.Quit();
+          });
+
+  registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
+  run_loop.Run();
+  ASSERT_TRUE(registry.component_path_.empty());
+}
+
+TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
+  const auto non_existing_path =
+      base::FilePath(FILE_PATH_LITERAL("non-existing-path"));
+  PsstRuleRegistry registry;
+  LoadRulesTestCallback mock_callback;
+  registry.SetOnLoadCallbackForTest(mock_callback.Get());
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_callback, Run)
+      .Times(1)
+      .WillOnce(
+          [&](const std::string& data, const std::vector<PsstRule>& rules) {
+            EXPECT_TRUE(rules.empty());
+            EXPECT_TRUE(data.empty());
+            run_loop.Quit();
+          });
+
+  registry.LoadRules(non_existing_path);
+  run_loop.Run();
+  EXPECT_EQ(non_existing_path, registry.component_path_);
+}
+
 TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
   PsstRuleRegistry registry;
   {
-    base::MockCallback<base::OnceCallback<void(
-        const std::string& data, const std::vector<PsstRule>& rules)>>
-        mock_callback;
+    LoadRulesTestCallback mock_callback;
     registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
     base::RunLoop run_loop;
@@ -174,9 +208,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
   }
 
   base::RunLoop run_loop;
-  base::MockCallback<
-      base::OnceCallback<void(const std::optional<MatchedRule>&)>>
-      mock_callback;
+  CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run)
       .Times(1)
       .WillOnce([&](const std::optional<MatchedRule>& matched_rule) {
@@ -194,9 +226,7 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
 TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
   PsstRuleRegistry registry;
   {
-    base::MockCallback<base::OnceCallback<void(
-        const std::string& data, const std::vector<PsstRule>& rules)>>
-        mock_callback;
+    LoadRulesTestCallback mock_callback;
     registry.SetOnLoadCallbackForTest(mock_callback.Get());
 
     base::RunLoop run_loop;
@@ -215,9 +245,7 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
     run_loop.Run();
   }
 
-  base::MockCallback<
-      base::OnceCallback<void(const std::optional<MatchedRule>&)>>
-      mock_callback;
+  CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
   registry.CheckIfMatch(GURL("https://notexisted.com"), mock_callback.Get());
   ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
