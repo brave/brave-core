@@ -498,7 +498,7 @@ GURL ZCashMainnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL("https://zcash.wallet.brave.com:443/");
+  return GURL("https://zcash.wallet.brave.com/");
 }
 
 GURL ZCashTestnetRpcUrl() {

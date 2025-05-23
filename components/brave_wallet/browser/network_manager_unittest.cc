@@ -420,7 +420,7 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
             network_manager()->GetNetworkURL(mojom::kBitcoinMainnet,
                                              mojom::CoinType::BTC));
 
-  EXPECT_EQ(GURL("https://zec.rocks:443/"),
+  EXPECT_EQ(GURL("https://zcash.wallet.brave.com/"),
             network_manager()->GetNetworkURL(mojom::kZCashMainnet,
                                              mojom::CoinType::ZEC));
   auto custom_zec_network = network_manager()->GetKnownChain(
@@ -560,8 +560,8 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   // Zcash
   mojom::NetworkInfo zec_mainnet(mojom::kZCashMainnet, "Zcash Mainnet",
                                  {"https://3xpl.com/zcash/transaction"}, {}, 0,
-                                 {GURL("https://zec.rocks:443/")}, "ZEC",
-                                 "Zcash", 8, mojom::CoinType::ZEC,
+                                 {GURL("https://zcash.wallet.brave.com/")},
+                                 "ZEC", "Zcash", 8, mojom::CoinType::ZEC,
                                  {mojom::KeyringId::kZCashMainnet});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ZEC));
   EXPECT_EQ(network_manager()->GetChain("zcash_mainnet", mojom::CoinType::ZEC),
