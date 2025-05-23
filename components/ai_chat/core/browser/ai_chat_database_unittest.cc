@@ -512,10 +512,10 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {
   const std::string uuid = "for_associated_content";
   auto content_1 = mojom::AssociatedContent::New(
       "content_1", mojom::ContentType::PageContent, "one", 1,
-      GURL("https://one.com"), 61, true);
+      GURL("https://one.com"), 61);
   auto content_2 = mojom::AssociatedContent::New(
       "content_2", mojom::ContentType::PageContent, "two", 2,
-      GURL("https://two.com"), 62, true);
+      GURL("https://two.com"), 62);
 
   // Note: This is reused for all conversations, as it is moved into the
   // conversation ptr.
@@ -631,7 +631,7 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   // are persisted.
   associated_content.push_back(mojom::AssociatedContent::New(
       "first-content", mojom::ContentType::PageContent, "page title", 1,
-      page_url, 62, true));
+      page_url, 62));
   mojom::ConversationPtr metadata_first = mojom::Conversation::New(
       "first", "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       0, 0, std::move(associated_content));
@@ -980,13 +980,14 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     const std::string uuid = "is_content_refined_test";
 
     mojom::ConversationPtr metadata = mojom::Conversation::New(
-        uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0, nullptr);
-    metadata->associated_content = mojom::AssociatedContent::New(
+        uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0,
+        std::vector<mojom::AssociatedContentPtr>());
+    metadata->associated_content.push_back(mojom::AssociatedContent::New(
         "1234", mojom::ContentType::PageContent, "title", 1,
-        GURL("https://example.com"), 100);
+        GURL("https://example.com"), 100));
 
     auto history = CreateSampleChatHistory(1u);
-    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), "Hello world!",
+    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {"Hello world!"},
                                      history[0]->Clone()));
 
     auto data = db_->GetConversationData(uuid);

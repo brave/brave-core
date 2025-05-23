@@ -841,10 +841,10 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "1", mojom::ContentType::PageContent, "Content 1", 1,
-      GURL("https://one.com"), 100, false));
+      GURL("https://one.com"), 100));
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "2", mojom::ContentType::PageContent, "Content 2", 2,
-      GURL("https://two.com"), 100, false));
+      GURL("https://two.com"), 100));
 
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(

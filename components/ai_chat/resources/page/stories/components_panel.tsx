@@ -36,7 +36,6 @@ import Attachments from '../components/attachments'
 
 const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
-  pageContentRefineEvent: undefined,
   searchQueriesEvent: undefined,
   searchStatusEvent: undefined,
   selectedLanguageEvent: undefined,
