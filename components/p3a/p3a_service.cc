@@ -217,7 +217,7 @@ void P3AService::OnMetricCycled(const std::string& histogram_name,
 }
 
 std::optional<MetricLogType> P3AService::GetDynamicMetricLogType(
-    const std::string& histogram_name) const {
+    std::string_view histogram_name) const {
   auto log_type_it = dynamic_metric_log_types_.find(histogram_name);
   return log_type_it != dynamic_metric_log_types_.end()
              ? log_type_it->second
