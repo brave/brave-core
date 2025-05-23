@@ -27,6 +27,7 @@ enum class MetricAttribute {
   kSubregion,
   kRef,
   kDateOfInstall,
+  kWeekOfActivation,
   kDateOfActivation,
   kMaxValue = kDateOfActivation,
 };
