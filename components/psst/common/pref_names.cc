@@ -17,7 +17,6 @@ namespace psst {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
-    registry->RegisterDictionaryPref(prefs::kPsstSettingsPref);
   }
 }
 
