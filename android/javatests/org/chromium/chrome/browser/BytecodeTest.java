@@ -413,6 +413,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_group_sync/StartupHelper"));
     }
 
     @Test
@@ -959,6 +960,12 @@ public class BytecodeTest {
                         "getChromeNtpRadioButton",
                         MethodModifier.REGULAR,
                         RadioButtonWithDescription.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab_group_sync/StartupHelper",
+                        "handleUnsavedLocalTabGroups",
+                        MethodModifier.REGULAR,
+                        void.class));
     }
 
     @Test
@@ -2485,6 +2492,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/homepage/settings/BraveRadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tab_group_sync/StartupHelper",
+                        "org/chromium/chrome/browser/tab_group_sync/BraveStartupHelper"));
     }
 
     @Test
