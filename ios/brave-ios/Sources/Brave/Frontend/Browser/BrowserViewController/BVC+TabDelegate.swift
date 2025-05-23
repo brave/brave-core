@@ -570,25 +570,6 @@ extension BrowserViewController {
     }
   }
 
-  private class TabOneShotURLObservation: TabObserver {
-    init(tab: some TabState, updated: @escaping (URL?) -> Void) {
-      tab.addObserver(self)
-      self.updated = updated
-    }
-
-    var updated: ((URL?) -> Void)?
-
-    public func tabDidUpdateURL(_ tab: some TabState) {
-      updated?(tab.visibleURL)
-      updated = nil
-      tab.removeObserver(self)
-    }
-
-    public func tabWillBeDestroyed(_ tab: some TabState) {
-      tab.removeObserver(self)
-    }
-  }
-
   public func tab(
     _ tab: some TabState,
     createNewTabWithRequest request: URLRequest,
@@ -616,19 +597,12 @@ extension BrowserViewController {
 
     toolbarVisibilityViewModel.toolbarState = .expanded
 
-    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
-    // restore it as if it was a dead tab.
-    var observation: TabOneShotURLObservation?
-    observation = TabOneShotURLObservation(tab: newTab) { [weak self, weak newTab] _ in
-      _ = observation
-      observation = nil
+    // When a child tab is being selected, dismiss any popups on the parent tab
+    tab.shownPromptAlert?.dismiss(animated: false)
+    // Select the tab immediately, the web view will be created at different times depending on
+    // the TabState implementation
+    tabManager.selectTab(newTab)
 
-      guard let self = self, let tab = newTab else { return }
-
-      // When a child tab is being selected, dismiss any popups on the parent tab
-      tab.opener?.shownPromptAlert?.dismiss(animated: false)
-      self.tabManager.selectTab(tab)
-    }
     return newTab
   }
 
