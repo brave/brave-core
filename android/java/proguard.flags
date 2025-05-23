@@ -101,7 +101,3 @@
 -keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
     *** dismissActivityIfNeeded(...);
 }
-
--keep class org.chromium.chrome.browser.tab_group_sync.StartupHelper {
-    *** handleUnsavedLocalTabGroups(...);
-}

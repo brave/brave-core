@@ -978,6 +978,10 @@
 
 -keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference
 
+-keep class org.chromium.chrome.browser.tab_group_sync.StartupHelper {
+    *** handleUnsavedLocalTabGroups(...);
+}
+
 -keep class org.chromium.chrome.browser.tab_group_sync.BraveStartupHelper {
     *** handleUnsavedLocalTabGroups(...);
 }
