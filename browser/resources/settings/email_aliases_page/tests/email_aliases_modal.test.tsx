@@ -5,7 +5,8 @@
 
 import * as React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
-import { EmailAliasModal, EditState, EditMode } from '../content/email_aliases_modal'
+import { EmailAliasModal, EditState, EditMode }
+  from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
 import { EmailAliasesServiceInterface, GenerateAliasResult }
@@ -338,7 +339,7 @@ describe('EmailAliasModal', () => {
         />
       )
 
-      // Wait for error message to be displayed. Create button should be disabled.
+      // Wait for error message to appear. Create button should be disabled.
       const saveButton = screen.getByText(
         /emailAliasesCreateAliasButton|emailAliasesSaveAliasButton/)
       await waitFor(() => {
