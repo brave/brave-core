@@ -358,11 +358,13 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
       const addedElements = [];
       mutations.forEach(mutation =>
         mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
-          n.nodeType === Node.ELEMENT_NODE && addedElements.push(n)
-          const childNodes = n.querySelectorAll('*')
-          childNodes.length !== 0 && childNodes.forEach(c => {
-            c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
-          })
+          if (n.nodeType === Node.ELEMENT_NODE) {
+            addedElements.push(n)
+            const childNodes = n.querySelectorAll('*')
+            childNodes.length !== 0 && childNodes.forEach(c => {
+              c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
+            })
+          }
         })
       )
       if (addedElements.length !== 0) {
