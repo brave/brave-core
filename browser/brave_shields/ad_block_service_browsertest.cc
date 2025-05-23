@@ -2765,7 +2765,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterHasText) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        ProceduralFilterDynamicAddedChildHasText) {
   UpdateAdBlockInstanceWithRules(
-      "a.com###procedural-filter-child-node-id:has-text(View in App)");
+      "a.com##.procedural-filter-child-node-class:has-text(View in App)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
@@ -2775,9 +2775,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   auto result = EvalJs(contents,
                        R"(
-        addElementWithChildDynamically();
-        waitCSSSelector('#procedural-filter-child-node-id', 'display', 'none')
-      )");
+      addElementWithChildDynamically();
+      waitCSSSelector('.procedural-filter-child-node-class', 'display', 'none')
+    )");
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
 }

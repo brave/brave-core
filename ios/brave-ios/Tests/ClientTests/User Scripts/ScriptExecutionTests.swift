@@ -264,7 +264,7 @@ final class ScriptExecutionTests: XCTestCase {
         "brave.com###test-has-text:has-text(hide me)",
         "brave.com###test-has:has(a.banner-link)",
         "brave.com###test-delayed-has-text:has-text(hide me)",
-        "brave.com###procedural-filter-child-node-id:has-text(View in App)",
+        "brave.com##.procedural-filter-child-node-class:has-text(View in App)",
       ].joined(separator: "\n")
     )
     let cosmeticFilterModel = try engine.cosmeticFilterModel(forFrameURL: siteURL)!

@@ -97,14 +97,6 @@
         results.delayedHasTextHidden = nodeDisplay === 'none'
       }
 
-      if (node.id === 'procedural-filter-child-node-id') {
-        const nodeDisplay = window.getComputedStyle(node).display
-        // 2 elements have this id, we want to test both their display values
-        const delayedChildHasTextHidden = results.delayedChildHasTextHidden
-        delayedChildHasTextHidden.push(nodeDisplay === 'none')
-        results.delayedChildHasTextHidden = delayedChildHasTextHidden
-      }
-
       if (node.id === 'test-has') {
         results.hasDisplayIsNone = window.getComputedStyle(node).display === 'none'
       }
@@ -119,6 +111,21 @@
             results.localFrameElement = window.getComputedStyle(node).display === 'none'
           }
         })
+      }
+    })
+
+    const elementsWithClass = document.querySelectorAll('[class]')
+    elementsWithClass.forEach((node) => {
+      if (!node.hasAttribute('class')) {
+        return
+      }
+
+      if (node.getAttribute('class') === 'procedural-filter-child-node-class') {
+        const nodeDisplay = window.getComputedStyle(node).display
+        // 2 elements have this class, we want to test both their display values
+        const delayedChildHasTextHidden = results.delayedChildHasTextHidden
+        delayedChildHasTextHidden.push(nodeDisplay === 'none')
+        results.delayedChildHasTextHidden = delayedChildHasTextHidden
       }
     })
 
