@@ -15,7 +15,6 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -53,7 +52,8 @@ public class MediaPreferences extends BravePreferenceFragment
         ChromeSwitchPreference backgroundVideoPlaybackPref =
                 findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
         if (backgroundVideoPlaybackPref != null) {
-            backgroundVideoPlaybackPref.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK));
+            backgroundVideoPlaybackPref.setVisible(
+                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK));
         }
     }
 
@@ -78,10 +78,12 @@ public class MediaPreferences extends BravePreferenceFragment
 
         ChromeSwitchPreference backgroundVideoPlaybackPref =
                 findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
-        if (backgroundVideoPlaybackPref != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
+        if (backgroundVideoPlaybackPref != null
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
             backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
-            backgroundVideoPlaybackPref.setChecked(UserPrefs.get(getProfile())
-                    .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED));
+            backgroundVideoPlaybackPref.setChecked(
+                    UserPrefs.get(getProfile())
+                            .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED));
         }
 
         ChromeSwitchPreference openYoutubeLinksBravePref =
