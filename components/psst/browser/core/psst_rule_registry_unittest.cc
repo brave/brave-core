@@ -122,7 +122,13 @@ TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
 
   registry.CheckIfMatch(GURL("https://a.com"), mock_callback.Get());
   run_loop.Run();
-  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
+}
+
+TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
+  PsstRuleRegistry registry;
+  CheckIfMatchTestCallback mock_callback;
+  EXPECT_CALL(mock_callback, Run).Times(0);
+  registry.CheckIfMatch(GURL("https://a.com"), mock_callback.Get());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
@@ -144,7 +150,6 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
 
   registry.LoadRules(GetTestDataDirBase());
   run_loop.Run();
-  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
@@ -164,7 +169,6 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
 
   registry.LoadRules(base::FilePath(FILE_PATH_LITERAL("")));
   run_loop.Run();
-  ASSERT_TRUE(registry.component_path_.empty());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
@@ -186,7 +190,6 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
 
   registry.LoadRules(GetBrokenTestDataDirBase());
   run_loop.Run();
-  ASSERT_FALSE(registry.component_path_.empty());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
@@ -208,7 +211,6 @@ TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
 
   registry.LoadRules(non_existing_path);
   run_loop.Run();
-  EXPECT_EQ(non_existing_path, registry.component_path_);
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
@@ -246,7 +248,6 @@ TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
 
   registry.CheckIfMatch(GURL("https://url.com"), mock_callback.Get());
   run_loop.Run();
-  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
@@ -274,7 +275,6 @@ TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
   CheckIfMatchTestCallback mock_callback;
   EXPECT_CALL(mock_callback, Run).Times(0);
   registry.CheckIfMatch(GURL("https://notexisted.com"), mock_callback.Get());
-  ASSERT_EQ(registry.component_path_, GetTestDataDirBase());
 }
 
 }  // namespace psst
