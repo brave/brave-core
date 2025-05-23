@@ -38,7 +38,6 @@ source_set("browser_tests") {
 
   if (enable_extensions) {
     deps += [
-      "//brave/browser/ethereum_remote_client:ethereum_remote_client",
       "//chrome/browser/extensions",
       "//extensions:test_support",
       "//extensions/browser",

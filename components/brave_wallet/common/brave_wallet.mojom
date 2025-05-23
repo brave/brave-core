@@ -2518,8 +2518,7 @@ struct SignSolTransactionsRequest {
 };
 
 enum ExternalWalletType {
-  CryptoWallets,
-  MetaMask
+  MetaMask = 1
 };
 
 struct AddSuggestTokenRequest {
@@ -2752,7 +2751,7 @@ enum JSProviderType {
 enum DefaultWallet {
   AskDeprecated = 0,
   None = 1,
-  CryptoWallets = 2,
+  CryptoWalletsDeprecated = 2,
   BraveWalletPreferExtension = 3,
   BraveWallet = 4
 };

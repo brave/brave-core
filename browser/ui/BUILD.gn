@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/build/config.gni")
@@ -777,7 +776,6 @@ source_set("ui") {
     "//brave/browser:browser_process",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/brave_rewards:util",
-    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/themes",
@@ -1338,17 +1336,6 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page/screens/fund-wallet/android:brave_wallet_deposit_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/send/android:brave_wallet_send_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
-    ]
-  }
-
-  if (ethereum_remote_client_enabled && !is_android) {
-    sources += [
-      "webui/ethereum_remote_client/ethereum_remote_client_ui.cc",
-      "webui/ethereum_remote_client/ethereum_remote_client_ui.h",
-    ]
-    deps += [
-      "//brave/browser/ethereum_remote_client",
-      "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated",
     ]
   }
 

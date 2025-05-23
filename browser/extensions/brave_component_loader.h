@@ -10,7 +10,6 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -34,11 +33,6 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
 
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  void AddEthereumRemoteClientExtension();
-  void AddEthereumRemoteClientExtensionOnStartup();
-  void UnloadEthereumRemoteClientExtension();
-#endif
   void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
                         bool allow_file_access,
@@ -49,15 +43,12 @@ class BraveComponentLoader : public ComponentLoader {
                     const std::string& public_key);
 
  private:
-  void ReinstallAsNonComponent(const std::string& extension_id);
   void UpdateBraveExtension();
 
   bool UseBraveExtensionBackgroundPage();
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
-  std::string ethereum_remote_client_manifest_;
-  base::FilePath ethereum_remote_client_install_dir_;
 
   PrefChangeRegistrar pref_change_registrar_;
 };

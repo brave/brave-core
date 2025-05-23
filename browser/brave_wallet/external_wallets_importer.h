@@ -56,10 +56,7 @@ class ExternalWalletsImporter {
   void SetExternalWalletInstalledForTesting(bool installed);
 
  private:
-  const extensions::Extension* GetCryptoWallets() const;
   const extensions::Extension* GetMetaMask() const;
-  void OnCryptoWalletsLoaded(InitCallback);
-  bool IsCryptoWalletsInstalledInternal() const;
 
   void GetLocalStorage(const extensions::Extension&, InitCallback);
   void OnGetLocalStorage(InitCallback, base::Value::Dict);

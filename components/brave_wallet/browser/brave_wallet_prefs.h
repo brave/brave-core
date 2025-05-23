@@ -24,6 +24,7 @@ void ClearJsonRpcServiceProfilePrefs(PrefService* prefs);
 void ClearKeyringServiceProfilePrefs(PrefService* prefs);
 void ClearBraveWalletServicePrefs(PrefService* prefs);
 void MigrateObsoleteProfilePrefs(PrefService* prefs);
+void MigrateCryptoWalletsPrefToBraveWallet(PrefService* prefs);
 
 }  // namespace brave_wallet
 

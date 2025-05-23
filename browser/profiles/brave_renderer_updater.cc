@@ -10,11 +10,11 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -175,7 +175,8 @@ void BraveRendererUpdater::UpdateRenderer(
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   bool has_installed_metamask =
-      registry && registry->enabled_extensions().Contains(kMetamaskExtensionId);
+      registry && registry->enabled_extensions().Contains(
+                      brave_wallet::kMetamaskExtensionId);
 #else
   bool has_installed_metamask = false;
 #endif

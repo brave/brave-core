@@ -451,10 +451,6 @@
   <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_DAY" desc="Connect with site panel DApp is connected for 1 day">For 24 hours</message>
   <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_WEEK" desc="Connect with site panel DApp is connected for 1 week">For 1 week</message>
   <message name="IDS_BRAVE_WALLET_PERMISSION_FOREVER" desc="Connect with site panel DApp is connected forever">Forever</message>
-  <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED" desc="Wallet Welcome screen detected crypto wallets title">Existing crypto wallets detected</message>
-  <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO" desc="Wallet welcome screen detected crypto wallets second description">If you&apos;d rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE">$1</ph>Settings<ph name="LINK_AFTER">$2</ph> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_INPUT" desc="Import CryptoWallets screen password input placeholder">Type Crypto wallets password</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECTED" desc="Connect Hardware panel connected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> connected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> disconnected</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>
@@ -857,7 +853,7 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR" desc="Error message of unsupported hardware wallet operation">This hardware wallet does not support this operation.</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_BRAVE_WALLET_PASSWORD" desc="Prompt for the user to enter their Brave Wallet password">Enter your Brave Wallet password</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD" desc="Prompt for the user to enter their password">Enter your password</message>
-  <message name="IDS_BRAVE_WALLET_LEARN_MORE_ABOUT_BRAVE_WALLET" desc="Link to article explaining crypto wallets">Learn more about Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_LEARN_MORE_ABOUT_BRAVE_WALLET" desc="Link to article explaining wallet">Learn more about Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_HEADING" desc="Heading of password strength tooltip">Password should have:</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_STRENGTH_TOOLTIP_IS_LONG_ENOUGH" desc="Password strength length requirements">At least 8 characters</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_MATCH" desc="Password and confirmed passwords match">Passwords match</message>
@@ -898,7 +894,6 @@
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_HOW_TO_USE_A_WALLET" desc="Title of article link 'How to use a crypto wallet?'">How to use a crypto wallet?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_THE_BEST_WALLET" desc="Title of article link 'What’s the best crypto wallet?'">What’s the best crypto wallet?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_CRYPTO_BROWSER" desc="Title of article link 'What’s a crypto browser?'">What’s a crypto browser?</message>
-  <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WALLETS_BASICS" desc="Title of article link 'Crypto wallets 101'">Crypto wallets 101</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHATS_A_RECOVERY_PHRASE" desc="Title of article link 'What’s a recovery phrase?'">What’s a recovery phrase?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_ARE_DAPPS" desc="Title of article link 'What are DApps?'">What are DApps?</message>
   <message name="IDS_BRAVE_WALLET_ARTICLE_LINK_WHAT_IS_WEB3" desc="Title of article link 'What’s web 3?'">What’s web 3?</message>
@@ -916,13 +911,12 @@
   <message name="IDS_BRAVE_WALLET_RESTORE_WALLET_ERROR" desc="Error message shown when recovery fails">Check your recovery phrase and try again.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_WITH_RECOVERY_PHRASE" desc="Label for action to go back to import with recovery phrase">Import using your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_DETECTED" desc="Metamask detected message">Metamask wallet detected!</message>
-  <message name="IDS_BRAVE_WALLET_LEGACY_WALLET_DETECTED" desc="Legacy wallet detected message">Legacy wallet detected!</message>
   <message name="IDS_BRAVE_WALLET_USE_PASSWORD" desc="Use password">Use password</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_WORD" desc="Recovery phrase word label">Word <ph name="VALUE">$1</ph></message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_SEED_INSTRUCTIONS" desc="Instructions for importing a MetaMask wallet via recovery phrase">Type your MetaMask 12-24 word recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder text for MetaMask password input">Type MetaMask password</message>
   <message name="IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD" desc="Password input field label">Password</message>
-  <message name="IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET" desc="Link to an article explaining crypto wallets">Learn more about my new wallet</message>
+  <message name="IDS_BRAVE_WALLET_LEARN_ABOUT_MY_WALLET" desc="Link to an article explaining the wallet">Learn more about my new wallet</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_TITLE" desc="Title text for Wallet Disclosures page">Before we begin</message>
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets, or accounts, and for taking any appropriate action to secure, protect, and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
@@ -930,7 +924,6 @@
   <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy crypto button text">Buy crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_FROM_LEGACY" desc="Import from legacy crypto wallet extension button text">Import from legacy Brave crypto wallets</message>
   <message name="IDS_BRAVE_WALLET_BUY_SELECT_ASSET" desc="Continue button text for buy crypto flow when an asset is not yet selected">Select an asset</message>
   <message name="IDS_BRAVE_WALLET_FUND_WALLET_TITLE" desc="Fund wallet screen title text">To finish your <ph name="ASSET_TICKER">$1<ex>1</ex></ph> purchase, select one of our partners</message>
   <message name="IDS_BRAVE_WALLET_FUND_WALLET_DESCRIPTION" desc="Fund wallet screen description text">On completion, your funds will be transfered to your Brave Wallet</message>

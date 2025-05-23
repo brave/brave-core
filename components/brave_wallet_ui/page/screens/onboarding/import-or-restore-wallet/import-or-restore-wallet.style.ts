@@ -10,8 +10,6 @@ import BraveWalletSvg from '../../../../assets/svg-icons/onboarding/brave-wallet
 import BraveWalletSvgDark from '../../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
 import MMSvg from '../../../../assets/svg-icons/onboarding/import-from-metamask.svg'
 import MMSvgDark from '../../../../assets/svg-icons/onboarding/import-from-metamask-dark.svg'
-import LegacyWalletSvg from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet.svg'
-import LegacyWalletSvgDark from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet-dark.svg'
 
 // styles
 import { WalletLink } from '../../../../components/shared/style'
@@ -84,18 +82,6 @@ export const MetaMaskIcon = styled.div`
   background-position: center;
   @media (prefers-color-scheme: dark) {
     background-image: url(${MMSvgDark});
-  }
-`
-
-export const LegacyWalletIcon = styled.div`
-  width: 80px;
-  height: 80px;
-  background-image: url(${LegacyWalletSvg});
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: center;
-  @media (prefers-color-scheme: dark) {
-    background-image: url(${LegacyWalletSvgDark});
   }
 `
 

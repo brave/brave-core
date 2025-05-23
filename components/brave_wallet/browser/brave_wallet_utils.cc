@@ -423,7 +423,6 @@ void SetDefaultSolanaWallet(PrefService* prefs,
                             mojom::DefaultWallet default_wallet) {
   // We should not be using these values anymore
   DCHECK(default_wallet != mojom::DefaultWallet::AskDeprecated);
-  DCHECK(default_wallet != mojom::DefaultWallet::CryptoWallets);
   prefs->SetInteger(kDefaultSolanaWallet, static_cast<int>(default_wallet));
 }
 

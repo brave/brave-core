@@ -83,11 +83,6 @@
     "includes": [33510],
   },
   # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ethereum_remote_client_page/ethereum_remote_client_page.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [33710],
-  },
-  # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_panel/brave_wallet_panel.grd": {
     "META": {"sizes": {"includes": [200]}},
     "includes": [33720],

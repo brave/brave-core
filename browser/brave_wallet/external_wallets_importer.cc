@@ -19,7 +19,6 @@
 #include "base/task/thread_pool.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "base/types/fixed_array.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/third_party/argon2/src/include/argon2.h"
 #include "components/value_store/value_store.h"
@@ -32,12 +31,6 @@
 #include "extensions/common/mojom/manifest.mojom.h"
 #include "third_party/boringssl/src/include/openssl/digest.h"
 #include "third_party/boringssl/src/include/openssl/hkdf.h"
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
-#endif
 
 using extensions::Extension;
 using extensions::ExtensionRegistry;
@@ -151,24 +144,7 @@ ExternalWalletsImporter::~ExternalWalletsImporter() = default;
 
 void ExternalWalletsImporter::Initialize(InitCallback callback) {
   const Extension* extension = nullptr;
-  if (type_ == mojom::ExternalWalletType::CryptoWallets) {
-#if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-    std::move(callback).Run(false);
-    return;
-#endif
-    extension = GetCryptoWallets();
-    // Crypto Wallets is not loaded
-    if (!extension) {
-      EthereumRemoteClientService* service =
-          EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
-              context_);
-      DCHECK(service);
-      service->MaybeLoadCryptoWalletsExtension(
-          base::BindOnce(&ExternalWalletsImporter::OnCryptoWalletsLoaded,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-      return;
-    }
-  } else if (type_ == mojom::ExternalWalletType::MetaMask) {
+  if (type_ == mojom::ExternalWalletType::MetaMask) {
     extension = GetMetaMask();
     if (!extension) {
       VLOG(1) << "Failed to load MetaMask extension";
@@ -187,43 +163,11 @@ bool ExternalWalletsImporter::IsInitialized() const {
   return storage_data_.has_value();
 }
 
-void ExternalWalletsImporter::OnCryptoWalletsLoaded(InitCallback callback) {
-  const Extension* extension = GetCryptoWallets();
-  if (!extension) {
-    VLOG(1) << "Failed to load Crypto Wallets extension";
-    std::move(callback).Run(false);
-    return;
-  }
-
-  GetLocalStorage(*extension, std::move(callback));
-
-  EthereumRemoteClientService* service =
-      EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
-          context_);
-  DCHECK(service);
-  service->UnloadCryptoWalletsExtension();
-}
-
-bool ExternalWalletsImporter::IsCryptoWalletsInstalledInternal() const {
-  if (!extensions::ExtensionPrefs::Get(context_)->HasPrefForExtension(
-          kEthereumRemoteClientExtensionId)) {
-    return false;
-  }
-  return true;
-}
-
 bool ExternalWalletsImporter::IsExternalWalletInstalled() const {
   if (is_external_wallet_installed_for_testing_) {
     return true;
   }
-  if (type_ == mojom::ExternalWalletType::CryptoWallets) {
-#if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-    return false;
-#endif
-    if (!IsCryptoWalletsInstalledInternal()) {
-      return false;
-    }
-  } else if (type_ == mojom::ExternalWalletType::MetaMask) {
+  if (type_ == mojom::ExternalWalletType::MetaMask) {
     if (!GetMetaMask()) {
       return false;
     }
@@ -265,14 +209,6 @@ void ExternalWalletsImporter::GetImportInfo(
   } else {
     GetMnemonic(false, std::move(callback), password);
   }
-}
-
-const Extension* ExternalWalletsImporter::GetCryptoWallets() const {
-  ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
-  if (!registry) {
-    return nullptr;
-  }
-  return registry->GetInstalledExtension(kEthereumRemoteClientExtensionId);
 }
 
 const Extension* ExternalWalletsImporter::GetMetaMask() const {

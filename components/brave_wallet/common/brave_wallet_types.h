@@ -157,6 +157,9 @@ struct SolanaAccountInfo {
   uint64_t rent_epoch;
 };
 
+inline constexpr char kMetamaskExtensionId[] =
+    "nkbihfbeogaeaoehlefnkodbefgpgknn";
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_

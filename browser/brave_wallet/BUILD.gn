@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -111,7 +110,6 @@ source_set("external_wallets_importer") {
     "external_wallets_importer.h",
   ]
   deps = [
-    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
@@ -122,12 +120,6 @@ source_set("external_wallets_importer") {
     deps += [
       "//extensions/browser",
       "//extensions/common",
-    ]
-  }
-  if (ethereum_remote_client_enabled) {
-    deps += [
-      "//brave/browser/ethereum_remote_client",
-      "//brave/browser/ethereum_remote_client:browser",
     ]
   }
 }

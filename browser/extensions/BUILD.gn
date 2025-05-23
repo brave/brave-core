@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -25,7 +24,6 @@ source_set("component_loader") {
 
   deps = [
     "//base",
-    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_webtorrent:static_resources",
@@ -37,31 +35,6 @@ source_set("component_loader") {
     "//extensions/browser",
     "//extensions/common",
   ]
-
-  if (ethereum_remote_client_enabled) {
-    deps += [
-      ":ethereum_remote_client_utils",
-      "//brave/browser/ethereum_remote_client",
-    ]
-  }
-}
-
-if (ethereum_remote_client_enabled) {
-  source_set("ethereum_remote_client_utils") {
-    sources = [
-      "ethereum_remote_client_util.cc",
-      "ethereum_remote_client_util.h",
-    ]
-
-    deps = [
-      "//brave/browser/ethereum_remote_client",
-      "//brave/components/brave_wallet/browser:utils",
-      "//brave/components/brave_wallet/common",
-      "//brave/components/brave_wallet/common:buildflags",
-      "//brave/components/constants",
-      "//components/prefs",
-    ]
-  }
 }
 
 # This is split out from extensions and the rest of brave_prefs_util because it
@@ -181,7 +154,6 @@ source_set("extensions") {
 
   public_deps = [
     ":component_loader",
-    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_rewards/core/mojom",
     "//extensions/browser",
@@ -219,24 +191,16 @@ source_set("extensions") {
     deps += [ "//brave/components/web_discovery/common" ]
   }
 
-  # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.
-  # However this is not possible right now because the ethereum-remote-client extension
-  # uses chrome.braveWallet, so the API is intentionally not being renamed now.
-  if (ethereum_remote_client_enabled) {
-    sources += [
-      "api/brave_wallet_api.cc",
-      "api/brave_wallet_api.h",
-    ]
-
-    deps += [
-      ":ethereum_remote_client_utils",
-      "//brave/browser/ethereum_remote_client",
-      "//brave/browser/ethereum_remote_client:browser",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/common:buildflags",
-      "//components/prefs",
-    ]
-  }
+  # This API is still being used by the preferences page
+  sources += [
+    "api/brave_wallet_api.cc",
+    "api/brave_wallet_api.h",
+  ]
+  deps += [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common:buildflags",
+    "//components/prefs",
+  ]
 
   if (enable_brave_webtorrent) {
     sources += [

@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/pref_names.h"
@@ -28,11 +27,6 @@
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
-#endif
-
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
-#include "chrome/browser/extensions/managed_installation_mode.h"
 #endif
 
 namespace extensions {
@@ -56,11 +50,6 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
             base::Unretained(this)));
 #endif
   }
-  // Make IsInstallationExplicitlyAllowed to be true
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  AccessById(kEthereumRemoteClientExtensionId)->installation_mode =
-      ManagedInstallationMode::kRecommended;
-#endif
   Cleanup(profile);
 }
 

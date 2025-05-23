@@ -10,8 +10,6 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
-#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -241,22 +239,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
       })
-
-#define CRYPTO_WALLETS_FEATURE_ENTRIES                                      \
-  IF_BUILDFLAG(                                                             \
-      ETHEREUM_REMOTE_CLIENT_ENABLED,                                       \
-      EXPAND_FEATURE_ENTRIES({                                              \
-          "ethereum_remote-client_new-installs",                            \
-          "Enable Crypto Wallets option in settings",                       \
-          "Crypto Wallets extension is deprecated but with this option it " \
-          "can "                                                            \
-          "still be enabled in settings. If it was previously used, this "  \
-          "flag is "                                                        \
-          "ignored.",                                                       \
-          kOsDesktop,                                                       \
-          FEATURE_VALUE_TYPE(ethereum_remote_client::features::             \
-                                 kCryptoWalletsForNewInstallsFeature),      \
-      }))
 
 #define PLAYLIST_FEATURE_ENTRIES                                       \
   IF_BUILDFLAG(                                                        \
@@ -1040,7 +1022,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
-  CRYPTO_WALLETS_FEATURE_ENTRIES                                               \
   BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
