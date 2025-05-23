@@ -33,13 +33,22 @@ source_set("service") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "new_tab_page_ad_prefetcher_unittest.cc" ]
+  sources = [
+    "new_tab_page_ad_prefetcher_unittest.cc",
+    "virtual_pref_provider_unittest.cc",
+  ]
 
   deps = [
     ":service",
     ":test_support",
     "//base",
+    "//base/test:test_support",
+    "//base/version_info",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/public:test_support",
+    "//brave/components/skus/browser",
+    "//components/prefs:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
