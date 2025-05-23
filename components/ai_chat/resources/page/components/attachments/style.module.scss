@@ -4,6 +4,11 @@
     border-radius: var(--leo-radius-l);
     box-shadow: var(--leo-effect-elevation-01);
 
+    max-height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
     & leo-button[fab] {
         flex: 0;
     }
@@ -21,6 +26,10 @@
     }
 }
 
+leo-dialog .root {
+    max-height: 90vh;
+}
+
 .header {
     padding: var(--leo-spacing-l) var(--leo-spacing-xl);
 }
@@ -32,6 +41,9 @@
     display: flex;
     flex-direction: column;
     gap: var(--leo-spacing-m);
+
+    flex-shrink: 1;
+    overflow: hidden;
 }
 
 .tabList {
@@ -43,6 +55,8 @@
     border-radius: var(--leo-radius-m);
 
     padding: var(--leo-spacing-m);
+
+    overflow: hidden auto;
 }
 
 .description {
