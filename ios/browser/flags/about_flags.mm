@@ -138,15 +138,6 @@
           "Enables AI Chat History persistence and management",            \
           flags_ui::kOsIos,                                                \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),           \
-      },                                                                   \
-      {                                                                    \
-          "brave-ai-chat-page-content-refine",                             \
-          "Brave AI Chat Page Content Refine",                             \
-          "Enable local text embedding for long page content in order to " \
-          "find "                                                          \
-          "most relevant parts to the prompt within context limit.",       \
-          flags_ui::kOsIos,                                                \
-          FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),       \
       })
 
 #define BRAVE_PLAYLIST_FEATURE_ENTRIES                        \
