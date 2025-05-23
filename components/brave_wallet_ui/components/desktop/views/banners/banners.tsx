@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom'
 import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 
 // Utils
-import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 
@@ -33,6 +32,7 @@ import {
 export const Banners = () => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // Queries
   const {
@@ -58,9 +58,6 @@ export const Banners = () => {
 
   // routing
   const history = useHistory()
-
-  // Computed
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   const isCheckingWallets =
     isCheckingInstalledExtensions

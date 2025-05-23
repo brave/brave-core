@@ -129,17 +129,16 @@ const zcashAddressOptions: zcashAddressOptionType[] = [
   },
 ]
 
-interface Props {
-  isAndroid?: boolean
-}
-
 interface Params {
   assetId: string
 }
 
-export const DepositFundsScreen = ({ isAndroid }: Props) => {
+export const DepositFundsScreen = () => {
   // routing
   const history = useHistory()
+
+  // Selectors
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // render
   return (

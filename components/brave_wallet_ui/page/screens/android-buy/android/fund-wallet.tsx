@@ -41,7 +41,7 @@ export function AndroidFundWalletApp() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <FundWalletScreen isAndroid={true} />
+          <FundWalletScreen />
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
