@@ -51,6 +51,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
   friend class PsstTabHelperBrowserTest;
   friend class PsstRuleRegistryUnitTest;
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoading);
+  FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
+                           RulesLoadingBrokenRulesFile);
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath);
   FRIEND_TEST_ALL_PREFIXES(PsstRuleRegistryUnitTest,
                            RulesLoadingNonExistingPath);
