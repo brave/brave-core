@@ -126,16 +126,14 @@ class AIChatService : public KeyedService,
   // is an ephemeral identifier for active browser content.
   ConversationHandler* GetOrCreateConversationHandlerForContent(
       int associated_content_id,
-      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-          associated_content);
+      base::WeakPtr<AssociatedContentDelegate> associated_content);
 
   // Creates and owns a new ConversationHandler and associated with the provided
   // content ID. |associated_content_id| should not be stored. It
   // is an ephemeral identifier for active browser content.
   ConversationHandler* CreateConversationHandlerForContent(
       int associated_content_id,
-      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-          associated_content);
+      base::WeakPtr<AssociatedContentDelegate> associated_content);
 
   // Removes all in-memory and persisted data for all conversations
   void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
@@ -148,16 +146,13 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(bool)> callback = base::DoNothing());
 
   void OpenConversationWithStagedEntries(
-      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-          associated_content,
+      base::WeakPtr<AssociatedContentDelegate> associated_content,
       base::OnceClosure open_ai_chat);
 
-  void MaybeAssociateContent(
-      ConversationHandler::AssociatedContentDelegate* content,
-      const std::string& conversation_uuid);
-  void DisassociateContent(
-      ConversationHandler::AssociatedContentDelegate* content,
-      const std::string& conversation_uuid);
+  void MaybeAssociateContent(AssociatedContentDelegate* content,
+                             const std::string& conversation_uuid);
+  void DisassociateContent(AssociatedContentDelegate* content,
+                           const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,
@@ -248,8 +243,7 @@ class AIChatService : public KeyedService,
   void MaybeAssociateContent(
       ConversationHandler* conversation,
       int associated_content_id,
-      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-          associated_content);
+      base::WeakPtr<AssociatedContentDelegate> associated_content);
   void MaybeUnloadConversation(ConversationHandler* conversation);
   void HandleFirstEntry(ConversationHandler* handler,
                         mojom::ConversationTurnPtr& entry,

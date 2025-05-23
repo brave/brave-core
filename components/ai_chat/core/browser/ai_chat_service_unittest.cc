@@ -657,7 +657,7 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   NiceMock<MockAssociatedContent> associated_content{};
   ON_CALL(associated_content, GetStagedEntriesFromContent)
       .WillByDefault(
-          [](ConversationHandler::GetStagedEntriesCallback callback) {
+          [](GetStagedEntriesCallback callback) {
             std::move(callback).Run(std::vector<SearchQuerySummary>{
                 SearchQuerySummary("query", "summary")});
           });

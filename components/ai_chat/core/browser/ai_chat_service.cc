@@ -272,8 +272,7 @@ void AIChatService::OnConversationDataReceived(
 
 ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
     int associated_content_id,
-    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-        associated_content) {
+    base::WeakPtr<AssociatedContentDelegate> associated_content) {
   ConversationHandler* conversation = nullptr;
   auto conversation_uuid_it =
       content_conversations_.find(associated_content_id);
@@ -297,8 +296,7 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
 
 ConversationHandler* AIChatService::CreateConversationHandlerForContent(
     int associated_content_id,
-    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-        associated_content) {
+    base::WeakPtr<AssociatedContentDelegate> associated_content) {
   ConversationHandler* conversation = CreateConversation();
   // Provide the content delegate, if allowed
   MaybeAssociateContent(conversation, associated_content_id,
@@ -559,8 +557,7 @@ void AIChatService::ReloadConversations(bool from_cancel) {
 void AIChatService::MaybeAssociateContent(
     ConversationHandler* conversation,
     int associated_content_id,
-    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-        associated_content) {
+    base::WeakPtr<AssociatedContentDelegate> associated_content) {
   if (associated_content &&
       kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
     conversation->associated_content_manager()->AddContent(
@@ -1008,8 +1005,7 @@ void AIChatService::OnConversationListChanged() {
 }
 
 void AIChatService::OpenConversationWithStagedEntries(
-    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
-        associated_content,
+    base::WeakPtr<AssociatedContentDelegate> associated_content,
     base::OnceClosure open_ai_chat) {
   if (!associated_content || !associated_content->HasOpenAIChatPermission()) {
     return;
@@ -1030,7 +1026,7 @@ void AIChatService::OpenConversationWithStagedEntries(
 }
 
 void AIChatService::MaybeAssociateContent(
-    ConversationHandler::AssociatedContentDelegate* content,
+    AssociatedContentDelegate* content,
     const std::string& conversation_uuid) {
   CHECK(content);
 
@@ -1043,9 +1039,8 @@ void AIChatService::MaybeAssociateContent(
                         content->GetWeakPtr());
 }
 
-void AIChatService::DisassociateContent(
-    ConversationHandler::AssociatedContentDelegate* content,
-    const std::string& conversation_uuid) {
+void AIChatService::DisassociateContent(AssociatedContentDelegate* content,
+                                        const std::string& conversation_uuid) {
   CHECK(content);
 
   // Note: This will only work if the conversation is already loaded.

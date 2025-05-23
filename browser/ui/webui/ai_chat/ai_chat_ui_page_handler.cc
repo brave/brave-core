@@ -302,8 +302,7 @@ void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   chat_context_observer_.reset();
 }
 
-void AIChatUIPageHandler::OnNavigated(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
+void AIChatUIPageHandler::OnNavigated(AssociatedContentDelegate* delegate) {
   // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone

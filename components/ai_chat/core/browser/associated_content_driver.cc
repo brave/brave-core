@@ -5,17 +5,14 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 
-#include <ios>
 #include <memory>
 #include <ostream>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
@@ -80,8 +77,7 @@ std::u16string AssociatedContentDriver::GetTitle() const {
   return GetPageTitle();
 }
 
-void AssociatedContentDriver::GetContent(
-    ConversationHandler::GetPageContentCallback callback) {
+void AssociatedContentDriver::GetContent(GetPageContentCallback callback) {
   // Determine whether we're adding our callback to the queue or the
   // we need to call GetPageContent.
   bool is_page_text_fetch_in_progress =
@@ -111,7 +107,7 @@ void AssociatedContentDriver::GetContent(
 }
 
 void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
-    ConversationHandler::GetPageContentCallback callback,
+    GetPageContentCallback callback,
     int64_t navigation_id) {
   if (navigation_id != current_navigation_id_) {
     return;
@@ -161,7 +157,7 @@ bool AssociatedContentDriver::GetCachedIsVideo() const {
 }
 
 void AssociatedContentDriver::GetStagedEntriesFromContent(
-    ConversationHandler::GetStagedEntriesCallback callback) {
+    GetStagedEntriesCallback callback) {
   // At the moment we only know about staged entries from:
   // - Brave Search results page
   if (!IsBraveSearchSERP(GetPageURL())) {
@@ -175,7 +171,7 @@ void AssociatedContentDriver::GetStagedEntriesFromContent(
 }
 
 void AssociatedContentDriver::OnSearchSummarizerKeyFetched(
-    ConversationHandler::GetStagedEntriesCallback callback,
+    GetStagedEntriesCallback callback,
     int64_t navigation_id,
     const std::optional<std::string>& key) {
   if (!key || key->empty() || navigation_id != current_navigation_id_) {
@@ -207,7 +203,7 @@ void AssociatedContentDriver::OnSearchSummarizerKeyFetched(
 }
 
 void AssociatedContentDriver::OnSearchQuerySummaryFetched(
-    ConversationHandler::GetStagedEntriesCallback callback,
+    GetStagedEntriesCallback callback,
     int64_t navigation_id,
     api_request_helper::APIRequestResult result) {
   if (!result.Is2XXResponseCode() || navigation_id != current_navigation_id_) {
@@ -248,7 +244,7 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
 }
 
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
-  ConversationHandler::AssociatedContentDelegate::OnNewPage(navigation_id);
+  AssociatedContentDelegate::OnNewPage(navigation_id);
 
   // Reset state for next navigated Page
   current_navigation_id_ = navigation_id;
