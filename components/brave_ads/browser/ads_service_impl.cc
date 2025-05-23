@@ -1890,7 +1890,7 @@ void AdsServiceImpl::HasLocalStatePrefPath(
 }
 
 void AdsServiceImpl::GetVirtualPrefs(GetVirtualPrefsCallback callback) {
-  std::move(callback).Run(virtual_pref_provider_->GetVirtualPrefs());
+  std::move(callback).Run(virtual_pref_provider_->GetPrefs());
 }
 
 void AdsServiceImpl::Log(const std::string& file,

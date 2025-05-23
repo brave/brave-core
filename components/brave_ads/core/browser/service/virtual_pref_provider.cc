@@ -5,14 +5,12 @@
 
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 
-#include <cstddef>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
-#include "base/version.h"
 #include "base/version_info/version_info.h"
+#include "brave/components/brave_ads/core/browser/service/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -28,35 +26,6 @@ constexpr char kSkuOrderCreatedAtKey[] = "created_at";
 constexpr char kSkuOrderExpiresAtKey[] = "expires_at";
 constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
 constexpr char kSkuOrderStatusKey[] = "status";
-
-int GetVersionComponent(size_t index) {
-  const base::Version& version = version_info::GetVersion();
-  const std::vector<uint32_t>& version_components = version.components();
-  return index < version_components.size()
-             ? static_cast<int>(version_components[index])
-             : 0;
-}
-
-int GetMajorVersion() {
-  return GetVersionComponent(0);
-}
-
-int GetMinorVersion() {
-  return GetVersionComponent(1);
-}
-
-int GetBuildVersion() {
-  return GetVersionComponent(2);
-}
-
-int GetPatchVersion() {
-  return GetVersionComponent(3);
-}
-
-bool IsMobilePlatform() {
-  std::string_view operating_system_name = version_info::GetOSType();
-  return operating_system_name == "Android" || operating_system_name == "iOS";
-}
 
 std::string StripSkuEnvironmentPrefix(const std::string& environment) {
   const size_t pos = environment.find(':');
@@ -160,7 +129,7 @@ VirtualPrefProvider::VirtualPrefProvider(PrefService* local_state,
 
 VirtualPrefProvider::~VirtualPrefProvider() = default;
 
-base::Value::Dict VirtualPrefProvider::GetVirtualPrefs() {
+base::Value::Dict VirtualPrefProvider::GetPrefs() {
   return base::Value::Dict()
       .Set("[virtual]:browser",
            base::Value::Dict()

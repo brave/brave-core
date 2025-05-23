@@ -12,6 +12,8 @@ source_set("service") {
     "new_tab_page_ad_prefetcher.h",
     "virtual_pref_provider.cc",
     "virtual_pref_provider.h",
+    "virtual_pref_provider_util.cc",
+    "virtual_pref_provider_util.h",
   ]
 
   public_deps = [

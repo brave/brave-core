@@ -1450,7 +1450,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return {};
   }
 
-  return virtualPrefProvider->GetVirtualPrefs();
+  return virtualPrefProvider->GetPrefs();
 }
 
 - (void)log:(const char*)file
