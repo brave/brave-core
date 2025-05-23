@@ -5,9 +5,10 @@
 
 #import "brave/browser/mac/sparkle_glue.h"
 
-#include <string>
 #include <sys/mount.h>
 #include <sys/stat.h>
+
+#include <string>
 
 #include "base/apple/bundle_locations.h"
 #include "base/apple/foundation_util.h"
