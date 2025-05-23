@@ -339,7 +339,7 @@ describe('EmailAliasModal', () => {
         />
       )
 
-      // Wait for error message to appear. Create button should be disabled.
+      // Wait for error message to appear. Create/Edit button should be enabled.
       const saveButton = screen.getByText(
         /emailAliasesCreateAliasButton|emailAliasesSaveAliasButton/)
       await waitFor(() => {
@@ -351,14 +351,9 @@ describe('EmailAliasModal', () => {
         saveButton.shadowRoot?.querySelector('button')?.click()
       })
 
-      // Check that updateAlias was called
+      // Check that updateAlias was called and error message is displayed.
       await waitFor(() => {
         expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
-      })
-
-      // Wait for error message to be displayed. Create button should be
-      // disabled.
-      await waitFor(() => {
         expect(screen.getByText('emailAliasesUpdateAliasError'))
           .toBeInTheDocument()
       })
