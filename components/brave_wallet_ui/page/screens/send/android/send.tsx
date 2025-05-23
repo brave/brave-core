@@ -39,7 +39,7 @@ export function AndroidSendApp() {
         >
           <Switch>
             <Route>
-              <SendScreen isAndroid={true} />
+              <SendScreen />
             </Route>
           </Switch>
         </BraveCoreThemeProvider>

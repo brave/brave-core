@@ -63,11 +63,7 @@ import {
 import { Column, Row, Text } from '../../../components/shared/style'
 import { SearchInput } from './components/shared/style'
 
-interface Props {
-  isAndroid?: boolean
-}
-
-export const FundWalletScreen = ({ isAndroid }: Props) => {
+export const FundWalletScreen = () => {
   // State
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = React.useState(false)
   const [isAssetDialogOpen, setIsAssetDialogOpen] = React.useState(false)
@@ -113,6 +109,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
 
   // Redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // Computed
   const selectedCountry = countries?.find(

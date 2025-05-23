@@ -12,7 +12,8 @@ import { SetTransactionProviderErrorType } from '../constants/action_types'
 export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
-  isPanel: false
+  isPanel: false,
+  isAndroid: false
 }
 
 // slice
