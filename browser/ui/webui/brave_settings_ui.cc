@@ -39,7 +39,6 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -225,13 +224,4 @@ void BraveSettingsUI::BindInterface(
         pending_receiver) {
   brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
       web_ui(), std::move(pending_receiver));
-}
-
-void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<
-        password_strength_meter::mojom::PasswordStrengthMeterHandler>
-        pending_receiver) {
-  password_strength_meter_handler_ =
-      std::make_unique<password_strength_meter::PasswordStrengthMeterHandler>(
-          std::move(pending_receiver));
 }

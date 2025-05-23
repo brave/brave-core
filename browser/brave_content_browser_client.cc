@@ -846,9 +846,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_account::mojom::BraveAccountHandler, BraveSettingsUI>(map);
-  content::RegisterWebUIControllerInterfaceBinder<
-      password_strength_meter::mojom::PasswordStrengthMeterHandler,
-      BraveSettingsUI>(map);
 #endif
 
   auto* prefs =
