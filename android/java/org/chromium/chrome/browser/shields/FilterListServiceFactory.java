@@ -22,15 +22,15 @@ import org.chromium.mojo.system.impl.CoreImpl;
 @JNINamespace("chrome::android")
 public class FilterListServiceFactory {
     private static final Object sLock = new Object();
-    private static @Nullable FilterListServiceFactory instance;
+    private static @Nullable FilterListServiceFactory sInstance;
 
     public static FilterListServiceFactory getInstance() {
         synchronized (sLock) {
-            if (instance == null) {
-                instance = new FilterListServiceFactory();
+            if (sInstance == null) {
+                sInstance = new FilterListServiceFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private FilterListServiceFactory() {}
