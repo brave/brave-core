@@ -94,13 +94,9 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   PrefService* prefs =
       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
 
-  if (!base::FeatureList::IsEnabled(
+  return (base::FeatureList::IsEnabled(
           ::preferences::features::kBraveBackgroundVideoPlayback) &&
-      !prefs->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
-    return false;
-  }
-
-  return true;
+      prefs->GetBoolean(kBackgroundVideoPlaybackEnabled));
 }
 
 }  // namespace
