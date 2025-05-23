@@ -40,6 +40,7 @@ BraveMultiContentsView::BraveMultiContentsView(
   }
   auto* separator = AddChildView(
       std::make_unique<SplitViewSeparator>(browser_view_->browser()));
+  separator->set_resize_delegate(this);
   separator->set_separator_delegate(this);
   separator->SetPreferredSize(gfx::Size(kSpacingBetweenContentsWebViews, 0));
   separator->SetVisible(false);
@@ -122,12 +123,7 @@ float BraveMultiContentsView::GetCornerRadius() const {
              : 0;
 }
 
-void BraveMultiContentsView::OnSeparatorResize(int resize_amount,
-                                               bool done_resizing) {
-  OnResize(resize_amount, done_resizing);
-}
-
-void BraveMultiContentsView::OnSeparatorDoubleClicked() {
+void BraveMultiContentsView::OnDoubleClicked() {
   // Give same width on both contents view.
   contents_resize_callback_.Run(0.5);
 }

@@ -7,12 +7,14 @@
 #define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_LAYOUT_MANAGER_H_
 
 #include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
+#include "ui/views/controls/resize_area_delegate.h"
 #include "ui/views/layout/layout_manager_base.h"
 #include "ui/views/layout/proposed_layout.h"
 
 class SplitViewSeparator;
 
 class SplitViewLayoutManager : public views::LayoutManagerBase,
+                               public views::ResizeAreaDelegate,
                                public SplitViewSeparatorDelegate {
  public:
   // Spacing between |contents_web_view_| and |secondary_contents_web_view_|.
@@ -34,6 +36,8 @@ class SplitViewLayoutManager : public views::LayoutManagerBase,
 
   // SplitViewSeparatorDelegate:
   void OnDoubleClicked() override;
+
+  // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
 
  protected:
