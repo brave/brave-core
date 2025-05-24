@@ -38,7 +38,9 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "matched_rule_unittest.cc",
     "psst_rule_registry_unittest.cc",
+    "psst_rule_unittest.cc",
     "rule_data_reader_unittest.cc",
   ]
 
