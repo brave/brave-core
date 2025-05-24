@@ -121,7 +121,7 @@ void BraveImportBulkDataHandler::HandleImportDataBulk(
 }
 
 std::optional<int> BraveImportBulkDataHandler::GetProfileIndex(
-    const importer::SourceProfile& source_profile) {
+    const user_data_importer::SourceProfile& source_profile) {
   for (auto index : importing_profiles_) {
     const auto& profile = GetSourceProfileAt(index);
     if (profile.source_path == source_profile.source_path) {
@@ -132,7 +132,7 @@ std::optional<int> BraveImportBulkDataHandler::GetProfileIndex(
 }
 
 void BraveImportBulkDataHandler::StartImport(
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     uint16_t imported_items) {
   if (!imported_items)
     return;
@@ -160,13 +160,13 @@ void BraveImportBulkDataHandler::StartImport(
 }
 
 void BraveImportBulkDataHandler::NotifyImportProgress(
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     const base::Value::Dict& info) {
   FireWebUIListener("brave-import-data-status-changed", info);
 }
 
 void BraveImportBulkDataHandler::OnImportEnded(
-    const importer::SourceProfile& source_profile) {
+    const user_data_importer::SourceProfile& source_profile) {
   auto index = GetProfileIndex(source_profile);
   if (index.has_value()) {
     importing_profiles_.erase(index.value());

@@ -11,9 +11,11 @@
 #include "base/threading/thread.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/importer/profile_writer.h"
+#include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/utility/importer/bookmark_html_reader.h"
 #include "components/url_formatter/url_fixer.h"
+#include "components/user_data_importer/common/importer_data_types.h"
 
 #define BraveBookmarkBridge BookmarkBridge
 #include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
@@ -23,6 +25,7 @@
 #include "ui/android/window_android.h"
 
 using base::android::JavaParamRef;
+using user_data_importer::SearchEngineInfo;
 
 namespace internal {
 
@@ -121,7 +124,7 @@ void BookmarkBridge::ImportBookmarks(
       base::android::ConvertJavaStringToUTF16(env, j_import_path);
 
   std::vector<ImportedBookmarkEntry> bookmarks;
-  std::vector<importer::SearchEngineInfo> search_engines;
+  std::vector<SearchEngineInfo> search_engines;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -133,11 +136,10 @@ void BookmarkBridge::ImportBookmarks(
 }
 
 void BookmarkBridge::ImportBookmarksImpl(
-    std::pair<std::vector<ImportedBookmarkEntry>,
-              std::vector<importer::SearchEngineInfo>> importedItems) {
+    std::pair<std::vector<ImportedBookmarkEntry>, std::vector<SearchEngineInfo>>
+        importedItems) {
   std::vector<ImportedBookmarkEntry> bookmarks = get<0>(importedItems);
-  std::vector<importer::SearchEngineInfo> search_engines =
-      get<1>(importedItems);
+  std::vector<SearchEngineInfo> search_engines = get<1>(importedItems);
   auto* writer = new ProfileWriter(profile_);
 
   if (!bookmarks.empty()) {
@@ -166,12 +168,11 @@ void BookmarkBridge::ImportBookmarksImpl(
   Java_BraveBookmarkBridge_bookmarksImported(env, obj, !bookmarks.empty());
 }
 
-std::pair<std::vector<ImportedBookmarkEntry>,
-          std::vector<importer::SearchEngineInfo>>
+std::pair<std::vector<ImportedBookmarkEntry>, std::vector<SearchEngineInfo>>
 BookmarkBridge::ImportBookmarksReader(
     std::u16string import_path,
     std::vector<ImportedBookmarkEntry> bookmarks,
-    std::vector<importer::SearchEngineInfo> search_engines) {
+    std::vector<SearchEngineInfo> search_engines) {
   base::FilePath import_path_ = base::FilePath::FromUTF16Unsafe(import_path);
   bookmark_html_reader::ImportBookmarksFile(
       base::RepeatingCallback<bool(void)>(),

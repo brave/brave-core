@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H_
 #define BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H_
@@ -20,7 +20,7 @@ class BraveExternalProcessImporterClient
  public:
   BraveExternalProcessImporterClient(
       base::WeakPtr<ExternalProcessImporterHost> importer_host,
-      const importer::SourceProfile& source_profile,
+      const user_data_importer::SourceProfile& source_profile,
       uint16_t items,
       InProcessImporterBridge* bridge);
 
@@ -33,7 +33,8 @@ class BraveExternalProcessImporterClient
   void Start() override;
   void Cancel() override;
   void CloseMojoHandles() override;
-  void OnImportItemFinished(importer::ImportItem import_item) override;
+  void OnImportItemFinished(
+      user_data_importer::ImportItem import_item) override;
 
   // brave::mojom::ProfileImportObserver overrides:
   void OnCreditCardImportReady(const std::u16string& name_on_card,
