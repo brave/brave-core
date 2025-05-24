@@ -35,7 +35,7 @@ bool HasProperDiskAccessPermission(uint16_t imported_items) {
   const base::FilePath& library_dir = base::apple::GetUserLibraryPath();
   const base::FilePath safari_dir = library_dir.Append("Safari");
 
-  if (imported_items & importer::FAVORITES) {
+  if (imported_items & user_data_importer::FAVORITES) {
     const base::FilePath bookmarks_path = safari_dir.Append("Bookmarks.plist");
     if (!PathIsWritable(bookmarks_path)) {
       LOG(ERROR) << __func__ << " " << bookmarks_path << " is not accessible."
@@ -44,7 +44,7 @@ bool HasProperDiskAccessPermission(uint16_t imported_items) {
     }
   }
 
-  if (imported_items & importer::HISTORY) {
+  if (imported_items & user_data_importer::HISTORY) {
     const base::FilePath history_path = safari_dir.Append("History.plist");
     if (!PathIsWritable(history_path)) {
       LOG(ERROR) << __func__ << " " << history_path << " is not accessible."
@@ -66,7 +66,7 @@ BraveImportDataHandler::BraveImportDataHandler() = default;
 BraveImportDataHandler::~BraveImportDataHandler() = default;
 
 void BraveImportDataHandler::StartImport(
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     uint16_t imported_items) {
   if (!imported_items)
     return;
@@ -83,7 +83,7 @@ void BraveImportDataHandler::StartImport(
 }
 
 void BraveImportDataHandler::StartImportImpl(
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     uint16_t imported_items,
     Profile* profile) {
   // If another import is already ongoing, let it finish silently.
@@ -105,7 +105,7 @@ void BraveImportDataHandler::StartImportImpl(
 }
 
 void BraveImportDataHandler::NotifyImportProgress(
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     const base::Value::Dict& info) {
   const std::string* event = info.FindString("event");
   if (!event)
@@ -124,15 +124,15 @@ void BraveImportDataHandler::HandleImportData(const base::Value::List& args) {
 }
 
 void BraveImportDataHandler::OnImportEnded(
-    const importer::SourceProfile& source_profile) {
+    const user_data_importer::SourceProfile& source_profile) {
   import_observers_.erase(source_profile.source_path);
   FireWebUIListener("import-data-status-changed",
                     base::Value(import_did_succeed_ ? kImportStatusSucceeded
                                                     : kImportStatusFailed));
 }
 
-const importer::SourceProfile& BraveImportDataHandler::GetSourceProfileAt(
-    int browser_index) {
+const user_data_importer::SourceProfile&
+BraveImportDataHandler::GetSourceProfileAt(int browser_index) {
   return importer_list_->GetSourceProfileAt(browser_index);
 }
 
@@ -140,13 +140,13 @@ const importer::SourceProfile& BraveImportDataHandler::GetSourceProfileAt(
 void BraveImportDataHandler::CheckDiskAccess(
     uint16_t imported_items,
     base::FilePath source_path,
-    importer::ImporterType importer_type,
+    user_data_importer::ImporterType importer_type,
     ContinueImportCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   guide_dialog_is_requested_ = false;
 
-  if (importer_type == importer::TYPE_SAFARI) {
+  if (importer_type == user_data_importer::TYPE_SAFARI) {
     // Start import if Brave has full disk access permission.
     // If not, show dialog that has infos about that permission.
     base::ThreadPool::PostTaskAndReplyWithResult(

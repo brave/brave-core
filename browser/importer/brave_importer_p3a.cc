@@ -27,43 +27,43 @@ enum class ImporterSource {
 };
 }  // namespace
 
-void RecordImporterP3A(importer::ImporterType type) {
+void RecordImporterP3A(user_data_importer::ImporterType type) {
   ImporterSource metric;
   switch (type) {
-    case importer::TYPE_UNKNOWN:
+    case user_data_importer::TYPE_UNKNOWN:
       metric = ImporterSource::kNone;
       break;
 #if BUILDFLAG(IS_WIN)
-    case importer::TYPE_IE:
+    case user_data_importer::TYPE_IE:
       metric = ImporterSource::kMicrosoft;
       break;
-    case importer::TYPE_EDGE:
+    case user_data_importer::TYPE_EDGE:
       metric = ImporterSource::kMicrosoft;
       break;
 #endif
-    case importer::TYPE_FIREFOX:
+    case user_data_importer::TYPE_FIREFOX:
       metric = ImporterSource::kFirefox;
       break;
 #if BUILDFLAG(IS_MAC)
-    case importer::TYPE_SAFARI:
+    case user_data_importer::TYPE_SAFARI:
       metric = ImporterSource::kSafari;
       break;
 #endif
-    case importer::TYPE_BOOKMARKS_FILE:
+    case user_data_importer::TYPE_BOOKMARKS_FILE:
       metric = ImporterSource::kBookmarksHTMLFile;
       break;
-    case importer::TYPE_CHROME:
+    case user_data_importer::TYPE_CHROME:
       metric = ImporterSource::kChrome;
       break;
-    case importer::TYPE_EDGE_CHROMIUM:
+    case user_data_importer::TYPE_EDGE_CHROMIUM:
       metric = ImporterSource::kMicrosoft;
       break;
-    case importer::TYPE_VIVALDI:
-    case importer::TYPE_YANDEX:
-    case importer::TYPE_WHALE:
+    case user_data_importer::TYPE_VIVALDI:
+    case user_data_importer::TYPE_YANDEX:
+    case user_data_importer::TYPE_WHALE:
       metric = ImporterSource::kOther;
       break;
-    case importer::TYPE_OPERA:
+    case user_data_importer::TYPE_OPERA:
       metric = ImporterSource::kOpera;
       break;
   }

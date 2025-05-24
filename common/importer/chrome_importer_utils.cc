@@ -15,7 +15,7 @@
 #include "base/values.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/common/importer/scoped_copy_file.h"
-#include "chrome/common/importer/importer_data_types.h"
+#include "components/user_data_importer/common/importer_data_types.h"
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
@@ -148,18 +148,18 @@ bool IsLastActiveProfile(const std::string& profile,
   return false;
 }
 
-bool CanImportPasswordsForType(importer::ImporterType type) {
+bool CanImportPasswordsForType(user_data_importer::ImporterType type) {
   // We can't import passwords from Chrome due to encryption. See
   // https://github.com/brave/brave-browser/issues/34046
   // #issuecomment-2857856039
-  if (type == importer::TYPE_CHROME) {
+  if (type == user_data_importer::TYPE_CHROME) {
     return false;
   }
 
   // We can import password from Whale only on macOS. Decryption fails on
   // Windows and Linux.
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
-  if (type == importer::TYPE_WHALE) {
+  if (type == user_data_importer::TYPE_WHALE) {
     return false;
   }
 #endif
@@ -226,21 +226,21 @@ base::Value::List GetChromeSourceProfiles(
 }
 
 bool ChromeImporterCanImport(const base::FilePath& profile,
-                             importer::ImporterType type,
+                             user_data_importer::ImporterType type,
                              uint16_t* services_supported) {
   DCHECK(services_supported);
-  *services_supported = importer::NONE;
+  *services_supported = user_data_importer::NONE;
 
   base::FilePath bookmarks = profile.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
   if (base::PathExists(bookmarks)) {
-    *services_supported |= importer::FAVORITES;
+    *services_supported |= user_data_importer::FAVORITES;
   }
 
   base::FilePath history =
       profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   if (base::PathExists(history)) {
-    *services_supported |= importer::HISTORY;
+    *services_supported |= user_data_importer::HISTORY;
   }
 
   if (CanImportPasswordsForType(type)) {
@@ -251,19 +251,19 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
             FILE_PATH_LITERAL("Login Data For Account")));
     if (base::PathExists(passwords) ||
         base::PathExists(passwords_for_account)) {
-      *services_supported |= importer::PASSWORDS;
+      *services_supported |= user_data_importer::PASSWORDS;
     }
   }
 
   if (HasPaymentMethods(profile.Append(kWebDataFilename)))
-    *services_supported |= importer::PAYMENTS;
+    *services_supported |= user_data_importer::PAYMENTS;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (HasImportableExtensions(profile))
-    *services_supported |= importer::EXTENSIONS;
+    *services_supported |= user_data_importer::EXTENSIONS;
 #endif
 
-  return *services_supported != importer::NONE;
+  return *services_supported != user_data_importer::NONE;
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

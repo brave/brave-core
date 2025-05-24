@@ -7,7 +7,7 @@
 // no-include-guard-because-multiply-included
 
 #include "build/build_config.h"
-#include "chrome/common/importer/importer_type.h"
+#include "components/user_data_importer/common/importer_type.h"
 
 #if !BUILDFLAG(IS_WIN)
 #define TYPE_BOOKMARKS_FILE TYPE_WHALE
