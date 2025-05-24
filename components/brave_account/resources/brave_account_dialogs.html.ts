@@ -9,9 +9,9 @@ import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
 import './brave_account_forgot_password_dialog.js'
 import './brave_account_sign_in_dialog.js'
-import { Dialog, SettingsBraveAccountRow } from './brave_account_row.js'
+import { Dialog, SettingsBraveAccountDialogs } from './brave_account_dialogs.js'
 
-export function getHtml(this: SettingsBraveAccountRow) {
+export function getHtml(this: SettingsBraveAccountDialogs) {
   switch (this.dialog) {
     case Dialog.NONE:
       return nothing

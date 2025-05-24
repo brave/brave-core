@@ -9,8 +9,7 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
-import { getCss } from './brave_account_row.css.js'
-import { getHtml } from './brave_account_row.html.js'
+import { getHtml } from './brave_account_dialogs.html.js'
 
 export enum Dialog {
   NONE,
@@ -20,13 +19,9 @@ export enum Dialog {
   SIGN_IN,
 }
 
-export class SettingsBraveAccountRow extends CrLitElement {
+export class SettingsBraveAccountDialogs extends CrLitElement {
   static get is() {
-    return 'settings-brave-account-row'
-  }
-
-  static override get styles() {
-    return getCss()
+    return 'settings-brave-account-dialogs'
   }
 
   override render() {
@@ -38,10 +33,6 @@ export class SettingsBraveAccountRow extends CrLitElement {
       dialog: { type: Dialog },
       signedIn: { type: Boolean, reflect: true },
     }
-  }
-
-  protected onButtonClicked() {
-    // this.browserProxy.handler.openDialog()
   }
 
   protected onBackButtonClicked() {
@@ -71,8 +62,11 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-row': SettingsBraveAccountRow
+    'settings-brave-account-dialogs': SettingsBraveAccountDialogs
   }
 }
 
-customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow)
+customElements.define(
+  SettingsBraveAccountDialogs.is,
+  SettingsBraveAccountDialogs,
+)

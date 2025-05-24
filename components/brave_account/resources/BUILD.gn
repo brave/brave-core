@@ -9,8 +9,8 @@ build_webui("build") {
   grd_prefix = "brave_account"
 
   static_files = [
-    "brave_account_dialogs.css",
-    "brave_account_dialogs.html",
+    "brave_account_dialogs_page.css",
+    "brave_account_dialogs_page.html",
   ]
 
   ts_files = [
@@ -20,12 +20,12 @@ build_webui("build") {
     "brave_account_create_dialog.ts",
     "brave_account_dialog.html.ts",
     "brave_account_dialog.ts",
+    "brave_account_dialogs.html.ts",
+    "brave_account_dialogs.ts",
     "brave_account_entry_dialog.html.ts",
     "brave_account_entry_dialog.ts",
     "brave_account_forgot_password_dialog.html.ts",
     "brave_account_forgot_password_dialog.ts",
-    "brave_account_row.html.ts",
-    "brave_account_row.ts",
     "brave_account_sign_in_dialog.html.ts",
     "brave_account_sign_in_dialog.ts",
   ]
@@ -36,7 +36,6 @@ build_webui("build") {
     "brave_account_dialog.css",
     "brave_account_entry_dialog.css",
     "brave_account_forgot_password_dialog.css",
-    "brave_account_row.css",
     "brave_account_sign_in_dialog.css",
   ]
 

@@ -72,17 +72,10 @@ class BraveAccountDialogsUIBase
     source->EnableReplaceI18nInJS();
 
     source->AddResourcePaths(kBraveAccountResources);
-    source->AddResourcePath("", IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_HTML);
+    source->AddResourcePath("",
+                            IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_PAGE_HTML);
 
     static constexpr webui::LocalizedString kStrings[] = {
-        // Row:
-        {"braveAccountRowTitle", IDS_BRAVE_ACCOUNT_ROW_TITLE},
-        {"braveAccountRowDescription", IDS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
-        {"braveAccountGetStartedButtonLabel",
-         IDS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-        {"braveAccountManageAccountButtonLabel",
-         IDS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
-
         // 'Entry' dialog:
         {"braveAccountEntryDialogTitle", IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE},
         {"braveAccountEntryDialogDescription",
