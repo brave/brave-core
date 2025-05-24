@@ -4,7 +4,7 @@ index 9f55dde376e8bc499436c3f3e8c2f1e1fa76149c..04e092216c407d3a07a75472b9000b44
 +++ b/chrome/browser/importer/in_process_importer_bridge.cc
 @@ -53,6 +53,8 @@ history::VisitSource ConvertImporterVisitSourceToHistoryVisitSource(
        return history::SOURCE_IE_IMPORTED;
-     case importer::VISIT_SOURCE_SAFARI_IMPORTED:
+     case user_data_importer::VISIT_SOURCE_SAFARI_IMPORTED:
        return history::SOURCE_SAFARI_IMPORTED;
 +    case user_data_importer::VISIT_SOURCE_CHROME_IMPORTED:
 +      return history::SOURCE_CHROME_IMPORTED;

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/importer/external_process_importer_host.h b/chrome/browser/importer/external_process_importer_host.h
-index 20dcc3baded90c6d45fb0f8a1c7f5199578b22c3..a5b37d23ae7e147d9d4b2e2cdd29964139a9d98e 100644
+index 7bab2a5ac11b8f39a6ec5bf5b82bd958e2a07694..d076964ddd69eb1ff1ffb93a0968a496611669a4 100644
 --- a/chrome/browser/importer/external_process_importer_host.h
 +++ b/chrome/browser/importer/external_process_importer_host.h
-@@ -80,6 +80,7 @@ class ExternalProcessImporterHost
-   void NotifyImportItemEnded(importer::ImportItem item);
+@@ -81,6 +81,7 @@ class ExternalProcessImporterHost
+   void NotifyImportItemEnded(user_data_importer::ImportItem item);
    void NotifyImportEnded();
  
 +  BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H
