@@ -18,10 +18,49 @@
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace psst {
 
 namespace {
+
+constexpr char kPsstJsonFileContent[] = R"([
+    {
+        "name": "a",
+        "include": [
+            "https://a.com/*"
+        ],
+        "exclude": [
+            "https://a.com/exclude/*"
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "b",
+        "include": [
+            "https://b.com/*"
+        ],
+        "exclude": [
+        ],
+        "version": 2,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "rule_with_wrong_script_path",
+        "include": [
+            "https://url.com/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    }
+])";
+
 std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
   bool success = base::ReadFileToString(file_path, &contents);
@@ -30,6 +69,7 @@ std::string ReadFile(const base::FilePath& file_path) {
   }
   return contents;
 }
+
 }  // namespace
 
 class RuleDataReaderUnitTest : public testing::Test {
@@ -39,11 +79,7 @@ class RuleDataReaderUnitTest : public testing::Test {
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
 
-    auto psst_rules_content = ReadFile(test_data_dir_base_.Append(
-        base::FilePath::FromUTF8Unsafe("psst.json")));
-    ASSERT_FALSE(psst_rules_content.empty());
-
-    psst_rules_ = PsstRule::ParseRules(psst_rules_content);
+    psst_rules_ = PsstRule::ParseRules(kPsstJsonFileContent);
     ASSERT_EQ(psst_rules_->size(), 3U);
   }
 

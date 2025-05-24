@@ -10,9 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/logging.h"
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 
 namespace psst {
