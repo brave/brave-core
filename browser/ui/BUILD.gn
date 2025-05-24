@@ -131,6 +131,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
       "//brave/build/android:jni_headers",
+      "//chrome/browser/ui/android/tab_model",
     ]
   }
 
