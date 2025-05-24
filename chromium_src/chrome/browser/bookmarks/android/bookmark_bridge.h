@@ -9,8 +9,12 @@
 #include <utility>
 
 #include "chrome/browser/reading_list/android/reading_list_manager.h"
-#include "chrome/common/importer/imported_bookmark_entry.h"
-#include "chrome/common/importer/importer_data_types.h"
+
+namespace user_data_importer {
+struct SearchEngineInfo;
+}
+
+struct ImportedBookmarkEntry;
 
 #define SetReadStatus                                                    \
   ImportBookmarks(                                                       \
@@ -19,13 +23,14 @@
       const base::android::JavaParamRef<jstring>& import_file_path);     \
   void ImportBookmarksImpl(                                              \
       std::pair<std::vector<ImportedBookmarkEntry>,                      \
-                std::vector<importer::SearchEngineInfo>> importedItems); \
+                std::vector<user_data_importer::SearchEngineInfo>>       \
+          importedItems);                                                \
   std::pair<std::vector<ImportedBookmarkEntry>,                          \
-            std::vector<importer::SearchEngineInfo>>                     \
+            std::vector<user_data_importer::SearchEngineInfo>>           \
   ImportBookmarksReader(                                                 \
       std::u16string import_file_path,                                   \
       std::vector<ImportedBookmarkEntry> bookmarks,                      \
-      std::vector<importer::SearchEngineInfo> search_engines);           \
+      std::vector<user_data_importer::SearchEngineInfo> search_engines); \
   void ExportBookmarks(                                                  \
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,      \
       const base::android::JavaParamRef<jobject>& java_window,           \

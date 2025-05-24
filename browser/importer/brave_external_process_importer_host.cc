@@ -26,7 +26,7 @@ void BraveExternalProcessImporterHost::NotifyImportEnded() {
   // Don't import if cancelled.
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (NeedToImportExtensions() && extensions_importer_) {
-    NotifyImportItemStarted(importer::EXTENSIONS);
+    NotifyImportItemStarted(user_data_importer::EXTENSIONS);
     if (extensions_importer_->Import(base::BindRepeating(
             &BraveExternalProcessImporterHost::OnExtensionImported,
             weak_ptr_factory_.GetWeakPtr()))) {
@@ -81,7 +81,8 @@ BraveExternalProcessImporterHost::GetObserverForTesting() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 
 bool BraveExternalProcessImporterHost::NeedToImportExtensions() const {
-  return !cancelled_ && (items_ & importer::EXTENSIONS) == importer::EXTENSIONS;
+  return !cancelled_ && (items_ & user_data_importer::EXTENSIONS) ==
+                            user_data_importer::EXTENSIONS;
 }
 
 void BraveExternalProcessImporterHost::OnExtensionsImportReady(bool ready) {
@@ -118,7 +119,7 @@ void BraveExternalProcessImporterHost::OnExtensionImported(
   if (!extensions_importer_ || !extensions_importer_->IsImportInProgress()) {
     extensions_importer_.reset();
     if (observer_) {
-      NotifyImportItemEnded(importer::EXTENSIONS);
+      NotifyImportItemEnded(user_data_importer::EXTENSIONS);
     }
     ExternalProcessImporterHost::NotifyImportEnded();
   }

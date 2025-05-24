@@ -21,7 +21,6 @@
 #include "build/build_config.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_bridge.h"
-#include "chrome/common/importer/importer_data_types.h"
 #include "chrome/utility/importer/favicon_reencode.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/password_manager/core/browser/password_form.h"
@@ -29,6 +28,7 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
+#include "components/user_data_importer/common/importer_data_types.h"
 #include "components/user_data_importer/common/importer_url_row.h"
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
@@ -148,16 +148,18 @@ std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
 
 bool PasswordFormToImportedPasswordForm(
     const password_manager::PasswordForm& form,
-    importer::ImportedPasswordForm& imported_form) {
+    user_data_importer::ImportedPasswordForm& imported_form) {
   if (form.scheme != password_manager::PasswordForm::Scheme::kHtml &&
       form.scheme != password_manager::PasswordForm::Scheme::kBasic) {
     return false;
   }
 
   if (form.scheme == password_manager::PasswordForm::Scheme::kHtml) {
-    imported_form.scheme = importer::ImportedPasswordForm::Scheme::kHtml;
+    imported_form.scheme =
+        user_data_importer::ImportedPasswordForm::Scheme::kHtml;
   } else {
-    imported_form.scheme = importer::ImportedPasswordForm::Scheme::kBasic;
+    imported_form.scheme =
+        user_data_importer::ImportedPasswordForm::Scheme::kBasic;
   }
 
   if (form.blocked_by_user &&
@@ -182,47 +184,51 @@ ChromeImporter::ChromeImporter() = default;
 
 ChromeImporter::~ChromeImporter() = default;
 
-void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
-                                 uint16_t items,
-                                 ImporterBridge* bridge) {
+void ChromeImporter::StartImport(
+    const user_data_importer::SourceProfile& source_profile,
+    uint16_t items,
+    ImporterBridge* bridge) {
   bridge_ = bridge;
   source_path_ = source_profile.source_path;
   importer_name_ = source_profile.importer_name;
   // The order here is important!
   bridge_->NotifyStarted();
 
-  if ((items & importer::HISTORY) && !cancelled()) {
-    bridge_->NotifyItemStarted(importer::HISTORY);
+  if ((items & user_data_importer::HISTORY) && !cancelled()) {
+    bridge_->NotifyItemStarted(user_data_importer::HISTORY);
     ImportHistory();
-    bridge_->NotifyItemEnded(importer::HISTORY);
+    bridge_->NotifyItemEnded(user_data_importer::HISTORY);
   }
 
-  if ((items & importer::FAVORITES) && !cancelled()) {
-    bridge_->NotifyItemStarted(importer::FAVORITES);
+  if ((items & user_data_importer::FAVORITES) && !cancelled()) {
+    bridge_->NotifyItemStarted(user_data_importer::FAVORITES);
     ImportBookmarks();
-    bridge_->NotifyItemEnded(importer::FAVORITES);
+    bridge_->NotifyItemEnded(user_data_importer::FAVORITES);
   }
 
 #if BUILDFLAG(IS_WIN)
-  auto source_path = source_profile.importer_type == importer::TYPE_OPERA
-                         ? source_path_
-                         : source_path_.DirName();
+  auto source_path =
+      source_profile.importer_type == user_data_importer::TYPE_OPERA
+          ? source_path_
+          : source_path_.DirName();
 #else
   auto source_path = source_path_;
 #endif
   const bool set_encryption_key = SetEncryptionKey(source_path);
-  if ((items & importer::PASSWORDS) && !cancelled() && set_encryption_key) {
-    bridge_->NotifyItemStarted(importer::PASSWORDS);
+  if ((items & user_data_importer::PASSWORDS) && !cancelled() &&
+      set_encryption_key) {
+    bridge_->NotifyItemStarted(user_data_importer::PASSWORDS);
     ImportPasswords(base::FilePath(FILE_PATH_LITERAL("Login Data")));
     ImportPasswords(
         base::FilePath(FILE_PATH_LITERAL("Login Data For Account")));
-    bridge_->NotifyItemEnded(importer::PASSWORDS);
+    bridge_->NotifyItemEnded(user_data_importer::PASSWORDS);
   }
 
-  if ((items & importer::PAYMENTS) && !cancelled() && set_encryption_key) {
-    bridge_->NotifyItemStarted(importer::PAYMENTS);
+  if ((items & user_data_importer::PAYMENTS) && !cancelled() &&
+      set_encryption_key) {
+    bridge_->NotifyItemStarted(user_data_importer::PAYMENTS);
     ImportPayments();
-    bridge_->NotifyItemEnded(importer::PAYMENTS);
+    bridge_->NotifyItemEnded(user_data_importer::PAYMENTS);
   }
 
   bridge_->NotifyEnded();
@@ -274,7 +280,8 @@ void ChromeImporter::ImportHistory() {
   }
 
   if (!rows.empty() && !cancelled())
-    bridge_->SetHistoryItems(rows, importer::VISIT_SOURCE_CHROME_IMPORTED);
+    bridge_->SetHistoryItems(rows,
+                             user_data_importer::VISIT_SOURCE_CHROME_IMPORTED);
 }
 
 void ChromeImporter::ImportBookmarks() {
@@ -477,7 +484,7 @@ void ChromeImporter::ImportPasswords(
   bool success = database.GetAutofillableLogins(&forms);
   if (success) {
     for (auto& entry : forms) {
-      importer::ImportedPasswordForm form;
+      user_data_importer::ImportedPasswordForm form;
       if (PasswordFormToImportedPasswordForm(entry, form)) {
         bridge_->SetPasswordForm(form);
       }
@@ -487,7 +494,7 @@ void ChromeImporter::ImportPasswords(
   success = database.GetBlocklistLogins(&blocklist);
   if (success) {
     for (auto& entry : blocklist) {
-      importer::ImportedPasswordForm form;
+      user_data_importer::ImportedPasswordForm form;
       if (PasswordFormToImportedPasswordForm(entry, form)) {
         bridge_->SetPasswordForm(form);
       }

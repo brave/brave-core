@@ -13,14 +13,14 @@
 #include "content/public/browser/service_process_host.h"
 
 namespace {
-bool ShouldUseBraveImporter(importer::ImporterType type) {
+bool ShouldUseBraveImporter(user_data_importer::ImporterType type) {
   switch (type) {
-    case importer::TYPE_CHROME:
-    case importer::TYPE_EDGE_CHROMIUM:
-    case importer::TYPE_VIVALDI:
-    case importer::TYPE_OPERA:
-    case importer::TYPE_YANDEX:
-    case importer::TYPE_WHALE:
+    case user_data_importer::TYPE_CHROME:
+    case user_data_importer::TYPE_EDGE_CHROMIUM:
+    case user_data_importer::TYPE_VIVALDI:
+    case user_data_importer::TYPE_OPERA:
+    case user_data_importer::TYPE_YANDEX:
+    case user_data_importer::TYPE_WHALE:
       return true;
     default:
       return false;
@@ -36,11 +36,13 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
 
 BraveExternalProcessImporterClient::BraveExternalProcessImporterClient(
     base::WeakPtr<ExternalProcessImporterHost> importer_host,
-    const importer::SourceProfile& source_profile,
+    const user_data_importer::SourceProfile& source_profile,
     uint16_t items,
     InProcessImporterBridge* bridge)
-    : ExternalProcessImporterClient(
-          importer_host, source_profile, items, bridge) {}
+    : ExternalProcessImporterClient(importer_host,
+                                    source_profile,
+                                    items,
+                                    bridge) {}
 
 BraveExternalProcessImporterClient::
     ~BraveExternalProcessImporterClient() = default;
@@ -96,7 +98,7 @@ void BraveExternalProcessImporterClient::CloseMojoHandles() {
 }
 
 void BraveExternalProcessImporterClient::OnImportItemFinished(
-    importer::ImportItem import_item) {
+    user_data_importer::ImportItem import_item) {
   if (!ShouldUseBraveImporter(source_profile_.importer_type)) {
     ExternalProcessImporterClient::OnImportItemFinished(import_item);
     return;

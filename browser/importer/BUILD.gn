@@ -13,7 +13,7 @@ source_set("importer") {
 
   deps = [
     "//base",
-    "//chrome/common/importer",
+    "//components/user_data_importer/common",
   ]
 }
 if (!is_android) {
@@ -47,7 +47,6 @@ if (!is_android) {
       "//chrome/browser/importer",
       "//chrome/browser/ui",
       "//chrome/common:constants",
-      "//chrome/common/importer",
       "//chrome/test:test_support",
       "//components/value_store:test_support",
       "//content/test:test_support",
