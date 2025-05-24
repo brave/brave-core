@@ -14,8 +14,9 @@ import Description from './styles/Description'
 import Dialog from '@brave/leo/react/dialog'
 import Row from './styles/Row'
 import styled from 'styled-components'
-import { Alias, EmailAliasesServiceInterface, MAX_ALIASES }
+import { AliasesUpdatedInfo, EmailAliasesServiceInterface, MAX_ALIASES }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
+import Alert from '@brave/leo/react/alert'
 
 const AliasListIntro = styled(Row)`
   justify-content: space-between;
@@ -62,18 +63,20 @@ export const ListIntroduction = ({
 )
 
 export const AliasList = ({
-  aliases, authEmail, emailAliasesService }: {
+  aliasesInfo, authEmail, emailAliasesService }: {
     emailAliasesService: EmailAliasesServiceInterface,
-    aliases: Alias[],
+    aliasesInfo: AliasesUpdatedInfo,
     authEmail: string
   }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
   return (
     <DivWithTopDivider>
       <ListIntroduction
-        aliasesCount={aliases.length}
+        aliasesCount={aliasesInfo.aliases.length}
         onCreateClicked={() => setEditState({ mode: 'Create' })} />
-      {aliases.map(
+      {aliasesInfo.errorMessage &&
+        <Alert>{aliasesInfo.errorMessage}</Alert>}
+      {aliasesInfo.aliases.map(
         alias =>
           <AliasItem
             key={alias.email}
@@ -92,7 +95,7 @@ export const AliasList = ({
             onReturnToMain={() => setEditState({ mode: 'None' })}
             editState={editState}
             mainEmail={authEmail}
-            aliasCount={aliases.length}
+            aliasCount={aliasesInfo.aliases.length}
             emailAliasesService={emailAliasesService} />
         </AliasDialog>}
     </DivWithTopDivider>

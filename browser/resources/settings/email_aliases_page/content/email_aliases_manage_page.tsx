@@ -10,7 +10,9 @@ import { MainView } from './email_aliases_main_view'
 import * as React from 'react'
 import Col from './styles/Col'
 import styled from 'styled-components'
-import { Alias, AuthState, AuthenticationStatus, EmailAliasesServiceInterface }
+import {
+  AliasesUpdatedInfo, AuthState,
+  AuthenticationStatus, EmailAliasesServiceInterface }
   from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const PageCol = styled(Col)`
@@ -24,8 +26,8 @@ const PageCol = styled(Col)`
   }
 `
 
-export const ManagePage = ({ aliasesState, authState, emailAliasesService }: {
-  aliasesState: Alias[],
+export const ManagePage = ({ aliasesInfo, authState, emailAliasesService }: {
+  aliasesInfo: AliasesUpdatedInfo,
   authState: AuthState,
   emailAliasesService: EmailAliasesServiceInterface
 }) => (
@@ -38,7 +40,7 @@ export const ManagePage = ({ aliasesState, authState, emailAliasesService }: {
         emailAliasesService={emailAliasesService} />
       : <MainView
         authState={authState}
-        aliasesState={aliasesState}
+        aliasesInfo={aliasesInfo}
         emailAliasesService={emailAliasesService} />}
   </PageCol>
 )

@@ -42,6 +42,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE" desc="The title for the email alias list">
     Your Email aliases
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_INFO_ERROR_MESSAGE" desc="The label for the info error message">
+    Error retrieving email aliases from our servers. Please check your internet connection.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE" desc="The title for the create alias">
     New email alias
   </message>

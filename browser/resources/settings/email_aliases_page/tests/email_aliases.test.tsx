@@ -34,9 +34,9 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
     this.observer = observer
   }
 
-  notifyObserverAliasesUpdated(aliases: Alias[]) {
+  notifyObserverAliasesUpdated(aliases: Alias[], errorMessage?: string) {
     expect(this.observer).toBeDefined()
-    this.observer?.onAliasesUpdated(aliases)
+    this.observer?.onAliasesUpdated({ aliases, errorMessage })
   }
 
   notifyObserverAuthStateChanged(status: AuthenticationStatus, email: string) {
@@ -183,7 +183,8 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }])
     })
 
@@ -197,13 +198,16 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }, {
         email: 'alias3@brave.com',
-        name: 'Test Alias 3'
+        note: 'Test Alias 3',
+        domains: []
       }])
     })
 
@@ -236,13 +240,16 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }, {
         email: 'alias3@brave.com',
-        name: 'Test Alias 3'
+        note: 'Test Alias 3',
+        domains: []
       }])
     })
 
@@ -256,7 +263,8 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }])
     })
 
@@ -289,13 +297,16 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }, {
         email: 'alias3@brave.com',
-        name: 'Test Alias 3'
+        note: 'Test Alias 3',
+        domains: []
       }])
     })
 
@@ -309,13 +320,16 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias3@brave.com',
-        name: 'Test Alias 3'
+        note: 'Test Alias 3',
+        domains: []
       }, {
         email: '2.alias@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }, {
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }])
     })
 
@@ -351,13 +365,16 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }, {
         email: 'alias3@brave.com',
-        name: 'Test Alias 3'
+        note: 'Test Alias 3',
+        domains: []
       }])
     })
 
@@ -393,10 +410,12 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }])
     })
 
@@ -429,10 +448,12 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }])
     })
 
@@ -464,10 +485,12 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }])
     })
 
@@ -506,10 +529,12 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAliasesUpdated([{
         email: 'alias1@brave.com',
-        name: 'Test Alias 1'
+        note: 'Test Alias 1',
+        domains: []
       }, {
         email: 'alias2@brave.com',
-        name: 'Test Alias 2'
+        note: 'Test Alias 2',
+        domains: []
       }])
     })
 
@@ -538,6 +563,47 @@ describe('ManagePageConnected', () => {
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
       expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
+    })
+  })
+
+  it('shows error message when fetching aliases fails', async () => {
+    const mockEmail = 'test@brave.com'
+    const mockErrorMessage = 'Error message'
+    const mockEmailAliasesService = new MockEmailAliasesService()
+
+    await act(async () => {
+      render(<ManagePageConnected
+        emailAliasesService={mockEmailAliasesService}
+        bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
+    // Log in
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticated,
+        mockEmail
+      )
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAliasesUpdated(
+        [{
+          email: 'alias1@brave.com',
+          note: 'Test Alias 1',
+          domains: []
+        }, {
+          email: 'alias2@brave.com',
+          note: 'Test Alias 2',
+          domains: []
+        }], mockErrorMessage)
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText(mockErrorMessage)).toBeInTheDocument()
+      // Still show the aliases we know about.
+      expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
+      expect(screen.queryByText('alias2@brave.com')).toBeInTheDocument()
     })
   })
 })

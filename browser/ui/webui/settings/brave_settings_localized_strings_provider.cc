@@ -1091,6 +1091,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
       {"emailAliasesCreateDescription",
        IDS_SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION},
       {"emailAliasesListTitle", IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE},
+      {"emailAliasesInfoErrorMessage",
+       IDS_SETTINGS_EMAIL_ALIASES_INFO_ERROR_MESSAGE},
       {"emailAliasesCreateAliasTitle",
        IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE},
       {"emailAliasesBubbleDescription",

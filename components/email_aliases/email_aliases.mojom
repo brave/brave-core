@@ -35,6 +35,13 @@ union GenerateAliasResult {
   string error_message;
 };
 
+struct AliasesUpdatedInfo {
+  // Current list of aliases
+  array<Alias> aliases;
+  // Error message if retrieving aliases fails
+  string? error_message;
+};
+
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
 
@@ -43,7 +50,7 @@ interface EmailAliasesServiceObserver {
 
   // Called when aliases have been updated for the currently authenticated
   // account.
-  OnAliasesUpdated(array<Alias> aliases);
+  OnAliasesUpdated(AliasesUpdatedInfo info);
 
 };
 

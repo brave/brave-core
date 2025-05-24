@@ -68,6 +68,8 @@ provideStrings({
     'forwards to your inbox while keeping your personal email private.',
   emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free ' +
     'email aliases. Click "Manage" to re-use or delete an alias.',
+  emailAliasesInfoErrorMessage: 'Error retrieving email aliases from our ' +
+    'servers. Please check your internet connection.'
 })
 
 export default {
@@ -96,11 +98,24 @@ const demoData = {
 } satisfies { email: string, aliases: Alias[] }
 
 class StubEmailAliasesService implements EmailAliasesServiceInterface {
-  aliases: Map<string, Alias>
   authState: AuthState
   accountRequestId: number
   observers: Set<EmailAliasesServiceObserverRemote |
                  EmailAliasesServiceObserverInterface>
+  aliases: Map<string, Alias>
+
+  private notifyAliasesUpdatedObservers () {
+    const errorMessage = Math.random() < 1/3
+      ? getLocale('emailAliasesInfoErrorMessage')
+      : undefined
+    this.observers.forEach(observer => {
+      observer.onAliasesUpdated({
+        aliases: [...this.aliases.values()],
+        errorMessage
+      })
+    })
+  }
+
   constructor(authState: AuthState) {
     this.authState = authState
     this.observers = new Set<EmailAliasesServiceObserverRemote |
@@ -115,7 +130,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
                          EmailAliasesServiceObserverInterface) {
     this.observers.add(observer)
     observer.onAuthStateChanged(this.authState)
-    observer.onAliasesUpdated([...this.aliases.values()])
+    this.notifyAliasesUpdatedObservers()
   }
 
   removeObserver (observer: EmailAliasesServiceObserverRemote |
@@ -126,16 +141,12 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   updateAlias (email: string, note: string) {
     const alias = { email, note, domains: undefined }
     this.aliases.set(email, alias)
-    this.observers.forEach(observer => {
-      observer.onAliasesUpdated([...this.aliases.values()])
-    })
+    this.notifyAliasesUpdatedObservers()
   }
 
   deleteAlias (email: string) {
     this.aliases.delete(email)
-    this.observers.forEach(observer => {
-      observer.onAliasesUpdated([...this.aliases.values()])
-    })
+    this.notifyAliasesUpdatedObservers()
   }
 
   async generateAlias () {
