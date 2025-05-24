@@ -27,14 +27,10 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 </style>
 
 <div class="cr-row first two-line">
-  <div
-    id="containersSectionHeader"
-    class="flex"
-  >
+  <div class="flex">
     <div class="label">$i18nRaw{containersDesc}</div>
   </div>
   <cr-button
-    id="addContainer"
     on-click="onAddContainerClick_"
     size="small"
   >
@@ -58,14 +54,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
           </div>
           <div>
             <cr-icon-button
-              id="edit"
               on-click="onEditContainerClick_"
               class="size-20"
               iron-icon="edit-pencil"
             >
             </cr-icon-button>
             <cr-icon-button
-              id="delete"
               on-click="onDeleteContainerClick_"
               class="size-20"
               iron-icon="trash"
@@ -93,15 +87,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <div slot="body">
       <div class="flex">
         <cr-input
-          id="container-name"
           value="{{editingContainer_.name}}"
           autofocus
           required
           auto-validate
           pattern=".+"
-          spellcheck="false"
-          label="$i18nRaw{containersContainerName}"
-          placeholder="$i18nRaw{containersContainerNamePlaceholder}"
+          label="$i18n{containersContainerName}"
+          placeholder="$i18n{containersContainerNamePlaceholder}"
         >
         </cr-input>
       </div>
@@ -109,14 +101,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <div slot="button-container">
       <cr-button
         class="cancel-button"
-        id="cancel"
         on-click="onCancelDialog_"
       >
         $i18n{cancel}
       </cr-button>
       <cr-button
         class="action-button"
-        id="save"
         on-click="onSaveContainerFromDialog_"
         disabled="[[!editingContainer_.name]]"
       >
@@ -147,14 +137,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <div slot="button-container">
       <cr-button
         class="cancel-button"
-        id="cancel"
         on-click="onCancelDialog_"
       >
         $i18n{cancel}
       </cr-button>
       <cr-button
-        class="action-button"
-        id="save"
+        class="tonal-button"
         on-click="onDeleteContainerFromDialog_"
       >
         $i18n{delete}
