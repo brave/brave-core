@@ -17,7 +17,10 @@ namespace ai_chat {
 inline constexpr char kUniversalQAModelName[] =
     "universal_sentence_encoder_qa_with_metadata.tflite";
 
-void ManageLocalModelsComponentRegistration(
+// Added 2025-05
+// TODO(https://github.com/brave/brave-browser/issues/46336): Move this
+// migration
+void MigrateDeprecatedLocalModelsComponent(
     component_updater::ComponentUpdateService* cus);
 
 }  // namespace ai_chat

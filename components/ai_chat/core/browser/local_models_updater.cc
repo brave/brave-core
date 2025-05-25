@@ -47,7 +47,7 @@ void DeleteComponent() {
 
 }  // namespace
 
-void ManageLocalModelsComponentRegistration(
+void MigrateDeprecatedLocalModelsComponent(
     component_updater::ComponentUpdateService* cus) {
   // Delete the component - its not required anymore.
   DeleteComponent();

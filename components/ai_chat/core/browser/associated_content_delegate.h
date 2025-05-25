@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DELEGATE_H_
 
 #include <string>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"

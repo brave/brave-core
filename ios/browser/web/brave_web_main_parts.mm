@@ -29,7 +29,7 @@ void RegisterComponentsForUpdate(
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(
           cus, GetApplicationContext()->GetLocalState());
-  ai_chat::ManageLocalModelsComponentRegistration(cus);
+  ai_chat::MigrateDeprecatedLocalModelsComponent(cus);
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
   RegisterZxcvbnDataComponent(cus);
 }

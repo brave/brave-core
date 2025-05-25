@@ -5,6 +5,9 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 
+#include <memory>
+#include <utility>
+
 #include "base/uuid.h"
 
 namespace ai_chat {
