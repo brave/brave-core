@@ -22,7 +22,6 @@
 #include "brave/browser/update_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/constants/brave_switches.h"
-#include "chrome/browser/app_controller_mac.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
 
@@ -393,15 +392,6 @@ std::string GetDescriptionFromAppcastItem(id item) {
              GetDescriptionFromAppcastItem(item);
 
   _updateWillBeInstalledOnQuit = YES;
-
-  // Updates roll out orders of magnitude slower on macOS than on other
-  // platforms. The current hypothesis is that the reason for this is the
-  // following: Updates require a relaunch to be applied. On other platforms,
-  // closing the last browser window terminates the application. But on macOS,
-  // the app keeps running by default. This prevents it from being updated.
-  // In an attempt to fix the problem, we therefore allow the application to
-  // terminate when an update is ready to be installed:
-  app_controller_mac::AllowApplicationToTerminate();
 
   [self determineUpdateStatusAsync];
 }
