@@ -8,13 +8,10 @@
 #include <stddef.h>
 
 #include <algorithm>
-#include <functional>
-#include <ios>
 #include <iterator>
 #include <memory>
 #include <optional>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
 #include "base/check.h"
@@ -23,28 +20,18 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
-#include "base/metrics/field_trial_params.h"
-#include "base/notreached.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/task/task_traits.h"
-#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
-#include "base/types/strong_alias.h"
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
-#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -73,122 +60,9 @@ namespace {
 using ai_chat::mojom::CharacterType;
 using ai_chat::mojom::ConversationTurn;
 
-using AssociatedContentDelegate =
-    ConversationHandler::AssociatedContentDelegate;
-
 constexpr size_t kDefaultSuggestionsCount = 4;
 
 }  // namespace
-
-AssociatedContentDelegate::AssociatedContentDelegate()
-    : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()),
-      text_embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
-
-AssociatedContentDelegate::~AssociatedContentDelegate() = default;
-
-void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
-  for (auto& observer : observers_) {
-    observer.OnNavigated(this);
-  }
-
-  pending_top_similarity_requests_.clear();
-  if (text_embedder_) {
-    text_embedder_->CancelAllTasks();
-    text_embedder_.reset();
-  }
-}
-
-void AssociatedContentDelegate::GetStagedEntriesFromContent(
-    GetStagedEntriesCallback callback) {
-  std::move(callback).Run(std::nullopt);
-}
-
-bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
-  return false;
-}
-
-void AssociatedContentDelegate::GetScreenshots(
-    mojom::ConversationHandler::GetScreenshotsCallback callback) {
-  std::move(callback).Run(std::nullopt);
-}
-
-void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
-    const std::string& prompt,
-    const std::string& text,
-    uint32_t context_limit,
-    TextEmbedder::TopSimilarityCallback callback) {
-  // Create TextEmbedder
-  if (!text_embedder_) {
-    base::FilePath universal_qa_model_path =
-        LocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
-    // Tasks in TextEmbedder are run on |embedder_task_runner|. The
-    // text_embedder_ must be deleted on that sequence to guarantee that pending
-    // tasks can safely be executed.
-    scoped_refptr<base::SequencedTaskRunner> embedder_task_runner =
-        base::ThreadPool::CreateSequencedTaskRunner(
-            {base::MayBlock(), base::TaskPriority::USER_BLOCKING});
-    text_embedder_ = TextEmbedder::Create(
-        base::FilePath(universal_qa_model_path), embedder_task_runner);
-    if (!text_embedder_) {
-      std::move(callback).Run(
-          base::unexpected("Failed to create TextEmbedder"));
-      pending_top_similarity_requests_.pop_back();
-      return;
-    }
-  }
-
-  if (!text_embedder_->IsInitialized()) {
-    // Will have to wait for initialization to complete, store params for
-    // calling later.
-    pending_top_similarity_requests_.emplace_back(prompt, text, context_limit,
-                                                  std::move(callback));
-
-    text_embedder_->Initialize(
-        base::BindOnce(&ConversationHandler::AssociatedContentDelegate::
-                           OnTextEmbedderInitialized,
-                       weak_ptr_factory_.GetWeakPtr()));
-  } else {
-    // Run immediately if already initialized
-    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        prompt, text, context_limit, std::move(callback));
-  }
-}
-
-void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
-  if (!initialized) {
-    VLOG(1) << "Failed to initialize TextEmbedder";
-    for (auto& request_info : pending_top_similarity_requests_) {
-      std::move(std::get<3>(request_info))
-          .Run(base::unexpected<std::string>(
-              "Failed to initialize TextEmbedder"));
-    }
-    pending_top_similarity_requests_.clear();
-    return;
-  }
-
-  CHECK(text_embedder_);
-  for (auto& request_info : pending_top_similarity_requests_) {
-    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        std::move(std::get<0>(request_info)),
-        std::move(std::get<1>(request_info)), std::get<2>(request_info),
-        std::move(std::get<3>(request_info)));
-  }
-  pending_top_similarity_requests_.clear();
-}
-
-void AssociatedContentDelegate::OnTitleChanged() {
-  for (auto& observer : observers_) {
-    observer.OnTitleChanged(this);
-  }
-}
-
-void AssociatedContentDelegate::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void AssociatedContentDelegate::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
 
 ConversationHandler::Suggestion::Suggestion(std::string title)
     : title(std::move(title)) {}

@@ -230,16 +230,15 @@ class ConversationHandlerUnitTest : public testing::Test {
                                          bool multi = false) {
     if (empty) {
       ON_CALL(*associated_content_, GetStagedEntriesFromContent)
-          .WillByDefault(
-              [](ConversationHandler::GetStagedEntriesCallback callback) {
-                std::move(callback).Run(std::nullopt);
-              });
+          .WillByDefault([](GetStagedEntriesCallback callback) {
+            std::move(callback).Run(std::nullopt);
+          });
       return;
     }
     if (!multi) {
       ON_CALL(*associated_content_, GetStagedEntriesFromContent)
           .WillByDefault(
-              [](ConversationHandler::GetStagedEntriesCallback callback) {
+              [](GetStagedEntriesCallback callback) {
                 std::move(callback).Run(std::vector<SearchQuerySummary>{
                     SearchQuerySummary("query", "summary")});
               });
@@ -247,7 +246,7 @@ class ConversationHandlerUnitTest : public testing::Test {
     }
     ON_CALL(*associated_content_, GetStagedEntriesFromContent)
         .WillByDefault(
-            [](ConversationHandler::GetStagedEntriesCallback callback) {
+            [](GetStagedEntriesCallback callback) {
               std::move(callback).Run(
                   std::make_optional(std::vector<SearchQuerySummary>{
                       SearchQuerySummary("query", "summary"),

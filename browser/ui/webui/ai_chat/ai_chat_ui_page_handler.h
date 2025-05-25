@@ -32,10 +32,9 @@ class FaviconService;
 }  // namespace favicon
 
 namespace ai_chat {
-class AIChatUIPageHandler
-    : public mojom::AIChatUIHandler,
-      public ConversationHandler::AssociatedContentDelegate::Observer,
-      public UploadFileHelper::Observer {
+class AIChatUIPageHandler : public mojom::AIChatUIHandler,
+                            public AssociatedContentDelegate::Observer,
+                            public UploadFileHelper::Observer {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
@@ -96,8 +95,7 @@ class AIChatUIPageHandler
   void HandleWebContentsDestroyed();
 
   // AssociatedContentDelegate::Observer
-  void OnNavigated(
-      ConversationHandler::AssociatedContentDelegate* delegate) override;
+  void OnNavigated(AssociatedContentDelegate* delegate) override;
 
   // UploadFileHelper::Observer
   void OnFilesSelected() override;
@@ -107,9 +105,8 @@ class AIChatUIPageHandler
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
-  base::ScopedObservation<
-      ConversationHandler::AssociatedContentDelegate,
-      ConversationHandler::AssociatedContentDelegate::Observer>
+  base::ScopedObservation<AssociatedContentDelegate,
+                          AssociatedContentDelegate::Observer>
       associated_content_delegate_observation_{this};
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 

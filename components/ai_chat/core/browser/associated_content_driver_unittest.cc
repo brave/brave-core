@@ -50,7 +50,7 @@ class MockAssociatedContentDriver : public AssociatedContentDriver {
   MOCK_METHOD(std::u16string, GetPageTitle, (), (const, override));
   MOCK_METHOD(void,
               GetPageContent,
-              (ConversationHandler::GetPageContentCallback, std::string_view),
+              (GetPageContentCallback, std::string_view),
               (override));
   MOCK_METHOD(void,
               GetSearchSummarizerKey,
@@ -89,9 +89,9 @@ class AssociatedContentDriverUnitTest : public ::testing::Test {
 };
 
 TEST_F(AssociatedContentDriverUnitTest, GetContent) {
-  base::MockCallback<ConversationHandler::GetPageContentCallback> callback1;
-  base::MockCallback<ConversationHandler::GetPageContentCallback> callback2;
-  base::MockCallback<ConversationHandler::GetPageContentCallback> callback3;
+  base::MockCallback<GetPageContentCallback> callback1;
+  base::MockCallback<GetPageContentCallback> callback2;
+  base::MockCallback<GetPageContentCallback> callback3;
 
   EXPECT_CALL(callback1, Run("content", false, "token")).Times(1);
   EXPECT_CALL(callback2, Run("content", false, "token")).Times(1);
@@ -100,16 +100,15 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
   // Should only ask content once
   base::RunLoop run_loop;
   EXPECT_CALL(*associated_content_driver_, GetPageContent(_, _))
-      .WillOnce([&](ConversationHandler::GetPageContentCallback callback,
+      .WillOnce([&](GetPageContentCallback callback,
                     std::string_view invalidation_token) {
         // Simulate async response so that multiple calls can queue
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-            FROM_HERE,
-            base::BindOnce(
-                [](ConversationHandler::GetPageContentCallback callback) {
-                  std::move(callback).Run("content", false, "token");
-                },
-                std::move(callback)));
+            FROM_HERE, base::BindOnce(
+                           [](GetPageContentCallback callback) {
+                             std::move(callback).Run("content", false, "token");
+                           },
+                           std::move(callback)));
       });
 
   // Test
@@ -135,7 +134,7 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent) {
       .WillOnce(base::test::RunOnceCallback<0>("key"));
 
   // Expect a result
-  base::MockCallback<ConversationHandler::GetStagedEntriesCallback> callback;
+  base::MockCallback<GetStagedEntriesCallback> callback;
   EXPECT_CALL(
       callback,
       Run(Optional(ElementsAre(Eq(SearchQuerySummary("query", "summary"))))))
@@ -157,7 +156,7 @@ TEST_F(AssociatedContentDriverUnitTest,
       .WillByDefault(testing::Return(GURL("https://search.brave.com")));
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey).Times(0);
 
-  base::MockCallback<ConversationHandler::GetStagedEntriesCallback> callback;
+  base::MockCallback<GetStagedEntriesCallback> callback;
   EXPECT_CALL(callback, Run(Eq(std::nullopt))).Times(1);
 
   associated_content_driver_->GetStagedEntriesFromContent(callback.Get());
@@ -173,7 +172,7 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoKey) {
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
 
-  base::MockCallback<ConversationHandler::GetStagedEntriesCallback> callback;
+  base::MockCallback<GetStagedEntriesCallback> callback;
   EXPECT_CALL(callback, Run(Eq(std::nullopt))).Times(1);
 
   associated_content_driver_->GetStagedEntriesFromContent(callback.Get());
@@ -190,7 +189,7 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoResult) {
   EXPECT_CALL(*associated_content_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>("key"));
 
-  base::MockCallback<ConversationHandler::GetStagedEntriesCallback> callback;
+  base::MockCallback<GetStagedEntriesCallback> callback;
   EXPECT_CALL(callback, Run(Eq(std::nullopt))).Times(1);
 
   associated_content_driver_->GetStagedEntriesFromContent(callback.Get());

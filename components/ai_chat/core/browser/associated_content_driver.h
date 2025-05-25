@@ -9,20 +9,16 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
-#include <set>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
-#include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -50,8 +46,7 @@ namespace ai_chat {
 // and a single piece of content. Must be subclassed to
 // provide the platform-specific retrieval of the content details, such as
 // extracting the content of a web page.
-class AssociatedContentDriver
-    : public ConversationHandler::AssociatedContentDelegate {
+class AssociatedContentDriver : public AssociatedContentDelegate {
  public:
   explicit AssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -60,16 +55,14 @@ class AssociatedContentDriver
   AssociatedContentDriver(const AssociatedContentDriver&) = delete;
   AssociatedContentDriver& operator=(const AssociatedContentDriver&) = delete;
 
-  // ConversationHandler::AssociatedContentDelegate
+  // AssociatedContentDelegate
   int GetContentId() const override;
   GURL GetURL() const override;
   std::u16string GetTitle() const override;
-  void GetContent(
-      ConversationHandler::GetPageContentCallback callback) override;
+  void GetContent(GetPageContentCallback callback) override;
   std::string_view GetCachedTextContent() const override;
   bool GetCachedIsVideo() const override;
-  void GetStagedEntriesFromContent(
-      ConversationHandler::GetStagedEntriesCallback callback) override;
+  void GetStagedEntriesFromContent(GetStagedEntriesCallback callback) override;
 
   base::WeakPtr<AssociatedContentDriver> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
@@ -90,9 +83,8 @@ class AssociatedContentDriver
   // |invalidation_token| is an optional parameter received in a prior callback
   // response of this function against the same page. See GetPageContentCallback
   // for explanation.
-  virtual void GetPageContent(
-      ConversationHandler::GetPageContentCallback callback,
-      std::string_view invalidation_token) = 0;
+  virtual void GetPageContent(GetPageContentCallback callback,
+                              std::string_view invalidation_token) = 0;
 
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
@@ -117,18 +109,15 @@ class AssociatedContentDriver
                                      std::string contents_text,
                                      bool is_video,
                                      std::string invalidation_token);
-  void OnExistingGeneratePageContentComplete(
-      ConversationHandler::GetPageContentCallback callback,
-      int64_t navigation_id);
+  void OnExistingGeneratePageContentComplete(GetPageContentCallback callback,
+                                             int64_t navigation_id);
 
-  void OnSearchSummarizerKeyFetched(
-      ConversationHandler::GetStagedEntriesCallback callback,
-      int64_t navigation_id,
-      const std::optional<std::string>& key);
-  void OnSearchQuerySummaryFetched(
-      ConversationHandler::GetStagedEntriesCallback callback,
-      int64_t navigation_id,
-      api_request_helper::APIRequestResult result);
+  void OnSearchSummarizerKeyFetched(GetStagedEntriesCallback callback,
+                                    int64_t navigation_id,
+                                    const std::optional<std::string>& key);
+  void OnSearchQuerySummaryFetched(GetStagedEntriesCallback callback,
+                                   int64_t navigation_id,
+                                   api_request_helper::APIRequestResult result);
 
   static std::optional<std::vector<SearchQuerySummary>>
   ParseSearchQuerySummaryResponse(const base::Value& value);

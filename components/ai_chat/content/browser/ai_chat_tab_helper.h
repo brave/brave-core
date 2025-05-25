@@ -60,7 +60,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
                         public mojom::PageContentExtractorHost,
                         public AssociatedContentDriver {
  public:
-  using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
+  using GetPageContentCallback = GetPageContentCallback;
 
   static void BindPageContentExtractorHost(
       content::RenderFrameHost* rfh,

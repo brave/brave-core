@@ -16,8 +16,7 @@
 
 namespace ai_chat {
 
-class MockAssociatedContent
-    : public ConversationHandler::AssociatedContentDelegate {
+class MockAssociatedContent : public AssociatedContentDelegate {
  public:
   MockAssociatedContent();
   ~MockAssociatedContent() override;
@@ -26,8 +25,7 @@ class MockAssociatedContent
 
   void SetContentId(int id) { content_id_ = id; }
 
-  void GetContent(
-      ConversationHandler::GetPageContentCallback callback) override;
+  void GetContent(GetPageContentCallback callback) override;
 
   std::string_view GetCachedTextContent() const override {
     return cached_text_content_;
@@ -41,19 +39,18 @@ class MockAssociatedContent
 
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
-              (ConversationHandler::GetStagedEntriesCallback),
+              (GetStagedEntriesCallback),
               (override));
   MOCK_METHOD(bool, HasOpenAIChatPermission, (), (const, override));
 
-  base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
+  base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
 
  private:
   int content_id_ = 0;
   std::string cached_text_content_;
-  base::WeakPtrFactory<ConversationHandler::AssociatedContentDelegate>
-      weak_ptr_factory_{this};
+  base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

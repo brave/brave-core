@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -98,10 +99,9 @@ void AssociatedContentManager::SetArchiveContent(int content_id,
   conversation_->OnAssociatedContentUpdated();
 }
 
-void AssociatedContentManager::AddContent(
-    ConversationHandler::AssociatedContentDelegate* delegate,
-    bool notify_updated,
-    bool detach_existing_content) {
+void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
+                                          bool notify_updated,
+                                          bool detach_existing_content) {
   DVLOG(1) << __func__;
 
   // Optionally, we can set |delegate| as the only content for this
@@ -127,7 +127,7 @@ void AssociatedContentManager::AddContent(
 }
 
 void AssociatedContentManager::RemoveContent(
-    ConversationHandler::AssociatedContentDelegate* delegate,
+    AssociatedContentDelegate* delegate,
     bool notify_updated) {
   DVLOG(1) << __func__;
 
@@ -280,7 +280,7 @@ void AssociatedContentManager::GetScreenshots(
 }
 
 void AssociatedContentManager::GetStagedEntriesFromContent(
-    ConversationHandler::GetStagedEntriesCallback callback) {
+    GetStagedEntriesCallback callback) {
   DVLOG(1) << __func__;
 
   if (content_delegates_.size() != 1) {
@@ -384,7 +384,7 @@ void AssociatedContentManager::SetShouldSend(bool value) {
 }
 
 void AssociatedContentManager::OnNavigated(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
+    AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
   SetArchiveContent(delegate->GetContentId(),
                     std::string(delegate->GetCachedTextContent()),
@@ -395,7 +395,7 @@ void AssociatedContentManager::OnNavigated(
 }
 
 void AssociatedContentManager::OnTitleChanged(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
+    AssociatedContentDelegate* delegate) {
   DVLOG(1) << __func__;
 
   conversation_->OnAssociatedContentUpdated();

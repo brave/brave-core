@@ -14,6 +14,7 @@
 #include "base/one_shot_event.h"
 #include "base/scoped_multi_source_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -25,8 +26,7 @@ namespace ai_chat {
 // - Loading archived content
 // - Archiving content as the user navigates aways
 // - Managing whether content should be used as part of the context
-class AssociatedContentManager
-    : public ConversationHandler::AssociatedContentDelegate::Observer {
+class AssociatedContentManager : public AssociatedContentDelegate::Observer {
  public:
   explicit AssociatedContentManager(ConversationHandler* conversation);
   ~AssociatedContentManager() override;
@@ -46,18 +46,17 @@ class AssociatedContentManager
   // content has been updated.
   // If |detach_existing_content| is true, the current content will be detached
   // and the new content will be set as the only content for this conversation.
-  void AddContent(ConversationHandler::AssociatedContentDelegate* delegate,
+  void AddContent(AssociatedContentDelegate* delegate,
                   bool notify_updated = true,
                   bool detach_existing_content = false);
 
   // Removes a content delegate from the list of content delegates.
-  void RemoveContent(ConversationHandler::AssociatedContentDelegate* delegate,
+  void RemoveContent(AssociatedContentDelegate* delegate,
                      bool notify_updated = true);
 
   void GetContent(base::OnceClosure callback);
   void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
-  void GetStagedEntriesFromContent(
-      ConversationHandler::GetStagedEntriesCallback callback);
+  void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
   void GetTopSimilarityWithPromptTilContextLimit(
       const std::string& prompt,
       const std::string& text,
@@ -82,17 +81,14 @@ class AssociatedContentManager
   // TODO(fallaciousreasoning): Remove this method.
   bool IsVideo() const;
 
-  // ConversationHandler::AssociatedContentDelegate::Observer
-  void OnNavigated(
-      ConversationHandler::AssociatedContentDelegate* delegate) override;
-  void OnTitleChanged(
-      ConversationHandler::AssociatedContentDelegate* delegate) override;
+  // AssociatedContentDelegate::Observer:
+  void OnNavigated(AssociatedContentDelegate* delegate) override;
+  void OnTitleChanged(AssociatedContentDelegate* delegate) override;
 
   bool should_send() const { return should_send_; }
   void SetShouldSend(bool value);
 
-  std::vector<ConversationHandler::AssociatedContentDelegate*>
-  GetContentDelegatesForTesting() {
+  std::vector<AssociatedContentDelegate*> GetContentDelegatesForTesting() {
     return content_delegates_;
   }
 
@@ -103,15 +99,13 @@ class AssociatedContentManager
 
   raw_ptr<ConversationHandler> conversation_;
 
-  std::vector<ConversationHandler::AssociatedContentDelegate*>
-      content_delegates_;
+  std::vector<AssociatedContentDelegate*> content_delegates_;
 
   // Used for ownership - still stored in the above array.
   std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;
 
-  base::ScopedMultiSourceObservation<
-      ConversationHandler::AssociatedContentDelegate,
-      ConversationHandler::AssociatedContentDelegate::Observer>
+  base::ScopedMultiSourceObservation<AssociatedContentDelegate,
+                                     AssociatedContentDelegate::Observer>
       content_observations_{this};
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;

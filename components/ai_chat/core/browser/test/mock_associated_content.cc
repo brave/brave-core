@@ -14,8 +14,7 @@ MockAssociatedContent::~MockAssociatedContent() {
   OnNewPage(-1);
 }
 
-void MockAssociatedContent::GetContent(
-    ConversationHandler::GetPageContentCallback callback) {
+void MockAssociatedContent::GetContent(GetPageContentCallback callback) {
   cached_text_content_ = GetTextContent();
   std::move(callback).Run(GetTextContent(), GetCachedIsVideo(), "");
 }
