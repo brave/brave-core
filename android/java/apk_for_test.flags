@@ -358,7 +358,11 @@
 
 -keep class org.chromium.chrome.browser.search_engines.settings.BraveBaseSearchEngineAdapter
 
--keep class org.chromium.chrome.browser.ChromeTabbedActivity
+-keep class org.chromium.components.browser_ui.util.motion.MotionEventInfo
+
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity {
+    boolean onMenuOrKeyboardAction(int, boolean, org.chromium.components.browser_ui.util.motion.MotionEventInfo);
+}
 
 -keep class org.chromium.chrome.browser.app.BraveActivity
 
