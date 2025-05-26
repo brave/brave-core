@@ -1,3 +1,5 @@
 include_rules = [
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/core/browser",
   "+components/search_engines",
 ]

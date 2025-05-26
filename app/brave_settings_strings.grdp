@@ -216,6 +216,32 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION" desc="The label for section containing settings related to content">
     Content
   </message>
+  <if expr="enable_containers">
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_SECTION" desc="The label for section containing settings related to containers">
+      Containers
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_DESC" desc="The label for section containing settings related to containers">
+      Organize your browsing with containers. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_ADD_CONTAINER" desc="The label for dialog title for adding a container">
+      Add container
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_EDIT_CONTAINER" desc="The label for dialog title for editing a container">
+      Edit container
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER" desc="The label for dialog title for deleting a container">
+      Delete container
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER_DESCRIPTION" desc="The description for dialog title for deleting a container">
+      Are you sure you want to delete container <ph name="CONTAINER_NAME">"$1"<ex>"Work"</ex></ph>? This will remove all the data associated with it.
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME" desc="The label for container name input field">
+      Container name
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME_PLACEHOLDER" desc="The placeholder for container name input field">
+      Personal, Work, Shopping, Social, you name it.
+    </message>
+  </if>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS" desc="The label for showing tabs vertically">
     Use vertical tabs
   </message>

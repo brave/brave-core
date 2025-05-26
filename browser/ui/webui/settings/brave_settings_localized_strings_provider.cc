@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -65,6 +66,11 @@ constexpr char16_t kBraveBuildInstructionsUrl[] =
 constexpr char16_t kBraveLicenseUrl[] = u"https://mozilla.org/MPL/2.0/";
 constexpr char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/brave/brave-browser/releases/tag/v";
+#if BUILDFLAG(ENABLE_CONTAINERS)
+constexpr char16_t kContainersLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Containers";
+#endif
 constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
@@ -329,6 +335,22 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
       {"contentSettingsContentSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
+#if BUILDFLAG(ENABLE_CONTAINERS)
+      {"contentSettingsContainersSection",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_SECTION},
+      {"containersAddContainer",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_ADD_CONTAINER},
+      {"containersEditContainer",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_EDIT_CONTAINER},
+      {"containersContainerName",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME},
+      {"containersContainerNamePlaceholder",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINER_NAME_PLACEHOLDER},
+      {"containersDeleteContainer",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER},
+      {"containersDeleteContainerDescription",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_DELETE_CONTAINER_DESCRIPTION},
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 #endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
@@ -1032,6 +1054,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC,
                              kUnstoppableDomainsLearnMoreURL));
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  html_source->AddString("containersDesc",
+                         l10n_util::GetStringFUTF16(
+                             IDS_SETTINGS_APPEARANCE_SETTINGS_CONTAINERS_DESC,
+                             kContainersLearnMoreURL));
+#endif
   html_source->AddString(
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
