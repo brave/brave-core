@@ -11,7 +11,7 @@ describe('getSolanaSystemInstructionParamsAndType', () => {
   it('converts a brave wallet instruction to a solana instruction', () => {
     const typedInstruction = getSolanaTransactionInstructionParamsAndType(
       mockSolDappSignAndSendTransactionRequest.txDataUnion.solanaTxData!
-        .instructions[0]
+        .instructions[0],
     )
 
     const paramNames = typedInstruction.params.map((p) => p.name)

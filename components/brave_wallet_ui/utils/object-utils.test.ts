@@ -13,14 +13,14 @@ const e = { a: 'text', b: [1, 0] }
 const i = {
   a: 'text',
   c: {
-    b: [1, 0]
-  }
+    b: [1, 0],
+  },
 }
 const j = {
   a: 'text',
   c: {
-    b: [1, 0]
-  }
+    b: [1, 0],
+  },
 }
 const k = { a: 'text', b: null }
 const l = { a: 'text', b: undefined }
@@ -89,14 +89,14 @@ it('should detect differences in nested object property values', () => {
   expect(
     objectEquals(
       { 1: { name: 'mhc', age: 28 }, 2: { name: 'arb', age: 26 } },
-      { 1: { name: 'mhc', age: 28 }, 2: { name: 'arb', age: 26 } }
-    )
+      { 1: { name: 'mhc', age: 28 }, 2: { name: 'arb', age: 26 } },
+    ),
   ).toBe(true)
   expect(
     objectEquals(
       { 1: { name: 'mhc', age: 28 }, 2: { name: 'arb', age: 26 } },
-      { 1: { name: 'mhc', age: 28 }, 2: { name: 'arb', age: 27 } }
-    )
+      { 1: { name: 'mhc', age: 28 }, 2: { name: 'arb', age: 27 } },
+    ),
   ).toBe(false)
   expect(objectEquals(i, j)).toBe(true)
   expect(objectEquals(d, k)).toBe(false)
@@ -110,10 +110,10 @@ it('should fail if an empty object is compared with null or undefined', () => {
 
 it('should detect Date differences', () => {
   expect(objectEquals(new Date('2011-03-31'), new Date('2011-03-31'))).toBe(
-    true
+    true,
   )
   expect(objectEquals(new Date('2011-03-31'), new Date('1970-01-01'))).toBe(
-    false
+    false,
   )
   expect(objectEquals(new Date(1234), 1234)).toBe(false)
 })

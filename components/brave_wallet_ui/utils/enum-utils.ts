@@ -28,7 +28,7 @@ export const getGetCleanedMojoEnumKeys = <T extends object>(mojoEnum: T) => {
     getGetMojoEnumValues(mojoEnum)
       // remove leading 'k' from constant names
       .map((type) =>
-        type.startsWith('k') ? type.replace('k', '') : type
+        type.startsWith('k') ? type.replace('k', '') : type,
       ) as Array<CleanedFromMojoEnumKey<keyof typeof mojoEnum>>
   )
 }

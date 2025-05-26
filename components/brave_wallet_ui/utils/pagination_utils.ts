@@ -6,7 +6,7 @@
 export function getListPageItems<T extends any[]>(
   items: T,
   currentPageNumber: number,
-  maxItemsPerPage: number
+  maxItemsPerPage: number,
 ) {
   const pageStartItemIndex =
     currentPageNumber * maxItemsPerPage - maxItemsPerPage
@@ -15,7 +15,7 @@ export function getListPageItems<T extends any[]>(
 
 export function getLastPageNumber<T extends any[]>(
   items: T,
-  maxItemsPerPage: number
+  maxItemsPerPage: number,
 ) {
   return Math.floor(items.length / maxItemsPerPage) + 1
 }

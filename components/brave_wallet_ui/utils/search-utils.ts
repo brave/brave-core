@@ -9,14 +9,14 @@ import { EntityState } from '@reduxjs/toolkit'
 import {
   SerializableTransactionInfo,
   BraveWallet,
-  TransactionInfo
+  TransactionInfo,
 } from '../constants/types'
 import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
 // utils
 import {
   NetworksRegistry,
-  networkEntityAdapter
+  networkEntityAdapter,
 } from '../common/slices/entities/network.entity'
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAddressLabel, getAccountLabel } from './account-utils'
@@ -27,7 +27,7 @@ import {
   getETHSwapTransactionBuyAndSellTokens,
   getTransactionApprovalTargetAddress,
   getTransactionToAddress,
-  getTransactionIntent
+  getTransactionIntent,
 } from './tx-utils'
 
 export type SearchableTransaction = TransactionInfo & {
@@ -49,13 +49,13 @@ export const makeSearchableTransaction = (
   tx: SerializableTransactionInfo,
   combinedTokensListForSelectedChain: BraveWallet.BlockchainToken[],
   networksRegistry: NetworksRegistry | undefined,
-  accountInfosRegistry: EntityState<AccountInfoEntity>
+  accountInfosRegistry: EntityState<AccountInfoEntity>,
 ): SearchableTransaction => {
   const txNetwork =
     networksRegistry?.entities[
       networkEntityAdapter.selectId({
         chainId: tx.chainId,
-        coin: getCoinFromTxDataUnion(tx.txDataUnion)
+        coin: getCoinFromTxDataUnion(tx.txDataUnion),
       })
     ]
 
@@ -65,7 +65,7 @@ export const makeSearchableTransaction = (
 
   const erc721BlockchainToken = [
     BraveWallet.TransactionType.ERC721TransferFrom,
-    BraveWallet.TransactionType.ERC721SafeTransferFrom
+    BraveWallet.TransactionType.ERC721SafeTransferFrom,
   ].includes(tx.txType)
     ? token
     : undefined
@@ -73,13 +73,13 @@ export const makeSearchableTransaction = (
   const { buyToken, sellToken } = getETHSwapTransactionBuyAndSellTokens({
     nativeAsset,
     tokensList: combinedTokensListForSelectedChain,
-    tx
+    tx,
   })
 
   const approvalTarget = getTransactionApprovalTargetAddress(tx)
   const approvalTargetLabel = getAddressLabel(
     approvalTarget,
-    accountInfosRegistry
+    accountInfosRegistry,
   )
 
   const senderAccount = tx.fromAccountId
@@ -99,7 +99,7 @@ export const makeSearchableTransaction = (
     sellAmount: emptyAmount,
     sellToken,
     token,
-    transactionNetwork: txNetwork
+    transactionNetwork: txNetwork,
   })
 
   return {
@@ -115,57 +115,56 @@ export const makeSearchableTransaction = (
     sellToken,
     senderAddress,
     senderLabel,
-    token
+    token,
   }
 }
 
 const findTokenBySearchValue = (
   searchValue: string,
-  token?: BraveWallet.BlockchainToken
+  token?: BraveWallet.BlockchainToken,
 ) => {
   if (!token) {
     return false
   }
 
   return (
-    token.name.toLowerCase().includes(searchValue) ||
-    token.symbol.toLowerCase().includes(searchValue) ||
-    token.contractAddress.toLowerCase().includes(searchValue)
+    token.name.toLowerCase().includes(searchValue)
+    || token.symbol.toLowerCase().includes(searchValue)
+    || token.contractAddress.toLowerCase().includes(searchValue)
   )
 }
 
 export const filterTransactionsBySearchValue = (
   txs: SearchableTransaction[],
-  lowerCaseSearchValue: string
+  lowerCaseSearchValue: string,
 ) => {
   return txs.filter((tx) => {
     return (
       // Tokens
-      findTokenBySearchValue(lowerCaseSearchValue, tx.token) ||
+      findTokenBySearchValue(lowerCaseSearchValue, tx.token)
       // Buy Token
-      findTokenBySearchValue(lowerCaseSearchValue, tx.buyToken) ||
+      || findTokenBySearchValue(lowerCaseSearchValue, tx.buyToken)
       // Sell Token
-      findTokenBySearchValue(lowerCaseSearchValue, tx.sellToken) ||
+      || findTokenBySearchValue(lowerCaseSearchValue, tx.sellToken)
       // ERC721 NFTs
-      findTokenBySearchValue(lowerCaseSearchValue, tx.erc721BlockchainToken) ||
+      || findTokenBySearchValue(lowerCaseSearchValue, tx.erc721BlockchainToken)
       // Sender
-      tx.senderAddress.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.senderLabel.toLowerCase().includes(lowerCaseSearchValue) ||
+      || tx.senderAddress.toLowerCase().includes(lowerCaseSearchValue)
+      || tx.senderLabel.toLowerCase().includes(lowerCaseSearchValue)
       // Receiver
-      tx.recipient.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.recipientLabel.toLowerCase().includes(lowerCaseSearchValue) ||
+      || tx.recipient.toLowerCase().includes(lowerCaseSearchValue)
+      || tx.recipientLabel.toLowerCase().includes(lowerCaseSearchValue)
       // Intent
-      tx.intent.toLowerCase().includes(lowerCaseSearchValue) ||
+      || tx.intent.toLowerCase().includes(lowerCaseSearchValue)
       // Hash
-      tx.txHash.toLowerCase().includes(lowerCaseSearchValue) ||
+      || tx.txHash.toLowerCase().includes(lowerCaseSearchValue)
       // Approval Target
-      (tx.approvalTarget &&
-        tx.approvalTarget.toLowerCase().includes(lowerCaseSearchValue)) ||
-      (tx.approvalTargetLabel &&
-        tx.approvalTargetLabel.toLowerCase().includes(lowerCaseSearchValue)) ||
-      // Origin
-      tx.originInfo?.eTldPlusOne.toLowerCase().includes(lowerCaseSearchValue) ||
-      tx.originInfo?.originSpec.toLowerCase().includes(lowerCaseSearchValue)
+      || (tx.approvalTarget
+        && tx.approvalTarget.toLowerCase().includes(lowerCaseSearchValue))
+      || (tx.approvalTargetLabel
+        && tx.approvalTargetLabel.toLowerCase().includes(lowerCaseSearchValue)) // Origin
+      || tx.originInfo?.eTldPlusOne.toLowerCase().includes(lowerCaseSearchValue)
+      || tx.originInfo?.originSpec.toLowerCase().includes(lowerCaseSearchValue)
     )
   })
 }

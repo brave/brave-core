@@ -11,7 +11,7 @@ export const stripChromeImageURL = (url?: string) =>
   url?.replace('chrome://image?', '')
 
 export const stripERC20TokenImageURL = <T extends string | undefined>(
-  url?: T
+  url?: T,
 ): T => {
   if (url) {
     return url.replace('chrome://erc-token-images/', '') as T
@@ -22,17 +22,17 @@ export const stripERC20TokenImageURL = <T extends string | undefined>(
 export const toProperCase = (value: string) =>
   value.replace(
     /\w\S*/g,
-    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
   )
 
 export function getIsBraveWalletOrigin({
-  originSpec
+  originSpec,
 }: Pick<BraveWallet.OriginInfo, 'originSpec'>) {
   try {
     const url = new URL(originSpec)
     return (
-      (url.protocol === 'chrome:' || url.protocol === 'brave:') &&
-      url.host === 'wallet'
+      (url.protocol === 'chrome:' || url.protocol === 'brave:')
+      && url.host === 'wallet'
     )
   } catch (error) {
     console.log(error)
@@ -41,17 +41,17 @@ export function getIsBraveWalletOrigin({
 }
 
 export const isRemoteImageURL = (url?: string) =>
-  url?.startsWith('http://') ||
-  url?.startsWith('https://') ||
-  url?.startsWith('data:image/') ||
-  isIpfs(url)
+  url?.startsWith('http://')
+  || url?.startsWith('https://')
+  || url?.startsWith('data:image/')
+  || isIpfs(url)
 
 export const isValidIconExtension = (url?: string) =>
-  url?.endsWith('.jpg') ||
-  url?.endsWith('.jpeg') ||
-  url?.endsWith('.png') ||
-  url?.endsWith('.svg') ||
-  url?.endsWith('.gif')
+  url?.endsWith('.jpg')
+  || url?.endsWith('.jpeg')
+  || url?.endsWith('.png')
+  || url?.endsWith('.svg')
+  || url?.endsWith('.gif')
 
 export const isDataURL = (url?: string) =>
   url?.startsWith('chrome://erc-token-images/')

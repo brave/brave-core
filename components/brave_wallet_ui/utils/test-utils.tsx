@@ -23,10 +23,10 @@ import { mockPageState } from '../stories/mock-data/mock-page-state'
 import { mockWalletState } from '../stories/mock-data/mock-wallet-state'
 import {
   AccountsTabState,
-  createAccountsTabReducer
+  createAccountsTabReducer,
 } from '../page/reducers/accounts-tab-reducer'
 import {
-  mockAccountsTabState //
+  mockAccountsTabState, //
 } from '../stories/mock-data/mock-accounts-tab-state'
 import { mockUiState } from '../stories/mock-data/mock-ui-state'
 import { mockPanelState } from '../stories/mock-data/mock-panel-state'
@@ -35,13 +35,13 @@ import {
   makeBraveWalletServiceObserver,
   makeJsonRpcServiceObserver,
   makeKeyringServiceObserver,
-  makeTxServiceObserver
+  makeTxServiceObserver,
 } from '../common/wallet_api_proxy_observers'
 import getAPIProxy, { resetAPIProxy } from '../common/async/bridge'
 import { resetRewardsProxy } from '../common/async/brave_rewards_api_proxy'
 import {
   BraveRewardsProxyOverrides,
-  WalletApiDataOverrides
+  WalletApiDataOverrides,
 } from '../constants/testing_types'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
@@ -59,10 +59,10 @@ export const createMockStore = (
     pageStateOverride,
     panelStateOverride,
     uiStateOverride,
-    walletStateOverride
+    walletStateOverride,
   }: RootStateOverrides,
   apiOverrides?: WalletApiDataOverrides,
-  rewardsApiOverrides?: BraveRewardsProxyOverrides
+  rewardsApiOverrides?: BraveRewardsProxyOverrides,
 ) => {
   // api reset
   resetCache() // clear base query cache
@@ -75,29 +75,29 @@ export const createMockStore = (
     reducer: {
       wallet: createWalletReducer({
         ...mockWalletState,
-        ...(walletStateOverride || {})
+        ...(walletStateOverride || {}),
       }),
       panel: createPanelReducer({
         ...mockPanelState,
-        ...(panelStateOverride ?? {})
+        ...(panelStateOverride ?? {}),
       }),
       page: createPageReducer({
         ...mockPageState,
-        ...(pageStateOverride || {})
+        ...(pageStateOverride || {}),
       }),
       accountsTab: createAccountsTabReducer({
         ...mockAccountsTabState,
-        ...(accountTabStateOverride || {})
+        ...(accountTabStateOverride || {}),
       }),
       ui: createUIReducer({
         ...mockUiState,
-        ...(uiStateOverride || {})
+        ...(uiStateOverride || {}),
       }),
-      [api.reducerPath]: api.reducer
+      [api.reducerPath]: api.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware)
+      getDefaultMiddleware().concat(api.middleware),
   })
 
   const proxy = getAPIProxy()
@@ -111,36 +111,36 @@ export const createMockStore = (
 }
 
 export function renderHookOptionsWithMockStore(
-  store: ReturnType<typeof createMockStore>
+  store: ReturnType<typeof createMockStore>,
 ) {
   return {
     wrapper: ({ children }: { children?: React.ReactNode }) => (
       <Provider store={store}>{children}</Provider>
-    )
+    ),
   }
 }
 
 export function renderComponentOptionsWithMockStore(
-  store: ReturnType<typeof createMockStore>
+  store: ReturnType<typeof createMockStore>,
 ) {
   return {
     wrapper: ({ children }: { children?: React.ReactNode }) => (
       <BraveCoreThemeProvider>
         <Provider store={store}>{children}</Provider>
       </BraveCoreThemeProvider>
-    )
+    ),
   }
 }
 
 export const makeMockedStoreWithSpy = (
   stateOverrides: RootStateOverrides = {},
   apiOverrides?: WalletApiDataOverrides,
-  rewardsApiOverrides?: BraveRewardsProxyOverrides
+  rewardsApiOverrides?: BraveRewardsProxyOverrides,
 ) => {
   const store = createMockStore(
     stateOverrides,
     apiOverrides,
-    rewardsApiOverrides
+    rewardsApiOverrides,
   )
 
   const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined

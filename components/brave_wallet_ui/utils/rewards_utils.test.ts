@@ -19,7 +19,7 @@ import {
   getRewardsProviderBackground,
   getRewardsProviderIcon,
   getRewardsProviderName,
-  getRewardsTokenDescription
+  getRewardsTokenDescription,
 } from './rewards_utils'
 
 const upholdRewardsAccount = getNormalizedExternalRewardsWallet('uphold')
@@ -36,7 +36,7 @@ describe('getIsRewardsAccount', () => {
 describe('getNormalizedExternalRewardsWallet', () => {
   it('Should return uphold as uniqueKey', () => {
     expect(
-      getNormalizedExternalRewardsWallet('uphold')?.accountId.uniqueKey
+      getNormalizedExternalRewardsWallet('uphold')?.accountId.uniqueKey,
     ).toEqual('uphold')
   })
   it('Should return undefined', () => {
@@ -58,7 +58,7 @@ describe('getIsRewardsNetwork', () => {
 describe('getNormalizedExternalRewardsNetwork', () => {
   it('Should return uphold as chainId', () => {
     expect(getNormalizedExternalRewardsNetwork('uphold')?.chainId).toEqual(
-      'uphold'
+      'uphold',
     )
   })
   it('Should return undefined', () => {
@@ -122,7 +122,7 @@ describe('getRewardsProviderName', () => {
 describe('getRewardsTokenDescription', () => {
   it('Should return empty string', () => {
     expect(getRewardsTokenDescription('uphold')).toEqual(
-      'braveWalletBraveRewardsDescription'
+      'braveWalletBraveRewardsDescription',
     )
   })
   it('Should return empty string', () => {

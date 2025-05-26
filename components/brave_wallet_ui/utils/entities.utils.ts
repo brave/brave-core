@@ -10,7 +10,7 @@ export function getEntitiesListFromEntityState<T>(
   /**
    * Use to select a subset of entities by id
    */
-  altIds?: EntityId[]
+  altIds?: EntityId[],
 ): T[] {
   const ids = altIds || state.ids
   const entitiesList: T[] = []

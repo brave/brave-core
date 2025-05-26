@@ -25,11 +25,11 @@ interface GroupedSVMStateChanges {
 }
 
 export const groupSimulatedEVMStateChanges = (
-  evmStateChanges: BraveWallet.BlowfishEVMStateChange[]
+  evmStateChanges: BraveWallet.BlowfishEVMStateChange[],
 ): GroupedEVMStateChanges => {
   const changes: GroupedEVMStateChanges = {
     evmApprovals: [],
-    evmTransfers: []
+    evmTransfers: [],
   }
 
   for (const stateChange of evmStateChanges) {
@@ -37,20 +37,20 @@ export const groupSimulatedEVMStateChanges = (
 
     // approvals & approvals for all
     if (
-      data.erc20ApprovalData ||
-      data.erc721ApprovalData ||
-      data.erc721ApprovalForAllData ||
-      data.erc1155ApprovalForAllData
+      data.erc20ApprovalData
+      || data.erc721ApprovalData
+      || data.erc721ApprovalForAllData
+      || data.erc1155ApprovalForAllData
     ) {
       changes.evmApprovals.push(stateChange)
     }
 
     // transfers
     if (
-      data.erc20TransferData ||
-      data.erc721TransferData ||
-      data.erc1155TransferData ||
-      data.nativeAssetTransferData
+      data.erc20TransferData
+      || data.erc721TransferData
+      || data.erc1155TransferData
+      || data.nativeAssetTransferData
     ) {
       changes.evmTransfers.push(stateChange)
     }
@@ -60,13 +60,13 @@ export const groupSimulatedEVMStateChanges = (
 }
 
 export const decodeSimulatedSVMStateChanges = (
-  stateChanges: BraveWallet.BlowfishSolanaStateChange[]
+  stateChanges: BraveWallet.BlowfishSolanaStateChange[],
 ): GroupedSVMStateChanges => {
   const changes: GroupedSVMStateChanges = {
     solStakeAuthorityChanges: [],
     splApprovals: [],
     svmTransfers: [],
-    accountOwnerChangeData: []
+    accountOwnerChangeData: [],
   }
 
   for (const stateChange of stateChanges) {
@@ -104,7 +104,7 @@ const { BlowfishEVMErrorKind, BlowfishSolanaErrorKind: SolErrorKind } =
   BraveWallet
 
 export const translateSimulationWarning = (
-  warning: BraveWallet.BlowfishWarning | undefined
+  warning: BraveWallet.BlowfishWarning | undefined,
 ) => {
   if (!warning) {
     return ''
@@ -149,7 +149,7 @@ export const translateSimulationWarning = (
 
     case BraveWallet.BlowfishWarningKind.kTransferringErc20ToOwnContract:
       return getLocale(
-        'braveWalletSimulationWarningTransferringErc20ToOwnContract'
+        'braveWalletSimulationWarningTransferringErc20ToOwnContract',
       )
 
     case BraveWallet.BlowfishWarningKind.kUserAccountOwnerChange:
@@ -166,7 +166,7 @@ export const translateSimulationResultError = (
     | BraveWallet.BlowfishSolanaError
     | undefined,
   /** prevents collisions between error enums */
-  coinType: BraveWallet.CoinType
+  coinType: BraveWallet.CoinType,
 ) => {
   if (!error) {
     return ''
@@ -184,13 +184,13 @@ export const translateSimulationResultError = (
 
       case SolErrorKind.kTooManyTransactions:
         return getLocale(
-          'braveWalletSimulationWarningTooManyTransactionsCritical'
+          'braveWalletSimulationWarningTooManyTransactionsCritical',
         )
 
       default:
         return (
-          error.humanReadableError ||
-          getLocale('braveWalletSimulationUnexpectedError')
+          error.humanReadableError
+          || getLocale('braveWalletSimulationUnexpectedError')
         )
     }
   }
@@ -209,8 +209,8 @@ export const translateSimulationResultError = (
     // Unknown error type
     default:
       return (
-        error.humanReadableError ||
-        getLocale('braveWalletSimulationUnexpectedError')
+        error.humanReadableError
+        || getLocale('braveWalletSimulationUnexpectedError')
       )
   }
 }

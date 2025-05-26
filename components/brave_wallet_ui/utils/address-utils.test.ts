@@ -7,26 +7,26 @@ import {
   isValidEVMAddress,
   isValidSolanaAddress,
   isValidFilAddress,
-  isValidBtcAddress
+  isValidBtcAddress,
 } from './address-utils'
 import {
   mockAddresses,
   mockFilAddresses,
   mockFilInvalilAddresses,
-  mockSolanaAccount
+  mockSolanaAccount,
 } from '../common/constants/mocks'
 
 const validAdresses = mockAddresses.map((addr: string) => [addr, true])
 const invalidAddresses = [
   '0xea674fdde714fd979de3edf0f56aa9716b898',
   '0xdbf41e98f541f19bb044e604d2520f3893e',
-  '0xcee177039c99d03a6f74e95bb23ceea43ea2'
+  '0xcee177039c99d03a6f74e95bb23ceea43ea2',
 ].map((addr) => [addr, false])
 
 const validFilAdresses = mockFilAddresses.map((addr: string) => [addr, true])
 const validFilInvalidAdresses = mockFilInvalilAddresses.map((addr: string) => [
   addr,
-  false
+  false,
 ])
 const validSolanaAddress = mockSolanaAccount.address
 
@@ -42,7 +42,7 @@ const validBtcMainnetAddresses = [
   'bc1qgc9ljrvdf2e0zg9rmmq86xklqwfys7r6wptjlacdgrcdc7sa6ggqu4rrxf',
   'bc1pve739yap4uxjvfk0jrey69078u0gasm2nwvv483ec6zkzulgw9xqu4w9fd',
   '1G9A9j6W8TLuh6dEeVwWeyibK1Uc5MfVFV',
-  '33GA3ZXbw5o5HeUrBEaqkWXFYYZmdxGRRP'
+  '33GA3ZXbw5o5HeUrBEaqkWXFYYZmdxGRRP',
 ]
 
 const validBtcTestnetAddresses = [
@@ -57,7 +57,7 @@ const validBtcTestnetAddresses = [
   'tb1q9jx3x2qqdpempxrcfgyrkjd5fzeacaqj4ua7cs7fe2sfd2wdaueq5wn26y',
   'tb1pdswckwd9ym5yf5eyzg8j4jjwnzla8y0tf9cp7aasfkek0u29sz9qfr00yf',
   'mwgS2HRbjyfYxFnR1nF9VKLvmdgMfFBmGq',
-  '2MwBVrJQ76BdaGD76CTmou8cZzQYLpe4NqU'
+  '2MwBVrJQ76BdaGD76CTmou8cZzQYLpe4NqU',
 ]
 
 describe('Address Utils', () => {
@@ -66,14 +66,14 @@ describe('Address Utils', () => {
       'should return true if address is valid',
       (address: string, isValid: boolean) => {
         expect(isValid).toBe(isValidAddress(address, 20))
-      }
+      },
     )
 
     it.each(invalidAddresses)(
       'should return false if address is invalid',
       (address: string, isValid: boolean) => {
         expect(isValid).toBe(isValidAddress(address, 20))
-      }
+      },
     )
 
     it('should return false if address length is not (2 + 2) * length', () => {
@@ -93,14 +93,14 @@ describe('Address Utils', () => {
       'should return true if address is valid',
       (address: string, isValid: boolean) => {
         expect(isValid).toBe(isValidFilAddress(address))
-      }
+      },
     )
 
     it.each(validFilInvalidAdresses)(
       'should return false if address is invalid',
       (address: string, isValid: boolean) => {
         expect(isValid).toBe(isValidFilAddress(address))
-      }
+      },
     )
   })
 
@@ -109,14 +109,14 @@ describe('Address Utils', () => {
       'should return true if address is valid',
       (address: string, isValid: boolean) => {
         expect(isValid).toBe(isValidEVMAddress(address))
-      }
+      },
     )
 
     it.each(invalidAddresses)(
       'should return false if address is invalid',
       (address: string, isValid: boolean) => {
         expect(isValid).toBe(isValidEVMAddress(address))
-      }
+      },
     )
 
     it('should return false if address length is invalid', () => {
@@ -131,7 +131,7 @@ describe('Address Utils', () => {
 
     it('should return false if address contains invalid characters', () => {
       expect(
-        isValidEVMAddress('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadzzzz')
+        isValidEVMAddress('0xdeadbeefdeadbeefdeadbeefdeadbeefdeadzzzz'),
       ).toBe(false)
     })
   })
@@ -143,14 +143,14 @@ describe('Address Utils', () => {
 
     it('should return false if address length is invalid', () => {
       expect(isValidSolanaAddress(validSolanaAddress.substring(0, 31))).toBe(
-        false
+        false,
       )
       expect(isValidSolanaAddress(validSolanaAddress + '4')).toBe(false)
     })
 
     it('should return false if address contains invalid characters', () => {
       expect(
-        isValidSolanaAddress(validSolanaAddress.substring(0, 31) + '0')
+        isValidSolanaAddress(validSolanaAddress.substring(0, 31) + '0'),
       ).toBe(false)
     })
   })
@@ -161,14 +161,14 @@ describe('Address Utils', () => {
       (address) => {
         expect(isValidBtcAddress(address, false)).toBe(true)
         expect(isValidBtcAddress(address, true)).toBe(false)
-      }
+      },
     )
     it.each(validBtcTestnetAddresses)(
       'should return true if address is valid',
       (address) => {
         expect(isValidBtcAddress(address, true)).toBe(true)
         expect(isValidBtcAddress(address, false)).toBe(false)
-      }
+      },
     )
   })
 })

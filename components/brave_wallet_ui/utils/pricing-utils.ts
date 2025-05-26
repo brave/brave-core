@@ -9,7 +9,7 @@ import {
   SpotPriceRegistry,
   BraveWallet,
   externalWalletProviders,
-  SupportedTestNetworks
+  SupportedTestNetworks,
 } from '../constants/types'
 
 // Utils
@@ -20,7 +20,7 @@ export const getTokenPriceFromRegistry = (
   token: Pick<
     BraveWallet.BlockchainToken,
     'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId' | 'isShielded'
-  >
+  >,
 ): BraveWallet.AssetPrice | undefined => {
   return spotPriceRegistry[getPriceIdForToken(token)]
 }
@@ -30,7 +30,7 @@ export const getTokenPriceAmountFromRegistry = (
   token: Pick<
     BraveWallet.BlockchainToken,
     'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId' | 'isShielded'
-  >
+  >,
 ) => {
   const value = getTokenPriceFromRegistry(spotPriceRegistry, token)
   return value ? new Amount(value.price) : Amount.zero()
@@ -39,7 +39,7 @@ export const getTokenPriceAmountFromRegistry = (
 export const computeFiatAmount = ({
   spotPriceRegistry,
   value,
-  token
+  token,
 }: {
   spotPriceRegistry?: SpotPriceRegistry
   value: string
@@ -75,7 +75,7 @@ export const computeFiatAmount = ({
 export const computeFiatAmountToAssetValue = ({
   spotPriceRegistry,
   value,
-  token
+  token,
 }: {
   spotPriceRegistry?: SpotPriceRegistry
   value: string
@@ -106,7 +106,7 @@ export const getPriceIdForToken = (
   token: Pick<
     BraveWallet.BlockchainToken,
     'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId' | 'isShielded'
-  >
+  >,
 ) => {
   if (token?.coingeckoId) {
     return token.coingeckoId.toLowerCase()
@@ -119,8 +119,8 @@ export const getPriceIdForToken = (
 
   const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
   if (
-    (isEthereumNetwork || externalWalletProviders.includes(token.chainId)) &&
-    token.contractAddress
+    (isEthereumNetwork || externalWalletProviders.includes(token.chainId))
+    && token.contractAddress
   ) {
     return token.contractAddress.toLowerCase()
   }

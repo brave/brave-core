@@ -6,7 +6,7 @@
 import {
   BraveWallet,
   MeldCryptoCurrency,
-  SpotPriceRegistry
+  SpotPriceRegistry,
 } from '../constants/types'
 
 export const getAssetSymbol = (asset: MeldCryptoCurrency) => {
@@ -28,7 +28,7 @@ export const getAssetPriceId = (asset: MeldCryptoCurrency) => {
 
 export const getTokenPriceFromRegistry = (
   spotPriceRegistry: SpotPriceRegistry,
-  asset: MeldCryptoCurrency
+  asset: MeldCryptoCurrency,
 ): BraveWallet.AssetPrice | undefined => {
   return spotPriceRegistry[getAssetPriceId(asset)]
 }
@@ -40,7 +40,7 @@ export const getAssetIdKey = (asset: MeldCryptoCurrency) => {
 }
 
 export const getMeldTokensCoinType = (
-  asset: Pick<MeldCryptoCurrency, 'chainCode'>
+  asset: Pick<MeldCryptoCurrency, 'chainCode'>,
 ) => {
   switch (asset.chainCode) {
     case 'BTC':
@@ -57,7 +57,7 @@ export const getMeldTokensCoinType = (
 }
 
 export const getMeldTokensChainId = (
-  asset: Pick<MeldCryptoCurrency, 'chainId' | 'chainCode'>
+  asset: Pick<MeldCryptoCurrency, 'chainId' | 'chainCode'>,
 ) => {
   switch (asset.chainCode) {
     case 'BTC':

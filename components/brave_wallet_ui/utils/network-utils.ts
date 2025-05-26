@@ -19,13 +19,13 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   symbolName: '',
   decimals: 0,
   coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: []
+  supportedKeyrings: [],
 }
 
 export const getNetworkInfo = (
   chainId: string,
   coin: BraveWallet.CoinType,
-  list: BraveWallet.NetworkInfo[]
+  list: BraveWallet.NetworkInfo[],
 ) => {
   for (let it of list) {
     if (it.chainId === chainId && it.coin === coin) {
@@ -37,29 +37,29 @@ export const getNetworkInfo = (
 
 export const networkSupportsAccount = (
   network: Pick<BraveWallet.NetworkInfo, 'coin' | 'supportedKeyrings'>,
-  accountId: BraveWallet.AccountId
+  accountId: BraveWallet.AccountId,
 ) => {
   return (
-    network.coin === accountId.coin &&
-    network.supportedKeyrings.includes(accountId.keyringId)
+    network.coin === accountId.coin
+    && network.supportedKeyrings.includes(accountId.keyringId)
   )
 }
 
 export const filterNetworksForAccount = (
   networks: BraveWallet.NetworkInfo[],
-  accountId: BraveWallet.AccountId
+  accountId: BraveWallet.AccountId,
 ): BraveWallet.NetworkInfo[] => {
   if (!networks) {
     return []
   }
   return networks.filter((network) =>
-    networkSupportsAccount(network, accountId)
+    networkSupportsAccount(network, accountId),
   )
 }
 
 export const getTokensNetwork = (
   networks: BraveWallet.NetworkInfo[],
-  token: BraveWallet.BlockchainToken
+  token: BraveWallet.BlockchainToken,
 ): BraveWallet.NetworkInfo => {
   if (!networks) {
     return emptyNetwork
@@ -69,7 +69,7 @@ export const getTokensNetwork = (
   if (network.length > 1) {
     return (
       network?.find(
-        (n) => n.symbol.toLowerCase() === token.symbol.toLowerCase()
+        (n) => n.symbol.toLowerCase() === token.symbol.toLowerCase(),
       ) ?? emptyNetwork
     )
   }
@@ -91,7 +91,7 @@ export type TxDataPresence = {
 }
 
 export const getCoinFromTxDataUnion = <T extends TxDataPresence>(
-  txDataUnion: T
+  txDataUnion: T,
 ): BraveWallet.CoinType => {
   if (txDataUnion.ethTxData || txDataUnion.ethTxData1559) {
     return BraveWallet.CoinType.ETH

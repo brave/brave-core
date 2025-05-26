@@ -12,7 +12,7 @@ import {
   WalletCreationMode,
   WalletImportMode,
   NftDropdownOptionId,
-  MeldCryptoCurrency
+  MeldCryptoCurrency,
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { SUPPORT_LINKS } from '../common/constants/support_links'
@@ -23,7 +23,7 @@ import { SUPPORT_LINKS } from '../common/constants/support_links'
  */
 export function isPersistableSessionRoute(
   route?: string,
-  isPanel?: boolean
+  isPanel?: boolean,
 ): route is WalletRoutes {
   if (!route) {
     return false
@@ -32,102 +32,102 @@ export function isPersistableSessionRoute(
     /**
      * Insure that the Accounts route is an exact match.
      */
-    route === WalletRoutes.Accounts ||
+    route === WalletRoutes.Accounts
     /**
      * or allow if it includes a trailing slash which is followed
      * by an accountId query param.
      */
-    route.includes(WalletRoutes.Accounts + '/') ||
+    || route.includes(WalletRoutes.Accounts + '/')
     /**
      * The Backup route uses a query param to determine the step
      * and can not be exact matched.
      */
-    route.includes(WalletRoutes.Backup) ||
+    || route.includes(WalletRoutes.Backup)
     /**
      * Insure that the Deposit Funds route is an exact match.
      */
-    route === WalletRoutes.DepositFundsPageStart ||
+    || route === WalletRoutes.DepositFundsPageStart
     /**
      * or allow if it includes a trailing slash which is followed
      * by a currencyCode query param.
      */
-    route.includes(WalletRoutes.DepositFundsPageStart + '/') ||
+    || route.includes(WalletRoutes.DepositFundsPageStart + '/')
     /**
      * Fund wallet route uses a query param to determine the asset
      * and can not be exact matched.
      */
-    route.includes(WalletRoutes.FundWalletPageStart) ||
+    || route.includes(WalletRoutes.FundWalletPageStart)
     /**
      * Insure that the Portfolio Assets route is an exact match.
      */
-    route === WalletRoutes.PortfolioAssets ||
+    || route === WalletRoutes.PortfolioAssets
     /**
      * or allow if it includes a trailing slash which is followed
      * by a tokenId query param.
      */
-    route.includes(WalletRoutes.PortfolioAssets + '/') ||
+    || route.includes(WalletRoutes.PortfolioAssets + '/')
     /**
      * Insure that the Portfolio NFTs route is an exact match.
      */
-    route === WalletRoutes.PortfolioNFTs ||
+    || route === WalletRoutes.PortfolioNFTs
     /**
      * or allow if it includes a trailing slash which is followed
      * by a tokenId query param.
      */
-    route.includes(WalletRoutes.PortfolioNFTs + '/') ||
+    || route.includes(WalletRoutes.PortfolioNFTs + '/')
     /**
      * Portfolio Activity route uses a query param to determine the
      * transactionId and can not be exact matched.
      */
-    route.includes(WalletRoutes.PortfolioActivity) ||
+    || route.includes(WalletRoutes.PortfolioActivity)
     /**
      * Insure that the Market route is an exact match.
      */
-    route === WalletRoutes.Market ||
+    || route === WalletRoutes.Market
     /**
      * or allow if it includes a trailing slash which is followed
      * by a tokenId query param.
      */
-    route.includes(WalletRoutes.Market + '/') ||
+    || route.includes(WalletRoutes.Market + '/')
     /**
      * Web3 route uses a query param to determine the
      * dappCategory and can not be exact matched.
      */
-    route.includes(WalletRoutes.Web3) ||
+    || route.includes(WalletRoutes.Web3)
     /**
      * Insure that the Connections route is an exact match.
      */
-    route === WalletRoutes.Connections ||
+    || route === WalletRoutes.Connections
     /**
      * NFT Collections route uses a query param to determine the
      * collectionName and can not be exact matched.
      */
-    route.includes(WalletRoutes.PortfolioNFTCollectionsStart)
+    || route.includes(WalletRoutes.PortfolioNFTCollectionsStart)
   if (isPanel) {
     return isPersistableInPanel
   }
   return (
-    isPersistableInPanel ||
+    isPersistableInPanel
     /**
      * The Swap route uses a query param to determine the
      * fromToken and toToken and can not be exact matched.
      */
-    route.includes(WalletRoutes.Swap) ||
+    || route.includes(WalletRoutes.Swap)
     /**
      * The Send route uses a query param to determine the
      * asset and can not be exact matched.
      */
-    route.includes(WalletRoutes.Send) ||
+    || route.includes(WalletRoutes.Send)
     /**
      * The Bridge route uses a query param to determine the
      * fromToken and toToken and can not be exact matched.
      */
-    route.includes(WalletRoutes.Bridge)
+    || route.includes(WalletRoutes.Bridge)
   )
 }
 
 export function getInitialSessionRoute(
-  isPanel?: boolean
+  isPanel?: boolean,
 ): WalletRoutes | undefined {
   const route =
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE) || ''
@@ -135,7 +135,7 @@ export function getInitialSessionRoute(
 }
 
 export function getOnboardingTypeFromPath(
-  path: WalletRoutes | string
+  path: WalletRoutes | string,
 ): WalletCreationMode {
   if (path.includes(WalletRoutes.OnboardingHardwareWalletStart)) {
     return 'hardware'
@@ -147,7 +147,7 @@ export function getOnboardingTypeFromPath(
 }
 
 export function getOnboardingImportTypeFromPath(
-  path: WalletRoutes | string
+  path: WalletRoutes | string,
 ): WalletImportMode {
   if (path.includes(WalletRoutes.OnboardingRestoreWallet)) {
     return 'seed'
@@ -160,43 +160,43 @@ export function getOnboardingImportTypeFromPath(
 
 export const makeAccountRoute = (
   accountInfo: Pick<BraveWallet.AccountInfo, 'address' | 'accountId'>,
-  tab: AccountPageTabs
+  tab: AccountPageTabs,
 ) => {
   const id = accountInfo.address || accountInfo.accountId.uniqueKey
   return WalletRoutes.Account.replace(':accountId', id).replace(
     ':selectedTab?',
-    tab
+    tab,
   )
 }
 
 export const makeAccountTransactionRoute = (
   accountInfo: Pick<BraveWallet.AccountInfo, 'address' | 'accountId'>,
-  transactionId: string
+  transactionId: string,
 ) => {
   const id = accountInfo.address || accountInfo.accountId.uniqueKey
   return (
     WalletRoutes.Account.replace(':accountId', id).replace(
       ':selectedTab?',
-      AccountPageTabs.AccountTransactionsSub
-    ) +
-    '#' +
-    transactionId.replace('#', '')
+      AccountPageTabs.AccountTransactionsSub,
+    )
+    + '#'
+    + transactionId.replace('#', '')
   )
 }
 
 export const makeFundWalletRoute = (
   asset: Pick<MeldCryptoCurrency, 'chainId' | 'currencyCode'>,
-  account?: BraveWallet.AccountInfo
+  account?: BraveWallet.AccountInfo,
 ) => {
   const baseQueryParams = {
     currencyCode: asset.currencyCode ?? '',
-    chainId: asset.chainId ?? ''
+    chainId: asset.chainId ?? '',
   }
 
   const params = new URLSearchParams(
     account
       ? { ...baseQueryParams, accountId: account.accountId.uniqueKey }
-      : baseQueryParams
+      : baseQueryParams,
   )
 
   return `${WalletRoutes.FundWalletPageStart}?${params.toString()}`
@@ -210,7 +210,7 @@ export const makeAndroidFundWalletRoute = (
     searchText?: string
     chainId?: string
     coinType?: string
-  }
+  },
 ) => {
   if (options) {
     const params = new URLSearchParams()
@@ -233,7 +233,7 @@ export const makeAndroidFundWalletRoute = (
 
     return `${WalletRoutes.FundWalletPage.replace(
       ':assetId?',
-      assetId
+      assetId,
     )}?${params.toString()}`
   }
   return WalletRoutes.FundWalletPage.replace(':assetId?', assetId)
@@ -244,7 +244,7 @@ export const makeFundWalletPurchaseOptionsRoute = (
   options?: {
     currencyCode: string
     buyAmount: string
-  }
+  },
 ) => {
   if (options) {
     const params = new URLSearchParams()
@@ -257,13 +257,13 @@ export const makeFundWalletPurchaseOptionsRoute = (
 
     return `${WalletRoutes.FundWalletPurchaseOptionsPage.replace(
       ':assetId',
-      assetId
+      assetId,
     )}?${params.toString()}`
   }
 
   return WalletRoutes.FundWalletPurchaseOptionsPage.replace(
     ':assetId', //
-    assetId
+    assetId,
   )
 }
 
@@ -273,7 +273,7 @@ export const makeDepositFundsRoute = (
     searchText?: string
     chainId?: string
     coinType?: string
-  }
+  },
 ) => {
   if (options) {
     const params = new URLSearchParams()
@@ -289,7 +289,7 @@ export const makeDepositFundsRoute = (
 
     return `${WalletRoutes.DepositFundsPage.replace(
       ':assetId?',
-      assetId
+      assetId,
     )}?${params.toString()}`
   }
 
@@ -302,12 +302,12 @@ export const makeDepositFundsAccountRoute = (assetId: string) => {
 
 export const makeSendRoute = (
   asset: BraveWallet.BlockchainToken,
-  account?: BraveWallet.AccountInfo
+  account?: BraveWallet.AccountInfo,
 ) => {
   const isNftTab = asset.isErc721 || asset.isNft
   const baseQueryParams = {
     chainId: asset.chainId,
-    token: asset.contractAddress || asset.symbol.toUpperCase()
+    token: asset.contractAddress || asset.symbol.toUpperCase(),
   }
 
   const accountIdQueryParams = account
@@ -321,7 +321,7 @@ export const makeSendRoute = (
   const params = new URLSearchParams(
     asset.isShielded
       ? { ...tokenIdQueryParams, isShielded: 'true' }
-      : tokenIdQueryParams
+      : tokenIdQueryParams,
   )
 
   if (isNftTab) {
@@ -337,7 +337,7 @@ export const makeSwapOrBridgeRoute = ({
   toToken,
   toAddress,
   toCoin,
-  routeType
+  routeType,
 }: {
   fromToken: BraveWallet.BlockchainToken
   fromAccount?: BraveWallet.AccountInfo
@@ -349,7 +349,7 @@ export const makeSwapOrBridgeRoute = ({
   const baseQueryParams = {
     fromChainId: fromToken.chainId,
     fromToken: fromToken.contractAddress || fromToken.symbol.toUpperCase(),
-    toChainId: toToken ? toToken.chainId : fromToken.chainId
+    toChainId: toToken ? toToken.chainId : fromToken.chainId,
   }
 
   const fromAccountParams = fromAccount
@@ -361,7 +361,7 @@ export const makeSwapOrBridgeRoute = ({
         toAddress: fromAccount.accountId.address,
         // Will default to fromAccount's coin and be replaced
         // below if toCoin is passed.
-        toCoin: fromAccount.accountId.coin.toString()
+        toCoin: fromAccount.accountId.coin.toString(),
       }
     : baseQueryParams
 
@@ -376,7 +376,7 @@ export const makeSwapOrBridgeRoute = ({
   const toTokenParams = toToken
     ? {
         ...toCoinParams,
-        toToken: toToken.contractAddress || toToken.symbol.toUpperCase()
+        toToken: toToken.contractAddress || toToken.symbol.toUpperCase(),
       }
     : toCoinParams
 
@@ -399,30 +399,30 @@ export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
 
 export const makePortfolioNftCollectionRoute = (
   collectionName: string,
-  page?: number
+  page?: number,
 ) => {
   if (page) {
     const params = new URLSearchParams({
-      page: page.toString()
+      page: page.toString(),
     })
     return `${WalletRoutes.PortfolioNFTCollection.replace(
       ':collectionName',
-      collectionName
+      collectionName,
     )}?${params.toString()}`
   }
   return WalletRoutes.PortfolioNFTCollection.replace(
     ':collectionName',
-    collectionName
+    collectionName,
   )
 }
 
 export const makePortfolioNftsRoute = (
   tab: NftDropdownOptionId,
-  page?: number
+  page?: number,
 ) => {
   const params = new URLSearchParams({
     tab: tab,
-    page: page?.toString() || '1'
+    page: page?.toString() || '1',
   })
   return `${WalletRoutes.PortfolioNFTs}?${params.toString()}`
 }

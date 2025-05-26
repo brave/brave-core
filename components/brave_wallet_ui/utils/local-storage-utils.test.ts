@@ -6,7 +6,7 @@
 import { BraveWallet } from '../constants/types'
 import {
   parseJSONFromLocalStorage,
-  makeInitialFilteredOutNetworkKeys
+  makeInitialFilteredOutNetworkKeys,
 } from './local-storage-utils'
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
@@ -15,69 +15,69 @@ const mockInitialFilteredOutNetworkKeys = [
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.SEPOLIA_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: BraveWallet.CoinType.ETH,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.SOLANA_DEVNET,
-      coin: BraveWallet.CoinType.SOL
+      coin: BraveWallet.CoinType.SOL,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.SOLANA_TESTNET,
-      coin: BraveWallet.CoinType.SOL
+      coin: BraveWallet.CoinType.SOL,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.FILECOIN_TESTNET,
-      coin: BraveWallet.CoinType.FIL
+      coin: BraveWallet.CoinType.FIL,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: BraveWallet.CoinType.ETH,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.BITCOIN_TESTNET,
-      coin: BraveWallet.CoinType.BTC
+      coin: BraveWallet.CoinType.BTC,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.Z_CASH_TESTNET,
-      coin: BraveWallet.CoinType.ZEC
+      coin: BraveWallet.CoinType.ZEC,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.CARDANO_TESTNET,
-      coin: BraveWallet.CoinType.ADA
+      coin: BraveWallet.CoinType.ADA,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: BraveWallet.CoinType.ETH,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.SOL
+      coin: BraveWallet.CoinType.SOL,
     })
     .toString(),
   networkEntityAdapter
     .selectId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.FIL
+      coin: BraveWallet.CoinType.FIL,
     })
-    .toString()
+    .toString(),
 ]
 
 describe('Test parseJSONFromLocalStorage', () => {
@@ -87,16 +87,16 @@ describe('Test parseJSONFromLocalStorage', () => {
   let mockLocalStorageGet = jest.fn()
   Object.defineProperty(window, 'localStorage', {
     value: {
-      getItem: mockLocalStorageGet
-    }
+      getItem: mockLocalStorageGet,
+    },
   })
   it('getItem be called and the value should be correctly parsed', () => {
     mockLocalStorageGet.mockReturnValue(mockValue)
     expect(parseJSONFromLocalStorage(key, mockValue)).toEqual(
-      initialNetworkKeys
+      initialNetworkKeys,
     )
     expect(window.localStorage.getItem).toHaveBeenCalledWith(
-      LOCAL_STORAGE_KEYS[key]
+      LOCAL_STORAGE_KEYS[key],
     )
     expect(jest.isMockFunction(window.localStorage.getItem)).toBe(true)
     expect(mockLocalStorageGet.mock.results[0].value).toBe(mockValue)
@@ -104,10 +104,10 @@ describe('Test parseJSONFromLocalStorage', () => {
   it('getItem should return null, fallback should be returned', () => {
     mockLocalStorageGet.mockReturnValue(null)
     expect(parseJSONFromLocalStorage(key, initialNetworkKeys)).toEqual(
-      initialNetworkKeys
+      initialNetworkKeys,
     )
     expect(window.localStorage.getItem).toHaveBeenCalledWith(
-      LOCAL_STORAGE_KEYS[key]
+      LOCAL_STORAGE_KEYS[key],
     )
     expect(jest.isMockFunction(window.localStorage.getItem)).toBe(true)
     expect(mockLocalStorageGet.mock.results[0].value).toBe(null)
@@ -117,7 +117,7 @@ describe('Test parseJSONFromLocalStorage', () => {
 describe('Test makeInitialFilteredOutNetworkKeys', () => {
   it('Should construct a string array of test network keys', () => {
     expect(makeInitialFilteredOutNetworkKeys()).toEqual(
-      mockInitialFilteredOutNetworkKeys
+      mockInitialFilteredOutNetworkKeys,
     )
   })
 })

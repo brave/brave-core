@@ -8,19 +8,19 @@ import {
   filterNetworksForAccount,
   getTokensNetwork,
   getCoinFromTxDataUnion,
-  networkSupportsAccount
+  networkSupportsAccount,
 } from './network-utils'
 import {
   mockBitcoinMainnet,
   mockBitcoinTestnet,
   mockEthMainnet,
-  mockNetworks
+  mockNetworks,
 } from '../stories/mock-data/mock-networks'
 import { BraveWallet } from '../constants/types'
 import { mockNewAssetOptions } from '../stories/mock-data/mock-asset-options'
 import {
   mockBitcoinAccount,
-  mockEthAccount
+  mockEthAccount,
 } from '../stories/mock-data/mock-wallet-accounts'
 
 const ethToken = mockNewAssetOptions[0]
@@ -43,22 +43,22 @@ describe('getNetworkInfo', () => {
 describe('networkSupportsAccount', () => {
   it('ETH mainnet should match ETH account', () => {
     expect(
-      networkSupportsAccount(mockEthMainnet, mockEthAccount.accountId)
+      networkSupportsAccount(mockEthMainnet, mockEthAccount.accountId),
     ).toBeTruthy()
   })
   it('ETH mainnet should not match BTC account', () => {
     expect(
-      networkSupportsAccount(mockEthMainnet, mockBitcoinAccount.accountId)
+      networkSupportsAccount(mockEthMainnet, mockBitcoinAccount.accountId),
     ).toBeFalsy()
   })
   it('BTC mainnet should match Bitcoin mainnet account', () => {
     expect(
-      networkSupportsAccount(mockBitcoinMainnet, mockBitcoinAccount.accountId)
+      networkSupportsAccount(mockBitcoinMainnet, mockBitcoinAccount.accountId),
     ).toBeTruthy()
   })
   it('BTC testnet should not match Bitcoin mainnet account', () => {
     expect(
-      networkSupportsAccount(mockBitcoinTestnet, mockBitcoinAccount.accountId)
+      networkSupportsAccount(mockBitcoinTestnet, mockBitcoinAccount.accountId),
     ).toBeFalsy()
   })
 })
@@ -66,12 +66,12 @@ describe('networkSupportsAccount', () => {
 describe('filterNetworksForAccount', () => {
   it('CoinType ETH, should return all ETH networks', () => {
     expect(
-      filterNetworksForAccount(mockNetworks, mockEthAccount.accountId)
+      filterNetworksForAccount(mockNetworks, mockEthAccount.accountId),
     ).toEqual(mockNetworks.filter((n) => n.coin === BraveWallet.CoinType.ETH))
   })
   it('CoinType BTC, should return Bitcoin mainnet', () => {
     expect(
-      filterNetworksForAccount(mockNetworks, mockBitcoinAccount.accountId)
+      filterNetworksForAccount(mockNetworks, mockBitcoinAccount.accountId),
     ).toEqual([mockBitcoinMainnet])
   })
 })
@@ -93,8 +93,8 @@ describe('getCoinFromTxDataUnion', () => {
         ethTxData: undefined,
         ethTxData1559: undefined,
         solanaTxData: undefined,
-        btcTxData: undefined
-      })
+        btcTxData: undefined,
+      }),
     ).toEqual(BraveWallet.CoinType.FIL)
   })
   it('Ethereum transaction', () => {
@@ -104,8 +104,8 @@ describe('getCoinFromTxDataUnion', () => {
         ethTxData: {} as BraveWallet.TxData,
         ethTxData1559: undefined,
         solanaTxData: undefined,
-        btcTxData: undefined
-      })
+        btcTxData: undefined,
+      }),
     ).toEqual(BraveWallet.CoinType.ETH)
   })
   it('Ethereum1559 transaction', () => {
@@ -115,8 +115,8 @@ describe('getCoinFromTxDataUnion', () => {
         ethTxData: undefined,
         ethTxData1559: {} as BraveWallet.TxData1559,
         solanaTxData: undefined,
-        btcTxData: undefined
-      })
+        btcTxData: undefined,
+      }),
     ).toEqual(BraveWallet.CoinType.ETH)
   })
   it('Solana transaction', () => {
@@ -126,8 +126,8 @@ describe('getCoinFromTxDataUnion', () => {
         ethTxData: undefined,
         ethTxData1559: undefined,
         solanaTxData: {} as BraveWallet.SolanaTxData,
-        btcTxData: undefined
-      })
+        btcTxData: undefined,
+      }),
     ).toEqual(BraveWallet.CoinType.SOL)
   })
   it('Bitcoin transaction', () => {
@@ -137,8 +137,8 @@ describe('getCoinFromTxDataUnion', () => {
         ethTxData: undefined,
         ethTxData1559: undefined,
         solanaTxData: undefined,
-        btcTxData: {} as BraveWallet.BtcTxData
-      })
+        btcTxData: {} as BraveWallet.BtcTxData,
+      }),
     ).toEqual(BraveWallet.CoinType.BTC)
   })
 })

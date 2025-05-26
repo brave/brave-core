@@ -5,7 +5,7 @@
 
 import {
   mockBraveWalletOrigin,
-  mockUniswapOriginInfo
+  mockUniswapOriginInfo,
 } from '../stories/mock-data/mock-origin-info'
 import {
   isRemoteImageURL,
@@ -16,7 +16,7 @@ import {
   unicodeCharEscape,
   removeDoubleSpaces,
   getIsBraveWalletOrigin,
-  reduceInt
+  reduceInt,
 } from './string-utils'
 
 describe('Checking URL is remote image or not', () => {
@@ -31,9 +31,9 @@ describe('Checking URL is remote image or not', () => {
   test('Data URL image should return true', () => {
     expect(
       isRemoteImageURL(
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAA' +
-          'CQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC'
-      )
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAA'
+          + 'CQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC',
+      ),
     ).toEqual(true)
   })
 
@@ -123,7 +123,7 @@ describe('getIsBraveWalletOrigin', () => {
   it('should return `false` if it is not a Brave Wallet origin', () => {
     expect(getIsBraveWalletOrigin(mockUniswapOriginInfo)).toBe(false)
     expect(
-      getIsBraveWalletOrigin({ originSpec: 'chrome://wallet@newtab' })
+      getIsBraveWalletOrigin({ originSpec: 'chrome://wallet@newtab' }),
     ).toBe(false)
   })
   it('should return `true` if it is a Brave Wallet origin', () => {
