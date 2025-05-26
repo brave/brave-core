@@ -23,6 +23,10 @@ import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
 
+// <if expr="enable_containers">
+import '../brave_content_page/containers.js'
+// </if>
+
 import {
   html,
   RegisterPolymerTemplateModifications,
@@ -328,6 +332,23 @@ RegisterPolymerTemplateModifications({
         }
       ))
 
+      // <if expr="enable_containers">
+      const sectionContainers = document.createElement('template')
+      sectionContainers.setAttribute('is', 'dom-if')
+      sectionContainers.setAttribute('restamp', 'true')
+      sectionContainers.setAttribute('if', '[[showPage_(pageVisibility.containers)]]')
+      sectionContainers.content.appendChild(createNestedSectionElement(
+        'containers',
+        'content',
+        'contentSettingsContainersSection',
+        'settings-brave-content-containers',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+      // </if>
+
       const sectionPlaylist = document.createElement('template')
       sectionPlaylist.setAttribute('is', 'dom-if')
       sectionPlaylist.setAttribute('restamp', 'true')
@@ -393,8 +414,12 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionToolbar)
       last = last.insertAdjacentElement('afterend', sectionTabs)
       last = last.insertAdjacentElement('afterend', sectionSidebar)
-      // Insert nested Content, Playlist, Speedreader under 'Content' menu
+      // Insert nested Content, Containers, Playlist, Speedreader under
+      // 'Content' menu
       last = last.insertAdjacentElement('afterend', sectionContent)
+      // <if expr="enable_containers">
+      last = last.insertAdjacentElement('afterend', sectionContainers)
+      // </if>
       last = last.insertAdjacentElement('afterend', sectionPlaylist)
       last = last.insertAdjacentElement('afterend', sectionSpeedreader)
       // Insert shields

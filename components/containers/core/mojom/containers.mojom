@@ -1,0 +1,56 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module containers.mojom;
+
+// Represents a container that holds a separate browsing context/identity.
+// Containers allow users to maintain different identities within the same
+// browser profile, keeping cookies, storage, and other site data separate
+// between containers.
+struct Container {
+  // Unique identifier for the container.
+  string id;
+  // User-friendly name for the container.
+  string name;
+};
+
+// Factory interface to create handlers for the containers settings page. This
+// interface is implemented on the browser side and called by the renderer to
+// establish communication channels for container management.
+interface SettingsPageHandlerFactory {
+  // Creates a new settings page handler and establishes bidirectional
+  // communication between the browser and renderer processes.
+  CreateSettingsPageHandler(
+      pending_remote<SettingsPage> page,
+      pending_receiver<SettingsPageHandler> page_handler);
+};
+
+// Interface for renderer -> browser communication. This interface allows the
+// renderer (UI) to perform CRUD operations on containers, with all operations
+// being handled in the browser process.
+interface SettingsPageHandler {
+  // Retrieves the current list of containers. Returns: Array of all configured
+  // containers
+  GetContainers() => (array<Container> containers);
+
+  // Creates a new container.
+  AddContainer(Container container);
+
+  // Updates an existing container's properties.
+  UpdateContainer(Container container);
+
+  // Removes a container by its ID. Returns async response to block UI until
+  // completion, because the data removal might take some time.
+  RemoveContainer(string id) => ();
+};
+
+// Interface for browser -> renderer communication. This interface allows the
+// browser process to notify the renderer about changes to the containers list.
+interface SettingsPage {
+  // Notifies the renderer when the containers list is modified. This ensures
+  // the UI stays in sync with the browser-side container state.
+  // - `containers`: Updated list of all containers.
+  OnContainersChanged(array<Container> containers);
+};

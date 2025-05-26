@@ -1,0 +1,12 @@
+diff --git a/components/sync_preferences/BUILD.gn b/components/sync_preferences/BUILD.gn
+index d741a1624ea0b2bcb13862750db41fc06f29b345..02471a7dad68036ca133081b7d1b2a204d3900eb 100644
+--- a/components/sync_preferences/BUILD.gn
++++ b/components/sync_preferences/BUILD.gn
+@@ -68,6 +68,7 @@ source_set("common_syncable_prefs_database") {
+     "//components/translate/core/browser",
+     "//components/variations/service",
+   ]
++  allow_circular_includes_from = [ "//brave/chromium_src/components/sync_preferences:common_syncable_prefs_database" ] public_deps = [ "//brave/chromium_src/components/sync_preferences:common_syncable_prefs_database" ]
+ }
+ 
+ static_library("test_support") {
