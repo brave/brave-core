@@ -119,9 +119,11 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
+  isJunitTestSuite = suite.endsWith('_junit_tests')
+
   let braveArgs = []
 
-  if (!suite.endsWith('_junit_tests')) {
+  if (!isJunitTestSuite) {
     braveArgs.push('--enable-logging=stderr')
   }
 
@@ -154,11 +156,11 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     braveArgs.push('--single_process')
   }
 
-  if (!suite.endsWith('_junit_tests') && options.test_launcher_jobs) {
+  if (!isJunitTestSuite && options.test_launcher_jobs) {
     braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
   }
 
-  if (!suite.endsWith('_junit_tests')) {
+  if (!isJunitTestSuite) {
     braveArgs = braveArgs.concat(passthroughArgs)
   }
 
@@ -223,7 +225,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         }
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
-      if (config.targetOS === 'android' && !suite.endsWith('_junit_tests')) {
+      if (config.targetOS === 'android' && !isJunitTestSuite) {
         assert(
           config.targetArch === 'x86'
             || config.targetArch === 'x64'
@@ -233,7 +235,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       }
       if (
         config.targetOS === 'android'
-        && !suite.endsWith('_junit_tests')
+        && !isJunitTestSuite
         && !options.manual_android_test_device
       ) {
         // Specify emulator to run tests on
