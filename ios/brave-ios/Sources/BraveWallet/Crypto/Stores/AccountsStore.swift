@@ -44,6 +44,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let userAssetManager: WalletUserAssetManagerType
 
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -59,6 +60,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
@@ -66,6 +68,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     self.walletService = walletService
     self.assetRatioService = assetRatioService
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.userAssetManager = userAssetManager
     self.setupObservers()
 
@@ -176,7 +179,34 @@ class AccountsStore: ObservableObject, WalletObserverStore {
         }
       }
     }
-    // Update non-BTC account balance
+    // Update Zcash account balance
+    if accounts.contains(where: { $0.coin == .zec }) {
+      await withTaskGroup(
+        of: [String: [String: Double]].self
+      ) { [zcashWalletService] group in
+        for account in accounts where account.coin == .zec {
+          group.addTask {
+            if let zecToken = allNetworkAssets.first(where: {
+              $0.network.supportedKeyrings.contains(
+                account.keyringId.rawValue as NSNumber
+              )
+            })?.tokens.first {
+              let zecBalance =
+                await zcashWalletService.fetchZECTransparentBalances(
+                  networkId: zecToken.chainId,
+                  accountId: account.accountId
+                ) ?? 0
+              return [account.id: [zecToken.id: zecBalance]]
+            }
+            return [:]
+          }
+        }
+        for await accountBTCBalances in group {
+          tokenBalancesCache.merge(with: accountBTCBalances)
+        }
+      }
+    }
+    // Update non-BTC/ZEC account balance
     let balancesForAccounts = await withTaskGroup(
       of: TokenBalanceCache.self,
       body: { group in
@@ -203,10 +233,25 @@ class AccountsStore: ObservableObject, WalletObserverStore {
             // a mock `rpcService` and `bitcoinWalletService`
             group.addTask {
               var balancesForTokens: [String: Double] = [:]
-              balancesForTokens = await self.rpcService.fetchBalancesForTokens(
-                account: account,
-                networkAssets: allNetworkAssets
-              )
+              if account.coin == .zec {
+                if let zecToken = allNetworkAssets.first(where: {
+                  $0.network.supportedKeyrings.contains(
+                    account.keyringId.rawValue as NSNumber
+                  )
+                })?.tokens.first {
+                  let zecBalance =
+                    await self.zcashWalletService.fetchZECTransparentBalances(
+                      networkId: zecToken.chainId,
+                      accountId: account.accountId
+                    ) ?? 0
+                  balancesForTokens = [zecToken.id: zecBalance]
+                }
+              } else {
+                balancesForTokens = await self.rpcService.fetchBalancesForTokens(
+                  account: account,
+                  networkAssets: allNetworkAssets
+                )
+              }
               return [account.id: balancesForTokens]
             }
           }

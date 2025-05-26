@@ -96,6 +96,7 @@ class AssetDetailStoreTests: XCTestCase {
     }
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
 
     // setup store
     let store = AssetDetailStore(
@@ -109,6 +110,7 @@ class AssetDetailStoreTests: XCTestCase {
       ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.previewToken)
     )
@@ -319,6 +321,7 @@ class AssetDetailStoreTests: XCTestCase {
         nil
       )
     }
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
 
     // setup store
     let store = AssetDetailStore(
@@ -332,6 +335,7 @@ class AssetDetailStoreTests: XCTestCase {
       ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.mockBTCToken)
     )
@@ -508,6 +512,7 @@ class AssetDetailStoreTests: XCTestCase {
     let swapService = BraveWallet.TestSwapService()
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
 
     // setup store
     var store = AssetDetailStore(
@@ -521,6 +526,7 @@ class AssetDetailStoreTests: XCTestCase {
       ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketBitcoin)
     )
@@ -633,6 +639,7 @@ class AssetDetailStoreTests: XCTestCase {
       ipfsApi: TestIpfsAPI(),
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketEth)
     )

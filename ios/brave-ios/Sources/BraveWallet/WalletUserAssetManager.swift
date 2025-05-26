@@ -92,6 +92,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
   private let walletService: BraveWalletBraveWalletService
   private let txService: BraveWalletTxService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
 
   private var keyringServiceObserver: KeyringServiceObserver?
   private var txServiceObserver: TxServiceObserver?
@@ -110,13 +111,15 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     txService: BraveWalletTxService,
-    bitcoinWalletService: BraveWalletBitcoinWalletService
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.walletService = walletService
     self.txService = txService
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
 
     setupObservers()
   }
@@ -542,7 +545,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
       )
       await withTaskGroup(
         of: Void.self,
-        body: { @MainActor [rpcService, bitcoinWalletService] group in
+        body: { @MainActor [rpcService, bitcoinWalletService, zcashWalletService] group in
           for account in accounts {
             guard !Task.isCancelled else { return }
             group.addTask { @MainActor in
@@ -559,6 +562,22 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
                   await WalletUserAssetBalance.updateBalance(
                     for: btc,
                     balance: String(btcBalance),
+                    account: account.id
+                  )
+                }
+              } else if account.coin == .zec {
+                let networkAssets = allUserAssets.first {
+                  $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+                }
+                if let zec = networkAssets?.tokens.first,
+                  let zecBalance = await zcashWalletService.fetchZECTransparentBalances(
+                    networkId: zec.chainId,
+                    accountId: account.accountId
+                  )
+                {
+                  await WalletUserAssetBalance.updateBalance(
+                    for: zec,
+                    balance: String(zecBalance),
                     account: account.id
                   )
                 }

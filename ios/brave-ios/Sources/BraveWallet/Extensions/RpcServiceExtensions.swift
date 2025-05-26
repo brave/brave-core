@@ -251,6 +251,7 @@ extension BraveWalletJsonRpcService {
       // Bitcoin balance should be fetched using `BraveWallet.BitcoinWalletService`
       completion(nil)
     case .zec:
+      // Zcash balance should be fetched using `BraveWallet.ZCashWalletService`
       completion(nil)
     @unknown default:
       completion(nil)
@@ -391,6 +392,13 @@ extension BraveWalletJsonRpcService {
             && !allHiddenChainIds.contains(network.chainId)
         } else {
           return Preferences.Wallet.isBitcoinTestnetEnabled.value
+        }
+      } else if network.chainId == BraveWallet.ZCashTestnet {
+        if respectHiddenNetworksPreference {
+          return Preferences.Wallet.isZcashTestnetEnabled.value
+            && !allHiddenChainIds.contains(network.chainId)
+        } else {
+          return Preferences.Wallet.isZcashTestnetEnabled.value
         }
       }
       if respectHiddenNetworksPreference {

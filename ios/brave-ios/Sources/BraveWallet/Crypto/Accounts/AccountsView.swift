@@ -270,7 +270,7 @@ private struct AccountCardView: View {
           Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
         }
         Divider()
-        if account.coin != .btc {
+        if account.supportsAccountExport {
           Button {
             action(.exportAccount)
           } label: {

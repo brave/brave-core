@@ -196,6 +196,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     setupObservers()
 
     Preferences.Wallet.isBitcoinTestnetEnabled.observe(from: self)
+    Preferences.Wallet.isZcashTestnetEnabled.observe(from: self)
 
     updateInfo()
 
@@ -565,7 +566,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         network: chainId
       )
     case .zec:
-      // ZCash not supported on iOS yet, including account import
+      // no import for Zcash
       return nil
     default:
       return nil
@@ -721,12 +722,30 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
 
 extension KeyringStore: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
-    if Preferences.Wallet.isBitcoinTestnetEnabled.value == false {
+    if key == Preferences.Wallet.isBitcoinTestnetEnabled.key,
+      Preferences.Wallet.isBitcoinTestnetEnabled.value == false
+    {
       // user disabled Bitcoin Testnet
       Task { @MainActor in
         let allAccounts = await keyringService.allAccounts()
         if let currentlySelectedAccount = allAccounts.selectedAccount,
           currentlySelectedAccount.keyringId == .bitcoin84Testnet,
+          let firstAvailableAccount = allAccounts.accounts.first(where: {
+            $0.keyringId != currentlySelectedAccount.keyringId
+          })
+        {
+          // we need to switch to the first available account
+          setSelectedAccount(to: firstAvailableAccount)
+        }
+      }
+    } else if key == Preferences.Wallet.isZcashTestnetEnabled.key,
+      Preferences.Wallet.isZcashTestnetEnabled.value == false
+    {
+      // user disabled Zcash Testnet
+      Task { @MainActor in
+        let allAccounts = await keyringService.allAccounts()
+        if let currentlySelectedAccount = allAccounts.selectedAccount,
+          currentlySelectedAccount.keyringId == .zCashTestnet,
           let firstAvailableAccount = allAccounts.accounts.first(where: {
             $0.keyringId != currentlySelectedAccount.keyringId
           })

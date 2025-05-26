@@ -446,6 +446,13 @@ extension Strings {
       value: "Bitcoin",
       comment: "A description of an Bitcoin account, displayed in Accounts tab."
     )
+    public static let zecAccountDescription = NSLocalizedString(
+      "wallet.zecAccountDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "ZCash",
+      comment: "A description of an ZCash account, displayed in Accounts tab."
+    )
     public static let exportButtonTitle = NSLocalizedString(
       "wallet.exportButtonTitle",
       tableName: "BraveWallet",
@@ -3421,6 +3428,13 @@ extension Strings {
       value: "Bitcoin",
       comment: "One of the coin types for users to create an account to store BTC assets"
     )
+    public static let coinTypeZCash = NSLocalizedString(
+      "wallet.coinTypeZCash",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "ZCash",
+      comment: "One of the coin types for users to create an account to store ZEC assets"
+    )
     public static let coinTypeEthereumDescription = NSLocalizedString(
       "wallet.coinTypeEthereumDescription",
       tableName: "BraveWallet",
@@ -3449,6 +3463,13 @@ extension Strings {
       bundle: .module,
       value: "Store BTC asset",
       comment: "A description for Bitcoin coin type."
+    )
+    public static let coinTypeZCashDescription = NSLocalizedString(
+      "wallet.coinTypeZCashDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Store ZEC asset",
+      comment: "A description for ZCash coin type."
     )
     public static let coinTypeUnknown = NSLocalizedString(
       "wallet.coinTypeUnknown",

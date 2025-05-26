@@ -140,8 +140,7 @@ struct SelectAccountTokenView: View {
           WalletListHeaderView {
             CopyAddressHeader(
               displayText: accountSection.account.accountNameDisplay,
-              account: accountSection.account,
-              btcAccountInfo: accountSection.bitcoinAccountInfo
+              address: accountSection.copyAddress
             )
           }
         }

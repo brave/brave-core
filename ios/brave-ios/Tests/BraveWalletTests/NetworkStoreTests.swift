@@ -175,6 +175,8 @@ import XCTest
       case .btc:
         completion(.mockBitcoinMainnet)
       case .zec:
+        completion(.mockZcashMainnet)
+      case .ada:
         fallthrough
       @unknown default:
         completion(.mockMainnet)
@@ -199,6 +201,7 @@ import XCTest
       .mockFilecoinMainnet,
       .mockFilecoinTestnet,
       .mockBitcoinMainnet,
+      .mockZcashMainnet,
     ]
 
     let expectedCustomChains: [BraveWallet.NetworkInfo] = [

@@ -159,6 +159,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     walletService: walletService,
     assetRatioService: assetRatioService,
     bitcoinWalletService: bitcoinWalletService,
+    zcashWalletService: zcashWalletService,
     ipfsApi: ipfsApi,
     userAssetManager: assetManager,
     query: prefilledToken?.symbol
@@ -173,6 +174,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
@@ -197,6 +199,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     prefilledToken: BraveWallet.BlockchainToken?,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
@@ -210,6 +213,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.prefilledToken = prefilledToken
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
@@ -399,12 +403,21 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         )?.first {
           balance = BDouble(assetBalance.balance)
         } else {
-          balance = await self.rpcService.balance(
-            for: selectedSendToken,
-            in: selectedAccount.address,
-            network: network,
-            decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
-          )
+          if selectedAccount.coin == .zec {
+            let zecBalance =
+              await self.zcashWalletService.fetchZECTransparentBalances(
+                networkId: selectedSendToken.chainId,
+                accountId: selectedAccount.accountId
+              ) ?? 0
+            balance = BDouble(zecBalance)
+          } else {
+            balance = await self.rpcService.balance(
+              for: selectedSendToken,
+              in: selectedAccount.address,
+              network: network,
+              decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
+            )
+          }
         }
       }
 
@@ -443,6 +456,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       case .btc:
         validateBitcoinSendAddress(fromAccount: selectedAccount)
       case .zec:
+        break
+      case .ada:
         break
       @unknown default:
         break
