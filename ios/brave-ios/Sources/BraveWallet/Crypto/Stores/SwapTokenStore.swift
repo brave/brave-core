@@ -599,13 +599,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       swapFees: swapFees
     )
     if let swapQuoteUnion = swapQuoteUnion {
-      print("1")
       await self.handleSwapQuote(base: base, swapQuoteUnion: swapQuoteUnion)
     } else if let swapQuoteErrorUnion = swapQuoteErrorUnion {
-      print("2")
       await self.handleSwapQuoteError(swapQuoteErrorUnion)
     } else {  // unknown error, ex failed parsing zerox quote.
-      print("failed to fetch swap quote, unknown error")
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
     }
