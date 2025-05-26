@@ -22,6 +22,13 @@ def Run(_original_function, **kwargs):
     # Don't ignore files/directories starting with a dot.
     node_args += ['--ignore-pattern', '!.*']
     # Ignore the .eslintrc.js file - it breaks when we include it.
-    node_args += [x for x in kwargs['args'] if '.eslintrc.js' not in x]
+    # Don't touch --ignore-pattern .eslintrc.js
+    args = kwargs['args']
+    for i, arg in enumerate(args):
+        if '.eslintrc.js' in arg:
+            if i == 0 or args[i - 1] != '--ignore-pattern':
+                continue
+
+        node_args.append(arg)
 
     return brave_node.RunNode(node_args)
