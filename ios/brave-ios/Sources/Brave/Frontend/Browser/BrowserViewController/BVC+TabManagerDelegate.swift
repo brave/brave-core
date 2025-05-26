@@ -50,10 +50,12 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     toolbar?.setSearchButtonState(url: selected?.visibleURL)
-    if let tab = selected, case let webView = tab.view,
-      let scrollView = tab.webViewProxy?.scrollView
-    {
-      toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+    if let tab = selected {
+      if let scrollView = tab.webViewProxy?.scrollView {
+        // For tabs being opened by the DOM via window.open a web view may not be created yet and
+        // this will instead be observed in tabDidCreateWebView
+        toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+      }
       toolbarVisibilityCancellable = toolbarVisibilityViewModel.objectWillChange
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { [weak self] in
@@ -64,7 +66,6 @@ extension BrowserViewController: TabManagerDelegate {
           )
           self.handleToolbarVisibilityStateChange(state, progress: progress)
         })
-
       updateURLBar()
       recordScreenTimeUsage(for: tab)
 
@@ -85,8 +86,8 @@ extension BrowserViewController: TabManagerDelegate {
       readerModeCache = ReaderModeScriptHandler.cache(for: tab)
       ReaderModeHandler.readerModeCache = readerModeCache
 
-      webViewContainer.addSubview(webView)
-      webView.snp.remakeConstraints { make in
+      webViewContainer.addSubview(tab.view)
+      tab.view.snp.remakeConstraints { make in
         make.left.right.top.bottom.equalTo(self.webViewContainer)
       }
 
@@ -104,9 +105,9 @@ extension BrowserViewController: TabManagerDelegate {
         }
       }
 
-      webView.accessibilityLabel = Strings.webContentAccessibilityLabel
-      webView.accessibilityIdentifier = "contentView"
-      webView.accessibilityElementsHidden = false
+      tab.view.accessibilityLabel = Strings.webContentAccessibilityLabel
+      tab.view.accessibilityIdentifier = "contentView"
+      tab.view.accessibilityElementsHidden = false
     }
 
     updateToolbarUsingTabManager(tabManager)

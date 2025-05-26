@@ -296,6 +296,10 @@ import UIKit
   ///
   /// If you need to control the delegate yourself, consider calling actions yourself instead
   func beginObservingScrollView(_ scrollView: UIScrollView) {
+    if scrollViewObservation != nil {
+      // Already observing
+      return
+    }
     scrollView.panGestureRecognizer.addTarget(self, action: #selector(pannedScrollView(_:)))
     scrollViewObservation = scrollView.observe(
       \.contentSize,
