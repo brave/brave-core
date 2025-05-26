@@ -15,10 +15,10 @@
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/common/chrome_paths.h"
-#include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "components/favicon_base/favicon_usage_data.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/user_data_importer/common/importer_url_row.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -88,7 +88,7 @@ TEST_F(ChromeImporterTest, ImportHistory) {
 }
 
 TEST_F(ChromeImporterTest, ImportBookmarks) {
-  std::vector<ImportedBookmarkEntry> bookmarks;
+  std::vector<user_data_importer::ImportedBookmarkEntry> bookmarks;
 
   EXPECT_CALL(*bridge_, NotifyStarted());
   EXPECT_CALL(*bridge_, NotifyItemStarted(user_data_importer::FAVORITES));

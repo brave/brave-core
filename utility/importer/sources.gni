@@ -31,6 +31,7 @@ if (!is_android) {
     "//components/os_crypt/sync",
     "//components/password_manager/core/browser",
     "//components/user_data_importer/common",
+    "//components/user_data_importer/common",
     "//components/webdata/common",
   ]
 }

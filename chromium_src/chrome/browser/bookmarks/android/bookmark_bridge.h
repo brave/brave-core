@@ -14,7 +14,9 @@ namespace user_data_importer {
 struct SearchEngineInfo;
 }
 
+namespace user_data_importer {
 struct ImportedBookmarkEntry;
+}  // namespace user_data_importer
 
 #define SetReadStatus                                                    \
   ImportBookmarks(                                                       \
@@ -22,14 +24,14 @@ struct ImportedBookmarkEntry;
       const base::android::JavaParamRef<jobject>& java_window,           \
       const base::android::JavaParamRef<jstring>& import_file_path);     \
   void ImportBookmarksImpl(                                              \
-      std::pair<std::vector<ImportedBookmarkEntry>,                      \
+      std::pair<std::vector<user_data_importer::ImportedBookmarkEntry>,  \
                 std::vector<user_data_importer::SearchEngineInfo>>       \
           importedItems);                                                \
-  std::pair<std::vector<ImportedBookmarkEntry>,                          \
+  std::pair<std::vector<user_data_importer::ImportedBookmarkEntry>,      \
             std::vector<user_data_importer::SearchEngineInfo>>           \
   ImportBookmarksReader(                                                 \
       std::u16string import_file_path,                                   \
-      std::vector<ImportedBookmarkEntry> bookmarks,                      \
+      std::vector<user_data_importer::ImportedBookmarkEntry> bookmarks,  \
       std::vector<user_data_importer::SearchEngineInfo> search_engines); \
   void ExportBookmarks(                                                  \
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,      \
