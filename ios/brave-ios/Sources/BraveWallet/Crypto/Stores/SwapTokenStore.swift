@@ -587,7 +587,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     base: SwapParamsBase,
     swapQuoteParams: BraveWallet.SwapQuoteParams
   ) async {
-    print("fetching eth price quote")
     self.isUpdatingPriceQuote = true
     defer { self.isUpdatingPriceQuote = false }
     let (swapQuoteUnion, swapFees, swapQuoteErrorUnion, _) = await swapService.quote(

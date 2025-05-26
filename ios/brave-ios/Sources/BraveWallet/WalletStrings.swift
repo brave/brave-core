@@ -2377,7 +2377,7 @@ extension Strings {
       "wallet.sendAmountFormatError",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Wrong amount format",
+      value: "Invalid amount format",
       comment:
         "An error that appears below the send amount 4 grids when the user inputs an invalid amount format."
     )
