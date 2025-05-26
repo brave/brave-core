@@ -210,6 +210,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.prefs.PrefChangeRegistrar;
@@ -407,7 +408,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
+    public boolean onMenuOrKeyboardAction(
+            int id, boolean fromMenu, @Nullable MotionEventInfo triggeringMotion) {
         final Tab currentTab = getActivityTab();
         // Handle items replaced by Brave.
         if (id == R.id.info_menu_id && currentTab != null) {
@@ -418,7 +420,7 @@ public abstract class BraveActivity extends ChromeActivity
             setComesFromNewTab(true);
         }
 
-        if (super.onMenuOrKeyboardAction(id, fromMenu)) {
+        if (super.onMenuOrKeyboardAction(id, fromMenu, triggeringMotion)) {
             return true;
         }
 
@@ -749,7 +751,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(int itemId, @Nullable Bundle menuItemData) {
+    public boolean onOptionsItemSelected(
+            int itemId, @Nullable Bundle menuItemData, @Nullable MotionEventInfo triggeringMotion) {
         if (itemId == R.id.new_tab_menu_id) {
             LayoutManagerChrome layoutManager =
                     (LayoutManagerChrome)
@@ -766,7 +769,7 @@ public abstract class BraveActivity extends ChromeActivity
                 ((BraveToolbarManager) getToolbarManager()).openHomepage();
             }
         }
-        return super.onOptionsItemSelected(itemId, menuItemData);
+        return super.onOptionsItemSelected(itemId, menuItemData, triggeringMotion);
     }
 
     @Override
