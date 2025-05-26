@@ -11,6 +11,7 @@ import("//brave/build/android/bytecode/bytecode_rewriter.gni")
 
 declare_args() {
   brave_android_manifest_includes = []
+  extra_libchrome_junit_tests_visibility = [ "//brave/test:*" ]
 }
 
 brave_android_manifest_includes = [

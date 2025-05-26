@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/config.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+testonly = true
+
+if (is_android) {
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.homepage") {
+    sources = [ "src/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+}
