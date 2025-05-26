@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "net/http/http_status_code.h"
-#include "url/gurl.h"
 
 namespace brave_rewards::internal::endpoints {
 using Error = PostCommitTransactionGemini::Error;

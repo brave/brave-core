@@ -15,7 +15,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/android/chrome_jni_headers/BraveLeoUtils_jni.h"
 #include "content/public/browser/web_contents.h"
-#include "url/gurl.h"
 
 namespace ai_chat {
 

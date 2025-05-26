@@ -18,7 +18,6 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
-#include "url/gurl.h"
 
 namespace brave_wallet {
 

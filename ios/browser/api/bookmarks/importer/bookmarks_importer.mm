@@ -29,7 +29,6 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "url/gurl.h"
 
 using bookmarks::BookmarkModel;
 using bookmarks::BookmarkNode;

@@ -15,7 +15,6 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "url/gurl.h"
 
 namespace content {
 class WebContents;
