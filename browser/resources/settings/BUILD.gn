@@ -7,6 +7,7 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -86,6 +87,7 @@ preprocess_if_expr("preprocess") {
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_brave_vpn_wireguard=$enable_brave_vpn_wireguard",
+    "enable_containers=$enable_containers",
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_web_discovery_native=$enable_web_discovery_native",
