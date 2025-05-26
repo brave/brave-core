@@ -680,7 +680,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
                          )"));
   content::RunAllTasksUntilIdle();
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-  brave_shields::ResetBraveShieldsEnabled(content_settings(), url);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
 }
 
 // Requests made by a service worker should be blocked as well.
