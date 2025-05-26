@@ -729,260 +729,6 @@
     </message>
   </if>
 
-  <if expr="use_nss_certs">
-    <!-- Certificate Manager Page -->
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_YOUR_CERTIFICATES" desc="Label for the your certificates tab in certificate manager.">
-      Your certificates
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the certificates that are installed for a particular organization. Only visible by screen reader software.">
-      Show certificates for organization
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_YOUR_CERTIFICATES_DESCRIPTION" desc="Label for your certificates subtitle tab in certificate manager.">
-      You have certificates from these organizations that identify you
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_SERVERS" desc="Label for the servers tab in certificate manager.">
-      Servers
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_SERVERS_DESCRIPTION" desc="Label for servers subtitle tab in certificate manager.">
-      You have certificates on file that identify these servers
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_NO_CERTIFICATES" desc="Message displayed by the certificate manager, indicating that there are no certificates for a given certificate category.">
-      You have no certificates in this category
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_AUTHORITIES" desc="Label for the authorities tab in certificate manager.">
-      Authorities
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_AUTHORITIES_DESCRIPTION" desc="Label for authorities subtitle tab in certificate manager.">
-      You have certificates on file that identify these certificate authorities
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_VIEW" desc="Label for view button in certificate manager.">
-      View
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT" desc="Label for import button in certificate manager.">
-      Import
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_AND_BIND" desc="Label for import and bind button in certificate manager.">
-      Import and Bind
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_EXPORT" desc="Label for export button in certificate manager.">
-      Export
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_OTHERS" desc="Label for the others tab in certificate manager.">
-      Others
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_OTHERS_DESCRIPTION" desc="Label for others subtitle tab in certificate manager.">
-      You have certificates on file that do not fit in any of the other categories
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_USAGE_SSL_CLIENT" desc="The description of a certificate that is verified for use as an SSL client">
-      SSL Client Certificate
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_UNTRUSTED" desc="This text is displayed next to untrusted certificates in a red box.">
-      Untrusted
-    </message>
-
-    <!-- Certificate Manager Page, edit certificate authority trust dialog-->
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_TRUST_EDIT_DIALOG_TITLE" desc="Title of the certificate manager edit trust dialog">
-      Certificate authority
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_TRUST_EDIT_DIALOG_DESCRIPTION" desc="Line displayed in certificate manager edit trust dialog before the checkboxes for editing certificate trust flags">
-      Trust settings
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_TRUST_EDIT_DIALOG_EXPLANATION" desc="Description in dialog for editing Certification Authority trust flags">
-      The certificate "<ph name="CERTIFICATE_NAME">$1<ex>Verisign Class 1 Public Primary Certification Authority</ex></ph>" represents a Certification Authority
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_TRUST_EDIT_DIALOG_SSL" desc="Description in Certification Authority trust dialog for the SSL trust checkbox.">
-      Trust this certificate for identifying websites
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_TRUST_EDIT_DIALOG_EMAIL" desc="Description in Certification Authority trust dialog for the Email trust checkbox.">
-      Trust this certificate for identifying email users
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_TRUST_EDIT_DIALOG_OBJ_SIGN" desc="Description in Certification Authority trust dialog for the Code Signing trust checkbox.">
-      Trust this certificate for identifying software makers
-    </message>
-
-    <!-- Certificate Manager Page, delete certificate confirmation dialog -->
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_USER_TITLE" desc="Title of a certificate manager dialog for confirming deletion of a user certificate">
-      Delete "<ph name="CERTIFICATE_NAME">$1<ex>VeriSign Browser Certificate</ex></ph>"?
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_USER_DESCRIPTION" desc="Description of impact of deleting a user certificate">
-      If you delete one of your own certificates, you can no longer use it to identify yourself.
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_SERVER_TITLE" desc="Title of a certificate manager dialog for confirming deletion of a server certificate">
-      Delete server certificate "<ph name="CERTIFICATE_NAME">$1<ex>www.example.com</ex></ph>"?
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_SERVER_DESCRIPTION" desc="Description of impact of deleting a user certificate">
-      If you delete a server certificate, you restore the usual security checks for that server and require it uses a valid certificate.
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_CA_TITLE" desc="Title of a certificate manager dialog for confirming deletion of a certification authority certificate">
-      Delete CA certificate "<ph name="CERTIFICATE_NAME">$1<ex>Verisign Class 1 Public Primary Certification Authority</ex></ph>"?
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_CA_DESCRIPTION" desc="Description of impact of deleting a user certificate">
-      If you delete a Certification Authority (CA) certificate, your browser will no longer trust any certificates issued by that CA.
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_OTHER_TITLE" desc="Title of a certificate manager dialog for confirming deletion of a certificate of other type">
-      Delete certificate "<ph name="CERTIFICATE_NAME">$1<ex>Example Certificate</ex></ph>"?
-    </message>
-
-    <!-- Certificate Manager Page, encrypt/decrypt password dialogs -->
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_ENCRYPT_PASSWORD_TITLE" desc="Description of password prompt in certificate manager for exporting a personal certificate">
-      Please enter a password to encrypt this certificate
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DECRYPT_PASSWORD_TITLE" desc="Description of password prompt in certificate manager for restoring a personal certificate">
-      Enter your certificate password
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_ENCRYPT_PASSWORD_DESCRIPTION" desc="Text in password prompt of certificate manager for exporting a personal certificate, reminding user that if they forget the password they're screwed.">
-      The password you choose will be required to restore this certificate later. Please record it in a safe location.
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PASSWORD" desc="The label of the password field in the certificate manager for restoring or exporting a personal certificate">
-      Password
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CONFIRM_PASSWORD" desc="The label of the field in the certificate manager for re-entering the password when exporting a certificate">
-      Confirm password
-    </message>
-
-    <!-- Certificate Manager Page, error dialog -->
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_BAD_PASSWORD" desc="The text in the error dialog for entering an incorrect password when importing an encrypted certificate file.">
-      Incorrect password
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CA_IMPORT_ERROR_TITLE" desc="The title in the error dialog for Certification Authority file import errors.">
-      Certification Authority Import Error
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_CERT_PARSE_ERROR" desc="The message in the certificate manager error dialog for importing invalid certificate files.">
-      Unable to parse file
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE_CERT_ERROR_TITLE" desc="The title in the error dialog for certificate delete errors.">
-      Certificate Deletion Error
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_ERROR_CERT_ALREADY_EXISTS" desc="The error message when trying to import certificate which already exists.">
-      Certificate already exists
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_ERROR_NOT_CA" desc="The error message when trying to import certificate authorities and a certificate is not a certification authority">
-      Not a Certification Authority
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_ALL_NOT_IMPORTED" desc="The header in certificate manager error dialog for list of certificates that could not be imported, when none were successfully imported.">
-      The file contained multiple certificates, none of which were imported:
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_ERROR_TITLE" desc="The title in the error dialog for certificate file import errors.">
-      Certificate Import Error
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_INVALID_FILE" desc="The message in the error dialog for corrupt certificate files.">
-      Invalid or corrupt file
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_INVALID_MAC" desc="The message in the error dialog for certificate files with invalid MAC.">
-      Incorrect password or corrupt file
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_MISSING_KEY" desc="The message in the error dialog for certificates without a local private key.">
-      The Private Key for this Client Certificate is missing or invalid
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_SINGLE_NOT_IMPORTED" desc="The header in certificate manager error dialog for single certificates that could not be imported.">
-      The file contained one certificate, which was not imported:
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_SOME_NOT_IMPORTED" desc="The header in certificate manager error dialog for list of certificates that could not be imported, even though others were.">
-      The file contained multiple certificates, some of which were not imported:
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_UNSUPPORTED" desc="The message in the error dialog for unsupported certificate files.">
-      File uses unsupported features
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PKCS12_EXPORT_ERROR_TITLE" desc="The title in the error dialog for PKCS #12 file export errors.">
-      PKCS #12 Export Error
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PKCS12_FILES" desc="The label in the file selector dialog for PKCS #12 file type.">
-      PKCS #12 Files
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_READ_ERROR_FORMAT" desc="The text in the error dialog for certificate file read errors.">
-      There was an error while trying to read the file: <ph name="ERROR_TEXT">$1<ex>File not found.</ex></ph>.
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_IMPORT_ERROR_FORMAT" desc="The format of per-certificate error messages in import failure dialog">
-      <ph name="CERTIFICATE_NAME">$1<ex>www.example.com</ex></ph>: <ph name="ERROR">$2<ex>Not a Certification Authority</ex></ph>
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_SERVER_IMPORT_ERROR_TITLE" desc="The title in the error dialog for Certification Authority file import errors.">
-      Server Certificate Import Error
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_SET_TRUST_ERROR_TITLE" desc="The title in the error dialog for certificate trust editing errors.">
-      Error Setting Certificate Trust
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_ERROR_NOT_ALLOWED" desc="The text in the error dialog for policy restriction errors.">
-      Action is disabled by your administrator
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_UNKNOWN_ERROR" desc="The text in the error dialog when an unknown error occurs during an operation on the certificate database.">
-      Unknown error
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_WRITE_ERROR_FORMAT" desc="The text in the error dialog for PKCS #12 file write errors.">
-      There was an error while trying to write the file: <ph name="ERROR_TEXT">$1<ex>Permission denied.</ex></ph>.
-    </message>
-    <if expr="is_chromeos">
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LIST_HEADER" desc="Header that lists the certificate provisioning processes.">
-        Certificates are being provisioned for these certificate profiles
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_REFRESH" desc="Text on the button to refresh the status of a certificate provisioning process.">
-        Refresh
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_RESET" desc="Text on the button to reset a certificate provisioning process.">
-        Reset
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_DETAILS" desc="Text on the button to show debug details about a certificate provisioning process and title of the dialog that shows the details.">
-        Details
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_ADVANCED" desc="Text on the button to show advanced entries on the certificate provisioning details dialog.">
-        Advanced
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_PREPARING_CSR" desc="Status description of a certificate provisioning process when the client is preparing the Certificate signing request (CSR) ">
-        Preparing certificate signing request
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_PREPARING_CSR_WAITING" desc="Status description of a certificate provisioning process when the client is waiting for the server to aid in preparation of the Certificate signing request (CSR)">
-        Preparing certificate signing request (waiting on server)
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_WAITING_FOR_CA" desc="Status description of a certificate provisioning process when the client is waiting for a certificate to be issued">
-        Waiting for the CA to issue a certificate
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_SUCCESS" desc="Status description of a certificate provisioning process that has succeeded">
-        Success
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_FAILURE" desc="Status description of a certificate provisioning process that has failed">
-        Failure
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_CANCELED" desc="Status description of a certificate provisioning process that has been canceled">
-        Canceled
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_READY_FOR_NEXT_OPERATION" desc="Status description of a certificate provisioning process that is waiting for the next operation">
-        Waiting for the next operation
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_AUTHORIZE_INSTRUCTION_RECEIVED" desc="Status description of a certificate provisioning process that has received a Authorize instruction">
-        <ph name="AUTHORIZE_INSTRUCTION_NAME">"Authorize"</ph> instruction received
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_PROOF_OF_POSSESSION_INSTRUCTION_RECEIVED" desc="Status description of a certificate provisioning process that has received a Sign Data instruction">
-        <ph name="PROOF_OF_POSSESSION_INSTRUCTION_NAME">"Proof of Possession"</ph> instruction received
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_IMPORT_CERTIFICATE_INSTRUCTION_RECEIVED" desc="Status description of a certificate provisioning process that has received a Import Certificate instruction">
-        <ph name="IMPORT_CERTIFICATE__INSTRUCTION_NAME">"Import Certificate"</ph> instruction received
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_PROCESS_ID" desc="Label of the field that displays the id of a certificate provisioning process">
-        Process ID
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_CERTIFICATE_PROFILE_NAME" desc="Label of the field that displays the human-readable client certificate profile name of a certificate provisioning process">
-        Certificate Profile Name
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_CERTIFICATE_PROFILE_ID" desc="Label of the field that displays the internal ID of the client certificate profile of a certificate provisioning process">
-        Certificate Profile ID
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS" desc="Label of the field that displays certificate provisioning status">
-        Status
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_ID" desc="Label of the field that displays certificate provisioning status id, which is a number (e.g. 6)">
-        Status Id
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LAST_UPDATE" desc="Label of the field that displays when a certificate provisioning process had the last update">
-        Last Update
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_LAST_UNSUCCESSFUL_STATUS" desc="Label of the field that is displayed when a certificate provisioning process last update was unsuccessful">
-        Last Unsuccessful Update
-      </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_DMSERVER_ERROR_MESSAGE" desc="Status description of a certificate provisioning process that has failed while contacting the DMServer">
-        Connection to Device Management Server failed with status '<ph name="STATUS_TEXT">$1<ex>Temporary server error</ex></ph>' at <ph name="FAILURE_TIME">$2<ex>Mon, 14 Mar 2022 17:35:00 GMT</ex></ph>
-      </message>
-    </if>
-  </if>
-
   <!-- Delete Browsing Data -->
   <message name="IDS_SETTINGS_CLEAR_PERIOD_TITLE" desc="Label of the dropdown that selects the time range for which browsing data will be deleted.">
     Time range
@@ -1001,6 +747,9 @@
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY" desc="Checkbox for deleting Browsing History">
     Browsing history
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_OTHER_GOOGLE_DATA_LABEL" desc="Label for the 'Manage other Brave Data' option in the 'Delete Browsing Data' dialog." translateable="false">
+    Manage other Brave Data
   </message>
   <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites.">
     Signs you out of most sites
@@ -1481,9 +1230,6 @@
   </message>
   <message name="IDS_SETTINGS_OFFER_WRITING_HELP_DISABLED_SUB_LABEL" desc="Sub-label for the site settings writing help page link, used when the offer writing help preference is disabled.">
     Don't allow "Help me write" to automatically open
-  </message>
-  <message name="IDS_SETTINGS_OFFER_WRITING_HELP_DISABLED_SITES_LABEL" desc="Label of the list of sites on which the writing help suggestion feature is disabled.">
-    Never offer writing help on these sites
   </message>
   <message name="IDS_SETTINGS_OFFER_WRITING_HELP_DISABLED_SITES_LABEL_V2" desc="Label of the list of sites on which the writing help suggestion feature is disabled.">
     Not allowed to offer writing help
@@ -3952,38 +3698,11 @@
   <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search.">
     History search, powered by AI
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL" desc="Sublabel of the setting that enables history search.">
-    Use everyday language to search your browsing history and find sites you visited. Only sites you visit after turning on this feature are shown in AI-powered history search results.
-  </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL_V2" desc="This string is the subheading of a setting for ‘History search, powered by AI’. This subheading summarizes the user benefit of the History Search feature. This is an AI (artificial intelligence) feature that improves the search functionality so that users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
     Use everyday language to search your browsing history and find sites you visited
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_BULLET_ONE" desc="Bullet point in the 'When on' column of the description of the setting that enables history search.">
-    You can search your browsing history based on general page content, not only page title and URL. This gives you improved results, whether you're searching browsing history in the address bar using @history or from the History page.
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_ONE" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search.">
-    When you search browsing history, your history search terms, page content of best matches, and generated model outputs are sent to Brave and may be seen by human reviewers to improve this feature.
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search.">
-    As you browse sites, their page contents are saved in an encrypted form on your device. This may affect Brave's performance.
-  </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the toggle for the setting that enables history search.">
     Learn more about history searches
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_ANSWERS_SETTING_SUBLABEL" desc="Sublabel of the setting that enables history search with answers enabled.">
-    Use everyday language to search your browsing history. You can also ask questions and get answers based on your browsing history.
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_ANSWERS_WHEN_ON_BULLET_ONE" desc="Bullet point in the 'When on' column of the description of the setting that enables history search with answers enabled.">
-    Answers and search results are based on the content of a page.  This gives you improved results, whether you're searching browsing history in the address bar using “@history” or from the History page.
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_ANSWERS_WHEN_ON_BULLET_TWO" desc="Bullet point in the 'When on' column of the description of the setting that enables history search with answers enabled.">
-    Only sites you visit after turning on this feature are shown in AI-powered history search results.
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_ANSWERS_CONSIDER_BULLET_ONE" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search with answers enabled.">
-    When you search browsing history, your history searches, the page content of best matches, and generated model outputs are sent to Brave and may be seen by human reviewers to improve this feature.
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_ANSWERS_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search with answers enabled.">
-    As you browse sites, their page contents are encrypted and saved to your device.  AI-powered history search results and answers may become outdated if site content has changed since your last visit.  This feature may also affect Brave’s performance.
   </message>
   <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_PAGE_CONTENT" desc="This string is a bullet point in the ‘When on’ column, which describes the behavior of this feature. This string explains how users can write queries in natural language and search their Brave browsing history. The tone should be motivating.">
     You can search your browsing history based on general page content, not only page title and URL, and see improved results
@@ -4564,9 +4283,6 @@
   </message>
 
   <!-- Experimental settings strings -->
-  <message name="IDS_SETTINGS_AI_PAGE_TITLE" desc="Title of page holding experimental AI settings">
-    Experimental AI
-  </message>
   <message name="IDS_SETTINGS_AI_INNOVATIONS_PAGE_TITLE" desc="This label is on the left Navigation sidebar in Brave’s settings. It tells the user that they can see settings related to AI (artificial intelligence) in this section. It is a noun phrase that refers to our collection of AI settings. These settings include Help me write, Tab organizer, and more. If possible, translate this so that it closely matches the Navigation tab title at the top of this marketing page: https://www.google.com/chrome/ai-innovations.">
     AI innovations
   </message>
@@ -4583,7 +4299,7 @@
     Data sent to Brave may be seen by human reviewers to improve Brave AI’s technology
   </message>
   <message name="IDS_SETTINGS_AI_PAGE_MAIN_MANAGED_SUBLABEL_3" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write, Tab organizer, and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing, and that humans may review feature usage and corresponding data in order to further improve the feature. The tone should be informative.">
-    Your organization controls how data collected by these features may be used.
+    Your organization manages how data collected by these features may be used.
   </message>
   <message name="IDS_SETTINGS_AI_PAGE_MAIN_MANAGED_LEARN_MORE_ACCESSIBILITY_LABEL" desc="This string is found in a link that takes the user to the AI features and policies help center article when the user taps it. The tone should be informative">
     Learn more about using generative AI at work
