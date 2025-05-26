@@ -159,6 +159,7 @@ import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher.WebsitePermissionsType;
+import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
@@ -978,6 +979,15 @@ public class BytecodeTest {
                         "getBrowserServicesThemeColorProvider",
                         MethodModifier.REGULAR,
                         BrowserServicesThemeColorProvider.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ChromeTabbedActivity",
+                        "onMenuOrKeyboardAction",
+                        MethodModifier.REGULAR,
+                        boolean.class,
+                        int.class,
+                        boolean.class,
+                        MotionEventInfo.class));
     }
 
     @Test
