@@ -223,10 +223,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         }
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
-      if (
-        config.targetOS === 'android'
-        && !suite.endsWith('_junit_tests')
-      ) {
+      if (config.targetOS === 'android' && !suite.endsWith('_junit_tests')) {
         assert(
           config.targetArch === 'x86'
             || config.targetArch === 'x64'
