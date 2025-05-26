@@ -23,12 +23,12 @@ constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
 
 }  // namespace
 
-class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
+class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
  public:
-  AndroidBackgroundVideoPlaybackBrowserTest()
+  AndroidYouTubeScriptInjectorBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  ~AndroidBackgroundVideoPlaybackBrowserTest() override = default;
+  ~AndroidYouTubeScriptInjectorBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);
@@ -82,7 +82,7 @@ class AndroidBackgroundVideoPlaybackBrowserTest : public PlatformBrowserTest {
 
 // TESTS
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        ReplaceExperimentalFlagValues) {
   const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
 
@@ -138,7 +138,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
           .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        ReplaceExperimentalFlagValuesInjectedBeforeOnLoad) {
   const GURL url = https_server_.GetURL("youtube.com", "/load_ytcfg_mock.html");
 
@@ -200,7 +200,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
           .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        DontReplaceExperimentalFlagValuesForSamePageNavigation) {
   const GURL url = https_server_.GetURL("youtube.com", "/ytcfg_mock.html");
 
@@ -284,7 +284,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
           .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        OnlyReplaceExperimentalFlagValuesForYouTubeDomains) {
   const GURL url = https_server_.GetURL("youtub.com", "/ytcfg_mock.html");
 
@@ -294,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
   EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        NoOpIfSerializedExperimentFlagsIsMissing) {
   const GURL url =
       https_server_.GetURL("youtube.com", "/ytcfg_mock_no_flags.html");
@@ -314,7 +314,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
   EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        NoOpIfYtcfgIsMissing) {
   const GURL url = https_server_.GetURL("youtube.com", "/no_ytcfg_mock.html");
 
@@ -328,7 +328,7 @@ IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
   EXPECT_EQ(0, content::EvalJs(web_contents(), kReplaceCallCount).ExtractInt());
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidBackgroundVideoPlaybackBrowserTest,
+IN_PROC_BROWSER_TEST_F(AndroidYouTubeScriptInjectorBrowserTest,
                        IgnoreMissingSerializedExperimentalFlags) {
   const GURL url =
       https_server_.GetURL("youtube.com", "/ytcfg_mock_reduced_flags.html");
