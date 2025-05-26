@@ -20,4 +20,6 @@ BraveAccountHandler::~BraveAccountHandler() = default;
 void BraveAccountHandler::OpenDialog() {
   BraveAccountDialogsDialog::Show(web_ui_);
 }
+
+void BraveAccountHandler::CloseDialog() {}
 }  // namespace brave_account

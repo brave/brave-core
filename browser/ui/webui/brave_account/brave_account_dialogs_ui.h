@@ -40,6 +40,7 @@ class BraveAccountDialogsUI
   ~BraveAccountDialogsUI() override;
 
   void OpenDialog() override;
+  void CloseDialog() override;
 
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();

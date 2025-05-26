@@ -50,7 +50,7 @@ export class SettingsBraveAccountDialogs extends CrLitElement {
   }
 
   protected onCloseButtonClicked() {
-    this.browserProxy.account_handler.openDialog()
+    this.browserProxy.account_handler.closeDialog()
   }
 
   private browserProxy: BraveAccountBrowserProxy =

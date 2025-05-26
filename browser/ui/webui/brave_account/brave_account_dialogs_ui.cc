@@ -23,7 +23,9 @@ BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
 
 BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;
 
-void BraveAccountDialogsUI::OpenDialog() {
+void BraveAccountDialogsUI::OpenDialog() {}
+
+void BraveAccountDialogsUI::CloseDialog() {
   if (auto* delegate = GetConstrainedDelegate()) {
     delegate->GetWebDialogDelegate()->OnDialogClosed("");
     delegate->OnDialogCloseFromWebUI();

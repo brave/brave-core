@@ -53,6 +53,7 @@ class BraveAccountDialogsUIBase
 
  protected:
   void OpenDialog() override {}
+  void CloseDialog() override {}
 
   void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(

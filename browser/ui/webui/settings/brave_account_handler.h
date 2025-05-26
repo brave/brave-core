@@ -28,6 +28,7 @@ class BraveAccountHandler : public mojom::BraveAccountHandler {
   ~BraveAccountHandler() override;
 
   void OpenDialog() override;
+  void CloseDialog() override;
 
  private:
   raw_ptr<content::WebUI> web_ui_;
