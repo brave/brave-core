@@ -119,7 +119,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  isJunitTestSuite = suite.endsWith('_junit_tests')
+  const isJunitTestSuite = suite.endsWith('_junit_tests')
 
   let braveArgs = []
 
