@@ -13,6 +13,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    // TODO(https://github.com/brave/brave-browser/issues/46337): Re-enable
+    // scrim views if needed.
+    {kScrimForBrowserWindowModal, base::FEATURE_DISABLED_BY_DEFAULT},
+    {KScrimForTabModal, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSideBySide, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
