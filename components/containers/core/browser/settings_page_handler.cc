@@ -14,9 +14,11 @@ namespace containers {
 
 SettingsPageHandler::SettingsPageHandler(
     mojo::PendingRemote<mojom::SettingsPage> page,
-    PrefService* prefs)
-    : page_(std::move(page)), prefs_(prefs) {
+    PrefService* prefs,
+    std::unique_ptr<Delegate> delegate)
+    : page_(std::move(page)), prefs_(prefs), delegate_(std::move(delegate)) {
   DCHECK(prefs_);
+  DCHECK(delegate_);
   pref_change_registrar_.Init(prefs);
   pref_change_registrar_.Add(
       prefs::kContainersList,
@@ -52,10 +54,21 @@ void SettingsPageHandler::UpdateContainer(mojom::ContainerPtr container) {
   SetContainersList(*prefs_, std::move(containers));
 }
 
-void SettingsPageHandler::RemoveContainer(const std::string& id) {
+void SettingsPageHandler::RemoveContainer(const std::string& id,
+                                          RemoveContainerCallback callback) {
+  delegate_->RemoveContainerData(
+      id,
+      base::BindOnce(&SettingsPageHandler::OnContainerDataRemoved,
+                     weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
+}
+
+void SettingsPageHandler::OnContainerDataRemoved(
+    const std::string& id,
+    RemoveContainerCallback callback) {
   auto containers = GetContainersList(*prefs_);
   std::erase_if(containers, [id](const auto& c) { return c->id == id; });
   SetContainersList(*prefs_, std::move(containers));
+  std::move(callback).Run();
 }
 
 void SettingsPageHandler::OnContainersChanged() {

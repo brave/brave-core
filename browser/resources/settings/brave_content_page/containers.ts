@@ -12,13 +12,14 @@ import { getTemplate } from './containers.html.js'
 import { ContainersSettingsPageBrowserProxy } from './containers_browser_proxy.js'
 import { Container } from '../containers.mojom-webui.js'
 import { assert } from '//resources/js/assert.js'
+import { CrDialogElement } from '//resources/cr_elements/cr_dialog/cr_dialog.js'
 
 const SettingsBraveContentContainersElementBase = I18nMixin(PolymerElement)
 
 /**
  * 'settings-brave-content-containers' is the settings page containing settings for Containers
  */
-class SettingsBraveContentContainersElement extends SettingsBraveContentContainersElementBase {
+export class SettingsBraveContentContainersElement extends SettingsBraveContentContainersElementBase {
   private browserProxy: ContainersSettingsPageBrowserProxy =
     ContainersSettingsPageBrowserProxy.getInstance()
 
@@ -92,9 +93,27 @@ class SettingsBraveContentContainersElement extends SettingsBraveContentContaine
     this.editingContainer_ = null
   }
 
-  onDeleteContainerFromDialog_() {
+  async onDeleteContainerFromDialog_() {
     assert(this.deletingContainer_)
-    this.browserProxy.handler.removeContainer(this.deletingContainer_.id)
+
+    const dialog = this.shadowRoot!.querySelector(
+      '#deleteContainerDialog'
+    ) as CrDialogElement
+    assert(dialog)
+
+    const buttons = dialog.querySelectorAll('cr-button, cr-icon-button')
+    if (buttons) {
+      buttons.forEach((button) => button.setAttribute('disabled', 'true'))
+    }
+    dialog.noCancel = true
+
+    await this.browserProxy.handler.removeContainer(this.deletingContainer_.id)
+
+    if (buttons) {
+      buttons.forEach((button) => button.removeAttribute('disabled'))
+    }
+    dialog.noCancel = false
+
     this.deletingContainer_ = null
   }
 
@@ -102,6 +121,12 @@ class SettingsBraveContentContainersElement extends SettingsBraveContentContaine
     return this.editingContainer_?.id
       ? this.i18n('containersEditContainer')
       : this.i18n('containersAddContainer')
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-brave-content-containers': SettingsBraveContentContainersElement
   }
 }
 

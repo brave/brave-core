@@ -29,5 +29,5 @@ interface SettingsPageHandler {
 
   UpdateContainer(Container container);
 
-  RemoveContainer(string id);
+  RemoveContainer(string id) => ();
 };
