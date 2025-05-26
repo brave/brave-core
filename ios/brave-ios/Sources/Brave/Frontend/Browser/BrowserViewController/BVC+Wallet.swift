@@ -112,8 +112,8 @@ extension BrowserViewController {
     let privateMode = privateBrowsingManager.isPrivateBrowsing
     guard
       let walletStore = WalletStore.from(
-        ipfsApi: braveCore.ipfsAPI,
-        walletP3A: braveCore.braveWalletAPI.walletP3A(),
+        ipfsApi: profileController.ipfsAPI,
+        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       )
     else {
@@ -136,7 +136,7 @@ extension BrowserViewController {
       walletStore: walletStore,
       tabDappStore: tabDappStore,
       origin: origin,
-      webImageDownloader: braveCore.webImageDownloader
+      webImageDownloader: profileController.webImageDownloader
     )
     controller.delegate = self
     let popover = PopoverController(contentController: controller)
@@ -183,7 +183,7 @@ extension BrowserViewController: BraveWalletDelegate {
   ) {
     let walletHostingController = WalletHostingViewController(
       walletStore: walletStore,
-      webImageDownloader: braveCore.webImageDownloader,
+      webImageDownloader: profileController.webImageDownloader,
       presentingContext: presentWalletWithContext
     )
     walletHostingController.delegate = self

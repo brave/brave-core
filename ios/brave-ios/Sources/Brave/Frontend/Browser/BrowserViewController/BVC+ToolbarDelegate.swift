@@ -46,7 +46,7 @@ extension BrowserViewController: TopToolbarDelegate {
     let tabTrayController = TabTrayController(
       isExternallyPresented: isExternallyPresented,
       tabManager: tabManager,
-      braveCore: braveCore,
+      braveCore: profileController,
       windowProtection: windowProtection
     ).then {
       $0.delegate = self
@@ -80,7 +80,7 @@ extension BrowserViewController: TopToolbarDelegate {
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
           case .load(let resolvedURL):
             if resolvedURL.isIPFSScheme,
-              let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+              let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
             {
               tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedIPFSURL))
             } else {
@@ -314,7 +314,7 @@ extension BrowserViewController: TopToolbarDelegate {
         return true
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
           finishEditingAndSubmit(resolvedIPFSURL)
         } else {
@@ -346,7 +346,7 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let host = url.host, supportedPages.contains(host) else {
       return false
     }
-    let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
+    let controller = ChromeWebUIController(braveCore: profileController, isPrivateBrowsing: false)
     controller.webView.load(URLRequest(url: url))
     controller.title = url.host?.capitalizeFirstLetter
     let webView = controller.webView
@@ -494,7 +494,8 @@ extension BrowserViewController: TopToolbarDelegate {
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           debounceService: DebounceServiceFactory.get(privateMode: false),
-          braveCore: braveCore,
+          braveCore: profileController,
+          p3aUtils: braveCore.p3aUtils,
           rewards: rewards,
           webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(privateMode: false),
           clearDataCallback: { [weak self] isLoading, isHistoryCleared in
@@ -739,7 +740,7 @@ extension BrowserViewController: TopToolbarDelegate {
     searchController.searchDelegate = self
 
     searchLoader = SearchLoader(
-      historyAPI: braveCore.historyAPI,
+      historyAPI: profileController.historyAPI,
       bookmarkManager: bookmarkManager,
       tabManager: tabManager
     )
