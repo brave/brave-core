@@ -70,8 +70,8 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/browser/android/youtube_script_injector/features.h"
 #else
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"

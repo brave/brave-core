@@ -40,8 +40,8 @@ source_set("browser_tests") {
   sources = [ "youtube_script_injector_tab_helper_browsertest.cc" ]
 
   deps = [
-    ":youtube_script_injector",
     ":features",
+    ":youtube_script_injector",
     "//base",
     "//brave/components/constants",
     "//chrome/test:test_support",

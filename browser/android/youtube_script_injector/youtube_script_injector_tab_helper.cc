@@ -104,8 +104,7 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
     content::WebContents* contents)
     : WebContentsObserver(contents),
-      content::WebContentsUserData<YouTubeScriptInjectorTabHelper>(
-          *contents) {}
+      content::WebContentsUserData<YouTubeScriptInjectorTabHelper>(*contents) {}
 
 YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
