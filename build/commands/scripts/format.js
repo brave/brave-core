@@ -140,6 +140,7 @@ const runPrettier = async (files, dryRun) => {
     const content = await fs.readFile(file, { encoding: 'utf-8' })
     const formatted = await prettier.format(content, {
       ...options,
+      filepath: file,
       parser: fileInfo.inferredParser,
     })
     if (content !== formatted) {
