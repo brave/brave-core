@@ -33,9 +33,12 @@ export default function BeginGeneration() {
       <ToolsButtonMenu
         isToolsMenuOpen={context.isToolsMenuOpen}
         setIsToolsMenuOpen={context.setIsToolsMenuOpen}
-        actionList={context.actionList}
-        handleActionTypeClick={context.handleActionTypeClick}
-        inputText={context.instructionsText} />
+        categories={context.actionList}
+        getLabel={item => item.details!.label}
+        getSubheading={item => item.subheading}
+        matchesQuery={(query, item) => item.details!.label.toLowerCase().includes(query.toLowerCase())}
+        handleClick={item => context.handleActionTypeClick(item.details!.type)}
+        query={context.instructionsText} />
       <InputBox
         conversationStarted
         context={{
