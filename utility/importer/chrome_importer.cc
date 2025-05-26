@@ -18,7 +18,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "build/build_config.h"
-#include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/utility/importer/favicon_reencode.h"
 #include "components/os_crypt/sync/os_crypt.h"
@@ -27,6 +26,7 @@
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
+#include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/user_data_importer/common/importer_url_row.h"
 #include "components/webdata/common/webdata_constants.h"
@@ -298,7 +298,7 @@ void ChromeImporter::ImportBookmarks() {
   if (!bookmark_dict)
     return;
 
-  std::vector<ImportedBookmarkEntry> bookmarks;
+  std::vector<user_data_importer::ImportedBookmarkEntry> bookmarks;
   const base::Value::Dict* roots = bookmark_dict->FindDict("roots");
   if (roots) {
     // Importing bookmark bar items
@@ -409,7 +409,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
     const base::Value::Dict* folder,
     const std::vector<std::u16string>& parent_path,
     bool is_in_toolbar,
-    std::vector<ImportedBookmarkEntry>* bookmarks) {
+    std::vector<user_data_importer::ImportedBookmarkEntry>* bookmarks) {
   const base::Value::List* children = folder->FindList("children");
   if (children) {
     for (const auto& value : *children) {
@@ -421,7 +421,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
       auto name = base::UTF8ToUTF16(name_found ? *name_found : std::string());
       const auto* type = dict->FindString("type");
       const auto* url = dict->FindString("url");
-      ImportedBookmarkEntry entry;
+      user_data_importer::ImportedBookmarkEntry entry;
       if (type && *type == "folder") {
         // Folders are added implicitly on adding children, so we only
         // explicitly add empty folders.
