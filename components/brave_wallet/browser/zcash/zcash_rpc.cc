@@ -363,6 +363,13 @@ std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES | net::LOAD_DISABLE_CACHE;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->method = "POST";
+  base::flat_map<std::string, std::string> request_headers =
+      brave_wallet::IsEndpointUsingBraveWalletProxy(url)
+          ? brave_wallet::MakeBraveServicesKeyHeaders()
+          : base::flat_map<std::string, std::string>();
+  for (auto entry : request_headers) {
+    request->headers.SetHeader(entry.first, entry.second);
+  }
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
