@@ -6,9 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_SEPARATOR_DELEGATE_H_
 #define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_SEPARATOR_DELEGATE_H_
 
-#include "ui/views/controls/resize_area_delegate.h"
-
-class SplitViewSeparatorDelegate : public views::ResizeAreaDelegate {
+class SplitViewSeparatorDelegate {
  public:
   virtual void OnDoubleClicked() = 0;
 };

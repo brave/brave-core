@@ -9,6 +9,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
+#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
@@ -19,13 +20,32 @@
 #include "ui/views/border.h"
 #include "ui/views/widget/widget.h"
 
+namespace {
+constexpr auto kSpacingBetweenContentsWebViews = 4;
+}  // namespace
+
 BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
     WebContentsFocusedCallback inactive_contents_focused_callback,
     WebContentsResizeCallback contents_resize_callback)
     : MultiContentsView(browser_view,
                         inactive_contents_focused_callback,
-                        contents_resize_callback) {}
+                        contents_resize_callback) {
+  // Replace upstream's resize area with ours.
+  // To prevent making |resize_area_| dangling pointer,
+  // reset it after setting null to |resize_area_|.
+  {
+    std::unique_ptr<views::View> resize_area = RemoveChildViewT(resize_area_);
+    resize_area_ = nullptr;
+  }
+  auto* separator = AddChildView(
+      std::make_unique<SplitViewSeparator>(browser_view_->browser()));
+  separator->set_resize_delegate(this);
+  separator->set_separator_delegate(this);
+  separator->SetPreferredSize(gfx::Size(kSpacingBetweenContentsWebViews, 0));
+  separator->SetVisible(false);
+  resize_area_ = separator;
+}
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
 
@@ -101,6 +121,11 @@ float BraveMultiContentsView::GetCornerRadius() const {
              browser_view_->browser())
              ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
              : 0;
+}
+
+void BraveMultiContentsView::OnDoubleClicked() {
+  // Give same width on both contents view.
+  contents_resize_callback_.Run(0.5);
 }
 
 void BraveMultiContentsView::UpdateSecondaryLocationBar() {
