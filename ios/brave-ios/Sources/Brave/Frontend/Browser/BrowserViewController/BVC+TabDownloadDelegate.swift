@@ -4,7 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStrings
 import Foundation
+import OSLog
 import PassKit
 import SafariServices
 import Shared
@@ -19,7 +21,7 @@ extension UTType {
 
 extension BrowserViewController: TabDownloadDelegate {
   public func tab(_ tab: some TabState, didCreateDownload download: Download) {
-    guard tab.browserData?.isTabVisible() == true else {
+    guard tab.isVisible else {
       download.cancel()
       return
     }
@@ -105,17 +107,18 @@ extension BrowserViewController: TabDownloadDelegate {
     guard let destinationURL = download.destinationURL, error == nil else {
       downloadQueue.download(download, didCompleteWithError: error)
 
+      if let error, (error as NSError).code == URLError.cancelled.rawValue {
+        // If the download was cancelled then we can ignore the error
+        return
+      }
+
       // display an error
       let alertController = UIAlertController(
-        title: Strings.unableToAddPassErrorTitle,
-        message: Strings.unableToAddPassErrorMessage,
+        title: Strings.unableToDownloadFileErrorTitle,
+        message: Strings.unableToDownloadFileErrorMessage,
         preferredStyle: .alert
       )
-      alertController.addAction(
-        UIAlertAction(title: Strings.unableToAddPassErrorDismiss, style: .cancel) { (action) in
-          // Do nothing.
-        }
-      )
+      alertController.addAction(UIAlertAction(title: Strings.OKString, style: .cancel) { _ in })
       present(alertController, animated: true, completion: nil)
 
       return

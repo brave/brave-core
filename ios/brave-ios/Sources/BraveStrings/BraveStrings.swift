@@ -9322,6 +9322,18 @@ extension Strings {
 
 extension Strings {
   // Errors
+  public static let unableToDownloadFileErrorTitle = NSLocalizedString(
+    "UnableToDownloadFileErrorTitle",
+    bundle: .module,
+    value: "Failed to Download File",
+    comment: "A title shown when a file fails to download for some reason"
+  )
+  public static let unableToDownloadFileErrorMessage = NSLocalizedString(
+    "UnableToDownloadFileErrorMessage",
+    bundle: .module,
+    value: "An error occurred while downloading the file. Please try again later.",
+    comment: "A message shown when a file fails to download for some reason"
+  )
   public static let unsupportedInstrumentMessage = NSLocalizedString(
     "unsupportedInstrumentMessage",
     tableName: "BraveShared",
