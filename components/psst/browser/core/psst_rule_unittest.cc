@@ -54,9 +54,9 @@ TEST_F(PsstRuleUnitTest, LoadRuleWithExclude) {
   EXPECT_EQ(psst_rules_with_exclude->front().Name(), "a");
   EXPECT_EQ(psst_rules_with_exclude->front().Version(), 1);
   EXPECT_EQ(psst_rules_with_exclude->front().UserScriptPath().value(),
-            "user.js");
+            FILE_PATH_LITERAL("user.js"));
   EXPECT_EQ(psst_rules_with_exclude->front().PolicyScriptPath().value(),
-            "policy.js");
+            FILE_PATH_LITERAL("policy.js"));
 
   EXPECT_TRUE(psst_rules_with_exclude->front().ShouldInsertScript(
       GURL("https://a.com/page.html")));
@@ -72,9 +72,9 @@ TEST_F(PsstRuleUnitTest, LoadRuleNoExclude) {
   EXPECT_EQ(psst_rules_with_exclude->front().Name(), "b");
   EXPECT_EQ(psst_rules_with_exclude->front().Version(), 2);
   EXPECT_EQ(psst_rules_with_exclude->front().UserScriptPath().value(),
-            "user_script.js");
+            FILE_PATH_LITERAL("user_script.js"));
   EXPECT_EQ(psst_rules_with_exclude->front().PolicyScriptPath().value(),
-            "policy_script.js");
+            FILE_PATH_LITERAL("policy_script.js"));
 
   EXPECT_TRUE(psst_rules_with_exclude->front().ShouldInsertScript(
       GURL("https://b.com/page.html")));
