@@ -586,7 +586,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     recipient: String
   ) {
     Task { @MainActor in
+      let selectedChain = await rpcService.network(coin: fromAccount.coin, origin: nil)
       let (_, zcashAddressError) = await zcashWalletService.transactionType(
+        chainId: selectedChain.chainId,
         accountId: fromAccount.accountId,
         testnet: false,
         useShieldedPool: false,
