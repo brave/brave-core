@@ -79,6 +79,7 @@ group("brave_ios_tests") {
 brave_core_public_headers = [
   "//brave/build/ios/mojom/public/base/base_values.h",
   "//brave/ios/app/brave_core_main.h",
+  "//brave/ios/app/brave_profile_controller.h",
   "//brave/ios/app/brave_core_switches.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
   "//brave/ios/browser/skus/skus_sdk_factory_wrappers.h",

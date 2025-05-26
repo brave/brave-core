@@ -41,7 +41,7 @@ extension BrowserViewController: TabPolicyDecider {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
           domain: domain,
-          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+          isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled
         ) ?? []
       tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }
@@ -204,7 +204,7 @@ extension BrowserViewController: TabPolicyDecider {
         return .cancel
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
           // FIXME: This should cancel & load the resolvedIPFSURL
         } else {
@@ -290,7 +290,7 @@ extension BrowserViewController: TabPolicyDecider {
         tab.browserData?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,
+          .deAmp: profileController.deAmpPrefs.isDeAmpEnabled,
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
@@ -317,7 +317,7 @@ extension BrowserViewController: TabPolicyDecider {
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
             domain: domainForMainFrame,
-            isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+            isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }
