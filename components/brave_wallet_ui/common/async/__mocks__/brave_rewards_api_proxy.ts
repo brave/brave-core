@@ -10,7 +10,7 @@ export class MockBraveRewardsProxy {
   overrides: BraveRewardsProxyOverrides = {
     rewardsEnabled: true,
     balance: 100.5,
-    externalWallet: null
+    externalWallet: null,
   }
 
   applyOverrides = (overrides?: BraveRewardsProxyOverrides) => {
@@ -45,12 +45,12 @@ export const getBraveRewardsProxy = () => {
     braveRewardsProxyInstance = new MockBraveRewardsProxy()
   }
 
-  return braveRewardsProxyInstance as unknown as BraveRewardsProxyInstance &
-    MockBraveRewardsProxy
+  return braveRewardsProxyInstance as unknown as BraveRewardsProxyInstance
+    & MockBraveRewardsProxy
 }
 
 export function resetRewardsProxy(
-  overrides?: BraveRewardsProxyOverrides | undefined
+  overrides?: BraveRewardsProxyOverrides | undefined,
 ) {
   braveRewardsProxyInstance = new MockBraveRewardsProxy()
   braveRewardsProxyInstance.applyOverrides(overrides)

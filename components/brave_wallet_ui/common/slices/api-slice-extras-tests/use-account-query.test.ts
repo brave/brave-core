@@ -8,7 +8,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 // utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 
 // hooks
@@ -23,17 +23,17 @@ describe('useAccountQuery', () => {
     const store = createMockStore(
       {},
       {
-        accountInfos: [mockAccount]
-      }
+        accountInfos: [mockAccount],
+      },
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
     const hook = renderHook(
       () => useAccountQuery(mockAccount.accountId),
-      renderOptions
+      renderOptions,
     )
     const hookInstance2 = renderHook(
       () => useAccountQuery(mockAccount.accountId),
-      renderOptions
+      renderOptions,
     )
 
     // initial state
@@ -44,8 +44,8 @@ describe('useAccountQuery', () => {
     // loading
     await waitFor(() =>
       expect(
-        !hook.result.current.isLoading && hook.result.current.account
-      ).toBeTruthy()
+        !hook.result.current.isLoading && hook.result.current.account,
+      ).toBeTruthy(),
     )
 
     // loaded
@@ -57,7 +57,7 @@ describe('useAccountQuery', () => {
     // additional instances should not
     // create more than one account in memory
     expect(hookInstance2.result.current.account).toBe(
-      hook.result.current.account
+      hook.result.current.account,
     )
   })
 })

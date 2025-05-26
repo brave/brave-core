@@ -11,7 +11,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   addLogoToToken,
   getUniqueAssets,
-  sortNativeAndAndBatAssetsToTop
+  sortNativeAndAndBatAssetsToTop,
 } from '../../../utils/asset-utils'
 import { mapLimit } from 'async'
 import { handleEndpointError } from '../../../utils/api-utils'
@@ -29,7 +29,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
         try {
           const {
             data: { blockchainRegistry },
-            cache
+            cache,
           } = baseQuery(undefined)
           const { kRamp } = BraveWallet.OffRampProvider
 
@@ -37,7 +37,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             SupportedOffRampNetworks,
             10,
             async (chainId: string) =>
-              await blockchainRegistry.getSellTokens(kRamp, chainId)
+              await blockchainRegistry.getSellTokens(kRamp, chainId),
           )
 
           // add token logos
@@ -48,7 +48,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
               async (token: BraveWallet.BlockchainToken) => {
                 const tokenLogo = await cache.getTokenLogo(token)
                 return addLogoToToken(token, tokenLogo)
-              }
+              },
             )
 
           // moves Gas coins and BAT to front of list
@@ -57,17 +57,17 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
 
           const results = {
             rampAssetOptions: sortedRampOptions,
-            allAssetOptions: getUniqueAssets(sortedRampOptions)
+            allAssetOptions: getUniqueAssets(sortedRampOptions),
           }
 
           return {
-            data: results
+            data: results,
           }
         } catch (error) {
           const errorMessage = `Unable to fetch offRamp assets: ${error}`
           console.log(errorMessage)
           return {
-            error: errorMessage
+            error: errorMessage,
           }
         }
       },
@@ -76,7 +76,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           return ['UNKNOWN_ERROR']
         }
         return ['OffRampAssets']
-      }
+      },
     }),
 
     getSellAssetUrl: query<
@@ -97,7 +97,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             arg.chainId,
             arg.assetSymbol,
             arg.amount,
-            arg.fiatCurrencyCode
+            arg.fiatCurrencyCode,
           )
 
           if (error) {
@@ -105,12 +105,12 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           }
 
           return {
-            data: url
+            data: url,
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'Failed to get sell URL', error)
         }
-      }
-    })
+      },
+    }),
   }
 }

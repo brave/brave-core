@@ -42,9 +42,8 @@ export const usePasswordAttempts = () => {
       const { keyringService } = getAPIProxy()
 
       // entered password must be correct
-      const { result: isPasswordValid } = await keyringService.validatePassword(
-        password
-      )
+      const { result: isPasswordValid } =
+        await keyringService.validatePassword(password)
 
       if (!isPasswordValid) {
         const newAttempts = attempts + 1
@@ -65,11 +64,11 @@ export const usePasswordAttempts = () => {
       dispatch(WalletActions.setPasswordAttempts(0))
       return isPasswordValid
     },
-    [dispatch, attempts]
+    [dispatch, attempts],
   )
 
   return {
     attemptPasswordEntry,
-    attempts
+    attempts,
   }
 }

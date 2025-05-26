@@ -23,31 +23,31 @@ export const useSwapTransactionParser = <
         SerializableTransactionInfo | BraveWallet.TransactionInfo,
         'chainId' | 'txType' | 'txDataUnion' | 'swapInfo'
       >
-    | undefined
+    | undefined,
 >(
-  transaction: T
+  transaction: T,
 ) => {
   const { data: sellNetwork } = useGetNetworkQuery(
     transaction?.swapInfo?.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
           chainId: transaction?.swapInfo.fromChainId,
-          coin: transaction?.swapInfo.fromCoin
+          coin: transaction?.swapInfo.fromCoin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { tokenInfo: sellTokenInfo } = useGetTokenInfo(
-    transaction?.swapInfo &&
-      transaction.swapInfo.fromAsset &&
-      transaction.swapInfo.fromAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    transaction?.swapInfo
+      && transaction.swapInfo.fromAsset
+      && transaction.swapInfo.fromAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
           contractAddress: transaction.swapInfo.fromAsset,
           network: {
             chainId: transaction.swapInfo.fromChainId,
-            coin: transaction.swapInfo.fromCoin
-          }
+            coin: transaction.swapInfo.fromCoin,
+          },
         }
-      : skipToken
+      : skipToken,
   )
 
   const sellToken = React.useMemo(() => {
@@ -62,23 +62,23 @@ export const useSwapTransactionParser = <
     transaction?.swapInfo?.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
           chainId: transaction?.swapInfo.toChainId,
-          coin: transaction?.swapInfo.toCoin
+          coin: transaction?.swapInfo.toCoin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { tokenInfo: buyTokenInfo } = useGetTokenInfo(
-    transaction?.swapInfo &&
-      transaction.swapInfo.toAsset &&
-      transaction.swapInfo.toAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    transaction?.swapInfo
+      && transaction.swapInfo.toAsset
+      && transaction.swapInfo.toAsset !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? {
           contractAddress: transaction.swapInfo.toAsset,
           network: {
             chainId: transaction.swapInfo.toChainId,
-            coin: transaction.swapInfo.toCoin
-          }
+            coin: transaction.swapInfo.toCoin,
+          },
         }
-      : skipToken
+      : skipToken,
   )
 
   const buyToken = React.useMemo(() => {
@@ -100,6 +100,6 @@ export const useSwapTransactionParser = <
     buyToken,
     buyAmountWei,
     receiver: transaction?.swapInfo?.receiver || '',
-    provider: transaction?.swapInfo?.provider
+    provider: transaction?.swapInfo?.provider,
   }
 }

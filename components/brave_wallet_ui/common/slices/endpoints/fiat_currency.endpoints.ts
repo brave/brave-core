@@ -11,51 +11,45 @@ import { handleEndpointError } from '../../../utils/api-utils'
 
 export const fiatCurrencyEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getDefaultFiatCurrency: query<string, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { braveWalletService } = baseQuery(undefined).data
-          const { currency } =
-            await braveWalletService.getDefaultBaseCurrency()
+          const { currency } = await braveWalletService.getDefaultBaseCurrency()
           const defaultFiatCurrency = currency.toLowerCase()
           return {
-            data: defaultFiatCurrency
+            data: defaultFiatCurrency,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to fetch default fiat currency',
-            error
+            error,
           )
         }
       },
-      providesTags: ['DefaultFiatCurrency']
+      providesTags: ['DefaultFiatCurrency'],
     }),
     setDefaultFiatCurrency: mutation<string, string>({
-      queryFn: async (
-        currencyArg,
-        { endpoint },
-        extraOptions,
-        baseQuery
-      ) => {
+      queryFn: async (currencyArg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { braveWalletService } = baseQuery(undefined).data
           braveWalletService.setDefaultBaseCurrency(currencyArg)
           return {
-            data: currencyArg
+            data: currencyArg,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to set default fiat currency to ${currencyArg}`,
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['DefaultFiatCurrency']
+      invalidatesTags: ['DefaultFiatCurrency'],
     }),
   }
 }

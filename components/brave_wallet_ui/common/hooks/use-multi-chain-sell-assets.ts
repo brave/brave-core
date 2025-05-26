@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getNetworkInfo } from '../../utils/network-utils'
 import {
   filterTokensByNetworks,
-  getRampAssetSymbol
+  getRampAssetSymbol,
 } from '../../utils/asset-utils'
 import Amount from '../../utils/amount'
 import { openTab } from '../../utils/routes-utils'
@@ -22,7 +22,7 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetOffRampNetworksQuery,
   useGetOffRampAssetsQuery,
-  useLazyGetSellAssetUrlQuery
+  useLazyGetSellAssetUrlQuery,
 } from '../slices/api.slice'
 
 export const useMultiChainSellAssets = () => {
@@ -54,7 +54,7 @@ export const useMultiChainSellAssets = () => {
       return getNetworkInfo(
         selectedSellAsset.chainId,
         selectedSellAsset.coin,
-        offRampNetworks
+        offRampNetworks,
       )
     }
     return undefined
@@ -64,7 +64,7 @@ export const useMultiChainSellAssets = () => {
 
   const openSellAssetLink = React.useCallback(
     async ({
-      sellAsset
+      sellAsset,
     }: {
       sellAsset: BraveWallet.BlockchainToken | undefined
     }) => {
@@ -81,7 +81,7 @@ export const useMultiChainSellAssets = () => {
             .multiplyByDecimals(sellAsset.decimals)
             .toNumber()
             .toString(),
-          fiatCurrencyCode: defaultFiatCurrency
+          fiatCurrencyCode: defaultFiatCurrency,
         }).unwrap()
 
         if (url) {
@@ -91,20 +91,20 @@ export const useMultiChainSellAssets = () => {
         console.error(error)
       }
     },
-    [getSellAssetUrl, defaultFiatCurrency, sellAmount]
+    [getSellAssetUrl, defaultFiatCurrency, sellAmount],
   )
 
   const checkIsAssetSellSupported = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
       return allSellAssetOptions.some(
         (asset) =>
-          (asset.symbol.toLowerCase() === token.symbol.toLowerCase() ||
-            asset.contractAddress.toLowerCase() ===
-              token.contractAddress.toLowerCase()) &&
-          asset.chainId === token.chainId
+          (asset.symbol.toLowerCase() === token.symbol.toLowerCase()
+            || asset.contractAddress.toLowerCase()
+              === token.contractAddress.toLowerCase())
+          && asset.chainId === token.chainId,
       )
     },
-    [allSellAssetOptions]
+    [allSellAssetOptions],
   )
 
   return {
@@ -115,6 +115,6 @@ export const useMultiChainSellAssets = () => {
     sellAmount,
     setSellAmount,
     openSellAssetLink,
-    checkIsAssetSellSupported
+    checkIsAssetSellSupported,
   }
 }

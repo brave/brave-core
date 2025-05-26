@@ -11,7 +11,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 // utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 import { selectAllVisibleUserAssetsFromQueryResult } from '../entities/blockchain-token.entity'
 import { getAssetIdKey } from '../../../utils/asset-utils'
@@ -20,21 +20,21 @@ import { getAssetIdKey } from '../../../utils/asset-utils'
 import {
   // useAddUserTokenMutation,
   useGetUserTokensRegistryQuery,
-  useRemoveUserTokenMutation
+  useRemoveUserTokenMutation,
 } from '../api.slice'
 
 // mocks
 import {
   // mockMoonCatNFT,
-  mockNewAssetOptions
+  mockNewAssetOptions,
 } from '../../../stories/mock-data/mock-asset-options'
 
 const fetchTokensAndSetupStore = async () => {
   const store = createMockStore(
     {},
     {
-      userAssets: mockNewAssetOptions
-    }
+      userAssets: mockNewAssetOptions,
+    },
   )
 
   const hook = renderHook(
@@ -43,17 +43,18 @@ const fetchTokensAndSetupStore = async () => {
         selectFromResult: (res) => ({
           isLoading: res.isLoading,
           visibleTokens: selectAllVisibleUserAssetsFromQueryResult(res),
-          error: res.error
-        })
+          error: res.error,
+        }),
       }),
-    renderHookOptionsWithMockStore(store)
+    renderHookOptionsWithMockStore(store),
   )
 
   // load
   await waitFor(() =>
     expect(
-      !hook.result.current.isLoading && hook.result.current.visibleTokens.length
-    ).toBeTruthy()
+      !hook.result.current.isLoading
+        && hook.result.current.visibleTokens.length,
+    ).toBeTruthy(),
   )
 
   const { visibleTokens, error, isLoading } = hook.result.current
@@ -69,7 +70,7 @@ describe('token endpoints', () => {
     const { hook } = await fetchTokensAndSetupStore()
 
     expect(hook.result.current.visibleTokens).toHaveLength(
-      mockNewAssetOptions.length
+      mockNewAssetOptions.length,
     )
   })
 
@@ -80,7 +81,7 @@ describe('token endpoints', () => {
 
     const { result: mutationHook } = renderHook(
       () => useRemoveUserTokenMutation(),
-      renderHookOptionsWithMockStore(store)
+      renderHookOptionsWithMockStore(store),
     )
 
     const [removeToken] = mutationHook.current

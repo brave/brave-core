@@ -31,7 +31,7 @@ type UseLocalStorageOptions<T> = {
 export function useLocalStorage<T>(
   key: string,
   initialValue: T | (() => T),
-  options: UseLocalStorageOptions<T> = {}
+  options: UseLocalStorageOptions<T> = {},
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
   const { initializeWithValue = true, syncWithOtherDocuments = false } = options
 
@@ -47,7 +47,7 @@ export function useLocalStorage<T>(
 
       return JSON.stringify(value)
     },
-    [options]
+    [options],
   )
 
   const deserializer = React.useCallback<(value: string) => T>(
@@ -77,7 +77,7 @@ export function useLocalStorage<T>(
 
       return parsed as T
     },
-    [options, initialValue]
+    [options, initialValue],
   )
 
   // Get from local storage then
@@ -122,7 +122,7 @@ export function useLocalStorage<T>(
       } catch (error) {
         console.warn(`Error setting localStorage key “${key}”:`, error)
       }
-    }
+    },
   )
 
   React.useEffect(() => {
@@ -137,13 +137,13 @@ export function useLocalStorage<T>(
       }
       setStoredValue(readValue())
     },
-    [key, readValue]
+    [key, readValue],
   )
 
   // this only works for other documents, not the current one
   useEventListener(
     syncWithOtherDocuments ? 'storage' : 'skipped-other-document-local-storage',
-    handleStorageChange
+    handleStorageChange,
   )
 
   // this is a custom event, triggered in setValue
@@ -155,7 +155,7 @@ export function useLocalStorage<T>(
 export function useSyncedLocalStorage<T>(
   key: string,
   initialValue: T | (() => T),
-  options: UseLocalStorageOptions<T> = { syncWithOtherDocuments: true }
+  options: UseLocalStorageOptions<T> = { syncWithOtherDocuments: true },
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
   return useLocalStorage(key, initialValue, options)
 }

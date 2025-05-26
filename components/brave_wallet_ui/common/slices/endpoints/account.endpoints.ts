@@ -7,14 +7,14 @@
 import {
   BitcoinNetwork,
   BraveWallet,
-  FilecoinNetwork
+  FilecoinNetwork,
 } from '../../../constants/types'
 
 // types
 import {
   ACCOUNT_TAG_IDS,
   NETWORK_TAG_IDS,
-  WalletApiEndpointBuilderParams
+  WalletApiEndpointBuilderParams,
 } from '../api-base.slice'
 import { AccountInfoEntityState } from '../entities/account-info.entity'
 
@@ -23,7 +23,7 @@ import { handleEndpointError } from '../../../utils/api-utils'
 
 export const accountEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getAccountInfosRegistry: query<AccountInfoEntityState, void>({
@@ -31,20 +31,20 @@ export const accountEndpoints = ({
         try {
           const { cache } = baseQuery(undefined)
           return {
-            data: await cache.getAccountsRegistry()
+            data: await cache.getAccountsRegistry(),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to fetch accounts',
-            error
+            error,
           )
         }
       },
       providesTags: (res, err) =>
         err
           ? ['UNKNOWN_ERROR']
-          : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }]
+          : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }],
     }),
 
     invalidateAccountInfos: mutation<boolean, void>({
@@ -57,8 +57,8 @@ export const accountEndpoints = ({
         { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY },
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     invalidateSelectedAccount: mutation<boolean, void>({
@@ -68,8 +68,8 @@ export const accountEndpoints = ({
       },
       invalidatesTags: [
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-      ]
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+      ],
     }),
 
     setSelectedAccount: mutation<BraveWallet.AccountId, BraveWallet.AccountId>({
@@ -77,27 +77,27 @@ export const accountEndpoints = ({
         try {
           const {
             cache,
-            data: { keyringService }
+            data: { keyringService },
           } = baseQuery(undefined)
 
           await keyringService.setSelectedAccount(accountId)
           cache.clearSelectedAccount()
 
           return {
-            data: accountId
+            data: accountId,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to select account (${accountId})`,
-            error
+            error,
           )
         }
       },
       invalidatesTags: [
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-      ]
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+      ],
     }),
 
     getSelectedAccountId: query<BraveWallet.AccountId | null, void>({
@@ -105,10 +105,10 @@ export const accountEndpoints = ({
         return {
           data:
             (await baseQuery(undefined).cache.getAllAccounts()).selectedAccount
-              ?.accountId || null
+              ?.accountId || null,
         }
       },
-      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
+      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
     }),
 
     getSelectedSOLAccountId: query<BraveWallet.AccountId | null, void>({
@@ -116,10 +116,10 @@ export const accountEndpoints = ({
         return {
           data:
             (await baseQuery(undefined).cache.getAllAccounts())
-              .solDappSelectedAccount?.accountId || null
+              .solDappSelectedAccount?.accountId || null,
         }
       },
-      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
+      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
     }),
 
     getSelectedETHAccountId: query<BraveWallet.AccountId | null, void>({
@@ -127,10 +127,10 @@ export const accountEndpoints = ({
         return {
           data:
             (await baseQuery(undefined).cache.getAllAccounts())
-              .ethDappSelectedAccount?.accountId || null
+              .ethDappSelectedAccount?.accountId || null,
         }
       },
-      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
+      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }],
     }),
 
     addAccount: mutation<
@@ -147,7 +147,7 @@ export const accountEndpoints = ({
           const { accountInfo } = await api.keyringService.addAccount(
             args.coin,
             args.keyringId,
-            args.accountName
+            args.accountName,
           )
 
           if (!accountInfo) {
@@ -157,7 +157,7 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: accountInfo
+            data: accountInfo,
           }
         } catch (error) {
           return handleEndpointError(
@@ -165,9 +165,9 @@ export const accountEndpoints = ({
             `Failed to create an account for ${JSON.stringify(
               args,
               undefined,
-              2
+              2,
             )}`,
-            error
+            error,
           )
         }
       },
@@ -175,8 +175,8 @@ export const accountEndpoints = ({
         'AccountInfos',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     updateAccountName: mutation<
@@ -193,7 +193,7 @@ export const accountEndpoints = ({
 
           const result = await keyringService.setAccountName(
             arg.accountId,
-            arg.name
+            arg.name,
           )
 
           if (!result.success) {
@@ -203,17 +203,17 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to update account name',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['AccountInfos']
+      invalidatesTags: ['AccountInfos'],
     }),
 
     importEthAccount: mutation<
@@ -229,7 +229,7 @@ export const accountEndpoints = ({
           const { keyringService } = api
           const result = await keyringService.importEthereumAccount(
             arg.accountName,
-            arg.privateKey
+            arg.privateKey,
           )
 
           if (!result.account) {
@@ -239,13 +239,13 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to import account',
-            error
+            error,
           )
         }
       },
@@ -254,8 +254,8 @@ export const accountEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     importSolAccount: mutation<
@@ -271,7 +271,7 @@ export const accountEndpoints = ({
           const { keyringService } = api
           const result = await keyringService.importSolanaAccount(
             arg.accountName,
-            arg.privateKey
+            arg.privateKey,
           )
 
           if (!result.account) {
@@ -281,13 +281,13 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to import account',
-            error
+            error,
           )
         }
       },
@@ -296,8 +296,8 @@ export const accountEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     importFilAccount: mutation<
@@ -315,7 +315,7 @@ export const accountEndpoints = ({
           const result = await keyringService.importFilecoinAccount(
             arg.accountName,
             arg.privateKey,
-            arg.network
+            arg.network,
           )
 
           if (!result.account) {
@@ -325,13 +325,13 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to import account',
-            error
+            error,
           )
         }
       },
@@ -340,8 +340,8 @@ export const accountEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     importBtcAccount: mutation<
@@ -359,7 +359,7 @@ export const accountEndpoints = ({
           const result = await keyringService.importBitcoinAccount(
             arg.accountName,
             arg.payload,
-            arg.network
+            arg.network,
           )
 
           if (!result.account) {
@@ -369,13 +369,13 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to import account',
-            error
+            error,
           )
         }
       },
@@ -384,8 +384,8 @@ export const accountEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     importEthAccountFromJson: mutation<
@@ -403,7 +403,7 @@ export const accountEndpoints = ({
           const result = await keyringService.importEthereumAccountFromJson(
             arg.accountName,
             arg.password,
-            arg.json
+            arg.json,
           )
 
           if (!result.account) {
@@ -413,13 +413,13 @@ export const accountEndpoints = ({
           cache.clearAccountsRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to import account from JSON',
-            error
+            error,
           )
         }
       },
@@ -428,8 +428,8 @@ export const accountEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     importHardwareAccounts: mutation<
@@ -443,7 +443,7 @@ export const accountEndpoints = ({
         { coin, accounts },
         { endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { cache, data: api } = baseQuery(undefined)
@@ -452,7 +452,7 @@ export const accountEndpoints = ({
             for await (const hardwareAccount of accounts) {
               const { success } =
                 await api.keyringService.addBitcoinHardwareAccount(
-                  hardwareAccount
+                  hardwareAccount,
                 )
               if (!success) {
                 throw new Error('Import failed')
@@ -464,13 +464,13 @@ export const accountEndpoints = ({
 
           cache.clearAccountsRegistry()
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to import hardware accounts',
-            error
+            error,
           )
         }
       },
@@ -478,8 +478,8 @@ export const accountEndpoints = ({
         'AccountInfos',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     removeAccount: mutation<
@@ -497,17 +497,17 @@ export const accountEndpoints = ({
 
           cache.clearAccountsRegistry()
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to remove account',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'Network']
-    })
+      invalidatesTags: ['AccountInfos', 'Network'],
+    }),
   }
 }

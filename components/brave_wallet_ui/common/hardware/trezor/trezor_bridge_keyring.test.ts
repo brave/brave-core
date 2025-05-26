@@ -16,7 +16,7 @@ import {
   SignTransactionResponse,
   TrezorErrorsCodes,
   SignMessageResponse,
-  SignTypedMessageResponse
+  SignTypedMessageResponse,
 } from './trezor-messages'
 import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
@@ -26,12 +26,12 @@ import { Unsuccessful } from './trezor-connect-types'
 import {
   EthTrezorDefaultHardwareImportScheme,
   HardwareOperationError,
-  HardwareOperationResult
+  HardwareOperationResult,
 } from '../types'
 
 const createTransport = (
   url: string,
-  hardwareTransport: TrezorBridgeTransport | TrezorCommandHandler
+  hardwareTransport: TrezorBridgeTransport | TrezorCommandHandler,
 ) => {
   hardwareTransport.windowListeners_ = {}
   hardwareTransport.getTrezorBridgeOrigin = () => {
@@ -63,9 +63,9 @@ const createTransport = (
         {
           type: 'message',
           origin: url,
-          data: data
+          data: data,
         },
-        url
+        url,
       )
     }
   }
@@ -76,11 +76,11 @@ const createTrezorTransport = (
   unlock: HardwareOperationResult,
   accounts?: TrezorGetAccountsResponse,
   signedPayload?: SignTransactionResponse,
-  signedMessagePayload?: SignMessageResponse
+  signedMessagePayload?: SignMessageResponse,
 ) => {
   let hardwareTransport = createTransport(
     kTrezorBridgeUrl,
-    new TrezorBridgeTransport(kTrezorBridgeUrl)
+    new TrezorBridgeTransport(kTrezorBridgeUrl),
   )
   hardwareTransport.contentWindow = {
     postMessage: (message: any, command: any) => {
@@ -89,38 +89,38 @@ const createTrezorTransport = (
         hardwareTransport.postResponse({
           id: message.id,
           command: TrezorCommand.Unlock,
-          payload: unlock
+          payload: unlock,
         })
       }
       if (message.command === TrezorCommand.GetAccounts) {
         hardwareTransport.postResponse({
           id: message.id,
           command: TrezorCommand.GetAccounts,
-          payload: accounts
+          payload: accounts,
         })
       }
       if (message.command === TrezorCommand.SignTransaction) {
         hardwareTransport.postResponse({
           id: message.id,
           command: TrezorCommand.SignTransaction,
-          payload: signedPayload
+          payload: signedPayload,
         })
       }
       if (message.command === TrezorCommand.SignMessage) {
         hardwareTransport.postResponse({
           id: message.id,
           command: TrezorCommand.SignMessage,
-          payload: signedMessagePayload
+          payload: signedMessagePayload,
         })
       }
       if (message.command === TrezorCommand.SignTypedMessage) {
         hardwareTransport.postResponse({
           id: message.id,
           command: message.command,
-          payload: signedMessagePayload
+          payload: signedMessagePayload,
         })
       }
-    }
+    },
   }
   hardwareTransport.createBridge = async () => {
     return hardwareTransport
@@ -132,7 +132,7 @@ const createTrezorTransport = (
 const createCommandHandler = () => {
   let hardwareTransport = createTransport(
     kTrezorBridgeUrl,
-    new TrezorCommandHandler()
+    new TrezorCommandHandler(),
   )
   hardwareTransport._commands_called = []
   return hardwareTransport
@@ -143,7 +143,7 @@ const handlerResponse = async (handler: TrezorCommandHandler): Promise => {
     handler.mockedWindow = {
       postMessage: (message: any, command: any) => {
         return resolve([message, handler._commands_called])
-      }
+      },
     }
 
     handler.postCommand = (data: TrezorFrameCommand) => {
@@ -153,9 +153,9 @@ const handlerResponse = async (handler: TrezorCommandHandler): Promise => {
             type: 'message',
             origin: kTrezorBridgeUrl,
             data: data,
-            source: handler.mockedWindow
+            source: handler.mockedWindow,
           },
-          kTrezorBridgeUrl
+          kTrezorBridgeUrl,
         )
       }
     }
@@ -168,13 +168,13 @@ test('Wait for responses', () => {
   expect(
     transport.addCommandHandler('1', (data: any) => {
       expect(data.result).toStrictEqual(true)
-    })
+    }),
   ).toStrictEqual(true)
   // second handler with same id
   expect(
     transport.addCommandHandler('1', (data: any) => {
       expect(data.result).toStrictEqual(true)
-    })
+    }),
   ).toStrictEqual(false)
   transport.addCommandHandler('2', (data: any) => {
     expect(data.result).toStrictEqual(true)
@@ -189,20 +189,20 @@ test('Wait for responses', () => {
   transport.postResponse({
     id: '4',
     command: TrezorCommand.Unlock,
-    result: true
+    result: true,
   })
 
   expect(transport.handlers.size).toStrictEqual(3)
   transport.postResponse({
     id: '2',
     command: TrezorCommand.Unlock,
-    result: true
+    result: true,
   })
   expect(transport.handlers.size).toStrictEqual(2)
   transport.postResponse({
     id: '1',
     command: TrezorCommand.Unlock,
-    result: true
+    result: true,
   })
   expect(transport.handlers.size).toStrictEqual(1)
 
@@ -210,14 +210,14 @@ test('Wait for responses', () => {
   transport.postResponse({
     id: '1',
     command: TrezorCommand.Unlock,
-    result: true
+    result: true,
   })
   expect(transport.handlers.size).toStrictEqual(1)
 
   transport.postResponse({
     id: '3',
     command: TrezorCommand.Unlock,
-    result: false
+    result: false,
   })
   expect(transport.handlers.size).toStrictEqual(0)
   transport.expectWindowMessageSubscribers(0)
@@ -234,18 +234,18 @@ const createTrezorKeyringWithTransport = (
   unlock: HardwareOperationResult,
   accounts?: TrezorGetAccountsResponse,
   signedPayload?: SignTransactionResponse,
-  signedMessagePayload?: SignMessageResponse
+  signedMessagePayload?: SignMessageResponse,
 ) => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   const transport = createTrezorTransport(
     unlock,
     accounts,
     signedPayload,
-    signedMessagePayload
+    signedMessagePayload,
   )
   hardwareKeyring.sendTrezorCommand = async (
     command: TrezorFrameCommand,
-    listener: Function
+    listener: Function,
   ) => {
     return transport.sendCommandToTrezorFrame(command, listener)
   }
@@ -263,11 +263,11 @@ test('Bridge not ready', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   let hardwareTransport = createTransport(
     kTrezorBridgeUrl,
-    new TrezorBridgeTransport(kTrezorBridgeUrl)
+    new TrezorBridgeTransport(kTrezorBridgeUrl),
   )
   hardwareKeyring.sendTrezorCommand = (
     command: TrezorFrameCommand,
-    listener: Function
+    listener: Function,
   ) => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
@@ -280,26 +280,26 @@ test('Device is busy', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   let hardwareTransport = createTransport(
     kTrezorBridgeUrl,
-    new TrezorBridgeTransport(kTrezorBridgeUrl)
+    new TrezorBridgeTransport(kTrezorBridgeUrl),
   )
   hardwareTransport.contentWindow = {
     postMessage: () => {
       // This is intentional
-    }
+    },
   }
   hardwareTransport.createBridge = async () => {
     return hardwareTransport
   }
   hardwareKeyring.sendTrezorCommand = (
     command: TrezorFrameCommand,
-    listener: Function
+    listener: Function,
   ) => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
   hardwareKeyring.sendTrezorCommand('command1', () => {}).then()
   const result = hardwareKeyring.sendTrezorCommand('command1', () => {})
   return expect(result).resolves.toStrictEqual(
-    TrezorErrorsCodes.CommandInProgress
+    TrezorErrorsCodes.CommandInProgress,
   )
 })
 
@@ -307,41 +307,41 @@ test('Unlock device fail', () => {
   const hardwareKeyring = createTrezorKeyringWithTransport({
     success: false,
     error: 'error',
-    code: undefined
+    code: undefined,
   })
   expect(hardwareKeyring.isUnlocked()).toStrictEqual(false)
   return expect(hardwareKeyring.unlock()).resolves.toStrictEqual({
     success: false,
     error: getLocale('braveWalletUnlockError'),
-    code: ''
+    code: '',
   })
 })
 
 test('Unlock device fail with error', () => {
   const response = {
     success: false,
-    payload: { error: 'test_error', code: 'test_code' }
+    payload: { error: 'test_error', code: 'test_code' },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(response)
   expect(hardwareKeyring.isUnlocked()).toStrictEqual(false)
   return expect(hardwareKeyring.unlock()).resolves.toStrictEqual({
     error: 'test_error',
     code: 'test_code',
-    success: false
+    success: false,
   })
 })
 
 test('Extract accounts from locked device', () => {
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: false, error: 'error', code: undefined },
-    { success: true, payload: [] }
+    { success: true, payload: [] },
   )
   return expect(
-    hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme)
+    hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme),
   ).resolves.toStrictEqual({
     success: false,
     error: getLocale('braveWalletUnlockError'),
-    code: ''
+    code: '',
   })
 })
 
@@ -350,18 +350,18 @@ test('Extracting accounts from unlocked device fail to access bridge', () => {
   const expectedCode = 'test_code'
   const response = {
     success: false,
-    payload: { error: expectedError, code: expectedCode }
+    payload: { error: expectedError, code: expectedCode },
   } as Unsuccessful
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
-    response
+    response,
   )
   return expect(
-    hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme)
+    hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme),
   ).resolves.toStrictEqual({
     error: response.payload.error,
     success: response.success,
-    code: response.payload.code
+    code: response.payload.code,
   })
 })
 
@@ -369,38 +369,38 @@ test('Extract accounts from unlocked device returned success', () => {
   const accounts = [
     {
       publicKey:
-        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9' +
-        'e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
+        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9'
+        + 'e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
       serializedPath: "m/44'/60'/0'/0/0",
-      fingerprint: 5454545
+      fingerprint: 5454545,
     },
     {
       publicKey:
-        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f' +
-        '377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
+        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f'
+        + '377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
       serializedPath: "m/44'/60'/0'/0/1",
-      fingerprint: 5454545
-    }
+      fingerprint: 5454545,
+    },
   ]
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
-    { success: true, payload: accounts }
+    { success: true, payload: accounts },
   )
 
   return expect(
-    hardwareKeyring.getAccounts(0, 2, EthTrezorDefaultHardwareImportScheme)
+    hardwareKeyring.getAccounts(0, 2, EthTrezorDefaultHardwareImportScheme),
   ).resolves.toStrictEqual({
     accounts: [
       {
         'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
-        'derivationPath': "m/44'/60'/0'/0/0"
+        'derivationPath': "m/44'/60'/0'/0/0",
       },
       {
         'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-        'derivationPath': "m/44'/60'/0'/0/1"
-      }
+        'derivationPath': "m/44'/60'/0'/0/1",
+      },
     ],
-    success: true
+    success: true,
   })
 })
 
@@ -408,38 +408,38 @@ test('Extracting accounts from unlocked device returned success without zero ind
   const accounts = [
     {
       publicKey:
-        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae' +
-        '52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
+        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae'
+        + '52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
       serializedPath: "m/44'/60'/0'/0/0",
-      fingerprint: 5454545
+      fingerprint: 5454545,
     },
     {
       publicKey:
-        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f7' +
-        '80787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
+        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f7'
+        + '80787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
       serializedPath: "m/44'/60'/0'/0/1",
-      fingerprint: 5454545
-    }
+      fingerprint: 5454545,
+    },
   ]
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
-    { success: true, payload: accounts }
+    { success: true, payload: accounts },
   )
 
   return expect(
-    hardwareKeyring.getAccounts(0, 2, EthTrezorDefaultHardwareImportScheme)
+    hardwareKeyring.getAccounts(0, 2, EthTrezorDefaultHardwareImportScheme),
   ).resolves.toStrictEqual({
     accounts: [
       {
         'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
-        'derivationPath': "m/44'/60'/0'/0/0"
+        'derivationPath': "m/44'/60'/0'/0/0",
       },
       {
         'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-        'derivationPath': "m/44'/60'/0'/0/1"
-      }
+        'derivationPath': "m/44'/60'/0'/0/1",
+      },
     ],
-    success: true
+    success: true,
   })
 })
 
@@ -451,20 +451,20 @@ test('Add unlock command handler', () => {
       expect(command.command).toStrictEqual(TrezorCommand.Unlock)
       hardwareTransport._commands_called.push(TrezorCommand.Unlock)
       return Promise.resolve({ result: true })
-    }
+    },
   )
   const response = handlerResponse(hardwareTransport)
   hardwareTransport.postCommand({
     command: TrezorCommand.GetAccounts,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   hardwareTransport.postCommand({
     command: TrezorCommand.Unlock,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   return expect(response).resolves.toStrictEqual([
     { result: true },
-    [TrezorCommand.Unlock]
+    [TrezorCommand.Unlock],
   ])
 })
 
@@ -476,20 +476,20 @@ test('Add get accounts command handler', () => {
       expect(command.command).toStrictEqual(TrezorCommand.GetAccounts)
       hardwareTransport._commands_called.push(TrezorCommand.GetAccounts)
       return Promise.resolve({ result: true })
-    }
+    },
   )
   const response = handlerResponse(hardwareTransport)
   hardwareTransport.postCommand({
     command: TrezorCommand.Unlock,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   hardwareTransport.postCommand({
     command: TrezorCommand.GetAccounts,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   return expect(response).resolves.toStrictEqual([
     { result: true },
-    [TrezorCommand.GetAccounts]
+    [TrezorCommand.GetAccounts],
   ])
 })
 
@@ -501,7 +501,7 @@ test('Add multiple commands handlers', () => {
       expect(command.command).toStrictEqual(TrezorCommand.Unlock)
       hardwareTransport._commands_called.push(TrezorCommand.Unlock)
       return Promise.resolve({ result: true })
-    }
+    },
   )
 
   hardwareTransport.addCommandHandler(
@@ -510,24 +510,24 @@ test('Add multiple commands handlers', () => {
       expect(command.command).toStrictEqual(TrezorCommand.GetAccounts)
       hardwareTransport._commands_called.push(TrezorCommand.GetAccounts)
       return Promise.resolve({ result: true })
-    }
+    },
   )
   const response = handlerResponse(hardwareTransport)
   hardwareTransport.postCommand({
     command: TrezorCommand.Unlock,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   hardwareTransport.postCommand({
     command: TrezorCommand.GetAccounts,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   hardwareTransport.postCommand({
     command: TrezorCommand.GetAccounts,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   hardwareTransport.postCommand({
     command: TrezorCommand.Unlock,
-    origin: kTrezorBridgeUrl
+    origin: kTrezorBridgeUrl,
   })
   return expect(response).resolves.toStrictEqual([
     { result: true },
@@ -535,8 +535,8 @@ test('Add multiple commands handlers', () => {
       TrezorCommand.Unlock,
       TrezorCommand.GetAccounts,
       TrezorCommand.GetAccounts,
-      TrezorCommand.Unlock
-    ]
+      TrezorCommand.Unlock,
+    ],
   ])
 })
 
@@ -547,13 +547,13 @@ test('Sign transaction from unlocked device', () => {
     payload: {
       vBytes: Buffer.from([1]),
       rBytes: Buffer.from([2, 3]),
-      sBytes: Buffer.from([4, 5, 6])
-    }
+      sBytes: Buffer.from([4, 5, 6]),
+    },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
     undefined,
-    signed
+    signed,
   )
 
   const expectedResult = {
@@ -561,8 +561,8 @@ test('Sign transaction from unlocked device', () => {
     signature: {
       vBytes: [1],
       rBytes: [2, 3],
-      sBytes: [4, 5, 6]
-    }
+      sBytes: [4, 5, 6],
+    },
   }
 
   return expect(
@@ -570,8 +570,8 @@ test('Sign transaction from unlocked device', () => {
       "m/44'/60'/0'/0",
       txInfo.id,
       txInfo.txDataUnion.ethTxData1559,
-      '0x539'
-    )
+      '0x539',
+    ),
   ).resolves.toStrictEqual(expectedResult)
 })
 
@@ -581,19 +581,19 @@ test('Sign transaction failed from unlocked device', () => {
     success: false,
     payload: {
       error: 'Permissions not granted',
-      code: 'Method_PermissionsNotGranted'
-    }
+      code: 'Method_PermissionsNotGranted',
+    },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
     undefined,
-    signed
+    signed,
   )
 
   const expectedResult: HardwareOperationError = {
     error: signed.payload.error,
     code: signed.payload.code,
-    success: false
+    success: false,
   }
 
   return expect(
@@ -601,8 +601,8 @@ test('Sign transaction failed from unlocked device', () => {
       "m/44'/60'/0'/0",
       txInfo.id,
       txInfo.txDataUnion.ethTxData1559,
-      '0x539'
-    )
+      '0x539',
+    ),
   ).resolves.toStrictEqual(expectedResult)
 })
 
@@ -610,25 +610,25 @@ test('Sign message from unlocked device success', () => {
   const signMessagePayload: SignMessageResponse = {
     success: true,
     payload: {
-      bytes: Buffer.from([3, 1, 4])
-    }
+      bytes: Buffer.from([3, 1, 4]),
+    },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
     undefined,
     undefined,
-    signMessagePayload
+    signMessagePayload,
   )
 
   const expectedResult = {
     success: true,
     signature: {
-      bytes: [3, 1, 4]
-    }
+      bytes: [3, 1, 4],
+    },
   }
 
   return expect(
-    hardwareKeyring.signPersonalMessage("m/44'/60'/0'/0", 'Hello!')
+    hardwareKeyring.signPersonalMessage("m/44'/60'/0'/0", 'Hello!'),
   ).resolves.toStrictEqual(expectedResult)
 })
 
@@ -637,21 +637,21 @@ test('Sign message from unlocked device failed', () => {
     success: false,
     payload: {
       code: '1',
-      error: 'error'
-    }
+      error: 'error',
+    },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
     undefined,
     undefined,
-    signMessagePayload
+    signMessagePayload,
   )
   return expect(
-    hardwareKeyring.signPersonalMessage("m/44'/60'/0'/0", 'Hello!')
+    hardwareKeyring.signPersonalMessage("m/44'/60'/0'/0", 'Hello!'),
   ).resolves.toStrictEqual({
     success: signMessagePayload.success,
     code: signMessagePayload.payload.code,
-    error: signMessagePayload.payload.error
+    error: signMessagePayload.payload.error,
   })
 })
 
@@ -659,21 +659,21 @@ test('Sign typed from unlocked device, success', () => {
   const signMessagePayload: SignTypedMessageResponse = {
     success: true,
     payload: {
-      bytes: Buffer.from([2, 7, 8])
-    }
+      bytes: Buffer.from([2, 7, 8]),
+    },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
     undefined,
     undefined,
-    signMessagePayload
+    signMessagePayload,
   )
 
   const expectedResult = {
     success: true,
     signature: {
-      bytes: [2, 7, 8]
-    }
+      bytes: [2, 7, 8],
+    },
   }
 
   return expect(
@@ -684,8 +684,8 @@ test('Sign typed from unlocked device, success', () => {
       '{}', // messageJson
       '{}', // domainJson
       '{}', // typesJson
-      'primaryType'
-    )
+      'primaryType',
+    ),
   ).resolves.toStrictEqual(expectedResult)
 })
 
@@ -694,14 +694,14 @@ test('Sign typed message api not supported', () => {
     success: false,
     payload: {
       code: 'Method_InvalidParameter',
-      error: 'some text'
-    }
+      error: 'some text',
+    },
   }
   const hardwareKeyring = createTrezorKeyringWithTransport(
     { success: true },
     undefined,
     undefined,
-    signMessagePayload
+    signMessagePayload,
   )
   return expect(
     hardwareKeyring.signEip712Message(
@@ -711,11 +711,11 @@ test('Sign typed message api not supported', () => {
       '{}', // messageJson
       '{}', // domainJson
       '{}', // typesJson
-      'primaryType'
-    )
+      'primaryType',
+    ),
   ).resolves.toStrictEqual({
     error: getLocale('braveWalletTrezorSignTypedDataError'),
     success: signMessagePayload.success,
-    code: undefined
+    code: undefined,
   })
 })

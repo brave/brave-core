@@ -17,36 +17,36 @@ export type GetCoinMarketArgs = {
 
 export const coinMarketEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getCoinMarket: query<BraveWallet.CoinMarket[], GetCoinMarketArgs>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const {
-            data: { assetRatioService }
+            data: { assetRatioService },
           } = baseQuery(undefined)
           const result = await assetRatioService.getCoinMarkets(
             arg.vsAsset,
-            arg.limit
+            arg.limit,
           )
           return {
             data: result.values.map((coin) => {
               coin.image = coin.image.replace(
                 'https://assets.coingecko.com',
-                ' https://assets.cgproxy.brave.com'
+                ' https://assets.cgproxy.brave.com',
               )
               return coin
-            })
+            }),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to fetch coin market data',
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

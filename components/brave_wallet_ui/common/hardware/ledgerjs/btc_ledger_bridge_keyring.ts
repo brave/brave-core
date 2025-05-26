@@ -9,14 +9,14 @@ import {
   HardwareImportScheme,
   DerivationSchemes,
   HardwareOperationResultAccounts,
-  HardwareOperationResultBitcoinSignature
+  HardwareOperationResultBitcoinSignature,
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
   BtcGetAccountResponse,
-  BtcSignTransactionResponse
+  BtcSignTransactionResponse,
 } from './ledger-messages'
 
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
@@ -36,7 +36,7 @@ export default class BitcoinLedgerBridgeKeyring
   getAccounts = async (
     from: number,
     count: number,
-    scheme: HardwareImportScheme
+    scheme: HardwareImportScheme,
   ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -51,7 +51,7 @@ export default class BitcoinLedgerBridgeKeyring
 
   private readonly getAccountsFromDevice = async (
     paths: string[],
-    scheme: HardwareImportScheme
+    scheme: HardwareImportScheme,
   ): Promise<HardwareOperationResultAccounts> => {
     let accounts: AccountFromDevice[] = []
     for (const path of paths) {
@@ -63,11 +63,11 @@ export default class BitcoinLedgerBridgeKeyring
         xpubVersion:
           scheme.derivationScheme === DerivationSchemes.BtcLedgerMainnet
             ? 0x0488b21e // xpub
-            : 0x043587cf // tpub
+            : 0x043587cf, // tpub
       })
       if (
-        data === LedgerBridgeErrorCodes.BridgeNotReady ||
-        data === LedgerBridgeErrorCodes.CommandInProgress
+        data === LedgerBridgeErrorCodes.BridgeNotReady
+        || data === LedgerBridgeErrorCodes.CommandInProgress
       ) {
         return this.createErrorFromCode(data)
       }
@@ -78,7 +78,7 @@ export default class BitcoinLedgerBridgeKeyring
 
       accounts.push({
         address: data.payload.xpub,
-        derivationPath: path
+        derivationPath: path,
       })
     }
     return { success: true, accounts: accounts }
@@ -92,7 +92,7 @@ export default class BitcoinLedgerBridgeKeyring
     }>,
     outputScript: Buffer,
     changePath: string | undefined,
-    lockTime: number
+    lockTime: number,
   ): Promise<HardwareOperationResultBitcoinSignature> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -105,11 +105,11 @@ export default class BitcoinLedgerBridgeKeyring
       inputTransactions,
       outputScript,
       changePath,
-      lockTime
+      lockTime,
     })
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -120,7 +120,7 @@ export default class BitcoinLedgerBridgeKeyring
 
     return {
       success: true,
-      signature: { witnessArray: data.payload.witnesses.map((w) => [...w]) }
+      signature: { witnessArray: data.payload.witnesses.map((w) => [...w]) },
     }
   }
 }

@@ -13,21 +13,21 @@ import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 // hooks
 import {
   useGetRewardsInfoQuery,
-  useGetVisibleNetworksQuery
+  useGetVisibleNetworksQuery,
 } from '../slices/api.slice'
 import { useLocalStorage } from './use_local_storage'
 
 // utils
 import { networkEntityAdapter } from '../slices/entities/network.entity'
 import {
-  makeInitialFilteredOutNetworkKeys //
+  makeInitialFilteredOutNetworkKeys, //
 } from '../../utils/local-storage-utils'
 
 export const usePortfolioVisibleNetworks = () => {
   // local-storage
   const [filteredOutPortfolioNetworkKeys] = useLocalStorage(
     LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
-    makeInitialFilteredOutNetworkKeys
+    makeInitialFilteredOutNetworkKeys,
   )
 
   // queries
@@ -36,8 +36,8 @@ export const usePortfolioVisibleNetworks = () => {
   const {
     data: {
       status: rewardsStatus,
-      rewardsNetwork: externalRewardsNetwork
-    } = emptyRewardsInfo
+      rewardsNetwork: externalRewardsNetwork,
+    } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
 
   // Computed
@@ -55,12 +55,12 @@ export const usePortfolioVisibleNetworks = () => {
       const visibleNetworks = networksList.filter(
         (network) =>
           !filteredOutPortfolioNetworkKeys.includes(
-            networkEntityAdapter.selectId(network).toString()
-          )
+            networkEntityAdapter.selectId(network).toString(),
+          ),
       )
       return [
         visibleNetworks,
-        visibleNetworks.map(networkEntityAdapter.selectId)
+        visibleNetworks.map(networkEntityAdapter.selectId),
       ]
     }, [networksList, filteredOutPortfolioNetworkKeys])
 
@@ -68,6 +68,6 @@ export const usePortfolioVisibleNetworks = () => {
   return {
     visiblePortfolioNetworkIds,
     visiblePortfolioNetworks,
-    filteredOutPortfolioNetworkKeys
+    filteredOutPortfolioNetworkKeys,
   }
 }

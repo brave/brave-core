@@ -15,7 +15,7 @@ export function useExplorer(
   network?: Pick<
     BraveWallet.NetworkInfo,
     'chainId' | 'blockExplorerUrls'
-  > | null
+  > | null,
 ) {
   return React.useCallback(
     (type: BlockExplorerUrlTypes, value?: string, id?: string) =>
@@ -23,9 +23,9 @@ export function useExplorer(
         network,
         value,
         type,
-        id
+        id,
       }),
-    [network]
+    [network],
   )
 }
 

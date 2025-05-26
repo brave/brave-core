@@ -36,8 +36,8 @@ async function refreshWalletInfo(store: Store) {
       'ConnectedAccounts',
       'DefaultEthWallet',
       'DefaultSolWallet',
-      'IsMetaMaskInstalled'
-    ])
+      'IsMetaMaskInstalled',
+    ]),
   )
 }
 
@@ -53,7 +53,7 @@ handler.on(
       .dispatch(walletApi.endpoints.invalidateUserTokensRegistry.initiate())
       .unwrap()
     store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
-  }
+  },
 )
 
 handler.on(WalletActions.initialize.type, async (store) => {
@@ -67,7 +67,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
   interactionNotifier.beginWatchingForInteraction(
     50000,
     isWalletLocked,
-    onInteractionInterval
+    onInteractionInterval,
   )
   store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
 })
@@ -96,7 +96,7 @@ handler.on(WalletActions.unlocked.type, async (store) => {
   interactionNotifier.beginWatchingForInteraction(
     50000,
     false,
-    onInteractionInterval
+    onInteractionInterval,
   )
 })
 
@@ -112,7 +112,7 @@ handler.on(
   WalletActions.defaultBaseCryptocurrencyChanged.type,
   async (store) => {
     await refreshWalletInfo(store)
-  }
+  },
 )
 
 handler.on(WalletActions.refreshAll.type, async (store: Store) => {
@@ -139,10 +139,10 @@ handler.on(
         'TokenBalances',
         'TokenBalancesForChainId',
         'AccountTokenCurrentBalance',
-        'HardwareAccountDiscoveryBalance'
-      ])
+        'HardwareAccountDiscoveryBalance',
+      ]),
     )
-  }
+  },
 )
 
 export default handler.middleware

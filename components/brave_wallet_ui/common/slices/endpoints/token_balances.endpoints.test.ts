@@ -11,24 +11,24 @@ import { useGetTokenBalancesRegistryQuery } from '../api.slice'
 // utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
 import { mockEthMainnet } from '../../../stories/mock-data/mock-networks'
 import {
   createEmptyTokenBalancesRegistry,
   getBalanceFromRegistry,
-  setBalance
+  setBalance,
 } from '../../../utils/balance-utils'
 
 // mocks
 import {
   mockMoonCatNFT,
-  mockSplNft
+  mockSplNft,
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockSolanaAccount,
-  mockSolanaMainnetNetwork
+  mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
 
 /** Eth Account owns a MoonCat NFT, SOL account owns 1 SPL NFT */
@@ -41,7 +41,7 @@ setBalance({
   contractAddress: mockMoonCatNFT.contractAddress,
   tokenId: mockMoonCatNFT.tokenId,
   tokenBalancesRegistry: mockedTokenBalancesRegistry,
-  isShielded: false
+  isShielded: false,
 })
 setBalance({
   accountId: mockSolanaAccount.accountId,
@@ -51,7 +51,7 @@ setBalance({
   contractAddress: mockSplNft.contractAddress,
   tokenId: mockSplNft.tokenId,
   tokenBalancesRegistry: mockedTokenBalancesRegistry,
-  isShielded: false
+  isShielded: false,
 })
 
 describe('token balances endpoints', () => {
@@ -66,8 +66,8 @@ describe('token balances endpoints', () => {
             networks: [mockEthMainnet, mockSolanaMainnetNetwork],
             accountInfos: [mockEthAccount, mockSolanaAccount],
             blockchainTokens: [mockMoonCatNFT, mockSplNft],
-            userAssets: [mockMoonCatNFT, mockSplNft]
-          }
+            userAssets: [mockMoonCatNFT, mockSplNft],
+          },
         )
 
         const { result } = renderHook(
@@ -75,13 +75,13 @@ describe('token balances endpoints', () => {
             useGetTokenBalancesRegistryQuery({
               accountIds: [
                 mockEthAccount.accountId,
-                mockSolanaAccount.accountId
+                mockSolanaAccount.accountId,
               ],
               networks: [mockEthMainnet, mockSolanaMainnetNetwork],
               useAnkrBalancesFeature,
-              isSpamRegistry: false
+              isSpamRegistry: false,
             }),
-          renderHookOptionsWithMockStore(store)
+          renderHookOptionsWithMockStore(store),
         )
 
         await waitFor(() => {
@@ -103,8 +103,8 @@ describe('token balances endpoints', () => {
             contractAddress: mockMoonCatNFT.contractAddress,
             tokenId: mockMoonCatNFT.tokenId,
             registry: registry!,
-            isShielded: false
-          })
+            isShielded: false,
+          }),
         ).toBe('1')
         expect(
           getBalanceFromRegistry({
@@ -114,8 +114,8 @@ describe('token balances endpoints', () => {
             contractAddress: mockMoonCatNFT.contractAddress,
             tokenId: '0x1111',
             registry: registry!,
-            isShielded: false
-          })
+            isShielded: false,
+          }),
         ).toBe('0')
         expect(
           getBalanceFromRegistry({
@@ -125,8 +125,8 @@ describe('token balances endpoints', () => {
             contractAddress: mockSplNft.contractAddress,
             tokenId: mockSplNft.tokenId,
             registry: registry!,
-            isShielded: false
-          })
+            isShielded: false,
+          }),
         ).toBe('1')
         expect(
           getBalanceFromRegistry({
@@ -136,10 +136,10 @@ describe('token balances endpoints', () => {
             contractAddress: 'wt1t1111111111111111111',
             tokenId: '',
             registry: registry!,
-            isShielded: false
-          })
+            isShielded: false,
+          }),
         ).toBe('0')
-      }
+      },
     )
   })
 })

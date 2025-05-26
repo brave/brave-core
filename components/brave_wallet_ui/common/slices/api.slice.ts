@@ -15,7 +15,7 @@ import {
   selectAllNetworksFromQueryResult,
   selectOffRampNetworksFromQueryResult,
   selectOnRampNetworksFromQueryResult,
-  selectVisibleNetworksFromQueryResult
+  selectVisibleNetworksFromQueryResult,
 } from './entities/network.entity'
 
 // api
@@ -35,7 +35,7 @@ import { onRampEndpoints } from './endpoints/on-ramp.endpoints'
 import { offRampEndpoints } from './endpoints/off-ramp.endpoints'
 import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
-  tokenSuggestionsEndpoints //
+  tokenSuggestionsEndpoints, //
 } from './endpoints/token_suggestions.endpoints'
 import { addressEndpoints } from './endpoints/address.endpoints'
 import { accountEndpoints } from './endpoints/account.endpoints'
@@ -70,27 +70,27 @@ export function createWalletApi() {
                     await jsonRpcService.getCode(
                       arg.address,
                       arg.coin,
-                      arg.chainId
+                      arg.chainId,
                     )
                   if (error !== 0 && errorMessage) {
                     return {
-                      error: errorMessage
+                      error: errorMessage,
                     }
                   }
                   return {
-                    data: bytecode
+                    data: bytecode,
                   }
                 } catch (error) {
                   return handleEndpointError(
                     endpoint,
                     `Unable to fetch bytecode for address: ${arg.address}.`,
-                    error
+                    error,
                   )
                 }
-              }
-            })
+              },
+            }),
           }
-        }
+        },
       })
       // panel endpoints
       .injectEndpoints({
@@ -100,16 +100,16 @@ export function createWalletApi() {
               const { panelHandler } = baseQuery(undefined).data
               panelHandler?.showUI()
               return { data: true }
-            }
+            },
           }),
           closePanelUI: mutation<boolean, void>({
             queryFn(arg, api, extraOptions, baseQuery) {
               const { panelHandler } = baseQuery(undefined).data
               panelHandler?.closeUI()
               return { data: true }
-            }
-          })
-        })
+            },
+          }),
+        }),
       })
       // Wallet management endpoints
       .injectEndpoints({ endpoints: walletEndpoints })
@@ -372,7 +372,7 @@ export const {
   useGetMeldServiceProvidersQuery,
   useGetMeldPaymentMethodsQuery,
   useGenerateMeldCryptoQuotesMutation,
-  useCreateMeldBuyWidgetMutation
+  useCreateMeldBuyWidgetMutation,
 } = walletApi
 
 // Derived Data Queries
@@ -382,9 +382,9 @@ export const useGetMainnetsQuery = (opts?: { skip?: boolean }) => {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
-      data: selectMainnetNetworksFromQueryResult(res)
+      data: selectMainnetNetworksFromQueryResult(res),
     }),
-    skip: opts?.skip
+    skip: opts?.skip,
   })
 
   return queryResults
@@ -395,9 +395,9 @@ export const useGetNetworksQuery = (opts?: { skip?: boolean }) => {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
-      data: selectAllNetworksFromQueryResult(res)
+      data: selectAllNetworksFromQueryResult(res),
     }),
-    skip: opts?.skip
+    skip: opts?.skip,
   })
 
   return queryResults
@@ -408,9 +408,9 @@ export const useGetOffRampNetworksQuery = (opts?: { skip?: boolean }) => {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
-      data: selectOffRampNetworksFromQueryResult(res)
+      data: selectOffRampNetworksFromQueryResult(res),
     }),
-    skip: opts?.skip
+    skip: opts?.skip,
   })
 
   return queryResults
@@ -421,9 +421,9 @@ export const useGetOnRampNetworksQuery = (opts?: { skip?: boolean }) => {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
-      data: selectOnRampNetworksFromQueryResult(res)
+      data: selectOnRampNetworksFromQueryResult(res),
     }),
-    skip: opts?.skip
+    skip: opts?.skip,
   })
 
   return queryResults
@@ -431,15 +431,15 @@ export const useGetOnRampNetworksQuery = (opts?: { skip?: boolean }) => {
 
 export const useGetVisibleNetworksQuery = (
   arg?: undefined | typeof skipToken,
-  opts?: { skip?: boolean }
+  opts?: { skip?: boolean },
 ) => {
   const queryResults = useGetNetworksRegistryQuery(arg, {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
-      data: selectVisibleNetworksFromQueryResult(res)
+      data: selectVisibleNetworksFromQueryResult(res),
     }),
-    skip: opts?.skip
+    skip: opts?.skip,
   })
 
   return queryResults
@@ -451,7 +451,7 @@ export const useGetNetworkQuery = (
         chainId: string
         coin: BraveWallet.CoinType
       }
-    | typeof skipToken
+    | typeof skipToken,
 ) => {
   return useGetNetworksRegistryQuery(
     args === skipToken ? skipToken : undefined,
@@ -462,9 +462,9 @@ export const useGetNetworkQuery = (
         data:
           res.data && args !== skipToken
             ? res.data.entities[networkEntityAdapter.selectId(args)]
-            : undefined
-      })
-    }
+            : undefined,
+      }),
+    },
   )
 }
 

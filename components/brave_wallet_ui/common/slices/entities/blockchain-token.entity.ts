@@ -7,7 +7,7 @@ import {
   createDraftSafeSelector,
   createEntityAdapter,
   EntityAdapter,
-  EntityId
+  EntityId,
 } from '@reduxjs/toolkit'
 
 // types
@@ -16,7 +16,7 @@ import { BraveWallet } from '../../../constants/types'
 // utils
 import {
   getAssetIdKey,
-  GetBlockchainTokenIdArg
+  GetBlockchainTokenIdArg,
 } from '../../../utils/asset-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
@@ -27,7 +27,7 @@ export type BlockchainTokenEntityAdaptor =
 
 export const blockchainTokenEntityAdaptor: BlockchainTokenEntityAdaptor =
   createEntityAdapter<BraveWallet.BlockchainToken>({
-    selectId: getAssetIdKey
+    selectId: getAssetIdKey,
   })
 export type BlockchainTokenEntityAdaptorState = ReturnType<
   BlockchainTokenEntityAdaptor['getInitialState']
@@ -104,22 +104,22 @@ BlockchainTokenEntityAdaptorState = {
   nonFungibleHiddenTokenIdsByCoinType: {},
 
   spamTokenIds: [],
-  nonSpamTokenIds: []
+  nonSpamTokenIds: [],
 }
 
 export const combineTokenRegistries = (
   tokensRegistry: BlockchainTokenEntityAdaptorState,
-  userTokensRegistry: BlockchainTokenEntityAdaptorState
+  userTokensRegistry: BlockchainTokenEntityAdaptorState,
 ): BlockchainTokenEntityAdaptorState => {
   const chainIds = new Set(
     Object.keys(tokensRegistry.idsByChainId).concat(
-      Object.keys(userTokensRegistry.idsByChainId)
-    )
+      Object.keys(userTokensRegistry.idsByChainId),
+    ),
   )
   const coinTypes = new Set(
     Object.keys(tokensRegistry.idsByCoinType)
       .concat(Object.keys(userTokensRegistry.idsByCoinType))
-      .map(Number)
+      .map(Number),
   )
 
   const idsByCoinType: Record<string, EntityId[]> = {}
@@ -137,22 +137,22 @@ export const combineTokenRegistries = (
       new Set(
         (idsByCoinType[coinType] || [])
           .concat(tokensRegistry.idsByCoinType[coinType])
-          .concat(userTokensRegistry.idsByCoinType[coinType])
-      )
+          .concat(userTokensRegistry.idsByCoinType[coinType]),
+      ),
     )
     fungibleIdsByCoinType[coinType] = Array.from(
       new Set(
         (fungibleIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.fungibleIdsByCoinType[coinType])
-          .concat(userTokensRegistry.fungibleIdsByCoinType[coinType])
-      )
+          .concat(userTokensRegistry.fungibleIdsByCoinType[coinType]),
+      ),
     )
     nonFungibleIdsByCoinType[coinType] = Array.from(
       new Set(
         (nonFungibleIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.nonFungibleIdsByCoinType[coinType])
-          .concat(userTokensRegistry.nonFungibleIdsByCoinType[coinType])
-      )
+          .concat(userTokensRegistry.nonFungibleIdsByCoinType[coinType]),
+      ),
     )
 
     // visible ids by coin type
@@ -160,26 +160,26 @@ export const combineTokenRegistries = (
       new Set(
         (visibleTokenIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.visibleTokenIdsByCoinType[coinType])
-          .concat(userTokensRegistry.visibleTokenIdsByCoinType[coinType])
-      )
+          .concat(userTokensRegistry.visibleTokenIdsByCoinType[coinType]),
+      ),
     )
     fungibleVisibleTokenIdsByCoinType[coinType] = Array.from(
       new Set(
         (fungibleVisibleTokenIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.fungibleVisibleTokenIdsByCoinType[coinType])
           .concat(
-            userTokensRegistry.fungibleVisibleTokenIdsByCoinType[coinType]
-          )
-      )
+            userTokensRegistry.fungibleVisibleTokenIdsByCoinType[coinType],
+          ),
+      ),
     )
     nonFungibleVisibleTokenIdsByCoinType[coinType] = Array.from(
       new Set(
         (nonFungibleVisibleTokenIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType])
           .concat(
-            userTokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType]
-          )
-      )
+            userTokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType],
+          ),
+      ),
     )
 
     // hidden ids by coin type
@@ -187,24 +187,26 @@ export const combineTokenRegistries = (
       new Set(
         (hiddenTokenIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.hiddenTokenIdsByCoinType[coinType])
-          .concat(userTokensRegistry.hiddenTokenIdsByCoinType[coinType])
-      )
+          .concat(userTokensRegistry.hiddenTokenIdsByCoinType[coinType]),
+      ),
     )
     fungibleHiddenTokenIdsByCoinType[coinType] = Array.from(
       new Set(
         (fungibleHiddenTokenIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.fungibleHiddenTokenIdsByCoinType[coinType])
-          .concat(userTokensRegistry.fungibleHiddenTokenIdsByCoinType[coinType])
-      )
+          .concat(
+            userTokensRegistry.fungibleHiddenTokenIdsByCoinType[coinType],
+          ),
+      ),
     )
     nonFungibleHiddenTokenIdsByCoinType[coinType] = Array.from(
       new Set(
         (nonFungibleHiddenTokenIdsByCoinType[coinType] || [])
           .concat(tokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType])
           .concat(
-            userTokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType]
-          )
-      )
+            userTokensRegistry.nonFungibleVisibleTokenIdsByCoinType[coinType],
+          ),
+      ),
     )
   }
 
@@ -223,22 +225,22 @@ export const combineTokenRegistries = (
       new Set(
         (idsByChainId[chainId] || [])
           .concat(tokensRegistry.idsByChainId[chainId])
-          .concat(userTokensRegistry.idsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.idsByChainId[chainId]),
+      ),
     )
     fungibleIdsByChainId[chainId] = Array.from(
       new Set(
         (fungibleIdsByChainId[chainId] || [])
           .concat(tokensRegistry.fungibleIdsByChainId[chainId])
-          .concat(userTokensRegistry.fungibleIdsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.fungibleIdsByChainId[chainId]),
+      ),
     )
     nonFungibleIdsByChainId[chainId] = Array.from(
       new Set(
         (nonFungibleIdsByChainId[chainId] || [])
           .concat(tokensRegistry.nonFungibleIdsByChainId[chainId])
-          .concat(userTokensRegistry.nonFungibleIdsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.nonFungibleIdsByChainId[chainId]),
+      ),
     )
 
     // visible ids by chain
@@ -246,24 +248,24 @@ export const combineTokenRegistries = (
       new Set(
         (visibleTokenIdsByChainId[chainId] || [])
           .concat(tokensRegistry.visibleTokenIdsByChainId[chainId])
-          .concat(userTokensRegistry.visibleTokenIdsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.visibleTokenIdsByChainId[chainId]),
+      ),
     )
     nonFungibleVisibleTokenIdsByChainId[chainId] = Array.from(
       new Set(
         (nonFungibleVisibleTokenIdsByChainId[chainId] || [])
           .concat(tokensRegistry.nonFungibleVisibleTokenIdsByChainId[chainId])
           .concat(
-            userTokensRegistry.nonFungibleVisibleTokenIdsByChainId[chainId]
-          )
-      )
+            userTokensRegistry.nonFungibleVisibleTokenIdsByChainId[chainId],
+          ),
+      ),
     )
     fungibleVisibleTokenIdsByChainId[chainId] = Array.from(
       new Set(
         (fungibleVisibleTokenIdsByChainId[chainId] || [])
           .concat(tokensRegistry.fungibleVisibleTokenIdsByChainId[chainId])
-          .concat(userTokensRegistry.fungibleVisibleTokenIdsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.fungibleVisibleTokenIdsByChainId[chainId]),
+      ),
     )
 
     // hidden ids by chain
@@ -271,82 +273,82 @@ export const combineTokenRegistries = (
       new Set(
         (hiddenTokenIdsByChainId[chainId] || [])
           .concat(tokensRegistry.hiddenTokenIdsByChainId[chainId])
-          .concat(userTokensRegistry.hiddenTokenIdsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.hiddenTokenIdsByChainId[chainId]),
+      ),
     )
     nonFungibleHiddenTokenIdsByChainId[chainId] = Array.from(
       new Set(
         (nonFungibleHiddenTokenIdsByChainId[chainId] || [])
           .concat(tokensRegistry.nonFungibleHiddenTokenIdsByChainId[chainId])
           .concat(
-            userTokensRegistry.nonFungibleHiddenTokenIdsByChainId[chainId]
-          )
-      )
+            userTokensRegistry.nonFungibleHiddenTokenIdsByChainId[chainId],
+          ),
+      ),
     )
     fungibleHiddenTokenIdsByChainId[chainId] = Array.from(
       new Set(
         (fungibleHiddenTokenIdsByChainId[chainId] || [])
           .concat(tokensRegistry.fungibleHiddenTokenIdsByChainId[chainId])
-          .concat(userTokensRegistry.fungibleHiddenTokenIdsByChainId[chainId])
-      )
+          .concat(userTokensRegistry.fungibleHiddenTokenIdsByChainId[chainId]),
+      ),
     )
   }
 
   // all visible ids
   const visibleTokenIds = Array.from(
     new Set(
-      tokensRegistry.visibleTokenIds.concat(userTokensRegistry.visibleTokenIds)
-    )
+      tokensRegistry.visibleTokenIds.concat(userTokensRegistry.visibleTokenIds),
+    ),
   )
   const fungibleVisibleTokenIds = Array.from(
     new Set(
       tokensRegistry.fungibleVisibleTokenIds.concat(
-        userTokensRegistry.fungibleVisibleTokenIds
-      )
-    )
+        userTokensRegistry.fungibleVisibleTokenIds,
+      ),
+    ),
   )
   const nonFungibleVisibleTokenIds = Array.from(
     new Set(
       tokensRegistry.nonFungibleVisibleTokenIds.concat(
-        userTokensRegistry.nonFungibleVisibleTokenIds
-      )
-    )
+        userTokensRegistry.nonFungibleVisibleTokenIds,
+      ),
+    ),
   )
   // all hidden ids
   const hiddenTokenIds = Array.from(
     new Set(
-      tokensRegistry.hiddenTokenIds.concat(userTokensRegistry.hiddenTokenIds)
-    )
+      tokensRegistry.hiddenTokenIds.concat(userTokensRegistry.hiddenTokenIds),
+    ),
   )
   const fungibleHiddenTokenIds = Array.from(
     new Set(
       tokensRegistry.fungibleHiddenTokenIds.concat(
-        userTokensRegistry.fungibleHiddenTokenIds
-      )
-    )
+        userTokensRegistry.fungibleHiddenTokenIds,
+      ),
+    ),
   )
   const nonFungibleHiddenTokenIds = Array.from(
     new Set(
       tokensRegistry.nonFungibleVisibleTokenIds.concat(
-        userTokensRegistry.nonFungibleVisibleTokenIds
-      )
-    )
+        userTokensRegistry.nonFungibleVisibleTokenIds,
+      ),
+    ),
   )
 
   // all ids
   const nonFungibleTokenIds = Array.from(
     new Set(
       tokensRegistry.nonFungibleTokenIds.concat(
-        userTokensRegistry.nonFungibleTokenIds
-      )
-    )
+        userTokensRegistry.nonFungibleTokenIds,
+      ),
+    ),
   )
   const fungibleTokenIds = Array.from(
     new Set(
       tokensRegistry.fungibleTokenIds.concat(
-        userTokensRegistry.fungibleTokenIds
-      )
-    )
+        userTokensRegistry.fungibleTokenIds,
+      ),
+    ),
   )
 
   const initialState: BlockchainTokenEntityAdaptorState = {
@@ -384,7 +386,7 @@ export const combineTokenRegistries = (
     nonFungibleVisibleTokenIdsByChainId,
     nonFungibleHiddenTokenIdsByChainId,
     nonFungibleVisibleTokenIdsByCoinType,
-    nonFungibleHiddenTokenIdsByCoinType
+    nonFungibleHiddenTokenIdsByCoinType,
   }
 
   // add user tokens to known tokens registry
@@ -392,7 +394,7 @@ export const combineTokenRegistries = (
   // replace existing registry entity info with user token info
   return blockchainTokenEntityAdaptor.setMany(
     initialState,
-    getEntitiesListFromEntityState(userTokensRegistry)
+    getEntitiesListFromEntityState(userTokensRegistry),
   )
 }
 
@@ -408,15 +410,15 @@ export const {
   selectById: selectBlockchainTokenByIdFromQueryResult,
   selectEntities: selectBlockchainTokenEntitiesFromQueryResult,
   selectIds: selectBlockchainTokenIdsFromQueryResult,
-  selectTotal: selectTotalBlockchainTokensFromQueryResult
+  selectTotal: selectTotalBlockchainTokensFromQueryResult,
 } = blockchainTokenEntityAdaptor.getSelectors(
-  selectTokensRegistryFromQueryResult
+  selectTokensRegistryFromQueryResult,
 )
 
 export const makeSelectAllBlockchainTokenIdsForChainIdFromQueryResult = () => {
   return createDraftSafeSelector(
     [selectTokensRegistryFromQueryResult, (_, chainId: EntityId) => chainId],
-    (registry, chainId) => registry.idsByChainId[chainId]
+    (registry, chainId) => registry.idsByChainId[chainId],
   )
 }
 
@@ -424,7 +426,7 @@ export const makeSelectAllBlockchainTokensForChainFromQueryResult = () => {
   return createDraftSafeSelector(
     [selectTokensRegistryFromQueryResult, (_, chainId: EntityId) => chainId],
     (registry, chainId) =>
-      getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
+      getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId]),
   )
 }
 
@@ -435,15 +437,15 @@ export const {
   selectById: selectUserAssetByIdFromQueryResult,
   selectEntities: selectUserAssetEntitiesFromQueryResult,
   selectIds: selectUserAssetIdsFromQueryResult,
-  selectTotal: selectTotalUserAssetsFromQueryResult
+  selectTotal: selectTotalUserAssetsFromQueryResult,
 } = blockchainTokenEntityAdaptor.getSelectors(
-  selectTokensRegistryFromQueryResult
+  selectTokensRegistryFromQueryResult,
 )
 
 export const makeSelectUserAssetIdsForChainIdFromQueryResult = () => {
   return createDraftSafeSelector(
     [selectTokensRegistryFromQueryResult, (_, chainId: EntityId) => chainId],
-    (registry, chainId) => registry.idsByChainId[chainId]
+    (registry, chainId) => registry.idsByChainId[chainId],
   )
 }
 
@@ -451,7 +453,7 @@ export const makeSelectAllUserAssetsForChainFromQueryResult = () =>
   createDraftSafeSelector(
     [selectTokensRegistryFromQueryResult, (_, chainId: EntityId) => chainId],
     (registry, chainId) =>
-      getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
+      getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId]),
   )
 
 // combined tokens list
@@ -459,7 +461,7 @@ export const selectCombinedTokensList = createDraftSafeSelector(
   // inputs
   [
     (knownTokens: BraveWallet.BlockchainToken[]) => knownTokens,
-    (_, userTokens: BraveWallet.BlockchainToken[]) => userTokens
+    (_, userTokens: BraveWallet.BlockchainToken[]) => userTokens,
   ],
   // output
   (knownTokensList, userTokensList) => {
@@ -467,13 +469,13 @@ export const selectCombinedTokensList = createDraftSafeSelector(
       (token) =>
         !userTokensList.some(
           (userToken) =>
-            userToken.contractAddress === token.contractAddress &&
-            userToken.chainId === token.chainId &&
-            userToken.tokenId === token.tokenId
-        )
+            userToken.contractAddress === token.contractAddress
+            && userToken.chainId === token.chainId
+            && userToken.tokenId === token.tokenId,
+        ),
     )
     return userTokensList.concat(filteredKnownTokens)
-  }
+  },
 )
 
 // combined tokens registry
@@ -481,12 +483,12 @@ export const selectCombinedTokensRegistry = createDraftSafeSelector(
   // inputs
   [
     (knownTokens: BlockchainTokenEntityAdaptorState) => knownTokens,
-    (_, userTokens: BlockchainTokenEntityAdaptorState) => userTokens
+    (_, userTokens: BlockchainTokenEntityAdaptorState) => userTokens,
   ],
   // output
   (knownTokens, userTokens) => {
     return combineTokenRegistries(knownTokens, userTokens)
-  }
+  },
 )
 
 /**
@@ -494,7 +496,7 @@ export const selectCombinedTokensRegistry = createDraftSafeSelector(
  */
 export const selectAllVisibleUserAssetsFromQueryResult =
   createDraftSafeSelector([selectTokensRegistryFromQueryResult], (assets) =>
-    getEntitiesListFromEntityState(assets, assets.visibleTokenIds)
+    getEntitiesListFromEntityState(assets, assets.visibleTokenIds),
   )
 
 /**
@@ -503,7 +505,7 @@ export const selectAllVisibleUserAssetsFromQueryResult =
  */
 export const selectAllVisibleFungibleUserAssetsFromQueryResult =
   createDraftSafeSelector([selectTokensRegistryFromQueryResult], (assets) =>
-    getEntitiesListFromEntityState(assets, assets.fungibleVisibleTokenIds)
+    getEntitiesListFromEntityState(assets, assets.fungibleVisibleTokenIds),
   )
 
 /**
@@ -513,7 +515,7 @@ export const selectAllVisibleFungibleUserAssetsFromQueryResult =
 export const selectAllVisibleUserNFTsFromQueryResult = createDraftSafeSelector(
   [selectTokensRegistryFromQueryResult],
   (assets) =>
-    getEntitiesListFromEntityState(assets, assets.nonFungibleVisibleTokenIds)
+    getEntitiesListFromEntityState(assets, assets.nonFungibleVisibleTokenIds),
 )
 
 /**
@@ -523,6 +525,6 @@ export const selectHiddenNftsFromQueryResult = createDraftSafeSelector(
   [selectTokensRegistryFromQueryResult],
   (assets) =>
     getEntitiesListFromEntityState(assets, assets.hiddenTokenIds).filter(
-      (t) => t.isErc1155 || t.isErc721 || t.isNft
-    )
+      (t) => t.isErc1155 || t.isErc721 || t.isNft,
+    ),
 )

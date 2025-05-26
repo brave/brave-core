@@ -16,7 +16,7 @@ export const usePortfolioAccounts = () => {
   // local-storage
   const [filteredOutPortfolioAccountIds] = useLocalStorage<string[]>(
     LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
-    []
+    [],
   )
 
   // queries
@@ -26,7 +26,7 @@ export const usePortfolioAccounts = () => {
   const usersFilteredAccounts = React.useMemo(() => {
     return accounts.filter(
       (account) =>
-        !filteredOutPortfolioAccountIds.includes(account.accountId.uniqueKey)
+        !filteredOutPortfolioAccountIds.includes(account.accountId.uniqueKey),
     )
   }, [accounts, filteredOutPortfolioAccountIds])
 

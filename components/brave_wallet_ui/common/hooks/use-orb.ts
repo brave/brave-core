@@ -15,7 +15,7 @@ interface OrbOptions {
 }
 
 const applyDefaults = (
-  options: Partial<OrbOptions> | undefined
+  options: Partial<OrbOptions> | undefined,
 ): OrbOptions => {
   return { size: options?.size || 4, scale: options?.scale || 25 }
 }
@@ -26,7 +26,7 @@ export const useAccountOrb = (
   accountInfo:
     | Pick<BraveWallet.AccountInfo, 'accountId' | 'address'>
     | undefined,
-  options?: Partial<OrbOptions>
+  options?: Partial<OrbOptions>,
 ) => {
   return React.useMemo(() => {
     if (!accountInfo) {
@@ -36,8 +36,8 @@ export const useAccountOrb = (
     // Using hash of uniqueKey so similar unique keys don't produce similar
     // colors.
     const seed =
-      accountInfo.address?.toLowerCase() ||
-      crypto
+      accountInfo.address?.toLowerCase()
+      || crypto
         .createHash('sha256')
         .update(accountInfo.accountId.uniqueKey)
         .digest('hex')
@@ -45,8 +45,8 @@ export const useAccountOrb = (
     const svgString = serializer.serializeToString(
       EthereumBlockies.create({
         ...applyDefaults(options),
-        seed
-      })
+        seed,
+      }),
     )
     const encodedSvg = btoa(svgString)
     return 'data:image/svg+xml;base64,' + encodedSvg
@@ -55,7 +55,7 @@ export const useAccountOrb = (
 
 export const useAddressOrb = (
   address: string | undefined,
-  options?: Partial<OrbOptions>
+  options?: Partial<OrbOptions>,
 ) => {
   return React.useMemo(() => {
     if (!address) {
@@ -65,8 +65,8 @@ export const useAddressOrb = (
     const svgString = serializer.serializeToString(
       EthereumBlockies.create({
         ...applyDefaults(options),
-        seed: address.toLowerCase()
-      })
+        seed: address.toLowerCase(),
+      }),
     )
     const encodedSvg = btoa(svgString)
     return 'data:image/svg+xml;base64,' + encodedSvg
@@ -75,7 +75,7 @@ export const useAddressOrb = (
 
 export const useNetworkOrb = (
   networkInfo: Pick<BraveWallet.NetworkInfo, 'chainName'> | undefined | null,
-  options?: Partial<OrbOptions>
+  options?: Partial<OrbOptions>,
 ) => {
   return React.useMemo(() => {
     if (!networkInfo) {
@@ -84,7 +84,7 @@ export const useNetworkOrb = (
 
     return EthereumBlockies.background({
       ...applyDefaults(options),
-      seed: networkInfo.chainName
+      seed: networkInfo.chainName,
     })
   }, [networkInfo, options])
 }

@@ -17,7 +17,7 @@ import Amount from '../../utils/amount'
 // api
 import {
   useLazyGetERC20AllowanceQuery,
-  useApproveERC20AllowanceMutation
+  useApproveERC20AllowanceMutation,
 } from '../slices/api.slice'
 
 export function useTokenAllowance() {
@@ -36,7 +36,7 @@ export function useTokenAllowance() {
       spenderAddress,
       spendAmount,
       account,
-      token
+      token,
     }: {
       spenderAddress: string
       spendAmount: string
@@ -53,7 +53,7 @@ export function useTokenAllowance() {
           contractAddress: token.contractAddress,
           ownerAddress: account.address,
           spenderAddress: spenderAddress,
-          chainId: token.chainId
+          chainId: token.chainId,
         }).unwrap()
 
         setHasAllowance(new Amount(allowance).gte(spendAmount))
@@ -63,7 +63,7 @@ export function useTokenAllowance() {
         setHasAllowance(false)
       }
     },
-    [getERC20Allowance]
+    [getERC20Allowance],
   )
 
   const approveSpendAllowance = useCallback(
@@ -72,7 +72,7 @@ export function useTokenAllowance() {
       spendAmount,
       account,
       network,
-      token
+      token,
     }: {
       spenderAddress: string
       spendAmount?: string
@@ -92,19 +92,19 @@ export function useTokenAllowance() {
           spenderAddress,
           allowance: spendAmount
             ? new Amount(spendAmount).toHex()
-            : new Amount(MAX_UINT256).toHex()
+            : new Amount(MAX_UINT256).toHex(),
         })
       } catch (e) {
         // bubble up error
         console.error(`Error creating ERC20 approve transaction: ${e}`)
       }
     },
-    [approveERC20Allowance, hasAllowance]
+    [approveERC20Allowance, hasAllowance],
   )
 
   return {
     checkAllowance,
     hasAllowance,
-    approveSpendAllowance
+    approveSpendAllowance,
   }
 }

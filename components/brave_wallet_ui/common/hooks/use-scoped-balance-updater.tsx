@@ -13,7 +13,7 @@ import { useSafeWalletSelector } from './use-safe-selector'
 import { useGetTokenBalancesForChainIdQuery } from '../slices/api.slice'
 import {
   coinTypesMapping,
-  defaultQuerySubscriptionOptions
+  defaultQuerySubscriptionOptions,
 } from '../slices/constants'
 
 // Types / constants
@@ -46,8 +46,8 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
             accountId: account.accountId,
             chainId: arg.network.chainId,
             coin: coinTypesMapping[account.accountId.coin],
-            tokens: arg.tokens
-          }
+            tokens: arg.tokens,
+          },
         ]
       }
       return []
@@ -60,29 +60,29 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
               accountId: account.accountId,
               chainId: arg.network.chainId,
               coin: CoinTypes.SOL,
-              tokens: arg.tokens
-            }
+              tokens: arg.tokens,
+            },
           ]
-        : []
+        : [],
     )
 
     return [...nonSolArgs, ...solArgs]
   }, [arg])
 
   return useGetTokenBalancesForChainIdQuery(
-    arg !== skipToken &&
+    arg !== skipToken
       // account and network CoinType can be inconsistent during intermittent
       // updates.
-      arg.accounts.every(
-        (account) => account.accountId.coin === arg.network.coin
-      ) &&
-      !isWalletLocked &&
-      isWalletCreated &&
-      hasInitialized &&
-      args
+      && arg.accounts.every(
+        (account) => account.accountId.coin === arg.network.coin,
+      )
+      && !isWalletLocked
+      && isWalletCreated
+      && hasInitialized
+      && args
       ? args
       : skipToken,
-    defaultQuerySubscriptionOptions
+    defaultQuerySubscriptionOptions,
   )
 }
 

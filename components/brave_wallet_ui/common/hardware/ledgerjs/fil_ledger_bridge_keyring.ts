@@ -8,14 +8,14 @@ import {
   HardwareImportScheme,
   DerivationSchemes,
   HardwareOperationResultAccounts,
-  HardwareOperationResultFilecoinSignature
+  HardwareOperationResultFilecoinSignature,
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   FilGetAccountResponse,
   FilSignTransactionResponse,
   LedgerBridgeErrorCodes,
-  LedgerCommand
+  LedgerCommand,
 } from './ledger-messages'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
 
@@ -34,7 +34,7 @@ export default class FilecoinLedgerBridgeKeyring
   getAccounts = async (
     from: number,
     count: number,
-    scheme: HardwareImportScheme
+    scheme: HardwareImportScheme,
   ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -50,12 +50,12 @@ export default class FilecoinLedgerBridgeKeyring
       from: from,
       count: count,
       isTestnet,
-      origin: window.origin
+      origin: window.origin,
     })
 
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -68,7 +68,7 @@ export default class FilecoinLedgerBridgeKeyring
     for (let i = 0; i < data.payload.accounts.length; i++) {
       accounts.push({
         address: data.payload.accounts[i],
-        derivationPath: scheme.pathTemplate(from + i)
+        derivationPath: scheme.pathTemplate(from + i),
       })
     }
 
@@ -76,7 +76,7 @@ export default class FilecoinLedgerBridgeKeyring
   }
 
   signTransaction = async (
-    message: string
+    message: string,
   ): Promise<HardwareOperationResultFilecoinSignature> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -87,12 +87,12 @@ export default class FilecoinLedgerBridgeKeyring
       command: LedgerCommand.SignTransaction,
       id: LedgerCommand.SignTransaction,
       message: message,
-      origin: window.origin
+      origin: window.origin,
     })
 
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -106,14 +106,14 @@ export default class FilecoinLedgerBridgeKeyring
         success: true,
         signature: {
           // TODO(apaymyshev): should have trusted->untrusted checks?
-          signedMessageJson: data.payload.untrustedSignedTxJson
-        }
+          signedMessageJson: data.payload.untrustedSignedTxJson,
+        },
       }
     } catch (e) {
       return {
         success: false,
         error: e.message,
-        code: e.statusCode || e.id || e.name
+        code: e.statusCode || e.id || e.name,
       }
     }
   }

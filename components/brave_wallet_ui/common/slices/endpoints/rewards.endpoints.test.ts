@@ -14,7 +14,7 @@ import { WalletStatus } from '../../../constants/types'
 // utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 import { BraveRewardsProxyOverrides } from '../../../constants/testing_types'
 
@@ -23,10 +23,10 @@ const mockedRewardsData: BraveRewardsProxyOverrides = {
     url: '',
     name: 'DeadBeef',
     provider: 'uphold',
-    status: WalletStatus.kConnected
+    status: WalletStatus.kConnected,
   },
   balance: 1234,
-  rewardsEnabled: true
+  rewardsEnabled: true,
 }
 
 describe('api slice Brave Rewards endpoints', () => {
@@ -36,11 +36,11 @@ describe('api slice Brave Rewards endpoints', () => {
 
       const { result } = renderHook(
         () => useGetRewardsInfoQuery(),
-        renderHookOptionsWithMockStore(store)
+        renderHookOptionsWithMockStore(store),
       )
 
       await waitFor(() =>
-        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+        expect(result.current.data && !result.current.isLoading).toBeTruthy(),
       )
       const { data: rewardsInfo, isLoading, error } = result.current
       const { provider } = rewardsInfo || {}
@@ -55,12 +55,12 @@ describe('api slice Brave Rewards endpoints', () => {
 
       const { result } = renderHook(
         () => useGetRewardsInfoQuery(),
-        renderHookOptionsWithMockStore(store)
+        renderHookOptionsWithMockStore(store),
       )
 
       // loading
       await waitFor(() =>
-        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+        expect(result.current.data && !result.current.isLoading).toBeTruthy(),
       )
 
       const { data: rewardsInfo, isLoading, error } = result.current
@@ -76,12 +76,12 @@ describe('api slice Brave Rewards endpoints', () => {
 
       const { result } = renderHook(
         () => useGetRewardsInfoQuery(),
-        renderHookOptionsWithMockStore(store)
+        renderHookOptionsWithMockStore(store),
       )
 
       // loading
       await waitFor(() =>
-        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+        expect(result.current.data && !result.current.isLoading).toBeTruthy(),
       )
 
       const { data: rewardsInfo, isLoading, error } = result.current

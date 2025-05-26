@@ -7,7 +7,7 @@ import {
   LedgerBridgeErrorCodes,
   LedgerFrameCommand,
   LedgerFrameResponse,
-  LedgerCommandHandlerUnion
+  LedgerCommandHandlerUnion,
 } from './ledger-messages'
 
 // LedgerMessagingTransport is a generic bi-directional messaging utility for
@@ -31,7 +31,7 @@ export class LedgerMessagingTransport {
 
   // T is response type, e.g. GetAccountResponse
   sendCommand = <T>(
-    command: LedgerFrameCommand
+    command: LedgerFrameCommand,
   ): Promise<T | LedgerBridgeErrorCodes> => {
     return new Promise<T | LedgerBridgeErrorCodes>(async (resolve) => {
       // Set handler for the response by passing the resolve function to be run
@@ -50,7 +50,7 @@ export class LedgerMessagingTransport {
   // be reassigned until removed.
   protected addCommandHandler = <T>(
     id: string,
-    handler: LedgerCommandHandlerUnion<T>
+    handler: LedgerCommandHandlerUnion<T>,
   ): boolean => {
     if (!this.handlers.size) {
       this.addWindowMessageListener()
@@ -79,12 +79,12 @@ export class LedgerMessagingTransport {
   // removed.
   // Otherwise, the response is posted back to the Window that sent the message.
   protected onMessageReceived = async (
-    event: MessageEvent<LedgerFrameCommand>
+    event: MessageEvent<LedgerFrameCommand>,
   ) => {
     if (
-      event.type !== 'message' ||
-      event.origin !== this.targetUrl ||
-      !event.source
+      event.type !== 'message'
+      || event.origin !== this.targetUrl
+      || !event.source
     ) {
       return
     }

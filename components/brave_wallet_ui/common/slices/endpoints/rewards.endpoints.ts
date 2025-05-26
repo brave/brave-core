@@ -12,7 +12,7 @@ import { handleEndpointError } from '../../../utils/api-utils'
 
 export function braveRewardsApiEndpoints({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) {
   return {
     getRewardsInfo: query<BraveRewardsInfo, void>({
@@ -20,17 +20,17 @@ export function braveRewardsApiEndpoints({
         try {
           const { cache } = baseQuery(undefined)
           return {
-            data: cache.rewardsInfo || (await cache.getBraveRewardsInfo())
+            data: cache.rewardsInfo || (await cache.getBraveRewardsInfo()),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get Brave Rewards information',
-            error
+            error,
           )
         }
       },
-      providesTags: ['BraveRewards-Info']
-    })
+      providesTags: ['BraveRewards-Info'],
+    }),
   } as const
 }

@@ -13,12 +13,12 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import { handleEndpointError } from '../../../utils/api-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import {
-  dappRadarChainNamesToChainIdMapping //
+  dappRadarChainNamesToChainIdMapping, //
 } from '../../constants/dapp_radar'
 
 export const dappRadarEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getTopDapps: query<BraveWallet.Dapp[], void>({
@@ -28,12 +28,12 @@ export const dappRadarEndpoints = ({
           const netsRegistry = await cache.getNetworksRegistry()
 
           const chainIds = Object.values(
-            dappRadarChainNamesToChainIdMapping
+            dappRadarChainNamesToChainIdMapping,
           ).filter((chainId) => !!chainId)
 
           const networks = getEntitiesListFromEntityState(
             netsRegistry,
-            chainIds
+            chainIds,
           )
 
           if (!networks.length) {
@@ -47,10 +47,10 @@ export const dappRadarEndpoints = ({
             async (net: BraveWallet.NetworkInfo) => {
               const { dapps } = await api.blockchainRegistry.getTopDapps(
                 net.chainId,
-                net.coin
+                net.coin,
               )
               return dapps
-            }
+            },
           )
 
           const uniqueTopDapps: BraveWallet.Dapp[] = []
@@ -72,19 +72,19 @@ export const dappRadarEndpoints = ({
                   })
                   .map((chain) => {
                     return dappRadarChainNamesToChainIdMapping[chain]
-                  })
+                  }),
               }
-            }
+            },
           )
 
           return {
             // filter by network ids args until core supports more chains
-            data: parsedUniqueTopDapps
+            data: parsedUniqueTopDapps,
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'unable to get top dApps', error)
         }
-      }
-    })
+      },
+    }),
   }
 }

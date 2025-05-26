@@ -7,13 +7,13 @@ import * as React from 'react'
 
 /** creates a memoized event callback. */
 export function useEventCallback<Args extends unknown[], R>(
-  fn: (...args: Args) => R
+  fn: (...args: Args) => R,
 ): (...args: Args) => R
 export function useEventCallback<Args extends unknown[], R>(
-  fn: ((...args: Args) => R) | undefined
+  fn: ((...args: Args) => R) | undefined,
 ): ((...args: Args) => R) | undefined
 export function useEventCallback<Args extends unknown[], R>(
-  fn: ((...args: Args) => R) | undefined
+  fn: ((...args: Args) => R) | undefined,
 ): ((...args: Args) => R) | undefined {
   const ref = React.useRef<typeof fn>(() => {
     throw new Error('Cannot call an event handler while rendering.')
@@ -25,6 +25,6 @@ export function useEventCallback<Args extends unknown[], R>(
 
   return React.useCallback(
     (...args: Args) => ref.current?.(...args),
-    [ref]
+    [ref],
   ) as (...args: Args) => R
 }

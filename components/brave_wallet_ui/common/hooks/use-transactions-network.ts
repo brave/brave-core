@@ -14,18 +14,18 @@ export const useTransactionsNetwork = <
         SerializableTransactionInfo | BraveWallet.TransactionInfo,
         'chainId' | 'txDataUnion'
       >
-    | undefined
+    | undefined,
 >(
-  transaction: T
+  transaction: T,
 ) => {
   // queries
   const { data: txNetwork } = useGetNetworkQuery(
     transaction
       ? {
           chainId: transaction.chainId,
-          coin: getCoinFromTxDataUnion(transaction.txDataUnion)
+          coin: getCoinFromTxDataUnion(transaction.txDataUnion),
         }
-      : skipToken
+      : skipToken,
   )
 
   return txNetwork

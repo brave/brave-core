@@ -35,7 +35,7 @@ export const LOCAL_STORAGE_KEYS = {
   NFT_COLLECTION_NAMES_REGISTRY: 'NFT_COLLECTION_NAMES_REGISTRY2',
   FILTERED_OUT_DAPP_NETWORK_KEYS: 'BRAVE_WALLET_FILTERED_OUT_DAPP_NETWORK_KEYS',
   FILTERED_OUT_DAPP_CATEGORIES: 'BRAVE_WALLET_FILTERED_OUT_DAPP_CATEGORIES',
-  HAS_ACCEPTED_PARTNER_TERMS: 'BRAVE_WALLET_HAS_ACCEPTED_PARTNER_TERMS'
+  HAS_ACCEPTED_PARTNER_TERMS: 'BRAVE_WALLET_HAS_ACCEPTED_PARTNER_TERMS',
 } as const
 
 const LOCAL_STORAGE_KEYS_DEPRECATED = {
@@ -62,14 +62,14 @@ const LOCAL_STORAGE_KEYS_DEPRECATED = {
   NFT_COLLECTION_NAMES_REGISTRY: 'NFT_COLLECTION_NAMES_REGISTRY',
   IS_IPFS_BANNER_HIDDEN: 'BRAVE_WALLET_IS_IPFS_BANNER_HIDDEN',
   IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN:
-  'BRAVE_WALLET_IS_WALLET_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN',
+    'BRAVE_WALLET_IS_WALLET_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN',
 }
 
 const removeDeprecatedLocalStorageKeys = () => {
   Object.keys(LOCAL_STORAGE_KEYS_DEPRECATED).forEach(
     (key: keyof typeof LOCAL_STORAGE_KEYS_DEPRECATED) => {
       window.localStorage.removeItem(LOCAL_STORAGE_KEYS_DEPRECATED[key])
-    }
+    },
   )
 }
 
@@ -80,19 +80,18 @@ export const runLocalStorageMigrations = () => {
 
 function migrateTokenIds() {
   const oldUserHiddenTokenIds: string[] = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_HIDDEN_TOKEN_IDS) ||
-      '[]'
+    localStorage.getItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_HIDDEN_TOKEN_IDS)
+      || '[]',
   )
   const oldUserDeletedTokenIds: string[] = JSON.parse(
-    localStorage.getItem(
-      LOCAL_STORAGE_KEYS_DEPRECATED.USER_DELETED_TOKEN_IDS
-    ) || '[]'
+    localStorage.getItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_DELETED_TOKEN_IDS)
+      || '[]',
   )
   if (oldUserHiddenTokenIds.length) {
     const newKeys = oldUserHiddenTokenIds.map((entry) => entry.toLowerCase())
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.USER_HIDDEN_TOKEN_IDS,
-      JSON.stringify(newKeys)
+      JSON.stringify(newKeys),
     )
     localStorage.removeItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_HIDDEN_TOKEN_IDS)
   }
@@ -100,10 +99,10 @@ function migrateTokenIds() {
     const newKeys = oldUserDeletedTokenIds.map((entry) => entry.toLowerCase())
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.USER_DELETED_TOKEN_IDS,
-      JSON.stringify(newKeys)
+      JSON.stringify(newKeys),
     )
     localStorage.removeItem(
-      LOCAL_STORAGE_KEYS_DEPRECATED.USER_DELETED_TOKEN_IDS
+      LOCAL_STORAGE_KEYS_DEPRECATED.USER_DELETED_TOKEN_IDS,
     )
   }
 }

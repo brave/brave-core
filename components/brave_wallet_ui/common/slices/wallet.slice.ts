@@ -7,17 +7,17 @@ import {
   createAction,
   createSlice,
   PayloadAction,
-  EntityId
+  EntityId,
 } from '@reduxjs/toolkit'
 
 import {
   BraveWallet,
   WalletState,
-  WalletInitializedPayload
+  WalletInitializedPayload,
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
-  DefaultBaseCurrencyChanged
+  DefaultBaseCurrencyChanged,
 } from '../constants/action_types'
 
 const defaultState: WalletState = {
@@ -35,7 +35,7 @@ const defaultState: WalletState = {
   isAnkrBalancesFeatureEnabled: false,
   isRefreshingNetworksAndTokens: false,
   isZCashShieldedTransactionsEnabled: false,
-  isCardanoEnabled: false
+  isCardanoEnabled: false,
 }
 
 // async actions
@@ -51,17 +51,17 @@ export const WalletAsyncActions = {
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
-    'defaultBaseCurrencyChanged'
+    'defaultBaseCurrencyChanged',
   ), // refreshWalletInfo
   defaultBaseCryptocurrencyChanged:
     createAction<DefaultBaseCryptocurrencyChanged>(
-      'defaultBaseCryptocurrencyChanged'
+      'defaultBaseCryptocurrencyChanged',
     ),
   refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
   refreshBalancesAndPriceHistory: createAction(
-    'refreshBalancesAndPriceHistory'
+    'refreshBalancesAndPriceHistory',
   ),
-  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
+  autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
 }
 
 // slice
@@ -72,7 +72,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     reducers: {
       initialized(
         state: WalletState,
-        { payload }: PayloadAction<WalletInitializedPayload>
+        { payload }: PayloadAction<WalletInitializedPayload>,
       ) {
         state.hasInitialized = true
         state.isWalletCreated = payload.walletInfo.isWalletCreated
@@ -90,37 +90,37 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setAssetAutoDiscoveryCompleted(
         state: WalletState,
-        { payload }: PayloadAction<boolean>
+        { payload }: PayloadAction<boolean>,
       ) {
         state.assetAutoDiscoveryCompleted = payload
       },
 
       setPasswordAttempts(
         state: WalletState,
-        { payload }: PayloadAction<number>
+        { payload }: PayloadAction<number>,
       ) {
         state.passwordAttempts = payload
       },
 
       setIsRefreshingNetworksAndTokens: (
         state: WalletState,
-        { payload }: PayloadAction<boolean>
+        { payload }: PayloadAction<boolean>,
       ) => {
         state.isRefreshingNetworksAndTokens = payload
       },
 
       setAllowedNewWalletAccountTypeNetworkIds(
         state: WalletState,
-        { payload }: PayloadAction<EntityId[]>
+        { payload }: PayloadAction<EntityId[]>,
       ) {
         state.allowedNewWalletAccountTypeNetworkIds = payload
-      }
+      },
     },
     extraReducers: (builder) => {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {
         state.isWalletLocked = true
       })
-    }
+    },
   })
 }
 

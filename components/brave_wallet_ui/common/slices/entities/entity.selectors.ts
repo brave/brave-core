@@ -7,7 +7,7 @@ import {
   createSelector,
   EntityId,
   EntityState,
-  Selector
+  Selector,
 } from '@reduxjs/toolkit'
 
 export type EntityByIdFromRegistryQuerySelector<T> = Selector<
@@ -25,6 +25,6 @@ export function makeSelectEntityByIdFromRegistryQuery<T>() {
     // get id arg
     (res: any, id: EntityId) => id,
     // select the entity by id
-    (data: EntityState<T> | undefined, id: string) => data?.entities[id]
+    (data: EntityState<T> | undefined, id: string) => data?.entities[id],
   )
 }

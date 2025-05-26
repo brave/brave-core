@@ -6,7 +6,7 @@
 // types
 import {
   BraveWallet,
-  HardwareWalletResponseCodeType
+  HardwareWalletResponseCodeType,
 } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -17,14 +17,14 @@ import { PanelActions } from '../../../panel/actions'
 import {
   getHasPendingRequests,
   handleEndpointError,
-  navigateToConnectHardwareWallet
+  navigateToConnectHardwareWallet,
 } from '../../../utils/api-utils'
 import { isHardwareAccount } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
 import {
   dialogErrorFromLedgerErrorCode,
   dialogErrorFromTrezorErrorCode,
-  signEthMessageWithHardwareKeyring
+  signEthMessageWithHardwareKeyring,
 } from '../../async/hardware'
 
 interface ProcessSignMessageRequestArgs {
@@ -36,7 +36,7 @@ interface ProcessSignMessageRequestArgs {
 
 export const signingEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getPendingSignMessageRequests: query<
@@ -51,17 +51,17 @@ export const signingEndpoints = ({
             await api.braveWalletService.getPendingSignMessageRequests()
 
           return {
-            data: requests?.length ? requests : []
+            data: requests?.length ? requests : [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending sign-message requests',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingSignMessageRequests']
+      providesTags: ['PendingSignMessageRequests'],
     }),
 
     getPendingSignMessageErrors: query<BraveWallet.SignMessageError[], void>({
@@ -73,17 +73,17 @@ export const signingEndpoints = ({
             await api.braveWalletService.getPendingSignMessageErrors()
 
           return {
-            data: errors?.length ? errors : []
+            data: errors?.length ? errors : [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending sign-message errors',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingSignMessageErrors']
+      providesTags: ['PendingSignMessageErrors'],
     }),
 
     /** Should work for both hardware & hot wallets */
@@ -95,17 +95,17 @@ export const signingEndpoints = ({
           await processSignMessageRequestInternal(api, arg)
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to process pending sign-message request',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingSignMessageRequests']
+      invalidatesTags: ['PendingSignMessageRequests'],
     }),
 
     processSignMessageError: mutation<
@@ -131,17 +131,17 @@ export const signingEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to process pending sign-message request error',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingSignMessageErrors']
+      invalidatesTags: ['PendingSignMessageErrors'],
     }),
 
     signMessageHardware: mutation<
@@ -167,7 +167,7 @@ export const signingEndpoints = ({
               false,
               arg.request.id,
               null,
-              getLocale('braveWalletHardwareAccountNotFound')
+              getLocale('braveWalletHardwareAccountNotFound'),
             )
 
             const hasPendingRequests = await getHasPendingRequests()
@@ -192,19 +192,19 @@ export const signingEndpoints = ({
           const signed = await signEthMessageWithHardwareKeyring(
             info.vendor,
             info.path,
-            arg.request
+            arg.request,
           )
 
           if (!signed.success && signed.code) {
             if (signed.code === 'unauthorized') {
               store.dispatch(
-                PanelActions.setHardwareWalletInteractionError(signed.code)
+                PanelActions.setHardwareWalletInteractionError(signed.code),
               )
               return {
                 data: {
                   success: false,
-                  hardwareWalletInteractionError: signed.code
-                }
+                  hardwareWalletInteractionError: signed.code,
+                },
               }
             }
 
@@ -215,13 +215,13 @@ export const signingEndpoints = ({
 
             if (deviceError !== 'transactionRejected') {
               store.dispatch(
-                PanelActions.setHardwareWalletInteractionError(deviceError)
+                PanelActions.setHardwareWalletInteractionError(deviceError),
               )
               return {
                 data: {
                   success: false,
-                  hardwareWalletInteractionError: deviceError
-                }
+                  hardwareWalletInteractionError: deviceError,
+                },
               }
             }
           }
@@ -232,13 +232,13 @@ export const signingEndpoints = ({
               ? {
                   approved: signed.success,
                   id: arg.request.id,
-                  hwSignature: signed.signature
+                  hwSignature: signed.signature,
                 }
               : {
                   approved: signed.success,
                   id: arg.request.id,
-                  error: signed.error as string | undefined
-                }
+                  error: signed.error as string | undefined,
+                },
           )
 
           store.dispatch(PanelActions.navigateToMain())
@@ -251,19 +251,19 @@ export const signingEndpoints = ({
 
           return {
             data: {
-              success: true
-            }
+              success: true,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to sign hardware wallet sign-message request',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingSignMessageErrors']
-    })
+      invalidatesTags: ['PendingSignMessageErrors'],
+    }),
   }
 }
 
@@ -273,13 +273,13 @@ async function processSignMessageRequestInternal(
     braveWalletService: BraveWallet.BraveWalletServiceRemote
     panelHandler?: BraveWallet.PanelHandlerRemote
   },
-  arg: ProcessSignMessageRequestArgs
+  arg: ProcessSignMessageRequestArgs,
 ) {
   api.braveWalletService.notifySignMessageRequestProcessed(
     arg.approved,
     arg.id,
     arg.hwSignature || null,
-    arg.error || null
+    arg.error || null,
   )
 
   const hasPendingRequests = await getHasPendingRequests()

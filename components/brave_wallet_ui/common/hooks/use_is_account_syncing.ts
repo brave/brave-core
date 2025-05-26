@@ -18,30 +18,28 @@ import { WalletSelectors } from '../selectors'
 import {
   useGetIsSyncInProgressQuery,
   useClearChainTipStatusCacheMutation,
-  useClearZCashBalanceCacheMutation
+  useClearZCashBalanceCacheMutation,
 } from '../slices/api.slice'
 
 export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
   // State
-  const [syncingId, setSyncingId] = React.useState<
-    string | undefined
-  >()
+  const [syncingId, setSyncingId] = React.useState<string | undefined>()
   const [clearChainTipStatusCache] = useClearChainTipStatusCacheMutation()
   const [clearZCashBalanceCache] = useClearZCashBalanceCacheMutation()
 
   // Selectors
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
-    WalletSelectors.isZCashShieldedTransactionsEnabled
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
 
   // Queries
   const { data: isSyncAlreadyInProgress } = useGetIsSyncInProgressQuery(
-    isZCashShieldedTransactionsEnabled &&
-      !syncingId &&
-      accountId &&
-      accountId.coin === BraveWallet.CoinType.ZEC
+    isZCashShieldedTransactionsEnabled
+      && !syncingId
+      && accountId
+      && accountId.coin === BraveWallet.CoinType.ZEC
       ? accountId
-      : skipToken
+      : skipToken,
   )
 
   // Effects
@@ -61,11 +59,11 @@ export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
           }
         },
         onSyncStatusUpdate: () => {},
-        onSyncError: () => {}
+        onSyncError: () => {},
       })
 
     getAPIProxy().zcashWalletService.addObserver(
-      zcashWalletServiceObserver.$.bindNewPipeAndPassRemote()
+      zcashWalletServiceObserver.$.bindNewPipeAndPassRemote(),
     )
 
     return () => zcashWalletServiceObserver.$.close()

@@ -12,13 +12,13 @@ import { BraveWallet } from '../../../constants/types'
 import {
   ACCOUNT_TAG_IDS,
   NETWORK_TAG_IDS,
-  WalletApiEndpointBuilderParams
+  WalletApiEndpointBuilderParams,
 } from '../api-base.slice'
 
 // utils
 import {
   getHasPendingRequests,
-  handleEndpointError
+  handleEndpointError,
 } from '../../../utils/api-utils'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
@@ -26,12 +26,12 @@ import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import {
   makeInitialFilteredOutNetworkKeys,
   parseJSONFromLocalStorage,
-  setLocalStorageItem
+  setLocalStorageItem,
 } from '../../../utils/local-storage-utils'
 
 export const networkEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     // queries
@@ -44,44 +44,44 @@ export const networkEndpoints = ({
           const { networks } = await api.jsonRpcService.getAllNetworks()
 
           return {
-            data: [...networks]
+            data: [...networks],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to fetch all known networks',
-            error
+            error,
           )
         }
       },
-      providesTags: ['Network']
+      providesTags: ['Network'],
     }),
     getNetworksRegistry: query<NetworksRegistry, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { cache } = baseQuery(undefined)
           return {
-            data: await cache.getNetworksRegistry()
+            data: await cache.getNetworksRegistry(),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to fetch Networks Registry ${error}`,
-            error
+            error,
           )
         }
       },
       providesTags: (res, err, arg) =>
         err
           ? ['UNKNOWN_ERROR']
-          : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }]
+          : [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }],
     }),
     getSwapSupportedNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const {
             data: { swapService },
-            cache
+            cache,
           } = baseQuery(undefined)
 
           const networksRegistry = await cache.getNetworksRegistry()
@@ -91,13 +91,13 @@ export const networkEndpoints = ({
             10,
             async (chainId: string) => {
               const { result } = await swapService.isSwapSupported(
-                chainId.toString()
+                chainId.toString(),
               )
               return {
                 chainId,
-                supported: result
+                supported: result,
               }
-            }
+            },
           )
 
           const swapChainIds = chainIdsWithSupportFlags
@@ -105,23 +105,26 @@ export const networkEndpoints = ({
             .map((net) => net.chainId.toString())
 
           return {
-            data: getEntitiesListFromEntityState(networksRegistry, swapChainIds)
+            data: getEntitiesListFromEntityState(
+              networksRegistry,
+              swapChainIds,
+            ),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to get Swap-Supported Networks',
-            error
+            error,
           )
         }
       },
-      providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }]
+      providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }],
     }),
     invalidateSelectedChain: mutation<boolean, void>({
       queryFn: () => {
         return { data: true }
       },
-      invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
+      invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
     }),
     getSelectedChain: query<BraveWallet.NetworkInfo | null, void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -130,20 +133,20 @@ export const networkEndpoints = ({
           const { network } = await api.braveWalletService //
             .getNetworkForSelectedAccountOnActiveOrigin()
           return {
-            data: network
+            data: network,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to fetch the currently selected chain`,
-            error
+            error,
           )
         }
       },
       providesTags: (res, err) =>
         err
           ? ['UNKNOWN_ERROR']
-          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
+          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
     }),
     getNetworkForAccountOnActiveOrigin: query<
       BraveWallet.NetworkInfo | null,
@@ -161,20 +164,20 @@ export const networkEndpoints = ({
           const { network } = await api.braveWalletService //
             .getNetworkForAccountOnActiveOrigin(accountId)
           return {
-            data: network
+            data: network,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to fetch getNetworkForAccountOnActiveOrigin`,
-            error
+            error,
           )
         }
       },
       providesTags: (res, err) =>
         err
           ? ['UNKNOWN_ERROR']
-          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
+          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }],
     }),
     setNetworkForAccountOnActiveOrigin: mutation<
       /** success */
@@ -190,21 +193,21 @@ export const networkEndpoints = ({
 
           api.braveWalletService.setNetworkForAccountOnActiveOrigin(
             arg.accountId,
-            arg.chainId
+            arg.chainId,
           )
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to setNetworkForAccountOnActiveOrigin',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: []
+      invalidatesTags: [],
     }),
     getPendingAddChainRequest: query<BraveWallet.AddChainRequest | null, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
@@ -215,17 +218,17 @@ export const networkEndpoints = ({
             await api.jsonRpcService.getPendingAddChainRequests()
 
           return {
-            data: requests.length ? requests[0] : null
+            data: requests.length ? requests[0] : null,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending "Add-Chain" requests',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingAddChainRequests']
+      providesTags: ['PendingAddChainRequests'],
     }),
     getPendingSwitchChainRequest: query<
       BraveWallet.SwitchChainRequest | null,
@@ -240,21 +243,21 @@ export const networkEndpoints = ({
 
           if (requests.length) {
             return {
-              data: requests[0]
+              data: requests[0],
             }
           }
           return {
-            data: null
+            data: null,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending Switch-Chain requests',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingSwitchChainRequests']
+      providesTags: ['PendingSwitchChainRequests'],
     }),
     // mutations
     hideNetworks: mutation<
@@ -265,7 +268,7 @@ export const networkEndpoints = ({
         chains,
         { endpoint, dispatch },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
@@ -274,11 +277,11 @@ export const networkEndpoints = ({
             chains,
             10,
             async (
-              chain: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+              chain: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>,
             ) => {
               const { success } = await api.jsonRpcService.addHiddenNetwork(
                 chain.coin,
-                chain.chainId
+                chain.chainId,
               )
 
               const networkKey = getNetworkId(chain)
@@ -286,7 +289,7 @@ export const networkEndpoints = ({
               // Get currently filtered-out network Keys in Local Storage
               const currentFilteredOutNetworkKeys = parseJSONFromLocalStorage(
                 'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
-                makeInitialFilteredOutNetworkKeys()
+                makeInitialFilteredOutNetworkKeys(),
               )
 
               // add network to hide list if not in the list already
@@ -298,19 +301,19 @@ export const networkEndpoints = ({
               // Update filtered-out network keys in Local Storage
               setLocalStorageItem(
                 LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
-                JSON.stringify(newFilteredOutNetworkKeys)
+                JSON.stringify(newFilteredOutNetworkKeys),
               )
 
               if (!success) {
                 throw new Error('jsonRpcService.addHiddenNetwork failed')
               }
-            }
+            },
           )
 
           cache.clearNetworksRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
@@ -318,11 +321,11 @@ export const networkEndpoints = ({
             `Unable to hide networks: ${chains
               .map((chain) => chain.chainId)
               .join()}`,
-            error
+            error,
           )
         }
       },
-      invalidatesTags: (result, error) => ['Network']
+      invalidatesTags: (result, error) => ['Network'],
     }),
     restoreNetworks: mutation<
       boolean,
@@ -336,23 +339,23 @@ export const networkEndpoints = ({
             chains,
             10,
             async (
-              chain: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+              chain: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>,
             ) => {
               const { success } = await api.jsonRpcService.removeHiddenNetwork(
                 chain.coin,
-                chain.chainId
+                chain.chainId,
               )
 
               if (!success) {
                 throw new Error('jsonRpcService.removeHiddenNetwork failed')
               }
-            }
+            },
           )
 
           cache.clearNetworksRegistry()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
@@ -360,7 +363,7 @@ export const networkEndpoints = ({
             `Unable to unhide networks: ${chains
               .map((chain) => chain.chainId)
               .join()}`,
-            error
+            error,
           )
         }
       },
@@ -368,8 +371,8 @@ export const networkEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalances',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
     setNetwork: mutation<
       {
@@ -382,39 +385,39 @@ export const networkEndpoints = ({
         { chainId, coin },
         { endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const {
             data: { braveWalletService },
-            cache
+            cache,
           } = baseQuery(undefined)
 
           cache.clearSelectedAccount()
           const { accountId: selectedAccountId } =
             await braveWalletService.ensureSelectedAccountForChain(
               coin,
-              chainId
+              chainId,
             )
           if (!selectedAccountId) {
             return {
-              data: { needsAccountForNetwork: true }
+              data: { needsAccountForNetwork: true },
             }
           }
 
           const {
-            success //
+            success, //
           } = await braveWalletService //
             .setNetworkForSelectedAccountOnActiveOrigin(chainId)
           if (!success) {
             throw new Error(
-              'braveWalletService.' +
-                'SetNetworkForSelectedAccountOnActiveOrigin failed'
+              'braveWalletService.'
+                + 'SetNetworkForSelectedAccountOnActiveOrigin failed',
             )
           }
 
           return {
-            data: { selectedAccountId }
+            data: { selectedAccountId },
           }
         } catch (error) {
           return handleEndpointError(
@@ -424,14 +427,14 @@ export const networkEndpoints = ({
             }, coin: ${
               coin //
             })`,
-            error
+            error,
           )
         }
       },
       invalidatesTags: (result, error, { coin }) => [
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
-        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
-      ]
+        { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED },
+      ],
     }),
     refreshNetworkInfo: mutation<boolean, void>({
       queryFn: async (arg, api, extraOptions, baseQuery) => {
@@ -439,7 +442,7 @@ export const networkEndpoints = ({
         baseQuery(undefined).cache.clearNetworksRegistry()
         // invalidates tags
         return {
-          data: true
+          data: true,
         }
       },
       // refresh networks & selected network
@@ -447,8 +450,8 @@ export const networkEndpoints = ({
         'Network',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
     acknowledgePendingAddChainRequest: mutation<
       /**  success */
@@ -465,7 +468,7 @@ export const networkEndpoints = ({
 
           api.jsonRpcService.addEthereumChainRequestCompleted(
             arg.chainId,
-            arg.isApproved
+            arg.isApproved,
           )
 
           // close the panel if there are no additional pending requests
@@ -476,20 +479,20 @@ export const networkEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to acknowledge pending "Add-Chain" request',
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, error, arg) =>
         arg.isApproved
           ? ['Network', 'PendingAddChainRequests', 'PendingSwitchChainRequests']
-          : ['PendingAddChainRequests', 'PendingSwitchChainRequests']
+          : ['PendingAddChainRequests', 'PendingSwitchChainRequests'],
     }),
     acknowledgeSwitchChainRequest: mutation<
       /** success */
@@ -505,7 +508,7 @@ export const networkEndpoints = ({
 
           api.jsonRpcService.notifySwitchChainRequestProcessed(
             arg.requestId,
-            arg.isApproved
+            arg.isApproved,
           )
 
           const hasPendingRequests = await getHasPendingRequests()
@@ -515,17 +518,17 @@ export const networkEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to acknowledge Switch-Chain request',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingSwitchChainRequests']
-    })
+      invalidatesTags: ['PendingSwitchChainRequests'],
+    }),
   }
 }
