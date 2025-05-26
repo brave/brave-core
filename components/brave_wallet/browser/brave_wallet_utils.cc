@@ -473,13 +473,6 @@ std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {
       result.push_back(std::move(token_ptr));
     }
   }
-
-#if BUILDFLAG(ENABLE_ORCHARD)
-  if (IsZCashShieldedTransactionsEnabled()) {
-    result.push_back(GetZcashNativeShieldedToken(mojom::kZCashMainnet));
-    result.push_back(GetZcashNativeShieldedToken(mojom::kZCashTestnet));
-  }
-#endif
   return result;
 }
 
