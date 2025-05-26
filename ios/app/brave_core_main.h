@@ -10,28 +10,11 @@
 
 #import "brave_core_switches.h"  // NOLINT
 
-@class BraveBookmarksAPI;
-@class BraveHistoryAPI;
-@class BravePasswordAPI;
-@class BraveOpenTabsAPI;
 @class BraveP3AUtils;
-@class BraveSendTabAPI;
-@class BraveSyncAPI;
-@class BraveSyncProfileServiceIOS;
-@class BraveStats;
-@class BraveWalletAPI;
 @class AdblockService;
-@class BraveTabGeneratorAPI;
-@class WebImageDownloader;
-@class NTPBackgroundImagesService;
-@class DeAmpPrefs;
-@class AIChat;
 @class HTTPSUpgradeExceptionsService;
-@class DefaultHostContentSettings;
-@class CWVWebViewConfiguration;
 @class BraveUserAgentExceptionsIOS;
-@protocol AIChatDelegate;
-@protocol IpfsAPI;
+@class BraveProfileController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -51,23 +34,6 @@ typedef bool (^BraveCoreLogHandler)(BraveCoreLogSeverity severity,
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
 
-@property(nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
-
-@property(nonatomic, readonly) BraveHistoryAPI* historyAPI;
-
-@property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
-
-@property(nonatomic, readonly) BraveOpenTabsAPI* openTabsAPI;
-
-@property(nonatomic, readonly) BraveSendTabAPI* sendTabAPI;
-
-@property(nonatomic, readonly) BraveSyncAPI* syncAPI;
-
-@property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
-
-@property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
-
-@property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
 
 @property(nonatomic, readonly)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
@@ -91,27 +57,15 @@ OBJC_EXPORT
 
 - (void)setUserAgent:(NSString*)userAgent;
 
-@property(readonly) BraveWalletAPI* braveWalletAPI;
-
-@property(readonly) BraveStats* braveStats;
-
 @property(readonly) AdblockService* adblockService;
-
-@property(readonly) id<IpfsAPI> ipfsAPI;
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                       installationDate:(NSDate*)installDate;
 
 @property(readonly) BraveP3AUtils* p3aUtils;
 
-@property(readonly) DeAmpPrefs* deAmpPrefs;
-
-@property(readonly) NTPBackgroundImagesService* backgroundImagesService;
-
-/// The default content settings for regular browsing windows
-@property(readonly) DefaultHostContentSettings* defaultHostContentSettings;
-
-- (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
+@property(readonly, nullable) BraveProfileController* profileController;
+- (void)loadDefaultProfile:(void (^)(BraveProfileController*))completionHandler;
 
 /// Sets up bundle path overrides and initializes ICU from the BraveCore bundle
 /// without setting up a BraveCoreMain instance.
@@ -120,11 +74,6 @@ OBJC_EXPORT
 + (bool)initializeICUForTesting;
 
 + (void)initializeResourceBundleForTesting;
-
-@property(readonly) CWVWebViewConfiguration* defaultWebViewConfiguration;
-@property(readonly) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
-- (void)notifyLastPrivateTabClosed;
-
 @end
 
 NS_ASSUME_NONNULL_END

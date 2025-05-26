@@ -164,12 +164,12 @@ class SyncWelcomeViewController: SyncViewController {
     return button
   }()
 
-  private let braveCore: BraveCoreMain
+  private let braveCore: BraveProfileController
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
 
   init(
-    braveCore: BraveCoreMain,
+    braveCore: BraveProfileController,
     tabManager: TabManager,
     windowProtection: WindowProtection?,
     isModallyPresented: Bool = false

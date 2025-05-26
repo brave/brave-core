@@ -5,11 +5,11 @@
 
 import Foundation
 
-class BraveServiceStateObserver: NSObject {
+public class BraveServiceStateObserver: NSObject {
 
   // MARK: Static
 
-  static let coreServiceLoadedNotification: Notification.Name = .init(
+  public static let coreServiceLoadedNotification: Notification.Name = .init(
     rawValue: "BraveServiceStateDidLoaded"
   )
 

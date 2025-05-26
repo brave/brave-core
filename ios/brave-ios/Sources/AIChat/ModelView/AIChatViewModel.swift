@@ -135,7 +135,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   public init(
-    braveCore: BraveCoreMain,
+    braveCore: BraveProfileController,
     webDelegate: AIChatWebDelegate?,
     braveTalkScript: AIChatBraveTalkJavascript?,
     querySubmited: String? = nil

@@ -41,7 +41,7 @@ extension BrowserViewController {
     }
 
     // Send Tab To Self Activity - Show device selection screen
-    if braveCore.syncAPI.isSendTabToSelfVisible, !privateBrowsingManager.isPrivateBrowsing,
+    if profileController.syncAPI.isSendTabToSelfVisible, !privateBrowsingManager.isPrivateBrowsing,
       !url.isLocal, !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode)
     {
       activities.append(
@@ -50,7 +50,7 @@ extension BrowserViewController {
           callback: { [weak self] in
             guard let self = self else { return }
 
-            let deviceList = self.braveCore.sendTabAPI.getListOfSyncedDevices()
+            let deviceList = self.profileController.sendTabAPI.getListOfSyncedDevices()
             let dataSource = SendableTabInfoDataSource(
               with: deviceList,
               displayTitle: tab?.displayTitle ?? "",
@@ -58,7 +58,7 @@ extension BrowserViewController {
             )
 
             let controller = SendTabToSelfController(
-              sendTabAPI: self.braveCore.sendTabAPI,
+              sendTabAPI: self.profileController.sendTabAPI,
               dataSource: dataSource
             )
 
@@ -69,7 +69,7 @@ extension BrowserViewController {
                 SendTabProcessController(
                   type: .progress,
                   data: dataSource,
-                  sendTabAPI: self.braveCore.sendTabAPI
+                  sendTabAPI: self.profileController.sendTabAPI
                 ),
                 animated: true,
                 completion: nil

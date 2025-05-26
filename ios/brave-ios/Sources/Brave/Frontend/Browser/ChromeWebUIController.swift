@@ -11,7 +11,7 @@ import Strings
 class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
   private let configuration: CWVWebViewConfiguration
 
-  init(braveCore: BraveCoreMain, isPrivateBrowsing: Bool) {
+  init(braveCore: BraveProfileController, isPrivateBrowsing: Bool) {
     configuration =
       isPrivateBrowsing
       ? braveCore.nonPersistentWebViewConfiguration : braveCore.defaultWebViewConfiguration

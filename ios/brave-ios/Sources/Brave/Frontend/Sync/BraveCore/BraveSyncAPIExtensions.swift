@@ -27,7 +27,7 @@ extension BraveSyncAPI {
 
   public static let seedByteLength = 32
 
-  var isInSyncGroup: Bool {
+  public var isInSyncGroup: Bool {
     return Preferences.Chromium.syncEnabled.value
   }
 
@@ -97,7 +97,7 @@ extension BraveSyncAPI {
     resetSync()
   }
 
-  func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {
+  public func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {
     syncProfileService.userSelectedTypes = []
 
     if Preferences.Chromium.syncBookmarksEnabled.value {

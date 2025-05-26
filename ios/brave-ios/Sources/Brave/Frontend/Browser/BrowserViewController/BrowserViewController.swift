@@ -174,8 +174,8 @@ public class BrowserViewController: UIViewController {
   let profile: Profile
   let attributionManager: AttributionManager
   let braveCore: BraveCoreMain
+  let profileController: BraveProfileController
   let tabManager: TabManager
-  let migration: Migration?
   let bookmarkManager: BookmarkManager
   public let privateBrowsingManager: PrivateBrowsingManager
 
@@ -283,8 +283,8 @@ public class BrowserViewController: UIViewController {
     profile: Profile,
     attributionManager: AttributionManager,
     braveCore: BraveCoreMain,
+    profileController: BraveProfileController,
     rewards: BraveRewards,
-    migration: Migration?,
     crashedLastSession: Bool,
     newsFeedDataSource: FeedDataSource,
     privateBrowsingManager: PrivateBrowsingManager
@@ -293,15 +293,15 @@ public class BrowserViewController: UIViewController {
     self.profile = profile
     self.attributionManager = attributionManager
     self.braveCore = braveCore
-    self.bookmarkManager = BookmarkManager(bookmarksAPI: braveCore.bookmarksAPI)
+    self.profileController = profileController
+    self.bookmarkManager = BookmarkManager(bookmarksAPI: profileController.bookmarksAPI)
     self.rewards = rewards
-    self.migration = migration
     self.crashedLastSession = crashedLastSession
     self.privateBrowsingManager = privateBrowsingManager
     self.feedDataSource = newsFeedDataSource
-    feedDataSource.historyAPI = braveCore.historyAPI
+    feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
-      service: braveCore.backgroundImagesService,
+      service: profileController.backgroundImagesService,
       rewards: rewards,
       privateBrowsingManager: privateBrowsingManager
     )
@@ -317,7 +317,7 @@ public class BrowserViewController: UIViewController {
       windowId: windowId,
       prefs: profile.prefs,
       rewards: rewards,
-      braveCore: braveCore,
+      braveCore: profileController,
       privateBrowsingManager: privateBrowsingManager
     )
 
@@ -375,7 +375,7 @@ public class BrowserViewController: UIViewController {
     }
 
     // Observer watching tab information is sent by another device
-    openTabsModelStateListener = braveCore.sendTabAPI.add(
+    openTabsModelStateListener = profileController.sendTabAPI.add(
       SendTabToSelfStateObserver { [weak self] stateChange in
         if case .sendTabToSelfEntriesAddedRemotely(let newEntries) = stateChange {
           // Fetching the last URL that has been sent from synced sessions
@@ -387,12 +387,12 @@ public class BrowserViewController: UIViewController {
     )
 
     // Observer watching state change in sync chain
-    syncServiceStateListener = braveCore.syncAPI.addServiceStateObserver { [weak self] in
+    syncServiceStateListener = profileController.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
       // Observe Sync State in order to determine if the sync chain is deleted
       // from another device - Clean local sync chain
-      if self.braveCore.syncAPI.shouldLeaveSyncGroup {
-        self.braveCore.syncAPI.leaveSyncGroup()
+      if self.profileController.syncAPI.shouldLeaveSyncGroup {
+        self.profileController.syncAPI.leaveSyncGroup()
       }
     }
 
@@ -422,7 +422,7 @@ public class BrowserViewController: UIViewController {
   deinit {
     // Remove the open tabs model state observer
     if let observer = openTabsModelStateListener {
-      braveCore.sendTabAPI.removeObserver(observer)
+      profileController.sendTabAPI.removeObserver(observer)
     }
   }
 
@@ -477,7 +477,7 @@ public class BrowserViewController: UIViewController {
   fileprivate func didInit() {
     updateApplicationShortcuts()
     tabManager.addDelegate(self)
-    UserScriptManager.shared.fetchWalletScripts(from: braveCore.braveWalletAPI)
+    UserScriptManager.shared.fetchWalletScripts(from: profileController.braveWalletAPI)
     downloadQueue.delegate = self
 
     // Observe some user preferences
@@ -1989,7 +1989,7 @@ public class BrowserViewController: UIViewController {
       openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
       popToBVC()
     } else {
-      braveCore.historyAPI.deleteAll { [weak self] in
+      profileController.historyAPI.deleteAll { [weak self] in
         guard let self = self else { return }
 
         self.tabManager.clearTabHistory {
@@ -2124,7 +2124,7 @@ public class BrowserViewController: UIViewController {
         // Only add history of a url which is not a localhost url
         if !url.isInternalURL(for: .readermode) {
           if !tab.isPrivate {
-            braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
+            profileController.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
           }
 
           // Saving Tab.
@@ -2328,7 +2328,7 @@ extension BrowserViewController: SettingsDelegate {
   func settingsCreateFakeBookmarks() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=Bookmarks\($0)")! }
     for (index, url) in urls.enumerated() {
-      braveCore.bookmarksAPI.createBookmark(
+      profileController.bookmarksAPI.createBookmark(
         withTitle: "QA-Bookmark - BraveSearch - \(index)",
         url: url
       )
@@ -2338,7 +2338,7 @@ extension BrowserViewController: SettingsDelegate {
   func settingsCreateFakeHistory() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
     for (index, url) in urls.enumerated() {
-      braveCore.historyAPI.add(
+      profileController.historyAPI.add(
         url: url,
         title: "QA-History - BraveSearch - \(index)",
         dateAdded: Date()
@@ -2484,8 +2484,8 @@ extension BrowserViewController: TabMiscDelegate {
     guard
       let cryptoStore = self.walletStore?.cryptoStore
         ?? CryptoStore.from(
-          ipfsApi: braveCore.ipfsAPI,
-          walletP3A: braveCore.braveWalletAPI.walletP3A(),
+          ipfsApi: profileController.ipfsAPI,
+          walletP3A: profileController.braveWalletAPI.walletP3A(),
           privateMode: privateMode
         )
     else {
@@ -2951,8 +2951,8 @@ extension BrowserViewController: PreferencesObserver {
       WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth])
       let privateMode = privateBrowsingManager.isPrivateBrowsing
       if let cryptoStore = CryptoStore.from(
-        ipfsApi: braveCore.ipfsAPI,
-        walletP3A: braveCore.braveWalletAPI.walletP3A(),
+        ipfsApi: profileController.ipfsAPI,
+        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       ) {
         cryptoStore.rejectAllPendingWebpageRequests()
@@ -2966,8 +2966,8 @@ extension BrowserViewController: PreferencesObserver {
       WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.sol])
       let privateMode = privateBrowsingManager.isPrivateBrowsing
       if let cryptoStore = CryptoStore.from(
-        ipfsApi: braveCore.ipfsAPI,
-        walletP3A: braveCore.braveWalletAPI.walletP3A(),
+        ipfsApi: profileController.ipfsAPI,
+        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       ) {
         cryptoStore.rejectAllPendingWebpageRequests()
@@ -3289,7 +3289,7 @@ extension BrowserViewController {
     let webDelegate = (query == nil) ? tabManager.selectedTab?.leoTabHelper : nil
 
     let model = AIChatViewModel(
-      braveCore: braveCore,
+      braveCore: profileController,
       webDelegate: webDelegate,
       braveTalkScript: self.braveTalkJitsiCoordinator,
       querySubmited: query
