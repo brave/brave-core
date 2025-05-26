@@ -33,5 +33,5 @@ export {
   SafeIcon,
   InternetIcon,
   InfoIcon,
-  SettingsAdvancedIcon
+  SettingsAdvancedIcon,
 }

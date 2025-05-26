@@ -16,5 +16,5 @@ export {
   NoTransactionsIconLight,
   NoTransactionsIconDark,
   NoTokensIconLight,
-  NoTokensIconDark
+  NoTokensIconDark,
 }
