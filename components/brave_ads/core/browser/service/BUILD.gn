@@ -10,6 +10,10 @@ source_set("service") {
     "ads_service_observer.h",
     "new_tab_page_ad_prefetcher.cc",
     "new_tab_page_ad_prefetcher.h",
+    "virtual_pref_provider.cc",
+    "virtual_pref_provider.h",
+    "virtual_pref_provider_util.cc",
+    "virtual_pref_provider_util.h",
   ]
 
   public_deps = [
@@ -18,20 +22,36 @@ source_set("service") {
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/keyed_service/core",
+    "//components/prefs",
     "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    "//base/version_info",
+    "//brave/components/l10n/common",
+    "//brave/components/skus/browser",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "new_tab_page_ad_prefetcher_unittest.cc" ]
+  sources = [
+    "new_tab_page_ad_prefetcher_unittest.cc",
+    "virtual_pref_provider_unittest.cc",
+  ]
 
   deps = [
     ":service",
     ":test_support",
     "//base",
+    "//base/test:test_support",
+    "//base/version_info",
     "//brave/components/brave_ads/core",
+    "//brave/components/l10n/common:test_support",
+    "//brave/components/skus/browser",
+    "//components/prefs:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
