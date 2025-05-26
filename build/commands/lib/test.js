@@ -32,8 +32,8 @@ const getTestsToRun = (config, suite) => {
     }
   } else if (suite === 'brave_java_unit_tests') {
     testsToRun = ['bin/run_brave_java_unit_tests']
-  } else if (suite === 'brave_robolectric_junit_tests') {
-    testsToRun = ['bin/run_brave_robolectric_junit_tests']
+  } else if (suite === 'brave_junit_tests') {
+    testsToRun = ['bin/run_brave_junit_tests']
   } else if (suite === 'chromium_unit_tests') {
     testsToRun = getChromiumUnitTestsSuites()
   }
@@ -100,7 +100,7 @@ const buildTests = async (
     'brave_unit_tests',
     'brave_browser_tests',
     'brave_java_unit_tests',
-    'brave_robolectric_junit_tests',
+    'brave_junit_tests',
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
@@ -121,7 +121,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
 
   let braveArgs = []
 
-  if (suite !== 'brave_robolectric_junit_tests') {
+  if (!suite.endsWith('_junit_tests')) {
     braveArgs.push('--enable-logging=stderr')
   }
 
@@ -154,11 +154,11 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     braveArgs.push('--single_process')
   }
 
-  if (suite !== 'brave_robolectric_junit_tests' && options.test_launcher_jobs) {
+  if (!suite.endsWith('_junit_tests') && options.test_launcher_jobs) {
     braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
   }
 
-  if (suite !== 'brave_robolectric_junit_tests') {
+  if (!suite.endsWith('_junit_tests')) {
     braveArgs = braveArgs.concat(passthroughArgs)
   }
 
@@ -225,7 +225,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       }
       if (
         config.targetOS === 'android'
-        && suite !== 'brave_robolectric_junit_tests'
+        && !suite.endsWith('_junit_tests')
       ) {
         assert(
           config.targetArch === 'x86'
@@ -236,7 +236,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       }
       if (
         config.targetOS === 'android'
-        && suite !== 'brave_robolectric_junit_tests'
+        && !suite.endsWith('_junit_tests')
         && !options.manual_android_test_device
       ) {
         // Specify emulator to run tests on

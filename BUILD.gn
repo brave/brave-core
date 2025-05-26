@@ -73,7 +73,7 @@ group("all") {
     deps += [
       "//brave/build/android:brave",
       "//brave/test:brave_java_unit_tests",
-      "//brave/test:brave_robolectric_junit_tests",
+      "//brave/test:brave_junit_tests",
     ]
   }
 }

@@ -1380,10 +1380,10 @@ if (is_android) {
     ]
   }
 
-  robolectric_binary("brave_robolectric_junit_tests") {
+  robolectric_binary("brave_junit_tests") {
     # Needed by androidx.test.core.app.ActivityScenario
     android_manifest = "//chrome/android/junit/AndroidManifest.xml"
-    package_name = "brave.robolectric.junit.tests"
+    package_name = "brave.junit.tests"
 
     shared_libraries = [
       "//chrome/android/junit:libchrome_junit_tests($robolectric_toolchain)",
