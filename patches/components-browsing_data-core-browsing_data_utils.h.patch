@@ -1,5 +1,5 @@
 diff --git a/components/browsing_data/core/browsing_data_utils.h b/components/browsing_data/core/browsing_data_utils.h
-index 61e3057781a9e14e9f31ae43b5c40e71cc842f2a..e6edd74f9ea68475ab55ebc34464752c91aef452 100644
+index 969890bd3450eaf953b1664bded8f54dda5222c8..f3f3a848979684dd69464787413f9829a71acf29 100644
 --- a/components/browsing_data/core/browsing_data_utils.h
 +++ b/components/browsing_data/core/browsing_data_utils.h
 @@ -39,7 +39,7 @@ enum class BrowsingDataType {

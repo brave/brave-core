@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index ab1b0d88b5a3792ab5ed11e640e0063e5d445931..9154ef9e2b8b9820b066f6ce0ba1047d52c05203 100644
+index efcae1474a5da722f46110c91cc34d8071d0605e..ce5a7f9cb7db80a67477158b536a2e4736e2c7e6 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -447,6 +447,7 @@ void ToolbarView::Init() {
+@@ -448,6 +448,7 @@ void ToolbarView::Init() {
      media_button_ = container_view_->AddChildView(std::move(media_button));
    }
  

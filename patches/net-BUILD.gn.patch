@@ -1,8 +1,8 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 4afb45ca68ae26bdbfd9814e28e4755d519dd309..5ed25dd6e8163553180e76105202264bac95eb65 100644
+index 4e802dba35252d939dc3a7f0df731ba0292571b2..a531519c73af4995bd4519e75f8973a6c075305a 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1205,6 +1205,7 @@ component("net") {
+@@ -1210,6 +1210,7 @@ component("net") {
        "reporting/reporting_uploader.h",
      ]
    }

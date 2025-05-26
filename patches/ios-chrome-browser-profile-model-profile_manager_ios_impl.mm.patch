@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/profile/model/profile_manager_ios_impl.mm b/ios/chrome/browser/profile/model/profile_manager_ios_impl.mm
-index 3c030aa62eb3aa82fe297874850145e29dc34234..f329709a5a8296fd50eb4f25ebd78d5dc7d4c592 100644
+index 8c702b9403c9cc796074d2b6c250ed5461e17327..1b099427bcbe0e8336412e83f4b1c6a473ebd973 100644
 --- a/ios/chrome/browser/profile/model/profile_manager_ios_impl.mm
 +++ b/ios/chrome/browser/profile/model/profile_manager_ios_impl.mm
-@@ -552,6 +552,7 @@ bool ProfileManagerIOSImpl::CreateOrLoadProfile(
+@@ -531,6 +531,7 @@ bool ProfileManagerIOSImpl::CreateOrLoadProfile(
      }
    }
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/common/importer/mock_importer_bridge.h b/chrome/common/importer/mock_importer_bridge.h
-index fe0a65eb48e42abc4c42d7d92ab5e8830540fb6f..1c1159b3445249dbd8f27e23bf90a4b1f98eb088 100644
+index 84c1212f386ed1695cc177501282ef060a319fda..8391c4da7c0f7391122c5b3be9055753bb3042f3 100644
 --- a/chrome/common/importer/mock_importer_bridge.h
 +++ b/chrome/common/importer/mock_importer_bridge.h
-@@ -35,7 +35,7 @@ class MockImporterBridge : public ImporterBridge {
+@@ -38,7 +38,7 @@ class MockImporterBridge : public ImporterBridge {
    MOCK_METHOD0(NotifyEnded, void());
    MOCK_METHOD1(GetLocalizedString, std::u16string(int));
  

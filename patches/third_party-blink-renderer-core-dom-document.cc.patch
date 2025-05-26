@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 07218c2f9adafacbe780bfec7a4bb78d7ddb6a72..748083e34b5b86688d36ca67bf5a1970d3688aac 100644
+index 90836cce3c5623b4651f472700f876c6cba2aa73..d5e6de9a3a8ee82fc3f7d86605acb68da1205119 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -2280,7 +2280,6 @@ void Document::UpdateStyleInvalidationIfNeeded() {
+@@ -2286,7 +2286,6 @@ void Document::UpdateStyleInvalidationIfNeeded() {
  
  #if DCHECK_IS_ON()
  static void AssertNodeClean(const Node& node) {

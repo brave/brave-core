@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/BUILD.gn b/chrome/browser/ui/browser_window/BUILD.gn
-index 26a78c63194c0513ca61227472dbac15b403eec0..98732bd559b6b5c1bf8ef4d099966b848ce414b3 100644
+index bcd1ef74baa901e0e73406bb21dcfb76cb340808..e7fd2905890dbe14caff89a7694051a8ab469c00 100644
 --- a/chrome/browser/ui/browser_window/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/BUILD.gn
 @@ -21,6 +21,7 @@ source_set("browser_window") {
@@ -10,7 +10,7 @@ index 26a78c63194c0513ca61227472dbac15b403eec0..98732bd559b6b5c1bf8ef4d099966b84
  }
  
  source_set("impl") {
-@@ -59,4 +60,5 @@ source_set("impl") {
+@@ -60,4 +61,5 @@ source_set("impl") {
    if (enable_glic) {
      deps += [ "//chrome/browser/glic" ]
    }
