@@ -27,6 +27,7 @@
       'hasDisplayIsNone': results.hasDisplayIsNone,
       'delayedHasTextHidden': results.delayedHasTextHidden,
       'delayedChildHasTextHidden': results.delayedChildHasTextHidden,
+      'altMutationStrategyHidden': results.altMutationStrategyHidden
     })
   }
 
@@ -49,7 +50,8 @@
       hasTextDisplayIsNone: false,
       hasDisplayIsNone: false,
       delayedHasTextHidden: false,
-      delayedChildHasTextHidden: []
+      delayedChildHasTextHidden: [],
+      altMutationStrategyHidden: false
     }
 
     elements.forEach((node) => {
@@ -95,6 +97,11 @@
       if (node.id === 'test-delayed-has-text') {
         const nodeDisplay = window.getComputedStyle(node).display
         results.delayedHasTextHidden = nodeDisplay === 'none'
+      }
+
+      if (node.id === 'test-alt-mutation-observation-strategy') {
+        const nodeDisplay = window.getComputedStyle(node).display
+        results.altMutationStrategyHidden = nodeDisplay === 'none'
       }
 
       if (node.id === 'test-has') {
