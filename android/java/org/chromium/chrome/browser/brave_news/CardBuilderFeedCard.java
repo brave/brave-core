@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
 public class CardBuilderFeedCard {
     private static final int CARD_LAYOUT = 7;
     private static final int BUTTON_LAYOUT = 8;
