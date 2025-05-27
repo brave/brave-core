@@ -8,12 +8,12 @@ import { MockLedgerTransport } from './mock_ledger_transport'
 import {
   BtcLedgerMainnetHardwareImportScheme,
   HardwareOperationError,
-  HardwareOperationResultAccounts
+  HardwareOperationResultAccounts,
 } from '../types'
 import {
   LedgerCommand,
   UnlockResponse,
-  BtcGetAccountResponse
+  BtcGetAccountResponse,
 } from './ledger-messages'
 
 const createKeyring = () => {
@@ -30,21 +30,21 @@ const createKeyring = () => {
 const unlockError: HardwareOperationError = {
   success: false,
   error: 'LedgerError',
-  code: 101
+  code: 101,
 }
 
 const unlockErrorResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: unlockError
+  payload: unlockError,
 }
 
 const unlockSuccessResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: { success: true }
+  payload: { success: true },
 }
 
 test('getAccounts unlock error', async () => {
@@ -53,7 +53,7 @@ test('getAccounts unlock error', async () => {
   const result = await keyring.getAccounts(
     0,
     1,
-    BtcLedgerMainnetHardwareImportScheme
+    BtcLedgerMainnetHardwareImportScheme,
   )
   const expectedResult: HardwareOperationError = unlockError
   expect(result).toEqual(expectedResult)
@@ -69,8 +69,8 @@ test('getAccounts success', async () => {
     command: LedgerCommand.GetAccount,
     payload: {
       success: true,
-      xpub: 'xpub1'
-    }
+      xpub: 'xpub1',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse1)
 
@@ -80,28 +80,28 @@ test('getAccounts success', async () => {
     command: LedgerCommand.GetAccount,
     payload: {
       success: true,
-      xpub: 'xpub2'
-    }
+      xpub: 'xpub2',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
 
   const result = await keyring.getAccounts(
     0,
     2,
-    BtcLedgerMainnetHardwareImportScheme
+    BtcLedgerMainnetHardwareImportScheme,
   )
   const expectedResult: HardwareOperationResultAccounts = {
     success: true,
     accounts: [
       {
         address: 'xpub1',
-        derivationPath: "84'/0'/0'"
+        derivationPath: "84'/0'/0'",
       },
       {
         address: 'xpub2',
-        derivationPath: "84'/0'/1'"
-      }
-    ]
+        derivationPath: "84'/0'/1'",
+      },
+    ],
   }
   expect(result).toEqual(expectedResult)
 })
@@ -114,14 +114,14 @@ test('getAccounts ledger error after successful unlock', async () => {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: unlockError
+    payload: unlockError,
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
   const result = await keyring.getAccounts(
     0,
     1,
-    BtcLedgerMainnetHardwareImportScheme
+    BtcLedgerMainnetHardwareImportScheme,
   )
 
   const expectedResult: HardwareOperationError = unlockError

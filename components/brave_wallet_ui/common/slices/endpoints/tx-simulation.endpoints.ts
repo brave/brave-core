@@ -12,7 +12,7 @@ import { handleEndpointError } from '../../../utils/api-utils'
 
 export const transactionSimulationEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getIsTxSimulationOptInStatus: query<BraveWallet.BlowfishOptInStatus, void>({
@@ -24,7 +24,7 @@ export const transactionSimulationEndpoints = ({
 
         if (!isTransactionSimulationsFeatureEnabled) {
           return {
-            data: BraveWallet.BlowfishOptInStatus.kDenied
+            data: BraveWallet.BlowfishOptInStatus.kDenied,
           }
         }
 
@@ -32,10 +32,10 @@ export const transactionSimulationEndpoints = ({
           await api.braveWalletService.getTransactionSimulationOptInStatus()
 
         return {
-          data: status
+          data: status,
         }
       },
-      providesTags: ['TransactionSimulationsOptIn']
+      providesTags: ['TransactionSimulationsOptIn'],
     }),
 
     setIsTxSimulationOptInStatus: mutation<
@@ -47,10 +47,10 @@ export const transactionSimulationEndpoints = ({
         api.braveWalletService.setTransactionSimulationOptInStatus(status)
         cache.clearWalletInfo()
         return {
-          data: status
+          data: status,
         }
       },
-      invalidatesTags: ['TransactionSimulationsOptIn']
+      invalidatesTags: ['TransactionSimulationsOptIn'],
     }),
 
     getHasTransactionSimulationSupport: query<
@@ -63,10 +63,10 @@ export const transactionSimulationEndpoints = ({
           const { result } =
             await api.simulationService.hasTransactionScanSupport(
               arg.chainId,
-              arg.coinType
+              arg.coinType,
             )
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
@@ -74,10 +74,10 @@ export const transactionSimulationEndpoints = ({
             `Unable to check if this network (${
               arg.chainId //
             }) has transaction simulation support`,
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getEVMTransactionSimulation: query<
@@ -94,7 +94,7 @@ export const transactionSimulationEndpoints = ({
           const { errorResponse, errorString, response } =
             await simulationService.scanEVMTransaction(
               txArg.txMetaId,
-              navigator.language
+              navigator.language,
             )
 
           if (errorResponse || errorString) {
@@ -103,7 +103,7 @@ export const transactionSimulationEndpoints = ({
                 txArg.txMetaId //
               } -- ${
                 errorString //
-              } -- ${errorResponse}`
+              } -- ${errorResponse}`,
             )
           }
 
@@ -112,16 +112,16 @@ export const transactionSimulationEndpoints = ({
           }
 
           return {
-            data: response
+            data: response,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to simulate EVM transaction',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getSolanaTransactionSimulation: query<
@@ -138,14 +138,14 @@ export const transactionSimulationEndpoints = ({
           const { errorResponse, errorString, response } =
             await simulationService.scanSolanaTransaction(
               arg.txMetaId,
-              navigator.language
+              navigator.language,
             )
 
           if (errorResponse || errorString) {
             throw new Error(
               `getSolanaTransactionSimulation({${
                 arg.txMetaId //
-              }}) failed -- ${errorString}: ${errorResponse}`
+              }}) failed -- ${errorString}: ${errorResponse}`,
             )
           }
 
@@ -154,16 +154,16 @@ export const transactionSimulationEndpoints = ({
           }
 
           return {
-            data: response
+            data: response,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to simulate Solana transaction',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getSolanaSignTransactionsRequestSimulation: query<
@@ -180,14 +180,14 @@ export const transactionSimulationEndpoints = ({
           const { errorResponse, errorString, response } =
             await simulationService.scanSignSolTransactionsRequest(
               arg.signSolTransactionsRequestId,
-              navigator.language
+              navigator.language,
             )
 
           if (errorResponse || errorString) {
             throw new Error(
               `getSolanaSignTransactionsRequestSimulation({${
                 arg.signSolTransactionsRequestId //
-              }}) failed -- ${errorString}: ${errorResponse}`
+              }}) failed -- ${errorString}: ${errorResponse}`,
             )
           }
 
@@ -196,16 +196,16 @@ export const transactionSimulationEndpoints = ({
           }
 
           return {
-            data: response
+            data: response,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to simulate Solana transaction',
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

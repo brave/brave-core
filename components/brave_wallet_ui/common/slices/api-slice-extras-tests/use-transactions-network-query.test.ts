@@ -11,7 +11,7 @@ import type { BraveWallet } from '../../../constants/types'
 // utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 import { deserializeTransaction } from '../../../utils/model-serialization-utils'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -23,10 +23,10 @@ import { useTransactionsNetworkQuery } from '../api.slice.extra'
 import { mockNetwork } from '../../constants/mocks'
 import {
   mockAccountAssetOptions,
-  mockErc20TokensList
+  mockErc20TokensList,
 } from '../../../stories/mock-data/mock-asset-options'
 import {
-  mockTransactionInfo //
+  mockTransactionInfo, //
 } from '../../../stories/mock-data/mock-transaction-info'
 
 describe('api slice extra hooks', () => {
@@ -36,20 +36,20 @@ describe('api slice extra hooks', () => {
       const mockTxNetwork: BraveWallet.NetworkInfo = {
         ...mockNetwork,
         chainId: mockTx.chainId,
-        coin: getCoinFromTxDataUnion(mockTx.txDataUnion)
+        coin: getCoinFromTxDataUnion(mockTx.txDataUnion),
       }
       const store = createMockStore(
         {},
         {
           blockchainTokens: mockErc20TokensList,
           userAssets: mockAccountAssetOptions,
-          networks: [mockTxNetwork]
-        }
+          networks: [mockTxNetwork],
+        },
       )
 
       // check mock data
       expect(getCoinFromTxDataUnion(mockTx.txDataUnion)).toBe(
-        mockTxNetwork.coin
+        mockTxNetwork.coin,
       )
       expect(mockTx.chainId).toBe(mockTxNetwork.chainId)
 
@@ -59,9 +59,9 @@ describe('api slice extra hooks', () => {
         () =>
           useTransactionsNetworkQuery({
             chainId: mockTx.chainId,
-            txDataUnion: mockTx.txDataUnion
+            txDataUnion: mockTx.txDataUnion,
           }),
-        renderOptions
+        renderOptions,
       )
 
       // initial state
@@ -71,8 +71,8 @@ describe('api slice extra hooks', () => {
       // loading
       await waitFor(() =>
         expect(
-          !result.current.isLoading && result.current.data !== undefined
-        ).toBe(true)
+          !result.current.isLoading && result.current.data !== undefined,
+        ).toBe(true),
       )
 
       // done loading

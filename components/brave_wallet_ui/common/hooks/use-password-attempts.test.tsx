@@ -16,7 +16,7 @@ import type { MockedWalletApiProxy } from '../async/__mocks__/bridge'
 import getAPIProxy from '../async/bridge'
 import {
   makeMockedStoreWithSpy,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../utils/test-utils'
 
 describe('usePasswordAttempts hook', () => {
@@ -32,7 +32,7 @@ describe('usePasswordAttempts hook', () => {
 
     const { result } = renderHook(
       () => usePasswordAttempts(),
-      renderHookOptionsWithMockStore(store)
+      renderHookOptionsWithMockStore(store),
     )
 
     expect(result.current.attempts).toEqual(0)
@@ -42,7 +42,7 @@ describe('usePasswordAttempts hook', () => {
       await result.current.attemptPasswordEntry('pass')
       expect(dispatchSpy).toHaveBeenCalledWith({
         payload: 1,
-        type: 'wallet/setPasswordAttempts'
+        type: 'wallet/setPasswordAttempts',
       })
     })
 
@@ -53,7 +53,7 @@ describe('usePasswordAttempts hook', () => {
       await result.current.attemptPasswordEntry('pass2')
       expect(dispatchSpy).toHaveBeenCalledWith({
         payload: 2,
-        type: 'wallet/setPasswordAttempts'
+        type: 'wallet/setPasswordAttempts',
       })
     })
 
@@ -65,7 +65,7 @@ describe('usePasswordAttempts hook', () => {
       // attempts count is rest before locking
       expect(dispatchSpy).toHaveBeenCalledWith({
         payload: 0,
-        type: 'wallet/setPasswordAttempts'
+        type: 'wallet/setPasswordAttempts',
       })
     })
 
@@ -82,7 +82,7 @@ describe('usePasswordAttempts hook', () => {
 
     const { result } = renderHook(
       () => usePasswordAttempts(),
-      renderHookOptionsWithMockStore(store)
+      renderHookOptionsWithMockStore(store),
     )
 
     expect(result.current.attempts).toEqual(0)
@@ -99,7 +99,7 @@ describe('usePasswordAttempts hook', () => {
 
     const { result } = renderHook(
       () => usePasswordAttempts(),
-      renderHookOptionsWithMockStore(store)
+      renderHookOptionsWithMockStore(store),
     )
 
     expect(result.current.attempts).toEqual(0)

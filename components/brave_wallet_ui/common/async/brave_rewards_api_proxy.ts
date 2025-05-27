@@ -5,11 +5,11 @@
 
 import {
   UserType,
-  userTypeFromString
+  userTypeFromString,
 } from '../../../brave_rewards/resources/shared/lib/user_type'
 
 import {
-  externalWalletFromExtensionData //
+  externalWalletFromExtensionData, //
 } from '../../../brave_rewards/resources/shared/lib/external_wallet'
 import { RewardsExternalWallet, WalletStatus } from '../../constants/types'
 import { BraveRewardsProxyOverrides } from '../../constants/testing_types'
@@ -19,7 +19,7 @@ export class BraveRewardsProxy {
     return new Promise<boolean>((resolve) =>
       chrome.braveRewards.getRewardsEnabled((enabled) => {
         resolve(enabled)
-      })
+      }),
     )
   }
 
@@ -27,7 +27,7 @@ export class BraveRewardsProxy {
     return new Promise<number | undefined>((resolve) =>
       chrome.braveRewards.fetchBalance((balance) => {
         resolve(balance)
-      })
+      }),
     )
   }
 
@@ -35,7 +35,7 @@ export class BraveRewardsProxy {
     return new Promise<RewardsExtension.BalanceReport>((resolve) =>
       chrome.braveRewards.getBalanceReport(month, year, (report) => {
         resolve(report)
-      })
+      }),
     )
   }
 
@@ -64,7 +64,7 @@ export class BraveRewardsProxy {
               ...externalWallet,
               status: externalWallet.authenticated
                 ? WalletStatus.kConnected
-                : WalletStatus.kLoggedOut
+                : WalletStatus.kLoggedOut,
             }
           : null
         resolve(rewardsWallet)
@@ -121,7 +121,7 @@ export class BraveRewardsProxy {
     return new Promise<string[]>((resolve) =>
       chrome.braveRewards.getAvailableCountries((countries) => {
         resolve(countries)
-      })
+      }),
     )
   }
 
@@ -129,7 +129,7 @@ export class BraveRewardsProxy {
     return new Promise<RewardsExtension.RewardsParameters>((resolve) =>
       chrome.braveRewards.getRewardsParameters((params) => {
         resolve(params)
-      })
+      }),
     )
   }
 
@@ -156,7 +156,7 @@ export const getBraveRewardsProxy = () => {
 
 /** For testing */
 export function resetRewardsProxy(
-  overrides?: BraveRewardsProxyOverrides | undefined
+  overrides?: BraveRewardsProxyOverrides | undefined,
 ) {
   // no-op in production
 }

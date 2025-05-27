@@ -6,7 +6,7 @@
 import {
   LedgerBridgeErrorCodes,
   LedgerFrameCommand,
-  LedgerFrameResponse
+  LedgerFrameResponse,
 } from './ledger-messages'
 import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
 
@@ -18,27 +18,27 @@ export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
   constructor(
     targetWindow: Window,
     targetUrl: string,
-    onAuthorized?: () => void
+    onAuthorized?: () => void,
   ) {
     super(targetWindow, targetUrl)
     this.sendCommandResponses = []
   }
 
   addSendCommandResponse = (
-    response: LedgerFrameResponse | LedgerBridgeErrorCodes
+    response: LedgerFrameResponse | LedgerBridgeErrorCodes,
   ) => {
     // appends to the left of the list
     this.sendCommandResponses.unshift(response)
   }
 
   sendCommand = <T>(
-    command: LedgerFrameCommand
+    command: LedgerFrameCommand,
   ): Promise<T | LedgerBridgeErrorCodes> => {
     const response = this.sendCommandResponses.pop()
     if (response === undefined) {
       throw new Error(
-        'No mock ledger transport responses remaining.' +
-          'More sendCommand calls were made than mocked responses added.'
+        'No mock ledger transport responses remaining.'
+          + 'More sendCommand calls were made than mocked responses added.',
       )
     }
     return new Promise((resolve) => resolve(response as T))

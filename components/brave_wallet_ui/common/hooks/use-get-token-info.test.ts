@@ -7,7 +7,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../utils/test-utils'
 
 import useGetTokenInfo from './use-get-token-info'
@@ -16,7 +16,7 @@ import useGetTokenInfo from './use-get-token-info'
 import { mockNetwork } from '../constants/mocks'
 import {
   mockAccountAssetOptions,
-  mockErc20TokensList
+  mockErc20TokensList,
 } from '../../stories/mock-data/mock-asset-options'
 
 describe('useGetTokenInfo hook', () => {
@@ -25,8 +25,8 @@ describe('useGetTokenInfo hook', () => {
       {},
       {
         blockchainTokens: mockErc20TokensList,
-        userAssets: mockAccountAssetOptions
-      }
+        userAssets: mockAccountAssetOptions,
+      },
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
@@ -34,9 +34,9 @@ describe('useGetTokenInfo hook', () => {
       () =>
         useGetTokenInfo({
           contractAddress: mockErc20TokensList[0].contractAddress,
-          network: mockNetwork
+          network: mockNetwork,
         }),
-      renderOptions
+      renderOptions,
     )
 
     // initial state
@@ -47,8 +47,8 @@ describe('useGetTokenInfo hook', () => {
     // loading
     await waitFor(() =>
       expect(
-        result.current.tokenInfo !== undefined && !result.current.isLoading
-      ).toBeTruthy()
+        result.current.tokenInfo !== undefined && !result.current.isLoading,
+      ).toBeTruthy(),
     )
 
     // done loading
@@ -61,8 +61,8 @@ describe('useGetTokenInfo hook', () => {
       {},
       {
         blockchainTokens: mockErc20TokensList,
-        userAssets: mockAccountAssetOptions
-      }
+        userAssets: mockAccountAssetOptions,
+      },
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
@@ -70,9 +70,9 @@ describe('useGetTokenInfo hook', () => {
       () =>
         useGetTokenInfo({
           contractAddress: '0xdeadbeef',
-          network: mockNetwork
+          network: mockNetwork,
         }),
-      renderOptions
+      renderOptions,
     )
 
     // initial state
@@ -83,8 +83,8 @@ describe('useGetTokenInfo hook', () => {
     // loading
     await waitFor(() =>
       expect(
-        result.current.tokenInfo !== undefined && !result.current.isLoading
-      ).toBeTruthy()
+        result.current.tokenInfo !== undefined && !result.current.isLoading,
+      ).toBeTruthy(),
     )
 
     // done loading

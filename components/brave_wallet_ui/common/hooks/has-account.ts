@@ -22,7 +22,7 @@ export function useHasAccount() {
   // memos
   const hasSolAccount = React.useMemo((): boolean => {
     return accounts.some(
-      (account) => account.accountId.coin === BraveWallet.CoinType.SOL
+      (account) => account.accountId.coin === BraveWallet.CoinType.SOL,
     )
   }, [accounts])
   const hasFilAccount = React.useMemo((): boolean => {
@@ -32,8 +32,8 @@ export function useHasAccount() {
         : BraveWallet.KeyringId.kFilecoinTestnet
     return accounts.some(
       (account) =>
-        account.accountId.coin === BraveWallet.CoinType.FIL &&
-        account.accountId.keyringId === keyringForCurrentNetwork
+        account.accountId.coin === BraveWallet.CoinType.FIL
+        && account.accountId.keyringId === keyringForCurrentNetwork,
     )
   }, [accounts, selectedNetwork])
 
@@ -56,7 +56,7 @@ export function useHasAccount() {
   return {
     hasSolAccount,
     hasFilAccount,
-    needsAccount
+    needsAccount,
   }
 }
 

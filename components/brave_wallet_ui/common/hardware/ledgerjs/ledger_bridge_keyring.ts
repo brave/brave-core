@@ -11,7 +11,7 @@ import {
   LedgerCommand,
   UnlockResponse,
   LedgerFrameCommand,
-  LedgerBridgeErrorCodes
+  LedgerBridgeErrorCodes,
 } from './ledger-messages'
 import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
 
@@ -48,12 +48,12 @@ export default class LedgerBridgeKeyring {
     const data = await this.sendCommand<UnlockResponse>({
       id: LedgerCommand.Unlock,
       origin: window.origin,
-      command: LedgerCommand.Unlock
+      command: LedgerCommand.Unlock,
     })
 
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -65,7 +65,7 @@ export default class LedgerBridgeKeyring {
   }
 
   sendCommand = async <T>(
-    command: LedgerFrameCommand
+    command: LedgerFrameCommand,
   ): Promise<T | LedgerBridgeErrorCodes> => {
     if (!this.bridge && !this.hasBridgeCreated()) {
       this.bridge = await this.createBridge(LEDGER_BRIDGE_URL)
@@ -77,7 +77,7 @@ export default class LedgerBridgeKeyring {
       this.transport = new LedgerTrustedMessagingTransport(
         this.bridge.contentWindow,
         LEDGER_BRIDGE_URL,
-        this.onAuthorized
+        this.onAuthorized,
       )
     }
     return this.transport.sendCommand(command)
@@ -90,9 +90,9 @@ export default class LedgerBridgeKeyring {
       const element = document.createElement('iframe')
       element.id = this.frameId
       element.src =
-        new URL(targetUrl).origin +
-        `?targetUrl=${encodeURIComponent(window.origin)}` +
-        `&bridgeType=${this.bridgeType()}`
+        new URL(targetUrl).origin
+        + `?targetUrl=${encodeURIComponent(window.origin)}`
+        + `&bridgeType=${this.bridgeType()}`
       element.style.display = 'none'
       element.allow = 'hid'
       element.setAttribute('sandbox', 'allow-scripts allow-same-origin')
@@ -105,7 +105,7 @@ export default class LedgerBridgeKeyring {
   }
 
   protected readonly createErrorFromCode = (
-    code: LedgerBridgeErrorCodes
+    code: LedgerBridgeErrorCodes,
   ): HardwareOperationError => {
     const deviceName = getLocale('braveWalletConnectHardwareLedger')
 
@@ -115,18 +115,18 @@ export default class LedgerBridgeKeyring {
           success: false,
           error: getLocale('braveWalletBridgeNotReady').replace(
             '$1',
-            deviceName
+            deviceName,
           ),
-          code: code
+          code: code,
         }
       case LedgerBridgeErrorCodes.CommandInProgress:
         return {
           success: false,
           error: getLocale('braveWalletBridgeCommandInProgress').replace(
             '$1',
-            deviceName
+            deviceName,
           ),
-          code: code
+          code: code,
         }
     }
   }

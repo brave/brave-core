@@ -17,7 +17,7 @@ const balancesTags = [
   'AccountTokenCurrentBalance',
   'TokenBalancesForChainId',
   'TokenBalances',
-  'HardwareAccountDiscoveryBalance'
+  'HardwareAccountDiscoveryBalance',
 ] as const
 
 /**
@@ -88,15 +88,15 @@ export function createWalletApiBase() {
       'IsShieldingAvailable',
       'IsSyncInProgress',
       'ZcashChainTipStatus',
-      'ZCashBalance'
+      'ZCashBalance',
     ],
-    endpoints: ({ mutation, query }) => ({})
+    endpoints: ({ mutation, query }) => ({}),
   })
 }
 
 export const ACCOUNT_TAG_IDS = {
   REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED'
+  SELECTED: 'SELECTED',
 } as const
 
 export const NETWORK_TAG_IDS = {
@@ -108,11 +108,11 @@ export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED',
   SWAP_SUPPORTED: 'SWAP_SUPPORTED',
-  VISIBLE: 'VISIBLE'
+  VISIBLE: 'VISIBLE',
 } as const
 
 export const TOKEN_TAG_IDS = {
-  REGISTRY: 'REGISTRY'
+  REGISTRY: 'REGISTRY',
 } as const
 
 export type WalletApiBase = ReturnType<typeof createWalletApiBase>

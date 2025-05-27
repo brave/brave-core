@@ -20,7 +20,7 @@ class InteractionNotifier {
   beginWatchingForInteraction(
     timeMs: number,
     isWalletLocked: boolean,
-    onInteractionInterval: () => unknown
+    onInteractionInterval: () => unknown,
   ) {
     if (!isWalletLocked && !this.intervalId) {
       this.intervalId = setInterval(() => {
@@ -47,7 +47,7 @@ class InteractionNotifier {
       window.removeEventListener('scroll', this.handleInteraction, true)
       document.removeEventListener(
         'visibilitychange',
-        this.handleVisibilityChange
+        this.handleVisibilityChange,
       )
     }
   }

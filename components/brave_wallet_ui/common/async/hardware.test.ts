@@ -8,7 +8,7 @@ import {
   signTrezorTransaction,
   signLedgerEthereumTransaction,
   signLedgerFilecoinTransaction,
-  signLedgerSolanaTransaction
+  signLedgerSolanaTransaction,
 } from './hardware'
 import WalletApiProxy from '../../common/wallet_api_proxy'
 import { getLocale } from '../../../common/locale'
@@ -18,7 +18,7 @@ import {
   HardwareOperationResult,
   HardwareOperationResultEthereumSignatureVRS,
   HardwareOperationResultFilecoinSignature,
-  HardwareOperationResultSolanaSignature
+  HardwareOperationResultSolanaSignature,
 } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
@@ -28,7 +28,7 @@ import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_ke
 const mockEthereumSignatureVRS: BraveWallet.EthereumSignatureVRS = {
   vBytes: [1],
   rBytes: [2, 3],
-  sBytes: [4, 5, 6]
+  sBytes: [4, 5, 6],
 }
 
 const getMockedLedgerEthKeyring = (args: {
@@ -39,23 +39,23 @@ const getMockedLedgerEthKeyring = (args: {
   return {
     signTransaction: async (
       path: string,
-      data: string
+      data: string,
     ): Promise<HardwareOperationResultEthereumSignatureVRS> => {
       expect(path).toStrictEqual(args.expectedPath)
       expect(data).toStrictEqual(args.expectedData)
       if (args.mockSignature) {
         return {
           success: true,
-          signature: args.mockSignature
+          signature: args.mockSignature,
         }
       } else {
         return {
           success: false,
           error: 'braveWalletSignOnDeviceError',
-          code: undefined
+          code: undefined,
         }
       }
-    }
+    },
   }
 }
 
@@ -68,21 +68,21 @@ const getMockedLedgerFilKeyring = (args: {
       return BraveWallet.HardwareVendor.kLedger
     },
     signTransaction: async (
-      message: string
+      message: string,
     ): Promise<HardwareOperationResultFilecoinSignature> => {
       expect(message).toStrictEqual(args.expectedMessage)
       if (args.mockSignature) {
         return {
           success: true,
-          signature: args.mockSignature
+          signature: args.mockSignature,
         }
       }
       return {
         success: false,
         error: 'braveWalletSignOnDeviceError',
-        code: undefined
+        code: undefined,
       }
-    }
+    },
   }
 }
 
@@ -93,7 +93,7 @@ const getMockedLedgerSolKeyring = (args: {
   return {
     signTransaction: async (
       path: string,
-      message: Buffer
+      message: Buffer,
     ): Promise<HardwareOperationResultSolanaSignature> => {
       expect(message).toStrictEqual(args.expectedMessage)
       if (args.mockSignature) {
@@ -102,9 +102,9 @@ const getMockedLedgerSolKeyring = (args: {
       return {
         success: false,
         error: 'braveWalletSignOnDeviceError',
-        code: undefined
+        code: undefined,
       }
-    }
+    },
   }
 }
 
@@ -119,7 +119,7 @@ const getMockedTrezorKeyring = (args: {
       path: string,
       txid: string,
       ethTxData1559: BraveWallet.TxData1559,
-      chainId: string
+      chainId: string,
     ): Promise<HardwareOperationResultEthereumSignatureVRS> => {
       expect(path).toStrictEqual(args.expectedDevicePath)
       if (args.mockSignature) {
@@ -130,10 +130,10 @@ const getMockedTrezorKeyring = (args: {
         return {
           success: false,
           error: 'braveWalletSignOnDeviceError',
-          code: undefined
+          code: undefined,
         }
       }
-    }
+    },
   }
 }
 
@@ -155,7 +155,7 @@ const getMockedProxyServices = (args: {
     jsonRpcService: {
       getChainId: async () => {
         return '0x123'
-      }
+      },
     },
     ethTxManagerProxy: {
       getEthTransactionMessageToSign: (id: string) => {
@@ -168,16 +168,16 @@ const getMockedProxyServices = (args: {
       },
       processEthHardwareSignature: (
         id: string,
-        hwSignature: BraveWallet.EthereumSignatureVRS
+        hwSignature: BraveWallet.EthereumSignatureVRS,
       ) => {
         expect(id).toStrictEqual(args.expectedId)
         expect(hwSignature).toStrictEqual(args.expectedEthereumSignatureVRS)
         return Promise.resolve({
           status: !!args.processHardwareSignatureResult,
           error: 0,
-          errorMessage: ''
+          errorMessage: '',
         })
-      }
+      },
     },
     filTxManagerProxy: {
       getFilTransactionMessageToSign: (id: string) => {
@@ -186,16 +186,16 @@ const getMockedProxyServices = (args: {
       },
       processFilHardwareSignature: (
         id: string,
-        hwSignature: BraveWallet.FilecoinSignature
+        hwSignature: BraveWallet.FilecoinSignature,
       ) => {
         expect(id).toStrictEqual(args.expectedId)
         expect(hwSignature).toStrictEqual(args.expectedFilSignedTransaction)
         return Promise.resolve({
           status: !!args.processHardwareSignatureResult,
           errorUnion: emptyProviderErrorCodeUnion,
-          errorMessage: ''
+          errorMessage: '',
         })
-      }
+      },
     },
     btcTxManagerProxy: {
       getBtcTransactionMessageToSign: (id: string) => {
@@ -204,16 +204,16 @@ const getMockedProxyServices = (args: {
       },
       processBtcHardwareSignature: (
         id: string,
-        hwSignature: BraveWallet.BitcoinSignature
+        hwSignature: BraveWallet.BitcoinSignature,
       ) => {
         expect(id).toStrictEqual(args.expectedId)
         expect(hwSignature).toStrictEqual(args.expectedBtcSignedTransaction)
         return Promise.resolve({
           status: !!args.processHardwareSignatureResult,
           errorUnion: emptyProviderErrorCodeUnion,
-          errorMessage: ''
+          errorMessage: '',
         })
-      }
+      },
     },
     solanaTxManagerProxy: {
       getSolTransactionMessageToSign: (id: string) => {
@@ -222,17 +222,17 @@ const getMockedProxyServices = (args: {
       },
       processSolanaHardwareSignature: (
         id: string,
-        signature: BraveWallet.SolanaSignature
+        signature: BraveWallet.SolanaSignature,
       ) => {
         expect(id).toStrictEqual(args.expectedId)
         expect(signature).toStrictEqual(args.expectedSolSignature)
         return Promise.resolve({
           status: !!args.processHardwareSignatureResult,
           errorUnion: emptyProviderErrorCodeUnion,
-          errorMessage: ''
+          errorMessage: '',
         })
-      }
-    }
+      },
+    },
   }
 }
 
@@ -248,7 +248,7 @@ const signEthTransactionWithLedger = (args?: {
   const mockedKeyring = getMockedLedgerEthKeyring({
     expectedPath,
     expectedData,
-    mockSignature: args?.mockSignature
+    mockSignature: args?.mockSignature,
   })
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
@@ -256,13 +256,13 @@ const signEthTransactionWithLedger = (args?: {
     nonce: '0x1',
     ethMessageToSign: messageToSign,
     expectedEthereumSignatureVRS: args?.mockSignature,
-    processHardwareSignatureResult: args?.processHardwareSignatureResult
+    processHardwareSignatureResult: args?.processHardwareSignatureResult,
   })
   return signLedgerEthereumTransaction(
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
     txInfo.id,
-    mockedKeyring as unknown as LedgerBridgeKeyring
+    mockedKeyring as unknown as LedgerBridgeKeyring,
   )
 }
 
@@ -276,20 +276,20 @@ const signSolTransactionWithLedger = (args: {
   const messageToSign = [...expectedData]
   const mockedKeyring = getMockedLedgerSolKeyring({
     expectedMessage: expectedData,
-    mockSignature: args.mockSignature
+    mockSignature: args.mockSignature,
   })
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
     expectedId: txInfo.id,
     solMessageToSign: Buffer.from(messageToSign),
     processHardwareSignatureResult: args.processHardwareSignatureResult,
-    expectedSolSignature: args.mockSignature
+    expectedSolSignature: args.mockSignature,
   })
   return signLedgerSolanaTransaction(
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
     txInfo.id,
-    mockedKeyring as unknown as SolanaLedgerBridgeKeyring
+    mockedKeyring as unknown as SolanaLedgerBridgeKeyring,
   )
 }
 
@@ -302,31 +302,31 @@ const signFilTransactionWithLedger = (args: {
   const messageToSign = expectedData
   const mockedKeyring = getMockedLedgerFilKeyring({
     expectedMessage: expectedData,
-    mockSignature: args.mockSignature
+    mockSignature: args.mockSignature,
   })
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
     expectedId: txInfo.id,
     filMessageToSign: messageToSign,
     processHardwareSignatureResult: args.processHardwareSignatureResult,
-    expectedFilSignedTransaction: args.mockSignature
+    expectedFilSignedTransaction: args.mockSignature,
   })
   return signLedgerFilecoinTransaction(
     apiProxy as unknown as WalletApiProxy,
     txInfo.id,
-    mockedKeyring as unknown as FilecoinLedgerBridgeKeyring
+    mockedKeyring as unknown as FilecoinLedgerBridgeKeyring,
   )
 }
 
 const hardwareTransactionErrorResponse = (
   errorId: string,
-  code: string | undefined = undefined
+  code: string | undefined = undefined,
 ): HardwareOperationError => {
   return { success: false, error: getLocale(errorId), code }
 }
 const hardwareTransactionErrorResponseWithCode = (
   errorId: string,
-  code: string = ''
+  code: string = '',
 ): HardwareOperationError => {
   return { success: false, error: getLocale(errorId), code: code }
 }
@@ -341,20 +341,20 @@ const signTransactionWithTrezor = (args: {
     expectedDevicePath: expectedPath,
     expectedEthTxData1559: txInfo.txDataUnion.ethTxData1559,
     mockSignature: args.mockSignature,
-    mockHardwareOperationError: args.mockHardwareOperationError
+    mockHardwareOperationError: args.mockHardwareOperationError,
   })
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
     expectedId: txInfo.id,
     nonce: '0x03',
     expectedEthereumSignatureVRS: args.mockSignature,
-    processHardwareSignatureResult: args.processHardwareSignatureResult
+    processHardwareSignatureResult: args.processHardwareSignatureResult,
   })
   return signTrezorTransaction(
     apiProxy as unknown as WalletApiProxy,
     expectedPath,
     txInfo,
-    mockedKeyring as unknown as TrezorBridgeKeyring
+    mockedKeyring as unknown as TrezorBridgeKeyring,
   )
 }
 
@@ -363,32 +363,32 @@ test('Test sign Ledger transaction, approved, no message to sign', () => {
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
     expectedId: txInfo.id,
-    nonce: '0x1'
+    nonce: '0x1',
   })
   return expect(
     signLedgerEthereumTransaction(
       apiProxy as unknown as WalletApiProxy,
       'path',
-      txInfo.id
-    )
+      txInfo.id,
+    ),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletNoMessageToSignError')
+    hardwareTransactionErrorResponse('braveWalletNoMessageToSignError'),
   )
 })
 
 test('Test sign Ledger transaction, approved, device error', () => {
   return expect(signEthTransactionWithLedger()).resolves.toStrictEqual(
-    hardwareTransactionErrorResponseWithCode('braveWalletSignOnDeviceError')
+    hardwareTransactionErrorResponseWithCode('braveWalletSignOnDeviceError'),
   )
 })
 
 test('Test sign Ledger transaction, approved, processing error', () => {
   return expect(
     signEthTransactionWithLedger({
-      mockSignature: mockEthereumSignatureVRS
-    })
+      mockSignature: mockEthereumSignatureVRS,
+    }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletProcessTransactionError')
+    hardwareTransactionErrorResponse('braveWalletProcessTransactionError'),
   )
 })
 
@@ -396,8 +396,8 @@ test('Test sign Ledger transaction, approved, processed', () => {
   return expect(
     signEthTransactionWithLedger({
       mockSignature: mockEthereumSignatureVRS,
-      processHardwareSignatureResult: true
-    })
+      processHardwareSignatureResult: true,
+    }),
   ).resolves.toStrictEqual({ success: true })
 })
 
@@ -406,12 +406,16 @@ test('Test sign Trezor transaction, approve failed', () => {
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
     expectedId: txInfo.id,
-    nonce: ''
+    nonce: '',
   })
   return expect(
-    signTrezorTransaction(apiProxy as unknown as WalletApiProxy, 'path', txInfo)
+    signTrezorTransaction(
+      apiProxy as unknown as WalletApiProxy,
+      'path',
+      txInfo,
+    ),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletApproveTransactionError')
+    hardwareTransactionErrorResponse('braveWalletApproveTransactionError'),
   )
 })
 
@@ -421,13 +425,13 @@ test('Test sign Trezor transaction, approved, device error', () => {
       mockHardwareOperationError: {
         success: false,
         error: 'error',
-        code: '111'
-      }
-    })
+        code: '111',
+      },
+    }),
   ).resolves.toStrictEqual({
     success: false,
     error: 'error',
-    code: '111'
+    code: '111',
   })
 })
 
@@ -437,11 +441,11 @@ test('Test sign Trezor transaction, approved, generic device error', () => {
       mockHardwareOperationError: {
         success: false,
         error: 'braveWalletSignOnDeviceError',
-        code: undefined
-      }
-    })
+        code: undefined,
+      },
+    }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletSignOnDeviceError')
+    hardwareTransactionErrorResponse('braveWalletSignOnDeviceError'),
   )
 })
 
@@ -449,10 +453,10 @@ test('Test sign Trezor transaction, approved, processing error', () => {
   return expect(
     signTransactionWithTrezor({
       mockSignature: mockEthereumSignatureVRS,
-      processHardwareSignatureResult: false
-    })
+      processHardwareSignatureResult: false,
+    }),
   ).resolves.toStrictEqual(
-    hardwareTransactionErrorResponse('braveWalletProcessTransactionError')
+    hardwareTransactionErrorResponse('braveWalletProcessTransactionError'),
   )
 })
 
@@ -460,8 +464,8 @@ test('Test sign Trezor transaction, approved, processed', () => {
   return expect(
     signTransactionWithTrezor({
       mockSignature: mockEthereumSignatureVRS,
-      processHardwareSignatureResult: true
-    })
+      processHardwareSignatureResult: true,
+    }),
   ).resolves.toStrictEqual({ success: true })
 })
 
@@ -475,23 +479,23 @@ test('Test sign Ledger FIL transaction, signed', () => {
     'Nonce': 1,
     'Params': '',
     'To': 't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
-    'Value': '11'
+    'Value': '11',
   }
   const expectedSignature = {
     Message: message,
     Signature: {
       Type: 1,
-      Data: 'signed'
-    }
+      Data: 'signed',
+    },
   }
 
   return expect(
     signFilTransactionWithLedger({
       mockSignature: {
-        signedMessageJson: JSON.stringify(expectedSignature)
+        signedMessageJson: JSON.stringify(expectedSignature),
       },
-      processHardwareSignatureResult: true
-    })
+      processHardwareSignatureResult: true,
+    }),
   ).resolves.toStrictEqual({ success: true })
 })
 
@@ -500,9 +504,9 @@ test('Test sign Ledger SOL transaction, signed', () => {
   return expect(
     signSolTransactionWithLedger({
       mockSignature: {
-        bytes: [...expectedSignature]
+        bytes: [...expectedSignature],
       },
-      processHardwareSignatureResult: true
-    })
+      processHardwareSignatureResult: true,
+    }),
   ).resolves.toStrictEqual({ success: true })
 })

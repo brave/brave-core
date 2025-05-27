@@ -12,7 +12,7 @@ import {
   HardwareOperationResultEthereumSignatureBytes,
   HardwareOperationResultSolanaSignature,
   HardwareOperationResultFilecoinSignature,
-  HardwareOperationResultBitcoinSignature
+  HardwareOperationResultBitcoinSignature,
 } from './types'
 import { BridgeType } from './untrusted_shared_types'
 
@@ -21,7 +21,7 @@ export abstract class HardwareKeyring {
   abstract getAccounts(
     from: number,
     count: number,
-    scheme: HardwareImportScheme
+    scheme: HardwareImportScheme,
   ): Promise<HardwareOperationResultAccounts>
   abstract unlock(): Promise<HardwareOperationResult>
 }
@@ -31,11 +31,11 @@ export abstract class TrezorKeyring extends HardwareKeyring {
     path: string,
     txid: string,
     ethTxData1559: BraveWallet.TxData1559,
-    chainId: string
+    chainId: string,
   ): Promise<HardwareOperationResultEthereumSignatureVRS>
   abstract signPersonalMessage(
     path: string,
-    message: string
+    message: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes>
   abstract signEip712Message(
     path: string,
@@ -44,30 +44,30 @@ export abstract class TrezorKeyring extends HardwareKeyring {
     messageJson: string,
     domainJson: string,
     typesJson: string,
-    primaryType: string
+    primaryType: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 
 export abstract class LedgerEthereumKeyring extends HardwareKeyring {
   abstract signTransaction(
     path: string,
-    rawTxHex: string
+    rawTxHex: string,
   ): Promise<HardwareOperationResultEthereumSignatureVRS>
   abstract signPersonalMessage(
     path: string,
     address: string,
-    message: string
+    message: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes>
   abstract signEip712Message(
     path: string,
     domainSeparatorHex: string,
-    hashStructMessageHex: string
+    hashStructMessageHex: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 
 export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
   abstract signTransaction(
-    message: string
+    message: string,
   ): Promise<HardwareOperationResultFilecoinSignature>
 }
 
@@ -80,13 +80,13 @@ export abstract class LedgerBitcoinKeyring extends HardwareKeyring {
     }>,
     outputScript: Buffer,
     changePath: string | undefined,
-    lockTime: number
+    lockTime: number,
   ): Promise<HardwareOperationResultBitcoinSignature>
 }
 
 export abstract class LedgerSolanaKeyring extends HardwareKeyring {
   abstract signTransaction(
     path: string,
-    rawTxBytes: Buffer
+    rawTxBytes: Buffer,
   ): Promise<HardwareOperationResultSolanaSignature>
 }

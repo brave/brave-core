@@ -8,7 +8,7 @@ import { TransportStatusError } from '@ledgerhq/errors'
 import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
 import {
   LedgerProvider,
-  TransportWrapper
+  TransportWrapper,
 } from '@glif/filecoin-wallet-provider'
 import {
   FilGetAccountCommand,
@@ -17,7 +17,7 @@ import {
   FilSignTransactionResponse,
   LedgerBridgeErrorCodes,
   LedgerCommand,
-  UnlockResponse
+  UnlockResponse,
 } from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
@@ -32,20 +32,20 @@ export class FilecoinLedgerUntrustedMessagingTransport //
     super(targetWindow, targetUrl)
     this.addCommandHandler<UnlockResponse>(
       LedgerCommand.Unlock,
-      this.handleUnlock
+      this.handleUnlock,
     )
     this.addCommandHandler<FilGetAccountResponse>(
       LedgerCommand.GetAccount,
-      this.handleGetAccount
+      this.handleGetAccount,
     )
     this.addCommandHandler<FilSignTransactionResponse>(
       LedgerCommand.SignTransaction,
-      this.handleSignTransaction
+      this.handleSignTransaction,
     )
   }
 
   private handleGetAccount = async (
-    command: FilGetAccountCommand
+    command: FilGetAccountCommand,
   ): Promise<FilGetAccountResponse> => {
     try {
       if (!this.provider && !(await this.makeProvider())) {
@@ -56,15 +56,15 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           payload: {
             success: false,
             error: '',
-            code: LedgerBridgeErrorCodes.BridgeNotReady
-          }
+            code: LedgerBridgeErrorCodes.BridgeNotReady,
+          },
         }
       }
 
       const accounts = await this.provider!.getAccounts(
         command.from,
         command.from + command.count,
-        command.isTestnet ? CoinType.TEST : CoinType.MAIN
+        command.isTestnet ? CoinType.TEST : CoinType.MAIN,
       )
 
       return {
@@ -73,8 +73,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: true,
-          accounts: accounts
-        }
+          accounts: accounts,
+        },
       }
     } catch (error) {
       return {
@@ -85,14 +85,16 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
     }
   }
 
   private handleSignTransaction = async (
-    command: FilSignTransactionCommand
+    command: FilSignTransactionCommand,
   ): Promise<FilSignTransactionResponse> => {
     try {
       if (!this.provider && !(await this.makeProvider())) {
@@ -103,8 +105,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           payload: {
             success: false,
             error: '',
-            code: LedgerBridgeErrorCodes.BridgeNotReady
-          }
+            code: LedgerBridgeErrorCodes.BridgeNotReady,
+          },
         }
       }
       // Accounts should be warmed up before sign in
@@ -119,11 +121,11 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         GasLimit: parsed.GasLimit,
         GasFeeCap: parsed.GasFeeCap,
         Method: parsed.Method,
-        Params: parsed.Params
+        Params: parsed.Params,
       }
       const signed: SignedLotusMessage = await this.provider!.sign(
         parsed.From,
-        lotusMessage
+        lotusMessage,
       )
       return {
         command: LedgerCommand.SignTransaction,
@@ -131,8 +133,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: true,
-          untrustedSignedTxJson: JSON.stringify(signed)
-        }
+          untrustedSignedTxJson: JSON.stringify(signed),
+        },
       }
     } catch (error) {
       return {
@@ -143,8 +145,10 @@ export class FilecoinLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
     }
   }
@@ -164,8 +168,8 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         minLedgerVersion: {
           major: 0,
           minor: 0,
-          patch: 1
-        }
+          patch: 1,
+        },
       })
 
       if (!(await provider.ready())) {

@@ -12,7 +12,7 @@ import {
   SolGetAccountCommand,
   SolGetAccountResponse,
   SolSignTransactionCommand,
-  SolSignTransactionResponse
+  SolSignTransactionResponse,
 } from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
@@ -24,20 +24,20 @@ export class SolanaLedgerUntrustedMessagingTransport //
     super(targetWindow, targetUrl)
     this.addCommandHandler<UnlockResponse>(
       LedgerCommand.Unlock,
-      this.handleUnlock
+      this.handleUnlock,
     )
     this.addCommandHandler<SolGetAccountResponse>(
       LedgerCommand.GetAccount,
-      this.handleGetAccount
+      this.handleGetAccount,
     )
     this.addCommandHandler<SolSignTransactionResponse>(
       LedgerCommand.SignTransaction,
-      this.handleSignTransaction
+      this.handleSignTransaction,
     )
   }
 
   private handleGetAccount = async (
-    command: SolGetAccountCommand
+    command: SolGetAccountCommand,
   ): Promise<SolGetAccountResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Sol(transport)
@@ -45,7 +45,7 @@ export class SolanaLedgerUntrustedMessagingTransport //
       const result = await app.getAddress(command.path)
       const response: SolGetAccountResponse = {
         ...command,
-        payload: { success: true, address: result.address }
+        payload: { success: true, address: result.address },
       }
       return response
     } catch (error) {
@@ -55,8 +55,10 @@ export class SolanaLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
       return response
     } finally {
@@ -65,22 +67,22 @@ export class SolanaLedgerUntrustedMessagingTransport //
   }
 
   private handleSignTransaction = async (
-    command: SolSignTransactionCommand
+    command: SolSignTransactionCommand,
   ): Promise<SolSignTransactionResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Sol(transport)
     try {
       const result = await app.signTransaction(
         command.path,
-        Buffer.from(command.rawTxBytes)
+        Buffer.from(command.rawTxBytes),
       )
 
       const response: SolSignTransactionResponse = {
         ...command,
         payload: {
           success: true,
-          untrustedSignatureBytes: result.signature
-        }
+          untrustedSignatureBytes: result.signature,
+        },
       }
       return response
     } catch (error) {
@@ -90,8 +92,10 @@ export class SolanaLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
       return response
     } finally {

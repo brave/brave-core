@@ -9,14 +9,14 @@ import {
   HardwareOperationResultAccounts,
   HardwareOperationError,
   HardwareOperationResultSolanaSignature,
-  SolLedgerDefaultHardwareImportScheme
+  SolLedgerDefaultHardwareImportScheme,
 } from '../types'
 import {
   LedgerCommand,
   UnlockResponse,
   SolGetAccountResponse,
   SolSignTransactionResponse,
-  LedgerResponse
+  LedgerResponse,
 } from './ledger-messages'
 import { MockLedgerTransport } from './mock_ledger_transport'
 
@@ -38,15 +38,15 @@ const unlockErrorResponse: UnlockResponse = {
   payload: {
     success: false,
     error: 'LedgerError',
-    code: 101
-  }
+    code: 101,
+  },
 }
 
 const unlockSuccessResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: { success: true }
+  payload: { success: true },
 }
 
 test('getAccounts unlock error', async () => {
@@ -55,13 +55,13 @@ test('getAccounts unlock error', async () => {
   const result: HardwareOperationResultAccounts = await keyring.getAccounts(
     0,
     1,
-    SolLedgerDefaultHardwareImportScheme
+    SolLedgerDefaultHardwareImportScheme,
   )
 
   const expectedResult: HardwareOperationError = {
     success: false,
     code: 101,
-    error: 'LedgerError'
+    error: 'LedgerError',
   }
   expect(result).toEqual(expectedResult)
 })
@@ -75,46 +75,46 @@ test('getAccounts success', async () => {
     address: Buffer
   }> = {
     success: true,
-    address: Buffer.from("address for 44'/501'/0'/0'")
+    address: Buffer.from("address for 44'/501'/0'/0'"),
   }
   transport.addSendCommandResponse({
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: getAccountsResponsePayload1
+    payload: getAccountsResponsePayload1,
   })
   const getAccountsResponsePayload2: LedgerResponse<{
     address: Buffer
   }> = {
     success: true,
-    address: Buffer.from("address for 44'/501'/1'/0'")
+    address: Buffer.from("address for 44'/501'/1'/0'"),
   }
   transport.addSendCommandResponse({
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: getAccountsResponsePayload2
+    payload: getAccountsResponsePayload2,
   })
 
   const result = await keyring.getAccounts(
     0,
     2,
-    SolLedgerDefaultHardwareImportScheme
+    SolLedgerDefaultHardwareImportScheme,
   )
 
   const expectedResult: AccountFromDevice[] = [
     {
       address: '3yyGpgRsxQWmrP8UZUjC87APcNdwPLuNEdLr',
-      derivationPath: "44'/501'/0'/0'"
+      derivationPath: "44'/501'/0'/0'",
     },
     {
       address: '3yyGpgRsxQWmrP8UZUjC87APcNdwPM1umTV8',
-      derivationPath: "44'/501'/1'/0'"
-    }
+      derivationPath: "44'/501'/1'/0'",
+    },
   ]
   expect(result).toEqual({
     success: true,
-    accounts: expectedResult
+    accounts: expectedResult,
   })
 })
 
@@ -129,21 +129,21 @@ test('getAccounts ledger error after successful unlock', async () => {
     payload: {
       success: false,
       error: 'LedgerError',
-      code: 101
-    }
+      code: 101,
+    },
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
   const result: HardwareOperationResultAccounts = await keyring.getAccounts(
     0,
     1,
-    SolLedgerDefaultHardwareImportScheme
+    SolLedgerDefaultHardwareImportScheme,
   )
 
   const expectedResult: HardwareOperationError = {
     success: false,
     error: 'LedgerError',
-    code: 101
+    code: 101,
   }
 
   expect(result).toEqual(expectedResult)
@@ -155,12 +155,12 @@ test('signTransaction unlock error', async () => {
   transport.addSendCommandResponse(unlockErrorResponse)
   const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
-    Buffer.from('transaction')
+    Buffer.from('transaction'),
   )
   expect(result).toEqual({
     success: false,
     error: 'LedgerError',
-    code: 101
+    code: 101,
   })
 })
 
@@ -174,20 +174,20 @@ test('signTransaction success', async () => {
     command: LedgerCommand.SignTransaction,
     payload: {
       success: true,
-      untrustedSignatureBytes: Buffer.from('signature')
-    }
+      untrustedSignatureBytes: Buffer.from('signature'),
+    },
   }
   transport.addSendCommandResponse(signTransactionResponse)
   const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
-    Buffer.from('transaction')
+    Buffer.from('transaction'),
   )
 
   const expectedResult: HardwareOperationResultSolanaSignature = {
     success: true,
     signature: {
-      bytes: [...Buffer.from('signature')]
-    }
+      bytes: [...Buffer.from('signature')],
+    },
   }
   expect(result).toEqual(expectedResult)
 })
@@ -199,24 +199,24 @@ test('signTransaction ledger error after successful unlock', async () => {
   const ledgerError: LedgerResponse = {
     success: false,
     error: 'LedgerError',
-    code: 101
+    code: 101,
   }
   const signTransactionResponseLedgerError: SolSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: ledgerError
+    payload: ledgerError,
   }
   transport.addSendCommandResponse(signTransactionResponseLedgerError)
   const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
-    Buffer.from('transaction')
+    Buffer.from('transaction'),
   )
 
   const expectedResult: HardwareOperationError = {
     success: false,
     error: 'LedgerError',
-    code: 101
+    code: 101,
   }
   expect(result).toEqual(expectedResult)
 })

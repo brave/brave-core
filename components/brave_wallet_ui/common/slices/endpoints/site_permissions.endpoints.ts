@@ -10,14 +10,14 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import {
   getHasPendingRequests,
-  handleEndpointError
+  handleEndpointError,
 } from '../../../utils/api-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { storeCurrentAndPreviousPanel } from '../../../utils/local-storage-utils'
 
 export const sitePermissionEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getActiveOriginConnectedAccountIds: query<BraveWallet.AccountId[], void>({
@@ -32,21 +32,21 @@ export const sitePermissionEndpoints = ({
           // Get a list of accounts with permissions of the active origin
           const { accountsWithPermission } =
             await braveWalletService.hasPermission(
-              accounts.map((acc) => acc.accountId)
+              accounts.map((acc) => acc.accountId),
             )
 
           return {
-            data: accountsWithPermission
+            data: accountsWithPermission,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get account with permission for the active origin',
-            error
+            error,
           )
         }
       },
-      providesTags: ['ConnectedAccounts']
+      providesTags: ['ConnectedAccounts'],
     }),
 
     getIsPrivateWindow: query<boolean, void>({
@@ -58,17 +58,17 @@ export const sitePermissionEndpoints = ({
           const { isPrivateWindow } = await braveWalletService.isPrivateWindow()
 
           return {
-            data: isPrivateWindow
+            data: isPrivateWindow,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get private window status',
-            error
+            error,
           )
         }
       },
-      providesTags: ['IsPrivateWindow']
+      providesTags: ['IsPrivateWindow'],
     }),
 
     connectToSite: mutation<
@@ -94,17 +94,17 @@ export const sitePermissionEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to connect to site`,
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts']
+      invalidatesTags: ['ConnectedAccounts'],
     }),
 
     cancelConnectToSite: mutation<true, void>({
@@ -125,17 +125,17 @@ export const sitePermissionEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to cancel site connection`,
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts']
+      invalidatesTags: ['ConnectedAccounts'],
     }),
 
     requestSitePermission: mutation<true, BraveWallet.AccountId>({
@@ -149,7 +149,7 @@ export const sitePermissionEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
@@ -157,11 +157,11 @@ export const sitePermissionEndpoints = ({
             `Failed to request account (${
               accountId //
             }) permission for the active origin`,
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts']
+      invalidatesTags: ['ConnectedAccounts'],
     }),
 
     removeSitePermission: mutation<true, BraveWallet.AccountId>({
@@ -173,7 +173,7 @@ export const sitePermissionEndpoints = ({
           await braveWalletService.resetPermission(accountId)
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
@@ -181,11 +181,11 @@ export const sitePermissionEndpoints = ({
             `Failed to remove account (${
               accountId //
             }) permission for the active origin`,
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['ConnectedAccounts']
-    })
+      invalidatesTags: ['ConnectedAccounts'],
+    }),
   }
 }

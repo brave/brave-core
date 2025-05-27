@@ -8,7 +8,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 // utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 
 // hooks
@@ -26,9 +26,9 @@ describe('useGetIsRegistryTokenQuery', () => {
       () =>
         useGetIsRegistryTokenQuery({
           address: mockSplBat.contractAddress,
-          chainId: mockSplBat.chainId
+          chainId: mockSplBat.chainId,
         }),
-      renderOptions
+      renderOptions,
     )
 
     // initial state
@@ -39,9 +39,9 @@ describe('useGetIsRegistryTokenQuery', () => {
     // loading
     await waitFor(() =>
       expect(
-        !hook.result.current.isLoading &&
-          hook.result.current.isVerified !== undefined
-      ).toBe(true)
+        !hook.result.current.isLoading
+          && hook.result.current.isVerified !== undefined,
+      ).toBe(true),
     )
 
     // loaded
@@ -57,9 +57,9 @@ describe('useGetIsRegistryTokenQuery', () => {
       () =>
         useGetIsRegistryTokenQuery({
           address: 'unknown',
-          chainId: mockSplBat.chainId
+          chainId: mockSplBat.chainId,
         }),
-      renderOptions
+      renderOptions,
     )
 
     // initial state
@@ -70,9 +70,9 @@ describe('useGetIsRegistryTokenQuery', () => {
     // loading
     await waitFor(() =>
       expect(
-        !hook.result.current.isLoading &&
-          hook.result.current.isVerified !== undefined
-      ).toBe(true)
+        !hook.result.current.isLoading
+          && hook.result.current.isVerified !== undefined,
+      ).toBe(true),
     )
 
     // loaded

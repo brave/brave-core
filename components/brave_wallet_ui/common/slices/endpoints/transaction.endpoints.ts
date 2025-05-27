@@ -20,7 +20,7 @@ import {
   SendCardanoTransactionParams,
   SerializableTransactionInfo,
   SPLTransferFromParams,
-  TransactionInfoLookup
+  TransactionInfoLookup,
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -28,7 +28,7 @@ import {
   UpdateUnapprovedTransactionNonceType,
   RetryTransactionPayload,
   CancelTransactionPayload,
-  SpeedupTransactionPayload
+  SpeedupTransactionPayload,
 } from '../../constants/action_types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -39,11 +39,11 @@ import { PanelActions } from '../../../panel/actions'
 import {
   getHasPendingRequests,
   handleEndpointError,
-  navigateToConnectHardwareWallet
+  navigateToConnectHardwareWallet,
 } from '../../../utils/api-utils'
 import {
   findAccountByAccountId,
-  isHardwareAccount
+  isHardwareAccount,
 } from '../../../utils/account-utils'
 import { makeSerializableTransaction } from '../../../utils/model-serialization-utils'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -56,7 +56,7 @@ import {
   dialogErrorFromLedgerErrorCode,
   signTrezorTransaction,
   signSolTransactionWithHardwareKeyring,
-  signLedgerBitcoinTransaction
+  signLedgerBitcoinTransaction,
 } from '../../async/hardware'
 import { getLocale } from '../../../../common/locale'
 
@@ -69,7 +69,7 @@ interface ProcessSignSolTransactionsRequestPayload {
 
 export const transactionEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     // Transactions List
@@ -94,12 +94,12 @@ export const transactionEndpoints = ({
         { accountId: fromAccountId, coinType, chainId },
         { endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const {
             data: { txService },
-            cache
+            cache,
           } = baseQuery(undefined)
           // TODO(apaymyshev): getAllTransactionInfo already supports
           // getting transaction for all accounts.
@@ -109,41 +109,39 @@ export const transactionEndpoints = ({
                   await txService.getAllTransactionInfo(
                     coinType,
                     chainId,
-                    fromAccountId
+                    fromAccountId,
                   )
                 ).transactionInfos
               : (
                   await mapLimit(
-                    (
-                      await cache.getAllAccounts()
-                    ).accounts,
+                    (await cache.getAllAccounts()).accounts,
                     10,
                     async (account: BraveWallet.AccountInfo) => {
                       const { transactionInfos } =
                         await txService.getAllTransactionInfo(
                           account.accountId.coin,
                           chainId,
-                          account.accountId
+                          account.accountId,
                         )
                       return transactionInfos
-                    }
+                    },
                   )
                 ).flat(1)
 
           const nonRejectedTransactionInfos = txInfos
             // hide rejected txs
             .filter(
-              (tx) => tx.txStatus !== BraveWallet.TransactionStatus.Rejected
+              (tx) => tx.txStatus !== BraveWallet.TransactionStatus.Rejected,
             )
             .map(makeSerializableTransaction)
 
           const sortedTxs = sortTransactionByDate(
             nonRejectedTransactionInfos,
-            'descending'
+            'descending',
           )
 
           return {
-            data: sortedTxs
+            data: sortedTxs,
           }
         } catch (error) {
           return handleEndpointError(
@@ -153,7 +151,7 @@ export const transactionEndpoints = ({
             } (${
               coinType //
             })`,
-            error
+            error,
           )
         }
       },
@@ -164,10 +162,10 @@ export const transactionEndpoints = ({
               ...TX_CACHE_TAGS.LISTS({
                 chainId: arg.chainId,
                 coin: arg.coinType,
-                fromAccountId: arg.accountId
+                fromAccountId: arg.accountId,
               }),
-              ...TX_CACHE_TAGS.IDS((res || []).map(({ id }) => id))
-            ]
+              ...TX_CACHE_TAGS.IDS((res || []).map(({ id }) => id)),
+            ],
     }),
 
     getTransaction: query<
@@ -180,24 +178,24 @@ export const transactionEndpoints = ({
           const { transactionInfo: tx } =
             await api.txService.getTransactionInfo(arg.coin, arg.id)
           return {
-            data: tx ? makeSerializableTransaction(tx) : null
+            data: tx ? makeSerializableTransaction(tx) : null,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to get transaction (${arg.id})`,
-            error
+            error,
           )
         }
       },
-      providesTags: (res, err, arg) => (err ? [] : [TX_CACHE_TAGS.ID(arg.id)])
+      providesTags: (res, err, arg) => (err ? [] : [TX_CACHE_TAGS.ID(arg.id)]),
     }),
 
     invalidateTransactionsCache: mutation<boolean, void>({
       queryFn: () => {
         return { data: true }
       }, // no-op, uses invalidateTags
-      invalidatesTags: ['Transactions']
+      invalidatesTags: ['Transactions'],
     }),
 
     // Solana VM
@@ -212,18 +210,18 @@ export const transactionEndpoints = ({
           const {
             error,
             errorMessage: transferTxDataErrorMessage,
-            txData
+            txData,
           } = await solanaTxManagerProxy //
             .makeSystemProgramTransferTxData(
               payload.fromAccount.address,
               payload.to,
-              BigInt(payload.value)
+              BigInt(payload.value),
             )
 
           if (error && transferTxDataErrorMessage) {
             throw new Error(
-              'Failed to make SOL system program transfer txData): ' +
-                transferTxDataErrorMessage || 'unknown error'
+              'Failed to make SOL system program transfer txData): '
+                + transferTxDataErrorMessage || 'unknown error',
             )
           }
 
@@ -231,7 +229,7 @@ export const transactionEndpoints = ({
             await txService.addUnapprovedTransaction(
               toTxDataUnion({ solanaTxData: txData ?? undefined }),
               payload.network.chainId,
-              payload.fromAccount.accountId
+              payload.fromAccount.accountId,
             )
 
           if (!success && errorMessage) {
@@ -239,13 +237,13 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success }
+            data: { success },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to send Sol transaction',
-            error
+            error,
           )
         }
       },
@@ -255,8 +253,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     /** works for SPL tokens and Solana compressed NFTs */
@@ -271,7 +269,7 @@ export const transactionEndpoints = ({
                   payload.network.chainId,
                   payload.splTokenMintAddress,
                   payload.fromAccount.address,
-                  payload.to
+                  payload.to,
                 )
               : await solanaTxManagerProxy.makeTokenProgramTransferTxData(
                   payload.network.chainId,
@@ -279,14 +277,14 @@ export const transactionEndpoints = ({
                   payload.fromAccount.address,
                   payload.to,
                   BigInt(payload.value),
-                  payload.decimals
+                  payload.decimals,
                 )
 
           if (!txData) {
             throw new Error(
               `Failed making ${
                 payload.isCompressedNft ? 'Compressed NFT' : 'SPL'
-              } transfer data: ${transferTxDataErrorMessage}`
+              } transfer data: ${transferTxDataErrorMessage}`,
             )
           }
 
@@ -294,7 +292,7 @@ export const transactionEndpoints = ({
             await txService.addUnapprovedTransaction(
               toTxDataUnion({ solanaTxData: txData }),
               payload.network.chainId,
-              payload.fromAccount.accountId
+              payload.fromAccount.accountId,
             )
 
           if (!success) {
@@ -303,8 +301,8 @@ export const transactionEndpoints = ({
 
           return {
             data: {
-              success
-            }
+              success,
+            },
           }
         } catch (error) {
           return handleEndpointError(
@@ -314,7 +312,7 @@ export const transactionEndpoints = ({
             } Transfer failed:
                   to: ${payload.to}
                   value: ${payload.value}`,
-            error
+            error,
           )
         }
       },
@@ -322,12 +320,12 @@ export const transactionEndpoints = ({
         ...TX_CACHE_TAGS.LISTS({
           chainId: null,
           coin: arg.fromAccount.accountId.coin,
-          fromAccountId: arg.fromAccount.accountId
+          fromAccountId: arg.fromAccount.accountId,
         }),
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     sendSolanaSerializedTransaction: mutation<
@@ -348,12 +346,12 @@ export const transactionEndpoints = ({
             await solanaTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
               payload.encodedTransaction,
               payload.txType,
-              payload.sendOptions || null
+              payload.sendOptions || null,
             )
 
           if (result.error !== BraveWallet.ProviderError.kSuccess) {
             throw new Error(
-              `Failed to sign Solana message: ${result.errorMessage}`
+              `Failed to sign Solana message: ${result.errorMessage}`,
             )
           }
 
@@ -361,26 +359,26 @@ export const transactionEndpoints = ({
             await txService.addUnapprovedTransaction(
               toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
               payload.chainId,
-              payload.accountId
+              payload.accountId,
             )
 
           if (!success) {
             throw new Error(
-              `Error creating Solana transaction: ${errorMessage}`
+              `Error creating Solana transaction: ${errorMessage}`,
             )
           }
 
           return {
-            data: success
+            data: success,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to send Solana serialized transaction',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getPendingSignSolTransactionsRequests: query<
@@ -395,17 +393,17 @@ export const transactionEndpoints = ({
             await api.braveWalletService.getPendingSignSolTransactionsRequests()
 
           return {
-            data: requests
+            data: requests,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending Sign-All-Transactions Requests',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingSignSolTransactionsRequests']
+      providesTags: ['PendingSignSolTransactionsRequests'],
     }),
 
     processSignSolTransactionsRequest: mutation<
@@ -420,21 +418,21 @@ export const transactionEndpoints = ({
           await processSignSolTransactionsRequest(
             api.braveWalletService,
             arg,
-            api.panelHandler
+            api.panelHandler,
           )
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to Sign-All-Transactions',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingSignSolTransactionsRequests']
+      invalidatesTags: ['PendingSignSolTransactionsRequests'],
     }),
 
     processSignSolTransactionsRequestHardware: mutation<
@@ -455,7 +453,7 @@ export const transactionEndpoints = ({
               false,
               arg.request.id,
               [],
-              errorString
+              errorString,
             )
 
             const hasPendingRequests = await getHasPendingRequests()
@@ -467,15 +465,15 @@ export const transactionEndpoints = ({
             return {
               data: {
                 success: false,
-                errorCode: errorString
-              }
+                errorCode: errorString,
+              },
             }
           }
 
           const accountsRegistry = await cache.getAccountsRegistry()
           const info = findAccountByAccountId(
             arg.request.fromAccountId,
-            accountsRegistry
+            accountsRegistry,
           )?.hardware
 
           if (!info) {
@@ -491,7 +489,7 @@ export const transactionEndpoints = ({
             approved: true,
             id: arg.request.id,
             hwSignatures: [],
-            error: null
+            error: null,
           }
 
           for (const rawMessage of arg.request.rawMessages) {
@@ -502,19 +500,19 @@ export const transactionEndpoints = ({
               () => {
                 // dismiss hardware connect screen
                 store.dispatch(PanelActions.navigateToMain())
-              }
+              },
             )
 
             if (!signed.success) {
               if (signed.code && signed.code === 'unauthorized') {
                 store.dispatch(
-                  PanelActions.setHardwareWalletInteractionError(signed.code)
+                  PanelActions.setHardwareWalletInteractionError(signed.code),
                 )
                 return {
                   data: {
                     success: false,
-                    errorCode: signed.code
-                  }
+                    errorCode: signed.code,
+                  },
                 }
               }
               payload.approved = false
@@ -529,23 +527,23 @@ export const transactionEndpoints = ({
           await processSignSolTransactionsRequest(
             braveWalletService,
             payload,
-            panelHandler
+            panelHandler,
           )
 
           return {
             data: {
-              success: true
-            }
+              success: true,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to Sign-All-Transactions (Hardware)',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingSignSolTransactionsRequests']
+      invalidatesTags: ['PendingSignSolTransactionsRequests'],
     }),
 
     // BTC
@@ -562,7 +560,7 @@ export const transactionEndpoints = ({
             from: payload.fromAccount.accountId,
             to: payload.to,
             amount: BigInt(payload.value),
-            sendingMaxAmount: payload.sendingMaxAmount
+            sendingMaxAmount: payload.sendingMaxAmount,
           }
 
           const { errorMessage, success } =
@@ -573,7 +571,7 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success }
+            data: { success },
           }
         } catch (error) {
           return { error: 'Failed to send Btc transaction' }
@@ -585,8 +583,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     // ZEC
@@ -605,7 +603,7 @@ export const transactionEndpoints = ({
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxAmount,
             memo: payload.memo,
-            useShieldedPool: payload.useShieldedPool
+            useShieldedPool: payload.useShieldedPool,
           }
 
           const { errorMessage, success } =
@@ -616,7 +614,7 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success }
+            data: { success },
           }
         } catch (error) {
           return { error: 'Failed to send Zec transaction' }
@@ -628,8 +626,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     // Cardano
@@ -646,7 +644,7 @@ export const transactionEndpoints = ({
             from: payload.fromAccount.accountId,
             to: payload.to,
             amount: BigInt(payload.value),
-            sendingMaxAmount: payload.sendingMaxAmount
+            sendingMaxAmount: payload.sendingMaxAmount,
           }
 
           const { errorMessage, success } =
@@ -657,7 +655,7 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success }
+            data: { success },
           }
         } catch (error) {
           return { error: 'Failed to send ADA transaction' }
@@ -669,8 +667,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     // FIL
@@ -689,14 +687,14 @@ export const transactionEndpoints = ({
             gasLimit: payload.gasLimit || '',
             maxFee: payload.maxFee || '0',
             to: payload.to,
-            value: payload.value
+            value: payload.value,
           }
 
           const { errorMessage, success } =
             await txService.addUnapprovedTransaction(
               toTxDataUnion({ filTxData: filTxData }),
               payload.network.chainId,
-              payload.fromAccount.accountId
+              payload.fromAccount.accountId,
             )
 
           if (!success) {
@@ -704,13 +702,13 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success }
+            data: { success },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to send Fil transaction',
-            error
+            error,
           )
         }
       },
@@ -720,8 +718,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     // FEVM
@@ -733,7 +731,7 @@ export const transactionEndpoints = ({
         payload,
         { dispatch, endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { ethTxManagerProxy, txService } = baseQuery(undefined).data
@@ -742,10 +740,10 @@ export const transactionEndpoints = ({
 
           if (!success) {
             throw new Error(
-              'Failed making FilForwarder transferFrom data, from: ' +
-                payload.fromAccount.address +
-                ' to: ' +
-                payload.to
+              'Failed making FilForwarder transferFrom data, from: '
+                + payload.fromAccount.address
+                + ' to: '
+                + payload.to,
             )
           }
 
@@ -756,9 +754,9 @@ export const transactionEndpoints = ({
               to: payload.contractAddress,
               value: payload.value,
               gasLimit: payload.gasLimit,
-              data
+              data,
             },
-            txService
+            txService,
           })
 
           return result
@@ -766,7 +764,7 @@ export const transactionEndpoints = ({
           return handleEndpointError(
             endpoint,
             'Failed to send ETH-Fil-Forwarder Transfer',
-            error
+            error,
           )
         }
       },
@@ -774,8 +772,8 @@ export const transactionEndpoints = ({
         TX_CACHE_TAGS.LISTS({
           chainId: null,
           coin: arg.fromAccount.accountId.coin,
-          fromAccountId: arg.fromAccount.accountId
-        })
+          fromAccountId: arg.fromAccount.accountId,
+        }),
     }),
 
     // EVM Transactions
@@ -787,14 +785,14 @@ export const transactionEndpoints = ({
         payload,
         { dispatch, endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { txService } = baseQuery(undefined).data
 
           const result = await sendEvmTransaction({
             payload,
-            txService
+            txService,
           })
 
           return result
@@ -802,7 +800,7 @@ export const transactionEndpoints = ({
           return handleEndpointError(
             endpoint,
             'Failed to send EVM Transaction',
-            error
+            error,
           )
         }
       },
@@ -812,8 +810,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     sendERC20Transfer: mutation<{ success: boolean }, ER20TransferParams>({
@@ -821,14 +819,14 @@ export const transactionEndpoints = ({
         payload,
         { dispatch, endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { ethTxManagerProxy, txService } = baseQuery(undefined).data
           const { data, success } =
             await ethTxManagerProxy.makeERC20TransferData(
               payload.to,
-              payload.value
+              payload.value,
             )
           if (!success) {
             throw new Error(
@@ -836,7 +834,7 @@ export const transactionEndpoints = ({
                 payload.to //
               }, value: ${
                 payload.value //
-              }`
+              }`,
             )
           }
 
@@ -847,9 +845,9 @@ export const transactionEndpoints = ({
               to: payload.contractAddress,
               value: '0x0',
               gasLimit: payload.gasLimit,
-              data
+              data,
             },
-            txService
+            txService,
           })
 
           return result
@@ -857,7 +855,7 @@ export const transactionEndpoints = ({
           return handleEndpointError(
             endpoint,
             'Failed to send ERC20 Transfer',
-            error
+            error,
           )
         }
       },
@@ -867,8 +865,8 @@ export const transactionEndpoints = ({
           : TX_CACHE_TAGS.LISTS({
               coin: arg.fromAccount.accountId.coin,
               fromAccountId: arg.fromAccount.accountId,
-              chainId: null
-            })
+              chainId: null,
+            }),
     }),
 
     sendERC721TransferFrom: mutation<
@@ -879,7 +877,7 @@ export const transactionEndpoints = ({
         payload,
         { dispatch, endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { ethTxManagerProxy, txService } = baseQuery(undefined).data
@@ -888,7 +886,7 @@ export const transactionEndpoints = ({
               payload.fromAccount.address,
               payload.to,
               payload.tokenId,
-              payload.contractAddress
+              payload.contractAddress,
             )
 
           if (!success) {
@@ -906,9 +904,9 @@ export const transactionEndpoints = ({
               to: payload.contractAddress,
               value: '0x0',
               gasLimit: payload.gasLimit,
-              data
+              data,
             },
-            txService
+            txService,
           })
 
           return result
@@ -916,7 +914,7 @@ export const transactionEndpoints = ({
           return handleEndpointError(
             endpoint,
             'Failed to send ERC721 Transfer',
-            error
+            error,
           )
         }
       },
@@ -924,8 +922,8 @@ export const transactionEndpoints = ({
         TX_CACHE_TAGS.LISTS({
           chainId: arg.network.chainId,
           coin: arg.fromAccount.accountId.coin,
-          fromAccountId: arg.fromAccount.accountId
-        })
+          fromAccountId: arg.fromAccount.accountId,
+        }),
     }),
 
     approveERC20Allowance: mutation<{ success: boolean }, ApproveERC20Params>({
@@ -933,7 +931,7 @@ export const transactionEndpoints = ({
         payload,
         { dispatch, endpoint },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { ethTxManagerProxy, txService } = baseQuery(undefined).data
@@ -941,7 +939,7 @@ export const transactionEndpoints = ({
           const { data, success } =
             await ethTxManagerProxy.makeERC20ApproveData(
               payload.spenderAddress,
-              payload.allowance
+              payload.allowance,
             )
 
           if (!success) {
@@ -959,9 +957,9 @@ export const transactionEndpoints = ({
               to: payload.contractAddress,
               value: '0x0',
               gasLimit: '',
-              data
+              data,
             },
-            txService
+            txService,
           })
 
           return result
@@ -969,7 +967,7 @@ export const transactionEndpoints = ({
           return handleEndpointError(
             endpoint,
             'Failed to approve ERC20 allowance',
-            error
+            error,
           )
         }
       },
@@ -977,8 +975,8 @@ export const transactionEndpoints = ({
         TX_CACHE_TAGS.LISTS({
           chainId: arg.network.chainId,
           coin: BraveWallet.CoinType.ETH,
-          fromAccountId: arg.fromAccount.accountId
-        })
+          fromAccountId: arg.fromAccount.accountId,
+        }),
     }),
 
     // Transactions Management
@@ -999,7 +997,7 @@ export const transactionEndpoints = ({
         // no-op
         // uses 'invalidateTags' to handle data refresh
         return {
-          data: { success: true, txId: arg.id, status: arg.txStatus }
+          data: { success: true, txId: arg.id, status: arg.txStatus },
         }
       },
       invalidatesTags: (res, err, arg) =>
@@ -1014,10 +1012,10 @@ export const transactionEndpoints = ({
                     'TokenSpotPrices',
                     'TokenBalances',
                     'TokenBalancesForChainId',
-                    'AccountTokenCurrentBalance'
+                    'AccountTokenCurrentBalance',
                   ] as const)
-                : [])
-            ]
+                : []),
+            ],
     }),
 
     approveTransaction: mutation<
@@ -1041,26 +1039,26 @@ export const transactionEndpoints = ({
           } = await txService.approveTransaction(
             txInfo.coinType,
             txInfo.chainId,
-            txInfo.id
+            txInfo.id,
           )
 
           return {
             data: {
               success: result.status,
               errorMessage: result.errorMessage,
-              errorUnion: result.errorUnion
-            }
+              errorUnion: result.errorUnion,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to approve transaction: ${error}`,
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? ['UNKNOWN_ERROR'] : [TX_CACHE_TAGS.ID(arg.id)]
+        err ? ['UNKNOWN_ERROR'] : [TX_CACHE_TAGS.ID(arg.id)],
     }),
 
     approveHardwareTransaction: mutation<
@@ -1078,14 +1076,14 @@ export const transactionEndpoints = ({
           const accountsRegistry = await cache.getAccountsRegistry()
           const foundAccount = findAccountByAccountId(
             txInfo.fromAccountId,
-            accountsRegistry
+            accountsRegistry,
           )
 
           if (!foundAccount?.hardware) {
             throw new Error(
-              'failed to approve hardware transaction - ' +
-                'account not found or is not hardware: ' +
-                txInfo.fromAccountId.uniqueKey
+              'failed to approve hardware transaction - '
+                + 'account not found or is not hardware: '
+                + txInfo.fromAccountId.uniqueKey,
             )
           }
 
@@ -1103,13 +1101,13 @@ export const transactionEndpoints = ({
                 result = await signLedgerEthereumTransaction(
                   apiProxy,
                   hardwareAccount.path,
-                  txInfo.id
+                  txInfo.id,
                 )
                 break
               case BraveWallet.CoinType.FIL:
                 result = await signLedgerFilecoinTransaction(
                   apiProxy,
-                  txInfo.id
+                  txInfo.id,
                 )
                 break
               case BraveWallet.CoinType.BTC:
@@ -1119,7 +1117,7 @@ export const transactionEndpoints = ({
                 result = await signLedgerSolanaTransaction(
                   apiProxy,
                   hardwareAccount.path,
-                  txInfo.id
+                  txInfo.id,
                 )
                 break
               default:
@@ -1131,13 +1129,13 @@ export const transactionEndpoints = ({
                 PanelActions.setSelectedTransactionId({
                   chainId: txInfo.chainId,
                   coin: getCoinFromTxDataUnion(txInfo.txDataUnion),
-                  id: txInfo.id
-                })
+                  id: txInfo.id,
+                }),
               )
               store.dispatch(PanelActions.navigateTo('transactionStatus'))
               apiProxy.panelHandler?.setCloseOnDeactivate(true)
               return {
-                data: { success: true }
+                data: { success: true },
               }
             }
             const { error, code } = result
@@ -1145,10 +1143,10 @@ export const transactionEndpoints = ({
             if (code !== undefined) {
               if (code === 'unauthorized') {
                 store.dispatch(
-                  PanelActions.setHardwareWalletInteractionError(code)
+                  PanelActions.setHardwareWalletInteractionError(code),
                 )
                 return {
-                  error: code
+                  error: code,
                 }
               }
 
@@ -1157,16 +1155,16 @@ export const transactionEndpoints = ({
                 await apiProxy.txService.rejectTransaction(
                   getCoinFromTxDataUnion(txInfo.txDataUnion),
                   txInfo.chainId,
-                  txInfo.id
+                  txInfo.id,
                 )
                 store.dispatch(PanelActions.navigateToMain())
                 return {
-                  data: { success: true }
+                  data: { success: true },
                 }
               }
 
               store.dispatch(
-                PanelActions.setHardwareWalletInteractionError(deviceError)
+                PanelActions.setHardwareWalletInteractionError(deviceError),
               )
               throw new Error('device error: ' + deviceError)
             }
@@ -1178,7 +1176,7 @@ export const transactionEndpoints = ({
               throw new Error(
                 typeof error === 'object'
                   ? JSON.stringify(error)
-                  : error || 'unknown error'
+                  : error || 'unknown error',
               )
             }
           } else if (
@@ -1187,15 +1185,15 @@ export const transactionEndpoints = ({
             const result = await signTrezorTransaction(
               apiProxy,
               hardwareAccount.path,
-              txInfo
+              txInfo,
             )
             if (result.success) {
               store.dispatch(
                 PanelActions.setSelectedTransactionId({
                   chainId: txInfo.chainId,
                   coin: getCoinFromTxDataUnion(txInfo.txDataUnion),
-                  id: txInfo.id
-                })
+                  id: txInfo.id,
+                }),
               )
               store.dispatch(PanelActions.navigateTo('transactionStatus'))
               apiProxy.panelHandler?.setCloseOnDeactivate(true)
@@ -1211,14 +1209,14 @@ export const transactionEndpoints = ({
               // the wallet panel.
               apiProxy.panelHandler?.focus()
               return {
-                data: { success: true }
+                data: { success: true },
               }
             }
 
             if (result.code === 'deviceBusy') {
               // do nothing as the operation is already in progress
               return {
-                data: { success: true }
+                data: { success: true },
               }
             }
 
@@ -1226,29 +1224,29 @@ export const transactionEndpoints = ({
             await apiProxy.txService.rejectTransaction(
               getCoinFromTxDataUnion(txInfo.txDataUnion),
               txInfo.chainId,
-              txInfo.id
+              txInfo.id,
             )
             store.dispatch(PanelActions.navigateToMain())
             return {
-              data: { success: false }
+              data: { success: false },
             }
           }
 
           store.dispatch(PanelActions.navigateToMain())
 
           return {
-            data: { success: true }
+            data: { success: true },
           }
         } catch (error) {
           return handleEndpointError(
             store.endpoint,
             `Unable to approve hardware transaction: ${error}`,
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? ['UNKNOWN_ERROR'] : [TX_CACHE_TAGS.ID(arg.id)]
+        err ? ['UNKNOWN_ERROR'] : [TX_CACHE_TAGS.ID(arg.id)],
     }),
 
     rejectTransactions: mutation<
@@ -1269,26 +1267,26 @@ export const transactionEndpoints = ({
             async (
               tx: Pick<BraveWallet.TransactionInfo, 'id' | 'chainId'> & {
                 coinType: BraveWallet.CoinType
-              }
+              },
             ) => {
               await txService.rejectTransaction(tx.coinType, tx.chainId, tx.id)
               return true
-            }
+            },
           )
 
           return {
-            data: { success: true }
+            data: { success: true },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to reject transaction',
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? [] : arg.map(({ id }) => TX_CACHE_TAGS.ID(id))
+        err ? [] : arg.map(({ id }) => TX_CACHE_TAGS.ID(id)),
     }),
 
     updateUnapprovedTransactionGasFields: mutation<
@@ -1300,8 +1298,8 @@ export const transactionEndpoints = ({
           const { ethTxManagerProxy } = baseQuery(undefined).data
 
           const isEIP1559 =
-            payload.maxPriorityFeePerGas !== undefined &&
-            payload.maxFeePerGas !== undefined
+            payload.maxPriorityFeePerGas !== undefined
+            && payload.maxFeePerGas !== undefined
 
           if (isEIP1559) {
             const result = await ethTxManagerProxy //
@@ -1310,28 +1308,28 @@ export const transactionEndpoints = ({
                 payload.txMetaId,
                 payload.maxPriorityFeePerGas || '',
                 payload.maxFeePerGas || '',
-                payload.gasLimit
+                payload.gasLimit,
               )
 
             if (!result.success) {
               throw new Error(
-                'Failed to update unapproved transaction: ' +
-                  `id=${payload.txMetaId} ` +
-                  'maxPriorityFeePerGas=' +
-                  payload.maxPriorityFeePerGas +
-                  `maxFeePerGas=${payload.maxFeePerGas}` +
-                  `gasLimit=${payload.gasLimit}`
+                'Failed to update unapproved transaction: '
+                  + `id=${payload.txMetaId} `
+                  + 'maxPriorityFeePerGas='
+                  + payload.maxPriorityFeePerGas
+                  + `maxFeePerGas=${payload.maxFeePerGas}`
+                  + `gasLimit=${payload.gasLimit}`,
               )
             }
 
             return {
-              data: result
+              data: result,
             }
           }
 
           if (!payload.gasPrice) {
             return {
-              error: 'Gas price is required to update transaction gas fields'
+              error: 'Gas price is required to update transaction gas fields',
             }
           }
 
@@ -1340,33 +1338,33 @@ export const transactionEndpoints = ({
               payload.chainId,
               payload.txMetaId,
               payload.gasPrice,
-              payload.gasLimit
+              payload.gasLimit,
             )
 
           if (!result.success) {
             throw new Error(
-              'Failed to update unapproved transaction: ' +
-                `id=${payload.txMetaId} ` +
-                `gasPrice=${payload.gasPrice}` +
-                `gasLimit=${payload.gasLimit}`
+              'Failed to update unapproved transaction: '
+                + `id=${payload.txMetaId} `
+                + `gasPrice=${payload.gasPrice}`
+                + `gasLimit=${payload.gasLimit}`,
             )
           }
 
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             "An error occurred while updating an transaction's gas",
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
         err
           ? [TX_CACHE_TAGS.TXS_LIST]
-          : [TX_CACHE_TAGS.ID(arg.txMetaId), 'GasEstimation1559']
+          : [TX_CACHE_TAGS.ID(arg.txMetaId), 'GasEstimation1559'],
     }),
 
     updateUnapprovedTransactionSpendAllowance: mutation<
@@ -1379,7 +1377,7 @@ export const transactionEndpoints = ({
           const { data, success } =
             await ethTxManagerProxy.makeERC20ApproveData(
               payload.spenderAddress,
-              payload.allowance
+              payload.allowance,
             )
 
           if (!success) {
@@ -1388,7 +1386,7 @@ export const transactionEndpoints = ({
                 payload.spenderAddress //
               }, allowance: ${
                 payload.allowance //
-              }`
+              }`,
             )
           }
 
@@ -1396,20 +1394,20 @@ export const transactionEndpoints = ({
             await ethTxManagerProxy.setDataForUnapprovedTransaction(
               payload.chainId,
               payload.txMetaId,
-              data
+              data,
             )
 
           if (!result.success) {
             throw new Error(
-              'Failed to set data for unapproved transaction: ' +
-                `chainId=${payload.chainId} txMetaId=${
+              'Failed to set data for unapproved transaction: '
+                + `chainId=${payload.chainId} txMetaId=${
                   payload.txMetaId
-                } data=${data.join(',')}`
+                } data=${data.join(',')}`,
             )
           }
 
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
@@ -1417,12 +1415,12 @@ export const transactionEndpoints = ({
             `Failed to update unapproved transaction:
                 id=${payload.txMetaId}
                 allowance=${payload.allowance}`,
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
+        err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId)],
     }),
 
     updateUnapprovedTransactionNonce: mutation<
@@ -1437,7 +1435,7 @@ export const transactionEndpoints = ({
             await ethTxManagerProxy.setNonceForUnapprovedTransaction(
               payload.chainId,
               payload.txMetaId,
-              payload.nonce
+              payload.nonce,
             )
 
           if (!result.success) {
@@ -1448,16 +1446,16 @@ export const transactionEndpoints = ({
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            'Failed to update unapproved transaction nonce: ' +
-              `id=${payload.txMetaId} ` +
-              `chainId=${payload.chainId} ` +
-              `nonce=${payload.nonce}`,
-            error
+            'Failed to update unapproved transaction nonce: '
+              + `id=${payload.txMetaId} `
+              + `chainId=${payload.chainId} `
+              + `nonce=${payload.nonce}`,
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
+        err ? [] : [TX_CACHE_TAGS.ID(arg.txMetaId)],
     }),
 
     retryTransaction: mutation<{ success: boolean }, RetryTransactionPayload>({
@@ -1468,7 +1466,7 @@ export const transactionEndpoints = ({
           const result = await txService.retryTransaction(
             payload.coinType,
             payload.chainId,
-            payload.transactionId
+            payload.transactionId,
           )
 
           if (!result.success) {
@@ -1480,12 +1478,12 @@ export const transactionEndpoints = ({
           return handleEndpointError(
             endpoint,
             'Retry transaction failed: ' + `id=${payload.transactionId} `,
-            error
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? [] : [TX_CACHE_TAGS.ID(arg.transactionId)]
+        err ? [] : [TX_CACHE_TAGS.ID(arg.transactionId)],
     }),
 
     cancelTransaction: mutation<{ success: boolean }, CancelTransactionPayload>(
@@ -1498,7 +1496,7 @@ export const transactionEndpoints = ({
               payload.coinType,
               payload.chainId,
               payload.transactionId,
-              true
+              true,
             )
 
             if (!result.success) {
@@ -1506,21 +1504,21 @@ export const transactionEndpoints = ({
             }
 
             return {
-              data: { success: result.success }
+              data: { success: result.success },
             }
           } catch (error) {
             return handleEndpointError(
               endpoint,
-              'Cancel transaction failed: ' +
-                `id=${payload.transactionId} ` +
-                `err=${error}`,
-              error
+              'Cancel transaction failed: '
+                + `id=${payload.transactionId} `
+                + `err=${error}`,
+              error,
             )
           }
         },
         invalidatesTags: (res, err, arg) =>
-          err ? [] : [TX_CACHE_TAGS.ID(arg.transactionId)]
-      }
+          err ? [] : [TX_CACHE_TAGS.ID(arg.transactionId)],
+      },
     ),
 
     speedupTransaction: mutation<
@@ -1535,7 +1533,7 @@ export const transactionEndpoints = ({
             payload.coinType,
             payload.chainId,
             payload.transactionId,
-            false
+            false,
           )
 
           if (!result.success) {
@@ -1543,20 +1541,20 @@ export const transactionEndpoints = ({
           }
 
           return {
-            data: { success: result.success }
+            data: { success: result.success },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            'Speedup transaction failed: ' +
-              `id=${payload.transactionId} ` +
-              `err=${error}`,
-            error
+            'Speedup transaction failed: '
+              + `id=${payload.transactionId} `
+              + `err=${error}`,
+            error,
           )
         }
       },
       invalidatesTags: (res, err, arg) =>
-        err ? [] : [TX_CACHE_TAGS.ID(arg.transactionId)]
+        err ? [] : [TX_CACHE_TAGS.ID(arg.transactionId)],
     }),
 
     newUnapprovedTxAdded: mutation<
@@ -1569,8 +1567,8 @@ export const transactionEndpoints = ({
         return {
           data: {
             success: true,
-            txId: arg.id
-          }
+            txId: arg.id,
+          },
         }
       },
       invalidatesTags: (res, err, arg) =>
@@ -1579,9 +1577,9 @@ export const transactionEndpoints = ({
           ? TX_CACHE_TAGS.LISTS({
               chainId: arg.chainId,
               coin: getCoinFromTxDataUnion(arg.txDataUnion),
-              fromAccountId: arg.fromAccountId
+              fromAccountId: arg.fromAccountId,
             })
-          : []
+          : [],
     }),
 
     unapprovedTxUpdated: mutation<
@@ -1592,7 +1590,7 @@ export const transactionEndpoints = ({
         // no-op (invalidate pending txs)
         return { data: { success: true } }
       },
-      invalidatesTags: (_, err, arg) => (err ? [] : [TX_CACHE_TAGS.ID(arg.id)])
+      invalidatesTags: (_, err, arg) => (err ? [] : [TX_CACHE_TAGS.ID(arg.id)]),
     }),
 
     // Transactions Fees
@@ -1605,30 +1603,29 @@ export const transactionEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { ethTxManagerProxy } = api
 
-          const { estimation } = await ethTxManagerProxy.getGasEstimation1559(
-            chainIdArg
-          )
+          const { estimation } =
+            await ethTxManagerProxy.getGasEstimation1559(chainIdArg)
 
           if (estimation === null) {
             throw new Error(
               `Failed to fetch gas estimates for chainId: ${
                 chainIdArg //
-              }`
+              }`,
             )
           }
 
           return {
-            data: estimation
+            data: estimation,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to estimate EVM gas: ${error}`,
-            error
+            error,
           )
         }
       },
-      providesTags: ['GasEstimation1559']
+      providesTags: ['GasEstimation1559'],
     }),
 
     getSolanaEstimatedFee: query<string, { chainId: string; txId: string }>({
@@ -1638,7 +1635,7 @@ export const transactionEndpoints = ({
           const { errorMessage, fee } =
             await solanaTxManagerProxy.getSolanaTxFeeEstimation(
               arg.chainId,
-              arg.txId
+              arg.txId,
             )
 
           if (!fee) {
@@ -1646,32 +1643,32 @@ export const transactionEndpoints = ({
           }
 
           const priorityFee =
-            (BigInt(fee.computeUnits) * BigInt(fee.feePerComputeUnit)) /
-            BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT)
+            (BigInt(fee.computeUnits) * BigInt(fee.feePerComputeUnit))
+            / BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT)
           const totalFee = BigInt(fee.baseFee) + priorityFee
 
           return {
-            data: totalFee.toString()
+            data: totalFee.toString(),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Unable to fetch Solana fees - txId: ${arg.txId}`,
-            error
+            error,
           )
         }
       },
       providesTags: (res, er, arg) => [
-        { type: 'SolanaEstimatedFees', id: arg.txId }
-      ]
-    })
+        { type: 'SolanaEstimatedFees', id: arg.txId },
+      ],
+    }),
   }
 }
 
 // internals
 async function sendEvmTransaction({
   payload,
-  txService
+  txService,
 }: {
   payload: SendEthTransactionParams
   txService: BraveWallet.TxServiceRemote
@@ -1682,36 +1679,35 @@ async function sendEvmTransaction({
     gasLimit: payload.gasLimit,
     to: payload.to,
     value: payload.value,
-    data: payload.data
+    data: payload.data,
   }
 
-  const { errorMessage, success } = await txService.addUnapprovedEvmTransaction(
-    params
-  )
+  const { errorMessage, success } =
+    await txService.addUnapprovedEvmTransaction(params)
 
   if (!success && errorMessage) {
     throw new Error(
       `Failed to create Evm transaction: ${
         errorMessage || 'unknown error'
-      } ::payload:: ${JSON.stringify(payload)}`
+      } ::payload:: ${JSON.stringify(payload)}`,
     )
   }
 
   return {
-    data: { success }
+    data: { success },
   }
 }
 
 async function processSignSolTransactionsRequest(
   braveWalletService: BraveWallet.BraveWalletServiceRemote,
   arg: ProcessSignSolTransactionsRequestPayload,
-  panelHandler: BraveWallet.PanelHandlerRemote | undefined
+  panelHandler: BraveWallet.PanelHandlerRemote | undefined,
 ) {
   braveWalletService.notifySignSolTransactionsRequestProcessed(
     arg.approved,
     arg.id,
     arg.hwSignatures,
-    arg.error || null
+    arg.error || null,
   )
 
   const hasPendingRequests = await getHasPendingRequests()

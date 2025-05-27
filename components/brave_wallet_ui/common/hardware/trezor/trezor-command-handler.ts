@@ -6,16 +6,16 @@
 import {
   MessagingTransport,
   TrezorFrameCommand,
-  TrezorCommand
+  TrezorCommand,
 } from './trezor-messages'
 
 // Handles commands forwarding to the Trezor library inside the iframe.
 export class TrezorCommandHandler extends MessagingTransport {
   protected onMessageReceived = async (event: MessageEvent) => {
     if (
-      event.origin !== event.data.origin ||
-      event.type !== 'message' ||
-      !event.source
+      event.origin !== event.data.origin
+      || event.type !== 'message'
+      || !event.source
     ) {
       return
     }
@@ -34,7 +34,7 @@ let handler: TrezorCommandHandler
 
 export function addTrezorCommandHandler(
   command: TrezorCommand,
-  listener: Function
+  listener: Function,
 ): Boolean {
   if (!handler) {
     handler = new TrezorCommandHandler()

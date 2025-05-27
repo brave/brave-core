@@ -27,13 +27,13 @@ export class WalletApiProxy {
   braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
   addJsonRpcServiceObserver(
-    observer: BraveWallet.JsonRpcServiceObserverReceiver
+    observer: BraveWallet.JsonRpcServiceObserverReceiver,
   ) {
     this.jsonRpcService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
   addKeyringServiceObserver(
-    observer: BraveWallet.KeyringServiceObserverReceiver
+    observer: BraveWallet.KeyringServiceObserverReceiver,
   ) {
     this.keyringService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
@@ -43,16 +43,16 @@ export class WalletApiProxy {
   }
 
   addBraveWalletServiceObserver(
-    observer: BraveWallet.BraveWalletServiceObserverReceiver
+    observer: BraveWallet.BraveWalletServiceObserverReceiver,
   ) {
     this.braveWalletService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
   addBraveWalletServiceTokenObserver(
-    observer: BraveWallet.BraveWalletServiceTokenObserverReceiver
+    observer: BraveWallet.BraveWalletServiceTokenObserverReceiver,
   ) {
     this.braveWalletService.addTokenObserver(
-      observer.$.bindNewPipeAndPassRemote()
+      observer.$.bindNewPipeAndPassRemote(),
     )
   }
 }

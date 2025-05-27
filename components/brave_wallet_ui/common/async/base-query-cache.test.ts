@@ -11,7 +11,7 @@ describe('BaseQueryCache', () => {
   it('should cache WalletInfo after fetching', async () => {
     const getWalletInfoSpy = jest.spyOn(
       getAPIProxy().walletHandler,
-      'getWalletInfo'
+      'getWalletInfo',
     )
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
 
@@ -48,7 +48,7 @@ describe('BaseQueryCache', () => {
   it('should cache accounts after fetching', async () => {
     const getAllAccountsSpy = jest.spyOn(
       getAPIProxy().keyringService,
-      'getAllAccounts'
+      'getAllAccounts',
     )
     expect(getAllAccountsSpy).toHaveBeenCalledTimes(0)
 
@@ -81,15 +81,15 @@ describe('BaseQueryCache', () => {
   it('should cache networks after fetching', async () => {
     const getWalletInfoSpy = jest.spyOn(
       getAPIProxy().walletHandler,
-      'getWalletInfo'
+      'getWalletInfo',
     )
     const getAllNetworksSpy = jest.spyOn(
       getAPIProxy().jsonRpcService,
-      'getAllNetworks'
+      'getAllNetworks',
     )
     const getHiddenNetworksSpy = jest.spyOn(
       getAPIProxy().jsonRpcService,
-      'getHiddenNetworks'
+      'getHiddenNetworks',
     )
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(0)

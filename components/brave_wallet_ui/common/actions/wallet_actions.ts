@@ -25,5 +25,5 @@ export const {
   setPasswordAttempts,
   unlocked,
   setIsRefreshingNetworksAndTokens,
-  setAllowedNewWalletAccountTypeNetworkIds
+  setAllowedNewWalletAccountTypeNetworkIds,
 } = WalletActions

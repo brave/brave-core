@@ -6,7 +6,7 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../../utils/test-utils'
 import { useGetNftAssetIdsByCollectionRegistryQuery } from '../api.slice'
 import { mockMoonCatNFT } from '../../../stories/mock-data/mock-asset-options'
@@ -19,19 +19,19 @@ describe('NFT Endpoints', () => {
 
       const { result } = renderHook(
         () => useGetNftAssetIdsByCollectionRegistryQuery([mockMoonCatNFT]),
-        renderHookOptionsWithMockStore(store)
+        renderHookOptionsWithMockStore(store),
       )
 
       // loading
       await waitFor(() =>
-        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+        expect(result.current.data && !result.current.isLoading).toBeTruthy(),
       )
 
       const { data: registryInfo, isLoading, error } = result.current
       expect(isLoading).toBeFalsy()
       expect(error).toBeUndefined()
       expect(registryInfo?.registry).toEqual({
-        MoonCatsRescue: [getAssetIdKey({ ...mockMoonCatNFT, tokenId: '' })]
+        MoonCatsRescue: [getAssetIdKey({ ...mockMoonCatNFT, tokenId: '' })],
       })
     })
   })

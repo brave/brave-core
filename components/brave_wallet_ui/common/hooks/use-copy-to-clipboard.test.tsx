@@ -5,7 +5,7 @@
 import { renderHook, act } from '@testing-library/react'
 import {
   useCopyToClipboard,
-  useTemporaryCopyToClipboard
+  useTemporaryCopyToClipboard,
 } from './use-copy-to-clipboard'
 
 describe('useCopyToClipboard Hook', () => {
@@ -31,7 +31,7 @@ describe('useTemporaryCopyToClipboard Hook', () => {
     const timeoutTime = 5000 // 5 seconds
 
     const { result } = renderHook(() =>
-      useTemporaryCopyToClipboard(timeoutTime)
+      useTemporaryCopyToClipboard(timeoutTime),
     )
 
     await act(async () => {

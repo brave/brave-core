@@ -8,7 +8,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 // Utils
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../utils/test-utils'
 
 // Hooks
@@ -24,17 +24,17 @@ describe('useIsDAppVerified hook', () => {
     const store = createMockStore(
       {},
       {
-        networks: [mockEthMainnet]
-      }
+        networks: [mockEthMainnet],
+      },
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
     const { result } = renderHook(
       () =>
         useIsDAppVerified({
-          ...mockUniswapOriginInfo
+          ...mockUniswapOriginInfo,
         }),
-      renderOptions
+      renderOptions,
     )
 
     // wait for query to complete
@@ -50,8 +50,8 @@ describe('useIsDAppVerified hook', () => {
     const store = createMockStore(
       {},
       {
-        networks: [mockEthMainnet]
-      }
+        networks: [mockEthMainnet],
+      },
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
@@ -59,9 +59,9 @@ describe('useIsDAppVerified hook', () => {
       () =>
         useIsDAppVerified({
           originSpec: 'https://unknown-dapp.com',
-          eTldPlusOne: 'unknown-dapp.com'
+          eTldPlusOne: 'unknown-dapp.com',
         }),
-      renderOptions
+      renderOptions,
     )
 
     // wait for query to complete

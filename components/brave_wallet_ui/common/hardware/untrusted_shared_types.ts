@@ -10,7 +10,7 @@ export const BridgeTypes = {
   SolLedger: 'SolLedger',
   FilLedger: 'FilLedger',
   BtcLedger: 'BtcLedger',
-  EthTrezor: 'EthTrezor'
+  EthTrezor: 'EthTrezor',
 } as const
 
 export type BridgeType = (typeof BridgeTypes)[keyof typeof BridgeTypes]

@@ -85,5 +85,5 @@ export const supportedUDExtensions = [
 export const allSupportedExtensions = [
   ...supportedENSExtensions,
   ...supportedSNSExtensions,
-  ...supportedUDExtensions
+  ...supportedUDExtensions,
 ]

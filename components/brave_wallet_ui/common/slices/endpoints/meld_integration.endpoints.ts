@@ -15,7 +15,7 @@ import {
   MeldPaymentMethod,
   CryptoWidgetCustomerData,
   CryptoBuySessionData,
-  MeldCryptoWidget
+  MeldCryptoWidget,
 } from '../../../constants/types'
 
 // Utils
@@ -55,12 +55,12 @@ const supportedChains = [
   'AURORA',
   'CELO',
   'ARBITRUM',
-  'AVAXC'
+  'AVAXC',
 ]
 
 export const meldIntegrationEndpoints = ({
   query,
-  mutation
+  mutation,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getMeldFiatCurrencies: query<MeldFiatCurrency[], void>({
@@ -76,7 +76,7 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined
+            cryptoChains: undefined,
           }
           const { fiatCurrencies, error } =
             await meldIntegrationService.getFiatCurrencies(filter)
@@ -85,22 +85,22 @@ export const meldIntegrationEndpoints = ({
             return handleEndpointError(
               endpoint,
               'Error getting fiat currencies: ',
-              error
+              error,
             )
           }
 
           return {
-            data: fiatCurrencies || []
+            data: fiatCurrencies || [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting fiat currencies: ',
-            error
+            error,
           )
         }
       },
-      providesTags: ['MeldFiatCurrencies']
+      providesTags: ['MeldFiatCurrencies'],
     }),
     getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -116,7 +116,7 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: supportedChains.join(',')
+            cryptoChains: supportedChains.join(','),
           }
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
@@ -129,47 +129,47 @@ export const meldIntegrationEndpoints = ({
               if (chainId && token.contractAddress) {
                 const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
                   chainId,
-                  token.contractAddress
+                  token.contractAddress,
                 )
                 if (coingeckoId) {
                   return {
                     ...token,
                     chainId: chainId,
-                    coingeckoId: coingeckoId
+                    coingeckoId: coingeckoId,
                   }
                 }
                 return {
                   ...token,
-                  chainId: chainId
+                  chainId: chainId,
                 }
               }
               return {
                 ...token,
-                chainId: chainId
+                chainId: chainId,
               }
-            }
+            },
           )
 
           if (error) {
             return handleEndpointError(
               endpoint,
               'Error getting crypto currencies: ',
-              error
+              error,
             )
           }
 
           return {
-            data: tokenList || []
+            data: tokenList || [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting crypto currencies: ',
-            error
+            error,
           )
         }
       },
-      providesTags: ['MeldCryptoCurrencies']
+      providesTags: ['MeldCryptoCurrencies'],
     }),
     getMeldCountries: query<MeldCountry[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -184,7 +184,7 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined
+            cryptoChains: undefined,
           }
           const { countries, error } =
             await meldIntegrationService.getCountries(filter)
@@ -192,22 +192,22 @@ export const meldIntegrationEndpoints = ({
             return handleEndpointError(
               endpoint,
               'Error getting countries: ',
-              error
+              error,
             )
           }
 
           return {
-            data: countries || []
+            data: countries || [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting countries: ',
-            error
+            error,
           )
         }
       },
-      providesTags: ['MeldCountries']
+      providesTags: ['MeldCountries'],
     }),
     getMeldServiceProviders: query<MeldServiceProvider[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -222,7 +222,7 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined
+            cryptoChains: undefined,
           }
           const { serviceProviders, error } =
             await meldIntegrationService.getServiceProviders(filter)
@@ -231,22 +231,22 @@ export const meldIntegrationEndpoints = ({
             return handleEndpointError(
               endpoint,
               'Error getting countries: ',
-              error
+              error,
             )
           }
 
           return {
-            data: serviceProviders || []
+            data: serviceProviders || [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting service providers: ',
-            error
+            error,
           )
         }
       },
-      providesTags: ['MeldServiceProviders']
+      providesTags: ['MeldServiceProviders'],
     }),
     generateMeldCryptoQuotes: mutation<
       {
@@ -265,7 +265,7 @@ export const meldIntegrationEndpoints = ({
             destinationCurrencyCode,
             amount,
             account,
-            paymentMethod
+            paymentMethod,
           } = params
 
           const result = await meldIntegrationService.getCryptoQuotes(
@@ -274,21 +274,21 @@ export const meldIntegrationEndpoints = ({
             destinationCurrencyCode,
             amount,
             account,
-            paymentMethod.paymentMethod
+            paymentMethod.paymentMethod,
           )
 
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting fetching quotes: ',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['MeldCryptoQuotes']
+      invalidatesTags: ['MeldCryptoQuotes'],
     }),
     getMeldPaymentMethods: query<MeldPaymentMethod[], GetPaymentMethodsArg>({
       queryFn: async (params, { endpoint }, _extraOptions, baseQuery) => {
@@ -302,7 +302,7 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined
+            cryptoChains: undefined,
           }
           const { paymentMethods, error } =
             await meldIntegrationService.getPaymentMethods(filter)
@@ -311,22 +311,22 @@ export const meldIntegrationEndpoints = ({
             return handleEndpointError(
               endpoint,
               'Error getting paymentMethods: ',
-              error
+              error,
             )
           }
 
           return {
-            data: paymentMethods || []
+            data: paymentMethods || [],
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting paymentMethods: ',
-            error
+            error,
           )
         }
       },
-      providesTags: ['MeldPaymentMethods']
+      providesTags: ['MeldPaymentMethods'],
     }),
     createMeldBuyWidget: mutation<
       {
@@ -341,31 +341,31 @@ export const meldIntegrationEndpoints = ({
           const { widgetData, error } =
             await meldIntegrationService.cryptoBuyWidgetCreate(
               sessionData,
-              customerData
+              customerData,
             )
 
           if (error) {
             return handleEndpointError(
               endpoint,
               'Error in createMeldBuyWidget: ',
-              error
+              error,
             )
           }
 
           return {
             data: {
-              widget: widgetData
-            }
+              widget: widgetData,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error in createMeldBuyWidget: ',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['MeldWidget']
-    })
+      invalidatesTags: ['MeldWidget'],
+    }),
   }
 }

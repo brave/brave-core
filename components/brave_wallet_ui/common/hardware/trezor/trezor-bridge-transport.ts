@@ -7,7 +7,7 @@ import {
   kTrezorBridgeUrl,
   MessagingTransport,
   TrezorErrorsCodes,
-  TrezorFrameCommand
+  TrezorFrameCommand,
 } from './trezor-messages'
 
 // Handles sending messages to the Trezor library, creates untrusted iframe,
@@ -37,7 +37,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
    * error
    */
   sendCommandToTrezorFrame = <T>(
-    command: TrezorFrameCommand
+    command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> => {
     return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
       if (!this.bridge && !this.hasBridgeCreated()) {
@@ -57,9 +57,9 @@ export class TrezorBridgeTransport extends MessagingTransport {
 
   protected onMessageReceived = (event: MessageEvent) => {
     if (
-      event.origin !== this.getTrezorBridgeOrigin() ||
-      event.type !== 'message' ||
-      !this.handlers.size
+      event.origin !== this.getTrezorBridgeOrigin()
+      || event.type !== 'message'
+      || !this.handlers.size
     ) {
       return
     }
@@ -97,7 +97,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
 
 let transport: TrezorBridgeTransport
 export async function sendTrezorCommand<T>(
-  command: TrezorFrameCommand
+  command: TrezorFrameCommand,
 ): Promise<T | TrezorErrorsCodes> {
   if (!transport) {
     transport = new TrezorBridgeTransport(kTrezorBridgeUrl)

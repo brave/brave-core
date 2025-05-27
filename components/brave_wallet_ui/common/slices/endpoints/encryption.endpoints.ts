@@ -10,12 +10,12 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import {
   getHasPendingRequests,
-  handleEndpointError
+  handleEndpointError,
 } from '../../../utils/api-utils'
 
 export const encryptionEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getPendingDecryptRequest: query<BraveWallet.DecryptRequest | null, void>({
@@ -27,17 +27,17 @@ export const encryptionEndpoints = ({
             await api.braveWalletService.getPendingDecryptRequests()
 
           return {
-            data: requests.length ? requests[0] : null
+            data: requests.length ? requests[0] : null,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending decrypt request',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingDecryptRequest']
+      providesTags: ['PendingDecryptRequest'],
     }),
 
     processPendingDecryptRequest: mutation<
@@ -53,7 +53,7 @@ export const encryptionEndpoints = ({
 
           api.braveWalletService.notifyDecryptRequestProcessed(
             arg.requestId,
-            arg.approved
+            arg.approved,
           )
 
           const hasPendingRequests = await getHasPendingRequests()
@@ -63,17 +63,17 @@ export const encryptionEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to process pending decrypt request',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingDecryptRequest']
+      invalidatesTags: ['PendingDecryptRequest'],
     }),
 
     getPendingGetEncryptionPublicKeyRequest: query<
@@ -89,17 +89,17 @@ export const encryptionEndpoints = ({
             await braveWalletService.getPendingGetEncryptionPublicKeyRequests()
 
           return {
-            data: requests.length ? requests[0] : null
+            data: requests.length ? requests[0] : null,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to get pending encryption public key request',
-            error
+            error,
           )
         }
       },
-      providesTags: ['PendingEncryptRequest']
+      providesTags: ['PendingEncryptRequest'],
     }),
 
     processPendingGetEncryptionPublicKeyRequest: mutation<
@@ -116,7 +116,7 @@ export const encryptionEndpoints = ({
 
           braveWalletService.notifyGetPublicKeyRequestProcessed(
             arg.requestId,
-            arg.approved
+            arg.approved,
           )
 
           const hasPendingRequests = await getHasPendingRequests()
@@ -126,17 +126,17 @@ export const encryptionEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to process pending encryption public key request',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['PendingEncryptRequest']
-    })
+      invalidatesTags: ['PendingEncryptRequest'],
+    }),
   }
 }

@@ -7,7 +7,7 @@ import { LedgerMessagingTransport } from './ledger-messaging-transport'
 import {
   LedgerCommand,
   AuthorizationSuccessCommand,
-  AuthorizationSuccessResponsePayload
+  AuthorizationSuccessResponsePayload,
 } from './ledger-messages'
 
 // LedgerTrustedMessagingTransport is the messaging transport object
@@ -21,18 +21,18 @@ export class LedgerTrustedMessagingTransport extends LedgerMessagingTransport {
   constructor(
     targetWindow: Window,
     targetUrl: string,
-    onAuthorized?: () => void
+    onAuthorized?: () => void,
   ) {
     super(targetWindow, targetUrl)
     this.onAuthorized = onAuthorized
     this.addCommandHandler(
       LedgerCommand.AuthorizationSuccess,
-      this.handleAuthorizationSuccess
+      this.handleAuthorizationSuccess,
     )
   }
 
   private handleAuthorizationSuccess = async (
-    command: AuthorizationSuccessCommand
+    command: AuthorizationSuccessCommand,
   ): Promise<AuthorizationSuccessResponsePayload> => {
     if (this.onAuthorized) {
       this.onAuthorized()
@@ -41,8 +41,8 @@ export class LedgerTrustedMessagingTransport extends LedgerMessagingTransport {
     return {
       ...command,
       payload: {
-        success: true
-      }
+        success: true,
+      },
     }
   }
 }

@@ -10,10 +10,10 @@ import {
   CommonParams,
   Success,
   EthereumSignMessage,
-  EthereumSignTypedHash
+  EthereumSignTypedHash,
 } from './trezor-connect-types'
 export const kTrezorBridgeUrl = loadTimeData.getString(
-  'braveWalletTrezorBridgeUrl'
+  'braveWalletTrezorBridgeUrl',
 )
 
 export enum TrezorCommand {
@@ -21,12 +21,12 @@ export enum TrezorCommand {
   GetAccounts = 'trezor-get-accounts',
   SignTransaction = 'trezor-sign-transaction',
   SignMessage = 'trezor-sign-message',
-  SignTypedMessage = 'trezor-sign-typed-message'
+  SignTypedMessage = 'trezor-sign-typed-message',
 }
 
 export enum TrezorErrorsCodes {
   BridgeNotReady = 0,
-  CommandInProgress = 1
+  CommandInProgress = 1,
 }
 
 export type CommandMessage = {
@@ -67,8 +67,8 @@ export type GetAccountsCommand = CommandMessage & {
 }
 
 // SignTransaction command
-export type SignTransactionCommandPayload = CommonParams &
-  EthereumSignTransaction
+export type SignTransactionCommandPayload = CommonParams
+  & EthereumSignTransaction
 export type SignTransactionCommand = CommandMessage & {
   command: TrezorCommand.SignTransaction
   payload: SignTransactionCommandPayload
@@ -94,8 +94,8 @@ export type SignMessageResponsePayload = CommandMessage & {
 }
 
 // SignTypedMessage command
-export type SignTypedMessageCommandPayload = CommonParams &
-  EthereumSignTypedHash
+export type SignTypedMessageCommandPayload = CommonParams
+  & EthereumSignTypedHash
 export type SignTypedMessageCommand = CommandMessage & {
   command: TrezorCommand.SignTypedMessage
   payload: SignTypedMessageCommandPayload

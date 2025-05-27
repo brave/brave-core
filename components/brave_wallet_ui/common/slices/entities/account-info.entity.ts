@@ -8,7 +8,7 @@ import { createEntityAdapter, EntityAdapter, EntityId } from '@reduxjs/toolkit'
 import { BraveWallet } from '../../../constants/types'
 import {
   EntityByIdFromRegistryResultSelectorFactory,
-  makeSelectEntityByIdFromRegistryQuery
+  makeSelectEntityByIdFromRegistryQuery,
 } from './entity.selectors'
 import { entityIdFromAccountId } from '../../../utils/account-utils'
 
@@ -18,8 +18,8 @@ export const accountInfoEntityAdaptor: EntityAdapter<AccountInfoEntity> = {
   ...createEntityAdapter<AccountInfoEntity>({
     selectId: (model: Pick<BraveWallet.AccountInfo, 'accountId'>): EntityId => {
       return entityIdFromAccountId(model.accountId)
-    }
-  })
+    },
+  }),
 }
 
 export const accountInfoEntityAdaptorInitialState =
@@ -38,7 +38,7 @@ export const {
   selectById: selectAccountInfoByIdFromQuery,
   selectEntities: selectAccountInfoEntitiesFromQuery,
   selectIds: selectAccountInfoIdsFromQuery,
-  selectTotal: selectTotalAccountInfosFromQuery
+  selectTotal: selectTotalAccountInfosFromQuery,
 } = accountInfoEntityAdaptor.getSelectors(selectAccountInfosRegistryFromQuery)
 
 type MakeSelectNetworkByIdFromQuery =

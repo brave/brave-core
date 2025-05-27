@@ -94,7 +94,7 @@ export interface EthereumSignTypedDataTypes {
 }
 
 export interface EthereumSignTypedDataMessage<
-  T extends EthereumSignTypedDataTypes
+  T extends EthereumSignTypedDataTypes,
 > {
   types: T
   primaryType: keyof T

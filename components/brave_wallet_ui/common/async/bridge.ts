@@ -5,10 +5,10 @@
 
 import type WalletApiProxy from '../wallet_api_proxy'
 import getWalletPanelApiProxy, {
-  type WalletPanelApiProxy
+  type WalletPanelApiProxy,
 } from '../../panel/wallet_panel_api_proxy'
 import getWalletPageApiProxy, {
-  type WalletPageApiProxy
+  type WalletPageApiProxy,
 } from '../../page/wallet_page_api_proxy'
 
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
@@ -33,12 +33,12 @@ const debugProxyHandler = (path?: string) => ({
     }
 
     return v
-  }
+  },
 })
 
-export type IsomorphicApiProxy = WalletApiProxy &
-  Partial<WalletPanelApiProxy> &
-  Partial<WalletPageApiProxy>
+export type IsomorphicApiProxy = WalletApiProxy
+  & Partial<WalletPanelApiProxy>
+  & Partial<WalletPageApiProxy>
 
 export function getAPIProxy(): IsomorphicApiProxy {
   const nativeProxy =

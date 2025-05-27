@@ -12,7 +12,7 @@ const temporaryCopyTimeout = 5000 // 5s
 const copiedMessageTimeout = 1500 // 1.5s
 
 export const useTemporaryCopyToClipboard = (
-  timeoutMs: number = temporaryCopyTimeout
+  timeoutMs: number = temporaryCopyTimeout,
 ) => {
   // state
   const [isCopied, setIsCopied] = React.useState(false)
@@ -44,7 +44,7 @@ export const useTemporaryCopyToClipboard = (
 
   return {
     temporaryCopyToClipboard,
-    isCopied
+    isCopied,
   }
 }
 
@@ -83,6 +83,6 @@ export const useCopyToClipboard = (timeoutMs = copiedMessageTimeout) => {
   return {
     copyToClipboard: _copyToClipboard,
     resetCopyState,
-    isCopied
+    isCopied,
   }
 }

@@ -91,5 +91,5 @@ export const dappRadarChainNamesToChainIdMapping: Record<string, string> = {
   'xrpl': '', // NOT SUPPORTED
   'zetachain': BraveWallet.ZETA_CHAIN_MAINNET_CHAIN_ID,
   'zilliqa': BraveWallet.ZILLIQA_EVM_CHAIN_ID,
-  'zksync-era': BraveWallet.ZK_SYNC_ERA_CHAIN_ID
+  'zksync-era': BraveWallet.ZK_SYNC_ERA_CHAIN_ID,
 }

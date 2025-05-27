@@ -7,7 +7,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 function useInterval(
   callback: () => void,
   delay: number | null,
-  initialDelay?: number | null
+  initialDelay?: number | null,
 ) {
   const savedCallback = useRef(callback)
 
