@@ -24,15 +24,12 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
 }
 
 describe('MainEmailEntryForm', () => {
-  beforeEach(() => {
-    mockEmailAliasesService.requestAuthentication.mockClear()
-  })
 
-  it('handles sign up via button click', async () => {
+  it('handles a successful authentication request', async () => {
     const mockAuthEmail = 'test@example.com'
 
     mockEmailAliasesService.requestAuthentication = jest.fn()
-      .mockResolvedValue({ errorMessage: 'mockErrorMessage' })
+      .mockResolvedValue({ errorMessage: undefined })
 
     render(<MainEmailEntryForm
       authState={
@@ -53,7 +50,8 @@ describe('MainEmailEntryForm', () => {
     const mockAuthEmail = 'test@example.com'
 
     mockEmailAliasesService.requestAuthentication = jest.fn()
-      .mockResolvedValue({ errorMessage: 'mockErrorMessage' })
+      .mockResolvedValue(
+        { errorMessage: 'mockErrorMessage' })
 
     render(<MainEmailEntryForm
       authState={{
