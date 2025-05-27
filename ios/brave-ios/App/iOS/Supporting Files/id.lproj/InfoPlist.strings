@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "Tindakan Mengisi Sandi 1Password";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Situs yang Anda kunjungi mungkin meminta lokasi Anda.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ini memungkinkan Anda untuk menggunakan mikrofon Anda saat menggunakan Brave.";
+"NSMicrophoneUsageDescription" = "Ini memungkinkan Brave mengirimkan kueri penelusuran memakai suara Anda.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Ini memungkinkan Anda menyimpan foto.";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "Izin ini digunakan untuk mengaktifkan Pengenalan Ucapan Tingkat Lanjut Apple. Jika tidak diizinkan, pengenalan `pada perangkat` akan digunakan dan pencarian akan sepenuhnya bersifat pribadi. Brave tidak menyimpan atau membagikan pencarian suara Anda.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "Berkas OPML";
 

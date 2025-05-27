@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blochează tot";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Blocarea tuturor cookie-urilor va împiedica anumite site-uri să funcționeze corect.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Blochezi toate cookie-urile?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Blochează toate cookie-urile?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields blochează deja cookie-urile terță parte. Această setare pentru blocarea TUTUROR modulelor cookie va elimina modulele cookie existente și datele site-ului și ar putea afecta site-urile web.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Setarea preferinței a eșuat. Te rog să încerci din nou.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blochează notificările privind consimțământul pentru cookie-uri";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Împiedică site-urile web să stocheze informații despre vizitele tale anterioare.\nOpțiunea „Blochează toate modulele cookie” a fost abandonată. Pentru a afla cum să activezi forțat această opțiune, vizitează [pagina noastră de ajutor](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor de blocare";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Confirmă";
 
-/* Cookie settings option title */
-"CookieControl" = "Control cookie-uri";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie-uri și date privind site-ul";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Finalizat";
-
-/* cookie settings option */
-"DontBlockCookies" = "Nu bloca cookie-uri";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Nu trimite";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Actualizări la HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importare date de navigare";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Controale individuale";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Nu s-a putut încărca pagina.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licențe";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Număr de cuvinte: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Marcaje importate";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Închide";

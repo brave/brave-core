@@ -5839,7 +5839,7 @@ extension Strings {
         "The title of the message when a swap transaction failed to be confirmed on the blockchain."
     )
     public static let txStatusSwapTxErrorMsg = NSLocalizedString(
-      "wallet.txStatusSendTxErrorMsg",
+      "wallet.txStatusSwapTxErrorMsg",
       tableName: "BraveWallet",
       bundle: .module,
       value: "There was an error attempting to swap",

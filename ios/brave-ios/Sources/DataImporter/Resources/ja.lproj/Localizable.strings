@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "ブックマークのインポート中にエラーが発生しました。";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "履歴のインポート中にエラーが発生しました。";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "パスワードのインポート中にエラーが発生しました。一部のパスワードは競合のためインポートできませんでした。";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "パスワードのインポート中にエラーが発生しました。";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "ファイルの解凍中にエラーが発生しました。";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "ファイルを選択...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "ブックマーク、履歴、その他のブラウザデータをBraveに取り込んでください。";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "閲覧データをインポート";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "ブックマークなどをインポートできます";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Safariからエクスポートする方法";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "データのインポート中に問題が発生しました。\nもう一度やり直してください。\n問題が解決しない場合は、サポートまでお問い合わせください。";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "インポート失敗";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Braveのパスワードを保持";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Safariのパスワードを使用";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "%d パスワードの競合が見つかりました。\nインポートするものを選択してください。";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "パスワードの競合";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "続ける";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "あなたのデータは正常にインポートされ、Braveをお使いいただく準備が整いました。";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "成功しました ！";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "再試行";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Safariのヘルプページを開く";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "データエクスポートの詳しい手順";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Safariからエクスポートする方法";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "ファイルを**ファイル**に保存し、後で見つけやすい場所を選択します。";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "エクスポートしたいデータを**選択**します (ブックマーク、履歴、クレジットカード、パスワード)。";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "**設定**を開き、下にスクロールして**アプリ**をタップします。";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "下にスクロールし、**エクスポート**をタップします。";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "ステップ %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "アプリのリスト（アルファベット順）から**Safari**を見つけてタップします。";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "ZIPファイルにインポートデータが含まれていません。";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "データを安全に転送しますので、しばらくお待ちください。";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "あなたのデータをインポートしています...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "データをインポートするプロファイルを選択してください";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "複数のプロファイルが検出されました";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "個人用";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "インポートされたブックマーク";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "ZIPファイルにインポートデータが含まれていません。";
+
