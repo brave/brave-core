@@ -98,7 +98,6 @@
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
 <translation id="6302422639282249274">Upravljaj storitev Brave Rewards</translation>
-<translation id="2709516037105925701">Samodejno izpolnjevanje</translation>
 <translation id="8617525558807213034">Samodejno izpolnjevanje v zasebnih zavihkih</translation>
 <translation id="8685431198160039193">Shranjene informacije se lahko samodejno izpolnijo v zasebnih zavihkih</translation>
 <translation id="6583902294974160967">Podpora</translation>
@@ -233,7 +232,8 @@
 <translation id="2433507940547922241">Videz</translation>
 <translation id="9040069796107003510">Ikona Nagrad Brave</translation>
 <translation id="6333347122924254968">Pokaži ikono Brave Rewards v naslovni vrstici</translation>
-<translation id="8495235435594442882">Omogoči orodno vrstico na dnu</translation>
+<translation id="1215433243238902715">Omogoči spodnjo navigacijsko orodno vrstico</translation>
+<translation id="1422686363939271829">Ta nastavitev je onemogočena, če je izbran spodnji položaj naslovne vrstice.</translation>
 <translation id="6587448235155023666">Spremembe bodo začele veljati ob ponovnem zagonu brskalnika Brave</translation>
 <translation id="8701563696941209024">PONOVNO ZAŽENITE ZDAJ</translation>
 <translation id="834487290629916192">KASNEJE</translation>
@@ -422,9 +422,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8520059774736886747">Ustvarjalec <ph name="PUBLISHER_NAME"/> je nedavno preveril</translation>
 <translation id="1486343603936278248">žeton</translation>
 <translation id="7781069478569868053">Stran »Nov zavihek«</translation>
+<translation id="5927196110206824867">Sponzorirane slike v ozadju podpirajo poslanstvo družbe Brave, da gradi neodvisen in uporabniku prijazen splet. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
+<translation id="8748471354357836070">Več informacij/možnosti odjave</translation>
 <translation id="3171669670217312786">Slike ozadja</translation>
 <translation id="8522669544471808198">Prikaži slike ozadja</translation>
 <translation id="3870475560794762985">Prikaži sponzorirane slike</translation>
+<translation id="6937724381960478525">Preberite več o sponzoriranih slikah</translation>
 <translation id="8793108040181436796">Pripomočki</translation>
 <translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="7275773481201277457">Pokaži Braveove statistike</translation>

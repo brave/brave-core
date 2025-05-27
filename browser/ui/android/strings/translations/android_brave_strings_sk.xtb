@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
 <translation id="6302422639282249274">Spravovať Brave odmeny</translation>
-<translation id="2709516037105925701">Automatické dopĺňanie</translation>
 <translation id="8617525558807213034">Automaticky vyplniť v súkromných kartách</translation>
 <translation id="8685431198160039193">Uložené informácie môžu byť automaticky vyplnené v súkromných kartách</translation>
 <translation id="6583902294974160967">Podpora</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Vzhľad</translation>
 <translation id="9040069796107003510">Ikona Brave Rewards</translation>
 <translation id="6333347122924254968">Zobraziť ikonu odmien Brave v paneli s adresou</translation>
-<translation id="8495235435594442882">Povoliť spodný panel nástrojov</translation>
+<translation id="1215433243238902715">Povoliť spodný navigačný panel</translation>
+<translation id="1422686363939271829">Toto nastavenie je vypnuté, keď je vybratá spodná pozícia adresného riadka</translation>
 <translation id="6587448235155023666">Zmeny vašich nastavení sa prejavia pri ďalšom spustení prehliadača Brave</translation>
 <translation id="8701563696941209024">SPUSTIŤ ZNOVA TERAZ</translation>
 <translation id="834487290629916192">NESKÔR</translation>
@@ -420,9 +420,12 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8520059774736886747">Tvorca <ph name="PUBLISHER_NAME"/> bol nedávno verifikovaný</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Stránka novej karty</translation>
+<translation id="5927196110206824867">Sponzorované obrázky na pozadí podporujú poslanie spoločnosti Brave budovať nezávislý web, ktorý je zameraný na používateľa. Na rozdiel od veľkých technologických spoločností meriame výkon reklamy anonymne, aby sme zachovali vaše súkromie.</translation>
+<translation id="8748471354357836070">Ďalšie informácie / možnosti odhlásenia</translation>
 <translation id="3171669670217312786">Obrázky na pozadí</translation>
 <translation id="8522669544471808198">Zobraziť obrázky na pozadí</translation>
 <translation id="3870475560794762985">Zobraziť sponzorované obrázky</translation>
+<translation id="6937724381960478525">Ďalšie informácie o sponzorovaných obrázkoch</translation>
 <translation id="8793108040181436796">Miniaplikácie</translation>
 <translation id="8643377320501056697">Zobraziť top stránky</translation>
 <translation id="7275773481201277457">Zobraziť štatistiky Brave</translation>

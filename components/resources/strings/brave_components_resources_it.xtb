@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Mostra i premi Brave</translation>
 <translation id="5585019845078534178">Carte</translation>
 <translation id="3870475560794762985">Mostra immagini sponsorizzate</translation>
+<translation id="5684562942023496754">Puoi guadagnare visualizzando immagini sponsorizzate.</translation>
+<translation id="6168679340384667457">Stai guadagnando BAT dalle immagini sponsorizzate. Disabilitare le immagini sponsorizzate ridurrà l'importo guadagnato.</translation>
+<translation id="6165508094623778733">Ulteriori informazioni</translation>
 <translation id="2414654907269324670">Stai guadagnando BAT per le immagini sponsorizzate.</translation>
 <translation id="4942016616604700968">Abilita Ricompense</translation>
-<translation id="5684562942023496754">Puoi guadagnare visualizzando immagini sponsorizzate.</translation>
 <translation id="8934374643857605034">In qualità di utente di Ricompense Brave puoi guadagnare BAT visualizzando immagini sponsorizzate.</translation>
 <translation id="1570714748649804013">In qualità di utente di Ricompense Brave puoi guadagnare BAT per le immagini sponsorizzate che visualizzi. Se disattivi le immagini sponsorizzate guadagnerai di meno.</translation>
 <translation id="8998727244653964783">Se colleghi un conto di custodia a Ricompense Brave puoi guadagnare BAT visualizzando immagini sponsorizzate. Allo stesso tempo con le immagini sponsorizzate supporti chi crea contenuti.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">Elenco di lettura</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="8027460023387054992">Riepilogo chat</translation>
-<translation id="6165508094623778733">Scopri di più</translation>
 <translation id="8730621377337864115">Fine</translation>
 <translation id="730042046912793465">Questo è un</translation>
 <translation id="2055363275850890030">Finestra privata</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">Non connessa</translation>
 <translation id="4217695020908122747">Account connessi</translation>
 <translation id="8497650996740651467">Account disponibili</translation>
+<translation id="1775188434254367931">Connessioni</translation>
+<translation id="1818522458013171885">Sblocca</translation>
 <translation id="5677928146339483299">Bloccato</translation>
 <translation id="3890989020011724401">Nuovo account</translation>
 <translation id="4612979983851181941">Utilizza questo pannello per accedere in modo sicuro a Web3 e a tutte le tue criptovalute.</translation>
@@ -1739,6 +1742,7 @@
 <translation id="803703704549420287">Cancella i filtri</translation>
 <translation id="1472675084647422956">Mostra altro</translation>
 <translation id="4522570452068850558">Dettagli</translation>
+<translation id="4583937519241190398">Verificato da DappRadar</translation>
 <translation id="8713438253026855351">Passa a un account protetto</translation>
 <translation id="3526789880090101085">Proteggi l'account</translation>
 <translation id="2298396008562701154">Al momento, questo account supporta solo transazioni trasparenti, visibili a chiunque sulla blockchain.</translation>
@@ -1829,7 +1833,9 @@
 <translation id="7758665172236842395">Segui le tue fonti preferite in un unico feed. Ti basta aprire una scheda su Brave, scorrere verso il basso e… voilà!</translation>
 <translation id="2376542729617592331">Le News di Brave usano annunci anonimi e rispettosi della privacy. <ph name="LINK_START"/>Scopri di più<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Attiva le Notizie di Brave</translation>
+<translation id="5149018766422637336">Notizie e RSS</translation>
 <translation id="6265592479622441247">Torna alla <ph name="BEGIN_BOLD"/>dashboard<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">Scopri</translation>
 <translation id="8981973962043893066">Cerca siti, argomenti o feed RSS</translation>
 <translation id="1498364270401875204">Canali</translation>
 <translation id="6401776069326703655">Visualizza tutti</translation>
@@ -2114,6 +2120,7 @@
 <translation id="8151638057146502721">Configura</translation>
 <translation id="3282183392203936979">Ciao, sono Leo. Sono un assistente IA situato interamente sui server di Brave. Sfrutto Llama 3.1 8B, un modello creato da Meta per essere performante e utile in vari scenari. Llama è hostato personalmente da Brave utilizzando la propria infrastruttura di sicurezza. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Ciao, sono Leo. Sono un assistente IA situato interamente sui server di Brave. Sfrutto Qwen 14B, un modello creato da Alibaba Cloud per essere performante e utile in vari scenari. Llama è hostato personalmente da Brave utilizzando la propria infrastruttura di sicurezza. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">Ciao, sono Leo, sono un assistente IA completamente ospitato da Brave. Sfrutto DeepSeek R1, un modello creato da DeepSeek per l'esecuzione di analisi complesse. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">Ciao, sono Leo. Sono un assistente IA situato interamente sui server di Brave. Sfrutto Mixtral 8x7B, un modello creato da Alibaba Cloud per il completamento di compiti complessi. Mixtral è hostato personalmente da Brave utilizzando la propria infrastruttura di sicurezza. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Ciao, sono Leo. Sono un assistente IA scelto da Brave. Sfrutto Claude Instant, un modello creato da Anthropic per gestire conversazioni ed elaborare testi. Claude Instant è hostato da Brave utilizzando la propria infrastruttura di sicurezza. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Ciao, sono Leo. Sono un assistente IA scelto da Brave. Sfrutto Claude Haiku, un modello creato da Anthropic per gestire conversazioni ed elaborare testi. Claude Haiku è hostato da Brave utilizzando la propria infrastruttura di sicurezza. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
@@ -2152,7 +2159,6 @@
 <translation id="6393149565874086128">Aggiungi feedback</translation>
 <translation id="3521125531016408657">Metti Mi piace alla risposta</translation>
 <translation id="8202517001427388906">Metti Non mi piace alla risposta</translation>
-<translation id="3177073390279208955">Invia la valutazione, la conversazione, il modello, la lingua, la versione e lo stato premium</translation>
 <translation id="1379399209929302811">Fornisci un feedback sull’IA di Brave</translation>
 <translation id="8442999546461118871">Seleziona il tuo argomento del feedback</translation>
 <translation id="9018766373792005944">Di cosa tratta il feedback?</translation>
@@ -2177,6 +2183,12 @@
 <translation id="1946267518364740045">Elaborazione risposta...</translation>
 <translation id="4198859185714743678">Elaborazione completata</translation>
 <translation id="6140948187512243695">Mostra dettagli</translation>
+<translation id="4881695831933465202">Apri</translation>
+<translation id="1625889395409731085">Vuoi aprire un link esterno?</translation>
+<translation id="4211063437291114749">Leo AI vuole aprire una pagina web in una nuova scheda. Vuoi continuare?</translation>
+<translation id="5526001300821542157">Apri i link senza chiederlo di nuovo</translation>
+<translation id="1243966363662220847">Feedback risposta</translation>
+<translation id="7417895556119762861">Mettere mi piace o non mi piace a una risposta invierà la valutazione, il modello di conversazione, il modello, la lingua, la versione e lo status premium a Brave al fine di migliorare Leo. <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Invia messaggio a Leo</translation>
 <translation id="8650874793377330048">Interrompi elaborazione</translation>
 <translation id="8712637175834984815">Fatto</translation>
@@ -2204,6 +2216,7 @@
 <translation id="2836330653441111204">Velocità e intelligenza equilibrate</translation>
 <translation id="6695329447007213917">Conversazioni, programmazione e molto altro</translation>
 <translation id="5051668914970329839">Assistente Immagini Generico</translation>
+<translation id="7226508434216060960">Modello di ragionamento</translation>
 <translation id="3965507912994218570">Impostazioni di Leo</translation>
 <translation id="1037324977127422019">Ciao, mi chiamo Leo!</translation>
 <translation id="8930348081963284873">Un assistente intelligente alimentato dall’AI e integrato direttamente in Brave.</translation>
@@ -2252,21 +2265,38 @@
 <translation id="8370801182970639038">Automatico (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motori di ricerca abilitati</translation>
 <translation id="5355776323718420036">Nascondi siti popolari</translation>
+<translation id="9173319813356700250">NOTIZIE</translation>
 <translation id="6543799171249004861">Foto di <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">RICOMPENSE</translation>
 <translation id="5966055668402779222">Chiedi a Ricerca Brave</translation>
 <translation id="6851426306697017546">Mostra orologio</translation>
 <translation id="4844370919312937270">Mostra il widget di ricerca nelle nuove schede</translation>
 <translation id="5009354496127441090">Mostra i siti popolari</translation>
+<translation id="3960619311638643872">VPN di Brave</translation>
 <translation id="4784802981241664605">STATISTICHE</translation>
+<translation id="712731581368828482">Videochiamate criptate con Brave Talk.</translation>
+<translation id="2671474274417808910">Chiamate che rispettano davvero la tua privacy.</translation>
+<translation id="2100665198270190500">CHIAMA</translation>
 <translation id="4290791698375397492">Sito principale rimosso</translation>
 <translation id="1436784010935106834">Rimosso</translation>
 <translation id="9030215177866748410">I siti migliori vengono suggeriti in base ai siti web che visiti spesso.</translation>
+<translation id="8425213833346101688">Cambia</translation>
+<translation id="755045397420611731">Privacy e sicurezza online aggiuntive</translation>
+<translation id="4520128772974831415">Nascondi l’IP e cambia la tua posizione</translation>
+<translation id="6819278685469225453">Proteggi ogni app sul tuo dispositivo</translation>
+<translation id="8422279921836245017">Già acquistato?</translation>
+<translation id="8703188411226330709">Avvia la versione di prova gratuita</translation>
+<translation id="8814357473522731680">Con tecnologia</translation>
+<translation id="7143207342074048698">Connessione</translation>
+<translation id="1202549130170287307">Disconnessione</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">Widget</translation>
 <translation id="6303294677342628402">Protezioni</translation>
 <translation id="8458987127502506209">Abilita Protezioni Brave</translation>
-<translation id="7509914170164691086">Le Protezioni sono <ph name="LINK_BEFORE"/>ATTIVE<ph name="LINK_AFTER"/> per</translation>
-<translation id="260764436039299868">Le Protezioni sono <ph name="LINK_BEFORE"/>DISATTIVE<ph name="LINK_AFTER"/> per</translation>
-<translation id="3907405056878805220">Se il sito non funziona, prova a disattivare le Protezioni.
-   <ph name="LINK_BEFORE"/>Attenzione: in questo modo si riducono le protezioni per la privacy di Brave.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Protezioni ATTIVE<ph name="STATUS_AFTER"/> per <ph name="HOST"/></translation>
+<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>Protezioni DISATTIVATE<ph name="STATUS_AFTER"/> per <ph name="HOST"/></translation>
+<translation id="5623354834493649144">Se questo sito sembra non funzionare, prova a disattivare le Protezioni.
+   <ph name="NOTE_BEFORE"/>Nota: ciò potrebbe ridurre l'efficacia della protezioni Brave per la tua privacy.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">I tracker, gli annunci pubblicitari e altri sistemi sono bloccati <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nessun blocco dalle protezioni di Brave <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Controlli avanzati</translation>
@@ -2349,15 +2379,12 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="958268166261124668">VPN di Brave: connessione effettuata</translation>
 <translation id="6021669293402055982">VPN di Brave: nessuna connessione</translation>
 <translation id="3541307549916475335">Interfaccia utente del pannello VPN di Brave</translation>
-<translation id="7143207342074048698">Connessione</translation>
-<translation id="1202549130170287307">Disconnessione</translation>
 <translation id="2325196879156848326">Connessione non riuscita</translation>
 <translation id="745054660363064771">Impossibile connettersi al server</translation>
 <translation id="3936826714240735937">Scegli un altro server</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> non è riuscito a connettersi al server <ph name="REGION_NAME"/> . Riprova e scegli un altro Paese.</translation>
 <translation id="5753795690521538679">Inizia la prova gratuita di 7 giorni</translation>
 <translation id="3357036723290257445">Hai già acquistato la VPN Brave?</translation>
-<translation id="8814357473522731680">Con tecnologia</translation>
 <translation id="8652175077544655965">Chiudi le impostazioni</translation>
 <translation id="5908163815855240493">Vai alla pagina principale</translation>
 <translation id="7805768142964895445">Stato</translation>
@@ -2365,8 +2392,6 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="8421945428836418371">Riconnetti automaticamente</translation>
 <translation id="434523916398030617">Contatta l'assistenza tecnica</translation>
 <translation id="1116694919640316211">Informazioni</translation>
-<translation id="755045397420611731">Privacy e sicurezza online aggiuntive</translation>
-<translation id="4520128772974831415">Nascondi l’IP e cambia la tua posizione</translation>
 <translation id="2044418816479192294">Centinaia di server in tutto il mondo</translation>
 <translation id="7410504850864021600">Connessione velocissima</translation>
 <translation id="2422309687188612485">Proteggi fino a 10 dispositivi con un unico piano</translation>
@@ -2440,11 +2465,7 @@ Ti aiutiamo a connetterti!</translation>
 <translation id="8048263175525832621">VPN di Brave: connessa</translation>
 <translation id="1498770726476841108">Gestisci account</translation>
 <translation id="6825718953004242472">Rimuovi icona</translation>
-<translation id="6819278685469225453">Proteggi ogni app sul tuo dispositivo</translation>
-<translation id="3960619311638643872">VPN di Brave</translation>
 <translation id="4295077644587784828">Privacy e sicurezza online aggiuntive.</translation>
-<translation id="8425213833346101688">Cambia</translation>
-<translation id="8703188411226330709">Avvia la versione di prova gratuita</translation>
 <translation id="3287942014983548982">Apri qui</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, aperta al momento,
     premi i tasti TAB quindi Invio per passare alla scheda aperta</translation>

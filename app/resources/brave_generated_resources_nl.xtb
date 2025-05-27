@@ -52,6 +52,12 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="4450893287417543264">Laat niet weer zien</translation>
 <translation id="4595286989346610620">Details controleren</translation>
 <translation id="8324318899000695659">Elementen blokkeren</translation>
+<translation id="3828310068250853121">Selecteer elementen die je wilt blokkeren</translation>
+<translation id="2577286987423083872">Elementen blokkeren</translation>
+<translation id="3211174446914979436">Filters beheren</translation>
+<translation id="3108584651298176909">Regels tonen</translation>
+<translation id="5156986655891520787">Regels verbergen</translation>
+<translation id="7658239707568436148">Annuleren</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Open met .onion-adres: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Plakken forceren</translation>
@@ -93,7 +99,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8117247596084706514">Deze site heeft uw <ph name="PART_ONE"/>exacte locatie<ph name="PART_ONE_END"/> opgevraagd. <ph name="PART_TWO"/>Meer informatie<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Deze site heeft uw <ph name="PART_ONE"/>exacte locatie<ph name="PART_ONE_END"/> opgevraagd. Brave geeft alleen de <ph name="PART_TWO"/>algemene locatie<ph name="PART_TWO_END"/> door omdat <ph name="PART_THREE"/>locatiegegevens<ph name="PART_THREE_END"/> is uitgeschakeld. <ph name="PART_FOUR"/>Meer informatie<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Alle sluiten</translation>
-<translation id="7658239707568436148">Annuleren</translation>
 <translation id="4870911314065352661">Wilt u alle tabbladen sluiten?</translation>
 <translation id="7551864359422178684">U hebt <ph name="NUMBER_OF_TABS"/> tabbladen openstaan in dit browservenster.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tabbladen</translation>
@@ -133,6 +138,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3447730462826640312">U hoeft niet op een melding te klikken om te verdienen, maar klik er vooral op als u er geïnteresseerd in bent!</translation>
 <translation id="5253166205743627564">Bedankt dat je Brave Search steunt door op een privé-advertentie te klikken. In tegenstelling tot Big Tech meten wij de prestaties van advertenties anoniem om jouw privacy te verzekeren.</translation>
 <translation id="8748471354357836070">Meer informatie / afmeldingsopties</translation>
+<translation id="5927196110206824867">Dankzij gesponsorde achtergrondafbeeldingen kan Brave bouwen aan een onafhankelijk web waarin de gebruiker centraal staat. En anders dan bij Big Tech gebeurt het meten van advertenties bij ons volledig anoniem: jouw privacy komt op de eerste plaats.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Draag wat anonieme zoek- en browsegegevens bij om Brave Search te verfijnen.</translation>
 <translation id="1516554614404600536">Tooltip van Brave</translation>
@@ -473,6 +479,9 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="7791141927430186653">Ingesloten tweets van X (voorheen Twitter) toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
+<translation id="1244912498725894944">Sommige cookie-instellingen worden beheerd door Brave Shields. Je kunt deze &lt;a href="/content/braveShields"&gt;hier&lt;/a&gt; bekijken.</translation>
+<translation id="5352519841984162795">Deze instelling wordt beheerd door Brave Shields.</translation>
+<translation id="352287031024189516">Deze instelling wordt beheerd door het Google-inlogproces.</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
@@ -674,8 +683,12 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="856371974127598760">Wallet-netwerken</translation>
 <translation id="5975930666279943472">Wallet-transactie en nonce-informatie wissen</translation>
 <translation id="5693968582510626466">Transacties wissen kan nuttig zijn voor ontwikkelaars of wanneer een lokale server wordt opgeschoond</translation>
-<translation id="2326850911705720398">Walletgegevens resetten en wissen</translation>
+<translation id="6171369470447621882">Zcash-synchronisatiestatus resetten</translation>
+<translation id="6705112675071480687">Reset de Zcash-synchronisatievoortgang voor alle beschermde accounts</translation>
+<translation id="2012093487873597892">Weet je zeker dat je de Zcash-synchronisatiestatus wilt resetten? De synchronisatievoortgang voor alle beschermde accounts gaat dan verloren. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
+<translation id="5031551083187285762">De synchronisatiestatus van de Zcash-accounts is gereset.</translation>
 <translation id="9216386092464743272">Weet u zeker dat u uw gehele wallet-transactie en alle nonce-informatie wilt wissen? Deze optie wordt voornamelijk gebruikt door ontwikkelaars die een lokale testserver uitvoeren. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
+<translation id="2326850911705720398">Walletgegevens resetten en wissen</translation>
 <translation id="6369495274982305511">Weet je zeker dat je je wallet opnieuw wilt instellen? Als je geen back-up van je wallet hebt, gaan alle accountgegevens verloren (inclusief het eventuele saldo) wanneer je je wallet opnieuw instelt. Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
 <translation id="3752403403443723332">Uw wallet is opnieuw ingesteld.</translation>
 <translation id="594766067816395072">Uw wallet-transactie-informatie is opnieuw ingesteld.</translation>

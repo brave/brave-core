@@ -52,6 +52,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="4450893287417543264">Ne prikazuj ponovo</translation>
 <translation id="4595286989346610620">Proveri detalje</translation>
 <translation id="8324318899000695659">Blokiraj elemente</translation>
+<translation id="7658239707568436148">Otkaži</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvori pomoću adrese .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Prinudno nalepi</translation>
@@ -93,7 +94,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="8117247596084706514">Ovaj sajt je zatražio vašu <ph name="PART_ONE"/>preciznu lokaciju<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Saznajte više<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Ovaj sajt je zatražio vašu <ph name="PART_ONE"/>preciznu lokaciju<ph name="PART_ONE_END"/>. Brave može da pruži samo podatke o <ph name="PART_TWO"/>opštoj lokaciji<ph name="PART_TWO_END"/> zato što su <ph name="PART_THREE"/>servisi za lokaciju<ph name="PART_THREE_END"/> isključeni. <ph name="PART_FOUR"/>Saznajte više<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Zatvori sve</translation>
-<translation id="7658239707568436148">Otkaži</translation>
 <translation id="4870911314065352661">Želite li da zatvorite sve kartice?</translation>
 <translation id="7551864359422178684">Imate otvorene kartice u ovom prozoru pregledača (<ph name="NUMBER_OF_TABS"/>).</translation>
 <translation id="2571596981920752023">kartice (<ph name="NUMBER_OF_TABS"/>)</translation>
@@ -673,8 +673,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="856371974127598760">Mreže novčanika</translation>
 <translation id="5975930666279943472">Izbriši transakcije novčanika i informacije o jednokratnom ključu</translation>
 <translation id="5693968582510626466">Brisanje transakcija može biti korisno razvojnim programerima ili prilikom brisanja stanja na lokalnom serveru</translation>
-<translation id="2326850911705720398">Resetuj i izbriši podatke novčanika</translation>
 <translation id="9216386092464743272">Želite li sigurno da resetujete čitavu transakciju novčanika i jednokratni ključ? Tu opciju uglavnom koriste razvojni programeri koji koriste lokalni server za testiranje. Unesite „<ph name="CONFIRMATION_PHRASE"/>“ da potvrdite.</translation>
+<translation id="2326850911705720398">Resetuj i izbriši podatke novčanika</translation>
 <translation id="6369495274982305511">Želite li sigurno da resetujete svoj novčanik? Ako nemate rezervnu kopiju novčanika, a resetujete ga, izgubićete sve podatke naloga (uključujući sva povezana sredstva). Unesite „<ph name="CONFIRMATION_PHRASE"/>“ da potvrdite.</translation>
 <translation id="3752403403443723332">Novčanik je resetovan.</translation>
 <translation id="594766067816395072">Informacije o transakcijama novčanika su resetovane.</translation>

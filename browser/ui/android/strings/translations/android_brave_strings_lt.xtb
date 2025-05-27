@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
 <translation id="6302422639282249274">Tvarkyti „Brave Rewards“</translation>
-<translation id="2709516037105925701">Automatinis pildymas</translation>
 <translation id="8617525558807213034">Automatiškai pildyti inkognito skirtukuose</translation>
 <translation id="8685431198160039193">Įrašyta informacija gali būti automatiškai įvedama inkognito skirtukuose</translation>
 <translation id="6583902294974160967">Palaikymas</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Išvaizda</translation>
 <translation id="9040069796107003510">„Brave Rewards“ piktograma</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
-<translation id="8495235435594442882">Įjungti apatinę įrankių juostą</translation>
+<translation id="1215433243238902715">Įjungti apatinę naršymo juostą</translation>
+<translation id="1422686363939271829">Ši nuostata išjungiama, kai pasirinkta apatinė adreso juostos padėtis</translation>
 <translation id="6587448235155023666">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“</translation>
 <translation id="8701563696941209024">IŠ NAUJO PALEISTI DABAR</translation>
 <translation id="834487290629916192">VĖLIAU</translation>
@@ -424,9 +424,12 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8520059774736886747">Kūrėjas <ph name="PUBLISHER_NAME"/> neseniai patvirtintas</translation>
 <translation id="1486343603936278248">žetonas</translation>
 <translation id="7781069478569868053">Naujo skirtuko puslapis</translation>
+<translation id="5927196110206824867">Remiami fono vaizdai prisideda prie „Brave“ misijos kurti nepriklausomą, į vartotoją orientuotą žiniatinklį. Skirtingai nuo didžiųjų technologijų įmonių, reklamų našumo duomenis vertiname anonimiškai, kad apsaugotume jūsų privatumą.</translation>
+<translation id="8748471354357836070">Sužinokite daugiau / atsisakymo parinktys</translation>
 <translation id="3171669670217312786">Foniniai vaizdai</translation>
 <translation id="8522669544471808198">Rodyti foninius vaizdus</translation>
 <translation id="3870475560794762985">Rodyti remiamus vaizdus</translation>
+<translation id="6937724381960478525">Sužinokite daugiau apie remiamus vaizdus</translation>
 <translation id="8793108040181436796">Valdikliai</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>

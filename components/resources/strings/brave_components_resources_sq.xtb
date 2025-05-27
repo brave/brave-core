@@ -33,6 +33,7 @@
 <translation id="780301667611848630">Jo, faleminderit</translation>
 <translation id="3446024864193919737">Trego Shpërblimet Brave</translation>
 <translation id="3870475560794762985">Trego Pamjet e Sponsorizuara</translation>
+<translation id="6165508094623778733">Mësoni më tepër</translation>
 <translation id="4942016616604700968">Aktivizo Shpërblime</translation>
 <translation id="2875302873837723333">sajtet kryesore</translation>
 <translation id="1383876407941801731">Kërko</translation>
@@ -45,7 +46,6 @@
 <translation id="8820817407110198400">Shiriti i faqeshënuesve</translation>
 <translation id="1644574205037202324">Historiku</translation>
 <translation id="2702801445560668637">Lista e Leximeve</translation>
-<translation id="6165508094623778733">Mësoni më tepër</translation>
 <translation id="8730621377337864115">U bë</translation>
 <translation id="730042046912793465">Kjo është një</translation>
 <translation id="2055363275850890030">Dritare Private</translation>
@@ -276,6 +276,7 @@
 <translation id="9086302186042011942">Po sinkronizon</translation>
 <translation id="4744699166186440">Investues</translation>
 <translation id="3155170474926428993">Nisës Tor-i</translation>
+<translation id="3169472444629675720">Discover</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="6709133671862442373">Lajmet</translation>
@@ -307,6 +308,7 @@
 <translation id="8261506727792406068">Fshije</translation>
 <translation id="8171760814579050200">Kontribuo me të dhëna anonime kërkimi dhe shfletimi për të përrmirësuar Kërkimin Brave me Projektin e Zbulimit të Internetit. Është tërësisht me burim të hapur.</translation>
 <translation id="7754678742055438573">Fshi bisedën</translation>
+<translation id="4881695831933465202">Hape</translation>
 <translation id="8712637175834984815">E mora vesh</translation>
 <translation id="2315654674554095762">Leo do t'i kujtojë bisedat e tua, kështu që mund t'u kthehesh. Ato ruhen të koduara në pajisjen tënde dhe mund t'i fshish në çdo kohë.</translation>
 <translation id="6291843235651817590">Biseda të përgjithshme</translation>
@@ -315,7 +317,14 @@
 <translation id="2836330653441111204">Shpejtësi dhe inteligjencë e ekuilibruar</translation>
 <translation id="42981349822642051">Përhap</translation>
 <translation id="4250229828105606438">Pamje e ekranit</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4290791698375397492">Faqja në krye u hoq</translation>
+<translation id="8425213833346101688">Ndrysho</translation>
+<translation id="755045397420611731">Privatësi shtesë &amp; siguri në internet</translation>
+<translation id="4520128772974831415">IP e fshehtë &amp; ndrysho vendndodhjen</translation>
+<translation id="6819278685469225453">Mbroni çdo aplikacion në pajisjen tuaj</translation>
+<translation id="8703188411226330709">Fillo provën falas</translation>
+<translation id="8814357473522731680">Mundësuar nga</translation>
 <translation id="6303294677342628402">Mburoja</translation>
 <translation id="8458987127502506209">Aktivizo Mburojat Brave</translation>
 <translation id="650318023204990401">Kontrolle të përparuara</translation>
@@ -340,18 +349,11 @@
 <translation id="2370739752330685659">Ndoshta më vonë</translation>
 <translation id="5753795690521538679">Fillo provë 7-ditore falas</translation>
 <translation id="3357036723290257445">Ke blerë Brave VPN?</translation>
-<translation id="8814357473522731680">Mundësuar nga</translation>
 <translation id="7805768142964895445">Statusi</translation>
 <translation id="1116694919640316211">Rreth</translation>
-<translation id="755045397420611731">Privatësi shtesë &amp; siguri në internet</translation>
-<translation id="4520128772974831415">IP e fshehtë &amp; ndrysho vendndodhjen</translation>
 <translation id="2044418816479192294">Qindra servera në mbarë botën</translation>
 <translation id="7410504850864021600">Lidhje me shpejtësi rrufe</translation>
 <translation id="2422309687188612485">Mbro deri në 10 pajisje me një plan</translation>
 <translation id="2740531572673183784">Ok</translation>
-<translation id="6819278685469225453">Mbroni çdo aplikacion në pajisjen tuaj</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Privatësi shtesë &amp; siguri në internet.</translation>
-<translation id="8425213833346101688">Ndrysho</translation>
-<translation id="8703188411226330709">Fillo provën falas</translation>
 </translationbundle>

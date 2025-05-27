@@ -53,6 +53,12 @@
 <translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
 <translation id="4595286989346610620">ब्यौरा देखें</translation>
 <translation id="8324318899000695659">एलिमेंट ब्लॉक करें</translation>
+<translation id="3828310068250853121">उस एलिमेंट को चुनें जिसे आप ब्लॉक करना चाहते हैं</translation>
+<translation id="2577286987423083872">एलिमेंट ब्लॉक करें</translation>
+<translation id="3211174446914979436">फ़िल्टर मैनेज करें</translation>
+<translation id="3108584651298176909">नियम दिखाएँ</translation>
+<translation id="5156986655891520787">नियम छिपाएँ</translation>
+<translation id="7658239707568436148">रद्द करें</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion एड्रेस के साथ खोलें: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">फ़ोर्स पेस्ट करें</translation>
@@ -94,7 +100,6 @@
 <translation id="8117247596084706514">इस साइट ने आपसे<ph name="PART_ONE"/>सटीक लोकेशन<ph name="PART_ONE_END"/>का अनुरोध किया है. <ph name="PART_TWO"/><ph name="PART_TWO_END"/> और जानें.</translation>
 <translation id="5486652646100591203">इस साइट ने आपसे<ph name="PART_ONE"/>आपकी सटीक लोकेशन<ph name="PART_ONE_END"/> का अनुरोध किया है. Brave <ph name="PART_TWO"/>बस जेनरल लोकेशन<ph name="PART_TWO_END"/> की जानकारी दे सकता है क्योंकि <ph name="PART_THREE"/>लोकेशन सर्विस<ph name="PART_THREE_END"/> अभी डिसेबल हैं. <ph name="PART_FOUR"/><ph name="PART_FOUR_END"/> पर और ज़्यादा जानें.</translation>
 <translation id="8915916167043355778">सभी बंद करें</translation>
-<translation id="7658239707568436148">रद्द करें</translation>
 <translation id="4870911314065352661">क्या आप सभी टैब बंद करना चाहते हैं?</translation>
 <translation id="7551864359422178684">आपकी इस ब्राउज़र विंडो में <ph name="NUMBER_OF_TABS"/> टैब खुले हुए हैं.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> टैब</translation>
@@ -134,6 +139,7 @@
 <translation id="3447730462826640312">कमाने के लिए आपको क्लिक करने की ज़रूरत नहीं है, लेकिन अगर आपकी दिलचस्पी हो, तो ज़रूर क्लिक करें!</translation>
 <translation id="5253166205743627564">एक प्राइवेट विज्ञापन पर क्लिक करके Brave Search को सपोर्ट करने के लिए शुक्रिया। हम Big Tech की तरह नहीं करते, बल्कि आपकी प्राइवेसी को बचाने के लिए विज्ञापन के प्रदर्शन को बिना किसी पहचान के मापते हैं।</translation>
 <translation id="8748471354357836070">ज़्यादा जानें / विकल्प ऑप्ट आउट करें</translation>
+<translation id="5927196110206824867">स्पॉन्सर की गई बैकग्राउंड इमेज Brave के स्वतंत्र, यूज़र्स को पहले रखने वाले वेब को सपोर्ट करती हैं। और Big Tech से हटकर, हम आपकी प्राइवेसी को सुरक्षित रखने के लिए ऐड की परफ़ॉर्मेंस को अनाम तरीके से मापते हैं।</translation>
 <translation id="4174337572777167894">वेब डिस्कवरी प्रोजेक्ट</translation>
 <translation id="8659271182272561965">कुछ अनाम सर्च में योगदान करें &amp; Brave Search को बेहतर बनाने के लिए ब्राउज़िंग डेटा.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -507,6 +513,9 @@ Binance
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="7791141927430186653">X (पहले Twitter) एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
+<translation id="1244912498725894944">कुछ कुकी सेटिंग को Brave Shields नियंत्रित करता है। आप उन्हें &lt;a href="/content/braveShields"&gt;यहाँ&lt;/a&gt; देख सकते हैं।</translation>
+<translation id="5352519841984162795">इस सेटिंग को Brave Shields नियंत्रित करता है।</translation>
+<translation id="352287031024189516">इस सेटिंग को Google Sign-in नियंत्रित करता है।</translation>
 <translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
 <translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
@@ -708,8 +717,12 @@ Binance
 <translation id="856371974127598760">वॉलेट नेटवर्क</translation>
 <translation id="5975930666279943472">वॉलेट लेनदेन और गलत-सूचना साफ़ करें</translation>
 <translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
-<translation id="2326850911705720398">वॉलेट का डेटा रीसेट करें और मिटाएँ</translation>
+<translation id="6171369470447621882">Zcash की सिंक स्थिति रीसेट करें</translation>
+<translation id="6705112675071480687">शील्ड किए गए सभी अकाउंट्स के लिए Zcash के सिंक की प्रगति रीसेट करें</translation>
+<translation id="2012093487873597892">क्या आप वाकई Zcash की सिंक स्थिति रीसेट करना चाहते हैं? शील्ड किए गए सभी अकाउंट्स के लिए सिंक प्रगति छोड़ दी जाएगी। पुष्टि के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें।</translation>
+<translation id="5031551083187285762">आपके Zcash अकाउंट्स के लिए सिंक स्थिति रीसेट की गई।</translation>
 <translation id="9216386092464743272">क्या आप वाकई अपने सभी वॉलेट लेनदेन और गैर-सूचना को रीसेट करना चाहते हैं? यह विकल्प ज्यादातर लोकल टेस्ट सर्वर चलाने वाले डेवलपर्स द्वारा इस्तेमाल किया जाता है. कंफ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="2326850911705720398">वॉलेट का डेटा रीसेट करें और मिटाएँ</translation>
 <translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
 <translation id="3752403403443723332">आपका वॉलेट रिसेट किया गया.</translation>
 <translation id="594766067816395072">आपकी वॉलेट लेन-देन की जानकारी रीसेट कर दी गई थी.</translation>

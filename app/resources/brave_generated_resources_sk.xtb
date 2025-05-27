@@ -52,6 +52,12 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4450893287417543264">Už nezobrazovať</translation>
 <translation id="4595286989346610620">Skontrolujte podrobnosti</translation>
 <translation id="8324318899000695659">Blokovať prvky</translation>
+<translation id="3828310068250853121">Vyberte prvok, ktorý chcete blokovať</translation>
+<translation id="2577286987423083872">Blokovať prvky</translation>
+<translation id="3211174446914979436">Spravovať filtre</translation>
+<translation id="3108584651298176909">Zobraziť pravidlá</translation>
+<translation id="5156986655891520787">Skryť pravidlá</translation>
+<translation id="7658239707568436148">Zrušiť</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otvoriť pomocou adresy .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vynútiť prilepenie</translation>
@@ -93,7 +99,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8117247596084706514">Táto stránka vyžaduje vašu <ph name="PART_ONE"/>presnú polohu<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Zistiť viac<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Táto stránka vyžaduje vašu <ph name="PART_ONE"/>presnú polohu<ph name="PART_ONE_END"/>. Vyhľadávač Brave poskytne iba údaje o<ph name="PART_TWO"/>všeobecnej polohe<ph name="PART_TWO_END"/>, pretože <ph name="PART_THREE"/>lokalizačné služby<ph name="PART_THREE_END"/> sú deaktivované. <ph name="PART_FOUR"/>Zistiť viac<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Zavrieť všetky</translation>
-<translation id="7658239707568436148">Zrušiť</translation>
 <translation id="4870911314065352661">Zavrieť všetky karty?</translation>
 <translation id="7551864359422178684">V tomto okne prehliadača máte otvorených <ph name="NUMBER_OF_TABS"/> kariet.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> kariet</translation>
@@ -133,6 +138,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3447730462826640312">Nemusíte kliknúť, aby ste získali odmenu, ale kliknite, ak máte záujem!</translation>
 <translation id="5253166205743627564">Ďakujeme, že podporujete Vyhľadávač Brave kliknutím na súkromnú reklamu. Na rozdiel od veľkých technologických firiem meriame výkon reklamy anonymne, aby sme zachovali vaše súkromie.</translation>
 <translation id="8748471354357836070">Ďalšie informácie / možnosti odhlásenia</translation>
+<translation id="5927196110206824867">Sponzorované obrázky na pozadí podporujú poslanie spoločnosti Brave budovať nezávislý web, ktorý je zameraný na používateľa. Na rozdiel od veľkých technologických spoločností meriame výkon reklamy anonymne, aby sme zachovali vaše súkromie.</translation>
 <translation id="4174337572777167894">Project Web Discovery</translation>
 <translation id="8659271182272561965">Prispejte nejakýmí údajmi anonymného vyhľadávania a prezerania a upresnite tak vyhľadávanie Brave.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
@@ -473,6 +479,9 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="7791141927430186653">Povoliť vložené tweety X (predtým Twitter)</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
+<translation id="1244912498725894944">Niektoré nastavenia súborov cookie majú na starosti Štíty Brave. Môžete si ich pozrieť &lt;a href="/content/braveShields"&gt;tu&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Toto nastavenie je ovládané pomocou funkcie Štíty Brave.</translation>
+<translation id="352287031024189516">Toto nastavenie je ovládané pomocou prihlásenia do služby Google.</translation>
 <translation id="8792121506918889955">Poriadok zaobchádzania WebRTC IP</translation>
 <translation id="8798099450830957504">Štandardné</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
@@ -673,8 +682,12 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="856371974127598760">Siete Peňaženiek</translation>
 <translation id="5975930666279943472">Vymazať transakcie v peňaženke a informácie o nonce</translation>
 <translation id="5693968582510626466">Vymazanie transakcií môže byť užitočné pre vývojárov alebo pri vymazaní stavu na lokálnom serveri</translation>
-<translation id="2326850911705720398">Resetovať a vymazať údaje peňaženky</translation>
+<translation id="6171369470447621882">Obnoviť stav synchronizácie Zcash</translation>
+<translation id="6705112675071480687">Obnoví priebeh synchronizácie Zcash pre všetky chránené účty</translation>
+<translation id="2012093487873597892">Ste si istí, že chcete obnoviť stav synchronizácie Zcash? Priebeh synchronizácie pre všetky chránené účty bude zrušený. Na potvrdenie zadajte "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="5031551083187285762">Váš stav synchronizácie pre účty Zcash bol obnovený.</translation>
 <translation id="9216386092464743272">Naozaj chcete resetovať všetky transakcie v peňaženke a informácie o nonce? Túto možnosť väčšinou používajú vývojári, ktorí prevádzkujú lokálny testovací server. Napíšte „<ph name="CONFIRMATION_PHRASE"/>“ pre potvrdenie.</translation>
+<translation id="2326850911705720398">Resetovať a vymazať údaje peňaženky</translation>
 <translation id="6369495274982305511">Naozaj si chcete obnoviť peňaženku? Ak vaša peňaženka nie je zálohovaná, obnovenie spôsobí, že stratíte všetky údaje z účtu (vrátane všetkých finančných prostriedkov s ním spojených). Na potvrdenie napíšte „<ph name="CONFIRMATION_PHRASE"/>“ .</translation>
 <translation id="3752403403443723332">Vaša peňaženka bola resetovaná.</translation>
 <translation id="594766067816395072">Informácie o transakciách vo vašej peňaženke boli resetované.</translation>

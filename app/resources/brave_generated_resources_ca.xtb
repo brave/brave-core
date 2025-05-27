@@ -52,6 +52,12 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">No m'ho tornis a mostrar</translation>
 <translation id="4595286989346610620">Consulta els detalls</translation>
 <translation id="8324318899000695659">Bloqueja elements</translation>
+<translation id="3828310068250853121">Selecciona l'element que vols bloquejar</translation>
+<translation id="2577286987423083872">Bloquejar elements</translation>
+<translation id="3211174446914979436">Gestionat filtres</translation>
+<translation id="3108584651298176909">Mostrar regles</translation>
+<translation id="5156986655891520787">Ocultar regles</translation>
+<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Obre amb una adreça .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Força l'enganxada</translation>
@@ -93,7 +99,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Aquest lloc ha sol·licitat la vostra <ph name="PART_ONE"/>ubicació exacta<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Per a més informació<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Aquest lloc ha sol·licitat la vostra <ph name="PART_ONE"/>ubicació exacta<ph name="PART_ONE_END"/>. Brave només podrà proporcionar dades <ph name="PART_TWO"/>generals d'ubicació<ph name="PART_TWO_END"/> a causa de la desactivació dels <ph name="PART_THREE"/>serveis d'ubicació<ph name="PART_THREE_END"/>. <ph name="PART_FOUR"/>Per a més informació<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Tanca-ho tot</translation>
-<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="4870911314065352661">Vols tancar totes les pestanyes?</translation>
 <translation id="7551864359422178684">Tens <ph name="NUMBER_OF_TABS"/> pestanyes obertes a la finestra del navegador.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> pestanyes</translation>
@@ -133,6 +138,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">No cal que cliquis per guanyar, però fes clic si estàs interessat!</translation>
 <translation id="5253166205743627564">Gràcies per clicar sobre un anunci privat i donar suport al Cercador de Brave. A diferència de les Big Tech, mesurem el rendiment dels anuncis de manera anònima per preservar la teva privacitat.</translation>
 <translation id="8748471354357836070">Més informació / opcions de renúncia</translation>
+<translation id="5927196110206824867">Les imatges de fons patrocinades ajuden a Brave en la seva missió de construir un lloc web independent on els usuaris són la prioritat. I, a diferència de les Big Tech, mesurem el rendiment dels anuncis de manera anònima per garantir la teva privacitat.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Aporta dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
 <translation id="1516554614404600536">Descripció emergent de Brave</translation>
@@ -473,6 +479,9 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="7791141927430186653">Permet tuits incrustats d'X (anteriorment Twitter)</translation>
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
+<translation id="1244912498725894944">Els Escuts de Brave controlen algunes de les configuracions de Cookies. Pots veure-les &lt;a href="/content/braveShields"&gt;aquí&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Aquesta configuració està gestionada pels Escuts de Brave.</translation>
+<translation id="352287031024189516">Aquesta configuració està gestionada per l'Inici de sessió de Google.</translation>
 <translation id="8792121506918889955">Política de gestió d'IP WebRTC</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
@@ -674,8 +683,12 @@ Segur que vols continuar?</translation>
 <translation id="856371974127598760">Xarxes de la cartera</translation>
 <translation id="5975930666279943472">Esborra la transacció de la cartera i la informació del nonce</translation>
 <translation id="5693968582510626466">Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local</translation>
-<translation id="2326850911705720398">Reinicia i neteja les dades de la cartera</translation>
+<translation id="6171369470447621882">Reiniciar l'estat de sincronització de Zcash</translation>
+<translation id="6705112675071480687">Reinicia el progrés de sincronització de Zcash per tots els comptes protegits</translation>
+<translation id="2012093487873597892">Segur que vols restablir la sincronització de Zcash? Es perdrà el progrés de sincronització per tots els comptes protegits. Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
+<translation id="5031551083187285762">S'ha reiniciat l'estat de sincronització pels comptes de Zcash.</translation>
 <translation id="9216386092464743272">Confirma que vols restablir totes les teves transaccions de la cartera i la informació nonce? Aquesta opció l'utilitzen principalment els desenvolupadors que executen un servidor de proves local. Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
+<translation id="2326850911705720398">Reinicia i neteja les dades de la cartera</translation>
 <translation id="6369495274982305511">Segur que vols restablir la teva cartera? Si no en tens una còpia de seguretat, amb el restabliment perdràs totes les dades del compte (inclosos els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
 <translation id="3752403403443723332">S'ha restablert la cartera.</translation>
 <translation id="594766067816395072">S'ha restablert la informació de les transaccions de la cartera.</translation>

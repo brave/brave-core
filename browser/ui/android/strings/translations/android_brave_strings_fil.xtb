@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
 <translation id="6302422639282249274">Pamahalaan ang Brave Rewards</translation>
-<translation id="2709516037105925701">AutoFill</translation>
 <translation id="8617525558807213034">I-autofill ang mga pribadong tab</translation>
 <translation id="8685431198160039193">Puwedeng i-auto fill ang mga naka-save na impormasyon sa mga pribadong tab</translation>
 <translation id="6583902294974160967">Suporta</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="9040069796107003510">Icon ng Brave Rewards</translation>
 <translation id="6333347122924254968">Ipakita ang icon ng Mga Reward ng Brave sa address bar</translation>
-<translation id="8495235435594442882">I-enable ang toolbar sa ibaba</translation>
+<translation id="1215433243238902715">I-enable ang toolbar ng navigation sa ibaba</translation>
+<translation id="1422686363939271829">Naka-disable ang setting na ito kapag pinili ang posisyon ng address bar sa ibaba</translation>
 <translation id="6587448235155023666">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave</translation>
 <translation id="8701563696941209024">ILUNSAD MULI NGAYON</translation>
 <translation id="834487290629916192">MAMAYA</translation>
@@ -420,9 +420,12 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8520059774736886747">Nag-verify kamakailan ang creator na <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Page ng Bagong Tab</translation>
+<translation id="5927196110206824867">Sinusuportahan ng naka-sponsor na larawan sa background ang mission ng Brave na bumuo ng independent, user-first na Web. Hindi katulad ng Big Tech, sinusukat namin ang performance ng ad nang anonymous para ipreserba ang privacy mo.</translation>
+<translation id="8748471354357836070">Alamin ang higit pa / mga opsyon sa pag-opt out</translation>
 <translation id="3171669670217312786">Mga larawan sa background</translation>
 <translation id="8522669544471808198">Ipakita ang Mga Larawan sa Background</translation>
 <translation id="3870475560794762985">Ipakita ang Mga Naka-sponsor na Larawan</translation>
+<translation id="6937724381960478525">Alamin ang higit pa tungkol sa Mga Naka-sponsor na Larawan</translation>
 <translation id="8793108040181436796">Mga Widget</translation>
 <translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>

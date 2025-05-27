@@ -52,6 +52,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Don't show again</translation>
 <translation id="4595286989346610620">Check details</translation>
 <translation id="8324318899000695659">Block elements</translation>
+<translation id="7658239707568436148">Cancel</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Open using .onion address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Force paste</translation>
@@ -93,7 +94,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">This site has requested your <ph name="PART_ONE"/>precise location<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">This site has requested your <ph name="PART_ONE"/>precise location<ph name="PART_ONE_END"/>. Brave will only able to provide <ph name="PART_TWO"/>general location<ph name="PART_TWO_END"/> data due to <ph name="PART_THREE"/>Location Services<ph name="PART_THREE_END"/> being disabled. <ph name="PART_FOUR"/>Learn more<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Close all</translation>
-<translation id="7658239707568436148">Cancel</translation>
 <translation id="4870911314065352661">Close all tabs?</translation>
 <translation id="7551864359422178684">You have <ph name="NUMBER_OF_TABS"/> tabs open in this browser window.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tabs</translation>
@@ -642,8 +642,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Wallet networks</translation>
 <translation id="5975930666279943472">Clear wallet transaction and nonce information</translation>
 <translation id="5693968582510626466">Clearing transactions may be useful for developers or when clearing state on a local server</translation>
-<translation id="2326850911705720398">Reset and clear wallet data</translation>
 <translation id="9216386092464743272">Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
+<translation id="2326850911705720398">Reset and clear wallet data</translation>
 <translation id="6369495274982305511">Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
 <translation id="3752403403443723332">Your wallet was reset.</translation>
 <translation id="594766067816395072">Your wallet transaction information was reset.</translation>

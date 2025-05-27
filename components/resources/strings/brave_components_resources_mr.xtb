@@ -22,6 +22,7 @@
 <translation id="5525668735313040116">वेबवर गुप्तपणे शोध घ्या</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="780301667611848630">नाही, नको</translation>
+<translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="2875302873837723333">टॉप साइट</translation>
 <translation id="1383876407941801731">शोधा</translation>
 <translation id="3333887201479867589">ब्रेव्ह बक्षिसे</translation>
@@ -33,7 +34,6 @@
 <translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="1644574205037202324">इतिहास</translation>
-<translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="8730621377337864115">पूर्ण झाले</translation>
 <translation id="8759753423332885148">आणखी जाणून घ्या.</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
@@ -207,6 +207,7 @@
 <translation id="8261506727792406068">हटवा</translation>
 <translation id="8171760814579050200">संभाषणाचे नाव बदला</translation>
 <translation id="7754678742055438573">संभाषण काढून टाका</translation>
+<translation id="4881695831933465202">उघडा</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="2315654674554095762">Leo आता तुमची संभाषणे लक्षात ठेवेल ज्यामुळे तुम्ही त्यांमध्ये पुन्हा सहभागी होऊ शकता. ती तुमच्या डिव्हाईसवर एन्क्रिप्ट करून जतन केलेली असतात, आणि तुम्ही कधीही ती काढून टाकू शकता.</translation>
 <translation id="6291843235651817590">सर्वसाधारण हेतुसाठीचे चॅट</translation>
@@ -214,7 +215,14 @@
 <translation id="7979673624064378842">अतिजलद चॅट</translation>
 <translation id="2836330653441111204">संतुलित वेग आणि बुद्धिमत्ता</translation>
 <translation id="4250229828105606438">स्क्रीनशॉट</translation>
+<translation id="3960619311638643872">ब्रेव्ह VPN</translation>
 <translation id="1436784010935106834">काढली</translation>
+<translation id="8425213833346101688">बदल करा</translation>
+<translation id="755045397420611731">अतिरिक्त गोपनीयता &amp; ऑनलाईन संरक्षण</translation>
+<translation id="4520128772974831415">तुमचा IP लपवा &amp; तुमचे ठिकाण बदला</translation>
+<translation id="8703188411226330709">विनामूल्य ट्रायल सुरु करा</translation>
+<translation id="8814357473522731680">समर्थक</translation>
+<translation id="7143207342074048698">कनेक्ट करीत आहे</translation>
 <translation id="6303294677342628402">शिल्ड्स</translation>
 <translation id="8458987127502506209">ब्रेव्ह शील्ड्स सक्रिय करा</translation>
 <translation id="650318023204990401">प्रगत नियंत्रणे</translation>
@@ -231,21 +239,14 @@
 <translation id="6764845498618413165">अधिक जाणून घ्या.</translation>
 <translation id="7818938154803162778">हो, मी नक्की मदत करेन</translation>
 <translation id="2370739752330685659">नंतर बघू</translation>
-<translation id="7143207342074048698">कनेक्ट करीत आहे</translation>
 <translation id="5753795690521538679">7 दिवसांचे विनामूल्य ट्रायल सुरु करा</translation>
 <translation id="3357036723290257445">Brave VPN आधीच खरेदी केला आहे?</translation>
-<translation id="8814357473522731680">समर्थक</translation>
 <translation id="7805768142964895445">स्थिती</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
 <translation id="1116694919640316211">बद्दल</translation>
-<translation id="755045397420611731">अतिरिक्त गोपनीयता &amp; ऑनलाईन संरक्षण</translation>
-<translation id="4520128772974831415">तुमचा IP लपवा &amp; तुमचे ठिकाण बदला</translation>
 <translation id="2044418816479192294">जगभरातील शेकडो सर्व्हर</translation>
 <translation id="7410504850864021600">अतिजलद कनेक्शनचे वेग</translation>
 <translation id="2422309687188612485">एका प्लॅनसह 10 डिव्हायसेस सुरक्षित करा</translation>
 <translation id="2740531572673183784">ठीक आहे</translation>
-<translation id="3960619311638643872">ब्रेव्ह VPN</translation>
 <translation id="4295077644587784828">अतिरिक्त गोपनीयता &amp; ऑनलाईन संरक्षण.</translation>
-<translation id="8425213833346101688">बदल करा</translation>
-<translation id="8703188411226330709">विनामूल्य ट्रायल सुरु करा</translation>
 </translationbundle>
