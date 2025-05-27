@@ -16,16 +16,6 @@ BraveAccountDialogsUI::BraveAccountDialogsUI(web::WebUIIOS* web_ui,
     : web::WebUIIOSController(web_ui, url.host()),
       BraveAccountDialogsUIBase(ProfileIOS::FromWebUIIOS(web_ui)) {
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
-      base::BindRepeating(static_cast<void (BraveAccountDialogsUIBase::*)(
-                              mojo::PendingReceiver<
-                                  brave_account::mojom::BraveAccountHandler>)>(
-                              &BraveAccountDialogsUIBase::BindInterface),
+      base::BindRepeating(&BraveAccountDialogsUIBase::BindInterface,
                           base::Unretained(this)));
-  web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
-      base::BindRepeating(
-          static_cast<void (BraveAccountDialogsUIBase::*)(
-              mojo::PendingReceiver<password_strength_meter::mojom::
-                                        PasswordStrengthMeterHandler>)>(
-              &BraveAccountDialogsUIBase::BindInterface),
-          base::Unretained(this)));
 }

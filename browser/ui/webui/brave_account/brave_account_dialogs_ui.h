@@ -39,9 +39,6 @@ class BraveAccountDialogsUI
   explicit BraveAccountDialogsUI(content::WebUI* web_ui);
   ~BraveAccountDialogsUI() override;
 
-  void OpenDialog() override;
-  void CloseDialog() override;
-
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

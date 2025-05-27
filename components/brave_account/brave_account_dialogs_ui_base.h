@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -18,28 +17,17 @@
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 
 template <typename WebUIDataSource>
-class BraveAccountDialogsUIBase
-    : public brave_account::mojom::BraveAccountHandler {
+class BraveAccountDialogsUIBase {
  public:
   template <typename Profile>
   explicit BraveAccountDialogsUIBase(Profile* profile) {
     SetupWebUIDataSource(
         WebUIDataSource::CreateAndAdd(profile, kBraveAccountDialogsHost));
-  }
-
-  void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
-          pending_receiver) {
-    if (receiver_.is_bound()) {
-      receiver_.reset();
-    }
-    receiver_.Bind(std::move(pending_receiver));
   }
 
   void BindInterface(
@@ -52,9 +40,6 @@ class BraveAccountDialogsUIBase
   }
 
  protected:
-  void OpenDialog() override {}
-  void CloseDialog() override {}
-
   void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ScriptSrc,
@@ -170,7 +155,6 @@ class BraveAccountDialogsUIBase
   static inline constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
       u"https://brave.com/privacy/browser/";
 
-  mojo::Receiver<brave_account::mojom::BraveAccountHandler> receiver_{this};
   std::unique_ptr<password_strength_meter::PasswordStrengthMeterHandler>
       password_strength_meter_handler_;
 };

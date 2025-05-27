@@ -644,7 +644,6 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   registry.ForWebUI<BraveAccountDialogsUI>()
-      .Add<brave_account::mojom::BraveAccountHandler>()
       .Add<password_strength_meter::mojom::PasswordStrengthMeterHandler>();
 }
 
