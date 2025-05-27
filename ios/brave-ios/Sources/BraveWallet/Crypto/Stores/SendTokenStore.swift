@@ -70,7 +70,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   /// If we are currently resolving an SNS or ENS address
   @Published private(set) var isResolvingAddress: Bool = false
   /// The address returned from SNS / ENS
-  var test = 0
   @Published private(set) var resolvedAddress: String?
   /// If the current `sendAddress` needs to be resolved offchain
   @Published private(set) var isOffchainResolveRequired: Bool = false
@@ -590,7 +589,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       let (_, zcashAddressError) = await zcashWalletService.transactionType(
         chainId: selectedChain.chainId,
         accountId: fromAccount.accountId,
-        testnet: false,
         useShieldedPool: false,
         recipient: recipient
       )
