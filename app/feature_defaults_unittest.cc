@@ -162,6 +162,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kReportPakFileIntegrity,
 #endif
       &features::kSCTAuditing,
+      &features::kScrimForBrowserWindowModal,
+      &features::KScrimForTabModal,
       &features::kServiceWorkerAutoPreload,
       &features::kSideBySide,
       &features::kTabHoverCardImages,
