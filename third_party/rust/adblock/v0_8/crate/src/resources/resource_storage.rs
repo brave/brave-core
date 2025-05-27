@@ -350,7 +350,13 @@ fn index_next_unescaped_separator(s: &str, separator: char) -> (Option<usize>, b
             return (None, needs_transform)
         }
     }
-    (Some(new_arg_end), needs_transform)
+    // don't index beyond the end of the string
+    let new_arg_end = if new_arg_end >= s.len() {
+        None
+    } else {
+        Some(new_arg_end)
+    };
+    (new_arg_end, needs_transform)
 }
 
 /// Replaces escaped instances of `separator` in `arg` with unescaped characters.
