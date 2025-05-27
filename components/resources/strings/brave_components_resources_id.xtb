@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Tampilkan Brave Rewards</translation>
 <translation id="5585019845078534178">Kartu</translation>
 <translation id="3870475560794762985">Tampilkan gambar bersponsor</translation>
+<translation id="5684562942023496754">Anda dapat memperoleh pendapatan dengan melihat Gambar Bersponsor.</translation>
+<translation id="6168679340384667457">Anda dapat BAT untuk Gambar Bersponsor. Menonaktifkan Gambar Bersponsor akan turunkan penghasilan Anda.</translation>
+<translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="2414654907269324670">Anda akan memperoleh BAT untuk Gambar Bersponsor.</translation>
 <translation id="4942016616604700968">Aktifkan Rewards</translation>
-<translation id="5684562942023496754">Anda dapat memperoleh pendapatan dengan melihat Gambar Bersponsor.</translation>
 <translation id="8934374643857605034">Sebagai pengguna Imbalan Brave, Anda dapat memperoleh BAT dengan melihat Gambar Bersponsor.</translation>
 <translation id="1570714748649804013">Sebagai pengguna Imbalan Brave, Anda memperoleh BAT untuk Gambar Disponsori yang Anda lihat. Menonaktifkan Gambar yang Disponsori akan mengurangi jumlah pendapatan Anda.</translation>
 <translation id="8998727244653964783">Anda dapar memperoleh BAT dengan melihat Gambar Bersponsor ketika menghubungkan akun kustodian dengan Imbalan Brave. Sementara itu, Anda membantu mendukung kreator dengan Gambar Bersponsor.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">Daftar Bacaan</translation>
 <translation id="4590997608186539865">Daftar Putar</translation>
 <translation id="8027460023387054992">Peringkas Obrolan</translation>
-<translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="730042046912793465">Ini adalah</translation>
 <translation id="2055363275850890030">Jendela Pribadi</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">Tidak tersambung</translation>
 <translation id="4217695020908122747">Akun yang terhubung</translation>
 <translation id="8497650996740651467">Akun yang tersedia</translation>
+<translation id="1775188434254367931">Koneksi</translation>
+<translation id="1818522458013171885">Batal blokir</translation>
 <translation id="5677928146339483299">Diblokir</translation>
 <translation id="3890989020011724401">Akun baru</translation>
 <translation id="4612979983851181941">Gunakan panel ini untuk mengakses Web3 dan semua aset kripto Anda secara aman.</translation>
@@ -1739,6 +1742,7 @@
 <translation id="803703704549420287">Bersihkan filter</translation>
 <translation id="1472675084647422956">Tampilkan lebih banyak</translation>
 <translation id="4522570452068850558">Rincian</translation>
+<translation id="4583937519241190398">Diverifikasi oleh DappRadar</translation>
 <translation id="8713438253026855351">Beralih ke akun berpelindung</translation>
 <translation id="3526789880090101085">Lindungi akun</translation>
 <translation id="2298396008562701154">Saat ini akun ini mendukung transaksi transparan yang berarti transaksi tersebut dapat dilihat oleh semua orang di blockchain.</translation>
@@ -1829,7 +1833,9 @@
 <translation id="7758665172236842395">Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan... tara!</translation>
 <translation id="2376542729617592331">Berita Brave didukung iklan dengan iklan privat dan anonim. <ph name="LINK_START"/>Pelajari lebih lanjut.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Aktifkan Brave News</translation>
+<translation id="5149018766422637336">Berita dan RSS</translation>
 <translation id="6265592479622441247">Kembali ke <ph name="BEGIN_BOLD"/>Dasbor<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">Temukan</translation>
 <translation id="8981973962043893066">Cari situs, topik, atau umpan RSS</translation>
 <translation id="1498364270401875204">Saluran</translation>
 <translation id="6401776069326703655">Lihat Semua</translation>
@@ -2114,6 +2120,7 @@
 <translation id="8151638057146502721">Konfigurasi</translation>
 <translation id="3282183392203936979">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">Hai, saya Leo. Saya adalah asisten yang dihost sepenuhnya oleh Brave. Saya didukung oleh DeepSeek R1, model yang dibuat oleh DeepSeek untuk melakukan tugas penalaran yang mendalam. <ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Mixtral 8x7B, model yang diciptakan oleh Mistral AI untuk menangani tugas-tugas tingkat lanjut. Mixtral dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Instant, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Instant dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Haiku dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
@@ -2152,7 +2159,6 @@
 <translation id="6393149565874086128">Tambahkan umpan balik</translation>
 <translation id="3521125531016408657">Suka jawaban</translation>
 <translation id="8202517001427388906">Tidak suka jawaban</translation>
-<translation id="3177073390279208955">Mengirim peringkat, percakapan, model, bahasa, versi, dan status premium</translation>
 <translation id="1379399209929302811">Berikan Umpan Balik untuk AI Brave</translation>
 <translation id="8442999546461118871">Pilih topik umpan balik Anda</translation>
 <translation id="9018766373792005944">Umpan balik Anda adalah tentang apa?</translation>
@@ -2177,6 +2183,12 @@
 <translation id="1946267518364740045">Penalaran...</translation>
 <translation id="4198859185714743678">Penalaran selesai</translation>
 <translation id="6140948187512243695">Tampilkan detail</translation>
+<translation id="4881695831933465202">Buka</translation>
+<translation id="1625889395409731085">Buka tautan eksternal?</translation>
+<translation id="4211063437291114749">Leo AI mau membuka situs web di tab baru. Anda mau melanjutkan?</translation>
+<translation id="5526001300821542157">Buka tautan tanpa tanya saya lagi</translation>
+<translation id="1243966363662220847">Respons Masukan</translation>
+<translation id="7417895556119762861">Menyukai atau tidak menyukai jawaban akan mengirimkan peringkat, percakapan, model, bahasa, versi, dan status premium ke Brave untuk menyempurnakan Leo. <ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Kirim pesan ke Leo</translation>
 <translation id="8650874793377330048">Berhenti menjawab</translation>
 <translation id="8712637175834984815">Mengerti</translation>
@@ -2204,6 +2216,7 @@
 <translation id="2836330653441111204">Kecepatan yang seimbang dengan kecerdasan</translation>
 <translation id="6695329447007213917">Obrolan umum, koding, dan lainnya</translation>
 <translation id="5051668914970329839">Visi tujuan umum</translation>
+<translation id="7226508434216060960">Model penalaran</translation>
 <translation id="3965507912994218570">Pengaturan Leo</translation>
 <translation id="1037324977127422019">Hai, saya Leo!</translation>
 <translation id="8930348081963284873">Asisten cerdas yang didukung AI, dibangun langsung ke dalam Brave.</translation>
@@ -2252,21 +2265,38 @@
 <translation id="8370801182970639038">Otomatis (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Mesin penelusuran diaktifkan</translation>
 <translation id="5355776323718420036">Sembunyikan situs teratas</translation>
+<translation id="9173319813356700250">BERITA</translation>
 <translation id="6543799171249004861">Foto oleh <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">REWARDS</translation>
 <translation id="5966055668402779222">Tanya Brave Penelusuran</translation>
 <translation id="6851426306697017546">Tampilkan jam</translation>
 <translation id="4844370919312937270">Tampilkan widget penelusuran di tab baru</translation>
 <translation id="5009354496127441090">Tampilkan situs teratas</translation>
+<translation id="3960619311638643872">VPN Brave</translation>
 <translation id="4784802981241664605">STAT</translation>
+<translation id="712731581368828482">Panggilan video terenkripsi dengan Brave Bicara.</translation>
+<translation id="2671474274417808910">Panggilan Yang Utamakan Privasi</translation>
+<translation id="2100665198270190500">BICARA</translation>
 <translation id="4290791698375397492">Situs teratas dihapus</translation>
 <translation id="1436784010935106834">Dihapus</translation>
 <translation id="9030215177866748410">Situs teratas diusulkan berdasarkan situs web yang sering Anda kunjungi.</translation>
+<translation id="8425213833346101688">Ubah</translation>
+<translation id="755045397420611731">Privasi &amp; keamanan ekstra saat daring</translation>
+<translation id="4520128772974831415">Menyembunyikan IP Anda &amp; mengubah lokasi Anda</translation>
+<translation id="6819278685469225453">Melindungi aplikasi di perangkat Anda</translation>
+<translation id="8422279921836245017">Sudah membeli?</translation>
+<translation id="8703188411226330709">Mulai uji coba gratis</translation>
+<translation id="8814357473522731680">Didukung oleh</translation>
+<translation id="7143207342074048698">Menyambungkan</translation>
+<translation id="1202549130170287307">Memutuskan sambungan</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">Tombol</translation>
 <translation id="6303294677342628402">Pelindung</translation>
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
-<translation id="7509914170164691086">Perisai sedang AKTIF <ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Perisai sedang TIDAK AKTIF<ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Jika situs ini tampaknya rusak, coba turunkan Perisai.
- <ph name="LINK_BEFORE"/>Catatan: ini dapat mengurangi perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Perisai sedang AKTIF<ph name="STATUS_AFTER"/> untuk <ph name="HOST"/></translation>
+<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>Perisai sedang NONAKTIF<ph name="STATUS_AFTER"/> untuk <ph name="HOST"/></translation>
+<translation id="5623354834493649144">Jika situs ini tampak bermasalah, coba nonaktifkan Perisai.
+   <ph name="NOTE_BEFORE"/>Catatan: ini bisa mengurangi tingkat perlindungan privasi Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">Pelacak, iklan, dan lebih banyak pemblokiran <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Tidak dilindungi oleh Pelindung Brave <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
@@ -2349,15 +2379,12 @@
 <translation id="958268166261124668">VPN Brave: Tersambung</translation>
 <translation id="6021669293402055982">VPN Brave: Terputus</translation>
 <translation id="3541307549916475335">UI Panel VPN Brave</translation>
-<translation id="7143207342074048698">Menyambungkan</translation>
-<translation id="1202549130170287307">Memutuskan sambungan</translation>
 <translation id="2325196879156848326">Koneksi Gagal</translation>
 <translation id="745054660363064771">Tidak dapat terhubung ke peladen</translation>
 <translation id="3936826714240735937">Memilih peladen lain</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> tidak dapat terhubung ke peladen <ph name="REGION_NAME"/>. Silakan coba lagi atau pilih negara lain.</translation>
 <translation id="5753795690521538679">Mulai uji coba gratis 7 hari</translation>
 <translation id="3357036723290257445">Sudah membeli VPN Brave?</translation>
-<translation id="8814357473522731680">Didukung oleh</translation>
 <translation id="8652175077544655965">Menutup pengaturan</translation>
 <translation id="5908163815855240493">Buka beranda utama</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -2365,8 +2392,6 @@
 <translation id="8421945428836418371">Sambungkan ulang secara otomatis</translation>
 <translation id="434523916398030617">Hubungi dukungan teknis</translation>
 <translation id="1116694919640316211">Tentang</translation>
-<translation id="755045397420611731">Privasi &amp; keamanan ekstra saat daring</translation>
-<translation id="4520128772974831415">Menyembunyikan IP Anda &amp; mengubah lokasi Anda</translation>
 <translation id="2044418816479192294">Ratusan peladen di seluruh dunia</translation>
 <translation id="7410504850864021600">Koneksi secepat kilat</translation>
 <translation id="2422309687188612485">Melindungi hingga 10 perangkat dengan satu paket</translation>
@@ -2440,11 +2465,7 @@ Mari kita buat Anda terhubung!</translation>
 <translation id="8048263175525832621">VPN Brave - Terputus</translation>
 <translation id="1498770726476841108">Kelola Akun</translation>
 <translation id="6825718953004242472">Hapus ikon</translation>
-<translation id="6819278685469225453">Melindungi aplikasi di perangkat Anda</translation>
-<translation id="3960619311638643872">VPN Brave</translation>
 <translation id="4295077644587784828">Privasi &amp; keamanan ekstra saat daring.</translation>
-<translation id="8425213833346101688">Ubah</translation>
-<translation id="8703188411226330709">Mulai uji coba gratis</translation>
 <translation id="3287942014983548982">Buka di sini</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, saat ini terbuka,
     tekan Tab, kemudian Enter untuk beralih ke tab yang terbuka</translation>

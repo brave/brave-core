@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
 <translation id="6302422639282249274">Uruskan Ganjaran Brave</translation>
-<translation id="2709516037105925701">Autoisi</translation>
 <translation id="8617525558807213034">Autoisi dalam tab peribadi</translation>
 <translation id="8685431198160039193">Maklumat tersimpan boleh diisi secara automatik dalam tab peribadi</translation>
 <translation id="6583902294974160967">Sokongan</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="9040069796107003510">Ikon Ganjaran Brave</translation>
 <translation id="6333347122924254968">Tunjukkan ikon Ganjaran Brave dalam bar alamat</translation>
-<translation id="8495235435594442882">Dayakan bar alat bawah</translation>
+<translation id="1215433243238902715">Bolehkan bar alat navigasi bawah</translation>
+<translation id="1422686363939271829">Tetapan ini dimatikan apabila kedudukan bar alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Perubahan anda akan kelihatan apabila anda melancarkan semula Brave</translation>
 <translation id="8701563696941209024">LANCARKAN SEMULA SEKARANG</translation>
 <translation id="834487290629916192">NANTI</translation>
@@ -420,9 +420,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8520059774736886747">Pencipta <ph name="PUBLISHER_NAME"/> disahkan baru-baru ini</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Halaman Tab Baharu</translation>
+<translation id="5927196110206824867">Imej latar yang ditaja menyokong misi Brave untuk membina Web bebas yang mengutamakan pengguna. Dan tidak seperti Big Tech, kami mengukur prestasi iklan secara tanpa nama untuk mengekalkan privasi anda.</translation>
+<translation id="8748471354357836070">Ketahui lebih lanjut / pilihan untuk keluar</translation>
 <translation id="3171669670217312786">Imej Latar belakang</translation>
 <translation id="8522669544471808198">Papar Imej Latar Belakang</translation>
 <translation id="3870475560794762985">Papar Imej Yang Ditaja</translation>
+<translation id="6937724381960478525">Ketahui lebih lanjut tentang Imej yang Ditaja</translation>
 <translation id="8793108040181436796">Widget</translation>
 <translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>

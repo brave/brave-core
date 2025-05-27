@@ -29,15 +29,16 @@
 <translation id="1356661055722410047">Novo! Pode traduzir texto e imagens no ecrã</translation>
 <translation id="1383876407941801731">Pesquisar</translation>
 <translation id="8132634101975074716">Tem sessão iniciada no Brave!</translation>
+<translation id="141901961143729572">Partilhe a sua opinião</translation>
 <translation id="3880714039086599943">Para partilhar a sua janela, permita a gravação de ecrã para o Brave nas Definições do sistema.</translation>
 <translation id="1586284627848250203">Obter ajuda com o Brave for Testing</translation>
 <translation id="1497802159252041924">Erro ao instalar: <ph name="INSTALL_ERROR"/></translation>
+<translation id="1518627427551567882">Esta página está protegida</translation>
 <translation id="5147525139567260139">Partilhe um separador do Brave</translation>
 <translation id="1547469039832541117">Termina a tarefa realçada.</translation>
 <translation id="1530633922026945685">O Brave necessita de autorização de acesso à câmara para criar um mapa 3D do ambiente à sua volta.</translation>
 <translation id="9125033103884432">{NUM_EXTENSIONS,plural, =1{Esta extensão já não é suportada. O Brave recomenda que a remova.}other{Estas extensões já não são suportadas. O Brave recomenda que as remova.}}</translation>
 <translation id="6570689355868013775">Ferramentas de segurança do Brave</translation>
-<translation id="6198411733024382246">O Brave precisa de validar a sua identidade antes de ser possível guardar alguns dados na sua Conta Brave e usá-los em todos os seus dispositivos. Se terminar sessão, estes dados permanecem neste dispositivo.</translation>
 <translation id="1902837727299679178">O Brave quer eliminar os seus dados do Gestor de Palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
 <translation id="4449148723378534338">Reveja os principais controlos de privacidade e segurança no Brave</translation>
 <translation id="1640672724030957280">A transferir...</translation>
@@ -161,6 +162,7 @@
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Uma ou mais extensões do Brave estavam a aceder a 1 dispositivo USB}=1{Uma ou mais extensões do Brave estão a aceder a 1 dispositivo USB}other{Uma ou mais extensões do Brave estão a aceder a # dispositivos USB}}</translation>
 <translation id="5320085753638900910">O seu histórico de navegação afeta os anúncios que vê e os interesses, conforme estimados abaixo. Para proteger a sua privacidade, o Brave elimina automaticamente os seus interesses todos os meses. Os interesses podem ser atualizados, a menos que os remova.</translation>
 <translation id="7365690458036015383">Houve uma falha no programa de instalação ao descompactar o arquivo. Descarregue novamente o Brave.</translation>
+<translation id="310459126943037700">Falha ao terminar as tarefas.</translation>
 <translation id="8919461291440820124">O Brave está a utilizar o microfone.</translation>
 <translation id="3137969841538672700">Arraste para pesquisar</translation>
 <translation id="8372436892102763334">Este separador está a usar recursos adicionais. Para melhorar o seu desempenho, permita que o Brave o torne inativo.</translation>
@@ -202,7 +204,6 @@
 <translation id="308146532933302843">Saiba por que motivo o Brave bloqueia algumas transferências</translation>
 <translation id="2189149060536531804">O Brave indica-lhe se algo precisar da sua revisão</translation>
 <translation id="6324134303015966238">O Brave pré-carrega páginas que provavelmente vai visitar para que sejam carregadas mais rapidamente quando as visita</translation>
-<translation id="2401189691232800402">Sistema ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3885770153807205175">Selecionador de idiomas</translation>
 <translation id="6315734375101223238">Personalize e controle o Brave. É necessária a sua atenção – clique para obter detalhes.</translation>
@@ -212,6 +213,7 @@
 <translation id="3941890832296813527">Erro de instalação: o nome de ficheiro do instalador é inválido ou não é suportado.</translation>
 <translation id="8090497651549769448">O Brave está a tentar copiar palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
 <translation id="4256965182800026277">As suas palavras-passe, métodos de pagamento e moradas guardadas na sua Conta Brave vão ser removidas deste dispositivo. Para os usar novamente no Brave, volte a iniciar sessão.</translation>
+<translation id="395904275706073188">Não é possível ler páginas protegidas. Experimente uma página diferente.</translation>
 <translation id="4194619960643453552">Saiba como o Brave mantém a sua segurança</translation>
 <translation id="1311808042904310985">Acerca do &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Acerca do ChromeOS</translation>
@@ -330,6 +332,7 @@
 <translation id="82926023981336111">Personalize e controle o Brave. Defina o Brave como o navegador predefinido.</translation>
 <translation id="5809516625706423866">Não é possível ligar à Internet. HTTP 401 não autorizado. Verifique a sua configuração de proxy.</translation>
 <translation id="1224606669200461217">Para usar e guardar dados do Brave na sua Conta Brave, atualize o Brave</translation>
+<translation id="5824893331272123205">Não foi possível carregar este painel. Tente novamente</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="5871205389137001634">Clique para sair da pesquisa de imagens</translation>
 <translation id="8054200348483755053">O Brave encontrou software malicioso nestes itens:</translation>
@@ -461,6 +464,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="7339898014177206373">Nova janela</translation>
 <translation id="3511996232906761537">A sua Web, os seus marcadores e os seus outros itens do Brave estão aqui.</translation>
 <translation id="5380963249588143069">O administrador do sistema configurou o Brave para abrir o <ph name="ALTERNATIVE_BROWSER_NAME"/> e aceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="7352651011704765696">Algo correu mal</translation>
 <translation id="4631170166710903214">Esta extensão já não é suportada. O Brave recomenda que a remova.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="7450541714075000668">Texto copiado</translation>
@@ -481,6 +485,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="3343095737966473035">O Brave não é o seu navegador predefinido.</translation>
 <translation id="5477319665405831211">Sincronizar e personalizar o Brave em todos os dispositivos</translation>
 <translation id="2339273275658335597">Atualização do Brave</translation>
+<translation id="7716950018788545737">As tarefas terminaram.</translation>
 <translation id="77283119132245232">Oferece serviços de rastreio do sistema para o <ph name="BROWSER_NAME"/>. Se este serviço estiver desativado, os rastreios de desempenho criados pelo navegador não incluem eventos ao nível do sistema, como eventos de mudança de contexto e de thread pronta.</translation>
 <translation id="4784414698887946907">Esta ação elimina os dados de navegação deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">O programa de instalação não conseguiu criar um directório temporário. Verifique se há espaço livre no disco e permissão para a instalação do software.</translation>
@@ -531,6 +536,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="9098234372282930719">Em seguida, tem de reiniciar o Brave.</translation>
 <translation id="1327729221471951979">O Brave recomenda que a remova. <ph name="BEGIN_LINK"/>Saiba mais sobre as extensões suportadas<ph name="END_LINK"/></translation>
 <translation id="8577108764439626300">A publicação desta extensão foi anulada pelo programador e pode não ser segura. Remova-a do Brave para que deixe de poder ver e alterar os seus dados nos sites que visita, incluindo as suas informações pessoais.</translation>
+<translation id="4234753748520037091">O Brave precisa de validar a sua identidade antes de ser possível guardar alguns dados na sua Conta Brave e usá-los em todos os seus dispositivos. Se terminar sessão agora, estes dados vão ser eliminados.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Reinicie o Brave dentro de um dia}other{Reinicie o Brave dentro de # dias}}</translation>
 <translation id="8438543370129609977">Quando usa a pesquisa de imagens, o título, o URL e o conteúdo da página, incluindo PDFs, são enviados para o servidor. <ph name="LEARN_MORE"/></translation>
 <translation id="6914496861676471566">O arquivo do programa de instalação está corrompido ou não é válido. Descarregue novamente o Brave.</translation>

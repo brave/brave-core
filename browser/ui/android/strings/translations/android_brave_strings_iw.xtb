@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="6302422639282249274">נהל את Brave Rewards</translation>
-<translation id="2709516037105925701">מילוי אוטומטי</translation>
 <translation id="8617525558807213034">מילוי אוטומטי בכרטיסיות פרטיות</translation>
 <translation id="8685431198160039193">ניתן למלא באופן אוטומטי מידע שנשמר בכרטיסיות פרטיות</translation>
 <translation id="6583902294974160967">תמיכה</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">מראה</translation>
 <translation id="9040069796107003510">סמל Brave Rewards</translation>
 <translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
-<translation id="8495235435594442882">הפעל סרגל כלים תחתון</translation>
+<translation id="1215433243238902715">הפעת סרגל הניווט התחתון</translation>
+<translation id="1422686363939271829">ההגדרה הזו מושבתת בעת בחירה למקם את סרגל הכתובת למטה</translation>
 <translation id="6587448235155023666">השינויים שלך ייכנסו לתוקף בפעם הבאה שתפעיל/י מחדש את Brave</translation>
 <translation id="8701563696941209024">הפעל שנית עכשיו</translation>
 <translation id="834487290629916192">אחר כך</translation>
@@ -421,9 +421,12 @@
 <translation id="8520059774736886747">יוצר/ת <ph name="PUBLISHER_NAME"/> אומת/ה לאחרונה</translation>
 <translation id="1486343603936278248">טוקן</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
+<translation id="5927196110206824867">תמונות רקע ממומנות תומכות במשימה של Brave לבנות רשת אינטרנט עצמאית ששמה את המשתמש בעדיפות ראשונה. ושלא כמו חברות ביג טק, אנחנו מודדים את ביצועי המודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
+<translation id="8748471354357836070">למידע נוסף / אפשרויות ביטול</translation>
 <translation id="3171669670217312786">תמונות רקע</translation>
 <translation id="8522669544471808198">הצג תמונות רקע</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
+<translation id="6937724381960478525">למידע נוסף על תמונות ממומנות</translation>
 <translation id="8793108040181436796">ווידג'טים</translation>
 <translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="7275773481201277457">הצג סטטיסטיקות Brave</translation>

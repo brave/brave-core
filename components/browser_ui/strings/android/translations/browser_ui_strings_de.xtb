@@ -1,6 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
+<translation id="3586180167003092914">In den <ph name="BEGIN_LINK1"/>Android-Einstellungen<ph name="END_LINK1"/> verwalten
+
+Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteuert:
+• „Immer verschlüsselte Verbindungen verwenden“ ist aktiviert.
+• „JavaScript-Optimierungstool“ ist deaktiviert. <ph name="BEGIN_LINK2"/>Ausnahmen für Websites verwalten<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Online öffnen</translation>
 <translation id="1036348656032585052">Deaktivieren</translation>
 <translation id="1044891598689252897">Websites funktionieren normal</translation>
@@ -38,6 +43,7 @@
 <translation id="1510341833810331442">Websites dürfen keine Daten auf deinem Gerät speichern</translation>
 <translation id="1538031354170655462">Websites verwenden Nahfeldkommunikation für gewöhnlich dazu, mit Tags oder Geräten in der Nähe zu interagieren, z. B. beim Scannen von Preisetiketten oder kontaktlosen Bezahlen</translation>
 <translation id="1547123415014299762">Drittanbieter-Cookies werden zugelassen</translation>
+<translation id="3665719978526894928">Websites mit der V8-Engine von Brave beschleunigen (dadurch wird Brave etwas anfälliger für Angriffe)</translation>
 <translation id="1593426485665524382">Neue Aktionen auf dem oberen Teil des Bildschirms verfügbar</translation>
 <translation id="1615755956145364867">Websites dürfen nachfragen, ob geschützte Inhalte wiedergegeben werden sollen</translation>
 <translation id="1620510694547887537">Kamera</translation>
@@ -54,6 +60,7 @@
 <translation id="1704230497453185209">Websites dürfen keinen Ton wiedergeben</translation>
 <translation id="1717218214683051432">Bewegungssensoren</translation>
 <translation id="1743802530341753419">Nachfragen, bevor Websites eine Verbindung zu einem Gerät herstellen (empfohlen)</translation>
+<translation id="1777815584158991902">Ansicht des Discover-Feeds am unteren Rand</translation>
 <translation id="1779089405699405702">Bild-Decodierer</translation>
 <translation id="1785415724048343560">Für eine optimale Nutzung empfohlen</translation>
 <translation id="1796588414813960292">Funktionen, die Ton erfordern, funktionieren dann nicht</translation>
@@ -94,13 +101,12 @@
 <translation id="2231160360698766265">Websites können geschützte Inhalte wiedergeben</translation>
 <translation id="2235344399760031203">Drittanbieter-Cookies werden blockiert</translation>
 <translation id="2238944249568001759">Vorgeschlagene Suchanfragen basierend auf deinem letzten Tab</translation>
-<translation id="2241587408274973373">Karten auf der Seite „Neuer Tab“</translation>
+<translation id="2241587408274973373">Karten auf „Neuer Tab“-Seite</translation>
 <translation id="2241634353105152135">Nur einmal</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/> entfernen</translation>
 <translation id="228293613124499805">Die meisten Websites, die du besuchst, speichern wahrscheinlich Daten auf deinem Gerät. Damit du bequemer im Internet surfen kannst, werden häufig Einstellungen oder Informationen gespeichert, die du an die jeweiligen Websites weitergibst. Wir empfehlen, diese Einstellung aktiviert zu lassen.</translation>
 <translation id="2289270750774289114">Nachfragen, wenn eine Website nach Bluetooth-Geräten in der Nähe suchen möchte (empfohlen)</translation>
 <translation id="2315043854645842844">Die clientseitige Zertifikatauswahl wird vom Betriebssystem nicht unterstützt.</translation>
-<translation id="2356926036049612643">V8-Optimierungstool</translation>
 <translation id="2359808026110333948">Weiter</translation>
 <translation id="904887679952026733">Sofern möglich, dunkles Design auf Websites anwenden, wenn Brave das dunkle Design verwendet</translation>
 <translation id="2390272837142897736">Heranzoomen</translation>
@@ -123,7 +129,6 @@
 <translation id="257931822824936280">Maximiert – zum Minimieren klicken</translation>
 <translation id="2586657967955657006">Zwischenablage</translation>
 <translation id="2588271083332682494">Mit Tabgruppen den Überblick behalten</translation>
-<translation id="2594832159966169099">V8-Sicherheit verwalten</translation>
 <translation id="2597457036804169544">Dunkles Design nicht auf Websites anwenden</translation>
 <translation id="2606760465469169465">Automatische Bestätigung</translation>
 <translation id="2621115761605608342">JavaScript für eine bestimmte Website zulassen.</translation>
@@ -160,6 +165,7 @@
 <translation id="3008272652534848354">Berechtigungen zurücksetzen</translation>
 <translation id="301521992641321250">Automatisch blockiert</translation>
 <translation id="3064871050034234884">Websites dürfen Ton wiedergeben</translation>
+<translation id="3065787901655140044">Erweitertes Sicherheitsprogramm ist aktiviert</translation>
 <translation id="3069226013421428034">Hier kannst du Websites angeben, für die die Anmeldung über Drittanbieter erlaubt werden soll.</translation>
 <translation id="310297983047869047">Vorherige Folie</translation>
 <translation id="3109724472072898302">Minimiert</translation>
@@ -187,6 +193,7 @@
 <translation id="3333961966071413176">Alle Kontakte</translation>
 <translation id="3360338140203645771">Gespeicherte Zoomstufen löschen?</translation>
 <translation id="3362437373201486687">Nach Bluetooth-Geräten wird gesucht</translation>
+<translation id="3368138297038111198">Fenster wird geteilt</translation>
 <translation id="3386292677130313581">Nachfragen, bevor Websites mein Standort angezeigt wird (empfohlen)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="344449859752187052">Drittanbieter-Cookies blockiert</translation>
@@ -195,7 +202,6 @@
 <translation id="3496995426334945408">Websites verwenden normalerweise JavaScript zum Anzeigen von interaktiven Funktionen wie Videospielen oder Webformularen</translation>
 <translation id="3521663503435878242">Websites unter <ph name="DOMAIN"/></translation>
 <translation id="3523447078673133727">Websites nicht erlauben, meine Handbewegungen zu verfolgen</translation>
-<translation id="3532312529397438268">Websites dürfen das V8‑Optimierungstool nicht verwenden</translation>
 <translation id="3536227077203206203">Einmal gewährt</translation>
 <translation id="3538390592868664640">Websites daran hindern, eine 3D-Karte meiner Umgebung zu erstellen oder die Kameraposition zu verfolgen</translation>
 <translation id="3586500876634962664">Kamera- und Mikrofonnutzung</translation>
@@ -209,12 +215,15 @@
 <translation id="3658847490588580244">Ansicht am unteren Rand des Standardbrowsers</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> Website in der Gruppe von <ph name="RWS_OWNER"/>, die deine Aktivitäten in der Gruppe sehen kann}other{<ph name="RWS_MEMBERS_COUNT"/> Websites in der Gruppe von <ph name="RWS_OWNER"/>, die deine Aktivitäten in der Gruppe sehen können}}</translation>
 <translation id="3676777756440746804">Websites dürfen nicht darum bitten, Informationen verwenden zu dürfen, die sie zu deiner Person gespeichert haben</translation>
+<translation id="3678318839615834650">Ansicht mit Karten auf der Seite „Neuer Tab“ am unteren Rand ist vollständig geöffnet</translation>
 <translation id="3697164069658504920">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie USB-Geräte verwenden dürfen. Wenn er deaktiviert ist, können Websites keine USB-Geräte verwenden.</translation>
+<translation id="3703430731944883733">Feed verwalten</translation>
 <translation id="2697264242676904869">Von dir besuchte Websites können eine kleine Datenmenge in Brave speichern, die hauptsächlich dazu dienen, zu belegen, dass du kein Bot bist</translation>
 <translation id="3708684582558000260">Geschlossene Websites dürfen den Datenversand oder -empfang nicht abschließen</translation>
 <translation id="3709818294139939629">Dateizugriff der Website entfernt</translation>
 <translation id="3721953990244350188">Schließen und nächste verfügbare Aktion anzeigen</translation>
 <translation id="3744111561329211289">Hintergrundsynchronisierung</translation>
+<translation id="3746834924069123416">Weitere zuletzt geöffnete Tabs ansehen</translation>
 <translation id="3763247130972274048">Tippe links oder rechts im Video doppelt, um 10 s zu überspringen</translation>
 <translation id="3776508619697147021">Websites dürfen nachfragen, ob sie automatisch mehrere Dateien herunterladen dürfen</translation>
 <translation id="3779154269823594982">Passwörter ändern</translation>
@@ -229,6 +238,7 @@
 <translation id="3859306556332390985">Nach vorne navigieren</translation>
 <translation id="389521680295183045">Websites dürfen nachfragen, ob sie Informationen zu meiner aktiven Nutzung dieses Geräts abrufen dürfen</translation>
 <translation id="3895926599014793903">Zoom zwingend aktivieren</translation>
+<translation id="3903738175795615004">Zum Beenden des Vollbildmodus von oben nach unten ziehen oder Esc-Taste drücken.</translation>
 <translation id="3905475044299942653">Erhalt von zu vielen Benachrichtigungen verhindern</translation>
 <translation id="3918378745482005425">Einige Funktionen sind möglicherweise nicht verfügbar. Ähnliche Websites können weiterhin Drittanbieter-Cookies verwenden.</translation>
 <translation id="3922092564198021702">Öffne die Einstellungen auf deinem Smartphone</translation>
@@ -253,6 +263,7 @@
 <translation id="4194328954146351878">Nachfragen, bevor Websites erlaubt wird, Informationen auf NFC-Geräten abzurufen und zu ändern (empfohlen)</translation>
 <translation id="4200726100658658164">Standorteinstellungen öffnen</translation>
 <translation id="421742575134139848">Websites geben möglicherweise Audio für Musik, Videos und weitere Medien wieder</translation>
+<translation id="4217710972110098902">Mit einem seriellen Port verbunden</translation>
 <translation id="4226663524361240545">Bei Benachrichtigungen kann das Gerät vibrieren</translation>
 <translation id="4259722352634471385">Die Navigation zu <ph name="URL"/> ist blockiert.</translation>
 <translation id="4274673989874969668">Wenn du eine Website verlässt, kann die Synchronisierung trotzdem fortgesetzt werden, um Aufgaben wie das Hochladen von Fotos oder das Versenden einer Chatnachricht zu beenden</translation>
@@ -278,6 +289,7 @@
 <translation id="4534723447064627427">Um <ph name="APP_NAME"/> Zugriff auf dein Mikrofon zu gewähren, muss die Mikrofonberechtigung auch in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktiviert werden.</translation>
 <translation id="4566417217121906555">Mikrofon stummschalten</translation>
 <translation id="4570913071927164677">Details</translation>
+<translation id="4578289292431526768">Los gehts</translation>
 <translation id="461356340001513807">Du kannst dich mit einem Konto, das du bei einem Identitätsdienst hast, auf Websites anmelden</translation>
 <translation id="4635969503923889910">Websites dürfen keine NFC-Geräte verwenden</translation>
 <translation id="4644713492825682049">Löschen und zurücksetzen</translation>
@@ -290,7 +302,6 @@
 <translation id="4779083564647765204">Zoomen</translation>
 <translation id="4807122856660838973">Safe Browsing aktivieren</translation>
 <translation id="4811450222531576619">Informationen zur Quelle und zum Thema</translation>
-<translation id="481168145262973879">Websites dürfen das V8‑Optimierungstool verwenden</translation>
 <translation id="4816495437032298535">Gespeicherter Zoom für Websites</translation>
 <translation id="4836046166855586901">Nachfragen, wenn eine Website Informationen zu deiner aktiven Nutzung dieses Geräts abrufen möchte</translation>
 <translation id="483914009762354899">Alle Websites unter dieser Domain einschließen</translation>
@@ -336,6 +347,7 @@
 <translation id="5335288049665977812">Ausführung von JavaScript durch Websites zulassen (empfohlen)</translation>
 <translation id="534295439873310000">NFC-Geräte</translation>
 <translation id="5344522958567249764">Datenschutz bei Anzeigen verwalten</translation>
+<translation id="5371407439562620893">JavaScript-Optimierung und -Sicherheit</translation>
 <translation id="5373874281522292782">Deine Tabgruppen sind gespeichert</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 weitere)}other{(+ # weitere)}}</translation>
 <translation id="5403592356182871684">Namen</translation>
@@ -344,22 +356,28 @@
 <translation id="5489227211564503167">Verstrichene Zeit: <ph name="ELAPSED_TIME"/> von <ph name="TOTAL_TIME"/>.</translation>
 <translation id="5502860503640766021"><ph name="PERMISSION_1"/> zugelassen, <ph name="PERMISSION_2"/> blockiert</translation>
 <translation id="5505264765875738116">Websites können nicht fragen, ob du Benachrichtigungen erhalten möchtest</translation>
+<translation id="5515432237048785579">Ansicht des Discover-Feeds am unteren Rand ist vollständig geöffnet</translation>
 <translation id="5516455585884385570">Benachrichtigungseinstellungen öffnen</translation>
 <translation id="5527111080432883924">Nachfragen, bevor einer Website erlaubt wird, Texte und Bilder aus der Zwischenablage abzurufen (empfohlen)</translation>
 <translation id="5545693483061321551">Websites können deine Cookies nicht verwenden, um deine Browseraktivitäten auf anderen Websites zu sehen und beispielsweise zur Personalisierung von Werbung zu nutzen. Einige Websites funktionieren dann möglicherweise nicht mehr richtig.</translation>
 <translation id="5553374991681107062">Letzte</translation>
+<translation id="674221630984410403">Websites nicht mit der V8-Engine von Brave beschleunigen (so wird Brave etwas besser vor Angriffen geschützt)</translation>
 <translation id="5556459405103347317">Neu laden</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blockiert</translation>
 <translation id="560980142378233747">Das bedeutet, dass die Websitefunktionen wie erwartet funktionieren sollten, der Browserschutz aber möglicherweise geringer ist. <ph name="BEGIN_LINK"/>Feedback geben<ph name="END_LINK"/></translation>
-<translation id="5632485077360054581">Zeigen</translation>
+<translation id="5617702678271228680">Ansicht mit Karten auf der Seite „Neuer Tab“ am unteren Rand</translation>
+<translation id="5632485077360054581">So gehts</translation>
 <translation id="5649053991847567735">Auto-Downloads</translation>
 <translation id="5668404140385795438">Website-Anfrage zum Verhindern des Vergrößerns übergehen</translation>
+<translation id="5668843533782548925">Websites sind langsamer, aber sicherer</translation>
 <translation id="5677928146339483299">Blockiert</translation>
 <translation id="5689516760719285838">Standort</translation>
 <translation id="5690795753582697420">Die Kamera wurde in den Android-Einstellungen deaktiviert</translation>
 <translation id="5700761515355162635">Drittanbieter-Cookies zugelassen</translation>
 <translation id="5706552988683188916">Dadurch werden Cookies und andere Websitedaten für <ph name="WEBSITE"/> gelöscht</translation>
+<translation id="571222594670061844">Websites dürfen Aufforderungen zur Anmeldung von Identitätsdiensten anzeigen</translation>
 <translation id="5740126560802162366">Websites können Daten auf deinem Gerät speichern</translation>
+<translation id="5743425052258407233">Du kannst deinen Verlauf auf allen deinen Geräten abrufen und ganz einfach dort weitermachen, wo du vorher aufgehört hast</translation>
 <translation id="5750869797196646528">Handtracking</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> blockiert</translation>
 <translation id="5804241973901381774">Berechtigungen</translation>
@@ -372,6 +390,7 @@
 <translation id="5860491529813859533">Aktivieren</translation>
 <translation id="5876056640971328065">Video anhalten</translation>
 <translation id="5877248419911025165">Alle Anfragen minimieren</translation>
+<translation id="5878945009165002849">Aufforderungen zur Anmeldung von Identitätsdiensten blockieren</translation>
 <translation id="5884085660368669834">Websiteeinstellung</translation>
 <translation id="5887687176710214216">Gestern zuletzt besucht</translation>
 <translation id="5908617755156109052">Websites dürfen weder eine 3D-Karte meiner Umgebung erstellen noch die Kameraposition erfassen</translation>
@@ -409,7 +428,6 @@
 <translation id="6270391203985052864">Websites können fragen, ob du Benachrichtigungen erhalten möchtest</translation>
 <translation id="6295158916970320988">Alle Websites</translation>
 <translation id="6320088164292336938">Vibrieren</translation>
-<translation id="6344622098450209924">Schutz vor Tracking</translation>
 <translation id="6367753977865761591">Hier kannst du Websites angeben, für die die Anmeldung über Drittanbieter blockiert werden soll.</translation>
 <translation id="6398765197997659313">Vollbildmodus beenden</translation>
 <translation id="640163077447496506">Läuft heute ab</translation>
@@ -433,7 +451,6 @@
 <translation id="6612358246767739896">Geschützte Inhalte</translation>
 <translation id="662080504995468778">Bleiben</translation>
 <translation id="6635327442719709864">Wenn diese Funktion aktiviert ist, können Websites anfragen, ob sie serielle Ports verwenden dürfen. Ist sie deaktiviert, können Websites keine seriellen Ports verwenden.</translation>
-<translation id="6653342741369270081">Wenn du den Vollbildmodus beenden möchtest, tippe auf die Schaltfläche „Zurück“.</translation>
 <translation id="6683865262523156564">Diese Website ist einer Gruppe zugeordnet, die deine Aktivitäten sehen kann. Die Gruppe wird durch <ph name="RWS_OWNER"/> definiert.</translation>
 <translation id="6689172468748959065">Profilfotos</translation>
 <translation id="6697925417670533197">Aktive Downloads</translation>
@@ -448,7 +465,6 @@
 <translation id="7912249371524580097">Standardmäßig Brave verwenden</translation>
 <translation id="6840760312327750441">Wenn du Tabs gruppieren möchtest, halte einen Tab gedrückt. Ziehe ihn dann auf einen anderen Tab.</translation>
 <translation id="6842868554183332230">Websites rufen normalerweise Informationen zu deiner aktiven Nutzung eines Geräts ab, um deine Verfügbarkeit in Chat-Apps anzuzeigen</translation>
-<translation id="7550680632761245819">Zusätzlichen Schutz in der JavaScript- und WebAssembly-Engine von Brave aktivieren</translation>
 <translation id="6864395892908308021">NFC wird von diesem Gerät nicht unterstützt</translation>
 <translation id="6870169401250095575">Karte „Sicherheitscheck“ ausblenden</translation>
 <translation id="6900883974539674431">Erstelle Tabgruppen, die automatisch auf allen deinen Geräten gespeichert und aktualisiert werden</translation>
@@ -459,7 +475,6 @@
 <translation id="6980861169612950611">Websitedaten löschen? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Bedienungshilfen</translation>
 <translation id="6992289844737586249">Nachfragen, bevor Websites auf mein Mikrofon zugreifen dürfen (empfohlen)</translation>
-<translation id="2532326772258858491">Brave wird schneller ausgeführt und Funktionen, die JavaScript verwenden, sollten wie vorgesehen laufen</translation>
 <translation id="7000754031042624318">In den Android-Einstellungen deaktiviert</translation>
 <translation id="8683151724374457021">Diese Website erhebt Informationen dazu, was dir gefällt, und schlägt dann anderen Websites Werbung vor. Außerdem ruft sie deine Anzeigenthemen von Brave ab, damit sie dir relevantere Werbung anzeigen kann.</translation>
 <translation id="7053983685419859001">Blockieren</translation>
@@ -476,11 +491,11 @@
 <translation id="7203150201908454328">Erweitert</translation>
 <translation id="7219254577985949841">Websitedaten löschen?</translation>
 <translation id="723171743924126238">Bilder auswählen</translation>
-<translation id="7243246278722455312">Ansicht am unteren Rand für „Seite ‚Neuer Tab‘ anpassen“</translation>
 <translation id="7243308994586599757">Optionen unten auf dem Bildschirm verfügbar</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> ausgewählt</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> und <ph name="PERMISSION_2"/> zugelassen</translation>
 <translation id="7276071417425470385">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie Virtual-Reality-Geräte verwenden dürfen. Wenn er deaktiviert ist, können Websites keine Virtual-Reality-Geräte verwenden.</translation>
+<translation id="728412880473384942">Websites sind schneller, aber weniger sicher</translation>
 <translation id="7366415735885268578">Website hinzufügen</translation>
 <translation id="7368695150573390554">Sämtliche Offlinedaten werden gelöscht</translation>
 <translation id="7383715096023715447">Einstellungen für <ph name="DOMAIN"/></translation>
@@ -536,7 +551,6 @@
 <translation id="8077120325605624147">Jede Website, die du besuchst, kann dir beliebige Werbung präsentieren</translation>
 <translation id="6405300764336705484">Dieser Inhalt ist von <ph name="DOMAIN_NAME"/> und wurde von Brave bereitgestellt.</translation>
 <translation id="8088603949666785339">Weitere Optionen in „<ph name="BANNER_TITLE"/>“</translation>
-<translation id="8090579562279016251">Reduziert die Leistung, macht V8 aber widerstandsfähiger gegen Angriffe</translation>
 <translation id="8112925981674547014">Tabs in App-Liste anzeigen</translation>
 <translation id="7418062714432254273">{DAYS,plural, =1{Brave schränkt morgen wieder Cookies ein}other{Noch # Tage, bis Brave wieder Cookies einschränkt}}</translation>
 <translation id="8116925261070264013">Stummgeschaltet</translation>
@@ -555,6 +569,7 @@
 <translation id="8261506727792406068">Löschen</translation>
 <translation id="8284326494547611709">Untertitel</translation>
 <translation id="8300705686683892304">Von App verwaltet</translation>
+<translation id="8315509175050791576">Tab wird geteilt</translation>
 <translation id="8324158725704657629">Nicht mehr fragen</translation>
 <translation id="8362795839483915693">Du kannst Websites, die du besuchst, heranzoomen und wieder herauszoomen</translation>
 <translation id="8372893542064058268">Lässt die Hintergrundsynchronisierung für eine bestimmte Website zu.</translation>
@@ -569,6 +584,7 @@
 <translation id="8447861592752582886">Zugriffsberechtigung auf Gerät widerrufen</translation>
 <translation id="8471525937465764768">Websites verwenden normalerweise USB-Geräte für Funktionen wie das Drucken eines Dokuments oder das Speichern auf einem Speichergerät</translation>
 <translation id="8473055640493819707"><ph name="APP_NAME"/> ist veraltet. Bitte installiere die App neu.</translation>
+<translation id="847433688444405067">Geräteübergreifend surfen</translation>
 <translation id="8487700953926739672">Offline verfügbar</translation>
 <translation id="848952951823693243">Mobile Website immer anfordern</translation>
 <translation id="8492822722330266509">Websites dürfen Pop-ups senden und Weiterleitungen verwenden</translation>

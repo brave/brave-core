@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
 <translation id="6302422639282249274">Brave Rewards kezelése</translation>
-<translation id="2709516037105925701">Automatikus kitöltés</translation>
 <translation id="8617525558807213034">Automatikus kitöltés a privát lapokon</translation>
 <translation id="8685431198160039193">A mentett információk automatikusan kitölthetők a privát lapokon</translation>
 <translation id="6583902294974160967">Támogatás</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Megjelenés</translation>
 <translation id="9040069796107003510">Brave jutalom ikon</translation>
 <translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
-<translation id="8495235435594442882">Alsó eszközsáv engedélyezése</translation>
+<translation id="1215433243238902715">Alsó navigációs eszköztár engedélyezése</translation>
+<translation id="1422686363939271829">Ez a beállítás nem elérhető, ha az alsó címsáv van kiválasztva</translation>
 <translation id="6587448235155023666">A változtatásai a Brave következő indításakor lépnek érvénybe</translation>
 <translation id="8701563696941209024">INDÍTSA ÚJRA MOST</translation>
 <translation id="834487290629916192">KÉSŐBB</translation>
@@ -420,9 +420,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8520059774736886747">A tartalomkészítő <ph name="PUBLISHER_NAME"/> nemrég igazolta magát</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Új lap</translation>
+<translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását</translation>
+<translation id="8748471354357836070">További információk / lemondási lehetőségek</translation>
 <translation id="3171669670217312786">Háttérképek</translation>
 <translation id="8522669544471808198">Háttérképek megjelenítése</translation>
 <translation id="3870475560794762985">Szponzorált képek megjelenítése</translation>
+<translation id="6937724381960478525">Tudj meg többet a szponzorált képekről</translation>
 <translation id="8793108040181436796">Widgetek</translation>
 <translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
 <translation id="7275773481201277457">Brave statisztikák mutatása</translation>

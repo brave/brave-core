@@ -30,15 +30,16 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="1356661055722410047">Nouveau! Vous pouvez traduire à la fois le texte et les images sur votre écran</translation>
 <translation id="1383876407941801731">Rechercher</translation>
 <translation id="8132634101975074716">Vous êtes connecté à Brave!</translation>
+<translation id="141901961143729572">Faites part de vos commentaires</translation>
 <translation id="3880714039086599943">Pour partager votre fenêtre, autorisez l'enregistrement de l'écran pour Brave dans les Réglages système.</translation>
 <translation id="1586284627848250203">Obtenir de l'aide avec Brave for Testing</translation>
 <translation id="1497802159252041924">Erreur d'installation : <ph name="INSTALL_ERROR"/></translation>
+<translation id="1518627427551567882">Cette page est protégée</translation>
 <translation id="5147525139567260139">Partager un onglet de Brave</translation>
 <translation id="1547469039832541117">Termine la tâche mise en évidence.</translation>
 <translation id="1530633922026945685">Brave a besoin de votre autorisation pour accéder à votre appareil photo afin de créer une carte 3D de votre environnement</translation>
 <translation id="9125033103884432">{NUM_EXTENSIONS,plural, =1{Cette extension n'est plus prise en charge. Brave vous recommande de la retirer.}one{Cette extension n'est plus prise en charge. Brave vous recommande de la retirer.}other{Ces extensions ne sont plus prises en charge. Brave vous recommande de les retirer.}}</translation>
 <translation id="6570689355868013775">Les outils de sécurité de Brave</translation>
-<translation id="6198411733024382246">Brave doit confirmer votre identité avant que certaines données puissent être enregistrées dans votre compte Brave et utilisées sur tous vos appareils. Si vous vous déconnectez, ces données resteront sur cet appareil.</translation>
 <translation id="1902837727299679178">Brave souhaite supprimer vos données du gestionnaire de mots de passe. Tapez votre mot de passe Windows pour autoriser la suppression.</translation>
 <translation id="4449148723378534338">Passer en revue les principaux paramètres de confidentialité et de sécurité dans Brave</translation>
 <translation id="1640672724030957280">Téléchargement en cours…</translation>
@@ -162,6 +163,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Une ou plusieurs extensions Brave ont accédé à 1 appareil USB}=1{Une ou plusieurs extensions Brave ont accédé à 1 appareil USB}one{Une ou plusieurs extensions Brave ont accédé à # appareil USB}other{Une ou plusieurs extensions Brave ont accédé à # appareils USB}}</translation>
 <translation id="5320085753638900910">Votre historique de navigation a une incidence sur les annonces que vous voyez ainsi que sur les centres d'intérêt tels qu'ils sont estimés ci-dessous. Afin de protéger votre confidentialité, Brave supprime automatiquement et de façon continue vos centres d'intérêt chaque mois. Les centres d'intérêt peuvent être actualisés à moins que vous ne les retiriez.</translation>
 <translation id="7365690458036015383">Le programme d'installation n'a pas réussi à décompresser l'archive. Veuillez télécharger Brave de nouveau.</translation>
+<translation id="310459126943037700">Impossible de terminer la ou les tâches.</translation>
 <translation id="8919461291440820124">Brave se sert de votre microphone.</translation>
 <translation id="3137969841538672700">Faire glisser pour rechercher</translation>
 <translation id="8372436892102763334">Cet onglet utilise des ressources supplémentaires. Pour améliorer vos performances, laissez Brave le rendre inactif.</translation>
@@ -203,7 +205,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="308146532933302843">Découvrir pourquoi Brave bloque certains téléchargements</translation>
 <translation id="2189149060536531804">Brave vous informera si vous devez examiner quelque chose</translation>
 <translation id="6324134303015966238">Brave précharge les pages que vous êtes susceptible de visiter, afin qu'elles se chargent plus rapidement lorsque vous le faites.</translation>
-<translation id="2401189691232800402">Système Brave OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3885770153807205175">Sélecteur de langue</translation>
 <translation id="6315734375101223238">Personnaliser et gérer Brave. Votre attention est requise – cliquez pour plus de détails.</translation>
@@ -213,6 +214,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="3941890832296813527">Erreur d'installation : le nom du fichier du programme d'installation n'est pas valide ou n'est pas pris en charge.</translation>
 <translation id="8090497651549769448">Brave essaie de copier des mots de passe. Pour autoriser cette action, entrez votre mot de passe Windows.</translation>
 <translation id="4256965182800026277">Vos adresses, vos mots de passe et vos modes de paiement que vous avez enregistrés dans votre compte Brave seront retirés de cet appareil. Pour les utiliser à nouveau dans Brave, reconnectez-vous.</translation>
+<translation id="395904275706073188">Les pages protégées ne peuvent pas être lues. Essayez une autre page.</translation>
 <translation id="4194619960643453552">Découvrez comment Brave assure votre sécurité</translation>
 <translation id="1311808042904310985">À propos de &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">À propos de Brave OS</translation>
@@ -331,6 +333,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="82926023981336111">Personnalisez et gérez Brave. Définissez Brave comme navigateur par défaut.</translation>
 <translation id="5809516625706423866">Impossible de se connecter à Internet. HTTP 401 Unauthorized. Veuillez vérifier la configuration de votre mandataire.</translation>
 <translation id="1224606669200461217">Pour utiliser et enregistrer les données Brave dans votre compte Brave, mettez à jour Brave</translation>
+<translation id="5824893331272123205">Impossible de charger ce panneau, réessayez</translation>
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
 <translation id="5871205389137001634">Cliquez pour quitter la recherche d'images</translation>
 <translation id="8054200348483755053">Brave a constaté que ces éléments contiennent un logiciel malveillant :</translation>
@@ -462,6 +465,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="7339898014177206373">Nouvelle fenêtre</translation>
 <translation id="3511996232906761537">Votre contenu Web, vos favoris et toutes vos données de Brave sont conservés ici.</translation>
 <translation id="5380963249588143069">Votre administrateur système a configuré Brave de manière à ouvrir <ph name="ALTERNATIVE_BROWSER_NAME"/> pour accéder à <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="7352651011704765696">Une erreur s’est produite</translation>
 <translation id="4631170166710903214">Cette extension n'est plus prise en charge. Brave vous recommande de la retirer.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave pour les concepteurs</translation>
 <translation id="7450541714075000668">Texte copié</translation>
@@ -482,6 +486,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="3343095737966473035">Brave n'est pas votre navigateur par défaut</translation>
 <translation id="5477319665405831211">Synchroniser et personnaliser Brave sur vos appareils</translation>
 <translation id="2339273275658335597">mise à jour de Brave</translation>
+<translation id="7716950018788545737">Tâches terminées.</translation>
 <translation id="77283119132245232">Fournit des services de traçage système pour <ph name="BROWSER_NAME"/>. Si ce service est désactivé, les traces de la performance créées par le navigateur ne comprendront pas les événements à l'échelle du système tels que les événements ReadyThread et de changement de contexte.</translation>
 <translation id="4784414698887946907">Cette action entraînera la suppression de vos données de navigation sur cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Le programme d'installation n'a pas pu créer de répertoire temporaire. Vérifiez que le disque a suffisamment d'espace libre et que vous disposez des autorisations nécessaires pour installer le logiciel.</translation>
@@ -532,6 +537,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="9098234372282930719">Vous devrez ensuite redémarrer Brave.</translation>
 <translation id="1327729221471951979">Brave vous recommande de la retirer. <ph name="BEGIN_LINK"/>En savoir plus sur les extensions prises en charge<ph name="END_LINK"/></translation>
 <translation id="8577108764439626300">Cette extension n'a pas été publiée par son développeur et pourrait être dangereuse. Retirez-la de Brave afin qu'elle ne puisse plus voir ni modifier vos données sur les sites que vous visitez, y compris vos renseignements personnels.</translation>
+<translation id="4234753748520037091">Brave doit confirmer votre identité avant que certaines données puissent être enregistrées dans votre compte Brave et utilisées sur tous vos appareils. Si vous vous déconnectez maintenant, ces données seront supprimées.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Redémarrer Brave d'ici un jour}one{Redémarrer Brave d'ici # jour}other{Redémarrer Brave d'ici # jours}}</translation>
 <translation id="8438543370129609977">Lorsque vous utilisez la recherche d'images, le titre de la page, l'URL et le contenu, y compris les fichiers PDF, sont envoyés au serveur. <ph name="LEARN_MORE"/></translation>
 <translation id="6914496861676471566">L'archive du programme d'installation est corrompue ou n'est pas valide. Veuillez télécharger Brave à nouveau.</translation>

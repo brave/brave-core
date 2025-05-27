@@ -52,6 +52,12 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Huwag ipakita ulit</translation>
 <translation id="4595286989346610620">Suriin ang mga detalye</translation>
 <translation id="8324318899000695659">I-block ang mga elemento</translation>
+<translation id="3828310068250853121">Piliin ang element na gusto mong i-block</translation>
+<translation id="2577286987423083872">I-block ang Mga Element</translation>
+<translation id="3211174446914979436">I-manage ang mga filter</translation>
+<translation id="3108584651298176909">Ipakita ang mga tuntunin</translation>
+<translation id="5156986655891520787">Itago ang mga tuntunin</translation>
+<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buksan gamit ang .onion na address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">I-force Paste</translation>
@@ -93,7 +99,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Hiniling ng site na ito ang <ph name="PART_ONE"/>eksaktong lokasyon<ph name="PART_ONE_END"/> mo. <ph name="PART_TWO"/>Matuto pa<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Hiniling ng site na ito ang <ph name="PART_ONE"/>eksaktong lokasyon<ph name="PART_ONE_END"/> mo. Maibibigay lang ng Brave ang data ng <ph name="PART_TWO"/>pangkalahatang lokasyon<ph name="PART_TWO_END"/> mo dahil naka-disable ang <ph name="PART_THREE"/>Mga Serbisyo ng Lokasyon<ph name="PART_THREE_END"/>. <ph name="PART_FOUR"/>Matuto pa<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Isara ang lahat</translation>
-<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="4870911314065352661">Isara ang lahat ng tab?</translation>
 <translation id="7551864359422178684">Mayroon kang <ph name="NUMBER_OF_TABS"/> (na) tab na nakabukas sa window ng browser na ito.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> (na) tab</translation>
@@ -133,6 +138,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Hindi mo kailangang mag-click para kumita, pero mag-click ka kung interesado!</translation>
 <translation id="5253166205743627564">Salamat sa pagsuporta sa Brave Search sa pamamagitan ng pag-click sa isang private ad. Hindi kagaya ng Big Tech, sinusukat namin ang performance ng ad nang anonymous para mapanatili ang privacy mo.</translation>
 <translation id="8748471354357836070">Alamin ang higit pa / mga opsyon sa pag-opt out</translation>
+<translation id="5927196110206824867">Sinusuportahan ng naka-sponsor na larawan sa background ang mission ng Brave na bumuo ng independent, user-first na Web. Hindi katulad ng Big Tech, sinusukat namin ang performance ng ad nang anonymous para ipreserba ang privacy mo.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Mag-ambag ng ilang anonymous na paghahanap at data mula sa pag-browse para pahusayin ang Brave Search.</translation>
 <translation id="1516554614404600536">Tooltip ng Brave</translation>
@@ -473,6 +479,9 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
 <translation id="7791141927430186653">Pahintulutan ang mga naka-embed na tweet ng X (dating Twitter)</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
+<translation id="1244912498725894944">Kontrolado ng Brave Shields ang ilang setting ng cookie. Makikita mo ang mga ito &lt;a href="/content/braveShields"&gt;rito&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Kontrolado ng Brave Shields ang setting na ito.</translation>
+<translation id="352287031024189516">Kontrolado ng Google Sign-in ang setting na ito.</translation>
 <translation id="8792121506918889955">Patakaran sa pangangasiwa ng IP ng WebRTC</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Default na pampubliko at pampribadong interface</translation>
@@ -674,8 +683,12 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Mga Wallet Network</translation>
 <translation id="5975930666279943472">I-clear ang transaksyon sa wallet at impormasyon ng nonce</translation>
 <translation id="5693968582510626466">Ang pag-clear sa mga transaksyon ay maaaring makatutulong sa mga developer o kapag nag-ayos ng katayuan sa isang local server</translation>
-<translation id="2326850911705720398">I-reset at i-clear ang data ng wallet</translation>
+<translation id="6171369470447621882">I-reset sync state ng Zcash</translation>
+<translation id="6705112675071480687">Nire-reset ang sync progress ng Zcash para sa lahat ng mga shielded na account</translation>
+<translation id="2012093487873597892">Sigurado ka bang gusto mong i-reset ang sync state ng Zcash? Ida-drop ang sync progress para sa lahat ng mga shielded na account. I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
+<translation id="5031551083187285762">Na-reset ang sync state para sa mga Zcash account.</translation>
 <translation id="9216386092464743272">Sigurado ka bang gusto mong i-reset ang lahat ng transaksyon ng iyong wallet at impormasyon ng nonce? Ang option na ito ay kadalasang ginagamit ng mga developer na nagpapatakbo ng local test server. I-type ang <ph name="CONFIRMATION_PHRASE"/> para maconfirm.</translation>
+<translation id="2326850911705720398">I-reset at i-clear ang data ng wallet</translation>
 <translation id="6369495274982305511">Sigurado ka bang gusto mong i-reset ang iyong wallet? Kung hindi naka-back up ang iyong wallet, mawawala ang lahat ng data ng iyong account kapag nag-reset (kabilang ang anumang nauugnay na pondo). I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
 <translation id="3752403403443723332">Ang iyong wallet ay na-reset.</translation>
 <translation id="594766067816395072">Ang impormasyon sa transaksyon ng iyong wallet ay na-reset.</translation>

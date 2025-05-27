@@ -72,9 +72,11 @@
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
 <translation id="5585019845078534178">カード</translation>
 <translation id="3870475560794762985">スポンサー画像を表示する</translation>
+<translation id="5684562942023496754">スポンサー画像を閲覧すると稼ぐことができます。</translation>
+<translation id="6168679340384667457">閲覧したスポンサー画像に対してBATを獲得することができます。スポンサー画像を無効にすると、獲得量が減ります。</translation>
+<translation id="6165508094623778733">詳しく知る</translation>
 <translation id="2414654907269324670">スポンサー画像に対してBATを獲得しています。</translation>
 <translation id="4942016616604700968">リワードを有効にする</translation>
-<translation id="5684562942023496754">スポンサー画像を閲覧すると稼ぐことができます。</translation>
 <translation id="8934374643857605034">Brave Rewardsのユーザーであれば、 スポンサー画像を見ることでBATを獲得することができます。</translation>
 <translation id="1570714748649804013">Brave Rewardsのユーザーであれば、 閲覧したスポンサー画像に対してBATを獲得することができます。スポンサー画像を無効にすると、獲得量が減ります。</translation>
 <translation id="8998727244653964783">カストディアルアカウントをBrave Rewardsに接続すると、スポンサー画像の閲覧に対してBATを獲得することができます。その間、スポンサー画像でクリエイターをサポートすることができます。</translation>
@@ -122,7 +124,6 @@
 <translation id="2702801445560668637">リーディングリスト</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="8027460023387054992">チャット要約ツール</translation>
-<translation id="6165508094623778733">詳細情報</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="730042046912793465">これは</translation>
 <translation id="2055363275850890030">プライベートウィンドウ</translation>
@@ -1098,6 +1099,8 @@
 <translation id="8874184842967597500">未接続</translation>
 <translation id="4217695020908122747">接続済みアカウント</translation>
 <translation id="8497650996740651467">利用可能なアカウント</translation>
+<translation id="1775188434254367931">接続</translation>
+<translation id="1818522458013171885">ブロック解除</translation>
 <translation id="5677928146339483299">ブロック中</translation>
 <translation id="3890989020011724401">新規アカウント</translation>
 <translation id="4612979983851181941">このパネルを使用して、Web3とすべての暗号資産に安全にアクセスできます。</translation>
@@ -1744,6 +1747,7 @@
 <translation id="803703704549420287">フィルターをクリア</translation>
 <translation id="1472675084647422956">表示項目を増やす</translation>
 <translation id="4522570452068850558">詳細</translation>
+<translation id="4583937519241190398">DappRadarにより検証済</translation>
 <translation id="8713438253026855351">シールド済アカウントに切り替える</translation>
 <translation id="3526789880090101085">シールド済アカウント</translation>
 <translation id="2298396008562701154">現在、このアカウントは透明なトランザクションをサポートしており、ブロックチェーン上のすべての人に閲覧可能な状態になっています。</translation>
@@ -1834,7 +1838,9 @@
 <translation id="7758665172236842395">お気に入りのソースを1つのフィードでフォロー。Braveのタブを開いて、下にスクロールすればすぐに設定できます！</translation>
 <translation id="2376542729617592331">Braveニュースは、匿名化されたプライベート広告を使用する広告サポート型のツールです。<ph name="LINK_START"/>詳細はこちら<ph name="LINK_END"/>。</translation>
 <translation id="1765217911817124376">Braveニュースを有効にする</translation>
+<translation id="5149018766422637336">ニュースとRSS</translation>
 <translation id="6265592479622441247"><ph name="BEGIN_BOLD"/>ダッシュボード<ph name="END_BOLD"/>に戻る</translation>
+<translation id="3169472444629675720">ディスカバー</translation>
 <translation id="8981973962043893066">サイト、トピック、RSSフィードを検索</translation>
 <translation id="1498364270401875204">チャンネル</translation>
 <translation id="6401776069326703655">全て見る</translation>
@@ -2119,6 +2125,7 @@
 <translation id="8151638057146502721">設定</translation>
 <translation id="3282183392203936979">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama 3.1 8Bを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。LlamaはBrave独自の安全なインフラを通じて、ホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 14Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにDeepSeekによって作られたモデル、DeepSeek R1を搭載しています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにMistral AIによって作られたモデル、Mixtral 8x7Bを搭載しています。MixtralはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude Instantを搭載しています。ClaudeはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicの会話・テキスト処理タスクモデルであるClaude Sonnetを搭載しています。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
@@ -2156,7 +2163,6 @@
 <translation id="6393149565874086128">フィードバックを追加</translation>
 <translation id="3521125531016408657">回答に「いいね」する</translation>
 <translation id="8202517001427388906">回答を「不満」と評価する</translation>
-<translation id="3177073390279208955">評価、会話、モデル、言語、バージョン、プレミアムステータスを送信する</translation>
 <translation id="1379399209929302811">Brave AIのフィードバックを送信</translation>
 <translation id="8442999546461118871">フィードバックの内容を選択</translation>
 <translation id="9018766373792005944">フィードバックのカテゴリを選択してください</translation>
@@ -2181,6 +2187,12 @@
 <translation id="1946267518364740045">推論中...</translation>
 <translation id="4198859185714743678">推論完了</translation>
 <translation id="6140948187512243695">詳細を表示</translation>
+<translation id="4881695831933465202">開く</translation>
+<translation id="1625889395409731085">外部リンクを開きますか？</translation>
+<translation id="4211063437291114749">Leo AI は新しいタブでウェブサイトを開こうとしています。続行しますか？</translation>
+<translation id="5526001300821542157">次回からこのメッセージを表示しないでリンクを開く</translation>
+<translation id="1243966363662220847">回答を評価</translation>
+<translation id="7417895556119762861">回答の良し悪しを答えると、評価、会話、モデル、言語、バージョン、プレミアムステータスがBraveが送信され、Leoを改善するために使われます。 <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Leoにメッセージを送信</translation>
 <translation id="8650874793377330048">回答を停止</translation>
 <translation id="8712637175834984815">閉じる</translation>
@@ -2208,6 +2220,7 @@
 <translation id="2836330653441111204">均整の取れたスピード＆インテリジェンス</translation>
 <translation id="6695329447007213917">汎用系チャット、コーディングなど</translation>
 <translation id="5051668914970329839">General Purpose Vision</translation>
+<translation id="7226508434216060960">推論モデル</translation>
 <translation id="3965507912994218570">Leoの設定</translation>
 <translation id="1037324977127422019">こんにちは、私はLeoです。</translation>
 <translation id="8930348081963284873">Braveに組み込まれた、AI搭載型のインテリジェント・アシスタントです。</translation>
@@ -2256,21 +2269,38 @@
 <translation id="8370801182970639038">自動 (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">有効な検索エンジン</translation>
 <translation id="5355776323718420036">トップサイトを非表示</translation>
+<translation id="9173319813356700250">ニュース</translation>
 <translation id="6543799171249004861">Photo by <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">リワード</translation>
 <translation id="5966055668402779222">Brave Searchに尋ねる</translation>
 <translation id="6851426306697017546">時計を表示</translation>
 <translation id="4844370919312937270">新しいタブページに検索ウィジェットを表示</translation>
 <translation id="5009354496127441090">トップサイトを表示</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">STATS</translation>
+<translation id="712731581368828482">Brave Talkで暗号化されたビデオ通話ができます。</translation>
+<translation id="2671474274417808910">プライバシーファーストの通話</translation>
+<translation id="2100665198270190500">TALK</translation>
 <translation id="4290791698375397492">トップサイトが削除されました</translation>
 <translation id="1436784010935106834">削除されました</translation>
 <translation id="9030215177866748410">トップサイトは、頻繁にアクセスするウェブサイトに基づいて推奨されます.</translation>
+<translation id="8425213833346101688">変更</translation>
+<translation id="755045397420611731">高度なプライバシーとオンラインセキュリティ</translation>
+<translation id="4520128772974831415">IPの非表示・位置情報の変更</translation>
+<translation id="6819278685469225453">デバイス上の各アプリを保護</translation>
+<translation id="8422279921836245017">すでに購入済みですか？</translation>
+<translation id="8703188411226330709">無料トライアルを開始</translation>
+<translation id="8814357473522731680">提供元</translation>
+<translation id="7143207342074048698">接続中</translation>
+<translation id="1202549130170287307">切断しています</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">ウィジェット</translation>
 <translation id="6303294677342628402">シールド</translation>
 <translation id="8458987127502506209">Brave Shieldsを有効にする</translation>
-<translation id="7509914170164691086">次のサイトでシールド<ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/>:</translation>
-<translation id="260764436039299868">シールド<ph name="LINK_BEFORE"/>オフ<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">サイトの表示に問題があると思われる場合は、シールドを無効化してください。
-<ph name="LINK_BEFORE"/>注意：これにより、Braveのプライバシー保護機能が低下する場合があります。<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="HOST"/>の<ph name="STATUS_BEFORE"/>シールドがオンです<ph name="STATUS_AFTER"/></translation>
+<translation id="7656091630265507216"><ph name="HOST"/>の<ph name="STATUS_BEFORE"/>シールドがオフです<ph name="STATUS_AFTER"/></translation>
+<translation id="5623354834493649144">サイトの表示に問題があると思われる場合は、シールドを無効化してください。
+<ph name="NOTE_BEFORE"/>注意：これにより、Braveのプライバシー保護機能が低下する場合があります。<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">トラッカー、広告などをブロック。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Braveシールドで保護されていません。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">高度なコントロール</translation>
@@ -2353,15 +2383,12 @@
 <translation id="958268166261124668">Brave VPN: 接続済み</translation>
 <translation id="6021669293402055982">Brave VPN: 切断</translation>
 <translation id="3541307549916475335">Brave VPNパネルUI</translation>
-<translation id="7143207342074048698">接続中</translation>
-<translation id="1202549130170287307">切断しています</translation>
 <translation id="2325196879156848326">接続に失敗しました</translation>
 <translation id="745054660363064771">サーバーに接続できません</translation>
 <translation id="3936826714240735937">別のサーバーを選択</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>が<ph name="REGION_NAME"/>サーバーに接続できませんでした。再度お試しいただくか、別の国を選択してください。</translation>
 <translation id="5753795690521538679">7日間の無料トライアルを開始する</translation>
 <translation id="3357036723290257445">Brave VPNを購入済みですか？</translation>
-<translation id="8814357473522731680">提供元</translation>
 <translation id="8652175077544655965">設定を閉じる</translation>
 <translation id="5908163815855240493">メインページを開く</translation>
 <translation id="7805768142964895445">ステータス</translation>
@@ -2369,8 +2396,6 @@
 <translation id="8421945428836418371">自動で再接続</translation>
 <translation id="434523916398030617">テクニカルサポートに連絡する</translation>
 <translation id="1116694919640316211">企業情報</translation>
-<translation id="755045397420611731">高度なプライバシーとオンラインセキュリティ</translation>
-<translation id="4520128772974831415">IPの非表示・位置情報の変更</translation>
 <translation id="2044418816479192294">世界中に数百台のサーバーを配置</translation>
 <translation id="7410504850864021600">超高速の接続スピード</translation>
 <translation id="2422309687188612485">1つのプランで最大10台のデバイスを保護</translation>
@@ -2444,11 +2469,7 @@ brave://settings/systemにアクセスして、いつでもWireGuard に戻す�
 <translation id="8048263175525832621">Brave VPN - 切断済み</translation>
 <translation id="1498770726476841108">アカウントを管理</translation>
 <translation id="6825718953004242472">アイコンを削除</translation>
-<translation id="6819278685469225453">デバイス上の各アプリを保護</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">高度なプライバシーとオンラインセキュリティ。</translation>
-<translation id="8425213833346101688">変更</translation>
-<translation id="8703188411226330709">無料トライアルを開始</translation>
 <translation id="3287942014983548982">このタブで開く</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>が現在開いています。
 Tab + Enterキーの順に操作して開いているタブを切り替えます</translation>

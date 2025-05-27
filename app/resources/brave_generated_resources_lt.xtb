@@ -52,6 +52,12 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4450893287417543264">Neberodyti</translation>
 <translation id="4595286989346610620">Patikrinkite išsamią informaciją</translation>
 <translation id="8324318899000695659">Blokuoti elementus</translation>
+<translation id="3828310068250853121">Pasirinkite elementą, kurį norite blokuoti</translation>
+<translation id="2577286987423083872">Blokuoti elementus</translation>
+<translation id="3211174446914979436">Tvarkyti filtrus</translation>
+<translation id="3108584651298176909">Rodyti taisykles</translation>
+<translation id="5156986655891520787">Paslėpti taisykles</translation>
+<translation id="7658239707568436148">Atšaukti</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atidaryti naudojant .onion adresą: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Įdėti priverstinai</translation>
@@ -93,7 +99,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8117247596084706514">Ši svetainė paprašė nurodyti jūsų <ph name="PART_ONE"/>tikslią buvimo vietą <ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Sužinokite daugiau<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Ši svetainė paprašė nurodyti jūsų <ph name="PART_ONE"/>tikslią buvimo vietą <ph name="PART_ONE_END"/>. „Brave“ galės pateikti tik <ph name="PART_TWO"/>bendrus buvimo vietos<ph name="PART_TWO_END"/> duomenis, nes <ph name="PART_THREE"/>vietos nustatymo paslaugos<ph name="PART_THREE_END"/> yra išjungtos. <ph name="PART_FOUR"/>Sužinokite daugiau<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Uždaryti viską</translation>
-<translation id="7658239707568436148">Atšaukti</translation>
 <translation id="4870911314065352661">Uždaryti visus skirtukus?</translation>
 <translation id="7551864359422178684">Šiame naršyklės lange esate atvėrę <ph name="NUMBER_OF_TABS"/> skirtukus (-ų).</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> skirtukai (-ų)</translation>
@@ -133,6 +138,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3447730462826640312">Jums nereikia spustelėti, kad uždirbtumėte, bet spustelėkite, jei jus tai domina!</translation>
 <translation id="5253166205743627564">Ačiū, kad remiate „Brave“ paiešką paspaudę privačią reklamą. Skirtingai nei technologijų milžinės, reklamų efektyvumą vertiname anonimiškai saugodami jūsų privatumą.</translation>
 <translation id="8748471354357836070">Sužinokite daugiau / atsisakymo parinktys</translation>
+<translation id="5927196110206824867">Remiami fono vaizdai prisideda prie „Brave“ misijos kurti nepriklausomą, į vartotoją orientuotą žiniatinklį. Skirtingai nuo didžiųjų technologijų įmonių, reklamų našumo duomenis vertiname anonimiškai, kad apsaugotume jūsų privatumą.</translation>
 <translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
 <translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis bei padėkite patikslinti „Brave“ paieškos rezultatus.</translation>
 <translation id="1516554614404600536">„Brave“ patarimas apie įrankį</translation>
@@ -473,6 +479,9 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="7791141927430186653">Leisti rodyti įterptąsias „X“ (anksčiau „Twitter“) žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
+<translation id="1244912498725894944">Kai kurias slapukų nuostatas valdo „Brave“ skydai. Juos galite pamatyti &lt;a href="/content/braveShields"&gt;čia&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Šią nuostatą valdo „Brave“ skydai.</translation>
+<translation id="352287031024189516">Šią nuostatą valdo „Google“ prisijungimas.</translation>
 <translation id="8792121506918889955">„WebRTC“ IP tvarkymo politika</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
@@ -674,8 +683,12 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="856371974127598760">Piniginės tinklai</translation>
 <translation id="5975930666279943472">Išvalyti piniginės operacijų ir operacijos numerių informaciją</translation>
 <translation id="5693968582510626466">Operacijų išvalymas gali būti naudingas kūrėjams arba norint išvalyti būseną vietiniame serveryje</translation>
-<translation id="2326850911705720398">Nustatyti  iš naujo ir išvalyti piniginės duomenis</translation>
+<translation id="6171369470447621882">Atkurti „Zcash“ sinchronizavimo būseną</translation>
+<translation id="6705112675071480687">Visų apsaugotų paskyrų „Zcash“ sinchronizavimo eigos atkūrimas</translation>
+<translation id="2012093487873597892">Ar tikrai norite atkurti „Zcash“ sinchronizavimo būseną? Visų apsaugotų paskyrų sinchronizavimo eiga bus nutraukta. Norėdami patvirtinti, rašykite "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="5031551083187285762">Jūsų „Zcash“ paskyrų sinchronizavimo būsena buvo atkurta.</translation>
 <translation id="9216386092464743272">Ar tikrai norite iš naujo nustatyti visą savo piniginės operacijų ir operacijų numerių informaciją? Šią parinktį dažniausiai naudoja kūrėjai, turintys vietinį testavimo serverį. Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="2326850911705720398">Nustatyti  iš naujo ir išvalyti piniginės duomenis</translation>
 <translation id="6369495274982305511">Ar tikrai norite iš naujo nustatyti piniginę? Jei piniginės atsarginė kopija nebus sukurta, nustatę iš naujo prarasite visus sąskaitos duomenis (įskaitant visas susijusias lėšas). Patvirtinkite įrašydami „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="3752403403443723332">Jūsų piniginė atkurta.</translation>
 <translation id="594766067816395072">Jūsų piniginės operacijų informacija atkurta.</translation>

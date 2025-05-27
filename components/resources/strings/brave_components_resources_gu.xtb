@@ -21,6 +21,7 @@
 <translation id="5525668735313040116">વેબમાં ખાનગી રીતે શોધ કરો</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="780301667611848630">નહીં, આભાર</translation>
+<translation id="6165508094623778733">વધુ જાણો</translation>
 <translation id="2875302873837723333">લોકપ્રિય સાઇટ</translation>
 <translation id="1383876407941801731">શોધો</translation>
 <translation id="3333887201479867589">Brave પુરસ્કારો</translation>
@@ -32,7 +33,6 @@
 <translation id="8488282162676695335">Brave વૉલેટ</translation>
 <translation id="8820817407110198400">બુકમાર્ક્સ</translation>
 <translation id="1644574205037202324">ઇતિહાસ</translation>
-<translation id="6165508094623778733">વધુ જાણો</translation>
 <translation id="8730621377337864115">થઈ ગયું</translation>
 <translation id="8759753423332885148">વધુ જાણો.</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
@@ -224,6 +224,13 @@
 <translation id="8193130769524604031">ચેટના ઉન્નત ટાસ્ક</translation>
 <translation id="7979673624064378842">એકદમ ઝડપી ચેટ</translation>
 <translation id="2836330653441111204">ઝડપ અને બુદ્ધિમત્તાનું સંતુલન</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8425213833346101688">બદલો</translation>
+<translation id="755045397420611731">અતિરિક્ત ગોપનીયતા અને સુરક્ષા ઓનલાઇન</translation>
+<translation id="4520128772974831415">તમારું IP છુપાવો અને તમારું લોકેશન બદલો</translation>
+<translation id="8703188411226330709">મફત અજમાયશ શરૂ કરો</translation>
+<translation id="8814357473522731680">સંચાલન કરનાર</translation>
+<translation id="7143207342074048698">કનેક્ટ કરી રહ્યું છે</translation>
 <translation id="6303294677342628402">શિલ્ડ્સ</translation>
 <translation id="8458987127502506209">Brave શિલ્ડ સક્ષમ કરો</translation>
 <translation id="650318023204990401">ઉન્નત કંટ્રોલ</translation>
@@ -239,21 +246,14 @@
 <translation id="6764845498618413165">વધુ જાણો.</translation>
 <translation id="7818938154803162778">ચોક્કસ, હું મદદ કરીશ</translation>
 <translation id="2370739752330685659">કદાચ પછી</translation>
-<translation id="7143207342074048698">કનેક્ટ કરી રહ્યું છે</translation>
 <translation id="5753795690521538679">7-દિવસની મફત અજમાયશ શરૂ કરો</translation>
 <translation id="3357036723290257445">Brave VPN પહેલાંથી જ ખરીદ્યું છે?</translation>
-<translation id="8814357473522731680">સંચાલન કરનાર</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
 <translation id="1116694919640316211">વિશે</translation>
-<translation id="755045397420611731">અતિરિક્ત ગોપનીયતા અને સુરક્ષા ઓનલાઇન</translation>
-<translation id="4520128772974831415">તમારું IP છુપાવો અને તમારું લોકેશન બદલો</translation>
 <translation id="2044418816479192294">વિશ્વભરમાં સેંકડો સર્વરો</translation>
 <translation id="7410504850864021600">તીવ્ર-ગતિની કનેક્શન ઝડપ</translation>
 <translation id="2422309687188612485">એક જ પ્લાન સાથે 10 જેટલા ડિવાઇસ સુરક્ષિત કરો</translation>
 <translation id="2740531572673183784">બરાબર, સમજાઇ ગયું</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">અતિરિક્ત ગોપનીયતા અને સુરક્ષા ઓનલાઇન.</translation>
-<translation id="8425213833346101688">બદલો</translation>
-<translation id="8703188411226330709">મફત અજમાયશ શરૂ કરો</translation>
 </translationbundle>

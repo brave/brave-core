@@ -69,9 +69,10 @@
 <translation id="3446024864193919737">Brave පාරිතෝෂික පෙන්වන්න</translation>
 <translation id="5585019845078534178">පත්</translation>
 <translation id="3870475560794762985">ප්‍රවර්ධන රූප පෙන්වන්න</translation>
+<translation id="5684562942023496754">ප්‍රවර්ධන රූප බැලීමෙන් ඔබට ඉපැයීමට හැකිය.</translation>
+<translation id="6165508094623778733">තව දැනගන්න</translation>
 <translation id="2414654907269324670">ඔබ ප්‍රවර්ධන රූප සඳහා බැට් උපයයි.</translation>
 <translation id="4942016616604700968">පාරිතෝෂික සබල කරන්න</translation>
-<translation id="5684562942023496754">ප්‍රවර්ධන රූප බැලීමෙන් ඔබට ඉපැයීමට හැකිය.</translation>
 <translation id="8934374643857605034">බ්‍රේව් පාරිතෝෂික පරිශ්‍රීලකයෙක් ලෙස ඔබට අනුග්‍රහය ලද රූප බැලීමෙන් BAT ඉපැයීමට හැකිය.</translation>
 <translation id="1570714748649804013">බ්‍රේව් පාරිතෝෂික පරිශ්‍රීලකයෙක් ලෙස ඔබ දකින අනුග්‍රහය ලද රූප සඳහා BAT උපයනු ඇත. අනුග්‍රහය ලද රූප අබල කිරීමෙන් ඔබගේ ඉපැයීම අවම වේ.</translation>
 <translation id="8998727244653964783">ඔබ භාරකාර ගිණුමක් Brave Rewards වෙත සම්බන්ධ කරන විට අනුග්‍රහය පින්තූර බැලීම සඳහා ඔබට BAT උපයා ගත හැක. මේ අතරතුර, ඔබ අනුග්‍රහය බලන්න ලද පින්තූර දායකයින් නිර්මාණකරුවන්ට සහාය වීමට උපකාර කරයි.</translation>
@@ -119,11 +120,11 @@
 <translation id="2702801445560668637">කියවීමේ ලැයිස්තුව</translation>
 <translation id="4590997608186539865">වාදන ලැයිස්තුව</translation>
 <translation id="8027460023387054992">කතාබස් සාරාංශකය</translation>
-<translation id="6165508094623778733">තව දැනගන්න</translation>
 <translation id="8730621377337864115">අහවරයි</translation>
 <translation id="730042046912793465">මෙය</translation>
 <translation id="2055363275850890030">පෞද්ගලික කවුළුව</translation>
 <translation id="9133213713928851646">ඔබ පෞද්ගලික කවුළුවක කරන දෑ බ්‍රේව් රඳවා නොගනියි. ඔබ ගොඩවදින අඩවි ඉතිහාසයේ නොපෙන්වයි, ඔබ අහවර විට දත්තකඩ අතුරුදහන් වේ. කෙසේ වෙතත්, පෞද්ගලික කවුළු ඔබව මුළුමනින්ම නිර්නාමික නොකරයි.</translation>
+<translation id="4491905831789757331">පුද්ගලික කවුළුවක ඔබ කරන දේ Brave කිසිදා මතක තබා නොගනී. ඔබ පිවිසෙන අඩවි ඔබගේ ඉතිහාසයේ නොපෙන්වයි. ඔබ විවෘත කර ඇති සියලුම පුද්ගලික කවුළු වසා දැමූ පසු කුකීස්, පෝරම දත්ත සහ අඩවි දත්ත අතුරුදහන් වේ.</translation>
 <translation id="1700746046668116047">ඔබගේ ක්‍රියාකාරකම් තවමත් අන්තර්ජාල සේවා සපයන්නට, නිෂ්ක්‍රීය ජාල නිරීක්ෂකයින්ට හෝ ඔබගේ සේවායෝජකයාට (ඔබ වැඩ යන්ත්‍රයක් හෝ ජාලයක් භාවිතා කරන්නේ නම්) දෘශ්‍යමාන විය හැකි බව සලකන්න. වැඩි පුද්ගලිකත්වය සඳහා, Tor පුද්ගලික කවුළුවක් විවෘත කරන්න.</translation>
 <translation id="8759753423332885148">තව දැනගන්න</translation>
 <translation id="8611976753572844841">ටෝර් සම්බන්ධතාව සහිත පෞද්ගලික කවුළුව</translation>
@@ -171,6 +172,7 @@
 <translation id="3110968385867124099">මෙම පිටුව HTTP/HTTPS හරහා ලබා නොදෙන නිසා වාර්තා කිරීමට නොහැකිය.</translation>
 <translation id="7907023135990310743">මෙය ස්ථානීය පිටුවක් නිසා වාර්තා කිරීමට සුදුසු නොවේ.</translation>
 <translation id="8740275226259417070">මෙය දෝෂ පිටුවකි. එය කැඩුණු අඩවියක් ලෙස වාර්තා කළ නොහැක.</translation>
+<translation id="6367576083705149078">ඔබ සබඳතා තොරතුරු සපයන්නේ නම්, එය අනාගත වාර්තා සඳහා ගබඩා කෙරේ.</translation>
 <translation id="6806248680442980382">සැමට Brave යහපත් කිරීමට දක්වන සහායට ස්තූතියි. මෙම වාර්තාවේ අඩංගු වන්නේ මෙම අඩවිය නිවැරදි කිරීමට අපට වුවමනා තොරතුරු පමණි.</translation>
 <translation id="6476216365964140603">අතිරේක විස්තර (විකල්පයකි)</translation>
 <translation id="6145852496180774737">අමතන්න: (විකල්පයකි)</translation>
@@ -240,6 +242,7 @@
 <translation id="3082557070674409251">එබුවා</translation>
 <translation id="7119308337584989771">ඉවතලිණි</translation>
 <translation id="6805660603861526473">බැලූ</translation>
+<translation id="8167256685618982116"><ph name="TITLE"/>සක්‍රිය කිරීමෙන්, ඔබ <ph name="BEGIN_LINK1"/>සේවාවේ නියම<ph name="END_LINK1"/> සහ <ph name="BEGIN_LINK2"/>රහස්‍යතා ප්‍රතිපත්තියට<ph name="END_LINK2"/> එකඟ වේ.</translation>
 <translation id="1892970806832316900"><ph name="DATE"/> තෙක් පොරොත්තුවෙන්</translation>
 <translation id="7849926087559412554">අපොයි! ඔබගේ අතිරික්සුවට බ්‍රේව් පෞද්ගලික දැන්වීම් ලැබීමට නොහැකිය.</translation>
 <translation id="5177429570315095022">දැන්වීම් දිගටම දැකීමට අතිරික්සුව යාවත්කාල කළ යුතුය.</translation>
@@ -418,8 +421,10 @@
 <translation id="412480955826088549">සංරචකය බාගැනෙමින්...</translation>
 <translation id="4894106830958548828">මට තේරෙනවා</translation>
 <translation id="326118736933420687">ඔබ WebTorrent පිටුවක් නරඹමින් සිටී</translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/>ස්ථාන දරන්නන්<ph name="PART_ONE_END"/>සඳහා පරීක්ෂණ තන්තුව. <ph name="PART_TWO"/>තව දැනගන්න<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">නතර කළ නොහැකි වසම්</translation>
 <translation id="4492298165410552103">බ්‍රේව් හි නොනවතින වසම් සඳහා සහාය සබල කරන්නද?</translation>
+<translation id="5015092481905019948"><ph name="DOMAIN_PROVIDER_NAME"/>හි ඇති <ph name="DOMAIN_LIST"/> වසම් නම් විසඳීමට Brave <ph name="PROVIDER_NAME"/> භාවිතා කරනු ඇත. Brave ඔබගේ IP ලිපිනය සඟවයි. ඔබ මෙය සක්‍රීය කළහොත්, <ph name="PROVIDER_NAME"/> යමෙකු මෙම වසම් වෙත පිවිසීමට උත්සාහ කරන බව දකිනු ඇත, නමුත් වෙන කිසිවක් නොවේ. <ph name="PROVIDER_NAME"/>හි <ph name="BEGIN_PROVIDER_TOU_LINK"/>භාවිත නියමයන්<ph name="END_PROVIDER_TOU_LINK"/> සහ <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>රහස්‍යතා ප්‍රතිපත්තිය<ph name="END_PROVIDER_PRIVACY_LINK"/>බලන්න.</translation>
 <translation id="6513892817556267573">ඊතරම් නාම සේවාව</translation>
 <translation id="2789190492285945209">ඊතරම් නාම සේවාව (ENS)</translation>
 <translation id="4335039108389860301">බ්‍රේව් හි ඊතරම් නාම සේවාව (ENS) සඳහා සහාය සබල කරන්නද?</translation>
@@ -429,6 +434,7 @@
 <translation id="4047002754575891955">දාමයෙන් බැහැර බැලීමෙන් ඉදිරියට යන්න</translation>
 <translation id="531747189990625622">සොලානා නාම සේවාව</translation>
 <translation id="1090584614351290462">Brave Hi Solana Name Service (SNS) සහය සබල කරන්නද?</translation>
+<translation id="7769345036263036863"><ph name="DOMAIN_LIST"/> වසම් නාම විසඳීම සඳහා Brave තෙවන පාර්ශවයක් භාවිතා කරනු ඇත. Brave ඔබගේ IP ලිපිනය සඟවයි. ඔබ මෙය සක්‍රීය කළහොත්, තෙවන පාර්ශවයට පෙනෙනු ඇත්තේ යමෙකු මෙම <ph name="DOMAIN_LIST"/> වසම් වෙත පිවිසීමට උත්සාහ කරන බවත් වෙන කිසිවක් නොමැති බවත්ය. අපි භාවිතා කරන තෙවන පාර්ශවයන් සහ ඔවුන්ගේ රහස්‍යතා ප්‍රතිපත්ති පිළිබඳ වැඩිදුර තොරතුරු සඳහා, කරුණාකර අපගේ <ph name="BEGIN_SNS_WIKI_LINK"/>උදව් පිටුව<ph name="END_SNS_WIKI_LINK"/>බලන්න.</translation>
 <translation id="884864496166128252"><ph name="PROVIDER_NAME"/> භාවිතයෙන් ඉදිරියට</translation>
 <translation id="4388873516324656141">SNS සේවාදායකයක් භාවිතයෙන් ඉදිරියට</translation>
 <translation id="2356070529366658676">අසන්න</translation>
@@ -458,6 +464,7 @@
 <translation id="8797999629784150206">ඔබට යම් අවස්ථාවක ඔබේ <ph name="SITE_PERMISSIONS"/> වෙනස් කළ හැක. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">අඩවි අවසරය</translation>
 <translation id="7222371875290545057">Leo AI සංවාද Brave හි විවෘත කිරීමට ඉඩ දෙන්නද?</translation>
+<translation id="1518915449477235311"><ph name="URL"/> ට Brave හි Leo AI සංවාද විවෘත කිරීමට ඉඩ දෙන්නද?</translation>
 <translation id="4355784577209159847">ලෙගසි Google පුරනය වීම සඳහා තෙවන පාර්ශ්ව කුකීස් භාවිතයට ඉඩ දෙන්න</translation>
 <translation id="5770656036486891920"><ph name="URL"/> හට Google පුරාණයේ උරුමය සඳහා තෙවන පාර්ශ්ව කුකීස් භාවිතා කිරීම අවශ්‍ය වේ</translation>
 <translation id="6053826678715267477">ස්ථානීය සත්කාරක සම්පත් වෙත ප්‍රවේශයට ඉඩ දෙන්න</translation>
@@ -555,6 +562,7 @@
 <translation id="3970520675790340955">ඔබේ රට තෝරා ගැනීමට අපට ඔබේ කලාපය සඳහා නිවැරදි විකල්ප සහ දැන්වීම් පෙන්විය හැක.</translation>
 <translation id="6945221475159498467">තෝරන්න</translation>
 <translation id="3279158300746391749">ආරම්භ කිරීමට URL තීරුවේ <ph name="BAT_ICON"/> BAT නිරූපකය ඔබන්න.</translation>
+<translation id="8465790416279415448">ඉදිරියට යාමෙන්, ඔබ <ph name="TOS_LINK_BEGIN"/>සේවා කොන්දේසි<ph name="TOS_LINK_END"/> සහ <ph name="PP_LINK_BEGIN"/>රහස්‍යතා ප්‍රතිපත්තිය<ph name="PP_LINK_END"/>ට එකඟ වේ.</translation>
 <translation id="8981626318554555706">ඔබගේ කලාපය තෝරන්න</translation>
 <translation id="6923445315496949274">ඔබගේ රට තෝරන්න එවිට අපට ඔබගේ කලාපය සඳහා නිවැරදි විකල්ප සහ දැන්වීම් පෙන්වීමට හැකිය.</translation>
 <translation id="840952951051929644">පාරිතෝෂික සබල කිරීමෙන්, ඔබ <ph name="TOS_LINK_BEGIN"/>සේවාවේ නියම<ph name="TOS_LINK_END"/> සහ <ph name="PP_LINK_BEGIN"/>රහස්‍යතා ප්‍රතිපත්තියට<ph name="PP_LINK_END"/> එකඟ වේ.</translation>
@@ -625,15 +633,19 @@
 <translation id="7329170127335794328">දැනට ඔබගේ කලාපයට නැත</translation>
 <translation id="966956302643313970">මූලික අවධානය ටෝකනය (BAT) ත්‍යාග උපයා ගැනීම ආරම්භ කිරීමට, ගිණුමක් සම්බන්ධ කරන්න. ඔබ උපයන BAT සෑම මසකම ස්වයංක්‍රීයව ඔබගේ ගිණුමට මාරු කරනු ලැබේ.</translation>
 <translation id="4009439571146350519">හෝ සොලනාට සහාය දක්වන වෙනත් පසුම්බි</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>භාවිත නියමයන්<ph name="TOS_LINK_END"/> සහ <ph name="PP_LINK_BEGIN"/>රහස්‍යතා ප්‍රතිපත්තිය<ph name="PP_LINK_END"/>.</translation>
 <translation id="1692293127547800972">යමක් වැරදී ඇත. පසුව උත්සාහ කරන්න.</translation>
 <translation id="756341217015623253">පිවිසෙන්න හෝ ලියාපදිංචිය</translation>
 <translation id="2653844658857826081">නව</translation>
 <translation id="1165039591588034296">දෝෂයකි</translation>
+<translation id="5826530373788377342">මෙම <ph name="PROVIDER"/> ගිණුම සඳහා ඔබ උපරිම උපාංග සීමාවට ළඟා වී ඇත.</translation>
 <translation id="6700131426769360592">උපාංග සීමාවට ළඟා විය</translation>
 <translation id="6895088073061692390">කණගාටුයි, අපගේ ස්වයංක්‍රීය පරීක්‍ෂාව අනපේක්‍ෂිත බ්‍රේව් දැන්වීම් ක්‍රියාකාරකම් සොයා ගත් නිසා ඔබගේ බ්‍රේව් පාරිතෝෂික පැතිකඩ අත්හිටුවා ඇත.</translation>
 <translation id="4229056297802204697">ඔබගේ පැතිකඩ සලකුණු කර ඇති අතර, ඔබට දිගටම දැන්වීම් දැකිය හැක, නමුත් ගෙවීම් ලැබීමට සුදුසුකම් නොලබයි. ඔබට භාරකාර ගිණුමක් Brave Rewards වෙත සම්බන්ධ කිරීමට ද නොහැකි වනු ඇත.</translation>
 <translation id="5124846913141379164">ඔබගේ පැතිකඩ දෝෂයකින් සලකුණු කර ඇති අතර, ඔබගේ පැත්තෙන් ක්ෂණික ක්‍රියාමාර්ගයක් අවශ්‍ය නොවේ. ඔබගේ පැතිකඩෙහි ඇති කොඩිය අනාගතයේදී ඉවත් කළ හැක.</translation>
+<translation id="8947002243324362172">Rewards පැතිකඩ සලකුණු කිරීම සඳහා Brave හි ක්‍රියාවලිය ගැන තව දැනගන්න.</translation>
 <translation id="4699218748197721830">Brave Rewards පැතිකඩ සලකුණු කර ඇත</translation>
+<translation id="2607420597216860026"><ph name="PROVIDER"/>හි ID සත්‍යාපනය සම්පූර්ණ කළ පසු කරුණාකර නැවත උත්සාහ කරන්න.</translation>
 <translation id="5037332159336402972">පිවිසීමට සත්‍යාපිත ගිණුමක් වුවමනාය</translation>
 <translation id="1859789048900659918">හ්ම්, ඔබගේ බ්‍රේව් පාරිතෝෂික රට ඔබ සබැඳීමට උත්සාහ කරන <ph name="PROVIDER"/> ගිණුමේ රටට නොගැළපෙන බව පෙනෙයි.</translation>
 <translation id="3080649636035373911">රට නොගැළපීම</translation>
@@ -642,10 +654,12 @@
 <translation id="5225019866741699134">එය <ph name="PROVIDER"/> to Brave Rewards තාවකාලිකව ලබා ගත නොහැක. කරුණාකර පසුව නැවත උත්සාහ කරන්න.</translation>
 <translation id="6105073131081187815">You can view <ph name="BEGIN_LINK"/>service status here<ph name="END_LINK"/>.</translation>
 <translation id="3969419585013689529">තෝරාගත් භාරකරු වෙත සම්බන්ධ වීම තාවකාලිකව නොමැත</translation>
+<translation id="1024520300696337331">ඔබගේ <ph name="PROVIDER"/> ගිණුම මෙම අවස්ථාවේදී ඔබගේ Brave Rewards පැතිකඩට සම්බන්ධ කළ නොහැක. ඔබගේ <ph name="PROVIDER"/> ගිණුම ලියාපදිංචි කර ඇත්තේ දැනට Brave Rewards වෙත සම්බන්ධ වීමට සහාය නොදක්වන රටකය.</translation>
 <translation id="619384413404021992"><ph name="LINK_BEGIN"/>වත්මන් සහාය දක්වන කලාප ලැයිස්තුව බලන්න සහ තව<ph name="END_LINK"/> භාරකාර ගිණුමක් Brave Rewards වෙත සම්බන්ධ කිරීම ගැන.</translation>
 <translation id="7933193151688235283">කලාපය දැනට සහාය නොදක්වයි</translation>
 <translation id="5376524136040178759">Uphold අනුව, දැනට ඔබගේ Uphold ගිණුමේ යම් සීමාවන් ඇත. කරුණාකර ඔබගේ Uphold ගිණුමට පුරනය වී සම්පූර්ණ කිරීමට දැනුම්දීම් හෝ ඉතිරි ගිණුම් අවශ්‍යතා තිබේ දැයි පරීක්ෂා කර නැවත උත්සාහ කරන්න. උදාහරණයක් ලෙස, ඔබට Uphold වෙත තවත් තොරතුරු ඉදිරිපත් කිරීමට අවශ්‍ය විය හැක.</translation>
 <translation id="6349168810769273818">සීමාසහිත uphold ගිණුම් ක්‍රියාකාරීත්වය</translation>
+<translation id="1279668677171152085">ඔබගේ <ph name="PROVIDER"/> ගිණුම Brave Rewards වෙත සම්බන්ධ කිරීම සඳහා වූ ඔබගේ ඉල්ලීම වලංගු කිරීමේදී ගැටළුවක් ඇති විය. වැඩිදුර උදව් සඳහා ඔබට <ph name="BEGIN_LINK"/>සහාය<ph name="END_LINK"/> අමතන්න.</translation>
 <translation id="8761736799800527591">ඉල්ලීම වලංගුකරණයට නොහැකි විය</translation>
 <translation id="8285276813470932793">We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN"/>contact support<ph name="LINK_END"/> if the problem persists.</translation>
 <translation id="135956957367307069">ඔබගේ ඉල්ලීම සැකසෙමින් පවතී. කරුණාකර රැඳෙන්න.</translation>
@@ -698,6 +712,7 @@
 <translation id="4174337572777167894">වෙබ් ඩිස්කවරි ව්‍යාපෘතිය</translation>
 <translation id="9034669711835382440">ප්‍රජාව</translation>
 <translation id="845020633253356720">වෙලඳසැල බලන්න</translation>
+<translation id="7777123407058400802">මූලික අවධානය යොමු කිරීමේ සංකේතය - BAT</translation>
 <translation id="7090992647511817643">ගිණුම</translation>
 <translation id="4822132585477111396">දාමයේ හැඳු.</translation>
 <translation id="3269475789479462358">වසම</translation>
@@ -801,18 +816,28 @@
 <translation id="8692596799753687794">සලාක ප්‍රතිපාදකයෙක් තෝරන්න</translation>
 <translation id="463712644600982655">සෑම එකතු කරන්නෙකුම එහි API වෙතින් ද්‍රවශීලතාවය භාවිතා කරමින් මිල ගණන් සපයයි. ඔවුන් විවිධ හුවමාරු වලින් මිල තොරතුරු රැස් කර මෙම දත්ත මත පදනම්ව මිල ගණන් ඉදිරිපත් කරයි.</translation>
 <translation id="473775607612524610">යාවත්කාලය</translation>
+<translation id="4389658703251593158">මෙම යුගලය <ph name="PROVIDER_NAME"/>මගින් සහාය නොදක්වයි.</translation>
 <translation id="1176173785350238153">ප්‍රතිපාදකයා වෙනස් කරන්න</translation>
 <translation id="1442774416207457340">මාර්ගය</translation>
 <translation id="8669403359205745187">උපරිම ලිස්සා යාම</translation>
 <translation id="4537396160118360541">ඔබ ඉදිරිපත් කළ ගනුදෙනුවේ මිල සහ දාමයේ ගනුදෙනුව සිදු වූ අවස්ථාවේ මිල අතර අපගමනය මෙම නියම කළ අගයට වඩා වැඩි වූ විට, ගනුදෙනුව අසාර්ථක වනු ඇත.</translation>
 <translation id="9102352924723221579">මිල බලපෑම යනු ඔබේ වෙළඳාම වෙළඳපල මිල කොපමණ ප්‍රමාණයක් ගෙන යා හැකිද යන්නයි. අඩු ද්‍රවශීලතාවය සහිත සමහර ටෝකන වෙළඳාම් වලට වඩා සංවේදී වේ, එබැවින් කුඩා වෙළඳාම් පවා මිල විශාල ලෙස වෙනස් කළ හැකිය.</translation>
 <translation id="6830526162796484210">යෝජිත අගයන්:</translation>
+<translation id="3882803104394170658">ප්‍රධාන ධාරාවේ වත්කම් යුගල: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">ස්ටේබල්කොයින් යුගල: <ph name="SLIPPAGE_PERCENT"/>%</translation>
 <translation id="7056655731948492143">වෙනත්: <ph name="SLIPPAGE_PERCENT"/>%</translation>
 <translation id="6231782223312638214">යෝජිත</translation>
 <translation id="8525485643657418753">ලාභදායී</translation>
 <translation id="1224275271335624810">වේගවත්ම</translation>
 <translation id="4071446933408069155"><ph name="NETWORK_NAME"/> හි</translation>
 <translation id="3751611888003301070">මාර්ග</translation>
+<translation id="3799091982455573025"><ph name="NETWORK_NAME"/> හරහා <ph name="EXCHANGE_NAME"/>මත හුවමාරු කරන්න</translation>
+<translation id="5136093123841570193"><ph name="FRIST_NETWORK_NAME"/> සිට <ph name="SECOND_NETWORK_NAME"/>දක්වා පාලම</translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} පියවර}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} පියවර}
+    }</translation>
+<translation id="782639616412356895"><ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE_NAME"/><ph name="EXCHANGE_AFTER"/> හරහා <ph name="PROVIDER_BEFORE"/><ph name="PROVIDER_NAME"/><ph name="PROVIDER_AFTER"/></translation>
 <translation id="3735740477244556633">වර්ගනය</translation>
 <translation id="6484605214219822434">සමාලෝචන පාලම</translation>
 <translation id="3365052891357224017">තක්සේරු කාලය</translation>
@@ -906,6 +931,7 @@
 <translation id="2236507293802791911">පෙනෙන වත්කම්</translation>
 <translation id="3188393374551744535">ගිණුමේ ශේෂය</translation>
 <translation id="4180024248473947674">ලිපිනය බලන්න:</translation>
+<translation id="1251267447128999380"><ph name="BLOCKCHAIN_NETWORK_NAME"/> ගවේෂකය</translation>
 <translation id="7525067979554623046">සාදන්න</translation>
 <translation id="4771176409524282426">ගිණුමක් සාදන්න</translation>
 <translation id="2471867767872178363"><ph name="BLOCKCHAIN_NETWORK"/> ගිණුමක් සාදන්න</translation>
@@ -919,6 +945,8 @@
 <translation id="2399555431746923964">BTC Testnet වත්කම් ගබඩා කරන්න</translation>
 <translation id="8749751940551938347">ZEC වත්කම් ගබඩා කරන්න</translation>
 <translation id="3451958544919449297">ZEC Testnet වත්කම් ගබඩා කරන්න</translation>
+<translation id="8459631690385393533">කාර්ඩානෝ වත්කම් ගබඩා කරන්න</translation>
+<translation id="4915057812371523845">Cardano Testnet වත්කම් ගබඩා කරන්න</translation>
 <translation id="8500387257977999003">පුද්ගලික යතුර <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">ආයාත කරන්න</translation>
 <translation id="232925166623833246">දෘඪාංග පසුම්බියෙන් ආයාත කරන්න</translation>
@@ -938,6 +966,7 @@
 <translation id="6892232036314454524">ලෙජර් වැරදි විවෘත වූ විට මෙම දෝෂය ඇති විය හැක.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">ලෙජරය</translation>
+<translation id="8012452656725205792">ඔබගේ <ph name="HARDWARE_DEVICE"/> උපාංගයට Brave ප්‍රවේශය ලබා දෙන්න.</translation>
 <translation id="4378551569595875038">සම්බන්ධ වෙමින්...</translation>
 <translation id="1943188256166395881">පරීක්ෂා කළ ගිණුම් එකතු කරන්න</translation>
 <translation id="8554010658308662631">තවත්</translation>
@@ -950,6 +979,7 @@
 <translation id="4549853322523631092">ප්‍රතිඵල හමු නොවිණි</translation>
 <translation id="7261362517244085362">ඔබේ මුදල් පසුම්බියට අවසර දෙන්න</translation>
 <translation id="7150150391368236519">දෘඩාංග මුදල් පසුම්බිය සම්බන්ධ කරන්න</translation>
+<translation id="5400782314657008092">අපි දැනට <ph name="HARDWARE_DEVICE"/> සහ <ph name="HARDWARE_DEVICE1"/> උපාංග සඳහා සහය දක්වමු.</translation>
 <translation id="8144305264680648043">Brave Wallet වෙතින් ඔබේ වත්කම් සෘජුවම කළමනාකරණය කිරීමට ඔබේ දෘඪාංග මුදල් පසුම්බිය සම්බන්ධ කරන්න</translation>
 <translation id="1329837291200753515">ඔබේ දෘඪාංග මුදල් පසුම්බිය ආයාත කිරීමට බ්ලොක්චේන් එකක් තෝරන්න</translation>
 <translation id="6983390509997396124">ඔබගේ <ph name="HARDWARE_DEVICE"/> සම්බන්ධ කරන්න උපාංගය Brave Wallet වෙත</translation>
@@ -1094,6 +1124,7 @@
 <translation id="5317781812114905957">උපදෙස්</translation>
 <translation id="1178198982208000092">ඔබගේ <ph name="DEVICE_NAME"/>සම්බන්ධ කරන්න</translation>
 <translation id="6941881257520473899">දෘංගාංග මුදල් පසුම්බියට සහතික කිරීමට අවශ්‍ය වේ.</translation>
+<translation id="2288190100157580461">දෘඪාංග පසුම්බිය සඳහා <ph name="NETWORK"/> අවශ්‍ය වේ <ph name="DEVICE_NAME"/>මත විවෘත කරන ලද යෙදුම</translation>
 <translation id="8687869982094542529">යැවිණි</translation>
 <translation id="5013754027092416509">ලැබුණි</translation>
 <translation id="5867988533873716616">බ්ලොක් ගවේෂක URL ලබා ගත නොහැක.</translation>
@@ -1147,6 +1178,7 @@
 <translation id="749944179568745958">වලංගු ETH ලිපිනයක් නොවේ</translation>
 <translation id="2832270987629018596">වලංගු SOL ලිපිනයක් නොවේ</translation>
 <translation id="2115100722958448834">වලංගු නොවන <ph name="COIN_TYPE_SYMBOL"/> ලිපිනය.</translation>
+<translation id="240219768078450165">වසමට සබැඳි <ph name="COIN_TYPE_SYMBOL"/> ලිපිනයක් නොමැත.</translation>
 <translation id="4932382283590063268">ලැබෙන ලිපිනය ඔබේම ලිපිනයයි.</translation>
 <translation id="3124753063207986114">ලැබෙන ලිපිනය ටෝකනයේ කොන්ත්‍රාත්තුවේ ලිපිනයකි.</translation>
 <translation id="7029817408221097939">වලංගු නොවන ඒකාබද්ධ ලිපිනයක්</translation>
@@ -1159,6 +1191,11 @@
 <translation id="4667144295226514387">ලැබුණු සීමාව අතුරුදහන්</translation>
 <translation id="2021522108838444624">මුදල 0 ට වඩා වැඩි විය යුතුය</translation>
 <translation id="8464365289405373974">ලිපිනය සඳහා අවශ්ය වේ</translation>
+<translation id="6449503919127419230">වැරදි විනිවිද පෙනෙන ලිපිනයක්</translation>
+<translation id="3778662247272439818">ජාල නොගැළපීම</translation>
+<translation id="1170025316306464310">වැරදි ඒකාබද්ධ ලිපින ආකෘතියකි</translation>
+<translation id="8380483120683767377">පළතුරු වතු කොටස අතුරුදහන්.</translation>
+<translation id="1536211570215515174">විනිවිද පෙනෙන කොටසක් නොමැත.</translation>
 <translation id="8585995109882455949">මම නිවැරදි ලිපිනය සොයා ගන්නේ කෙසේද?</translation>
 <translation id="105524480632150318">Brave වැරදි ප්‍රාග්ධනීකරණය හේතුවෙන් වැරදි ලිපිනයකට අරමුදල් යැවීමෙන් පරිශීලකයින් වළක්වයි. පහත උපදෙස් අනුගමනය කිරීමෙන් එය නිවැරදි ලිපිනය බව තහවුරු කර ගන්න.</translation>
 <translation id="4583433813614292221">1. පිවිසෙන්න</translation>
@@ -1183,6 +1220,7 @@
 <translation id="5036882519065735613"><ph name="CHAIN_ID"/> වත්මන් ජාලය නොවේ</translation>
 <translation id="317252468455212145"><ph name="ADDRESS"/> ලිපිනයෙන් නොගැලපේ</translation>
 <translation id="8034449164954956172"><ph name="DOMAIN"/> වත්මන් වසම නොගැලපේ</translation>
+<translation id="5444904139422068509">මෙම වෙබ් අඩවිය ඔබට වෙනස් <ph name="NAME"/> (<ph name="VALUE"/>) භාවිතා කරන ලෙස ඉල්ලා සිටින බැවින් අපි මෙම ඉල්ලීම ප්‍රතික්ෂේප කළෙමු.</translation>
 <translation id="7340805872138998391">ඔබට අගුළු ඇරීමට නොහැකි විය, නැවත සම්බන්ධ කිරීමට උත්සාහ කරන්න</translation>
 <translation id="1984410139271779110">අභ්‍යන්තර දෝෂය, නොදන්නා යෝජනා ක්‍රමය</translation>
 <translation id="6989562355845156390">අනුමැතිය</translation>
@@ -1201,6 +1239,8 @@
 <translation id="8523768065044261559">ගනුදෙනුව සැකසීමේ දෝෂයකි, කරුණාකර නැවත උත්සාහ කරන්න</translation>
 <translation id="971552837551838642">පණිවිඩය අත්සන් කිරීමේ දෝෂයකි, කරුණාකර නැවත උත්සාහ කරන්න</translation>
 <translation id="8273603707418703324">පණිවිඩය අත්සන් කිරීමේ දෝෂයකි, නොදන්නා යතුරුකරණය ඉල්ලා ඇත, කරුණාකර නැවත උත්සාහ කරන්න</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> විධානය දැනටමත් ක්‍රියාත්මක වෙමින් පවතී.</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> පාලම සූදානම් නැත</translation>
 <translation id="3378339846292573874">යෝජිත ටෝකනය එක් කරන්න</translation>
 <translation id="2322227405137827074">ඔබ මෙම ටෝකනය ආයාත කිරීමට කැමතිද?</translation>
 <translation id="4378475168089649292">බ්ලොක්චේන්</translation>
@@ -1296,11 +1336,21 @@
 <translation id="6248202915200795128">බලාපොරොත්තු වූවාට වඩා වැඩි කාලයක් ගතවේද?</translation>
 <translation id="5417904796609871601">ක්‍රියාකාරකම් තුළ බලන්න</translation>
 <translation id="8915839655070878476">ඔබට මෙම කවුළුව ආරක්ෂිතව ඉවත දැමිය හැක.</translation>
+<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>වෙත යවමින්</translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ගිණුමට යවා ඇත <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> සිට <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> <ph name="NETWORK"/>මත මාරු කිරීම.</translation>
+<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ප්‍රමාණය ඔබගේ ගිණුමට එකතු කර ඇත <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> සිට <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>දක්වා පාලම් කිරීම</translation>
+<translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/>කිරීමට නොහැකි විය.</translation>
+<translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> සිට <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/>කිරීමට උත්සාහ කිරීමේදී දෝෂයක් ඇති විය.</translation>
+<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> සිට <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/>අනුමත කරමින්</translation>
 <translation id="8036159955043245753">ඔබගේ පවතින ගනුදෙනුව අවලංගු කිරීමට නව ගනුදෙනුවක් සාදනු ඇත.</translation>
 <translation id="4056435949094149644">හුවමාරු</translation>
 <translation id="7694836973509310467">පාලම</translation>
 <translation id="997000407026317399"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> හි <ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/></translation>
 <translation id="6934057383578424432"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> හි <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> කිරීමට තැත් කිරීමේදී දෝෂයක් සිදු විය</translation>
+<translation id="4916833841663290382">පලිහ <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ආරක්ෂා කර ඇත</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} තවත් ගනුදෙනුවක් බලාපොරොත්තු වේ.}
       other {{PENDING_TRANSACTIONS} තවත් ගනුදෙනු පොරොත්තුවෙන්.}
@@ -1317,12 +1367,14 @@
 <translation id="6257687515171395402">ලදුපත</translation>
 <translation id="7065228161830418508">දෝෂ පණිවිඩය</translation>
 <translation id="5711048370886541571">කරුණාකර අනාගත යොමුව සඳහා දෝෂ පණිවිඩය සුරකින්න.</translation>
+<translation id="4315561646577477669"><ph name="MAKER"/> සිට <ph name="TAKER"/>දක්වා මාරු කරන ලදී.</translation>
 <translation id="5896915466769225182">ගනුදෙනුව සම්පූර්ණයි!</translation>
 <translation id="3541662075332902575">ගනුදෙනුව බ්ලොක් එකකට සාර්ථකව ඇතුළත් කර ඇත. ද්විත්ව වියදම් සඳහා අවදානම තහවුරු වීම සඳහා, බ්ලොක් කිරීම් සඳහා රැඳී සිටීමට අපි නිර්දේශ කරමු.</translation>
 <translation id="1349457304183253101">ගනුදෙනුව සැකසෙමින්</translation>
 <translation id="5132698868627864842">තහවුරු කරමින්</translation>
 <translation id="5601436886921227795">ඩැප් අන්තර්ක්රියා</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/>යවන්න</translation>
+<translation id="4048336522751528394"><ph name="MAKER"/> සිට <ph name="TAKER"/>දක්වා මාරු කරන්න.</translation>
 <translation id="8613144770663526433">Brave Wallet සමඟින් පුරන්න</translation>
 <translation id="8813165409788097898">ඔබ <ph name="ORIGIN"/>වෙත පුරනය වේ. Brave Wallet පසුම්බි ලිපිනය <ph name="ORIGIN"/>සමඟ බෙදා ගනී.</translation>
 <translation id="1028781062521375153">විස්තර බලන්න</translation>
@@ -1555,6 +1607,7 @@
 <translation id="5450317966495183014">ලැබීම (තක්සේරු)</translation>
 <translation id="8747614139273050577">ටෝකන් එකෙන්</translation>
 <translation id="1726158192333401896">සංකේත කිරීමට</translation>
+<translation id="765894671068292221">හි නව උපුටා දැක්වීම <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">ශේෂය:</translation>
 <translation id="5709875713144853427">හුවමාරු කිරීමට ටෝකනයක් තෝරා ගැනීම</translation>
 <translation id="720404198240859011">ශේෂයක් නොමැතිව ටෝකන පෙන්වන්න</translation>
@@ -1588,6 +1641,7 @@
 <translation id="7561262633951061138">හොඳ</translation>
 <translation id="8060029310790625334">උපකාර මධ්‍යස්ථානය</translation>
 <translation id="3143110700666266545">මෙම යෙදුම පහත දැක්වෙන තෙවන පාර්ශ්ව යෙ.ක්‍ර.මු. භාවිතා කරයි:</translation>
+<translation id="163536108506359457">Brave Swap සහාය දක්වන <ph name="NETWORKS"/> ජාල සඳහා DEX එකතු කරන්නෙකු ලෙස <ph name="AGGREGATOR"/> භාවිතා කරයි. <ph name="AGGREGATOR"/> ගනුදෙනුවක් සම්පූර්ණ කිරීම සඳහා <ph name="NETWORK"/> මුදල් පසුම්බිය ලිපිනය සහ IP ලිපිනය සකසනු ඇත (මිල ගණන් ලබා ගැනීම ඇතුළුව). <ph name="AGGREGATOR"/> ගනුදෙනු සැකසීමේ අරමුණු සඳහා පමණක් මෙම දත්ත භාවිතා කරනු ඇත.</translation>
 <translation id="1847885264294023691"><ph name="AGGREGATOR"/> රහස්‍යතා ප්‍රතිපත්තිය සඳහා මෙතැන ඔබන්න.</translation>
 <translation id="644984757357042735">ජාලයක් වුවමනාය</translation>
 <translation id="132243864024778443">නිමිත්තේ නම වුවමනාය</translation>
@@ -1692,9 +1746,31 @@
 <translation id="3819528427777765709">ආරක්‍ෂිතයි</translation>
 <translation id="2142946302539262412">ඒකාබද්ධ</translation>
 <translation id="4438043733494739848">විනිවිද</translation>
+<translation id="1950406774300125954">සමමුහූර්ත නොවේ</translation>
+<translation id="68413355604013935">සමමුහුර්ත වී නොමැත (<ph name="BLOCKS"/> පිටුපසින් අවහිර කරයි)</translation>
+<translation id="1724354250024376254">පොරොත්තු ශේෂය (තවත් තහවුරු කිරීම් අවශ්‍යයි): <ph name="FUNDS"/></translation>
+<translation id="1597233669965903034">නවතම ගනුදෙනු සහ ශේෂය වෙත ප්‍රවේශ වීමට ඔබගේ ගිණුම සමමුහුර්ත කරන්න.</translation>
+<translation id="3609785682760573515">සමමුහූර්ත වෙමින්...</translation>
+<translation id="7499262814309712782">ගිණුම සමමුහූර්තය</translation>
+<translation id="2804568727504456403"><ph name="ACCOUNT"/> සමමුහූර්තය</translation>
+<translation id="813913629614996137">අරඹමින්...</translation>
+<translation id="4404141491825711928">සැකසුම් කොටස:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> ඉතිරියි</translation>
 <translation id="1703172100615786285"><ph name="BLOCKS"/> / <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">පරාස:</translation>
 <translation id="1178581264944972037">විරාමයක්</translation>
-<translation id="9086302186042011942">සමමු වෙමින්</translation>
+<translation id="7714298753782862705">සමමුහුර්ත කිරීම සම්පූර්ණයි. දැන් ඔබට මෙම කවුළුව වසා දැමිය හැක.</translation>
+<translation id="7716113567047550378">සමමුහුර්ත කිරීම අවසන් වන තුරු කරුණාකර මෙම කවුළුව වසා නොදමන්න.</translation>
+<translation id="5123590959308755060">නව ටැබ් එකක පසුම්බිය භාවිතා කිරීම දිගටම කරගෙන යන්න</translation>
+<translation id="4594014034647546191">ආරක්ෂිත ගිණුම් උපන්දින කොටස</translation>
+<translation id="6666784075827260119">ගිණුමේ උපන් දිනය <ph name="BLOCK_NUMBER"/>ට වඩා වැඩි විය යුතුය.</translation>
+<translation id="3102477628835823956">ගිණුමේ උපන් දිනය <ph name="BLOCK_NUMBER"/>ට වඩා අඩු විය යුතුය.</translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> පිටුපසින් අවහිර කරයි</translation>
+<translation id="7747318989577709780">ගිණුම සමමුහූර්ත වෙමින්</translation>
+<translation id="9086302186042011942">සමමුහූර්ත වෙමින්</translation>
+<translation id="99991973626409495">සමාලෝචන පලිහ</translation>
+<translation id="3114681061018999547">පලිහ</translation>
+<translation id="8897189056319316783">පලිහ ZEC</translation>
 <translation id="7144878232160441200">නැවත</translation>
 <translation id="9094621390791852268">ගනුදෙනු පෙරදසුනට අසමත් විය.</translation>
 <translation id="4982713341035600933">තක්සේරු ශේෂ වෙනස</translation>
@@ -2019,16 +2095,30 @@
 <translation id="8637805148029768813">සාර විශේෂාංගයන් දැනට ලබා ගත හැකි වෙබ් ලිපි සහ අනෙකුත් දිගු ආකෘති පිටු සඳහා පමණි.</translation>
 <translation id="1223498995510244364">සාරාංශ කරන්න</translation>
 <translation id="7491773233732232424">Leo ගැන</translation>
+<translation id="4885527781814382758">Brave Leo යනු ඔබගේ අන්තර්ජාල භාවිතය වැඩි දියුණු කරන පුද්ගලික AI ස්මාර්ට් සහායකයෙකි. සීමිත ප්‍රවේශයක් සහිතව Leo භාවිතා කිරීමට නිදහස ඇත. Brave Leo Premium වැඩි මාදිලි, ඉහළ සීමාවන් ලබා දෙන අතර ග්‍රාහකයින්ට නව විශේෂාංග සඳහා මුල් ප්‍රවේශය ලබා දෙයි. පෙරනිමි ආකෘතිය වරින් වර වෙනස් වේ. වැඩි විස්තර සඳහා <ph name="LINK_BEFORE"/>Brave උපකාරක මධ්‍යස්ථානය<ph name="LINK_AFTER"/> බලන්න.</translation>
 <translation id="7189603330209995455">පෙරනිමි පරිදි ඔබ ලියෝගෙන් ප්‍රශ්නයක් ඇසූ විට බ්‍රේව් ඔබ බලන පිටුවේ අන්තර්ගතය හෝ ඔබ පිටුවක උද්දීපනය කරන ඕනෑම පෙළක් ප්‍රතිචාරයක් සැපයීම සඳහා ලියෝ වෙත යැවිය හැකිය. ප්‍රතිචාර වල නිරවද්‍යතාවය සහතික නොකරන අතර සාවද්‍ය, නොමඟ යවන හෝ අසත්‍ය තොරතුරු ඇතුළත් විය හැකිය. ලියෝ ප්‍රතිචාරයේ ගුණත්‍වය දියුණුවට බ්‍රේව් සෙවුමෙන් දත්ත භාවිතා කරයි. සංවේදී හෝ පෞද්ගලික තොරතුරු යොමු නොකරන්න. සෞඛ්‍ය, මූල්‍ය, පුද්ගලික ආරක්‍ෂාව හෝ ඒ ආශ්‍රිත පිළිතුරු ගැන ප්‍රවේශම් වන්න. ඔබට ඕනෑම වේලාවක සැකසුම් තුළ ලියෝගේ විකල්ප සීරුමාරුවට හැකිය. සැකසුම් &gt; ලියෝ වෙත යන්න.</translation>
 <translation id="3038772045018370764">ලියෝ ඔබට සම්බන්ධ කළ හැකි ඔබේ IP ලිපිනය වැනි හඳුනාගැනීම් එකතු නොකරයි. AI ආකෘති පුහුණු කිරීමට දත්ත භාවිතා නොකරන අතර AI ආකෘති මගින් පුද්ගලික දත්ත කිසිවක් රඳවා නොගනී (මැකීමට පෙර දින 30ක් දත්ත රඳවා තබා ගන්නා Anthropic සඳහා හැර). <ph name="LINK_BEFORE"/>පෞද්ගලිකත්ව ප්‍රතිපත්තිය<ph name="LINK_AFTER"/> බලන්න වැඩි විස්තර සඳහා.</translation>
+<translation id="6961721183181597848">අද මම ඔබට උදව් කරන්නේ කෙසේද?</translation>
+<translation id="2966135729673253768">පසු විපරමක් ඉල්ලන්න</translation>
 <translation id="4524675003624341892">ප්‍රශ්න යෝජනා කරන්න…</translation>
 <translation id="4567071417854988869">මෙම දෘශ්‍යකයේ සාරාංශයක්</translation>
 <translation id="7921782882718083488">මෙම පිටුවේ සාරාංශයක්</translation>
 <translation id="7932221068776853847">මෙම පිටුවේ අන්තර්ගත ලියෝ වෙත යැවීම නැවැත්වීමට විසන්ධි කර නව සංවාදයක් අරඹන්න</translation>
+<translation id="8743383817154663379">ඔබගේ ඉල්ලීම සකසන අතරතුර යමක් වැරදී ඇත. කරුණාකර පසුව නැවත උත්සාහ කරන්න.</translation>
 <translation id="2712650703044366764">මෙම ආදර්ශකයේ වලංගු නොවන අන්ත ලක්ෂ්‍යයක් ඇත. කරුණාකර ඔබගේ වින්‍යාසය පරීක්‍ෂා කර නැවත උත්සාහ කරන්න.</translation>
 <translation id="1167803637855350748">ලියෝ වෙත සබැඳීමේ ගැටලුවක් ඇත. ඔබගේ සම්බන්ධතාව පරීක්‍ෂා කර නැවත උත්සාහ කරන්න.</translation>
 <translation id="1996126325390835277">ඔබ ආධික්‍ය සීමාවට ළඟා වී ඇත. කරුණාකර පැය කිහිපයකින් නැවත උත්සාහ කරන්න.</translation>
+<translation id="3683964919745779766">ඔබ මෙම ආකෘතිය සඳහා අනුපාත සීමාවට ළඟා වී ඇත නැතහොත් ණය අවසන් වී ඇත. කරුණාකර පසුව නැවත උත්සාහ කරන්න.</translation>
+<translation id="7692501701960747469">මෙම ආකෘතිය සඳහා වින්‍යාස කර ඇති API යතුර වලංගු නොවේ. කරුණාකර ඔබේ වින්‍යාසය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</translation>
+<translation id="7905602379229309187">අන්ත ලක්ෂ්‍යය දැනට අධික ලෙස පටවා ඇත. කරුණාකර පසුව නැවත උත්සාහ කරන්න.</translation>
 <translation id="8151638057146502721">වින්‍යාස කරන්න</translation>
+<translation id="3282183392203936979">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Llama 3.1 8B මගින් බලගන්වා ඇති අතර, එය Meta විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය වැඩි දියුණු කිරීමට සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Llama අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="4328177358021456069">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Qwen 14B මගින් බලගන්වනු ලබන අතර, එය Alibaba Cloud විසින් නිර්මාණය කරන ලද ආකෘතියක් වන අතර එය කාර්ය සාධනය සහ බොහෝ භාවිත අවස්ථාවන්ට අදාළ වේ. Qwen අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="8345529480300554358">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Mixtral 8x7B මගින් බලගන්වනු ලබන අතර, උසස් කාර්යයන් හැසිරවීම සඳහා Mistral AI විසින් නිර්මාණය කරන ලද ආකෘතියකි. Mixtral අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="2575216739207798060">හායි, මම ලියෝ. මම Brave විසින් ප්‍රොක්සි කර ඇති අතර සංවාද සහ පෙළ සැකසුම් කාර්යයන් බල ගැන්වීම සඳහා Anthropic විසින් නිර්මාණය කරන ලද ආකෘතියක් වන Claude Instant විසින් බලගන්වනු ලැබේ. Claude Instant අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="512933369128404654">හායි, මම ලියෝ. මම Brave විසින් ප්‍රොක්සි කර ඇති අතර සංවාද සහ පෙළ සැකසුම් කාර්යයන් බල ගැන්වීම සඳහා Anthropic විසින් නිර්මාණය කරන ලද ආකෘතියක් වන Claude Haiku විසින් බලගන්වනු ලැබේ. Claude Haiku අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="406499980300734922">හායි, මම ලියෝ. මම Brave විසින් ප්‍රොක්සි කර ඇති අතර සංවාද සහ පෙළ සැකසුම් කාර්යයන් බල ගැන්වීම සඳහා Anthropic විසින් නිර්මාණය කරන ලද ආකෘතියක් වන Claude Sonnet විසින් බලගන්වනු ලැබේ. Claude Sonnet අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave විසින් සත්කාරකත්වය සපයනු ලැබේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
+<translation id="1774712391633741125">හායි, මම ලියෝ. මම Brave විසින් සම්පූර්ණයෙන්ම සත්කාරකත්වය සපයන AI සහායකයෙක්. මම Llama Vision මගින් බලගන්වා ඇති අතර, එය බොහෝ භාවිත අවස්ථාවන්ට ක්‍රියාකාරී වීමට සහ අදාළ වීමට Meta විසින් නිර්මාණය කරන ලද ආකෘතියකි. Llama Vision අපගේම ආරක්ෂිත යටිතල පහසුකම් හරහා Brave-සත්කාරක වේ.<ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">ආධික්‍ය</translation>
 <translation id="6187065185557150870">කතාබහ</translation>
 <translation id="4685048769603134644">පූර්ණ පිටුව අරින්න</translation>
@@ -2046,7 +2136,9 @@
 <translation id="4165928407303989823">මාතෘකාවේ රැඳෙන්න</translation>
 <translation id="2389665228467129817">දීර්ඝව කතාබහ කරන්න</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> / මාසික</translation>
+<translation id="9031958221569934724">ඇමරිකානු ඩොලර් $ <ph name="PRICE_VALUE"/> /වසරකට</translation>
 <translation id="1028627582482425924">අවුරුද්දක්</translation>
+<translation id="36366199652730057">හොඳම අගය</translation>
 <translation id="5151923271944811339">නිදහස් ආකෘතියට මාරු වන්න</translation>
 <translation id="5474757891469990756">ආධික්‍ය සමඟ ලියෝගේ පූර්ණ බලය මුදවාහරින්න:</translation>
 <translation id="3453542753968940696">විවිධ නිපුණතා සහිත බලවත් මාදිලි සඳහා ප්‍රමුඛත්වය.</translation>
@@ -2060,14 +2152,16 @@
 <translation id="6393149565874086128">ප්‍රතිපෝෂණ ලියන්න</translation>
 <translation id="3521125531016408657">පිළිතුර වගේ</translation>
 <translation id="8202517001427388906">අකමැති පිළිතුර</translation>
-<translation id="3177073390279208955">ඇගයීම, සංවාද, ආදර්ශකය, භාෂාව, අනුවාදය සහ ආධික්‍ය තත්‍වය යවයි</translation>
 <translation id="1379399209929302811">බ්‍රේව් AI ප්‍රතිපෝෂණ සපයන්න</translation>
 <translation id="8442999546461118871">ප්‍රතිපෝෂණයට මාතෘකාවක් තෝරන්න</translation>
 <translation id="9018766373792005944">ඔබගේ ප්‍රතිපෝෂණය කුමක්ද?</translation>
 <translation id="7355096922131918313">මෙහි ප්‍රතිපෝෂණ සපයන්න</translation>
 <translation id="3027575440738035995">Leo Premium වඩාත් විශාල පිළිතුරු සූක්ෂ්ම සඳහා පුළුල් කරන ලද භාෂා ආකෘති කට්ටල සඳහා ප්රවේශය පහසුකම්. <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">මකන්න</translation>
+<translation id="6574153208133461043">මෙම සංවාදය මැකීමට ඔබට අවශ්‍ය බව ඔබට විශ්වාසද? මෙම ක්‍රියාව අහෝසි කළ නොහැක.</translation>
 <translation id="7488762544858401571">සංශෝධිතයි</translation>
+<translation id="5604254791550001355">විමසුම සංස්කරණය කරන්න</translation>
+<translation id="8115786586976830777">පිටපත් කිරීමේ විමසුම</translation>
 <translation id="1406205536570262057">පිළිතුර සංස්කරණය</translation>
 <translation id="2399439821649319175">ප්‍රයෝජනවත් නොවේ</translation>
 <translation id="2976167228906046828">වැරදියි</translation>
@@ -2079,13 +2173,26 @@
 <translation id="903201991022343217">නව සංවාදයක් අරඹන්න</translation>
 <translation id="8171760814579050200">සංවාදය නම් කරන්න</translation>
 <translation id="7754678742055438573">සංවාදය මකන්න</translation>
+<translation id="1946267518364740045">තර්ක කිරීම...</translation>
+<translation id="4198859185714743678">තර්කනය සම්පූර්ණයි</translation>
+<translation id="6140948187512243695">විස්තර පෙන්වන්න</translation>
+<translation id="4881695831933465202">විවෘත කරන්න</translation>
 <translation id="7494736170250048402">ලියෝ වෙත පණිවිඩයක් යවන්න</translation>
+<translation id="8650874793377330048">උත්තර දීම නවත්වන්න</translation>
 <translation id="8712637175834984815">තේරුණා</translation>
+<translation id="1093419424466417703">ලියෝට පිටුව දිග වැඩියි. සංවාදයේ යම් සන්දර්භයක් මඟ හැරී තිබිය හැක. පිටුවේ අන්තර්ගතයෙන් <ph name="PERCENTAGE"/> කියවීමට ලියෝට හැකි විය.</translation>
+<translation id="4592293425457329338">සංවාදයේ යම් සන්දර්භයක් මඟ හැරී තිබිය හැක. සංවාදයට අදාළ අන්තර්ගතයෙන් <ph name="PERCENTAGE"/> රඳවා ගැනීමට ලියෝට හැකි විය.</translation>
 <translation id="2186990448773134544">ලියෝට එය දිග වැඩි නිසා පිටුවෙන් වඩාත් අදාළ තොරතුරු උපුටාගෙන අන්තර්ගතය ප්‍රසාදනය කර ඇත.</translation>
 <translation id="5140068729857132378">පිටුවේ අදාළ කොටස් සොයමින්...</translation>
 <translation id="4370698775470316661">මෙම සංවාදය දිගු කිරීමට ඉදිරියට යා නොහැක. සංවාද සඳහා සත්‍ය පරීක්ෂණ පවත්වා ගැනීමට ලියෝ හැකි වෙනත් උපාංග තිබිය හැක.</translation>
 <translation id="5719170755629028558">Brave සර්ච් සමඟ ඔබගේ උත්තර වැඩි දියුණු කරගන්න…</translation>
+<translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>සඳහා පිළිතුරු සෙවීම වැඩිදියුණු කරන ලදී.</translation>
+<translation id="7307396647043599949">තවත් <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">මෙම දැන්වීම වසන්න</translation>
+<translation id="3417835166382867856">පටිති සොයන්න</translation>
+<translation id="9090243919347147717">ඇමුණුම්</translation>
+<translation id="4444978378117903684">ලියෝට සංවාදය සඳහා වැඩි සන්දර්භයක් ලබා දීමට ඔබේ බ්‍රව්සර් ටැබ් එක් කරන්න.</translation>
+<translation id="4300920590112551536">බ්‍රව්සර් ටැබ්</translation>
 <translation id="2315654674554095762">දැන් ලියෝ ඔබගේ සංවාද මතක තබා ගන්නා බැවින් ඔබට ඒවාට ආපසු යා හැකිය. ඒවා ඔබගේ උපාංගයේ සංකේතනය කර ගබඩා කර තිබෙන අතර ඔබට ඕනෑම වේලාවක මැකීමට හැකිය.</translation>
 <translation id="7821251979960635244">ඔබ සංවාදයක් ආරම්භ කළ පසු ඔබගේ සංවාද ඉතිහාසය මෙහි දිස්වනු ඇත.</translation>
 <translation id="887511360213807449">ඉතිහාසය අබලයි</translation>
@@ -2095,6 +2202,8 @@
 <translation id="3185367320601718531">සංවාද සහ පෙළ උත්පාදනය</translation>
 <translation id="7979673624064378842">ඉක්මන් කතාබහ</translation>
 <translation id="2836330653441111204">වේගය සහ බුද්ධිය සමබරව</translation>
+<translation id="6695329447007213917">පොදු අරමුණු කතාබස්, කේතනය සහ තවත් දේ</translation>
+<translation id="5051668914970329839">පොදු අරමුණු දැක්ම</translation>
 <translation id="3965507912994218570">ලියෝ සැකසුම්</translation>
 <translation id="1037324977127422019">ආයුබෝවන්, මම ලියෝ!</translation>
 <translation id="8930348081963284873">AI බලගැන්වූ බුද්ධිමත් සහායකයෙක් Brave තුළ ඇත.</translation>
@@ -2130,25 +2239,47 @@
 <translation id="6320643499534852464">සමාජ මාධ්‍ය</translation>
 <translation id="2370739752330685659">සමහර විට පසුව</translation>
 <translation id="983013125018250242">ලියෝ මෙවලම්</translation>
-<translation id="4250229828105606438">තිරරූපය</translation>
+<translation id="7623223587478473368">ඇමුණුම</translation>
+<translation id="3777121685517940177">උඩුගත කරන්න</translation>
+<translation id="9088751620363630236">පින්තූරයක් ගන්න...</translation>
+<translation id="4250229828105606438">තිරසේයාව</translation>
+<translation id="6332876390231524389">වත්මන් පටිත්තේ අන්තර්ගත</translation>
 <translation id="49269513399674318">ශබ්දවාහිනිය භාවිතා කරන්න</translation>
 <translation id="3895031624234442305">අභිරුචි ආකෘති</translation>
 <translation id="4572010449071015143">නව සංවාදයක් අරඹන්න</translation>
 <translation id="345901077335355561">සක්‍රිය සංවාදයට ආපසු යන්න</translation>
 <translation id="6287023598025162715">නව සංවාදය</translation>
-<translation id="4290791698375397492">ප්‍රචලිත අඩවිය ඉවත් කර ඇත</translation>
+<translation id="8370801182970639038">ස්වයංක්‍රිය (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">සබල සෙවුම් යන්ත්‍ර</translation>
+<translation id="5355776323718420036">ප්‍රචලිත අඩවි සඟවන්න</translation>
+<translation id="6543799171249004861">ඡායාරූපය: <ph name="AUTHOR"/></translation>
+<translation id="5966055668402779222">බ්‍රේව් සෙවුමෙන් අසන්න</translation>
+<translation id="6851426306697017546">ඔරලෝසුව පෙන්වන්න</translation>
+<translation id="4844370919312937270">නව ටැබ් වල සෙවුම් විජට් එක පෙන්වන්න</translation>
+<translation id="5009354496127441090">ප්‍රචලිත අඩවි පෙන්වන්න</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4784802981241664605">සංඛ්‍යාලේඛන</translation>
+<translation id="4290791698375397492">ප්‍රචලිත අඩවිය ඉවත් කෙරිණි</translation>
+<translation id="1436784010935106834">ඉවත් කෙරිණි</translation>
+<translation id="9030215177866748410">ඔබ නිතර ගොඩවදින අඩවි අනුව ප්‍රචලිත අඩවි යෝජනා කෙරේ</translation>
+<translation id="8425213833346101688">වෙනස් කරන්න</translation>
+<translation id="755045397420611731">අමතර පෞද්ගලිකත්‍වයක්, මාර්ගගත ආරක්‍ෂාවක්</translation>
+<translation id="4520128772974831415">ඔබගේ අ.ජා.කෙ. සඟවන්න, ස්ථානය වෙනස් කරන්න</translation>
+<translation id="6819278685469225453">උපාංගයේ සෑම යෙදුමක්ම රැකගන්න</translation>
+<translation id="8703188411226330709">නොමිලේ නැහැසුම අරඹන්න</translation>
+<translation id="8814357473522731680">බලගැන්වීම</translation>
+<translation id="7143207342074048698">සම්බන්ධ වෙමින්</translation>
+<translation id="1202549130170287307">විසන්ධි වෙමින්</translation>
+<translation id="8793108040181436796">විජට්</translation>
 <translation id="6303294677342628402">පලිහ</translation>
 <translation id="8458987127502506209">Brave පලිහ සබල කරන්න</translation>
-<translation id="7509914170164691086"><ph name="LINK_BEFORE"/>මෙයට<ph name="LINK_AFTER"/> පලිහ සක්‍රියයි</translation>
-<translation id="260764436039299868"><ph name="LINK_BEFORE"/>මෙයට<ph name="LINK_AFTER"/> පලිහ අක්‍රියයි</translation>
-<translation id="3907405056878805220">මෙම අඩවිය කැඩී ඇත්නම් පලිහ අක්‍රිය කර බලන්න.
-<ph name="LINK_BEFORE"/>සටහන: මෙයින් බ්‍රේව් පෞද්ගලිකත්‍ව රැකවරණය අඩු වනු ඇත.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ලුහුබැඳීම්, දැන්වීම් සහ තවත් දෑ අවහිර කර ඇත <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields මගින් ආරක්‍ෂා කර නැත <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">සංකීර්ණ පාලන</translation>
 <translation id="5799940914270080805">මෙම සැකසුම් සංශෝධනයෙන් අඩවි කැඩී යා හැකිය.</translation>
 <translation id="9204041448536398473">ගෝලීය පලිහ සැකසුම්</translation>
 <translation id="2108334320919763866">ගෝලීය පෙරනිමි</translation>
+<translation id="7205939464631857223">අවහිර කළ සියලු අංග මකන්න</translation>
 <translation id="3440043456924990296">සංවිධානයෙන් කළමනාකරණය කරන සැකසුම්</translation>
 <translation id="7053983685419859001">අවහිර</translation>
 <translation id="5716230673298034837">සියල්ලට ඉඩ දෙන්න</translation>
@@ -2223,15 +2354,12 @@
 <translation id="958268166261124668">Brave VPN - සම්බන්‍ධයි</translation>
 <translation id="6021669293402055982">Brave VPN - විසන්‍ධි විය</translation>
 <translation id="3541307549916475335">බ්‍රේව් VPN මඬලේ UI</translation>
-<translation id="7143207342074048698">සම්බන්ධ වෙමින්</translation>
-<translation id="1202549130170287307">විසන්ධි වෙමින්</translation>
 <translation id="2325196879156848326">සබැඳීමට අසමත් විය</translation>
 <translation id="745054660363064771">සේවාදායකයට සබැඳීමට නොහැකිය</translation>
 <translation id="3936826714240735937">වෙනත් සේවාදායකයක් තෝරන්න</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> සඳහා <ph name="REGION_NAME"/> සේවාදායකයට සබැඳීමට නොහැකි විය. පසුව උත්සාහ කරන්න හෝ වෙනත් රටක් තෝරන්න.</translation>
 <translation id="5753795690521538679">දවස් 7 ක නොමිලේ නැහැසුම අරඹන්න</translation>
 <translation id="3357036723290257445">දැනටමත් Brave VPN මිලදී ගෙන තිබේද?</translation>
-<translation id="8814357473522731680">බලගැන්වීම</translation>
 <translation id="8652175077544655965">සැකසුම් වසන්න</translation>
 <translation id="5908163815855240493">ප්‍රධාන වෙත යන්න</translation>
 <translation id="7805768142964895445">තත්‍වය</translation>
@@ -2239,8 +2367,6 @@
 <translation id="8421945428836418371">ස්වයංක්‍රියව යළි සබඳින්න</translation>
 <translation id="434523916398030617">තාක්‍ෂණික සහාය අමතන්න</translation>
 <translation id="1116694919640316211">පිළිබඳ</translation>
-<translation id="755045397420611731">අමතර පෞද්ගලිකත්‍වයක්, මාර්ගගත ආරක්‍ෂාවක්</translation>
-<translation id="4520128772974831415">ඔබගේ අ.ජා.කෙ. සඟවන්න, ස්ථානය වෙනස් කරන්න</translation>
 <translation id="2044418816479192294">ලොව පුරා සේවාදායකයන් සිය ගණනක්</translation>
 <translation id="7410504850864021600">සම්බන්ධතා විදුලි වේගයෙන්</translation>
 <translation id="2422309687188612485">එක් සැලසුමකින් උපාංග 10 කට රැකවරණය</translation>
@@ -2314,15 +2440,12 @@
 <translation id="8048263175525832621">Brave VPN - විසන්‍ධි විය</translation>
 <translation id="1498770726476841108">ගිණුම කළමනාකරණය</translation>
 <translation id="6825718953004242472">නිරූපකය ඉවත් කරන්න</translation>
-<translation id="6819278685469225453">උපාංගයේ සෑම යෙදුමක්ම රැකගන්න</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">අමතර පෞද්ගලිකත්‍වයක්, මාර්ගගත ආරක්‍ෂාවක්.</translation>
-<translation id="8425213833346101688">වෙනස් කරන්න</translation>
-<translation id="8703188411226330709">නොමිලේ නැහැසුම අරඹන්න</translation>
 <translation id="3287942014983548982">මෙහි අරින්න</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, දැන් විවෘතයි,
  පටිත්ත හා ඇතුල් කරන යතුරු ඔබා විවෘත පටිත්තට මාරු වන්න</translation>
 <translation id="1538335063514960365">මෙහි අරින්න බොත්තම, පවතින පටිත්තට මාරු නොවී වත්මන් පටිත්තේ මෙම ඒ.ස.නි. ඇරීමට ඇතුල් කරන යතුර ඔබන්න</translation>
 <translation id="451189393813405346">ලියෝගෙන් අහන්න</translation>
+<translation id="1602850501393095406">උද්දීපනය කිරීමට ↑ ඔබන්න</translation>
 <translation id="8525248723479742219">පසුව වාදනය</translation>
 </translationbundle>

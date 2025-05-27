@@ -52,6 +52,12 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="4450893287417543264">Non mostrare più</translation>
 <translation id="4595286989346610620">Controlla i dettagli</translation>
 <translation id="8324318899000695659">Blocca gli elementi</translation>
+<translation id="3828310068250853121">Seleziona gli elementi che vuoi bloccare</translation>
+<translation id="2577286987423083872">Blocca elementi</translation>
+<translation id="3211174446914979436">Gestisci filtri</translation>
+<translation id="3108584651298176909">Mostra regole</translation>
+<translation id="5156986655891520787">Nascondi regole</translation>
+<translation id="7658239707568436148">Annulla</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Apri usando l’indirizzo .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forza l’azione Incolla</translation>
@@ -93,7 +99,6 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="8117247596084706514">Questo sito ha richiesto la tua <ph name="PART_ONE"/>posizione precisa<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Scopri di più<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Questo sito ha richiesto la tua <ph name="PART_ONE"/>posizione precisa<ph name="PART_ONE_END"/>. Brave è in grado di fornire unicamente i dati sulla <ph name="PART_TWO"/>posizione generica<ph name="PART_TWO_END"/>, poiché i <ph name="PART_THREE"/>Servizi di localizzazione<ph name="PART_THREE_END"/> sono disattivati. <ph name="PART_FOUR"/>Scopri di più<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Chiudi tutto</translation>
-<translation id="7658239707568436148">Annulla</translation>
 <translation id="4870911314065352661">Vuoi chiudere tutte le schede?</translation>
 <translation id="7551864359422178684">Hai <ph name="NUMBER_OF_TABS"/> schede aperte in questo browser.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> schede</translation>
@@ -133,6 +138,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="3447730462826640312">Per ricevere la ricompensa non serve nessun clic, ma clicca se ti interessa l’annuncio!</translation>
 <translation id="5253166205743627564">Grazie per aver sostenuto Ricerca Brave cliccando su un annuncio privato. A differenza delle aziende Big Tech, misuriamo le prestazioni degli annunci in modo anonimo per tutelare la tua privacy.</translation>
 <translation id="8748471354357836070">Scopri di più / Scelte di opt-out</translation>
+<translation id="5927196110206824867">Le immagini di sfondo sponsorizzate supportano l'impegno di Brave nel creare un Web indipedente in cui l'utente sia al primo posto. Al contrario delle Big Tech, misuriamo le prestazioni degli annunci in modo anonimo, rispettando la tua privacy.</translation>
 <translation id="4174337572777167894">Progetto Web Discovery</translation>
 <translation id="8659271182272561965">Contribuisci alla ricerca anonima e ai dati di navigazione per perfezionare la ricerca Brave.</translation>
 <translation id="1516554614404600536">Descrizione comando Brave</translation>
@@ -473,6 +479,9 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
 <translation id="7791141927430186653">Consenti tweet incorporati di X (in precedenza Twitter)</translation>
 <translation id="958971637207126733">Permetti i post integrati di LinkedIn</translation>
+<translation id="1244912498725894944">Le impostazioni di alcuni cookie sono controllate da Protezione Brave. Puoi visualizzarle &lt;a href="/content/braveShields"&gt;qui&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Questa impostazione è controllata da Protezioni Brave.</translation>
+<translation id="352287031024189516">Questa impostazione è controllata da Google Sign-in.</translation>
 <translation id="8792121506918889955">Gestione politica IP WebRTC</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Interfacce pubbliche e private predefinite</translation>
@@ -674,8 +683,12 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="856371974127598760">Reti del potafoglio</translation>
 <translation id="5975930666279943472">Cancella i dati relativi alle transazioni del portafoglio e al nonce</translation>
 <translation id="5693968582510626466">Cancellare le transazioni può essere utile agli sviluppatori o per cancellare lo stato su un server locale</translation>
-<translation id="2326850911705720398">Reimposta e cancella i dati del portafoglio</translation>
+<translation id="6171369470447621882">Resetta lo stato di sincronizzazione di Zcash</translation>
+<translation id="6705112675071480687">Resetta il progresso di sincronizzazione di Zcash per tutti gli account protetti.</translation>
+<translation id="2012093487873597892">Confermi di voler resettare lo stato di sincronizzazione di Zcash? Il progresso di sincronizzazione per tutti gli account protetti sarà interrotto. Digita "<ph name="CONFIRMATION_PHRASE"/>" per confermare.</translation>
+<translation id="5031551083187285762">Lo stato di sincronizzazione per i tuoi account Zcash è stato resettato.</translation>
 <translation id="9216386092464743272">Vuoi davvero ripristinare tutti i dati relativi al nonce e alle transazioni del tuo portafoglio? Questa opzione in genere viene usata dagli sviluppatori su server di prova locali. Per confermare scrivi “<ph name="CONFIRMATION_PHRASE"/>”.</translation>
+<translation id="2326850911705720398">Reimposta e cancella i dati del portafoglio</translation>
 <translation id="6369495274982305511">Vuoi davvero ripristinare il portafoglio? Se non hai eseguito un backup, perderai tutti i dati dell’account (inclusi tutti i fondi associati). Digita “<ph name="CONFIRMATION_PHRASE"/>” per confermare.</translation>
 <translation id="3752403403443723332">Il wallet è stato ripristinato.</translation>
 <translation id="594766067816395072">I dati relativi alle transazioni del portafoglio sono stati ripristinati.</translation>
