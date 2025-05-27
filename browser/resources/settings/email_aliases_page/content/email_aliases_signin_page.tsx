@@ -70,10 +70,7 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
         {getLocale('emailAliasesGetLoginLinkButton')}
       </Button>
     </LoginRow>
-    {errorMessage && <Alert>
-      {getLocale('emailAliasesRequestAuthenticationErrorPreamble') + ' ' +
-        errorMessage}
-    </Alert>}
+    {errorMessage && <Alert>{errorMessage}</Alert>}
   </SpacedCol>
 }
 

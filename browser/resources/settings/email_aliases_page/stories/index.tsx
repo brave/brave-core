@@ -58,10 +58,9 @@ provideStrings({
     'create or access a Brave Account and let you use the free Email Aliases ' +
     'service.',
   emailAliasesGetLoginLinkButton: 'Get login link',
-  emailAliasesRequestAuthenticationErrorPreamble:
-    'Error requesting authentication.',
-  emailAliasesCheckYourInternetConnectionAndTryAgain:
-    'Check your internet connection and try again.',
+  emailAliasesRequestAuthenticationError:
+    'Error requesting authentication. Check your internet connection and try ' +
+    'again.',
   emailAliasesEmailAddressPlaceholder: 'Email address',
   emailAliasesLoginEmailOnTheWay: 'A login email is on the way to $1',
   emailAliasesClickOnSecureLogin: 'Click on the secure login link in the ' +
@@ -176,7 +175,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
       }, 5000);
     }
     const errorMessage = error
-      ? getLocale('emailAliasesCheckYourInternetConnectionAndTryAgain')
+      ? getLocale('emailAliasesRequestAuthenticationError')
       : null
     return { errorMessage }
   }

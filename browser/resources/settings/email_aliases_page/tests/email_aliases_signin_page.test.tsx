@@ -40,8 +40,10 @@ describe('MainEmailEntryForm', () => {
     const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
     const emailInput = screen
       .getByPlaceholderText('emailAliasesEmailAddressPlaceholder')
-    fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
-    clickLeoButton(signUpButton)
+    await act(async () => {
+      fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
+      clickLeoButton(signUpButton)
+    })
     expect(mockEmailAliasesService.requestAuthentication)
       .toHaveBeenCalledWith(mockAuthEmail)
   })
@@ -70,7 +72,7 @@ describe('MainEmailEntryForm', () => {
     await waitFor(() => {
       expect(mockEmailAliasesService.requestAuthentication)
         .toHaveBeenCalledWith(mockAuthEmail)
-      expect(screen.getByText(/mockErrorMessage/i)).toBeInTheDocument()
+      expect(screen.getByText('mockErrorMessage')).toBeInTheDocument()
     })
   })
 
