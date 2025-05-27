@@ -68,9 +68,9 @@ provideStrings({
   emailAliasesClickOnSecureLogin: 'Click on the secure login link in the ' +
     'email to access your account.',
   emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder ' +
-    'or $1try again$2.',
+    'or $1try again$1.',
   emailAliasesAuthError: 'Error authenticating with Brave Account.',
-  emailAliasesAuthTryAgain: 'Please $1try again$2.',
+  emailAliasesAuthTryAgain: 'Please $1try again$1.',
   emailAliasesBubbleDescription: 'Create a random email address that ' +
     'forwards to your inbox while keeping your personal email private.',
   emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free ' +
