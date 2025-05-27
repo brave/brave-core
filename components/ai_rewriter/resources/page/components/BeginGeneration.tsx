@@ -6,10 +6,11 @@ import { spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled from "styled-components";
 import InputBox from '../../../../ai_chat/resources/page/components/input_box';
-import ToolsButtonMenu from "../../../../ai_chat/resources/page/components/tools_button_menu";
+import ToolsMenu from "../../../../ai_chat/resources/page/components/filter_menu/tools_menu";
 import { useRewriterContext } from "../Context";
 import InitialText from "./InitialText";
 import NoContent from "./NoContent";
+import { extractQuery } from "../../../../ai_chat/resources/page/components/filter_menu/query";
 
 const FiltersContainer = styled.div`
   display: flex;
@@ -30,15 +31,15 @@ export default function BeginGeneration() {
   return <>
     <FiltersContainer>
       <InitialText />
-      <ToolsButtonMenu
-        isToolsMenuOpen={context.isToolsMenuOpen}
-        setIsToolsMenuOpen={context.setIsToolsMenuOpen}
+      <ToolsMenu
+        isOpen={context.isToolsMenuOpen}
+        setIsOpen={context.setIsToolsMenuOpen}
         categories={context.actionList}
-        getLabel={item => item.details!.label}
-        getSubheading={item => item.subheading}
-        matchesQuery={(query, item) => item.details!.label.toLowerCase().includes(query.toLowerCase())}
-        handleClick={item => context.handleActionTypeClick(item.details!.type)}
-        query={context.instructionsText} />
+        query={extractQuery(context.instructionsText, {
+          onlyAtStart: true,
+          triggerCharacter: '/',
+        })}
+        handleClick={context.handleActionTypeClick} />
       <InputBox
         conversationStarted
         context={{
