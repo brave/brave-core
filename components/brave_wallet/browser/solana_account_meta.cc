@@ -8,6 +8,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
+
 namespace {
 
 constexpr char kPubkey[] = "pubkey";

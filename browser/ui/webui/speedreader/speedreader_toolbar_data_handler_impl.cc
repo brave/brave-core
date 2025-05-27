@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"

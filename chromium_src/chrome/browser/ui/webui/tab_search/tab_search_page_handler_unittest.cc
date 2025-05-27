@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/tab_search/tab_search_page_handler.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"

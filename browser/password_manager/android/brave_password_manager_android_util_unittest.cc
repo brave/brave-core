@@ -5,6 +5,7 @@
 
 #include "base/android/build_info.h"
 #include "base/files/file_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_file_util.h"
 #include "base/types/cxx23_to_underlying.h"

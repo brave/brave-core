@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/brave_rewards/core/engine/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"

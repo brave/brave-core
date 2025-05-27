@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
+
 namespace brave_wallet {
 
 // MockOrchardBlockScannerProxy

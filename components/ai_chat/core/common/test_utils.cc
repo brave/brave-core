@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 
 #include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "crypto/random.h"

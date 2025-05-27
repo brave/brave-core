@@ -9,7 +9,6 @@
 
 #include "base/containers/extend.h"
 #include "base/containers/to_vector.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
