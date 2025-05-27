@@ -38,6 +38,7 @@ final class ScriptExecutionTests: XCTestCase {
     let hasDisplayIsNone: Bool
     let delayedHasTextHidden: Bool
     let delayedChildHasTextHidden: [Bool]
+    let altMutationStrategyHidden: Bool
   }
 
   override class func setUp() {
@@ -265,6 +266,7 @@ final class ScriptExecutionTests: XCTestCase {
         "brave.com###test-has:has(a.banner-link)",
         "brave.com###test-delayed-has-text:has-text(hide me)",
         "brave.com##.procedural-filter-child-node-class:has-text(View in App)",
+        "brave.com###test-alt-mutation-observation-strategy:has-text(hide me)",
       ].joined(separator: "\n")
     )
     let cosmeticFilterModel = try engine.cosmeticFilterModel(forFrameURL: siteURL)!
@@ -406,14 +408,21 @@ final class ScriptExecutionTests: XCTestCase {
       }
     }
 
-    // Now wait for the pump which takes a few seconds (The pump unhides 1st party elements).
-    try await Task.sleep(seconds: 5)
-
     let addDynamicElementsJavascript = """
-        addElementForProceduralFilter();
+        addElementForProceduralFilter(/* id */ 'test-delayed-has-text');
         addElementWithChildDynamically();
+        triggerAltMutationObservationStrategy();
+        // add element to hide using alt mutation observation strategy, but delayed
+        // so it's not grouped with above mutation
+        window.setTimeout(
+          addElementForProceduralFilter, 
+          /* delay */ 50,
+          /* id */ 'test-alt-mutation-observation-strategy');
       """
     try await viewController.webView.evaluateJavaScript(addDynamicElementsJavascript)
+
+    // Now wait for the pump which takes a few seconds (The pump unhides 1st party elements).
+    try await Task.sleep(seconds: 5)
 
     // Execute a script that will test the cosmetic filters page
     let testURL = Bundle.module.url(forResource: "cosmetic-filter-tests", withExtension: "js")!
@@ -484,6 +493,7 @@ final class ScriptExecutionTests: XCTestCase {
     } else {
       XCTFail("delayedChildHasTextHidden missing in results")
     }
+    XCTAssertTrue(resultsAfterPump?.altMutationStrategyHidden ?? false)
     // Test for local frames
     XCTAssertTrue(resultsAfterPump?.localFrameElement ?? false)
   }
