@@ -151,7 +151,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 
 // The oldest version of the schema such that a legacy Brave client using that
 // version can still read/write the current database.
-constexpr int kCompatibleDatabaseVersionNumber = 1;
+constexpr int kCompatibleDatabaseVersionNumber = 6;
 
 // Current version of the database. Increase if breaking changes are made.
 constexpr int kCurrentDatabaseVersion = 6;
