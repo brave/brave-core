@@ -320,16 +320,15 @@ struct TranslateToast: View {
   }
 
   private var currentLanguageName: String {
-    if let languageCode = languageInfo.currentLanguage.languageCode?.identifier,
-      let languageName = Locale.current.localizedString(forIdentifier: languageCode)
-    {
+    let languageCode = languageInfo.currentLanguage.braveTranslateLanguageIdentifier
+    if let languageName = Locale.current.localizedString(forIdentifier: languageCode) {
       return languageName
     }
     return Strings.BraveTranslate.unknownLanguageTitle
   }
 
   private var pageLanguageName: String {
-    if let languageCode = languageInfo.pageLanguage?.languageCode?.identifier,
+    if let languageCode = languageInfo.pageLanguage?.braveTranslateLanguageIdentifier,
       let languageName = Locale.current.localizedString(forIdentifier: languageCode)
     {
       return languageName
