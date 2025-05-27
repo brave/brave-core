@@ -11,12 +11,30 @@
 #import <WebKit/WebKit.h>
 
 #import "cwv_export.h"               // NOLINT
+#import "cwv_navigation_action.h"    // NOLINT
 #import "cwv_navigation_delegate.h"  // NOLINT
 #import "cwv_ui_delegate.h"          // NOLINT
 #import "cwv_web_view.h"             // NOLINT
 #import "cwv_web_view_extras.h"      // NOLINT
 
 NS_ASSUME_NONNULL_BEGIN
+
+CWV_EXPORT
+@interface BraveNavigationAction : CWVNavigationAction
+/// YES if the navigation target frame is the main frame.
+@property(nonatomic, readonly, getter=isTargetFrameMain) BOOL targetFrameIsMain;
+/// YES if the navigation target frame is cross-origin with respect to the the
+/// navigation source frame.
+@property(nonatomic, readonly, getter=isTargetFrameCrossOrigin)
+    BOOL targetFrameIsCrossOrigin;
+/// YES if the navigation target frame is in another window and is cross-origin
+/// with respect to the the navigation source frame.
+@property(nonatomic, readonly, getter=isTargetWindowCrossOrigin)
+    BOOL targetWindowIsCrossOrigin;
+/// YES if there was a recent user interaction with the web view (not
+/// necessarily on the page).
+@property(nonatomic, readonly) BOOL hasTappedRecently;
+@end
 
 /// Additional navigation delegate methods that extend functionality of
 /// CWVWebView
@@ -44,6 +62,15 @@ CWV_EXPORT
 /// Notifies the delegate that a server redirect occured. At the point when this
 /// is called, the url will already be updated.
 - (void)webViewDidRedirectNavigation:(CWVWebView*)webView;
+// An alternative to -[id<CWVNavigationDelegate>
+// webView:decidePolicyForNavigationAction:decisionHandler:] which provides
+// additional request info found in WebPolicyDecider
+- (void)webView:(CWVWebView*)webView
+    decidePolicyForBraveNavigationAction:
+        (BraveNavigationAction*)navigationAction
+                         decisionHandler:(void (^)(CWVNavigationActionPolicy))
+                                             decisionHandler;
+
 @end
 
 CWV_EXPORT
