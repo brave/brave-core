@@ -37,20 +37,20 @@ public class SponsoredImageUtil {
                                             "Dylan Malval",
                                             "https://www.instagram.com/vass_captures/"))));
 
-    private static int mBackgroundImageIndex = getRandomIndex(sBackgroundImages.size());
+    private static int sBackgroundImageIndex = getRandomIndex(sBackgroundImages.size());
 
-    private static int mTabIndex = 1;
+    private static int sTabIndex = 1;
 
     public static List<BackgroundImage> getBackgroundImages() {
         return sBackgroundImages;
     }
 
     public static int getTabIndex() {
-        return mTabIndex;
+        return sTabIndex;
     }
 
     public static void incrementTabIndex(int count) {
-        mTabIndex = mTabIndex + count;
+        sTabIndex = sTabIndex + count;
     }
 
     private static int getRandomIndex(int count) {
@@ -59,12 +59,12 @@ public class SponsoredImageUtil {
     }
 
     public static BackgroundImage getBackgroundImage() {
-        if (mBackgroundImageIndex >= sBackgroundImages.size()) {
-            mBackgroundImageIndex = 0;
+        if (sBackgroundImageIndex >= sBackgroundImages.size()) {
+            sBackgroundImageIndex = 0;
         }
 
-        BackgroundImage backgroundImage = sBackgroundImages.get(mBackgroundImageIndex);
-        mBackgroundImageIndex++;
+        BackgroundImage backgroundImage = sBackgroundImages.get(sBackgroundImageIndex);
+        sBackgroundImageIndex++;
         return backgroundImage;
     }
 }

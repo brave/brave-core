@@ -34,8 +34,8 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 
 public class BraveAdsNotificationDialog {
-    private static AlertDialog mAdsDialog;
-    private static String mNotificationId;
+    private static AlertDialog sAdsDialog;
+    private static String sNotificationId;
 
     private static class AdsNotificationTouchListener implements View.OnTouchListener {
         private static final int MIN_DISTANCE_FOR_DISMISS = 40;
@@ -52,7 +52,7 @@ public class BraveAdsNotificationDialog {
         public AdsNotificationTouchListener(Context context, final String origin) {
             mContext = context;
             mOrigin = origin;
-            mLayoutParams = mAdsDialog.getWindow().getAttributes();
+            mLayoutParams = sAdsDialog.getWindow().getAttributes();
             mWindowInitialPos = mLayoutParams.x;
         }
 
@@ -76,11 +76,11 @@ public class BraveAdsNotificationDialog {
                         return false;
                     }
                     if (Math.abs(deltaXDp) > MIN_DISTANCE_FOR_DISMISS) {
-                        mAdsDialog.dismiss();
-                        mAdsDialog = null;
+                        sAdsDialog.dismiss();
+                        sAdsDialog = null;
                         BraveAdsNativeHelper.nativeOnNotificationAdClosed(
-                                ProfileManager.getLastUsedRegularProfile(), mNotificationId, true);
-                        mNotificationId = null;
+                                ProfileManager.getLastUsedRegularProfile(), sNotificationId, true);
+                        sNotificationId = null;
                     } else if (Math.abs(deltaXDp) <= MAX_DISTANCE_FOR_TAP) {
                         adsDialogTapped(mOrigin);
                     } else {
@@ -93,7 +93,7 @@ public class BraveAdsNotificationDialog {
 
         private void updateWindowPosition(int x) {
             mLayoutParams.x = x;
-            if (mAdsDialog != null) mAdsDialog.getWindow().setAttributes(mLayoutParams);
+            if (sAdsDialog != null) sAdsDialog.getWindow().setAttributes(mLayoutParams);
         }
 
         private void translateWindowToOrigin() {
@@ -114,20 +114,25 @@ public class BraveAdsNotificationDialog {
             return Math.round(
                     value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         }
-    };
+    }
+    ;
 
-    public static void showNotificationAd(Context context, final String notificationId,
-            final String origin, final String title, final String body) {
+    public static void showNotificationAd(
+            Context context,
+            final String notificationId,
+            final String origin,
+            final String title,
+            final String body) {
         try {
-            if (mAdsDialog != null) {
-                mAdsDialog.dismiss();
+            if (sAdsDialog != null) {
+                sAdsDialog.dismiss();
             }
         } catch (IllegalArgumentException e) {
-          mAdsDialog = null;
+            sAdsDialog = null;
         }
         AlertDialog.Builder b = new AlertDialog.Builder(context);
 
-        mNotificationId = notificationId;
+        sNotificationId = notificationId;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         if (shouldUseDarkModeTheme()) {
@@ -135,55 +140,58 @@ public class BraveAdsNotificationDialog {
         } else {
             b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
         }
-        mAdsDialog = b.create();
+        sAdsDialog = b.create();
 
-        if (mNotificationId != null) {
+        if (sNotificationId != null) {
             BraveAdsNativeHelper.nativeOnNotificationAdShown(
-                    ProfileManager.getLastUsedRegularProfile(), mNotificationId);
+                    ProfileManager.getLastUsedRegularProfile(), sNotificationId);
         }
 
-        mAdsDialog.show();
+        sAdsDialog.show();
 
-        Window window = mAdsDialog.getWindow();
+        Window window = sAdsDialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
 
         wlp.gravity = Gravity.TOP;
-        wlp.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+        wlp.flags |=
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
-        mAdsDialog.setCanceledOnTouchOutside(false);
-        mAdsDialog.setCancelable(false);
+        sAdsDialog.setCanceledOnTouchOutside(false);
+        sAdsDialog.setCancelable(false);
 
         window.setAttributes(wlp);
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_header)).setText(title);
-        ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_body)).setText(body);
+        ((TextView) sAdsDialog.findViewById(R.id.brave_ads_custom_notification_header))
+                .setText(title);
+        ((TextView) sAdsDialog.findViewById(R.id.brave_ads_custom_notification_body)).setText(body);
 
-        mNotificationId = notificationId;
-        mAdsDialog.findViewById(R.id.brave_ads_custom_notification_popup)
+        sNotificationId = notificationId;
+        sAdsDialog
+                .findViewById(R.id.brave_ads_custom_notification_popup)
                 .setOnTouchListener(new AdsNotificationTouchListener(context, origin));
     }
 
     private static void adsDialogTapped(final String origin) {
-        if (mNotificationId.equals(BraveOnboardingNotification.BRAVE_ONBOARDING_NOTIFICATION_TAG)) {
-            mAdsDialog.dismiss();
-            mAdsDialog = null;
+        if (sNotificationId.equals(BraveOnboardingNotification.BRAVE_ONBOARDING_NOTIFICATION_TAG)) {
+            sAdsDialog.dismiss();
+            sAdsDialog = null;
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null) {
                 chromeTabbedActivity.getTabCreator(false).launchUrl(
                         origin, TabLaunchType.FROM_CHROME_UI);
             }
         } else {
-            mAdsDialog.dismiss();
-            mAdsDialog = null;
+            sAdsDialog.dismiss();
+            sAdsDialog = null;
             BraveAdsNativeHelper.nativeOnNotificationAdClicked(
-                    ProfileManager.getLastUsedRegularProfile(), mNotificationId);
+                    ProfileManager.getLastUsedRegularProfile(), sNotificationId);
         }
-        mNotificationId = null;
+        sNotificationId = null;
     }
 
     @CalledByNative
@@ -206,14 +214,16 @@ public class BraveAdsNotificationDialog {
     @CalledByNative
     private static void closeNotificationAd(final String notificationId) {
         try {
-            if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
-                mAdsDialog.dismiss();
-                mAdsDialog = null;
+            if (sNotificationId != null
+                    && sNotificationId.equals(notificationId)
+                    && sAdsDialog != null) {
+                sAdsDialog.dismiss();
+                sAdsDialog = null;
                 BraveAdsNativeHelper.nativeOnNotificationAdClosed(
-                        ProfileManager.getLastUsedRegularProfile(), mNotificationId, false);
+                        ProfileManager.getLastUsedRegularProfile(), sNotificationId, false);
             }
         } catch (IllegalArgumentException e) {
-            mAdsDialog = null;
+            sAdsDialog = null;
         }
     }
 
