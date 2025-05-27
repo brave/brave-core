@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Brave Ödüllerini Göster</translation>
 <translation id="5585019845078534178">kartlar</translation>
 <translation id="3870475560794762985">Sponsorlu Görselleri Göster</translation>
+<translation id="5684562942023496754">Sponsorlu Görselleri görerek kazanabilirsiniz.</translation>
+<translation id="6168679340384667457">Gördüğünüz Sponsorlu Görseller için BAT kazanıyorsunuz. Sponsorlu Görselleri devre dışı bırakmak daha az kazanmanıza sebep olur.</translation>
+<translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="2414654907269324670">Sponsorlu Görseller için BAT kazanıyorsunuz.</translation>
 <translation id="4942016616604700968">Ödülleri Etkinleştir</translation>
-<translation id="5684562942023496754">Sponsorlu Görselleri görerek kazanabilirsiniz.</translation>
 <translation id="8934374643857605034">Brave Ödülleri kullanıcısı olarak, Sponsorlu Görselleri görerek BAT kazanabilirsiniz.</translation>
 <translation id="1570714748649804013">Brave Ödülleri kullanıcısı olarak, gördüğünüz Sponsorlu Görseller için BAT kazanırsınız. Sponsorlu Görselleri devre dışı bırakmak daha az kazanmanıza sebep olur.</translation>
 <translation id="8998727244653964783">Bir korumalı hesabı Brave Ödüllerine bağladığınızda Sponsorlu Görselleri görerek BAT kazanabilirsiniz. Bu sırada, Sponsorlu Görsellerle oluşturucuların desteklenmesine yardımcı olursunuz.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">Okuma Listesi</translation>
 <translation id="4590997608186539865">Oynatma listesi</translation>
 <translation id="8027460023387054992">Sohbet Özetleyici</translation>
-<translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8730621377337864115">Bitti</translation>
 <translation id="730042046912793465">Bu bir</translation>
 <translation id="2055363275850890030">Özel Pencere</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">Bağlı değil</translation>
 <translation id="4217695020908122747">Bağlı hesaplar</translation>
 <translation id="8497650996740651467">Kullanılabilir hesaplar</translation>
+<translation id="1775188434254367931">Bağlantılar</translation>
+<translation id="1818522458013171885">Engellemeyi Kaldır</translation>
 <translation id="5677928146339483299">Engellendi</translation>
 <translation id="3890989020011724401">Yeni hesap</translation>
 <translation id="4612979983851181941">Web3 ve tüm kripto varlıklarınıza güvenli bir şekilde erişmek için bu paneli kullanın.</translation>
@@ -1739,6 +1742,7 @@
 <translation id="803703704549420287">Filtreleri temizle</translation>
 <translation id="1472675084647422956">Daha fazla göster</translation>
 <translation id="4522570452068850558">Ayrıntılar</translation>
+<translation id="4583937519241190398">DappRadar tarafından doğrulandı</translation>
 <translation id="8713438253026855351">Korumalı bir hesaba geçin</translation>
 <translation id="3526789880090101085">Korumalı hesap</translation>
 <translation id="2298396008562701154">Şu anda bu hesap şeffaf işlemleri desteklemektedir, yani işlemler blok zinciri üzerinde herkes tarafından görülebilir.</translation>
@@ -1829,7 +1833,9 @@
 <translation id="7758665172236842395">Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve... işte oldu!</translation>
 <translation id="2376542729617592331">Brave News, gizli ve anonimleştirilmiş reklamlarla desteklenir. <ph name="LINK_START"/>Daha fazla bilgi edinin.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
+<translation id="5149018766422637336">Haberler ve RSS</translation>
 <translation id="6265592479622441247">Panoya <ph name="BEGIN_BOLD"/> Geri Dön<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">Keşfet</translation>
 <translation id="8981973962043893066">Site, konu veya RSS akışı için arama yapın</translation>
 <translation id="1498364270401875204">Kanallar</translation>
 <translation id="6401776069326703655">Tümünü Görüntüle</translation>
@@ -2114,6 +2120,7 @@
 <translation id="8151638057146502721">Yapılandır</translation>
 <translation id="3282183392203936979">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Meta tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Llama 3.1 8B modeliyle çalışıyorum. Llama, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 14B modeliyle çalışıyorum. Qwen, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">Merhaba, ben Leo. Brave'in sunduğu bir YZ asistanıyım. DeepSeek tarafından derin muhakeme gerektiren görevler için tasarlanan DeepSeek R1 modeliyle çalışıyorum. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Mistral AI tarafından gelişmiş görevleri yerine getirebilmesi için geliştirilen Mixtral 8x7B modeliyle çalışıyorum. Mixtral, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Merhaba, ben Leo. Brave tarafından yönlendirilen ve Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Instant modeliyle çalışan bir yapay zeka asistanıyım. Claude Instant, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Merhaba, ben Leo. Brave tarafından yönlendirilen ve Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışan bir yapay zeka asistanıyım. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
@@ -2152,7 +2159,6 @@
 <translation id="6393149565874086128">Geri bildirim ekle</translation>
 <translation id="3521125531016408657">Yanıtı beğen</translation>
 <translation id="8202517001427388906">Yanıtı beğenme</translation>
-<translation id="3177073390279208955">Derecelendirme, konuşma, model, dil, sürüm ve premium durumu gönderir</translation>
 <translation id="1379399209929302811">Brave YZ Geri Bildirimi Verin</translation>
 <translation id="8442999546461118871">Geri bildirim konunuzu seçin</translation>
 <translation id="9018766373792005944">Geri bildiriminiz neyle alakalı?</translation>
@@ -2177,6 +2183,12 @@
 <translation id="1946267518364740045">Akıl yürütüyor...</translation>
 <translation id="4198859185714743678">Akıl yürütme tamamlandı</translation>
 <translation id="6140948187512243695">Detayları göster</translation>
+<translation id="4881695831933465202">Açık</translation>
+<translation id="1625889395409731085">Harici bağlantı açılsın mı?</translation>
+<translation id="4211063437291114749">Leo YZ yeni bir sekmede bir web sitesi açmak istiyor. Devam etmek istiyor musunuz?</translation>
+<translation id="5526001300821542157">Bağlantıları bana sormadan aç</translation>
+<translation id="1243966363662220847">Yanıt Geri Bildirimi</translation>
+<translation id="7417895556119762861">Bir cevabı beğenmek veya beğenmemek, Leo'yu geliştirmek için Brave'e derecelendirme, konuşma, model, dil, sürüm ve premium durumu gönderecektir. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Leo'ya mesaj gönder</translation>
 <translation id="8650874793377330048">Yanıt vermeyi bırak</translation>
 <translation id="8712637175834984815">Anlaşıldı</translation>
@@ -2204,6 +2216,7 @@
 <translation id="2836330653441111204">Dengeli hız ve zeka</translation>
 <translation id="6695329447007213917">Genel amaçlı sohbet, kodlama ve daha fazlası</translation>
 <translation id="5051668914970329839">Çok amaçlı görsel algılama</translation>
+<translation id="7226508434216060960">Muhakeme modeli</translation>
 <translation id="3965507912994218570">Leo ayarları</translation>
 <translation id="1037324977127422019">Merhaba, ben Leo!</translation>
 <translation id="8930348081963284873">Doğrudan Brave'in içine inşa edilen, YZ destekli akıllı bir asistanım.</translation>
@@ -2252,21 +2265,38 @@
 <translation id="8370801182970639038">Otomatik (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Etkinleştirilmiş arama motorları</translation>
 <translation id="5355776323718420036">En iyi siteleri gizle</translation>
+<translation id="9173319813356700250">HABERLER</translation>
 <translation id="6543799171249004861">Photo by <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">ÖDÜLLER</translation>
 <translation id="5966055668402779222">Brave Arama'ya sor</translation>
 <translation id="6851426306697017546">Saati göster</translation>
 <translation id="4844370919312937270">Yeni sekmelerde arama widget'ını göster</translation>
 <translation id="5009354496127441090">En iyi siteleri göster</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">İSTATİSTİKLER</translation>
+<translation id="712731581368828482">Brave Talk ile şifreli video görüşmeleri.</translation>
+<translation id="2671474274417808910">Gizlilik Öncelikli Aramalar</translation>
+<translation id="2100665198270190500">TALK</translation>
 <translation id="4290791698375397492">En iyi site kaldırıldı</translation>
 <translation id="1436784010935106834">Kaldırıldı</translation>
 <translation id="9030215177866748410">En iyi siteler sık ziyaret ettiğiniz web sitelerine göre önerilir.</translation>
+<translation id="8425213833346101688">Değiştir</translation>
+<translation id="755045397420611731">Çevrimiçi ekstra gizlilik ve güvenlik</translation>
+<translation id="4520128772974831415">IP'nizi gizleyin ve konumunuzu değiştirin</translation>
+<translation id="6819278685469225453">Cihazınızdaki her uygulamayı koruyun</translation>
+<translation id="8422279921836245017">Zaten satın aldınız mı?</translation>
+<translation id="8703188411226330709">Ücretsiz denemeyi başlat</translation>
+<translation id="8814357473522731680">Destekleyen:</translation>
+<translation id="7143207342074048698">Bağlanıyor</translation>
+<translation id="1202549130170287307">Bağlantı kesiliyor</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">Widget'lar</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
-<translation id="7509914170164691086">Şunun için Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/>:</translation>
-<translation id="260764436039299868">Kalkanlar <ph name="LINK_BEFORE"/>KAPALI<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Bu site bozuk görünüyorsa, Shields'ı deneyin.
-  <ph name="LINK_BEFORE"/>Not: Bu, Brave'in gizlilik korumalarını azaltabilir.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770">Şunun için Kalkanlar <ph name="STATUS_BEFORE"/>AÇIK<ph name="STATUS_AFTER"/>: <ph name="HOST"/></translation>
+<translation id="7656091630265507216">Şunun için Kalkanlar <ph name="STATUS_BEFORE"/>KAPALI<ph name="STATUS_AFTER"/>: <ph name="HOST"/></translation>
+<translation id="5623354834493649144">Bu site düzgün görüntülenmiyorsa, Kalkanlar'ı kapatmayı deneyin.
+  <ph name="NOTE_BEFORE"/>Not: Bu, Brave'in gizlilik korumalarını azaltabilir.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">İzleyiciler, reklamlar ve daha fazlası engellendi <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Kalkanları tarafından korunmuyor <ph name="LINK_BEFORE"/> Daha fazla bilgi alın <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
@@ -2349,15 +2379,12 @@
 <translation id="958268166261124668">Brave VPN: Bağlı</translation>
 <translation id="6021669293402055982">Brave VPN: Bağlı değil</translation>
 <translation id="3541307549916475335">Brave VPN Paneli Arayüzü</translation>
-<translation id="7143207342074048698">Bağlanıyor</translation>
-<translation id="1202549130170287307">Bağlantı kesiliyor</translation>
 <translation id="2325196879156848326">Bağlantı Başarısız Oldu</translation>
 <translation id="745054660363064771">Sunucuya bağlanamıyor</translation>
 <translation id="3936826714240735937">Başka bir sunucu seç</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>, <ph name="REGION_NAME"/> sunucusuna bağlanamadı. Lütfen tekrar deneyin veya farklı bir ülke seçin.</translation>
 <translation id="5753795690521538679">7 günlük ücretsiz denemeyi başlat</translation>
 <translation id="3357036723290257445">Brave VPN'i zaten satın aldınız mı?</translation>
-<translation id="8814357473522731680">Destekleyen:</translation>
 <translation id="8652175077544655965">Ayarları kapat</translation>
 <translation id="5908163815855240493">Ana sayfaya gidin</translation>
 <translation id="7805768142964895445">Durum</translation>
@@ -2365,8 +2392,6 @@
 <translation id="8421945428836418371">Otomatik olarak tekrar bağlan</translation>
 <translation id="434523916398030617">Teknik destekle iletişime geçin</translation>
 <translation id="1116694919640316211">Hakkında</translation>
-<translation id="755045397420611731">Çevrimiçi ekstra gizlilik ve güvenlik</translation>
-<translation id="4520128772974831415">IP'nizi gizleyin ve konumunuzu değiştirin</translation>
 <translation id="2044418816479192294">Dünyanın her yerinde yüzlerce sunucu</translation>
 <translation id="7410504850864021600">Şimşek gibi bağlantı hızları</translation>
 <translation id="2422309687188612485">Tek bir planla 10 taneye kadar cihazı koruyun</translation>
@@ -2440,11 +2465,7 @@ Hadi sizi bağlayalım!</translation>
 <translation id="8048263175525832621">Brave VPN - Bağlı Değil</translation>
 <translation id="1498770726476841108">Hesabı yönet</translation>
 <translation id="6825718953004242472">Simgeyi kaldır</translation>
-<translation id="6819278685469225453">Cihazınızdaki her uygulamayı koruyun</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Çevrimiçi ortamda &amp; ekstra gizlilik ve güvenlik.</translation>
-<translation id="8425213833346101688">Değiştir</translation>
-<translation id="8703188411226330709">Ücretsiz denemeyi başlat</translation>
 <translation id="3287942014983548982">Burada aç</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, şu anda açık,
     açık sekmeye geçmek için Tab tuşuna ve ardından Enter tuşuna basın</translation>

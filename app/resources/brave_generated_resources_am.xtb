@@ -50,6 +50,7 @@
 <translation id="3975865347033939965">የማመሳሰል አገልግሎት ሊጀመር አልቻለም፣ Brave Sync እየሰራ አይደለም።</translation>
 <translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="4595286989346610620">ዝርዝሮችን ይፈትሹ</translation>
+<translation id="7658239707568436148">ሰርዝ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="4759098689276706664">በግድ ለጥፍ</translation>
 <translation id="1434416574322382019">አዲስ የግል መስኮት በ Brave</translation>
@@ -82,7 +83,6 @@
 <translation id="7276554663454265692">በማንኛውም ጊዜ <ph name="SETTING_TEXT"/> በማሰሻ ቅንብሮች ውስጥ መቀየር ይችላሉ።</translation>
 <translation id="6873781976650514089">ይህ ቅንብር</translation>
 <translation id="8915916167043355778">ሁሉንም ዝጋ</translation>
-<translation id="7658239707568436148">ሰርዝ</translation>
 <translation id="4870911314065352661">ሁሉንም ትሮች ይዘጉ?</translation>
 <translation id="7551864359422178684">በዚህ አሳሽ መስኮት ውስጥ 
 1<ph name="NUMBER_OF_TABS"/> 
@@ -590,8 +590,8 @@
 <translation id="856371974127598760">የኪስ ቦርሳ አውታረ መረቦች</translation>
 <translation id="5975930666279943472">የኪስ ቦርሳ ግብይት እና የአንድ ጊዜ መረጃ ያጽዱ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
-<translation id="2326850911705720398">የዋሌት ውሂብን አጥፋና ዳግም አስጀምር</translation>
 <translation id="9216386092464743272">እርግጠኛ ነዎት ሁሉንም የኪስ ቦርሳ ግብይትዎን እና ምንም መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው የሚጠቀመው የአካባቢያዊ የሙከራ አገልጋይ በሚያሄዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
+<translation id="2326850911705720398">የዋሌት ውሂብን አጥፋና ዳግም አስጀምር</translation>
 <translation id="6369495274982305511">እርግጠኛ ነዎት ዋሌትዎን ዳግም ማስጀመር ይፈልጋሉ? የዋሌትዎ ምትኬ ካልተቀመጠ፣ ዳግም ማስጀመር ሁሉንም የመለያ ውሂቦች (ማንኛውም ተዛማጅ ገንዘቦችን ጨምሮ) እንዲያጡ ያደርግዎታል። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይጻፉ።</translation>
 <translation id="3752403403443723332">ዋሌትዎ ዳግም ተጀምሯል።</translation>
 <translation id="594766067816395072">የዋሌትዎ የግብይት መረጃ ዳግም ተጀምሯል።</translation>

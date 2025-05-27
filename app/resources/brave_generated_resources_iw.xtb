@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="4595286989346610620">בדוק פרטים</translation>
 <translation id="8324318899000695659">חסום אלמנטים</translation>
+<translation id="3828310068250853121">יש לבחור אלמנט שברצונך לחסום</translation>
+<translation id="2577286987423083872">חסימת אלמנטים</translation>
+<translation id="3211174446914979436">ניהול מסננים</translation>
+<translation id="3108584651298176909">הצגת כללים</translation>
+<translation id="5156986655891520787">הסתרת כללים</translation>
+<translation id="7658239707568436148">ביטול</translation>
 <translation id="7398397225367092613">.בצל</translation>
 <translation id="2269780537090240241">פתחו על ידי שימוש בכתובת בצל: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">הדבקה ישירה</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">אתר זה ביקש שלך <ph name="PART_ONE"/>מיקום מדויק<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>למד עוד<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">אתר זה ביקש את ה<ph name="PART_ONE"/>מיקום המדויק<ph name="PART_ONE_END"/> שלך. Brave יכול לספק רק את ה<ph name="PART_TWO"/>מיקום הכללי<ph name="PART_TWO_END"/> נתונים בשל מידע המיקום הכללי שמנוטרל עקב <ph name="PART_THREE"/>שירותי מיקום<ph name="PART_THREE_END"/> שאינם פעילים. <ph name="PART_FOUR"/>למד עוד<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">סגור הכל</translation>
-<translation id="7658239707568436148">ביטול</translation>
 <translation id="4870911314065352661">לסגור את כל הכרטיסיות?</translation>
 <translation id="7551864359422178684">יש לך <ph name="NUMBER_OF_TABS"/> כרטיסיות פתוחות בחלון הדפדפן הזה.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> כרטיסיות</translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">אתה לא צריך ללחוץ כדי להרוויח, אבל לחץ אם אתה מעוניין!</translation>
 <translation id="5253166205743627564">תודה על תמיכתך בחיפוש Brave באמצעות לחיצה על מודעה פרטית. שלא כמו חברות ביג טק, אנחנו מודדים ביצועי מודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
 <translation id="8748471354357836070">למידע נוסף / אפשרויות ביטול</translation>
+<translation id="5927196110206824867">תמונות רקע ממומנות תומכות במשימה של Brave לבנות רשת אינטרנט עצמאית ששמה את המשתמש בעדיפות ראשונה. ושלא כמו חברות ביג טק, אנחנו מודדים את ביצועי המודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
 <translation id="4174337572777167894">פרויקט Web Discovery</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -472,6 +478,9 @@
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="7791141927430186653">אפשר ציוצים מוטבעים של X (לשעבר Twitter)</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
+<translation id="1244912498725894944">הגדרות מסוימות של קובצי עוגיות נשלטות על ידי מגיני Brave. אפשר לראות אותן &lt;a href="/content/braveShields"&gt;כאן&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">ההגדרה הזו נשלטת על ידי מגיני Brave.</translation>
+<translation id="352287031024189516">ההגדרה הזו נשלטת באמצעות התחברות לחשבון Google.</translation>
 <translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
@@ -673,8 +682,12 @@
 <translation id="856371974127598760">Wallet Networks</translation>
 <translation id="5975930666279943472">נקו מידע על עסקאות בארנק ומידע על חוסר</translation>
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
-<translation id="2326850911705720398">אפס ונקה את נתוני הארנק</translation>
+<translation id="6171369470447621882">איפוס של מצב סנכרון Zcash</translation>
+<translation id="6705112675071480687">מאפס את תהליך הסנכרון של Zcash עבור כל החשבונות המוגנים</translation>
+<translation id="2012093487873597892">בטוח שברצונך לאפס את מצב הסנכרון של Zcash? תהליך הסנכרון עבור כל החשבונות המוגנים יופסק. יש להקליד <ph name="CONFIRMATION_PHRASE"/> כדי לאשר.</translation>
+<translation id="5031551083187285762">מצב הסנכרון שלך עבור חשבונות Zcash אופס.</translation>
 <translation id="9216386092464743272">האם אתם בטוחים שברצונכם לאפס את כל עסקאות הארנק שלכם ומידע על חוסר? אפשרות זו משמשת בעיקר מפתחים המפעילים שרת בדיקה מקומי. הקלידו "<ph name="CONFIRMATION_PHRASE"/>לאישור.</translation>
+<translation id="2326850911705720398">אפס ונקה את נתוני הארנק</translation>
 <translation id="6369495274982305511">בטוח שברצונך לאפס את הארנק שלך? אם אין גיבוי לארנק שלך, האיפוס יגרום לך לאבד את כל נתוני החשבון (כולל את כל הכספים המשויכים). הקלד " <ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
 <translation id="3752403403443723332">הארנק שלכם אופס.</translation>
 <translation id="594766067816395072">פרטי העסקאות בארנקכם אופסו.</translation>

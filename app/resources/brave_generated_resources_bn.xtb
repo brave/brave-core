@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">আবার দেখাবেন না</translation>
 <translation id="4595286989346610620">বিস্তারিত চেক করুন</translation>
 <translation id="8324318899000695659">উপাদানগুলি ব্লক করুন</translation>
+<translation id="3828310068250853121">আপনি ব্লক করতে চান এমন একটি উপাদান নির্বাচন করুন</translation>
+<translation id="2577286987423083872">উপাদানগুলি ব্লক করুন</translation>
+<translation id="3211174446914979436">ফিল্টারগুলি পরিচালনা করুন</translation>
+<translation id="3108584651298176909">নিয়মাবলী দেখান</translation>
+<translation id="5156986655891520787">নিয়মাবলী লুকান</translation>
+<translation id="7658239707568436148">বাতিল</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion ঠিকানা ব্যবহার করে খুলুন: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">জোর করে পেস্ট করুন</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">এই সাইট আপনার <ph name="PART_ONE"/>সুনির্দিষ্ট লোকেশন<ph name="PART_ONE_END"/>-এর অনুরোধ করেছে। <ph name="PART_TWO"/>আরও জানুন<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">এই সাইট আপনার <ph name="PART_ONE"/>সুনির্দিষ্ট লোকেশন<ph name="PART_ONE_END"/>-এর অনুরোধ করেছে। Brave শুধুমাত্র <ph name="PART_TWO"/>সাধারণ লোকেশন<ph name="PART_TWO_END"/>-এর ডেটাই দিতে পারবে কারণ <ph name="PART_THREE"/>লোকেশন পরিষেবা<ph name="PART_THREE_END"/> নিষ্ক্রিয় করা আছে। <ph name="PART_FOUR"/>আরও জানুন<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">সবকটি বন্ধ করুন</translation>
-<translation id="7658239707568436148">বাতিল</translation>
 <translation id="4870911314065352661">সমস্ত ট্যাবগুলি বন্ধ করুন?</translation>
 <translation id="7551864359422178684">এই ব্রাউজার উইন্ডোতে আপনার <ph name="NUMBER_OF_TABS"/>টি ট্যাব খোলা আছে।</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>টি ট্যাব</translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">উপার্জন করার জন্য আপনাকে ক্লিক করতে হবে না, তবে আপনি আগ্রহী হলে ক্লিক করুন!</translation>
 <translation id="5253166205743627564">একটি ব্যক্তিগত বিজ্ঞাপনে ক্লিক করে Brave সন্ধানকে সহায়তা করার জন্য ধন্যবাদ। বড় বড় প্রযুক্তি কোম্পানিগুলির মতো নয় এমনভাবে আপনার গোপনীয়তা রক্ষা করার জন্য আমরা বেনামে বিজ্ঞাপনের পারফরম্যান্স পরিমাপ করি।</translation>
 <translation id="8748471354357836070">আরও জানুন / অপ্ট আউট করার বিকল্পসমূহ</translation>
+<translation id="5927196110206824867">স্পন্সর করা ব্যাকগ্রান্ডের ছবিগুলি Brave এর একটি স্বাধীন, ব্যবহারকারীকে-অগ্রাধিকার দেওয়া ওয়েব গড়ে তোলার মিশনকে সমর্থন করে। এবং বড় প্রযুক্তি সংস্থাগুলির মতো নয়, আপনার গোপনীয়তা রক্ষা করার জন্য আমরা নাম গোপন রেখে বিজ্ঞাপনের পারফরম্যান্স পরিমাপ করি।</translation>
 <translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
 <translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
@@ -473,6 +479,9 @@
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="7791141927430186653">X (আগে Twitter নামে পরিচিত ছিল) এম্বেড করা টুইট</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
+<translation id="1244912498725894944">কিছু কুকি সেটিংস Brave রক্ষাকবচ নিয়ন্ত্রণ করে। আপনি সেগুলিকে &lt;a href="/content/braveShields"&gt;এখানে&lt;/a&gt; দেখতে পারবেন।</translation>
+<translation id="5352519841984162795">এই সেটিংটি Brave রক্ষাকবচ নিয়ন্ত্রণ করে।</translation>
+<translation id="352287031024189516">এই সেটিংটি Google সাইন-ইন নিয়ন্ত্রণ করে।</translation>
 <translation id="8792121506918889955">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
@@ -674,8 +683,12 @@
 <translation id="856371974127598760">ওয়ালেট নেটওয়ার্ক</translation>
 <translation id="5975930666279943472">ওয়ালেটের লেনদেন এবং বর্তমান তথ্য সাফ করুন</translation>
 <translation id="5693968582510626466">লেনদেনগুলো সাফ করা ডেভেলপারদের জন্য বা একটি স্থানীয় সার্ভারে অবস্থা সাফ করার জন্য উপকারী হতে পারে</translation>
-<translation id="2326850911705720398">ওয়ালেট ডেটা রিসেট করুন এবং সাফ করুন</translation>
+<translation id="6171369470447621882">Zcash সিঙ্ক স্থিতি রিসেট করুন</translation>
+<translation id="6705112675071480687">সমস্ত রক্ষাকবচ যুক্ত অ্যাকাউন্টের জন্য Zcash সিঙ্ক অগ্রগতি রিসেট করে</translation>
+<translation id="2012093487873597892">আপনি কি Zcash সিঙ্ক স্থিতি রিসেট করতে চাওয়ার বিষয়ে নিশ্চিত? রক্ষাকবচ যুক্ত সমস্ত অ্যাকাউন্টের জন্য সিঙ্ক অগ্রগতি বাতিল করে দেওয়া হবে। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="5031551083187285762">Zcash অ্যাকাউন্টের জন্য আপনার সিঙ্ক স্থিতি রিসেট হয়ে গেছে।</translation>
 <translation id="9216386092464743272">আপনি কি আপনার ওয়ালেটের সব লেনদেন এবং বর্তমান তথ্য রিসেট করার বিষয়ে নিশ্চিত? এই বিকল্পটি বেশিরভাগ ক্ষেত্রে একটি স্থানীয় টেস্ট সার্ভার চালনাকারী ডেভেলপাররা ব্যবহার করেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="2326850911705720398">ওয়ালেট ডেটা রিসেট করুন এবং সাফ করুন</translation>
 <translation id="6369495274982305511">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
 <translation id="3752403403443723332">আপনার ওয়ালেট রিসেট করা হয়েছে।</translation>
 <translation id="594766067816395072">আপনার ওয়ালেটের লেনদেন রিসেট করা হয়েছে।</translation>

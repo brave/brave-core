@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="6302422639282249274">管理 Brave 獎賞</translation>
-<translation id="2709516037105925701">自動填入</translation>
 <translation id="8617525558807213034">在隱私分頁自動填入資訊</translation>
 <translation id="8685431198160039193">可在隱私分頁自動填入已儲存的資訊</translation>
 <translation id="6583902294974160967">支援</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">外觀</translation>
 <translation id="9040069796107003510">Brave Rewards 圖示</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
-<translation id="8495235435594442882">啟用底部工具列</translation>
+<translation id="1215433243238902715">啟用底部導覽工具列</translation>
+<translation id="1422686363939271829">選取底部位址列位置時，此設定會停用</translation>
 <translation id="6587448235155023666">所有變更將在你下次重啟 Brave 時生效</translation>
 <translation id="8701563696941209024">馬上重新啟動</translation>
 <translation id="834487290629916192">稍後</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">創作者<ph name="PUBLISHER_NAME"/>近期已驗證</translation>
 <translation id="1486343603936278248">代幣</translation>
 <translation id="7781069478569868053">新分頁</translation>
+<translation id="5927196110206824867">贊助商背景圖片支援 Brave 建立一個獨立、使用者優先網路的使命。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
+<translation id="8748471354357836070">瞭解更多 / 退出選擇</translation>
 <translation id="3171669670217312786">背景圖片</translation>
 <translation id="8522669544471808198">顯示背景圖片</translation>
 <translation id="3870475560794762985">顯示贊助圖片</translation>
+<translation id="6937724381960478525">進一步了解贊助商圖片</translation>
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">顯示頂部網站</translation>
 <translation id="7275773481201277457">顯示 Brave 統計</translation>

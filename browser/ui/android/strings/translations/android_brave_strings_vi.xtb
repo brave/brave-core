@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
 <translation id="6302422639282249274">Quản lý Phần thưởng Brave</translation>
-<translation id="2709516037105925701">Tự động điền</translation>
 <translation id="8617525558807213034">Tự động điền vào các tab riêng tư</translation>
 <translation id="8685431198160039193">Thông tin đã lưu có thể được tự động điền vào các tab riêng tư</translation>
 <translation id="6583902294974160967">Hỗ trợ</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Hình thức</translation>
 <translation id="9040069796107003510">Biểu tượng Brave Phần thưởng</translation>
 <translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
-<translation id="8495235435594442882">Bật thanh công cụ ở dưới cùng</translation>
+<translation id="1215433243238902715">Bật thanh điều hướng phía dưới</translation>
+<translation id="1422686363939271829">Cài đặt này bị vô hiệu hóa khi thanh địa chỉ được chọn hiển thị ở phía dưới</translation>
 <translation id="6587448235155023666">Các thay đổi bạn thực hiện sẽ có hiệu lực vào lần tới khi bạn khởi chạy lại Brave</translation>
 <translation id="8701563696941209024">KHỞI CHẠY LẠI NGAY</translation>
 <translation id="834487290629916192">ĐỂ SAU</translation>
@@ -420,9 +420,12 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8520059774736886747">Nhà sáng tạo nội dung <ph name="PUBLISHER_NAME"/> gần đây đã được xác thực</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Trang Tab Mới</translation>
+<translation id="5927196110206824867">Hình nền được tài trợ hỗ trợ sứ mệnh xây dựng một nền tảng web độc lập và ưu tiên người dùng của Brave. Khác với sản phẩm của công ty Big Tech, chúng tôi đo lường hiệu suất quảng cáo theo cách đo ẩn danh để bảo toàn quyền riêng tư của bạn.</translation>
+<translation id="8748471354357836070">Tìm hiểu thêm / lựa chọn từ chối</translation>
 <translation id="3171669670217312786">Ảnh nền</translation>
 <translation id="8522669544471808198">Hiển thị Hình Nền</translation>
 <translation id="3870475560794762985">Hiển thị Hình được Tài trợ</translation>
+<translation id="6937724381960478525">Tìm hiểu thêm về Hình ảnh được tài trợ</translation>
 <translation id="8793108040181436796">Tiện ích</translation>
 <translation id="8643377320501056697">Hiển thị Các trang Hàng đầu</translation>
 <translation id="7275773481201277457">Hiển thị Số liệu thống kê Brave</translation>

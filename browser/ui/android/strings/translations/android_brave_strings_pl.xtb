@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="6302422639282249274">Zarządzaj nagrodami Brave</translation>
-<translation id="2709516037105925701">Autouzupełnianie</translation>
 <translation id="8617525558807213034">Autouzupełnianie w prywatnych oknach</translation>
 <translation id="8685431198160039193">Zapisane informacje mogą być autouzupełniane w prywatnych oknach</translation>
 <translation id="6583902294974160967">Wsparcie</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Wygląd</translation>
 <translation id="9040069796107003510">Ikona nagród Brave</translation>
 <translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
-<translation id="8495235435594442882">Włącz dolny pasek narzędzi</translation>
+<translation id="1215433243238902715">Włącz pasek nawigacji na dole</translation>
+<translation id="1422686363939271829">To ustawienie jest wyłączone, gdy wybrana jest dolna pozycja paska adresu</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
 <translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
 <translation id="834487290629916192">PÓŹNIEJ</translation>
@@ -420,9 +420,12 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8520059774736886747">Twórca <ph name="PUBLISHER_NAME"/> został niedawno zweryfikowany.</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Strona nowej karty</translation>
+<translation id="5927196110206824867">Sponsorowane obrazy tła wspierają misję Brave polegającą na budowaniu niezależnej, zorientowanej na użytkownika sieci. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.</translation>
+<translation id="8748471354357836070">Dowiedz się więcej / zrezygnuj z opcji</translation>
 <translation id="3171669670217312786">Obrazy tła</translation>
 <translation id="8522669544471808198">Wyświetl obrazy w tle</translation>
 <translation id="3870475560794762985">Wyświetl obrazy sponsorowane</translation>
+<translation id="6937724381960478525">Dowiedz się więcej o sponsorowanych obrazach</translation>
 <translation id="8793108040181436796">Widżety</translation>
 <translation id="8643377320501056697">Pokaż popularne strony</translation>
 <translation id="7275773481201277457">Pokaż statystyki Brave</translation>

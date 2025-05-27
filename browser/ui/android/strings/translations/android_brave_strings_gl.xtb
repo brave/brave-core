@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Permitir os chíos incrustados en Twitter</translation>
 <translation id="958971637207126733">Permitir publicacións incrustadas en LinkedIn</translation>
 <translation id="6302422639282249274">Xestionar recompensas de Brave</translation>
-<translation id="2709516037105925701">Autocompletar</translation>
 <translation id="8617525558807213034">Encher automaticamente pestanas privadas</translation>
 <translation id="8685431198160039193">A información gardada pode encherse automaticamente en pestanas privadas</translation>
 <translation id="6583902294974160967">Asistencia</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Aparencia</translation>
 <translation id="9040069796107003510">Icona de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
-<translation id="8495235435594442882">Activa a barra de ferramentas inferior</translation>
+<translation id="1215433243238902715">Activar a barra de navegación inferior</translation>
+<translation id="1422686363939271829">Esta opción queda desactivada cando se activa a barra de navegación inferior</translation>
 <translation id="6587448235155023666">Os teus cambios entrarán en vigor a próxima vez que volvas a iniciar Brave</translation>
 <translation id="8701563696941209024">Relanzar agora</translation>
 <translation id="834487290629916192">Máis tarde</translation>
@@ -420,9 +420,12 @@ Seguro que queres facelo?</translation>
 <translation id="8520059774736886747">O creador <ph name="PUBLISHER_NAME"/> foi verificado recentemente</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Nova lapela</translation>
+<translation id="5927196110206824867">As imaxes de fondo con patrocinio contribúen á misión de Brave de crear unha web independente e centrada no usuario. E, ao contrario das grandes tecnolóxicas, medimos o rendemento publicitario de xeito anónimo para preservar a túa privacidade.</translation>
+<translation id="8748471354357836070">Máis información/opcións de exclusión</translation>
 <translation id="3171669670217312786">Imaxes de fondo</translation>
 <translation id="8522669544471808198">Amosar as imaxes en segundo plano</translation>
 <translation id="3870475560794762985">Ensinar imaxes patrocinadas</translation>
+<translation id="6937724381960478525">Obtén máis información sobre as imaxes patrocinadas</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Ensinar os sitios máis importantes</translation>
 <translation id="7275773481201277457">Ensinar os estados de Brave</translation>

@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Dozvoli ugrađene tvitove sa Twitter-a</translation>
 <translation id="958971637207126733">Dozvoli ugrađene objave sa LinkedIn-a</translation>
 <translation id="6302422639282249274">Upravljanje Brave nagradama</translation>
-<translation id="2709516037105925701">Automatski unos</translation>
 <translation id="8617525558807213034">Automatski unos na privatnim karticama</translation>
 <translation id="8685431198160039193">Sačuvane informacije mogu automatski biti unete u privatne kartice</translation>
 <translation id="6583902294974160967">Podrška</translation>
@@ -231,7 +230,6 @@
 <translation id="2433507940547922241">Izgled</translation>
 <translation id="9040069796107003510">Ikona Brave nagrada</translation>
 <translation id="6333347122924254968">Prikaži ikonu Brave nagrada na traci za adresu</translation>
-<translation id="8495235435594442882">Aktiviraj donju traku sa alatkama</translation>
 <translation id="6587448235155023666">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave</translation>
 <translation id="8701563696941209024">PONOVO POKRENI</translation>
 <translation id="834487290629916192">KASNIJE</translation>
@@ -420,6 +418,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="8520059774736886747">Nedavno je verifikovan autor <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
+<translation id="8748471354357836070">Saznajte više / opcije za odustanak</translation>
 <translation id="3171669670217312786">Slike pozadine</translation>
 <translation id="8522669544471808198">Prikaži slike pozadine</translation>
 <translation id="3870475560794762985">Prikaži sponzorisane slike</translation>

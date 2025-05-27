@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="6302422639282249274">إدارة مكافآت Brave</translation>
-<translation id="2709516037105925701">الملء التلقائي</translation>
 <translation id="8617525558807213034">الملء التلقائي في علامات التبويب الخاصة</translation>
 <translation id="8685431198160039193">يمكن ملء المعلومات المحفوظة تلقائيًا في علامات التبويب الخاصة</translation>
 <translation id="6583902294974160967">الدعم</translation>
@@ -232,7 +231,8 @@
 <translation id="2433507940547922241">المظهر</translation>
 <translation id="9040069796107003510">أيقونة المكافآت الخاصة بموقع (Brave (Brave Rewards</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
-<translation id="8495235435594442882">تمكين شريط الأدوات السفلي</translation>
+<translation id="1215433243238902715">تمكين شريط أدوات التنقل السفلي</translation>
+<translation id="1422686363939271829">يتم تعطيل هذا الإعداد عند تحديد موضع شريط العنوان السفلي</translation>
 <translation id="6587448235155023666">ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل متصفح Brave</translation>
 <translation id="8701563696941209024">إعادة بدء التشغيل الآن</translation>
 <translation id="834487290629916192">لاحقاً</translation>
@@ -417,9 +417,12 @@
 <translation id="8520059774736886747">تم التحقق مؤخراً من المنشئ <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1486343603936278248">رمز مميز</translation>
 <translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
+<translation id="5927196110206824867">تدعم صور الخلفية المدعومة Brave في مهمتها المتمثلة في بناء شبكة ويب مستقلة ترتكز على المستخدم أولًا. وعلى عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بشكل مجهول للحفاظ على خصوصيتكم.</translation>
+<translation id="8748471354357836070">معرفة المزيد / خيارات إلغاء الاشتراك</translation>
 <translation id="3171669670217312786">صور الخلفية</translation>
 <translation id="8522669544471808198">إظهار صور الخلفية</translation>
 <translation id="3870475560794762985">إظهار صور الرعاة الدعائية</translation>
+<translation id="6937724381960478525">تعرف على المزيد حول الصور الدعائية</translation>
 <translation id="8793108040181436796">عناصر واجهة المستخدم</translation>
 <translation id="8643377320501056697">عرض أهم المواقع</translation>
 <translation id="7275773481201277457">إظهار إحصائيات Brave</translation>

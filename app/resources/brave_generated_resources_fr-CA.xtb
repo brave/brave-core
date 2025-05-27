@@ -52,6 +52,12 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="4450893287417543264">Ne plus afficher</translation>
 <translation id="4595286989346610620">Vérifiez les détails</translation>
 <translation id="8324318899000695659">Éléments bloqués</translation>
+<translation id="3828310068250853121">Sélectionnez l'élément que vous souhaitez bloquer</translation>
+<translation id="2577286987423083872">Bloquer les éléments</translation>
+<translation id="3211174446914979436">Gérer les filtres</translation>
+<translation id="3108584651298176909">Afficher les règles</translation>
+<translation id="5156986655891520787">Cacher les règles</translation>
+<translation id="7658239707568436148">Annuler</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Ouvrir avec l'adresse .onion : <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Collage forcé</translation>
@@ -93,7 +99,6 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8117247596084706514">Ce site souhaite connaître votre <ph name="PART_ONE"/>position précise<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>En savoir plus<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Ce site souhaite connaître votre <ph name="PART_ONE"/>position précise<ph name="PART_ONE_END"/>. Brave peut uniquement lui fournir des données de <ph name="PART_TWO"/>position générale<ph name="PART_TWO_END"/> étant donné que la <ph name="PART_THREE"/>localisation<ph name="PART_THREE_END"/> est désactivée. <ph name="PART_FOUR"/>En savoir plus<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Tout fermer</translation>
-<translation id="7658239707568436148">Annuler</translation>
 <translation id="4870911314065352661">Fermer tous les onglets?</translation>
 <translation id="7551864359422178684">Vous avez <ph name="NUMBER_OF_TABS"/> onglets ouverts dans cette fenêtre du navigateur.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> onglets</translation>
@@ -133,6 +138,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="3447730462826640312">Vous n'avez pas besoin de cliquer sur la notification pour gagner de l'argent, mais cliquez dessus si son contenu vous intéresse!</translation>
 <translation id="5253166205743627564">Merci de soutenir le moteur de recherche Brave en cliquant sur une annonce privée. Contrairement aux grandes entreprises technologiques, nous mesurons les performances des annonces de manière anonyme pour préserver votre vie privée.</translation>
 <translation id="8748471354357836070">En savoir plus / Me désinscrire</translation>
+<translation id="5927196110206824867">Les images de fond commanditées supportent la mission de Brave de construire un Web indépendant et axé sur l'utilisateur. Et contrairement aux grandes entreprises technologiques, nous mesurons les performances des publicités de manière anonyme pour préserver votre vie privée.</translation>
 <translation id="4174337572777167894">Projet de découverte web</translation>
 <translation id="8659271182272561965">Fournissez des données de recherche et de navigation anonymes pour affiner Brave Search.</translation>
 <translation id="1516554614404600536">Infobulle Brave</translation>
@@ -473,6 +479,9 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="863171915776379000">Autoriser les connexions à Facebook et les messages intégrés</translation>
 <translation id="7791141927430186653">Autoriser les tweets intégrés de X (anciennement Twitter)</translation>
 <translation id="958971637207126733">Permettre les publications LinkedIn intégrées</translation>
+<translation id="1244912498725894944">Certains paramètres de témoins sont contrôlés par Brave Shields. Vous pouvez les voir &lt;a href="/content/braveShields"&gt;ici&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Ce paramètre est contrôlé par Brave Shields.</translation>
+<translation id="352287031024189516">Ce paramètre est contrôlé par la connexion Google.</translation>
 <translation id="8792121506918889955">Politique de gestion de l'IP WebRTC</translation>
 <translation id="8798099450830957504">Par défaut</translation>
 <translation id="1822560017823072927">Interfaces publiques et privées par défaut</translation>
@@ -674,8 +683,12 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="856371974127598760">Réseaux du portefeuille</translation>
 <translation id="5975930666279943472">Effacer les renseignements relatifs aux transactions et aux nonces du portefeuille</translation>
 <translation id="5693968582510626466">Supprimer les transactions peut être utile pour les développeurs ou lors de la suppression de l'état sur un serveur local</translation>
-<translation id="2326850911705720398">Réinitialiser et effacer les données du portefeuille</translation>
+<translation id="6171369470447621882">Réinitialiser la synchronisation Zcash</translation>
+<translation id="6705112675071480687">Réinitialise la progression de la synchronisation Zcash pour tous les comptes protégés</translation>
+<translation id="2012093487873597892">Êtes-vous sûr de vouloir réinitialiser l'état de la synchronisation de Zcash? La progression de la synchronisation pour tous les comptes protégés sera abandonnée. Tapez "<ph name="CONFIRMATION_PHRASE"/>" pour confirmer.</translation>
+<translation id="5031551083187285762">Votre synchronisation pour les comptes Zcash a été réinitialisé.</translation>
 <translation id="9216386092464743272">Voulez-vous vraiment réinitialiser tous les renseignements relatifs aux transactions et aux nonces de votre portefeuille? Cette option est principalement utilisée par les développeurs exécutant un serveur test local. Saisissez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
+<translation id="2326850911705720398">Réinitialiser et effacer les données du portefeuille</translation>
 <translation id="6369495274982305511">Voulez-vous vraiment réinitialiser votre portefeuille? Si votre portefeuille n'est pas sauvegardé, vous perdrez alors toutes les données de votre compte (y compris tous les fonds associés). Tapez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
 <translation id="3752403403443723332">Votre portefeuille a été réinitialisé.</translation>
 <translation id="594766067816395072">Les renseignements relatifs aux transactions de votre portefeuille ont été réinitialisés.</translation>
