@@ -18,6 +18,7 @@
 <translation id="4643117005422448078">គេហទំព័រកំពូលៗ</translation>
 <translation id="5525668735313040116">ស្វែងរកគេហទំព័រឯកជន</translation>
 <translation id="780301667611848630">ទេ អរគុណ</translation>
+<translation id="6165508094623778733">ស្វែងយល់​បន្ថែម</translation>
 <translation id="2875302873837723333">គេហទំព័រ​ពេញនិយម</translation>
 <translation id="1383876407941801731">ស្វែងរក</translation>
 <translation id="3333887201479867589">កម្មវិធី Brave Rewards</translation>
@@ -31,7 +32,6 @@
 <translation id="8488282162676695335">កាបូប Brave</translation>
 <translation id="8820817407110198400">របាចំណាំ</translation>
 <translation id="1644574205037202324">ប្រវត្តិ</translation>
-<translation id="6165508094623778733">ស្វែងយល់​បន្ថែម</translation>
 <translation id="8730621377337864115">រួចរាល់</translation>
 <translation id="8759753423332885148">ស្វែងយល់​បន្ថែម.</translation>
 <translation id="2653659639078652383">ដាក់ស្នើ</translation>
@@ -200,6 +200,7 @@
 <translation id="8261506727792406068">លុប</translation>
 <translation id="8171760814579050200">ប្តូរឈ្មោះការសន្ទនា</translation>
 <translation id="7754678742055438573">លុបការសន្ទនា</translation>
+<translation id="4881695831933465202">បើក</translation>
 <translation id="8712637175834984815">យល់ហើយ</translation>
 <translation id="2315654674554095762">ឥឡូវនេះ Leo នឹងចងចាំការសន្ទនារបស់អ្នក ដូច្នេះអ្នកអាចត្រឡប់ទៅរកពួកគេវិញ។ ពួកវាត្រូវបានរក្សាទុកដោយអ៊ិនគ្រីបនៅលើឧបករណ៍របស់អ្នក ហើយអ្នកអាចលុបវាបានគ្រប់ពេល។</translation>
 <translation id="6291843235651817590">ការជជែកអំពីគោលបំណងទូទៅ</translation>
@@ -207,6 +208,12 @@
 <translation id="7979673624064378842">ការជជែកយ៉ាងរហ័ស</translation>
 <translation id="2836330653441111204">មានតុល្យភាពល្បឿន និងភាពវៃឆ្លាត</translation>
 <translation id="4250229828105606438">ថតអេក្រង់</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8425213833346101688">ប្តូរ</translation>
+<translation id="755045397420611731">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ</translation>
+<translation id="4520128772974831415">លាក់ពិធីការអ៊ីនធឺណិត (IP) របស់អ្នក &amp; ផ្លាស់ប្តូរទីតាំងរបស់អ្នក</translation>
+<translation id="8703188411226330709">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃ</translation>
+<translation id="8814357473522731680">ដំណើរការដោយ</translation>
 <translation id="8458987127502506209">បើកខែលការពារ Brave</translation>
 <translation id="650318023204990401">ការគ្រប់គ្រងកម្រិតខ្ពស់</translation>
 <translation id="7053983685419859001">ទប់ស្កាត់</translation>
@@ -225,16 +232,10 @@
 <translation id="2370739752330685659">ប្រហែលជាពេលក្រោយ</translation>
 <translation id="5753795690521538679">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
 <translation id="3357036723290257445">បានទិញ Brave VPN រួចហើយ?</translation>
-<translation id="8814357473522731680">ដំណើរការដោយ</translation>
 <translation id="7805768142964895445">ស្ថានភាព</translation>
 <translation id="1116694919640316211">អំពី</translation>
-<translation id="755045397420611731">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ</translation>
-<translation id="4520128772974831415">លាក់ពិធីការអ៊ីនធឺណិត (IP) របស់អ្នក &amp; ផ្លាស់ប្តូរទីតាំងរបស់អ្នក</translation>
 <translation id="2044418816479192294">ម៉ាស៊ីនមេរាប់រយនៅជុំវិញពិភពលោក</translation>
 <translation id="7410504850864021600">ល្បឿននៃការតភ្ជាប់យ៉ាងរហ័ស</translation>
 <translation id="2422309687188612485">ការពារឧបករណ៍រហូតដល់ 10 ដោយប្រើគម្រោងតែមួយ</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ.</translation>
-<translation id="8425213833346101688">ប្តូរ</translation>
-<translation id="8703188411226330709">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃ</translation>
 </translationbundle>

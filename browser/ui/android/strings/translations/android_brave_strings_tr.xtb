@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
 <translation id="6302422639282249274">Brave Ödülllerini Yönet</translation>
-<translation id="2709516037105925701">Otomatik doldurma</translation>
 <translation id="8617525558807213034">Gizli sekmelerde otomatik doldur</translation>
 <translation id="8685431198160039193">Kaydedilen bilgiler gizli sekmelerde otomatik doldurulabilir</translation>
 <translation id="6583902294974160967">Destek</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Görünüm</translation>
 <translation id="9040069796107003510">Brave Ödülleri simgesi</translation>
 <translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
-<translation id="8495235435594442882">Alt araç çubuğunu etkinleştir</translation>
+<translation id="1215433243238902715">Alt gezinme araç çubuğunu etkinleştir</translation>
+<translation id="1422686363939271829">Alt adres çubuğu konumu seçildiğinde bu ayar devre dışı bırakılır</translation>
 <translation id="6587448235155023666">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
 <translation id="8701563696941209024">ŞİMDİ YENİDEN BAŞLAT</translation>
 <translation id="834487290629916192">DAHA SONRA</translation>
@@ -421,9 +421,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8520059774736886747">Oluşturucu <ph name="PUBLISHER_NAME"/> doğrulandı</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
+<translation id="5927196110206824867">Sponsorlu arka plan görselleri Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu destekliyor. Ve Teknoloji Devleri'nin aksine, gizliliğinizi korumak için reklam performansını anonim olarak ölçüyoruz.</translation>
+<translation id="8748471354357836070">Daha fazla bilgi edinin / tercihleri devre dışı bırakın</translation>
 <translation id="3171669670217312786">Arka Plan Resimleri</translation>
 <translation id="8522669544471808198">Arka Plan Resimlerini Göster</translation>
 <translation id="3870475560794762985">Sponsorlu Resimleri Göster</translation>
+<translation id="6937724381960478525">Sponsorlu görseller hakkında daha fazla bilgi edinin</translation>
 <translation id="8793108040181436796">Widget'lar</translation>
 <translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
 <translation id="7275773481201277457">Brave İstatistiklerini Göster</translation>

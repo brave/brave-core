@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Дозволити вбудовані дописи Twitter</translation>
 <translation id="958971637207126733">Дозволити вбудовані дописи LinkedIn</translation>
 <translation id="6302422639282249274">Керувати винагородами Brave</translation>
-<translation id="2709516037105925701">Автозаповнення</translation>
 <translation id="8617525558807213034">Автозаповнення у приватних вкладках</translation>
 <translation id="8685431198160039193">Збережені дані можна автоматично заповнювати у приватних вкладках</translation>
 <translation id="6583902294974160967">Підтримка</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Зовнішній вигляд</translation>
 <translation id="9040069796107003510">Піктограма Винагороди Brave</translation>
 <translation id="6333347122924254968">Показувати піктограму Винагороди Brave у панелі адреси</translation>
-<translation id="8495235435594442882">Увімкнути нижню панель інструментів</translation>
+<translation id="1215433243238902715">Увімкнути нижню панель навігації</translation>
+<translation id="1422686363939271829">Ця опція вимкнена, якщо адресний рядок розміщено внизу</translation>
 <translation id="6587448235155023666">Ваші зміни застосуються після наступного перезапуску Brave</translation>
 <translation id="8701563696941209024">ПЕРЕЗАПУСТИТИ ЗАРАЗ</translation>
 <translation id="834487290629916192">ПІЗНІШЕ</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">Створювача <ph name="PUBLISHER_NAME"/> нещодавно підтверджено</translation>
 <translation id="1486343603936278248">токен</translation>
 <translation id="7781069478569868053">Сторінка нової вкладки</translation>
+<translation id="5927196110206824867">Спонсорські зображення підтримують місію Brave — створювати незалежний інтернет для користувачів. На відміну від Big Tech, ми вимірюємо ефективність реклами анонімно, зберігаючи вашу конфіденційність.</translation>
+<translation id="8748471354357836070">Детальніше / змінити вибір</translation>
 <translation id="3171669670217312786">Фонові зображення</translation>
 <translation id="8522669544471808198">Показати фонові зображення</translation>
 <translation id="3870475560794762985">Показати спонсоровані зображення</translation>
+<translation id="6937724381960478525">Докладніше про спонсорські зображення</translation>
 <translation id="8793108040181436796">Віджети</translation>
 <translation id="8643377320501056697">Показати топ-сайти</translation>
 <translation id="7275773481201277457">Показати статистику Brave</translation>

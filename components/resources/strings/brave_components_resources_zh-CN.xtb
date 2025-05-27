@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">显示 Brave 奖励</translation>
 <translation id="5585019845078534178">卡</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
+<translation id="5684562942023496754">您可以通过观看赞助图片来赚取收益。</translation>
+<translation id="6168679340384667457">您正在通过赞助图片赚取 BAT。禁用赞助图片将会减少您的 BAT 收入。</translation>
+<translation id="6165508094623778733">了解更多</translation>
 <translation id="2414654907269324670">您将获得 BAT 赞助图片。</translation>
 <translation id="4942016616604700968">启用奖励</translation>
-<translation id="5684562942023496754">您可以通过观看赞助图片来赚取收益。</translation>
 <translation id="8934374643857605034">作为 Brave 奖励用户，您可以通过查看赞助图片获得 BAT。</translation>
 <translation id="1570714748649804013">作为 Brave 奖励用户，您看到的赞助图像将获得 BAT。禁用赞助图片将减少您的收入。</translation>
 <translation id="8998727244653964783">当您将托管帐户连接到 Brave 奖励时，您可以通过查看赞助图像获得 BAT。与此同时，您也在通过赞助图片支持创作者。</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">读取列表</translation>
 <translation id="4590997608186539865">播放单</translation>
 <translation id="8027460023387054992">聊天摘要生成器</translation>
-<translation id="6165508094623778733">了解更多</translation>
 <translation id="8730621377337864115">已完成</translation>
 <translation id="730042046912793465">这是一个</translation>
 <translation id="2055363275850890030">私人窗口</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">未连接</translation>
 <translation id="4217695020908122747">已连接的账户</translation>
 <translation id="8497650996740651467">可用账户</translation>
+<translation id="1775188434254367931">连接</translation>
+<translation id="1818522458013171885">取消拦截</translation>
 <translation id="5677928146339483299">已禁止</translation>
 <translation id="3890989020011724401">新账户</translation>
 <translation id="4612979983851181941">使用此面板可以安全地访问 Web3 和您的所有加密资产。</translation>
@@ -1739,6 +1742,7 @@
 <translation id="803703704549420287">清除筛选条件</translation>
 <translation id="1472675084647422956">显示更多</translation>
 <translation id="4522570452068850558">详细信息</translation>
+<translation id="4583937519241190398">经 DappRadar 验证</translation>
 <translation id="8713438253026855351">切换到护盾账户</translation>
 <translation id="3526789880090101085">护盾账户</translation>
 <translation id="2298396008562701154">当前该账户支持透明交易，这意味着区块链上的每个人都能看到这些交易。</translation>
@@ -1829,7 +1833,9 @@
 <translation id="7758665172236842395">在单个提要中跟踪您最喜欢的来源。在 Brave 中打开一个标签，向下滚动，然后……就可以了！</translation>
 <translation id="2376542729617592331">Brave News 支持私人匿名投放广告。<ph name="LINK_START"/>了解更多。<ph name="LINK_END"/>。</translation>
 <translation id="1765217911817124376">开启 Brave 新闻</translation>
+<translation id="5149018766422637336">新闻与 RSS</translation>
 <translation id="6265592479622441247">返回<ph name="BEGIN_BOLD"/>仪表板<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">发现</translation>
 <translation id="8981973962043893066">搜索网站、主题或 RSS 源</translation>
 <translation id="1498364270401875204">频道</translation>
 <translation id="6401776069326703655">查看全部</translation>
@@ -2114,6 +2120,7 @@ other {# 个来源}
 <translation id="8151638057146502721">配置</translation>
 <translation id="3282183392203936979">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama 3.1 8B 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 14B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 DeepSeek R1 提供技术支持，这是由 DeepSeek 创建的模型，适用于处理深度推理任务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mixtral 8x7B 提供支持，这是一个由 Mistral AI 为处理高级任务而创建的模型。Mixtral 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">嗨，我是 Leo。我由 Brave 代理，并由 Claude Instant 提供支持。Claude Instant 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Instant 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">嗨，我是 Leo。我由 Brave 代理，并由 Claude Haiku 提供支持。Claude Haiku 是 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
@@ -2152,7 +2159,6 @@ other {# 个来源}
 <translation id="6393149565874086128">添加反馈</translation>
 <translation id="3521125531016408657">喜欢答复</translation>
 <translation id="8202517001427388906">不喜欢答复</translation>
-<translation id="3177073390279208955">发送评分、对话、模型、语言、版本和高级状态</translation>
 <translation id="1379399209929302811">提供 Brave 人工智能反馈</translation>
 <translation id="8442999546461118871">选择反馈主题</translation>
 <translation id="9018766373792005944">你有什么反馈意见？</translation>
@@ -2177,6 +2183,12 @@ other {# 个来源}
 <translation id="1946267518364740045">正在推理…</translation>
 <translation id="4198859185714743678">推理完成</translation>
 <translation id="6140948187512243695">显示详情</translation>
+<translation id="4881695831933465202">公开的设置</translation>
+<translation id="1625889395409731085">打开外部链接？</translation>
+<translation id="4211063437291114749">Leo AI 想要在新标签页中打开一个网站。您想要继续吗？</translation>
+<translation id="5526001300821542157">打开链接，不再询问我</translation>
+<translation id="1243966363662220847">答复反馈</translation>
+<translation id="7417895556119762861">点击喜欢或不喜欢某个回答会向 Brave 发送评分、对话、模型、语言、版本和高级状态以优化 Leo。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">发送消息给 Leo</translation>
 <translation id="8650874793377330048">停止回答</translation>
 <translation id="8712637175834984815">知道了</translation>
@@ -2204,6 +2216,7 @@ other {# 个来源}
 <translation id="2836330653441111204">兼顾速度与智慧</translation>
 <translation id="6695329447007213917">普通聊天、编码等更多功能</translation>
 <translation id="5051668914970329839">通用视觉</translation>
+<translation id="7226508434216060960">推理模型</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
 <translation id="1037324977127422019">嗨，我是 Leo！</translation>
 <translation id="8930348081963284873">Brave 内置的人工智能智能助手。</translation>
@@ -2252,21 +2265,38 @@ other {# 个来源}
 <translation id="8370801182970639038">自动（<ph name="LOCALE"/>）</translation>
 <translation id="8343473178272604223">已启用搜索引擎</translation>
 <translation id="5355776323718420036">隐藏常用网站</translation>
+<translation id="9173319813356700250">新闻</translation>
 <translation id="6543799171249004861">照片提供者：<ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">奖励</translation>
 <translation id="5966055668402779222">询问 Brave 搜索</translation>
 <translation id="6851426306697017546">显示时钟</translation>
 <translation id="4844370919312937270">在新标签页中显示搜索小部件</translation>
 <translation id="5009354496127441090">显示常用网站</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">统计</translation>
+<translation id="712731581368828482">使用 Brave Talk 可进行加密视频通话。</translation>
+<translation id="2671474274417808910">隐私优先通话</translation>
+<translation id="2100665198270190500">TALK</translation>
 <translation id="4290791698375397492">已移除常用网站</translation>
 <translation id="1436784010935106834">已移除</translation>
 <translation id="9030215177866748410">根据您经常访问的网站推荐热门网站.</translation>
+<translation id="8425213833346101688">更改</translation>
+<translation id="755045397420611731">额外的在线隐私和安全</translation>
+<translation id="4520128772974831415">隐藏您的 IP 并变更您的位置</translation>
+<translation id="6819278685469225453">保护您的设备上的每个应用程序</translation>
+<translation id="8422279921836245017">已经购买？</translation>
+<translation id="8703188411226330709">开始免费试用</translation>
+<translation id="8814357473522731680">技术支持：</translation>
+<translation id="7143207342074048698">正在连接</translation>
+<translation id="1202549130170287307">正在断开连接</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">小工具</translation>
 <translation id="6303294677342628402">盾牌</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
-<translation id="7509914170164691086">Shields 已为<ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Shields 已<ph name="LINK_BEFORE"/>停用<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">如果此站点看上去已损坏，请尝试 Shields down。
- <ph name="LINK_BEFORE"/>注意：这可能会削弱 Brave 的隐私保护的效果。<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770">已为 <ph name="HOST"/> <ph name="STATUS_BEFORE"/>启用盾牌<ph name="STATUS_AFTER"/></translation>
+<translation id="7656091630265507216">已为 <ph name="HOST"/> <ph name="STATUS_BEFORE"/>禁用盾牌<ph name="STATUS_AFTER"/></translation>
+<translation id="5623354834493649144">如果此网站看似失效，请尝试禁用盾牌。
+   <ph name="NOTE_BEFORE"/>注意：禁用盾牌会削弱 Brave 的隐私保护效果。<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">拦截了跟踪器、广告和其他 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">不受 Brave 防护盾保护 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">高级控制</translation>
@@ -2349,15 +2379,12 @@ other {# 个来源}
 <translation id="958268166261124668">Brave VPN：已连接</translation>
 <translation id="6021669293402055982">Brave VPN：已断开连接</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>
-<translation id="7143207342074048698">正在连接</translation>
-<translation id="1202549130170287307">正在断开连接</translation>
 <translation id="2325196879156848326">连接失败</translation>
 <translation id="745054660363064771">无法连接到服务器</translation>
 <translation id="3936826714240735937">选择另一个服务器</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>无法连接至<ph name="REGION_NAME"/>服务器。请重试或选择其他国家。</translation>
 <translation id="5753795690521538679">开始 7 天免费试用</translation>
 <translation id="3357036723290257445">已经购买 Brave VPN?</translation>
-<translation id="8814357473522731680">技术支持：</translation>
 <translation id="8652175077544655965">关闭设置</translation>
 <translation id="5908163815855240493">转到主界面</translation>
 <translation id="7805768142964895445">状态</translation>
@@ -2365,8 +2392,6 @@ other {# 个来源}
 <translation id="8421945428836418371">自动恢复连接</translation>
 <translation id="434523916398030617">联系技术支持</translation>
 <translation id="1116694919640316211">关于</translation>
-<translation id="755045397420611731">额外的在线隐私和安全</translation>
-<translation id="4520128772974831415">隐藏您的 IP 并变更您的位置</translation>
 <translation id="2044418816479192294">数百台服务器遍布全球</translation>
 <translation id="7410504850864021600">快如闪电的连接速度</translation>
 <translation id="2422309687188612485">一次订阅最多可保护 10 台设备</translation>
@@ -2440,11 +2465,7 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="8048263175525832621">Brave VPN - 已断开连接</translation>
 <translation id="1498770726476841108">管理账户</translation>
 <translation id="6825718953004242472">移除图标</translation>
-<translation id="6819278685469225453">保护您的设备上的每个应用程序</translation>
-<translation id="3960619311638643872">Brave 的 VPN</translation>
 <translation id="4295077644587784828">额外隐私 &amp; 在线安全</translation>
-<translation id="8425213833346101688">更改</translation>
-<translation id="8703188411226330709">开始免费试用</translation>
 <translation id="3287942014983548982">此处打开</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>，目前处于打开状态，按 Tab 键，然后按回车键，切换到打开的标签页</translation>
 <translation id="1538335063514960365">在此打开按钮，按回车键在当前标签页中打开该网址，而不是切换到

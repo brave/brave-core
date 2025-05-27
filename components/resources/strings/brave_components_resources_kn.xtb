@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Brave Rewards ತೋರಿಸಿ</translation>
 <translation id="5585019845078534178">ಕಾರ್ಡ್‌ಗಳು</translation>
 <translation id="3870475560794762985">ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಿ</translation>
+<translation id="5684562942023496754">ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳನ್ನು ನೋಡಿದ್ದಕ್ಕಾಗಿ ನೀವು ಸಂಪಾದಿಸಬಹುದು.</translation>
+<translation id="6168679340384667457">ನೀವು ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳಿಗೆ BAT ಗಳಿಸುತ್ತಿದ್ದೀರಿ. ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ನಿಷ್ಕ್ರಿಯ ಮಾಡಿದರೆ ನೀವು ಗಳಿಸುವ ಮೊತ್ತ ಕಡಿಮೆಯಾಗುತ್ತದೆ.</translation>
+<translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="2414654907269324670">ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳಿಗೆ ನೀವು BAT ಸಂಪಾದಿಸುತ್ತಿರುವಿರಿ.</translation>
 <translation id="4942016616604700968">ಪುರಸ್ಕಾರಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="5684562942023496754">ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳನ್ನು ನೋಡಿದ್ದಕ್ಕಾಗಿ ನೀವು ಸಂಪಾದಿಸಬಹುದು.</translation>
 <translation id="8934374643857605034">Brave ರಿವಾರ್ಡ್ಸ್ ಬಳಕೆದಾರರಾಗಿ, ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳನ್ನು ನೋಡಿದ್ದಕ್ಕಾಗಿ ನೀವು BAT ಸಂಪಾದಿಸಬಹುದು.</translation>
 <translation id="1570714748649804013">Brave ರಿವಾರ್ಡ್ಸ್ ಬಳಕೆದಾರರಾಗಿ, ನೀವು ಬಳಸುವ ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳಿಗೆ ನೀವು BAT ಗಳಿಸುತ್ತೀರಿ. ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವುದರಿಂದ ನೀವು ಗಳಿಸುವ ಪ್ರಮಾಣ ಕಡಿಮೆಯಾಗುತ್ತದೆ.</translation>
 <translation id="8998727244653964783">Brave ರಿವಾರ್ಡ್ಸ್‌ಗೆ ನೀವು ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಯನ್ನು ಸಂಪರ್ಕಿಸಿದಾಗ ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳನ್ನು ನೋಡಿದ್ದಕ್ಕಾಗಿ ನೀವು BAT ಸಂಪಾದಿಸಬಹುದು. ಈ ಮಧ್ಯೆ, ಪ್ರಾಯೋಜಿತ ಇಮೇಜ್‌ಗಳೊಂದಿಗೆ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ನೀವು ಸಹಾಯ ಮಾಡುತ್ತಿರುವಿರಿ.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">ಓದುವ ಪಟ್ಟಿ</translation>
 <translation id="4590997608186539865">ಪ್ಲೇಲಿಸ್ಟ್</translation>
 <translation id="8027460023387054992">ಚಾಟ್ ಸಮ್ಮರೈಸರ್</translation>
-<translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="8730621377337864115">ಮುಗಿದಿದೆ</translation>
 <translation id="730042046912793465">ಇದು</translation>
 <translation id="2055363275850890030">ಖಾಸಗಿ ವಿಂಡೋ</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">ಸಂಪರ್ಕಗೊಳಿಸಿಲ್ಲ</translation>
 <translation id="4217695020908122747">ಸಂಪರ್ಕಿತ ಖಾತೆಗಳು</translation>
 <translation id="8497650996740651467">ಲಭ್ಯ ಖಾತೆಗಳು</translation>
+<translation id="1775188434254367931">ಸಂಪರ್ಕಗಳು</translation>
+<translation id="1818522458013171885">ಅನ್‌ ಬ್ಲಾಕ್‌ ಮಾಡಿ</translation>
 <translation id="5677928146339483299">ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="3890989020011724401">ಹೊಸ ಖಾತೆ</translation>
 <translation id="4612979983851181941">Web3 ಮತ್ತು ನಿಮ್ಮ ಎಲ್ಲಾ ಕ್ರಿಪ್ಟೋ ಅಸೆಟ್‌ಗಳನ್ನು ಸುರಕ್ಷಿತವಾಗಿ ಪ್ರವೇಶಿಸಲು ಈ ಪ್ಯಾನಲ್ ಬಳಸಿ.</translation>
@@ -1739,6 +1742,7 @@
 <translation id="803703704549420287">ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="1472675084647422956">ಇನ್ನಷ್ಟು ತೋರಿಸಿ</translation>
 <translation id="4522570452068850558">ವಿವರಗಳು</translation>
+<translation id="4583937519241190398">DappRadar ನಿಂದ ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
 <translation id="3526789880090101085">ಸುರಕ್ಷಿತ ಖಾತೆ</translation>
 <translation id="2298396008562701154">ಈ ಖಾತೆಯು ಪ್ರಸ್ತುತ ಪಾರದರ್ಶಕ ವಹಿವಾಟುಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ ಅಂದರೆ ಬ್ಲಾಕ್‌ಚೈನ್‌ನಲ್ಲಿ ಎಲ್ಲರಿಗೂ ಗೋಚರಿಸುತ್ತದೆ.</translation>
 <translation id="3987095760757102811">ರಕ್ಷಿತ ಖಾತೆಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡುವುದು ಎಂದರೆ ಈ ವಹಿವಾಟುಗಳನ್ನು ಕಳುಹಿಸುವವರು, ಸ್ವೀಕರಿಸುವವರು ಮತ್ತು ಮೊತ್ತದ ವಿವರಗಳನ್ನು ಮರೆಮಾಡುವುದು ಎಂದರ್ಥ.</translation>
@@ -1828,7 +1832,9 @@
 <translation id="7758665172236842395">ಒಂದೇ ಫೀಡ್‌ನಲ್ಲಿ, ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಮೂಲಗಳನ್ನು ಅನುಸರಿಸಿ. Brave ನಲ್ಲಿ ಟ್ಯಾಬ್ ತೆರೆಯಿರಿ, ಕೆಳಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ… ಅಲ್ಲಿಯೇ ನಿಮಗೆ ದೊರೆಯುತ್ತದೆ!</translation>
 <translation id="2376542729617592331">Brave ನ್ಯೂಸ್ ಎನ್ನುವುದು ಖಾಸಗಿ, ಅನಾಮಧೇಯಗೊಳಿಸಿದ ಜಾಹೀರಾತುಗಳೊಂದಿಗೆ ಜಾಹೀರಾತು-ಬೆಂಬಲಿತವಾಗಿದೆ. <ph name="LINK_START"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Brave ಸುದ್ದಿ ಆನ್ ಮಾಡಿ</translation>
+<translation id="5149018766422637336">ಸುದ್ದಿ ಮತ್ತು ಆರ್. ಎಸ್. ಎಸ್</translation>
 <translation id="6265592479622441247"><ph name="BEGIN_BOLD"/>ಡ್ಯಾಶ್‍ಬೋರ್ಡ್<ph name="END_BOLD"/> ಗೆ ಹಿಂದಿರುಗಿ</translation>
+<translation id="3169472444629675720">ಅನ್ವೇಷಿಸಿ</translation>
 <translation id="8981973962043893066">ಸೈಟ್, ವಿಷಯ ಅಥವಾ RSS ಫೀಡ್‌ಗಾಗಿ ಹುಡುಕಿ</translation>
 <translation id="1498364270401875204">ಚಾನಲ್‍ಗಳು</translation>
 <translation id="6401776069326703655">ಎಲ್ಲಾ ವೀಕ್ಷಿಸಿ</translation>
@@ -2113,6 +2119,7 @@
 <translation id="8151638057146502721">ಕಾನ್ಫಿಗರ್</translation>
 <translation id="3282183392203936979">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು ಲಾಮಾ 3.1 8Bನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಇದು ಮೆಟಾದಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಒಂದು ಮಾದರಿಯಾಗಿದ್ದು, ಇದು ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಹೆಚ್ಚಿಸಲು ಮತ್ತು ಅನೇಕ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. ಲಾಮಾ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ <ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು Qwen 14B ಯಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಅಲಿಬಾಬಾ ಕ್ಲೌಡ್‌ನಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಒಂದು ಮಾದರಿಯಾಗಿದ್ದು, ಇದು ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಹೆಚ್ಚಿಸಲು ಮತ್ತು ಅನೇಕ ಬಳಕೆಯ ಸಂದರ್ಭಗಳಿಗೆ ಅನ್ವಯಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. Qwen ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ Brave-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">ನಮಸ್ಕಾರ, ನಾನು ಲಿಯೋ. ನಾನು ಸಂಪೂರ್ಣವಾಗಿ ಬ್ರೇವ್‌ನಿಂದ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಸಹಾಯಕ. ಡೀಪ್ಆ‌ ರೀಸನಿಂಗ್‌ ಕಾರ್ಯಗಳನ್ನು ನಿರ್ವಹಿಸಲು DeepSeek ನಿಂದ ರಚಿಸಲಾದ ಮಾದರಿಯಾದ DeepSeek R1 ನಿಂದ ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಸಂಪೂರ್ಣವಾಗಿ ಹೋಸ್ಟ್ ಮಾಡಲಾದ AI ಅಸಿಸ್ಟೆಂಟ್. ನಾನು ಮಿಸ್ಟ್ರಲ್ 8x7B ನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಮುಂದುವರಿದ ಕಾರ್ಯಗಳನ್ನು ನಿರ್ವಹಿಸಲು ಮಿಸ್ಟ್ರಲ್ AI ನಿಂದ ರಚಿಸಲ್ಪಟ್ಟ ಮಾದರಿಯಾಗಿದೆ. ಮಿಸ್ಟ್ರಲ್ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಪ್ರಾಕ್ಸಿ ಮಾಡಲ್ಪಟ್ಟಿದ್ದೇನೆ ಮತ್ತು ಕ್ಲೌಡ್ ಇನ್‌ಸ್ಟಂಟ್‌ನಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಸಂವಾದಗಳಿಗೆ ಮತ್ತು ಪದಗಳನ್ನು ಸರಿಪಡಿಸಲು ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದೆ. ಕ್ಲೌಡ್ ಇನ್‌ಸ್ಟಂಟ್ ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ.<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">ನಮಸ್ಕಾರ, ನಾನು Leo. ನಾನು ಬ್ರೇವ್‌ನಿಂದ ಪ್ರಾಕ್ಸಿ ಮಾಡಲ್ಪಟ್ಟಿದ್ದೇನೆ ಮತ್ತು ಕ್ಲೌಡ್ ಹೈಕು ಅವರಿಂದ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ, ಇದು ಸಂವಾದ ಮತ್ತು ಪದಗನ್ನು ಸರಿಪಡಿಸುವುದಕ್ಕೆ ಆಂಥ್ರೊಪಿಕ್ ರಚಿಸಿದ ಮಾದರಿಯಾಗಿದೆ. ಕ್ಲೌಡ್ ಹೈಕು ನಮ್ಮದೇ ಆದ ಸುರಕ್ಷಿತ ಮೂಲಸೌಕರ್ಯದ ಮೂಲಕ ಬ್ರೇವ್-ಹೋಸ್ಟ್ ಆಗಿದೆ..<ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
@@ -2151,7 +2158,6 @@
 <translation id="6393149565874086128">ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="3521125531016408657">ಉತ್ತರವನ್ನು ಇಷ್ಟಪಡಿ</translation>
 <translation id="8202517001427388906">ಉತ್ತರವನ್ನು ಇಷ್ಟಪಡದಿರಿ</translation>
-<translation id="3177073390279208955">ರೇಟಿಂಗ್, ಸಂಭಾಷಣೆ, ಮಾದರಿ, ಭಾಷೆ, ಆವೃತ್ತಿ ಮತ್ತು ಪ್ರೀಮಿಯಂ‌ ಸ್ಟೇಟಸ್‌ನ್ನು ಕಳುಹಿಸುತ್ತದೆ</translation>
 <translation id="1379399209929302811">Brave AI ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಒದಗಿಸಿ</translation>
 <translation id="8442999546461118871">ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆ ವಿಷಯ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="9018766373792005944">ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆ ಯಾವುದರ ಕುರಿತಾಗಿದೆ?</translation>
@@ -2176,6 +2182,13 @@
 <translation id="1946267518364740045">ತಾರ್ಕಿಕ...</translation>
 <translation id="4198859185714743678">ತಾರ್ಕಿಕ ಕ್ರಿಯೆ ಪೂರ್ಣಗೊಂಡಿದೆ</translation>
 <translation id="6140948187512243695">ವಿವರಗಳನ್ನು ತೋರಿಸಿ</translation>
+<translation id="4881695831933465202">ತೆರೆಯಿರಿ</translation>
+<translation id="1625889395409731085">ಹೊರಗಿನ ಲಿಂಕ್ ತೆರೆಯುವುದೇ?</translation>
+<translation id="4211063437291114749">ಲಿಯೋ AI ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಲು ಬಯಸುತ್ತದೆ. ನೀವು ಮುಂದುವರಿಯಲು ಬಯಸುವಿರಾ?</translation>
+<translation id="5526001300821542157">ಲಿಂಕ್‌ಗಳನ್ನು ತೆರೆಯಲು ನನ್ನನ್ನು ಮತ್ತೆ ಕೇಳಬೇಡಿ</translation>
+<translation id="1243966363662220847">ಫೀಡ್‌ ಬ್ಯಾಕ್‌ ಪ್ರತಿಕ್ರಿಯೆ</translation>
+<translation id="7417895556119762861">ಲಿಯೋವನ್ನು ಸುಧಾರಿಸಲು ಇಷ್ಟಪಡುವ ಅಥವಾ ಇಷ್ಟಪಡದೇ ಇರುವ ಉತ್ತರ ಕಳಿಸುವುದು, ರೇಟಿಂಗ್, ಸಂಭಾಷಣೆ, ಮಾದರಿ, ಭಾಷೆ, ಆವೃತ್ತಿ ಮತ್ತು ಪ್ರೀಮಿಯಂ ಸ್ಥಿತಿಯನ್ನು ಬ್ರೇವ್‌ಗೆ ಕಳುಹಿಸುತ್ತದೆ. <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/>
+Uttaravannu iṣṭ;</translation>
 <translation id="7494736170250048402">Leo ಗೆ ಸಂದೇಶವನ್ನು ಕಳುಹಿಸಿ</translation>
 <translation id="8650874793377330048">ಉತ್ತರಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ</translation>
 <translation id="8712637175834984815">ಅರ್ಥವಾಯಿತು</translation>
@@ -2203,6 +2216,7 @@
 <translation id="2836330653441111204">ಸಮತೋಲಿತ ವೇಗ ಮತ್ತು ಬುದ್ಧಿಶಕ್ತಿ</translation>
 <translation id="6695329447007213917">ಸಾಮಾನ್ಯ ಉದ್ದೇಶದ ಚಾಟ್, ಕೋಡಿಂಗ್ ಮತ್ತು ಇನ್ನಷ್ಟು</translation>
 <translation id="5051668914970329839">ಸಾಮಾನ್ಯ ಉದ್ದೇಶದ ವಿಷನ್</translation>
+<translation id="7226508434216060960">ತಾರ್ಕಿಕ ಮಾದರಿ</translation>
 <translation id="3965507912994218570">Leo ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="1037324977127422019">ನಮಸ್ಕಾರ, ನಾನು ಲಿಯೋ!</translation>
 <translation id="8930348081963284873">Brave ನಲ್ಲಿಯೇ ನಿರ್ಮಿಸಲಾದ, AI-ಸಾಮರ್ಥ್ಯದ ಬುದ್ಧಿವಂತ ಸಹಾಯಕ.</translation>
@@ -2251,21 +2265,38 @@
 <translation id="8370801182970639038">ಆಟೋಮ್ಯಾಟಿಕ್(<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">ಸಕ್ರಿಯಗೊಳಿಸಿದ‌ ಸರ್ಚಿಂಗ್‌ ಇಂಜಿನ್‌ಗಳು</translation>
 <translation id="5355776323718420036">ಉನ್ನತ ಸೈಟ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
+<translation id="9173319813356700250">ಸುದ್ದಿ</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/> ಮೂಲಕ ಫೋಟೋ</translation>
+<translation id="5430001801813715388">ಬಹುಮಾನಗಳು</translation>
 <translation id="5966055668402779222">ಬ್ರೇವ್ ಸರ್ಚ್‌ ಕೇಳಿ</translation>
 <translation id="6851426306697017546">ಗಡಿಯಾರವನ್ನು ತೋರಿಸಿ</translation>
 <translation id="4844370919312937270">ಹೊಸ ಟ್ಯಾಬ್‌ಗಳಲ್ಲಿ ಸರ್ಚ್‌ ವಿಜೆಟ್ ಅನ್ನು ತೋರಿಸಿ</translation>
 <translation id="5009354496127441090">ಉನ್ನತ ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">ಅಂಕಿಅಂಶಗಳು</translation>
+<translation id="712731581368828482">ಬ್ರೇವ್ ಟಾಕ್‌ನೊಂದಿಗೆ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಿದ ವಿಡಿಯೋ ಕರೆಗಳು.</translation>
+<translation id="2671474274417808910">ಗೌಪ್ಯತೆ-ಮೊದಲ ಕರೆಗಳು</translation>
+<translation id="2100665198270190500">ಮಾತನಾಡಿ</translation>
 <translation id="4290791698375397492">ಟಾಪ್ ಸೈಟ್ ತೆಗೆದುಹಾಕಲಾಗಿದೆ</translation>
 <translation id="1436784010935106834">ತೆಗೆದುಹಾಕಲಾಗಿದೆ</translation>
 <translation id="9030215177866748410">ನೀವು ಸದಾ ಭೇಟಿ ನೀಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ಆಧರಿಸಿ ಉನ್ನತ ಸೈಟ್‌ಗಳನ್ನು ಸೂಚಿಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
+<translation id="755045397420611731">ಹೆಚ್ಚುವರಿ ಗೌಪ್ಯತೆ ಮತ್ತು ಭದ್ರತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="4520128772974831415">ನಿಮ್ಮ IP ಮರೆ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="6819278685469225453">ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿರುವ ಪ್ರತಿ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ರಕ್ಷಿಸಿ</translation>
+<translation id="8422279921836245017">ಈಗಾಗಲೇ ಖರೀದಿಸಲಾಗಿದೆಯೇ?</translation>
+<translation id="8703188411226330709">ಉಚಿತ ಪ್ರಯೋಗ ಆರಂಭಿಸಿ</translation>
+<translation id="8814357473522731680">ಇದರಿಂದ ಸಾಮರ್ಥ್ಯ ಪಡೆದಿದೆ</translation>
+<translation id="7143207342074048698">ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="1202549130170287307">ಸಂಪರ್ಕಕಡಿತಗೊಳ್ಳುತ್ತಿದೆ</translation>
+<translation id="8941703009412168350">ಬ್ರೇವ್ VPN</translation>
+<translation id="8793108040181436796">ವಿಜೆಟ್‌ಗಳು</translation>
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
 <translation id="8458987127502506209">Brave ಶೀಲ್ಡ್ಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="7509914170164691086">ಶೀಲ್ಡ್ಸ್‌ ಅನ್ನು <ph name="LINK_BEFORE"/>ಇದಕ್ಕೆ<ph name="LINK_AFTER"/> ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
-<translation id="260764436039299868">ಶೀಲ್ಡ್ಸ್‌ ಅನ್ನು <ph name="LINK_BEFORE"/>ಇದಕ್ಕೆ<ph name="LINK_AFTER"/> ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
-<translation id="3907405056878805220">ಈ ಸೈಟ್ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ ಎಂದು ತೋರುತ್ತಿದ್ದರೆ, ಶೀಲ್ಡ್ಸ್ ಡೌನ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ.
-  <ph name="LINK_BEFORE"/>ಗಮನಿಸಿ: ಇದು Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಯನ್ನು ಕಡಿಮೆ ಮಾಡಬಹುದು.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>ಶೀಲ್ಡ್‌ಗಳು <ph name="STATUS_AFTER"/> ಗಾಗಿ <ph name="HOST"/> ಮೇಲಕ್ಕೆ ಇರುತ್ತವೆ.</translation>
+<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>ಶೀಲ್ಡ್‌ಗಳು ಕೆಳಗಿವೆ<ph name="STATUS_AFTER"/> ಗಾಗಿ <ph name="HOST"/></translation>
+<translation id="5623354834493649144">ಈ ಸೈಟ್ ಕೆಟ್ಟಿದೆ ಎಂದು ಕಂಡುಬಂದರೆ, ಶೀಲ್ಡ್ಸ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ.
+<ph name="NOTE_BEFORE"/>ಗಮನಿಸಿ: ಇದು ಬ್ರೇವ್‌ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳನ್ನು ಕಡಿಮೆ ಮಾಡಬಹುದು.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">ಟ್ರ್ಯಾಕರ್‌ಗಳು, ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಹೆಚ್ಚು ನಿರ್ಬಂಧಿತವಾದವುಗಳು <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave ಶೀಲ್ಡ್ಸ್‌ನಿಂದ ರಕ್ಷಿತವಾಗಿಲ್ಲ <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ಸುಧಾರಿತ ನಿಯಂತ್ರಣಗಳು</translation>
@@ -2348,15 +2379,12 @@
 <translation id="958268166261124668">Brave VPN: ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
 <translation id="6021669293402055982">Brave VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="3541307549916475335">Brave VPN ಪ್ಯಾನೆಲ್ UI</translation>
-<translation id="7143207342074048698">ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ</translation>
-<translation id="1202549130170287307">ಸಂಪರ್ಕಕಡಿತಗೊಳ್ಳುತ್ತಿದೆ</translation>
 <translation id="2325196879156848326">ಸಂಪರ್ಕ ವಿಫಲಗೊಂಡಿದೆ</translation>
 <translation id="745054660363064771">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲಾಗುವುದಿಲ್ಲ</translation>
 <translation id="3936826714240735937">ಮತ್ತೊಂದು ಸರ್ವರ್ ಆರಿಸಿ</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು <ph name="REGION_NAME"/> ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಮತ್ತೊಂದು ದೇಶವನ್ನು ಆರಿಸಿ.</translation>
 <translation id="5753795690521538679">7-ದಿನದ ಉಚಿತ ಪ್ರಯೋಗ ಆರಂಭಿಸಿ</translation>
 <translation id="3357036723290257445">ಈಗಾಗಲೇ Brave VPN ಖರೀದಿಸಿದ್ದೀರಾ?</translation>
-<translation id="8814357473522731680">ಇದರಿಂದ ಸಾಮರ್ಥ್ಯ ಪಡೆದಿದೆ</translation>
 <translation id="8652175077544655965">ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="5908163815855240493">ಮುಖ್ಯಪುಟಕ್ಕೆ ಹೋಗಿ</translation>
 <translation id="7805768142964895445">ಸ್ಥಿತಿ</translation>
@@ -2364,8 +2392,6 @@
 <translation id="8421945428836418371">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="434523916398030617">ತಾಂತ್ರಿಕ ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="1116694919640316211">ಕುರಿತು</translation>
-<translation id="755045397420611731">ಹೆಚ್ಚುವರಿ ಗೌಪ್ಯತೆ ಮತ್ತು ಭದ್ರತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="4520128772974831415">ನಿಮ್ಮ IP ಮರೆ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಬದಲಾಯಿಸಿ</translation>
 <translation id="2044418816479192294">ವಿಶ್ವದಾದ್ಯಂತದ ನೂರಾರು ಸರ್ವರ್‌ಗಳು</translation>
 <translation id="7410504850864021600">ಮಿಂಚಿನ ವೇಗದ ಸಂಪರ್ಕ ವೇಗಗಳು</translation>
 <translation id="2422309687188612485">ಒಂದು ಯೋಜನೆಯೊಂದಿಗೆ 10 ಸಾಧನಗಳಿಗೆ ರಕ್ಷಣೆ ನೀಡಿ</translation>
@@ -2439,11 +2465,7 @@
 <translation id="8048263175525832621">Brave VPN - ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="1498770726476841108">ಖಾತೆಯನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="6825718953004242472">ಐಕಾನ್ ತೆಗೆದುಹಾಕಿ</translation>
-<translation id="6819278685469225453">ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿರುವ ಪ್ರತಿ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ರಕ್ಷಿಸಿ</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">ಹೆಚ್ಚುವರಿ ಗೌಪ್ಯತೆ &amp; ಭದ್ರತೆ ಆನ್‌ಲೈನ್.</translation>
-<translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
-<translation id="8703188411226330709">ಉಚಿತ ಪ್ರಯೋಗ ಆರಂಭಿಸಿ</translation>
 <translation id="3287942014983548982">ಇಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/> ಪ್ರಸ್ತುತ ತೆರೆಯಿರಿ,
     ತೆರೆದ ಟ್ಯಾಬ್‌ಗೆ ಬದಲಾಯಿಸಲು ಟ್ಯಾಬ್ ಒತ್ತಿ ನಂತರ ಎಂಟರ್ ಒತ್ತಿರಿ</translation>

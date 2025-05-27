@@ -52,6 +52,12 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Nie pokazuj ponownie</translation>
 <translation id="4595286989346610620">Sprawdź szczegóły</translation>
 <translation id="8324318899000695659">Blokuj elementy</translation>
+<translation id="3828310068250853121">Wybierz element, który chcesz zablokować</translation>
+<translation id="2577286987423083872">Blokuj elementy</translation>
+<translation id="3211174446914979436">Zarządzaj filtrami</translation>
+<translation id="3108584651298176909">Pokaż reguły</translation>
+<translation id="5156986655891520787">Ukryj reguły</translation>
+<translation id="7658239707568436148">Anuluj</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otwórz za pomocą adresu .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Wklejanie wymuszone</translation>
@@ -93,7 +99,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Ta strona przesłała prośbę o podanie <ph name="PART_ONE"/>dokładnej lokalizacji<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Dowiedz się więcej<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Ta strona poprosiła o podanie <ph name="PART_ONE"/>dokładnej lokalizacji<ph name="PART_ONE_END"/>. Brave może podać tylko dane związane z <ph name="PART_TWO"/>ogólną lokalizacją<ph name="PART_TWO_END"/> ze względu na to, że <ph name="PART_THREE"/>Usługi lokalizacji<ph name="PART_THREE_END"/> są wyłączone. <ph name="PART_FOUR"/>Dowiedz się więcej<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Zamknij wszystko</translation>
-<translation id="7658239707568436148">Anuluj</translation>
 <translation id="4870911314065352661">Zamknąć wszystkie karty?</translation>
 <translation id="7551864359422178684">Otwarte karty: <ph name="NUMBER_OF_TABS"/> w tym oknie przeglądarki.</translation>
 <translation id="2571596981920752023">karty: <ph name="NUMBER_OF_TABS"/></translation>
@@ -133,6 +138,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Nie musisz klikać, aby zarabiać, ale kliknij, jeśli Cię coś interesuje!</translation>
 <translation id="5253166205743627564">Dziękujemy za wsparcie Brave Search poprzez kliknięcie prywatnej reklamy. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.</translation>
 <translation id="8748471354357836070">Dowiedz się więcej / zrezygnuj z opcji</translation>
+<translation id="5927196110206824867">Sponsorowane obrazy tła wspierają misję Brave polegającą na budowaniu niezależnej, zorientowanej na użytkownika sieci. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Przekaż anonimowo niektóre dane wyszukiwania i przeglądania, aby pomóc w doskonaleniu wyszukiwarki Brave.</translation>
 <translation id="1516554614404600536">Tooltip Brave</translation>
@@ -472,6 +478,9 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="7791141927430186653">Zezwalaj serwisowi X (wcześniej Twitter) na osadzone tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
+<translation id="1244912498725894944">Niektóre ustawienia plików cookie są kontrolowane przez Tarcze Brave. Możesz je zobaczyć &lt;a href="/content/braveShields"&gt;tutaj&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">To ustawienie jest kontrolowane przez Tarcze Brave.</translation>
+<translation id="352287031024189516">To ustawienie jest kontrolowane przez Google Sign-in.</translation>
 <translation id="8792121506918889955">Zasady obsługi IP WebRTC IP</translation>
 <translation id="8798099450830957504">Domyślny</translation>
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
@@ -673,8 +682,12 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Sieci portfela</translation>
 <translation id="5975930666279943472">Transakcja czyszczenia portfela i informacja okolicznościowa</translation>
 <translation id="5693968582510626466">Transakcje czyszczenia mogą być przydatne dla programistów lub w takcie czyszczenia lokalnego serwera</translation>
-<translation id="2326850911705720398">Resetuj i wyczyść dane portfela</translation>
+<translation id="6171369470447621882">Resetuj stan synchronizacji Zcash</translation>
+<translation id="6705112675071480687">Resetuje postęp synchronizacji Zcash dla wszystkich chronionych kont.</translation>
+<translation id="2012093487873597892">Czy na pewno chcesz zresetować stan synchronizacji Zcash? Postęp synchronizacji dla wszystkich chronionych kont zostanie przerwany. Wpisz "<ph name="CONFIRMATION_PHRASE"/>", aby potwierdzić.</translation>
+<translation id="5031551083187285762">Twój stan synchronizacji kont Zcash został zresetowany.</translation>
 <translation id="9216386092464743272">Czy na pewno chcesz zresetować wszystkie transakcje w portfelu i informacje okolicznościowe? Tę opcję wykorzystują zazwyczaj programiści przeprowadzający lokalny test serwera. Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
+<translation id="2326850911705720398">Resetuj i wyczyść dane portfela</translation>
 <translation id="6369495274982305511">Czy na pewno chcesz zresetować portfel? Jeśli portfel nie ma kopii zapasowej, zresetowanie go spowoduje utratę wszystkich danych konta (w tym wszelkich powiązanych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
 <translation id="3752403403443723332">Twój portfel został zresetowany.</translation>
 <translation id="594766067816395072">Informacje o Twoim portfelu zostały zresetowane.</translation>

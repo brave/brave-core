@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Покажи Brave награди</translation>
 <translation id="5585019845078534178">Карти</translation>
 <translation id="3870475560794762985">Показване на спонсорирани изображения</translation>
+<translation id="5684562942023496754">Можете да спечелите от гледането на спонсорирани изображения.</translation>
+<translation id="6168679340384667457">Печелите BAT за спонсорирани изображения. Деактивирането на спонсорираните изображения ще намали печалбата ви.</translation>
+<translation id="6165508094623778733">Научете повече</translation>
 <translation id="2414654907269324670">Вие ще получите BAT за спонсорирани изображения.</translation>
 <translation id="4942016616604700968">Активиране на възнагражденията</translation>
-<translation id="5684562942023496754">Можете да спечелите от гледането на спонсорирани изображения.</translation>
 <translation id="8934374643857605034">Като Brave Rewards потребител, Вие можете да спечелите BAT от гледането на спонсорирани изображения.</translation>
 <translation id="1570714748649804013">Като Brave Rewards потребител, Вие печелите BAT от спонсорирани изображения, които гледате. Деактивирането на спонсорирани изображения, ще намали възможността Ви да печелите.</translation>
 <translation id="8998727244653964783">Можете да печелите BAT от гледането на спонсорирани изображения, като свържете акаунт за попечителство към Brave Rewards. Междувременно Вие подпомагате създадетелите със спонсорирани изображения.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">Списък за четене</translation>
 <translation id="4590997608186539865">Плейлист</translation>
 <translation id="8027460023387054992">Обобщител на чата</translation>
-<translation id="6165508094623778733">Научете повече</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="730042046912793465">Това е</translation>
 <translation id="2055363275850890030">Поверителен прозорец</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">Няма връзка</translation>
 <translation id="4217695020908122747">Свързани сметки</translation>
 <translation id="8497650996740651467">Налични сметки</translation>
+<translation id="1775188434254367931">Връзки</translation>
+<translation id="1818522458013171885">Разблокиране</translation>
 <translation id="5677928146339483299">Блокирано</translation>
 <translation id="3890989020011724401">Нов акаунт</translation>
 <translation id="4612979983851181941">Използвайте този панел, за да получите достъп до Web3  и всичките си криптоактиви.</translation>
@@ -1739,6 +1742,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="803703704549420287">Изчистване на филтрите</translation>
 <translation id="1472675084647422956">Показване на още</translation>
 <translation id="4522570452068850558">Подробности</translation>
+<translation id="4583937519241190398">Проверено от DappRadar</translation>
 <translation id="8713438253026855351">Преминаване към защитен акаунт</translation>
 <translation id="3526789880090101085">Защитен акаунт</translation>
 <translation id="2298396008562701154">В момента този акаунт поддържа прозрачни трансакции, което означава, че те са видими за всички в блокчейна.</translation>
@@ -1829,7 +1833,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7758665172236842395">Следете любимите си източници в един канал. Просто отворете раздел в Brave, превъртете надолу и... воала!</translation>
 <translation id="2376542729617592331">Brave Новини се поддържа от частни и анонимизирани реклами. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Включете Brave News</translation>
+<translation id="5149018766422637336">Новини и RSS</translation>
 <translation id="6265592479622441247">Назад към <ph name="BEGIN_BOLD"/>таблото за управление<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">Открийте</translation>
 <translation id="8981973962043893066">Търсене на сайт, тема или RSS канал</translation>
 <translation id="1498364270401875204">Канали</translation>
 <translation id="6401776069326703655">Преглед на всички</translation>
@@ -2114,6 +2120,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8151638057146502721">Конфигуриране</translation>
 <translation id="3282183392203936979">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 3.1 8B - модел, създаден от Meta, с цел ефективност и широко приложение. Llama се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Qwen 14B - модел, създаден от Alibaba Cloud, с цел ефективност и широко приложение. Qwen се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">Здравейте, аз съм Лио и съм изцяло хостван AI асистент от Brave. Работя с DeepSeek R1, модел, създаден от DeepSeek за изпълнение на задачи, изискващи задълбочено разсъждаване. <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Mixtral 8x7B - модел, създаден от Mistral AI, за справяне със сложни задачи. Mistral се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Здравей, аз съм Лио. Аз съм проксиран от Brave и задвижван от Claude Instant - модел, създаден от Anthropic, за да решава задачи за обработка на разговори и текст. Claude Instant е хостван от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Здравей, аз съм Лио. Аз съм проксиран от Brave и задвижван от Claude Haiku - модел, създаден от Anthropic, за да решава задачи за обработка на разговори и текст. Claude Haiku е хостван от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
@@ -2152,7 +2159,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6393149565874086128">Добавяне на обратна връзка</translation>
 <translation id="3521125531016408657">Харесване на отговор</translation>
 <translation id="8202517001427388906">Нехаресване на отговор</translation>
-<translation id="3177073390279208955">Изпраща оценка, разговор, модел, език, версия и премиум статус</translation>
 <translation id="1379399209929302811">Даване на обратна връзка чрез Brave AI</translation>
 <translation id="8442999546461118871">Изберете тема за обратна връзка</translation>
 <translation id="9018766373792005944">За какво се отнася вашата обратна връзка?</translation>
@@ -2177,6 +2183,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="1946267518364740045">Мислене...</translation>
 <translation id="4198859185714743678">Разсъждението приключи</translation>
 <translation id="6140948187512243695">Покажи подробности</translation>
+<translation id="4881695831933465202">Отваряне</translation>
+<translation id="1625889395409731085">Отваряне на външна връзка?</translation>
+<translation id="4211063437291114749">Лио AI иска да отвори уебсайт в нов раздел. Желаете ли да продължите?</translation>
+<translation id="5526001300821542157">Нека оттук нататък връзките се отварят без питане</translation>
+<translation id="1243966363662220847">Обратна връзка за отговора</translation>
+<translation id="7417895556119762861">Харесването или нехаресването на отговор ще изпрати оценката, разговора, модела, езика, версията и премиум статуса в Brave, за да подобрява Лио. <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Изпращане на съобщение на Leo</translation>
 <translation id="8650874793377330048">Спри отговора</translation>
 <translation id="8712637175834984815">Разбрах</translation>
@@ -2204,6 +2216,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2836330653441111204">Балансирана скорост и интелект</translation>
 <translation id="6695329447007213917">Чат за общи цели, писане на код и други</translation>
 <translation id="5051668914970329839">Визия за общо предназначение</translation>
+<translation id="7226508434216060960">Модел за разсъждение</translation>
 <translation id="3965507912994218570">Настройки на Leo</translation>
 <translation id="1037324977127422019">Здравейте, аз съм Лео!</translation>
 <translation id="8930348081963284873">Интелигентен асистент с изкуствен интелект, вграден директно в Brave.</translation>
@@ -2252,21 +2265,38 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8370801182970639038">Автоматично (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Активирай търсачките</translation>
 <translation id="5355776323718420036">Скриване на топ сайтове</translation>
+<translation id="9173319813356700250">НОВИНИ</translation>
 <translation id="6543799171249004861">Снимка от <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">НАГРАДИ</translation>
 <translation id="5966055668402779222">Поискай Brave търсене</translation>
 <translation id="6851426306697017546">Покажи часовник</translation>
 <translation id="4844370919312937270">Показване на функциите за търсене в новите раздели</translation>
 <translation id="5009354496127441090">Показване на топ сайтове</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">СТАТИСТИКИ</translation>
+<translation id="712731581368828482">Криптирани видеоразговори с Brave чат.</translation>
+<translation id="2671474274417808910">Разговори с акцент върху поверителността</translation>
+<translation id="2100665198270190500">TALK</translation>
 <translation id="4290791698375397492">Горният сайт е премахнат</translation>
 <translation id="1436784010935106834">Премахнато</translation>
 <translation id="9030215177866748410">Най-добрите сайтове се предлагат въз основа на уебсайтове, които посещавате често.</translation>
+<translation id="8425213833346101688">Промяна</translation>
+<translation id="755045397420611731">Допълнителна поверителност &amp; сигурност онлайн</translation>
+<translation id="4520128772974831415">Скрийте IP адреса си &amp; променете локацията си</translation>
+<translation id="6819278685469225453">Защитете всяко прил. на устройството си</translation>
+<translation id="8422279921836245017">Вече сте закупили?</translation>
+<translation id="8703188411226330709">Започнете безплатен пробен период</translation>
+<translation id="8814357473522731680">Предоставено от</translation>
+<translation id="7143207342074048698">Свързва се</translation>
+<translation id="1202549130170287307">Връзката се прекратява</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">Изпълними модули</translation>
 <translation id="6303294677342628402">Щитове</translation>
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
-<translation id="7509914170164691086">Щитовете са ВДИГНАТИ <ph name="LINK_BEFORE"/>за<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Щитовете са СМЪКНАТИ <ph name="LINK_BEFORE"/>за<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Ако този сайт изглежда повреден, опитайте да смъкнете щитовете.
- <ph name="LINK_BEFORE"/>Забележка: това може да намали защитата на поверителността на Brave.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Защитите са АКТИВНИ<ph name="STATUS_AFTER"/> за <ph name="HOST"/></translation>
+<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>Защитите са НЕАКТИВНИ<ph name="STATUS_AFTER"/> за <ph name="HOST"/></translation>
+<translation id="5623354834493649144">Ако този сайт изглежда повреден, пробвайте с деактивирани Защити.
+   <ph name="NOTE_BEFORE"/>Забележка: това може да намали защитите за поверителността на Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">Проследяващите елементи, рекламите и други елементи са блокирани<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Не е защитено от щитовете на Brave <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Разширени контроли</translation>
@@ -2349,15 +2379,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="958268166261124668">Brave VPN: свързан</translation>
 <translation id="6021669293402055982">Brave VPN: прекъсната връзка</translation>
 <translation id="3541307549916475335">Потребителски интерфейс на VPN панела на Brave</translation>
-<translation id="7143207342074048698">Свързва се</translation>
-<translation id="1202549130170287307">Връзката се прекратява</translation>
 <translation id="2325196879156848326">Неуспешно свързване</translation>
 <translation id="745054660363064771">Не може да се установи връзка със сървъра</translation>
 <translation id="3936826714240735937">Избор на друг сървър</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> не можа да се свърже със<ph name="REGION_NAME"/>сървъра. Моля, опитайте отново или изберете друга държава.</translation>
 <translation id="5753795690521538679">Започнете безплатен 7-дневен пробен период</translation>
 <translation id="3357036723290257445">Вече закупихте Brave VPN?</translation>
-<translation id="8814357473522731680">Предоставено от</translation>
 <translation id="8652175077544655965">Затваряне на настройки</translation>
 <translation id="5908163815855240493">Към главната страница</translation>
 <translation id="7805768142964895445">Състояние</translation>
@@ -2365,8 +2392,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8421945428836418371">Автоматично възстановяване на връзката</translation>
 <translation id="434523916398030617">Свързване с техническата поддръжка</translation>
 <translation id="1116694919640316211">Информация</translation>
-<translation id="755045397420611731">Допълнителна поверителност &amp; сигурност онлайн</translation>
-<translation id="4520128772974831415">Скрийте IP адреса си &amp; променете локацията си</translation>
 <translation id="2044418816479192294">Стотици сървъри по света</translation>
 <translation id="7410504850864021600">Светкавично бързи скорости на свързване</translation>
 <translation id="2422309687188612485">Защитете до 10 устройства с един план</translation>
@@ -2440,11 +2465,7 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="8048263175525832621">Brave VPN – прекъсната връзка</translation>
 <translation id="1498770726476841108">Управление на акаунта</translation>
 <translation id="6825718953004242472">Премахване на иконата</translation>
-<translation id="6819278685469225453">Защитете всяко прил. на устройството си</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Допълнителна поверителност &amp; онлайн сигурност.</translation>
-<translation id="8425213833346101688">Промяна</translation>
-<translation id="8703188411226330709">Започнете безплатен пробен период</translation>
 <translation id="3287942014983548982">Отваряне тук</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, е отворено понастоящем,
   натиснете Раздел и след това Enter, за да превключите към отворения раздел</translation>

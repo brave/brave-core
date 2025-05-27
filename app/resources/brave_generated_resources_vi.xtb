@@ -52,6 +52,12 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Không hiển thị lại</translation>
 <translation id="4595286989346610620">Kiểm tra chi tiết</translation>
 <translation id="8324318899000695659">Chặn các thành phần</translation>
+<translation id="3828310068250853121">Chọn thành phần bạn muốn chặn</translation>
+<translation id="2577286987423083872">Chặn thành phần</translation>
+<translation id="3211174446914979436">Quản lý bộ lọc</translation>
+<translation id="3108584651298176909">Hiển thị quy tắc</translation>
+<translation id="5156986655891520787">Ẩn quy tắc</translation>
+<translation id="7658239707568436148">Hủy</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Mở bằng địa chỉ .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Buộc dán</translation>
@@ -93,7 +99,6 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Trang này đã yêu cầu <ph name="PART_ONE"/>vị trí chính xác<ph name="PART_ONE_END"/> của bạn. <ph name="PART_TWO"/>Tìm hiểu thêm<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Trang này đã yêu cầu <ph name="PART_ONE"/>vị trí chính xác<ph name="PART_ONE_END"/> của bạn. Brave sẽ chỉ có thể cung cấp dữ liệu <ph name="PART_TWO"/>vị trí chung<ph name="PART_TWO_END"/> vì <ph name="PART_THREE"/>Dịch vụ vị trí<ph name="PART_THREE_END"/> đang bị tắt đi. <ph name="PART_FOUR"/>Tìm hiểu thêm<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Đóng tất cả</translation>
-<translation id="7658239707568436148">Hủy</translation>
 <translation id="4870911314065352661">Đóng tất cả các tab?</translation>
 <translation id="7551864359422178684">Bạn có <ph name="NUMBER_OF_TABS"/> tab đang mở trong cửa sổ trình duyệt này.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
@@ -133,6 +138,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Bạn không cần nhấp để kiếm tiền, nhưng hãy nhấp nếu bạn quan tâm!</translation>
 <translation id="5253166205743627564">Cảm ơn vì đã ủng hộ Tìm kiếm Brave khi bấm vào quảng cáo riêng tư. Khác với sản phẩm của công ty Big Tech, chúng tôi đo lường hiệu suất quảng cáo theo cách đo ẩn danh để bảo toàn quyền riêng tư của bạn.</translation>
 <translation id="8748471354357836070">Tìm hiểu thêm / lựa chọn từ chối</translation>
+<translation id="5927196110206824867">Hình nền được tài trợ hỗ trợ sứ mệnh xây dựng một nền tảng web độc lập và ưu tiên người dùng của Brave. Khác với sản phẩm của công ty Big Tech, chúng tôi đo lường hiệu suất quảng cáo theo cách đo ẩn danh để bảo toàn quyền riêng tư của bạn.</translation>
 <translation id="4174337572777167894">Dự án Khám phá Web</translation>
 <translation id="8659271182272561965">Đóng góp một số dữ liệu tìm kiếm &amp; duyệt web ẩn danh để tinh chỉnh Tìm kiếm Brave.</translation>
 <translation id="1516554614404600536">Brave Chú giải công cụ</translation>
@@ -473,6 +479,9 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="7791141927430186653">Cho phép nhúng các tweet X (trước đây là Twitter)</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
+<translation id="1244912498725894944">Một số cài đặt cookie được Lá chắn Brave kiểm soát. Bạn có thể xem các cài đặt đó &lt;a href="/content/braveShields"&gt;tại đây&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Cài đặt này được Lá chắn Brave kiểm soát.</translation>
+<translation id="352287031024189516">Cài đặt này được Google Sign-in kiểm soát.</translation>
 <translation id="8792121506918889955">Chính sách xử lý IP của WebRTC</translation>
 <translation id="8798099450830957504">Mặc định</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
@@ -674,8 +683,12 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Mạng ví</translation>
 <translation id="5975930666279943472">Xóa giao dịch ví và thông tin số giao dịch</translation>
 <translation id="5693968582510626466">Việc xóa các giao dịch có thể hữu ích cho các nhà phát triển hoặc khi xóa trạng thái trên máy chủ cục bộ</translation>
-<translation id="2326850911705720398">Thiết lập lại và xóa dữ liệu ví</translation>
+<translation id="6171369470447621882">Đặt lại trạng thái đồng bộ hóa Zcash</translation>
+<translation id="6705112675071480687">Đặt lại tiến trình đồng bộ hóa Zcash cho tất cả tài khoản được bảo vệ</translation>
+<translation id="2012093487873597892">Bạn có chắc muốn đặt lại trạng thái đồng bộ hóa Zcash? Tiến trình đồng bộ hóa cho tất cả các tài khoản được bảo vệ sẽ bị hủy. Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="5031551083187285762">Trạng thái đồng bộ hóa tài khoản Zcash của bạn đã được đặt lại.</translation>
 <translation id="9216386092464743272">Bạn có chắc chắn muốn đặt lại tất cả giao dịch ví và thông tin số giao dịch của mình không? Tùy chọn này chủ yếu được sử dụng bởi các nhà phát triển đang chạy máy chủ kiểm thử nội bộ. Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="2326850911705720398">Thiết lập lại và xóa dữ liệu ví</translation>
 <translation id="6369495274982305511">Bạn có chắc chắn muốn đặt lại ví của mình không? Nếu ví của bạn không được sao lưu, việc đặt lại sẽ khiến bạn mất tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên kết). Gõ "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
 <translation id="3752403403443723332">Ví của bạn đã được đặt lại.</translation>
 <translation id="594766067816395072">Thông tin giao dịch ví của bạn đã được đặt lại.</translation>

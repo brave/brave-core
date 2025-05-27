@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
 <translation id="6302422639282249274">Gérer les récompenses Brave</translation>
-<translation id="2709516037105925701">Saisie automatique</translation>
 <translation id="8617525558807213034">Remplir automatiquement dans les onglets de navigation privée</translation>
 <translation id="8685431198160039193">Les informations enregistrées peuvent être remplies automatiquement dans les onglets de navigation privée</translation>
 <translation id="6583902294974160967">Assistance</translation>
@@ -112,10 +111,10 @@
 <translation id="5989135139219497991">Afficher les suggestions recommandées</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
-<translation id="412411722208944922">Moteurs de recherches rapides</translation>
-<translation id="2836969042340015500">Moteurs de recherches rapides</translation>
+<translation id="412411722208944922">Raccourcis vers les moteurs de recherche</translation>
+<translation id="2836969042340015500">Raccourcis vers les moteurs de recherche</translation>
 <translation id="9120455214794270250">Afficher la barre de recherche rapide</translation>
-<translation id="1052991798173010693">Moteurs de recherches actuellement utilisés</translation>
+<translation id="1052991798173010693">Moteurs de recherches disponibles</translation>
 <translation id="335303688425891752">Appui long pour modifier l'ordre</translation>
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="8047754398610073499">Bloquer les fenêtres de consentement aux cookies</translation>
@@ -152,7 +151,7 @@
 <translation id="6920492760024499150">Les gros titres du jour dans un fil privé, rien que pour vous.</translation>
 <translation id="8300751939969131609">Activez les actualités Brave et ne ratez aucune info</translation>
 <translation id="7627131190984957214">Les actualités Brave sont financées par des publicités privées et anonymes adaptées à votre appareil.</translation>
-<translation id="7699565323725789472">Suivez vos sources préférées au sein d'un seul et même fil. Il vous suffit d'ouvrir un onglet dans Brave, de faire défiler la page vers le bas, et le tour est joué !\nLes actualités Brave contiennent des annonces privées et anonymes.</translation>
+<translation id="7699565323725789472">Suivez vos sources préférées au sein d'un seul et même fil. Il vous suffit d'ouvrir un onglet dans Brave, de faire défiler la page vers le bas, et le tour est joué !\nLes actualités Brave contiennent des annonces qui respectent votre vie privée.</translation>
 <translation id="1765217911817124376">Activer les actualités Brave</translation>
 <translation id="8981973962043893066">Rechercher un site, un sujet ou un flux RSS</translation>
 <translation id="3225021799163709119">Populaires</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Apparence</translation>
 <translation id="9040069796107003510">Icône des récompenses Brave</translation>
 <translation id="6333347122924254968">Affiche l'icône des récompenses Brave dans la barre d'adresse</translation>
-<translation id="8495235435594442882">Activer la barre d'outils inférieure</translation>
+<translation id="1215433243238902715">Activer la barre de navigation inférieure</translation>
+<translation id="1422686363939271829">Ce paramètre est désactivé lorsque la position de la barre d'adresse inférieure est sélectionnée.</translation>
 <translation id="6587448235155023666">Vos changements prendront effet la prochaine fois que vous relancerez Brave</translation>
 <translation id="8701563696941209024">RELANCER MAINTENANT</translation>
 <translation id="834487290629916192">PLUS TARD</translation>
@@ -332,7 +332,7 @@
 <translation id="7006136453627651236">Échec de la suppression du compte de synchronisation</translation>
 <translation id="728334460283296316">Supprimer l'appareil</translation>
 <translation id="1178128181015923849">Voulez-vous vraiment supprimer l'appareil '<ph name="DEVICE_NAME"/>' ?</translation>
-<translation id="7745082336226088126">Scannez ou saisissez le code de synchro</translation>
+<translation id="7745082336226088126">Scanner ou saisir le code de synchro</translation>
 <translation id="1602067095281698985">Démarrer une nouvelle chaîne de synchronisation</translation>
 <translation id="1475223680121592371">Ajouter un appareil mobile</translation>
 <translation id="2965377893636908578">Ajouter un ordinateur</translation>
@@ -420,9 +420,12 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="8520059774736886747">Créateur récemment vérifié par <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1486343603936278248">jeton</translation>
 <translation id="7781069478569868053">Nouvel onglet</translation>
+<translation id="5927196110206824867">Les arrière-plans sponsorisés aident Brave à créer un Web plus indépendant et pensé pour les utilisateurs. Contrairement aux grandes entreprises de la tech, les performances des annonces sont analysées de manière anonyme pour préserver votre vie privée.</translation>
+<translation id="8748471354357836070">En savoir plus / Me désinscrire</translation>
 <translation id="3171669670217312786">Images en arrière-plan</translation>
 <translation id="8522669544471808198">Afficher les images d'arrière-plan</translation>
 <translation id="3870475560794762985">Afficher les images sponsorisées</translation>
+<translation id="6937724381960478525">En savoir plus sur les images sponsorisées</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Afficher mes sites</translation>
 <translation id="7275773481201277457">Afficher les statistiques de Brave</translation>
@@ -478,8 +481,8 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="876424292214881779">publicités et autres éléments indésirables bloqués</translation>
 <translation id="6849027612978668678">Les sites incluent souvent des cookies et des scripts qui tentent de vous identifier, vous et votre appareil. Ils veulent savoir qui vous êtes et vous suivre sur le web en pistant ce que vous faites sur chaque site.\n\nBrave bloque ces éléments afin que vous puissiez naviguer sans être suivi.</translation>
 <translation id="8553998445606452168">À propos des boucliers Brave</translation>
-<translation id="8912304686498704084">ACTIVÉ</translation>
-<translation id="4963218453264888510">BAS</translation>
+<translation id="8912304686498704084">ACTIVÉS</translation>
+<translation id="4963218453264888510">DÉSACTIVÉS</translation>
 <translation id="7474113515179313724">Votre navigation sur ce site n'est pas protégée par Brave. Avez-vous rencontré des problèmes en utilisant les boucliers sur ce site ?</translation>
 <translation id="4226543734057230801">Réseaux Ethereum</translation>
 <translation id="3504157706952484145">Réseaux Filecoin</translation>
@@ -500,7 +503,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Merci !</translation>
 <translation id="76550953340008122">Merci d'avoir fait savoir aux développeurs de Brave qu'il y a quelque chose qui ne marche pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
-<translation id="650318023204990401">Commandes avancées</translation>
+<translation id="650318023204990401">Paramètres avancés</translation>
 <translation id="7205939464631857223">Effacer tous les éléments bloqués</translation>
 <translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
 <translation id="1118508688433541158">Naviguez plus rapidement et bloquez les annonces avec Brave</translation>
@@ -712,7 +715,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="112929124115834557">Renouvellement annuel</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/mois</translation>
 <translation id="1163809943099641131">Un an</translation>
-<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>Économisez <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>économisez <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/an</translation>
 <translation id="2786538705804257030">Les abonnements seront facturés via votre compte Google. Toute période d'essai gratuite non utilisée sera annulée en cas d'achat d'un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d'annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions générales d'utilisation et la politique de confidentialité.</translation>
 <translation id="5035172357624830412">Vous avez déjà acheté sur brave.com ?</translation>
@@ -1030,7 +1033,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4635094429202343515">Essayez le widget du moteur de recherche Brave</translation>
 <translation id="4809681171446727314">Utilisez un moteur de recherche indépendant et protégeant de vie privée directement depuis votre écran d'accueil.</translation>
 <translation id="7751715172931488388">Ajouter le widget</translation>
-<translation id="7285167584112910782">recherche d'action rapide Brave</translation>
+<translation id="7285167584112910782">Recherche rapide Brave</translation>
 <translation id="2326703104633309781">Utiliser l'outil de traduction Brave</translation>
 <translation id="5802752138057422257">Caractères non-ASCII détectés !</translation>
 <translation id="442709594176931966">Afficher le message original</translation>

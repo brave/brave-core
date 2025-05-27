@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
 <translation id="6302422639282249274">Administrer Brave Belønninger</translation>
-<translation id="2709516037105925701">AutoFyld</translation>
 <translation id="8617525558807213034">Automatisk udfyldning i private faner</translation>
 <translation id="8685431198160039193">Gemte oplysninger kan automatisk udfyldes i private faner</translation>
 <translation id="6583902294974160967">Support</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Udseende</translation>
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Vis ikonet for Brave Belønninger i adresselinjen</translation>
-<translation id="8495235435594442882">Aktivér værktøjslinje i bunden</translation>
+<translation id="1215433243238902715">Aktivér nederste navigationsværktøjslinje</translation>
+<translation id="1422686363939271829">Denne indstilling er deaktiveret, når den nederste adresselinjeposition er valgt</translation>
 <translation id="6587448235155023666">Dine ændringer træder i kraft næste gang du genstarter Brave</translation>
 <translation id="8701563696941209024">GENÅBN NU</translation>
 <translation id="834487290629916192">SENERE</translation>
@@ -420,9 +420,12 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8520059774736886747">Udvikler <ph name="PUBLISHER_NAME"/> for nyligt verificeret</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Side på ny fane</translation>
+<translation id="5927196110206824867">Sponsorerede baggrundsbilleder støtter Braves mission om at opbygge et uafhængigt, brugerorienteret internet. Og i modsætning til Big Tech måler vi annoncepræstationer anonymt for at beskytte dit privatliv.</translation>
+<translation id="8748471354357836070">Få mere at vide / fravalgsmuligheder</translation>
 <translation id="3171669670217312786">Baggrundsbilleder</translation>
 <translation id="8522669544471808198">Vis baggrundsbilleder</translation>
 <translation id="3870475560794762985">Vis sponsorerede billeder</translation>
+<translation id="6937724381960478525">Få mere at vide om sponsorerede billeder</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Vis topsider</translation>
 <translation id="7275773481201277457">Vis Brave Stats</translation>

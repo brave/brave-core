@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">ไม่ต้องแสดงอีก</translation>
 <translation id="4595286989346610620">ตรวจสอบรายละเอียด</translation>
 <translation id="8324318899000695659">องค์ประกอบบล็อก</translation>
+<translation id="3828310068250853121">เลือกองค์ประกอบที่คุณต้องการบล็อก</translation>
+<translation id="2577286987423083872">บล็อกองค์ประกอบ</translation>
+<translation id="3211174446914979436">จัดการตัวกรอง</translation>
+<translation id="3108584651298176909">แสดงกฎ</translation>
+<translation id="5156986655891520787">ซ่อนกฎ</translation>
+<translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">เปิดโดยใช้ที่อยู่ .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">บังคับวาง</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">เว็บไซต์นี้ร้องขอ <ph name="PART_ONE"/>ตำแหน่งที่แม่นยำ<ph name="PART_ONE_END"/>ของคุณ <ph name="PART_TWO"/>เรียนรู้เพิ่มเติม<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">เว็บไซต์นี้ร้องขอ <ph name="PART_ONE"/>ตำแหน่งที่แม่นยำ<ph name="PART_ONE_END"/>ของคุณ Brave สามารถระบุได้เพียงข้อมูล <ph name="PART_TWO"/>ตำแหน่งทั่วไป<ph name="PART_TWO_END"/> เนื่องจาก <ph name="PART_THREE"/>บริการระบุตำแหน่ง<ph name="PART_THREE_END"/> ถูกปิดใช้งาน <ph name="PART_FOUR"/>เรียนรู้เพิ่มเติม<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">ปิดทั้งหมด</translation>
-<translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="4870911314065352661">ปิดแท็บทั้งหมดหรือไม่</translation>
 <translation id="7551864359422178684">คุณเปิดแท็บทั้งหมด <ph name="NUMBER_OF_TABS"/> แท็บในหน้าต่างเบราว์เซอร์นี้</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> แท็บ</translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">คุณไม่จำเป็นต้องคลิกเพื่อรับ แต่คลิกได้ถ้าคุณสนใจ!</translation>
 <translation id="5253166205743627564">ขอบคุณที่สนับสนุน Brave Search โดยการคลิกโฆษณาแบบส่วนตัว เราไม่เหมือนบริษัทยักษ์ใหญ่ด้านเทคโนโลยี เพราะเราวัดผลโฆษณาโดยไม่เปิดเผยตัวตน เพื่อรักษาความเป็นส่วนตัวของคุณ</translation>
 <translation id="8748471354357836070">เรียนรู้เพิ่มเติม/ตัวเลือกการยกเลิกการเข้าร่วม</translation>
+<translation id="5927196110206824867">ภาพพื้นหลังที่มีสปอนเซอร์ช่วยสนับสนุนภารกิจของ Brave ในการสร้างเว็บที่เป็นอิสระและยึดผู้ใช้เป็นศูนย์กลาง และไม่เหมือนกับบริษัทยักษ์ใหญ่ทางเทคโนโลยี เราวัดประสิทธิภาพของโฆษณาโดยไม่ระบุตัวตน เพื่อคุ้มครองความเป็นส่วนตัวของคุณ</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -473,6 +479,9 @@
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="7791141927430186653">อนุญาตทวีตแบบฝังของ X (เดิมเรียกว่า Twitter)</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
+<translation id="1244912498725894944">การตั้งค่าคุกกี้บางอย่างถูกควบคุมโดย Brave Shields คุณสามารถดูได้ที่&lt;a href="/content/braveShields"&gt;ที่นี่&lt;/a&gt;</translation>
+<translation id="5352519841984162795">การตั้งค่านี้ถูกควบคุมโดย Brave Shields</translation>
+<translation id="352287031024189516">การตั้งค่านี้ถูกควบคุมโดยระบบลงชื่อเข้าใช้ของ Google</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
@@ -674,8 +683,12 @@
 <translation id="856371974127598760">เครือข่ายกระเป๋าเงิน</translation>
 <translation id="5975930666279943472">ล้าข้อมูลธุรกรรมในกระเป๋าเงินและข้อมูล Nonce</translation>
 <translation id="5693968582510626466">การล้างข้อมูลธุรกรรมอาจเป็นประโยชน์ต่อนักพัฒนาหรือเป็นประโยชน์เมื่อล้างสถานะบนเซิร์ฟเวอร์ภายใน</translation>
-<translation id="2326850911705720398">รีเซ็ตและล้างข้อมูลวอลเล็ต</translation>
+<translation id="6171369470447621882">รีเซตสถานะการซิงค์ของ Zcash</translation>
+<translation id="6705112675071480687">รีเซตความคืบหน้าในการซิงค์ Zcash สำหรับบัญชีที่ได้รับการป้องกันทั้งหมด</translation>
+<translation id="2012093487873597892">คุณแน่ใจหรือไม่ว่าต้องการรีเซตสถานะการซิงค์ของ Zcash ความคืบหน้าในการซิงค์ของบัญชีที่ได้รับการป้องกันทั้งหมดจะถูกลบ พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
+<translation id="5031551083187285762">สถานะการซิงค์ของบัญชี Zcash ของคุณถูกรีเซตแล้ว</translation>
 <translation id="9216386092464743272">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินและข้อมูล Nonce ซึ่งตัวเลือกนี้ส่วนใหญ่จะใช้โดยนักพัฒนาที่รันเซิร์ฟเวอร์ทดสอบในเครื่อง กรุณาพิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
+<translation id="2326850911705720398">รีเซ็ตและล้างข้อมูลวอลเล็ต</translation>
 <translation id="6369495274982305511">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตกระเป๋าเงินของคุณ หากไม่ได้สำรองกระเป๋าเงินของคุณไว้ จะทำให้คุณสูญเสียข้อมูลบัญชีทั้งหมด (รวมถึงเงินที่เกี่ยวข้อง) พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
 <translation id="3752403403443723332">รีเซ็ตกระเป๋าเงินของคุณแล้ว!</translation>
 <translation id="594766067816395072">รีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินของคุณแล้ว</translation>

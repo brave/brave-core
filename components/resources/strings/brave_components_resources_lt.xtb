@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Rodyti „Brave Rewards“</translation>
 <translation id="5585019845078534178">Kortelės</translation>
 <translation id="3870475560794762985">Rodyti remiamus vaizdus</translation>
+<translation id="5684562942023496754">Galite užsidirbti peržiūrėdami remiamus vaizdus.</translation>
+<translation id="6168679340384667457">Uždirbate BAT už remiamus vaizdus. Jei išjungsite remiamus vaizdus, ​​sumažės jūsų uždarbis.</translation>
+<translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="2414654907269324670">Gaunate BAT už remiamų vaizdų peržiūrą.</translation>
 <translation id="4942016616604700968">Įgalinti „Rewards“</translation>
-<translation id="5684562942023496754">Galite užsidirbti peržiūrėdami remiamus vaizdus.</translation>
 <translation id="8934374643857605034">Kadangi esate „Brave Rewards“ naudotojas, galite gauti BAT peržiūrėdami remiamus vaizdus.</translation>
 <translation id="1570714748649804013">Kadangi esate „Brave Rewards“ naudotojas, galite gauti BAT peržiūrėdami remiamus vaizdus. Jei išjungsite remiamus vaizdus, uždirbsite mažiau.</translation>
 <translation id="8998727244653964783">Prijungę savo saugojimo sąskaitą prie „Brave Rewards“ paskyros, galėsite uždirbti BAT peržiūrėdami remiamus vaizdus. Jei to dar nepadarėte, peržiūrėdami remiamus vaizdus remiate naršyklės kūrėjus.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">Skaitinių sąrašas</translation>
 <translation id="4590997608186539865">Grojaraštis</translation>
 <translation id="8027460023387054992">Pokalbių apibendrintuvas</translation>
-<translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8730621377337864115">Atlikta</translation>
 <translation id="730042046912793465">Tai yra</translation>
 <translation id="2055363275850890030">Privatus langas</translation>
@@ -1097,6 +1098,8 @@
 <translation id="8874184842967597500">Neprisijungta</translation>
 <translation id="4217695020908122747">Prijungtos paskyros</translation>
 <translation id="8497650996740651467">Galimos paskyros</translation>
+<translation id="1775188434254367931">Prisijungimai</translation>
+<translation id="1818522458013171885">Atblokuoti</translation>
 <translation id="5677928146339483299">Užblokuoti</translation>
 <translation id="3890989020011724401">Nauja paskyra</translation>
 <translation id="4612979983851181941">Naudokite šį skydelį saugiai prieigai prie „Web3“ ir visų savo kriptovaliutų išteklių.</translation>
@@ -1741,6 +1744,7 @@
 <translation id="803703704549420287">Išvalyti filtrus</translation>
 <translation id="1472675084647422956">Rodyti daugiau</translation>
 <translation id="4522570452068850558">Išsami informacija</translation>
+<translation id="4583937519241190398">Patvirtino DappRadar</translation>
 <translation id="8713438253026855351">Perėjimas prie apsaugotos paskyros</translation>
 <translation id="3526789880090101085">Apsaugoti paskyrą</translation>
 <translation id="2298396008562701154">Šiuo metu ši paskyra palaiko skaidrias operacijas, o tai reiškia, kad jos yra matomos visiems blokų grandinėje.</translation>
@@ -1832,7 +1836,9 @@
 <translation id="2376542729617592331">„Brave News“ funkcija yra palaikoma skelbimų. Jums rodomos privačios, anoniminės reklamos.
 <ph name="LINK_START"/>Sužinoti daugiau<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Įjungti „Brave“ naujienas</translation>
+<translation id="5149018766422637336">Naujienos ir RSS</translation>
 <translation id="6265592479622441247">Grįžti į <ph name="BEGIN_BOLD"/>ataskaitų sritį<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">Atrasti</translation>
 <translation id="8981973962043893066">Ieškoti svetainių, temų arba RSS srauto</translation>
 <translation id="1498364270401875204">Kanalai</translation>
 <translation id="6401776069326703655">Žiūrėti viską</translation>
@@ -2117,6 +2123,7 @@
 <translation id="8151638057146502721">Konfigūruoti</translation>
 <translation id="3282183392203936979">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Meta“ sukurtu „Llama 3.1 8B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Llama“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Alibaba Cloud“ sukurtu „Qwen 14B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Qwen“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš naudoju „DeepSeek R1“ – „DeepSeek“ sukurtą modelį, skirtą sudėtingoms samprotavimo užduotims spręsti. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Mistral“ dirbtinio intelekto sukurtu „Mixtral 8x7B“ modeliu, skirtu sudėtingesnėms užduotims atlikti. „Brave“ naudoja „Mixtral“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Instant“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Instant“ modelį savo saugioje infrastruktūroje. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Haiku“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Haiku“ modelį savo saugioje infrastruktūroje. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
@@ -2155,7 +2162,6 @@
 <translation id="6393149565874086128">Pridėti atsiliepimą</translation>
 <translation id="3521125531016408657">Atsakymas patinka</translation>
 <translation id="8202517001427388906">Atsakymas nepatinka</translation>
-<translation id="3177073390279208955">Siunčia įvertinimą, pokalbį, modelį, kalbą, versiją ir „Premium“ būseną</translation>
 <translation id="1379399209929302811">Pateikti „Brave“ DI atsiliepimus</translation>
 <translation id="8442999546461118871">Pasirinkite atsiliepimo temą</translation>
 <translation id="9018766373792005944">Apie ką jūsų atsiliepimas?</translation>
@@ -2180,6 +2186,12 @@
 <translation id="1946267518364740045">Pagrindimas...</translation>
 <translation id="4198859185714743678">Pagrindimas baigtas</translation>
 <translation id="6140948187512243695">Rodyti išsamią informaciją</translation>
+<translation id="4881695831933465202">Atverti</translation>
+<translation id="1625889395409731085">Atidaryti išorinę nuorodą?</translation>
+<translation id="4211063437291114749">„Leo“ dirbtinis intelektas nori atidaryti svetainę naujame skirtuke. Ar norite tęsti?</translation>
+<translation id="5526001300821542157">Atverti nuorodas daugiau neklausiant</translation>
+<translation id="1243966363662220847">Atsiliepimai</translation>
+<translation id="7417895556119762861">Kai vertinate atsakymus, „Brave“ renka informaciją apie įvertinimą, pokalbį, modelį, kalbą, versiją ir aukščiausios kokybės prenumeratos būseną. Tai daroma siekiant patobulinti „Leo“. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Siųsti „Leo“ žinutę</translation>
 <translation id="8650874793377330048">Nustokite atsakinėti</translation>
 <translation id="8712637175834984815">Supratau</translation>
@@ -2207,6 +2219,7 @@
 <translation id="2836330653441111204">Greičio ir intelekto pusiausvyra</translation>
 <translation id="6695329447007213917">Bendros paskirties pokalbiai, kodavimas ir dar daugiau</translation>
 <translation id="5051668914970329839">Bendras vizualinio apdorojimo palaikymas</translation>
+<translation id="7226508434216060960">Argumentavimo modelis</translation>
 <translation id="3965507912994218570">"Leo" nustatymai</translation>
 <translation id="1037324977127422019">Labas, aš Leo!</translation>
 <translation id="8930348081963284873">DI pagrįstas išmanusis asistentas, integruotas tiesiogiai į „Brave“.</translation>
@@ -2255,21 +2268,38 @@
 <translation id="8370801182970639038">Automatinis (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Įjungtos paieškos sistemos</translation>
 <translation id="5355776323718420036">Paslėpti populiariausias svetaines</translation>
+<translation id="9173319813356700250">NAUJIENOS</translation>
 <translation id="6543799171249004861">Nuotraukos autorius <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">APDOVANOJIMAI</translation>
 <translation id="5966055668402779222">Užduokite klausimą „Brave“ paieškoje</translation>
 <translation id="6851426306697017546">Rodyti laikrodį</translation>
 <translation id="4844370919312937270">Rodyti paieškos valdiklį naujose kortelėse</translation>
 <translation id="5009354496127441090">Rodyti populiariausias svetaines</translation>
+<translation id="3960619311638643872">„Brave“ VPN</translation>
 <translation id="4784802981241664605">STATISTIKA</translation>
+<translation id="712731581368828482">Užšifruoti vaizdo skambučiai su „Brave Talk“.</translation>
+<translation id="2671474274417808910">Privatūs ir saugūs skambučiai</translation>
+<translation id="2100665198270190500">TALK</translation>
 <translation id="4290791698375397492">Viršutinė svetainė pašalinta</translation>
 <translation id="1436784010935106834">Pašalinta</translation>
 <translation id="9030215177866748410">Pagrindinės svetainės siūlomos pagal tai, kurias svetaines dažnai lankote.</translation>
+<translation id="8425213833346101688">Keisti</translation>
+<translation id="755045397420611731">Didesnis privatumas &amp; saugumas internete</translation>
+<translation id="4520128772974831415">Paslėpkite savo IP &amp; pakeiskite savo buvimo vietą</translation>
+<translation id="6819278685469225453">Apsaugokite visas įrenginio programas</translation>
+<translation id="8422279921836245017">Jau įsigijote?</translation>
+<translation id="8703188411226330709">Pradėti nemokamą bandomąją versiją</translation>
+<translation id="8814357473522731680">Teikia</translation>
+<translation id="7143207342074048698">Jungiama</translation>
+<translation id="1202549130170287307">Atsijungiama</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">Valdikliai</translation>
 <translation id="6303294677342628402">Skydai</translation>
 <translation id="8458987127502506209">Įgalinti „Brave“ skydus</translation>
-<translation id="7509914170164691086">Skydai įjungti <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Skydai yra išjungti <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Jei atrodo, kad ši svetainė neveikia, pabandykite išjungti skydus.
- <ph name="LINK_BEFORE"/>Pastaba: tai gali sumažinti „Brave“ privatumo apsaugą.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Skydai yra ĮJUNGTI<ph name="STATUS_AFTER"/> šiam svečiui: <ph name="HOST"/></translation>
+<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>Skydai yra IŠJUNGTI<ph name="STATUS_AFTER"/> šiam svečiui: <ph name="HOST"/></translation>
+<translation id="5623354834493649144">Jei svetainė veikia netinkamai, pabandykite išjungti skydus.
+   <ph name="NOTE_BEFORE"/>Pastaba: tai gali sumažinti „Brave“ privatumo apsaugos funkcijas.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">Sekikliai, reklamos ir kt. užblokuoti <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Neapsaugota „Brave“ skydais <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
@@ -2352,15 +2382,12 @@
 <translation id="958268166261124668">„Brave“ VPN: prisijungta</translation>
 <translation id="6021669293402055982">„Brave“ VPN: neprisijungta</translation>
 <translation id="3541307549916475335">„Brave“ VPN skydelio UI</translation>
-<translation id="7143207342074048698">Jungiama</translation>
-<translation id="1202549130170287307">Atsijungiama</translation>
 <translation id="2325196879156848326">Ryšio užmegzti nepavyko</translation>
 <translation id="745054660363064771">Nepavyko prisijungti prie serverio</translation>
 <translation id="3936826714240735937">Pasirinkite kitą serverį</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>nepavyko prisijungti prie <ph name="REGION_NAME"/>serverio. Bandykite dar kartą arba pasirinkite kitą.</translation>
 <translation id="5753795690521538679">Pradėkite nemokamą 7 dienų bandomąją versiją</translation>
 <translation id="3357036723290257445">Jau įsigijote „Brave“ VPN?</translation>
-<translation id="8814357473522731680">Teikia</translation>
 <translation id="8652175077544655965">Užverti nuostatas</translation>
 <translation id="5908163815855240493">Grįžti į pagrindinį</translation>
 <translation id="7805768142964895445">Būsena</translation>
@@ -2368,8 +2395,6 @@
 <translation id="8421945428836418371">Automatiškai prisijungti iš naujo</translation>
 <translation id="434523916398030617">Susisiekti su techninės pagalbos tarnyba</translation>
 <translation id="1116694919640316211">Apie</translation>
-<translation id="755045397420611731">Didesnis privatumas &amp; saugumas internete</translation>
-<translation id="4520128772974831415">Paslėpkite savo IP &amp; pakeiskite savo buvimo vietą</translation>
 <translation id="2044418816479192294">Šimtai serverių visame pasaulyje</translation>
 <translation id="7410504850864021600">Žaibiškas interneto ryšio greitis</translation>
 <translation id="2422309687188612485">Apsaugokite iki 10 įrenginių su vienu planu</translation>
@@ -2443,11 +2468,7 @@ Būkite prisijungę!</translation>
 <translation id="8048263175525832621">„Brave“ VPN: atsijungta</translation>
 <translation id="1498770726476841108">Tvarkyti paskyrą</translation>
 <translation id="6825718953004242472">Pašalinti piktogramą</translation>
-<translation id="6819278685469225453">Apsaugokite visas įrenginio programas</translation>
-<translation id="3960619311638643872">„Brave“ VPN</translation>
 <translation id="4295077644587784828">Papildomas privatumas &amp; saugumas internete.</translation>
-<translation id="8425213833346101688">Keisti</translation>
-<translation id="8703188411226330709">Pradėti nemokamą bandomąją versiją</translation>
 <translation id="3287942014983548982">Atidaryti čia</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, šiuo metu atviras,
     paspauskite „Tab“, tada „Enter“, kad pereitumėte į atidarytą skirtuką.</translation>

@@ -52,6 +52,12 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4450893287417543264">Znovu neukazovat</translation>
 <translation id="4595286989346610620">Zkontrolujte podrobnosti</translation>
 <translation id="8324318899000695659">Blokovat prvky</translation>
+<translation id="3828310068250853121">Vyberte prvek, který chcete blokovat</translation>
+<translation id="2577286987423083872">Blokovat prvky</translation>
+<translation id="3211174446914979436">Spravovat filtry</translation>
+<translation id="3108584651298176909">Zobrazit pravidla</translation>
+<translation id="5156986655891520787">Skrýt pravidla</translation>
+<translation id="7658239707568436148">Zrušit</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Otevřít pomocí adresy .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vynucené vložení</translation>
@@ -93,7 +99,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8117247596084706514">Tato stránka si vyžádala vaši <ph name="PART_ONE"/>přesnou polohu<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Zjistit více<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Tato stránka si vyžádala vaši <ph name="PART_ONE"/>přesnou polohu<ph name="PART_ONE_END"/>. Brave bude pouze schopen poskytnout<ph name="PART_TWO"/>obecná data o poloze,<ph name="PART_TWO_END"/>, jelikož jsou <ph name="PART_THREE"/>Služby k určení polohy<ph name="PART_THREE_END"/> deaktivovány. <ph name="PART_FOUR"/>Zjistit více<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Zavřít vše</translation>
-<translation id="7658239707568436148">Zrušit</translation>
 <translation id="4870911314065352661">Chcete zavřít všechny karty?</translation>
 <translation id="7551864359422178684">V tomto okně prohlížeče máte otevřeny karty: <ph name="NUMBER_OF_TABS"/>.</translation>
 <translation id="2571596981920752023">Počet karet: <ph name="NUMBER_OF_TABS"/></translation>
@@ -133,6 +138,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3447730462826640312">Abyste vydělali, nemusíte na nic klikat, ale pokud vás to zajímá, určitě klikněte!</translation>
 <translation id="5253166205743627564">Děkujeme, že kliknutím na soukromou reklamu podporujete vyhledávač Brave. Na rozdíl od velkých technologických společností měříme výkon reklam anonymně, abychom ochránili vaše soukromí.</translation>
 <translation id="8748471354357836070">Další informace / možnosti odhlášení</translation>
+<translation id="5927196110206824867">Sponzorované obrázky na pozadí podporují poslání společnosti Brave budovat nezávislý web zaměřený na uživatele. Na rozdíl od velkých technologických společností měříme výkon reklamy anonymně, abychom zachovali vaše soukromí.</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Přispějte anonymními údaji o vyhledávání a prohlížení ke zdokonalení služby Brave Search.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
@@ -473,6 +479,9 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="7791141927430186653">Povolit X (dříve Twitter) vložené tweety</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
+<translation id="1244912498725894944">Některá nastavení souborů cookie jsou řízena službou Štíty Brave. Můžete si je prohlédnout &lt;a href="/content/braveShields"&gt;zde&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Toto nastavení ovládá služba Štíty Brave.</translation>
+<translation id="352287031024189516">Toto nastavení ovládá Přihlášení Google.</translation>
 <translation id="8792121506918889955">Pravidla WebRTC pro zacházení s IP</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
@@ -674,8 +683,12 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="856371974127598760">Sítě k dispozici</translation>
 <translation id="5975930666279943472">Vymazat transakce peněženky a informace o nonce</translation>
 <translation id="5693968582510626466">Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru</translation>
-<translation id="2326850911705720398">Resetovat a odstranit data peněženky</translation>
+<translation id="6171369470447621882">Reset synchronizace Zcash</translation>
+<translation id="6705112675071480687">Resetuje průběh synchronizace Zcash pro všechny účty chráněné štíty.</translation>
+<translation id="2012093487873597892">Jste si jisti, že chcete resetovat stav synchronizace Zcash? Průběh synchronizace všech účtů chráněných štíty bude zrušen. Pro potvrzení napište"<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="5031551083187285762">Proběhlo resetování stavu synchronizace pro účty Zcash.</translation>
 <translation id="9216386092464743272">Určitě chcete obnovit všechny transakce peněženky a informace o nonce? Tuto možnost většinou používají vývojáři provozující místní testovací server. Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="2326850911705720398">Resetovat a odstranit data peněženky</translation>
 <translation id="6369495274982305511">Určitě chcete obnovit peněženku? Pokud vaše peněženka není zálohovaná, obnovení způsobí ztrátu všech údajů o účtu (včetně všech přidružených prostředků). Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="3752403403443723332">Vaše peněženka byla resetována.</translation>
 <translation id="594766067816395072">Informace o transakcích vaší peněženky byly resetovány.</translation>
