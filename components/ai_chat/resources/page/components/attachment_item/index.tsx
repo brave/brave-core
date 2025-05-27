@@ -14,7 +14,6 @@ import * as Mojom from '../../../common/mojom'
 
 // Styles
 import styles from './style.module.scss'
-import classnames from '$web-common/classnames'
 
 type Props = {
   icon: React.ReactNode
@@ -123,7 +122,9 @@ export function AttachmentPageItem(props: { title: string, url: string, remove?:
   const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
 
   return <AttachmentItem
-    icon={<img src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`} />}
+    icon={<div className={styles.favicon}>
+      <img src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`} />
+    </div>}
     title={props.title}
     subtitle={sansSchemeUrl}
     remove={props.remove} />

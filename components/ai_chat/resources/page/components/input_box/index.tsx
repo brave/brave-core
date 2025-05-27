@@ -139,15 +139,14 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-           {props.context.associatedContentInfo &&
-            props.context.shouldSendPageContents &&
-            !props.conversationStarted && (
+           {props.context.shouldSendPageContents &&
+            !props.conversationStarted && props.context.associatedContentInfo.map((content) => (
               <AttachmentPageItem
-                title={props.context.associatedContentInfo.title}
-                url={props.context.associatedContentInfo.url.url}
+                title={content.title}
+                url={content.url.url}
                 remove={() => props.context.updateShouldSendPageContents(false)}
               />
-            )}
+            ))}
           {props.context.isUploadingFiles && (
             <AttachmentSpinnerItem title={getLocale('uploadingFileLabel')} />
           )}
