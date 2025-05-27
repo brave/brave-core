@@ -29,7 +29,7 @@ public class NTPBackgroundImagesBridge {
     private final ObserverList<NTPBackgroundImageServiceObserver> mObservers =
             new ObserverList<NTPBackgroundImageServiceObserver>();
     private static final List<TopSite> sTopSites = new ArrayList<>();
-    private static NewTabPageListener mNewTabPageListener;
+    private static NewTabPageListener sNewTabPageListener;
 
     public abstract static class NTPBackgroundImageServiceObserver {
         public abstract void onUpdated();
@@ -131,7 +131,7 @@ public class NTPBackgroundImagesBridge {
     }
 
     public void setNewTabPageListener(NewTabPageListener newTabPageListener) {
-        mNewTabPageListener = newTabPageListener;
+        sNewTabPageListener = newTabPageListener;
     }
 
     @CalledByNative
@@ -142,7 +142,7 @@ public class NTPBackgroundImagesBridge {
 
     @CalledByNative
     public static void topSitesLoaded() {
-        mNewTabPageListener.updateTopSites(sTopSites);
+        sNewTabPageListener.updateTopSites(sTopSites);
     }
 
     @CalledByNative
