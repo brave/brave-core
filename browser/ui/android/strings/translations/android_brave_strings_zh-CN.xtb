@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="6302422639282249274">管理 Brave 奖励</translation>
-<translation id="2709516037105925701">自动填充</translation>
 <translation id="8617525558807213034">无痕式标签页中的自动填充</translation>
 <translation id="8685431198160039193">保存的信息可自动填充到无痕式标签页中</translation>
 <translation id="6583902294974160967">支持</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">外观</translation>
 <translation id="9040069796107003510">Brave 奖励图标</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
-<translation id="8495235435594442882">启用底部工具栏</translation>
+<translation id="1215433243238902715">启用底部导航工具栏</translation>
+<translation id="1422686363939271829">选择底部地址栏位置时，此设置将会被禁用</translation>
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
 <translation id="8701563696941209024">立即重新启动</translation>
 <translation id="834487290629916192">后来</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">创建者 <ph name="PUBLISHER_NAME"/> 最近通过验证</translation>
 <translation id="1486343603936278248">代币</translation>
 <translation id="7781069478569868053">新标签页</translation>
+<translation id="5927196110206824867">赞助背景图片支持 Brave 实现构建独立与用户优先网络的使命。不同于大型科技公司，我们通过匿名方式衡量广告效果，以保护您的隐私。</translation>
+<translation id="8748471354357836070">了解更多 / 退出选择</translation>
 <translation id="3171669670217312786">背景圖片</translation>
 <translation id="8522669544471808198">显示背景图片</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
+<translation id="6937724381960478525">进一步了解赞助图片</translation>
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">显示热门网站</translation>
 <translation id="7275773481201277457">显示 Brave 统计信息</translation>

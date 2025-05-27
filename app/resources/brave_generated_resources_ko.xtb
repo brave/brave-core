@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="4595286989346610620">세부정보 확인</translation>
 <translation id="8324318899000695659">요소 차단</translation>
+<translation id="3828310068250853121">차단할 요소 선택</translation>
+<translation id="2577286987423083872">요소 차단</translation>
+<translation id="3211174446914979436">필터 관리</translation>
+<translation id="3108584651298176909">규칙 표시</translation>
+<translation id="5156986655891520787">규칙 숨기기</translation>
+<translation id="7658239707568436148">취소</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion 주소를 사용하여 열기: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">강제 붙여넣기</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">이 사이트가 <ph name="PART_ONE"/>정밀한 위치 정보<ph name="PART_ONE_END"/>를 요청했습니다. <ph name="PART_TWO"/>자세히 알아보기<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">이 사이트가 <ph name="PART_ONE"/>정밀한 위치 정보<ph name="PART_ONE_END"/>를 요청했습니다. 지금은 Brave가 <ph name="PART_TWO"/>대략적인 위치<ph name="PART_TWO_END"/>만 제공할 수 있는데, 이유는 <ph name="PART_THREE"/>위치 서비스<ph name="PART_THREE_END"/>가 활성화되어 있기 때문입니다. <ph name="PART_FOUR"/>자세히 알아보기<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">모두 닫기</translation>
-<translation id="7658239707568436148">취소</translation>
 <translation id="4870911314065352661">모든 탭을 닫으시겠습니까?</translation>
 <translation id="7551864359422178684">이 브라우저 창에 탭 <ph name="NUMBER_OF_TABS"/>개가 열려 있습니다.</translation>
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">적립하기 위해 클릭할 필요는 없지만 관심이 있다면 클릭해보세요!</translation>
 <translation id="5253166205743627564">프라이빗 광고를 클릭하여 Brave 검색을 지원해 주셔서 감사합니다. 빅테크 기업들과 달리 당사는 사용자의 개인정보를 보호하기 위해 광고 실적을 익명으로 평가합니다.</translation>
 <translation id="8748471354357836070">자세히 알아보기 / 옵트아웃 옵션</translation>
+<translation id="5927196110206824867">스폰서 배경 이미지는 독립적인 사용자 중심 웹을 구축하려는 Brave의 사명을 뒷받침합니다. 또한 빅 테크와 달리 광고 성과를 익명으로 측정하여 사용자의 개인 정보를 보호합니다.</translation>
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
@@ -473,6 +479,9 @@
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="7791141927430186653">X(구 Twitter) 임베디드 트윗 허용</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
+<translation id="1244912498725894944">일부 쿠키 설정은 Brave 쉴드에서 컨트롤됩니다. 해당 항목을 &lt;a href="/content/braveShields"&gt;여기&lt;/a&gt;에서 확인하세요.</translation>
+<translation id="5352519841984162795">Brave 쉴드에서 컨트롤하는 설정입니다.</translation>
+<translation id="352287031024189516">구글 로그인에서 컨트롤하는 설정입니다.</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
 <translation id="8798099450830957504">기본값</translation>
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
@@ -674,8 +683,12 @@
 <translation id="856371974127598760">월렛 네트워크</translation>
 <translation id="5975930666279943472">월렛 트랜잭션 및 임시 정보 지우기</translation>
 <translation id="5693968582510626466">트랜잭션 지우기는 개발자가 로컬 서버에서 상태를 지울 때 유용합니다.</translation>
-<translation id="2326850911705720398">초기화하고 월렛 데이터 지우기</translation>
+<translation id="6171369470447621882">Zcash 동기화 상태 초기화</translation>
+<translation id="6705112675071480687">모든 차폐된 계정의 Zcash 동기화 진행률</translation>
+<translation id="2012093487873597892">Zcash 동기화 상태를 초기화하시겠습니까? 모든 차폐된 계정의 동기화 진행률이 중단됩니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"을(를) 입력하세요</translation>
+<translation id="5031551083187285762">Zcash 계정의 동기화 상태가 초기화되었습니다.</translation>
 <translation id="9216386092464743272">월렛 트랜잭션 및 임시 정보를 초기화하시겠습니까? 이 옵션은 주로 로컬 테스트 서버를 운용하는 개발자가 사용합니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
+<translation id="2326850911705720398">초기화하고 월렛 데이터 지우기</translation>
 <translation id="6369495274982305511">월렛을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
 <translation id="3752403403443723332">월렛이 초기화되었습니다.</translation>
 <translation id="594766067816395072">월렛 트랜잭션 정보가 초기화되었습니다.</translation>

@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
 <translation id="6302422639282249274">จัดการ Brave Rewards</translation>
-<translation id="2709516037105925701">ป้อนอัตโนมัติ</translation>
 <translation id="8617525558807213034">ป้อนอัตโนมัติในแท็บแบบส่วนตัว</translation>
 <translation id="8685431198160039193">ข้อมูลที่บันทึกไว้สามารถป้อนอัตโนมัติได้ในแท็บแบบส่วนตัว</translation>
 <translation id="6583902294974160967">การสนับสนุน</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
 <translation id="9040069796107003510">ไอคอน Brave Rewards</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
-<translation id="8495235435594442882">เปิดใช้งานแถบเครื่องมือด้านล่าง</translation>
+<translation id="1215433243238902715">เปิดใช้งานแถบเครื่องมือนำทางด้านล่าง</translation>
+<translation id="1422686363939271829">การตั้งค่านี้จะไม่สามารถใช้งานได้เมื่อเลือกตำแหน่งแถบที่อยู่ไว้ด้านล่าง</translation>
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
 <translation id="8701563696941209024">เปิดใช้งานใหม่เลย</translation>
 <translation id="834487290629916192">ภายหลัง</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">ผู้สร้าง <ph name="PUBLISHER_NAME"/> เพิ่งได้รับการยืนยัน</translation>
 <translation id="1486343603936278248">โทเคน</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
+<translation id="5927196110206824867">ภาพพื้นหลังที่มีสปอนเซอร์ช่วยสนับสนุนภารกิจของ Brave ในการสร้างเว็บที่เป็นอิสระและยึดผู้ใช้เป็นศูนย์กลาง และไม่เหมือนกับบริษัทยักษ์ใหญ่ทางเทคโนโลยี เราวัดประสิทธิภาพของโฆษณาโดยไม่ระบุตัวตน เพื่อคุ้มครองความเป็นส่วนตัวของคุณ</translation>
+<translation id="8748471354357836070">เรียนรู้เพิ่มเติม/ตัวเลือกการยกเลิกการเข้าร่วม</translation>
 <translation id="3171669670217312786">ภาพพื้นหลัง</translation>
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
 <translation id="3870475560794762985">แสดงรูปภาพที่มีผู้สนับสนุน</translation>
+<translation id="6937724381960478525">เรียนรู้เพิ่มเติมเกี่ยวกับภาพที่มีสปอนเซอร์</translation>
 <translation id="8793108040181436796">วิดเจ็ต</translation>
 <translation id="8643377320501056697">แสดงเว็บไซต์ยอดนิยม</translation>
 <translation id="7275773481201277457">แสดงสถิติ Brave</translation>

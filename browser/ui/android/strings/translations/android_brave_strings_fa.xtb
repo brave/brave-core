@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
 <translation id="6302422639282249274">مدیریت پاداش‌های Brave</translation>
-<translation id="2709516037105925701">تکمیل خودکار</translation>
 <translation id="8617525558807213034">تکمیل خودکار در زبانه‌های خصوصی</translation>
 <translation id="8685431198160039193">اطلاعات ذخیره‌شده را می‌توان به‌صورت خودکار در زبانه‌های خصوصی پر کرد</translation>
 <translation id="6583902294974160967">پشتیبانی</translation>
@@ -233,7 +232,8 @@
 <translation id="2433507940547922241">شکل ظاهری</translation>
 <translation id="9040069796107003510">نماد پاداش‌های Brave</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
-<translation id="8495235435594442882">فعال کردن نوار ابزار پایین</translation>
+<translation id="1215433243238902715">فعال‌سازی نوار ابزار پیمایش پایین</translation>
+<translation id="1422686363939271829">هنگامی که نوار نشانی سمت پایین انتخاب شده باشد، این تنظیمات غیرفعال می‌شود</translation>
 <translation id="6587448235155023666">دفعه بعدی که Brave را راه‌اندازی می‌کنید، تغییرات شما اجرایی می‌شوند.</translation>
 <translation id="8701563696941209024">اکنون مجدداً راه‌اندازی شود</translation>
 <translation id="834487290629916192">بعداً</translation>
@@ -422,9 +422,12 @@
 <translation id="8520059774736886747">سازنده <ph name="PUBLISHER_NAME"/> اخیراً تأیید شده است</translation>
 <translation id="1486343603936278248">توکن</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
+<translation id="5927196110206824867">تصاویر پس‌زمینه دارای حامی مالی از مأموریت Brave برای ساخت یک وب مستقل با اولویت کاربر پشتیبانی می‌کند. برخلاف شرکت‌های بزرگ فناوری، ما عملکرد تبلیغات را به‌صورت ناشناس اندازه‌گیری می‌کنیم تا حریم خصوصی شما حفظ شود.</translation>
+<translation id="8748471354357836070">بیشتر بدانید/گزینه‌های انصراف</translation>
 <translation id="3171669670217312786">تصاویر پس‌زمینه</translation>
 <translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
+<translation id="6937724381960478525">درباره تصاویر دارای حامی مالی بیشتر بدانید</translation>
 <translation id="8793108040181436796">ویجت‌ها</translation>
 <translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="7275773481201277457">نمایش آمار Brave</translation>

@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="4595286989346610620">詳細を確認する</translation>
 <translation id="8324318899000695659">要素をブロック</translation>
+<translation id="3828310068250853121">ブロックする要素を選択</translation>
+<translation id="2577286987423083872">要素をブロック</translation>
+<translation id="3211174446914979436">フィルターを管理</translation>
+<translation id="3108584651298176909">ルールを表示</translation>
+<translation id="5156986655891520787">ルールを非表示</translation>
+<translation id="7658239707568436148">Cancel</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onionアドレスで開く: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制ペースト</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">このサイトはあなたの<ph name="PART_ONE"/>正確な位置情報<ph name="PART_ONE_END"/>をリクエストしています。<ph name="PART_TWO"/>詳細はこちら<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">このサイトはあなたの<ph name="PART_ONE"/>正確な位置情報<ph name="PART_ONE_END"/>をリクエストしています。<ph name="PART_THREE"/>位置情報サービス<ph name="PART_THREE_END"/>が無効化されているため、Braveからは<ph name="PART_TWO"/>一般的な位置情報<ph name="PART_TWO_END"/>データのみ提供されます。<ph name="PART_FOUR"/>詳細はこちら<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">すべてを閉じる</translation>
-<translation id="7658239707568436148">Cancel</translation>
 <translation id="4870911314065352661">すべてのタブを閉じますか？</translation>
 <translation id="7551864359422178684">このブラウザウィンドウで<ph name="NUMBER_OF_TABS"/>個のタブを開いています。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">報酬獲得のためにクリックする必要はありません。もちろん、興味のある広告はクリックしてください！</translation>
 <translation id="5253166205743627564">プライベート広告をクリックしてBraveサーチをサポートしてくださり、ありがとうございます。私たちはビッグテックとは異なり、あなたのプライバシーを保護するために匿名で広告パフォーマンスを測定しています。</translation>
 <translation id="8748471354357836070">詳細 / オプトアウトの選択</translation>
+<translation id="5927196110206824867">スポンサー画像は、ユーザーファーストの独立したウェブを構築するというBraveのミッションをサポートしています。また、ビッグテックとは異なり、あなたのプライバシーを守るために匿名で広告パフォーマンスを測定します。</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
@@ -473,6 +479,9 @@
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="7791141927430186653">X (旧Twitter) の埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
+<translation id="1244912498725894944">一部のクッキー設定はBrave Shieldsによって管理されています。 &lt;a href="/content/braveShields"&gt;こちら&lt;/a&gt;をご覧ください。</translation>
+<translation id="5352519841984162795">この設定はBrave Shieldsによって管理されています。</translation>
+<translation id="352287031024189516">この設定はGoogleサインインで管理されています。</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
 <translation id="8798099450830957504">既定</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
@@ -674,8 +683,12 @@
 <translation id="856371974127598760">ウォレットネットワーク</translation>
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、ウォレットを使用する開発時や、ローカルサーバーの状態をクリアするときなどに使用します。</translation>
-<translation id="2326850911705720398">ウォレットのデータをリセット＆クリア</translation>
+<translation id="6171369470447621882">Zcashの同期状態をリセット</translation>
+<translation id="6705112675071480687">シールドされたすべてのアカウントのZcash同期進捗をリセットします</translation>
+<translation id="2012093487873597892">本当に Zcash の同期状態をリセットしますか？すべてのシールドされたアカウントの同期の進行状況は削除されます。<ph name="CONFIRMATION_PHRASE"/> と入力して確認してください。</translation>
+<translation id="5031551083187285762">Zcash アカウントの同期状態がリセットされました。</translation>
 <translation id="9216386092464743272">ウォレットのトランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認して実行するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="2326850911705720398">ウォレットのデータをリセット＆クリア</translation>
 <translation id="6369495274982305511">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、（紐づく資金を含む）すべてのアカウントデータ が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="3752403403443723332">ウォレットをリセットしました。</translation>
 <translation id="594766067816395072">ウォレットのトランザクション情報をリセットしました。</translation>

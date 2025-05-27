@@ -52,6 +52,12 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="4595286989346610620">Periksa detailnya</translation>
 <translation id="8324318899000695659">Blokir elemen</translation>
+<translation id="3828310068250853121">Pilih elemen yang ingin Anda blokir</translation>
+<translation id="2577286987423083872">Blokir Elemen</translation>
+<translation id="3211174446914979436">Kelola filter</translation>
+<translation id="3108584651298176909">Tampilkan aturan</translation>
+<translation id="5156986655891520787">Sembunyikan aturan</translation>
+<translation id="7658239707568436148">Batal</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buka menggunakan alamat .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tempelkan Paksa</translation>
@@ -93,7 +99,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8117247596084706514">Situs ini telah meminta <ph name="PART_ONE"/>lokasi tepat<ph name="PART_ONE_END"/> Anda. <ph name="PART_TWO"/>Pelajari lebih lanjut<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Situs ini telah meminta <ph name="PART_ONE"/>lokasi tepat<ph name="PART_ONE_END"/> Anda. Brave hanya akan mampu menyediakan data <ph name="PART_TWO"/>lokasi umum<ph name="PART_TWO_END"/> karena <ph name="PART_THREE"/>Layanan Lokasi<ph name="PART_THREE_END"/> sedang dinonaktifkan. <ph name="PART_FOUR"/>Pelajari lebih lanjut<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Tutup semua</translation>
-<translation id="7658239707568436148">Batal</translation>
 <translation id="4870911314065352661">Tutup semua tab?</translation>
 <translation id="7551864359422178684">Anda memiliki <ph name="NUMBER_OF_TABS"/>tab terbuka di jendela peramban ini.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
@@ -133,6 +138,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3447730462826640312">Anda tidak perlu mengeklik untuk memperoleh pendapatan, namun silakan klik jika Anda tertarik!</translation>
 <translation id="5253166205743627564">Terima kasih telah mendukung Penelusuran Brave dengan mengeklik iklan pribadi. Tidak seperti Big Tech umumnya, kami mengukur kinerja iklan secara anonim untuk menjaga privasi Anda.</translation>
 <translation id="8748471354357836070">Pelajari selengkapnya/pilihan penonaktifan</translation>
+<translation id="5927196110206824867">Gambar latar belakang bersponsor mendukung misi Brave untuk membangun Web yang independen dan memprioritaskan pengguna. Dan tidak seperti Big Tech, kami mengukur kinerja iklan secara anonim demi menjaga privasi Anda.</translation>
 <translation id="4174337572777167894">Proyek Penemuan Web</translation>
 <translation id="8659271182272561965">Meyumbangkan sejumlah penelusuran anonim &amp; penjelajahan data untuk memperbaiki Brave Search.</translation>
 <translation id="1516554614404600536">Tips Brave</translation>
@@ -473,6 +479,9 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
 <translation id="7791141927430186653">Izinkan cuitan tersemat X (sebelumnya Twitter)</translation>
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
+<translation id="1244912498725894944">Beberapa pengaturan cookie dikendalikan oleh Brave Perisai. Anda bisa melihatnya &lt;a href="/content/braveShields"&gt;di sini&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Pengaturan ini dikendalikan oleh Brave Perisai.</translation>
+<translation id="352287031024189516">Pengaturan ini dikendalikan oleh Google Login.</translation>
 <translation id="8792121506918889955">Kebijakan penanganan IP WebRTC</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Antarmuka pribadi dan umum baku</translation>
@@ -674,8 +683,12 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="856371974127598760">Jaringan Dompet</translation>
 <translation id="5975930666279943472">Hapus transaksi dompet dan informasi saat ini</translation>
 <translation id="5693968582510626466">Menghapus transaksi dapat berguna bagi pengembang atau saat menghapus kondisi pada peladen lokal</translation>
-<translation id="2326850911705720398">Atur ulang dan hapus data dompet</translation>
+<translation id="6171369470447621882">Reset status sinkronisasi Zcash</translation>
+<translation id="6705112675071480687">Reset progres sinkronisasi Zcash untuk semua akun terlindung</translation>
+<translation id="2012093487873597892">Anda yakin mau mereset status sinkronisasi Zcash? Progres sinkronisasi untuk semua akun terlindung akan dibatalkan. Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
+<translation id="5031551083187285762">Status sinkronisasi akun Zcash Anda sudah direset.</translation>
 <translation id="9216386092464743272">Anda yakin ingin mengatur ulang semua informasi transaksi dompet dan informasi Anda saat ini? Pilihan ini biasanya digunakan para pengembang yang menjalankan peladen percobaan lokal. Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
+<translation id="2326850911705720398">Atur ulang dan hapus data dompet</translation>
 <translation id="6369495274982305511">Anda yakin ingin mengatur ulang dompet Anda? Jika dompet Anda tidak dicadangkan, mengatur ulang akan menyebabkan Anda kehilangan semua data akun (termasuk dana terkait). Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
 <translation id="3752403403443723332">Dompet Anda telah diatur ulang</translation>
 <translation id="594766067816395072">Informasi transaksi dompet Anda telah diatur ulang.</translation>

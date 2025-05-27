@@ -52,6 +52,12 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Visa inte igen.</translation>
 <translation id="4595286989346610620">Kontrollera detaljer</translation>
 <translation id="8324318899000695659">Blockera element</translation>
+<translation id="3828310068250853121">Välj det element som du vill blockera</translation>
+<translation id="2577286987423083872">Blockera element</translation>
+<translation id="3211174446914979436">Hantera filter</translation>
+<translation id="3108584651298176909">Visa regler</translation>
+<translation id="5156986655891520787">Dölj regler</translation>
+<translation id="7658239707568436148">Avbryt</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Öppna med hjälp av .onion-adress: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tvinga inklistring</translation>
@@ -93,7 +99,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Den här webbplatsen har begärt att få veta din <ph name="PART_ONE"/>exakta plats<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Läs mer<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Den här webbplatsen har begärt att få veta din <ph name="PART_ONE"/>exakta plats<ph name="PART_ONE_END"/>. Brave kan endast ange uppgifter om <ph name="PART_TWO"/>ungefärlig plats<ph name="PART_TWO_END"/> på grund av att <ph name="PART_THREE"/>platstjänster<ph name="PART_THREE_END"/> är inaktiverade. <ph name="PART_FOUR"/>Läs mer<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Stäng alla</translation>
-<translation id="7658239707568436148">Avbryt</translation>
 <translation id="4870911314065352661">Stäng alla flikar?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> flikar öppna i webbläsarfönstret.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> flikar</translation>
@@ -133,6 +138,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Du behöver inte klicka för att tjäna, men klicka om du är intresserad!</translation>
 <translation id="5253166205743627564">Tack för att du stöder Brave Sökning genom att klicka på en privat annons. Till skillnad från Big Tech mäter vi annonsprestanda anonymt för att bevara din integritet.</translation>
 <translation id="8748471354357836070">Läs mer / välj bort alternativ</translation>
+<translation id="5927196110206824867">Sponsrade bakgrundsbilder stöder Braves uppdrag att bygga en oberoende, användarvänlig webb. Och till skillnad från de stora teknikföretagen mäter vi annonsprestanda anonymt för att bevara din integritet.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Bidra med anonym sökning &amp; surfdata för att förfina Brave Search.</translation>
 <translation id="1516554614404600536">Brave-knappbeskrivning</translation>
@@ -473,6 +479,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="7791141927430186653">Tillåt inbäddade tweets från X (tidigare Twitter)</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
+<translation id="1244912498725894944">Vissa cookie-inställningar styrs av Brave Skydd. Du kan se dem &lt;a href="/content/braveShields"&gt;här&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Denna inställning styrs av Brave Skydd.</translation>
+<translation id="352287031024189516">Den här inställningen styrs av Google Sign-in.</translation>
 <translation id="8792121506918889955">WebRTC IP-hanteringspolicy</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
@@ -674,8 +683,12 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="856371974127598760">Plånboksnätverk</translation>
 <translation id="5975930666279943472">Rensa plånbokstransaktion och nonce-information</translation>
 <translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
-<translation id="2326850911705720398">Återställ och rensa plånboksdata</translation>
+<translation id="6171369470447621882">Återställ Zcash synkningstillstånd</translation>
+<translation id="6705112675071480687">Återställer Zcash-synkroniseringsförloppet för alla skyddade konton</translation>
+<translation id="2012093487873597892">Är du säker på att du vill återställa Zcash synkroniseringsstatus? Synkroniseringsförloppet för alla skyddade konton kommer att avbrytas. Skriv "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
+<translation id="5031551083187285762">Ditt synkroniseringstillstånd för Zcash-konton har återställts.</translation>
 <translation id="9216386092464743272">Är du säker på att du vill återställa hela din plånbokstransaktion och nonce-information? Det här alternativet används oftast av utvecklare som kör en lokal testserver. Skriv "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
+<translation id="2326850911705720398">Återställ och rensa plånboksdata</translation>
 <translation id="6369495274982305511">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
 <translation id="3752403403443723332">Din plånbok har återställts.</translation>
 <translation id="594766067816395072">Din plånboks transaktionsinformation har återställts.</translation>

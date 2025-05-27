@@ -52,6 +52,12 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4450893287417543264">Nu mai afișa</translation>
 <translation id="4595286989346610620">Verificați detaliile</translation>
 <translation id="8324318899000695659">Blocați elementele</translation>
+<translation id="3828310068250853121">Selectează elementul pe care dorești să-l blochezi</translation>
+<translation id="2577286987423083872">Blochează elementele</translation>
+<translation id="3211174446914979436">Gestionează filtrele</translation>
+<translation id="3108584651298176909">Afișează regulile</translation>
+<translation id="5156986655891520787">Ascunde regulile</translation>
+<translation id="7658239707568436148">Anulează</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Deschide folosind adresa .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forțați lipirea</translation>
@@ -93,7 +99,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="8117247596084706514">Acest site a solicitat <ph name="PART_ONE"/>locația dvs. exactă<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Aflați mai multe<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Acest site a solicitat <ph name="PART_ONE"/>locația dvs. exactă<ph name="PART_ONE_END"/>. Brave va putea furniza doar date privind <ph name="PART_TWO"/>locația dvs. generală<ph name="PART_TWO_END"/> din cauză că <ph name="PART_THREE"/>Serviciile de localizare <ph name="PART_THREE_END"/> au fost dezactivate. <ph name="PART_FOUR"/>Aflați mai multe<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Închideți tot</translation>
-<translation id="7658239707568436148">Anulează</translation>
 <translation id="4870911314065352661">Închideți toate filele?</translation>
 <translation id="7551864359422178684">Aveți <ph name="NUMBER_OF_TABS"/> file deschise în această fereastră de browser.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> file</translation>
@@ -133,6 +138,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3447730462826640312">Nu trebuie să faceți clic pentru a câștiga, dar faceți clic dacă sunteți interesat!</translation>
 <translation id="5253166205743627564">Îți mulțumim pentru susținerea Brave Search făcând clic pe un anunț privat. Spre deosebire de Big Tech, noi măsurăm performanța anunțurilor în mod anonim pentru a-ți menține confidențialitatea.</translation>
 <translation id="8748471354357836070">Află mai multe / opțiuni de renunțare</translation>
+<translation id="5927196110206824867">Imaginile de fundal sponsorizate susțin misiunea Brave de a construi un web independent, orientat către utilizator. Spre deosebire de marile companii d tehnologie, noi măsurăm performanța reclamelor în mod anonim, respectând confidențialitatea utilizatorilor.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Contribuiți cu date anonime privind căutarea și navigarea, pentru a îmbunătăți căutarea Brave.</translation>
 <translation id="1516554614404600536">Sfat Brave</translation>
@@ -473,6 +479,9 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="7791141927430186653">Permite tweet-uri încorporate X (anterior denumită Twitter)</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
+<translation id="1244912498725894944">Anumite setări pentru cookie-uri sunt gestionate de Brave Shields. Le poți vizualiza aici. &lt;a href="/content/braveShields"&gt;aici&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Această setare este gestionată de Brave Shields.</translation>
+<translation id="352287031024189516">Această setare este gestionată de Google Sign-in.</translation>
 <translation id="8792121506918889955">Politică de manipulare IP WebRTC</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
@@ -674,8 +683,12 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="856371974127598760">Rețele de portofele</translation>
 <translation id="5975930666279943472">Ștergeți tranzacțiile din portofel și informația nonce</translation>
 <translation id="5693968582510626466">Ștergerea tranzacțiilor poate fi utilă pentru dezvoltatori sau în cazul golirii informațiilor pe un server local</translation>
-<translation id="2326850911705720398">Resetați și ștergeți datele de portofel</translation>
+<translation id="6171369470447621882">Resetează sincronizarea Zcash</translation>
+<translation id="6705112675071480687">Resetează progresul sincronizării Zcash pentru toate conturile protejate</translation>
+<translation id="2012093487873597892">Sigur vrei să resetezi procesul de sincronizare Zcash? Progresul de sincronizare pentru toate conturile protejate va fi pierdut. Tastează <ph name="CONFIRMATION_PHRASE"/>" pentru a confirma.</translation>
+<translation id="5031551083187285762">Progresul de sincronizare al conturilor tale Zcash a fost resetat.</translation>
 <translation id="9216386092464743272">Sigur doriți să resetați toate tranzacțiile din portofel și informația nonce? Această opțiune este utilizată în principal de dezvoltatori care rulează un server de test local. Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
+<translation id="2326850911705720398">Resetați și ștergeți datele de portofel</translation>
 <translation id="6369495274982305511">Sigur doriți să resetați portofelul dvs.? Dacă nu ați realizat o copie de rezervă după portofel, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
 <translation id="3752403403443723332">Portofelul dvs. a fost resetat.</translation>
 <translation id="594766067816395072">Informațiile privind tranzacțiile din portofel au fost resetate.</translation>

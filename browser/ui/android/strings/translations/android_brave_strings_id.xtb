@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Izinkan tweet tersemat Twitter</translation>
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
 <translation id="6302422639282249274">Kelola Brave Rewards</translation>
-<translation id="2709516037105925701">Isi-Otomatis</translation>
 <translation id="8617525558807213034">Isi otomatis di tab pribadi</translation>
 <translation id="8685431198160039193">Informasi yang disimpan dapat diisi secara otomatis ke dalam tab pribadi</translation>
 <translation id="6583902294974160967">Mendukung</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="9040069796107003510">Ikon Imbalan Brave</translation>
 <translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
-<translation id="8495235435594442882">Aktifkan bilah bawah</translation>
+<translation id="1215433243238902715">Aktifkan bilah alat navigasi bawah</translation>
+<translation id="1422686363939271829">Pengaturan ini dinonaktifkan apabila posisi bilah alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Semua perubahan akan berlaku begitu Anda meluncurkan ulang Brave</translation>
 <translation id="8701563696941209024">LUNCURKAN ULANG SEKARANG</translation>
 <translation id="834487290629916192">NANTI SAJA</translation>
@@ -420,9 +420,12 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8520059774736886747">Pembuat <ph name="PUBLISHER_NAME"/> baru diverifikasi</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Halaman Tab Baru</translation>
+<translation id="5927196110206824867">Gambar latar belakang bersponsor mendukung misi Brave untuk membangun Web yang independen dan memprioritaskan pengguna. Dan tidak seperti Big Tech, kami mengukur kinerja iklan secara anonim demi menjaga privasi Anda.</translation>
+<translation id="8748471354357836070">Pelajari selengkapnya/pilihan penonaktifan</translation>
 <translation id="3171669670217312786">Gambar Latar Belakang</translation>
 <translation id="8522669544471808198">Tampilkan Gambar Latar Belakang</translation>
 <translation id="3870475560794762985">Tampilkan Gambar Bersponsor</translation>
+<translation id="6937724381960478525">Pelajari selengkapnya tentang Gambar Bersponsor</translation>
 <translation id="8793108040181436796">Tombol</translation>
 <translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
 <translation id="7275773481201277457">Tampilkan Statistik Brave</translation>

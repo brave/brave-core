@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
 <translation id="6302422639282249274">Hallitse Brave Rewards -ohjelmaa</translation>
-<translation id="2709516037105925701">Automaattinen täyttö</translation>
 <translation id="8617525558807213034">Täytä automaattisesti yksityisillä välilehdillä</translation>
 <translation id="8685431198160039193">Tallennetut tiedot voidaan täyttää automaattisesti yksityisillä välilehdillä</translation>
 <translation id="6583902294974160967">Tuki</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Ulkonäkö</translation>
 <translation id="9040069796107003510">Brave-palkinnot-kuvake</translation>
 <translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
-<translation id="8495235435594442882">Ota alalaidan työkalupalkki käyttöön</translation>
+<translation id="1215433243238902715">Ota alareunan navigointityökalurivi käyttöön</translation>
+<translation id="1422686363939271829">Tämä asetus ei ole käytössä, kun osoitepalkin alareunan sijainti on valittu</translation>
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
 <translation id="8701563696941209024">KÄYNNISTÄ UUDELLEEN NYT</translation>
 <translation id="834487290629916192">MYÖHEMMIN</translation>
@@ -420,9 +420,12 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8520059774736886747">Tekijä <ph name="PUBLISHER_NAME"/> vahvistettu hiljattain</translation>
 <translation id="1486343603936278248">poletti</translation>
 <translation id="7781069478569868053">Uusi välilehtisivu</translation>
+<translation id="5927196110206824867">Sponsoroidut taustakuvat ovat osa Braven missiota rakentaa riippumatonta, käyttäjälähtöistä verkkoa. Toisin kuin suuret teknologiayritykset, me mittaamme mainosten suorituskykyä anonyymisti suojataksemme yksityisyyttäsi.</translation>
+<translation id="8748471354357836070">Lisätietoja / opt out -valinnat</translation>
 <translation id="3171669670217312786">Taustakuvat</translation>
 <translation id="8522669544471808198">Näytä taustakuvat</translation>
 <translation id="3870475560794762985">Näytä sponsoroidut kuvat</translation>
+<translation id="6937724381960478525">Lue lisää sponsoroiduista kuvista</translation>
 <translation id="8793108040181436796">Widgetit</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>

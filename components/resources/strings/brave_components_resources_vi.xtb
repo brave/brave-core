@@ -69,9 +69,11 @@
 <translation id="3446024864193919737">Hiện Brave Rewards</translation>
 <translation id="5585019845078534178">Thẻ</translation>
 <translation id="3870475560794762985">Hiển thị hình được tài trợ</translation>
+<translation id="5684562942023496754">Bạn có thể kiếm được tiền khi xem Hình ảnh được tài trợ.</translation>
+<translation id="6168679340384667457">Bạn đang nhận được BAT nhờ Hình ảnh được tài trợ. Tắt Hình ảnh được tài trợ sẽ làm giảm số BAT bạn nhận được.</translation>
+<translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="2414654907269324670">Bạn đã kiếm được BAT khi xem Hình ảnh được tài trợ.</translation>
 <translation id="4942016616604700968">Kích hoạt Phần thưởng</translation>
-<translation id="5684562942023496754">Bạn có thể kiếm được tiền khi xem Hình ảnh được tài trợ.</translation>
 <translation id="8934374643857605034">Là người dùng Brave Phần thưởng, bạn có thể kiếm được BAT khi xem Hình ảnh được tài trợ.</translation>
 <translation id="1570714748649804013">Là người dùng Brave Phần thưởng, bạn kiếm được BAT cho Hình ảnh được tài trợ mà bạn nhìn thấy. Vô hiệu hóa Hình ảnh được Tài trợ sẽ làm giảm số tiền bạn kiếm được.</translation>
 <translation id="8998727244653964783">Bạn có thể kiếm được BAT khi xem Hình ảnh được tài trợ khi bạn kết nối tài khoản lưu ký với Brave Phần thưởng. Trong lúc đó, bạn đang giúp hỗ trợ người sáng tạo nội dung bằng Hình ảnh được tài trợ.</translation>
@@ -119,7 +121,6 @@
 <translation id="2702801445560668637">Danh sách đọc</translation>
 <translation id="4590997608186539865">Danh sách phát</translation>
 <translation id="8027460023387054992">Trình tóm tắt trò chuyện</translation>
-<translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8730621377337864115">Đã xong</translation>
 <translation id="730042046912793465">Đây là một</translation>
 <translation id="2055363275850890030">Cửa sổ Riêng tư</translation>
@@ -1095,6 +1096,8 @@
 <translation id="8874184842967597500">Chưa kết nối</translation>
 <translation id="4217695020908122747">Các tài khoản đã kết nối</translation>
 <translation id="8497650996740651467">Tài khoản hiện có</translation>
+<translation id="1775188434254367931">Kết nối</translation>
+<translation id="1818522458013171885">Bỏ chặn</translation>
 <translation id="5677928146339483299">Bị chặn</translation>
 <translation id="3890989020011724401">Tài khoản mới</translation>
 <translation id="4612979983851181941">Sử dụng bảng điều khiển này để truy cập an toàn vào Web3 và tất cả các tài sản tiền điện tử của bạn.</translation>
@@ -1739,6 +1742,7 @@
 <translation id="803703704549420287">Xóa bộ lọc</translation>
 <translation id="1472675084647422956">Hiển thị thêm</translation>
 <translation id="4522570452068850558">Thông tin chi tiết</translation>
+<translation id="4583937519241190398">Đã được xác minh bởi DappRadar</translation>
 <translation id="8713438253026855351">Đổi sang tài khoản có lá chắn</translation>
 <translation id="3526789880090101085">Tạo lá chắn cho tài khoản</translation>
 <translation id="2298396008562701154">Hiện tại, tài khoản này hỗ trợ các giao dịch minh bạch, nghĩa là mọi người trên blockchain đều có thể nhìn thấy chúng.</translation>
@@ -1829,7 +1833,9 @@
 <translation id="7758665172236842395">Theo dõi các nguồn yêu thích của bạn, trong một nguồn cấp dữ liệu duy nhất. Chỉ cần mở một tab trong Brave, cuộn xuống và… đây rồi!</translation>
 <translation id="2376542729617592331">Brave Tin tức được hỗ trợ quảng cáo với các quảng cáo riêng tư, ẩn danh. <ph name="LINK_START"/>Tìm hiểu thêm.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Bật Tin tức Brave</translation>
+<translation id="5149018766422637336">Tin tức và RSS</translation>
 <translation id="6265592479622441247">Quay lại <ph name="BEGIN_BOLD"/>Bảng điều khiển<ph name="END_BOLD"/></translation>
+<translation id="3169472444629675720">Khám phá</translation>
 <translation id="8981973962043893066">Tìm kiếm trang web, chủ đề hoặc nguồn cấp dữ liệu RSS</translation>
 <translation id="1498364270401875204">Kênh</translation>
 <translation id="6401776069326703655">Xem Tất cả</translation>
@@ -2114,6 +2120,7 @@
 <translation id="8151638057146502721">Cấu hình</translation>
 <translation id="3282183392203936979">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Llama chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình do Alibaba Cloud tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Qwen chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="8706248250250832190">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi DeepSeek R1, một mô hình do DeepSeek tạo ra để xử lý các tác vụ lý luận chuyên sâu. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8345529480300554358">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Mixtral 8x7B, một mô hình do Mistral AI tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Mixtral chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Instant chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Haiku, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Haiku chạy trên cơ sở hạ tầng bảo mật của Brave. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
@@ -2152,7 +2159,6 @@
 <translation id="6393149565874086128">Thêm phản hồi</translation>
 <translation id="3521125531016408657">Thích câu trả lời</translation>
 <translation id="8202517001427388906">Không thích câu trả lời</translation>
-<translation id="3177073390279208955">Gửi đánh giá, cuộc trò chuyện, mô hình, ngôn ngữ, phiên bản và trạng thái premium</translation>
 <translation id="1379399209929302811">Cung cấp phản hồi Brave AI</translation>
 <translation id="8442999546461118871">Chọn chủ đề phản hồi của bạn</translation>
 <translation id="9018766373792005944">Phản hồi của bạn là gì?</translation>
@@ -2177,6 +2183,12 @@
 <translation id="1946267518364740045">Đang lý luận...</translation>
 <translation id="4198859185714743678">Hoàn tất khâu lý luận</translation>
 <translation id="6140948187512243695">Hiển thị chi tiết</translation>
+<translation id="4881695831933465202">Mở</translation>
+<translation id="1625889395409731085">Mở liên kết bên ngoài?</translation>
+<translation id="4211063437291114749">Leo AI muốn mở một trang web trong thẻ mới. Bạn có muốn tiếp tục?</translation>
+<translation id="5526001300821542157">Mở liên kết và không cần hỏi lại tôi</translation>
+<translation id="1243966363662220847">Phản hồi góp ý</translation>
+<translation id="7417895556119762861">Việc thích hoặc không thích một câu trả lời sẽ gửi đánh giá, cuộc trò chuyện, mô hình, ngôn ngữ, phiên bản và trạng thái gói đăng ký tới Brave để cải thiện Leo. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Gửi tin nhắn cho Leo</translation>
 <translation id="8650874793377330048">Dừng trả lời</translation>
 <translation id="8712637175834984815">Bỏ qua</translation>
@@ -2204,6 +2216,7 @@
 <translation id="2836330653441111204">Cân bằng tốc độ và trí thông minh</translation>
 <translation id="6695329447007213917">Trò chuyện mục đích chung, lập trình, v.v.</translation>
 <translation id="5051668914970329839">Hình ảnh cho mục đích chung</translation>
+<translation id="7226508434216060960">Mô hình lý luận</translation>
 <translation id="3965507912994218570">Cài đặt Leo</translation>
 <translation id="1037324977127422019">Xin chào, tôi là Leo!</translation>
 <translation id="8930348081963284873">Trợ lý thông minh được hỗ trợ bởi AI, được tích hợp ngay trong Brave.</translation>
@@ -2252,21 +2265,38 @@
 <translation id="8370801182970639038">Tự động (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Công cụ tìm kiếm đã bật</translation>
 <translation id="5355776323718420036">Ẩn các trang hàng đầu</translation>
+<translation id="9173319813356700250">TIN TỨC</translation>
 <translation id="6543799171249004861">Ảnh chụp bởi <ph name="AUTHOR"/></translation>
+<translation id="5430001801813715388">PHẦN THƯỞNG</translation>
 <translation id="5966055668402779222">Hỏi Brave Tìm kiếm</translation>
 <translation id="6851426306697017546">Hiển thị đồng hồ</translation>
 <translation id="4844370919312937270">Hiển thị tiện ích tìm kiếm trong thẻ mới</translation>
 <translation id="5009354496127441090">Hiển thị các trang hàng đầu</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4784802981241664605">THỐNG KÊ</translation>
+<translation id="712731581368828482">Cuộc gọi video được mã hóa với Brave Talk.</translation>
+<translation id="2671474274417808910">Cuộc gọi ưu tiên quyền riêng tư</translation>
+<translation id="2100665198270190500">TALK</translation>
 <translation id="4290791698375397492">Đã xóa trang hàng đầu</translation>
 <translation id="1436784010935106834">Đã xóa</translation>
 <translation id="9030215177866748410">Các trang mạng hàng đầu được đề xuất dựa trên các website bạn thường truy cập.</translation>
+<translation id="8425213833346101688">Thay đổi</translation>
+<translation id="755045397420611731">Quyền riêng tư &amp; bảo mật trực tuyến cao hơn</translation>
+<translation id="4520128772974831415">Ẩn IP và thay đổi vị trí của bạn</translation>
+<translation id="6819278685469225453">Bảo vệ mọi ứng dụng ở thiết bị của bạn</translation>
+<translation id="8422279921836245017">Bạn đã mua?</translation>
+<translation id="8703188411226330709">Bắt đầu dùng thử miễn phí</translation>
+<translation id="8814357473522731680">Được hỗ trợ bởi</translation>
+<translation id="7143207342074048698">Đang kết nối</translation>
+<translation id="1202549130170287307">Đang ngắt kết nối</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="8793108040181436796">Tiện ích</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
-<translation id="7509914170164691086">Khiên đã BẬT <ph name="LINK_BEFORE"/>cho<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Khiên đã TẮT <ph name="LINK_BEFORE"/>trong<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Nếu trang web này có vẻ bị hỏng thì hãy thử tắt Khiên. 
-  <ph name="LINK_BEFORE"/>Lưu ý: điều này có thể làm giảm các khả năng bảo vệ quyền riêng tư của Brave.<ph name="LINK_AFTER"/></translation>
+<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Đã BẬT Lá chắn<ph name="STATUS_AFTER"/> cho <ph name="HOST"/></translation>
+<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>Đã TẮT Lá chắn<ph name="STATUS_AFTER"/> cho <ph name="HOST"/></translation>
+<translation id="5623354834493649144">Nếu trang web này có vẻ bị hỏng, hãy thử tắt Lá chắn. 
+  <ph name="NOTE_BEFORE"/>Lưu ý: điều này có thể làm giảm khả năng bảo vệ quyền riêng tư của Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">Đã chặn trình theo dõi, quảng cáo và nhiều hơn nữa <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Không được bảo vệ bởi Khiên Brave <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kiểm soát nâng cao</translation>
@@ -2349,15 +2379,12 @@
 <translation id="958268166261124668">Brave VPN: Đã kết nối</translation>
 <translation id="6021669293402055982">Brave VPN: Ngắt kết nối</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
-<translation id="7143207342074048698">Đang kết nối</translation>
-<translation id="1202549130170287307">Đang ngắt kết nối</translation>
 <translation id="2325196879156848326">Kết nối không thành công</translation>
 <translation id="745054660363064771">Không thể kết nối với máy chủ</translation>
 <translation id="3936826714240735937">Chọn một máy chủ khác</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> không thể kết nối đến máy chủ <ph name="REGION_NAME"/>. Vui lòng thử lại hoặc chọn quốc gia khác.</translation>
 <translation id="5753795690521538679">Bắt đầu dùng thử 7 ngày</translation>
 <translation id="3357036723290257445">Đã mua Brave VPN?</translation>
-<translation id="8814357473522731680">Được hỗ trợ bởi</translation>
 <translation id="8652175077544655965">Đóng cài đặt</translation>
 <translation id="5908163815855240493">Đi đến trang chủ</translation>
 <translation id="7805768142964895445">Trạng thái</translation>
@@ -2365,8 +2392,6 @@
 <translation id="8421945428836418371">Tự động kết nối lại</translation>
 <translation id="434523916398030617">Liên hệ hỗ trợ kỹ thuật</translation>
 <translation id="1116694919640316211">About</translation>
-<translation id="755045397420611731">Quyền riêng tư &amp; bảo mật trực tuyến cao hơn</translation>
-<translation id="4520128772974831415">Ẩn IP và thay đổi vị trí của bạn</translation>
 <translation id="2044418816479192294">Hàng trăm máy chủ trên toàn thế giới</translation>
 <translation id="7410504850864021600">Tốc độ kết nối cực nhanh</translation>
 <translation id="2422309687188612485">Bảo vệ tối đa 10 thiết bị với một gói</translation>
@@ -2440,11 +2465,7 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="8048263175525832621">Brave VPN - Đã ngắt kết nối</translation>
 <translation id="1498770726476841108">Quản lý tài khoản</translation>
 <translation id="6825718953004242472">Xóa biểu tượng</translation>
-<translation id="6819278685469225453">Bảo vệ mọi ứng dụng ở thiết bị của bạn</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Quyền riêng tư &amp; bảo mật trực tuyến nâng cao.</translation>
-<translation id="8425213833346101688">Thay đổi</translation>
-<translation id="8703188411226330709">Bắt đầu dùng thử miễn phí</translation>
 <translation id="3287942014983548982">Mở tại đây</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, đang mở,
     nhấn Tab rồi Enter để chuyển sang tab đang mở,</translation>

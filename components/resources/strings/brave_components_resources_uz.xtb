@@ -10,12 +10,12 @@
 <translation id="7658239707568436148">Bekor qilish</translation>
 <translation id="5525668735313040116">Internetda xavfsiz qidiring</translation>
 <translation id="780301667611848630">Kerak emas</translation>
+<translation id="6165508094623778733">Batafsil</translation>
 <translation id="3333887201479867589">Brave Mukofotlar</translation>
 <translation id="6216996674668969227">Maxfiylik talablarini buzmaydigan reklamalarni koʻrish orqali tokenlar ishlab oling.</translation>
 <translation id="8488282162676695335">Brave Hamyon</translation>
 <translation id="8820817407110198400">Bukmarklar</translation>
 <translation id="1644574205037202324">Tarix</translation>
-<translation id="6165508094623778733">Batafsil</translation>
 <translation id="8759753423332885148">Batafsil.</translation>
 <translation id="1209739344687072997">Nosoz sayt haqida xabar qilish</translation>
 <translation id="3630697955794050612">oʻchiq</translation>
@@ -76,6 +76,11 @@
 <translation id="7979673624064378842">Tezkor chat</translation>
 <translation id="2836330653441111204">Muvozanatlangan tezlik va intellekt</translation>
 <translation id="2370739752330685659">Balki keyinroq</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="755045397420611731">Kuchaytirilgan maxfiylik va xavfsizlik</translation>
+<translation id="4520128772974831415">IP manzilingizni berkiting va joylashuvingizni almashtiring</translation>
+<translation id="8703188411226330709">Bepul sinovni boshlash</translation>
+<translation id="8814357473522731680">Texnologiya muallifi</translation>
 <translation id="8458987127502506209">Brave Qalqon funksiyasini yoqish</translation>
 <translation id="650318023204990401">Kengaytirilgan boshqaruv</translation>
 <translation id="2273851479262317744">Brave brauzerini birlamchi qilib sozlash</translation>
@@ -87,14 +92,9 @@
 <translation id="7818938154803162778">Albatta, yordam beraman</translation>
 <translation id="5753795690521538679">7 kunlik bepul sinovni boshlash</translation>
 <translation id="3357036723290257445">Allaqachon Brave VPN sotib olganmisiz?</translation>
-<translation id="8814357473522731680">Texnologiya muallifi</translation>
 <translation id="1116694919640316211">Haqida</translation>
-<translation id="755045397420611731">Kuchaytirilgan maxfiylik va xavfsizlik</translation>
-<translation id="4520128772974831415">IP manzilingizni berkiting va joylashuvingizni almashtiring</translation>
 <translation id="2044418816479192294">Dunyoning turli joylaridagi yuzlab serverlar</translation>
 <translation id="7410504850864021600">Yuqori aloqa tezliklari</translation>
 <translation id="2422309687188612485">Bitta tarif bilan 10 tagacha qurilmani himoyalang</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Kuchaytirilgan maxfiylik va xavfsizlik.</translation>
-<translation id="8703188411226330709">Bepul sinovni boshlash</translation>
 </translationbundle>
