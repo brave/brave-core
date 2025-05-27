@@ -26,11 +26,11 @@ import java.util.List;
  * sub-title.
  */
 public class TwoLineItemFragment extends Fragment {
-    private final List<TwoLineItem> items;
-    private TwoLineItemRecyclerViewAdapter adapter;
+    private final List<TwoLineItem> mItems;
+    private TwoLineItemRecyclerViewAdapter mAdapter;
 
     public TwoLineItemFragment(List<TwoLineItem> items) {
-        this.items = items;
+        mItems = items;
     }
 
     public static TwoLineItemFragment newInstance(List<TwoLineItem> items) {
@@ -44,8 +44,8 @@ public class TwoLineItemFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_two_line_item_list, container, false);
         RecyclerView recyclerView = (RecyclerView) view;
-        adapter = new TwoLineItemRecyclerViewAdapter(items);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new TwoLineItemRecyclerViewAdapter(mItems);
+        recyclerView.setAdapter(mAdapter);
         recyclerView.setOnTouchListener(
                 (v, event) -> {
                     int action = event.getAction();
@@ -70,8 +70,8 @@ public class TwoLineItemFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void invalidateData() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
         }
     }
 }

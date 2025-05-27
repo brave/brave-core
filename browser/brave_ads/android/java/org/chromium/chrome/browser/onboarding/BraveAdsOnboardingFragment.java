@@ -28,25 +28,25 @@ import org.chromium.chrome.browser.firstrun.FirstRunFragment;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 
 public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFragment {
-    private OnViewPagerAction onViewPagerAction;
+    private OnViewPagerAction mOnViewPagerAction;
 
-    private int progress;
+    private int mProgress;
     private static final int END_TIME_SECONDS = 3;
     private boolean mNativeInitialized;
 
-    private LottieAnimationView animatedView;
+    private LottieAnimationView mAnimatedView;
 
-    private TextView tvTitle;
-    private TextView tvTimer;
+    private TextView mTvTitle;
+    private TextView mTvTimer;
 
-    private ProgressBar progressBarView;
+    private ProgressBar mProgressBarView;
 
-    private CountDownTimer countDownTimer;
-    private LinearLayout countDownLayout;
-    private LinearLayout actionLayout;
+    private CountDownTimer mCountDownTimer;
+    private LinearLayout mCountDownLayout;
+    private LinearLayout mActionLayout;
 
-    private Button btnStartBrowsing;
-    private Button btnDidntSeeAd;
+    private Button mBtnStartBrowsing;
+    private Button mBtnDidntSeeAd;
 
     public BraveAdsOnboardingFragment() {
         // Required empty public constructor
@@ -69,13 +69,13 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            countDownLayout.setVisibility(View.VISIBLE);
-            tvTitle.setVisibility(View.VISIBLE);
-            actionLayout.setVisibility(View.GONE);
-            btnDidntSeeAd.setVisibility(View.GONE);
+            mCountDownLayout.setVisibility(View.VISIBLE);
+            mTvTitle.setVisibility(View.VISIBLE);
+            mActionLayout.setVisibility(View.GONE);
+            mBtnDidntSeeAd.setVisibility(View.GONE);
             OnboardingPrefManager.isNotification = true;
-            if (animatedView != null) {
-                animatedView.playAnimation();
+            if (mAnimatedView != null) {
+                mAnimatedView.playAnimation();
             }
         }
     }
@@ -90,68 +90,70 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
 
     @Override
     public void setInitialA11yFocus() {
-        if (tvTitle == null) return;
-        tvTitle.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+        if (mTvTitle == null) return;
+        mTvTitle.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
 
     private void setActions() {
-        btnStartBrowsing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // assert onViewPagerAction != null;
-                // if (onViewPagerAction != null) onViewPagerAction.onStartBrowsing();
-            }
-        });
+        mBtnStartBrowsing.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // assert onViewPagerAction != null;
+                        // if (onViewPagerAction != null) onViewPagerAction.onStartBrowsing();
+                    }
+                });
 
-        btnDidntSeeAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // assert onViewPagerAction != null;
-                // if (onViewPagerAction != null) onViewPagerAction.onDidntSeeAd();
-            }
-        });
+        mBtnDidntSeeAd.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // assert onViewPagerAction != null;
+                        // if (onViewPagerAction != null) onViewPagerAction.onDidntSeeAd();
+                    }
+                });
     }
 
     private void initializeViews(View root) {
-        animatedView = root.findViewById(R.id.bg_image);
+        mAnimatedView = root.findViewById(R.id.bg_image);
 
-        tvTitle = root.findViewById(R.id.section_title);
+        mTvTitle = root.findViewById(R.id.section_title);
 
-        countDownLayout = root.findViewById(R.id.count_down_layout);
-        actionLayout = root.findViewById(R.id.action_layout);
+        mCountDownLayout = root.findViewById(R.id.count_down_layout);
+        mActionLayout = root.findViewById(R.id.action_layout);
 
-        tvTimer = root.findViewById(R.id.tv_timer);
+        mTvTimer = root.findViewById(R.id.tv_timer);
 
-        btnStartBrowsing = root.findViewById(R.id.btn_start_browsing);
-        btnDidntSeeAd = root.findViewById(R.id.btn_didnt_see_ad);
+        mBtnStartBrowsing = root.findViewById(R.id.btn_start_browsing);
+        mBtnDidntSeeAd = root.findViewById(R.id.btn_didnt_see_ad);
 
-        progressBarView = root.findViewById(R.id.view_progress_bar);
+        mProgressBarView = root.findViewById(R.id.view_progress_bar);
     }
 
     public void setOnViewPagerAction(OnViewPagerAction onViewPagerAction) {
-        this.onViewPagerAction = onViewPagerAction;
+        mOnViewPagerAction = onViewPagerAction;
     }
 
     private void startCountdown() {
         BraveOnboardingNotification.cancelOnboardingNotification();
 
-        if (countDownTimer != null) countDownTimer.cancel();
+        if (mCountDownTimer != null) mCountDownTimer.cancel();
 
-        progress = 0;
+        mProgress = 0;
 
-        countDownTimer =
+        mCountDownTimer =
                 new CountDownTimer((long) END_TIME_SECONDS * 1000, 100) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        setProgress(progress, END_TIME_SECONDS);
-                        progress = progress + 100;
-                        tvTimer.setText(String.valueOf((millisUntilFinished / 1000) + 1));
+                        setProgress(mProgress, END_TIME_SECONDS);
+                        mProgress = mProgress + 100;
+                        mTvTimer.setText(String.valueOf((millisUntilFinished / 1000) + 1));
                     }
 
                     @Override
                     public void onFinish() {
-                        setProgress(progress, END_TIME_SECONDS);
-                        tvTimer.setText("0");
+                        setProgress(mProgress, END_TIME_SECONDS);
+                        mTvTimer.setText("0");
 
                         OnboardingPrefManager.getInstance().onboardingNotification();
                         new Handler()
@@ -159,21 +161,21 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
                                         new Runnable() {
                                             @Override
                                             public void run() {
-                                                assert onViewPagerAction != null;
-                                                if (onViewPagerAction != null) {
-                                                    onViewPagerAction.onNext();
+                                                assert mOnViewPagerAction != null;
+                                                if (mOnViewPagerAction != null) {
+                                                    mOnViewPagerAction.onNext();
                                                 }
                                             }
                                         },
                                         1000);
                     }
                 };
-        countDownTimer.start();
+        mCountDownTimer.start();
     }
 
     private void setProgress(int startTime, int endTime) {
-        progressBarView.setMax(endTime * 1000);
-        progressBarView.setSecondaryProgress(endTime * 1000);
-        progressBarView.setProgress(startTime);
+        mProgressBarView.setMax(endTime * 1000);
+        mProgressBarView.setSecondaryProgress(endTime * 1000);
+        mProgressBarView.setProgress(startTime);
     }
 }

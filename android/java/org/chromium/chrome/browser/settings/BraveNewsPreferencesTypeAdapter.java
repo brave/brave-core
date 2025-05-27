@@ -85,10 +85,10 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
             NewsPreferencesSectionViewHolder sectionHolder =
                     (NewsPreferencesSectionViewHolder) holder;
             if (position == 0 && mChannelList.size() > 0) {
-                sectionHolder.tvSection.setText(
+                sectionHolder.mTvSection.setText(
                         mContext.getResources().getString(R.string.channels));
             } else {
-                sectionHolder.tvSection.setText(
+                sectionHolder.mTvSection.setText(
                         mContext.getResources().getString(R.string.sources));
             }
 
@@ -148,83 +148,93 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     }
 
     private void setSearchUrl(int position, NewsPreferencesViewHolder viewHolder) {
-        viewHolder.imagePublisher.setVisibility(View.GONE);
-        viewHolder.imageChannel.setVisibility(View.GONE);
+        viewHolder.mImagePublisher.setVisibility(View.GONE);
+        viewHolder.mImageChannel.setVisibility(View.GONE);
 
         if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.SearchUrl
                 || mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.GettingFeed) {
-            viewHolder.name.setText(mSearchUrl);
-            viewHolder.subtitle.setVisibility(View.GONE);
-            viewHolder.btnFollow.setVisibility(View.VISIBLE);
+            viewHolder.mName.setText(mSearchUrl);
+            viewHolder.mSubtitle.setVisibility(View.GONE);
+            viewHolder.mBtnFollow.setVisibility(View.VISIBLE);
             if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.GettingFeed) {
                 displayFollowButton(true, R.string.getting_feeds, viewHolder);
             } else {
                 displayFollowButton(false, R.string.get_feeds, viewHolder);
             }
 
-            viewHolder.btnFollow.setOnClickListener(view -> {
-                if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.SearchUrl) {
-                    mBraveNewsPreferencesSearchType = BraveNewsPreferencesSearchType.GettingFeed;
-                    notifyItemChanged(position);
-                    mBraveNewsPreferencesListener.findFeeds(mSearchUrl);
-                }
-            });
+            viewHolder.mBtnFollow.setOnClickListener(
+                    view -> {
+                        if (mBraveNewsPreferencesSearchType
+                                == BraveNewsPreferencesSearchType.SearchUrl) {
+                            mBraveNewsPreferencesSearchType =
+                                    BraveNewsPreferencesSearchType.GettingFeed;
+                            notifyItemChanged(position);
+                            mBraveNewsPreferencesListener.findFeeds(mSearchUrl);
+                        }
+                    });
         } else if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.NotFound) {
-            viewHolder.name.setText(
+            viewHolder.mName.setText(
                     mContext.getResources().getString(R.string.no_feed_found, mSearchUrl));
-            viewHolder.btnFollow.setVisibility(View.GONE);
-            viewHolder.subtitle.setVisibility(View.GONE);
+            viewHolder.mBtnFollow.setVisibility(View.GONE);
+            viewHolder.mSubtitle.setVisibility(View.GONE);
         }
     }
 
     private void setFeedSearchResultItem(int position, NewsPreferencesViewHolder viewHolder) {
         if (position >= 0 && position < mFeedSearchResultItemList.size()) {
             FeedSearchResultItem feedSearchResultItem = mFeedSearchResultItemList.get(position);
-            viewHolder.name.setText(feedSearchResultItem.feedTitle);
-            if (feedSearchResultItem.feedUrl != null && feedSearchResultItem.feedUrl.url != null
+            viewHolder.mName.setText(feedSearchResultItem.feedTitle);
+            if (feedSearchResultItem.feedUrl != null
+                    && feedSearchResultItem.feedUrl.url != null
                     && feedSearchResultItem.feedUrl.url.length() > 0) {
-                viewHolder.subtitle.setText(feedSearchResultItem.feedUrl.url);
-                viewHolder.subtitle.setVisibility(View.VISIBLE);
+                viewHolder.mSubtitle.setText(feedSearchResultItem.feedUrl.url);
+                viewHolder.mSubtitle.setVisibility(View.VISIBLE);
             } else {
-                viewHolder.subtitle.setVisibility(View.GONE);
+                viewHolder.mSubtitle.setVisibility(View.GONE);
             }
-            viewHolder.imagePublisher.setVisibility(View.GONE);
-            viewHolder.imageChannel.setVisibility(View.GONE);
-            viewHolder.btnFollow.setVisibility(View.VISIBLE);
-            boolean isFollow = mFeedSearchResultItemFollowMap != null
-                    && mFeedSearchResultItemFollowMap.containsKey(feedSearchResultItem.feedUrl.url)
-                    && mFeedSearchResultItemFollowMap.get(feedSearchResultItem.feedUrl.url) != null;
+            viewHolder.mImagePublisher.setVisibility(View.GONE);
+            viewHolder.mImageChannel.setVisibility(View.GONE);
+            viewHolder.mBtnFollow.setVisibility(View.VISIBLE);
+            boolean isFollow =
+                    mFeedSearchResultItemFollowMap != null
+                            && mFeedSearchResultItemFollowMap.containsKey(
+                                    feedSearchResultItem.feedUrl.url)
+                            && mFeedSearchResultItemFollowMap.get(feedSearchResultItem.feedUrl.url)
+                                    != null;
             if (!isFollow) {
                 displayFollowButton(false, R.string.follow, viewHolder);
             } else {
                 displayFollowButton(true, R.string.unfollow, viewHolder);
             }
-            viewHolder.btnFollow.setOnClickListener(view -> {
-                if (!isFollow) {
-                    mBraveNewsPreferencesListener.subscribeToNewDirectFeed(
-                            position, feedSearchResultItem.feedUrl, true);
-                } else if (mFeedSearchResultItemFollowMap.containsKey(
-                                   feedSearchResultItem.feedUrl.url)) {
-                    String publisherId =
-                            mFeedSearchResultItemFollowMap.get(feedSearchResultItem.feedUrl.url);
-                    mBraveNewsPreferencesListener.updateFeedSearchResultItem(
-                            position, feedSearchResultItem.feedUrl.url, publisherId);
+            viewHolder.mBtnFollow.setOnClickListener(
+                    view -> {
+                        if (!isFollow) {
+                            mBraveNewsPreferencesListener.subscribeToNewDirectFeed(
+                                    position, feedSearchResultItem.feedUrl, true);
+                        } else if (mFeedSearchResultItemFollowMap.containsKey(
+                                feedSearchResultItem.feedUrl.url)) {
+                            String publisherId =
+                                    mFeedSearchResultItemFollowMap.get(
+                                            feedSearchResultItem.feedUrl.url);
+                            mBraveNewsPreferencesListener.updateFeedSearchResultItem(
+                                    position, feedSearchResultItem.feedUrl.url, publisherId);
 
-                    mBraveNewsPreferencesListener.onPublisherPref(
-                            publisherId, UserEnabled.DISABLED);
-                }
-            });
+                            mBraveNewsPreferencesListener.onPublisherPref(
+                                    publisherId, UserEnabled.DISABLED);
+                        }
+                    });
         }
     }
 
     private void setDirectSource(
             int position, NewsPreferencesViewHolder viewHolder, Publisher publisher) {
-        if (publisher.feedSource != null && publisher.feedSource.url != null
+        if (publisher.feedSource != null
+                && publisher.feedSource.url != null
                 && publisher.feedSource.url.length() > 0) {
-            viewHolder.subtitle.setText(publisher.feedSource.url);
-            viewHolder.subtitle.setVisibility(View.VISIBLE);
+            viewHolder.mSubtitle.setText(publisher.feedSource.url);
+            viewHolder.mSubtitle.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.subtitle.setVisibility(View.GONE);
+            viewHolder.mSubtitle.setVisibility(View.GONE);
         }
 
         if (publisher.userEnabledStatus == UserEnabled.DISABLED) {
@@ -233,61 +243,64 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
             displayFollowButton(true, R.string.unfollow, viewHolder);
         }
 
-        viewHolder.btnFollow.setOnClickListener(view -> {
-            if (publisher.userEnabledStatus == UserEnabled.DISABLED) {
-                publisher.userEnabledStatus = UserEnabled.ENABLED;
-            } else {
-                publisher.userEnabledStatus = UserEnabled.DISABLED;
-            }
+        viewHolder.mBtnFollow.setOnClickListener(
+                view -> {
+                    if (publisher.userEnabledStatus == UserEnabled.DISABLED) {
+                        publisher.userEnabledStatus = UserEnabled.ENABLED;
+                    } else {
+                        publisher.userEnabledStatus = UserEnabled.DISABLED;
+                    }
 
-            notifyItemChanged(position);
-            if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
-                mBraveNewsPreferencesListener.subscribeToNewDirectFeed(
-                        position, publisher.feedSource, false);
-            } else {
-                mBraveNewsPreferencesListener.onPublisherPref(
-                        publisher.publisherId, publisher.userEnabledStatus);
-            }
-        });
+                    notifyItemChanged(position);
+                    if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
+                        mBraveNewsPreferencesListener.subscribeToNewDirectFeed(
+                                position, publisher.feedSource, false);
+                    } else {
+                        mBraveNewsPreferencesListener.onPublisherPref(
+                                publisher.publisherId, publisher.userEnabledStatus);
+                    }
+                });
     }
 
     private void setSource(
             int position, NewsPreferencesViewHolder viewHolder, Publisher publisher) {
-        viewHolder.name.setText(publisher.publisherName);
+        viewHolder.mName.setText(publisher.publisherName);
 
-        viewHolder.imagePublisher.setVisibility(View.VISIBLE);
-        viewHolder.imageChannel.setVisibility(View.GONE);
+        viewHolder.mImagePublisher.setVisibility(View.VISIBLE);
+        viewHolder.mImageChannel.setVisibility(View.GONE);
         if (publisher.backgroundColor != null) {
             try {
-                viewHolder.imagePublisher.setBackgroundTintList(
+                viewHolder.mImagePublisher.setBackgroundTintList(
                         ColorStateList.valueOf(Color.parseColor(publisher.backgroundColor)));
             } catch (Exception exception) {
                 // Incase backgroundColor string is not proper hex string
-                viewHolder.imagePublisher.setBackgroundTintList(
+                viewHolder.mImagePublisher.setBackgroundTintList(
                         ColorStateList.valueOf(Color.TRANSPARENT));
             }
         } else {
-            viewHolder.imagePublisher.setBackgroundTintList(
+            viewHolder.mImagePublisher.setBackgroundTintList(
                     ColorStateList.valueOf(Color.TRANSPARENT));
         }
         if (mBraveNewsController != null && publisher.coverUrl != null) {
-            mBraveNewsController.getImageData(publisher.coverUrl, imageData -> {
-                if (imageData != null) {
-                    mGlide.load(imageData).fitCenter().into(viewHolder.imagePublisher);
-                } else {
-                    mGlide.clear(viewHolder.imagePublisher);
-                }
-            });
+            mBraveNewsController.getImageData(
+                    publisher.coverUrl,
+                    imageData -> {
+                        if (imageData != null) {
+                            mGlide.load(imageData).fitCenter().into(viewHolder.mImagePublisher);
+                        } else {
+                            mGlide.clear(viewHolder.mImagePublisher);
+                        }
+                    });
         } else {
-            mGlide.clear(viewHolder.imagePublisher);
+            mGlide.clear(viewHolder.mImagePublisher);
         }
 
-        viewHolder.btnFollow.setVisibility(View.VISIBLE);
+        viewHolder.mBtnFollow.setVisibility(View.VISIBLE);
 
         if (publisher.type == PublisherType.DIRECT_SOURCE) {
             setDirectSource(position, viewHolder, publisher);
         } else {
-            viewHolder.subtitle.setVisibility(View.GONE);
+            viewHolder.mSubtitle.setVisibility(View.GONE);
 
             if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
                 displayFollowButton(true, R.string.unfollow, viewHolder);
@@ -295,75 +308,79 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                 displayFollowButton(false, R.string.follow, viewHolder);
             }
 
-            viewHolder.btnFollow.setOnClickListener(view -> {
-                if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
-                    publisher.userEnabledStatus = UserEnabled.DISABLED;
-                } else {
-                    publisher.userEnabledStatus = UserEnabled.ENABLED;
-                }
-                notifyItemChanged(position);
-                mBraveNewsPreferencesListener.onPublisherPref(
-                        publisher.publisherId, publisher.userEnabledStatus);
-            });
+            viewHolder.mBtnFollow.setOnClickListener(
+                    view -> {
+                        if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
+                            publisher.userEnabledStatus = UserEnabled.DISABLED;
+                        } else {
+                            publisher.userEnabledStatus = UserEnabled.ENABLED;
+                        }
+                        notifyItemChanged(position);
+                        mBraveNewsPreferencesListener.onPublisherPref(
+                                publisher.publisherId, publisher.userEnabledStatus);
+                    });
         }
     }
 
     private void setChannel(int position, NewsPreferencesViewHolder viewHolder, Channel channel) {
-        viewHolder.name.setText(channel.channelName);
-        viewHolder.subtitle.setVisibility(View.GONE);
-        viewHolder.imagePublisher.setVisibility(View.GONE);
-        viewHolder.imageChannel.setVisibility(View.VISIBLE);
+        viewHolder.mName.setText(channel.channelName);
+        viewHolder.mSubtitle.setVisibility(View.GONE);
+        viewHolder.mImagePublisher.setVisibility(View.GONE);
+        viewHolder.mImageChannel.setVisibility(View.VISIBLE);
 
         if (mChannelIcons.containsKey(channel.channelName)) {
-            viewHolder.imageChannel.setImageResource(mChannelIcons.get(channel.channelName));
+            viewHolder.mImageChannel.setImageResource(mChannelIcons.get(channel.channelName));
         } else {
-            viewHolder.imageChannel.setImageResource(R.drawable.ic_channel_default);
+            viewHolder.mImageChannel.setImageResource(R.drawable.ic_channel_default);
         }
 
         List<String> subscribedLocalesList =
                 new ArrayList<>(Arrays.asList(channel.subscribedLocales));
 
-        viewHolder.btnFollow.setVisibility(View.VISIBLE);
+        viewHolder.mBtnFollow.setVisibility(View.VISIBLE);
         if (subscribedLocalesList.contains(BraveNewsUtils.getLocale())) {
             displayFollowButton(true, R.string.unfollow, viewHolder);
         } else {
             displayFollowButton(false, R.string.follow, viewHolder);
         }
 
-        viewHolder.btnFollow.setOnClickListener(view -> {
-            boolean isSubscribed = subscribedLocalesList.contains(BraveNewsUtils.getLocale());
-            isSubscribed = !isSubscribed;
-            if (isSubscribed) {
-                subscribedLocalesList.add(BraveNewsUtils.getLocale());
-            } else {
-                subscribedLocalesList.remove(BraveNewsUtils.getLocale());
-            }
-            String[] subscribedLocales = new String[subscribedLocalesList.size()];
-            channel.subscribedLocales = subscribedLocalesList.toArray(subscribedLocales);
-            notifyItemChanged(position);
+        viewHolder.mBtnFollow.setOnClickListener(
+                view -> {
+                    boolean isSubscribed =
+                            subscribedLocalesList.contains(BraveNewsUtils.getLocale());
+                    isSubscribed = !isSubscribed;
+                    if (isSubscribed) {
+                        subscribedLocalesList.add(BraveNewsUtils.getLocale());
+                    } else {
+                        subscribedLocalesList.remove(BraveNewsUtils.getLocale());
+                    }
+                    String[] subscribedLocales = new String[subscribedLocalesList.size()];
+                    channel.subscribedLocales = subscribedLocalesList.toArray(subscribedLocales);
+                    notifyItemChanged(position);
 
-            mBraveNewsPreferencesListener.onChannelSubscribed(position, channel, isSubscribed);
-        });
+                    mBraveNewsPreferencesListener.onChannelSubscribed(
+                            position, channel, isSubscribed);
+                });
     }
 
     private void displayFollowButton(
             boolean isFollowing, int textId, NewsPreferencesViewHolder holder) {
         if (isFollowing) {
-            holder.btnFollow.setBackgroundResource(R.drawable.brave_news_settings_unfollow_bg);
-            holder.btnText.setTextColor(
+            holder.mBtnFollow.setBackgroundResource(R.drawable.brave_news_settings_unfollow_bg);
+            holder.mBtnText.setTextColor(
                     ContextCompat.getColor(mContext, R.color.news_settings_unfollow_color));
         } else {
-            holder.btnFollow.setBackgroundResource(R.drawable.blue_48_rounded_bg);
-            holder.btnText.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
+            holder.mBtnFollow.setBackgroundResource(R.drawable.blue_48_rounded_bg);
+            holder.mBtnText.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
         }
 
         if (mBraveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.GettingFeed) {
-            holder.btnLoading.setVisibility(View.VISIBLE);
+            holder.mBtnLoading.setVisibility(View.VISIBLE);
         } else {
-            holder.btnLoading.setVisibility(View.GONE);
+            holder.mBtnLoading.setVisibility(View.GONE);
         }
 
-        holder.btnText.setText(textId);
+        holder.mBtnText.setText(textId);
     }
 
     public void setItems(List<Channel> channelList, List<Publisher> publisherList, String searchUrl,
@@ -507,32 +524,32 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     }
 
     public static class NewsPreferencesSectionViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSection;
+        TextView mTvSection;
 
         NewsPreferencesSectionViewHolder(View itemView) {
             super(itemView);
-            this.tvSection = (TextView) itemView.findViewById(R.id.tv_section);
+            mTvSection = (TextView) itemView.findViewById(R.id.tv_section);
         }
     }
 
     public static class NewsPreferencesViewHolder extends RecyclerView.ViewHolder {
-        ImageView imagePublisher;
-        ImageView imageChannel;
-        TextView name;
-        TextView subtitle;
-        TextView btnText;
-        ProgressBar btnLoading;
-        LinearLayout btnFollow;
+        ImageView mImagePublisher;
+        ImageView mImageChannel;
+        TextView mName;
+        TextView mSubtitle;
+        TextView mBtnText;
+        ProgressBar mBtnLoading;
+        LinearLayout mBtnFollow;
 
         NewsPreferencesViewHolder(View itemView) {
             super(itemView);
-            this.imagePublisher = (ImageView) itemView.findViewById(R.id.iv_publisher);
-            this.imageChannel = (ImageView) itemView.findViewById(R.id.iv_channel);
-            this.name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.subtitle = (TextView) itemView.findViewById(R.id.tv_subtitle);
-            this.btnText = (TextView) itemView.findViewById(R.id.btn_text);
-            this.btnLoading = (ProgressBar) itemView.findViewById(R.id.btn_loading);
-            this.btnFollow = (LinearLayout) itemView.findViewById(R.id.btn_follow);
+            mImagePublisher = (ImageView) itemView.findViewById(R.id.iv_publisher);
+            mImageChannel = (ImageView) itemView.findViewById(R.id.iv_channel);
+            mName = (TextView) itemView.findViewById(R.id.tv_name);
+            mSubtitle = (TextView) itemView.findViewById(R.id.tv_subtitle);
+            mBtnText = (TextView) itemView.findViewById(R.id.btn_text);
+            mBtnLoading = (ProgressBar) itemView.findViewById(R.id.btn_loading);
+            mBtnFollow = (LinearLayout) itemView.findViewById(R.id.btn_follow);
         }
     }
 }

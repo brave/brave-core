@@ -53,12 +53,12 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
             FilterListHeaderViewHolder filterListHeaderViewHolder =
                     (FilterListHeaderViewHolder) holder;
             if (holder.getAdapterPosition() == 0) {
-                filterListHeaderViewHolder.titleText.setText(R.string.custom_filter_lists);
-                filterListHeaderViewHolder.summaryText.setVisibility(View.GONE);
+                filterListHeaderViewHolder.mTitleText.setText(R.string.custom_filter_lists);
+                filterListHeaderViewHolder.mSummaryText.setVisibility(View.GONE);
             } else {
-                filterListHeaderViewHolder.titleText.setText(R.string.filter_lists);
-                filterListHeaderViewHolder.summaryText.setText(R.string.filter_lists_summary);
-                filterListHeaderViewHolder.summaryText.setVisibility(View.VISIBLE);
+                filterListHeaderViewHolder.mTitleText.setText(R.string.filter_lists);
+                filterListHeaderViewHolder.mSummaryText.setText(R.string.filter_lists_summary);
+                filterListHeaderViewHolder.mSummaryText.setVisibility(View.VISIBLE);
             }
         } else if (holder instanceof CustomFilterListViewHolder) {
             CustomFilterListViewHolder customFilterListViewHolder =
@@ -68,79 +68,84 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                     || holder.getAdapterPosition()
                             == mSubscriptionFilterLists.size() + TWO_ITEMS_SPACE) {
                 if (holder.getAdapterPosition() == ONE_ITEM_SPACE) {
-                    customFilterListViewHolder.titleText.setText(
+                    customFilterListViewHolder.mTitleText.setText(
                             R.string.create_custom_filters_title);
                 } else {
-                    customFilterListViewHolder.titleText.setText(R.string.add_custom_filter_list);
+                    customFilterListViewHolder.mTitleText.setText(R.string.add_custom_filter_list);
                 }
-                customFilterListViewHolder.lastUpdateText.setVisibility(View.GONE);
-                customFilterListViewHolder.toggleSwitch.setVisibility(View.GONE);
-                customFilterListViewHolder.urlText.setVisibility(View.GONE);
-                customFilterListViewHolder.deleteImageView.setVisibility(View.GONE);
-                customFilterListViewHolder.arrowImageView.setVisibility(View.VISIBLE);
+                customFilterListViewHolder.mLastUpdateText.setVisibility(View.GONE);
+                customFilterListViewHolder.mToggleSwitch.setVisibility(View.GONE);
+                customFilterListViewHolder.mUrlText.setVisibility(View.GONE);
+                customFilterListViewHolder.mDeleteImageView.setVisibility(View.GONE);
+                customFilterListViewHolder.mArrowImageView.setVisibility(View.VISIBLE);
 
             } else {
                 SubscriptionInfo customFilter =
                         mSubscriptionFilterLists.get(holder.getAdapterPosition() - TWO_ITEMS_SPACE);
                 String url = customFilter.subscriptionUrl.url;
                 if (customFilter.title != null && customFilter.title.length() > 0) {
-                    customFilterListViewHolder.titleText.setText(customFilter.title);
-                    customFilterListViewHolder.titleText.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mTitleText.setText(customFilter.title);
+                    customFilterListViewHolder.mTitleText.setVisibility(View.VISIBLE);
 
                 } else {
                     Uri uri = Uri.parse(url);
                     String lastPathSegment = uri.getLastPathSegment();
                     if (lastPathSegment != null && lastPathSegment.length() > 0) {
-                        customFilterListViewHolder.titleText.setText(lastPathSegment);
-                        customFilterListViewHolder.titleText.setVisibility(View.VISIBLE);
+                        customFilterListViewHolder.mTitleText.setText(lastPathSegment);
+                        customFilterListViewHolder.mTitleText.setVisibility(View.VISIBLE);
                     } else if (customFilter.homepage != null
                             && customFilter.homepage.length() > 0) {
-                        customFilterListViewHolder.titleText.setText(customFilter.homepage);
-                        customFilterListViewHolder.titleText.setVisibility(View.VISIBLE);
+                        customFilterListViewHolder.mTitleText.setText(customFilter.homepage);
+                        customFilterListViewHolder.mTitleText.setVisibility(View.VISIBLE);
                     } else {
-                        customFilterListViewHolder.titleText.setText(uri.getHost());
-                        customFilterListViewHolder.titleText.setVisibility(View.VISIBLE);
+                        customFilterListViewHolder.mTitleText.setText(uri.getHost());
+                        customFilterListViewHolder.mTitleText.setVisibility(View.VISIBLE);
                     }
                 }
 
                 if (customFilter.lastUpdateAttempt.internalValue == 0) {
-                    customFilterListViewHolder.lastUpdateText.setText(R.string.dashed);
-                    customFilterListViewHolder.lastUpdateText.setTextColor(
+                    customFilterListViewHolder.mLastUpdateText.setText(R.string.dashed);
+                    customFilterListViewHolder.mLastUpdateText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.filter_summary_color));
-                    customFilterListViewHolder.lastUpdateText.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mLastUpdateText.setVisibility(View.VISIBLE);
 
                 } else if (customFilter.lastSuccessfulUpdateAttempt.internalValue == 0) {
-                    customFilterListViewHolder.lastUpdateText.setText(
+                    customFilterListViewHolder.mLastUpdateText.setText(
                             R.string.download_failed_custom_filter);
 
-                    customFilterListViewHolder.lastUpdateText.setTextColor(ContextCompat.getColor(
-                            mContext, R.color.add_custom_filter_error_text_color));
-                    customFilterListViewHolder.lastUpdateText.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mLastUpdateText.setTextColor(
+                            ContextCompat.getColor(
+                                    mContext, R.color.add_custom_filter_error_text_color));
+                    customFilterListViewHolder.mLastUpdateText.setVisibility(View.VISIBLE);
 
                 } else if (customFilter.lastSuccessfulUpdateAttempt.internalValue != 0
                         && customFilter.lastSuccessfulUpdateAttempt.internalValue
                                 != customFilter.lastUpdateAttempt.internalValue) {
-                    customFilterListViewHolder.lastUpdateText.setText(
-                            mContext.getResources().getString(R.string.update_failed_custom_filter,
-                                    customFilter.lastUpdatedPrettyText));
+                    customFilterListViewHolder.mLastUpdateText.setText(
+                            mContext.getResources()
+                                    .getString(
+                                            R.string.update_failed_custom_filter,
+                                            customFilter.lastUpdatedPrettyText));
 
-                    customFilterListViewHolder.lastUpdateText.setTextColor(
+                    customFilterListViewHolder.mLastUpdateText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.filter_summary_color));
-                    customFilterListViewHolder.lastUpdateText.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mLastUpdateText.setVisibility(View.VISIBLE);
 
                 } else {
-                    customFilterListViewHolder.lastUpdateText.setText(
-                            mContext.getResources().getString(R.string.last_updated_custom_filter,
-                                    customFilter.lastUpdatedPrettyText));
-                    customFilterListViewHolder.lastUpdateText.setTextColor(
+                    customFilterListViewHolder.mLastUpdateText.setText(
+                            mContext.getResources()
+                                    .getString(
+                                            R.string.last_updated_custom_filter,
+                                            customFilter.lastUpdatedPrettyText));
+                    customFilterListViewHolder.mLastUpdateText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.filter_summary_color));
-                    customFilterListViewHolder.lastUpdateText.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mLastUpdateText.setVisibility(View.VISIBLE);
                 }
 
-                customFilterListViewHolder.urlText.setText(url);
-                customFilterListViewHolder.toggleSwitch.setChecked(customFilter.enabled);
+                customFilterListViewHolder.mUrlText.setText(url);
+                customFilterListViewHolder.mToggleSwitch.setChecked(customFilter.enabled);
 
-                customFilterListViewHolder.toggleSwitch.setOnClickListener(
+                customFilterListViewHolder.mToggleSwitch.setOnClickListener(
                         view -> {
                             customFilter.enabled = !customFilter.enabled;
                             mBraveContentFileringListener.onSubscriptionFilterToggle(
@@ -149,22 +154,22 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                         });
 
                 if (mIsEdit) {
-                    customFilterListViewHolder.deleteImageView.setVisibility(View.VISIBLE);
-                    customFilterListViewHolder.toggleSwitch.setVisibility(View.GONE);
+                    customFilterListViewHolder.mDeleteImageView.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mToggleSwitch.setVisibility(View.GONE);
                 } else {
-                    customFilterListViewHolder.deleteImageView.setVisibility(View.GONE);
-                    customFilterListViewHolder.toggleSwitch.setVisibility(View.VISIBLE);
+                    customFilterListViewHolder.mDeleteImageView.setVisibility(View.GONE);
+                    customFilterListViewHolder.mToggleSwitch.setVisibility(View.VISIBLE);
                 }
 
-                customFilterListViewHolder.deleteImageView.setOnClickListener(
+                customFilterListViewHolder.mDeleteImageView.setOnClickListener(
                         view -> {
                             if (mIsEdit) {
                                 mBraveContentFileringListener.onSubscriptionFilterDelete(
                                         holder.getAdapterPosition() - TWO_ITEMS_SPACE);
                             }
                         });
-                customFilterListViewHolder.urlText.setVisibility(View.VISIBLE);
-                customFilterListViewHolder.arrowImageView.setVisibility(View.GONE);
+                customFilterListViewHolder.mUrlText.setVisibility(View.VISIBLE);
+                customFilterListViewHolder.mArrowImageView.setVisibility(View.GONE);
             }
 
             customFilterListViewHolder.itemView.setOnClickListener(
@@ -186,11 +191,11 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                 String description = storage.get("desc").getStringValue();
                 boolean isEnabled = storage.get("enabled").getBoolValue();
                 String uuid = storage.get("uuid").getStringValue();
-                filterListViewHolder.titleText.setText(title);
-                filterListViewHolder.descriptionText.setText(description);
-                filterListViewHolder.toggleSwitch.setChecked(isEnabled);
+                filterListViewHolder.mTitleText.setText(title);
+                filterListViewHolder.mDescriptionText.setText(description);
+                filterListViewHolder.mToggleSwitch.setChecked(isEnabled);
 
-                filterListViewHolder.toggleSwitch.setOnClickListener(
+                filterListViewHolder.mToggleSwitch.setOnClickListener(
                         view -> {
                             storage.get("enabled").setBoolValue(!isEnabled);
                             mBraveContentFileringListener.onFilterToggle(uuid, !isEnabled);
@@ -265,47 +270,47 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public static class FilterListHeaderViewHolder extends RecyclerView.ViewHolder {
-        TextView titleText;
-        TextView summaryText;
+        TextView mTitleText;
+        TextView mSummaryText;
 
         FilterListHeaderViewHolder(View itemView) {
             super(itemView);
-            this.titleText = (TextView) itemView.findViewById(R.id.title_text);
-            this.summaryText = (TextView) itemView.findViewById(R.id.summary_text);
+            mTitleText = (TextView) itemView.findViewById(R.id.title_text);
+            mSummaryText = (TextView) itemView.findViewById(R.id.summary_text);
         }
     }
 
     public static class CustomFilterListViewHolder extends RecyclerView.ViewHolder {
-        TextView titleText;
-        TextView lastUpdateText;
-        TextView urlText;
-        ImageView deleteImageView;
-        ImageView arrowImageView;
-        SwitchCompat toggleSwitch;
-        View divider;
+        TextView mTitleText;
+        TextView mLastUpdateText;
+        TextView mUrlText;
+        ImageView mDeleteImageView;
+        ImageView mArrowImageView;
+        SwitchCompat mToggleSwitch;
+        View mDivider;
 
         CustomFilterListViewHolder(View itemView) {
             super(itemView);
-            this.titleText = (TextView) itemView.findViewById(R.id.title_text);
-            this.lastUpdateText = (TextView) itemView.findViewById(R.id.last_update_text);
-            this.urlText = (TextView) itemView.findViewById(R.id.url_text);
-            this.deleteImageView = (ImageView) itemView.findViewById(R.id.iv_delete);
-            this.arrowImageView = (ImageView) itemView.findViewById(R.id.iv_arrow);
-            this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
-            this.divider = itemView.findViewById(R.id.divider);
+            mTitleText = (TextView) itemView.findViewById(R.id.title_text);
+            mLastUpdateText = (TextView) itemView.findViewById(R.id.last_update_text);
+            mUrlText = (TextView) itemView.findViewById(R.id.url_text);
+            mDeleteImageView = (ImageView) itemView.findViewById(R.id.iv_delete);
+            mArrowImageView = (ImageView) itemView.findViewById(R.id.iv_arrow);
+            mToggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
+            mDivider = itemView.findViewById(R.id.divider);
         }
     }
 
     public static class FilterListViewHolder extends RecyclerView.ViewHolder {
-        TextView titleText;
-        TextView descriptionText;
-        SwitchCompat toggleSwitch;
+        TextView mTitleText;
+        TextView mDescriptionText;
+        SwitchCompat mToggleSwitch;
 
         FilterListViewHolder(View itemView) {
             super(itemView);
-            this.titleText = (TextView) itemView.findViewById(R.id.title_text);
-            this.descriptionText = (TextView) itemView.findViewById(R.id.description_text);
-            this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
+            mTitleText = (TextView) itemView.findViewById(R.id.title_text);
+            mDescriptionText = (TextView) itemView.findViewById(R.id.description_text);
+            mToggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
         }
     }
 }

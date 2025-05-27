@@ -46,9 +46,9 @@ public class KeyringModel implements KeyringServiceObserver {
 
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
-    private final MutableLiveData<AccountInfo> _mSelectedAccount;
-    private final MutableLiveData<AllAccountsInfo> _mAllAccountsInfo;
-    private final MutableLiveData<List<AccountInfo>> _mAccountInfos;
+    private final MutableLiveData<AccountInfo> mMutableSelectedAccount;
+    private final MutableLiveData<AllAccountsInfo> mMutableAllAccountsInfo;
+    private final MutableLiveData<List<AccountInfo>> mMutableAccountInfos;
     private final CryptoSharedActions mCryptoSharedActions;
     public LiveData<List<AccountInfo>> mAccountInfos;
     public LiveData<AccountInfo> mSelectedAccount;
@@ -62,12 +62,12 @@ public class KeyringModel implements KeyringServiceObserver {
         mBraveWalletService = braveWalletService;
         mCryptoSharedActions = cryptoSharedActions;
 
-        _mSelectedAccount = new MutableLiveData<>();
-        mSelectedAccount = _mSelectedAccount;
-        _mAllAccountsInfo = new MutableLiveData<>();
-        mAllAccountsInfo = _mAllAccountsInfo;
-        _mAccountInfos = new MutableLiveData<>(Collections.emptyList());
-        mAccountInfos = _mAccountInfos;
+        mMutableSelectedAccount = new MutableLiveData<>();
+        mSelectedAccount = mMutableSelectedAccount;
+        mMutableAllAccountsInfo = new MutableLiveData<>();
+        mAllAccountsInfo = mMutableAllAccountsInfo;
+        mMutableAccountInfos = new MutableLiveData<>(Collections.emptyList());
+        mAccountInfos = mMutableAccountInfos;
     }
 
     public void init() {
@@ -84,11 +84,12 @@ public class KeyringModel implements KeyringServiceObserver {
             if (mKeyringService == null) {
                 return;
             }
-            mKeyringService.getAllAccounts(allAccounts -> {
-                _mAllAccountsInfo.postValue(allAccounts);
-                _mAccountInfos.postValue(Arrays.asList(allAccounts.accounts));
-                _mSelectedAccount.postValue(allAccounts.selectedAccount);
-            });
+            mKeyringService.getAllAccounts(
+                    allAccounts -> {
+                        mMutableAllAccountsInfo.postValue(allAccounts);
+                        mMutableAccountInfos.postValue(Arrays.asList(allAccounts.accounts));
+                        mMutableSelectedAccount.postValue(allAccounts.selectedAccount);
+                    });
         }
     }
 
@@ -97,7 +98,7 @@ public class KeyringModel implements KeyringServiceObserver {
             if (mKeyringService == null || accountInfoToSelect == null) {
                 return;
             }
-            AccountInfo selectedAccount = _mSelectedAccount.getValue();
+            AccountInfo selectedAccount = mMutableSelectedAccount.getValue();
             if (selectedAccount != null
                     && WalletUtils.accountIdsEqual(selectedAccount, accountInfoToSelect)) {
                 return;
@@ -289,12 +290,12 @@ public class KeyringModel implements KeyringServiceObserver {
         if (!removeHiddenNetworks.isEmpty()) {
             removeHiddenNetworksLiveData.observeForever(
                     new Observer<>() {
-                        int countRemovedHiddenNetworks;
+                        int mCountRemovedHiddenNetworks;
 
                         @Override
                         public void onChanged(Boolean success) {
-                            countRemovedHiddenNetworks++;
-                            if (countRemovedHiddenNetworks == removeHiddenNetworks.size()) {
+                            mCountRemovedHiddenNetworks++;
+                            if (mCountRemovedHiddenNetworks == removeHiddenNetworks.size()) {
                                 removeHiddenNetworksLiveData.removeObserver(this);
 
                                 if (!addHiddenNetworksLiveData.hasActiveObservers()) {
@@ -319,12 +320,12 @@ public class KeyringModel implements KeyringServiceObserver {
         if (!addHiddenNetworks.isEmpty()) {
             addHiddenNetworksLiveData.observeForever(
                     new Observer<>() {
-                        int countAddedHiddenNetworks;
+                        int mCountAddedHiddenNetworks;
 
                         @Override
                         public void onChanged(Boolean success) {
-                            countAddedHiddenNetworks++;
-                            if (countAddedHiddenNetworks == addHiddenNetworks.size()) {
+                            mCountAddedHiddenNetworks++;
+                            if (mCountAddedHiddenNetworks == addHiddenNetworks.size()) {
                                 addHiddenNetworksLiveData.removeObserver(this);
 
                                 if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
@@ -424,12 +425,12 @@ public class KeyringModel implements KeyringServiceObserver {
 
             createAccountsLiveData.observeForever(
                     new Observer<>() {
-                        int countCreatedAccounts;
+                        int mCountCreatedAccounts;
 
                         @Override
                         public void onChanged(Boolean success) {
-                            countCreatedAccounts++;
-                            if (countCreatedAccounts == createAccounts.size()) {
+                            mCountCreatedAccounts++;
+                            if (mCountCreatedAccounts == createAccounts.size()) {
                                 createAccountsLiveData.removeObserver(this);
                                 // Set ETH account by default as initial state.
                                 selectEthAccount(result, callback);

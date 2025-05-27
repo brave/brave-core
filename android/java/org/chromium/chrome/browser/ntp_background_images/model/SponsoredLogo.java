@@ -6,31 +6,31 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class SponsoredLogo {
-    private final String imageUrl;
-    private final String alt;
-    private final String companyName;
-    private final String destinationUrl;
+    private final String mImageUrl;
+    private final String mAlt;
+    private final String mCompanyName;
+    private final String mDestinationUrl;
 
     public SponsoredLogo(String imageUrl, String alt, String companyName, String destinationUrl) {
-        this.imageUrl = imageUrl;
-        this.alt = alt;
-        this.companyName = companyName;
-        this.destinationUrl = destinationUrl;
+        mImageUrl = imageUrl;
+        mAlt = alt;
+        mCompanyName = companyName;
+        mDestinationUrl = destinationUrl;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return mImageUrl;
     }
 
     public String getAlt() {
-        return alt;
+        return mAlt;
     }
 
     public String getCompanyName() {
-        return companyName;
+        return mCompanyName;
     }
 
     public String getDestinationUrl() {
-        return destinationUrl;
+        return mDestinationUrl;
     }
 }

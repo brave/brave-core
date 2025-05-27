@@ -14,18 +14,18 @@ import org.chromium.base.Log;
 
 public class TunnelModel implements Tunnel {
     public static final String TUNNEL_NAME = "Brave";
-    private final String name;
+    private final String mName;
 
     @SuppressWarnings("UnusedVariable")
-    private final Config config;
+    private final Config mConfig;
 
-    private final TunnelStateUpdateListener tunnelStateUpdateListener;
+    private final TunnelStateUpdateListener mTunnelStateUpdateListener;
 
     public State getState() {
-        return state;
+        return mState;
     }
 
-    private Tunnel.State state;
+    private Tunnel.State mState;
 
     interface TunnelStateUpdateListener {
         void onTunnelStateUpdated(TunnelModel tunnelModel);
@@ -39,24 +39,27 @@ public class TunnelModel implements Tunnel {
         return new TunnelModel(TUNNEL_NAME, config, Tunnel.State.DOWN, tunnelStateUpdateListener);
     }
 
-    private TunnelModel(String name, Config config, State state,
+    private TunnelModel(
+            String name,
+            Config config,
+            State state,
             TunnelStateUpdateListener tunnelStateUpdateListener) {
-        this.name = name;
-        this.config = config;
-        this.state = state;
-        this.tunnelStateUpdateListener = tunnelStateUpdateListener;
+        mName = name;
+        mConfig = config;
+        mState = state;
+        mTunnelStateUpdateListener = tunnelStateUpdateListener;
     }
 
     @NonNull
     @Override
     public String getName() {
-        return name;
+        return mName;
     }
 
     @Override
     public void onStateChange(@NonNull State newState) {
-        this.state = newState;
-        tunnelStateUpdateListener.onTunnelStateUpdated(this);
+        mState = newState;
+        mTunnelStateUpdateListener.onTunnelStateUpdated(this);
         Log.d("Tunnel State", newState.name());
     }
 }

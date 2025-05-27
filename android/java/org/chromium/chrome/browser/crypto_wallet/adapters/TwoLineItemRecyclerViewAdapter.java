@@ -199,7 +199,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         public ImageType imageType;
         public String imgData;
 
-        private Callbacks.Callback2<TextView, TextView> updateViewCb;
+        public Callbacks.Callback2<TextView, TextView> updateViewCb;
 
         public TwoLineItemText(
                 String title,

@@ -29,37 +29,42 @@ import java.util.List;
 
 public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
     private static final String TAG = "RewardsOnboarding";
-    private boolean shouldShowMoreOptions;
-    private TextView adsPerHourText;
-    private final String countryCode = BraveRewardsNativeWorker.getInstance().getCountryCode();
-    private final List<Integer> adsPerHourValues = Arrays.asList(0, 1, 2, 3, 4, 5, 10);
+    private boolean mShouldShowMoreOptions;
+    private TextView mAdsPerHourText;
+    private final String mCountryCode = BraveRewardsNativeWorker.getInstance().getCountryCode();
+    private static final List<Integer> sAdsPerHourValues = Arrays.asList(0, 1, 2, 3, 4, 5, 10);
 
     public void setOnboardingType(boolean shouldShowMoreOptions) {
-        this.shouldShowMoreOptions = shouldShowMoreOptions;
+        mShouldShowMoreOptions = shouldShowMoreOptions;
     }
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         View view;
         Context context = ContextUtils.getApplicationContext();
-        if (shouldShowMoreOptions && position == (getImages().size() - 2)) {
+        if (mShouldShowMoreOptions && position == (getImages().size() - 2)) {
             int adsPerHour = BraveRewardsNativeWorker.getInstance().getAdsPerHour();
-            int adsValue = adsPerHourValues.indexOf(adsPerHour);
-            view = LayoutInflater.from(ContextUtils.getApplicationContext())
-                           .inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
+            int adsValue = sAdsPerHourValues.indexOf(adsPerHour);
+            view =
+                    LayoutInflater.from(ContextUtils.getApplicationContext())
+                            .inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
             Slider adsPerHourSlider = view.findViewById(R.id.ads_per_hour_slider);
-            adsPerHourSlider.setValueTo(adsPerHourValues.size() - 1);
+            adsPerHourSlider.setValueTo(sAdsPerHourValues.size() - 1);
             adsPerHourSlider.setValueFrom(0);
             adsPerHourSlider.setValue(adsValue);
             adsPerHourSlider.setLabelBehavior(LabelFormatter.LABEL_GONE);
-            adsPerHourText = view.findViewById(R.id.ads_per_hour_text);
-            adsPerHourText.setText(
-                    String.format(ContextUtils.getApplicationContext().getResources().getString(
-                                          R.string.ads_per_hour),
+            mAdsPerHourText = view.findViewById(R.id.ads_per_hour_text);
+            mAdsPerHourText.setText(
+                    String.format(
+                            ContextUtils.getApplicationContext()
+                                    .getResources()
+                                    .getString(R.string.ads_per_hour),
                             adsPerHour));
-            adsPerHourSlider.addOnSliderTouchListener(touchListener);
+            adsPerHourSlider.addOnSliderTouchListener(mTouchListener);
         } else {
-            view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
+            view =
+                    LayoutInflater.from(ContextUtils.getApplicationContext())
+                            .inflate(R.layout.brave_rewards_onboarding_item_layout, null);
             TextView titleView = view.findViewById(R.id.title_view);
             titleView.setText(getTitles(context).get(position));
             TextView textView = view.findViewById(R.id.onboarding_text_view);
@@ -78,7 +83,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return shouldShowMoreOptions ? getImages().size() : getImages().size() - 1;
+        return mShouldShowMoreOptions ? getImages().size() : getImages().size() - 1;
     }
 
     @Override
@@ -90,7 +95,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         List<String> headers = new ArrayList();
         headers.add(context.getResources().getString(R.string.welcome_to_brave_rewards));
         headers.add(context.getResources().getString(R.string.where_do_ads_show_up));
-        if (!countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
+        if (!mCountryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
             headers.add(context.getResources().getString(R.string.giving_back_made_effortless));
         }
         headers.add(context.getResources().getString(R.string.say_thank_you_with_tips));
@@ -103,7 +108,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         List<String> texts = new ArrayList();
         texts.add(context.getResources().getString(R.string.welcome_to_brave_rewards_text));
         texts.add(context.getResources().getString(R.string.where_do_ads_show_up_text));
-        if (!countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
+        if (!mCountryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
             texts.add(context.getResources().getString(R.string.giving_back_made_effortless_text));
         }
         texts.add(context.getResources().getString(R.string.say_thank_you_with_tips_text));
@@ -116,7 +121,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         List<Integer> images = new ArrayList();
         images.add(R.drawable.ic_onboarding_graphic_bat_ecosystem);
         images.add(R.drawable.ic_onboarding_graphic_android_brave_ads);
-        if (!countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
+        if (!mCountryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
             images.add(R.drawable.ic_onboarding_graphic_auto_contribute);
         }
         images.add(R.drawable.ic_onboarding_graphic_tipping);
@@ -125,7 +130,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         return images;
     }
 
-    private final Slider.OnSliderTouchListener touchListener =
+    private final Slider.OnSliderTouchListener mTouchListener =
             new Slider.OnSliderTouchListener() {
                 @Override
                 public void onStartTrackingTouch(Slider slider) {
@@ -135,9 +140,9 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                 @Override
                 public void onStopTrackingTouch(Slider slider) {
                     try {
-                        if (adsPerHourText != null) {
-                            int adsValue = adsPerHourValues.get((int) slider.getValue());
-                            adsPerHourText.setText(
+                        if (mAdsPerHourText != null) {
+                            int adsValue = sAdsPerHourValues.get((int) slider.getValue());
+                            mAdsPerHourText.setText(
                                     String.format(
                                             ContextUtils.getApplicationContext()
                                                     .getResources()
