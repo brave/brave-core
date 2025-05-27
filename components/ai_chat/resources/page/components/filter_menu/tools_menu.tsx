@@ -32,7 +32,7 @@ export default function ToolsMenu({
     {(item) => !item.details
       ? <div className={styles.menuSubtitle}>{item.subheading}</div>
       : <leo-menu-item
-        key={item.details!.type}
+        key={item.details.type}
         onClick={() => handleClick(item.details!.type)}
       >
         {item.details.label}

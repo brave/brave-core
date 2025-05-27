@@ -403,7 +403,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     if (context.inputText.startsWith('/')) {
       update.inputText = ''
     }
-    
+
     setPartialContext(update)
   }
 
