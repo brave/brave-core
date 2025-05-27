@@ -54,6 +54,12 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="4450893287417543264">Ne prikazuj več</translation>
 <translation id="4595286989346610620">Preverite podrobnosti</translation>
 <translation id="8324318899000695659">Blokiraj elemente</translation>
+<translation id="3828310068250853121">Izberite element, ki ga želite blokirati</translation>
+<translation id="2577286987423083872">Blokiraj elemente</translation>
+<translation id="3211174446914979436">Upravljaj filtre</translation>
+<translation id="3108584651298176909">Prikaži pravila</translation>
+<translation id="5156986655891520787">Skrij pravila</translation>
+<translation id="7658239707568436148">Prekliči</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Odpiranje s pomočjo naslova .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vseeno prilepi</translation>
@@ -95,7 +101,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="8117247596084706514">Stran je zahtevala podatke o vaši <ph name="PART_ONE"/>natančni lokaciji<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Več o tem<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Stran je zahtevala podatke o vaši <ph name="PART_ONE"/>natančni lokaciji<ph name="PART_ONE_END"/>. Brave bo lahko zagotovil le podatek o<ph name="PART_TWO"/>splošni lokaciji<ph name="PART_TWO_END"/>, in sicer zaradi onemogočenih <ph name="PART_THREE"/>Storitev v zvezi z lokacijo<ph name="PART_THREE_END"/>. <ph name="PART_FOUR"/>Več o tem<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Zapri vse</translation>
-<translation id="7658239707568436148">Prekliči</translation>
 <translation id="4870911314065352661">Zaprem vse zavihke?</translation>
 <translation id="7551864359422178684">V tem oknu brskalnika so odprti <ph name="NUMBER_OF_TABS"/> zavihki.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> zavihkov</translation>
@@ -135,6 +140,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3447730462826640312">Za zaslužek vam ni treba klikati, kliknite pa, če vas zanima!</translation>
 <translation id="5253166205743627564">Hvala, ker s klikom na zasebni oglas podpirate Brave Search. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
 <translation id="8748471354357836070">Več informacij/možnosti odjave</translation>
+<translation id="5927196110206824867">Sponzorirane slike v ozadju podpirajo poslanstvo družbe Brave, da gradi neodvisen in uporabniku prijazen splet. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Prispevajte nekaj podatkov anonimnega iskanja in brskanja, da izboljšate iskalnik Brave Search.</translation>
 <translation id="1516554614404600536">Namig o orodju Brave</translation>
@@ -476,6 +482,9 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="7791141927430186653">Dovoli X (prej Twitter) vdelane tvite</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
+<translation id="1244912498725894944">Nekatere nastavitve piškotkov nadzorujejo Brave Ščiti. Ogledate si jih lahko &lt;a href="/content/braveShields"&gt;tukaj&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">To nastavitev nadzorujejo Brave Ščiti.</translation>
+<translation id="352287031024189516">To nastavitev nadzoruje Prijava z Googlom.</translation>
 <translation id="8792121506918889955">Politika ravnanja z WebRTC IP</translation>
 <translation id="8798099450830957504">Privzeto</translation>
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
@@ -677,8 +686,12 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="856371974127598760">Omrežja denarnice</translation>
 <translation id="5975930666279943472">Počistite podatke o transakcijah denarnice in številu nonce</translation>
 <translation id="5693968582510626466">Transakcije brisanja so lahko uporabne za razvijalce ali pri čiščenju stanja na lokalnem strežniku</translation>
-<translation id="2326850911705720398">Reset and clear wallet data</translation>
+<translation id="6171369470447621882">Ponastavitev stanja sinhronizacije Zcash</translation>
+<translation id="6705112675071480687">Ponastavitev napredka sinhronizacije Zcash za vse zaščitene račune</translation>
+<translation id="2012093487873597892">Ste prepričani, da želite ponastaviti stanje sinhronizacije Zcash? Napredek sinhronizacije za vse zaščitene račune bo opuščen. Za potrditev vnesite "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="5031551083187285762">Vaše stanje sinhronizacije za račune Zcash je bilo ponastavljeno.</translation>
 <translation id="9216386092464743272">Ali ste prepričani, da želite ponastaviti vse podatke o transakcijah v denarnici in nonce? To možnost večinoma uporabljajo razvijalci, ki izvajajo lokalni testni strežnik. Vpišite "<ph name="CONFIRMATION_PHRASE"/>" in potrdite.</translation>
+<translation id="2326850911705720398">Reset and clear wallet data</translation>
 <translation id="6369495274982305511">Ali ste prepričani, da želite ponastaviti denarnico? Če vaša denarnica ni varnostno kopirana, bo ponastavitev povzročila, da izgubite vse podatke o računu (vključno s pripadajočimi sredstvi). Vnesite "<ph name="CONFIRMATION_PHRASE"/>", da potrdite.</translation>
 <translation id="3752403403443723332">Vaša denarnica je bila ponastavljena.</translation>
 <translation id="594766067816395072">Podatki o transakciji v denarnici so bili ponastavljeni.</translation>

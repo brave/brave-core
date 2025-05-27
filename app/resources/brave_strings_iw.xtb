@@ -29,15 +29,16 @@
 <translation id="1356661055722410047">חדש! אפשר לתרגם טקסט ותמונות במסך</translation>
 <translation id="1383876407941801731">חיפוש</translation>
 <translation id="8132634101975074716">‏נכנסת ל-Brave!</translation>
+<translation id="141901961143729572">כאן אפשר לשתף את המחשבות שלך</translation>
 <translation id="3880714039086599943">‏כדי לשתף את החלון, צריך לאפשר הקלטת מסך ב-Brave בקטע "הגדרות המערכת".</translation>
 <translation id="1586284627848250203">‏קבלת עזרה לגבי Brave for Testing</translation>
 <translation id="1497802159252041924">שגיאת התקנה: <ph name="INSTALL_ERROR"/></translation>
+<translation id="1518627427551567882">הדף הזה מוגן</translation>
 <translation id="5147525139567260139">‏שיתוף כרטיסיית Brave</translation>
 <translation id="1547469039832541117">סיום המשימה המודגשת.</translation>
 <translation id="1530633922026945685">‏Brave זקוק להרשאת גישה למצלמה כדי ליצור מפה תלת-ממדית של הסביבה שלך</translation>
 <translation id="9125033103884432">{NUM_EXTENSIONS,plural, =1{‏התוסף הזה כבר לא נתמך. אנחנו ממליצים להסיר אותו מ-Brave.}one{‏התוספים האלה כבר לא נתמכים. אנחנו ממליצים להסיר אותם מ-Brave.}two{‏התוספים האלה כבר לא נתמכים. אנחנו ממליצים להסיר אותם מ-Brave.}other{‏התוספים האלה כבר לא נתמכים. אנחנו ממליצים להסיר אותם מ-Brave.}}</translation>
 <translation id="6570689355868013775">‏הכלים לבטיחות של Brave</translation>
-<translation id="6198411733024382246">‏‫Brave צריך לאמת את הזהות שלך לפני שאפשר יהיה לשמור חלק מהנתונים בחשבון Brave ולהשתמש בהם בכל המכשירים שלך. אם תתבצע יציאה מהחשבון, הנתונים האלה יישארו במכשיר הזה.</translation>
 <translation id="1902837727299679178">‏‫Brave רוצה למחוק את הנתונים שלך במנהל הסיסמאות. כדי לאפשר זאת, צריך להזין את הסיסמה שלך ל-Windows.</translation>
 <translation id="4449148723378534338">‏בדיקה של אמצעי הבקרה החשובים ביותר על פרטיות ואבטחה ב-Brave</translation>
 <translation id="1640672724030957280">מוריד...</translation>
@@ -161,6 +162,7 @@
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{‏תוסף אחד לפחות ל-Brave ניגש להתקן USB אחד}=1{‏תוסף אחד לפחות ל-Brave ניגש להתקן USB אחד}one{‏תוסף אחד לפחות ל-Brave ניגש ל-# התקני USB}two{‏תוסף אחד לפחות ל-Brave ניגש ל-# התקני USB}other{‏תוסף אחד לפחות ל-Brave ניגש ל-# התקני USB}}</translation>
 <translation id="5320085753638900910">‏היסטוריית הגלישה שלך משפיעה על המודעות שמוצגות לך ועל תחומי העניין המשוערים שמופיעים בהמשך. כדי להגן על הפרטיות שלך, מתבצעת ב-Brave מחיקה אוטומטית של תחומי העניין שלך על בסיס מתחלף מדי חודש. תחומי עניין שלא הוסרו עוברים רענון.</translation>
 <translation id="7365690458036015383">‏המתקין לא הצליח לבטל את דחיסת הארכיון. יש להוריד שוב את Brave.</translation>
+<translation id="310459126943037700">סיום המשימות נכשל.</translation>
 <translation id="8919461291440820124">‏Brave משתמש במיקרופון שלך.</translation>
 <translation id="3137969841538672700">צריך לגרור כדי לחפש</translation>
 <translation id="8372436892102763334">‏בכרטיסייה הזו נעשה שימוש במשאבים נוספים. כדי לשפר את הביצועים, כדאי לאפשר ל-Brave להשבית אותה.</translation>
@@ -200,7 +202,6 @@
 <translation id="308146532933302843">‏למה הורדות מסוימות נחסמות ב-Brave</translation>
 <translation id="2189149060536531804">‏Brave יעדכן אותך אם יש משהו שצריך לבדוק</translation>
 <translation id="6324134303015966238">‏כדי שהדפים שבהם מבקרים ייטענו מהר יותר, מערכת Brave טוענת מראש דפים שיש סיכוי גבוה שייפתחו.</translation>
-<translation id="2401189691232800402">‏מערכת ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3885770153807205175">הכלי לבחירת שפה</translation>
 <translation id="6315734375101223238">‏התאמה אישית וניהול של Brave נחוצה פעולה שלך - יש ללחוץ לקבלת פרטים נוספים.</translation>
@@ -210,6 +211,7 @@
 <translation id="3941890832296813527">שגיאת התקנה: שם הקובץ של מנהל ההתקנה לא תקין או לא נתמך.</translation>
 <translation id="8090497651549769448">‏Brave מנסה להעתיק את הסיסמאות. כדי לאפשר למערכת לעשות זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
 <translation id="4256965182800026277">‏הסיסמאות, אמצעי התשלום והכתובות ששמרת בחשבון שלך ב-Brave יוסרו מהמכשיר הזה. כדי להשתמש בהם שוב ב-Brave, צריך להיכנס שוב לחשבון.</translation>
+<translation id="395904275706073188">לא ניתן לקרוא דפים מוגנים. כדאי לנסות דף אחר.</translation>
 <translation id="4194619960643453552">‏איך מערכת Brave שומרת על האבטחה שלך</translation>
 <translation id="1311808042904310985">‏מידע על &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">‏מידע על ChromeOS</translation>
@@ -328,6 +330,7 @@
 <translation id="82926023981336111">‏אפשר להתאים אישית את Brave ולנהל אותו. הגדרת Brave כברירת המחדל.</translation>
 <translation id="5809516625706423866">‏לא ניתן להתחבר לאינטרנט. HTTP 401: אין הרשאה. צריך לבדוק את ההגדרה של שרת ה-proxy.</translation>
 <translation id="1224606669200461217">‏כדי להשתמש בנתוני Brave ולשמור אותם בחשבון Brave, עליך לעדכן את Brave</translation>
+<translation id="5824893331272123205">לא הצלחנו לטעון את החלונית, אפשר לנסות שוב</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="5871205389137001634">יש ללחוץ כדי לצאת מחיפוש התמונות</translation>
 <translation id="8054200348483755053">‏מערכת Brave גילתה שהפריטים האלה מכילים תוכנה זדונית:</translation>
@@ -459,6 +462,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7339898014177206373">חלון חדש</translation>
 <translation id="3511996232906761537">‏היסטוריית האתרים, הסימניות ונתונים נוספים מ-Brave נמצאים כאן.</translation>
 <translation id="5380963249588143069">‏לפי הגדרת מנהל המערכת, Brave יפתח את<ph name="ALTERNATIVE_BROWSER_NAME"/> כדי לגשת אל <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="7352651011704765696">משהו השתבש</translation>
 <translation id="4631170166710903214">‏התוסף הזה כבר לא נתמך. ההמלצה של Brave היא להסיר אותו.</translation>
 <translation id="3943696263619956191">‏<ph name="PAGE_TITLE"/> - Brave בגרסת פיתוח</translation>
 <translation id="7450541714075000668">הטקסט הועתק</translation>
@@ -479,6 +483,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="3343095737966473035">‏Brave אינו דפדפן ברירת המחדל שלך</translation>
 <translation id="5477319665405831211">‏סנכרון והתאמה אישית של Brave בכל המכשירים שברשותך</translation>
 <translation id="2339273275658335597">‏עדכון ל-Brave</translation>
+<translation id="7716950018788545737">המשימות הסתיימו.</translation>
 <translation id="77283119132245232">השירות הזה מספק תיעוד של עקבות המערכת ל-<ph name="BROWSER_NAME"/>. אם השירות הזה מושבת, נתוני המעקב אחר הביצועים שנוצרים על ידי הדפדפן לא יכללו אירועים כלל-מערכתיים, כמו אירועי החלפת הקשר ואירועי שרשור מוכנים.</translation>
 <translation id="4784414698887946907">‏פעולה זו תמחק את נתוני הגלישה מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, יש להיכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">המתקין לא הצליח ליצור ספרייה זמנית. יש לבדוק את המקום הפנוי בדיסק ואת האישור להתקנת תוכנה.</translation>
@@ -529,6 +534,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="9098234372282930719">‏לאחר מכן יהיה עליך להפעיל מחדש את Brave.</translation>
 <translation id="1327729221471951979">‏ההמלצה של Brave היא להסיר אותו. <ph name="BEGIN_LINK"/>מידע נוסף על תוספים נתמכים<ph name="END_LINK"/></translation>
 <translation id="8577108764439626300">‏הפרסום של התוסף הזה בוטל על ידי המפתח שלו, ויכול להיות שהתוסף לא בטוח. צריך להסיר אותו מ-Brave כדי לא לאפשר לו יותר להציג ולשנות את הנתונים שלך באתרים שאליהם תתבצע כניסה, כולל הפרטים האישיים שלך.</translation>
+<translation id="4234753748520037091">‏‫Brave צריך לאמת את הזהות שלך לפני שאפשר יהיה לשמור חלק מהנתונים בחשבון Brave ולהשתמש בהם בכל המכשירים שלך. אם תתבצע יציאה מהחשבון, הנתונים האלה יימחקו.</translation>
 <translation id="5337999052834672687">{0,plural, =1{‏צריך להפעיל מחדש את Brave בתוך יום אחד}one{‏צריך להפעיל מחדש את Brave בתוך # ימים}two{‏צריך להפעיל מחדש את Brave בתוך # ימים}other{‏צריך להפעיל מחדש את Brave בתוך # ימים}}</translation>
 <translation id="8438543370129609977">‏כשמשתמשים בתכונה 'חיפוש תמונות', כותרת הדף, כתובת ה-URL והתוכן שלו, כולל קובצי PDF, נשלחים לשרת. <ph name="LEARN_MORE"/></translation>
 <translation id="6914496861676471566">‏הארכיון של המתקין פגום או שאינו חוקי. יש להוריד שוב את Brave.</translation>

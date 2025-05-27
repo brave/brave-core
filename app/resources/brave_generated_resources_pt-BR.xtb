@@ -52,6 +52,12 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Não exibir de novo</translation>
 <translation id="4595286989346610620">Ver detalhes</translation>
 <translation id="8324318899000695659">Bloquear elementos</translation>
+<translation id="3828310068250853121">Selecione o elemento que deseja bloquear</translation>
+<translation id="2577286987423083872">Bloquear elementos</translation>
+<translation id="3211174446914979436">Gerenciar filtros</translation>
+<translation id="3108584651298176909">Mostrar regras</translation>
+<translation id="5156986655891520787">Ocultar regras</translation>
+<translation id="7658239707568436148">Cancelar</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Abra usando o endereço .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forçar colagem</translation>
@@ -93,7 +99,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Este site solicitou sua <ph name="PART_ONE"/>localização precisa<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Saiba mais<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Este site solicitou sua <ph name="PART_ONE"/>localização precisa<ph name="PART_ONE_END"/>. O Brave apenas poderá fornecer os dados da <ph name="PART_TWO"/>localização geral <ph name="PART_TWO_END"/>, uma vez que os <ph name="PART_THREE"/>Serviços de Localização<ph name="PART_THREE_END"/> estão desativados. <ph name="PART_FOUR"/>Saiba mais<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Fechar tudo</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="4870911314065352661">Fechar todas as guias?</translation>
 <translation id="7551864359422178684">Você tem <ph name="NUMBER_OF_TABS"/> guias abertas nesta janela do navegador.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> guias</translation>
@@ -133,6 +138,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Você não precisa clicar para ganhar, mas clique se estiver interessado!</translation>
 <translation id="5253166205743627564">Obrigado por apoiar a Pesquisa Brave clicando em um anúncio privado. Ao contrário da Big Tech, medimos o desempenho de anúncios anonimamente para preservar sua privacidade.</translation>
 <translation id="8748471354357836070">Saiba mais/opções de desativação</translation>
+<translation id="5927196110206824867">As imagens de fundo patrocinadas apoiam a missão da Brave de criar uma Web independente que prioriza o usuário. Ao contrário das grandes empresas de tecnologia, medimos o desempenho dos anúncios de forma anônima para preservar sua privacidade.</translation>
 <translation id="4174337572777167894">Projeto de descoberta da web</translation>
 <translation id="8659271182272561965">Contribua com alguns dados anônimos de pesquisa e navegação para refinar a Pesquisa Brave.</translation>
 <translation id="1516554614404600536">Dica do Brave</translation>
@@ -473,6 +479,9 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="7791141927430186653">Permitir X tweets incorporados (anteriormente Twitter)</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
+<translation id="1244912498725894944">Algumas configurações de cookies são controladas pelas Proteções Brave. Você pode vê-las em &lt;a href="/content/braveShields"&gt;aqui&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Essa configuração é controlada pelas Proteções Brave.</translation>
+<translation id="352287031024189516">Essa configuração é controlada pelo Login do Google.</translation>
 <translation id="8792121506918889955">Política de manuseio de IP do WebRTC</translation>
 <translation id="8798099450830957504">Padrão</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas padrão</translation>
@@ -674,8 +683,12 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Redes de carteiras</translation>
 <translation id="5975930666279943472">Limpar informações de transação e nonce da carteira</translation>
 <translation id="5693968582510626466">A limpeza de transações pode ser útil para desenvolvedores ou ao limpar o estado em um servidor local</translation>
-<translation id="2326850911705720398">Redefinir e limpar dados da carteira</translation>
+<translation id="6171369470447621882">Redefinir estado de sincronização do Zcash</translation>
+<translation id="6705112675071480687">Redefine o progresso da sincronização do Zcash para todas as contas protegidas</translation>
+<translation id="2012093487873597892">Você tem certeza de que deseja redefinir o estado de sincronização do Zcash? O progresso da sincronização de todas as contas protegidas será interrompido. Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="5031551083187285762">Seu estado de sincronização para contas Zcash foi redefinido.</translation>
 <translation id="9216386092464743272">Tem certeza de que deseja redefinir todas as suas informações de transações e nonce? Essa opção é usada principalmente por desenvolvedores ao executar um servidor de teste local. Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="2326850911705720398">Redefinir e limpar dados da carteira</translation>
 <translation id="6369495274982305511">Tem certeza de que deseja redefinir sua carteira? Se sua carteira não for armazenada em backup, a redefinição fará com que você perca todos os dados da conta (incluindo todos os fundos associados). Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="3752403403443723332">Sua carteira foi redefinida.</translation>
 <translation id="594766067816395072">Suas informações de transações da carteira foram redefinidas.</translation>

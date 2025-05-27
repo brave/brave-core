@@ -52,6 +52,12 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="4450893287417543264">Ne mutassa többé</translation>
 <translation id="4595286989346610620">Részletek megtekintése</translation>
 <translation id="8324318899000695659">Elemek letiltása</translation>
+<translation id="3828310068250853121">Válassza ki a letiltani kívánt elemet</translation>
+<translation id="2577286987423083872">Elemek letiltása</translation>
+<translation id="3211174446914979436">Szűrők kezelése</translation>
+<translation id="3108584651298176909">Szabályok megjelenítése</translation>
+<translation id="5156986655891520787">Szabályok elrejtése</translation>
+<translation id="7658239707568436148">Elvetés</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Megnyitás .onion cím használatával: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Kényszerített beillesztés</translation>
@@ -93,7 +99,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8117247596084706514">A webhely hozzáférést kér az Ön <ph name="PART_ONE"/>pontos tartózkodási helyéhez<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>További tudnivalók<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">A webhely hozzáférést kér az Ön <ph name="PART_ONE"/>pontos tartózkodási helyéhez<ph name="PART_ONE_END"/>. A Brave csak a <ph name="PART_TWO"/>hozzávetőleges tartózkodási helyének<ph name="PART_TWO_END"/> adatait tudja megosztani, mert a <ph name="PART_THREE"/>Helyadat-szolgáltatások<ph name="PART_THREE_END"/> le vannak tiltva. <ph name="PART_FOUR"/>További tudnivalók<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Összes bezárása</translation>
-<translation id="7658239707568436148">Elvetés</translation>
 <translation id="4870911314065352661">Bezárja az összes lapot?</translation>
 <translation id="7551864359422178684">Ebben a böngészőablakban <ph name="NUMBER_OF_TABS"/> lap van megnyitva.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> lap</translation>
@@ -133,6 +138,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3447730462826640312">Nem szükséges az értesítésre kattintani a jutalom megszerzéséhez, de kattintson, ha érdeklik a részletek!</translation>
 <translation id="5253166205743627564">Köszönjük, hogy támogatja a Brave keresőmotort azzal, hogy rákattint egy privát hirdetésre. A nagy techcégekkel ellentétben mi anonim módon mérjük a hirdetések teljesítményét, hogy megőrizzük az Ön adatainak biztonságát.</translation>
 <translation id="8748471354357836070">További információk / lemondási lehetőségek</translation>
+<translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását</translation>
 <translation id="4174337572777167894">Web Discovery projekt</translation>
 <translation id="8659271182272561965">Szolgáltasson névtelen keresési és böngészési adatokat, hogy pontosabbá tegye a Brave Search-öt.</translation>
 <translation id="1516554614404600536">Brave elemleírás</translation>
@@ -473,6 +479,9 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="7791141927430186653">X (korábban: Twitter) beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
+<translation id="1244912498725894944">Egyes cookie-beállításokat a Brave Shields vezérli. Ezeket a &lt;a href="/content/braveShields"&gt;itt láthatja&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Ezt a beállítást a Brave Shields vezérli.</translation>
+<translation id="352287031024189516">Ezt a beállítást a Google Bejelentkezés vezérli.</translation>
 <translation id="8792121506918889955">WebRTC IP kezelési szabályzat</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
 <translation id="1822560017823072927">Alapértelmezett publikus és privát interfészek</translation>
@@ -674,8 +683,13 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="856371974127598760">Pénztárcahálózatok</translation>
 <translation id="5975930666279943472">Tárcatranzakciókkal kapcsolatos és nonce-adatok törlése</translation>
 <translation id="5693968582510626466">A tranzakciók törlése hasznos lehet fejlesztők számára, vagy pedig helyi kiszolgáló állapotának nullázásakor</translation>
-<translation id="2326850911705720398">A pénztárcaadatok visszaállítása és törlése</translation>
+<translation id="6171369470447621882">Zcash szinkronizálási állapot visszaállítása</translation>
+<translation id="6705112675071480687">Újraindítja a Zcash szinkronizálását minden védett fióknál</translation>
+<translation id="2012093487873597892">Biztosan vissza kívánja állítani a Zcash szinkronizálási állapotát?
+A szinkronizálás előrehaladása minden védett fióknál el fog veszni. A megerősítéshez írja be: „<ph name="CONFIRMATION_PHRASE"/>”.</translation>
+<translation id="5031551083187285762">A Zcash-fiókok szinkronizálása visszaállt.</translation>
 <translation id="9216386092464743272">Biztosan visszaállítja az összes, tárcatranzakciókkal kapcsolatos és nonce-adatot? Ezt a funkciót általában helyi tesztkiszolgálót üzemeltető fejlesztők használják. A megerősítéshez gépelje be a következőt: „<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="2326850911705720398">A pénztárcaadatok visszaállítása és törlése</translation>
 <translation id="6369495274982305511">Biztosan visszaállítja a pénztárcáját? Ha a pénztárcáról nem készült biztonsági mentés, a visszaállítással elveszíti az összes fiókadatot (beleértve a kapcsolódó forrásokat). A megerősítéshez írja be a következőt: "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="3752403403443723332">A pénztárcája vissza lett állítva.</translation>
 <translation id="594766067816395072">A tárcatranzakciókkal kapcsolatos adatai vissza lettek állítva.</translation>

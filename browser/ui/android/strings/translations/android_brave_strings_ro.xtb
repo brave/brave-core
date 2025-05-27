@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
 <translation id="6302422639282249274">Administrați recompensele Brave</translation>
-<translation id="2709516037105925701">Completare automată</translation>
 <translation id="8617525558807213034">Completați automat în filele private</translation>
 <translation id="8685431198160039193">Informațiile salvate pot fi completate automat în filele private</translation>
 <translation id="6583902294974160967">Asistență</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Aspect</translation>
 <translation id="9040069796107003510">Pictograma de Recompense Brave</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
-<translation id="8495235435594442882">Activați bara de instrumente de jos</translation>
+<translation id="1215433243238902715">Activează bara de navigare de jos</translation>
+<translation id="1422686363939271829">Această setare este dezactivată atunci când poziția barei de adrese este poziționată în partea de jos</translation>
 <translation id="6587448235155023666">Modificările dvs. vor intra în vigoare la următoarea pornire a Brave</translation>
 <translation id="8701563696941209024">RELANSEAZĂ ACUM</translation>
 <translation id="834487290629916192">MAI TÂRZIU</translation>
@@ -420,9 +420,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8520059774736886747">Creator <ph name="PUBLISHER_NAME"/> verificat recent</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Pagină filă nouă</translation>
+<translation id="5927196110206824867">Imaginile de fundal sponsorizate susțin misiunea Brave de a construi un web independent, centrat pe utilizator. Spre deosebire de marile companii de tehnologie, măsurăm performanța reclamelor în mod anonim, pentru a vă proteja confidențialitatea.</translation>
+<translation id="8748471354357836070">Află mai multe / opțiuni de renunțare</translation>
 <translation id="3171669670217312786">Imagini de fundal</translation>
 <translation id="8522669544471808198">Afișare imagini de fundal</translation>
 <translation id="3870475560794762985">Afișare imagini sponsorizate</translation>
+<translation id="6937724381960478525">Află mai multe despre imaginile sponsorizate</translation>
 <translation id="8793108040181436796">Widgeturi</translation>
 <translation id="8643377320501056697">Afișare site-uri de top</translation>
 <translation id="7275773481201277457">Afișare date statistice Brave</translation>

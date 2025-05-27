@@ -51,6 +51,12 @@
 <translation id="4450893287417543264">不再显示</translation>
 <translation id="4595286989346610620">查看详情</translation>
 <translation id="8324318899000695659">拦截元素</translation>
+<translation id="3828310068250853121">选择要拦截的元素</translation>
+<translation id="2577286987423083872">拦截元素</translation>
+<translation id="3211174446914979436">管理筛选器</translation>
+<translation id="3108584651298176909">显示规则</translation>
+<translation id="5156986655891520787">隐藏规则</translation>
+<translation id="7658239707568436148">取消</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 地址开启： <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">强制粘贴</translation>
@@ -92,7 +98,6 @@
 <translation id="8117247596084706514">此网站已要求您提供<ph name="PART_ONE"/>精确的所在位置<ph name="PART_ONE_END"/>。<ph name="PART_TWO"/>了解更多<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">此网站已要求您提供<ph name="PART_ONE"/>精确的所在位置<ph name="PART_ONE_END"/>。Brave 将只能提供<ph name="PART_TWO"/>一般所在位置<ph name="PART_TWO_END"/>资料，因为<ph name="PART_THREE"/>定位服务<ph name="PART_THREE_END"/> 已停用。<ph name="PART_FOUR"/>了解更多<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">全部关闭</translation>
-<translation id="7658239707568436148">取消</translation>
 <translation id="4870911314065352661">关闭所有标签页？</translation>
 <translation id="7551864359422178684">在此浏览器窗口中还有 <ph name="NUMBER_OF_TABS"/> 个标签页处于开启状态。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 个标签页</translation>
@@ -132,6 +137,7 @@
 <translation id="3447730462826640312">你无需点击以赚取收益，但如果你有兴趣，请点击查看！</translation>
 <translation id="5253166205743627564">感谢您通过点击私人广告支持 Brave 搜索。与大型科技公司不同，我们以匿名方式衡量广告效果，以保护您的隐私。</translation>
 <translation id="8748471354357836070">了解更多 / 退出选择</translation>
+<translation id="5927196110206824867">赞助背景图片支持 Brave 实现构建独立与用户优先网络的使命。不同于大型科技公司，我们通过匿名方式衡量广告效果，以保护您的隐私。</translation>
 <translation id="4174337572777167894">Web 发现项目</translation>
 <translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
@@ -472,6 +478,9 @@
 <translation id="863171915776379000">允许Facebook登陆和嵌入帖子</translation>
 <translation id="7791141927430186653">允许 X（原为 Twitter）嵌入的推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
+<translation id="1244912498725894944">某些 cookie 设置由 Brave 盾牌控制。您可以在&lt;a href="/content/braveShields"&gt;此处&lt;/a&gt;查看这些设置。</translation>
+<translation id="5352519841984162795">此设置由 Brave 盾牌控制。</translation>
+<translation id="352287031024189516">此设置由 Google Sign-in 控制。</translation>
 <translation id="8792121506918889955">WebRTC IP 处理政策</translation>
 <translation id="8798099450830957504">默认</translation>
 <translation id="1822560017823072927">默认公共和私人接口</translation>
@@ -673,8 +682,12 @@
 <translation id="856371974127598760">钱包网络</translation>
 <translation id="5975930666279943472">清除钱包交易和随机数信息</translation>
 <translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
-<translation id="2326850911705720398">重置和清除钱包数据</translation>
+<translation id="6171369470447621882">重置 Zcash 同步状态</translation>
+<translation id="6705112675071480687">重置所有盾牌保护账户的 Zcash 同步进度</translation>
+<translation id="2012093487873597892">您确定要重置 Zcash 同步状态吗？所有盾牌保护账户的同步进度将会被撤销。请输入“<ph name="CONFIRMATION_PHRASE"/>”进行确认。</translation>
+<translation id="5031551083187285762">您的 Zcash 账户同步状态已重置。</translation>
 <translation id="9216386092464743272">您确定要重置所有的钱包交易和随机数信息吗？这个选项主要由运行本地测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”进行确认。</translation>
+<translation id="2326850911705720398">重置和清除钱包数据</translation>
 <translation id="6369495274982305511">确定要重置钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括所有关联的资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>
 <translation id="3752403403443723332">您的钱包已重置。</translation>
 <translation id="594766067816395072">您的钱包交易信息已重置。</translation>

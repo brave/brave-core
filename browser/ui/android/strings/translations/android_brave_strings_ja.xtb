@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="6302422639282249274">Brave Rewardsの管理</translation>
-<translation id="2709516037105925701">自動入力</translation>
 <translation id="8617525558807213034">プライベートタブに自動入力</translation>
 <translation id="8685431198160039193">情報を保存してプライベートタブに自動入力することができます</translation>
 <translation id="6583902294974160967">サポート</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">デザイン</translation>
 <translation id="9040069796107003510">Braveリワードアイコン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
-<translation id="8495235435594442882">下部のツールバーを有効にします</translation>
+<translation id="1215433243238902715">下部ナビゲーションツールバーを有効にする</translation>
+<translation id="1422686363939271829">この設定は、アドレスバーの位置が下部に配置されている場合は無効になります。</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
 <translation id="8701563696941209024">今すぐ再起動</translation>
 <translation id="834487290629916192">後で</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">クリエイター<ph name="PUBLISHER_NAME"/>が最近設定を完了しました</translation>
 <translation id="1486343603936278248">トークン</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
+<translation id="5927196110206824867">スポンサー画像は、ユーザーファーストの独立したウェブを構築するというBraveのミッションをサポートしています。また、ビッグテックとは異なり、あなたのプライバシーを守るために匿名で広告パフォーマンスを測定します。</translation>
+<translation id="8748471354357836070">詳細 / オプトアウトの選択</translation>
 <translation id="3171669670217312786">背景画像</translation>
 <translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="3870475560794762985">スポンサー付き画像を表示</translation>
+<translation id="6937724381960478525">スポンサーイメージについて詳しく知る</translation>
 <translation id="8793108040181436796">ウィジェット</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>

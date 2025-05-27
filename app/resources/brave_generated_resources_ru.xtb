@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">Не показывать снова</translation>
 <translation id="4595286989346610620">Узнать больше</translation>
 <translation id="8324318899000695659">Блокировать элементы</translation>
+<translation id="3828310068250853121">Выберите элемент, который вы хотите заблокировать</translation>
+<translation id="2577286987423083872">Блокировать элементы</translation>
+<translation id="3211174446914979436">Управлять фильтрами</translation>
+<translation id="3108584651298176909">Показывать правила</translation>
+<translation id="5156986655891520787">Скрывать правила</translation>
+<translation id="7658239707568436148">Cancel</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Открыть с помощью адреса .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Вставить принудительно</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">Сайт запрашивает доступ к вашему <ph name="PART_ONE"/>точному местоположению<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Подробнее…<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Сайт запрашивает доступ к вашему <ph name="PART_ONE"/>точному местоположению<ph name="PART_ONE_END"/>. Чтобы предоставить его, включите <ph name="PART_THREE"/>службы геолокации<ph name="PART_THREE_END"/>. В противном случае Brave предоставит только ваше <ph name="PART_TWO"/>примерное местоположение<ph name="PART_TWO_END"/>. <ph name="PART_FOUR"/>Подробнее…<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Закрыть все</translation>
-<translation id="7658239707568436148">Cancel</translation>
 <translation id="4870911314065352661">Закрыть все вкладки?</translation>
 <translation id="7551864359422178684">У вас остались открытые вкладки (<ph name="NUMBER_OF_TABS"/>) в этом окне браузера.</translation>
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">Для получения дохода взаимодействовать с объявлением не нужно. Вы можете нажимать только на те уведомления, которые вас заинтересовали!</translation>
 <translation id="5253166205743627564">Спасибо, что вы поддержали Поиск Brave, нажав на частную рекламу. В отличие от больших технологических корпораций, мы измеряем эффективность рекламы анонимно для сохранения вашей конфиденциальности.</translation>
 <translation id="8748471354357836070">Узнайте больше / отключите выбор</translation>
+<translation id="5927196110206824867">Спонсируемые фоновые изображения поддерживают стремление Brave создать независимый Интернет, ставящий пользователей на первое место. И в отличие от Big Tech, мы измеряем производительность объявления анонимно для сохранения вашей конфиденциальности.</translation>
 <translation id="4174337572777167894">Проект Web Discovery</translation>
 <translation id="8659271182272561965">Анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса</translation>
 <translation id="1516554614404600536">Подсказки Brave</translation>
@@ -473,6 +479,9 @@
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="7791141927430186653">Разрешить встроенные твиты X (ранее Твиттер)</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
+<translation id="1244912498725894944">Некоторые настройки cookie контролируются Brave Shields. Вы можете посмотреть их &lt;a href="/content/braveShields"&gt;здесь&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Эта настройка контролируется Brave Shields.</translation>
+<translation id="352287031024189516">Эта настройка контролируется Google Sign-in.</translation>
 <translation id="8792121506918889955">Политика обработки IP WebRTC</translation>
 <translation id="8798099450830957504">По умолчанию</translation>
 <translation id="1822560017823072927">Публичные и приватные интерфейсы по умолчанию</translation>
@@ -674,8 +683,12 @@
 <translation id="856371974127598760">Сети кошелька</translation>
 <translation id="5975930666279943472">Удалить информацию о транзакциях и одноразовых кодах</translation>
 <translation id="5693968582510626466">Сброс информации о транзакциях может пригодиться разработчикам или при очистке состояния локального сервера.</translation>
-<translation id="2326850911705720398">Сбросить кошелек и очистить данные</translation>
+<translation id="6171369470447621882">Сбросьте состояние синхронизации Zcash</translation>
+<translation id="6705112675071480687">Сбросить прогресс синхронизации Zcash для всех защищенных аккаунтов</translation>
+<translation id="2012093487873597892">Вы уверены, что хотите сбросить состояние синхронизации Zcash? Прогресс синхронизации для всех защищенных аккаунтов будет сброшен. Введите "<ph name="CONFIRMATION_PHRASE"/>", чтобы подтвердить.</translation>
+<translation id="5031551083187285762">Сброс вашего состояния синхронизации для аккаунтов Zcash.</translation>
 <translation id="9216386092464743272">Удалить информацию о транзакциях и одноразовых кодах? Обычно это делают разработчики, обслуживающие локальный тестовый сервер. Чтобы подтвердить удаление, введите «<ph name="CONFIRMATION_PHRASE"/>».</translation>
+<translation id="2326850911705720398">Сбросить кошелек и очистить данные</translation>
 <translation id="6369495274982305511">Вы уверены, что хотите сбросить настройки кошелька? Если вы не сделали резервную копию, то можете потерять все данные аккаунта, в том числе любые связанные с ним средства. Для подтверждения введите «<ph name="CONFIRMATION_PHRASE"/>».</translation>
 <translation id="3752403403443723332">Настройки кошелька сброшены.</translation>
 <translation id="594766067816395072">Информация о транзакциях в кошельке сброшена.</translation>

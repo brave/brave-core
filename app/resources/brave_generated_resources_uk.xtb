@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">Не показувати знову</translation>
 <translation id="4595286989346610620">Переглянути подробиці</translation>
 <translation id="8324318899000695659">Заблокувати елементи</translation>
+<translation id="3828310068250853121">Оберіть елемент, який ви хочете заблокувати</translation>
+<translation id="2577286987423083872">Заблокувати елементи</translation>
+<translation id="3211174446914979436">Керування фільтрами</translation>
+<translation id="3108584651298176909">Показати правила</translation>
+<translation id="5156986655891520787">Сховати правила</translation>
+<translation id="7658239707568436148">Скасувати</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Відкрити за допомогою адреси .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Вставити примусово</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">Цей сайт запитав <ph name="PART_ONE"/>точні дані про ваше розташування<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Докладніше<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Цей сайт запитав <ph name="PART_ONE"/>точні дані про ваше розташування<ph name="PART_ONE_END"/>. Brave зможе надати лише <ph name="PART_TWO"/>загальні дані про розташування<ph name="PART_TWO_END"/>, оскільки <ph name="PART_THREE"/>служби визначення розташування<ph name="PART_THREE_END"/> вимкнено. <ph name="PART_FOUR"/>Докладніше<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Закрити всі</translation>
-<translation id="7658239707568436148">Скасувати</translation>
 <translation id="4870911314065352661">Закрити всі вкладки?</translation>
 <translation id="7551864359422178684">Відкриті вкладки в цьому вікні браузера: <ph name="NUMBER_OF_TABS"/>.</translation>
 <translation id="2571596981920752023">Вкладки: <ph name="NUMBER_OF_TABS"/></translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">Вам не обов’язково натискати сповіщення, щоб заробляти, але натискайте їх, якщо вам цікаво!</translation>
 <translation id="5253166205743627564">Дякуємо, що підтримуєте Пошук Brave і переглядаєте приватну рекламу. На відміну від Big Tech, ми вимірюємо ефективність реклами анонімно, зберігаючи вашу конфіденційність.</translation>
 <translation id="8748471354357836070">Детальніше / змінити вибір</translation>
+<translation id="5927196110206824867">Спонсорські зображення підтримують місію Brave — створювати незалежний інтернет для користувачів. На відміну від Big Tech, ми вимірюємо ефективність реклами анонімно, зберігаючи вашу конфіденційність.</translation>
 <translation id="4174337572777167894">Проєкт з дослідження мережі</translation>
 <translation id="8659271182272561965">Допомагайте вдосконалювати Пошук Brave, надсилаючи анонімні дані щодо своїх пошукових запитів.</translation>
 <translation id="1516554614404600536">Підказка Brave</translation>
@@ -473,6 +479,9 @@
 <translation id="863171915776379000">Дозволити вхід через Facebook і вбудовані дописи</translation>
 <translation id="7791141927430186653">Дозволити вбудовані дописи X (колишній Twitter)</translation>
 <translation id="958971637207126733">Дозволити вбудовані дописи LinkedIn</translation>
+<translation id="1244912498725894944">Деякі налаштування файлів cookie контролюються Brave Shields. Ви можете переглянути їх &lt;a href="/content/braveShields"&gt;тут&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Цей параметр контролюється Brave Shields.</translation>
+<translation id="352287031024189516">Цей параметр контролюється за допомогою Google Sign-in.</translation>
 <translation id="8792121506918889955">Політика поводження з IP WebRTC</translation>
 <translation id="8798099450830957504">Типово</translation>
 <translation id="1822560017823072927">Типові публічний і приватний інтерфейси</translation>
@@ -674,8 +683,12 @@
 <translation id="856371974127598760">Мережі гаманця</translation>
 <translation id="5975930666279943472">Очистити інформацію про транзакції гаманця та нонс</translation>
 <translation id="5693968582510626466">Очищення транзакцій може бути корисним для розробників або під час очищення стану на локальному сервері</translation>
-<translation id="2326850911705720398">Скинути гаманець і очистити дані</translation>
+<translation id="6171369470447621882">Скинути стан синхронізації Zcash</translation>
+<translation id="6705112675071480687">Скидає прогрес синхронізації Zcash для всіх захищених акаунтів</translation>
+<translation id="2012093487873597892">Ви впевнені, що хочете скинути стан синхронізації Zcash? Прогрес синхронізації для всіх захищених акаунтів буде зупинено. Введіть "<ph name="CONFIRMATION_PHRASE"/>" для підтвердження.</translation>
+<translation id="5031551083187285762">Ваш стан синхронізації для акаунтів Zcash було скинуто.</translation>
 <translation id="9216386092464743272">Ви дійсно хочете скинути всю інформацію про транзакції та нонс свого гаманця? Цей параметр здебільшого використовується розробниками, які працюють на локальному тестовому сервері. Введіть «<ph name="CONFIRMATION_PHRASE"/>» для підтвердження.</translation>
+<translation id="2326850911705720398">Скинути гаманець і очистити дані</translation>
 <translation id="6369495274982305511">Ви дійсно хочете скинути свій гаманець? Якщо ваш гаманець не має резервної копії, скидання призведе до втрати усіх даних облікового запису (зокрема всіх пов’язаних коштів). Уведіть «<ph name="CONFIRMATION_PHRASE"/>» для підтвердження.</translation>
 <translation id="3752403403443723332">Ваш гаманець скинуто.</translation>
 <translation id="594766067816395072">Інформацію про транзакції вашого гаманця скинуто.</translation>

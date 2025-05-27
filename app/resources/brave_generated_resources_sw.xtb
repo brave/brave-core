@@ -52,6 +52,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Usionyeshe tena</translation>
 <translation id="4595286989346610620">Angalia maelezo</translation>
 <translation id="8324318899000695659">Zuia vipengele</translation>
+<translation id="7658239707568436148">Ghairi</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Fungua ukitumia anwani ya .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Lazimisha Kubandika</translation>
@@ -93,7 +94,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Tovuti hii imeomba <ph name="PART_ONE"/>eneo lako halisi<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Pata maelezo zaidi<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Tovuti hii imeomba <ph name="PART_ONE"/>eneo lako halisi<ph name="PART_ONE_END"/>. Brave itaweza tu kutoa data ya <ph name="PART_TWO"/>eneo la jumla<ph name="PART_TWO_END"/> kwa sababu <ph name="PART_THREE"/>Huduma za Eneo<ph name="PART_THREE_END"/> kuwa zimezimwa. <ph name="PART_FOUR"/>Pata maelezo zaidi<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Funga vyote</translation>
-<translation id="7658239707568436148">Ghairi</translation>
 <translation id="4870911314065352661">Ungependa kufunga vichupo vyote?</translation>
 <translation id="7551864359422178684">Una vichupo <ph name="NUMBER_OF_TABS"/> vilivyofunguliwa kwenye dirisha hili la kivinjari.</translation>
 <translation id="2571596981920752023">Vichupo <ph name="NUMBER_OF_TABS"/></translation>
@@ -640,8 +640,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Mitandao ya Pochi</translation>
 <translation id="5975930666279943472">Futa maelezo ya muamala wa pochi na nonsi</translation>
 <translation id="5693968582510626466">Kufuta miamala kunaweza kuwa muhimu kwa wasanidi au wakati wa kusafisha hali kwenye seva ya ndani</translation>
-<translation id="2326850911705720398">Badilisha na ufute data ya pochi</translation>
 <translation id="9216386092464743272">Una uhakika kwamba unataka kuweka upya maelezo yako yote ya muamala wa pochi na nonsi? Chaguo hili mara nyingi hutumiwa na wasanidi wanaoendesha seva ya jaribio ya ndani. Charaza "<ph name="CONFIRMATION_PHRASE"/>" ili kuthibitisha.</translation>
+<translation id="2326850911705720398">Badilisha na ufute data ya pochi</translation>
 <translation id="6369495274982305511">Je, una uhakika unataka kubadilisha pochi yako? Ikiwa pochi yako haijahifadhiwa, kubadilisha kutakusababisha kupoteza data zote za akaunti (ikiwemo fedha zozote zinazohusishwa). Andika "<ph name="CONFIRMATION_PHRASE"/>" ili kuthibitisha.</translation>
 <translation id="3752403403443723332">Pochi yako imewekwa upya.</translation>
 <translation id="594766067816395072">Maelezo ya muamala wako wa pochi yamewekwa upya.</translation>
