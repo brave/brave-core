@@ -8,14 +8,17 @@ import UIKit
 public struct UserAgentBuilder {
   private let device: UIDevice
   private let os: OperatingSystemVersion
+  private let useBraveUserAgent: Bool
 
   /// - parameter iOSVersion: iOS version of the created UA. Both desktop and mobile UA differ between iOS versions.
   public init(
     device: UIDevice = .current,
-    iOSVersion: OperatingSystemVersion = ProcessInfo().operatingSystemVersion
+    iOSVersion: OperatingSystemVersion = ProcessInfo().operatingSystemVersion,
+    useBraveUserAgent: Bool = FeatureList.kUseBraveUserAgent.enabled
   ) {
     self.device = device
     self.os = iOSVersion
+    self.useBraveUserAgent = useBraveUserAgent
   }
 
   private var braveMajorVersion: String {
@@ -39,7 +42,7 @@ public struct UserAgentBuilder {
     if desktopMode { return desktopUA(maskBrave: maskBrave) }
 
     let version =
-      (FeatureList.kUseBraveUserAgent.enabled && !maskBrave)
+      (useBraveUserAgent && !maskBrave)
       ? "Brave/\(braveMajorVersion)" : "Version/\(safariVersion)"
 
     return """
@@ -64,7 +67,7 @@ public struct UserAgentBuilder {
   // The only differences are with exact `Version/XX` and `MAC OS X 10_XX` numbers.
   private func desktopUA(maskBrave: Bool = false) -> String {
     let braveUA =
-      (FeatureList.kUseBraveUserAgent.enabled && !maskBrave) ? "Brave/\(braveMajorVersion) " : ""
+      (useBraveUserAgent && !maskBrave) ? "Brave/\(braveMajorVersion) " : ""
 
     return
       """
