@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Chặn tất cả";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Chặn tất cả Cookie sẽ khiến một số trang web không hoạt động bình thường.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Chặn tất cả cookie?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Chặn tất cả cookie?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Lá chắn hiện đã chặn cookie của bên thứ ba. Cài đặt chặn TẤT CẢ cookie này sẽ xóa cookie hiện có cùng dữ liệu trang web và có thể làm hỏng trang web.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Không áp dụng được lựa chọn. Vui lòng thử lại.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Chặn thông báo chấp thuận cookie";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Ngăn các trang web lưu trữ thông tin về các lần truy cập trước của bạn.\nTùy chọn \"Chặn tất cả Cookie\" đã bị loại bỏ. Để tìm hiểu cách bắt buộc bật tùy chọn này, hãy truy cập [trang trợ giúp của chúng tôi](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Màn hình chặn";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Xác nhận";
 
-/* Cookie settings option title */
-"CookieControl" = "Kiểm soát Cookie";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie và dữ liệu trang web";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Xong";
-
-/* cookie settings option */
-"DontBlockCookies" = "Không chặn cookie";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Không gửi";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Nâng cấp lên HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Nhập dữ liệu duyệt web";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Kiểm soát riêng";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Không thể tải trang.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Giấy phép";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Số từ: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Dấu trang đã nhập";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Đóng";

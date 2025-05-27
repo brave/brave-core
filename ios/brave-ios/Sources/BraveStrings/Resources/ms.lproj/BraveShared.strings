@@ -80,25 +80,22 @@
 "Block3rdPartyCookies" = "Sekat kuki pihak ke 3";
 
 /* Title for setting to block all website cookies. */
-"BlockAllCookies" = "Sekat semua Kuki";
+"BlockAllCookies" = "Sekat Semua Kuki";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Sekat Semua";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Menyekat semua Kuki akan menghalang sesetengah laman web berfungsi dengan betul.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Sekat Semua Kuki?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Sekat semua Kuki?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields sudah menyekat kuki pihak ketiga. Tetapan untuk menyekat SEMUA kuki ini akan memadam kuki dan data laman sedia ada, dan boleh memecahkan laman web.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Gagal menetapkan keutamaan. Sila cuba lagi.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Sekat Notis Persetujuan Kuki";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Mencegah laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini.\nPilihan \"Sekat Semua Kuki\" telah dihentikan. Untuk mengetahui cara memaksa pilihan ini diaktifkan, lawati [halaman bantuan kami](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Sah";
 
-/* Cookie settings option title */
-"CookieControl" = "Kawalan Kuki";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Kuki dan Data Laman";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Selesai";
-
-/* cookie settings option */
-"DontBlockCookies" = "Jangan sekat kuki";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Jangan Hantar";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Naik Taraf HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Import Data Penyemakan Imbas";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Kawalan Individu";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Lesen";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Bilangan perkataan: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Penanda Buku Diimport";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tutup";
