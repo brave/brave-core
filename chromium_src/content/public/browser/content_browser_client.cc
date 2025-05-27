@@ -49,4 +49,9 @@ std::optional<GURL> ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
   return std::nullopt;
 }
 
+std::optional<bool> ContentBrowserClient::IsWindowsRecallEnabled(
+    content::BrowserContext* browser_context) {
+  return std::nullopt;
+}
+
 }  // namespace content

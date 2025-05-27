@@ -33,6 +33,8 @@
                                BrowserContext* browser_context);             \
   virtual std::optional<GURL> SanitizeURL(content::RenderFrameHost*,         \
                                           const GURL&);                      \
+  virtual std::optional<bool> IsWindowsRecallEnabled(                        \
+      content::BrowserContext* browser_context);                             \
   virtual void SetBrowserStartupIsCompleteForTesting
 
 #include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export

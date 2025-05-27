@@ -59,5 +59,19 @@
                             menu-options="[[requestOTRActions_]]">
     </settings-dropdown-menu>
 </div>
+<template is="dom-if" if="[[isWindowsRecallAvailable_]]">
+  <settings-toggle-button id="windowsRecallEnabled"
+      class="cr-row"
+      pref="{{prefs.brave.block_windows_recall}}"
+      label="$i18n{blockWindowsRecallLabel}"
+      sub-label="$i18n{blockWindowsRecallSubLabel}">
+      <template is="dom-if"
+                if="[[shouldShowRestartWindowsRecall_(prefs.brave.block_windows_recall.value)]]">
+          <cr-button on-click="restartBrowser_" slot="more-actions">
+            $i18n{restart}
+          </cr-button>
+      </template>
+  </settings-toggle-button>
+</template>
 <settings-do-not-track-toggle id="doNotTrack" prefs="{{prefs}}">
 </settings-do-not-track-toggle>

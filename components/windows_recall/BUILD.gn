@@ -1,0 +1,27 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(is_win)
+
+source_set("windows_recall") {
+  sources = [
+    "windows_recall.cc",
+    "windows_recall.h",
+    "windows_recall_service.cc",
+    "windows_recall_service.h",
+    "windows_recall_service_factory.cc",
+    "windows_recall_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+}
