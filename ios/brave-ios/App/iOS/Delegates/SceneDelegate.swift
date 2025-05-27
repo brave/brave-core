@@ -132,6 +132,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     Task { @MainActor in
       let (profileController, profileState) = await loadDefaultProfile()
+      Self.profileState = profileState
       let browserViewController = prepareBrowserViewController(
         profileController: profileController,
         profileState: profileState,
