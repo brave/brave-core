@@ -10,33 +10,33 @@ package org.chromium.chrome.browser.onboarding.v2;
 import android.view.View;
 
 public class HighlightItem {
-    private final int screenLeft;
-    private final int screenTop;
-    private final int screenRight;
-    private final int screenBottom;
+    private final int mScreenLeft;
+    private final int mScreenTop;
+    private final int mScreenRight;
+    private final int mScreenBottom;
 
     public HighlightItem(View highlightView) {
         int[] location = new int[2];
         highlightView.getLocationOnScreen(location);
-        screenLeft = location[0];
-        screenTop = location[1];
-        screenRight = location[0] + highlightView.getMeasuredWidth();
-        screenBottom = location[1] + highlightView.getMeasuredHeight();
+        mScreenLeft = location[0];
+        mScreenTop = location[1];
+        mScreenRight = location[0] + highlightView.getMeasuredWidth();
+        mScreenBottom = location[1] + highlightView.getMeasuredHeight();
     }
 
     public int getScreenLeft() {
-        return screenLeft;
+        return mScreenLeft;
     }
 
     public int getScreenTop() {
-        return screenTop;
+        return mScreenTop;
     }
 
     public int getScreenRight() {
-        return screenRight;
+        return mScreenRight;
     }
 
     public int getScreenBottom() {
-        return screenBottom;
+        return mScreenBottom;
     }
 }

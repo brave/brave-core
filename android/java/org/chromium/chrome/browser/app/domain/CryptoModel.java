@@ -55,9 +55,9 @@ public class CryptoModel {
     private final SwapService mSwapService;
     private final CryptoSharedActions mCryptoSharedActions;
     private final CryptoSharedData mSharedData;
-    private final MutableLiveData<Integer> _mCoinTypeMutableLiveData =
+    private final MutableLiveData<Integer> mCoinTypeMutableLiveData =
             new MutableLiveData<>(CoinType.ETH);
-    private final LiveData<Integer> mCoinTypeMutableLiveData = _mCoinTypeMutableLiveData;
+    private final LiveData<Integer> mCoinTypeLiveData = mCoinTypeMutableLiveData;
 
     private final Object mLock = new Object();
     private Context mContext;
@@ -212,7 +212,7 @@ public class CryptoModel {
                         coin = allAccounts.selectedAccount.accountId.coin;
                     }
 
-                    _mCoinTypeMutableLiveData.postValue(coin);
+                    mCoinTypeMutableLiveData.postValue(coin);
                 });
     }
 
@@ -243,10 +243,10 @@ public class CryptoModel {
     class CryptoSharedDataImpl implements CryptoSharedData {
         @Override
         public int getCoinType() {
-            if (mCoinTypeMutableLiveData.getValue() == null) {
+            if (mCoinTypeLiveData.getValue() == null) {
                 return CoinType.ETH;
             }
-            return mCoinTypeMutableLiveData.getValue();
+            return mCoinTypeLiveData.getValue();
         }
 
         @Override
@@ -264,7 +264,7 @@ public class CryptoModel {
 
         @Override
         public LiveData<Integer> getCoinTypeLd() {
-            return mCoinTypeMutableLiveData;
+            return mCoinTypeLiveData;
         }
 
         @Override

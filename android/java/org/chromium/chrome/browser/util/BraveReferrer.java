@@ -39,8 +39,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private static final String PLAY_STORE_AD_REFERRAL_CODE = "UAC001";
     private static final String GOOGLE_SEARCH_AD_REFERRAL_CODE = "UAC002";
 
-    private String promoCodeFilePath;
-    private InstallReferrerClient referrerClient;
+    private String mPromoCodeFilePath;
+    private InstallReferrerClient mReferrerClient;
 
     private long mNativeBraveReferrer;
 
@@ -76,11 +76,15 @@ public class BraveReferrer implements InstallReferrerStateListener {
                 onReferrerReady();
                 return;
             }
-            promoCodeFilePath = mContext.getApplicationInfo().dataDir + File.separator
-                    + APP_CHROME_DIR + File.separator + PROMO_CODE_FILE_NAME;
-            referrerClient = InstallReferrerClient.newBuilder(mContext).build();
+            mPromoCodeFilePath =
+                    mContext.getApplicationInfo().dataDir
+                            + File.separator
+                            + APP_CHROME_DIR
+                            + File.separator
+                            + PROMO_CODE_FILE_NAME;
+            mReferrerClient = InstallReferrerClient.newBuilder(mContext).build();
             try {
-                referrerClient.startConnection(mBraveReferrer);
+                mReferrerClient.startConnection(mBraveReferrer);
             } catch (Exception e) {
                 Log.e(TAG, "Unable to start connection for referrer client: " + e);
                 onReferrerReady();
@@ -107,12 +111,13 @@ public class BraveReferrer implements InstallReferrerStateListener {
         public void run() {
             FileOutputStream outputStreamWriter = null;
             try {
-                File promoCodeFile = new File(promoCodeFilePath);
+                File promoCodeFile = new File(mPromoCodeFilePath);
                 outputStreamWriter = new FileOutputStream(promoCodeFile);
                 outputStreamWriter.write(mUrpc.getBytes());
             } catch (IOException e) {
-                Log.e(TAG,
-                        "Could not write to file (" + promoCodeFilePath + "): " + e.getMessage());
+                Log.e(
+                        TAG,
+                        "Could not write to file (" + mPromoCodeFilePath + "): " + e.getMessage());
             } finally {
                 try {
                     if (outputStreamWriter != null) outputStreamWriter.close();
@@ -129,7 +134,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
         switch (responseCode) {
             case InstallReferrerResponse.OK:
                 try {
-                    ReferrerDetails response = referrerClient.getInstallReferrer();
+                    ReferrerDetails response = mReferrerClient.getInstallReferrer();
                     String referrer = response.getInstallReferrer();
                     Uri uri = Uri.parse("http://www.stub.co/?" + referrer);
                     // Get and save user referal program code
@@ -153,7 +158,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
                         PostTask.postTask(
                                 TaskTraits.BEST_EFFORT_MAY_BLOCK, new SaveReferrerRunnable(urpc));
                     }
-                    referrerClient.endConnection();
+                    mReferrerClient.endConnection();
                     // Set flag to not repeat this procedure
                     SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
                     SharedPreferences.Editor editor = sharedPref.edit();

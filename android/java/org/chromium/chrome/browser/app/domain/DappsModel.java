@@ -37,31 +37,36 @@ public class DappsModel implements KeyringServiceObserver {
     private final KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
     private PendingTxHelper mPendingTxHelper;
-    private final MutableLiveData<Boolean> _mWalletIconNotificationVisible =
+    private final MutableLiveData<Boolean> mMutableWalletIconNotificationVisible =
             new MutableLiveData<>(false);
     private final Object mLock = new Object();
-    private final MutableLiveData<BraveWalletDAppsActivity.ActivityType> _mProcessNextDAppsRequest =
-            new MutableLiveData<>();
-    private final MutableLiveData<List<SignSolTransactionsRequest>> _mSignSolTransactionsRequests;
+    private final MutableLiveData<BraveWalletDAppsActivity.ActivityType>
+            mMutableProcessNextDAppsRequest = new MutableLiveData<>();
+    private final MutableLiveData<List<SignSolTransactionsRequest>>
+            mMutableSignSolTransactionsRequests;
     private final LiveData<List<SignSolTransactionsRequest>> mSignSolTransactionsRequests;
     private final List<WalletAccountCreationRequest> mPendingWalletAccountCreationRequests;
     private final MutableLiveData<WalletAccountCreationRequest>
-            _mPendingWalletAccountCreationRequest;
+            mMutablePendingWalletAccountCreationRequest;
     public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
-    public final LiveData<Boolean> mWalletIconNotificationVisible = _mWalletIconNotificationVisible;
+    public final LiveData<Boolean> mWalletIconNotificationVisible =
+            mMutableWalletIconNotificationVisible;
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
-            _mProcessNextDAppsRequest;
+            mMutableProcessNextDAppsRequest;
 
-    public DappsModel(JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
-            KeyringService keyringService, PendingTxHelper pendingTxHelper) {
+    public DappsModel(
+            JsonRpcService jsonRpcService,
+            BraveWalletService braveWalletService,
+            KeyringService keyringService,
+            PendingTxHelper pendingTxHelper) {
         mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mKeyringService = keyringService;
         mPendingTxHelper = pendingTxHelper;
-        _mSignSolTransactionsRequests = new MutableLiveData<>(Collections.emptyList());
-        mSignSolTransactionsRequests = _mSignSolTransactionsRequests;
-        _mPendingWalletAccountCreationRequest = new MutableLiveData<>();
-        mPendingWalletAccountCreationRequest = _mPendingWalletAccountCreationRequest;
+        mMutableSignSolTransactionsRequests = new MutableLiveData<>(Collections.emptyList());
+        mSignSolTransactionsRequests = mMutableSignSolTransactionsRequests;
+        mMutablePendingWalletAccountCreationRequest = new MutableLiveData<>();
+        mPendingWalletAccountCreationRequest = mMutablePendingWalletAccountCreationRequest;
         mPendingWalletAccountCreationRequests = new ArrayList<>();
         mKeyringService.addObserver(this);
     }
@@ -84,7 +89,7 @@ public class DappsModel implements KeyringServiceObserver {
     public LiveData<List<SignSolTransactionsRequest>> fetchSignSolTransactionsRequests() {
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
-                    _mSignSolTransactionsRequests.postValue(
+                    mMutableSignSolTransactionsRequests.postValue(
                             new ArrayList<>(Arrays.asList(requests)));
                 });
         return mSignSolTransactionsRequests;
@@ -97,10 +102,10 @@ public class DappsModel implements KeyringServiceObserver {
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
                     if (requests.length == 0) {
-                        _mProcessNextDAppsRequest.postValue(
+                        mMutableProcessNextDAppsRequest.postValue(
                                 BraveWalletDAppsActivity.ActivityType.FINISH);
                     } else {
-                        _mSignSolTransactionsRequests.postValue(
+                        mMutableSignSolTransactionsRequests.postValue(
                                 new ArrayList<>(Arrays.asList(requests)));
                     }
                 });
@@ -124,7 +129,7 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     public void clearDappsState() {
-        _mProcessNextDAppsRequest.postValue(null);
+        mMutableProcessNextDAppsRequest.postValue(null);
     }
 
     public void processPublicEncryptionKey(String requestId, boolean isApproved) {
@@ -133,15 +138,17 @@ public class DappsModel implements KeyringServiceObserver {
                 return;
             }
             mBraveWalletService.notifyGetPublicKeyRequestProcessed(requestId, isApproved);
-            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-                if (requests != null && requests.length > 0) {
-                    _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
-                                                                .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
-                } else {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.FINISH);
-                }
-            });
+            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
+                    requests -> {
+                        if (requests != null && requests.length > 0) {
+                            mMutableProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType
+                                            .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+                        } else {
+                            mMutableProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType.FINISH);
+                        }
+                    });
         }
     }
 
@@ -151,24 +158,25 @@ public class DappsModel implements KeyringServiceObserver {
                 return;
             }
             mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
-            mBraveWalletService.getPendingDecryptRequests(requests -> {
-                if (requests != null && requests.length > 0) {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
-                } else {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.FINISH);
-                }
-            });
+            mBraveWalletService.getPendingDecryptRequests(
+                    requests -> {
+                        if (requests != null && requests.length > 0) {
+                            mMutableProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+                        } else {
+                            mMutableProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType.FINISH);
+                        }
+                    });
         }
     }
 
     public void setWalletBadgeVisible() {
-        _mWalletIconNotificationVisible.setValue(true);
+        mMutableWalletIconNotificationVisible.setValue(true);
     }
 
     public void setWalletBadgeInvisible() {
-        _mWalletIconNotificationVisible.setValue(false);
+        mMutableWalletIconNotificationVisible.setValue(false);
     }
 
     public void addAccountCreationRequest(@CoinType.EnumType int coinType) {
@@ -187,11 +195,12 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     public void showPendingAccountCreationRequest() {
-        WalletAccountCreationRequest request = _mPendingWalletAccountCreationRequest.getValue();
+        WalletAccountCreationRequest request =
+                mMutablePendingWalletAccountCreationRequest.getValue();
         if (request != null) {
-            _mPendingWalletAccountCreationRequest.postValue(request);
+            mMutablePendingWalletAccountCreationRequest.postValue(request);
         } else if (!mPendingWalletAccountCreationRequests.isEmpty()) {
-            _mPendingWalletAccountCreationRequest.postValue(
+            mMutablePendingWalletAccountCreationRequest.postValue(
                     mPendingWalletAccountCreationRequests.get(0));
         }
     }
@@ -213,7 +222,7 @@ public class DappsModel implements KeyringServiceObserver {
             return;
         }
 
-        _mWalletIconNotificationVisible.setValue(false);
+        mMutableWalletIconNotificationVisible.setValue(false);
 
         mBraveWalletService.getPendingSignMessageRequests(
                 requests -> {
@@ -267,9 +276,9 @@ public class DappsModel implements KeyringServiceObserver {
 
     private void updatePendingAccountCreationRequest() {
         if (mPendingWalletAccountCreationRequests.isEmpty()) {
-            _mPendingWalletAccountCreationRequest.postValue(null);
+            mMutablePendingWalletAccountCreationRequest.postValue(null);
         } else {
-            _mPendingWalletAccountCreationRequest.postValue(
+            mMutablePendingWalletAccountCreationRequest.postValue(
                     mPendingWalletAccountCreationRequests.get(0));
         }
     }

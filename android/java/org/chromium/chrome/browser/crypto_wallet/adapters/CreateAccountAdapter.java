@@ -21,19 +21,19 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import java.util.List;
 
 public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdapter.ViewHolder> {
-    private final LayoutInflater inflater;
+    private final LayoutInflater mInflater;
     private OnCreateAccountClickListener mCreateAccountClickListener;
     private final List<CryptoAccountTypeInfo> mCryptoAccountTypeInfos;
 
     public CreateAccountAdapter(
             Context context, List<CryptoAccountTypeInfo> cryptoAccountTypeInfos) {
         mCryptoAccountTypeInfos = cryptoAccountTypeInfos;
-        inflater = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_create_account, parent, false);
+        View view = mInflater.inflate(R.layout.item_create_account, parent, false);
         return new ViewHolder(view);
     }
 
@@ -41,9 +41,9 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CryptoAccountTypeInfo accountTypeInfo = mCryptoAccountTypeInfos.get(position);
 
-        holder.tvTitle.setText(accountTypeInfo.getName());
-        holder.tvDesc.setText(accountTypeInfo.getDesc());
-        holder.ivNetworkPicture.setImageResource(accountTypeInfo.getIcon());
+        holder.mTvTitle.setText(accountTypeInfo.getName());
+        holder.mTvDesc.setText(accountTypeInfo.getDesc());
+        holder.mIvNetworkPicture.setImageResource(accountTypeInfo.getIcon());
 
         holder.itemView.setOnClickListener(
                 v -> {
@@ -62,15 +62,15 @@ public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdap
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivNetworkPicture;
-        TextView tvTitle;
-        TextView tvDesc;
+        ImageView mIvNetworkPicture;
+        TextView mTvTitle;
+        TextView mTvDesc;
 
         ViewHolder(View itemView) {
             super(itemView);
-            ivNetworkPicture = itemView.findViewById(R.id.item_create_account_iv_icon);
-            tvTitle = itemView.findViewById(R.id.item_create_account_tv_title);
-            tvDesc = itemView.findViewById(R.id.item_create_account_tv_desc);
+            mIvNetworkPicture = itemView.findViewById(R.id.item_create_account_iv_icon);
+            mTvTitle = itemView.findViewById(R.id.item_create_account_tv_title);
+            mTvDesc = itemView.findViewById(R.id.item_create_account_tv_desc);
         }
     }
 

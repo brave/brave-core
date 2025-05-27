@@ -6,53 +6,53 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class BackgroundImage extends NTPImage {
-    private final int imageDrawable;
-    private final int centerPointX;
-    private final int centerPointY;
-    private String imagePath;
-    private ImageCredit imageCredit;
+    private final int mImageDrawable;
+    private final int mCenterPointX;
+    private final int mCenterPointY;
+    private String mImagePath;
+    private ImageCredit mImageCredit;
 
     public BackgroundImage(
             int imageDrawable, int centerPointX, int centerPointY, ImageCredit imageCredit) {
-        this.imageDrawable = imageDrawable;
-        this.centerPointX = centerPointX;
-        this.centerPointY = centerPointY;
-        this.imageCredit = imageCredit;
-        this.imagePath = null;
+        mImageDrawable = imageDrawable;
+        mCenterPointX = centerPointX;
+        mCenterPointY = centerPointY;
+        mImageCredit = imageCredit;
+        mImagePath = null;
     }
 
     public BackgroundImage(
             String imagePath, int centerPointX, int centerPointY, ImageCredit imageCredit) {
-        this.imageDrawable = 0;
-        this.centerPointX = centerPointX;
-        this.centerPointY = centerPointY;
-        this.imageCredit = imageCredit;
-        this.imagePath = imagePath;
+        mImageDrawable = 0;
+        mCenterPointX = centerPointX;
+        mCenterPointY = centerPointY;
+        mImageCredit = imageCredit;
+        mImagePath = imagePath;
     }
 
     public BackgroundImage(int imageDrawable, int centerPointX, int centerPointY) {
-        this.imageDrawable = imageDrawable;
-        this.centerPointX = centerPointX;
-        this.centerPointY = centerPointY;
+        mImageDrawable = imageDrawable;
+        mCenterPointX = centerPointX;
+        mCenterPointY = centerPointY;
     }
 
     public int getImageDrawable() {
-        return imageDrawable;
+        return mImageDrawable;
     }
 
     public String getImagePath() {
-        return imagePath;
+        return mImagePath;
     }
 
     public int getCenterPointX() {
-        return centerPointX;
+        return mCenterPointX;
     }
 
     public int getCenterPointY() {
-        return centerPointY;
+        return mCenterPointY;
     }
 
     public ImageCredit getImageCredit() {
-        return imageCredit;
+        return mImageCredit;
     }
 }
