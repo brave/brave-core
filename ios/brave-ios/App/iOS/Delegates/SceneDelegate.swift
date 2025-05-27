@@ -131,6 +131,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     )
 
     Task { @MainActor in
+      await setupBraveCoreDependencies()
       let (profileController, profileState) = await loadDefaultProfile()
       Self.profileState = profileState
       let browserViewController = prepareBrowserViewController(
@@ -265,6 +266,42 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
 
+  @MainActor private func setupBraveCoreDependencies() async {
+    if Preferences.Chromium.lastVariationsSeedFetchDate.value == nil {
+      Preferences.Chromium.lastVariationsSeedFetchDate.value = Date()
+
+      // Fetch variations seed before Brave-Core is setup/loaded
+      // attachProfilesToAllConnectedScenes is called after AppInitStage::kVariationsSeed
+      let success = await BraveVariationsSeedFetcher().fetchSeed()
+      Logger.module.info("[Variations] - Seed Fetched: \(success)")
+      AppState.shared.state = .variationsLoaded
+    }
+
+    // If the profile was already loaded, we don't need to setup anything else
+    if case .profileLoaded = AppState.shared.state {
+      return
+    }
+
+    AppState.shared.state = .variationsLoaded
+
+    // Setup P3A
+    if let installDate = Preferences.P3A.installationDate.value, AppConstants.isOfficialBuild {
+      AppState.shared.braveCore.initializeP3AService(
+        forChannel: AppConstants.buildChannel.serverChannelParam,
+        installationDate: installDate
+      )
+    }
+
+    // Finish setting up adblock
+    Task(priority: .high) {
+      // Start preparing the ad-block services right away
+      // So it's ready a lot faster
+      await LaunchHelper.shared.prepareAdBlockServices(
+        adBlockService: AppState.shared.braveCore.adblockService
+      )
+    }
+  }
+
   @MainActor private func loadDefaultProfile() async -> (BraveProfileController, ProfileState) {
     let braveCore = AppState.shared.braveCore
     if let profileController = braveCore.profileController, let profileState = Self.profileState {
@@ -273,7 +310,7 @@ extension SceneDelegate {
     // Setup default profile & profile state
     let defaultProfileController = await braveCore.loadDefaultProfile()
     AppState.shared.state = .profileLoaded
-    
+
     let profileState = ProfileState(profileController: defaultProfileController)
     Self.profileState = profileState
     return (defaultProfileController, profileState)

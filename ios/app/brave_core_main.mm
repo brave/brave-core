@@ -165,22 +165,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
-    _webMain->Startup();
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
-
-    // Setup WebUI (Sync Internals and other WebViews)
-    web::WebUIIOSControllerFactory::RegisterFactory(
-        BraveWebUIControllerFactory::GetInstance());
-
-    // TODO(darkdh): move _adblockService and _backgroundImageService to
-    // BraveWebMainParts::PreMainMessageLoopRun
-    // https://github.com/brave/brave-browser/issues/40567
-    component_updater::ComponentUpdateService* cus =
-        GetApplicationContext()->GetComponentUpdateService();
-
-    _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
   }
   return self;
 }
@@ -191,6 +178,23 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _webMain.reset();
   _delegate.reset();
   _webClient.reset();
+}
+
+- (void)finishBasicStartup {
+  // Start WebMain
+  _webMain->Startup();
+
+  // Setup WebUI (Sync Internals and other WebViews)
+  web::WebUIIOSControllerFactory::RegisterFactory(
+      BraveWebUIControllerFactory::GetInstance());
+
+  // TODO(darkdh): move _adblockService and _backgroundImageService to
+  // BraveWebMainParts::PreMainMessageLoopRun
+  // https://github.com/brave/brave-browser/issues/40567
+  component_updater::ComponentUpdateService* cus =
+      GetApplicationContext()->GetComponentUpdateService();
+
+  _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
 }
 
 - (void)onAppEnterBackground:(NSNotification*)notification {
