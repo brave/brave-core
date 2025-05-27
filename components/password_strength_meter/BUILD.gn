@@ -7,8 +7,8 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("password_strength_meter") {
   sources = [
-    "password_strength_meter.cc",
-    "password_strength_meter.h",
+    "password_strength_meter_handler.cc",
+    "password_strength_meter_handler.h",
   ]
 
   deps = [
@@ -18,9 +18,7 @@ source_set("password_strength_meter") {
   ]
 }
 
-mojom_component("mojom") {
-  output_prefix = "password_strength_meter_mojom"
-  macro_prefix = "PASSWORD_STRENGTH_METER_MOJOM"
+mojom("mojom") {
   sources = [ "password_strength_meter.mojom" ]
   webui_module_path = "/"
 }

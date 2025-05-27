@@ -19,8 +19,8 @@ namespace brave_account {
 class BraveAccountHandler : public mojom::BraveAccountHandler {
  public:
   explicit BraveAccountHandler(
-      content::WebUI* web_ui,
-      mojo::PendingReceiver<mojom::BraveAccountHandler> handler);
+      mojo::PendingReceiver<mojom::BraveAccountHandler> handler,
+      content::WebUI* web_ui);
 
   BraveAccountHandler(const BraveAccountHandler&) = delete;
   BraveAccountHandler& operator=(const BraveAccountHandler&) = delete;
@@ -30,8 +30,8 @@ class BraveAccountHandler : public mojom::BraveAccountHandler {
   void OpenDialog() override;
 
  private:
-  raw_ptr<content::WebUI> web_ui_;
   mojo::Receiver<mojom::BraveAccountHandler> handler_;
+  raw_ptr<content::WebUI> web_ui_;
 };
 }  // namespace brave_account
 

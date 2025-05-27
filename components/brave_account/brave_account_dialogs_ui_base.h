@@ -7,16 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
+#include "brave/components/password_strength_meter/password_strength_meter_handler.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -24,8 +24,7 @@
 template <typename WebUIDataSource>
 class BraveAccountDialogsUIBase {
  public:
-  template <typename Profile>
-  explicit BraveAccountDialogsUIBase(Profile* profile) {
+  explicit BraveAccountDialogsUIBase(auto* profile) {
     SetupWebUIDataSource(
         WebUIDataSource::CreateAndAdd(profile, kBraveAccountDialogsHost));
   }
@@ -39,17 +38,14 @@ class BraveAccountDialogsUIBase {
             std::move(pending_receiver));
   }
 
- protected:
+ private:
   void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(
-        network::mojom::CSPDirectiveName::ScriptSrc,
-        "script-src chrome://resources 'wasm-unsafe-eval' 'self';");
-
-    // so that the XHR that loads the WASM works
-    source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ConnectSrc,
-        "connect-src chrome://resources chrome://theme 'self';");
-
+        "connect-src chrome://resources 'self';");
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::ScriptSrc,
+        "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::TrustedTypes,
         "trusted-types lit-html-desktop;");
@@ -72,7 +68,6 @@ class BraveAccountDialogsUIBase {
          IDS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
         {"braveAccountSelfCustodyButtonLabel",
          IDS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL},
-
         // 'Create' dialog:
         {"braveAccountCreateDialogTitle",
          IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE},
@@ -98,7 +93,6 @@ class BraveAccountDialogsUIBase {
          IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE},
         {"braveAccountCreateAccountButtonLabel",
          IDS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL},
-
         // 'Sign In' dialog:
         {"braveAccountSignInDialogTitle",
          IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE},
@@ -110,7 +104,6 @@ class BraveAccountDialogsUIBase {
          IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL},
         {"braveAccountSignInButtonLabel",
          IDS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
-
         // 'Forgot Password' dialog:
         {"braveAccountForgotPasswordDialogTitle",
          IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE},
@@ -119,7 +112,6 @@ class BraveAccountDialogsUIBase {
         {"braveAccountAlertMessage", IDS_BRAVE_ACCOUNT_ALERT_MESSAGE},
         {"braveAccountResetPasswordButtonLabel",
          IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
-
         // Common:
         {"braveAccountBackButtonLabel", IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL},
         {"braveAccountEmailInputLabel", IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},
@@ -147,7 +139,6 @@ class BraveAccountDialogsUIBase {
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
   }
 
- private:
   static inline constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
       u"https://search.brave.com";
   static inline constexpr char16_t kBraveAccountTermsOfServiceURL[] =

@@ -11,13 +11,13 @@
 
 namespace brave_account {
 BraveAccountHandler::BraveAccountHandler(
-    content::WebUI* web_ui,
-    mojo::PendingReceiver<mojom::BraveAccountHandler> handler)
-    : web_ui_(web_ui), handler_(this, std::move(handler)) {}
+    mojo::PendingReceiver<mojom::BraveAccountHandler> handler,
+    content::WebUI* web_ui)
+    : handler_(this, std::move(handler)), web_ui_(web_ui) {}
 
 BraveAccountHandler::~BraveAccountHandler() = default;
 
 void BraveAccountHandler::OpenDialog() {
-  BraveAccountDialogsDialog::Show(web_ui_);
+  ShowBraveAccountDialogs(web_ui_);
 }
 }  // namespace brave_account

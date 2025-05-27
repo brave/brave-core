@@ -5,95 +5,60 @@
 
 #include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
 
-#include "base/containers/span.h"
-#include "brave/components/brave_account/resources/grit/brave_account_resources.h"
-#include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
+#include <memory>
+
+#include "base/check.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_dialogs.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/url_constants.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/views/widget/widget.h"
-#include "ui/webui/webui_util.h"
+#include "ui/web_dialogs/web_dialog_delegate.h"
+#include "url/gurl.h"
+
+namespace {
+
+constexpr float kDialogBorderRadius = 16;
+constexpr int kDialogWidth = 500;
+constexpr gfx::Size kDialogMinSize(kDialogWidth, 470);
+constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
+
+class BraveAccountDialogs : public ui::WebDialogDelegate {
+ public:
+  BraveAccountDialogs() {
+    set_delete_on_close(false);
+    set_dialog_content_url(GURL(kBraveAccountDialogsURL));
+    set_show_dialog_title(false);
+  }
+};
+
+}  // namespace
 
 BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui),
       BraveAccountDialogsUIBase(Profile::FromWebUI(web_ui)) {}
 
-BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;
-
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountDialogsUI)
 
-BraveAccountDialogsDialog::BraveAccountDialogsDialog() = default;
+BraveAccountDialogsUIConfig::BraveAccountDialogsUIConfig()
+    : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountDialogsHost) {}
 
-void BraveAccountDialogsDialog::Show(content::WebUI* web_ui) {
-  // chrome::ShowWebDialog(web_ui->GetWebContents()->GetNativeView(),
-  //                       Profile::FromWebUI(web_ui), new
-  //                       BraveAccountDialogsDialog());
-  const int kSigninEmailConfirmationDialogWidth = 500;
-  const int kSigninEmailConfirmationDialogMinHeight = 470;
-  const int kSigninEmailConfirmationDialogMaxHeight = 794;
-  gfx::Size min_size(kSigninEmailConfirmationDialogWidth,
-                     kSigninEmailConfirmationDialogMinHeight);
-  gfx::Size max_size(kSigninEmailConfirmationDialogWidth,
-                     kSigninEmailConfirmationDialogMaxHeight);
-
+void ShowBraveAccountDialogs(content::WebUI* web_ui) {
   auto* delegate = ShowConstrainedWebDialogWithAutoResize(
-      Profile::FromWebUI(web_ui),
-      base::WrapUnique(new BraveAccountDialogsDialog()),
-      web_ui->GetWebContents(), min_size, max_size);
+      Profile::FromWebUI(web_ui), std::make_unique<BraveAccountDialogs>(),
+      web_ui->GetWebContents(), kDialogMinSize, kDialogMaxSize);
+
   DCHECK(delegate);
   auto* widget =
       views::Widget::GetWidgetForNativeWindow(delegate->GetNativeDialog());
-  if (widget && widget->GetLayer()) {
-    widget->GetLayer()->SetRoundedCornerRadius(gfx::RoundedCornersF(16));
+  if (!widget) {
+    return;
   }
-}
 
-ui::mojom::ModalType BraveAccountDialogsDialog::GetDialogModalType() const {
-  return ui::mojom::ModalType::kWindow;
-}
-
-std::u16string BraveAccountDialogsDialog::GetDialogTitle() const {
-  return u"";
-}
-
-GURL BraveAccountDialogsDialog::GetDialogContentURL() const {
-  return GURL(kBraveAccountDialogsURL);
-}
-
-void BraveAccountDialogsDialog::GetWebUIMessageHandlers(
-    std::vector<content::WebUIMessageHandler*>* handlers) {}
-
-void BraveAccountDialogsDialog::GetDialogSize(gfx::Size* size) const {
-  const int kDefaultWidth = 500;
-  const int kDefaultHeight = 754;
-  size->SetSize(kDefaultWidth, kDefaultHeight);
-}
-
-std::string BraveAccountDialogsDialog::GetDialogArgs() const {
-  return "";
-}
-
-void BraveAccountDialogsDialog::OnDialogShown(content::WebUI* webui) {
-  webui_ = webui;
-}
-
-void BraveAccountDialogsDialog::OnDialogClosed(const std::string& json_retval) {
-  VLOG(0) << "deleted";
-  // delete this;
-}
-
-void BraveAccountDialogsDialog::OnCloseContents(content::WebContents* source,
-                                                bool* out_close_dialog) {
-  *out_close_dialog = true;
-}
-
-bool BraveAccountDialogsDialog::ShouldShowDialogTitle() const {
-  return false;
-}
-
-BraveAccountDialogsDialog::~BraveAccountDialogsDialog() {
-  VLOG(0) << "~BraveAccountDialogsDialog()";
+  if (auto* layer = widget->GetLayer()) {
+    layer->SetRoundedCornerRadius(gfx::RoundedCornersF(kDialogBorderRadius));
+  }
 }
