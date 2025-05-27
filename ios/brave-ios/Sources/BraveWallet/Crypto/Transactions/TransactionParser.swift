@@ -105,6 +105,25 @@ enum TransactionParser {
         gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
       }
     case .zec:
+      guard let zecTxData = transaction.txDataUnion.zecTxData,
+        case let formatter = WalletAmountFormatter(
+          decimalFormatStyle: .decimals(precision: Int(network.decimals))
+        ),
+        let gasFeeString = formatter.decimalString(
+          for: "\(zecTxData.fee)",
+          radix: .decimal,
+          decimals: Int(network.decimals)
+        )
+      else { return nil }
+      if let doubleValue = Double(gasFeeString),
+        let assetRatio = assetRatios[network.symbol.lowercased()],
+        let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
+      {
+        gasFee = .init(fee: gasFeeString, fiat: fiat)
+      } else {
+        gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+      }
+    case .ada:
       break
     @unknown default:
       break
@@ -257,6 +276,54 @@ enum TransactionParser {
           toAddress: btcTxData.to,
           network: txNetwork,
           details: .btcSend(
+            .init(
+              fromToken: fromToken,
+              fromValue: fromValue,
+              fromAmount: fromValueFormatted,
+              fromFiat: fromFiat,
+              fromTokenMetadata: nil,
+              gasFee: gasFee(
+                from: transaction,
+                network: txNetwork,
+                assetRatios: assetRatios,
+                currencyFormatter: currencyFormatter
+              )
+            )
+          )
+        )
+      } else if let zecTxData = transaction.txDataUnion.zecTxData {  // ZEC send tx
+        // Require 8 decimals precision for ZEC parsing
+        let namedFromAccount = fromAccountInfo.name
+        let fromValue = "\(zecTxData.amount)"
+        let fromValueFormatted =
+          formatter.decimalString(
+            for: fromValue,
+            radix: .decimal,
+            decimals: Int(txNetwork.decimals)
+          )?.trimmingTrailingZeros ?? ""
+        let fromFiat =
+          currencyFormatter.string(
+            from: NSNumber(
+              value: assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
+                * (Double(fromValueFormatted) ?? 0)
+            )
+          ) ?? "$0.00"
+        let fromToken = (allTokens + userAssets).first(where: {
+          $0.coin == transaction.coin && $0.chainId == transaction.chainId
+        })
+        // Example:
+        // Send 0.00001 ZEC
+        //
+        // fromValue="1000"
+        // fromValueFormatted="0.00001"
+        return .init(
+          transaction: transaction,
+          namedFromAddress: namedFromAccount,
+          fromAccountInfo: fromAccountInfo,
+          namedToAddress: "",
+          toAddress: zecTxData.to,
+          network: txNetwork,
+          details: .zecSend(
             .init(
               fromToken: fromToken,
               fromValue: fromValue,
@@ -981,6 +1048,7 @@ struct ParsedTransaction: Equatable {
     case solSwapTransaction(SolanaTxDetails)
     case filSend(FilSendDetails)
     case btcSend(SendDetails)
+    case zecSend(SendDetails)
     case other
   }
 
@@ -1024,7 +1092,8 @@ struct ParsedTransaction: Equatable {
       return details.gasFee
     case .filSend(let details):
       return details.gasFee
-    case .btcSend(let details):
+    case .btcSend(let details),
+      .zecSend(let details):
       return details.gasFee
     case .other:
       return nil
@@ -1092,7 +1161,8 @@ struct ParsedTransaction: Equatable {
       .erc20Transfer(let sendDetails),
       .solSystemTransfer(let sendDetails),
       .solSplTokenTransfer(let sendDetails),
-      .btcSend(let sendDetails):
+      .btcSend(let sendDetails),
+      .zecSend(let sendDetails):
       return sendDetails.fromToken?.matches(query) == true
     case .ethSwap(let ethSwapDetails):
       return ethSwapDetails.fromToken?.matches(query) == true
@@ -1315,7 +1385,8 @@ extension ParsedTransaction {
       if let token = details.sendToken {
         return [token]
       }
-    case .btcSend(let details):
+    case .btcSend(let details),
+      .zecSend(let details):
       if let token = details.fromToken {
         return [token]
       }
