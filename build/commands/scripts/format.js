@@ -119,6 +119,41 @@ const runFormat = async (options = {}) => {
   }
 }
 
+const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
+  const fileInfo = await prettier.getFileInfo(file, {
+    ignorePath: ignorePath,
+    withNodeModules: false,
+  })
+
+  if (fileInfo.ignored || !fileInfo.inferredParser) {
+    return null
+  }
+
+  const content = await fs.readFile(file, { encoding: 'utf-8' })
+  const formatted = await prettier.format(content, {
+    ...options,
+    filepath: file,
+    parser: fileInfo.inferredParser,
+  })
+  if (content !== formatted) {
+    if (dryRun) {
+      // Use `echo <formatted> | git diff --no-index <file> -` to show diff
+      const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
+        stdio: 'pipe',
+        input: formatted,
+      })
+      if (diffResult.status === 1) {
+        // Differences were found
+        return convertDiff(diffResult.stdout.toString(), file)
+      } else {
+        return `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`
+      }
+    } else {
+      await fs.writeFile(file, formatted)
+    }
+  }
+  return null
+}
 const runPrettier = async (files, dryRun) => {
   const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
@@ -128,38 +163,13 @@ const runPrettier = async (files, dryRun) => {
 
   const prettierIssues = []
   for (const file of files) {
-    const fileInfo = await prettier.getFileInfo(file, {
-      ignorePath: ignorePath,
-      withNodeModules: false,
-    })
-
-    if (fileInfo.ignored || !fileInfo.inferredParser) {
-      continue
-    }
-
-    const content = await fs.readFile(file, { encoding: 'utf-8' })
-    const formatted = await prettier.format(content, {
-      ...options,
-      parser: fileInfo.inferredParser,
-    })
-    if (content !== formatted) {
-      if (dryRun) {
-        // Use `echo <formatted> | git diff --no-index <file> -` to show diff
-        const diffResult = spawnSync('git', ['diff', '--no-index', file, '-'], {
-          stdio: 'pipe',
-          input: formatted,
-        })
-        if (diffResult.status === 1) {
-          // Differences were found
-          prettierIssues.push(convertDiff(diffResult.stdout.toString(), file))
-        } else {
-          prettierIssues.push(
-            `Can't show diff for ${file}:\n ${formatOutput(diffResult)}`,
-          )
-        }
-      } else {
-        await fs.writeFile(file, formatted)
+    try {
+      const issue = await runPrettierForFile(file, dryRun, options, ignorePath)
+      if (issue) {
+        prettierIssues.push(issue)
       }
+    } catch (e) {
+      prettierIssues.push(`Can't format ${file}:\n ${e}`)
     }
   }
 
