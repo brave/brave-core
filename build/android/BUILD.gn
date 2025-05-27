@@ -85,6 +85,11 @@ action("sign_app") {
     "$brave_android_key_password",
     "$brave_android_keystore_name",
   ]
+
+  # Add PKCS11 flag with key label if enabled
+  if (defined(brave_android_pkcs11_key_label)) {
+    args += [ "--pkcs11=" + brave_android_pkcs11_key_label ]
+  }
 }
 
 copy("brave") {

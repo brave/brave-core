@@ -136,6 +136,7 @@ program
   .option('--universal', 'build a universal binary distribution')
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--xcode_gen <target>', 'Generate an Xcode workspace ("ios" or a list of semi-colon separated label patterns, run `gn help label_pattern` for more info.')
+  .option('--pkcs11 <key_label>', 'Use PKCS11 signing with specified key label')
   .arguments('[build_config]')
   .action(build)
 
