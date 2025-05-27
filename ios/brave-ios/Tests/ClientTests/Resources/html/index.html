@@ -127,9 +127,9 @@
       localFrame.contentDocument.body.appendChild(div);
     }
 
-    const addElementForProceduralFilter = () => {
+    const addElementForProceduralFilter = (id) => {
       const div = document.createElement('div');
-      div.id = "test-delayed-has-text";
+      div.id = id;
       div.innerText = 'Please hide me';
       document.body.appendChild(div);
     }
@@ -154,6 +154,18 @@
       childNode2.appendChild(span);
 
       root.appendChild(rootElement);
+    }
+    
+    // Create an element with inflated mutation score to at least `switchToSelectorsPollingThreshold`
+    // value to so mutationScore triggers alternative mutation strategy (polling) in `content_cosmetic_ios`
+    const triggerAltMutationObservationStrategy = () => {
+      const div = document.createElement('div')
+      for (let i = 0; i < 2000; i++) {
+        const span = document.createElement('span');
+        span.setAttribute('id', 'span-id-' + i);
+        div.appendChild(span)
+      }
+      document.body.appendChild(div);
     }
 
     const onload = () => {

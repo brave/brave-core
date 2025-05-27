@@ -397,8 +397,10 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     }
 
     const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
-    const queryAttrsFromDocumentBound = querySelectorsFromDocument.bind(
-      undefined, futureTimeMs)
+     const queryAttrsFromDocumentBound = queryAttrsFromDocument.bind(
+      undefined,
+      /* switchToMutationObserverAtTime */ futureTimeMs,
+      /* sendSelectorsImmediately */ false)
     selectorsPollingIntervalId = window.setInterval(
       queryAttrsFromDocumentBound, selectorsPollingIntervalMs)
   }
@@ -797,11 +799,21 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
    * @param {number} switchToMutationObserverAtTime A timestamp indicating when
    * we should switch back to mutation observer
    */
-  const querySelectorsFromDocument = (switchToMutationObserverAtTime) => {
+  const queryAttrsFromDocument = async (
+    switchToMutationObserverAtTime, sendSelectorsImmediately) => {
+    // query selectors from document
     querySelectorsFromElement(document)
 
     // Send any found selectors to the browser
-    sendPendingSelectorsThrottled()
+    if (sendSelectorsImmediately) {
+      await sendPendingSelectorsIfNeeded()
+    } else {
+      sendPendingSelectorsThrottled()
+    }
+
+    if (CC.hasProceduralActions) {
+      executeProceduralActions();
+    }
 
     if (switchToMutationObserverAtTime !== undefined &&
       window.Date.now() >= switchToMutationObserverAtTime) {
@@ -814,12 +826,11 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
    * Then it will begin the selectors mutation observer
    */
   const startPollingSelectors = async () => {
-    // First queue up any classes and ids that exist before the mutation
-    // observer starts running.
-    querySelectorsFromElement(document)
-
-    // Send any found selectors to the browser and await the results
-    await sendPendingSelectorsIfNeeded()
+    // First queue up & send any classes and ids that exist before the
+    // mutation observer starts running.
+    await queryAttrsFromDocument(
+      /* switchToMutationObserverAtTime */ undefined,
+      /* sendSelectorsImmediately */ true)
 
     // Second, set up a mutation observer to handle any new ids or classes
     // that are added to the document.
