@@ -12,7 +12,6 @@ import BraveIconCircle from "./styles/brave_icon_circle"
 import Button from '@brave/leo/react/button'
 import Card from "./styles/Card"
 import Col from "./styles/Col"
-import formatMessage from '$web-common/formatMessage'
 import Input from '@brave/leo/react/input'
 import Row from "./styles/Row"
 import styled from 'styled-components'
@@ -83,10 +82,8 @@ const AfterSendingEmailMessage = (
     event.preventDefault()
     emailAliasesService.cancelAuthenticationOrLogout()
   }
-  const tryAgainLink = (msg: string) => formatMessage(
-    getLocale(msg),
-    { tags: { $1: (content) => <a href='#'
-                                  onClick={onClick}>{content}</a> } })
+  const tryAgainLink = (msg: string) => formatLocale( msg, {
+    $1: (content) => <a href='#' onClick={onClick}>{content}</a> } )
   return <SpacedCol>
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
