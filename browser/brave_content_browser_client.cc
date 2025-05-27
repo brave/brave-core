@@ -788,6 +788,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           &brave_wallet::BraveWalletTabHelper::BindEthereumProvider));
       map->Add<brave_wallet::mojom::SolanaProvider>(base::BindRepeating(
           &brave_wallet::BraveWalletTabHelper::BindSolanaProvider));
+      if (brave_wallet::IsCardanoDAppSupportEnabled()) {
+        map->Add<brave_wallet::mojom::CardanoProvider>(base::BindRepeating(
+            &brave_wallet::BraveWalletTabHelper::BindCardanoProvider));
+      }
     }
   }
 

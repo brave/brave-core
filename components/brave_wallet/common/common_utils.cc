@@ -56,6 +56,10 @@ bool IsCardanoEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature);
 }
 
+bool IsCardanoDAppSupportEnabled() {
+  return IsCardanoEnabled() && features::kCardanoDAppSupport.Get();
+}
+
 bool IsZCashEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
 }
