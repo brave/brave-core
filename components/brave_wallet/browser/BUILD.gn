@@ -93,6 +93,8 @@ static_library("browser") {
     "cardano/cardano_knapsack_solver.h",
     "cardano/cardano_max_send_solver.cc",
     "cardano/cardano_max_send_solver.h",
+    "cardano/cardano_provider_impl.cc",
+    "cardano/cardano_provider_impl.h",
     "cardano/cardano_rpc.cc",
     "cardano/cardano_rpc.h",
     "cardano/cardano_rpc_schema.cc",
