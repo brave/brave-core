@@ -53,7 +53,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {

@@ -35,7 +35,6 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;

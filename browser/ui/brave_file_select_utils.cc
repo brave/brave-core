@@ -16,7 +16,6 @@
 #include "components/url_formatter/elide_url.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace brave {

@@ -18,7 +18,6 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
-#include "url/gurl.h"
 
 namespace brave_rewards {
 

@@ -13,7 +13,6 @@
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/render_view_test.h"
-#include "url/gurl.h"
 
 namespace brave_subscription {
 

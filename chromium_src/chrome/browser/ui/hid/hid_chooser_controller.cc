@@ -9,7 +9,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "url/gurl.h"
 
 namespace {
 

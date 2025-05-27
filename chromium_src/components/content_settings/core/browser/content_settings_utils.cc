@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-#include "url/gurl.h"
-
 #define GetRendererContentSettingRules \
   GetRendererContentSettingRules_ChromiumImpl
 

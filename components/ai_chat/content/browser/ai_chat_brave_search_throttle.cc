@@ -25,7 +25,6 @@
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
-#include "url/gurl.h"
 
 namespace content {
 class RenderFrameHost;

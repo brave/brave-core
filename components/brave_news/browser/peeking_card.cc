@@ -21,7 +21,6 @@
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "url/gurl.h"
 
 namespace brave_news {
 

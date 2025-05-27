@@ -60,7 +60,6 @@
 #include "net/base/features.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
