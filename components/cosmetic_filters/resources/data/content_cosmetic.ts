@@ -300,11 +300,13 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
     const addedElements : Element[] = [];
     mutations.forEach(mutation =>
       mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
-        n.nodeType === Node.ELEMENT_NODE && addedElements.push(n as Element)
-        const childNodes = (n as Element).querySelectorAll('*')
-        childNodes.length !== 0 && childNodes.forEach(c => {
-          c.nodeType === Node.ELEMENT_NODE && addedElements.push(c as Element)
-        })
+        if (n.nodeType === Node.ELEMENT_NODE) {
+          addedElements.push(n as Element)
+          const childNodes = (n as Element).querySelectorAll('*')
+          childNodes.length !== 0 && childNodes.forEach(c => {
+            c.nodeType === Node.ELEMENT_NODE && addedElements.push(c as Element)
+          })
+        }
       })
     )
     if (addedElements.length !== 0) {
