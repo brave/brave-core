@@ -101,14 +101,11 @@ import {
 } from '../../../utils/routes-utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 
-interface Props {
-  isAndroid?: boolean
-}
 interface Params {
   assetId: string
 }
 
-export const FundWalletScreen = ({ isAndroid }: Props) => {
+export const FundWalletScreen = () => {
   // render
   return (
     <Switch>
@@ -116,14 +113,14 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
         path={WalletRoutes.FundWalletPurchaseOptionsPage}
         exact
       >
-        <PurchaseOptionSelection isAndroid={isAndroid} />
+        <PurchaseOptionSelection />
       </Route>
 
       <Route
         path={WalletRoutes.FundWalletPage}
         exact
       >
-        <AssetSelection isAndroid={isAndroid} />
+        <AssetSelection />
       </Route>
 
       <Redirect to={WalletRoutes.FundWalletPage} />
@@ -131,7 +128,10 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
   )
 }
 
-function AssetSelection({ isAndroid }: Props) {
+function AssetSelection() {
+  // Selectors
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+
   // routing
   const history = useHistory()
   const { assetId: selectedOnRampAssetId } = useParams<Params>()
@@ -444,7 +444,10 @@ function AssetSelection({ isAndroid }: Props) {
   )
 }
 
-function PurchaseOptionSelection({ isAndroid }: Props) {
+function PurchaseOptionSelection() {
+  // Selectors
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+
   // routing
   const history = useHistory()
   const { assetId: selectedOnRampAssetId } = useParams<Params>()

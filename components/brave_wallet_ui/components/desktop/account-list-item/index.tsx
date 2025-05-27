@@ -28,7 +28,6 @@ import {
 } from '../../../utils/rewards_utils'
 import { getLocale } from '../../../../common/locale'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
-import { loadTimeData } from '../../../../common/loadTimeData'
 
 // hooks
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
@@ -127,7 +126,7 @@ export const AccountListItem = ({
 
   // selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
 
   // redux
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
