@@ -5,93 +5,41 @@
 
 #include "brave/ios/browser/variations/model/brave_variations_seed_fetcher.h"
 
-#include "base/strings/sys_string_conversions.h"
-#include "base/time/time.h"
+#include "base/command_line.h"
 #include "brave/base/mac/conversions.h"
-#include "components/prefs/pref_registry_simple.h"
-#include "components/variations/seed_response.h"
-#include "components/variations/variations_seed_store.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-
-namespace {
-
-NSString* kLastVariationsSeedFetchTimeKey = @"kLastVariationsSeedFetchTime";
-
-base::Time GetLastVariationsSeedFetchTime() {
-  double timestamp = [[NSUserDefaults standardUserDefaults]
-      doubleForKey:kLastVariationsSeedFetchTimeKey];
-  return base::Time::FromSecondsSinceUnixEpoch(timestamp);
-}
-
-void SaveLastVariationsSeedFetchTime() {
-  [[NSUserDefaults standardUserDefaults]
-      setDouble:base::Time::Now().InSecondsFSinceUnixEpoch()
-         forKey:kLastVariationsSeedFetchTimeKey];
-}
-
-}  // namespace
-
-@interface IOSChromeVariationsSeedFetcher (Private)
-- (std::unique_ptr<variations::SeedResponse>)
-    seedResponseForHTTPResponse:(NSHTTPURLResponse*)httpResponse
-                           data:(NSData*)data;
-@end
+#include "ios/chrome/browser/variations/model/ios_chrome_variations_seed_fetcher.h"
 
 @interface BraveVariationsSeedFetcher () <
     IOSChromeVariationsSeedFetcherDelegate>
-@property(nonatomic) dispatch_semaphore_t semaphore;
+@property(nonatomic, strong) IOSChromeVariationsSeedFetcher* fetcher;
+@property(nonatomic, strong) void (^completion)(bool);
 @end
 
 @implementation BraveVariationsSeedFetcher
 - (instancetype)init {
-  NSArray* arguments =
-      brave::vector_to_ns(base::CommandLine::ForCurrentProcess()->argv());
-  self = [super initWithArguments:arguments];
+  if ((self = [super init])) {
+    NSArray* arguments =
+        brave::vector_to_ns(base::CommandLine::ForCurrentProcess()->argv());
+
+    CHECK(arguments);
+
+    _fetcher =
+        [[IOSChromeVariationsSeedFetcher alloc] initWithArguments:arguments];
+    CHECK(_fetcher);
+  }
   return self;
 }
 
-- (void)startSeedFetch {
-  CHECK(false) << "This function must never be called\n";
-}
-
-- (void)setDelegate:(id<IOSChromeVariationsSeedFetcherDelegate>)delegate {
-  CHECK(false) << "This function must never be called\n";
-}
-
-- (void)notifyDelegateSeedFetchResult:(BOOL)result {
-  __weak BraveVariationsSeedFetcher* weakSelf = self;
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    [weakSelf variationsSeedFetcherDidCompleteFetchWithSuccess:result];
-  });
-}
-
-- (void)fetchSeedSynchronously {
-  [self fetchSeedSynchronously:false];
-}
-
-- (void)fetchSeedSynchronously:(bool)ignoringLastSeedFetch {
-  base::Time lastSeedFetchTime =
-      ignoringLastSeedFetch ? base::Time() : GetLastVariationsSeedFetchTime();
-  if (lastSeedFetchTime.is_null()) {
-    // Save the last fetch time no matter what
-    // If the fetching fails, the next launch will NOT re-fetch!
-    SaveLastVariationsSeedFetchTime();
-
-    _semaphore = dispatch_semaphore_create(0);
-    [super setDelegate:self];
-    [super startSeedFetch];
-
-    // Timeout the semaphore
-    // Technically the Variations Seed Fetcher actually has a 1.5s fetch time,
-    // so this timeout will never be reached in reality.
-    // variations/model/ios_chrome_variations_seed_fetcher.mm;l=27
-    dispatch_semaphore_wait(
-        _semaphore, dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC));
-  }
+- (void)fetchSeedWithCompletion:(void (^)(bool success))completion {
+  self.completion = completion;
+  _fetcher.delegate = self;
+  [_fetcher startSeedFetch];
 }
 
 - (void)variationsSeedFetcherDidCompleteFetchWithSuccess:(BOOL)success {
-  [super setDelegate:nil];
-  dispatch_semaphore_signal(_semaphore);
+  if (_completion) {
+    _completion(success);
+  }
 }
 @end
