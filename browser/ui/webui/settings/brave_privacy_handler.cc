@@ -32,6 +32,10 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/windows_recall/windows_recall.h"
+#endif
+
 BravePrivacyHandler::BravePrivacyHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
@@ -102,6 +106,21 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isOpenAIChatFromBraveSearchEnabled",
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
+#if BUILDFLAG(IS_WIN)
+  {
+    const auto windows_recall_state =
+        windows_recall::GetWindowsRecallState(profile);
+    data_source->AddBoolean(
+        "isWindowsRecallAvailable",
+        windows_recall_state !=
+            windows_recall::WindowsRecallState::kUnavailable);
+    data_source->AddBoolean(
+        "windowsRecallEnabledAtStartup",
+        windows_recall_state == windows_recall::WindowsRecallState::kEnabled);
+  }
+#else
+  data_source->AddBoolean("isWindowsRecallAvailable", false);
+#endif
 }
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(
