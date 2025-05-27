@@ -53,6 +53,8 @@ OBJC_EXPORT
 - (instancetype)initWithAdditionalSwitches:
     (NSArray<BraveCoreSwitch*>*)additionalSwitches;
 
+- (void)finishBasicStartup;
+
 - (void)scheduleLowPriorityStartupTasks;
 
 - (void)setUserAgent:(NSString*)userAgent;

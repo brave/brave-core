@@ -224,6 +224,11 @@ extension Preferences {
   }
 
   public final class Chromium {
+    /// Last Variations Seed Fetch Date
+    public static let lastVariationsSeedFetchDate = Option<Date?>(
+      key: "chromium.variations.last_fetch_date",
+      default: nil
+    )
     /// Whether the device is in sync chain
     public static let syncEnabled = Option<Bool>(key: "chromium.sync.enabled", default: false)
     /// The sync type bookmarks enabled for the device in sync chain

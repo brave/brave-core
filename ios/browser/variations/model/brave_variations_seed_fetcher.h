@@ -8,12 +8,14 @@
 
 #include <Foundation/Foundation.h>
 
-#include "ios/chrome/browser/variations/model/ios_chrome_variations_seed_fetcher.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@interface BraveVariationsSeedFetcher : IOSChromeVariationsSeedFetcher
+OBJC_EXPORT
+@interface BraveVariationsSeedFetcher : NSObject
 - (instancetype)init;
-- (void)fetchSeedSynchronously;
-- (void)fetchSeedSynchronously:(bool)ignoringLastSeedFetch;
+- (void)fetchSeedWithCompletion:(void (^)(bool success))completion;
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_VARIATIONS_MODEL_BRAVE_VARIATIONS_SEED_FETCHER_H_

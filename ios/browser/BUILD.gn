@@ -44,6 +44,7 @@ group("browser") {
     "api/web_image",
     "api/web_view",
     "brave_wallet",
+    "variations/model",
     "//brave/browser/sync",
     "//brave/components/constants",
     "//brave/ios/browser/application_context",
