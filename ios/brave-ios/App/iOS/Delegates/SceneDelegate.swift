@@ -272,7 +272,10 @@ extension SceneDelegate {
     }
     // Setup default profile & profile state
     let defaultProfileController = await braveCore.loadDefaultProfile()
+    AppState.shared.state = .profileLoaded
+    
     let profileState = ProfileState(profileController: defaultProfileController)
+    Self.profileState = profileState
     return (defaultProfileController, profileState)
   }
 
