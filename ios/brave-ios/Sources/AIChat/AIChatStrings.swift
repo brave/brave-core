@@ -260,14 +260,6 @@ extension Strings {
       comment:
         "The model's purpose - Describes what it can do best"
     )
-    public static let introMessageMixtralModelPurposeDescription = NSLocalizedString(
-      "aichat.introMessageMixtralModelPurposeDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Advanced chat tasks",
-      comment:
-        "The model's purpose - Describes what it can do best"
-    )
     public static let introMessageQwenModelPurposeDescription = NSLocalizedString(
       "aichat.introMessageQwenModelPurposeDescription",
       tableName: "BraveLeo",

@@ -120,25 +120,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Mistral AI";
-      options->name = "mixtral-8x7b-instruct";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = kFreemiumAccess;
-      options->max_associated_content_length = 64000;
-      options->long_conversation_warning_character_limit = 9700;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-leo-expanded";
-      model->display_name = "Mixtral";
-      model->vision_support = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    {
-      auto options = mojom::LeoModelOptions::New();
       options->display_maker = "DeepSeek";
       options->name = "bedrock-us.deepseek-r1-v1:0";
       options->category = mojom::ModelCategory::CHAT;
