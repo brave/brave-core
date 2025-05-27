@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Az összes letiltása";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Az összes cookie letiltása megakadályozza egyes webhelyek megfelelő működését.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Letiltja az összes cookie-t?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Letiltja az összes cookie-t?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "A Shields már blokkolja a harmadik féltől származó cookie-kat.\nHa minden cookie-t letilt, azzal a meglévő cookie-kat és a webhelyadatokat is törli, és előfordulhat, hogy egyes webhelyek nem fognak megfelelően működni.\n\n";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Nem sikerült beállítani a preferenciát. Próbálja újra.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Cookie-kkal kapcsolatos hozzájárulási értesítések letiltása";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Megakadályozza, hogy a webhelyek információkat rögzítsenek az Ön korábbi látogatásairól. Az „Összes süti blokkolása” opciót már nem használjuk. Ha szeretné megtudni, hogyan lehet újra aktiválni ezt az opciót, keresse fel [súgóoldalunkat] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting). l";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkolásfigyelő";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Megerősítés ";
 
-/* Cookie settings option title */
-"CookieControl" = "Sütik beállítása";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie-k és webhelyadatok";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Kész";
-
-/* cookie settings option */
-"DontBlockCookies" = "Ne tiltsa le a cookie-kat";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ne küldje el";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS frissítések";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Böngészési adatok importálása";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Egyéni vezérlők";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Nem sikerült betölteni az oldalt.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licencek";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Szavak száma: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Importált könyvjelzők";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Bezárás";

@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "封鎖所有";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "封鎖所有 Cookies 可能會讓有些網站不能正常工作。";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "拦截所有 Cookie?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "要封鎖所有 Cookies 嗎？";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "盾牌已经拦截第三方 cookie。此拦截所有 cookie 的设置会移除现有 cookie 和站点数据，并可能会破坏网站。";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "阻止 Cookie 同意通知";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "防止网站储存您之前访问的信息。\n“阻止所有 cookie”选项已被弃用。如要了解如何强制启用该选项，请访问[我们的帮助页面](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "正在拦截监视器";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "确定";
 
-/* Cookie settings option title */
-"CookieControl" = "Cookie 控制";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie 及網站資料";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "已完成";
-
-/* cookie settings option */
-"DontBlockCookies" = "不要拦截 cookies";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "不发送";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 升级";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "导入浏览数据";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "个人控制";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "无法加载页面。";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "执照";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "字數：%i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "已匯入的書籤";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "关闭";

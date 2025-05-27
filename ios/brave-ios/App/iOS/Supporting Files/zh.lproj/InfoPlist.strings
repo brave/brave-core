@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "1Password 填寫瀏覽器操作";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "您造訪的網站可能會要求取得您的位置資訊。";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "這會允許您在使用 Brave 期間使用麥克風。";
+"NSMicrophoneUsageDescription" = "这允许 Brave 使用您的声音提交搜索查询。";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "这可使您保存照片。";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "此权限用于启用苹果高级语音识别功能。如果不允许，将使用“设备上”识别，搜索将完全保密。Brave 不会存储或分享你的语音搜索。";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "OPML 文件";
 

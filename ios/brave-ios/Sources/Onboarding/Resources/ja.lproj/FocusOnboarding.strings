@@ -23,10 +23,10 @@
 "focusOnboarding.p3aScreenTitle" = "Braveは進化を続けます";
 
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
-"focusOnboarding.p3aToggleDescription" = "この設定は ** Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら]（#p3a-learn-more）をご覧ください。";
+"focusOnboarding.p3aToggleDescription" = "この設定は **Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら](#p3a-learn-more) をご覧ください。";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "この設定は ** Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら]（#p3a-learn-more）をご覧ください。";
+"focusOnboarding.p3aToggleTitle" = "製品に関するインサイトが **完全にプライベートな匿名情報** として共有されます。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
