@@ -69,9 +69,10 @@
 <translation id="3446024864193919737">Show Brave Rewards</translation>
 <translation id="5585019845078534178">Cards</translation>
 <translation id="3870475560794762985">Show sponsored images</translation>
+<translation id="5684562942023496754">You can earn for seeing sponsored images.</translation>
+<translation id="6165508094623778733">Learn more</translation>
 <translation id="2414654907269324670">You're earning BATs for sponsored images.</translation>
 <translation id="4942016616604700968">Enable Rewards</translation>
-<translation id="5684562942023496754">You can earn for seeing sponsored images.</translation>
 <translation id="8934374643857605034">As a Brave Rewards user, you can earn BATs for seeing sponsored images.</translation>
 <translation id="1570714748649804013">As a Brave Rewards user, you earn BATs for sponsored images you see. Disabling sponsored images will reduce how much you earn.</translation>
 <translation id="8998727244653964783">You can earn BATs for seeing sponsored images when you connect a custodial account to Brave Rewards. In the meantime, you're helping to support creators with sponsored images.</translation>
@@ -119,7 +120,6 @@
 <translation id="2702801445560668637">Reading List</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="8027460023387054992">Chat Summariser</translation>
-<translation id="6165508094623778733">Learn more</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="730042046912793465">This is a</translation>
 <translation id="2055363275850890030">Private Window</translation>
@@ -2112,14 +2112,19 @@
 <translation id="3895031624234442305">Custom models</translation>
 <translation id="4572010449071015143">Start new conversation</translation>
 <translation id="6543799171249004861">Photo by <ph name="AUTHOR"/></translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4290791698375397492">Top site removed</translation>
 <translation id="9030215177866748410">Top sites are suggested based on websites you visit often.</translation>
+<translation id="8425213833346101688">Change</translation>
+<translation id="755045397420611731">Extra privacy &amp; security online</translation>
+<translation id="4520128772974831415">Hide your IP &amp; change your location</translation>
+<translation id="8703188411226330709">Start free trial</translation>
+<translation id="8814357473522731680">Powered by</translation>
+<translation id="7143207342074048698">Connecting ...</translation>
+<translation id="1202549130170287307">Disconnecting</translation>
+<translation id="8793108040181436796">Widgets</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Enable Brave Shields</translation>
-<translation id="7509914170164691086">Shields are UP <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Shields are DOWN <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">If this site seems broken, try Shields down.
-   <ph name="LINK_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Not protected by Brave Shields <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Advanced controls</translation>
@@ -2199,15 +2204,12 @@
 <translation id="958268166261124668">Brave VPN: connected</translation>
 <translation id="6021669293402055982">Brave VPN: disconnected</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
-<translation id="7143207342074048698">Connecting ...</translation>
-<translation id="1202549130170287307">Disconnecting</translation>
 <translation id="2325196879156848326">Connection failed</translation>
 <translation id="745054660363064771">Can't connect to server</translation>
 <translation id="3936826714240735937">Choose another server</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> couldn't connect to the <ph name="REGION_NAME"/> server. Please try again or choose another country.</translation>
 <translation id="5753795690521538679">Start free 7-day trial</translation>
 <translation id="3357036723290257445">Already purchased Brave VPN?</translation>
-<translation id="8814357473522731680">Powered by</translation>
 <translation id="8652175077544655965">Close settings</translation>
 <translation id="5908163815855240493">Go to main</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -2215,8 +2217,6 @@
 <translation id="8421945428836418371">Reconnect automatically</translation>
 <translation id="434523916398030617">Contact technical support</translation>
 <translation id="1116694919640316211">About</translation>
-<translation id="755045397420611731">Extra privacy &amp; security online</translation>
-<translation id="4520128772974831415">Hide your IP &amp; change your location</translation>
 <translation id="2044418816479192294">Hundreds of servers around the world</translation>
 <translation id="7410504850864021600">Lightning-fast connection speeds</translation>
 <translation id="2422309687188612485">Protect up to 10 devices with one plan</translation>
@@ -2288,10 +2288,7 @@ Let's get you connected!</translation>
 <translation id="8048263175525832621">Brave VPN – disconnected</translation>
 <translation id="1498770726476841108">Manage account</translation>
 <translation id="6825718953004242472">Remove icon</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Extra privacy &amp; security online.</translation>
-<translation id="8425213833346101688">Change</translation>
-<translation id="8703188411226330709">Start free trial</translation>
 <translation id="3287942014983548982">Open here</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, currently open,
     press Tab then Enter to switch to the open tab</translation>

@@ -30,6 +30,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
+  case RequestType::kBraveCardano:                   \
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
@@ -41,6 +42,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
+  case RequestType::kBraveCardano:                   \
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
@@ -53,6 +55,8 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
     return "brave_ethereum";                                      \
   case permissions::RequestType::kBraveSolana:                    \
     return "brave_solana";                                        \
+  case permissions::RequestType::kBraveCardano:                   \
+    return "brave_cardano";                                       \
   case permissions::RequestType::kBraveGoogleSignInPermission:    \
     return "brave_google_sign_in";                                \
   case permissions::RequestType::kBraveLocalhostAccessPermission: \
@@ -86,6 +90,8 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveEthereum;
     case ContentSettingsType::BRAVE_SOLANA:
       return RequestType::kBraveSolana;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return RequestType::kBraveCardano;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
@@ -116,6 +122,8 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
       return ContentSettingsType::BRAVE_SOLANA;
     case RequestType::kBraveOpenAIChat:
       return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
+    case RequestType::kBraveCardano:
+      return ContentSettingsType::BRAVE_CARDANO;
     default:
       return RequestTypeToContentSettingsType_ChromiumImpl(request_type);
   }
@@ -128,6 +136,7 @@ bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+    case ContentSettingsType::BRAVE_CARDANO:
       return true;
     default:
       return IsRequestablePermissionType_ChromiumImpl(content_settings_type);

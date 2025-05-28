@@ -10,8 +10,8 @@
 #include <variant>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "url/gurl.h"
 
 namespace user_prefs {
 class PrefRegistrySyncable;

@@ -20,15 +20,13 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
-using testing::UnorderedElementsAreArray;
-
 namespace brave_wallet {
 
 namespace {
 
-uint64_t ApplyFeeRate(uint64_t min_fee_coefficient,
-                      uint64_t min_fee_constant,
-                      uint32_t tx_size) {
+uint64_t MinFeeForTxSize(uint64_t min_fee_coefficient,
+                         uint64_t min_fee_constant,
+                         uint32_t tx_size) {
   return tx_size * min_fee_coefficient + min_fee_constant;
 }
 
@@ -96,9 +94,8 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
         .min_fee_coefficient = min_fee_coefficient(),
         .min_fee_constant = min_fee_constant()};
   }
-  uint32_t dust_change_threshold() const { return 2684; }
+  uint32_t dust_change_threshold() const { return 3036; }
 
-  bool testnet_ = false;
   CardanoHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
                             mojom::KeyringId::kCardanoMainnet};
 };
@@ -130,7 +127,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
 
   // Fee for typical 1 input -> 1 output transaction.
   uint32_t min_fee =
-      ApplyFeeRate(min_fee_coefficient(), min_fee_constant(), 222u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 222u);
   EXPECT_EQ(min_fee, 165149u);
 
   {
@@ -184,7 +181,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
 
   // Fee for typical 1 input -> 2 outputs transaction.
   uint32_t min_fee =
-      ApplyFeeRate(min_fee_coefficient(), min_fee_constant(), 285u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 285u);
   EXPECT_EQ(min_fee, 167921u);
 
   {

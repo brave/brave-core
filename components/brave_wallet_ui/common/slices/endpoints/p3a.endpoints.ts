@@ -12,7 +12,7 @@ import { handleEndpointError } from '../../../utils/api-utils'
 
 export const p3aEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     reportOnboardingAction: mutation<true, BraveWallet.OnboardingAction>({
@@ -21,16 +21,16 @@ export const p3aEndpoints = ({
           const { data: api } = baseQuery(undefined)
           api.braveWalletP3A.reportOnboardingAction(arg)
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to report onboarding action',
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

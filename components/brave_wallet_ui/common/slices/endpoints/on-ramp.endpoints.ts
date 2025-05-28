@@ -11,7 +11,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   addLogoToToken,
   getUniqueAssets,
-  sortNativeAndAndBatAssetsToTop
+  sortNativeAndAndBatAssetsToTop,
 } from '../../../utils/asset-utils'
 import { mapLimit } from 'async'
 import { handleEndpointError } from '../../../utils/api-utils'
@@ -33,7 +33,7 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
         try {
           const {
             data: { blockchainRegistry },
-            cache
+            cache,
           } = baseQuery(undefined)
           const { kRamp, kSardine, kTransak, kStripe, kCoinbase } =
             BraveWallet.OnRampProvider
@@ -42,34 +42,34 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             SupportedOnRampNetworks,
             10,
             async (chainId: string) =>
-              await blockchainRegistry.getBuyTokens(kRamp, chainId)
+              await blockchainRegistry.getBuyTokens(kRamp, chainId),
           )
 
           const sardineAssets = await mapLimit(
             SupportedOnRampNetworks,
             10,
             async (chainId: string) =>
-              await blockchainRegistry.getBuyTokens(kSardine, chainId)
+              await blockchainRegistry.getBuyTokens(kSardine, chainId),
           )
 
           const transakAssets = await mapLimit(
             SupportedOnRampNetworks,
             10,
             async (chainId: string) =>
-              await blockchainRegistry.getBuyTokens(kTransak, chainId)
+              await blockchainRegistry.getBuyTokens(kTransak, chainId),
           )
           const stripeAssets = await mapLimit(
             SupportedOnRampNetworks,
             10,
             async (chainId: string) =>
-              await blockchainRegistry.getBuyTokens(kStripe, chainId)
+              await blockchainRegistry.getBuyTokens(kStripe, chainId),
           )
 
           const coinbaseAssets = await mapLimit(
             SupportedOnRampNetworks,
             10,
             async (chainId: string) =>
-              await blockchainRegistry.getBuyTokens(kCoinbase, chainId)
+              await blockchainRegistry.getBuyTokens(kCoinbase, chainId),
           )
 
           const updateLogo = async (token: BraveWallet.BlockchainToken) => {
@@ -82,35 +82,35 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             await mapLimit(
               rampAssets.flatMap((p) => p.tokens),
               10,
-              updateLogo
+              updateLogo,
             )
 
           const sardineAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               sardineAssets.flatMap((p) => p.tokens),
               10,
-              updateLogo
+              updateLogo,
             )
 
           const transakAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               transakAssets.flatMap((p) => p.tokens),
               10,
-              updateLogo
+              updateLogo,
             )
 
           const stripeAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               stripeAssets.flatMap((p) => p.tokens),
               10,
-              updateLogo
+              updateLogo,
             )
 
           const coinbaseAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               coinbaseAssets.flatMap((p) => p.tokens),
               10,
-              updateLogo
+              updateLogo,
             )
 
           // sort lists
@@ -137,20 +137,20 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
                 sortedRampOptions.concat(
                   sortedSardineOptions,
                   sortedTransakOptions,
-                  sortedStripeOptions
-                )
-              )
-            )
+                  sortedStripeOptions,
+                ),
+              ),
+            ),
           }
 
           return {
-            data: results
+            data: results,
           }
         } catch (error) {
           const errorMessage = `Unable to fetch onRamp assets: ${error}`
           console.log(errorMessage)
           return {
-            error: errorMessage
+            error: errorMessage,
           }
         }
       },
@@ -159,7 +159,7 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           return ['UNKNOWN_ERROR']
         }
         return ['OnRampAssets']
-      }
+      },
     }),
 
     getOnRampFiatCurrencies: query<BraveWallet.OnRampCurrency[], void>({
@@ -172,16 +172,16 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             throw new Error('No currencies found')
           }
           return {
-            data: currencies
+            data: currencies,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to fetch on-ramp fiat currencies',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getBuyUrl: query<
@@ -204,7 +204,7 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             arg.address,
             arg.assetSymbol,
             arg.amount,
-            arg.currencyCode
+            arg.currencyCode,
           )
 
           if (error) {
@@ -212,26 +212,28 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           }
 
           return {
-            data: url
+            data: url,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to get ${getRampProviderName(
-              arg.onRampProvider
+              arg.onRampProvider,
             )} buy URL for: ${JSON.stringify(arg, undefined, 2)}`,
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }
 
 // internals
 function getRampProviderName(onRampProvider: BraveWallet.OnRampProvider) {
   return Object.keys(BraveWallet.OnRampProvider)
-    .find((key: keyof typeof BraveWallet.OnRampProvider) =>
-      BraveWallet.OnRampProvider[key] === onRampProvider)
+    .find(
+      (key: keyof typeof BraveWallet.OnRampProvider) =>
+        BraveWallet.OnRampProvider[key] === onRampProvider,
+    )
     ?.substring(1)
 }

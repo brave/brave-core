@@ -11,7 +11,7 @@ import {
   fromUntrustedEthereumSignatureVRS,
   fromUntrustedEthereumSignatureBytes,
   HardwareOperationResultEthereumSignatureVRS,
-  HardwareOperationResultEthereumSignatureBytes
+  HardwareOperationResultEthereumSignatureBytes,
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
@@ -20,7 +20,7 @@ import {
   EthGetAccountResponse,
   EthSignTransactionResponse,
   EthSignPersonalMessageResponse,
-  EthSignEip712MessageResponse
+  EthSignEip712MessageResponse,
 } from './ledger-messages'
 
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
@@ -40,7 +40,7 @@ export default class EthereumLedgerBridgeKeyring
   getAccounts = async (
     from: number,
     count: number,
-    scheme: HardwareImportScheme
+    scheme: HardwareImportScheme,
   ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -55,7 +55,7 @@ export default class EthereumLedgerBridgeKeyring
 
   signTransaction = async (
     path: string,
-    rawTxHex: string
+    rawTxHex: string,
   ): Promise<HardwareOperationResultEthereumSignatureVRS> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -66,11 +66,11 @@ export default class EthereumLedgerBridgeKeyring
       id: LedgerCommand.SignTransaction,
       path: path,
       rawTxHex: rawTxHex,
-      origin: window.origin
+      origin: window.origin,
     })
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -79,25 +79,25 @@ export default class EthereumLedgerBridgeKeyring
     }
 
     const ethereumSignatureVRS = fromUntrustedEthereumSignatureVRS(
-      data.payload.signature
+      data.payload.signature,
     )
     if (!ethereumSignatureVRS) {
       return {
         success: false,
         error: 'Invalid signature',
-        code: undefined
+        code: undefined,
       }
     }
 
     return {
       success: true,
-      signature: ethereumSignatureVRS
+      signature: ethereumSignatureVRS,
     }
   }
 
   signPersonalMessage = async (
     path: string,
-    message: string
+    message: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -109,11 +109,11 @@ export default class EthereumLedgerBridgeKeyring
       id: LedgerCommand.SignPersonalMessage,
       path: path,
       origin: window.origin,
-      messageHex: messageHex
+      messageHex: messageHex,
     })
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -122,26 +122,26 @@ export default class EthereumLedgerBridgeKeyring
     }
 
     const ethereumSignatureBytes = fromUntrustedEthereumSignatureBytes(
-      data.payload.signature
+      data.payload.signature,
     )
     if (!ethereumSignatureBytes) {
       return {
         success: false,
         error: 'Invalid signature',
-        code: undefined
+        code: undefined,
       }
     }
 
     return {
       success: true,
-      signature: ethereumSignatureBytes
+      signature: ethereumSignatureBytes,
     }
   }
 
   signEip712Message = async (
     path: string,
     domainSeparatorHex: string,
-    hashStructMessageHex: string
+    hashStructMessageHex: string,
   ): Promise<HardwareOperationResultEthereumSignatureBytes> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -153,11 +153,11 @@ export default class EthereumLedgerBridgeKeyring
       path: path,
       origin: window.origin,
       domainSeparatorHex: domainSeparatorHex,
-      hashStructMessageHex: hashStructMessageHex
+      hashStructMessageHex: hashStructMessageHex,
     })
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -166,24 +166,24 @@ export default class EthereumLedgerBridgeKeyring
     }
 
     const ethereumSignatureBytes = fromUntrustedEthereumSignatureBytes(
-      data.payload.signature
+      data.payload.signature,
     )
     if (!ethereumSignatureBytes) {
       return {
         success: false,
         error: 'Invalid signature',
-        code: undefined
+        code: undefined,
       }
     }
 
     return {
       success: true,
-      signature: ethereumSignatureBytes
+      signature: ethereumSignatureBytes,
     }
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[]
+    paths: string[],
   ): Promise<HardwareOperationResultAccounts> => {
     let accounts: AccountFromDevice[] = []
     for (const path of paths) {
@@ -191,11 +191,11 @@ export default class EthereumLedgerBridgeKeyring
         command: LedgerCommand.GetAccount,
         id: LedgerCommand.GetAccount,
         path: path,
-        origin: window.origin
+        origin: window.origin,
       })
       if (
-        data === LedgerBridgeErrorCodes.BridgeNotReady ||
-        data === LedgerBridgeErrorCodes.CommandInProgress
+        data === LedgerBridgeErrorCodes.BridgeNotReady
+        || data === LedgerBridgeErrorCodes.CommandInProgress
       ) {
         return this.createErrorFromCode(data)
       }
@@ -207,12 +207,12 @@ export default class EthereumLedgerBridgeKeyring
 
       accounts.push({
         address: responsePayload.address,
-        derivationPath: path
+        derivationPath: path,
       })
     }
     return {
       success: true,
-      accounts: accounts
+      accounts: accounts,
     }
   }
 }

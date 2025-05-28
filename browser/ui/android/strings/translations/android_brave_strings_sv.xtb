@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
 <translation id="6302422639282249274">Hantera Brave Rewards</translation>
-<translation id="2709516037105925701">Autofyll</translation>
 <translation id="8617525558807213034">Autofyll i privata flikar</translation>
 <translation id="8685431198160039193">Sparad information kan fyllas i automatiskt i privata flikar</translation>
 <translation id="6583902294974160967">Support</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
-<translation id="8495235435594442882">Aktivera nedre verktygsfältet</translation>
+<translation id="1215433243238902715">Aktivera det nedre navigeringsfältet</translation>
+<translation id="1422686363939271829">Denna inställning är inaktiverad när den nedre adressfältspositionen är vald</translation>
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
 <translation id="8701563696941209024">STARTA OM NU</translation>
 <translation id="834487290629916192">SENARE</translation>
@@ -420,9 +420,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8520059774736886747">Skaparen <ph name="PUBLISHER_NAME"/> verifierades nyligen</translation>
 <translation id="1486343603936278248">pollett</translation>
 <translation id="7781069478569868053">Ny flik</translation>
+<translation id="5927196110206824867">Sponsrade bakgrundsbilder stöder Braves uppdrag att bygga en oberoende, användarvänlig webb. Och till skillnad från de stora teknikföretagen mäter vi annonsprestanda anonymt för att bevara din integritet.</translation>
+<translation id="8748471354357836070">Läs mer / välj bort alternativ</translation>
 <translation id="3171669670217312786">Bakgrundsbilder</translation>
 <translation id="8522669544471808198">Visa bakgrundsbilder</translation>
 <translation id="3870475560794762985">Visa sponsrade bilder</translation>
+<translation id="6937724381960478525">Läs mer om Sponsrade bilder</translation>
 <translation id="8793108040181436796">Widgetar</translation>
 <translation id="8643377320501056697">Visa populäraste webbplatser</translation>
 <translation id="7275773481201277457">Visa Brave-statistik</translation>

@@ -52,6 +52,12 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4450893287417543264">Ära enam näita</translation>
 <translation id="4595286989346610620">Kontrolli üksikasju</translation>
 <translation id="8324318899000695659">Blokeeri elemendid</translation>
+<translation id="3828310068250853121">Valige element, mida soovite blokeerida</translation>
+<translation id="2577286987423083872">Blokeeri elemendid</translation>
+<translation id="3211174446914979436">Filtrite haldamine</translation>
+<translation id="3108584651298176909">Näita reegleid</translation>
+<translation id="5156986655891520787">Peida reeglid</translation>
+<translation id="7658239707568436148">Tühista</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Kasuta avamiseks .onion-i aadressi: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Sundkleebi</translation>
@@ -93,7 +99,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8117247596084706514">See veebisait päris teie <ph name="PART_ONE"/>täpset asukohta<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Lisateave<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">See veebisait päris teie <ph name="PART_ONE"/>täpset asukohta<ph name="PART_ONE_END"/>. Brave saab esitada ainult <ph name="PART_TWO"/>üldjoonelise asukoha<ph name="PART_TWO_END"/> andmed, sest <ph name="PART_THREE"/>asukohateenused<ph name="PART_THREE_END"/> on keelatud. <ph name="PART_FOUR"/>Lisateave<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Sule kõik</translation>
-<translation id="7658239707568436148">Tühista</translation>
 <translation id="4870911314065352661">Kas sulgeda kõik vahelehed?</translation>
 <translation id="7551864359422178684">Selles brauseriaknas on avatud <ph name="NUMBER_OF_TABS"/> vahelehte.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> vahelehte</translation>
@@ -133,6 +138,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="3447730462826640312">Te ei pea teenimiseks klõpsama, kuid klõpsake, kui olete huvitatud!</translation>
 <translation id="5253166205743627564">Täname, et toetate Brave Searchi, klõpsates erakuulutusel. Erinevalt Big Techist mõõdame reklaami tulemuslikkust anonüümselt, et säilitada teie privaatsust.</translation>
 <translation id="8748471354357836070">Lisateave / loobumisvõimalused</translation>
+<translation id="5927196110206824867">Sponsoreeritud taustapildid toetavad Brave'i missiooni luua sõltumatu, kasutajakesksem veeb. Ja erinevalt Big Techist mõõdame reklaami tulemuslikkust anonüümselt, et säilitada teie privaatsust.</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Andke Brave'i otsingu täpsemaks muutmiseks anonüümseid otsingu- ja sirvimisandmeid.</translation>
 <translation id="1516554614404600536">Brave'i kohtspikker</translation>
@@ -473,6 +479,9 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
 <translation id="7791141927430186653">Lubage X-i (varem Twitteri) manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
+<translation id="1244912498725894944">Mõnda küpsise seadistust kontrollib Brave Shields. Saate neid näha &lt;a href="/content/braveShields"&gt;siin&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Seda seadistust kontrollib Brave Shields.</translation>
+<translation id="352287031024189516">Seda seadistust kontrollib Google Sign-in.</translation>
 <translation id="8792121506918889955">WebRTC IP lahendamise kord</translation>
 <translation id="8798099450830957504">Vaikimisi</translation>
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
@@ -674,8 +683,12 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="856371974127598760">Rahakoti võrgud</translation>
 <translation id="5975930666279943472">Kustuta rahakoti tehingu- ja nonsiteave</translation>
 <translation id="5693968582510626466">Tehingute kustutamine võib olla kasulik arendajatele või kohalikus serveris oleku kustutamisel.</translation>
-<translation id="2326850911705720398">Lähtesta ja kustuta rahakoti andmed</translation>
+<translation id="6171369470447621882">Lähtesta Zcashi sünkroonimine</translation>
+<translation id="6705112675071480687">Lähtestab Zcashi sünkroonimise edenemise kõigi kaitstud kontode jaoks</translation>
+<translation id="2012093487873597892">Kas olete kindel, et soovite Zcashi sünkroonimisolekut lähtestada? Kõikide kaitstud kontode sünkroonimise edenemine langeb ära. Kinnitamiseks kirjutage "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="5031551083187285762">Teie Zcash-kontode sünkroonimisolek lähtestati.</translation>
 <translation id="9216386092464743272">Kas soovite kindlasti lähtestada kogu oma rahakoti tehingu- ja nonsiteabe? Seda valikut kasutavad enamasti arendajad, kes käitavad kohalikku testserverit. Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="2326850911705720398">Lähtesta ja kustuta rahakoti andmed</translation>
 <translation id="6369495274982305511">Kas soovite kindlasti rahakoti lähtestada? Kui rahakott ei ole varundatud, siis kaotate lähtestamise korral kõik kontoandmed (sealhulgas kõik seotud rahalised vahendid). Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="3752403403443723332">Teie rahakott lähtestati.</translation>
 <translation id="594766067816395072">Teie rahakoti tehinguteave lähtestati.</translation>

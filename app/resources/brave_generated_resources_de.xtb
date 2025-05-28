@@ -52,6 +52,12 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Nicht noch einmal anzeigen</translation>
 <translation id="4595286989346610620">Details prüfen</translation>
 <translation id="8324318899000695659">Elemente blockieren</translation>
+<translation id="3828310068250853121">Wähle das Element aus, das du blockieren möchtest.</translation>
+<translation id="2577286987423083872">Elemente blockieren</translation>
+<translation id="3211174446914979436">Filter verwalten</translation>
+<translation id="3108584651298176909">Regeln anzeigen</translation>
+<translation id="5156986655891520787">Regeln ausblenden</translation>
+<translation id="7658239707568436148">Abbrechen</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Mit .onion-Adresse öffnen: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Einfügen erzwingen</translation>
@@ -93,7 +99,6 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Diese Seite hat Ihren <ph name="PART_ONE"/>genauen Standort<ph name="PART_ONE_END"/> angefragt. <ph name="PART_TWO"/>Mehr erfahren<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Diese Seite hat Ihren <ph name="PART_ONE"/>genauen Standort<ph name="PART_ONE_END"/> angefragt. Brave kann jedoch nur den <ph name="PART_TWO"/>ungefähren Standort<ph name="PART_TWO_END"/> angeben, da die <ph name="PART_THREE"/>Standortdienste<ph name="PART_THREE_END"/> deaktiviert sind. <ph name="PART_FOUR"/>Mehr erfahren<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Alle schließen</translation>
-<translation id="7658239707568436148">Abbrechen</translation>
 <translation id="4870911314065352661">Alle Tabs schließen?</translation>
 <translation id="7551864359422178684"><ph name="NUMBER_OF_TABS"/> Tabs sind in diesem Browserfenster geöffnet.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> Tabs</translation>
@@ -133,6 +138,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Sie müssen keine Benachrichtigungen anklicken, um eine Belohnung zu verdienen. Doch wenn Sie Interesse haben, nur zu!</translation>
 <translation id="5253166205743627564">Vielen Dank, dass du Brave Search mit einem Klick auf eine private Anzeige unterstützt. Im Gegensatz zu Big Tech messen wir die Anzeigenleistung anonym, um deine Privatsphäre zu schützen.</translation>
 <translation id="8748471354357836070">Mehr erfahren / Opt-out-Möglichkeiten</translation>
+<translation id="5927196110206824867">Gesponserte Hintergrundbilder unterstützen Braves Mission, ein unabhängiges, nutzerzentriertes Web zu schaffen. Und im Gegensatz zu Big Tech messen wir die Werbeleistung anonym, um deine Privatsphäre zu wahren.</translation>
 <translation id="4174337572777167894">Web-Erkundungsprojekt</translation>
 <translation id="8659271182272561965">Tätigen Sie einige anonyme Suchanfragen und Durchsuchungen von Daten, um Brave Search zu verfeinern.</translation>
 <translation id="1516554614404600536">Brave-Tooltipp</translation>
@@ -473,6 +479,9 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="7791141927430186653">Eingebettete Tweets von X (ehemals Twitter) erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
+<translation id="1244912498725894944">Einige Cookie-Einstellungen werden von Brave Shields gesteuert. Du kannst sie &lt;a href="/content/braveShields"&gt;hier&lt;/a&gt;ansehen.</translation>
+<translation id="5352519841984162795">Diese Einstellung wird von Brave Shields gesteuert.</translation>
+<translation id="352287031024189516">Diese Einstellung wird von Google Sign-in kontrolliert.</translation>
 <translation id="8792121506918889955">WebRTC-IP-Nutzungsrichtlinien</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
@@ -674,8 +683,12 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Wallet-Netzwerke</translation>
 <translation id="5975930666279943472">Wallet-Transaktion und Nonce-Informationen löschen</translation>
 <translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
-<translation id="2326850911705720398">Wallet-Daten zurücksetzen und löschen</translation>
+<translation id="6171369470447621882">Zcash-Synchronisierungsstatus zurücksetzen</translation>
+<translation id="6705112675071480687">Setzt den Zcash-Synchronisierungsfortschritt für alle geschützten Konten zurück</translation>
+<translation id="2012093487873597892">Bist du sicher, dass du den Zcash-Synchronisierungsstatus zurücksetzen möchtest? Der Synchronisierungsfortschritt für alle geschützten Konten wird gelöscht. Tippe <ph name="CONFIRMATION_PHRASE"/> zur  Bestätigung.</translation>
+<translation id="5031551083187285762">Dein Synchronisierungsstatus für Zcash-Konten wurde zurückgesetzt.</translation>
 <translation id="9216386092464743272">Sind Sie sicher, dass Sie alle Ihre Wallet-Transaktionen und Nonce-Informationen zurücksetzen möchten? Diese Option wird hauptsächlich von Entwicklern verwendet, die einen lokalen Testserver betreiben. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
+<translation id="2326850911705720398">Wallet-Daten zurücksetzen und löschen</translation>
 <translation id="6369495274982305511">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
 <translation id="3752403403443723332">Ihre Wallet wurde zurückgesetzt.</translation>
 <translation id="594766067816395072">Ihre Wallet-Transaktionsinformationen wurden zurückgesetzt.</translation>

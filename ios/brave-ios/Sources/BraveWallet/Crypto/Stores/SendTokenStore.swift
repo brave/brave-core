@@ -93,6 +93,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     case udError(domain: String)
     case notFilAddress
     case notBtcAddress
+    case zcashAddressError(errorDescription: String)
 
     var errorDescription: String? {
       switch self {
@@ -127,6 +128,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         return Strings.Wallet.sendErrorInvalidRecipientAddress
       case .notBtcAddress:
         return Strings.Wallet.sendErrorBtcAddressNotValid
+      case .zcashAddressError(let errorDescription):
+        return errorDescription
       }
     }
 
@@ -456,7 +459,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       case .btc:
         validateBitcoinSendAddress(fromAccount: selectedAccount)
       case .zec:
-        break
+        validateZcashSendAddress(
+          fromAccount: selectedAccount,
+          recipient: sendAddress
+        )
       case .ada:
         break
       @unknown default:
@@ -574,6 +580,26 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     addressError = sendAddress.isBTCAddress(isMainnet: isMainnet) ? nil : .notBtcAddress
   }
 
+  private func validateZcashSendAddress(
+    fromAccount: BraveWallet.AccountInfo,
+    recipient: String
+  ) {
+    Task { @MainActor in
+      let selectedChain = await rpcService.network(coin: fromAccount.coin, origin: nil)
+      let (_, zcashAddressError) = await zcashWalletService.transactionType(
+        chainId: selectedChain.chainId,
+        accountId: fromAccount.accountId,
+        useShieldedPool: false,
+        recipient: recipient
+      )
+      if zcashAddressError != .noError {
+        addressError = .zcashAddressError(
+          errorDescription: zcashAddressError.errorDescription ?? ""
+        )
+      }
+    }
+  }
+
   public func enableENSOffchainLookup() {
     Task { @MainActor in
       rpcService.setEnsOffchainLookupResolveMethod(.enabled)
@@ -684,6 +710,13 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           from: selectedAccount.accountId,
           completion: completion
         )
+      case .zec:
+        self.sendTokenOnZec(
+          amount: amount,
+          token: token,
+          from: selectedAccount.accountId,
+          completion: completion
+        )
       default:
         self.isMakingTx = false
         completion(false, Strings.Wallet.internalErrorMessage)
@@ -701,7 +734,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
       let weiHexString = walletAmountFormatter.weiString(
-        from: amount.normalizedDecimals,
+        from: amount,
         radix: .hex,
         decimals: Int(token.decimals)
       )
@@ -795,7 +828,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     isMakingTx = true
     guard
       let amount = WalletAmountFormatter.decimalToAmount(
-        amount.normalizedDecimals,
+        amount,
         tokenDecimals: Int(token.decimals)
       )
     else {
@@ -907,7 +940,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     )
     guard
       let weiString = walletAmountFormatter.weiString(
-        from: amount.normalizedDecimals,
+        from: amount,
         decimals: Int(token.decimals)
       )
     else {
@@ -947,7 +980,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     isMakingTx = true
     guard
       let amountInSatoshi = WalletAmountFormatter.decimalToAmount(
-        amount.normalizedDecimals,
+        amount,
         tokenDecimals: Int(token.decimals)
       )
     else {
@@ -964,6 +997,42 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     )
     self.txService.addUnapprovedBitcoinTransaction(
       params: params
+    ) { success, txMetaId, errorMessage in
+      self.isMakingTx = false
+      completion(success, errorMessage)
+    }
+  }
+
+  private func sendTokenOnZec(
+    amount: String,
+    token: BraveWallet.BlockchainToken,
+    from fromAccountId: BraveWallet.AccountId,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    guard
+      let amountInSatoshi = WalletAmountFormatter.decimalToAmount(
+        amount.normalizedDecimals,
+        tokenDecimals: Int(token.decimals)
+      )
+    else {
+      isMakingTx = false
+      completion(false, Strings.Wallet.internalErrorMessage)
+      return
+    }
+    let zecTxData: BraveWallet.ZecTxData = .init(
+      useShieldedPool: false,
+      to: sendAddress,
+      sendingMaxAmount: isSendingMaxValue,
+      memo: nil,
+      amount: amountInSatoshi,
+      fee: 0,
+      inputs: [],
+      outputs: []
+    )
+    self.txService.addUnapprovedTransaction(
+      txDataUnion: BraveWallet.TxDataUnion(zecTxData: zecTxData),
+      chainId: token.chainId,
+      from: fromAccountId
     ) { success, txMetaId, errorMessage in
       self.isMakingTx = false
       completion(success, errorMessage)

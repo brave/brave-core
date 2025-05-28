@@ -11,7 +11,7 @@ import {
   EthLedgerLegacyHardwareImportScheme,
   EthLedgerLiveHardwareImportScheme,
   HardwareOperationResultAccounts,
-  HardwareOperationError
+  HardwareOperationError,
 } from '../types'
 import {
   EthGetAccountResponse,
@@ -19,7 +19,7 @@ import {
   UnlockResponse,
   EthSignTransactionResponse,
   EthSignPersonalMessageResponse,
-  EthSignEip712MessageResponse
+  EthSignEip712MessageResponse,
 } from './ledger-messages'
 import { Untrusted } from '../untrusted_shared_types'
 
@@ -36,33 +36,33 @@ const createKeyring = () => {
 const mockEthereumSignatureVRS: BraveWallet.EthereumSignatureVRS = {
   vBytes: [1],
   rBytes: [2, 3],
-  sBytes: [4, 5, 6]
+  sBytes: [4, 5, 6],
 }
 
 const mockUntrustedSignatureVRS: Untrusted.EthereumSignatureVRS = {
   vBytes: Buffer.from([1]),
   rBytes: Buffer.from([2, 3]),
-  sBytes: Buffer.from([4, 5, 6])
+  sBytes: Buffer.from([4, 5, 6]),
 }
 
 const unlockSuccessResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: { success: true }
+  payload: { success: true },
 }
 
 const unlockError: HardwareOperationError = {
   success: false,
   error: 'LedgerError',
-  code: 101
+  code: 101,
 }
 
 const unlockErrorResponse: UnlockResponse = {
   id: LedgerCommand.Unlock,
   origin: window.origin,
   command: LedgerCommand.Unlock,
-  payload: unlockError
+  payload: unlockError,
 }
 
 test('getAccounts unlock error', async () => {
@@ -72,7 +72,7 @@ test('getAccounts unlock error', async () => {
   const result: HardwareOperationResultAccounts = await keyring.getAccounts(
     0,
     1,
-    EthLedgerLiveHardwareImportScheme
+    EthLedgerLiveHardwareImportScheme,
   )
   expect(result).toEqual(unlockError)
 })
@@ -88,8 +88,8 @@ test('getAccounts ledger live derivation path success', async () => {
     payload: {
       success: true,
       publicKey: 'publicKey',
-      address: 'address'
-    }
+      address: 'address',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse1)
   const getAccountsResponse2: EthGetAccountResponse = {
@@ -99,28 +99,28 @@ test('getAccounts ledger live derivation path success', async () => {
     payload: {
       success: true,
       publicKey: 'publicKey 2',
-      address: 'address 2'
-    }
+      address: 'address 2',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
 
   const result = await keyring.getAccounts(
     0,
     2,
-    EthLedgerLiveHardwareImportScheme
+    EthLedgerLiveHardwareImportScheme,
   )
   expect(result).toEqual({
     success: true,
     accounts: [
       {
         address: 'address',
-        derivationPath: "m/44'/60'/0'/0/0"
+        derivationPath: "m/44'/60'/0'/0/0",
       },
       {
         address: 'address 2',
-        derivationPath: "m/44'/60'/1'/0/0"
-      }
-    ]
+        derivationPath: "m/44'/60'/1'/0/0",
+      },
+    ],
   })
 })
 
@@ -135,8 +135,8 @@ test('getAccounts legacy derivation path success', async () => {
     payload: {
       success: true,
       publicKey: 'publicKey',
-      address: 'address'
-    }
+      address: 'address',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse1)
   const getAccountsResponse2: EthGetAccountResponse = {
@@ -146,28 +146,28 @@ test('getAccounts legacy derivation path success', async () => {
     payload: {
       success: true,
       publicKey: 'publicKey 2',
-      address: 'address 2'
-    }
+      address: 'address 2',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
 
   const result = await keyring.getAccounts(
     0,
     2,
-    EthLedgerLegacyHardwareImportScheme
+    EthLedgerLegacyHardwareImportScheme,
   )
   expect(result).toEqual({
     success: true,
     accounts: [
       {
         address: 'address',
-        derivationPath: "m/44'/60'/0'/0"
+        derivationPath: "m/44'/60'/0'/0",
       },
       {
         address: 'address 2',
-        derivationPath: "m/44'/60'/0'/1"
-      }
-    ]
+        derivationPath: "m/44'/60'/0'/1",
+      },
+    ],
   })
 })
 
@@ -183,8 +183,8 @@ test('getAccounts deprecated derivation path success', async () => {
     payload: {
       success: true,
       publicKey: 'publicKey',
-      address: 'address'
-    }
+      address: 'address',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse1)
   const getAccountsResponse2: EthGetAccountResponse = {
@@ -194,28 +194,28 @@ test('getAccounts deprecated derivation path success', async () => {
     payload: {
       success: true,
       publicKey: 'publicKey 2',
-      address: 'address 2'
-    }
+      address: 'address 2',
+    },
   }
   transport.addSendCommandResponse(getAccountsResponse2)
 
   const result = await keyring.getAccounts(
     0,
     2,
-    EthLedgerDeprecatedHardwareImportScheme
+    EthLedgerDeprecatedHardwareImportScheme,
   )
   expect(result).toEqual({
     success: true,
     accounts: [
       {
         address: 'address',
-        derivationPath: "m/44'/60'/0'/0"
+        derivationPath: "m/44'/60'/0'/0",
       },
       {
         address: 'address 2',
-        derivationPath: "m/44'/60'/1'/0"
-      }
-    ]
+        derivationPath: "m/44'/60'/1'/0",
+      },
+    ],
   })
 })
 
@@ -227,14 +227,14 @@ test('getAccounts ledger error after successful unlock', async () => {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: unlockError
+    payload: unlockError,
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
   const result: HardwareOperationResultAccounts = await keyring.getAccounts(
     0,
     1,
-    EthLedgerLiveHardwareImportScheme
+    EthLedgerLiveHardwareImportScheme,
   )
 
   expect(result).toEqual(unlockError)
@@ -246,7 +246,7 @@ test('signTransaction unlock error', async () => {
   transport.addSendCommandResponse(unlockErrorResponse)
   const result = await keyring.signTransaction(
     "m/44'/60'/0'/0/0",
-    'transaction'
+    'transaction',
   )
   expect(result).toEqual(unlockError)
 })
@@ -261,8 +261,8 @@ test('signTransaction success', async () => {
     command: LedgerCommand.SignTransaction,
     payload: {
       success: true,
-      signature: mockUntrustedSignatureVRS
-    }
+      signature: mockUntrustedSignatureVRS,
+    },
   }
 
   transport.addSendCommandResponse(signTransactionResponse)
@@ -270,7 +270,7 @@ test('signTransaction success', async () => {
 
   const expectedResult = {
     success: true,
-    signature: mockEthereumSignatureVRS
+    signature: mockEthereumSignatureVRS,
   }
   expect(result).toEqual(expectedResult)
 })
@@ -284,12 +284,12 @@ test('signTransaction ledger error after successful unlock', async () => {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: unlockError
+    payload: unlockError,
   }
   transport.addSendCommandResponse(signTransactionResponse)
   const result = await keyring.signTransaction(
     "m/44'/60'/0'/0/0",
-    'transaction'
+    'transaction',
   )
 
   expect(result).toEqual(unlockError)
@@ -301,7 +301,7 @@ test('signPersonalMessage unlock error', async () => {
   transport.addSendCommandResponse(unlockErrorResponse)
   const result = await keyring.signPersonalMessage(
     "m/44'/60'/0'/0/0",
-    'message'
+    'message',
   )
   const expectedResult = unlockErrorResponse.payload
   expect(result).toEqual(expectedResult)
@@ -317,20 +317,20 @@ test('signPersonalMessage success', async () => {
     command: LedgerCommand.SignPersonalMessage,
     payload: {
       success: true,
-      signature: { bytes: Buffer.from([1, 2, 3, 4, 5]) }
-    }
+      signature: { bytes: Buffer.from([1, 2, 3, 4, 5]) },
+    },
   }
   transport.addSendCommandResponse(responsePayload)
   const result = await keyring.signPersonalMessage(
     "m/44'/60'/0'/0/0",
-    'message'
+    'message',
   )
 
   expect(result).toEqual({
     success: true,
     signature: {
-      bytes: [1, 2, 3, 4, 5]
-    }
+      bytes: [1, 2, 3, 4, 5],
+    },
   })
 })
 
@@ -343,12 +343,12 @@ test('signPersonalMessage failure after unsuccessful unlock', async () => {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: unlockError
+    payload: unlockError,
   }
   transport.addSendCommandResponse(signPersonalMessageResponse)
   const result = await keyring.signPersonalMessage(
     "m/44'/60'/0'/0/0",
-    'message'
+    'message',
   )
   expect(result).toEqual(unlockError)
 })
@@ -360,7 +360,7 @@ test('signEip712Message unlock error', async () => {
   const result = await keyring.signEip712Message(
     "m/44'/60'/0'/0/0",
     'domainSeparatorHex',
-    'hashStructMessageHex'
+    'hashStructMessageHex',
   )
   const expectedResult = unlockErrorResponse.payload
   expect(result).toEqual(expectedResult)
@@ -376,21 +376,21 @@ test('signEip712Message success', async () => {
     command: LedgerCommand.SignEip712Message,
     payload: {
       success: true,
-      signature: { bytes: Buffer.from([1, 1, 2, 3, 5, 8]) }
-    }
+      signature: { bytes: Buffer.from([1, 1, 2, 3, 5, 8]) },
+    },
   }
   transport.addSendCommandResponse(responsePayload)
   const result = await keyring.signEip712Message(
     "m/44'/60'/0'/0/0",
     'domainSeparatorHex',
-    'hashStructMessageHex'
+    'hashStructMessageHex',
   )
 
   expect(result).toEqual({
     success: true,
     signature: {
-      bytes: [1, 1, 2, 3, 5, 8]
-    }
+      bytes: [1, 1, 2, 3, 5, 8],
+    },
   })
 })
 
@@ -402,13 +402,13 @@ test('signEip712Message failure after unsuccessful unlock', async () => {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
-    payload: unlockError
+    payload: unlockError,
   }
   transport.addSendCommandResponse(signEip712MessageResponse)
   const result = await keyring.signEip712Message(
     "m/44'/60'/0'/0/0",
     'domainSeparatorHex',
-    'hashStructMessageHex'
+    'hashStructMessageHex',
   )
   expect(result).toEqual(unlockError)
 })

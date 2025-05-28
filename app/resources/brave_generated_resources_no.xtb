@@ -52,6 +52,12 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Ikke vis igjen</translation>
 <translation id="4595286989346610620">Sjekk detaljer</translation>
 <translation id="8324318899000695659">Blokker elementer</translation>
+<translation id="3828310068250853121">Velg hvilket element du ønsker å blokkere</translation>
+<translation id="2577286987423083872">Block Elements</translation>
+<translation id="3211174446914979436">Behandle filtre</translation>
+<translation id="3108584651298176909">Vis regler</translation>
+<translation id="5156986655891520787">Skjul regler</translation>
+<translation id="7658239707568436148">Avbryt</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Åpne ved å bruke en .onion-adresse: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tving lim inn</translation>
@@ -93,7 +99,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Dette nettstedet har bedt om din <ph name="PART_ONE"/>nøyaktige posisjon<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Finn ut mer<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Dette nettstedet har bedt om din <ph name="PART_ONE"/>nøyaktige posisjon<ph name="PART_ONE_END"/>. Brave vil bare kunne oppgi <ph name="PART_TWO"/>generelle posisjonsdata<ph name="PART_TWO_END"/> fordi <ph name="PART_THREE"/>Posisjonstjenester<ph name="PART_THREE_END"/> er deaktivert. <ph name="PART_FOUR"/>Finn ut mer<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Lukk alle</translation>
-<translation id="7658239707568436148">Avbryt</translation>
 <translation id="4870911314065352661">Vil du lukke alle fanene?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> åpne faner i dette nettleservinduet.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
@@ -133,6 +138,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Du trenger ikke klikke på dem for å tjene penger – men klikk gjerne hvis du er interessert!</translation>
 <translation id="5253166205743627564">Takk for at du støtter Brave Search ved å trykke på en privat annonse. I motsetning til Big Tech, måler vi resultatene av annonsene våre helt anonymt for å bevare personvernet ditt.</translation>
 <translation id="8748471354357836070">Les mer/se flere valg</translation>
+<translation id="5927196110206824867">Sponsede bakgrunnsbilder støtter Brave sitt mål om å bygge et uavhengig nett som setter brukeren først. I motsetning til Big Tech, måler vi effektene av annonsene våre anonymt for å ivareta personvernet ditt.</translation>
 <translation id="4174337572777167894">Web Discovery-prosjektet</translation>
 <translation id="8659271182272561965">Bidra med anonyme søke- og surfedata for å forbedre Brave-søket.</translation>
 <translation id="1516554614404600536">Brave-tooltip</translation>
@@ -473,6 +479,9 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="7791141927430186653">Tillat innebygde tweets fra X (tidligere Twitter)</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
+<translation id="1244912498725894944">Enkelte innstillinger for informasjonskapsler kontrolleres av Brave Shields. Du finner en liste over dem &lt;a href="/content/braveShields"&gt;her&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Denne innstillingen styres av Brave Shields.</translation>
+<translation id="352287031024189516">Denne innstillingen styres av Google.</translation>
 <translation id="8792121506918889955">WebRTCs IP-håndteringspolicy</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grensesnitt</translation>
@@ -674,8 +683,12 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="856371974127598760">Lommeboknettverk</translation>
 <translation id="5975930666279943472">Slett lommeboktransaksjonen og nonce-informasjonen</translation>
 <translation id="5693968582510626466">Sletting av transaksjoner kan være nyttig for utviklere eller ved sletting av tilstanden på en lokal server</translation>
-<translation id="2326850911705720398">Tilbakestill og slett lommebokdata</translation>
+<translation id="6171369470447621882">Tilbakestill Zcash synk-status</translation>
+<translation id="6705112675071480687">Tilbakestiller Zcash-synkronisering for alle skjermede kontoer</translation>
+<translation id="2012093487873597892">Er du sikker på at du vil tilbakestille synkroniseringsstatusen for Zcash? Dette vil avslutte all synkronisering av skjermede kontoer. Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
+<translation id="5031551083187285762">Synkroniseringen ble tilbakestilt.</translation>
 <translation id="9216386092464743272">Er du sikker på at du vil tilbakestille all informasjon om transaksjoner og nonce fra lommeboken? Dette alternativet brukes som regel av utviklere som kjører på en lokal testserver. Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
+<translation id="2326850911705720398">Tilbakestill og slett lommebokdata</translation>
 <translation id="6369495274982305511">Er du sikker på at du vil tilbakestille lommeboken? Om lommeboken din ikke er sikkerhetskopiert, vil tilbakestilling føre til at du mister alle kontodata (inkludert eventuelle tilknyttede midler). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for å bekrefte.</translation>
 <translation id="3752403403443723332">Lommeboken er tilbakestilt.</translation>
 <translation id="594766067816395072">Transaksjonsinformasjonen i lommeboken er tilbakestilt.</translation>

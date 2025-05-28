@@ -12,7 +12,7 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   ImportFromExternalWalletPayloadType,
-  ShowRecoveryPhrasePayload
+  ShowRecoveryPhrasePayload,
 } from '../../../page/constants/action_types'
 
 // actions
@@ -32,7 +32,7 @@ type ImportWalletResults = {
 
 export const walletEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getIsWalletBackedUp: query<boolean, void>({
@@ -41,17 +41,17 @@ export const walletEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { walletInfo } = await api.walletHandler.getWalletInfo()
           return {
-            data: walletInfo.isWalletBackedUp
+            data: walletInfo.isWalletBackedUp,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to check if wallet is backed up',
-            error
+            error,
           )
         }
       },
-      providesTags: ['IsWalletBackedUp']
+      providesTags: ['IsWalletBackedUp'],
     }),
 
     getDefaultEthereumWallet: query<number, void>({
@@ -62,17 +62,17 @@ export const walletEndpoints = ({
           const { defaultWallet } =
             await braveWalletService.getDefaultEthereumWallet()
           return {
-            data: defaultWallet
+            data: defaultWallet,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to fetch default Ethereum wallet',
-            error
+            error,
           )
         }
       },
-      providesTags: ['DefaultEthWallet']
+      providesTags: ['DefaultEthWallet'],
     }),
 
     getDefaultSolanaWallet: query<number, void>({
@@ -83,17 +83,17 @@ export const walletEndpoints = ({
           const { defaultWallet } =
             await braveWalletService.getDefaultSolanaWallet()
           return {
-            data: defaultWallet
+            data: defaultWallet,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to fetch default Solana wallet',
-            error
+            error,
           )
         }
       },
-      providesTags: ['DefaultSolWallet']
+      providesTags: ['DefaultSolWallet'],
     }),
 
     getIsMetaMaskInstalled: query<boolean, void>({
@@ -103,20 +103,20 @@ export const walletEndpoints = ({
           const { braveWalletService } = api
           const { installed } =
             await braveWalletService.isExternalWalletInstalled(
-              BraveWallet.ExternalWalletType.MetaMask
+              BraveWallet.ExternalWalletType.MetaMask,
             )
           return {
-            data: installed
+            data: installed,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to check if MetaMask is installed',
-            error
+            error,
           )
         }
       },
-      providesTags: ['IsMetaMaskInstalled']
+      providesTags: ['IsMetaMaskInstalled'],
     }),
 
     getActiveOrigin: query<BraveWallet.OriginInfo, void>({
@@ -127,17 +127,17 @@ export const walletEndpoints = ({
 
           const { originInfo } = await braveWalletService.getActiveOrigin()
           return {
-            data: originInfo
+            data: originInfo,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'unable to get active origin',
-            error
+            error,
           )
         }
       },
-      providesTags: ['ActiveOrigin']
+      providesTags: ['ActiveOrigin'],
     }),
 
     createWallet: mutation<true, { password: string }>({
@@ -145,7 +145,7 @@ export const walletEndpoints = ({
         arg,
         { endpoint, dispatch, getState },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
@@ -157,7 +157,7 @@ export const walletEndpoints = ({
           }
 
           dispatch(
-            WalletPageActions.walletCreated({ mnemonic: result.mnemonic })
+            WalletPageActions.walletCreated({ mnemonic: result.mnemonic }),
           )
 
           const { allowedNewWalletAccountTypeNetworkIds } = (
@@ -167,16 +167,16 @@ export const walletEndpoints = ({
           await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
             keyringService,
-            cache
+            cache,
           })
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'Unable to create wallet', error)
         }
-      }
+      },
     }),
 
     restoreWallet: mutation<
@@ -192,7 +192,7 @@ export const walletEndpoints = ({
         arg,
         { endpoint, dispatch, getState },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
@@ -201,15 +201,15 @@ export const walletEndpoints = ({
           const result = await keyringService.restoreWallet(
             arg.mnemonic,
             arg.password,
-            arg.isLegacy
+            arg.isLegacy,
           )
 
           if (!result.isValidMnemonic) {
             return {
               data: {
                 success: false,
-                invalidMnemonic: true
-              }
+                invalidMnemonic: true,
+              },
             }
           }
 
@@ -218,7 +218,7 @@ export const walletEndpoints = ({
 
           if (arg?.completeWalletSetup) {
             dispatch(
-              WalletPageActions.walletSetupComplete(arg.completeWalletSetup)
+              WalletPageActions.walletSetupComplete(arg.completeWalletSetup),
             )
           }
 
@@ -229,20 +229,20 @@ export const walletEndpoints = ({
           await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
             keyringService,
-            cache
+            cache,
           })
 
           return {
             data: {
               invalidMnemonic: false,
-              success: true
-            }
+              success: true,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to restore wallet from seed phrase',
-            error
+            error,
           )
         }
       },
@@ -251,8 +251,8 @@ export const walletEndpoints = ({
         'IsWalletBackedUp',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     showRecoveryPhrase: mutation<boolean, ShowRecoveryPhrasePayload>({
@@ -263,32 +263,31 @@ export const walletEndpoints = ({
           const { password } = arg
 
           if (password) {
-            const { mnemonic } = await keyringService.getWalletMnemonic(
-              password
-            )
+            const { mnemonic } =
+              await keyringService.getWalletMnemonic(password)
             dispatch(
               WalletPageActions.recoveryWordsAvailable({
-                mnemonic: mnemonic ?? ''
-              })
+                mnemonic: mnemonic ?? '',
+              }),
             )
             return {
-              data: true
+              data: true,
             }
           }
 
           dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to fetch wallet recovery phrase',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getWalletsToImport: query<
@@ -303,22 +302,22 @@ export const walletEndpoints = ({
           const { braveWalletService } = api
 
           const mmResult = await braveWalletService.isExternalWalletInitialized(
-            BraveWallet.ExternalWalletType.MetaMask
+            BraveWallet.ExternalWalletType.MetaMask,
           )
 
           return {
             data: {
-              isMetaMaskInitialized: mmResult.initialized
-            }
+              isMetaMaskInitialized: mmResult.initialized,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to fetch wallet extensions for import',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     checkExternalWalletPassword: mutation<
@@ -334,7 +333,7 @@ export const walletEndpoints = ({
             await braveWalletService.importFromExternalWallet(
               arg.walletType,
               arg.password,
-              ''
+              '',
             )
 
           // was the provided import password correct?
@@ -346,18 +345,18 @@ export const walletEndpoints = ({
           return {
             data: {
               errorMessage: checkExistingPasswordError,
-              success: !checkExistingPasswordError
-            }
+              success: !checkExistingPasswordError,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to check external wallet password',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp']
+      invalidatesTags: ['AccountInfos', 'IsWalletBackedUp'],
     }),
 
     importFromMetaMask: mutation<
@@ -377,15 +376,15 @@ export const walletEndpoints = ({
             await importFromExternalWallet(
               BraveWallet.ExternalWalletType.MetaMask,
               arg,
-              { braveWalletService, keyringService }
+              { braveWalletService, keyringService },
             )
 
           if (errorMessage) {
             return {
               data: {
                 errorMessage,
-                success: false
-              }
+                success: false,
+              },
             }
           }
 
@@ -396,19 +395,19 @@ export const walletEndpoints = ({
           await createDefaultAccounts({
             allowedNewWalletAccountTypeNetworkIds,
             keyringService,
-            cache
+            cache,
           })
 
           cache.clearWalletInfo()
 
           return {
-            data: { success: true }
+            data: { success: true },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to restore wallet from MetaMask extension',
-            error
+            error,
           )
         }
       },
@@ -417,8 +416,8 @@ export const walletEndpoints = ({
         'IsWalletBackedUp',
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+        'AccountTokenCurrentBalance',
+      ],
     }),
 
     completeWalletBackup: mutation<boolean, void>({
@@ -430,17 +429,17 @@ export const walletEndpoints = ({
           keyringService.notifyWalletBackupComplete()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to complete wallet backup',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['IsWalletBackedUp']
+      invalidatesTags: ['IsWalletBackedUp'],
     }),
 
     lockWallet: mutation<
@@ -451,23 +450,23 @@ export const walletEndpoints = ({
         password,
         { endpoint, dispatch },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { data: api } = baseQuery(undefined)
           api.keyringService.lock()
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'An error occurred while attempting to lock the wallet',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     unlockWallet: mutation<
@@ -478,22 +477,22 @@ export const walletEndpoints = ({
         password,
         { endpoint, dispatch },
         extraOptions,
-        baseQuery
+        baseQuery,
       ) => {
         try {
           const { data: api } = baseQuery(undefined)
           const result = await api.keyringService.unlock(password)
           return {
-            data: result.success
+            data: result.success,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'An error occurred while attempting to unlock the wallet',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     setAutoLockMinutes: mutation<boolean, number>({
@@ -502,17 +501,17 @@ export const walletEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const result = await api.keyringService.setAutoLockMinutes(minutes)
           return {
-            data: result.success
+            data: result.success,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'An error occurred while attempting to set the auto lock minutes',
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }
 
@@ -523,7 +522,7 @@ async function importFromExternalWallet(
   services: {
     braveWalletService: BraveWallet.BraveWalletServiceRemote
     keyringService: BraveWallet.KeyringServiceRemote
-  }
+  },
 ): Promise<ImportWalletResults> {
   // need new password to continue
   if (!payload.newPassword) {
@@ -535,7 +534,7 @@ async function importFromExternalWallet(
   const { errorMessage } = await braveWalletService.importFromExternalWallet(
     walletType,
     payload.password,
-    payload.newPassword
+    payload.newPassword,
   )
 
   // complete backup
@@ -544,14 +543,14 @@ async function importFromExternalWallet(
   }
 
   return {
-    errorMessage: errorMessage || undefined
+    errorMessage: errorMessage || undefined,
   }
 }
 
 async function createDefaultAccounts({
   allowedNewWalletAccountTypeNetworkIds,
   keyringService,
-  cache
+  cache,
 }: {
   cache: BaseQueryCache
   keyringService: BraveWallet.KeyringServiceRemote
@@ -562,7 +561,7 @@ async function createDefaultAccounts({
 
   const visibleNetworks = getEntitiesListFromEntityState(
     networksRegistry,
-    networksRegistry.visibleIds
+    networksRegistry.visibleIds,
   )
 
   const networkKeyrings: number[] = []
@@ -586,18 +585,18 @@ async function createDefaultAccounts({
       // TODO: remove these checks when we can hide "default" networks
       if (
         !allowedNewWalletAccountTypeNetworkIds.includes(
-          networkEntityAdapter.selectId(net)
-        ) ||
-        net.coin === BraveWallet.CoinType.ETH ||
-        net.coin === BraveWallet.CoinType.SOL
+          networkEntityAdapter.selectId(net),
+        )
+        || net.coin === BraveWallet.CoinType.ETH
+        || net.coin === BraveWallet.CoinType.SOL
       ) {
         return
       }
       await keyringService.addAccount(
         net.coin,
         keyringIdForNewAccount(net.coin, net.chainId),
-        suggestNewAccountName(accounts, net)
+        suggestNewAccountName(accounts, net),
       )
-    }
+    },
   )
 }

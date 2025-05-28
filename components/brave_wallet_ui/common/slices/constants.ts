@@ -12,19 +12,19 @@ export const querySubscriptionOptions60s = {
   refetchOnFocus: true,
   pollingInterval: 60 * s,
   refetchOnMountOrArgChange: 60 * s,
-  refetchOnReconnect: true
+  refetchOnReconnect: true,
 }
 export const querySubscriptionOptions5m = {
   refetchOnFocus: true,
   pollingInterval: 300 * s,
   refetchOnMountOrArgChange: 300 * s,
-  refetchOnReconnect: true
+  refetchOnReconnect: true,
 }
 export const defaultQuerySubscriptionOptions = {
   refetchOnFocus: true,
   pollingInterval: 15 * s,
   refetchOnMountOrArgChange: 15 * s,
-  refetchOnReconnect: true
+  refetchOnReconnect: true,
 }
 
 export const coinTypesMapping = {
@@ -33,5 +33,5 @@ export const coinTypesMapping = {
   [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
   [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
   [BraveWallet.CoinType.ZEC]: CoinTypes.ZEC,
-  [BraveWallet.CoinType.ADA]: CoinTypes.ADA
+  [BraveWallet.CoinType.ADA]: CoinTypes.ADA,
 }

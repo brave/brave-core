@@ -13,12 +13,12 @@ export function useScrollIntoView() {
         ref?.scrollIntoView({
           behavior: 'smooth',
           block: 'center',
-          inline: 'center'
+          inline: 'center',
         })
         alreadyScrolled.current = true
       }
     },
-    [alreadyScrolled]
+    [alreadyScrolled],
   )
 
   return scrollIntoView

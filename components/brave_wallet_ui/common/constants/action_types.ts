@@ -7,7 +7,7 @@ import {
   BraveWallet,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
-  TransactionProviderError
+  TransactionProviderError,
 } from '../../constants/types'
 
 export type UnapprovedTxUpdated = {

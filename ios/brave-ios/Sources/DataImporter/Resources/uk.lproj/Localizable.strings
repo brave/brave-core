@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Сталася помилка під час імпорту закладок.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Виникла помилка під час імпорту Історії.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Сталася помилка під час імпорту паролів.\nДеякі паролі не вдалося імпортувати через конфлікти.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Сталася помилка під час імпорту паролів.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Сталася помилка під час розархівування файлу.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Вибрати файл...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Перенесіть закладки, історію та інші дані браузера до Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Імпорт даних перегляду";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Імпорт закладок та багато іншого";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Як експортувати з Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Щось пішло не так під час імпорту ваших даних.\nБудь ласка, спробуйте ще раз.\nЯкщо проблема не зникне, зверніться до служби підтримки.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Не вдалось імпортувати";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Зберігайте паролі від Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Використовуйте паролі від Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "%d Виявлено конфлікт паролів.\nВиберіть, що імпортувати.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Конфлікти паролів";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Продовжити";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Ваші дані успішно імпортовано.\nВи готові розпочати роботу з браузером Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Успішно!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Повторити спробу";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Відкрити сторінку довідки Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Хочете отримати детальну інформацію про процес експорту?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Як експортувати з Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Збережіть файл у папці **Файли**, вибравши місце, яке ви зможете легко знайти пізніше.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Виберіть** дані, які ви хочете експортувати (Закладки, Історія, Кредитні Картки, Паролі).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Відкрийте **Налаштування**, прокрутіть вниз та оберіть **Додатки**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Прокрутіть униз та оберіть **Експорт**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Крок %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "У списку додатків (відсортовано в алфавіті), знайдіть і натисніть **Safari**.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "ZIP-файл не містить даних для імпорту.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Будь ласка, зачекайте, поки ми безпечно передамо ваші дані.\nЦе може зайняти кілька хвилин.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Імпорт ваших даних...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Оберіть профіль, з якого ви хочете імпортувати дані";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Виявлено декілька профілів";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Особисте";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Імпортовані закладки";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "ZIP-файл не містить даних для імпорту.";
+

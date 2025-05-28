@@ -66,7 +66,10 @@ constexpr TestCase kTestCases[] = {
      ContentSettingsType::BRAVE_ETHEREUM,
      blink::PermissionType::BRAVE_ETHEREUM},
     {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
-     ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+     ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA},
+    {"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2qrud"
+     "2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+     ContentSettingsType::BRAVE_CARDANO, blink::PermissionType::BRAVE_CARDANO}};
 
 constexpr char kPreTestDataFileName[] = "pre_test_data";
 
@@ -81,6 +84,7 @@ std::string GetContentSettingTypeString(ContentSettingsType type) {
     TYPE_CASE(ContentSettingsType::GEOLOCATION)
     TYPE_CASE(ContentSettingsType::BRAVE_ETHEREUM)
     TYPE_CASE(ContentSettingsType::BRAVE_SOLANA)
+    TYPE_CASE(ContentSettingsType::BRAVE_CARDANO)
 
 #undef TYPE_CASE
     default:
@@ -332,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   }
 
   scoped_mock_time_task_runner.task_runner()->FastForwardBy(
-      base::Seconds(30 * 3));
+      base::Seconds(30 * 4));
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
   EXPECT_TRUE(GetExpirationsPrefValue().empty());
   for (const auto& entry : kTestCases) {

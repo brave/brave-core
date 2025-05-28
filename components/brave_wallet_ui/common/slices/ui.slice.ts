@@ -12,7 +12,7 @@ import { SetTransactionProviderErrorType } from '../constants/action_types'
 export const defaultUIState: UIState = {
   selectedPendingTransactionId: undefined,
   transactionProviderErrorRegistry: {},
-  isPanel: false
+  isPanel: false,
 }
 
 // slice
@@ -23,18 +23,18 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
     reducers: {
       setPendingTransactionId: (
         state: UIState,
-        { payload }: PayloadAction<string>
+        { payload }: PayloadAction<string>,
       ) => {
         state.selectedPendingTransactionId = payload
       },
 
       setTransactionProviderError: (
         state: UIState,
-        { payload }: PayloadAction<SetTransactionProviderErrorType>
+        { payload }: PayloadAction<SetTransactionProviderErrorType>,
       ) => {
         state.transactionProviderErrorRegistry[payload.transactionId] =
           payload.providerError
-      }
+      },
     },
     extraReducers: (builder) => {
       builder.addMatcher(
@@ -44,13 +44,13 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           // if there is not one already
           if (!state.selectedPendingTransactionId) {
             const firstPendingTx = payload.find(
-              (tx) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved
+              (tx) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved,
             )
             if (firstPendingTx) {
               state.selectedPendingTransactionId = firstPendingTx.id
             }
           }
-        }
+        },
       )
 
       builder.addMatcher(
@@ -61,7 +61,7 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           if (!state.selectedPendingTransactionId) {
             state.selectedPendingTransactionId = payload.txId
           }
-        }
+        },
       )
 
       builder.addMatcher(
@@ -70,14 +70,14 @@ export const createUISlice = (initialState: UIState = defaultUIState) => {
           // set the updated transaction as the selected pending tx
           // if there is not one already
           if (
-            !state.selectedPendingTransactionId &&
-            payload.status === BraveWallet.TransactionStatus.Unapproved
+            !state.selectedPendingTransactionId
+            && payload.status === BraveWallet.TransactionStatus.Unapproved
           ) {
             state.selectedPendingTransactionId = payload.txId
           }
-        }
+        },
       )
-    }
+    },
   })
 }
 

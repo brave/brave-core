@@ -5,6 +5,7 @@
 
 import BigNumber
 import BraveCore
+import BraveUI
 import DesignSystem
 import Strings
 import SwiftUI
@@ -278,7 +279,12 @@ struct SwapCryptoView: View {
   }
 
   private var isSwapButtonDisabled: Bool {
-    guard !swapTokensStore.isMakingTx && !swapTokensStore.isUpdatingPriceQuote else {
+    guard
+      !swapTokensStore.isMakingTx
+        && !swapTokensStore.isUpdatingPriceQuote
+        && !swapTokensStore.isShowingSwapSellAmountError
+        && !swapTokensStore.isShowingSwapBuyAmountError
+    else {
       return true
     }
     switch swapTokensStore.state {
@@ -341,24 +347,30 @@ struct SwapCryptoView: View {
           )
         )
       ),
-      footer: VStack(spacing: 20) {
-        ShortcutAmountGrid(action: { amount in
-          swapTokensStore.suggestedAmountTapped(amount)
-        })
-        Button {
-          swapTokensStore.swapSelectedTokens()
-        } label: {
-          Label(Strings.Wallet.swapSelectedTokens, systemImage: "chevron.up.chevron.down")
-            .labelStyle(.iconOnly)
-            .font(.body)
-            .foregroundColor(Color(.bravePrimary))
-            .padding(.horizontal, 20)
-            .padding(.vertical, 5)
-            .background(
-              Color(.secondaryButtonTint)
-                .clipShape(Capsule().inset(by: 0.5).stroke())
-            )
-            .clipShape(Capsule())
+      footer: VStack {
+        VStack(alignment: .leading) {
+          ShortcutAmountGrid(action: { amount in
+            swapTokensStore.suggestedAmountTapped(amount)
+          })
+          SectionFooterErrorView(
+            errorMessage: swapTokensStore.isShowingSwapSellAmountError
+              ? Strings.Wallet.sendAmountFormatError : nil
+          )
+          Button {
+            swapTokensStore.swapSelectedTokens()
+          } label: {
+            Label(Strings.Wallet.swapSelectedTokens, systemImage: "chevron.up.chevron.down")
+              .labelStyle(.iconOnly)
+              .font(.body)
+              .foregroundColor(Color(.bravePrimary))
+              .padding(.horizontal, 20)
+              .padding(.vertical, 5)
+              .background(
+                Color(.secondaryButtonTint)
+                  .clipShape(Capsule().inset(by: 0.5).stroke())
+              )
+              .clipShape(Capsule())
+          }
         }
       }
       .listRowInsets(.zero)
@@ -370,7 +382,12 @@ struct SwapCryptoView: View {
         ),
         text: $swapTokensStore.sellAmount
       )
-      .keyboardType(.decimalPad)
+      .keyboardType(.numbersAndPunctuation)
+      .onChange(of: swapTokensStore.sellAmount) { _, newValue in
+        if !newValue.isEmpty {
+          swapTokensStore.isShowingSwapSellAmountError = BDouble(newValue) == nil
+        }
+      }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
@@ -411,7 +428,13 @@ struct SwapCryptoView: View {
             swapTokensStore.selectedToToken?.symbol ?? ""
           )
         )
+      ),
+      footer: SectionFooterErrorView(
+        errorMessage: swapTokensStore.isShowingSwapBuyAmountError
+          ? Strings.Wallet.sendAmountFormatError : nil
       )
+      .listRowInsets(.zero)
+      .padding(.top, 5)
     ) {
       TextField(
         String.localizedStringWithFormat(
@@ -420,7 +443,12 @@ struct SwapCryptoView: View {
         ),
         text: $swapTokensStore.buyAmount
       )
-      .keyboardType(.decimalPad)
+      .keyboardType(.numbersAndPunctuation)
+      .onChange(of: swapTokensStore.buyAmount) { _, newValue in
+        if !newValue.isEmpty {
+          swapTokensStore.isShowingSwapBuyAmountError = BDouble(newValue) == nil
+        }
+      }
       .disabled(networkStore.defaultSelectedChain.coin == .sol)
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }

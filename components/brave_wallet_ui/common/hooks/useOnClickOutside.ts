@@ -26,7 +26,7 @@ export const useModal = () => {
     openModal,
     closeModal,
     ref: modalRef,
-    isModalShown
+    isModalShown,
   }
 }
 
@@ -36,14 +36,14 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
   startListening: boolean,
   // Include a buttonId if you have a button outside of the click away area
   // that causes reopening when clicking to close.
-  buttonId?: string
+  buttonId?: string,
 ) => {
   React.useEffect(() => {
     const listener = (event: Event) => {
       if (
-        !ref.current ||
-        ref.current.contains((event?.target as Node) || null) ||
-        buttonId === (event.target as HTMLButtonElement).id
+        !ref.current
+        || ref.current.contains((event?.target as Node) || null)
+        || buttonId === (event.target as HTMLButtonElement).id
       ) {
         return
       }

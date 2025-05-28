@@ -12,5 +12,5 @@ export const BatRewardsContractAddress = BraveWallet.BAT_TOKEN_CONTRACT_ADDRESS
 
 export default {
   [SwapExchangeProxy]: '0x Exchange Proxy',
-  [LiFiExchangeProxy]: 'Li.Fi Exchange Proxy'
+  [LiFiExchangeProxy]: 'Li.Fi Exchange Proxy',
 }

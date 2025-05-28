@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blokker alle";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Hvis du blokkerer alle informasjonskapsler, vil enkelte nettsteder ikke fungere riktig.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Vil du blokkere alle informasjonskapsler?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Blokkere alle informasjonskapsler?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields blokkerer allerede informasjonskapsler fra tredjeparter. Denne innstillingen fører til at alle informasjonskapsler og nettstedsdata slettes, noe som kan bety at enkelte nettsteder ikke fungerer.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Alternativet kan ikke endres. Prøv senere.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blokker samtykkemeldinger om informasjonskapsler";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Dette hindrer nettsteder i å lagre informasjon om tidligere besøk.\nAlternativet «Blokker alle informasjonskapsler» er utdatert. Hvis du vil vite hvordan du tvangsaktiverer det, kan du besøke [hjelpesiden vår](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkeringsoversikt";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Bekreft";
 
-/* Cookie settings option title */
-"CookieControl" = "Informasjonskapsel-kontroll";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Informasjonskapsler og nettsteddata";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Ferdig";
-
-/* cookie settings option */
-"DontBlockCookies" = "Ikke blokker informasjonskapsler";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ikke send";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-oppgraderinger";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importer nettleserdata";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Individuelle kontroller";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Kunne ikke laste inn side.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Lisenser";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Antall ord: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Importerte bokmerker";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Lukk";

@@ -45,6 +45,17 @@ public class CarPlayController {
         animated: true,
         completion: nil
       )
+
+      let nowPlaying = CPNowPlayingTemplate.shared
+      let shuffleButton = CPNowPlayingShuffleButton { [weak self] _ in
+        self?.player.isShuffleEnabled.toggle()
+      }
+      shuffleButton.isSelected = player.isShuffleEnabled
+      let repeatButton = CPNowPlayingRepeatButton { [weak self] _ in
+        self?.player.repeatMode.cycle()
+      }
+      repeatButton.isSelected = player.repeatMode != .none
+      nowPlaying.updateNowPlayingButtons([shuffleButton, repeatButton])
     }
 
     fetchResultsDelegate.contentDidChange = { [weak self] in
@@ -172,15 +183,6 @@ public class CarPlayController {
     }
     let nowPlaying = CPNowPlayingTemplate.shared
     if interface.topTemplate != nowPlaying {
-      let shuffleButton = CPNowPlayingShuffleButton { [weak self] _ in
-        self?.player.isShuffleEnabled.toggle()
-      }
-      shuffleButton.isSelected = player.isShuffleEnabled
-      let repeatButton = CPNowPlayingRepeatButton { [weak self] _ in
-        self?.player.repeatMode.cycle()
-      }
-      repeatButton.isSelected = player.repeatMode != .none
-      nowPlaying.updateNowPlayingButtons([shuffleButton, repeatButton])
       interface.pushTemplate(nowPlaying, animated: true, completion: nil)
     }
   }

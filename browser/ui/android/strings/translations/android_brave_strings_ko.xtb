@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="6302422639282249274">Brave Rewards 관리</translation>
-<translation id="2709516037105925701">자동 완성</translation>
 <translation id="8617525558807213034">비공개 탭에 자동 채우기</translation>
 <translation id="8685431198160039193">저장된 정보를 비공개 탭에 자동으로 채울 수 있음</translation>
 <translation id="6583902294974160967">지원</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">모양</translation>
 <translation id="9040069796107003510">Brave Rewards 아이콘</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
-<translation id="8495235435594442882">하단 툴바 사용</translation>
+<translation id="1215433243238902715">하단 탐색 도구 모음 활성화</translation>
+<translation id="1422686363939271829">하단 주소 표시줄 위치를 선택하면 이 설정이 비활성화됩니다.</translation>
 <translation id="6587448235155023666">변경 사항은 다음번에 Brave를 재실행할 때 적용됩니다</translation>
 <translation id="8701563696941209024">지금 재실행</translation>
 <translation id="834487290629916192">나중에</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">제작자 <ph name="PUBLISHER_NAME"/> 최근에 확인됨</translation>
 <translation id="1486343603936278248">토큰</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
+<translation id="5927196110206824867">스폰서 배경 이미지는 독립적인 사용자 중심 웹을 구축하려는 Brave의 사명을 뒷받침합니다. 또한 빅 테크와 달리 광고 성과를 익명으로 측정하여 사용자의 개인 정보를 보호합니다.</translation>
+<translation id="8748471354357836070">자세히 알아보기 / 옵트아웃 옵션</translation>
 <translation id="3171669670217312786">배경 이미지</translation>
 <translation id="8522669544471808198">배경 이미지 표시</translation>
 <translation id="3870475560794762985">스폰서 이미지 표시</translation>
+<translation id="6937724381960478525">스폰서 이미지에 대해 자세히 알아보기</translation>
 <translation id="8793108040181436796">위젯</translation>
 <translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="7275773481201277457">Brave Stats 보기</translation>

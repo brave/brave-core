@@ -13,8 +13,8 @@ export function useGetCustomAssetSupportedNetworks() {
   return React.useMemo(
     () =>
       networkList.filter((network) =>
-        CustomAssetSupportedCoinTypes.includes(network.coin)
+        CustomAssetSupportedCoinTypes.includes(network.coin),
       ),
-    [networkList]
+    [networkList],
   )
 }

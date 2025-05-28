@@ -243,11 +243,6 @@ CardanoTransaction::TxWitness::FromValue(const base::Value::Dict& value) {
   return result;
 }
 
-// static
-CardanoTransaction::TxWitness CardanoTransaction::TxWitness::DummyTxWitness() {
-  return CardanoTransaction::TxWitness();
-}
-
 CardanoTransaction::TxOutput::TxOutput() = default;
 CardanoTransaction::TxOutput::~TxOutput() = default;
 CardanoTransaction::TxOutput::TxOutput(
@@ -311,6 +306,11 @@ base::Value::Dict CardanoTransaction::ToValue() const {
     outputs_value.Append(output.ToValue());
   }
 
+  auto& witnesses_value = dict.Set("witnesses", base::Value::List())->GetList();
+  for (const auto& witness : witnesses_) {
+    witnesses_value.Append(witness.ToValue());
+  }
+
   dict.Set("invalid_after", base::NumberToString(invalid_after_));
   dict.Set("to", to_.ToString());
   dict.Set("amount", base::NumberToString(amount_));
@@ -352,6 +352,21 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
       return std::nullopt;
     }
     result.outputs_.push_back(std::move(*output_opt));
+  }
+
+  auto* witnesses_list = value.FindList("witnesses");
+  if (!witnesses_list) {
+    return std::nullopt;
+  }
+  for (const auto& item : *witnesses_list) {
+    if (!item.is_dict()) {
+      return std::nullopt;
+    }
+    auto output_opt = CardanoTransaction::TxWitness::FromValue(item.GetDict());
+    if (!output_opt) {
+      return std::nullopt;
+    }
+    result.witnesses_.push_back(std::move(*output_opt));
   }
 
   if (!base::OptionalUnwrapTo(ReadUint32String(value, "invalid_after"),
@@ -418,10 +433,6 @@ void CardanoTransaction::AddInputs(std::vector<TxInput> inputs) {
 
 void CardanoTransaction::ClearInputs() {
   inputs_.clear();
-}
-
-void CardanoTransaction::AddWitness(TxWitness witnesses) {
-  witnesses_.push_back(std::move(witnesses));
 }
 
 void CardanoTransaction::SetWitnesses(std::vector<TxWitness> witnesses) {

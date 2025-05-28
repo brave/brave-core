@@ -8,7 +8,6 @@
 #include "base/strings/sys_string_conversions.h"
 #include "ios/web/util/wk_security_origin_util.h"
 #include "net/base/apple/url_conversions.h"
-#include "url/gurl.h"
 #include "url/origin.h"
 
 @implementation URLOriginIOS {

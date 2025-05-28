@@ -12,7 +12,7 @@ import { handleEndpointError } from '../../../utils/api-utils'
 
 export const swapEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     generateSwapQuote: mutation<
@@ -34,16 +34,16 @@ export const swapEndpoints = ({
           }
 
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to generate Brave Swap quote',
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     generateSwapTransaction: mutation<
@@ -59,16 +59,16 @@ export const swapEndpoints = ({
         try {
           const result = await swapService.getTransaction(params)
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Unable to generate Brave Swap transaction',
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

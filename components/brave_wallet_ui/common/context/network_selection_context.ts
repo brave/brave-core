@@ -16,8 +16,8 @@ export const useChainSelectionContext = () => {
   const context = React.useContext(ChainSelectionContext)
   if (!context) {
     throw new Error(
-      'useChainSelectionContext must be used ' +
-        'from a component rendered within a ChainSelectionContextProvider'
+      'useChainSelectionContext must be used '
+        + 'from a component rendered within a ChainSelectionContextProvider',
     )
   }
   return context

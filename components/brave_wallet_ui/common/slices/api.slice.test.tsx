@@ -10,20 +10,20 @@ import { useGetTransactionsQuery } from './api.slice'
 import {
   mockEthAccountInfo,
   mockFilecoinAccountInfo,
-  mockSolanaAccountInfo
+  mockSolanaAccountInfo,
 } from '../constants/mocks'
 import {
   createMockStore,
-  renderHookOptionsWithMockStore
+  renderHookOptionsWithMockStore,
 } from '../../utils/test-utils'
 import {
-  createMockTransactionInfo //
+  createMockTransactionInfo, //
 } from '../../stories/mock-data/mock-transaction-info'
 import { BraveWallet } from '../../constants/types'
 import { mockAccounts } from '../../stories/mock-data/mock-wallet-accounts'
 import {
   mockBasicAttentionToken,
-  mockBitcoinErc20Token
+  mockBitcoinErc20Token,
 } from '../../stories/mock-data/mock-asset-options'
 
 const mockSolanaSendTokenTx = createMockTransactionInfo({
@@ -33,7 +33,7 @@ const mockSolanaSendTokenTx = createMockTransactionInfo({
   toAddress: 'sSolanaAccount2',
   sendApproveOrSellAssetContractAddress:
     mockBasicAttentionToken.contractAddress,
-  sendApproveOrSellAmount: '100'
+  sendApproveOrSellAmount: '100',
 })
 
 const mockFilSendTx = createMockTransactionInfo({
@@ -43,7 +43,7 @@ const mockFilSendTx = createMockTransactionInfo({
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: '',
   isERC20Send: false,
-  sendApproveOrSellAmount: '100'
+  sendApproveOrSellAmount: '100',
 })
 
 const mockAvaxErc20SendTx = createMockTransactionInfo({
@@ -53,7 +53,7 @@ const mockAvaxErc20SendTx = createMockTransactionInfo({
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: mockBitcoinErc20Token.contractAddress,
   isERC20Send: true,
-  sendApproveOrSellAmount: '200'
+  sendApproveOrSellAmount: '200',
 })
 
 const mockEthErc20SendTx = createMockTransactionInfo({
@@ -64,7 +64,7 @@ const mockEthErc20SendTx = createMockTransactionInfo({
   sendApproveOrSellAssetContractAddress:
     mockBasicAttentionToken.contractAddress,
   isERC20Send: true,
-  sendApproveOrSellAmount: '100'
+  sendApproveOrSellAmount: '100',
 })
 
 describe('api slice: useGetTransactionsQuery', () => {
@@ -75,9 +75,9 @@ describe('api slice: useGetTransactionsQuery', () => {
         transactionInfos: [
           mockSolanaSendTokenTx,
           // this tx should be the only one returned
-          mockEthErc20SendTx
-        ]
-      }
+          mockEthErc20SendTx,
+        ],
+      },
     )
 
     const { result } = renderHook(
@@ -85,14 +85,14 @@ describe('api slice: useGetTransactionsQuery', () => {
         useGetTransactionsQuery({
           accountId: mockEthErc20SendTx.fromAccountId,
           coinType: BraveWallet.CoinType.ETH,
-          chainId: null
+          chainId: null,
         }),
-      renderHookOptionsWithMockStore(store)
+      renderHookOptionsWithMockStore(store),
     )
 
     // loading
     await waitFor(() =>
-      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+      expect(result.current.data && !result.current.isLoading).toBeTruthy(),
     )
 
     const { data: txs, isLoading, error } = result.current
@@ -115,9 +115,9 @@ describe('api slice: useGetTransactionsQuery', () => {
           mockSolanaSendTokenTx,
           mockAvaxErc20SendTx,
           mockEthErc20SendTx,
-          mockFilSendTx
-        ]
-      }
+          mockFilSendTx,
+        ],
+      },
     )
 
     const { result } = renderHook(
@@ -125,14 +125,14 @@ describe('api slice: useGetTransactionsQuery', () => {
         useGetTransactionsQuery({
           accountId: null,
           coinType: null,
-          chainId: null
+          chainId: null,
         }),
-      renderHookOptionsWithMockStore(store)
+      renderHookOptionsWithMockStore(store),
     )
 
     // loading
     await waitFor(() =>
-      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+      expect(result.current.data && !result.current.isLoading).toBeTruthy(),
     )
 
     const { data: txs = [], isLoading, error } = result.current

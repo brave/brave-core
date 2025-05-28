@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
 <translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
 <translation id="6302422639282249274">Administrar Recompensas Brave</translation>
-<translation id="2709516037105925701">Autocompletar</translation>
 <translation id="8617525558807213034">Autorrelleno en las pestañas de incógnito</translation>
 <translation id="8685431198160039193">La información guardada se puede rellenar automáticamente en las pestañas de incógnito</translation>
 <translation id="6583902294974160967">Asistencia</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Diseño</translation>
 <translation id="9040069796107003510">Ícono de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar ícono de Recompensas Brave en la barra de direcciones</translation>
-<translation id="8495235435594442882">Activar la barra de herramientas de la parte inferior</translation>
+<translation id="1215433243238902715">Habilitar la barra de navegación inferior</translation>
+<translation id="1422686363939271829">Este ajuste se desactiva cuando se selecciona la posición inferior de la barra de navegación</translation>
 <translation id="6587448235155023666">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="8701563696941209024">REINICIAR AHORA</translation>
 <translation id="834487290629916192">DESPUÉS</translation>
@@ -420,9 +420,12 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="8520059774736886747">El creador <ph name="PUBLISHER_NAME"/> realizó la verificación recientemente</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Página de Nueva pestaña</translation>
+<translation id="5927196110206824867">Las imágenes de fondo patrocinadas apoyan la misión de Brave de desarrollar una Web independiente y orientada al usuario. Y a diferencia de Big Tech, medimos el rendimiento de los anuncios de forma anónima para preservar tu privacidad.</translation>
+<translation id="8748471354357836070">Más información / Opciones de exclusión</translation>
 <translation id="3171669670217312786">Imágenes de fondo</translation>
 <translation id="8522669544471808198">Mostrar imágenes de fondo</translation>
 <translation id="3870475560794762985">Mostrar imágenes patrocinadas</translation>
+<translation id="6937724381960478525">Más información sobre las imágenes patrocinadas</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Mostrar sitios populares</translation>
 <translation id="7275773481201277457">Mostrar estadísticas de Brave</translation>

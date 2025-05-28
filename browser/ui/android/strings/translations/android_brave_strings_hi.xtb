@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="6302422639282249274">Brave रिवार्ड्स को प्रबंधित करें</translation>
-<translation id="2709516037105925701">ऑटोमैटिक भरना</translation>
 <translation id="8617525558807213034">निजी टैब अपने-आप भरें</translation>
 <translation id="8685431198160039193">सेव की गई जानकारी निजी टैब में अपने आप भरी जा सकती है</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">प्रकटन</translation>
 <translation id="9040069796107003510">Brave Rewards आइकन</translation>
 <translation id="6333347122924254968">एड्रेस बार में Brave Rewards आइकॉन दिखाएं</translation>
-<translation id="8495235435594442882">बॉटम टूलबार को सक्षम करें</translation>
+<translation id="1215433243238902715">सबसे नीचे का नेविगेशन टूलबार चालू करें</translation>
+<translation id="1422686363939271829">सबसे नीचे एड्रेस बार की पोज़िशन चुनी जाने पर, यह सेटिंग बंद हो जाती है</translation>
 <translation id="6587448235155023666">अगली बार जब आप Brave को पुनः लॉन्च करेंगे तो आपके परिवर्तन प्रभावी होंगे</translation>
 <translation id="8701563696941209024">अब पुनः लॉन्च करें</translation>
 <translation id="834487290629916192">बाद में</translation>
@@ -419,9 +419,12 @@
 <translation id="8520059774736886747">निर्माता <ph name="PUBLISHER_NAME"/> हाल ही में सत्यापित किया गया है</translation>
 <translation id="1486343603936278248">टोकन</translation>
 <translation id="7781069478569868053">नया टैब पेज</translation>
+<translation id="5927196110206824867">स्पॉन्सर की गई बैकग्राउंड इमेज Brave के स्वतंत्र, यूज़र्स को पहले रखने वाले वेब को सपोर्ट करती हैं। और Big Tech से हटकर, हम आपकी प्राइवेसी को सुरक्षित रखने के लिए ऐड की परफ़ॉर्मेंस को अनाम तरीके से मापते हैं।</translation>
+<translation id="8748471354357836070">ज़्यादा जानें / विकल्प ऑप्ट आउट करें</translation>
 <translation id="3171669670217312786">बैकग्राउंड फ़ोटो</translation>
 <translation id="8522669544471808198">बैकग्राउंड इमेज दिखाएँ</translation>
 <translation id="3870475560794762985">प्रायोजित इमेज दिखाएँ</translation>
+<translation id="6937724381960478525">स्पॉन्सर की गई इमेज के बारे में ज़्यादा जानें</translation>
 <translation id="8793108040181436796">विजेट</translation>
 <translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>

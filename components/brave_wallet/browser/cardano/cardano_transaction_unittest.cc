@@ -113,6 +113,12 @@ TEST(CardanoTransaction, Value) {
   output2.amount = 50;
   tx.AddOutput(std::move(output2));
 
+  CardanoTransaction::TxWitness witness1;
+  witness1.witness_bytes = {};
+  CardanoTransaction::TxWitness witness2;
+  witness2.witness_bytes = {1};
+  tx.SetWitnesses({witness1, witness2});
+
   tx.set_to(*CardanoAddress::FromString(kAddress1));
   tx.set_amount(12345);
   tx.set_invalid_after(777);
@@ -123,6 +129,7 @@ TEST(CardanoTransaction, Value) {
   EXPECT_EQ(*parsed, tx);
   EXPECT_EQ(parsed->inputs(), tx.inputs());
   EXPECT_EQ(parsed->outputs(), tx.outputs());
+  EXPECT_EQ(parsed->witnesses(), tx.witnesses());
   EXPECT_EQ(parsed->to(), tx.to());
   EXPECT_EQ(parsed->amount(), tx.amount());
   EXPECT_EQ(parsed->invalid_after(), tx.invalid_after());

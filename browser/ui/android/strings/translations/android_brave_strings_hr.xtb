@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
 <translation id="6302422639282249274">Upravljaj nagradama Brave</translation>
-<translation id="2709516037105925701">Automatsko popunjavanje</translation>
 <translation id="8617525558807213034">Automatski ispunite privatne kartice</translation>
 <translation id="8685431198160039193">Spremljene informacije mogu biti automatski ispunjene u privatnim karticama</translation>
 <translation id="6583902294974160967">Podrška</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Prikaz</translation>
 <translation id="9040069796107003510">Ikona Nagrada Brave</translation>
 <translation id="6333347122924254968">Prikaži ikonu Nagrade Brave u adresnoj traci</translation>
-<translation id="8495235435594442882">Omogući donju alatnu traku</translation>
+<translation id="1215433243238902715">Aktiviraj donju navigacijsku traku</translation>
+<translation id="1422686363939271829">Ova je funkcionalnost isključena kad se odabere donja pozicija adresne trake</translation>
 <translation id="6587448235155023666">Vaše se promjene primjenjuju sljedeći puta kada pokrene preglednik Brave</translation>
 <translation id="8701563696941209024">SADA PONOVNO POKRENI</translation>
 <translation id="834487290629916192">KASNIJE</translation>
@@ -420,9 +420,12 @@ Sigurno želite to napraviti?</translation>
 <translation id="8520059774736886747">Stvaratelj <ph name="PUBLISHER_NAME"/>nedavno je potvrđen</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Stranica Nova kartica</translation>
+<translation id="5927196110206824867">Sponzorirane pozadine podržavaju Braveovu misiju da izgradi nezavisni internet koji je prvenstveno usmjeren na korisnike. I za razliku od velikih tehnoloških korporacija mi anonimno mjerimo performanse oglasa kako bismo sačuvali vašu privatnost.</translation>
+<translation id="8748471354357836070">Doznajte više / mogućnosti odjave</translation>
 <translation id="3171669670217312786">Pozadinske slike</translation>
 <translation id="8522669544471808198">Prikaži pozadinske slike</translation>
 <translation id="3870475560794762985">Prikaži sponzorirane slike</translation>
+<translation id="6937724381960478525">Doznajte više o Sponzoriranim vizualima</translation>
 <translation id="8793108040181436796">Mali programi (widgeti)</translation>
 <translation id="8643377320501056697">Prikaži glavna mrežna mjesta</translation>
 <translation id="7275773481201277457">Prikaži stanja Brave</translation>

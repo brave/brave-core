@@ -53,6 +53,12 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="4450893287417543264">Tekrar gösterme</translation>
 <translation id="4595286989346610620">Ayrıntıları kontrol edin</translation>
 <translation id="8324318899000695659">Ögeleri engelle</translation>
+<translation id="3828310068250853121">Engellemek istediğiniz ögeyi seçin</translation>
+<translation id="2577286987423083872">Ögeleri Engelle</translation>
+<translation id="3211174446914979436">Filtreleri yönet</translation>
+<translation id="3108584651298176909">Kuralları göster</translation>
+<translation id="5156986655891520787">Kuralları gizle</translation>
+<translation id="7658239707568436148">İptal Et</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion adresi kullanarak açın: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Yapıştırmayı Zorla</translation>
@@ -94,7 +100,6 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="8117247596084706514">Bu site <ph name="PART_ONE"/>tam konumunuzu<ph name="PART_ONE_END"/> istedi. <ph name="PART_TWO"/>Daha fazla bilgi edinin<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Bu site <ph name="PART_ONE"/>tam konumunuzu<ph name="PART_ONE_END"/> istedi. <ph name="PART_THREE"/>Konum Hizmetleri<ph name="PART_THREE_END"/> devre dışı olduğundan Brave sadece <ph name="PART_TWO"/>genel konum<ph name="PART_TWO_END"/> verisini sağlayabildi. <ph name="PART_FOUR"/>Daha fazla bilgi edinin<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Hepsini kapat</translation>
-<translation id="7658239707568436148">İptal Et</translation>
 <translation id="4870911314065352661">Tüm sekmeler kapatılsın mı?</translation>
 <translation id="7551864359422178684">Bu tarayıcı penceresinde <ph name="NUMBER_OF_TABS"/> açık sekmeniz var.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> sekme</translation>
@@ -134,6 +139,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="3447730462826640312">Kazanmak için tıklamanıza gerek yoktur, ancak ilginizi çektiyse tıklayın!</translation>
 <translation id="5253166205743627564">Özel bir reklama tıklayarak Brave Arama'yı desteklediğiniz için teşekkür ederiz. Teknoloji Devleri'nin aksine, gizliliğinizi korumak için reklam performansını anonim olarak ölçüyoruz.</translation>
 <translation id="8748471354357836070">Daha fazla bilgi edinin / tercihleri devre dışı bırakın</translation>
+<translation id="5927196110206824867">Sponsorlu arka plan görselleri Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu destekliyor. Ve Teknoloji Devleri'nin aksine, gizliliğinizi korumak için reklam performansını anonim olarak ölçüyoruz.</translation>
 <translation id="4174337572777167894">Web Keşif Projesi</translation>
 <translation id="8659271182272561965">Brave Arama'yı daha iyi hale getirmek için anonim arama &amp; tarayıcı verilerinizle katkıda bulunun.</translation>
 <translation id="1516554614404600536">Brave Araç İpucu</translation>
@@ -474,6 +480,9 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="7791141927430186653">Gömülü X (önceki adıyla Twitter) tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
+<translation id="1244912498725894944">Bazı çerez ayarları Brave Kalkanlar tarafından kontrol edilir. Bunları &lt;a href="/content/braveShields"&gt;burada&lt;/a&gt;görebilirsiniz.</translation>
+<translation id="5352519841984162795">Bu ayar Brave Kalkanlar tarafından kontrol ediliyor.</translation>
+<translation id="352287031024189516">Bu ayar Google Oturum Açma tarafından kontrol ediliyor.</translation>
 <translation id="8792121506918889955">WebRTC IP kullanım politikası</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
 <translation id="1822560017823072927">Varsayılan genel ve özel arabirimler</translation>
@@ -675,8 +684,12 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="856371974127598760">Cüzdan Ağları</translation>
 <translation id="5975930666279943472">Cüzdan işlemlerini ve bir seferlik anahtar bilgilerini temizle</translation>
 <translation id="5693968582510626466">İşlemleri temizlemek geliştiriciler için veya yerel bir sunucudaki durumu temizlemek için faydalı olabilir</translation>
-<translation id="2326850911705720398">Cüzdan verilerini sıfırla ve temizle</translation>
+<translation id="6171369470447621882">Zcash senkronizasyon durumunu sıfırla</translation>
+<translation id="6705112675071480687">Tüm korumalı hesaplar için Zcash senkronizasyon ilerlemesini sıfırlar</translation>
+<translation id="2012093487873597892">Zcash senkronizasyon durumunu sıfırlamak istediğinizden emin misiniz? Tüm korumalı hesaplar için senkronizasyon ilerlemesi sıfırlanacaktır. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="5031551083187285762">Zcash hesapları için senkronizasyon durumunuz sıfırlandı.</translation>
 <translation id="9216386092464743272">Tüm cüzdan işlemlerinizi ve tek seferlik anahtar bilgilerinizi sıfırlamak istediğinizden emin misiniz? Bu seçenek en çok yerel bir test sunucusu çalıştıran geliştiriciler tarafından kullanılır. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="2326850911705720398">Cüzdan verilerini sıfırla ve temizle</translation>
 <translation id="6369495274982305511">Cüzdanınızı sıfırlamak istediğinizden emin misiniz? Eğer cüzdanınız yedeklenmediyse, sıfırlamak (tüm ilişkili paralar da dahil olmak üzere) tüm hesap verilerinizi kaybetmenize sebep olabilir. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
 <translation id="3752403403443723332">Cüzdanınız sıfırlandı.</translation>
 <translation id="594766067816395072">Cüzdan işlem bilgileriniz sıfırlandı.</translation>

@@ -29,7 +29,7 @@ export const DerivationSchemes = {
   BtcLedgerMainnet: 'BtcLedgerMainnet',
   BtcLedgerTestnet: 'BtcLedgerTestnet',
 
-  EthTrezorDefault: 'EthTrezorDefault'
+  EthTrezorDefault: 'EthTrezorDefault',
 } as const
 
 export type DerivationScheme =
@@ -58,7 +58,7 @@ export const EthLedgerLiveHardwareImportScheme: HardwareImportScheme = {
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Ledger Live',
-  pathTemplate: (index) => `m/44'/60'/${index}'/0/0`
+  pathTemplate: (index) => `m/44'/60'/${index}'/0/0`,
 }
 
 export const EthLedgerLegacyHardwareImportScheme: HardwareImportScheme = {
@@ -67,7 +67,7 @@ export const EthLedgerLegacyHardwareImportScheme: HardwareImportScheme = {
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Legacy (MEW/MyCrypto)',
-  pathTemplate: (index) => `m/44'/60'/0'/${index}`
+  pathTemplate: (index) => `m/44'/60'/0'/${index}`,
 }
 
 export const EthLedgerDeprecatedHardwareImportScheme: HardwareImportScheme = {
@@ -76,7 +76,7 @@ export const EthLedgerDeprecatedHardwareImportScheme: HardwareImportScheme = {
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Deprecated (Not recommended)',
-  pathTemplate: (index) => `m/44'/60'/${index}'/0`
+  pathTemplate: (index) => `m/44'/60'/${index}'/0`,
 }
 
 export const SolLedgerDefaultHardwareImportScheme: HardwareImportScheme = {
@@ -85,7 +85,7 @@ export const SolLedgerDefaultHardwareImportScheme: HardwareImportScheme = {
   keyringId: BraveWallet.KeyringId.kSolana,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
-  pathTemplate: (index) => `44'/501'/${index}'/0'`
+  pathTemplate: (index) => `44'/501'/${index}'/0'`,
 }
 
 export const SolLedgerLiveHardwareImportScheme: HardwareImportScheme = {
@@ -94,7 +94,7 @@ export const SolLedgerLiveHardwareImportScheme: HardwareImportScheme = {
   keyringId: BraveWallet.KeyringId.kSolana,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Ledger Live',
-  pathTemplate: (index) => `44'/501'/${index}'`
+  pathTemplate: (index) => `44'/501'/${index}'`,
 }
 
 export const SolLedgerBip44RootHardwareImportScheme: HardwareImportScheme = {
@@ -104,7 +104,7 @@ export const SolLedgerBip44RootHardwareImportScheme: HardwareImportScheme = {
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Bip44 Root',
   singleAccount: true,
-  pathTemplate: (index) => `44'/501'`
+  pathTemplate: (index) => `44'/501'`,
 }
 
 export const FilLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
@@ -114,7 +114,7 @@ export const FilLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
   fixedNetwork: BraveWallet.FILECOIN_MAINNET,
-  pathTemplate: (index) => `m/44'/461'/0'/0/${index}`
+  pathTemplate: (index) => `m/44'/461'/0'/0/${index}`,
 }
 
 export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
@@ -124,7 +124,7 @@ export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
   fixedNetwork: BraveWallet.FILECOIN_TESTNET,
-  pathTemplate: (index) => `m/44'/1'/0'/0/${index}`
+  pathTemplate: (index) => `m/44'/1'/0'/0/${index}`,
 }
 
 export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
@@ -134,7 +134,7 @@ export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
   fixedNetwork: BraveWallet.BITCOIN_MAINNET,
-  pathTemplate: (index) => `84'/0'/${index}'`
+  pathTemplate: (index) => `84'/0'/${index}'`,
 }
 
 export const BtcLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
@@ -144,7 +144,7 @@ export const BtcLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
   fixedNetwork: BraveWallet.BITCOIN_TESTNET,
-  pathTemplate: (index) => `84'/1'/${index}'`
+  pathTemplate: (index) => `84'/1'/${index}'`,
 }
 
 export const EthTrezorDefaultHardwareImportScheme: HardwareImportScheme = {
@@ -153,7 +153,7 @@ export const EthTrezorDefaultHardwareImportScheme: HardwareImportScheme = {
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kTrezor,
   name: 'Default',
-  pathTemplate: (index) => `m/44'/60'/0'/0/${index}`
+  pathTemplate: (index) => `m/44'/60'/0'/0/${index}`,
 }
 
 export const AllHardwareImportSchemes: HardwareImportScheme[] = [
@@ -171,7 +171,7 @@ export const AllHardwareImportSchemes: HardwareImportScheme[] = [
   BtcLedgerMainnetHardwareImportScheme,
   BtcLedgerTestnetHardwareImportScheme,
 
-  EthTrezorDefaultHardwareImportScheme
+  EthTrezorDefaultHardwareImportScheme,
 ]
 
 export type HardwareOperationResultAccounts = HardwareOperationResult<{
@@ -213,19 +213,19 @@ export interface AccountFromDevice {
 
 // TODO(apaymyshev): needs some simple checks
 export function fromUntrustedEthereumSignatureVRS(
-  untrusted: Untrusted.EthereumSignatureVRS
+  untrusted: Untrusted.EthereumSignatureVRS,
 ): BraveWallet.EthereumSignatureVRS | undefined {
   return {
     vBytes: [...untrusted.vBytes],
     rBytes: [...untrusted.rBytes],
-    sBytes: [...untrusted.sBytes]
+    sBytes: [...untrusted.sBytes],
   }
 }
 
 export function fromUntrustedEthereumSignatureBytes(
-  untrusted: Untrusted.EthereumSignatureBytes
+  untrusted: Untrusted.EthereumSignatureBytes,
 ): BraveWallet.EthereumSignatureBytes | undefined {
   return {
-    bytes: [...untrusted.bytes]
+    bytes: [...untrusted.bytes],
   }
 }

@@ -17,16 +17,16 @@ export const qrCodeEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
         try {
           const image = await generateQRCode(dataArg)
           return {
-            data: image
+            data: image,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to generate QR Code for: ${dataArg}`,
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

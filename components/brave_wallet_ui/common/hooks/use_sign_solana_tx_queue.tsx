@@ -14,7 +14,7 @@ import {
   useGetNetworkQuery,
   useGetPendingSignSolTransactionsRequestsQuery,
   useProcessSignSolTransactionsRequestHardwareMutation,
-  useProcessSignSolTransactionsRequestMutation
+  useProcessSignSolTransactionsRequestMutation,
 } from '../slices/api.slice'
 import { useAccountQuery } from '../slices/api.slice.extra'
 
@@ -23,7 +23,7 @@ export interface UseProcessSolTxProps {
 }
 
 export const useProcessSignSolanaTransaction = (
-  props: UseProcessSolTxProps
+  props: UseProcessSolTxProps,
 ) => {
   // mutations
   const [processSignSolTransactionsRequest] =
@@ -37,37 +37,37 @@ export const useProcessSignSolanaTransaction = (
       approved: false,
       id: props.signSolTransactionsRequest.id,
       hwSignatures: [],
-      error: null
+      error: null,
     }).unwrap()
   }, [props, processSignSolTransactionsRequest])
 
   const sign = React.useCallback(async () => {
     const isHwAccount =
-      props.signSolTransactionsRequest.fromAccountId.kind ===
-      BraveWallet.AccountKind.kHardware
+      props.signSolTransactionsRequest.fromAccountId.kind
+      === BraveWallet.AccountKind.kHardware
 
     if (isHwAccount) {
       await processSignSolTransactionsRequestHardware({
-        request: props.signSolTransactionsRequest
+        request: props.signSolTransactionsRequest,
       }).unwrap()
     } else {
       await processSignSolTransactionsRequest({
         approved: true,
         id: props.signSolTransactionsRequest.id,
         hwSignatures: [],
-        error: null
+        error: null,
       }).unwrap()
     }
   }, [
     processSignSolTransactionsRequest,
     processSignSolTransactionsRequestHardware,
-    props
+    props,
   ])
 
   // render
   return {
     cancelSign,
-    sign
+    sign,
   }
 }
 
@@ -85,7 +85,7 @@ export const useSignSolanaTransactionsQueue = () => {
   const { data: network } = useGetNetworkQuery(
     selectedRequest
       ? { coin: BraveWallet.CoinType.SOL, chainId: selectedRequest.chainId }
-      : skipToken
+      : skipToken,
   )
   const { account } = useAccountQuery(selectedRequest?.fromAccountId)
 
@@ -109,6 +109,6 @@ export const useSignSolanaTransactionsQueue = () => {
     queueNextSignTransaction,
     queueLength,
     queueNumber,
-    queueIndex
+    queueIndex,
   }
 }

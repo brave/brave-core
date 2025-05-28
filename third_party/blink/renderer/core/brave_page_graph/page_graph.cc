@@ -135,7 +135,6 @@
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/base64.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "url/gurl.h"
 #include "v8/include/v8.h"
 
 using brave_page_graph::DocumentRequest;

@@ -16,40 +16,40 @@ export const useFindBuySupportedToken = (
   token?: Pick<
     BraveWallet.BlockchainToken,
     'symbol' | 'contractAddress' | 'chainId'
-  >
+  >,
 ) => {
   // queries
   const { data: options } = useGetMeldCryptoCurrenciesQuery()
 
   // computed
   const foundNativeToken =
-    token &&
-    token.contractAddress === '' &&
-    options?.find(
+    token
+    && token.contractAddress === ''
+    && options?.find(
       (asset) =>
-        asset.chainId?.toLowerCase() === token.chainId.toLowerCase() &&
-        getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase()
+        asset.chainId?.toLowerCase() === token.chainId.toLowerCase()
+        && getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase(),
     )
 
   const foundTokenByContractAddress =
-    token &&
-    options?.find(
+    token
+    && options?.find(
       (asset) =>
-        asset.contractAddress?.toLowerCase() ===
-          token.contractAddress.toLowerCase() &&
-        asset.chainId?.toLowerCase() === token.chainId.toLowerCase()
+        asset.contractAddress?.toLowerCase()
+          === token.contractAddress.toLowerCase()
+        && asset.chainId?.toLowerCase() === token.chainId.toLowerCase(),
     )
 
   const foundTokenBySymbol =
-    token &&
-    options?.find(
+    token
+    && options?.find(
       (asset) =>
-        getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase()
+        getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase(),
     )
 
   // render
   return {
     foundMeldBuyToken:
-      foundNativeToken || foundTokenByContractAddress || foundTokenBySymbol
+      foundNativeToken || foundTokenByContractAddress || foundTokenBySymbol,
   }
 }

@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "1Acció d'omplir la contrasenya del navegador";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Els llocs web que visites poden demanar-te la ubicació.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Això permet utilitzar el micròfon quan utilitzes Brave.";
+"NSMicrophoneUsageDescription" = "Això permet a Brave enviar consultes de cerca amb la veu.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Això et permet desar fotos.";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "Aquest permís s'utilitza per habilitar Apple Advanced Speech Recognition. Si no es permet, s'utilitzarà el reconeixement \"al dispositiu\" i les cerques seran totalment privades. Brave no emmagatzema ni comparteix les teves cerques per veu.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "Fitxer OPML";
 

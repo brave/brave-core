@@ -30,7 +30,7 @@ export class LedgerUntrustedMessagingTransport //
   }
 
   protected handleUnlock = async (
-    command: UnlockCommand
+    command: UnlockCommand,
   ): Promise<UnlockResponse> => {
     const isAuthNeeded = await this.authorizationNeeded()
     if (isAuthNeeded) {
@@ -39,15 +39,15 @@ export class LedgerUntrustedMessagingTransport //
         payload: {
           success: false,
           error: 'unauthorized',
-          code: 'unauthorized'
-        }
+          code: 'unauthorized',
+        },
       }
     }
     return {
       ...command,
       payload: {
-        success: true
-      }
+        success: true,
+      },
     }
   }
 

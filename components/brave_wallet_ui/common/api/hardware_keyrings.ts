@@ -23,7 +23,7 @@ let trezorHardwareKeyring: TrezorBridgeKeyring
 export function getHardwareKeyring(
   vendor: BraveWallet.HardwareVendor,
   coin: BraveWallet.CoinType,
-  onAuthorized?: () => void
+  onAuthorized?: () => void,
 ):
   | EthereumLedgerBridgeKeyring
   | HWInterfaces.TrezorKeyring
@@ -50,7 +50,7 @@ export function getHardwareKeyring(
 }
 
 export function getLedgerEthereumHardwareKeyring(
-  onAuthorized?: () => void
+  onAuthorized?: () => void,
 ): EthereumLedgerBridgeKeyring {
   if (!ethereumHardwareKeyring) {
     ethereumHardwareKeyring = new EthereumLedgerBridgeKeyring(onAuthorized)
@@ -59,7 +59,7 @@ export function getLedgerEthereumHardwareKeyring(
 }
 
 export function getLedgerFilecoinHardwareKeyring(
-  onAuthorized?: () => void
+  onAuthorized?: () => void,
 ): FilecoinLedgerBridgeKeyring {
   if (!filecoinHardwareKeyring) {
     filecoinHardwareKeyring = new FilecoinLedgerBridgeKeyring(onAuthorized)
@@ -68,7 +68,7 @@ export function getLedgerFilecoinHardwareKeyring(
 }
 
 export function getLedgerSolanaHardwareKeyring(
-  onAuthorized?: () => void
+  onAuthorized?: () => void,
 ): SolanaLedgerBridgeKeyring {
   if (!solanaHardwareKeyring) {
     solanaHardwareKeyring = new SolanaLedgerBridgeKeyring(onAuthorized)
@@ -77,7 +77,7 @@ export function getLedgerSolanaHardwareKeyring(
 }
 
 export function getLedgerBitcoinHardwareKeyring(
-  onAuthorized?: () => void
+  onAuthorized?: () => void,
 ): BitcoinLedgerBridgeKeyring {
   if (!bitcoinHardwareKeyring) {
     bitcoinHardwareKeyring = new BitcoinLedgerBridgeKeyring(onAuthorized)

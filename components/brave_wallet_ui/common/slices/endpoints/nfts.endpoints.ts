@@ -9,7 +9,7 @@ import { mapLimit } from 'async'
 import {
   AssetIdsByCollectionNameRegistry,
   BraveWallet,
-  NFTMetadataReturnType
+  NFTMetadataReturnType,
 } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -17,18 +17,18 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   getAssetIdKey,
   GetBlockchainTokenIdArg,
-  tokenNameToNftCollectionName
+  tokenNameToNftCollectionName,
 } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
 import { baseQueryFunction } from '../../async/base-query-cache'
 import {
   getPersistedNftCollectionNamesRegistry,
-  setPersistedNftCollectionNamesRegistry
+  setPersistedNftCollectionNamesRegistry,
 } from '../../../utils/local-storage-utils'
 
 export const nftsEndpoints = ({
   query,
-  mutation
+  mutation,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getNftDiscoveryEnabledStatus: query<boolean, void>({
@@ -37,17 +37,17 @@ export const nftsEndpoints = ({
           const { braveWalletService } = baseQuery(undefined).data
           const result = await braveWalletService.getNftDiscoveryEnabled()
           return {
-            data: result.enabled
+            data: result.enabled,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error getting NFT discovery status: ',
-            error
+            error,
           )
         }
       },
-      providesTags: ['NftDiscoveryEnabledStatus']
+      providesTags: ['NftDiscoveryEnabledStatus'],
     }),
     setNftDiscoveryEnabled: mutation<
       boolean, // success
@@ -59,17 +59,17 @@ export const nftsEndpoints = ({
           await braveWalletService.setNftDiscoveryEnabled(arg)
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error setting NFT discovery status: ',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['NftDiscoveryEnabledStatus']
+      invalidatesTags: ['NftDiscoveryEnabledStatus'],
     }),
     getNftMetadata: query<NFTMetadataReturnType, GetBlockchainTokenIdArg>({
       queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -79,40 +79,40 @@ export const nftsEndpoints = ({
           const nftMetadata = await cache.getNftMetadata(arg)
 
           return {
-            data: nftMetadata
+            data: nftMetadata,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Error fetching NFT metadata',
-            error
+            error,
           )
         }
       },
       providesTags: (_result, err, arg) =>
         err
           ? ['NftMetadata']
-          : [{ type: 'NftMetadata', id: getAssetIdKey(arg) }]
+          : [{ type: 'NftMetadata', id: getAssetIdKey(arg) }],
     }),
     getIpfsGatewayTranslatedNftUrl: query<string | null, string>({
       queryFn: async (urlArg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { cache } = baseQuery(undefined)
           const translatedUrl = await cache.getIpfsGatewayTranslatedNftUrl(
-            urlArg || ''
+            urlArg || '',
           )
 
           return {
-            data: translatedUrl || urlArg.trim()
+            data: translatedUrl || urlArg.trim(),
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to translate NFT IPFS gateway URL',
-            error
+            error,
           )
         }
-      }
+      },
     }),
     /**
      * Fetches a registry of NFT collection names by collection asset id.
@@ -129,24 +129,24 @@ export const nftsEndpoints = ({
         return {
           data: {
             isStreaming: true,
-            registry: getPersistedNftCollectionNamesRegistry()
-          }
+            registry: getPersistedNftCollectionNamesRegistry(),
+          },
         }
       },
       async onCacheEntryAdded(
         arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
         try {
           // wait for the initial query to resolve before proceeding
           const {
-            data: { registry: persistedRegistry }
+            data: { registry: persistedRegistry },
           } = await cacheDataLoaded
 
           try {
             const {
               cache,
-              data: { jsonRpcService }
+              data: { jsonRpcService },
             } = baseQueryFunction()
 
             const registry: AssetIdsByCollectionNameRegistry = {}
@@ -161,7 +161,7 @@ export const nftsEndpoints = ({
                 }
                 uniqueTokenChainIdAndContractAddresses.push(key)
                 return true
-              }
+              },
             )
 
             for (const token of uniqueTokens) {
@@ -172,10 +172,10 @@ export const nftsEndpoints = ({
                 const {
                   token: tokenInfo,
                   error,
-                  errorMessage
+                  errorMessage,
                 } = await jsonRpcService.getEthTokenInfo(
                   token.contractAddress,
-                  token.chainId
+                  token.chainId,
                 )
 
                 if (error !== BraveWallet.ProviderError.kSuccess) {
@@ -192,17 +192,17 @@ export const nftsEndpoints = ({
                 try {
                   nftMetadata = await cache.getNftMetadata(token)
                   collectionName =
-                    nftMetadata?.collection?.name ||
+                    nftMetadata?.collection?.name
                     // guess the collection name
                     // if no contract or metadata could be found
-                    tokenNameToNftCollectionName(token)
+                    || tokenNameToNftCollectionName(token)
                 } catch (error) {
                   handleEndpointError(
                     'getNftCollectionNameRegistry -> cache.getNftMetadata',
                     `Error fetching NFT metadata for token: ${
                       token.name
                     } (${getAssetIdKey(token)})`,
-                    error
+                    error,
                   )
                 }
               }
@@ -215,7 +215,7 @@ export const nftsEndpoints = ({
               // add the asset id to the collection assets list
               registry[collectionName].push(
                 // remove the token id to reduce the sie of the registry
-                getAssetIdKey({ ...token, tokenId: '' })
+                getAssetIdKey({ ...token, tokenId: '' }),
               )
             }
 
@@ -229,13 +229,13 @@ export const nftsEndpoints = ({
             // update local-storage with the latest data
             setPersistedNftCollectionNamesRegistry({
               ...persistedRegistry,
-              ...registry
+              ...registry,
             })
           } catch (error) {
             handleEndpointError(
               'getNftCollectionNameRegistry.onCacheEntryAdded',
               'Error fetching NFT collection name registry',
-              error
+              error,
             )
           }
         } catch {
@@ -246,8 +246,8 @@ export const nftsEndpoints = ({
         // longer active
       },
       providesTags: (_result, err, arg) => [
-        { type: 'NftMetadata', id: 'COLLECTION_NAMES_REGISTRY' }
-      ]
+        { type: 'NftMetadata', id: 'COLLECTION_NAMES_REGISTRY' },
+      ],
     }),
 
     /** will get spam for all accounts if accounts arg is not provided */
@@ -268,22 +268,22 @@ export const nftsEndpoints = ({
               10,
               async (account: BraveWallet.AccountInfo) => {
                 return await cache.getSpamNftsForAccountId(account.accountId)
-              }
+              },
             )
           ).flat(1)
 
           return {
-            data: spamNfts
+            data: spamNfts,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to fetch spam NFTs',
-            error
+            error,
           )
         }
       },
-      providesTags: ['SimpleHashSpamNFTs']
+      providesTags: ['SimpleHashSpamNFTs'],
     }),
 
     getNftOwner: query<
@@ -298,13 +298,13 @@ export const nftsEndpoints = ({
             await jsonRpcService.getERC721OwnerOf(
               arg.contract,
               arg.tokenId,
-              arg.chainId
+              arg.chainId,
             )
           if (errorMessage) {
             throw new Error(errorMessage)
           }
           return {
-            data: ownerAddress
+            data: ownerAddress,
           }
         } catch (error) {
           return handleEndpointError(
@@ -312,10 +312,10 @@ export const nftsEndpoints = ({
             `Unable to fetch owner address for NFT(${
               arg.contract //
             }-${arg.tokenId}) on chain(${arg.chainId})`,
-            error
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

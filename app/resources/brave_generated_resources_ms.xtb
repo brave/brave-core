@@ -52,6 +52,12 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Jangan tunjuk lagi</translation>
 <translation id="4595286989346610620">Semak butiran</translation>
 <translation id="8324318899000695659">Sekat elemen</translation>
+<translation id="3828310068250853121">Pilih elemen yang anda ingin sekat</translation>
+<translation id="2577286987423083872">Sekat Elemen</translation>
+<translation id="3211174446914979436">Urus penapis</translation>
+<translation id="3108584651298176909">Tunjukkan peraturan</translation>
+<translation id="5156986655891520787">Sembunyikan peraturan</translation>
+<translation id="7658239707568436148">Batal</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Buka menggunakan alamat .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tampal Paksa</translation>
@@ -93,7 +99,6 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8117247596084706514">Laman ini telah meminta <ph name="PART_ONE"/>lokasi tepat<ph name="PART_ONE_END"/> anda. <ph name="PART_TWO"/>Ketahui lebih lanjut<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Laman ini telah meminta <ph name="PART_ONE"/>lokasi tepat<ph name="PART_ONE_END"/> anda. Brave hanya akan dapat menyediakan data<ph name="PART_TWO"/>lokasi umum<ph name="PART_TWO_END"/> kerana <ph name="PART_THREE"/>Perkhidmatan Lokasi<ph name="PART_THREE_END"/> dinyahdayakan. <ph name="PART_FOUR"/>Ketahui lebih lanjut<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Tutup semua</translation>
-<translation id="7658239707568436148">Batal</translation>
 <translation id="4870911314065352661">Tutup semua tab?</translation>
 <translation id="7551864359422178684">Anda mempunyai <ph name="NUMBER_OF_TABS"/> tab yang terbuka dalam tetingkap penyemak imbas ini.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> tab</translation>
@@ -133,6 +138,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3447730462826640312">Anda tidak perlu klik untuk memperoleh, tetapi klik sahaja jika anda berminat!</translation>
 <translation id="5253166205743627564">Terima kasih kerana menyokong Carian Brave dengan mengklik iklan peribadi. Berbeza dengan Big Tech, kami menilai prestasi iklan secara tanpa nama untuk melindungi privasi anda.</translation>
 <translation id="8748471354357836070">Ketahui lebih lanjut / pilihan untuk keluar</translation>
+<translation id="5927196110206824867">Imej latar yang ditaja menyokong misi Brave untuk membina Web bebas yang mengutamakan pengguna. Dan tidak seperti Big Tech, kami mengukur prestasi iklan secara tanpa nama untuk mengekalkan privasi anda.</translation>
 <translation id="4174337572777167894">Projek Penemuan Web</translation>
 <translation id="8659271182272561965">Lakukan penyemakan imbas data tanpa nama &amp; untuk memperhalusi Brave Search.</translation>
 <translation id="1516554614404600536">Petua Alat Brave</translation>
@@ -473,6 +479,9 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
 <translation id="7791141927430186653">Benarkan tweet X (sebelum ini Twitter) terbenam</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
+<translation id="1244912498725894944">Beberapa tetapan kuki dikawal oleh Brave Shields. Anda boleh melihatnya &lt;a href="/content/braveShields"&gt;di sini&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Tetapan ini dikawal oleh Brave Shields.</translation>
+<translation id="352287031024189516">Tetapan ini dikawal oleh Log Masuk Google.</translation>
 <translation id="8792121506918889955">Polisi menguruskan IP WebRTC</translation>
 <translation id="8798099450830957504">Lalai</translation>
 <translation id="1822560017823072927">Antara muka awam dan peribadi yang asal</translation>
@@ -674,8 +683,12 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="856371974127598760">Rangkaian Dompet</translation>
 <translation id="5975930666279943472">Kosongkan transaksi dompet dan maklumat nonce</translation>
 <translation id="5693968582510626466">Mengosongkan transaksi mungkin berguna untuk pembangun atau apabila membersihkan keadaan pada pelayan tempatan</translation>
-<translation id="2326850911705720398">Tetapkan semula dan kosongkan data dompet</translation>
+<translation id="6171369470447621882">Tetapkan semula keadaan penyegerakan Zcash</translation>
+<translation id="6705112675071480687">Menetapkan semula kemajuan penyegerakan Zcash untuk semua akaun yang terlindung</translation>
+<translation id="2012093487873597892">Adakah anda pasti anda ingin menetapkan semula keadaan penyegerakan Zcash? Kemajuan penyegerakan untuk semua akaun yang terlindung akan digugurkan. Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
+<translation id="5031551083187285762">Keadaan penyegerakan anda untuk akaun-akaun Zcash telah ditetapkan semula.</translation>
 <translation id="9216386092464743272">Adakah anda pasti anda ingin menetapkan semula semua transaksi dompet dan maklumat nonce anda? Pilihan ini kebanyakannya digunakan oleh pembangun yang menjalankan pelayan ujian tempatan. Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
+<translation id="2326850911705720398">Tetapkan semula dan kosongkan data dompet</translation>
 <translation id="6369495274982305511">Adakah anda pasti anda ingin menetapkan semula dompet anda? Sekiranya dompet anda tidak disandarkan, penetapan semula akan menyebabkan anda kehilangan semua data akaun (termasuk apa-apa dana yang berkaitan). Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk membuat pengesahan.</translation>
 <translation id="3752403403443723332">Dompet anda telah ditetapkan semula.</translation>
 <translation id="594766067816395072">Maklumat transaksi dompet anda telah ditetapkan semula.</translation>

@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "activées",
+    "message": "activés",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "désactivées",
+    "message": "désactivés",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {

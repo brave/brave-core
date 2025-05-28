@@ -51,6 +51,12 @@
 <translation id="4450893287417543264">Vairs nerādīt</translation>
 <translation id="4595286989346610620">Pārbaudiet informāciju</translation>
 <translation id="8324318899000695659">Bloķēt elementus</translation>
+<translation id="3828310068250853121">Atlasiet elementu, kuru vēlaties bloķēt</translation>
+<translation id="2577286987423083872">Bloķēt elementus</translation>
+<translation id="3211174446914979436">Pārvaldīt filtrus</translation>
+<translation id="3108584651298176909">Rādīt noteikumus</translation>
+<translation id="5156986655891520787">Paslēpt noteikumus</translation>
+<translation id="7658239707568436148">Atcelt</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atvērt, izmantojot .onion adresi: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Piespiedu ielīmēšana</translation>
@@ -92,7 +98,6 @@
 <translation id="8117247596084706514">Šī vietne pieprasa jūsu <ph name="PART_ONE"/>precīzu atrašanās vietu<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Uzzināt vairāk<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Šī vietne pieprasa jūsu <ph name="PART_ONE"/>precīzu atrašanās vietu<ph name="PART_ONE_END"/>. Brave varēs sniegt tikai  informāciju par<ph name="PART_TWO"/>galveno atrašanās vietu<ph name="PART_TWO_END"/>, jo <ph name="PART_THREE"/>atrašanās vietas pakalpojumi<ph name="PART_THREE_END"/> ir atspējoti. <ph name="PART_FOUR"/>Uzzināt vairāk<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Izvēlēties visu</translation>
-<translation id="7658239707568436148">Atcelt</translation>
 <translation id="4870911314065352661">Aizvērt visas cilnes?</translation>
 <translation id="7551864359422178684">Šajā pārlūkprogrammas logā jums ir atvērta(-s) <ph name="NUMBER_OF_TABS"/> cilne(-s).</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> cilnes</translation>
@@ -132,6 +137,7 @@
 <translation id="3447730462826640312">Jums nav jānoklikšķina, lai pelnītu, bet noklikšķiniet, ja jūs interesē!</translation>
 <translation id="5253166205743627564">Paldies, ka atbalstāt Brave meklēšanu, klikšķinot uz privātumu cienošām reklāmām. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs vērtējam reklāmu veiktspēju, saglabājot jūsu anonomitāti.</translation>
 <translation id="8748471354357836070">Uzzināt vairāk/izvēles atteikties</translation>
+<translation id="5927196110206824867">Sponsorētie fona attēli veicina Brave apņemšanos izveidot neatkarīgu, uz lietotāju orientētu tīmekli. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs reklāmas snieguma datus mērām anonimizēti, lai saglabātu jūsu konfidencialitāti.</translation>
 <translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
 <translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -472,6 +478,9 @@
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="7791141927430186653">Atļaut X (iepriekš Twitter) iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
+<translation id="1244912498725894944">Dažus sīkfailu iestatījumus kontrolē Brave aizsargi. Tos var apskatīt &lt;a href="/content/braveShields"&gt;šeit&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Šo iestatījumu kontrolē Brave aizsargi.</translation>
+<translation id="352287031024189516">Šo iestatījumu kontrolē pierakstīšanās ar Google.</translation>
 <translation id="8792121506918889955">WebRTC IP apstrādes politika</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
@@ -673,8 +682,12 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="856371974127598760">Maka tīkli</translation>
 <translation id="5975930666279943472">Notīrīt maka darījumu un aktuālo informāciju</translation>
 <translation id="5693968582510626466">Darījumu notīrīšana var būt noderīga izstrādātājiem vai, lai notīrītu vietējā servera statusu</translation>
-<translation id="2326850911705720398">Atiestatīt un notīrīt maka datus</translation>
+<translation id="6171369470447621882">Atiestatīt Zash sinhronizācijas stāvokli</translation>
+<translation id="6705112675071480687">Atiestata Zcash sinronizācijas progresu visiem aizsargātajiem kontiem</translation>
+<translation id="2012093487873597892">Vai tiešām vēlaties atiestatīt Zcash sinhronizācijas stāvokli? Sinhronizācijas progress visiem aizsargātajiem kontiem tiks zaudēts. Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu izvēli.</translation>
+<translation id="5031551083187285762">Jūsu Zcash kontu sinhronizācijas stāvoklis tika atiestatīts.</translation>
 <translation id="9216386092464743272">Vai tiešām vēlaties atiestatīt visus maka darījumus un aktuālo informāciju? Šo opciju galvenokārt izmanto izstrādātāji, kas pārvalda vietējo testa serveri. Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
+<translation id="2326850911705720398">Atiestatīt un notīrīt maka datus</translation>
 <translation id="6369495274982305511">Vai tiešām vēlaties atiestatīt maciņu? Ja jūsu maciņš nav dublēts, atiestatot jūs zaudēsiet visus konta datus (tostarp visus saistītos līdzekļus). Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
 <translation id="3752403403443723332">Jūsu maks tika atiestatīts.</translation>
 <translation id="594766067816395072">Jūsu maka darījuma informācija tika atiestatīta.</translation>

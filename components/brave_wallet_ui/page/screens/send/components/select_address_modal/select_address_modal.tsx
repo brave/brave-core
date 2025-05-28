@@ -351,7 +351,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         }
         if (
           account.accountId.coin === BraveWallet.CoinType.BTC ||
-          account.accountId.coin === BraveWallet.CoinType.ZEC
+          account.accountId.coin === BraveWallet.CoinType.ZEC ||
+          account.accountId.coin === BraveWallet.CoinType.ADA
         ) {
           const generatedAddress = await generateReceiveAddress(
             account.accountId

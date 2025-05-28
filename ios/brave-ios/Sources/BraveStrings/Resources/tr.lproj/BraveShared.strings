@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Tümünü Engelle";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Tüm Çerezlerin engellenmesi, bazı web sitelerinin düzgün çalışmasını engelleyecektir.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Tüm Çerezler Engellensin mi?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Tüm Çerezler engellensin mi?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Kalkanlar 3. taraf çerezlerini zaten engellemektedir. TÜM çerezleri engellemeye yönelik bu ayar, mevcut çerezleri ve site verilerini kaldıracağından web sitelerinin işleyişini bozabilir.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Çerez Onay Bildirimlerini Engelle";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Web sitelerinin önceki ziyaretleriniz hakkında bilgi depolamasını engeller.\n\"Tüm Çerezleri Engelle\" seçeneği kullanımdan kaldırılmıştır. Bu seçeneği nasıl zorla etkinleştireceğinizi öğrenmek için [yardım sayfamızı] ziyaret edin. (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Engelleme İzleyicisi";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Onayla";
 
-/* Cookie settings option title */
-"CookieControl" = "Çerez Denetimi";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Çerezler ve Site Verileri";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Bitti";
-
-/* cookie settings option */
-"DontBlockCookies" = "Çerezleri engelleme";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Gönderme";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS Yükseltmeleri";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Tarama Verilerini İçe Aktar";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Bireysel Denetimler";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Sayfa yüklenemedi.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Lisans";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Sözcük sayısı: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "İçe Aktarılan Yer İşaretleri";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Kapat";

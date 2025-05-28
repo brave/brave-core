@@ -67,10 +67,11 @@ class TransactionParserTests: XCTestCase {
       $0.accountId.address = "fil_testnet_address_2"
     },
     BraveWallet.AccountInfo.mockBtcAccount,
+    BraveWallet.AccountInfo.mockZcashAccount,
   ]
   private let tokens: [BraveWallet.BlockchainToken] = [
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken,
-    .mockSolanaNFTToken, .mockFilToken, .mockBTCToken,
+    .mockSolanaNFTToken, .mockFilToken, .mockBTCToken, .mockZecToken,
   ]
   let assetRatios: [String: Double] = [
     "eth": 1,
@@ -80,6 +81,7 @@ class TransactionParserTests: XCTestCase {
     BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(): 15,
     "fil": 2,
     BraveWallet.BlockchainToken.mockBTCToken.assetRatioId.lowercased(): 62_117,
+    BraveWallet.BlockchainToken.mockZecToken.assetRatioId.lowercased(): 35,
   ]
 
   let mockGasEstimation = BraveWallet.GasEstimation1559(
@@ -1277,5 +1279,89 @@ class TransactionParserTests: XCTestCase {
     XCTAssertEqual(expectedDetails.fromAmount, parsedDetails.fromAmount)
     XCTAssertEqual(expectedDetails.fromFiat, parsedDetails.fromFiat)
     XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
+  }
+
+  @MainActor func testZcashSend() async {
+    let network = BraveWallet.NetworkInfo.mockZcashMainnet
+    let mockFromAccount = accountInfos[7]
+    let mockToAccountAddress = "t1J3jktmALhAhc2neCSyBrLBhxjTercFhCM"
+
+    let transactionData: BraveWallet.ZecTxData = .init(
+      useShieldedPool: false,
+      to: mockToAccountAddress,
+      sendingMaxAmount: false,
+      memo: nil,
+      amount: 1_000_000,
+      fee: 100_000,
+      inputs: [],
+      outputs: []
+    )
+    let transaction = mockTransaction(
+      fromAccount: mockFromAccount,
+      txDataUnion: .init(zecTxData: transactionData),
+      txType: .other,
+      chainId: network.chainId,
+      effectiveRecipient: mockToAccountAddress
+    )
+
+    let expectedParsedTransaction = ParsedTransaction(
+      transaction: transaction,
+      namedFromAddress: mockFromAccount.name,
+      fromAccountInfo: mockFromAccount,
+      namedToAddress: "",
+      toAddress: mockToAccountAddress,
+      network: network,
+      details: .zecSend(
+        .init(
+          fromToken: .mockZecToken,
+          fromValue: "1000000",
+          fromAmount: "0.01",
+          fromFiat: "$0.35",
+          fromTokenMetadata: nil,
+          gasFee: GasFee(
+            fee: "0.00100000",
+            fiat: "$0.04"
+          )
+        )
+      )
+    )
+
+    guard
+      let parsedTransaction = TransactionParser.parseTransaction(
+        transaction: transaction,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
+        accountInfos: accountInfos,
+        userAssets: tokens,
+        allTokens: tokens,
+        assetRatios: assetRatios,
+        nftMetadata: [:],
+        solEstimatedTxFee: nil,
+        currencyFormatter: currencyFormatter
+      )
+    else {
+      XCTFail("Failed to parse zecSend transaction")
+      return
+    }
+
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountInfo.id,
+      parsedTransaction.fromAccountInfo.id
+    )
+    XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
+    XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
+    XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
+
+    guard case .zecSend(let expectedDetails) = expectedParsedTransaction.details,
+      case .zecSend(let parsedDetails) = parsedTransaction.details
+    else {
+      XCTFail("Incorrectly parsed zecSend transaction")
+      return
+    }
+
+    XCTAssertEqual(expectedDetails.fromValue, parsedDetails.fromValue)
+    XCTAssertEqual(expectedDetails.fromAmount, parsedDetails.fromAmount)
+    XCTAssertEqual(expectedDetails.fromFiat, parsedDetails.fromFiat)
+    XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
+
   }
 }

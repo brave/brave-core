@@ -8,7 +8,7 @@ import { selectCombinedTokensList } from './blockchain-token.entity'
 // mocks
 import {
   mockMoonCatNFT,
-  mockErc20TokensList
+  mockErc20TokensList,
 } from '../../../stories/mock-data/mock-asset-options'
 
 describe('blockchain token entity', () => {
@@ -17,17 +17,17 @@ describe('blockchain token entity', () => {
       const knownTokensList = mockErc20TokensList
       const userTokensList = [
         knownTokensList[0], // known token
-        mockMoonCatNFT
+        mockMoonCatNFT,
       ]
 
       const combinedListInstance = selectCombinedTokensList(
         knownTokensList,
-        userTokensList
+        userTokensList,
       )
 
       const secondCombinedListInstance = selectCombinedTokensList(
         knownTokensList,
-        userTokensList
+        userTokensList,
       )
 
       expect(combinedListInstance).not.toBe([...secondCombinedListInstance])

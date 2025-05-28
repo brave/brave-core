@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
 <translation id="6302422639282249274">Pārvaldīt Brave Rewards</translation>
-<translation id="2709516037105925701">Automātiskā aizpilde</translation>
 <translation id="8617525558807213034">Automātiskā aizpilde inkognito cilnēs</translation>
 <translation id="8685431198160039193">Saglabāto informāciju var izmantot automātiskai aizpildīšanai inkognito cilnēs</translation>
 <translation id="6583902294974160967">Atbalsts</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Izskats</translation>
 <translation id="9040069796107003510">Brave balvu ikona</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
-<translation id="8495235435594442882">Aktivizēt apakšējo rīkjoslu</translation>
+<translation id="1215433243238902715">Iespējot apakšējo navigācijas rīkjoslu</translation>
+<translation id="1422686363939271829">Šis iestatījums ir atspējots, ja ir atlasīta apakšējā adrešu joslas pozīcija</translation>
 <translation id="6587448235155023666">Šīs izmaiņas tiks piemērotas nākamajā reizē, kad atvērsiet programmu Brave</translation>
 <translation id="8701563696941209024">ATVĒRT TAGAD</translation>
 <translation id="834487290629916192">VĒLĀK</translation>
@@ -420,9 +420,12 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8520059774736886747">Izstrādātājs <ph name="PUBLISHER_NAME"/> nesen verificēja</translation>
 <translation id="1486343603936278248">marķieris</translation>
 <translation id="7781069478569868053">Jaunas cilnes lapa</translation>
+<translation id="5927196110206824867">Sponsorētie fona attēli veicina Brave apņemšanos izveidot neatkarīgu, uz lietotāju orientētu tīmekli. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs reklāmas snieguma datus mērām anonimizēti, lai saglabātu jūsu konfidencialitāti.</translation>
+<translation id="8748471354357836070">Uzzināt vairāk/izvēles atteikties</translation>
 <translation id="3171669670217312786">Fona attēli</translation>
 <translation id="8522669544471808198">Rādīt fona attēlus</translation>
 <translation id="3870475560794762985">Rādīt sponsorētos attēlus</translation>
+<translation id="6937724381960478525">Uzziniet vairāk par Sponsorētajiem attēliem</translation>
 <translation id="8793108040181436796">Logrīki</translation>
 <translation id="8643377320501056697">Rādīt populāras vietnes</translation>
 <translation id="7275773481201277457">Rādīt Brave statistiku</translation>

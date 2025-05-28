@@ -10,12 +10,12 @@
 <translation id="7658239707568436148">Цуцлах</translation>
 <translation id="5525668735313040116">Вэбийг нууцлалтай хайх</translation>
 <translation id="780301667611848630">Үгүй баярлалаа</translation>
+<translation id="6165508094623778733">Дэлгэрэнгүйг харах</translation>
 <translation id="3333887201479867589">Brave-н Урамшуулал</translation>
 <translation id="6216996674668969227">Нууцлал дэмжсэн сурталчилгаа үзэж токен олох.</translation>
 <translation id="8488282162676695335">Brave хэтэвч</translation>
 <translation id="8820817407110198400">Хадгалсан хуудсууд</translation>
 <translation id="1644574205037202324">Түүх</translation>
-<translation id="6165508094623778733">Дэлгэрэнгүйг харах</translation>
 <translation id="8759753423332885148">Дэлгэрэнгүйг харах</translation>
 <translation id="1209739344687072997">Эвдрэлтэй сайтыг мэдээлэх</translation>
 <translation id="3630697955794050612">нуух</translation>
@@ -72,6 +72,11 @@
 <translation id="8193130769524604031">Ахисан түвшний чатын үйлдлүүд</translation>
 <translation id="7979673624064378842">Гэрлийн хурдаар чатлах</translation>
 <translation id="2836330653441111204">Хурд ба оюуны тэнцвэр</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="755045397420611731">Нэмэлт нууцлал &amp; цахим аюулгүй байдал</translation>
+<translation id="4520128772974831415">IP &amp; нуух; байршлаа өөрчлөх</translation>
+<translation id="8703188411226330709">Үнэгүй туршилт эхлүүлэх</translation>
+<translation id="8814357473522731680">Дэмжсэн</translation>
 <translation id="8458987127502506209">Brave-н Бамбай</translation>
 <translation id="650318023204990401">Дэвшилтэт хяналтууд</translation>
 <translation id="2273851479262317744">Brave-г үндсэн хөтчөөр тохируулах</translation>
@@ -83,14 +88,9 @@
 <translation id="2370739752330685659">Дараагийн удаа</translation>
 <translation id="5753795690521538679">7-хоногийн үнэгүй туршилт эхлүүлэх</translation>
 <translation id="3357036723290257445">Brave VPN-н худалдан авалтаа хийчихсэн үү?</translation>
-<translation id="8814357473522731680">Дэмжсэн</translation>
 <translation id="1116694919640316211">Мэдээлэл</translation>
-<translation id="755045397420611731">Нэмэлт нууцлал &amp; цахим аюулгүй байдал</translation>
-<translation id="4520128772974831415">IP &amp; нуух; байршлаа өөрчлөх</translation>
 <translation id="2044418816479192294">Дэлхийг тойрсон зуу зуун серверүүд</translation>
 <translation id="7410504850864021600">Гэрлийн хурдны холболт</translation>
 <translation id="2422309687188612485">Нэг төлөвлөгөөгөөр 10 хүртэлх төхөөрөмж хамгаалах</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Нэмэлт нууцлал &amp; цахим аюулгүй байдал.</translation>
-<translation id="8703188411226330709">Үнэгүй туршилт эхлүүлэх</translation>
 </translationbundle>

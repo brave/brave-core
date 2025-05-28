@@ -41,7 +41,7 @@
 "AlwaysSendButtonTitle" = "Invia sempre";
 
 /* Setting preference to always show the browser tabs bar. */
-"AlwaysShow" = "On";
+"AlwaysShow" = "Attivato";
 
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "In questo modo puoi autenticarti per l’accesso a Brave";
@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blocca tutti";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Il blocco di tutti i cookie impedirà il corretto funzionamento di alcuni siti web.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Bloccare tutti i cookie?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Vuoi bloccare tutti i cookie?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Protezioni è già attivo e blocca i cookie di terze parti. Questa impostazione blocca TUTTI i cookie e rimuoverà tutti i cookie e i dati dei siti esistenti. Attivare questa funzione potrebbe rendere inutilizzabili alcune pagine.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Impossibile impostare la preferenza. Riprova.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blocca le notifiche di consenso ai cookie";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Impedisce ai siti web di memorizzare le informazioni sulle visite precedenti.\nL'opzione “Blocca tutti i cookie” è stata ritirata. Per forzare l'attivazione di questa opzione, visita [la pagina di supporto](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitoraggio blocchi";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Conferma";
 
-/* Cookie settings option title */
-"CookieControl" = "Gestione dei cookie";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie e dati del sito";
 
@@ -661,9 +655,6 @@
 /* No comment provided by engineer. */
 "Done" = "Fine";
 
-/* cookie settings option */
-"DontBlockCookies" = "Non bloccare i cookie";
-
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Non inviare";
 
@@ -704,7 +695,7 @@
 "EditFolderTitle" = "Modifica cartella";
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
-"enablePullToRefresh" = "Abilita Tracina verso il basso per aggiornare";
+"enablePullToRefresh" = "Abilita Trascina verso il basso per aggiornare";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Inserisci nome cartella";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Aggiornamenti HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importa dati di navigazione";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Comandi individuali";
@@ -1574,7 +1568,7 @@
 "playlist.playlistAutoSaveOptionOff" = "Off";
 
 /* Auto Save turn On Option */
-"playlist.playlistAutoSaveOptionOn" = "On";
+"playlist.playlistAutoSaveOptionOn" = "Attivato";
 
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Solo Wi-Fi";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Impossibile caricare la pagina.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licenze";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Conteggio parole: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Segnalibri importati";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Chiudi";

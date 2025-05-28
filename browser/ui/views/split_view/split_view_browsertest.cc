@@ -42,6 +42,13 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/view_utils.h"
 
+namespace {
+ui::MouseEvent GetDummyEvent() {
+  return ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(),
+                        gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+}
+}  // namespace
+
 class SplitViewDisabledBrowserTest : public InProcessBrowserTest {
  public:
   SplitViewDisabledBrowserTest() {
@@ -67,6 +74,10 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
         /*disabled_features*/ {features::kBraveWebViewRoundedCorners});
   }
   ~SideBySideEnabledBrowserTest() override = default;
+
+  TabStrip* tab_strip() {
+    return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
+  }
 
  private:
   base::test::ScopedFeatureList scoped_features_;
@@ -145,6 +156,31 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+
+  // Created new tab(at 3) for new split view with existing tab(at 2).
+  chrome::NewSplitTab(browser());
+  EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
+  EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
+
+  // Activate non split view tab.
+  tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
+  EXPECT_EQ(0, tab_strip()->GetActiveIndex());
+
+  // Check selected split tab becomes active tab.
+  tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());
+  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+
+  tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
+  EXPECT_EQ(0, tab_strip()->GetActiveIndex());
+
+  tab_strip()->SelectTab(tab_strip()->tab_at(3), GetDummyEvent());
+  EXPECT_EQ(3, tab_strip()->GetActiveIndex());
 }
 
 class SplitViewBrowserTest : public InProcessBrowserTest {

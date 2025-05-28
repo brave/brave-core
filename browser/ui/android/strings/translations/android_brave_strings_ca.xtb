@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
 <translation id="6302422639282249274">Gestiona Recompenses de Brave</translation>
-<translation id="2709516037105925701">Emplenament automàtic</translation>
 <translation id="8617525558807213034">Emplenament automàtic en pestanyes d'incògnit</translation>
 <translation id="8685431198160039193">La informació desada es pot emplenar automàticament en pestanyes d'incògnit</translation>
 <translation id="6583902294974160967">Suport</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">Aparença</translation>
 <translation id="9040069796107003510">Icona de Recompenses de Brave</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
-<translation id="8495235435594442882">Activa la barra d'eines inferior</translation>
+<translation id="1215433243238902715">Activar botó de navegació a la barra d'eines</translation>
+<translation id="1422686363939271829">Quan se selecciona la posició inferior per a la barra d'adreces, aquesta configuració es deshabilita</translation>
 <translation id="6587448235155023666">Els canvis s'aplicaran la propera vegada que reiniciïs Brave</translation>
 <translation id="8701563696941209024">REINICIA ARA</translation>
 <translation id="834487290629916192">MÉS TARD</translation>
@@ -420,9 +420,12 @@ Segur que vols continuar?</translation>
 <translation id="8520059774736886747">Creador <ph name="PUBLISHER_NAME"/> recentment verificat</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Pàgina de pestanya nova</translation>
+<translation id="5927196110206824867">Les imatges de fons patrocinades ajuden a Brave en la seva missió de construir un lloc web independent on els usuaris són la prioritat. I, a diferència de les Big Tech, mesurem el rendiment dels anuncis de manera anònima per garantir la teva privacitat.</translation>
+<translation id="8748471354357836070">Més informació / opcions de renúncia</translation>
 <translation id="3171669670217312786">Imatges de fons</translation>
 <translation id="8522669544471808198">Mostra imatges de fons</translation>
 <translation id="3870475560794762985">Mostra imatges patrocinades</translation>
+<translation id="6937724381960478525">Més informació sobre les imatges patrocinades</translation>
 <translation id="8793108040181436796">Ginys</translation>
 <translation id="8643377320501056697">Mostra llocs destacats</translation>
 <translation id="7275773481201277457">Mostra estadístiques de Brave</translation>

@@ -32,28 +32,28 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
 
     return combinedTokensList.find(
       (t) =>
-        t.contractAddress.toLowerCase() === arg.contractAddress.toLowerCase() &&
-        t.chainId === arg.network.chainId &&
-        t.coin === arg.network.coin &&
-        (!arg.tokenId || arg.tokenId === t.tokenId)
+        t.contractAddress.toLowerCase() === arg.contractAddress.toLowerCase()
+        && t.chainId === arg.network.chainId
+        && t.coin === arg.network.coin
+        && (!arg.tokenId || arg.tokenId === t.tokenId),
     )
   }, [combinedTokensList, arg])
 
   const {
     data: tokenInfoFromRpc,
     isFetching,
-    isError
+    isError,
   } = useGetTokenInfoQuery(
-    arg !== skipToken &&
-      arg.network &&
-      arg.contractAddress &&
-      !tokenInfoFromTokensList
+    arg !== skipToken
+      && arg.network
+      && arg.contractAddress
+      && !tokenInfoFromTokensList
       ? {
           coin: arg.network.coin,
           chainId: arg.network.chainId,
-          contractAddress: arg.contractAddress
+          contractAddress: arg.contractAddress,
         }
-      : skipToken
+      : skipToken,
   )
 
   const nftFromRpc = React.useMemo(() => {
@@ -69,6 +69,6 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
     isVisible: tokenInfoFromTokensList?.visible ?? false,
     tokenInfo: tokenInfoResult,
     isLoading: combinedTokensList.length === 0 || isFetching,
-    isError: !isFetching && !tokenInfoResult && isError
+    isError: !isFetching && !tokenInfoResult && isError,
   }
 }

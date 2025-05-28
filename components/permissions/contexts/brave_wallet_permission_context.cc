@@ -425,6 +425,7 @@ void BraveWalletPermissionContext::ResetAllPermissions(
       PermissionsClient::Get()->GetSettingsMap(context);
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_ETHEREUM);
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_SOLANA);
+  map->ClearSettingsForOneType(ContentSettingsType::BRAVE_CARDANO);
 }
 
 }  // namespace permissions

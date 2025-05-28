@@ -19,7 +19,6 @@
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 #include "net/base/url_util.h"
-#include "url/gurl.h"
 
 namespace {
 

@@ -16,7 +16,7 @@ import {
   EthSignTransactionCommand,
   EthSignTransactionResponse,
   LedgerCommand,
-  UnlockResponse
+  UnlockResponse,
 } from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 import { Untrusted } from '../untrusted_shared_types'
@@ -35,26 +35,26 @@ function vToHex(vNumber: number) {
 function createEthereumSignatureVRS(
   v: string,
   r: string,
-  s: string
+  s: string,
 ): Untrusted.EthereumSignatureVRS {
   return {
     vBytes: Buffer.from(v, 'hex'),
     rBytes: Buffer.from(r, 'hex'),
-    sBytes: Buffer.from(s, 'hex')
+    sBytes: Buffer.from(s, 'hex'),
   }
 }
 
 function createEthereumSignatureBytes(
   v: string,
   r: string,
-  s: string
+  s: string,
 ): Untrusted.EthereumSignatureBytes {
   return {
     bytes: Buffer.concat([
       Buffer.from(r, 'hex'),
       Buffer.from(s, 'hex'),
-      Buffer.from(v, 'hex')
-    ])
+      Buffer.from(v, 'hex'),
+    ]),
   }
 }
 
@@ -66,28 +66,28 @@ export class EthereumLedgerUntrustedMessagingTransport //
     super(targetWindow, targetUrl)
     this.addCommandHandler<UnlockResponse>(
       LedgerCommand.Unlock,
-      this.handleUnlock
+      this.handleUnlock,
     )
     this.addCommandHandler<EthGetAccountResponse>(
       LedgerCommand.GetAccount,
-      this.handleGetAccount
+      this.handleGetAccount,
     )
     this.addCommandHandler<EthSignTransactionResponse>(
       LedgerCommand.SignTransaction,
-      this.handleSignTransaction
+      this.handleSignTransaction,
     )
     this.addCommandHandler<EthSignPersonalMessageResponse>(
       LedgerCommand.SignPersonalMessage,
-      this.handleSignPersonalMessage
+      this.handleSignPersonalMessage,
     )
     this.addCommandHandler<EthSignEip712MessageResponse>(
       LedgerCommand.SignEip712Message,
-      this.handleSignEip712Message
+      this.handleSignEip712Message,
     )
   }
 
   private handleGetAccount = async (
-    command: EthGetAccountCommand
+    command: EthGetAccountCommand,
   ): Promise<EthGetAccountResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Eth(transport)
@@ -99,8 +99,8 @@ export class EthereumLedgerUntrustedMessagingTransport //
           success: true,
           publicKey: result.publicKey,
           address: result.address,
-          chainCode: result.chainCode
-        }
+          chainCode: result.chainCode,
+        },
       }
       return response
     } catch (error) {
@@ -110,8 +110,10 @@ export class EthereumLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
       return response
     } finally {
@@ -120,7 +122,7 @@ export class EthereumLedgerUntrustedMessagingTransport //
   }
 
   private handleSignTransaction = async (
-    command: EthSignTransactionCommand
+    command: EthSignTransactionCommand,
   ): Promise<EthSignTransactionResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Eth(transport)
@@ -131,8 +133,8 @@ export class EthereumLedgerUntrustedMessagingTransport //
         payload: {
           // https://github.com/LedgerHQ/ledger-live/tree/develop/libs/ledgerjs/packages/hw-app-eth#examples-2
           success: true,
-          signature: createEthereumSignatureVRS(result.v, result.r, result.s)
-        }
+          signature: createEthereumSignatureVRS(result.v, result.r, result.s),
+        },
       }
       return response
     } catch (error) {
@@ -142,8 +144,10 @@ export class EthereumLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
       return response
     } finally {
@@ -152,14 +156,14 @@ export class EthereumLedgerUntrustedMessagingTransport //
   }
 
   private handleSignPersonalMessage = async (
-    command: EthSignPersonalMessageCommand
+    command: EthSignPersonalMessageCommand,
   ): Promise<EthSignPersonalMessageResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Eth(transport)
     try {
       const result = await app.signPersonalMessage(
         command.path,
-        command.messageHex
+        command.messageHex,
       )
       const response: EthSignPersonalMessageResponse = {
         ...command,
@@ -169,9 +173,9 @@ export class EthereumLedgerUntrustedMessagingTransport //
             // https://github.com/LedgerHQ/ledger-live/tree/develop/libs/ledgerjs/packages/hw-app-eth#examples-4
             vToHex(result.v),
             result.r,
-            result.s
-          )
-        }
+            result.s,
+          ),
+        },
       }
       return response
     } catch (error) {
@@ -181,8 +185,10 @@ export class EthereumLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
       return response
     } finally {
@@ -191,7 +197,7 @@ export class EthereumLedgerUntrustedMessagingTransport //
   }
 
   private handleSignEip712Message = async (
-    command: EthSignEip712MessageCommand
+    command: EthSignEip712MessageCommand,
   ): Promise<EthSignEip712MessageResponse> => {
     const transport = await TransportWebHID.create()
     const app = new Eth(transport)
@@ -199,7 +205,7 @@ export class EthereumLedgerUntrustedMessagingTransport //
       const result = await app.signEIP712HashedMessage(
         command.path,
         command.domainSeparatorHex,
-        command.hashStructMessageHex
+        command.hashStructMessageHex,
       )
       const response: EthSignEip712MessageResponse = {
         ...command,
@@ -209,9 +215,9 @@ export class EthereumLedgerUntrustedMessagingTransport //
             // https://github.com/LedgerHQ/ledger-live/tree/develop/libs/ledgerjs/packages/hw-app-eth#examples-5
             vToHex(result.v),
             result.r,
-            result.s
-          )
-        }
+            result.s,
+          ),
+        },
       }
       return response
     } catch (error) {
@@ -221,8 +227,10 @@ export class EthereumLedgerUntrustedMessagingTransport //
           success: false,
           error: (error as Error).message,
           code:
-            error instanceof TransportStatusError ? error.statusCode : undefined
-        }
+            error instanceof TransportStatusError
+              ? error.statusCode
+              : undefined,
+        },
       }
       return response
     } finally {

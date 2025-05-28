@@ -464,7 +464,7 @@ import XCTest
       formatter.weiString(
         from: mockZECTransparentBalanceAccount1,
         radix: .decimal,
-        decimals: Int(BraveWallet.BlockchainToken.mockZECToken.decimals)
+        decimals: Int(BraveWallet.BlockchainToken.mockZecToken.decimals)
       ) ?? ""
     let zcashWalletService = BraveWallet.TestZCashWalletService()
     zcashWalletService._balance = { chainId, accountId, completion in
@@ -646,7 +646,7 @@ import XCTest
         // ZEC (value $0.00396) on mainnet
         XCTAssertEqual(
           group.assets[safe: 5]?.token.symbol,
-          BraveWallet.BlockchainToken.mockZECToken.symbol
+          BraveWallet.BlockchainToken.mockZecToken.symbol
         )
         XCTAssertEqual(
           group.assets[safe: 5]?.price,
@@ -815,7 +815,7 @@ import XCTest
           // ZEC testnet (value = $0)
           XCTAssertEqual(
             group.assets[safe: zecTestnetIndex]?.token.symbol,
-            BraveWallet.BlockchainToken.mockZECToken.symbol
+            BraveWallet.BlockchainToken.mockZecToken.symbol
           )
           // BTC testnet (value = $0.65726)
           XCTAssertEqual(
@@ -827,7 +827,7 @@ import XCTest
         // ZEC mainnet (value = $0.000395)
         XCTAssertEqual(
           group.assets[safe: zecMainnetIndex]?.token.id,
-          BraveWallet.BlockchainToken.mockZECToken.id
+          BraveWallet.BlockchainToken.mockZecToken.id
         )
 
         // BTC mainnet (value = $0.0065726)
@@ -1332,7 +1332,7 @@ import XCTest
           // ZEC (value = $0)
           XCTAssertEqual(
             zecTestnetAccountGroup.assets[safe: 0]?.token.symbol,
-            BraveWallet.BlockchainToken.mockZECToken.symbol
+            BraveWallet.BlockchainToken.mockZecToken.symbol
           )
           XCTAssertEqual(
             zecTestnetAccountGroup.assets[safe: 0]?.quantity,
@@ -1442,7 +1442,7 @@ import XCTest
         // ZEC mainnet (value = $0.000395)
         XCTAssertEqual(
           zecAccountGroup.assets[safe: 0]?.token.symbol,
-          BraveWallet.BlockchainToken.mockZECToken.symbol
+          BraveWallet.BlockchainToken.mockZecToken.symbol
         )
 
         XCTAssertEqual(solAccount2Group.groupType, .account(self.solAccount2))
@@ -1689,7 +1689,7 @@ import XCTest
           // Zcash testnet (value = $0)
           XCTAssertEqual(
             zcashTestnetGroup.assets[safe: 0]?.token.symbol,
-            BraveWallet.BlockchainToken.mockZECToken.symbol
+            BraveWallet.BlockchainToken.mockZecToken.symbol
           )
           XCTAssertEqual(btcTestnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
         }
@@ -1777,7 +1777,7 @@ import XCTest
         // ZEC mainnet (value = $0)
         XCTAssertEqual(
           zcashMainnetGroup.assets[safe: 0]?.token.symbol,
-          BraveWallet.BlockchainToken.mockZECToken.symbol
+          BraveWallet.BlockchainToken.mockZecToken.symbol
         )
         XCTAssertEqual(zcashMainnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
 

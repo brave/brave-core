@@ -1,4 +1,4 @@
-/* (No Comment) */
+/* No comment provided by engineer. */
 "1Password Fill Browser Action" = "1Password-täyttötoiminto selaimessa";
 
 /* Privacy - NFC Scan Usage Description */
@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Verkkosivustot, joilla käyt, voivat pyytää sijaintiasi.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Tämä mahdollistaa mikrofonin käytön, kun käytät Bravea.";
+"NSMicrophoneUsageDescription" = "Tämä sallii Braven tehdä hakuja sinun ääntäsi käyttäen.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Tämän avulla voit tallentaa valokuvia.";
@@ -22,6 +22,6 @@
 /* Privacy - Speech Recognition Usage Description */
 "NSSpeechRecognitionUsageDescription" = "Tätä lupaa käytetään Apple Advanced Speech Recognition -toiminnon käyttöön ottamiseen. Jos se ei ole sallittua, tunnistusta käytetään laitteessa ja haut ovat täysin yksityisiä. Brave ei tallenna tai jaa äänihakujasi.";
 
-/* (No Comment) */
+/* No comment provided by engineer. */
 "OPML File" = "OPML-tiedosto";
 

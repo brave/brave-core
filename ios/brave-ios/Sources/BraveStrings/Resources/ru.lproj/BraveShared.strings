@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Блокировать все";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Блокировка всех файлов cookie может нарушить работу некоторых сайтов.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Заблокировать все файлы cookie?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Заблокировать все файлы cookie?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields уже блокирует файлы cookie сторонних производителей. Настройка блокировки ВСЕХ файлов cookie приведет к удалению существующих файлов cookie и данных сайта и может нарушить работу веб-сайтов.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Не удалось применить параметр. Повторите попытку.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Блокировка уведомлений о согласии на использование файлов cookie";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Запрещает сайтам сохранять информацию о ваших предыдущих визитах.\nОпция \"Блокировать все файлы куки\" была упразднена. Чтобы узнать, как принудительно включить эту опцию, посетите [нашу страницу помощи](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = " Статистика блокировок";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Подтвердить";
 
-/* Cookie settings option title */
-"CookieControl" = "Управление файлами cookie";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Файлы cookie и данные сайтов";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Готово";
-
-/* cookie settings option */
-"DontBlockCookies" = "Не блокировать файлы cookie";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Не отправлять";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Смена HTTP на HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Импорт данных просмотра";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Индивидуальные настройки";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Не удалось загрузить страницу.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Лицензии";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Количество слов: %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Импортированные закладки";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Закрыть";

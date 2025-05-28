@@ -14,7 +14,7 @@ import {
   allSupportedExtensions,
   supportedENSExtensions,
   supportedSNSExtensions,
-  supportedUDExtensions
+  supportedUDExtensions,
 } from '../../constants/domain-extensions'
 
 interface GetFVMAddressArg {
@@ -32,7 +32,7 @@ type GetZCashTransactionTypeResult = {
 
 export const addressEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     enableEnsOffchainLookup: mutation<boolean, void>({
@@ -40,20 +40,20 @@ export const addressEndpoints = ({
         try {
           const { data: api } = baseQuery(undefined)
           api.jsonRpcService.setEnsOffchainLookupResolveMethod(
-            BraveWallet.ResolveMethod.kEnabled
+            BraveWallet.ResolveMethod.kEnabled,
           )
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'Failed to enable Ens Off-chain Lookup',
-            error
+            error,
           )
         }
       },
-      invalidatesTags: ['NameServiceAddress', 'EnsOffchainLookupEnabled']
+      invalidatesTags: ['NameServiceAddress', 'EnsOffchainLookupEnabled'],
     }),
 
     getIsBase58EncodedSolPubkey: query<boolean, string>({
@@ -64,16 +64,16 @@ export const addressEndpoints = ({
             await api.braveWalletService.isBase58EncodedSolanaPubkey(pubKeyArg)
 
           return {
-            data: result
+            data: result,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to check Base58 encoding for pubkey: ${pubKeyArg}`,
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getEthAddressChecksum: query<string, string>({
@@ -84,16 +84,16 @@ export const addressEndpoints = ({
             await api.keyringService.getChecksumEthAddress(addressArg)
 
           return {
-            data: checksumAddress
+            data: checksumAddress,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to check Base58 encoding for pubkey: ${addressArg}`,
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getZCashTransactionType: query<
@@ -113,22 +113,22 @@ export const addressEndpoints = ({
               arg.chainId,
               arg.accountId,
               arg.useShieldedPool,
-              arg.address
+              arg.address,
             )
           return {
             data: {
               txType: txType,
-              error: error
-            }
+              error: error,
+            },
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             `Failed to validate Zcash address: ${arg.address}`,
-            error
+            error,
           )
         }
-      }
+      },
     }),
 
     getAddressFromNameServiceUrl: query<
@@ -166,8 +166,8 @@ export const addressEndpoints = ({
             return {
               data: {
                 address,
-                requireOffchainConsent
-              }
+                requireOffchainConsent,
+              },
             }
           }
 
@@ -183,22 +183,22 @@ export const addressEndpoints = ({
             return {
               data: {
                 address,
-                requireOffchainConsent: false
-              }
+                requireOffchainConsent: false,
+              },
             }
           }
 
           // Unstoppable-Domains
           if (endsWithAny(supportedUDExtensions, lowercaseURL)) {
             const token = arg.tokenId
-              ? (await cache.getUserTokensRegistry()).entities[arg.tokenId] ||
-                null
+              ? (await cache.getUserTokensRegistry()).entities[arg.tokenId]
+                || null
               : null
 
             const { address, errorMessage } =
               await api.jsonRpcService.unstoppableDomainsGetWalletAddr(
                 lowercaseURL,
-                token
+                token,
               )
 
             if (errorMessage) {
@@ -208,8 +208,8 @@ export const addressEndpoints = ({
             return {
               data: {
                 address,
-                requireOffchainConsent: false
-              }
+                requireOffchainConsent: false,
+              },
             }
           }
 
@@ -217,8 +217,8 @@ export const addressEndpoints = ({
             `${
               arg.url
             } does not end in a valid extension (${allSupportedExtensions.join(
-              ', '
-            )})`
+              ', ',
+            )})`,
           )
         } catch (error) {
           return handleEndpointError(
@@ -227,7 +227,7 @@ export const addressEndpoints = ({
               arg.url //
             },
               tokenId: ${arg.tokenId}`,
-            error
+            error,
           )
         }
       },
@@ -238,9 +238,9 @@ export const addressEndpoints = ({
               type: 'NameServiceAddress',
               id: [arg.url.toLowerCase(), arg.tokenId]
                 .filter((arg) => arg !== null)
-                .join('-')
-            }
-      ]
+                .join('-'),
+            },
+      ],
     }),
 
     getFVMAddress: query<GetFVMAddressResult, GetFVMAddressArg>({
@@ -254,16 +254,16 @@ export const addressEndpoints = ({
           const convertResult = (
             await braveWalletService.convertFEVMToFVMAddress(
               arg.isMainNet,
-              arg.addresses
+              arg.addresses,
             )
           ).result
           return {
-            data: convertResult
+            data: convertResult,
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'Unable to getFVMAddress', error)
         }
-      }
+      },
     }),
 
     generateReceiveAddress: mutation<string, BraveWallet.AccountId>({
@@ -278,17 +278,17 @@ export const addressEndpoints = ({
           }
 
           return {
-            data: address
+            data: address,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            'Unable generate receive address for account: ' +
-              accountId.uniqueKey,
-            error
+            'Unable generate receive address for account: '
+              + accountId.uniqueKey,
+            error,
           )
         }
-      }
-    })
+      },
+    }),
   }
 }

@@ -8,7 +8,7 @@ import LedgerBridgeKeyring from './ledger_bridge_keyring'
 import {
   LedgerBridgeErrorCodes,
   LedgerCommand,
-  UnlockResponse
+  UnlockResponse,
 } from './ledger-messages'
 import { HardwareOperationResult } from '../types'
 import { MockLedgerTransport } from './mock_ledger_transport'
@@ -34,8 +34,8 @@ test('unlock successful', async () => {
     payload: {
       success: false,
       error: 'LedgerError',
-      code: 101
-    }
+      code: 101,
+    },
   }
   transport.addSendCommandResponse(unlockResponse)
   const result: HardwareOperationResult = await keyring.unlock()
@@ -53,8 +53,8 @@ test('unlock ledger error', async () => {
     payload: {
       success: false,
       error: 'LedgerError',
-      code: 101
-    }
+      code: 101,
+    },
   }
   transport.addSendCommandResponse(unlockResponse)
   const result: HardwareOperationResult = await keyring.unlock()
@@ -72,8 +72,8 @@ test('unlock unauthorized error', async () => {
     payload: {
       success: false,
       error: 'unauthorized',
-      code: undefined
-    }
+      code: undefined,
+    },
   }
   transport.addSendCommandResponse(sendCommandResponse)
   const result: HardwareOperationResult = await keyring.unlock()
@@ -89,7 +89,7 @@ test('unlock bridge error123', async () => {
   let expectedResult: HardwareOperationResult = {
     success: false,
     error: getLocale('braveWalletBridgeNotReady'),
-    code: 0
+    code: 0,
   }
   expect(result).toEqual(expectedResult)
 
@@ -98,7 +98,7 @@ test('unlock bridge error123', async () => {
   expectedResult = {
     success: false,
     error: getLocale('braveWalletBridgeCommandInProgress'),
-    code: 1
+    code: 1,
   }
   expect(result).toEqual(expectedResult)
 })

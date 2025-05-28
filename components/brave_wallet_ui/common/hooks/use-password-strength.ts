@@ -25,7 +25,7 @@ export const usePasswordStrength = (initialPassword: string = '') => {
     // granular results of password strength check
     return {
       isLongEnough,
-      isStrongPassword: isLongEnough
+      isStrongPassword: isLongEnough,
     }
   }, [])
 
@@ -57,10 +57,10 @@ export const usePasswordStrength = (initialPassword: string = '') => {
   const passwordsMatch = password === confirmedPassword
   const isValid =
     !(
-      hasConfirmedPasswordError ||
-      hasPasswordError ||
-      password === '' ||
-      confirmedPassword === ''
+      hasConfirmedPasswordError
+      || hasPasswordError
+      || password === ''
+      || confirmedPassword === ''
     ) && isStrongPassword
 
   return {
@@ -74,6 +74,6 @@ export const usePasswordStrength = (initialPassword: string = '') => {
     hasPasswordError,
     checkIsStrongPassword,
     passwordStrength,
-    passwordsMatch
+    passwordsMatch,
   }
 }

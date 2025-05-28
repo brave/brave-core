@@ -9,14 +9,14 @@ import { BraveWallet } from '../../../constants/types'
 // utils
 import {
   getHasPendingRequests,
-  handleEndpointError
+  handleEndpointError,
 } from '../../../utils/api-utils'
 import { isRemoteImageURL } from '../../../utils/string-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 export const tokenSuggestionsEndpoints = ({
   mutation,
-  query
+  query,
 }: WalletApiEndpointBuilderParams) => {
   return {
     getPendingTokenSuggestionRequests: query<
@@ -37,23 +37,23 @@ export const tokenSuggestionsEndpoints = ({
               } catch {
                 request.token = {
                   ...request.token,
-                  logo: `chrome://image/?url=${encodeURIComponent(logo)}&staticEncode=true`
+                  logo: `chrome://image/?url=${encodeURIComponent(logo)}&staticEncode=true`,
                 }
               }
             }
           }
           return {
-            data: requests
+            data: requests,
           }
         } catch (error) {
           return handleEndpointError(
             endpoint,
             'failed to fetch pending token suggestion requests',
-            error
+            error,
           )
         }
       },
-      providesTags: ['TokenSuggestionRequests']
+      providesTags: ['TokenSuggestionRequests'],
     }),
 
     approveOrDeclineTokenSuggestion: mutation<
@@ -69,7 +69,7 @@ export const tokenSuggestionsEndpoints = ({
         try {
           apiProxy.braveWalletService.notifyAddSuggestTokenRequestsProcessed(
             arg.approved,
-            [arg.contractAddress]
+            [arg.contractAddress],
           )
 
           if (arg.closePanel) {
@@ -81,7 +81,7 @@ export const tokenSuggestionsEndpoints = ({
           }
 
           return {
-            data: true
+            data: true,
           }
         } catch (error) {
           return handleEndpointError(
@@ -89,7 +89,7 @@ export const tokenSuggestionsEndpoints = ({
             `failed to ${
               arg.approved ? 'approve' : 'decline'
             } token suggestion (${arg.contractAddress})`,
-            error
+            error,
           )
         }
       },
@@ -101,9 +101,9 @@ export const tokenSuggestionsEndpoints = ({
               'UserBlockchainTokens',
               'TokenBalances',
               'TokenBalancesForChainId',
-              'AccountTokenCurrentBalance'
+              'AccountTokenCurrentBalance',
             ]
-          : ['TokenSuggestionRequests']
-    })
+          : ['TokenSuggestionRequests'],
+    }),
   }
 }

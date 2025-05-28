@@ -85,20 +85,17 @@
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Bloquer tout";
 
-/* Information displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertInfo" = "Bloquer tous les cookies empêchera le bon fonctionnement de certains sites Web.";
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "Bloquer tous les cookies ?";
 
-/* Title of alert displayed to user when block all cookie is enabled. */
-"BlockAllCookiesAlertTitle" = "Bloquer tous les cookies ?";
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Les boucliers bloquent déjà les cookies tiers. Bloquer TOUS les cookies supprimera les cookies existants et les données du site, et certains sites Web risquent de ne plus fonctionner.";
 
 /* Message of alert displayed to user when block all cookie operation fails */
 "BlockAllCookiesFailedAlertMsg" = "Modification impossible. Veuillez réessayer.";
 
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Blocage des fenêtres de consentement aux cookies";
-
-/* No comment provided by engineer. */
-"BlockCookiesDescription" = "Empêche les sites Web d'enregistrer des informations sur vos visites précédentes. L'option « Bloquer tous les cookies » est obsolète. Pour savoir comment forcer cette option, consultez [notre page d'aide] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting).";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Écran des blocages";
@@ -490,9 +487,6 @@
 /* No comment provided by engineer. */
 "Confirm" = "Confirmer";
 
-/* Cookie settings option title */
-"CookieControl" = "Contrôle des cookies";
-
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookies et données de site";
 
@@ -660,9 +654,6 @@
 
 /* No comment provided by engineer. */
 "Done" = "Terminé";
-
-/* cookie settings option */
-"DontBlockCookies" = "Ne pas bloquer les cookies";
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ne pas envoyer";
@@ -879,6 +870,9 @@
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Mises à jour HTTPS";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "Importer les données de navigation";
 
 /* title for per-site shield toggles */
 "IndividualControls" = "Contrôles individuels";
@@ -2626,9 +2620,6 @@
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
-/* Error message that is shown in settings when there was a problem loading */
-"SettingsContentLoadErrorMessage" = "Impossible de charger la page.";
-
 /* Row name for licenses. */
 "SettingsLicenses" = "Licences";
 
@@ -3210,9 +3201,6 @@
 
 /* Word count title */
 "sync.wordCount" = "Nombre de mots : %i";
-
-/* Folder name for where bookmarks are imported into when the root folder is not empty. */
-"SyncImportFolderName" = "Favoris importés";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Fermer";

@@ -10,14 +10,14 @@ import {
   HardwareImportScheme,
   DerivationSchemes,
   HardwareOperationResultAccounts,
-  HardwareOperationResultSolanaSignature
+  HardwareOperationResultSolanaSignature,
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
   SolGetAccountResponse,
-  SolSignTransactionResponse
+  SolSignTransactionResponse,
 } from './ledger-messages'
 
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
@@ -37,7 +37,7 @@ export default class SolanaLedgerBridgeKeyring
   getAccounts = async (
     from: number,
     count: number,
-    scheme: HardwareImportScheme
+    scheme: HardwareImportScheme,
   ): Promise<HardwareOperationResultAccounts> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -57,7 +57,7 @@ export default class SolanaLedgerBridgeKeyring
 
   signTransaction = async (
     path: string,
-    rawTxBytes: Buffer
+    rawTxBytes: Buffer,
   ): Promise<HardwareOperationResultSolanaSignature> => {
     const result = await this.unlock()
     if (!result.success) {
@@ -69,11 +69,11 @@ export default class SolanaLedgerBridgeKeyring
       id: LedgerCommand.SignTransaction,
       path: path,
       rawTxBytes: rawTxBytes,
-      origin: window.origin
+      origin: window.origin,
     })
     if (
-      data === LedgerBridgeErrorCodes.BridgeNotReady ||
-      data === LedgerBridgeErrorCodes.CommandInProgress
+      data === LedgerBridgeErrorCodes.BridgeNotReady
+      || data === LedgerBridgeErrorCodes.CommandInProgress
     ) {
       return this.createErrorFromCode(data)
     }
@@ -83,12 +83,12 @@ export default class SolanaLedgerBridgeKeyring
     return {
       success: true,
       // TODO(apaymyshev): should have trusted->untrusted checks?
-      signature: { bytes: [...data.payload.untrustedSignatureBytes] }
+      signature: { bytes: [...data.payload.untrustedSignatureBytes] },
     }
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[]
+    paths: string[],
   ): Promise<HardwareOperationResultAccounts> => {
     let accounts: AccountFromDevice[] = []
 
@@ -97,11 +97,11 @@ export default class SolanaLedgerBridgeKeyring
         command: LedgerCommand.GetAccount,
         id: LedgerCommand.GetAccount,
         path: path,
-        origin: window.origin
+        origin: window.origin,
       })
       if (
-        data === LedgerBridgeErrorCodes.BridgeNotReady ||
-        data === LedgerBridgeErrorCodes.CommandInProgress
+        data === LedgerBridgeErrorCodes.BridgeNotReady
+        || data === LedgerBridgeErrorCodes.CommandInProgress
       ) {
         return this.createErrorFromCode(data)
       }
@@ -111,12 +111,12 @@ export default class SolanaLedgerBridgeKeyring
       }
       accounts.push({
         address: bs58.encode(data.payload.address),
-        derivationPath: path
+        derivationPath: path,
       })
     }
     return {
       success: true,
-      accounts: accounts
+      accounts: accounts,
     }
   }
 }

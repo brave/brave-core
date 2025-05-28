@@ -15,7 +15,6 @@
 #include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
 #include "chrome/browser/shell_integration.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "url/gurl.h"
 
 class Profile;
 class Browser;

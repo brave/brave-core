@@ -13,9 +13,9 @@ export const BLOWFISH_URL_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kMultiCopyCatDomain,
   BraveWallet.BlowfishWarningKind.kNewDomain,
   BraveWallet.BlowfishWarningKind.kSemiTrustedBlocklistDomain,
-  BraveWallet.BlowfishWarningKind.kTrustedBlocklistDomain
+  BraveWallet.BlowfishWarningKind.kTrustedBlocklistDomain,
 ] as const
 
 export const BLOWFISH_WARNING_KINDS = getGetMojoEnumValues(
-  BraveWallet.BlowfishWarningKind
+  BraveWallet.BlowfishWarningKind,
 )

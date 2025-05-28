@@ -52,6 +52,12 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="4450893287417543264">Non mostrar de novo</translation>
 <translation id="4595286989346610620">Ver detalles</translation>
 <translation id="8324318899000695659">Bloquear elementos</translation>
+<translation id="3828310068250853121">Selecciona o elemento que desexes bloquear</translation>
+<translation id="2577286987423083872">Bloquear elementos</translation>
+<translation id="3211174446914979436">Xestionar filtros</translation>
+<translation id="3108584651298176909">Mostrar regras</translation>
+<translation id="5156986655891520787">Ocultar regras</translation>
+<translation id="7658239707568436148">Cancelar</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Abrir usando .onion address: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Forzar a acción de pegar</translation>
@@ -93,7 +99,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8117247596084706514">Este sitio solicitou a túa <ph name="PART_ONE"/>localización precisa<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Máis información<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Este sitio solicitou a túa <ph name="PART_ONE"/>localización precisa<ph name="PART_ONE_END"/>. Brave só poderá fornecer datos da <ph name="PART_TWO"/>localización xeral<ph name="PART_TWO_END"/> xa que os<ph name="PART_THREE"/>Servizos de localización<ph name="PART_THREE_END"/> están desactivados. <ph name="PART_FOUR"/>Máis información<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Pechar todo</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="4870911314065352661">Queres pechar todas as pestanas?</translation>
 <translation id="7551864359422178684">Tes <ph name="NUMBER_OF_TABS"/> pestanas abertas nesta ventá do navegador.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> pestanas</translation>
@@ -134,6 +139,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="3447730462826640312">Non precisas facer clic para gañar diñeiro, pero fai clic se estás interesado.</translation>
 <translation id="5253166205743627564">Grazas por apoiar a Busca de Brave ao clicar nun anuncio privado. A diferenza das grandes empresas tecnolóxicas, nós medimos o rendemento dos anuncios de forma anónima para protexer a túa privacidade.</translation>
 <translation id="8748471354357836070">Máis información/opcións de exclusión</translation>
+<translation id="5927196110206824867">As imaxes de fondo con patrocinio contribúen á misión de Brave de crear unha web independente e centrada no usuario. E, ao contrario das grandes tecnolóxicas, medimos o rendemento publicitario de xeito anónimo para preservar a túa privacidade.</translation>
 <translation id="4174337572777167894">Proxecto de detección web</translation>
 <translation id="8659271182272561965">Envía datos anónimos sobre buscas e navegación para mellorar Brave Search.</translation>
 <translation id="1516554614404600536">Información sobre as ferramentas de Brave</translation>
@@ -474,6 +480,9 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="863171915776379000">Permitir as conexións e publicacións incrustadas de Facebook</translation>
 <translation id="7791141927430186653">Permitir os chíos incrustados en X (anteriormente Twitter)</translation>
 <translation id="958971637207126733">Permitir publicacións incrustadas en LinkedIn</translation>
+<translation id="1244912498725894944">Os Escudos de Brave controlan certos parámetros dos rastros. Podes comprobalo &lt;a href="/content/braveShields"&gt;aquí&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Os Escudos de Brave controlan esta configuración.</translation>
+<translation id="352287031024189516">Google Sign-in controla esta confituración.</translation>
 <translation id="8792121506918889955">Política de xestión de IP de WebRTC</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas predeterminadas</translation>
@@ -675,8 +684,12 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="856371974127598760">Redes de carteiras</translation>
 <translation id="5975930666279943472">Borrar información sobre transaccións e valores nonce da carteira</translation>
 <translation id="5693968582510626466">Borrar transaccións pode ser útil para os programadores ou cando se borra o estado nun servidor local</translation>
-<translation id="2326850911705720398">Restablecer e borrar os datos da carteira</translation>
+<translation id="6171369470447621882">Restablecer o estado de sincronización de Zcash</translation>
+<translation id="6705112675071480687">Restablece o progreso de sincronización de Zcash para todas as contas protexidas</translation>
+<translation id="2012093487873597892">Queres restablecer o estado de sincronización de Zcash? Perderase o progreso de sincronización de todas as contas protexidas. Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="5031551083187285762">Restableceuse o estado de sincronización das túas contas Zcash.</translation>
 <translation id="9216386092464743272">Seguro que queres restablecer toda a información sobre transaccións e valores nonce da túa carteira? Esta opción adoitan escollela os programadores que teñen un servidor de proba local. Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="2326850911705720398">Restablecer e borrar os datos da carteira</translation>
 <translation id="6369495274982305511">Seguro que queres restablecer a túa carteira? Se non tes unha copia de seguridade da túa carteira, restablecela provocará que perdas todos os datos da conta (incluídos todos os fondos asociados). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
 <translation id="3752403403443723332">Restableceuse a túa carteira.</translation>
 <translation id="594766067816395072">Restableceuse a información sobre as transaccións da túa carteira.</translation>

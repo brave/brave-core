@@ -52,6 +52,12 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="4450893287417543264">Ne plus afficher</translation>
 <translation id="4595286989346610620">Vérifier les informations</translation>
 <translation id="8324318899000695659">Éléments bloqués</translation>
+<translation id="3828310068250853121">Sélectionnez l'élément que vous souhaitez bloquer</translation>
+<translation id="2577286987423083872">Bloquer les éléments</translation>
+<translation id="3211174446914979436">Gérer les filtres</translation>
+<translation id="3108584651298176909">Afficher les règles</translation>
+<translation id="5156986655891520787">Masquer les règles</translation>
+<translation id="7658239707568436148">Annuler</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Ouvrir avec l'adresse .onion : <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Collage forcé</translation>
@@ -93,13 +99,12 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="8117247596084706514">Ce site souhaite connaître votre <ph name="PART_ONE"/>position précise<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>En savoir plus<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Ce site souhaite connaître votre <ph name="PART_ONE"/>position précise<ph name="PART_ONE_END"/>. Brave peut uniquement lui fournir des données de <ph name="PART_TWO"/>position générale<ph name="PART_TWO_END"/> étant donné que la <ph name="PART_THREE"/>localisation<ph name="PART_THREE_END"/> est désactivée. <ph name="PART_FOUR"/>En savoir plus<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Tout fermer</translation>
-<translation id="7658239707568436148">Annuler</translation>
 <translation id="4870911314065352661">Fermer tous les onglets ?</translation>
 <translation id="7551864359422178684">Vous avez <ph name="NUMBER_OF_TABS"/> onglets ouverts dans cette fenêtre du navigateur.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> onglets</translation>
 <translation id="1307431692088049276">Ne plus me le demander.</translation>
 <translation id="6919364924256365253">Pas de Google. Ni de Bing. Juste Brave.</translation>
-<translation id="2640297688005939449">La recherche Brave ne collecte jamais vos données personnelles. En plus, c'est un service entièrement indépendant.</translation>
+<translation id="2640297688005939449">La recherche Brave ne collecte jamais vos données personnelles. De plus, c'est un service entièrement indépendant.</translation>
 <translation id="7295094278358921487">Cherchez et vous trouverez. En toute confidentialité.</translation>
 <translation id="3462465068145800637">La recherche Brave n'établit pas de profil vous concernant. C'est un service entièrement indépendant des géants du Web.</translation>
 <translation id="42032117189492785">Recherche enrichie par l'IA avec un index unique.</translation>
@@ -133,6 +138,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="3447730462826640312">Vous n'avez pas besoin de cliquer sur la notification pour gagner de l'argent, mais cliquez dessus si son contenu vous intéresse !</translation>
 <translation id="5253166205743627564">Merci de soutenir le moteur de recherche Brave en cliquant sur une annonce privée. Contrairement aux grandes entreprises de la tech, nous mesurons les performances des annonces de manière anonyme pour préserver votre vie privée.</translation>
 <translation id="8748471354357836070">En savoir plus / Me désinscrire</translation>
+<translation id="5927196110206824867">Les arrière-plans sponsorisés aident Brave à créer un Web plus indépendant et pensé pour les utilisateurs. Contrairement aux grandes entreprises de la tech, les performances des annonces sont analysées de manière anonyme pour préserver votre vie privée.</translation>
 <translation id="4174337572777167894">Projet Web Discovery</translation>
 <translation id="8659271182272561965">Partagez des données de recherche et de navigation anonymes pour affiner la recherche Brave.</translation>
 <translation id="1516554614404600536">Infobulle Brave</translation>
@@ -320,7 +326,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="1233913566967531780">Focus</translation>
 <translation id="4034992002364254340">Regroupez tous vos onglets similaires dans une nouvelle fenêtre</translation>
 <translation id="8012125596344613514">Catégories recommandées</translation>
-<translation id="7529120186020617755">Saisissez une catégorie…</translation>
+<translation id="7529120186020617755">Saisissez un sujet…</translation>
 <translation id="6847541693235449912">OK</translation>
 <translation id="2079545284768500474">Annuler</translation>
 <translation id="1533980864758658574">Nouvelle fenêtre créée pour <ph name="TOPIC"/></translation>
@@ -473,6 +479,9 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="7791141927430186653">Autoriser les tweets intégrés de X (anciennement Twitter)</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
+<translation id="1244912498725894944">Certains paramètres des cookies sont contrôlés par les boucliers Brave. Pour afficher les boucliers Brave, cliquez &lt;a href="/content/braveShields"&gt;ici&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Ce paramètre est contrôlé par les boucliers Brave.</translation>
+<translation id="352287031024189516">Ce paramètre est contrôlé par la connexion Google.</translation>
 <translation id="8792121506918889955">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="8798099450830957504">Par défaut</translation>
 <translation id="1822560017823072927">Interfaces publiques et privées par défaut</translation>
@@ -673,8 +682,12 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="856371974127598760">Réseaux du portefeuille</translation>
 <translation id="5975930666279943472">Effacer les informations relatives aux transactions et aux nonces du portefeuille</translation>
 <translation id="5693968582510626466">Supprimer les transactions peut être utile pour les développeurs ou lors de la suppression de l'état sur un serveur local</translation>
-<translation id="2326850911705720398">Réinitialiser et effacer les données du portefeuille</translation>
+<translation id="6171369470447621882">Réinitialiser la synchronisation pour Zcash</translation>
+<translation id="6705112675071480687">Réinitialise la progression de la synchronisation de Zcash pour tous les comptes anonymisés</translation>
+<translation id="2012093487873597892">Voulez-vous vraiment réinitialiser la synchronisation de Zcash ? La synchronisation en cours sera annulée pour tous les comptes anonymisés. Saisissez "<ph name="CONFIRMATION_PHRASE"/>" pour confirmer.</translation>
+<translation id="5031551083187285762">La synchronisation pour les comptes Zcash a été réinitialisée.</translation>
 <translation id="9216386092464743272">Voulez-vous vraiment réinitialiser toutes les informations relatives aux transactions et aux nonces de votre portefeuille ? Cette option est principalement utilisée par les développeurs exécutant un serveur test local. Saisissez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
+<translation id="2326850911705720398">Réinitialiser et effacer les données du portefeuille</translation>
 <translation id="6369495274982305511">Voulez-vous vraiment réinitialiser votre portefeuille ? Si votre portefeuille n'est pas sauvegardé, vous perdrez alors toutes les données de votre compte (y compris tous les fonds associés). Tapez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
 <translation id="3752403403443723332">Votre portefeuille a été réinitialisé.</translation>
 <translation id="594766067816395072">Les informations relatives aux transactions de votre portefeuille ont été réinitialisées.</translation>
@@ -746,7 +759,7 @@ Ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="7634775528597575156">Point de terminaison du serveur</translation>
 <translation id="6374563306438145841">Clé API</translation>
 <translation id="3295756655687327124">Analyse d'images</translation>
-<translation id="1415432774589088566">Dans le cas où ce modèle peut analyser les images (Llama 3.2B Vision, par exemple)</translation>
+<translation id="1415432774589088566">Activez cette option si ce modèle peut analyser les images (Llama 3.2B Vision, par exemple)</translation>
 <translation id="8008271349880309090">Le nom du modèle tel qu'il apparaîtra dans le menu de sélection du modèle</translation>
 <translation id="1355326130503900056">Le nom du modèle tel qu'il doit apparaître dans la demande adressée au serveur, par exemple phi-3 (si ce nom ne correspond pas exactement à ce qui est attendu par le serveur, l'intégration ne fonctionnera pas).</translation>
 <translation id="3213787232304349732">L'URL sur laquelle votre framework de service reçoit des requêtes. Si vous avez un doute, consultez la documentation du framework de service. Par exemple, pour Ollama, il s'agit toujours de http://localhost:11434/v1/chat/completions.</translation>

@@ -24,6 +24,8 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
       return RequestType::kBraveLocalhostAccessPermission;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return RequestType::kBraveOpenAIChat;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return RequestType::kBraveCardano;
     default:
       return ContentSettingsTypeToRequestTypeIfExists(content_settings_type);
   }

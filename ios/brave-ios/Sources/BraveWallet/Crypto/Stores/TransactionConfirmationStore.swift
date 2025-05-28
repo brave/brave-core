@@ -140,6 +140,22 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         return [outputLine, valueLine, addressLines].joined(separator: "\n")
       }.joined(separator: "\n\n")
       return inputs + "\n\n" + outputs
+    } else if activeParsedTransaction.transaction.coin == .zec,
+      let zecTxData = activeParsedTransaction.transaction.txDataUnion.zecTxData
+    {
+      let inputs = zecTxData.inputs.enumerated().map { (index, input) in
+        let inputLine = "\(Strings.Wallet.inputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(input.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(input.address)"
+        return [inputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
+      let outputs = zecTxData.outputs.enumerated().map { (index, output) in
+        let outputLine = "\(Strings.Wallet.outputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(output.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(output.address)"
+        return [outputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
+      return inputs + "\n\n" + outputs
     } else {
       let functionType = String.localizedStringWithFormat(
         Strings.Wallet.inputDataPlaceholderTx,
@@ -181,6 +197,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let keyringService: BraveWalletKeyringService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
@@ -201,6 +218,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     keyringService: BraveWalletKeyringService,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
@@ -213,6 +231,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.keyringService = keyringService
     self.solTxManagerProxy = solTxManagerProxy
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
@@ -662,7 +681,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
       .solSplTokenTransfer(let details),
-      .btcSend(let details):
+      .btcSend(let details),
+      .zecSend(let details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
       fiat = details.fromFiat ?? ""

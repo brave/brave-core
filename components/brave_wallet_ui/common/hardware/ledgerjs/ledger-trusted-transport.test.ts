@@ -23,7 +23,7 @@ const createWindow = (): Window => {
   // window.crypto because standard assignment results in
   // assignment error because window.origin is read-only
   Object.defineProperty(iframe.contentWindow, 'origin', {
-    value: 'chrome-untrusted://ledger-bridge'
+    value: 'chrome-untrusted://ledger-bridge',
   })
   return iframe.contentWindow
 }
@@ -36,18 +36,18 @@ test('handleAuthorizationSuccess calls onAuthorize callback', async () => {
     targetWindow.origin,
     () => {
       callbackCalled = true
-    }
+    },
   )
 
   const command: AuthorizationSuccessCommand = {
     id: LedgerCommand.AuthorizationSuccess,
     origin: trustedTransport['targetWindow'].origin,
-    command: LedgerCommand.AuthorizationSuccess
+    command: LedgerCommand.AuthorizationSuccess,
   }
   const event: MessageEvent = new MessageEvent('message', {
     data: command,
     origin: trustedTransport['targetWindow'].origin,
-    source: trustedTransport['targetWindow']
+    source: trustedTransport['targetWindow'],
   })
   window.dispatchEvent(event)
   expect(callbackCalled).toEqual(true)

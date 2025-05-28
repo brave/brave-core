@@ -69,9 +69,10 @@
 <translation id="3446024864193919737">Onyesha Brave Rewards</translation>
 <translation id="5585019845078534178">Kadi</translation>
 <translation id="3870475560794762985">Onyesha Picha Zinazodhaminiwa</translation>
+<translation id="5684562942023496754">Unaweza kupata pesa kwa kutazama Picha Zinazodhaminiwa.</translation>
+<translation id="6165508094623778733">Pata maelezo zaidi</translation>
 <translation id="2414654907269324670">Unapata BAT kwa Picha Zinazodhaminiwa.</translation>
 <translation id="4942016616604700968">Wezesha Zawadi</translation>
-<translation id="5684562942023496754">Unaweza kupata pesa kwa kutazama Picha Zinazodhaminiwa.</translation>
 <translation id="8934374643857605034">Kama mtumiaji wa Zawadi za Brave, unaweza kupata BAT kwa kutazama Picha Zinazodhaminiwa.</translation>
 <translation id="1570714748649804013">Kama mtumiaji wa Zawadi za Brave, unapata BAT kwa Picha Zilizodhaminiwa unazoona. Kulemaza Picha Zilizodhaminiwa kutapunguza kiasi unachopata.</translation>
 <translation id="8998727244653964783">Unaweza kupata BAT kwa kutazama Picha Zinazodhaminiwa unapounganisha akaunti ya uangalizi katika Zawadi za Brave. Kwa sasa, unasaidia kuwafadhili waundaji kwa Picha Zinazodhaminiwa.</translation>
@@ -118,7 +119,6 @@
 <translation id="2702801445560668637">Orodha ya Kusoma</translation>
 <translation id="4590997608186539865">Orodha ya kucheza</translation>
 <translation id="8027460023387054992">Kifanya Muhtasari wa Gumzo</translation>
-<translation id="6165508094623778733">Jifunze zaidi</translation>
 <translation id="8730621377337864115">Imekamilika</translation>
 <translation id="730042046912793465">Hili ni</translation>
 <translation id="2055363275850890030">Dirisha Binafsi</translation>
@@ -2108,14 +2108,19 @@
 <translation id="3895031624234442305">Miundo maalum</translation>
 <translation id="4572010449071015143">Anzisha mazungumzo mapya</translation>
 <translation id="6543799171249004861">Picha imepigwa na <ph name="AUTHOR"/></translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4290791698375397492">Tovuti maarufu imeondolewa</translation>
 <translation id="9030215177866748410">Tovuti maarufu zinapendekezwa kulingana na tovuti unazotembelea mara kwa mara.</translation>
+<translation id="8425213833346101688">Badilisha</translation>
+<translation id="755045397420611731">Faragha na usalama wa ziada mtandaoni</translation>
+<translation id="4520128772974831415">Ficha IP yako na ubadilishe eneo lako</translation>
+<translation id="8703188411226330709">Anza kutumia jaribio lisilolipishwa</translation>
+<translation id="8814357473522731680">Inaendeshwa na</translation>
+<translation id="7143207342074048698">Inaunganisha</translation>
+<translation id="1202549130170287307">Inaondolewa</translation>
+<translation id="8793108040181436796">Wijeti</translation>
 <translation id="6303294677342628402">Ulinzi</translation>
 <translation id="8458987127502506209">Wezesha Ulinzi wa Brave</translation>
-<translation id="7509914170164691086">Ngao Zinatumika <ph name="LINK_BEFORE"/>kwa<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Ngao Zimezimwa <ph name="LINK_BEFORE"/>kwa<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Ikiwa tovuti hii inaonekana kutofanya kazi vyema, jaribu kuzima Ngao.
- <ph name="LINK_BEFORE"/>Kumbuka: hii inaweza kupunguza ulinzi wa faragha wa Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Vifuatiliaji, matangazo na zaidi vimezimwa<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Haijalindwa kwa Brave Shields<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Vidhibiti vya hali ya juu</translation>
@@ -2195,15 +2200,12 @@
 <translation id="958268166261124668">Brave VPN: Imeunganishwa</translation>
 <translation id="6021669293402055982">Brave VPN: Haijaunganishwa</translation>
 <translation id="3541307549916475335">UI ya Paneli ya VPN ya Brave</translation>
-<translation id="7143207342074048698">Inaunganisha</translation>
-<translation id="1202549130170287307">Inaondolewa</translation>
 <translation id="2325196879156848326">Muunganisho Haujafaulu</translation>
 <translation id="745054660363064771">Haiwezi kuunganisha kwenye seva</translation>
 <translation id="3936826714240735937">Chagua seva nyingine</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> haikuweza kuunganishwa kwenye seva ya <ph name="REGION_NAME"/>. Tafadhali jaribu tena au uchague nchi nyingine.</translation>
 <translation id="5753795690521538679">Anza jaribio la siku 7 la bila malipo</translation>
 <translation id="3357036723290257445">Tayari umenunua Brave VPN?</translation>
-<translation id="8814357473522731680">Inaendeshwa na</translation>
 <translation id="8652175077544655965">Funga mipangilio</translation>
 <translation id="5908163815855240493">Nenda kwenye kuu</translation>
 <translation id="7805768142964895445">Hali</translation>
@@ -2211,8 +2213,6 @@
 <translation id="8421945428836418371">Unganisha tena kiotomatiki</translation>
 <translation id="434523916398030617">Wasiliana na usaidizi wa kiufundi</translation>
 <translation id="1116694919640316211">Kuhusu</translation>
-<translation id="755045397420611731">Faragha na usalama wa ziada mtandaoni</translation>
-<translation id="4520128772974831415">Ficha IP yako na ubadilishe eneo lako</translation>
 <translation id="2044418816479192294">Mamia ya seva kote ulimwenguni</translation>
 <translation id="7410504850864021600">Kasi za muunganisho za upesi mno</translation>
 <translation id="2422309687188612485">Linda hadi vifaa 10 kwa mpango mmoja</translation>
@@ -2284,9 +2284,6 @@ Turuhusu tukuunganishe!</translation>
 <translation id="8048263175525832621">Brave VPN - Imetenganishwa</translation>
 <translation id="1498770726476841108">Dhibiti Akaunti</translation>
 <translation id="6825718953004242472">Ondoa ikoni</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">Badilisha</translation>
-<translation id="8703188411226330709">Anza kutumia jaribio lisilolipishwa</translation>
 <translation id="3287942014983548982">Fungua hapa</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, imefunguliwa kwa sasa,
     bonyeza Kichupo kisha Ingiza ili kubadili hadi kichupo ambacho kimefunguliwa</translation>

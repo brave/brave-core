@@ -52,6 +52,12 @@ Eller skift senere på<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4450893287417543264">Vis ikke igen</translation>
 <translation id="4595286989346610620">Kontroller oplysninger</translation>
 <translation id="8324318899000695659">Blokér elementer</translation>
+<translation id="3828310068250853121">Vælg det element, du vil blokere</translation>
+<translation id="2577286987423083872">Bloker elementer</translation>
+<translation id="3211174446914979436">Administrer filtre</translation>
+<translation id="3108584651298176909">Vis regler</translation>
+<translation id="5156986655891520787">Skjul regler</translation>
+<translation id="7658239707568436148">Annuller</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Åbn ved at bruge .onion-adresse: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tving indsæt</translation>
@@ -94,7 +100,6 @@ vindue med Tor</translation>
 <translation id="8117247596084706514">Dette websted har anmodet om din <ph name="PART_ONE"/>præcise placering<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Få mere at vide<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">Dette websted har anmodet om din <ph name="PART_ONE"/>præcise placering<ph name="PART_ONE_END"/>. Brave vil kun kunne oplyse <ph name="PART_TWO"/>generelle placeringsdata<ph name="PART_TWO_END"/>, fordi<ph name="PART_THREE"/>placeringstjenester<ph name="PART_THREE_END"/> er deaktiveret. <ph name="PART_FOUR"/>Få mere at vide<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Luk alle</translation>
-<translation id="7658239707568436148">Annuller</translation>
 <translation id="4870911314065352661">Luk alle faner?</translation>
 <translation id="7551864359422178684">Du har <ph name="NUMBER_OF_TABS"/> faner åbne i dette vindue.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> faner</translation>
@@ -134,6 +139,7 @@ vindue med Tor</translation>
 <translation id="3447730462826640312">Du behøver ikke klikke for at tjene penge, men klik endeligt, hvis du er interesseret!</translation>
 <translation id="5253166205743627564">Tak, fordi du støtter Brave Search ved at klikke på en privat annonce. I modsætning til Big Tech måler vi annoncernes resultater anonymt for at beskytte dit privatliv.</translation>
 <translation id="8748471354357836070">Få mere at vide / fravalgsmuligheder</translation>
+<translation id="5927196110206824867">Sponsorerede baggrundsbilleder støtter Braves mission om at opbygge et uafhængigt, brugerorienteret internet. Og i modsætning til Big Tech måler vi annoncepræstationer anonymt for at beskytte dit privatliv.</translation>
 <translation id="4174337572777167894">Web Discovery-projekt</translation>
 <translation id="8659271182272561965">Bidrag med anonym søge- &amp; browsingdata for at forbedre Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -474,6 +480,9 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="7791141927430186653">Tillad X (tidligere Twitter) indlejrede tweets</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
+<translation id="1244912498725894944">Nogle cookie-indstillinger styres af Brave Shields. Du kan se dem &lt;a href="/content/braveShields"&gt;her&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">Denne indstilling styres af Brave Shields.</translation>
+<translation id="352287031024189516">Denne indstilling styres af Google Sign-in.</translation>
 <translation id="8792121506918889955">WebRTC IP-håndteringspolitik</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
@@ -675,8 +684,12 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="856371974127598760">Wallet-netværk</translation>
 <translation id="5975930666279943472">Ryd tegnebogstransaktioner og nonce-oplysninger</translation>
 <translation id="5693968582510626466">At rydde transaktioner kan være nyttigt for udviklere eller når status ryddes på en lokal server</translation>
-<translation id="2326850911705720398">Nulstil og ryd tegnebogsdata</translation>
+<translation id="6171369470447621882">Nulstil Zcash-synkroniseringsstatus</translation>
+<translation id="6705112675071480687">Nulstiller Zcash-synkroniseringsforløbet for alle afskærmede konti</translation>
+<translation id="2012093487873597892">Er du sikker på, at du vil nulstille Zcash-synkroniseringsstatus? Synkroniseringsforløbet for alle afskærmede konti vil blive droppet. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
+<translation id="5031551083187285762">Din synkroniseringsstatus for Zcash-konti blev nulstillet.</translation>
 <translation id="9216386092464743272">Er du sikker på, at du vil nulstille alle dine tegnebogstransaktioner og nonce-oplysninger? Dette bruges mest af udviklere, der arbejder på en lokal testserver. Tast "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
+<translation id="2326850911705720398">Nulstil og ryd tegnebogsdata</translation>
 <translation id="6369495274982305511">Er du sikker på, du vil nulstille din Wallet? Hvis din Wallet ikke har en backup, vil nulstillingen slette al din kontodata (inklusive alle tilknyttede milder). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="3752403403443723332">Din tegnebog  blev nulstillet.</translation>
 <translation id="594766067816395072">Oplysninger om dine tegnebogstransaktioner blev nulstillet.</translation>

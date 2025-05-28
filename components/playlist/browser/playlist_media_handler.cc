@@ -12,7 +12,6 @@
 #include "base/functional/overloaded.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "url/gurl.h"
 
 namespace playlist {
 

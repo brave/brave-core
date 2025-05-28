@@ -97,7 +97,6 @@
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
 <translation id="6302422639282249274">Brave রিওয়ার্ড পরিচালনা করুন</translation>
-<translation id="2709516037105925701">স্বয়ংপূরণ</translation>
 <translation id="8617525558807213034">ব্যক্তিগত ট্যাবে অটো-ফিল করুন</translation>
 <translation id="8685431198160039193">সেভ করা তথ্য ব্যক্তিগত ট্যাবে অটো-ফিল করা যাবে</translation>
 <translation id="6583902294974160967">সহায়তা</translation>
@@ -231,7 +230,8 @@
 <translation id="2433507940547922241">উপস্থিতি</translation>
 <translation id="9040069796107003510">Brave-এর পুরস্কার আইকন</translation>
 <translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
-<translation id="8495235435594442882">নীচের টুলবার সক্ষম করুন</translation>
+<translation id="1215433243238902715">নিচের নেভিগেশন টুলবার সক্রিয় করুন</translation>
+<translation id="1422686363939271829">নিচের অ্যাড্রেস বারের অবস্থান নির্বাচন করা হলে এই সেটিংটি নিষ্ক্রিয় হয়ে যায়</translation>
 <translation id="6587448235155023666">আপনি পরবর্তীকালে Brave পুনরায় চালু করার সময় আপনার পরিবর্তনগুলি কার্যকর হবে</translation>
 <translation id="8701563696941209024">এখনই পুনরায় চালু করুন</translation>
 <translation id="834487290629916192">পরে</translation>
@@ -420,9 +420,12 @@
 <translation id="8520059774736886747">সৃষ্টিকর্তা <ph name="PUBLISHER_NAME"/> একদম সাম্প্রতিক কালেই যাচাই করা হয়েছে</translation>
 <translation id="1486343603936278248">স্মারক</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
+<translation id="5927196110206824867">স্পন্সর করা ব্যাকগ্রান্ডের ছবিগুলি Brave এর একটি স্বাধীন, ব্যবহারকারীকে-অগ্রাধিকার দেওয়া ওয়েব গড়ে তোলার মিশনকে সমর্থন করে। এবং বড় প্রযুক্তি সংস্থাগুলির মতো নয়, আপনার গোপনীয়তা রক্ষা করার জন্য আমরা নাম গোপন রেখে বিজ্ঞাপনের পারফরম্যান্স পরিমাপ করি।</translation>
+<translation id="8748471354357836070">আরও জানুন / অপ্ট আউট করার বিকল্পসমূহ</translation>
 <translation id="3171669670217312786">ব্যাকগ্রাউন্ডের ছবি</translation>
 <translation id="8522669544471808198">পটভূমির চিত্রগুলি দেখান</translation>
 <translation id="3870475560794762985">স্পনসর করা ছবিগুলি দেখান</translation>
+<translation id="6937724381960478525">স্পন্সর করা ছবিগুলি সম্পর্কে আরও জানুন</translation>
 <translation id="8793108040181436796">উইজেট</translation>
 <translation id="8643377320501056697">শীর্ষ স্থানীয় সাইটগুলি দেখান</translation>
 <translation id="7275773481201277457">Brave পরিসংখ্যান দেখান</translation>

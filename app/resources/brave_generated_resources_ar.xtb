@@ -52,6 +52,12 @@
 <translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="4595286989346610620">تحقق من التفاصيل</translation>
 <translation id="8324318899000695659">حظر العناصر</translation>
+<translation id="3828310068250853121">حدد العنصر الذي تريد حظره</translation>
+<translation id="2577286987423083872">حظر العناصر</translation>
+<translation id="3211174446914979436">إدارة عوامل التصفية</translation>
+<translation id="3108584651298176909">عرض القواعد</translation>
+<translation id="5156986655891520787">إخفاء القواعد</translation>
+<translation id="7658239707568436148">إلغاء</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">افتح باستخدام عنوان .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">فرض اللصق</translation>
@@ -93,7 +99,6 @@
 <translation id="8117247596084706514">طلب هذا الموقع الحصول على<ph name="PART_ONE"/>موقعك الدقيق<ph name="PART_ONE_END"/>.<ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
 <translation id="5486652646100591203">طلب الموقع الحصول على<ph name="PART_ONE"/>موقعك الدقيق<ph name="PART_ONE_END"/>. سيمكن لـ Brave تقديم <ph name="PART_TWO"/>بيانات موقعك العام فقط،<ph name="PART_TWO_END"/>نظرًا لأن<ph name="PART_THREE"/>خدمات الموقع<ph name="PART_THREE_END"/> تم تعطيلها.<ph name="PART_FOUR"/>معرفة المزيد<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">إغلاق الكل</translation>
-<translation id="7658239707568436148">إلغاء</translation>
 <translation id="4870911314065352661">هل تريد إغلاق جميع علامات التبويب؟</translation>
 <translation id="7551864359422178684">لديك <ph name="NUMBER_OF_TABS"/> علامة تبويب مفتوحة في نافذة المتصفح هذه.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> علامة تبويب</translation>
@@ -133,6 +138,7 @@
 <translation id="3447730462826640312">لا تحتاج إلى النقر للربح، ولكن انقر إذا كنت مهتمًا!</translation>
 <translation id="5253166205743627564">شكراً لدعمك Brave Search بالنقر على إعلان خاص. على عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بكل سريّة للحفاظ على خصوصيتك.</translation>
 <translation id="8748471354357836070">معرفة المزيد / خيارات إلغاء الاشتراك</translation>
+<translation id="5927196110206824867">تدعم صور الخلفية المدعومة Brave في مهمتها المتمثلة في بناء شبكة ويب مستقلة ترتكز على المستخدم أولًا. وعلى عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بشكل مجهول للحفاظ على خصوصيتكم.</translation>
 <translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="8659271182272561965">المساهمة بإجراء بحث مجهول &amp; تصفح البيانات لتحسين مستوى Brave Search.</translation>
 <translation id="1516554614404600536">تعريف الأدوات الخاصة بشركة Brave</translation>
@@ -474,6 +480,9 @@
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="7791141927430186653">السماح بتضمين X (Twitter سابقًا) للتغريدات المضمنة</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
+<translation id="1244912498725894944">يتم التحكم في بعض إعدادات ملفات تعريف الارتباط بواسطة Brave Shields. يمكنك الإطلاع عليها &lt;a href="/content/braveShields"&gt;هنا&lt;/a&gt;.</translation>
+<translation id="5352519841984162795">يتحكم Brave Shields في هذا الإعداد.</translation>
+<translation id="352287031024189516">يتحكم Google Sign-in في هذا الإعداد.</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
 <translation id="8798099450830957504">الافتراضي</translation>
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
@@ -675,8 +684,12 @@
 <translation id="856371974127598760">شبكات المحفظة</translation>
 <translation id="5975930666279943472">امسح تداولات المحفظة ومعلومات الرقم الخاص</translation>
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
-<translation id="2326850911705720398">إعادة تعيين بيانات المحفظة وحذفها</translation>
+<translation id="6171369470447621882">إعادة تعيين حالة مزامنة Zcash</translation>
+<translation id="6705112675071480687">إعادة تعيين تقدم مزامنة Zcash لجميع الحسابات المحمية بالدروع</translation>
+<translation id="2012093487873597892">هل أنت متأكد من أنك تريد إعادة تعيين حالة مزامنة Zcash؟ سيتم التخلي عن تقدم المزامنة لجميع الحسابات المحمية بالدروع. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
+<translation id="5031551083187285762">تمت إعادة تعيين حالة المزامنة لحسابات Zcash الخاصة بك.</translation>
 <translation id="9216386092464743272">هل أنت متأكد من أنك تريد إعادة ضبط جميع تداولات محفظتك ومعلومات الرقم السري؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
+<translation id="2326850911705720398">إعادة تعيين بيانات المحفظة وحذفها</translation>
 <translation id="6369495274982305511">هل أنت متأكد أنك تريد إعادة ضبط محفظتك؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="3752403403443723332">تم إعادة ضبط محفظتك</translation>
 <translation id="594766067816395072">تمت إعادة ضبط معلومات تداولات محفظتك.</translation>
