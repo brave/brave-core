@@ -115,12 +115,15 @@
     Click on the secure login link in the email to access your account.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL" desc="The label for the don't see email">
-    Don't see the email? Check your spam folder or <ph name="BEGIN_LINK">$1</ph>try again<ph name="END_LINK">$1</ph>.
+    Don't see the email? Check your spam folder or try again.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR" desc="The label for the auth error">
     Error authenticating with Brave Account.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN" desc="The label for the auth try again">
-    Please <ph name="BEGIN_LINK">$1</ph>try again<ph name="END_LINK">$1</ph>.
+    Please try again.
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON" desc="The label for the auth try again button">
+    Start over
   </message>
 </grit-part>
