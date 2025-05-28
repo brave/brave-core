@@ -31,4 +31,3 @@ export const CheckboxText = styled.div`
 export const TermsLink = styled(LinkText)`
   font-weight: 400;
 `
-

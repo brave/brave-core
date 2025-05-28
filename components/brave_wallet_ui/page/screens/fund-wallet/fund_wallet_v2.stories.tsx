@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { FundWalletScreen } from './fund_wallet_v2'
 
@@ -20,10 +20,10 @@ export const _FundWalletScreen = () => {
 }
 
 _FundWalletScreen.story = {
-  name: 'Fund Wallet Screen v2'
+  name: 'Fund Wallet Screen v2',
 }
 
 export default {
   component: _FundWalletScreen,
-  title: 'Fund Wallet Screen v2'
+  title: 'Fund Wallet Screen v2',
 }

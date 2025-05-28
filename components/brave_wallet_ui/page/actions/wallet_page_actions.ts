@@ -13,5 +13,5 @@ export const {
   updateNFTMetadata,
   updateNftMetadataError,
   walletCreated,
-  walletSetupComplete
+  walletSetupComplete,
 } = PageActions

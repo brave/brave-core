@@ -6,9 +6,7 @@
 import * as React from 'react'
 
 // Mock Data
-import {
-  mockMeldCryptoCurrencies
-} from '../../../../../common/constants/mocks'
+import { mockMeldCryptoCurrencies } from '../../../../../common/constants/mocks'
 
 // Types
 import { MeldCryptoCurrency } from '../../../../../constants/types'
@@ -16,7 +14,7 @@ import { MeldCryptoCurrency } from '../../../../../constants/types'
 // Components
 import { SelectAsset } from './select_asset'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectAsset = () => {
@@ -41,5 +39,5 @@ export const _SelectAsset = () => {
 
 export default {
   component: _SelectAsset,
-  title: 'Fund Wallet - Select Asset'
+  title: 'Fund Wallet - Select Asset',
 }

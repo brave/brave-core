@@ -15,7 +15,7 @@ export const _BackupRecoveryPhraseExplainer = {
         <RecoveryPhraseExplainer />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: RecoveryPhraseExplainer }

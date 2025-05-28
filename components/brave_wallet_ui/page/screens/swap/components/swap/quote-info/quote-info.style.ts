@@ -12,7 +12,7 @@ import {
   WalletButton,
   Column,
   Row,
-  Text //
+  Text, //
 } from '../../../../../../components/shared/style'
 import { LPIcon } from '../../shared-swap.styles'
 
@@ -64,7 +64,7 @@ export const Section = styled(Column)`
 `
 
 export const CaratDownIcon = styled(Icon).attrs({
-  name: 'carat-down'
+  name: 'carat-down',
 })<{ isOpen: boolean }>`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.default};
@@ -79,7 +79,7 @@ export const ExpandRow = styled(Row)`
 `
 
 export const CaratRightIcon = styled(Icon).attrs({
-  name: 'carat-right'
+  name: 'carat-right',
 })`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.default};

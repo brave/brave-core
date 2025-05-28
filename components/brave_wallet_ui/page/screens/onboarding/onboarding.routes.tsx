@@ -14,20 +14,20 @@ import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
 import {
-  WalletPageLayout //
+  WalletPageLayout, //
 } from '../../../components/desktop/wallet-page-layout'
 import {
-  WalletSubViewLayout //
+  WalletSubViewLayout, //
 } from '../../../components/desktop/wallet-sub-view-layout'
 import {
-  ProtectedRoute //
+  ProtectedRoute, //
 } from '../../../components/shared/protected-routing/protected-route'
 import { OnboardingSuccess } from './onboarding_success/onboarding_success'
 import { OnboardingNewWalletRoutes } from './onboarding_new_wallet.routes'
 import { OnboardingWelcome } from './welcome/onboarding-welcome'
 import { OnboardingImportWalletRoutes } from './onboarding_import_wallet.routes'
 import {
-  OnboardingHardwareWalletRoutes //
+  OnboardingHardwareWalletRoutes, //
 } from './onboarding_hardware_wallet.routes'
 
 export const OnboardingRoutes = () => {

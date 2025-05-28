@@ -12,7 +12,7 @@ import {
   BubbleIcon,
   BubbleIconBackground,
   BubbleText,
-  IconBubbleColors
+  IconBubbleColors,
 } from './article_link_bubble.style'
 
 export interface ArticleLinkBubbleProps {
@@ -26,7 +26,7 @@ export const ArticleLinkBubble: React.FC<ArticleLinkBubbleProps> = ({
   icon,
   iconBackgroundColor,
   text,
-  url
+  url,
 }) => {
   return (
     <Bubble

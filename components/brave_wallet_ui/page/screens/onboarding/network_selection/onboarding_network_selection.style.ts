@@ -74,4 +74,3 @@ export const NetworkSelectionContainer = styled.button`
     right: 4px;
   }
 `
-

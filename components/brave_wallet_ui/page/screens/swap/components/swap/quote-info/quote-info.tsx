@@ -17,54 +17,54 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetSwapSupportedNetworksQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../../../../common/slices/api.slice'
 import {
-  useAccountsQuery //
+  useAccountsQuery, //
 } from '../../../../../../common/slices/api.slice.extra'
 
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../../../common/slices/constants'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
 // Hooks
 import {
-  useBalancesFetcher //
+  useBalancesFetcher, //
 } from '../../../../../../common/hooks/use-balances-fetcher'
 
 // Utils
 import Amount from '../../../../../../utils/amount'
 import { getLocale } from '../../../../../../../common/locale'
 import {
-  formatDateAsRelative //
+  formatDateAsRelative, //
 } from '../../../../../../utils/datetime-utils'
 import { getBalance } from '../../../../../../utils/balance-utils'
 import {
   getTokenPriceAmountFromRegistry,
   getTokenPriceFromRegistry,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 
 // Components
 import {
-  PopupModal //
+  PopupModal, //
 } from '../../../../../../components/desktop/popup-modals/index'
 import {
-  SelectAccount //
+  SelectAccount, //
 } from '../../../../composer_ui/select_token_modal/select_account/select_account'
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../../../../components/shared/bottom_sheet/bottom_sheet'
 import { MaxSlippage } from '../max_slippage/max_slippage'
 import {
-  InfoIconTooltip //
+  InfoIconTooltip, //
 } from '../../../../../../components/shared/info_icon_tooltip/info_icon_tooltip'
 import { Routes } from '../routes/routes'
 
@@ -79,13 +79,13 @@ import {
   FreeText,
   CaratRightIcon,
   ExpandRow,
-  ExpandButton
+  ExpandButton,
 } from './quote-info.style'
 import {
   Text,
   Row,
   Column,
-  HorizontalSpace
+  HorizontalSpace,
 } from '../../../../../../components/shared/style'
 import { BankIcon } from '../../shared-swap.styles'
 
@@ -115,7 +115,7 @@ export const QuoteInfo = (props: Props) => {
     selectedQuoteOptionId,
     onSelectQuoteOption,
     onChangeSlippageTolerance,
-    onChangeRecipient
+    onChangeRecipient,
   } = props
 
   // State
@@ -137,7 +137,7 @@ export const QuoteInfo = (props: Props) => {
   const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
     useBalancesFetcher({
       accounts,
-      networks
+      networks,
     })
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -146,19 +146,19 @@ export const QuoteInfo = (props: Props) => {
     !isLoadingBalances && toToken && fromToken && defaultFiatCurrency
       ? {
           ids: [getPriceIdForToken(toToken), getPriceIdForToken(fromToken)],
-          toCurrency: defaultFiatCurrency
+          toCurrency: defaultFiatCurrency,
         }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   const { data: txNetwork } = useGetNetworkQuery(
     fromToken
       ? {
           chainId: fromToken.chainId,
-          coin: fromToken.coin
+          coin: fromToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   // Methods
@@ -167,7 +167,7 @@ export const QuoteInfo = (props: Props) => {
       onChangeRecipient(account.accountId.address)
       setShowAccountSelector(false)
     },
-    [onChangeRecipient]
+    [onChangeRecipient],
   )
 
   const handleOnChangeSlippageTolerance = React.useCallback(
@@ -175,7 +175,7 @@ export const QuoteInfo = (props: Props) => {
       onChangeSlippageTolerance(slippage)
       setShowMaxSlippage(false)
     },
-    [onChangeSlippageTolerance]
+    [onChangeSlippageTolerance],
   )
 
   const handleOnChangeRoute = React.useCallback(
@@ -183,19 +183,19 @@ export const QuoteInfo = (props: Props) => {
       onSelectQuoteOption(id)
       setShowRoutes(false)
     },
-    [onSelectQuoteOption]
+    [onSelectQuoteOption],
   )
 
   // Memos & Computed
   const selectedQuoteOption = selectedQuoteOptionId
-    ? quoteOptions.find((option) => option.id === selectedQuoteOptionId) ||
-      quoteOptions[0]
+    ? quoteOptions.find((option) => option.id === selectedQuoteOptionId)
+      || quoteOptions[0]
     : quoteOptions[0]
 
   const toTokenPriceAmount =
-    spotPriceRegistry &&
-    toToken &&
-    getTokenPriceAmountFromRegistry(spotPriceRegistry, toToken)
+    spotPriceRegistry
+    && toToken
+    && getTokenPriceAmountFromRegistry(spotPriceRegistry, toToken)
 
   const swapRate: string = React.useMemo(() => {
     if (selectedQuoteOption === undefined) {
@@ -208,20 +208,20 @@ export const QuoteInfo = (props: Props) => {
         '$2',
         `${selectedQuoteOption.rate.format(6)} ${
           selectedQuoteOption.toToken.symbol
-        }`
+        }`,
       )
   }, [selectedQuoteOption])
 
   const coinGeckoDelta: Amount = React.useMemo(() => {
     if (
-      fromToken !== undefined &&
-      spotPriceRegistry &&
-      !getTokenPriceAmountFromRegistry(
+      fromToken !== undefined
+      && spotPriceRegistry
+      && !getTokenPriceAmountFromRegistry(
         spotPriceRegistry,
-        fromToken
-      ).isUndefined() &&
-      toTokenPriceAmount !== undefined &&
-      selectedQuoteOption !== undefined
+        fromToken,
+      ).isUndefined()
+      && toTokenPriceAmount !== undefined
+      && selectedQuoteOption !== undefined
     ) {
       // Exchange rate is the value <R> in the following equation:
       // 1 FROM = <R> TO
@@ -232,7 +232,7 @@ export const QuoteInfo = (props: Props) => {
       //   => <R> = (FROM/USD) / (TO/USD)
       const coinGeckoRate = getTokenPriceAmountFromRegistry(
         spotPriceRegistry,
-        fromToken
+        fromToken,
       ).div(toTokenPriceAmount)
 
       // Quote rate computation:
@@ -252,20 +252,20 @@ export const QuoteInfo = (props: Props) => {
     if (coinGeckoDelta.gte(0)) {
       return getLocale('braveSwapCoinGeckoCheaper').replace(
         '$1',
-        coinGeckoDelta.format(2)
+        coinGeckoDelta.format(2),
       )
     }
 
     if (coinGeckoDelta.gte(-1)) {
       return getLocale('braveSwapCoinGeckoWithin').replace(
         '$1',
-        coinGeckoDelta.times(-1).format(2)
+        coinGeckoDelta.times(-1).format(2),
       )
     }
 
     return getLocale('braveSwapCoinGeckoExpensive').replace(
       '$1',
-      coinGeckoDelta.times(-1).format(2)
+      coinGeckoDelta.times(-1).format(2),
     )
   }, [coinGeckoDelta])
 
@@ -290,15 +290,15 @@ export const QuoteInfo = (props: Props) => {
 
   const minimumReceived: string = React.useMemo(() => {
     if (
-      selectedQuoteOption === undefined ||
-      selectedQuoteOption.minimumToAmount === undefined
+      selectedQuoteOption === undefined
+      || selectedQuoteOption.minimumToAmount === undefined
     ) {
       return ''
     }
 
     return selectedQuoteOption.minimumToAmount.formatAsAsset(
       6,
-      selectedQuoteOption.toToken.symbol
+      selectedQuoteOption.toToken.symbol,
     )
   }, [selectedQuoteOption])
 
@@ -311,7 +311,7 @@ export const QuoteInfo = (props: Props) => {
       ...swapFees,
       effectiveFeePct: new Amount(swapFees.effectiveFeePct).format(6),
       discountPct: new Amount(swapFees.discountPct).format(6),
-      feePct: new Amount(swapFees.feePct).format(6)
+      feePct: new Amount(swapFees.feePct).format(6),
     }
   }, [swapFees])
 
@@ -323,7 +323,7 @@ export const QuoteInfo = (props: Props) => {
     // Converts executionDuration to milliseconds and creates a
     // past date from now to use as a relative time of execution.
     date.setTime(
-      date.getTime() - 1000 * Number(selectedQuoteOption.executionDuration)
+      date.getTime() - 1000 * Number(selectedQuoteOption.executionDuration),
     )
     return formatDateAsRelative(date, undefined, true)
   }, [selectedQuoteOption])
@@ -336,7 +336,7 @@ export const QuoteInfo = (props: Props) => {
       .filter((account) => account.accountId.coin === toToken.coin)
       .sort(function (a, b) {
         return new Amount(
-          getBalance(b.accountId, toToken, tokenBalancesRegistry)
+          getBalance(b.accountId, toToken, tokenBalancesRegistry),
         )
           .minus(getBalance(a.accountId, toToken, tokenBalancesRegistry))
           .toNumber()
@@ -365,15 +365,15 @@ export const QuoteInfo = (props: Props) => {
     accountsForReceivingToken,
     tokenBalancesRegistry,
     spotPriceRegistry,
-    handleSelectAccount
+    handleSelectAccount,
   ])
 
   const effectiveFeeAmount = braveFee && new Amount(braveFee.effectiveFeePct)
   const firstStep =
     selectedQuoteOption?.sources.find((source) =>
       source.includedSteps?.some(
-        (step) => step.type === BraveWallet.LiFiStepType.kCross
-      )
+        (step) => step.type === BraveWallet.LiFiStepType.kCross,
+      ),
     ) || selectedQuoteOption?.sources[0]
   const firstStepName = firstStep?.name ?? ''
   const firstStepIcon = firstStep ? getLPIcon(firstStep) : ''
@@ -385,9 +385,9 @@ export const QuoteInfo = (props: Props) => {
     async () =>
       PluralStringProxyImpl.getInstance().getPluralString(
         'braveWalletExchangeNamePlusSteps',
-        additionalRoutesLength
+        additionalRoutesLength,
       ),
-    [additionalRoutesLength]
+    [additionalRoutesLength],
   )
 
   return (
@@ -492,7 +492,7 @@ export const QuoteInfo = (props: Props) => {
                 >
                   {selectedQuoteOption.networkFee.formatAsAsset(
                     6,
-                    txNetwork.symbol
+                    txNetwork.symbol,
                   )}
                 </Text>
               </Row>
@@ -662,8 +662,8 @@ export const QuoteInfo = (props: Props) => {
                     <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
                   )}
 
-                  {braveFee.discountCode !==
-                    BraveWallet.SwapDiscountCode.kNone && (
+                  {braveFee.discountCode
+                    !== BraveWallet.SwapDiscountCode.kNone && (
                     <>
                       <BraveFeeDiscounted
                         textSize='12px'
@@ -702,7 +702,7 @@ export const QuoteInfo = (props: Props) => {
                 >
                   {selectedQuoteOption.networkFee.formatAsAsset(
                     6,
-                    txNetwork.symbol
+                    txNetwork.symbol,
                   )}
                 </Text>
               </Row>

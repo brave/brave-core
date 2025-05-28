@@ -20,18 +20,18 @@ import { usePasswordAttempts } from '../../../../common/hooks/use-password-attem
 
 // components
 import {
-  PasswordInput //
+  PasswordInput, //
 } from '../../../../components/shared/password-input/password-input-v2'
 
 // style
 import { Column, Row } from '../../../../components/shared/style'
 import {
   NextButtonRow,
-  ContinueButton
+  ContinueButton,
 } from '../../onboarding/onboarding.style'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding_content_layout/content_layout'
 import {
-  InputLabel //
+  InputLabel, //
 } from '../../../../components/shared/password-input/password-input-v2.style'
 
 export const BackupEnterPassword: React.FC = () => {
@@ -70,9 +70,8 @@ export const BackupEnterPassword: React.FC = () => {
     setPassword('')
     setIsCorrectPassword(true)
 
-    const { mnemonic } = await getAPIProxy().keyringService.getWalletMnemonic(
-      password
-    )
+    const { mnemonic } =
+      await getAPIProxy().keyringService.getWalletMnemonic(password)
     if (mnemonic) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic }))
       history.push(WalletRoutes.BackupExplainRecoveryPhrase)
@@ -80,7 +79,7 @@ export const BackupEnterPassword: React.FC = () => {
   }
 
   const handlePasswordKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
+    event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (event.key === 'Enter') {
       onSubmit()

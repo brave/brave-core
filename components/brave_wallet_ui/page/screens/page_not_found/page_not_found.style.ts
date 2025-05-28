@@ -9,7 +9,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 // Assets
 import {
   PageNotFoundIconLight,
-  PageNotFoundIconDark
+  PageNotFoundIconDark,
 } from '../../../assets/svg-icons/page_not_found_icons'
 
 // Shared Styles
@@ -29,7 +29,8 @@ export const ContentWrapper = styled(Column)`
   background-color: ${leo.color.container.background};
   border-radius: ${leo.radius.xl};
   max-width: 640px;
-  box-shadow: 0px ${leo.elevation.xxs} 0px 0px ${leo.color.elevation.primary},
+  box-shadow:
+    0px ${leo.elevation.xxs} 0px 0px ${leo.color.elevation.primary},
     0px ${leo.elevation.xxs} ${leo.elevation.xs} 0px
       ${leo.color.elevation.secondary};
 `

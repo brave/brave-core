@@ -21,7 +21,7 @@ export const ActionWrapper = styled.button`
 `
 
 export const RightArrow = styled(Icon).attrs({
-  name: 'arrow-right'
+  name: 'arrow-right',
 })`
   --leo-icon-size: 24px;
   margin-left: 8px;

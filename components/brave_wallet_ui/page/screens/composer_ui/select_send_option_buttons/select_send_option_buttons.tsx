@@ -16,7 +16,7 @@ import { Row } from '../../../../components/shared/style'
 import {
   Button,
   ButtonText,
-  LineIndicator
+  LineIndicator,
 } from './select_send_option_buttons.style'
 
 interface Props {

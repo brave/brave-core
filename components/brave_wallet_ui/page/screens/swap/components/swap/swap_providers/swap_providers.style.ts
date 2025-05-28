@@ -26,7 +26,7 @@ export const ProviderIcon = styled.img`
 `
 
 export const InfoIcon = styled(Icon).attrs({
-  name: 'info-outline'
+  name: 'info-outline',
 })`
   --leo-icon-size: 15px;
   color: ${leo.color.icon.default};

@@ -24,7 +24,7 @@ import {
   makeBraveWalletServiceTokenObserver,
   makeJsonRpcServiceObserver,
   makeKeyringServiceObserver,
-  makeTxServiceObserver
+  makeTxServiceObserver,
 } from '../common/wallet_api_proxy_observers'
 
 export const store = configureStore({
@@ -33,12 +33,12 @@ export const store = configureStore({
     wallet: walletReducer,
     accountsTab: accountsTabReducer,
     ui: uiReducer,
-    [walletApi.reducerPath]: walletApi.reducer
+    [walletApi.reducerPath]: walletApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
-    }).concat(walletAsyncHandler, walletApi.middleware)
+      serializableCheck: false,
+    }).concat(walletAsyncHandler, walletApi.middleware),
 })
 
 export type WalletPageRootStore = typeof store
@@ -50,7 +50,7 @@ proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
 proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
 proxy.addBraveWalletServiceTokenObserver(
-  makeBraveWalletServiceTokenObserver(store)
+  makeBraveWalletServiceTokenObserver(store),
 )
 
 export const walletPageApiProxy = proxy

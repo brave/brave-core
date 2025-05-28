@@ -22,12 +22,12 @@ const defaultState: AccountsTabState = {
   selectedAccount: undefined,
   showAccountModal: false,
   accountModalType: 'deposit',
-  accountToRemove: undefined
+  accountToRemove: undefined,
 }
 
 export const AccountsTabActions = {
   setSelectedAccount: createAction<BraveWallet.AccountInfo | undefined>(
-    'setSelectedAccount'
+    'setSelectedAccount',
   ),
   setShowAccountModal: createAction<boolean>('setShowAccountModal'),
   setAccountModalType: createAction<AccountModalTypes>('setAccountModalType'),
@@ -37,7 +37,7 @@ export const AccountsTabActions = {
         name: string
       }
     | undefined
-  >('setAccountToRemove')
+  >('setAccountToRemove'),
 }
 
 export const createAccountsTabReducer = (initialState: AccountsTabState) => {
@@ -47,13 +47,13 @@ export const createAccountsTabReducer = (initialState: AccountsTabState) => {
     AccountsTabActions.setSelectedAccount,
     (
       state: AccountsTabState,
-      payload: BraveWallet.AccountInfo | undefined
+      payload: BraveWallet.AccountInfo | undefined,
     ): AccountsTabState => {
       return {
         ...state,
-        selectedAccount: payload
+        selectedAccount: payload,
       }
-    }
+    },
   )
 
   reducer.on(
@@ -61,9 +61,9 @@ export const createAccountsTabReducer = (initialState: AccountsTabState) => {
     (state: AccountsTabState, payload: boolean): AccountsTabState => {
       return {
         ...state,
-        showAccountModal: payload
+        showAccountModal: payload,
       }
-    }
+    },
   )
 
   reducer.on(
@@ -71,9 +71,9 @@ export const createAccountsTabReducer = (initialState: AccountsTabState) => {
     (state: AccountsTabState, payload: AccountModalTypes): AccountsTabState => {
       return {
         ...state,
-        accountModalType: payload
+        accountModalType: payload,
       }
-    }
+    },
   )
 
   reducer.on(
@@ -85,13 +85,13 @@ export const createAccountsTabReducer = (initialState: AccountsTabState) => {
             accountId: BraveWallet.AccountId
             name: string
           }
-        | undefined
+        | undefined,
     ): AccountsTabState => {
       return {
         ...state,
-        accountToRemove: payload
+        accountToRemove: payload,
       }
-    }
+    },
   )
 
   return reducer

@@ -22,7 +22,7 @@ export const SearchInput = (props: Props) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange],
   )
 
   return (

@@ -63,7 +63,7 @@ const SwapProviderMetadata = {
   [BraveWallet.SwapProvider.kZeroEx]: ZeroXIcon,
   [BraveWallet.SwapProvider.kJupiter]: JupiterIcon,
   [BraveWallet.SwapProvider.kLiFi]: LiFiIcon,
-  [BraveWallet.SwapProvider.kSquid]: SquidIncon
+  [BraveWallet.SwapProvider.kSquid]: SquidIncon,
 }
 
 type LPMetadataType = {
@@ -133,7 +133,7 @@ const LPMetadata: LPMetadataType = {
   'Uniswap_V2': UniswapIcon,
   'Uniswap_V3': UniswapIcon,
   'WaultSwap': WaultSwapIcon,
-  'WOOFi': WOOFiIcon
+  'WOOFi': WOOFiIcon,
 }
 
 export { LPMetadata, SwapProviderMetadata }

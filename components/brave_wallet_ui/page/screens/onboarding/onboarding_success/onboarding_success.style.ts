@@ -13,7 +13,7 @@ import CompleteGraphicDark from './images/complete_dark.svg'
 export const IntroImg = styled.img.attrs({
   src: window.matchMedia('(prefers-color-scheme: dark)').matches
     ? CompleteGraphicDark
-    : CompleteGraphicLight
+    : CompleteGraphicLight,
 })`
   width: 336px;
   height: 264px;

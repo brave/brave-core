@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { VerifyRecoveryPhrase } from './verify_recovery_phrase'
 
@@ -17,7 +17,7 @@ export const _VerifyRecoveryPhrase = {
         <VerifyRecoveryPhrase />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: VerifyRecoveryPhrase }

@@ -12,7 +12,7 @@ import HardwareGraphicDarkSvg from './images/hardware_graphic_dark.svg'
 export const HardwareGraphic = styled.img.attrs({
   src: window.matchMedia('(prefers-color-scheme: dark)').matches
     ? HardwareGraphicDarkSvg
-    : HardwareGraphicLightSvg
+    : HardwareGraphicLightSvg,
 })`
   width: 100%;
   height: auto;

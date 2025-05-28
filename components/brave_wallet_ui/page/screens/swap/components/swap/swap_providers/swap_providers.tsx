@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
@@ -20,12 +20,12 @@ import { getLocale } from '../../../../../../../common/locale'
 import {
   BraveWallet,
   SupportedSwapProviders,
-  SwapProviderNameMapping
+  SwapProviderNameMapping,
 } from '../../../../../../constants/types'
 
 // Components
 import {
-  InfoIconTooltip //
+  InfoIconTooltip, //
 } from '../../../../../../components/shared/info_icon_tooltip/info_icon_tooltip'
 
 // Styles
@@ -35,7 +35,7 @@ import {
   HorizontalSpace,
   LeoSquaredButton,
   Row,
-  Text
+  Text,
 } from '../../../../../../components/shared/style'
 
 interface Props {
@@ -59,8 +59,8 @@ export const SwapProviders = (props: Props) => {
   const providerList = React.useMemo(() => {
     return [...SupportedSwapProviders].sort(
       (a, b) =>
-        Number(availableProvidersForSwap.includes(b)) -
-        Number(availableProvidersForSwap.includes(a))
+        Number(availableProvidersForSwap.includes(b))
+        - Number(availableProvidersForSwap.includes(a)),
     )
   }, [availableProvidersForSwap])
 

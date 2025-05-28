@@ -12,11 +12,11 @@ import {
   Column,
   Row,
   AssetIconFactory,
-  AssetIconProps
+  AssetIconProps,
 } from '../../../../../../components/shared/style'
 import { LPIcon } from '../../shared-swap.styles'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled(Column)`
@@ -51,7 +51,7 @@ export const IconsWrapper = styled(Column)`
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '32px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const NetworkIconWrapper = styled(Column)`
@@ -63,7 +63,7 @@ export const NetworkIconWrapper = styled(Column)`
 `
 
 export const CaratDownIcon = styled(Icon).attrs({
-  name: 'carat-down'
+  name: 'carat-down',
 })<{ isExpanded: boolean }>`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.default};
@@ -77,7 +77,7 @@ export const GasFeeBubble = styled(Row)`
 `
 
 export const GasIcon = styled(Icon).attrs({
-  name: 'search-fuel-tank'
+  name: 'search-fuel-tank',
 })`
   --leo-icon-size: 14px;
   color: ${leo.color.icon.default};
@@ -133,7 +133,7 @@ export const Dot = styled.div`
 `
 
 export const ArrowIcon = styled(Icon).attrs({
-  name: 'arrow-right'
+  name: 'arrow-right',
 })`
   --leo-icon-size: 14px;
   color: ${leo.color.icon.default};

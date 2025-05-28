@@ -22,7 +22,7 @@ interface SkipWarningDialogProps {
 export const SkipWarningDialog = ({
   isOpen,
   onBack,
-  onSkip
+  onSkip,
 }: SkipWarningDialogProps) => {
   return (
     <SkipDialog

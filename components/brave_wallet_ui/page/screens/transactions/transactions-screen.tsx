@@ -9,7 +9,7 @@ import { useHistory, useLocation } from 'react-router'
 // types
 import {
   BraveWallet,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
 } from '../../../constants/types'
 
 // options
@@ -21,14 +21,14 @@ import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/ent
 import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.extra'
 import {
   selectAllUserAssetsFromQueryResult,
-  selectAllBlockchainTokensFromQueryResult
+  selectAllBlockchainTokensFromQueryResult,
 } from '../../../common/slices/entities/blockchain-token.entity'
 import {
-  networkEntityAdapter //
+  networkEntityAdapter, //
 } from '../../../common/slices/entities/network.entity'
 import {
   filterTransactionsBySearchValue,
-  makeSearchableTransaction
+  makeSearchableTransaction,
 } from '../../../utils/search-utils'
 
 // hooks
@@ -37,38 +37,38 @@ import {
   useGetNetworksRegistryQuery,
   useGetUserTokensRegistryQuery,
   useGetTokensRegistryQuery,
-  useGetTransactionsQuery
+  useGetTransactionsQuery,
 } from '../../../common/slices/api.slice'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // components
 import {
-  PortfolioTransactionItem //
+  PortfolioTransactionItem, //
 } from '../../../components/desktop/portfolio_transaction_item/portfolio_transaction_item'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
-  ActivityPageHeader //
+  ActivityPageHeader, //
 } from '../../../components/desktop/card-headers/activity_page_header'
 import { SearchBar } from '../../../components/shared/search-bar'
 import {
-  TransactionDetailsModal //
+  TransactionDetailsModal, //
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // styles
 import { Column, Text, VerticalSpacer } from '../../../components/shared/style'
 import {
   LoadingSkeletonStyleProps,
-  Skeleton
+  Skeleton,
 } from '../../../components/shared/loading-skeleton/styles'
 import { EmptyTransactionsIcon } from './transaction-screen.styles'
 
 const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
   width: '100%',
   height: '60px',
-  enableAnimation: true
+  enableAnimation: true,
 }
 
 interface Props {
@@ -96,45 +96,45 @@ export const TransactionsScreen = (props: Props) => {
       address: searchParams.get('address'),
       chainId: searchParams.get('chainId'),
       chainCoinType:
-        Number(searchParams.get('chainCoinType')) || BraveWallet.CoinType.ETH
+        Number(searchParams.get('chainCoinType')) || BraveWallet.CoinType.ETH,
     }
   }, [history.location.search])
 
   // queries
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
-    isLoading: isLoadingAccounts
+    isLoading: isLoadingAccounts,
   } = useGetAccountInfosRegistryQuery(undefined)
 
   const { account: foundAccountFromParam } = useAccountFromAddressQuery(
-    address ?? undefined
+    address ?? undefined,
   )
 
   const { data: knownTokensList } = useGetTokensRegistryQuery(undefined, {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
-      data: selectAllBlockchainTokensFromQueryResult(res)
-    })
+      data: selectAllBlockchainTokensFromQueryResult(res),
+    }),
   })
 
   const { data: userTokensList } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
-      data: selectAllUserAssetsFromQueryResult(res)
-    })
+      data: selectAllUserAssetsFromQueryResult(res),
+    }),
   })
 
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   const specificNetworkFromParam =
-    chainId &&
-    chainId !== AllNetworksOption.chainId &&
-    chainCoinType !== undefined &&
-    networksRegistry
+    chainId
+    && chainId !== AllNetworksOption.chainId
+    && chainCoinType !== undefined
+    && networksRegistry
       ? networksRegistry.entities[
           networkEntityAdapter.selectId({
             chainId,
-            coin: chainCoinType
+            coin: chainCoinType,
           })
         ]
       : undefined
@@ -151,7 +151,7 @@ export const TransactionsScreen = (props: Props) => {
         ? {
             accountId: foundAccountFromParam.accountId,
             coinType: foundAccountFromParam.accountId.coin,
-            chainId: chainId !== AllNetworksOption.chainId ? chainId : null
+            chainId: chainId !== AllNetworksOption.chainId ? chainId : null,
           }
         : {
             accountId: null,
@@ -162,24 +162,24 @@ export const TransactionsScreen = (props: Props) => {
             coinType:
               foundNetworkFromParam?.chainId !== AllNetworksOption.chainId
                 ? foundNetworkFromParam?.coin || null
-                : null
-          }
+                : null,
+          },
     )
 
   const selectedTransaction = txsForSelectedChain.find(
-    (tx) => tx.id === selectedTransactionId
+    (tx) => tx.id === selectedTransactionId,
   )
 
   // Methods
   const onClickTransaction = React.useCallback(
     (
-      tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>
+      tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>,
     ): void => {
       history.push(
-        window.location.pathname + window.location.search + '#' + tx.id
+        window.location.pathname + window.location.search + '#' + tx.id,
       )
     },
-    [history]
+    [history],
   )
 
   // Memos
@@ -199,14 +199,14 @@ export const TransactionsScreen = (props: Props) => {
         tx,
         combinedTokensListForSelectedChain,
         networksRegistry,
-        accountInfosRegistry
+        accountInfosRegistry,
       )
     })
   }, [
     txsForSelectedChain,
     combinedTokensListForSelectedChain,
     networksRegistry,
-    accountInfosRegistry
+    accountInfosRegistry,
   ])
 
   const filteredTransactions = React.useMemo(() => {
@@ -216,7 +216,7 @@ export const TransactionsScreen = (props: Props) => {
 
     return filterTransactionsBySearchValue(
       searchableTransactions,
-      searchValue.toLowerCase()
+      searchValue.toLowerCase(),
     )
   }, [searchValue, searchableTransactions])
 
@@ -288,9 +288,9 @@ export const TransactionsScreen = (props: Props) => {
               </Column>
             )}
 
-            {txsForSelectedChain &&
-              txsForSelectedChain.length !== 0 &&
-              filteredTransactions.length === 0 && (
+            {txsForSelectedChain
+              && txsForSelectedChain.length !== 0
+              && filteredTransactions.length === 0 && (
                 <Column
                   fullHeight
                   padding={isPanel ? '32px 0px 64px 0px' : '0px'}
@@ -312,7 +312,7 @@ export const TransactionsScreen = (props: Props) => {
     onClickTransaction,
     searchValue,
     txsForSelectedChain,
-    isLoadingAccounts
+    isLoadingAccounts,
   ])
 
   // render

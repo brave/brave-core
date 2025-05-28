@@ -7,7 +7,7 @@ import Icon from '@brave/leo/react/icon'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
@@ -21,7 +21,7 @@ import {
   LeoSquaredButton,
   Row,
   Text,
-  VerticalSpace
+  VerticalSpace,
 } from '../../../../../../components/shared/style'
 
 const SUGGESTED_SLIPPAGE = '0.5'
@@ -43,7 +43,7 @@ export const MaxSlippage = (props: Props) => {
   // State
   const [customSlippageTolerance, setCustomSlippageTolerance] =
     React.useState<string>(
-      slippageTolerance === SUGGESTED_SLIPPAGE ? '' : slippageTolerance
+      slippageTolerance === SUGGESTED_SLIPPAGE ? '' : slippageTolerance,
     )
   const [slippageOption, setSlippageOption] = React.useState<
     'custom' | 'suggested'
@@ -107,7 +107,7 @@ export const MaxSlippage = (props: Props) => {
         >
           {getLocale('braveWalletMainstreamAssetPairs').replace(
             '$1',
-            MAINSTREAM_ASSET_PAIRS_SLIPPAGE
+            MAINSTREAM_ASSET_PAIRS_SLIPPAGE,
           )}
         </Text>
         <Text
@@ -118,7 +118,7 @@ export const MaxSlippage = (props: Props) => {
         >
           {getLocale('braveWalletStablecoinPairs').replace(
             '$1',
-            STABLECOIN_PAIRS_SLIPPAGE
+            STABLECOIN_PAIRS_SLIPPAGE,
           )}
         </Text>
         <VerticalSpace space='8px' />
@@ -136,7 +136,10 @@ export const MaxSlippage = (props: Props) => {
           onClick={() => setSlippageOption('suggested')}
           isSelected={slippageOption === 'suggested'}
         >
-          <Column alignItems='flex-start' gap='8px'>
+          <Column
+            alignItems='flex-start'
+            gap='8px'
+          >
             <Text
               isBold={true}
               textSize='12px'
@@ -165,7 +168,10 @@ export const MaxSlippage = (props: Props) => {
           onClick={() => setSlippageOption('custom')}
           isSelected={slippageOption === 'custom'}
         >
-          <Column alignItems='flex-start' gap='8px'>
+          <Column
+            alignItems='flex-start'
+            gap='8px'
+          >
             <Text
               isBold={true}
               textSize='12px'

@@ -10,7 +10,7 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Hooks
 import {
-  useGetSwapSupportedNetworksQuery //
+  useGetSwapSupportedNetworksQuery, //
 } from '../../../../../../common/slices/api.slice'
 
 // Types
@@ -18,7 +18,7 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  NetworkListButton //
+  NetworkListButton, //
 } from '../../buttons/network-list-button/network-list-button'
 
 // Styled Components
@@ -28,7 +28,7 @@ import {
   // VerticalDivider,
   VerticalSpacer,
   IconButton,
-  Icon
+  Icon,
 } from '../../shared-swap.styles'
 
 interface Props {

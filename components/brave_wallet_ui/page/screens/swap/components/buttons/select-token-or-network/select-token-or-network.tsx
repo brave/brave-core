@@ -13,10 +13,10 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../../../../components/shared/create-placeholder-icon'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../../components/shared/create-network-icon/index'
 
 // Styled Components
@@ -25,16 +25,16 @@ import {
   ButtonIcon,
   FuelTank,
   GasBubble,
-  SelectTokenButtonStyleProps
+  SelectTokenButtonStyleProps,
 } from './select-token-or-network.style'
 import {
   Text,
   HorizontalSpacer,
   Row,
-  HiddenResponsiveRow
+  HiddenResponsiveRow,
 } from '../../shared-swap.styles'
 import {
-  AssetIcon //
+  AssetIcon, //
 } from '../../../../composer_ui/shared_composer.style'
 
 interface Props extends SelectTokenButtonStyleProps {
@@ -61,7 +61,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
     isHeader,
     asset,
     network,
-    iconType
+    iconType,
   } = props
 
   // Memos
@@ -76,7 +76,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, {
       size: buttonSize === 'small' || buttonSize === 'medium' ? 'small' : 'big',
       marginLeft: 0,
-      marginRight: 8
+      marginRight: 8,
     })
   }, [buttonSize])
 

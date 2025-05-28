@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { BraveWallet } from '../../../constants/types'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../components/shared/loading-skeleton/index'
 
 const StyledWrapper = styled.div`
@@ -62,7 +62,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const fetchBalance = React.useCallback(async () => {
     setLoading(true)
     const result = await getAPIProxy().bitcoinWalletService.getBalance(
-      props.accountId
+      props.accountId,
     )
     setBalance(result.balance || undefined)
     setLoading(false)
@@ -88,19 +88,19 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <button onClick={fetchBalance}>Reload</button>
           <h3>balance: {balance?.totalBalance.toString()}</h3>
           <ul>
-            {balance?.balances &&
-              Object.entries(balance.balances as { [key: string]: BigInt }).map(
-                ([address, balance]) => {
-                  return (
-                    <li key={address}>
-                      <AddressLine>
-                        <Address>{address}</Address>
-                        <Balance>{balance.toString()}</Balance>
-                      </AddressLine>
-                    </li>
-                  )
-                }
-              )}
+            {balance?.balances
+              && Object.entries(
+                balance.balances as { [key: string]: BigInt },
+              ).map(([address, balance]) => {
+                return (
+                  <li key={address}>
+                    <AddressLine>
+                      <Address>{address}</Address>
+                      <Balance>{balance.toString()}</Balance>
+                    </AddressLine>
+                  </li>
+                )
+              })}
           </ul>
         </>
       )}
@@ -210,8 +210,8 @@ export const DevBitcoin = () => {
         .allAccounts
       setAccounts(
         allAccounts.accounts.filter(
-          (acc) => acc.accountId.coin === BraveWallet.CoinType.BTC
-        )
+          (acc) => acc.accountId.coin === BraveWallet.CoinType.BTC,
+        ),
       )
     }
 

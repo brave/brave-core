@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { Column, Row } from '../../../components/shared/style'
 
@@ -55,7 +55,7 @@ export const LoaderText = styled.p`
 `
 
 export const Loader = styled(ProgressRing).attrs({
-  mode: 'indeterminate'
+  mode: 'indeterminate',
 })`
   --leo-progressring-size: 32px;
 `
@@ -101,7 +101,7 @@ export const DropdownRow = styled(Row)`
 `
 
 export const Dropdown = styled(LeoDropdown).attrs({
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal'
+  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
 })`
   width: unset;
   color: ${color.text.primary};

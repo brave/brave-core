@@ -11,7 +11,7 @@ import { useHistory, useLocation } from 'react-router'
 // Selectors
 import {
   useSafeUISelector,
-  useSafeWalletSelector
+  useSafeWalletSelector,
 } from '../../../../common/hooks/use-safe-selector'
 import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 
@@ -22,7 +22,7 @@ import {
   CoinTypesMap,
   BraveWallet,
   BaseTransactionParams,
-  AmountValidationErrorType
+  AmountValidationErrorType,
 } from '../../../../constants/types'
 
 // Constants
@@ -35,15 +35,15 @@ import { getBalance } from '../../../../utils/balance-utils'
 import { isValidFilAddress } from '../../../../utils/address-utils'
 import { makeSendRoute } from '../../../../utils/routes-utils'
 import {
-  selectAllVisibleUserAssetsFromQueryResult //
+  selectAllVisibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
 import {
-  getDominantColorFromImageURL //
+  getDominantColorFromImageURL, //
 } from '../../../../utils/style.utils'
 
 // Hooks
 import {
-  useScopedBalanceUpdater //
+  useScopedBalanceUpdater, //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import { useModal } from '../../../../common/hooks/useOnClickOutside'
 import { useQuery } from '../../../../common/hooks/use-query'
@@ -60,42 +60,42 @@ import {
   useSendBtcTransactionMutation,
   useSendZecTransactionMutation,
   useSendCardanoTransactionMutation,
-  useGetZCashTransactionTypeQuery
+  useGetZCashTransactionTypeQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  useAccountFromAddressQuery //
+  useAccountFromAddressQuery, //
 } from '../../../../common/slices/api.slice.extra'
 import {
-  useIsAccountSyncing //
+  useIsAccountSyncing, //
 } from '../../../../common/hooks/use_is_account_syncing'
 
 // Styled Components
 import { InputRow, ToText, ToRow } from './send.style'
 import {
   ToSectionWrapper,
-  ReviewButtonRow
+  ReviewButtonRow,
 } from '../../composer_ui/shared_composer.style'
 import { Column, LeoSquaredButton } from '../../../../components/shared/style'
 
 // Components
 import {
-  SelectAddressModal //
+  SelectAddressModal, //
 } from '../components/select_address_modal/select_address_modal'
 import {
-  SelectTokenModal //
+  SelectTokenModal, //
 } from '../../composer_ui/select_token_modal/select_token_modal'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
-  PanelActionHeader //
+  PanelActionHeader, //
 } from '../../../../components/desktop/card-headers/panel-action-header'
 import {
-  OrdinalsWarningMessage //
+  OrdinalsWarningMessage, //
 } from '../components/ordinals-warning-message/ordinals-warning-message'
 import {
-  SelectAddressButton //
+  SelectAddressButton, //
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
 
@@ -121,12 +121,12 @@ export const SendScreen = React.memo((props: Props) => {
   const { data: networks = [] } = useGetVisibleNetworksQuery()
   const networkFromParams = React.useMemo(
     () => networks.find((network) => network.chainId === chainIdFromParams),
-    [networks, chainIdFromParams]
+    [networks, chainIdFromParams],
   )
 
   // State
   const [sendAmount, setSendAmount] = React.useState<string>(
-    selectedSendOption === '#nft' ? '1' : ''
+    selectedSendOption === '#nft' ? '1' : '',
   )
   const [sendingMaxAmount, setSendingMaxAmount] = React.useState<boolean>(false)
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
@@ -139,7 +139,7 @@ export const SendScreen = React.memo((props: Props) => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
-    WalletSelectors.isZCashShieldedTransactionsEnabled
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
 
   // Mutations
@@ -157,23 +157,23 @@ export const SendScreen = React.memo((props: Props) => {
   // Queries
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: (result) => ({
-      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
-    })
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result),
+    }),
   })
 
   const {
-    data: getZCashTransactionTypeResult = { txType: null, error: null }
+    data: getZCashTransactionTypeResult = { txType: null, error: null },
   } = useGetZCashTransactionTypeQuery(
-    networkFromParams?.coin === BraveWallet.CoinType.ZEC &&
-      accountFromParams &&
-      toAddressOrUrl
+    networkFromParams?.coin === BraveWallet.CoinType.ZEC
+      && accountFromParams
+      && toAddressOrUrl
       ? {
           chainId: networkFromParams.chainId,
           accountId: accountFromParams.accountId,
           useShieldedPool: query.get('isShielded') === 'true',
-          address: toAddressOrUrl
+          address: toAddressOrUrl,
         }
-      : skipToken
+      : skipToken,
   )
 
   const tokenFromParams = React.useMemo(() => {
@@ -191,25 +191,25 @@ export const SendScreen = React.memo((props: Props) => {
 
     return userVisibleTokensInfo.find((token) =>
       tokenId
-        ? token.chainId === networkFromParams.chainId &&
-          token.contractAddress.toLowerCase() ===
-            contractOrSymbolFromParams.toLowerCase() &&
-          token.tokenId === tokenId &&
-          token.isShielded === isShielded
-        : (token.chainId === networkFromParams.chainId &&
-            token.contractAddress.toLowerCase() ===
-              contractOrSymbolFromParams.toLowerCase()) ||
-          (token.chainId === networkFromParams.chainId &&
-            token.contractAddress === '' &&
-            token.symbol.toLowerCase() ===
-              contractOrSymbolFromParams.toLowerCase() &&
-            token.isShielded === isShielded)
+        ? token.chainId === networkFromParams.chainId
+          && token.contractAddress.toLowerCase()
+            === contractOrSymbolFromParams.toLowerCase()
+          && token.tokenId === tokenId
+          && token.isShielded === isShielded
+        : (token.chainId === networkFromParams.chainId
+            && token.contractAddress.toLowerCase()
+              === contractOrSymbolFromParams.toLowerCase())
+          || (token.chainId === networkFromParams.chainId
+            && token.contractAddress === ''
+            && token.symbol.toLowerCase()
+              === contractOrSymbolFromParams.toLowerCase()
+            && token.isShielded === isShielded),
     )
   }, [
     userVisibleTokensInfo,
     query,
     networkFromParams,
-    contractOrSymbolFromParams
+    contractOrSymbolFromParams,
   ])
 
   const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
@@ -218,9 +218,9 @@ export const SendScreen = React.memo((props: Props) => {
         ? {
             network: networkFromParams,
             accounts: [accountFromParams],
-            tokens: [tokenFromParams]
+            tokens: [tokenFromParams],
           }
-        : skipToken
+        : skipToken,
     )
 
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
@@ -247,7 +247,7 @@ export const SendScreen = React.memo((props: Props) => {
       : getBalance(
           accountFromParams.accountId,
           tokenFromParams,
-          tokenBalancesRegistry
+          tokenBalancesRegistry,
         )
 
   const insufficientFundsError = React.useMemo((): boolean => {
@@ -256,7 +256,7 @@ export const SendScreen = React.memo((props: Props) => {
     }
 
     const amountWei = new Amount(sendAmount).multiplyByDecimals(
-      tokenFromParams.decimals
+      tokenFromParams.decimals,
     )
 
     if (amountWei.isZero()) {
@@ -271,9 +271,9 @@ export const SendScreen = React.memo((props: Props) => {
   }, [tokenFromParams?.logo])
 
   const needsAccountSelected =
-    accountIdFromParams === undefined &&
-    contractOrSymbolFromParams !== undefined &&
-    chainIdFromParams !== undefined
+    accountIdFromParams === undefined
+    && contractOrSymbolFromParams !== undefined
+    && chainIdFromParams !== undefined
 
   // Methods
   const selectSendAsset = React.useCallback(
@@ -289,7 +289,7 @@ export const SendScreen = React.memo((props: Props) => {
         history.replace(makeSendRoute(asset, account))
       }
     },
-    [history]
+    [history],
   )
 
   const resetSendFields = React.useCallback(
@@ -303,7 +303,7 @@ export const SendScreen = React.memo((props: Props) => {
         history.push(WalletRoutes.Send)
       }
     },
-    [history]
+    [history],
   )
 
   const submitSend = React.useCallback(async () => {
@@ -325,7 +325,7 @@ export const SendScreen = React.memo((props: Props) => {
     const fromAccount: BaseTransactionParams['fromAccount'] = {
       accountId: accountFromParams.accountId,
       address: accountFromParams.address,
-      hardware: accountFromParams.hardware
+      hardware: accountFromParams.hardware,
     }
 
     const toAddress =
@@ -340,7 +340,7 @@ export const SendScreen = React.memo((props: Props) => {
           sendingMaxAmount,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex()
+            .toHex(),
         })
         resetSendFields()
         return
@@ -355,7 +355,7 @@ export const SendScreen = React.memo((props: Props) => {
             value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
             gasLimit: '',
             contractAddress: tokenFromParams.contractAddress,
-            data: []
+            data: [],
           })
           resetSendFields()
           return
@@ -370,18 +370,18 @@ export const SendScreen = React.memo((props: Props) => {
             gasLimit: '',
             contractAddress: tokenFromParams.contractAddress,
             tokenId: tokenFromParams.tokenId ?? '',
-            data: []
+            data: [],
           })
           resetSendFields()
           return
         }
 
         if (
-          (tokenFromParams.chainId ===
-            BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
-            tokenFromParams.chainId ===
-              BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
-          isValidFilAddress(toAddress)
+          (tokenFromParams.chainId
+            === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID
+            || tokenFromParams.chainId
+              === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID)
+          && isValidFilAddress(toAddress)
         ) {
           await sendETHFilForwarderTransfer({
             network: networkFromParams,
@@ -390,7 +390,7 @@ export const SendScreen = React.memo((props: Props) => {
             value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
             gasLimit: '',
             contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225',
-            data: []
+            data: [],
           })
           resetSendFields()
           return
@@ -404,7 +404,7 @@ export const SendScreen = React.memo((props: Props) => {
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
           gasLimit: '',
-          data: []
+          data: [],
         })
         resetSendFields()
         return
@@ -417,7 +417,7 @@ export const SendScreen = React.memo((props: Props) => {
           to: toAddress,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .format()
+            .format(),
         })
         resetSendFields()
         return
@@ -425,9 +425,9 @@ export const SendScreen = React.memo((props: Props) => {
 
       case BraveWallet.CoinType.SOL: {
         if (
-          tokenFromParams.contractAddress !== '' &&
-          !tokenFromParams.isErc20 &&
-          !tokenFromParams.isErc721
+          tokenFromParams.contractAddress !== ''
+          && !tokenFromParams.isErc20
+          && !tokenFromParams.isErc721
         ) {
           await sendSPLTransfer({
             network: networkFromParams,
@@ -440,7 +440,7 @@ export const SendScreen = React.memo((props: Props) => {
               : new Amount(sendAmount).toHex(),
             splTokenMintAddress: tokenFromParams.contractAddress,
             decimals: tokenFromParams.decimals,
-            isCompressedNft: tokenFromParams.isCompressed
+            isCompressedNft: tokenFromParams.isCompressed,
           })
           resetSendFields()
           return
@@ -452,7 +452,7 @@ export const SendScreen = React.memo((props: Props) => {
           to: toAddress,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex()
+            .toHex(),
         })
         resetSendFields()
         return
@@ -470,7 +470,7 @@ export const SendScreen = React.memo((props: Props) => {
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
-          memo: memoArray ? Array.from(memoArray) : undefined
+          memo: memoArray ? Array.from(memoArray) : undefined,
         })
         resetSendFields()
         return
@@ -484,7 +484,7 @@ export const SendScreen = React.memo((props: Props) => {
           sendingMaxAmount,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex()
+            .toHex(),
         })
         resetSendFields()
       }
@@ -508,7 +508,7 @@ export const SendScreen = React.memo((props: Props) => {
     sendSolTransaction,
     sendSPLTransfer,
     sendZecTransaction,
-    sendCardanoTransaction
+    sendCardanoTransaction,
   ])
 
   const handleFromAssetValueChange = React.useCallback(
@@ -516,14 +516,14 @@ export const SendScreen = React.memo((props: Props) => {
       setSendAmount(value)
       setSendingMaxAmount(maxValue)
     },
-    []
+    [],
   )
 
   const onSelectSendOption = React.useCallback(
     (option: SendPageTabHashes) => {
       resetSendFields(option)
     },
-    [resetSendFields]
+    [resetSendFields],
   )
 
   // Modals
@@ -531,14 +531,14 @@ export const SendScreen = React.memo((props: Props) => {
     closeModal: closeSelectTokenModal,
     openModal: openSelectTokenModal,
     ref: selectTokenModalRef,
-    isModalShown: showSelectTokenModal
+    isModalShown: showSelectTokenModal,
   } = useModal()
 
   const {
     closeModal: closeSelectAddressModal,
     openModal: openSelectAddressModal,
     ref: selectAddressModalRef,
-    isModalShown: showSelectAddressModal
+    isModalShown: showSelectAddressModal,
   } = useModal()
 
   // Effects
@@ -627,14 +627,14 @@ export const SendScreen = React.memo((props: Props) => {
                     onChange={setIsWarningAcknowledged}
                   />
                 )}
-                {isZCashShieldedTransactionsEnabled &&
-                  tokenFromParams?.coin === BraveWallet.CoinType.ZEC &&
-                  getZCashTransactionTypeResult &&
-                  toAddressOrUrl &&
-                  (getZCashTransactionTypeResult.txType ===
-                    BraveWallet.ZCashTxType.kTransparentToOrchard ||
-                    getZCashTransactionTypeResult.txType ===
-                      BraveWallet.ZCashTxType.kOrchardToOrchard) && (
+                {isZCashShieldedTransactionsEnabled
+                  && tokenFromParams?.coin === BraveWallet.CoinType.ZEC
+                  && getZCashTransactionTypeResult
+                  && toAddressOrUrl
+                  && (getZCashTransactionTypeResult.txType
+                    === BraveWallet.ZCashTxType.kTransparentToOrchard
+                    || getZCashTransactionTypeResult.txType
+                      === BraveWallet.ZCashTxType.kOrchardToOrchard) && (
                     <AddMemo
                       memoText={memoText}
                       onUpdateMemoText={setMemoText}
@@ -646,15 +646,15 @@ export const SendScreen = React.memo((props: Props) => {
                   onClick={submitSend}
                   size='large'
                   isDisabled={
-                    memoText.length > MAX_ZCASH_MEMO_LENGTH ||
-                    !toAddressOrUrl ||
-                    insufficientFundsError ||
-                    sendAmount === '' ||
-                    parseFloat(sendAmount) === 0 ||
-                    Boolean(sendAmountValidationError) ||
-                    (tokenFromParams?.coin === BraveWallet.CoinType.BTC &&
-                      !isWarningAcknowledged) ||
-                    isAccountSyncing
+                    memoText.length > MAX_ZCASH_MEMO_LENGTH
+                    || !toAddressOrUrl
+                    || insufficientFundsError
+                    || sendAmount === ''
+                    || parseFloat(sendAmount) === 0
+                    || Boolean(sendAmountValidationError)
+                    || (tokenFromParams?.coin === BraveWallet.CoinType.BTC
+                      && !isWarningAcknowledged)
+                    || isAccountSyncing
                   }
                 >
                   {getLocale(
@@ -662,8 +662,8 @@ export const SendScreen = React.memo((props: Props) => {
                       sendAmountValidationError,
                       insufficientFundsError,
                       isAccountSyncing,
-                      isShieldingFunds
-                    )
+                      isShieldingFunds,
+                    ),
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </LeoSquaredButton>
               </ReviewButtonRow>
@@ -707,7 +707,7 @@ export default SendScreen
  */
 function ethToWeiAmount(
   sendAmount: string,
-  selectedSendAsset: BraveWallet.BlockchainToken
+  selectedSendAsset: BraveWallet.BlockchainToken,
 ): Amount {
   return new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals)
 }
@@ -716,7 +716,7 @@ function getReviewButtonText(
   sendAmountValidationError: string | undefined,
   insufficientFundsError: boolean,
   isAccountSyncing?: boolean,
-  isShieldingFunds?: boolean
+  isShieldingFunds?: boolean,
 ) {
   if (sendAmountValidationError) {
     return 'braveWalletDecimalPlacesError'

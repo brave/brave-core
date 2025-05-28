@@ -61,7 +61,7 @@ export const Loader = styled(ProgressRing)`
 
 export const AutoSizerStyle = {
   width: '100%',
-  flex: 1
+  flex: 1,
 }
 
 export const SearchAndNetworkFilterRow = styled(Row)`

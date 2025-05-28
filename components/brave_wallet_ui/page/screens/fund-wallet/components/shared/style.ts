@@ -13,7 +13,7 @@ import Input from '@brave/leo/react/input'
 // Shared Styles
 import { WalletButton } from '../../../../../components/shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Label = styled.label`
@@ -61,7 +61,7 @@ export const ControlText = styled.h3`
 `
 
 export const Dialog = styled(LeoDialog).attrs({
-  size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal'
+  size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal',
 })`
   --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
   --leo-dialog-backdrop-filter: blur(8px);
@@ -110,7 +110,7 @@ export const Dropdown = styled(LeoDropdown)`
 
 export const SearchInput = styled(Input).attrs({
   mode: 'filled',
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal'
+  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
 })`
   width: 100%;
 `

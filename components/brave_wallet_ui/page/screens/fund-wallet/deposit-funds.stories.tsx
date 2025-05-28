@@ -16,7 +16,7 @@ export const _DepositFundsScreen = {
       </WalletPageStory>
     )
   },
-  name: 'Deposit Funds Screen'
+  name: 'Deposit Funds Screen',
 }
 
 export default { component: DepositFundsScreen }

@@ -18,23 +18,23 @@ import {
   useGetWalletsToImportQuery,
   useReportOnboardingActionMutation,
   useRestoreWalletMutation,
-  useSetAutoLockMinutesMutation
+  useSetAutoLockMinutesMutation,
 } from '../../../../common/slices/api.slice'
 import { clearClipboard } from '../../../../utils/copy-to-clipboard'
 import {
   normalizeRecoveryPhraseInput,
-  WORD_SEPARATOR
+  WORD_SEPARATOR,
 } from '../../../../utils/recovery-phrase-utils'
 
 // components
 import {
-  NewPasswordValues //
+  NewPasswordValues, //
 } from '../../../../components/shared/password-input/new-password-input'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 import {
-  OnboardingCreatingWallet //
+  OnboardingCreatingWallet, //
 } from '../creating_wallet/onboarding_creating_wallet'
 import { CreatePassword } from '../create_password/components/create_password'
 import { AutoLockSettings } from '../components/auto_lock_settings/auto_lock_settings'
@@ -47,7 +47,7 @@ import { Column, Row } from '../../../../components/shared/style'
 import {
   CheckboxText,
   InfoAlert,
-  RecoveryPhraseContainer
+  RecoveryPhraseContainer,
 } from './restore-from-recovery-phrase.style'
 import { AlertWrapper, ContinueButton } from '../onboarding.style'
 
@@ -77,13 +77,13 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   const [hasInvalidSeedError, setHasInvalidSeedError] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [autoLockDuration, setAutoLockDuration] = React.useState(
-    autoLockOptions[0].minutes
+    autoLockOptions[0].minutes,
   )
   const [isImportingFromLegacySeed, setIsImportingFromLegacySeed] =
     React.useState(false)
 
   const isCorrectPhraseLength = VALID_PHRASE_LENGTHS.includes(
-    phraseWords.length
+    phraseWords.length,
   )
 
   const alternateRecoveryPhraseLength = recoveryPhraseLength === 12 ? 24 : 12
@@ -144,7 +144,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       // clear any previous errors
       setHasInvalidSeedError(false)
     },
-    [recoveryPhraseLength]
+    [recoveryPhraseLength],
   )
 
   const onRecoveryPhraseLengthChange = React.useCallback(() => {
@@ -157,7 +157,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       setPassword(password)
       setIsPasswordValid(isValid)
     },
-    []
+    [],
   )
 
   const restoreWallet = React.useCallback(async () => {
@@ -172,7 +172,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       password,
       isLegacy: isImportingFromLegacySeed,
       // postpone until wallet onboarding success screen
-      completeWalletSetup: false
+      completeWalletSetup: false,
     }).unwrap()
 
     setHasInvalidSeedError(invalidMnemonic)
@@ -189,7 +189,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     recoveryPhrase,
     autoLockDuration,
     history,
-    setAutoLockMinutes
+    setAutoLockMinutes,
   ])
 
   const onContinue = React.useCallback(async () => {
@@ -232,7 +232,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   key={index}
                   mode='filled'
                   placeholder={getLocale(
-                    'braveWalletRecoveryPhraseWord'
+                    'braveWalletRecoveryPhraseWord',
                   ).replace('$1', `#${index + 1}`)}
                   value={phraseWords[index] || ''}
                   size='small'
@@ -258,7 +258,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           >
             {getLocale('braveWalletRestoreAlternateLength').replace(
               '$1',
-              alternateRecoveryPhraseLength.toString()
+              alternateRecoveryPhraseLength.toString(),
             )}
           </Button>
           <Row
@@ -275,7 +275,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   checked={isImportingFromLegacySeed}
                   onChange={() =>
                     setIsImportingFromLegacySeed(
-                      (isImportingFromLegacySeed) => !isImportingFromLegacySeed
+                      (isImportingFromLegacySeed) => !isImportingFromLegacySeed,
                     )
                   }
                 >
@@ -346,13 +346,13 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       <Column padding='24px 0 0 0'>
         <ContinueButton
           isDisabled={
-            !recoveryPhrase ||
-            (currentStep === 'phrase' &&
-              (!recoveryPhrase ||
-                !isCorrectPhraseLength ||
-                phraseWords.length !== recoveryPhraseLength)) ||
-            (currentStep === 'password' &&
-              (!isPasswordValid || hasInvalidSeedError))
+            !recoveryPhrase
+            || (currentStep === 'phrase'
+              && (!recoveryPhrase
+                || !isCorrectPhraseLength
+                || phraseWords.length !== recoveryPhraseLength))
+            || (currentStep === 'password'
+              && (!isPasswordValid || hasInvalidSeedError))
           }
           onClick={onContinue}
         >

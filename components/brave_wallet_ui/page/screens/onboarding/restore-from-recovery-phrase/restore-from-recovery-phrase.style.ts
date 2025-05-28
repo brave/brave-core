@@ -92,7 +92,7 @@ export const RecoveryTextInput = styled.input`
 
 export const InfoAlert = styled(Alert).attrs({
   mode: 'simple',
-  hasActions: true
+  hasActions: true,
 })<{ padding?: string } & AlertProps>`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
@@ -101,7 +101,7 @@ export const InfoAlert = styled(Alert).attrs({
 `
 
 InfoAlert.defaultProps = {
-  type: 'info'
+  type: 'info',
 }
 
 export const InputLabel = styled(Text)`

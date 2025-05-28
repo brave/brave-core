@@ -13,23 +13,23 @@ import { getLocale } from '../../../../../common/locale'
 import {
   useCreateWalletMutation,
   useReportOnboardingActionMutation,
-  useSetAutoLockMinutesMutation
+  useSetAutoLockMinutesMutation,
 } from '../../../../common/slices/api.slice'
 import {
-  useSafeWalletSelector //
+  useSafeWalletSelector, //
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 import { autoLockOptions } from '../../../../options/auto_lock_options'
 
 // components
 import {
-  NewPasswordValues //
+  NewPasswordValues, //
 } from '../../../../components/shared/password-input/new-password-input'
 import {
-  OnboardingCreatingWallet //
+  OnboardingCreatingWallet, //
 } from '../creating_wallet/onboarding_creating_wallet'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 import { CreatePassword } from './components/create_password'
 import { AutoLockSettings } from '../components/auto_lock_settings/auto_lock_settings'
@@ -43,7 +43,7 @@ interface OnboardingCreatePasswordProps {
 }
 
 export const OnboardingCreatePassword = ({
-  onWalletCreated
+  onWalletCreated,
 }: OnboardingCreatePasswordProps) => {
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
@@ -52,7 +52,7 @@ export const OnboardingCreatePassword = ({
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [autoLockDuration, setAutoLockDuration] = React.useState(
-    autoLockOptions[0].minutes
+    autoLockOptions[0].minutes,
   )
 
   // mutations
@@ -76,7 +76,7 @@ export const OnboardingCreatePassword = ({
       setPassword(password)
       setIsValid(isValid)
     },
-    []
+    [],
   )
 
   const onAutoLockDurationChange = async (autoLockDuration: number) => {

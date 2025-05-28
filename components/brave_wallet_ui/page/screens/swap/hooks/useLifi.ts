@@ -18,7 +18,7 @@ import { toMojoUnion } from '../../../../utils/mojo-utils'
 import {
   useGenerateSwapTransactionMutation,
   useSendEvmTransactionMutation,
-  useSendSolanaSerializedTransactionMutation
+  useSendSolanaSerializedTransactionMutation,
 } from '../../../../common/slices/api.slice'
 
 export function useLifi({
@@ -27,7 +27,7 @@ export function useLifi({
   fromNetwork,
   toAccountId,
   toToken,
-  slippageTolerance
+  slippageTolerance,
 }: Omit<SwapParams, 'toAmount' | 'fromAmount'>) {
   // mutations
   const [sendEvmTransaction] = useSendEvmTransactionMutation()
@@ -39,11 +39,11 @@ export function useLifi({
   const exchange = useCallback(
     async function (step: BraveWallet.LiFiStep) {
       if (
-        !fromAccount ||
-        !toAccountId ||
-        !fromToken ||
-        !toToken ||
-        !fromNetwork
+        !fromAccount
+        || !toAccountId
+        || !fromToken
+        || !toToken
+        || !fromNetwork
       ) {
         return
       }
@@ -55,13 +55,13 @@ export function useLifi({
       const fromAmountWrapped = new Amount(fromAmount)
       const toAmountWrapped = new Amount(toAmount)
       const isFromAmountEmpty =
-        fromAmountWrapped.isZero() ||
-        fromAmountWrapped.isNaN() ||
-        fromAmountWrapped.isUndefined()
+        fromAmountWrapped.isZero()
+        || fromAmountWrapped.isNaN()
+        || fromAmountWrapped.isUndefined()
       const isToAmountEmpty =
-        toAmountWrapped.isZero() ||
-        toAmountWrapped.isNaN() ||
-        toAmountWrapped.isUndefined()
+        toAmountWrapped.isZero()
+        || toAmountWrapped.isNaN()
+        || toAmountWrapped.isUndefined()
 
       if (isFromAmountEmpty && isToAmountEmpty) {
         return
@@ -73,11 +73,11 @@ export function useLifi({
           lifiTransactionParams: step,
           jupiterTransactionParams: undefined,
           zeroExTransactionParams: undefined,
-          squidTransactionParams: undefined
+          squidTransactionParams: undefined,
         }
 
         transactionResponse = await generateSwapTransaction(
-          toMojoUnion(swapParamsUnion, 'lifiTransactionParams')
+          toMojoUnion(swapParamsUnion, 'lifiTransactionParams'),
         ).unwrap()
       } catch (e) {
         console.log(`Error generating LiFi swap transaction: ${e}`)
@@ -86,7 +86,7 @@ export function useLifi({
       if (transactionResponse?.error) {
         console.log('useLiFi.exchange: tx response error')
         console.log({
-          err: transactionResponse?.error
+          err: transactionResponse?.error,
         })
         return transactionResponse?.error
       }
@@ -106,7 +106,7 @@ export function useLifi({
             value: new Amount(evmTransaction.value).toHex(),
             gasLimit: new Amount(evmTransaction.gasLimit).toHex(),
             data: hexStrToNumberArray(evmTransaction.data),
-            network: fromNetwork
+            network: fromNetwork,
           }).unwrap()
           return undefined
         }
@@ -120,13 +120,13 @@ export function useLifi({
             txType: BraveWallet.TransactionType.SolanaSwap,
             sendOptions: {
               skipPreflight: {
-                skipPreflight: true
+                skipPreflight: true,
               },
               maxRetries: {
-                maxRetries: BigInt(3)
+                maxRetries: BigInt(3),
               },
-              preflightCommitment: 'processed'
-            }
+              preflightCommitment: 'processed',
+            },
           }).unwrap()
         }
       } catch (e) {
@@ -144,11 +144,11 @@ export function useLifi({
       sendEvmTransaction,
       sendSolanaSerializedTransaction,
       toAccountId,
-      toToken
-    ]
+      toToken,
+    ],
   )
 
   return {
-    exchange
+    exchange,
   }
 }

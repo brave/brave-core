@@ -19,7 +19,7 @@ export const _BackupWallet = {
         <BackupWalletRoutes />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: BackupWalletRoutes }

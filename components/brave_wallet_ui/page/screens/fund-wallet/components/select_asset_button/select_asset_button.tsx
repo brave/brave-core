@@ -8,7 +8,7 @@ import { skipToken } from '@reduxjs/toolkit/query'
 
 // Queries
 import {
-  useGetNetworkQuery //
+  useGetNetworkQuery, //
 } from '../../../../../common/slices/api.slice'
 
 // Types
@@ -17,12 +17,12 @@ import { MeldCryptoCurrency } from '../../../../../constants/types'
 // Utils
 import {
   getAssetSymbol,
-  getMeldTokensCoinType
+  getMeldTokensCoinType,
 } from '../../../../../utils/meld_utils'
 
 // Components
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../components/shared/create-network-icon'
 
 // Styled Components
@@ -34,7 +34,7 @@ import {
   Label,
   WrapperButton,
   IconsWrapper,
-  NetworkIconWrapper
+  NetworkIconWrapper,
 } from '../shared/style'
 
 interface SelectAssetButtonProps {
@@ -51,9 +51,9 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
     selectedAsset?.chainId
       ? {
           chainId: selectedAsset.chainId,
-          coin: getMeldTokensCoinType(selectedAsset)
+          coin: getMeldTokensCoinType(selectedAsset),
         }
-      : skipToken
+      : skipToken,
   )
 
   // Computed

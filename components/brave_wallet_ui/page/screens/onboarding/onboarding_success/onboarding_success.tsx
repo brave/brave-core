@@ -12,7 +12,7 @@ import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 import {
   useDiscoverAssetsMutation,
-  useReportOnboardingActionMutation //
+  useReportOnboardingActionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // constants
@@ -20,7 +20,7 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // components
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 
 // styles

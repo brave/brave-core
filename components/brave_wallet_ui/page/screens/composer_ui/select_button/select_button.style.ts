@@ -9,13 +9,13 @@ import * as leo from '@brave/leo/tokens/css/variables'
 // Shared Styles
 import {
   AssetIconProps,
-  AssetIconFactory
+  AssetIconFactory,
 } from '../../../../components/shared/style'
 import { ButtonText } from '../shared_composer.style'
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const NetworkIconWrapper = styled.div`

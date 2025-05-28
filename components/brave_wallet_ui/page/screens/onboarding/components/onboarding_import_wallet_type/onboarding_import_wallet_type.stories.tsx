@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingImportWalletType } from './import_wallet_type'
 
@@ -19,7 +19,7 @@ export const _OnboardingImportWalletType = {
         <OnboardingImportWalletType />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: OnboardingImportWalletType }

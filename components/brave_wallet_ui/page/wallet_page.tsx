@@ -15,7 +15,7 @@ import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
 import {
-  runLocalStorageMigrations //
+  runLocalStorageMigrations, //
 } from '../common/constants/local-storage-keys'
 
 // redux

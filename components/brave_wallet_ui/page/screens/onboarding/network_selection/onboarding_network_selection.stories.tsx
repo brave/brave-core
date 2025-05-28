@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingNetworkSelection } from './onboarding_network_selection'
 import { Meta } from '@storybook/react'
@@ -20,5 +20,5 @@ export const OnboardingNetworkSelectionStory = () => {
 }
 
 export default {
-  component: OnboardingNetworkSelectionStory
+  component: OnboardingNetworkSelectionStory,
 } as Meta<typeof OnboardingNetworkSelectionStory>

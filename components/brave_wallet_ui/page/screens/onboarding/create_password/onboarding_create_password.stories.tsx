@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import OnboardingCreatePassword from './onboarding_create_password'
 
@@ -15,10 +15,10 @@ export const _OnboardingCreatePassword = {
   render: () => {
     return (
       <WalletPageStory>
-        <OnboardingCreatePassword onWalletCreated={() => { }} />
+        <OnboardingCreatePassword onWalletCreated={() => {}} />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: OnboardingCreatePassword }

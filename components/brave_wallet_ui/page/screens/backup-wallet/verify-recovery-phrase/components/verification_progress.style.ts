@@ -27,7 +27,7 @@ export const Rectangle = styled.span<{
 
 export const InfoAlert = styled(Alert).attrs({
   kind: 'info',
-  mode: 'simple'
+  mode: 'simple',
 })`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';

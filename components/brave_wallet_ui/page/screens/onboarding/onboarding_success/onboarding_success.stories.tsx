@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingSuccess } from './onboarding_success'
 
@@ -17,7 +17,7 @@ export const OnboardingSuccessStory = {
         <OnboardingSuccess />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {

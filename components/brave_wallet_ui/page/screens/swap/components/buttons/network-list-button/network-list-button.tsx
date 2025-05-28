@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../../components/shared/create-network-icon'
 
 // Styled Components

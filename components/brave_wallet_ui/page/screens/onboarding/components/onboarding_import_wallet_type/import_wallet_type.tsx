@@ -12,21 +12,21 @@ import { getLocale } from '../../../../../../common/locale'
 
 // components
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../onboarding_content_layout/content_layout'
 import { ImportTypeAction } from './components/import_type_action'
 
 // styles
 import {
   Column, //
-  VerticalDivider
+  VerticalDivider,
 } from '../../../../../components/shared/style'
 
 const softwareWalletIcons = [
   'brave-icon-release-color',
   'phantom-color',
   'metamask-color',
-  'coinbase-color'
+  'coinbase-color',
 ]
 const hardwareWalletIcons = ['trezor-color', 'wallet-ledger']
 
@@ -45,7 +45,7 @@ export const OnboardingImportWalletType = () => {
         <ImportTypeAction
           title={getLocale('braveWalletImportWalletTypeHotWalletTitle')}
           description={getLocale(
-            'braveWalletImportWalletTypeHotWalletDescription'
+            'braveWalletImportWalletTypeHotWalletDescription',
           )}
           icons={softwareWalletIcons}
           onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
@@ -54,7 +54,7 @@ export const OnboardingImportWalletType = () => {
         <ImportTypeAction
           title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
           description={getLocale(
-            'braveWalletImportWalletTypeHardwareWalletDescription'
+            'braveWalletImportWalletTypeHardwareWalletDescription',
           )}
           icons={hardwareWalletIcons}
           onClick={() =>

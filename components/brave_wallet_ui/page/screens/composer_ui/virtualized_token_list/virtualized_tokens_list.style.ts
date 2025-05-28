@@ -7,5 +7,5 @@ export const listItemInitialHeight = 72
 
 export const AutoSizerStyle: React.CSSProperties = {
   width: '100%',
-  height: '100%'
+  height: '100%',
 }

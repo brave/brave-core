@@ -39,7 +39,7 @@ const getIcon = (iconName: ArticleLinkIcons) => {
         'key': KeyIcon,
         'smartphone-desktop': SmartphoneDesktopIcon,
         'wallet-with-coins': WalletWithCoinsIcon,
-        'wallet': WalletIcon
+        'wallet': WalletIcon,
       } as Record<ArticleLinkIcons, string>
     )[iconName] || ''
   )

@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormInput,
   CloseButton,
-  CloseIcon
+  CloseIcon,
 } from '../verify_recovery_phrase.style'
 import { Column, VerticalSpace } from '../../../../../components/shared/style'
 import { InfoAlert } from './verification_progress.style'
@@ -23,7 +23,7 @@ import { AlertWrapper } from '../../../onboarding/onboarding.style'
 const alertSlotStyle = {
   display: 'flex',
   alignItems: 'center',
-  height: '20px'
+  height: '20px',
 }
 
 interface Props {
@@ -39,20 +39,21 @@ export const PhraseInput = ({
   showError,
   wordPosition,
   onChange,
-  onHideError
+  onHideError,
 }: Props) => {
-  const recoveryInstructions = formatLocale('braveWalletRecoveryWordInstructions', {
-    $1: <Bold>{wordPosition}</Bold>
-  })
+  const recoveryInstructions = formatLocale(
+    'braveWalletRecoveryWordInstructions',
+    {
+      $1: <Bold>{wordPosition}</Bold>,
+    },
+  )
 
   return (
     <Column
       margin='120px 0 18px'
       gap='25px'
     >
-      <FormLabel>
-        {recoveryInstructions}
-      </FormLabel>
+      <FormLabel>{recoveryInstructions}</FormLabel>
       <FormInput
         value={phrase}
         onInput={(event) => onChange(event.value)}

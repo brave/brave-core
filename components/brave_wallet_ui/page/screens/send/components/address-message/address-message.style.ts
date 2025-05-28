@@ -15,8 +15,8 @@ export const Wrapper = styled(Row)<{ type?: 'error' | 'warning' | 'info' }>`
     p.type === 'error'
       ? leo.color.systemfeedback.errorBackground
       : p.type === 'warning'
-      ? leo.color.systemfeedback.warningBackground
-      : leo.color.systemfeedback.infoBackground};
+        ? leo.color.systemfeedback.warningBackground
+        : leo.color.systemfeedback.infoBackground};
   border-radius: 8px;
 `
 

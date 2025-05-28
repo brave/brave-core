@@ -10,18 +10,18 @@ import { DialogProps } from '@brave/leo/react/dialog'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../common/selectors'
 
 // Options
 import {
-  AllNetworksOption //
+  AllNetworksOption, //
 } from '../../../../../options/network-filter-options'
 
 // Queries
 import {
-  useGetAllKnownNetworksQuery //
+  useGetAllKnownNetworksQuery, //
 } from '../../../../../common/slices/api.slice'
 
 // Types
@@ -31,22 +31,22 @@ import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
 import {
   getAssetSymbol,
   getAssetIdKey,
-  getMeldTokensCoinType
+  getMeldTokensCoinType,
 } from '../../../../../utils/meld_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../components/shared/create-network-icon'
 import {
-  NetworkFilterSelector //
+  NetworkFilterSelector, //
 } from '../../../../../components/desktop/network-filter-selector'
 import {
-  SearchBar //
+  SearchBar, //
 } from '../../../../../components/shared/search-bar/index'
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../../../components/shared/bottom_sheet/bottom_sheet'
 
 // Styled Components
@@ -57,7 +57,7 @@ import {
   AssetNetwork,
   Loader,
   AutoSizerStyle,
-  SearchAndNetworkFilterRow
+  SearchAndNetworkFilterRow,
 } from './select_asset.style'
 import {
   ContainerButton,
@@ -65,7 +65,7 @@ import {
   DialogTitle,
   ListTitle,
   IconsWrapper,
-  NetworkIconWrapper
+  NetworkIconWrapper,
 } from '../shared/style'
 
 interface SelectAssetProps extends DialogProps {
@@ -94,7 +94,7 @@ export const AssetListItem = ({
   setSize,
   asset,
   onSelect,
-  network
+  network,
 }: AssetListItemProps) => {
   const { symbolImageUrl, currencyCode, chainName } = asset
 
@@ -114,7 +114,7 @@ export const AssetListItem = ({
         setSize(index, ref.getBoundingClientRect().height)
       }
     },
-    [index, setSize]
+    [index, setSize],
   )
 
   return (
@@ -128,7 +128,9 @@ export const AssetListItem = ({
           gap='16px'
         >
           <IconsWrapper>
-            <AssetImage src={`chrome://image?url=${encodeURIComponent(symbolImageUrl ?? '')}&staticEncode=true`} />
+            <AssetImage
+              src={`chrome://image?url=${encodeURIComponent(symbolImageUrl ?? '')}&staticEncode=true`}
+            />
             <NetworkIconWrapper>
               <CreateNetworkIcon
                 network={network}
@@ -169,7 +171,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
   // Refs
   const listRef = React.useRef<List | null>(null)
   const itemSizes = React.useRef<number[]>(
-    new Array(assets.length).fill(assetItemHeight)
+    new Array(assets.length).fill(assetItemHeight),
   )
 
   // Queries
@@ -181,7 +183,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
       return assets
     }
     return assets.filter(
-      (asset) => asset.chainId === selectedNetworkFilter.chainId
+      (asset) => asset.chainId === selectedNetworkFilter.chainId,
     )
   }, [selectedNetworkFilter, assets])
 
@@ -192,13 +194,13 @@ export const SelectAsset = (props: SelectAssetProps) => {
       const assetSymbol = getAssetSymbol(asset).toLowerCase()
       const assetName = asset.name?.toLowerCase() ?? ''
       return (
-        assetName.startsWith(searchText.toLowerCase()) ||
-        assetSymbol.startsWith(searchText.toLowerCase()) ||
-        asset?.contractAddress
+        assetName.startsWith(searchText.toLowerCase())
+        || assetSymbol.startsWith(searchText.toLowerCase())
+        || asset?.contractAddress
           ?.toLowerCase()
-          .startsWith(searchText.toLowerCase()) ||
-        assetName.includes(searchText.toLowerCase()) ||
-        assetSymbol.includes(searchText.toLowerCase())
+          .startsWith(searchText.toLowerCase())
+        || assetName.includes(searchText.toLowerCase())
+        || assetSymbol.includes(searchText.toLowerCase())
       )
     })
   }, [assetsFilteredByNetwork, searchText])
@@ -207,7 +209,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
     const allChainIds = assets.map((asset) => asset.chainId)
     let reducedChainIds = [...new Set(allChainIds)]
     return networkList.filter((network) =>
-      reducedChainIds.includes(network.chainId)
+      reducedChainIds.includes(network.chainId),
     )
   }, [assets, networkList])
 
@@ -236,25 +238,25 @@ export const SelectAsset = (props: SelectAssetProps) => {
     (asset: MeldCryptoCurrency) => {
       return networkList.find(
         (network) =>
-          network.chainId.toLowerCase() === asset.chainId?.toLowerCase() &&
-          getMeldTokensCoinType(asset) === network.coin
+          network.chainId.toLowerCase() === asset.chainId?.toLowerCase()
+          && getMeldTokensCoinType(asset) === network.coin,
       )
     },
-    [networkList]
+    [networkList],
   )
 
   const updateSearchValue = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchText(event.target.value)
     },
-    []
+    [],
   )
 
   const onSelectNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
       setSelectedNetworkFilter(network)
     },
-    []
+    [],
   )
 
   // Memos
@@ -305,7 +307,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
               <AutoSizer style={AutoSizerStyle}>
                 {function ({
                   width,
-                  height
+                  height,
                 }: {
                   width: number
                   height: number
@@ -349,7 +351,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
     searchText,
     selectedNetworkFilter,
     setSize,
-    updateSearchValue
+    updateSearchValue,
   ])
 
   if (isPanel) {

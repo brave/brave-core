@@ -15,7 +15,7 @@ import { toMojoUnion } from '../../../../utils/mojo-utils'
 // Query hooks
 import {
   useGenerateSwapTransactionMutation,
-  useSendSolanaSerializedTransactionMutation
+  useSendSolanaSerializedTransactionMutation,
 } from '../../../../common/slices/api.slice'
 
 export function useJupiter(params: SwapParams) {
@@ -49,14 +49,14 @@ export function useJupiter(params: SwapParams) {
               jupiterTransactionParams: {
                 chainId: fromNetwork.chainId,
                 userPublicKey: fromAccount.address,
-                quote
+                quote,
               },
               zeroExTransactionParams: undefined,
               lifiTransactionParams: undefined,
-              squidTransactionParams: undefined
+              squidTransactionParams: undefined,
             },
-            'jupiterTransactionParams'
-          )
+            'jupiterTransactionParams',
+          ),
         ).unwrap()
       } catch (e) {
         console.log(`Error getting Jupiter swap transactions: ${e}`)
@@ -81,13 +81,13 @@ export function useJupiter(params: SwapParams) {
           txType: BraveWallet.TransactionType.SolanaSwap,
           sendOptions: {
             skipPreflight: {
-              skipPreflight: true
+              skipPreflight: true,
             },
             maxRetries: {
-              maxRetries: BigInt(3)
+              maxRetries: BigInt(3),
             },
-            preflightCommitment: 'processed'
-          }
+            preflightCommitment: 'processed',
+          },
         }).unwrap()
       } catch (e) {
         // Bubble up error
@@ -100,11 +100,11 @@ export function useJupiter(params: SwapParams) {
       fromAccount,
       fromNetwork,
       generateSwapTransaction,
-      sendSolanaSerializedTransaction
-    ]
+      sendSolanaSerializedTransaction,
+    ],
   )
 
   return {
-    exchange
+    exchange,
   }
 }

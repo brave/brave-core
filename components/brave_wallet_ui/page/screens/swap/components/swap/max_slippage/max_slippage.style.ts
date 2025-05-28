@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import {
-  WalletButton //
+  WalletButton, //
 } from '../../../../../../components/shared/style'
 
 export const OptionButton = styled(WalletButton)<{

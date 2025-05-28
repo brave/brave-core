@@ -15,9 +15,9 @@ export const _TransactionsScreen = {
         <TransactionsScreen />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: TransactionsScreen
+  component: TransactionsScreen,
 } as Meta<typeof TransactionsScreen>

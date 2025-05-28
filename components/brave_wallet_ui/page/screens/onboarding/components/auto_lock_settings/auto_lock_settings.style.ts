@@ -20,7 +20,7 @@ export const LockIconContainer = styled.div`
 `
 
 export const LockIcon = styled(Icon).attrs({
-  name: 'lock'
+  name: 'lock',
 })`
   --leo-icon-size: ${leo.icon.xs};
   color: ${leo.color.purple[30]};

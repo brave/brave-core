@@ -10,7 +10,7 @@ import { QuoteOption, RouteTagsType } from '../../../constants/types'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
@@ -26,7 +26,7 @@ import {
   LeoSquaredButton,
   Row,
   ScrollableColumn,
-  Text
+  Text,
 } from '../../../../../../components/shared/style'
 
 interface Props {
@@ -51,7 +51,7 @@ export const Routes = (props: Props) => {
   const sortedQuoteOptions = React.useMemo(() => {
     let quoteList = Array.from(quoteOptions)
     const indexOfSortBy = quoteList.findIndex((option) =>
-      option.tags.includes(sortBy)
+      option.tags.includes(sortBy),
     )
     quoteList.push(...quoteList.splice(0, indexOfSortBy))
     return quoteList
@@ -107,7 +107,7 @@ export const Routes = (props: Props) => {
               {getLocale(
                 sortBy === 'CHEAPEST'
                   ? 'braveWalletCheapest'
-                  : 'braveWalletFastest'
+                  : 'braveWalletFastest',
               )}
             </Text>
             <CaratDownIcon isExpanded={showSortByMenu} />

@@ -16,10 +16,10 @@ import {
   Row,
   AssetIconFactory,
   AssetIconProps,
-  Text
+  Text,
 } from '../../../components/shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ToSectionWrapper = styled(Column)<{
@@ -106,11 +106,11 @@ export const ReviewButtonRow = styled(Row)`
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const CaratIcon = styled(Icon).attrs({
-  name: 'carat-right'
+  name: 'carat-right',
 })`
   --leo-icon-size: 24px;
   color: inherit;

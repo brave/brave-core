@@ -10,7 +10,7 @@ import { MeldCryptoQuote } from 'components/brave_wallet_ui/constants/types'
 // Mock Data
 import {
   mockMeldCryptoQuotes,
-  mockServiceProviders
+  mockServiceProviders,
 } from '../../../../../common/constants/mocks'
 
 // Components
@@ -31,5 +31,5 @@ export const _BuyQuote = () => {
 
 export default {
   component: _BuyQuote,
-  title: 'Fund Wallet - Buy Quote'
+  title: 'Fund Wallet - Buy Quote',
 }

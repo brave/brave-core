@@ -8,7 +8,7 @@ import * as React from 'react'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  useGetWalletsToImportQuery //
+  useGetWalletsToImportQuery, //
 } from '../../../../common/slices/api.slice'
 
 // types
@@ -17,7 +17,7 @@ import { WalletRoutes } from '../../../../constants/types'
 // components
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 import {
-  OnboardingStepsNavigation //
+  OnboardingStepsNavigation, //
 } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 
 // styles
@@ -27,7 +27,7 @@ import {
   StyledWrapper,
   Title,
   Description,
-  MainWrapper
+  MainWrapper,
 } from '../onboarding.style'
 
 import {
@@ -35,7 +35,7 @@ import {
   CardButton,
   CardButtonTextContainer,
   LinkRow,
-  MetaMaskIcon
+  MetaMaskIcon,
 } from './import-or-restore-wallet.style'
 
 export const OnboardingImportOrRestoreWallet = () => {

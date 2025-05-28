@@ -6,10 +6,10 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import {
-  OnboardingImportHardwareWalletWelcome //
+  OnboardingImportHardwareWalletWelcome, //
 } from './import_hardware_wallet_welcome'
 import { Meta } from '@storybook/react'
 
@@ -23,5 +23,5 @@ export const OnboardingImportOrRestoreWallet = () => {
 
 export default {
   title: 'Import Hardware Wallet Welcome',
-  component: OnboardingImportOrRestoreWallet
+  component: OnboardingImportOrRestoreWallet,
 } as Meta<typeof OnboardingImportOrRestoreWallet>

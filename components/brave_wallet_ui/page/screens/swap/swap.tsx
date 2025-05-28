@@ -13,7 +13,7 @@ import { UISelectors } from '../../../common/selectors'
 import {
   WalletRoutes,
   BraveWallet,
-  SwapProviderNameMapping
+  SwapProviderNameMapping,
 } from '../../../constants/types'
 
 // Hooks
@@ -34,7 +34,7 @@ import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/w
 import { PanelActionHeader } from '../../../components/desktop/card-headers/panel-action-header'
 import { SwapProviders } from './components/swap/swap_providers/swap_providers'
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../components/shared/bottom_sheet/bottom_sheet'
 import { PopupModal } from '../../../components/desktop/popup-modals/index'
 
@@ -42,13 +42,13 @@ import { PopupModal } from '../../../components/desktop/popup-modals/index'
 import {
   Column,
   LeoSquaredButton,
-  VerticalSpace
+  VerticalSpace,
 } from '../../../components/shared/style'
 import {
   ReviewButtonRow,
   AlertMessage,
   AlertMessageButton,
-  AlertMessageWrapper
+  AlertMessageWrapper,
 } from '../composer_ui/shared_composer.style'
 
 export const Swap = () => {
@@ -91,7 +91,7 @@ export const Swap = () => {
     selectedProvider,
     availableProvidersForSwap,
     isSubmittingSwap,
-    needsAccountSelected
+    needsAccountSelected,
   } = swap
 
   // State
@@ -112,19 +112,19 @@ export const Swap = () => {
       onChangeSwapProvider(provider)
       setShowSwapProviders(false)
     },
-    [onChangeSwapProvider]
+    [onChangeSwapProvider],
   )
 
   // Hooks
   useOnClickOutside(
     selectTokenModalRef,
     () => setSelectingFromOrTo(undefined),
-    selectingFromOrTo !== undefined
+    selectingFromOrTo !== undefined,
   )
   useOnClickOutside(
     privacyModalRef,
     () => setShowPrivacyModal(false),
-    showPrivacyModal
+    showPrivacyModal,
   )
 
   // render
@@ -156,8 +156,8 @@ export const Swap = () => {
           tokenBalancesRegistry={tokenBalancesRegistry}
           isLoadingBalances={isLoadingBalances}
           hasInputError={
-            swapValidationError === 'insufficientBalance' ||
-            swapValidationError === 'fromAmountDecimalsOverflow'
+            swapValidationError === 'insufficientBalance'
+            || swapValidationError === 'fromAmountDecimalsOverflow'
           }
           network={fromNetwork}
           account={fromAccount}
@@ -230,7 +230,7 @@ export const Swap = () => {
                   >
                     {getLocale('braveWalletProviderNotSupported').replace(
                       '$1',
-                      SwapProviderNameMapping[selectedProvider]
+                      SwapProviderNameMapping[selectedProvider],
                     )}
                     <div>
                       <AlertMessageButton

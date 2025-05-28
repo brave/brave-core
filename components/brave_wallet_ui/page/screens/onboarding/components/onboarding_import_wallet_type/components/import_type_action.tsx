@@ -12,7 +12,7 @@ import {
   IconsWrapper,
   RightArrow,
   Subtitle,
-  Title
+  Title,
 } from './import_type_action.style'
 import { Row, VerticalSpace } from '../../../../../../components/shared/style'
 
@@ -27,7 +27,7 @@ export const ImportTypeAction = ({
   title,
   description,
   icons,
-  onClick
+  onClick,
 }: Props) => {
   return (
     <ActionWrapper onClick={onClick}>
@@ -50,7 +50,7 @@ export const ImportTypeAction = ({
             />
           ) : (
             icon
-          )
+          ),
         )}
       </IconsWrapper>
     </ActionWrapper>

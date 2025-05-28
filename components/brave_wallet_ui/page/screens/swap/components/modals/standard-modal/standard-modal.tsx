@@ -28,5 +28,5 @@ export const StandardModal = React.forwardRef<HTMLDivElement, Props>(
         </Modal>
       </Wrapper>
     )
-  }
+  },
 )

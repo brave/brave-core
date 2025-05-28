@@ -15,7 +15,7 @@ import {
   LockIcon,
   LockIconContainer,
   SettingDescription,
-  OptionLabel
+  OptionLabel,
 } from './auto_lock_settings.style'
 import { getLocale } from '../../../../../../common/locale'
 

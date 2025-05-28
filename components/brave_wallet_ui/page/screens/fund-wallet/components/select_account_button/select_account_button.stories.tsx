@@ -11,7 +11,7 @@ import { mockAccount } from '../../../../../common/constants/mocks'
 // Components
 import { SelectAccountButton } from './select_account_button'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectAccountButton = () => {
@@ -28,5 +28,5 @@ export const _SelectAccountButton = () => {
 
 export default {
   component: _SelectAccountButton,
-  title: 'Fund Wallet - Select Account Button'
+  title: 'Fund Wallet - Select Account Button',
 }

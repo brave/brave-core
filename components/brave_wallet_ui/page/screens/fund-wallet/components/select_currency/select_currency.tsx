@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../common/selectors'
 
@@ -21,21 +21,21 @@ import { getLocale } from '../../../../../../common/locale'
 
 // Components
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../../../components/shared/bottom_sheet/bottom_sheet'
 
 // Styled Components
 import {
   Column,
   Row,
-  ScrollableColumn
+  ScrollableColumn,
 } from '../../../../../components/shared/style'
 import {
   CurrencyImage,
   CurrencyName,
   CurrencyCode,
   SearchInput,
-  SelectedLabel
+  SelectedLabel,
 } from './select_currency.style'
 import { ContainerButton, Dialog, DialogTitle } from '../shared/style'
 
@@ -50,7 +50,7 @@ interface SelectCurrencyProps extends DialogProps {
 export const CurrencyListItem = ({
   currency,
   isSelected,
-  onSelect
+  onSelect,
 }: {
   currency: MeldFiatCurrency
   isSelected?: boolean
@@ -64,7 +64,7 @@ export const CurrencyListItem = ({
       >
         <CurrencyImage
           src={`chrome://image?url=${encodeURIComponent(
-            currency.symbolImageUrl ?? ''
+            currency.symbolImageUrl ?? '',
           )}&staticEncode=true`}
         />
         <CurrencyName>{currency.name}</CurrencyName>
@@ -104,8 +104,10 @@ export const SelectCurrency = (props: SelectCurrencyProps) => {
 
     return currencies.filter((currency) => {
       return (
-        currency?.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-        currency.currencyCode.toLowerCase().includes(searchText.toLowerCase())
+        currency?.name?.toLowerCase().includes(searchText.toLowerCase())
+        || currency.currencyCode
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
       )
     })
   }, [currencies, searchText])

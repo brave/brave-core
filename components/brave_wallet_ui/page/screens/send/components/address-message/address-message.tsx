@@ -16,13 +16,13 @@ import {
   Wrapper,
   LearnMoreLink,
   HowToSolveButton,
-  ErrorIcon
+  ErrorIcon,
 } from './address-message.style'
 import {
   Column,
   Row,
   Text,
-  LeoSquaredButton
+  LeoSquaredButton,
 } from '../../../../../components/shared/style'
 
 interface Props {
@@ -77,7 +77,7 @@ export const AddressMessage = (props: Props) => {
               >
                 {getLocale(addressMessageInfo.description).replace(
                   '$1',
-                  addressMessageInfo.placeholder || ''
+                  addressMessageInfo.placeholder || '',
                 )}{' '}
                 {addressMessageInfo.url && (
                   <LearnMoreLink

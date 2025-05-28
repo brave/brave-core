@@ -32,7 +32,7 @@ export const RouteStep = (props: Props) => {
   const { step } = props
   const {
     action: { fromToken, toToken },
-    toolDetails
+    toolDetails,
   } = step
 
   // Computed
@@ -43,18 +43,18 @@ export const RouteStep = (props: Props) => {
     fromToken
       ? {
           chainId: fromToken.chainId,
-          coin: fromToken.coin
+          coin: fromToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: toNetwork } = useGetNetworkQuery(
     toToken
       ? {
           chainId: toToken.chainId,
-          coin: toToken.coin
+          coin: toToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   return (

@@ -15,23 +15,23 @@ import Amount from '../../../../utils/amount'
 import { formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../../common/slices/api.slice'
 import { reduceInt } from '../../../../utils/string-utils'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../../components/shared/create-placeholder-icon/index'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../components/shared/create-network-icon/index'
 import { NftIcon } from '../../../../components/shared/nft-icon/nft-icon'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../../components/shared/loading-skeleton/index'
 import {
-  ShieldedLabel //
+  ShieldedLabel, //
 } from '../../../../components/shared/shielded_label/shielded_label'
 
 // Styled Components
@@ -52,13 +52,13 @@ import {
   TokenNameText,
   TokenNameRow,
   LeftSide,
-  NameAndBalanceColumn
+  NameAndBalanceColumn,
 } from './token_list_item.style'
 import {
   Column,
   Row,
   VerticalSpace,
-  Text
+  Text,
 } from '../../../../components/shared/style'
 
 interface Props {
@@ -88,7 +88,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
       disabledText,
       tokenHasMultipleAccounts,
       groupingLabel,
-      balance
+      balance,
     } = props
 
     // Queries
@@ -133,8 +133,8 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
         fullWidth={true}
         ref={forwardedRef}
       >
-        {groupingLabel &&
-          (groupingLabel === 'owned' ? (
+        {groupingLabel
+          && (groupingLabel === 'owned' ? (
             <Row
               justifyContent='space-between'
               padding='10px 16px'
@@ -222,15 +222,15 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   {formatTokenBalanceWithSymbol(
                     balance ?? '',
                     token.decimals,
-                    token.symbol
+                    token.symbol,
                   )}
                 </TokenBalanceText>
               </NameAndBalanceColumn>
             </LeftSide>
-            {!token.isNft &&
-              !token.isErc721 &&
-              !token.isErc1155 &&
-              tokenHasBalance && (
+            {!token.isNft
+              && !token.isErc721
+              && !token.isErc1155
+              && tokenHasBalance && (
                 <Column
                   alignItems='flex-end'
                   width='25%'
@@ -276,7 +276,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                           isDown={isPriceDown}
                         >
                           {`${Math.abs(
-                            Number(spotPrice?.assetTimeframeChange ?? '')
+                            Number(spotPrice?.assetTimeframeChange ?? ''),
                           ).toFixed(2)}%`}
                         </PercentChangeText>
                       </Row>
@@ -285,10 +285,10 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                 </Column>
               )}
           </Button>
-          {(!tokenHasBalance ||
-            token.isNft ||
-            token.isErc721 ||
-            token.isErc1155) && (
+          {(!tokenHasBalance
+            || token.isNft
+            || token.isErc721
+            || token.isErc1155) && (
             <InfoButton onClick={() => onViewTokenDetails(token)}>
               <InfoIcon />
             </InfoButton>
@@ -296,7 +296,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
         </ButtonWrapper>
       </Column>
     )
-  }
+  },
 )
 
 export default TokenListItem

@@ -15,10 +15,10 @@ export const OnboardingImportOrRestoreWalletStory = {
         <OnboardingImportOrRestoreWallet />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
   title: 'Import Or Restore Wallet',
-  component: OnboardingImportOrRestoreWallet
+  component: OnboardingImportOrRestoreWallet,
 }

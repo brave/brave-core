@@ -9,7 +9,7 @@ import { spacing } from '@brave/leo/tokens/css/variables'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../common/selectors'
 
@@ -22,10 +22,10 @@ import { getLocale } from '../../../../../../common/locale'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../../components/shared/create-account-icon/create-account-icon'
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../../../components/shared/bottom_sheet/bottom_sheet'
 
 // Styled Components
@@ -33,7 +33,7 @@ import { ContainerButton, Dialog, DialogTitle } from '../shared/style'
 import {
   Column,
   Row,
-  ScrollableColumn
+  ScrollableColumn,
 } from '../../../../../components/shared/style'
 import { AccountAddress, AccountName } from './select_account.style'
 import { getMeldTokensCoinType } from '../../../../../utils/meld_utils'
@@ -43,7 +43,7 @@ const testnetAccountKeyringIds = [
   BraveWallet.KeyringId.kBitcoinHardwareTestnet,
   BraveWallet.KeyringId.kBitcoinImportTestnet,
   BraveWallet.KeyringId.kFilecoinTestnet,
-  BraveWallet.KeyringId.kZCashTestnet
+  BraveWallet.KeyringId.kZCashTestnet,
 ]
 
 interface SelectAccountProps extends DialogProps {
@@ -93,8 +93,8 @@ export const SelectAccount = (props: SelectAccountProps) => {
     if (selectedAsset) {
       return accounts.filter(
         (account) =>
-          account.accountId.coin === getMeldTokensCoinType(selectedAsset) &&
-          !testnetAccountKeyringIds.includes(account.accountId.keyringId)
+          account.accountId.coin === getMeldTokensCoinType(selectedAsset)
+          && !testnetAccountKeyringIds.includes(account.accountId.keyringId),
       )
     }
     return accounts

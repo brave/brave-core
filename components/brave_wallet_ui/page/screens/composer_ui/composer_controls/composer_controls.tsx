@@ -19,7 +19,7 @@ import {
   FlipButton,
   FlipIcon,
   ProvidersButton,
-  ProviderIcon
+  ProviderIcon,
 } from './composer_controls.style'
 import { Row } from '../../../../components/shared/style'
 
@@ -35,7 +35,7 @@ export const ComposerControls = (props: Props) => {
     onFlipAssets,
     onOpenProviders,
     flipAssetsDisabled,
-    selectedProvider
+    selectedProvider,
   } = props
 
   // State
@@ -48,7 +48,7 @@ export const ComposerControls = (props: Props) => {
   useOnClickOutside(
     buttonMenuRef,
     () => setShowComposerMenu(false),
-    showComposerMenu
+    showComposerMenu,
   )
 
   return (

@@ -38,8 +38,8 @@ export const Button = styled(StyledButton)<SelectTokenButtonStyleProps>`
     p.buttonSize === 'small'
       ? 'var(--small-padding)'
       : p.buttonSize === 'medium'
-      ? 'var(--medium-padding)'
-      : 'var(--big-padding)'};
+        ? 'var(--medium-padding)'
+        : 'var(--big-padding)'};
   white-space: nowrap;
   width: ${(p) => (p.buttonSize === 'small' ? '140px' : 'unset')};
   :disabled {

@@ -7,13 +7,13 @@ import * as React from 'react'
 
 // Mock Data
 import {
-  mockAccounts //
+  mockAccounts, //
 } from '../../../../../stories/mock-data/mock-wallet-accounts'
 
 // Components
 import { SelectAccount } from './select_account'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectAccount = () => {
@@ -31,5 +31,5 @@ export const _SelectAccount = () => {
 
 export default {
   component: _SelectAccount,
-  title: 'Fund Wallet - Select Account'
+  title: 'Fund Wallet - Select Account',
 }

@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Queries
 import {
-  useAccountFromAddressQuery //
+  useAccountFromAddressQuery, //
 } from '../../../../common/slices/api.slice.extra'
 
 // Utils
@@ -15,7 +15,7 @@ import { getLocale } from '../../../../../common/locale'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../components/shared/create-account-icon/create-account-icon'
 
 // Styled Components
@@ -34,7 +34,7 @@ export const SelectAddressButton = (props: Props) => {
 
   // Queries
   const { account: foundAccount } = useAccountFromAddressQuery(
-    toAddressOrUrl ?? undefined
+    toAddressOrUrl ?? undefined,
   )
 
   return (

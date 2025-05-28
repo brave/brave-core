@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // components
 import NewPasswordInput, {
-  NewPasswordValues
+  NewPasswordValues,
 } from '../../../../../components/shared/password-input/new-password-input'
 
 // styles
@@ -22,7 +22,7 @@ interface Props {
 export function CreatePassword({
   initialPassword,
   onSubmit,
-  onPasswordChange
+  onPasswordChange,
 }: Props) {
   return (
     <Column

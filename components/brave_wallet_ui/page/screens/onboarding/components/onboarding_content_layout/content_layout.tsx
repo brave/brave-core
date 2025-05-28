@@ -25,7 +25,7 @@ import {
   BraveIcon,
   HeaderWrapper,
   TitleSection,
-  BackButtonWrapper
+  BackButtonWrapper,
 } from './content_layout.style'
 
 interface Props {
@@ -43,7 +43,7 @@ export const OnboardingContentLayout = ({
   centerContent,
   showBackButton = true,
   padding,
-  children
+  children,
 }: Props) => {
   // routing
   const history = useHistory()

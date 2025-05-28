@@ -12,13 +12,13 @@ import { WalletRoutes } from '../../../../../constants/types'
 import { useLocationPathName } from '../../../../../common/hooks/use-pathname'
 import {
   getOnboardingImportTypeFromPath,
-  getOnboardingTypeFromPath
+  getOnboardingTypeFromPath,
 } from '../../../../../utils/routes-utils'
 
 // components
 import {
   StepsNavigation,
-  StepsNavigationProps
+  StepsNavigationProps,
 } from '../../../../../components/desktop/steps-navigation/steps-navigation'
 
 const NEW_WALLET_STEPS: WalletRoutes[] = [
@@ -29,7 +29,7 @@ const NEW_WALLET_STEPS: WalletRoutes[] = [
   WalletRoutes.OnboardingExplainRecoveryPhrase,
   WalletRoutes.OnboardingBackupRecoveryPhrase,
   WalletRoutes.OnboardingVerifyRecoveryPhrase,
-  WalletRoutes.OnboardingComplete
+  WalletRoutes.OnboardingComplete,
 ]
 
 const RESTORE_WALLET_STEPS: WalletRoutes[] = [
@@ -38,7 +38,7 @@ const RESTORE_WALLET_STEPS: WalletRoutes[] = [
   WalletRoutes.OnboardingImportNetworkSelection,
   WalletRoutes.OnboardingImportOrRestore,
   WalletRoutes.OnboardingRestoreWallet,
-  WalletRoutes.OnboardingComplete
+  WalletRoutes.OnboardingComplete,
 ]
 
 const IMPORT_METAMASK_STEPS: WalletRoutes[] = [
@@ -47,7 +47,7 @@ const IMPORT_METAMASK_STEPS: WalletRoutes[] = [
   WalletRoutes.OnboardingImportNetworkSelection,
   WalletRoutes.OnboardingImportOrRestore,
   WalletRoutes.OnboardingImportMetaMask,
-  WalletRoutes.OnboardingComplete
+  WalletRoutes.OnboardingComplete,
 ]
 
 const IMPORT_LEGACY_STEPS: WalletRoutes[] = [
@@ -56,7 +56,7 @@ const IMPORT_LEGACY_STEPS: WalletRoutes[] = [
   WalletRoutes.OnboardingImportNetworkSelection,
   WalletRoutes.OnboardingImportOrRestore,
   WalletRoutes.OnboardingImportLegacy,
-  WalletRoutes.OnboardingComplete
+  WalletRoutes.OnboardingComplete,
 ]
 
 const CONNECT_HARDWARE_WALLET_STEPS: WalletRoutes[] = [
@@ -65,14 +65,14 @@ const CONNECT_HARDWARE_WALLET_STEPS: WalletRoutes[] = [
   WalletRoutes.OnboardingHardwareWalletNetworkSelection,
   WalletRoutes.OnboardingHardwareWalletCreatePassword,
   WalletRoutes.OnboardingHardwareWalletConnect,
-  WalletRoutes.OnboardingComplete
+  WalletRoutes.OnboardingComplete,
 ]
 
 interface OnboardingNewWalletStepsNavigationProps
   extends Omit<StepsNavigationProps<WalletRoutes>, 'steps' | 'currentStep'> {}
 
 export const OnboardingStepsNavigation = (
-  props: OnboardingNewWalletStepsNavigationProps
+  props: OnboardingNewWalletStepsNavigationProps,
 ) => {
   // routing
   const path = useLocationPathName()
@@ -87,12 +87,12 @@ export const OnboardingStepsNavigation = (
         onboardingType === 'new'
           ? NEW_WALLET_STEPS
           : onboardingType === 'hardware'
-          ? CONNECT_HARDWARE_WALLET_STEPS
-          : importType === 'seed'
-          ? RESTORE_WALLET_STEPS
-          : importType === 'metamask'
-          ? IMPORT_METAMASK_STEPS
-          : IMPORT_LEGACY_STEPS
+            ? CONNECT_HARDWARE_WALLET_STEPS
+            : importType === 'seed'
+              ? RESTORE_WALLET_STEPS
+              : importType === 'metamask'
+                ? IMPORT_METAMASK_STEPS
+                : IMPORT_LEGACY_STEPS
       }
     />
   )

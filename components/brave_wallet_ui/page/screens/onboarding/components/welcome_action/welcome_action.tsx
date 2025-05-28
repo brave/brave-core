@@ -10,7 +10,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import {
   Column,
   Row,
-  VerticalSpace
+  VerticalSpace,
 } from '../../../../../components/shared/style'
 import {
   WelcomeActionWrapper,
@@ -18,7 +18,7 @@ import {
   Description,
   TitleIcon,
   IconWrapper,
-  WalletIcon
+  WalletIcon,
 } from './welcome_action.style'
 
 interface Props {
@@ -34,7 +34,7 @@ export const WelcomeAction = ({
   title,
   description,
   walletIcons,
-  onSelect
+  onSelect,
 }: Props) => {
   return (
     <WelcomeActionWrapper onClick={onSelect}>

@@ -24,12 +24,13 @@ import { VerticalSpace } from '../../../../components/shared/style'
 import { NextButtonRow, ContinueButton } from '../onboarding.style'
 import { CheckboxText, TermsLink } from './disclosures.style'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 
 const TermsOfUseText: React.FC<{}> = () => {
   const text = formatLocale('braveWalletTermsOfServiceCheckboxText', {
-    $1: content => <TermsLink
+    $1: (content) => (
+      <TermsLink
         href='https://brave.com/terms-of-use/'
         target='_blank'
         rel='noopener noreferrer'
@@ -40,12 +41,9 @@ const TermsOfUseText: React.FC<{}> = () => {
       >
         {content}
       </TermsLink>
+    ),
   })
-  return (
-    <p>
-      {text}
-    </p>
-  )
+  return <p>{text}</p>
 }
 
 export const OnboardingDisclosures = () => {
@@ -57,14 +55,14 @@ export const OnboardingDisclosures = () => {
   // redux
   const dispatch = useDispatch()
   const walletTermsAcknowledged = useSafePageSelector(
-    PageSelectors.walletTermsAcknowledged
+    PageSelectors.walletTermsAcknowledged,
   )
 
   // state
   const [isResponsibilityCheckboxChecked, setIsResponsibilityCheckboxChecked] =
     React.useState(walletTermsAcknowledged)
   const [isTermsCheckboxChecked, setIsTermsCheckboxChecked] = React.useState(
-    walletTermsAcknowledged
+    walletTermsAcknowledged,
   )
 
   // render
@@ -104,8 +102,8 @@ export const OnboardingDisclosures = () => {
               onboardingType === 'hardware'
                 ? WalletRoutes.OnboardingHardwareWalletNetworkSelection
                 : onboardingType === 'import'
-                ? WalletRoutes.OnboardingImportNetworkSelection
-                : WalletRoutes.OnboardingNewWalletNetworkSelection
+                  ? WalletRoutes.OnboardingImportNetworkSelection
+                  : WalletRoutes.OnboardingNewWalletNetworkSelection,
             )
           }}
           isDisabled={

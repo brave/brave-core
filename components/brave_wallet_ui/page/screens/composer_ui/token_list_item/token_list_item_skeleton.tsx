@@ -10,10 +10,10 @@ import {
   Row,
   Column,
   VerticalSpace,
-  HorizontalSpace
+  HorizontalSpace,
 } from '../../../../components/shared/style'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../../components/shared/loading-skeleton/index'
 
 interface Props {

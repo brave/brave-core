@@ -7,10 +7,10 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import {
-  OnboardingConnectHardwareWallet //
+  OnboardingConnectHardwareWallet, //
 } from './onboarding_connect_hardware_wallet'
 
 export const _OnboardingConnectHardwareWallet = {
@@ -21,7 +21,7 @@ export const _OnboardingConnectHardwareWallet = {
         <OnboardingConnectHardwareWallet />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: OnboardingConnectHardwareWallet }

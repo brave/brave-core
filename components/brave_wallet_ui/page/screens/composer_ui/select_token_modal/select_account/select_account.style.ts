@@ -11,7 +11,7 @@ import {
   AssetIconFactory,
   AssetIconProps,
   Column,
-  WalletButton
+  WalletButton,
 } from '../../../../../components/shared/style'
 
 export const IconsWrapper = styled(Column)`
@@ -20,7 +20,7 @@ export const IconsWrapper = styled(Column)`
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const NetworkIconWrapper = styled(Column)`

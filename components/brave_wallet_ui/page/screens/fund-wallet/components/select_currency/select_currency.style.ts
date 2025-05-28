@@ -10,12 +10,12 @@ import { font, color } from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const SearchInput = styled(Input).attrs({
   mode: 'filled',
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal'
+  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
 })`
   margin-top: 2px;
   width: 100%;
@@ -69,7 +69,7 @@ export const CurrencyCode = styled.span`
 
 export const SelectedLabel = styled(Label).attrs({
   mode: 'default',
-  color: 'purple'
+  color: 'purple',
 })`
   text-transform: uppercase;
 `

@@ -11,22 +11,22 @@ import { clearClipboard } from '../../../../utils/copy-to-clipboard'
 import { removeDoubleSpaces } from '../../../../utils/string-utils'
 import {
   cleanupRecoveryPhraseInput,
-  isPhraseLengthValid
+  isPhraseLengthValid,
 } from '../../../../utils/recovery-phrase-utils'
 
 // style
 import {
   RecoveryTextArea,
-  RecoveryTextInput
+  RecoveryTextInput,
 } from './restore-from-recovery-phrase.style'
 import {
   PhraseCardBody,
   PhraseCardBottomRow,
-  PhraseCardTopRow
+  PhraseCardTopRow,
 } from '../onboarding.style'
 import {
   ToggleVisibilityButton,
-  WalletLink
+  WalletLink,
 } from '../../../../components/shared/style'
 
 interface Props {
@@ -42,7 +42,7 @@ interface Props {
 export const RecoveryInput = ({
   onChange,
   onKeyDown,
-  onToggleShowPhrase
+  onToggleShowPhrase,
 }: Props) => {
   // state
   const [isPhraseShown, setIsPhraseShown] = React.useState<boolean>(false)
@@ -62,10 +62,10 @@ export const RecoveryInput = ({
       onChange({
         value: cleanedInput,
         isValid: !isInvalid,
-        phraseLength: wordsInPhraseValue
+        phraseLength: wordsInPhraseValue,
       })
     },
-    [onChange]
+    [onChange],
   )
 
   const toggleShowPhrase = React.useCallback(() => {
@@ -80,7 +80,7 @@ export const RecoveryInput = ({
     const removedDoubleSpaces = removeDoubleSpaces(phraseFromClipboard)
 
     handleChange({
-      target: { value: removedDoubleSpaces }
+      target: { value: removedDoubleSpaces },
     } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)
   }, [handleChange])
 
@@ -93,10 +93,10 @@ export const RecoveryInput = ({
       const removedDoubleSpaces = removeDoubleSpaces(value)
 
       handleChange({
-        target: { value: removedDoubleSpaces }
+        target: { value: removedDoubleSpaces },
       } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)
     },
-    [handleChange]
+    [handleChange],
   )
 
   const onInputBlur = React.useCallback<
@@ -106,11 +106,11 @@ export const RecoveryInput = ({
       const removedDoubleSpaces = removeDoubleSpaces(event.target.value)
       if (removedDoubleSpaces !== event.target.value) {
         handleChange({
-          target: { value: removedDoubleSpaces }
+          target: { value: removedDoubleSpaces },
         } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)
       }
     },
-    [handleChange]
+    [handleChange],
   )
 
   // render

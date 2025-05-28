@@ -12,7 +12,7 @@ import { WalletRoutes } from '../../../constants/types'
 // selectors
 import {
   useSafePageSelector,
-  useSafeWalletSelector
+  useSafeWalletSelector,
 } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import { PageSelectors } from '../../selectors'
@@ -20,29 +20,29 @@ import { PageSelectors } from '../../selectors'
 // components
 import { OnboardingDisclosures } from './disclosures/disclosures'
 import {
-  ProtectedRoute //
+  ProtectedRoute, //
 } from '../../../components/shared/protected-routing/protected-route'
 import {
-  OnboardingImportOrRestoreWallet //
+  OnboardingImportOrRestoreWallet, //
 } from './import-or-restore-wallet/import-or-restore-wallet'
 import {
-  OnboardingRestoreFromRecoveryPhrase //
+  OnboardingRestoreFromRecoveryPhrase, //
 } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 import {
-  OnboardingNetworkSelection //
+  OnboardingNetworkSelection, //
 } from './network_selection/onboarding_network_selection'
 import {
-  OnboardingRestoreFromExtension //
+  OnboardingRestoreFromExtension, //
 } from './restore-from-recovery-phrase/restore-from-extension'
 import {
-  OnboardingImportWalletType //
+  OnboardingImportWalletType, //
 } from './components/onboarding_import_wallet_type/import_wallet_type'
 
 export const OnboardingImportWalletRoutes = () => {
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const termsAcknowledged = useSafePageSelector(
-    PageSelectors.walletTermsAcknowledged
+    PageSelectors.walletTermsAcknowledged,
   )
 
   // render

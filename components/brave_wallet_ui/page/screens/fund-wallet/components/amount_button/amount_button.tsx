@@ -14,7 +14,7 @@ import {
   CurrencyCode,
   SwapVerticalIcon,
   Wrapper,
-  ButtonWrapper
+  ButtonWrapper,
 } from './amount_button.style'
 
 interface SelectAccountProps {
@@ -32,14 +32,14 @@ export const AmountButton = ({
   amount,
   estimatedCryptoAmount,
   onChange,
-  onClick
+  onClick,
 }: SelectAccountProps) => {
   // Methods
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange],
   )
 
   return (
