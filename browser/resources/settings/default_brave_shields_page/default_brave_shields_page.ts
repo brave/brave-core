@@ -114,7 +114,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       },
       adControlType_: String,
       cookieControlTypes_: Array,
-      cookieControlType_: String,
+      cookieControlType_: {
+        type: String,
+        value: 'block_third_party'
+      },
       fingerprintingControlType_: String,
       httpsUpgradeControlType_: String,
       isAdBlockRoute_: {
