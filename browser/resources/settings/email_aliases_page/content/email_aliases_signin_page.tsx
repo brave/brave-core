@@ -77,23 +77,21 @@ const AfterSendingEmailMessage = (
   { authEmail, emailAliasesService, errorMessage }:
   { authEmail: string, emailAliasesService: EmailAliasesServiceInterface,
     errorMessage: string | undefined }) => {
-  const onClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    // Use preventDefault to avoid navigating to the hash
-    event.preventDefault()
-    emailAliasesService.cancelAuthenticationOrLogout()
-  }
-  const tryAgainLink = (msg: string) => formatLocale( msg, {
-    $1: (content) => <a href='#' onClick={onClick}>{content}</a> } )
   return <SpacedCol>
     <h4>{formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}</h4>
     <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div>
-      {tryAgainLink('emailAliasesDontSeeEmail')}
+      {getLocale('emailAliasesDontSeeEmail')}
     </div>
     {errorMessage && <Alert>
-      {errorMessage + ' '}
-      {tryAgainLink('emailAliasesAuthTryAgain')}
+      {errorMessage + ' ' + getLocale('emailAliasesAuthTryAgain')}
     </Alert>}
+    <div>
+      <Button onClick={() => emailAliasesService.cancelAuthenticationOrLogout()}
+              kind='filled'>
+        {getLocale('emailAliasesAuthTryAgainButton')}
+      </Button>
+    </div>
   </SpacedCol>
 }
 
