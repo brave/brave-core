@@ -246,6 +246,10 @@
     "META": {"sizes": {"includes": [40]}},
     "includes": [34810],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
+    "META": {"sizes": {"includes": [25]}},
+    "includes": [34850],
+  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 36930. We
   # must be careful not to exceed that maximum when adding new strings here.
 }

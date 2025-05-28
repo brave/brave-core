@@ -5,9 +5,7 @@
 
 import("//mojo/public/tools/bindings/mojom.gni")
 
-mojom_component("mojom") {
-  output_prefix = "brave_account_mojom"
-  macro_prefix = "BRAVE_ACCOUNT_MOJOM"
+mojom("mojom") {
   sources = [ "brave_account.mojom" ]
   webui_module_path = "/"
 }
