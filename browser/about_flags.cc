@@ -25,6 +25,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
@@ -86,6 +87,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/components/brave_education/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
 #endif
 
 #if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
@@ -276,6 +281,18 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #else
 #define BRAVE_COMMANDS_FEATURE_ENTRIES
 #endif
+
+#define BRAVE_CONTAINERS_FEATURE_ENTRIES                                       \
+  IF_BUILDFLAG(                                                                \
+      ENABLE_CONTAINERS,                                                       \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "brave-containers",                                                  \
+          "Enable Containers",                                                 \
+          "Allows websites to be opened in contained tabs, keeping different " \
+          "identities separate within the same browser profile",               \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(containers::features::kBraveContainers),          \
+      }))
 
 #if BUILDFLAG(IS_LINUX)
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES               \
@@ -1028,6 +1045,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   BRAVE_MODULE_FILENAME_PATCH                                                  \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
+  BRAVE_CONTAINERS_FEATURE_ENTRIES                                             \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \

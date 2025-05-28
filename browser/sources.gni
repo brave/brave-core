@@ -47,6 +47,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//chrome/browser/buildflags.gni")
@@ -185,6 +186,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
+  "//brave/components/containers/buildflags",
   "//brave/components/cosmetic_filters/browser",
   "//brave/components/cosmetic_filters/common:mojom",
   "//brave/components/de_amp/browser",
@@ -313,6 +315,10 @@ if (enable_brave_education) {
 if (is_android) {
   brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
   brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
+}
+
+if (enable_containers) {
+  brave_chrome_browser_deps += [ "//brave/components/containers/core/common" ]
 }
 
 if (enable_commander) {
