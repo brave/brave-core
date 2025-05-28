@@ -661,9 +661,7 @@ extension SceneDelegate {
 
     let themeOverride =
       DefaultTheme(rawValue: themeValue)?.userInterfaceStyleOverride ?? .unspecified
-    let isPrivateBrowsing =
-      scene?.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-    return isPrivateBrowsing ? .dark : themeOverride
+    return themeOverride
   }
 
   private func updateTheme(for scene: UIWindowScene) {
