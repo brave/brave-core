@@ -58,13 +58,6 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
-  const allAllowedLinks: string[] = conversationContext.conversationHistory
-    .flatMap(turn =>
-    turn.events?.flatMap(event =>
-      event.sourcesEvent?.sources?.map(source => source.url.url) || []
-    ) || []
-  )
-
   return (
     <>
       <div>
@@ -85,6 +78,12 @@ function ConversationEntries() {
           const showEditIndicator = !showEditInput && !!turn.edits?.length
           const latestEdit = turn.edits?.at(-1)
           const latestTurn = latestEdit ?? turn
+          const allowedLinksForTurn: string[] =
+            latestTurn.events?.flatMap(event =>
+              event.sourcesEvent?.sources?.map(
+                source => source.url.url
+              ) || []
+            ) || []
           const latestTurnText = isAIAssistant
             ? getCompletion(latestTurn)
             : latestTurn.text
@@ -157,7 +156,7 @@ function ConversationEntries() {
                     <AssistantResponse
                       entry={latestTurn}
                       isEntryInProgress={isEntryInProgress}
-                      allowedLinks={allAllowedLinks}
+                      allowedLinks={allowedLinksForTurn}
                       isLeoModel={conversationContext.isLeoModel}
                     />
                   )}
