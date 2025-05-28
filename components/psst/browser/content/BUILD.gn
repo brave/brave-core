@@ -9,17 +9,42 @@ component("content") {
   defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "psst_tab_helper.cc",
-    "psst_tab_helper.h",
+    "psst_scripts_handler.cc",
+    "psst_scripts_handler.h",
+    "psst_scripts_handler_impl.cc",
+    "psst_scripts_handler_impl.h",
+    "psst_tab_web_contents_observer.cc",
+    "psst_tab_web_contents_observer.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/script_injector/common/mojom",
+    "//content/public/browser",
   ]
 
   deps = [
-    "//base",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
-    "//brave/components/script_injector/common/mojom",
+    "//components/prefs:prefs",
     "//components/sessions",
-    "//content/public/browser",
+    "//components/user_prefs:user_prefs",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "psst_tab_web_contents_observer_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/common:common",
+    "//chrome/browser/prefs",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//url:url",
   ]
 }

@@ -5,7 +5,7 @@
 
 (() => {
   return new Promise((resolve) => {
-    document.title = 'test';
-    resolve(true)
+    document.title = 'b_user-';
+    resolve(false)
   })
 })();
