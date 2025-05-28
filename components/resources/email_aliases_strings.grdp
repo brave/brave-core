@@ -99,6 +99,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON" desc="The label for the get login link button">
     Get login link
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR" desc="The label for the request authentication error">
+    Error requesting authentication. Check your internet connection and try again.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER" desc="The placeholder for the email address">
     Email address
   </message>

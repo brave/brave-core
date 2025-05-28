@@ -1124,6 +1124,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK},
       {"emailAliasesGetLoginLinkButton",
        IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON},
+      {"emailAliasesRequestAuthenticationError",
+       IDS_SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR},
       {"emailAliasesEmailAddressPlaceholder",
        IDS_SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER},
       {"emailAliasesLoginEmailOnTheWay",
