@@ -59,6 +59,16 @@ class SplitViewSeparator : public views::ResizeArea,
   void OnViewBoundsChanged(views::View* observed_view) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
+                           BraveMultiContentsViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest, SelectTabTest);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest,
+                           TilingTwoTabsMakesSecondaryWebViewVisible);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest,
+                           BreakingTileMakesSecondaryWebViewHidden);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest,
+                           ActivateNonTiledTabShouldHideSecondaryWebView);
+
   void CreateMenuButton();
   void LayoutMenuButton();
 

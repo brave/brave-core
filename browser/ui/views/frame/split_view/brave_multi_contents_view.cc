@@ -43,7 +43,6 @@ BraveMultiContentsView::BraveMultiContentsView(
   separator->set_resize_delegate(this);
   separator->set_separator_delegate(this);
   separator->SetPreferredSize(gfx::Size(kSpacingBetweenContentsWebViews, 0));
-  separator->SetVisible(false);
   resize_area_ = separator;
 }
 
