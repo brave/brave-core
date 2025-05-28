@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index a372c42fe5755b9328b25ca09efca7297a0db57e..3436b446e1bd1515543472bf2644a9c03eccdd62 100644
+index 15ca9a708125de6505ca45a467e2c49b2b695df6..18361f691b6729c973c1c9d85eca1a9f5005d6df 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 @@ -214,6 +214,7 @@ void UpgradeDetectorImpl::DoCalculateThresholds() {
