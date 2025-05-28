@@ -1259,9 +1259,6 @@
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_DESC" desc="">
     Onion services won't be available outside of Tor windows.
   </message>
-  <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
-    Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
-  </message>
   <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
     Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.
   </message>

@@ -189,7 +189,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
-#include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -456,12 +455,6 @@ bool BraveContentBrowserClient::AreIsolatedWebAppsEnabled(
 
 void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  handler->AddHandlerPair(&webtorrent::HandleMagnetURLRewrite,
-                          content::BrowserURLHandler::null_handler());
-  handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
-                          &webtorrent::HandleTorrentURLReverseRewrite);
-#endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }

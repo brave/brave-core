@@ -8,12 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "base/memory/raw_ptr.h"
-#endif
 
 class BraveAutocompleteSchemeClassifier
     : public ChromeAutocompleteSchemeClassifier {
@@ -27,11 +22,6 @@ class BraveAutocompleteSchemeClassifier
 
   metrics::OmniboxInputType GetInputTypeForScheme(
       const std::string& scheme) const override;
-
- private:
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  raw_ptr<Profile> profile_ = nullptr;
-#endif
 };
 
 #endif  // BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_SCHEME_CLASSIFIER_H_

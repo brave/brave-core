@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -120,11 +119,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(&BraveDefaultExtensionsHandler::ResetTransactionInfo,
                           base::Unretained(this)));
 
-  web_ui()->RegisterMessageCallback(
-      "setWebTorrentEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
-                          base::Unretained(this)));
-
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (brave_wallet::IsZCashShieldedTransactionsEnabled()) {
     web_ui()->RegisterMessageCallback(
@@ -224,32 +218,6 @@ void BraveDefaultExtensionsHandler::ResetTransactionInfo(
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
   if (brave_wallet_service) {
     brave_wallet_service->tx_service()->Reset();
-  }
-}
-
-void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  bool enabled = args[0].GetBool();
-
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  extensions::ComponentLoader* loader =
-      extensions::ComponentLoader::Get(profile_);
-
-  if (enabled) {
-    if (!loader->Exists(brave_webtorrent_extension_id)) {
-      base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
-      brave_webtorrent_path =
-          brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
-      loader->Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
-    }
-    service->EnableExtension(brave_webtorrent_extension_id);
-  } else {
-    service->DisableExtension(
-        brave_webtorrent_extension_id,
-        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }
 

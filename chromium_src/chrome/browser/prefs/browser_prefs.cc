@@ -193,6 +193,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(kSafetynetStatus);
 #endif  // BUILDFLAG(IS_ANDROID)
 
+  // Added 2025-05
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  profile_prefs->ClearPref(kWebTorrentEnabled);
+#endif
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
