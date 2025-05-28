@@ -18,6 +18,10 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/component_updater/zxcvbn_data_component_installer.h"
+#endif  // BUILDFLAG(IS_ANDROID)
+
 namespace component_updater {
 
 void RegisterComponentsForUpdate() {
@@ -28,6 +32,9 @@ void RegisterComponentsForUpdate() {
                                              g_browser_process->local_state());
   psst::RegisterPsstComponent(cus);
   ai_chat::MigrateDeprecatedLocalModelsComponent(cus);
+#if BUILDFLAG(IS_ANDROID)
+  RegisterZxcvbnDataComponent(cus);
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace component_updater
