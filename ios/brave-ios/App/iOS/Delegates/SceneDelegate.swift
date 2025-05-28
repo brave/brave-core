@@ -175,7 +175,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       SessionWindow.setSelected(windowId: windowUUID)
     }
 
-    Preferences.AppState.backgroundedCleanly.value = false
     AppState.shared.profile.reopen()
     AppState.shared.uptimeMonitor.beginMonitoring()
 
@@ -183,6 +182,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     UIApplication.shared.applicationIconBadgeNumber = 0
 
     if let browserViewController = scene.browserViewController {
+      Preferences.AppState.backgroundedCleanly.value = false
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: scene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
@@ -446,6 +446,7 @@ extension SceneDelegate {
 
     if sceneState.windowScene.activationState == .foregroundActive {
       // Perform any actions that would also execute in sceneDidBecomeActive
+      Preferences.AppState.backgroundedCleanly.value = false
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: sceneState.windowScene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
