@@ -44,7 +44,7 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
                                  errorMessage?: string) {
     expect(this.observer).toBeDefined()
     this.observer?.onAuthStateChanged(
-      { status, email, errorMessage: errorMessage ?? undefined })
+      { status, email, errorMessage })
   }
 
   removeObserver() { }
