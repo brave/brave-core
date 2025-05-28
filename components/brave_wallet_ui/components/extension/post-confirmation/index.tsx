@@ -22,14 +22,14 @@ import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions
 
 // Components
 import {
-  TransactionSubmittedOrSigned //
+  TransactionSubmittedOrSigned, //
 } from './submitted_or_signed/submitted_or_signed'
 import { TransactionComplete } from './complete/complete'
 import {
-  TransactionFailedOrCanceled //
+  TransactionFailedOrCanceled, //
 } from './failed_or_canceled/failed_or_canceled'
 import {
-  CancelTransaction //
+  CancelTransaction, //
 } from './cancel_transaction/cancel_transaction'
 
 // Styled Components
@@ -64,8 +64,8 @@ export function TransactionStatus({ transactionLookup }: Props) {
       WalletPanelActions.setSelectedTransactionId({
         chainId: tx.chainId,
         coin: getCoinFromTxDataUnion(tx.txDataUnion),
-        id: tx.id
-      })
+        id: tx.id,
+      }),
     )
     dispatch(WalletPanelActions.navigateToMain())
     history.push(makeTransactionDetailsRoute(tx.id))
@@ -89,8 +89,8 @@ export function TransactionStatus({ transactionLookup }: Props) {
   }
 
   if (
-    tx.txStatus === BraveWallet.TransactionStatus.Submitted ||
-    tx.txStatus === BraveWallet.TransactionStatus.Signed
+    tx.txStatus === BraveWallet.TransactionStatus.Submitted
+    || tx.txStatus === BraveWallet.TransactionStatus.Signed
   ) {
     return (
       <TransactionSubmittedOrSigned
@@ -113,8 +113,8 @@ export function TransactionStatus({ transactionLookup }: Props) {
   }
 
   if (
-    tx.txStatus === BraveWallet.TransactionStatus.Error ||
-    tx.txStatus === BraveWallet.TransactionStatus.Dropped
+    tx.txStatus === BraveWallet.TransactionStatus.Error
+    || tx.txStatus === BraveWallet.TransactionStatus.Dropped
   ) {
     return (
       <TransactionFailedOrCanceled

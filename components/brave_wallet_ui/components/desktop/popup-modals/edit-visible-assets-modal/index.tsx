@@ -19,12 +19,12 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 
 // components
 import {
-  PopupModal //
+  PopupModal, //
 } from '../index'
 import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 import { AddAsset } from '../../add-asset/add-asset'
 import {
-  SegmentedControl //
+  SegmentedControl, //
 } from '../../../shared/segmented_control/segmented_control'
 import { SearchBar } from '../../../shared/search-bar'
 import { NetworkFilterSelector } from '../../network-filter-selector'
@@ -41,7 +41,7 @@ import {
   AddIcon,
   InfoIcon,
   EmptyStateWrapper,
-  TitleRow
+  TitleRow,
 } from './style'
 import {
   Column,
@@ -49,7 +49,7 @@ import {
   Row,
   Text,
   VerticalSpace,
-  LeoSquaredButton
+  LeoSquaredButton,
 } from '../../../shared/style'
 import { PaddedRow } from '../style'
 
@@ -59,15 +59,15 @@ import {
   useGetTokensRegistryQuery,
   useGetUserTokensRegistryQuery,
   useRemoveUserTokenMutation,
-  useUpdateUserAssetVisibleMutation
+  useUpdateUserAssetVisibleMutation,
 } from '../../../../common/slices/api.slice'
 import {
   blockchainTokenEntityAdaptorInitialState,
   selectAllBlockchainTokensFromQueryResult,
-  selectAllUserAssetsFromQueryResult
+  selectAllUserAssetsFromQueryResult,
 } from '../../../../common/slices/entities/blockchain-token.entity'
 import {
-  useGetCustomAssetSupportedNetworks //
+  useGetCustomAssetSupportedNetworks, //
 } from '../../../../common/hooks/use_get_custom_asset_supported_networks'
 import { eachLimit } from 'async'
 
@@ -77,17 +77,17 @@ export interface Props {
 
 const onlyInLeft = (
   left: BraveWallet.BlockchainToken[],
-  right: BraveWallet.BlockchainToken[]
+  right: BraveWallet.BlockchainToken[],
 ) =>
   left.filter(
     (leftValue) =>
       !right.some(
         (rightValue) =>
-          leftValue.contractAddress.toLowerCase() ===
-            rightValue.contractAddress.toLowerCase() &&
-          leftValue.chainId === rightValue.chainId &&
-          leftValue.tokenId === rightValue.tokenId
-      )
+          leftValue.contractAddress.toLowerCase()
+            === rightValue.contractAddress.toLowerCase()
+          && leftValue.chainId === rightValue.chainId
+          && leftValue.tokenId === rightValue.tokenId,
+      ),
   )
 
 export const EditVisibleAssetsModal = ({ onClose }: Props) => {
@@ -102,9 +102,9 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     {
       selectFromResult: (res) => ({
         isLoading: res.isLoading,
-        knownTokenListAllChains: selectAllBlockchainTokensFromQueryResult(res)
-      })
-    }
+        knownTokenListAllChains: selectAllBlockchainTokensFromQueryResult(res),
+      }),
+    },
   )
   const { userTokens, userTokensRegistry } = useGetUserTokensRegistryQuery(
     undefined,
@@ -112,9 +112,9 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
       selectFromResult: (res) => ({
         userTokensRegistry:
           res.data ?? blockchainTokenEntityAdaptorInitialState,
-        userTokens: selectAllUserAssetsFromQueryResult(res)
-      })
-    }
+        userTokens: selectAllUserAssetsFromQueryResult(res),
+      }),
+    },
   )
 
   // mutations
@@ -176,8 +176,8 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
       }
       return myAssetsOrAvailableAssets.filter(
         (token) =>
-          token.chainId === selectedNetworkFilter.chainId &&
-          token.coin === selectedNetworkFilter.coin
+          token.chainId === selectedNetworkFilter.chainId
+          && token.coin === selectedNetworkFilter.coin,
       )
     }, [selectedNetworkFilter, myAssetsOrAvailableAssets])
 
@@ -185,7 +185,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
   const sortedTokenListForSelectedNetworks: BraveWallet.BlockchainToken[] =
     React.useMemo(() => {
       return [...tokenListForSelectedNetworks].sort(
-        (a, b) => Number(b.visible) - Number(a.visible)
+        (a, b) => Number(b.visible) - Number(a.visible),
       )
     }, [tokenListForSelectedNetworks])
 
@@ -199,9 +199,9 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
     return sortedTokenListForSelectedNetworks.filter((item) => {
       return (
-        item.name.toLowerCase().startsWith(searchValueLower) ||
-        item.symbol.toLowerCase().startsWith(searchValueLower) ||
-        item.contractAddress.toLowerCase() === searchValueLower
+        item.name.toLowerCase().startsWith(searchValueLower)
+        || item.symbol.toLowerCase().startsWith(searchValueLower)
+        || item.contractAddress.toLowerCase() === searchValueLower
       )
     })
   }, [sortedTokenListForSelectedNetworks, searchValue])
@@ -211,19 +211,19 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value)
     },
-    []
+    [],
   )
 
   const onCheckWatchlistItem = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
       setTokensToAdd((prev) => prev.concat(token))
     },
-    []
+    [],
   )
 
   const toggleShowAddCustomToken = React.useCallback(
     () => setShowAddCustomToken((prev) => !prev),
-    []
+    [],
   )
 
   const onClickSuggestAdd = React.useCallback(() => {
@@ -235,7 +235,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     (token: BraveWallet.BlockchainToken) => {
       setTokenIdsToRemove((prev) => prev.concat(getAssetIdKey(token)))
     },
-    []
+    [],
   )
 
   const onClickAssetVisibilityToggle = React.useCallback(
@@ -248,7 +248,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
           : prev.concat(assetId)
       })
     },
-    []
+    [],
   )
 
   const onClickDone = React.useCallback(async () => {
@@ -271,7 +271,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
 
       await updateUserAssetVisible({
         token,
-        isVisible: !token.visible
+        isVisible: !token.visible,
       }).unwrap()
     })
 
@@ -284,21 +284,21 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     onClose,
     addUserToken,
     removeUserToken,
-    updateUserAssetVisible
+    updateUserAssetVisible,
   ])
 
   const onSelectAssetsNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
       setSelectedNetworkFilter(network)
     },
-    []
+    [],
   )
 
   const assetHasPendingVisibilityChange = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
       return tokenIdsToUpdateVisibility.includes(getAssetIdKey(token))
     },
-    [tokenIdsToUpdateVisibility]
+    [tokenIdsToUpdateVisibility],
   )
 
   return (
@@ -369,8 +369,8 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
         />
       ) : (
         <StyledWrapper>
-          {(myAssetsOrAvailableAssets.length === 0 && searchValue === '') ||
-          isLoading ? (
+          {(myAssetsOrAvailableAssets.length === 0 && searchValue === '')
+          || isLoading ? (
             <LoadingWrapper>
               <LoadIcon />
             </LoadingWrapper>

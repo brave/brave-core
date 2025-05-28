@@ -25,7 +25,7 @@ interface Props {
 
 export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm }: Props) => {
   const [contractAddress, setContractAddress] = React.useState<string>(
-    nftToken?.contractAddress || ''
+    nftToken?.contractAddress || '',
   )
 
   return (

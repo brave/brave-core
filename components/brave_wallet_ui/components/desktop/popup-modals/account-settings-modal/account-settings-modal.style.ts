@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import AlertReact from '@brave/leo/react/alert'
 import * as leo from '@brave/leo/tokens/css/variables'
 import LeoSegmentedControl, {
-  SegmentedControlProps
+  SegmentedControlProps,
 } from '@brave/leo/react/segmentedControl'
 
 // Assets
@@ -16,7 +16,7 @@ import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.s
 // Shared Styles
 import { WalletButton, Row } from '../../../shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
@@ -161,5 +161,5 @@ export const ControlsWrapper = styled(Row)`
 `
 
 export const SegmentedControl = styled(LeoSegmentedControl).attrs({
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'default'
+  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'default',
 })<SegmentedControlProps>``

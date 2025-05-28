@@ -22,7 +22,7 @@ export const SelectAccount = ({
   accounts,
   selectedAccount,
   onSelectAccount,
-  showTooltips
+  showTooltips,
 }: Props) => {
   return (
     <>

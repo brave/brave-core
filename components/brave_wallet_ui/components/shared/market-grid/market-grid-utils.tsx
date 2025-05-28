@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   AccountButtonOptionsObjectType,
   BraveWallet,
-  MarketGridHeader
+  MarketGridHeader,
 } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 
@@ -17,7 +17,7 @@ import {
   TextWrapper,
   ButtonsRow,
   breakpoints,
-  ActionButton
+  ActionButton,
 } from './market-grid.style'
 
 // Components
@@ -31,7 +31,7 @@ export const renderCells = (
   buttonOptions: AccountButtonOptionsObjectType[],
   fiatCurrency: string,
   onClickBuy: (coinMarket: BraveWallet.CoinMarket) => void,
-  onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void
+  onClickDeposit: (coinMarket: BraveWallet.CoinMarket) => void,
 ) => {
   const {
     name,
@@ -41,7 +41,7 @@ export const renderCells = (
     priceChange24h,
     priceChangePercentage24h,
     marketCap,
-    totalVolume
+    totalVolume,
   } = coinMarkDataItem
 
   const formattedPrice = new Amount(currentPrice).formatAsFiat(fiatCurrency, 6)
@@ -50,7 +50,7 @@ export const renderCells = (
   const formattedMarketCap = new Amount(marketCap).abbreviate(
     1,
     fiatCurrency,
-    'billion'
+    'billion',
   )
   const formattedVolume = new Amount(totalVolume).abbreviate(1, fiatCurrency)
   const isDown = priceChange24h < 0
@@ -93,7 +93,7 @@ export const renderCells = (
           {getLocale(option.name)}
         </ActionButton>
       ))}
-    </ButtonsRow>
+    </ButtonsRow>,
   ]
 
   return cellsContent.map((cellContent) => ({ content: cellContent }))
@@ -109,7 +109,7 @@ export const createColumnTemplate = (headers: MarketGridHeader[]) => {
 
   const mediaQueryPanel = window.matchMedia(`(max-width: ${breakpoints.panel})`)
   const mediaQuerySmall = window.matchMedia(
-    `(min-width: ${breakpoints.panel}) and (max-width: ${breakpoints.small})`
+    `(min-width: ${breakpoints.panel}) and (max-width: ${breakpoints.small})`,
   )
 
   if (mediaQueryPanel.matches) {
@@ -123,8 +123,8 @@ export const createColumnTemplate = (headers: MarketGridHeader[]) => {
       header.width
         ? `${header.width} `
         : header.id === 'assets'
-        ? '2.5fr'
-        : '1fr'
+          ? '2.5fr'
+          : '1fr',
     )
     .join(' ')
 }

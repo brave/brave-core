@@ -11,12 +11,12 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Components
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../shared/create-network-icon/index'
 
 // Utils
 import {
-  networkEntityAdapter //
+  networkEntityAdapter, //
 } from '../../../../../common/slices/entities/network.entity'
 
 // Styled Components
@@ -24,7 +24,7 @@ import {
   CheckboxText,
   CheckboxRow,
   CheckboxWrapper,
-  Description
+  Description,
 } from './filter-components.style'
 import { Row } from '../../../../shared/style'
 
@@ -42,7 +42,7 @@ export const NetworkCheckboxes = (props: Props) => {
     title,
     marginBottom,
     isNetworkFilteredOut,
-    onCheckNetwork
+    onCheckNetwork,
   } = props
 
   return (
@@ -72,12 +72,12 @@ export const NetworkCheckboxes = (props: Props) => {
             <Checkbox
               checked={
                 !isNetworkFilteredOut(
-                  networkEntityAdapter.selectId(network).toString()
+                  networkEntityAdapter.selectId(network).toString(),
                 )
               }
               onChange={() =>
                 onCheckNetwork(
-                  networkEntityAdapter.selectId(network).toString()
+                  networkEntityAdapter.selectId(network).toString(),
                 )
               }
             >

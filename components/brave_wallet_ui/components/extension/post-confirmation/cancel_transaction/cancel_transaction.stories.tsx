@@ -6,12 +6,12 @@ import * as React from 'react'
 
 // Mocks
 import {
-  mockTransactionInfo //
+  mockTransactionInfo, //
 } from '../../../../stories/mock-data/mock-transaction-info'
 
 // Components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../../stories/wrappers/wallet-panel-story-wrapper'
 import { CancelTransaction } from './cancel_transaction'
 
@@ -36,7 +36,7 @@ export const _CancelTransaction = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: CancelTransaction }

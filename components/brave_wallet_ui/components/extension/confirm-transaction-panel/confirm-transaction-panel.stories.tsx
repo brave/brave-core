@@ -21,7 +21,7 @@ export const _ConfirmTransactionPanel = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: ConfirmTransactionPanel }

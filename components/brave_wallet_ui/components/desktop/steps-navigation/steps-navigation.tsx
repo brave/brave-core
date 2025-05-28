@@ -19,7 +19,7 @@ import {
   BackButton,
   DotsWrapper,
   FlexBox,
-  Wrapper
+  Wrapper,
 } from './steps-navigation.style'
 
 export interface StepsNavigationProps<T extends string> {
@@ -34,7 +34,7 @@ export interface StepsNavigationProps<T extends string> {
 }
 
 export const StepsNavigation: <T extends string>(
-  props: StepsNavigationProps<T>
+  props: StepsNavigationProps<T>,
 ) => JSX.Element = ({
   currentStep,
   goBack,
@@ -43,7 +43,7 @@ export const StepsNavigation: <T extends string>(
   preventSkipAhead,
   steps,
   skipButtonText,
-  preventGoBack
+  preventGoBack,
 }) => {
   // routing
   const history = useHistory()
@@ -61,7 +61,7 @@ export const StepsNavigation: <T extends string>(
             goBack || steps[prevStepIndex]
               ? () => history.push(steps[prevStepIndex])
               : history.goBack,
-          as: 'button'
+          as: 'button',
         } as const)
   }, [steps, prevStepIndex, goBackUrl, goBack, history])
 

@@ -14,7 +14,7 @@ import {
   Input,
   ErrorText,
   ErrorRow,
-  WarningIcon
+  WarningIcon,
 } from './style'
 
 interface PasswordInputState {
@@ -58,7 +58,7 @@ export function PasswordInput({
   onFocus,
   onVisibilityToggled,
   children,
-  revealValue
+  revealValue,
 }: Props) {
   // state
   const [showPassword, setShowPassword] = React.useState(false)
@@ -68,7 +68,7 @@ export function PasswordInput({
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange],
   )
 
   const onTogglePasswordVisibility = React.useCallback(() => {
@@ -121,7 +121,7 @@ export function PasswordInput({
             error,
             hasError,
             showPassword,
-            value
+            value,
           })
         : children}
     </StyledWrapper>
@@ -129,7 +129,7 @@ export function PasswordInput({
 }
 
 PasswordInput.defaultProps = {
-  showToggleButton: true
+  showToggleButton: true,
 }
 
 export default PasswordInput

@@ -27,7 +27,7 @@ export const _PasswordStrengthTooltip = {
         </Button>
       </>
     )
-  }
+  },
 }
 
 export const _PasswordStrengthTooltipMini = {
@@ -42,7 +42,7 @@ export const _PasswordStrengthTooltipMini = {
         </PasswordStrengthTooltip>
       </div>
     )
-  }
+  },
 }
 
 export default { component: PasswordStrengthTooltip }

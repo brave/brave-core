@@ -35,14 +35,14 @@ export const AddAsset = (props: Props) => {
       if (tokenContractAddress !== '') setTokenContractAddress('')
       setSelectedTab(tab.id)
     },
-    [tokenContractAddress]
+    [tokenContractAddress],
   )
 
   const onChangeContractAddress = React.useCallback(
     (contractAddress: string) => {
       setTokenContractAddress(contractAddress)
     },
-    []
+    [],
   )
 
   return (

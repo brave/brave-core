@@ -11,32 +11,32 @@ import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_acti
 
 // Hooks
 import {
-  useRetryTransactionMutation //
+  useRetryTransactionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // Selectors
 import {
-  useUnsafeUISelector //
+  useUnsafeUISelector, //
 } from '../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../common/selectors'
 
 // Types
 import {
   BraveWallet,
-  SerializableTransactionInfo //
+  SerializableTransactionInfo, //
 } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 import {
   isBridgeTransaction,
-  isSwapTransaction
+  isSwapTransaction,
 } from '../../../../utils/tx-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 
 // Components
 import {
-  PostConfirmationHeader //
+  PostConfirmationHeader, //
 } from '../common/post_confirmation_header'
 import { TransactionIntent } from '../common/transaction_intent'
 
@@ -46,7 +46,7 @@ import {
   Title,
   Wrapper,
   ErrorOrSuccessIconWrapper,
-  ErrorOrSuccessIcon
+  ErrorOrSuccessIcon,
 } from '../common/common.style'
 import { Column, Row, Text } from '../../../shared/style'
 
@@ -60,13 +60,13 @@ export const TransactionFailedOrCanceled = (props: Props) => {
 
   // redux
   const transactionProviderErrorRegistry = useUnsafeUISelector(
-    UISelectors.transactionProviderErrorRegistry
+    UISelectors.transactionProviderErrorRegistry,
   )
 
   // Hooks
   const [retryTx] = useRetryTransactionMutation()
   const dispatch = useDispatch()
-  
+
   // Computed
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const isBridge = isBridgeTransaction(transaction)
@@ -74,12 +74,12 @@ export const TransactionFailedOrCanceled = (props: Props) => {
 
   const providerError = transactionProviderErrorRegistry[transaction.id]
   const errorCode =
-    providerError?.code.providerError ??
-    providerError?.code.zcashProviderError ??
-    providerError?.code.bitcoinProviderError ??
-    providerError?.code.solanaProviderError ??
-    providerError?.code.filecoinProviderError ??
-    BraveWallet.ProviderError.kUnknown
+    providerError?.code.providerError
+    ?? providerError?.code.zcashProviderError
+    ?? providerError?.code.bitcoinProviderError
+    ?? providerError?.code.solanaProviderError
+    ?? providerError?.code.filecoinProviderError
+    ?? BraveWallet.ProviderError.kUnknown
 
   const errorDetails = providerError && `${errorCode}: ${providerError.message}`
 
@@ -99,7 +99,7 @@ export const TransactionFailedOrCanceled = (props: Props) => {
     retryTx({
       coinType: txCoinType,
       chainId: transaction.chainId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
     })
     dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
   }
@@ -128,7 +128,7 @@ export const TransactionFailedOrCanceled = (props: Props) => {
         <Title>
           {getLocale('braveWalletUnableToSendSwapOrBridge').replace(
             '$1',
-            getLocale(sendSwapOrBridgeLocale).toLocaleLowerCase()
+            getLocale(sendSwapOrBridgeLocale).toLocaleLowerCase(),
           )}
         </Title>
         <TransactionIntent transaction={transaction} />

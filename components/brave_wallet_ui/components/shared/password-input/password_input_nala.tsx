@@ -18,7 +18,7 @@ export const PasswordInputNala = ({
   onChange,
   onKeyDown,
   isCorrectPassword,
-  password
+  password,
 }: {
   onChange?: InputEvent
   onKeyDown?: InputEvent

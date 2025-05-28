@@ -9,7 +9,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ClickAwayContainer
+  ClickAwayContainer,
 } from './style'
 
 interface TransactionPopupItemProps {

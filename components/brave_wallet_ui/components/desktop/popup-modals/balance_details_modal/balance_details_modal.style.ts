@@ -28,7 +28,7 @@ export const BalanceText = styled(Text)`
 `
 
 export const InfoIcon = styled(Icon).attrs({
-  name: 'info-outline'
+  name: 'info-outline',
 })`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.default};

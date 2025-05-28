@@ -10,7 +10,7 @@ import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import {
   useAddAccountMutation,
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../common/slices/api.slice'
 
 // Types
@@ -37,7 +37,7 @@ export interface Props {
 export const CreateAccountTab = ({
   network: accountNetwork,
   onCreated,
-  onCancel
+  onCancel,
 }: Props) => {
   // redux
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
@@ -46,7 +46,7 @@ export const CreateAccountTab = ({
   const { accounts } = useAccountsQuery()
   const { data: network } = useGetNetworkQuery({
     chainId: accountNetwork.chainId,
-    coin: accountNetwork.coin
+    coin: accountNetwork.coin,
   })
 
   // mutations
@@ -70,9 +70,9 @@ export const CreateAccountTab = ({
         coin: accountNetwork.coin,
         keyringId: keyringIdForNewAccount(
           accountNetwork.coin,
-          accountNetwork.chainId
+          accountNetwork.chainId,
         ),
-        accountName: suggestedAccountName
+        accountName: suggestedAccountName,
       }).unwrap()
 
       if (account && onCreated) {
@@ -88,7 +88,7 @@ export const CreateAccountTab = ({
     accountNetwork.coin,
     accountNetwork.chainId,
     suggestedAccountName,
-    onCreated
+    onCreated,
   ])
 
   // effects
@@ -106,7 +106,7 @@ export const CreateAccountTab = ({
         {network
           ? getLocale('braveWalletCreateAccountDescription').replace(
               '$1',
-              network.symbolName
+              network.symbolName,
             )
           : ''}
       </Description>

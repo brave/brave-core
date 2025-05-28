@@ -27,7 +27,7 @@ import {
   useGetDefaultEthereumWalletQuery,
   useGetIsWalletBackedUpQuery,
   useGetDefaultSolanaWalletQuery,
-  useGetIsMetaMaskInstalledQuery
+  useGetIsMetaMaskInstalledQuery,
 } from '../../../../common/slices/api.slice'
 
 export const Banners = () => {
@@ -37,17 +37,17 @@ export const Banners = () => {
   // Queries
   const {
     data: isMetaMaskInstalled,
-    isLoading: isCheckingInstalledExtensions
+    isLoading: isCheckingInstalledExtensions,
   } = useGetIsMetaMaskInstalledQuery()
   const {
     data: defaultEthereumWallet,
-    isLoading: isLoadingDefaultEthereumWallet
+    isLoading: isLoadingDefaultEthereumWallet,
   } = useGetDefaultEthereumWalletQuery()
   const { data: defaultSolanaWallet, isLoading: isLoadingDefaultSolanaWallet } =
     useGetDefaultSolanaWalletQuery()
   const {
     data: isWalletBackedUp = false,
-    isLoading: isCheckingWalletBackupStatus
+    isLoading: isCheckingWalletBackupStatus,
   } = useGetIsWalletBackedUpQuery()
 
   // State
@@ -63,22 +63,22 @@ export const Banners = () => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   const isCheckingWallets =
-    isCheckingInstalledExtensions ||
-    isLoadingDefaultEthereumWallet ||
-    isLoadingDefaultSolanaWallet
+    isCheckingInstalledExtensions
+    || isLoadingDefaultEthereumWallet
+    || isLoadingDefaultSolanaWallet
 
   const showBanner =
-    !isCheckingWallets &&
-    (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet ||
-      defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet) &&
-    (defaultEthereumWallet !==
-      BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
-      defaultSolanaWallet !==
-        BraveWallet.DefaultWallet.BraveWalletPreferExtension ||
-      (defaultEthereumWallet ===
-        BraveWallet.DefaultWallet.BraveWalletPreferExtension &&
-        isMetaMaskInstalled)) &&
-    !isDefaultWalletBannerDismissed
+    !isCheckingWallets
+    && (defaultEthereumWallet !== BraveWallet.DefaultWallet.BraveWallet
+      || defaultSolanaWallet !== BraveWallet.DefaultWallet.BraveWallet)
+    && (defaultEthereumWallet
+      !== BraveWallet.DefaultWallet.BraveWalletPreferExtension
+      || defaultSolanaWallet
+        !== BraveWallet.DefaultWallet.BraveWalletPreferExtension
+      || (defaultEthereumWallet
+        === BraveWallet.DefaultWallet.BraveWalletPreferExtension
+        && isMetaMaskInstalled))
+    && !isDefaultWalletBannerDismissed
 
   // Methods
   const onShowBackup = React.useCallback(() => {
@@ -90,15 +90,15 @@ export const Banners = () => {
     if (isPanel) {
       chrome.tabs.create(
         {
-          url: `chrome://wallet${WalletRoutes.Backup}`
+          url: `chrome://wallet${WalletRoutes.Backup}`,
         },
         () => {
           if (chrome.runtime.lastError) {
             console.error(
-              'tabs.create failed: ' + chrome.runtime.lastError.message
+              'tabs.create failed: ' + chrome.runtime.lastError.message,
             )
           }
-        }
+        },
       )
       return
     }
@@ -118,9 +118,9 @@ export const Banners = () => {
           description={getLocale('braveWalletDefaultWalletBanner')}
         />
       )}
-      {!isCheckingWalletBackupStatus &&
-        !isWalletBackedUp &&
-        !isBackupWarningDismissed && (
+      {!isCheckingWalletBackupStatus
+        && !isWalletBackedUp
+        && !isBackupWarningDismissed && (
           <WalletBanner
             onDismiss={() => {
               setDismissBackupWarning(true)

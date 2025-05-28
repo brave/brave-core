@@ -9,10 +9,10 @@ import { useLocation } from 'react-router-dom'
 
 // Constants
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../../../common/constants/local-storage-keys'
 import {
-  emptyRewardsInfo //
+  emptyRewardsInfo, //
 } from '../../../../../../common/async/base-query-cache'
 
 // Types
@@ -20,7 +20,7 @@ import {
   BraveWallet,
   SerializableTransactionInfo,
   SpotPriceRegistry,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../../../constants/types'
 
 // Utils
@@ -35,32 +35,32 @@ import { PortfolioAssetOptions } from '../../../../../../options/nav-options'
 
 // Components
 import {
-  PortfolioTransactionItem //
+  PortfolioTransactionItem, //
 } from '../../../../portfolio_transaction_item/portfolio_transaction_item'
 import { PortfolioAccountItem } from '../../../../portfolio-account-item/index'
 import {
-  SegmentedControl //
+  SegmentedControl, //
 } from '../../../../../shared/segmented_control/segmented_control'
 import {
-  SellAssetModal //
+  SellAssetModal, //
 } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
 import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
 
 // Hooks
 import {
-  useMultiChainSellAssets //
+  useMultiChainSellAssets, //
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetRewardsInfoQuery,
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery,
 } from '../../../../../../common/slices/api.slice'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../../../../../../common/slices/entities/token-balance.entity'
 import {
-  useSyncedLocalStorage //
+  useSyncedLocalStorage, //
 } from '../../../../../../common/hooks/use_local_storage'
 
 // Styled Components
@@ -68,7 +68,7 @@ import {
   ToggleVisibilityButton,
   EmptyTransactionsIcon,
   EmptyAccountsIcon,
-  EyeIcon
+  EyeIcon,
 } from '../../style'
 import {
   Column,
@@ -76,7 +76,7 @@ import {
   Row,
   VerticalDivider,
   VerticalSpacer,
-  HorizontalSpace
+  HorizontalSpace,
 } from '../../../../../shared/style'
 
 interface Props {
@@ -98,7 +98,7 @@ export const AccountsAndTransactionsList = ({
   accounts,
   tokenBalancesRegistry,
   isLoadingBalances,
-  spotPriceRegistry
+  spotPriceRegistry,
 }: Props) => {
   // routing
   const { hash } = useLocation()
@@ -111,10 +111,10 @@ export const AccountsAndTransactionsList = ({
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
-    selectedAsset ?? skipToken
+    selectedAsset ?? skipToken,
   )
   const {
-    data: { balance: rewardsBalance, rewardsAccount } = emptyRewardsInfo
+    data: { balance: rewardsBalance, rewardsAccount } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
 
   // hooks
@@ -122,7 +122,7 @@ export const AccountsAndTransactionsList = ({
     checkIsAssetSellSupported,
     sellAmount,
     setSellAmount,
-    openSellAssetLink
+    openSellAssetLink,
   } = useMultiChainSellAssets()
 
   // state
@@ -140,7 +140,7 @@ export const AccountsAndTransactionsList = ({
       return []
     }
     return accounts.filter(
-      (account) => account.accountId.coin === selectedAsset.coin
+      (account) => account.accountId.coin === selectedAsset.coin,
     )
   }, [accounts, selectedAsset])
 
@@ -154,20 +154,20 @@ export const AccountsAndTransactionsList = ({
     return filteredAccountsByCoinType
       .filter((account) =>
         new Amount(
-          getBalance(account.accountId, selectedAsset, tokenBalancesRegistry)
-        ).gt(0)
+          getBalance(account.accountId, selectedAsset, tokenBalancesRegistry),
+        ).gt(0),
       )
       .sort((a, b) => {
         const aBalance = computeFiatAmount({
           spotPriceRegistry,
           value: getBalance(a.accountId, selectedAsset, tokenBalancesRegistry),
-          token: selectedAsset
+          token: selectedAsset,
         })
 
         const bBalance = computeFiatAmount({
           spotPriceRegistry,
           value: getBalance(b.accountId, selectedAsset, tokenBalancesRegistry),
-          token: selectedAsset
+          token: selectedAsset,
         })
 
         return bBalance.minus(aBalance).toNumber()
@@ -178,12 +178,12 @@ export const AccountsAndTransactionsList = ({
     filteredAccountsByCoinType,
     externalRewardsAccount,
     tokenBalancesRegistry,
-    spotPriceRegistry
+    spotPriceRegistry,
   ])
 
   const nonRejectedTransactions = React.useMemo(() => {
     return selectedAssetTransactions.filter(
-      (t) => t.txStatus !== BraveWallet.TransactionStatus.Rejected
+      (t) => t.txStatus !== BraveWallet.TransactionStatus.Rejected,
     )
   }, [selectedAssetTransactions])
 
@@ -193,12 +193,12 @@ export const AccountsAndTransactionsList = ({
       setSelectedSellAccount(account)
       setShowSellModal(true)
     },
-    []
+    [],
   )
 
   const onOpenSellAssetLink = React.useCallback(() => {
     openSellAssetLink({
-      sellAsset: selectedAsset
+      sellAsset: selectedAsset,
     })
   }, [selectedAsset, openSellAssetLink])
 
@@ -207,9 +207,9 @@ export const AccountsAndTransactionsList = ({
   }, [setHidePortfolioBalances])
 
   if (
-    hash !== WalletRoutes.TransactionsHash &&
-    isLoadingBalances &&
-    accountsList.length === 0
+    hash !== WalletRoutes.TransactionsHash
+    && isLoadingBalances
+    && accountsList.length === 0
   ) {
     return (
       <>
@@ -342,11 +342,11 @@ export const AccountsAndTransactionsList = ({
                               textColor='text03'
                               textSize='14px'
                             >
-                              {'(' +
-                                fullAssetFiatBalance.formatAsFiat(
-                                  defaultFiatCurrency
-                                ) +
-                                ')'}
+                              {'('
+                                + fullAssetFiatBalance.formatAsFiat(
+                                  defaultFiatCurrency,
+                                )
+                                + ')'}
                             </Text>
                           </>
                         ) : (
@@ -382,7 +382,7 @@ export const AccountsAndTransactionsList = ({
                           : getBalance(
                               account.accountId,
                               selectedAsset,
-                              tokenBalancesRegistry
+                              tokenBalancesRegistry,
                             )
                       }
                       selectedNetwork={selectedAssetNetwork || selectedNetwork}
@@ -475,7 +475,7 @@ export const AccountsAndTransactionsList = ({
           sellAssetBalance={getBalance(
             selectedSellAccount?.accountId,
             selectedAsset,
-            tokenBalancesRegistry
+            tokenBalancesRegistry,
           )}
         />
       )}

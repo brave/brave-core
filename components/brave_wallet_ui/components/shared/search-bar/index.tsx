@@ -26,7 +26,7 @@ export const SearchBar = (props: Props) => {
     value,
     useWithFilter,
     disabled,
-    isV2
+    isV2,
   } = props
   return (
     <StyledWrapper

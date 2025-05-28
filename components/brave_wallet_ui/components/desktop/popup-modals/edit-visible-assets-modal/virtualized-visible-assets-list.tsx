@@ -23,7 +23,7 @@ import {
   Row,
   VerticalDivider,
   VerticalSpace,
-  Text
+  Text,
 } from '../../../shared/style'
 import { AddIcon, AddButtonText, VirtualListStyle } from './style'
 import { PaddedColumn } from '../style'
@@ -47,14 +47,14 @@ interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
 
 const getListItemKey = (
   index: number,
-  tokenList: BraveWallet.BlockchainToken[]
+  tokenList: BraveWallet.BlockchainToken[],
 ) => {
   return getAssetIdKey(tokenList[index])
 }
 
 const checkIsLastIndex = (
   index: number,
-  tokenList: BraveWallet.BlockchainToken[]
+  tokenList: BraveWallet.BlockchainToken[],
 ) => {
   return index === tokenList.length - 1
 }
@@ -62,9 +62,9 @@ const checkIsLastIndex = (
 const isRemovable = (token: BraveWallet.BlockchainToken): boolean => {
   return (
     // Native assets should not be removable.
-    token.contractAddress !== '' &&
+    token.contractAddress !== ''
     // Any NFT should be removable.
-    (token.isErc721 || token.isErc1155 || token.isNft)
+    && (token.isErc721 || token.isErc1155 || token.isNft)
   )
 }
 
@@ -78,7 +78,7 @@ const ListItem = (props: ListItemProps) => {
     onCheckWatchlistItem,
     onClickAddCustomAsset,
     onRemoveAsset,
-    setSize
+    setSize,
   } = props
 
   const handleSetSize = React.useCallback(
@@ -87,7 +87,7 @@ const ListItem = (props: ListItemProps) => {
         setSize(index, ref.getBoundingClientRect().height)
       }
     },
-    [index, setSize]
+    [index, setSize],
   )
 
   return (
@@ -129,21 +129,21 @@ const ListItem = (props: ListItemProps) => {
 }
 
 export const VirtualizedVisibleAssetsList = (
-  props: VirtualizedTokensListProps
+  props: VirtualizedTokensListProps,
 ) => {
   const {
     tokenList,
     isAssetSelected,
     onCheckWatchlistItem,
     onClickAddCustomAsset,
-    onRemoveAsset
+    onRemoveAsset,
   } = props
   // routing
   const { hash } = useLocation()
 
   const listRef = React.useRef<List | null>(null)
   const itemSizes = React.useRef<number[]>(
-    new Array(tokenList.length).fill(assetWatchListItemHeight)
+    new Array(tokenList.length).fill(assetWatchListItemHeight),
   )
 
   const setSize = React.useCallback((index: number, size: number) => {
@@ -184,8 +184,8 @@ export const VirtualizedVisibleAssetsList = (
                 onClickAddCustomAsset={onClickAddCustomAsset}
                 setSize={setSize}
                 isLastIndex={
-                  hash !== WalletRoutes.AvailableAssetsHash &&
-                  checkIsLastIndex(index, data)
+                  hash !== WalletRoutes.AvailableAssetsHash
+                  && checkIsLastIndex(index, data)
                 }
                 index={index}
                 style={style}

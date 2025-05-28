@@ -11,7 +11,7 @@ import {
   ToggleVisibilityIcon,
   Input,
   ErrorText,
-  ErrorIcon
+  ErrorIcon,
 } from './password-input-v2.style'
 import { Column, Row } from '../style'
 
@@ -53,7 +53,7 @@ export const PasswordInput = (props: Props) => {
     onBlur,
     onFocus,
     children,
-    revealValue
+    revealValue,
   } = props
 
   // state
@@ -64,7 +64,7 @@ export const PasswordInput = (props: Props) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange],
   )
 
   // render
@@ -120,7 +120,7 @@ export const PasswordInput = (props: Props) => {
             error,
             hasError,
             showPassword,
-            value
+            value,
           })
         : children}
     </Column>
@@ -128,7 +128,7 @@ export const PasswordInput = (props: Props) => {
 }
 
 PasswordInput.defaultProps = {
-  showToggleButton: true
+  showToggleButton: true,
 }
 
 export default PasswordInput

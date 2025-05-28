@@ -14,7 +14,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 import {
   useGetPendingSignMessageErrorsQuery,
-  useProcessSignMessageErrorMutation
+  useProcessSignMessageErrorMutation,
 } from '../../../common/slices/api.slice'
 
 // Components
@@ -29,7 +29,7 @@ import {
   WarningIcon,
   OriginErrorText,
   LaunchButton,
-  LaunchIcon
+  LaunchIcon,
 } from './sign_in_with_ethereum.style'
 import { Row, Column, VerticalDivider, VerticalSpace } from '../../shared/style'
 
@@ -46,15 +46,15 @@ export const SignInWithEthereumError = () => {
   const message = errorData?.localizedErrMsg ?? ''
   const address = message.substring(
     message.indexOf('(') + 1,
-    message.indexOf(')')
+    message.indexOf(')'),
   )
 
   const errorMessage =
     !errorData?.localizedErrMsg && !errorData?.type
       ? ''
       : errorData.type === BraveWallet.SignMessageErrorType.kAccountMismatched
-      ? message.replace(address, reduceAddress(address))
-      : errorData.localizedErrMsg
+        ? message.replace(address, reduceAddress(address))
+        : errorData.localizedErrMsg
 
   // Methods
   const onClickViewOnChainList = () => {
@@ -66,10 +66,10 @@ export const SignInWithEthereumError = () => {
       () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
-      }
+      },
     )
   }
 

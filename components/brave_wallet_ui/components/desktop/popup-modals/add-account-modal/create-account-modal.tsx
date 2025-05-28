@@ -19,7 +19,7 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 import {
   BraveWallet,
   CreateAccountOptionsType,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../constants/types'
 
 // components
@@ -35,12 +35,12 @@ import { WalletSelectors } from '../../../../common/selectors'
 
 // hooks
 import {
-  useSafeWalletSelector //
+  useSafeWalletSelector, //
 } from '../../../../common/hooks/use-safe-selector'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   useAddAccountMutation,
-  useGetVisibleNetworksQuery
+  useGetVisibleNetworksQuery,
 } from '../../../../common/slices/api.slice'
 import { LeoSquaredButton } from '../../../shared/style'
 
@@ -56,11 +56,11 @@ export const CreateAccountModal = () => {
 
   // redux
   const isBitcoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinEnabled
+    WalletSelectors.isBitcoinEnabled,
   )
   const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
   const isCardanoEnabled = useSafeWalletSelector(
-    WalletSelectors.isCardanoEnabled
+    WalletSelectors.isCardanoEnabled,
   )
 
   // queries
@@ -81,7 +81,7 @@ export const CreateAccountModal = () => {
       visibleNetworks,
       isBitcoinEnabled,
       isZCashEnabled,
-      isCardanoEnabled
+      isCardanoEnabled,
     })
   }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled, isCardanoEnabled])
 
@@ -94,7 +94,7 @@ export const CreateAccountModal = () => {
   const suggestedAccountName = React.useMemo(() => {
     const accountTypeLength =
       accounts.filter(
-        (account) => account.accountId.coin === selectedAccountType?.coin
+        (account) => account.accountId.coin === selectedAccountType?.coin,
       ).length + 1
     return `${
       selectedAccountType?.name //
@@ -114,7 +114,7 @@ export const CreateAccountModal = () => {
         BraveWallet.CoinType.FIL,
         BraveWallet.CoinType.BTC,
         BraveWallet.CoinType.ZEC,
-        BraveWallet.CoinType.ADA
+        BraveWallet.CoinType.ADA,
       ].includes(selectedAccountType.coin)
     ) {
       network = selectedAccountType.fixedNetwork
@@ -129,7 +129,7 @@ export const CreateAccountModal = () => {
   const modalTitle = selectedAccountType
     ? getLocale('braveWalletCreateAccount').replace(
         '$1',
-        selectedAccountType.name
+        selectedAccountType.name,
       )
     : getLocale('braveWalletCreateAccountButton')
 
@@ -142,7 +142,7 @@ export const CreateAccountModal = () => {
     (detail: InputEventDetail) => {
       setFullLengthAccountName(detail.value)
     },
-    []
+    [],
   )
 
   const onClickCreateAccount = React.useCallback(async () => {
@@ -153,7 +153,7 @@ export const CreateAccountModal = () => {
     await addAccount({
       coin: selectedAccountType.coin,
       keyringId: targetKeyringId,
-      accountName
+      accountName,
     })
 
     if (walletLocation.includes(WalletRoutes.Accounts)) {
@@ -166,7 +166,7 @@ export const CreateAccountModal = () => {
     isDisabled,
     selectedAccountType,
     targetKeyringId,
-    walletLocation
+    walletLocation,
   ])
 
   const handleKeyDown = React.useCallback(
@@ -175,7 +175,7 @@ export const CreateAccountModal = () => {
         onClickCreateAccount()
       }
     },
-    [onClickCreateAccount]
+    [onClickCreateAccount],
   )
 
   const pickNewAccountType = React.useCallback(
@@ -183,11 +183,11 @@ export const CreateAccountModal = () => {
       history.push(
         WalletRoutes.CreateAccountModal.replace(
           ':accountTypeName?',
-          option.name.toLowerCase()
-        )
+          option.name.toLowerCase(),
+        ),
       )
     },
-    [history]
+    [history],
   )
 
   // effects

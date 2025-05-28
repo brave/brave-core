@@ -8,7 +8,7 @@ import * as React from 'react'
 // Components
 import { PartnersConsentModal } from './partners_consent_modal'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _PartnersConsentModal = () => {
@@ -27,5 +27,5 @@ export const _PartnersConsentModal = () => {
 
 export default {
   component: _PartnersConsentModal,
-  title: 'Partners Consent Modal'
+  title: 'Partners Consent Modal',
 }

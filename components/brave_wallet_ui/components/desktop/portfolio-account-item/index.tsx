@@ -18,12 +18,12 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 import { getIsRewardsAccount } from '../../../utils/rewards_utils'
 import {
-  externalWalletProviderFromString //
+  externalWalletProviderFromString, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 import { getLocale } from '../../../../common/locale'
 
@@ -36,13 +36,13 @@ import { DepositModal } from '../popup-modals/account-settings-modal/account-set
 
 // Styled Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../shared/create-account-icon/create-account-icon'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
@@ -52,7 +52,7 @@ import {
   AccountMenuWrapper,
   AccountMenuButton,
   AccountMenuIcon,
-  AccountButton
+  AccountButton,
 } from './style'
 import {
   BraveRewardsIndicator,
@@ -60,7 +60,7 @@ import {
   Text,
   Row,
   Column,
-  VerticalDivider
+  VerticalDivider,
 } from '../../shared/style'
 
 interface Props {
@@ -81,7 +81,7 @@ export const PortfolioAccountItem = (props: Props) => {
     selectedNetwork,
     hideBalances,
     isSellSupported,
-    showSellModal
+    showSellModal,
   } = props
 
   // Routing
@@ -113,7 +113,7 @@ export const PortfolioAccountItem = (props: Props) => {
 
   const tokenPriceIds = React.useMemo(
     () => [getPriceIdForToken(asset)],
-    [asset]
+    [asset],
   )
 
   // Queries
@@ -123,14 +123,14 @@ export const PortfolioAccountItem = (props: Props) => {
     defaultFiatCurrency && tokenPriceIds.length
       ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   const fiatBalance: Amount = React.useMemo(() => {
     return computeFiatAmount({
       spotPriceRegistry,
       value: assetBalance,
-      token: asset
+      token: asset,
     })
   }, [spotPriceRegistry, assetBalance, asset])
 
@@ -147,7 +147,7 @@ export const PortfolioAccountItem = (props: Props) => {
 
   const onViewAccountOnBlockExplorer = React.useCallback(
     () => onClickViewOnBlockExplorer('address', account.address)(),
-    [account.address, onClickViewOnBlockExplorer]
+    [account.address, onClickViewOnBlockExplorer],
   )
 
   const onHideAccountMenu = React.useCallback(() => {
@@ -164,7 +164,7 @@ export const PortfolioAccountItem = (props: Props) => {
   useOnClickOutside(
     depositModalRef,
     () => setShowDepositModal(false),
-    showDepositModal
+    showDepositModal,
   )
 
   return (

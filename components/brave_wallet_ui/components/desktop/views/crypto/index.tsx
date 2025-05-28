@@ -13,28 +13,28 @@ import { ExploreNavOptions } from '../../../../options/nav-options'
 // types
 import { WalletRoutes } from '../../../../constants/types'
 import {
-  AccountsTabState //
+  AccountsTabState, //
 } from '../../../../page/reducers/accounts-tab-reducer'
 
 // hooks
 import {
-  usePortfolioVisibleNetworks //
+  usePortfolioVisibleNetworks, //
 } from '../../../../common/hooks/use_portfolio_networks'
 import {
-  usePortfolioAccounts //
+  usePortfolioAccounts, //
 } from '../../../../common/hooks/use_portfolio_accounts'
 
 // style
 import {
   SegmentedControlsWrapperMarket,
-  SegmentedControlsWrapperWeb3
+  SegmentedControlsWrapperWeb3,
 } from './style'
 import { DefaultPageWrapper } from '../../../shared/style'
 
 // components
 import { ExploreWeb3Header } from '../../card-headers/explorer_web3_header'
 import {
-  EditVisibleAssetsModal //
+  EditVisibleAssetsModal, //
 } from '../../popup-modals/edit-visible-assets-modal/index'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
 import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
@@ -44,20 +44,20 @@ import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
 import {
-  RemoveAccountModal //
+  RemoveAccountModal, //
 } from '../../popup-modals/confirm-password-modal/remove-account-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { MarketAsset } from '../market/market_asset'
 import { ExploreWeb3View } from '../explore_web3/explore_web3'
 import { NftCollection } from '../nfts/components/nft_collection'
 import {
-  SegmentedControl //
+  SegmentedControl, //
 } from '../../../shared/segmented_control/segmented_control'
 import {
-  PageNotFound //
+  PageNotFound, //
 } from '../../../../page/screens/page_not_found/page_not_found'
 import { Banners } from '../banners/banners'
 
@@ -68,7 +68,7 @@ export interface Props {
 export const CryptoView = ({ sessionRoute }: Props) => {
   // Selectors
   const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
-    ({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab
+    ({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab,
   )
 
   // custom hooks
@@ -87,12 +87,12 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       }
       history.push(WalletRoutes.PortfolioAssets)
     },
-    [history]
+    [history],
   )
 
   const hideVisibleAssetsModal = React.useCallback(
     () => onShowVisibleAssetsModal(false),
-    [onShowVisibleAssetsModal]
+    [onShowVisibleAssetsModal],
   )
 
   // render

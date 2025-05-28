@@ -15,7 +15,7 @@ import {
   FrostedGlass,
   HiddenPhraseContainer,
   EyeOffIcon,
-  WordPos
+  WordPos,
 } from './recovery-phrase.style'
 
 export interface SelectedPhraseWord {
@@ -32,7 +32,7 @@ const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
 
 export const RecoveryPhrase: React.FC<Props> = ({
   recoveryPhrase,
-  verificationModeEnabled
+  verificationModeEnabled,
 }) => {
   // state
   const [hidden, setHidden] = React.useState(true)
@@ -52,7 +52,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
 
   const phraseWordsToDisplay: SelectedPhraseWord[] = React.useMemo(() => {
     return (verificationModeEnabled ? shuffledPhrase : recoveryPhrase).map(
-      (str, index) => ({ value: str, index })
+      (str, index) => ({ value: str, index }),
     )
   }, [verificationModeEnabled, shuffledPhrase, recoveryPhrase])
 

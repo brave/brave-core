@@ -13,7 +13,7 @@ import { getLocale } from '../../../../../common/locale'
 // Components
 import { PopupModal } from '../../popup-modals/index'
 import {
-  AddCustomTokenForm //
+  AddCustomTokenForm, //
 } from '../../../shared/add-custom-token-form/add-custom-token-form'
 
 // Styles

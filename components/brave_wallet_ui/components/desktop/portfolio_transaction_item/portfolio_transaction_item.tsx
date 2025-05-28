@@ -9,19 +9,19 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Types
 import {
   BraveWallet,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
 } from '../../../constants/types'
 
 // Constants
 import {
   LiFiExchangeProxy,
-  SwapExchangeProxy
+  SwapExchangeProxy,
 } from '../../../common/constants/registry'
 
 // Utils
 import {
   formatDateAsRelative,
-  serializedTimeDeltaToJSDate
+  serializedTimeDeltaToJSDate,
 } from '../../../utils/datetime-utils'
 import { getLocale } from '../../../../common/locale'
 import {
@@ -33,17 +33,17 @@ import {
   isSwapTransaction,
   getTransactionTransferredValue,
   getIsTxApprovalUnlimited,
-  isBridgeTransaction
+  isBridgeTransaction,
 } from '../../../utils/tx-utils'
 import {
-  accountInfoEntityAdaptorInitialState //
+  accountInfoEntityAdaptorInitialState, //
 } from '../../../common/slices/entities/account-info.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../utils/pricing-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
@@ -52,11 +52,11 @@ import {
   useGetAccountInfosRegistryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../common/slices/api.slice'
 import {
   useAccountQuery,
-  useGetCombinedTokensListQuery
+  useGetCombinedTokensListQuery,
 } from '../../../common/slices/api.slice.extra'
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 
@@ -92,36 +92,36 @@ import {
   SwapIconsWrapper,
   SellIconPlaceholder,
   BuyIconPlaceholder,
-  SwapPlaceholderIcon
+  SwapPlaceholderIcon,
 } from './portfolio_transaction_item.style'
 import { Column, Row, VerticalSpace } from '../../shared/style'
 
 const noneTxStatusDisplayTypes = [
   BraveWallet.TransactionStatus.Approved,
   BraveWallet.TransactionStatus.Confirmed,
-  BraveWallet.TransactionStatus.Signed
+  BraveWallet.TransactionStatus.Signed,
 ]
 interface Props {
   transaction: BraveWallet.TransactionInfo | SerializableTransactionInfo
   isFocused?: boolean
   onClick?: (
-    tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>
+    tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>,
   ) => void
 }
 
 const ICON_ASSET_CONFIG = {
   size: 'medium',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 } as const
 const ICON_SWAP_CONFIG = {
   size: 'small',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(
   AssetIcon,
-  ICON_ASSET_CONFIG
+  ICON_ASSET_CONFIG,
 )
 const SwapIconWithPlaceholder = withPlaceholderIcon(SwapIcon, ICON_SWAP_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_ASSET_CONFIG)
@@ -135,7 +135,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       approvalTarget,
       isSwap,
       isBridge,
-      txCoinType
+      txCoinType,
     } = React.useMemo(() => {
       return {
         isSolanaTx: isSolanaTransaction(transaction),
@@ -143,37 +143,37 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         approvalTarget: getTransactionApprovalTargetAddress(transaction),
         isSwap: isSwapTransaction(transaction),
         isBridge: isBridgeTransaction(transaction),
-        txCoinType: getCoinFromTxDataUnion(transaction.txDataUnion)
+        txCoinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       }
     }, [transaction])
 
     // Queries
     const {
       data: defaultFiatCurrency = '',
-      isLoading: isLoadingDefaultFiatCurrency
+      isLoading: isLoadingDefaultFiatCurrency,
     } = useGetDefaultFiatCurrencyQuery(undefined)
 
     const { data: txNetwork } = useGetNetworkQuery({
       chainId: transaction.chainId,
-      coin: txCoinType
+      coin: txCoinType,
     })
 
     const { data: toNetwork } = useGetNetworkQuery(
-      isBridge &&
-        transaction.swapInfo?.toChainId &&
-        transaction.swapInfo.toCoin !== undefined
+      isBridge
+        && transaction.swapInfo?.toChainId
+        && transaction.swapInfo.toCoin !== undefined
         ? {
             chainId: transaction.swapInfo.toChainId,
-            coin: transaction.swapInfo.toCoin
+            coin: transaction.swapInfo.toCoin,
           }
-        : skipToken
+        : skipToken,
     )
 
     const { data: combinedTokensList, isLoading: isLoadingTokens } =
       useGetCombinedTokensListQuery()
 
     const {
-      data: accountInfosRegistry = accountInfoEntityAdaptorInitialState
+      data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
     } = useGetAccountInfosRegistryQuery(undefined)
 
     const { account } = useAccountQuery(transaction.fromAccountId)
@@ -189,12 +189,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const senderLabel = getAccountLabel(
       transaction.fromAccountId,
-      accountInfosRegistry
+      accountInfosRegistry,
     )
 
     const approvalTargetLabel = getAddressLabel(
       approvalTarget,
-      accountInfosRegistry
+      accountInfosRegistry,
     )
 
     const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
@@ -207,7 +207,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
           sellToken,
           token: txToken,
           txAccount: account,
-          txNetwork
+          txNetwork,
         })
         return [normalized.format(6), wei]
       }, [transaction, sellToken, txToken, account, txNetwork])
@@ -218,8 +218,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         tx: transaction,
         sellToken,
         token: txToken,
-        txNetwork
-      }
+        txNetwork,
+      },
     )
 
     const networkAssetPriceId = networkAsset
@@ -232,7 +232,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       networkAssetPriceId,
       txTokenPriceId,
       sellTokenPriceId,
-      buyTokenPriceId
+      buyTokenPriceId,
     ].filter(Boolean)
 
     // price queries
@@ -240,16 +240,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       useGetTokenSpotPricesQuery(
         priceIds.length && defaultFiatCurrency
           ? { ids: priceIds, toCurrency: defaultFiatCurrency }
-          : skipToken
+          : skipToken,
       )
 
     // Computed
     const isSwapOrBridge = isSwap || isBridge
     const sendToken =
-      transaction.txType === BraveWallet.TransactionType.ETHSend ||
-      transaction.fromAccountId.coin === BraveWallet.CoinType.FIL ||
-      transaction.fromAccountId.coin === BraveWallet.CoinType.BTC ||
-      transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+      transaction.txType === BraveWallet.TransactionType.ETHSend
+      || transaction.fromAccountId.coin === BraveWallet.CoinType.FIL
+      || transaction.fromAccountId.coin === BraveWallet.CoinType.BTC
+      || transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
         ? networkAsset
         : txToken
 
@@ -257,7 +257,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       ? computeFiatAmount({
           spotPriceRegistry,
           value: transferredValueWei.format(),
-          token: sendToken
+          token: sendToken,
         }).formatAsFiat(defaultFiatCurrency)
       : ''
 
@@ -274,33 +274,33 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
         ? 'check-normal'
         : isSwapOrBridge
-        ? 'currency-exchange'
-        : 'send'
+          ? 'currency-exchange'
+          : 'send'
 
     const transactionTypeLocale =
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
         ? 'braveWalletApprovalTransactionIntent'
         : isBridge
-        ? 'braveWalletBridge'
-        : isSwap
-        ? 'braveWalletSwap'
-        : 'braveWalletTransactionSent'
+          ? 'braveWalletBridge'
+          : isSwap
+            ? 'braveWalletSwap'
+            : 'braveWalletTransactionSent'
 
     const intentLabel =
-      transaction.txType === BraveWallet.TransactionType.ERC20Approve ||
-      isSwapOrBridge
+      transaction.txType === BraveWallet.TransactionType.ERC20Approve
+      || isSwapOrBridge
         ? 'braveWalletOn'
         : 'braveWalletFrom'
 
     const intentAddress =
       transaction.txType === BraveWallet.TransactionType.ERC20Approve
         ? approvalTargetLabel
-        : (isSwapOrBridge &&
-            (recipient.toLowerCase() === SwapExchangeProxy ||
-              recipient.toLowerCase() === LiFiExchangeProxy)) ||
-          (isSwap && !isSolanaTx)
-        ? recipientLabel
-        : senderLabel
+        : (isSwapOrBridge
+              && (recipient.toLowerCase() === SwapExchangeProxy
+                || recipient.toLowerCase() === LiFiExchangeProxy))
+            || (isSwap && !isSolanaTx)
+          ? recipientLabel
+          : senderLabel
 
     const isNonFungibleToken = txToken?.isNft || txToken?.isErc721
     const formattedApprovalAmount = isTxApprovalUnlimited
@@ -319,7 +319,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     const isSolanaSwap = isSwap && isSolanaTx
     const showAmounts = !txToken?.isNft && !isSolanaSwap
     const showTransactionStatus = !noneTxStatusDisplayTypes.includes(
-      transaction.txStatus
+      transaction.txStatus,
     )
     const nativeAssetWasSent = sendToken && isNativeAsset(sendToken)
     const showNetworkIcon = txNetwork && (!nativeAssetWasSent || isSwapOrBridge)
@@ -342,7 +342,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               isBold={false}
             >
               {formatDateAsRelative(
-                serializedTimeDeltaToJSDate(transaction.createdTime)
+                serializedTimeDeltaToJSDate(transaction.createdTime),
               )}
             </DateText>
             <TransactionTypeIcon name={transactionTypeIcon} />
@@ -417,7 +417,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                   <StatusBubble status={transaction.txStatus}>
                     {[
                       BraveWallet.TransactionStatus.Submitted,
-                      BraveWallet.TransactionStatus.Unapproved
+                      BraveWallet.TransactionStatus.Unapproved,
                     ].includes(transaction.txStatus) ? (
                       <LoadingIcon />
                     ) : (
@@ -484,9 +484,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               {isBridge && toNetwork
                                 ? getLocale('braveWalletOnNetwork').replace(
                                     '$1',
-                                    toNetwork.chainName
+                                    toNetwork.chainName,
                                   )
-                                : buyToken?.symbol ?? ''}
+                                : (buyToken?.symbol ?? '')}
                             </TokenNameText>
                             {isBridge && toNetwork && (
                               <CreateNetworkIcon
@@ -571,13 +571,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                       isBold={true}
                       textAlign='right'
                     >
-                      {transaction.txType ===
-                      BraveWallet.TransactionType.ERC20Approve
+                      {transaction.txType
+                      === BraveWallet.TransactionType.ERC20Approve
                         ? formattedApprovalAmount
                         : `-${formattedSendCurrencyTotal}`}
                     </AssetValueText>
-                    {isLoadingTxTokenSpotPrice &&
-                    isLoadingDefaultFiatCurrency ? (
+                    {isLoadingTxTokenSpotPrice
+                    && isLoadingDefaultFiatCurrency ? (
                       <Skeleton
                         width={60}
                         height={18}
@@ -600,7 +600,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         </Column>
       </PortfolioTransactionItemWrapper>
     )
-  }
+  },
 )
 
 export default PortfolioTransactionItem

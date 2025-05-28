@@ -39,7 +39,7 @@ export const CloseButton = styled(WalletButton)`
 `
 
 export const CloseIcon = styled(Icon).attrs({
-  name: 'close'
+  name: 'close',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};

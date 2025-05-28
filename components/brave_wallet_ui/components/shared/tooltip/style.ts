@@ -83,8 +83,8 @@ export const Pointer = styled.div<PositionProps>`
   }
 
   ${(p) =>
-    p.position === 'center' &&
-    css`
+    p.position === 'center'
+    && css`
       margin: 0 auto;
     `}
 

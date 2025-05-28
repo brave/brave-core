@@ -18,7 +18,7 @@ import { BraveWallet } from '../../../constants/types'
 import {
   LineChartWrapper,
   LineChartButton,
-  PopupButtonText
+  PopupButtonText,
 } from './wellet-menus.style'
 
 export interface Props {

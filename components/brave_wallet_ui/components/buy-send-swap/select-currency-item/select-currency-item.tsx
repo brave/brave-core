@@ -12,11 +12,11 @@ import {
   StyledWrapper,
   CurrencySymbol,
   CurrencyName,
-  CurrencyNameAndCode
+  CurrencyNameAndCode,
 } from './select-currency-item-styles'
 import {
   IconWrapper,
-  PlaceholderText
+  PlaceholderText,
 } from '../../shared/create-placeholder-icon/style'
 
 // utils
@@ -40,8 +40,8 @@ export const SelectCurrencyItem = (props: Props) => {
   const bg = React.useMemo(() => {
     return background({
       seed: window.btoa(
-        encodeURIComponent(currency.currencyName + currency.currencyCode)
-      )
+        encodeURIComponent(currency.currencyName + currency.currencyCode),
+      ),
     })
   }, [currency])
 

@@ -10,7 +10,7 @@ import { reduceAddress } from '../../../../../../utils/reduce-address'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../../shared/create-account-icon/create-account-icon'
 
 // Types

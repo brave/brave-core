@@ -17,7 +17,7 @@ import {
   TopWrapper,
   NetworkText,
   TopRow,
-  LoadingRing
+  LoadingRing,
 } from './style'
 import { URLText } from '../shared-panel-styles'
 
@@ -38,13 +38,13 @@ import useExplorer from '../../../common/hooks/explorer'
 import {
   useApproveOrDeclineTokenSuggestionMutation,
   useGetNetworkQuery,
-  useGetPendingTokenSuggestionRequestsQuery
+  useGetPendingTokenSuggestionRequestsQuery,
 } from '../../../common/slices/api.slice'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'big',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 })
 
 export function AddSuggestedTokenPanel() {
@@ -52,7 +52,7 @@ export function AddSuggestedTokenPanel() {
   const {
     data: suggestions = [],
     isFetching: isFetchingSuggestions,
-    isLoading: isLoadingSuggestions
+    isLoading: isLoadingSuggestions,
   } = useGetPendingTokenSuggestionRequestsQuery()
   const suggestion: BraveWallet.AddSuggestTokenRequest | undefined =
     suggestions[0]
@@ -76,13 +76,13 @@ export function AddSuggestedTokenPanel() {
     await approveOrDeclineSuggestion({
       approved: true,
       contractAddress: token.contractAddress,
-      closePanel: suggestions.length < 2
+      closePanel: suggestions.length < 2,
     })
   }, [
     approveOrDeclineSuggestion,
     token?.contractAddress,
     suggestions.length,
-    isRefreshingSuggestions
+    isRefreshingSuggestions,
   ])
 
   const onCancel = React.useCallback(async () => {
@@ -92,13 +92,13 @@ export function AddSuggestedTokenPanel() {
     await approveOrDeclineSuggestion({
       approved: false,
       contractAddress: token.contractAddress,
-      closePanel: suggestions.length < 2
+      closePanel: suggestions.length < 2,
     })
   }, [
     approveOrDeclineSuggestion,
     token?.contractAddress,
     suggestions.length,
-    isRefreshingSuggestions
+    isRefreshingSuggestions,
   ])
 
   // custom hooks
@@ -154,7 +154,7 @@ export function AddSuggestedTokenPanel() {
           <ContractAddress
             onClick={onClickViewOnBlockExplorer(
               'token',
-              token?.contractAddress
+              token?.contractAddress,
             )}
           >
             {reduceAddress(token?.contractAddress ?? '')}

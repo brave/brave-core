@@ -16,13 +16,13 @@ import { SearchBar } from '../shared/search-bar'
 import {
   ButtonIcon,
   PortfolioActionButton,
-  SearchButtonWrapper
+  SearchButtonWrapper,
 } from '../desktop/views/portfolio/style'
 import { Row, Text } from '../shared/style'
 import {
   BackButton,
   ControlBarWrapper,
-  SearchBarWrapper
+  SearchBarWrapper,
 } from './header_control_bar.styles'
 
 interface Props {
@@ -41,7 +41,7 @@ export const HeaderControlBar: React.FC<Props> = ({
   onSearchValueChange,
   onClickBackButton,
   searchValue,
-  title
+  title,
 }) => {
   // state
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
@@ -51,7 +51,7 @@ export const HeaderControlBar: React.FC<Props> = ({
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onSearchValueChange(event.target.value)
     },
-    [onSearchValueChange]
+    [onSearchValueChange],
   )
 
   const onCloseSearchBar = React.useCallback(() => {

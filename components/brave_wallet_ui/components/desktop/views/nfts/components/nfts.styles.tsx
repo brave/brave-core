@@ -8,7 +8,7 @@ import styled from 'styled-components'
 // Shared Styles
 import { Row, ScrollableColumn } from '../../../../shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const NftGrid = styled.div<{

@@ -239,23 +239,23 @@ export const StatusBubble = styled.div<{
   height: 10px;
   border-radius: 100%;
   opacity: ${(p) =>
-    p.status === BraveWallet.TransactionStatus.Submitted ||
-    p.status === BraveWallet.TransactionStatus.Approved ||
-    p.status === BraveWallet.TransactionStatus.Unapproved ||
-    p.status === BraveWallet.TransactionStatus.Signed
+    p.status === BraveWallet.TransactionStatus.Submitted
+    || p.status === BraveWallet.TransactionStatus.Approved
+    || p.status === BraveWallet.TransactionStatus.Unapproved
+    || p.status === BraveWallet.TransactionStatus.Signed
       ? 0.4
       : 1};
   background-color: ${(p) =>
-    p.status === BraveWallet.TransactionStatus.Confirmed ||
-    p.status === BraveWallet.TransactionStatus.Approved
+    p.status === BraveWallet.TransactionStatus.Confirmed
+    || p.status === BraveWallet.TransactionStatus.Approved
       ? p.theme.color.successBorder
-      : p.status === BraveWallet.TransactionStatus.Rejected ||
-        p.status === BraveWallet.TransactionStatus.Error ||
-        p.status === BraveWallet.TransactionStatus.Dropped
-      ? p.theme.color.errorBorder
-      : p.status === BraveWallet.TransactionStatus.Unapproved
-      ? p.theme.color.interactive08
-      : p.theme.color.warningIcon};
+      : p.status === BraveWallet.TransactionStatus.Rejected
+          || p.status === BraveWallet.TransactionStatus.Error
+          || p.status === BraveWallet.TransactionStatus.Dropped
+        ? p.theme.color.errorBorder
+        : p.status === BraveWallet.TransactionStatus.Unapproved
+          ? p.theme.color.interactive08
+          : p.theme.color.warningIcon};
   margin-right: 6px;
 `
 
@@ -389,7 +389,7 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>((props) => ({
   // viewport, as defined by the browser.
   //
   // Ref: https://web.dev/browser-level-image-lazy-loading
-  loading: 'lazy'
+  loading: 'lazy',
 }))
 
 // Construct styled-component using JS object instead of string, for editor
@@ -398,15 +398,15 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>((props) => ({
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const SmallAssetIcon = AssetIconFactory<AssetIconProps>({
   width: '24px',
-  height: 'auto'
+  height: 'auto',
 })
 export const MediumAssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 export const LargeAssetIcon = AssetIconFactory<AssetIconProps>({
   width: '60px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const GreenCheckmark = styled.div`

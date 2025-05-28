@@ -15,7 +15,7 @@ import {
   PasswordStrengthHeading,
   PasswordStrengthText,
   GreenCheckmarkIcon,
-  CloseCircleIcon
+  CloseCircleIcon,
 } from './password-strength-tooltip.style'
 
 // types
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const PasswordStrengthDetails = ({
-  passwordStrength: { isLongEnough }
+  passwordStrength: { isLongEnough },
 }: Pick<Props, 'passwordStrength'>) => {
   return (
     <>

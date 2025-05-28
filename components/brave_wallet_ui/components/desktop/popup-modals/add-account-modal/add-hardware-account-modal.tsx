@@ -15,14 +15,14 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 // types
 import {
   CreateAccountOptionsType,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../constants/types'
 
 // components
 import { DividerLine } from '../../../extension/divider/index'
 import PopupModal from '..'
 import {
-  HardwareWalletConnect //
+  HardwareWalletConnect, //
 } from '../../hardware-wallet-connect/hardware_wallet_connect'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
@@ -50,7 +50,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   const { accountTypeName } = useParams<Params>()
 
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinLedgerEnabled
+    WalletSelectors.isBitcoinLedgerEnabled,
   )
 
   // queries
@@ -62,7 +62,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
       visibleNetworks,
       isBitcoinEnabled: isBitcoinLedgerEnabled,
       isZCashEnabled: false, // No zcash hardware accounts by now.
-      isCardanoEnabled: false // No cardano hardware accounts by now.
+      isCardanoEnabled: false, // No cardano hardware accounts by now.
     })
   }, [visibleNetworks, isBitcoinLedgerEnabled])
 

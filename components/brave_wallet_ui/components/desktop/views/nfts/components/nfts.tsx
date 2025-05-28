@@ -10,23 +10,23 @@ import { skipToken } from '@reduxjs/toolkit/query'
 // types
 import {
   BraveWallet,
-  NftDropdownOptionId
+  NftDropdownOptionId,
 } from '../../../../../constants/types'
 
 // hooks
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
-  useBalancesFetcher //
+  useBalancesFetcher, //
 } from '../../../../../common/hooks/use-balances-fetcher'
 import {
   useLocalStorage,
-  useSyncedLocalStorage //
+  useSyncedLocalStorage, //
 } from '../../../../../common/hooks/use_local_storage'
 
 // selectors
 import {
   useSafeUISelector,
-  useSafeWalletSelector
+  useSafeWalletSelector,
 } from '../../../../../common/hooks/use-safe-selector'
 import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
@@ -38,14 +38,14 @@ import { WalletPageActions } from '../../../../../page/actions'
 import getAPIProxy from '../../../../../common/async/bridge'
 import { getLocale } from '$web-common/locale'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../../common/constants/local-storage-keys'
 import {
   useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
-  useSetNftDiscoveryEnabledMutation
+  useSetNftDiscoveryEnabledMutation,
 } from '../../../../../common/slices/api.slice'
 import {
   compareTokensByName,
@@ -57,21 +57,21 @@ import {
   groupSpamAndNonSpamNfts,
   isTokenWatchOnly,
   searchNftCollectionsAndGetTotalNftsFound,
-  searchNfts
+  searchNfts,
 } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import {
   makePortfolioAssetRoute,
   makePortfolioNftCollectionRoute,
-  makePortfolioNftsRoute
+  makePortfolioNftsRoute,
 } from '../../../../../utils/routes-utils'
 import {
   selectAllVisibleUserNFTsFromQueryResult,
-  selectHiddenNftsFromQueryResult //
+  selectHiddenNftsFromQueryResult, //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
 import {
   getLastPageNumber,
-  getListPageItems
+  getListPageItems,
 } from '../../../../../utils/pagination_utils'
 
 // components
@@ -80,15 +80,15 @@ import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-gr
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
 import {
-  NftGridViewItemSkeleton //
+  NftGridViewItemSkeleton, //
 } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
 import { Pagination } from '../../../../shared/pagination/pagination'
 import {
   NftDropdown,
-  NftDropdownOption
+  NftDropdownOption,
 } from './nft-group-selector/nft-group-selector'
 import {
-  NftCollectionGridViewItem //
+  NftCollectionGridViewItem, //
 } from '../../portfolio/components/nft-grid-view/nft-collection-grid-view-item'
 
 // styles
@@ -101,7 +101,7 @@ import {
   PortfolioActionButton,
   SearchBarWrapper,
   ControlBarWrapper,
-  ContentWrapper
+  ContentWrapper,
 } from '../../portfolio/style'
 
 interface Props {
@@ -119,7 +119,7 @@ const emptyTokenIdsList: string[] = []
 export const Nfts = ({
   networks,
   accounts,
-  onShowPortfolioSettings
+  onShowPortfolioSettings,
 }: Props) => {
   // routing
   const history = useHistory()
@@ -136,21 +136,21 @@ export const Nfts = ({
   const dispatch = useDispatch()
 
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
-    WalletSelectors.assetAutoDiscoveryCompleted
+    WalletSelectors.assetAutoDiscoveryCompleted,
   )
   const isRefreshingTokens = useSafeWalletSelector(
-    WalletSelectors.isRefreshingNetworksAndTokens
+    WalletSelectors.isRefreshingNetworksAndTokens,
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // local-storage
   const [hideUnownedNfts] = useSyncedLocalStorage<boolean>(
     LOCAL_STORAGE_KEYS.HIDE_UNOWNED_NFTS,
-    false
+    false,
   )
   const [groupNftsByCollection] = useLocalStorage<boolean>(
     LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_NFTS_BY_COLLECTION,
-    false
+    false,
   )
 
   // state
@@ -159,8 +159,8 @@ export const Nfts = ({
   const [showNftDiscoveryModal, setShowNftDiscoveryModal] =
     React.useState<boolean>(
       localStorage.getItem(
-        LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN
-      ) === null
+        LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN,
+      ) === null,
     )
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
@@ -169,7 +169,9 @@ export const Nfts = ({
     useGetNftDiscoveryEnabledStatusQuery()
   const { data: simpleHashSpamNfts = [], isFetching: isLoadingSpamNfts } =
     useGetSimpleHashSpamNftsQuery(
-      selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
+      selectedTab === 'collected' || !accounts.length
+        ? skipToken
+        : { accounts },
     )
   const { accounts: allAccounts } = useAccountsQuery()
   const { userTokensRegistry, hiddenNfts, visibleNfts, isFetchingTokens } =
@@ -178,8 +180,8 @@ export const Nfts = ({
         isFetchingTokens: result.isFetching,
         userTokensRegistry: result.data,
         visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
-        hiddenNfts: selectHiddenNftsFromQueryResult(result)
-      })
+        hiddenNfts: selectHiddenNftsFromQueryResult(result),
+      }),
     })
   const hiddenNftsIds =
     userTokensRegistry?.nonFungibleHiddenTokenIds ?? emptyTokenIdsList
@@ -190,7 +192,7 @@ export const Nfts = ({
     useBalancesFetcher({
       accounts,
       networks,
-      isSpamRegistry: true
+      isSpamRegistry: true,
     })
 
   const { data: tokenBalancesRegistry, isLoading: isLoadingTokenBalances } =
@@ -200,8 +202,8 @@ export const Nfts = ({
         ? skipToken
         : {
             accounts: allAccounts,
-            networks
-          }
+            networks,
+          },
     )
 
   // mutations
@@ -219,14 +221,14 @@ export const Nfts = ({
       hiddenNftsIds,
       userTokensRegistry?.deletedTokenIds || [],
       simpleHashSpamNfts,
-      visibleUserMarkedSpamNfts
+      visibleUserMarkedSpamNfts,
     )
   }, [
     visibleUserMarkedSpamNfts,
     simpleHashSpamNfts,
     hiddenNftsIds,
     userNonSpamNftIds,
-    userTokensRegistry
+    userTokensRegistry,
   ])
 
   const hiddenAndSpamNfts = React.useMemo(() => {
@@ -254,7 +256,7 @@ export const Nfts = ({
       allAccounts,
       tokenBalancesRegistry,
       selectedTab === 'collected' ? null : spamTokenBalancesRegistry,
-      hideUnownedNfts
+      hideUnownedNfts,
     )
   }, [
     accounts,
@@ -263,25 +265,25 @@ export const Nfts = ({
     sortedSelectedNftListForChains,
     spamTokenBalancesRegistry,
     tokenBalancesRegistry,
-    selectedTab
+    selectedTab,
   ])
 
   // differed queries
   const {
     data: assetIdsByCollectionNameRegistryInfo,
-    isFetching: isFetchingAssetIdsByCollectionNameRegistryInfo
+    isFetching: isFetchingAssetIdsByCollectionNameRegistryInfo,
   } = useGetNftAssetIdsByCollectionRegistryQuery(
     sortedSelectedNftListForChainsAndAccounts.length && groupNftsByCollection
       ? sortedSelectedNftListForChainsAndAccounts
-      : skipToken
+      : skipToken,
   )
 
   const assetIdsByCollectionNameRegistry =
     assetIdsByCollectionNameRegistryInfo?.registry
   const isFetchingLatestAssetIdsByCollectionNameRegistry =
-    assetIdsByCollectionNameRegistryInfo?.isStreaming ??
-    isFetchingAssetIdsByCollectionNameRegistryInfo ??
-    false
+    assetIdsByCollectionNameRegistryInfo?.isStreaming
+    ?? isFetchingAssetIdsByCollectionNameRegistryInfo
+    ?? false
 
   const collectionNames = React.useMemo(() => {
     return Object.keys(assetIdsByCollectionNameRegistry ?? {})
@@ -298,7 +300,7 @@ export const Nfts = ({
     if (!groupNftsByCollection) {
       return {
         nftCollectionAssets,
-        assetsByCollectionName
+        assetsByCollectionName,
       }
     }
 
@@ -306,7 +308,7 @@ export const Nfts = ({
     if (!assetIdsByCollectionNameRegistry) {
       return {
         nftCollectionAssets,
-        assetsByCollectionName
+        assetsByCollectionName,
       }
     }
 
@@ -314,7 +316,7 @@ export const Nfts = ({
       const collectionNameForToken = getTokenCollectionName(
         collectionNames,
         assetIdsByCollectionNameRegistry,
-        token
+        token,
       )
 
       // create collection and collection token if it doesn't exist
@@ -323,7 +325,7 @@ export const Nfts = ({
         const collectionToken = {
           ...token,
           tokenId: '',
-          name: collectionNameForToken
+          name: collectionNameForToken,
         }
         nftCollectionAssets.push(collectionToken)
 
@@ -343,7 +345,7 @@ export const Nfts = ({
     groupNftsByCollection,
     assetIdsByCollectionNameRegistry,
     sortedSelectedNftListForChainsAndAccounts,
-    collectionNames
+    collectionNames,
   ])
 
   const { searchResults, totalNftsFound } = React.useMemo(() => {
@@ -352,28 +354,28 @@ export const Nfts = ({
         searchNftCollectionsAndGetTotalNftsFound(
           searchValue,
           nftCollectionAssets,
-          assetsByCollectionName
+          assetsByCollectionName,
         )
       return {
         searchResults: foundCollections,
-        totalNftsFound
+        totalNftsFound,
       }
     }
 
     const searchResults = searchNfts(
       searchValue,
-      sortedSelectedNftListForChainsAndAccounts
+      sortedSelectedNftListForChainsAndAccounts,
     )
     return {
       searchResults,
-      totalNftsFound: searchResults.length
+      totalNftsFound: searchResults.length,
     }
   }, [
     assetsByCollectionName,
     groupNftsByCollection,
     nftCollectionAssets,
     searchValue,
-    sortedSelectedNftListForChainsAndAccounts
+    sortedSelectedNftListForChainsAndAccounts,
   ])
 
   const lastPageNumber = getLastPageNumber(searchResults, LIST_PAGE_ITEM_COUNT)
@@ -384,13 +386,13 @@ export const Nfts = ({
       {
         id: 'collected',
         label: getLocale('braveNftsTabCollected'),
-        labelSummary: totalNftsFound
+        labelSummary: totalNftsFound,
       },
       {
         id: 'hidden',
         label: getLocale('braveNftsTabHidden'),
-        labelSummary: totalNftsFound
-      }
+        labelSummary: totalNftsFound,
+      },
     ]
   }, [totalNftsFound])
 
@@ -398,16 +400,17 @@ export const Nfts = ({
     return getListPageItems(
       searchResults,
       currentPageNumber,
-      LIST_PAGE_ITEM_COUNT
+      LIST_PAGE_ITEM_COUNT,
     )
   }, [searchResults, currentPageNumber])
 
   const isLoadingAssets =
-    isLoadingTokenBalances ||
-    !assetAutoDiscoveryCompleted ||
-    (groupNftsByCollection &&
-      isFetchingLatestAssetIdsByCollectionNameRegistry) ||
-    (selectedTab === 'hidden' && (isLoadingSpamNfts || isLoadingSpamBalances))
+    isLoadingTokenBalances
+    || !assetAutoDiscoveryCompleted
+    || (groupNftsByCollection
+      && isFetchingLatestAssetIdsByCollectionNameRegistry)
+    || (selectedTab === 'hidden'
+      && (isLoadingSpamNfts || isLoadingSpamBalances))
 
   // methods
   const onSearchValueChange = React.useCallback(
@@ -417,7 +420,7 @@ export const Nfts = ({
         history.push(makePortfolioNftsRoute(selectedTab, 1))
       }
     },
-    [currentPageNumber, history, selectedTab]
+    [currentPageNumber, history, selectedTab],
   )
 
   const onSelectAsset = React.useCallback(
@@ -426,7 +429,7 @@ export const Nfts = ({
       // reset nft metadata
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     },
-    [dispatch, history]
+    [dispatch, history],
   )
 
   const onSelectCollection = React.useCallback(
@@ -434,13 +437,13 @@ export const Nfts = ({
       const collectionNameForToken = getTokenCollectionName(
         collectionNames,
         assetIdsByCollectionNameRegistry,
-        asset
+        asset,
       )
       if (collectionNameForToken) {
         history.push(makePortfolioNftCollectionRoute(collectionNameForToken))
       }
     },
-    [assetIdsByCollectionNameRegistry, collectionNames, history]
+    [assetIdsByCollectionNameRegistry, collectionNames, history],
   )
 
   const toggleShowAddNftModal = React.useCallback(() => {
@@ -451,7 +454,7 @@ export const Nfts = ({
     setShowNftDiscoveryModal((current) => {
       localStorage.setItem(
         LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN,
-        'true'
+        'true',
       )
       return !current
     })
@@ -470,7 +473,7 @@ export const Nfts = ({
     (selectedOption: NftDropdownOption) => {
       history.push(makePortfolioNftsRoute(selectedOption.id, 1))
     },
-    [history]
+    [history],
   )
 
   const onCloseSearchBar = React.useCallback(() => {
@@ -483,7 +486,7 @@ export const Nfts = ({
       history.push(makePortfolioNftsRoute(selectedTab, pageNumber))
       listScrollContainerRef.current?.scrollIntoView(scrollOptions)
     },
-    [history, selectedTab]
+    [history, selectedTab],
   )
 
   // effects
@@ -553,8 +556,8 @@ export const Nfts = ({
         ref={listScrollContainerRef}
         fullHeight
       >
-        {visibleNfts.length === 0 &&
-        userTokensRegistry?.hiddenTokenIds.length === 0 ? (
+        {visibleNfts.length === 0
+        && userTokensRegistry?.hiddenTokenIds.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
             <AutoDiscoveryEmptyState
               isRefreshingTokens={isRefreshingTokens}
@@ -585,11 +588,11 @@ export const Nfts = ({
                     const isSpam =
                       nft.isSpam || allSpamNftsIds.includes(assetId)
                     const isHidden =
-                      !nft.visible ||
-                      Boolean(
+                      !nft.visible
+                      || Boolean(
                         userTokensRegistry?.nonFungibleHiddenTokenIds.includes(
-                          assetId
-                        )
+                          assetId,
+                        ),
                       )
                     return (
                       <NFTGridViewItem
@@ -602,7 +605,7 @@ export const Nfts = ({
                           nft,
                           allAccounts,
                           tokenBalancesRegistry,
-                          spamTokenBalancesRegistry
+                          spamTokenBalancesRegistry,
                         )}
                       />
                     )
@@ -631,9 +634,9 @@ export const Nfts = ({
           onHideForm={toggleShowAddNftModal}
         />
       )}
-      {isNftAutoDiscoveryEnabled !== undefined &&
-        !isNftAutoDiscoveryEnabled &&
-        showNftDiscoveryModal && (
+      {isNftAutoDiscoveryEnabled !== undefined
+        && !isNftAutoDiscoveryEnabled
+        && showNftDiscoveryModal && (
           <EnableNftDiscoveryModal
             onConfirm={onConfirmNftAutoDiscovery}
             onCancel={hideNftDiscoveryModal}

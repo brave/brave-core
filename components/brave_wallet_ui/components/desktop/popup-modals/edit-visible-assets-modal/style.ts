@@ -11,7 +11,7 @@ import { WalletButton, Row } from '../../../shared/style'
 import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const VirtualListStyle = {
-  flex: 1
+  flex: 1,
 }
 
 export const StyledWrapper = styled.div`
@@ -93,7 +93,7 @@ export const EmptyStateWrapper = styled.div`
 `
 
 export const AddIcon = styled(Icon).attrs({
-  name: 'plus-add'
+  name: 'plus-add',
 })`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.interactive};
@@ -105,7 +105,7 @@ export const AddButtonText = styled.span`
 `
 
 export const InfoIcon = styled(Icon).attrs({
-  name: 'info-outline'
+  name: 'info-outline',
 })`
   --leo-icon-size: 40px;
   color: ${leo.color.icon.default};

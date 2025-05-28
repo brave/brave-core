@@ -11,7 +11,7 @@ import {
   MarketGridColumnTypes,
   MarketGridRow,
   SortOrder,
-  MarketGridHeader
+  MarketGridHeader,
 } from '../../../constants/types'
 
 // utils
@@ -19,7 +19,7 @@ import { createColumnTemplate, renderCells } from './market-grid-utils'
 import { getLocale } from '../../../../common/locale'
 import {
   BuyButtonOption,
-  DepositButtonOption
+  DepositButtonOption,
 } from '../../../options/account-list-button-options'
 
 // styles
@@ -33,7 +33,7 @@ import {
   GridRowsWrapper,
   SortIcon,
   StyledWrapper,
-  EmptyStateText
+  EmptyStateText,
 } from './market-grid.style'
 import { Row } from '../style'
 
@@ -77,11 +77,11 @@ export const MarketGrid = ({
   isDepositSupported,
   onClickBuy,
   onClickDeposit,
-  onUpdateIframeHeight
+  onUpdateIframeHeight,
 }: MarketGridProps) => {
   // state
   const [gridTemplateColumns, setGridTemplateColumns] = React.useState(
-    createColumnTemplate(headers)
+    createColumnTemplate(headers),
   )
 
   // refs
@@ -95,8 +95,8 @@ export const MarketGrid = ({
       const buttonOptions = buySupported
         ? [BuyButtonOption, DepositButtonOption]
         : depositSupported
-        ? [DepositButtonOption]
-        : []
+          ? [DepositButtonOption]
+          : []
       return {
         id: `coin-row-${coinMarketItem.symbol}-${coinMarketItem.marketCapRank}`,
         content: renderCells(
@@ -104,10 +104,10 @@ export const MarketGrid = ({
           buttonOptions,
           fiatCurrency,
           onClickBuy,
-          onClickDeposit
+          onClickDeposit,
         ),
         data: coinMarketItem,
-        onClick: onSelectCoinMarket
+        onClick: onSelectCoinMarket,
       }
     })
   }, [
@@ -117,7 +117,7 @@ export const MarketGrid = ({
     isDepositSupported,
     onClickBuy,
     onClickDeposit,
-    onSelectCoinMarket
+    onSelectCoinMarket,
   ])
 
   // callbacks
@@ -130,7 +130,7 @@ export const MarketGrid = ({
         onSort(header.id, newSortOrder)
       }
     },
-    [sortedBy, sortOrder, onSort]
+    [sortedBy, sortOrder, onSort],
   )
 
   const renderRows = React.useCallback(
@@ -156,7 +156,7 @@ export const MarketGrid = ({
         </GridRow>
       )
     },
-    [rows, gridTemplateColumns, headers]
+    [rows, gridTemplateColumns, headers],
   )
 
   const onContentLoad = React.useCallback(() => {

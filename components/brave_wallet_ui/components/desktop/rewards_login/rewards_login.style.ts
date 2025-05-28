@@ -28,7 +28,7 @@ export const InfoText = styled(Text)`
 `
 
 export const InfoIcon = styled(LeoIcon).attrs({
-  name: 'warning-circle-filled'
+  name: 'warning-circle-filled',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.systemfeedback.infoIcon};

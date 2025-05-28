@@ -11,15 +11,15 @@ import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
-  useUpdateUserAssetVisibleMutation //
+  useUpdateUserAssetVisibleMutation, //
 } from '../../../common/slices/api.slice'
 
 // Hooks
 import {
-  useMultiChainSellAssets //
+  useMultiChainSellAssets, //
 } from '../../../common/hooks/use-multi-chain-sell-assets'
 import {
-  useFindBuySupportedToken //
+  useFindBuySupportedToken, //
 } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 // Utils
@@ -29,16 +29,16 @@ import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
   makeSendRoute,
-  makeSwapOrBridgeRoute
+  makeSwapOrBridgeRoute,
 } from '../../../utils/routes-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwapOrBridge
+  getDoesCoinSupportSwapOrBridge,
 } from '../../../utils/asset-utils'
 
 // Components
 import {
-  SellAssetModal //
+  SellAssetModal, //
 } from '../popup-modals/sell-asset-modal/sell-asset-modal'
 
 // Styled Components
@@ -46,7 +46,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 
 interface Props {
@@ -75,7 +75,7 @@ export const AssetItemMenu = (props: Props) => {
     sellAmount,
     setSellAmount,
     openSellAssetLink,
-    checkIsAssetSellSupported
+    checkIsAssetSellSupported,
   } = useMultiChainSellAssets()
 
   const { foundMeldBuyToken } = useFindBuySupportedToken(asset)
@@ -108,11 +108,11 @@ export const AssetItemMenu = (props: Props) => {
         makeSwapOrBridgeRoute({
           fromToken: asset,
           fromAccount: account,
-          routeType
-        })
+          routeType,
+        }),
       )
     },
-    [account, history, asset]
+    [account, history, asset],
   )
 
   const onClickDeposit = React.useCallback(() => {
@@ -126,14 +126,14 @@ export const AssetItemMenu = (props: Props) => {
 
   const onOpenSellAssetLink = React.useCallback(() => {
     openSellAssetLink({
-      sellAsset: selectedSellAsset
+      sellAsset: selectedSellAsset,
     })
   }, [openSellAssetLink, selectedSellAsset])
 
   const onClickHide = React.useCallback(async () => {
     await updateUserAssetVisible({
       token: asset,
-      isVisible: false
+      isVisible: false,
     }).unwrap()
   }, [updateUserAssetVisible, asset])
 

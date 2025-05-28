@@ -12,12 +12,12 @@ import {
   AccountButtonOptionsObjectType,
   AccountModalTypes,
   BraveWallet,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../constants/types'
 
 // Options
 import {
-  AccountDetailsMenuOptions //
+  AccountDetailsMenuOptions, //
 } from '../../../options/account-details-menu-options'
 
 // Utils
@@ -25,7 +25,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getBalance } from '../../../utils/balance-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../utils/pricing-utils'
 import { getAccountTypeDescription } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
@@ -35,13 +35,13 @@ import Amount from '../../../utils/amount'
 import {
   useGetTokenSpotPricesQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
 } from '../../../common/slices/api.slice'
 import {
-  selectAllVisibleUserAssetsFromQueryResult //
+  selectAllVisibleUserAssetsFromQueryResult, //
 } from '../../../common/slices/entities/blockchain-token.entity'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../../../common/slices/entities/token-balance.entity'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
@@ -50,7 +50,7 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../shared/create-account-icon/create-account-icon'
 import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
 import { AccountDetailsMenu } from '../wallet-menus/account-details-menu'
@@ -62,13 +62,13 @@ import {
   AddressText,
   AccountsNetworkText,
   AccountBalanceText,
-  CopyIcon
+  CopyIcon,
 } from './account-details-header.style'
 import {
   MenuButton,
   MenuButtonIcon,
   MenuWrapper,
-  HorizontalDivider
+  HorizontalDivider,
 } from './shared-card-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
 import { Button, ButtonIcon } from './shared-panel-headers.style'
@@ -87,7 +87,7 @@ export const AccountDetailsHeader = (props: Props) => {
     onClickMenuOption,
     tokenBalancesRegistry,
     isAndroid,
-    isPanel
+    isPanel,
   } = props
 
   // routing
@@ -96,8 +96,8 @@ export const AccountDetailsHeader = (props: Props) => {
   // Queries
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: (result) => ({
-      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
-    })
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result),
+    }),
   })
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
@@ -112,7 +112,7 @@ export const AccountDetailsHeader = (props: Props) => {
   useOnClickOutside(
     accountDetailsMenuRef,
     () => setShowAccountDetailsMenu(false),
-    showAccountDetailsMenu
+    showAccountDetailsMenu,
   )
 
   // Memos
@@ -125,7 +125,7 @@ export const AccountDetailsHeader = (props: Props) => {
 
   const tokenPriceIds = React.useMemo(
     () => accountsFungibleTokens.map((token) => getPriceIdForToken(token)),
-    [accountsFungibleTokens]
+    [accountsFungibleTokens],
   )
 
   const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
@@ -133,7 +133,7 @@ export const AccountDetailsHeader = (props: Props) => {
       tokenPriceIds.length && defaultFiatCurrency
         ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
         : skipToken,
-      querySubscriptionOptions60s
+      querySubscriptionOptions60s,
     )
 
   const accountsFiatValue = React.useMemo(() => {
@@ -152,12 +152,12 @@ export const AccountDetailsHeader = (props: Props) => {
       const balance = getBalance(
         account.accountId,
         asset,
-        tokenBalancesRegistry
+        tokenBalancesRegistry,
       )
       return computeFiatAmount({
         spotPriceRegistry,
         value: balance,
-        token: asset
+        token: asset,
       })
     })
 
@@ -172,7 +172,7 @@ export const AccountDetailsHeader = (props: Props) => {
     accountsFungibleTokens,
     tokenBalancesRegistry,
     spotPriceRegistry,
-    isLoadingSpotPrices
+    isLoadingSpotPrices,
   ])
 
   const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
@@ -181,32 +181,32 @@ export const AccountDetailsHeader = (props: Props) => {
     // so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
       options = options.filter(
-        (option: AccountButtonOptionsObjectType) => option.id !== 'remove'
+        (option: AccountButtonOptionsObjectType) => option.id !== 'remove',
       )
     }
     // We are not able to fetch Private Keys for
     // a Hardware account so we filter out this option.
     // BTC, ZEC and ADA are not yet supported.
     if (
-      account.accountId.coin === BraveWallet.CoinType.BTC ||
-      account.accountId.coin === BraveWallet.CoinType.ZEC ||
-      account.accountId.coin === BraveWallet.CoinType.ADA ||
-      account.accountId.kind === BraveWallet.AccountKind.kHardware
+      account.accountId.coin === BraveWallet.CoinType.BTC
+      || account.accountId.coin === BraveWallet.CoinType.ZEC
+      || account.accountId.coin === BraveWallet.CoinType.ADA
+      || account.accountId.kind === BraveWallet.AccountKind.kHardware
     ) {
       options = options.filter(
-        (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey'
+        (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey',
       )
     }
     // We are currently not able to support viewing a
     // BTC, ZEC or ADA account on a block explorer.
     // Link to issue https://github.com/brave/brave-browser/issues/39699
     if (
-      account.accountId.coin === BraveWallet.CoinType.BTC ||
-      account.accountId.coin === BraveWallet.CoinType.ZEC ||
-      account.accountId.coin === BraveWallet.CoinType.ADA
+      account.accountId.coin === BraveWallet.CoinType.BTC
+      || account.accountId.coin === BraveWallet.CoinType.ZEC
+      || account.accountId.coin === BraveWallet.CoinType.ADA
     ) {
       options = options.filter(
-        (option: AccountButtonOptionsObjectType) => option.id !== 'explorer'
+        (option: AccountButtonOptionsObjectType) => option.id !== 'explorer',
       )
     }
     return options

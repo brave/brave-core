@@ -15,7 +15,7 @@ import {
   Text,
   AssetIconFactory,
   AssetIconProps,
-  Column
+  Column,
 } from '../../shared/style'
 
 export const PortfolioTransactionItemWrapper = styled.div<{
@@ -65,13 +65,13 @@ export const IntentAddressText = styled(Text)`
 
 const assetIconProps = {
   width: '32px',
-  height: 'auto'
+  height: 'auto',
 }
 export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
 
 const swapIconProps = {
   width: '24px',
-  height: 'auto'
+  height: 'auto',
 }
 export const SwapIcon = AssetIconFactory<AssetIconProps>(swapIconProps)
 
@@ -92,7 +92,7 @@ export const BuyIconPlaceholder = styled(SellIconPlaceholder)`
 `
 
 export const SwapPlaceholderIcon = styled(Icon).attrs({
-  name: 'crypto-wallets'
+  name: 'crypto-wallets',
 })`
   --leo-icon-size: 16px;
 `
@@ -128,7 +128,7 @@ export const ArrowIconWrapper = styled.div`
 `
 
 export const ArrowIcon = styled(Icon).attrs({
-  name: 'carat-right'
+  name: 'carat-right',
 })`
   --leo-icon-size: 12px;
   color: ${leo.color.icon.default};
@@ -189,12 +189,12 @@ export const StatusBubble = styled.div<{
   top: -5px;
   left: -2px;
   background-color: ${(p) =>
-    p.status === BraveWallet.TransactionStatus.Error ||
-    p.status === BraveWallet.TransactionStatus.Dropped
+    p.status === BraveWallet.TransactionStatus.Error
+    || p.status === BraveWallet.TransactionStatus.Dropped
       ? leo.color.systemfeedback.errorIcon
       : p.status === BraveWallet.TransactionStatus.Unapproved
-      ? leo.color.neutral[20]
-      : leo.color.systemfeedback.infoIcon};
+        ? leo.color.neutral[20]
+        : leo.color.systemfeedback.infoIcon};
 `
 
 export const LoadingIcon = styled(ProgressRing)`

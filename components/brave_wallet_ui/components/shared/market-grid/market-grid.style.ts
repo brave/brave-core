@@ -8,13 +8,13 @@ import Icon from '@brave/leo/react/icon'
 
 import {
   layoutPanelWidth,
-  layoutSmallWidth
+  layoutSmallWidth,
 } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { WalletButton, Text } from '../style'
 
 export const breakpoints = {
   panel: `${layoutPanelWidth}px`,
-  small: `${layoutSmallWidth}px`
+  small: `${layoutSmallWidth}px`,
 }
 
 export const StyledWrapper = styled.div`
@@ -62,15 +62,15 @@ export const HeaderItem = styled.div<{
   line-height: 18px;
   color: ${leo.color.text.tertiary};
   ${({ hideOnPanel }) =>
-    hideOnPanel &&
-    css`
+    hideOnPanel
+    && css`
       @media (max-width: ${breakpoints.panel}) {
         display: none;
       }
     `}
   ${({ hideOnSmall }) =>
-    hideOnSmall &&
-    css`
+    hideOnSmall
+    && css`
       @media (min-width: ${
           breakpoints.panel //
         }) and (max-width: ${
@@ -116,15 +116,15 @@ export const Cell = styled.div<{
   color: ${leo.color.text.primary};
   overflow: hidden;
   ${({ hideOnPanel }) =>
-    hideOnPanel &&
-    css`
+    hideOnPanel
+    && css`
       @media (max-width: ${breakpoints.panel}) {
         display: none;
       }
     `}
   ${({ hideOnSmall }) =>
-    hideOnSmall &&
-    css`
+    hideOnSmall
+    && css`
       @media (min-width: ${
           breakpoints.panel //
         }) and (max-width: ${

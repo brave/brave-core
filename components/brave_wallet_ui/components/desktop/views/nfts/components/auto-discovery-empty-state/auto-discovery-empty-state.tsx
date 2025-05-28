@@ -14,7 +14,7 @@ import {
   Heading,
   LoadingRing,
   RefreshText,
-  StyledWrapper
+  StyledWrapper,
 } from './auto-discovery-empty-state.styles'
 import { Row, VerticalSpace } from '../../../../../shared/style'
 
@@ -27,12 +27,19 @@ interface Props {
 export const AutoDiscoveryEmptyState = ({
   isRefreshingTokens,
   onImportNft,
-  onRefresh
+  onRefresh,
 }: Props) => {
-  const emptyStateActions = formatLocale('braveWalletAutoDiscoveryEmptyStateActions', {
-    $1: content => <ActionButton onClick={onRefresh}>{content}</ActionButton>,
-    $2: content => <ActionButton onClick={onImportNft}>{content}</ActionButton>
-  })
+  const emptyStateActions = formatLocale(
+    'braveWalletAutoDiscoveryEmptyStateActions',
+    {
+      $1: (content) => (
+        <ActionButton onClick={onRefresh}>{content}</ActionButton>
+      ),
+      $2: (content) => (
+        <ActionButton onClick={onImportNft}>{content}</ActionButton>
+      ),
+    },
+  )
 
   return (
     <StyledWrapper>
@@ -60,9 +67,7 @@ export const AutoDiscoveryEmptyState = ({
               {getLocale('braveWalletAutoDiscoveryEmptyStateFooter')}
             </Description>
           </Row>
-          <Description>
-            {emptyStateActions}
-          </Description>
+          <Description>{emptyStateActions}</Description>
         </>
       )}
     </StyledWrapper>

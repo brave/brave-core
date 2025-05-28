@@ -11,16 +11,16 @@ import { WalletSelectors, UISelectors } from '../../../common/selectors'
 // Hooks
 import {
   useSafeWalletSelector,
-  useSafeUISelector
+  useSafeUISelector,
 } from '../../../common/hooks/use-safe-selector'
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
 import {
-  FeatureRequestButton //
+  FeatureRequestButton, //
 } from '../../shared/feature-request-button/feature-request-button'
 import {
-  TabHeader //
+  TabHeader, //
 } from '../../../page/screens/shared-screen-components/tab-header/tab-header'
 
 // Styles
@@ -40,7 +40,7 @@ import {
   CardHeaderContentWrapper,
   PortfolioBackgroundWatermark,
   ConnectionBackgroundWatermark,
-  ConnectionBackgroundColor
+  ConnectionBackgroundColor,
 } from './wallet-page-wrapper.style'
 
 import { loadTimeData } from '../../../../common/loadTimeData'
@@ -79,7 +79,7 @@ export const WalletPageWrapper = (props: Props) => {
     useCardInPanel,
     useFullHeight,
     isPortfolio,
-    isConnection
+    isConnection,
   } = props
 
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false

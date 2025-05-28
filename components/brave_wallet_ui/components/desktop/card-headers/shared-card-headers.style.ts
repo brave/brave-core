@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 // Shared Styles
 import { WalletButton } from '../../shared/style'
 import {
-  layoutSmallWidth //
+  layoutSmallWidth, //
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const HeaderTitle = styled.span<{

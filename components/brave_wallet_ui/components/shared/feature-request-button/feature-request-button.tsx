@@ -12,7 +12,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   Button,
   ButtonText,
-  IdeaButtonIcon
+  IdeaButtonIcon,
 } from './feature-request-button.style'
 
 const featureRequestUrl =

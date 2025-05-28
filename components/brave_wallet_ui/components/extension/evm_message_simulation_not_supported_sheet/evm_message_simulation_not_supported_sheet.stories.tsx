@@ -7,10 +7,10 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import {
-  EvmMessageSimulationNotSupportedSheet //
+  EvmMessageSimulationNotSupportedSheet, //
 } from './evm_message_simulation_not_supported_sheet'
 
 export const _EvmMessageSimulationNotSupportedSheet = {
@@ -21,10 +21,10 @@ export const _EvmMessageSimulationNotSupportedSheet = {
         <EvmMessageSimulationNotSupportedSheet />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
   title: 'EVM Message Simulation Not Supported Sheet',
-  component: EvmMessageSimulationNotSupportedSheet
+  component: EvmMessageSimulationNotSupportedSheet,
 }

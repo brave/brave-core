@@ -100,7 +100,7 @@ export const IconButton = styled(WalletButton)`
 `
 
 export const CloseIcon = styled(Icon).attrs({
-  name: 'close'
+  name: 'close',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};
@@ -127,7 +127,7 @@ export const ErrorDescriptionText = styled(Text)`
 `
 
 export const WarningIcon = styled(Icon).attrs({
-  name: 'warning-circle-filled'
+  name: 'warning-circle-filled',
 })`
   --leo-icon-size: 32px;
   margin-bottom: 8px;
@@ -148,7 +148,7 @@ export const LaunchButton = styled(IconButton)`
 `
 
 export const LaunchIcon = styled(Icon).attrs({
-  name: 'launch'
+  name: 'launch',
 })`
   --leo-icon-size: 18px;
   color: ${leo.color.icon.interactive};

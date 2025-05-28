@@ -14,10 +14,10 @@ import {
   WalletButton,
   Text,
   Column,
-  Row
+  Row,
 } from '../../shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const HoverArea = styled.div<{
@@ -95,7 +95,7 @@ export const AssetBalanceText = styled(Text)`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 const assetIconProps = {
   width: '32px',
-  height: 'auto'
+  height: 'auto',
 }
 export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
 
@@ -134,7 +134,7 @@ export const AssetMenuButton = styled(WalletButton)`
 `
 
 export const AssetMenuButtonIcon = styled(Icon).attrs({
-  name: 'more-vertical'
+  name: 'more-vertical',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};

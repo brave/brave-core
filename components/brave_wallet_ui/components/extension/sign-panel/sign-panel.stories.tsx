@@ -42,7 +42,7 @@ const signMessageData: BraveWallet.SignMessageRequest = {
       resources: [mockIPFSPath, mockURLPath],
       statement: 'I accept the Brave Terms of Service: http://address.com/tos',
       uri: {
-        url: mockOriginInfo.originSpec
+        url: mockOriginInfo.originSpec,
       },
       version: 1,
       chainId: BigInt(123),
@@ -50,18 +50,18 @@ const signMessageData: BraveWallet.SignMessageRequest = {
         host: '',
         nonceIfOpaque: undefined,
         port: 0,
-        scheme: ''
-      }
+        scheme: '',
+      },
     },
-    ethStandardSignData: undefined
-  }
+    ethStandardSignData: undefined,
+  },
 }
 
 const evilUnicodeMessage = 'Sign into \u202E EVIL'
 
 const evilUnicodeSignMessageData = {
   ...signMessageData,
-  message: evilUnicodeMessage
+  message: evilUnicodeMessage,
 }
 
 export const _SignPanel = {
@@ -78,7 +78,7 @@ export const _SignPanel = {
         </PanelWrapper>
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export const _SignData = {
@@ -92,7 +92,7 @@ export const _SignData = {
           kind: BraveWallet.AccountKind.kDerived,
           address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
           accountIndex: 0,
-          uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id'
+          uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id',
         },
         originInfo: mockOriginInfo,
         coin: BraveWallet.CoinType.ETH,
@@ -108,12 +108,12 @@ export const _SignData = {
             chainId: '',
             domainHash: [],
             primaryHash: [],
-            meta: undefined
+            meta: undefined,
           },
           ethSiweData: undefined,
-          solanaSignData: undefined
-        }
-      }
+          solanaSignData: undefined,
+        },
+      },
     ]
 
     return (
@@ -128,7 +128,7 @@ export const _SignData = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: SignPanel }

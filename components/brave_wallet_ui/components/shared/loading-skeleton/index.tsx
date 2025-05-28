@@ -35,7 +35,7 @@ export const LoadingSkeleton = (props: LoadingSkeletonProps) => {
         <React.Fragment key={i}>
           {skeletonSpan}
           <LineBreak />
-        </React.Fragment>
+        </React.Fragment>,
       )
     }
   }

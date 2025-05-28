@@ -19,7 +19,7 @@ import {
   ButtonRow,
   Description,
   Header,
-  StyledWrapper
+  StyledWrapper,
 } from './remove-nft-modal.styles'
 import { LeoSquaredButton } from '../../../shared/style'
 

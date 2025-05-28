@@ -9,7 +9,7 @@ import * as React from 'react'
 import { AllowAddChangeNetworkPanel } from '.'
 import { PanelWrapper } from '../../../panel/style'
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
 // mocks
@@ -26,7 +26,7 @@ export const _AllowAddChangeNetwork = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: AllowAddChangeNetworkPanel }

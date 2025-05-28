@@ -7,24 +7,24 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../../stories/wrappers/wallet-panel-story-wrapper'
 
 import {
   SOLTransfer,
   SPLTokenTransfer,
-  SolStakingAuthChange
+  SolStakingAuthChange,
 } from './svm_state_changes'
 
 // mocks
 import {
-  mockSolanaMainnetNetwork //
+  mockSolanaMainnetNetwork, //
 } from '../../../../stories/mock-data/mock-networks'
 import {
   mockReceiveSolSimulation,
   mockSendSolNftEvent,
   mockSendSplTokenEvent,
-  mockSolStakingChangeEvent
+  mockSolStakingChangeEvent,
 } from '../../../../common/constants/mocks'
 
 function assertDefined<T>(data: T) {
@@ -41,7 +41,7 @@ export const _SOLTransfer = () => {
       <SOLTransfer
         transfer={assertDefined(
           mockReceiveSolSimulation.expectedStateChanges[0].rawInfo.data
-            .solTransferData
+            .solTransferData,
         )}
         network={mockSolanaMainnetNetwork}
       />
@@ -54,7 +54,7 @@ export const _SplTransfer = () => {
     <WalletPanelStory>
       <SPLTokenTransfer
         transfer={assertDefined(
-          mockSendSplTokenEvent.rawInfo.data.splTransferData
+          mockSendSplTokenEvent.rawInfo.data.splTransferData,
         )}
         network={mockSolanaMainnetNetwork}
       />
@@ -67,7 +67,7 @@ export const _SplNftTransfer = () => {
     <WalletPanelStory>
       <SPLTokenTransfer
         transfer={assertDefined(
-          mockSendSolNftEvent.rawInfo.data.splTransferData
+          mockSendSolNftEvent.rawInfo.data.splTransferData,
         )}
         network={mockSolanaMainnetNetwork}
       />
@@ -80,7 +80,7 @@ export const _SolStakingChange = () => {
     <WalletPanelStory>
       <SolStakingAuthChange
         authChange={assertDefined(
-          mockSolStakingChangeEvent.rawInfo.data.solStakeAuthorityChangeData
+          mockSolStakingChangeEvent.rawInfo.data.solStakeAuthorityChangeData,
         )}
         network={mockSolanaMainnetNetwork}
       />
@@ -89,5 +89,5 @@ export const _SolStakingChange = () => {
 }
 
 export default {
-  title: 'SVM State Changes'
+  title: 'SVM State Changes',
 }

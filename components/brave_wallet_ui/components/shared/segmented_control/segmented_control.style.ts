@@ -5,12 +5,12 @@
 
 import styled from 'styled-components'
 import LeoSegmentedControl, {
-  SegmentedControlProps
+  SegmentedControlProps,
 } from '@brave/leo/react/segmentedControl'
 
 // Shared Styles
 import {
-  layoutSmallWidth //
+  layoutSmallWidth, //
 } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div<{ maxWidth?: string }>`
@@ -28,7 +28,7 @@ export const StyledWrapper = styled.div<{ maxWidth?: string }>`
 `
 
 export const SegmentedControl = styled(LeoSegmentedControl).attrs({
-  size: 'default'
+  size: 'default',
 })<SegmentedControlProps>``
 
 export const ControlItemWrapper = styled.div`

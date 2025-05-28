@@ -31,7 +31,7 @@ export const ShieldIconWrapper = styled.div`
 `
 
 export const ShieldIcon = styled(Icon).attrs({
-  name: 'shield-done-filled'
+  name: 'shield-done-filled',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.systemfeedback.successIcon};

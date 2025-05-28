@@ -16,7 +16,7 @@ import {
   CheckboxRow,
   CheckboxWrapper,
   SelectAllButton,
-  Title
+  Title,
 } from './filter-components.style'
 import { Row } from '../../../../shared/style'
 
@@ -38,7 +38,7 @@ export const CategoryCheckboxes = (props: Props) => {
     marginBottom,
     onCheckCategory,
     isCategoryFilteredOut,
-    onSelectOrDeselectAllCategories
+    onSelectOrDeselectAllCategories,
   } = props
 
   return (

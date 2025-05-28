@@ -8,7 +8,7 @@ import * as React from 'react'
 import { CloseIcon, Column, Row } from '../../shared/style'
 import {
   FullScreenPanelPopupWrapper,
-  IconButton
+  IconButton,
 } from './full_panel_popup.style'
 
 interface Props extends React.PropsWithChildren {
@@ -19,7 +19,7 @@ interface Props extends React.PropsWithChildren {
 export const FullPanelPopup: React.FC<Props> = ({
   children,
   kind,
-  onClose
+  onClose,
 }) => {
   return (
     <FullScreenPanelPopupWrapper kind={kind}>

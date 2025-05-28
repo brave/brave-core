@@ -15,19 +15,19 @@ import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
   isUrlWarning,
-  translateSimulationResultError
+  translateSimulationResultError,
 } from '../../../utils/tx-simulation-utils'
 import {
-  openAssociatedTokenAccountSupportArticleTab //
+  openAssociatedTokenAccountSupportArticleTab, //
 } from '../../../utils/routes-utils'
 
 // Hooks
 import {
-  usePendingTransactions //
+  usePendingTransactions, //
 } from '../../../common/hooks/use-pending-transaction'
 import {
   useGetActiveOriginQuery,
-  useGetAddressByteCodeQuery
+  useGetAddressByteCodeQuery,
 } from '../../../common/slices/api.slice'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
@@ -41,18 +41,18 @@ import { TransactionDetailBox } from '../transaction-box/index'
 import { TransactionQueueSteps } from './common/queue'
 import { TransactionSimulationInfo } from './transaction_simulation_info'
 import {
-  PendingTransactionNetworkFeeAndSettings //
+  PendingTransactionNetworkFeeAndSettings, //
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
 import {
-  AdvancedTransactionSettingsButton //
+  AdvancedTransactionSettingsButton, //
 } from '../advanced-transaction-settings/button'
 import {
-  LoadingSimulation //
+  LoadingSimulation, //
 } from '../enable_transaction_simulations/enable_transaction_simulations'
 import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
 import { CriticalWarningPopup } from './critical-warning-popup'
 import {
-  PendingTransactionActionsFooter //
+  PendingTransactionActionsFooter, //
 } from './common/pending_tx_actions_footer'
 
 // Styled Components
@@ -61,7 +61,7 @@ import { NetworkFeeRow } from './common/style'
 import {
   AccountNameAndAddress,
   NetworkNameText,
-  SimulatedTxMessageBox
+  SimulatedTxMessageBox,
 } from './confirm_simulated_tx_panel.styles'
 import { LearnMoreButton } from '../shared-panel-styles'
 
@@ -82,7 +82,7 @@ type Props =
  */
 export const ConfirmSimulatedTransactionPanel = ({
   txSimulation,
-  simulationType
+  simulationType,
 }: Props) => {
   // custom hooks
   const {
@@ -103,7 +103,7 @@ export const ConfirmSimulatedTransactionPanel = ({
     insufficientFundsForGasError,
     insufficientFundsError,
     onConfirm,
-    isSolanaDappTransaction
+    isSolanaDappTransaction,
   } = usePendingTransactions()
 
   // queries
@@ -115,12 +115,12 @@ export const ConfirmSimulatedTransactionPanel = ({
       ? {
           address: transactionDetails.recipient ?? '',
           coin: transactionDetails.coinType ?? -1,
-          chainId: transactionDetails.chainId ?? ''
+          chainId: transactionDetails.chainId ?? '',
         }
-      : skipToken
+      : skipToken,
   )
   const { account: fromAccount } = useAccountQuery(
-    selectedPendingTransaction?.fromAccountId ?? skipToken
+    selectedPendingTransaction?.fromAccountId ?? skipToken,
   )
 
   // computed
@@ -135,7 +135,7 @@ export const ConfirmSimulatedTransactionPanel = ({
   // state
   const [isCriticalWarningPopupOpen, setIsCriticalWarningPopupOpen] =
     React.useState<boolean>(
-      txSimulation.action === BraveWallet.BlowfishSuggestedAction.kBlock
+      txSimulation.action === BraveWallet.BlowfishSuggestedAction.kBlock,
     )
   const [selectedTab, setSelectedTab] =
     React.useState<confirmPanelTabs>('transaction')
@@ -152,35 +152,33 @@ export const ConfirmSimulatedTransactionPanel = ({
     txSimulation?.error,
     simulationType === 'EVM'
       ? BraveWallet.CoinType.ETH
-      : BraveWallet.CoinType.SOL
+      : BraveWallet.CoinType.SOL,
   )
 
   const simulationHasOutgoingSPLandSOLTransfers =
-    simulationType === 'SVM' &&
-    txSimulation.expectedStateChanges.some(
+    simulationType === 'SVM'
+    && txSimulation.expectedStateChanges.some(
       (sim) =>
-        sim.rawInfo.kind ===
-          BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer &&
-        sim.rawInfo.data.splTransferData?.diff.sign ===
-          BraveWallet.BlowfishDiffSign.kMinus
-    ) &&
-    txSimulation.expectedStateChanges.some(
+        sim.rawInfo.kind === BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer
+        && sim.rawInfo.data.splTransferData?.diff.sign
+          === BraveWallet.BlowfishDiffSign.kMinus,
+    )
+    && txSimulation.expectedStateChanges.some(
       (sim) =>
-        sim.rawInfo.kind ===
-          BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer &&
-        sim.rawInfo.data.solTransferData?.diff.sign ===
-          BraveWallet.BlowfishDiffSign.kMinus
+        sim.rawInfo.kind === BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer
+        && sim.rawInfo.data.solTransferData?.diff.sign
+          === BraveWallet.BlowfishDiffSign.kMinus,
     )
 
   // methods
   const onSelectTab = React.useCallback(
     (tab: confirmPanelTabs) => () => setSelectedTab(tab),
-    []
+    [],
   )
 
   const onToggleEditGas = React.useCallback(
     () => setIsEditing((prev) => !prev),
-    []
+    [],
   )
 
   const onToggleAdvancedTransactionSettings = React.useCallback(() => {
@@ -189,10 +187,10 @@ export const ConfirmSimulatedTransactionPanel = ({
 
   // render
   if (
-    !txSimulation ||
-    !transactionsNetwork ||
-    !transactionDetails ||
-    !selectedPendingTransaction
+    !txSimulation
+    || !transactionsNetwork
+    || !transactionDetails
+    || !selectedPendingTransaction
   ) {
     return <LoadingSimulation />
   }
@@ -366,9 +364,9 @@ export const ConfirmSimulatedTransactionPanel = ({
               <PendingTransactionNetworkFeeAndSettings
                 onToggleEditGas={onToggleEditGas}
                 showEditGas={
-                  !isZCashTransaction &&
-                  !isBitcoinTransaction &&
-                  !isSolanaTransaction
+                  !isZCashTransaction
+                  && !isBitcoinTransaction
+                  && !isSolanaTransaction
                 }
                 feeDisplayMode='fiat'
               />
@@ -382,7 +380,7 @@ export const ConfirmSimulatedTransactionPanel = ({
               <Alert type='warning'>
                 <>
                   {getLocale(
-                    'braveWalletTransactionMayIncludeAccountCreationFee'
+                    'braveWalletTransactionMayIncludeAccountCreationFee',
                   )}{' '}
                   <LearnMoreButton
                     onClick={openAssociatedTokenAccountSupportArticleTab}

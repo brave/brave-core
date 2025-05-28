@@ -9,7 +9,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 // Assets
 import {
   NoTokensIconLight,
-  NoTokensIconDark
+  NoTokensIconDark,
 } from '../../../../../../assets/svg-icons/empty-state-icons'
 
 // Shared Styles

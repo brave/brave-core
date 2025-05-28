@@ -15,12 +15,12 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   AccountPageTabs,
   BraveWallet,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../constants/types'
 
 // Constants
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../common/constants/local-storage-keys'
 
 // Options
@@ -30,7 +30,7 @@ import { CreateAccountOptions } from '../../../options/nav-options'
 import { getLocale } from '../../../../common/locale'
 import {
   useGetSelectedChainQuery,
-  useLockWalletMutation
+  useLockWalletMutation,
 } from '../../../common/slices/api.slice'
 import { openWalletSettings } from '../../../utils/routes-utils'
 import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
@@ -42,7 +42,7 @@ import {
   PopupButtonText,
   ButtonIcon,
   ToggleRow,
-  SectionLabel
+  SectionLabel,
 } from './wellet-menus.style'
 import { VerticalDivider, Row, Column } from '../../shared/style'
 
@@ -66,11 +66,11 @@ export const WalletSettingsMenu = (props: Props) => {
     useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
   const [hidePortfolioNFTsTab, setHidePortfolioNFTsTab] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
-    false
+    false,
   )
   const [hidePortfolioGraph, setHidePortfolioGraph] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-    true
+    true,
   )
 
   // queries
@@ -101,15 +101,15 @@ export const WalletSettingsMenu = (props: Props) => {
   const onClickHelpCenter = React.useCallback(() => {
     chrome.tabs.create(
       {
-        url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
+        url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet',
       },
       () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
-      }
+      },
     )
     if (onClosePopup) {
       onClosePopup()
@@ -144,7 +144,7 @@ export const WalletSettingsMenu = (props: Props) => {
       chrome.tabs.create({ url: `chrome://wallet${route}` }, () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
       })
@@ -157,15 +157,15 @@ export const WalletSettingsMenu = (props: Props) => {
     if (isPanel) {
       chrome.tabs.create(
         {
-          url: `chrome://wallet${WalletRoutes.Backup}`
+          url: `chrome://wallet${WalletRoutes.Backup}`,
         },
         () => {
           if (chrome.runtime.lastError) {
             console.error(
-              'tabs.create failed: ' + chrome.runtime.lastError.message
+              'tabs.create failed: ' + chrome.runtime.lastError.message,
             )
           }
-        }
+        },
       )
       return
     }
@@ -199,8 +199,8 @@ export const WalletSettingsMenu = (props: Props) => {
           </PopupButtonText>
         </PopupButton>
 
-        {(selectedNetwork?.coin === BraveWallet.CoinType.ETH ||
-          selectedNetwork?.coin === BraveWallet.CoinType.SOL) && (
+        {(selectedNetwork?.coin === BraveWallet.CoinType.ETH
+          || selectedNetwork?.coin === BraveWallet.CoinType.SOL) && (
           <PopupButton onClick={onClickConnectedSites}>
             <ButtonIcon name='link-normal' />
             <PopupButtonText>
@@ -217,9 +217,9 @@ export const WalletSettingsMenu = (props: Props) => {
         </PopupButton>
       </Column>
 
-      {(walletLocation === WalletRoutes.PortfolioNFTs ||
-        walletLocation === WalletRoutes.PortfolioAssets ||
-        walletLocation === WalletRoutes.PortfolioActivity) && (
+      {(walletLocation === WalletRoutes.PortfolioNFTs
+        || walletLocation === WalletRoutes.PortfolioAssets
+        || walletLocation === WalletRoutes.PortfolioActivity) && (
         <>
           <SectionLabel justifyContent='flex-start'>
             {getLocale('braveWalletPortfolioSettings')}

@@ -16,14 +16,14 @@ import {
   MessageBox,
   MessageHeader,
   MessageText,
-  WarningTitleRow
+  WarningTitleRow,
 } from '../style'
 
 import {
   WarningBox,
   WarningTitle,
   LearnMoreButton,
-  WarningIcon
+  WarningIcon,
 } from '../../shared-panel-styles'
 
 interface Props {
@@ -39,8 +39,8 @@ export function EthSignTypedData(props: Props) {
 
   return (
     <>
-      {(hasUnicode(data?.messageJson ?? '') ||
-        hasUnicode(data?.domainJson ?? '')) && (
+      {(hasUnicode(data?.messageJson ?? '')
+        || hasUnicode(data?.domainJson ?? '')) && (
         <WarningBox warningType='warning'>
           <WarningTitleRow>
             <WarningIcon color={'warningIcon'} />

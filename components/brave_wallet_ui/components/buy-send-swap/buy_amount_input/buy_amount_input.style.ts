@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import {
   AssetIconProps,
   AssetIconFactory,
-  WalletButton
+  WalletButton,
 } from '../../shared/style'
 
 export const AssetButton = styled(WalletButton)<{ isERC721?: boolean }>`
@@ -32,7 +32,7 @@ export const AssetButton = styled(WalletButton)<{ isERC721?: boolean }>`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '24px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const AssetTicker = styled.span<{

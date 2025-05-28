@@ -14,7 +14,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 
 import {
-  useGetHardwareAccountDiscoveryBalanceQuery //
+  useGetHardwareAccountDiscoveryBalanceQuery, //
 } from '../../../common/slices/api.slice'
 import { useAddressOrb } from '../../../common/hooks/use-orb'
 
@@ -27,7 +27,7 @@ import {
   HardwareWalletAccountListItem,
   HardwareWalletAccountListItemRow,
   AddressBalanceWrapper,
-  AccountCheckbox
+  AccountCheckbox,
 } from './hardware_wallet_connect.styles'
 
 interface AccountListItemProps {
@@ -53,14 +53,14 @@ export const AccountListItem = ({
   onSelect,
   selected,
   disabled,
-  balanceAsset
+  balanceAsset,
 }: AccountListItemProps) => {
   // queries
   const { data: balanceResult, isFetching: isLoadingBalance } =
     useGetHardwareAccountDiscoveryBalanceQuery({
       coin: balanceAsset.coin,
       chainId: balanceAsset.chainId,
-      address: address
+      address: address,
     })
 
   // memos
@@ -68,9 +68,9 @@ export const AccountListItem = ({
 
   const balance = React.useMemo(() => {
     if (
-      isLoadingBalance ||
-      !balanceResult ||
-      balanceAsset.decimals === undefined
+      isLoadingBalance
+      || !balanceResult
+      || balanceAsset.decimals === undefined
     ) {
       return undefined
     }
@@ -82,7 +82,7 @@ export const AccountListItem = ({
     isLoadingBalance,
     balanceResult,
     balanceAsset.decimals,
-    balanceAsset.symbol
+    balanceAsset.symbol,
   ])
 
   // render

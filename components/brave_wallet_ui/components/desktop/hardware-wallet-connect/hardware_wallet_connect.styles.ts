@@ -185,8 +185,8 @@ export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`
     p.mode === 'info'
       ? leo.color.text.primary
       : p.mode === 'success'
-      ? leo.color.systemfeedback.successText
-      : leo.color.systemfeedback.errorText};
+        ? leo.color.systemfeedback.successText
+        : leo.color.systemfeedback.errorText};
   text-align: center;
   font: ${leo.font.large.regular};
   gap: 8px;

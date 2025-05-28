@@ -113,7 +113,7 @@ export const MoreButton = styled(WalletButton)`
 `
 
 export const MoreIcon = styled(Icon).attrs({
-  name: 'more-vertical'
+  name: 'more-vertical',
 })`
   --leo-icon-size: 22px;
   color: ${leo.color.text.secondary};
@@ -149,7 +149,7 @@ export const WatchOnlyMarker = styled(JunkMarker)`
 `
 
 export const JunkIcon = styled(Icon).attrs({
-  name: 'warning-triangle-outline'
+  name: 'warning-triangle-outline',
 })`
   --leo-icon-size: 14px;
   color: ${leo.color.systemfeedback.errorIcon};

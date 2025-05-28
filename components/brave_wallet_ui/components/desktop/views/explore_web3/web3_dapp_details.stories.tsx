@@ -10,7 +10,7 @@ import { getLocale } from '../../../../../common/locale'
 
 // components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { DappDetails } from './web3_dapp_details'
 import WalletPageWrapper from '../../wallet-page-wrapper/wallet-page-wrapper'

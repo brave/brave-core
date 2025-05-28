@@ -50,13 +50,13 @@ export const ContentWrapper = styled.div<{
   line-height: 18px;
   color: ${(p) => p.theme.color.text02};
   background-color: ${(p) =>
-    p.pinningStatus ===
-      BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS ||
-    p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING
+    p.pinningStatus
+      === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
+    || p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING
       ? 'var(--uploading-background)'
       : p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNED
-      ? 'var(--success-background)'
-      : 'var(--failed-background)'};
+        ? 'var(--success-background)'
+        : 'var(--failed-background)'};
 `
 
 export const StatusIcon = styled.div`

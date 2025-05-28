@@ -14,7 +14,7 @@ import {
   Heading,
   StyledWrapper,
   SubHeading,
-  ImportButton
+  ImportButton,
 } from './nfts-empty-state.style'
 import EmptyStateGraphicLight from '../../../../../../assets/png-icons/nft-empty-state-light.png'
 import EmptyStateGraphicDark from '../../../../../../assets/png-icons/nft-empty-state-dark.png'

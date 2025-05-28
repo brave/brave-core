@@ -9,7 +9,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 // Types
 import {
   BraveWallet,
-  SupportedTestNetworks //
+  SupportedTestNetworks, //
 } from '../../../../constants/types'
 
 // Styled Components
@@ -21,24 +21,24 @@ import {
   NameAndAddressColumn,
   AccountCircle,
   LeftSide,
-  SelectedIcon
+  SelectedIcon,
 } from './select-account-item.style'
 import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
 import { Tooltip } from '../../../shared/tooltip/index'
 
 // Utils
 import {
-  reduceAccountDisplayName //
+  reduceAccountDisplayName, //
 } from '../../../../utils/reduce-account-name'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
 import {
-  selectAllVisibleFungibleUserAssetsFromQueryResult //
+  selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Queries
@@ -47,13 +47,13 @@ import {
   useGetNetworksQuery,
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../../../../common/slices/entities/token-balance.entity'
 
 // Hooks
@@ -78,9 +78,9 @@ export const SelectAccountItem = (props: Props) => {
     {
       selectFromResult: (res) => ({
         userVisibleFungibleTokens:
-          selectAllVisibleFungibleUserAssetsFromQueryResult(res)
-      })
-    }
+          selectAllVisibleFungibleUserAssetsFromQueryResult(res),
+      }),
+    },
   )
 
   // Memos
@@ -88,44 +88,44 @@ export const SelectAccountItem = (props: Props) => {
 
   const tokenListByAccount = React.useMemo(() => {
     if (
-      selectedNetwork?.coin &&
-      selectedNetwork?.chainId &&
-      SupportedTestNetworks.includes(selectedNetwork.chainId)
+      selectedNetwork?.coin
+      && selectedNetwork?.chainId
+      && SupportedTestNetworks.includes(selectedNetwork.chainId)
     ) {
       return userVisibleFungibleTokens.filter(
         (token) =>
-          token.chainId === selectedNetwork.chainId &&
-          token.coin === selectedNetwork.coin
+          token.chainId === selectedNetwork.chainId
+          && token.coin === selectedNetwork.coin,
       )
     }
     const chainList = networks
       .filter(
         (network) =>
-          network.coin === account.accountId.coin &&
-          !SupportedTestNetworks.includes(network.chainId)
+          network.coin === account.accountId.coin
+          && !SupportedTestNetworks.includes(network.chainId),
       )
       .map((network) => network.chainId)
     return userVisibleFungibleTokens.filter((token) =>
-      chainList.includes(token.chainId)
+      chainList.includes(token.chainId),
     )
   }, [
     userVisibleFungibleTokens,
     networks,
     account,
     selectedNetwork?.coin,
-    selectedNetwork?.chainId
+    selectedNetwork?.chainId,
   ])
 
   const tokenPriceIds = React.useMemo(
     () => tokenListByAccount.map(getPriceIdForToken),
-    [tokenListByAccount]
+    [tokenListByAccount],
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length && defaultFiatCurrency
       ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   const accountFiatValue = React.useMemo(() => {
@@ -133,13 +133,13 @@ export const SelectAccountItem = (props: Props) => {
       const balance = getBalance(
         account.accountId,
         token,
-        tokenBalancesRegistry
+        tokenBalancesRegistry,
       )
 
       return computeFiatAmount({
         spotPriceRegistry,
         value: balance,
-        token
+        token,
       }).format()
     })
 
@@ -156,7 +156,7 @@ export const SelectAccountItem = (props: Props) => {
     defaultFiatCurrency,
     account.accountId,
     tokenBalancesRegistry,
-    spotPriceRegistry
+    spotPriceRegistry,
   ])
 
   return (

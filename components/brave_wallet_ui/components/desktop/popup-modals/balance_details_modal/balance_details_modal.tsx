@@ -9,7 +9,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 // Types
 import {
   BraveWallet,
-  BitcoinBalances //
+  BitcoinBalances, //
 } from '../../../../constants/types'
 
 // Utils
@@ -26,7 +26,7 @@ import {
   SectionText,
   BalanceText,
   InfoIcon,
-  TooltipContent
+  TooltipContent,
 } from './balance_details_modal.style'
 import { Column, Row, VerticalDivider } from '../../../shared/style'
 
@@ -172,5 +172,5 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
         </Column>
       </PopupModal>
     )
-  }
+  },
 )

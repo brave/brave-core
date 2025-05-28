@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { Connections } from './connections'
 
@@ -29,9 +29,9 @@ export const _Connections = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
-  component: Connections
+  component: Connections,
 }

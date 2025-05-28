@@ -7,18 +7,18 @@ import * as React from 'react'
 
 // types
 import {
-  UpdateUnapprovedTransactionGasFieldsType //
+  UpdateUnapprovedTransactionGasFieldsType, //
 } from '../../../common/constants/action_types'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import EditGas, { MaxPriorityPanels } from './edit-gas'
 
 // mocks
 import {
-  mockTransactionInfo //
+  mockTransactionInfo, //
 } from '../../../stories/mock-data/mock-transaction-info'
 import { mockSepolia } from '../../../stories/mock-data/mock-networks'
 import { PanelWrapper } from '../../../panel/style'
@@ -39,7 +39,7 @@ export const _EditGas = {
             suggestedSliderStep={''}
             maxPriorityPanel={MaxPriorityPanels.setCustom}
             updateUnapprovedTransactionGasFields={function (
-              payload: UpdateUnapprovedTransactionGasFieldsType
+              payload: UpdateUnapprovedTransactionGasFieldsType,
             ): void {
               alert(JSON.stringify(payload, undefined, 2))
             }}
@@ -53,7 +53,7 @@ export const _EditGas = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: EditGas }

@@ -19,11 +19,11 @@ import {
   useRemoveSitePermissionMutation,
   useRequestSitePermissionMutation,
   useSetNetworkForAccountOnActiveOriginMutation,
-  useSetSelectedAccountMutation
+  useSetSelectedAccountMutation,
 } from '../../../../../common/slices/api.slice'
 import {
   useSelectedETHAccountQuery,
-  useSelectedSOLAccountQuery
+  useSelectedSOLAccountQuery,
 } from '../../../../../common/slices/api.slice.extra'
 
 // Proxies
@@ -35,15 +35,15 @@ import { reduceAddress } from '../../../../../utils/reduce-address'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../shared/create-account-icon/create-account-icon'
 import { CreateNetworkIcon } from '../../../../shared/create-network-icon'
 import { BottomSheet } from '../../../../shared/bottom_sheet/bottom_sheet'
 import {
-  DAppConnectionNetworks //
+  DAppConnectionNetworks, //
 } from '../dapp_connection_networks/dapp_connection_networks'
 import {
-  DAppConnectionAccounts //
+  DAppConnectionAccounts, //
 } from '../dapp_connection_accounts/dapp_connection_accounts'
 
 // Styled Components
@@ -54,7 +54,7 @@ import {
   Icon,
   SelectButton,
   SelectButtonIcon,
-  TopCardBorder
+  TopCardBorder,
 } from './connection_section.style'
 import { Column, Row, Text } from '../../../../shared/style'
 
@@ -93,11 +93,11 @@ export const ConnectionSection = (props: Props) => {
       accountId:
         coin === BraveWallet.CoinType.ETH
           ? selectedETHAccount?.accountId
-          : selectedSOLAccount?.accountId
+          : selectedSOLAccount?.accountId,
     })
   const { data: networks = [] } = useGetNetworksQuery()
   const firstNetworkByCoin = networks.filter(
-    (network) => network.coin === coin
+    (network) => network.coin === coin,
   )[0]
   const selectedNetworkForAccount = networkForAccount ?? undefined
   const selectedNetwork =
@@ -120,14 +120,15 @@ export const ConnectionSection = (props: Props) => {
       return isSolanaConnected
     }
     return connectedAccounts.some(
-      (accountId) => accountId.uniqueKey === selectedAccount.accountId.uniqueKey
+      (accountId) =>
+        accountId.uniqueKey === selectedAccount.accountId.uniqueKey,
     )
   }, [
     connectedAccounts,
     selectedAccount,
     coin,
     isSolanaConnected,
-    isPermissionDenied
+    isPermissionDenied,
   ])
 
   const connectionStatusText = React.useMemo((): string => {
@@ -155,15 +156,15 @@ export const ConnectionSection = (props: Props) => {
   const onClickUnblock = React.useCallback(() => {
     chrome.tabs.create(
       {
-        url: 'brave://settings/content/all'
+        url: 'brave://settings/content/all',
       },
       () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
-      }
+      },
     )
   }, [])
 
@@ -172,13 +173,13 @@ export const ConnectionSection = (props: Props) => {
       if (selectedAccount) {
         await setNetworkForAccountOnActiveOrigin({
           accountId: selectedAccount.accountId,
-          chainId: network.chainId
+          chainId: network.chainId,
         })
         setSelectedNetworkState(network)
         setShowNetworks(false)
       }
     },
-    [selectedAccount, setNetworkForAccountOnActiveOrigin]
+    [selectedAccount, setNetworkForAccountOnActiveOrigin],
   )
 
   const onChangeAccount = React.useCallback(
@@ -186,7 +187,7 @@ export const ConnectionSection = (props: Props) => {
       setSelectedAccount(account.accountId)
       setShowAccounts(false)
     },
-    [setSelectedAccount]
+    [setSelectedAccount],
   )
 
   // Effects
@@ -240,8 +241,8 @@ export const ConnectionSection = (props: Props) => {
           isPermissionDenied
             ? 'blocked'
             : isConnected
-            ? 'connected'
-            : 'not-connected'
+              ? 'connected'
+              : 'not-connected'
         }
         fullWidth={true}
         padding='0px 4px 4px 4px'
@@ -253,8 +254,8 @@ export const ConnectionSection = (props: Props) => {
               isPermissionDenied
                 ? 'remove-circle-filled'
                 : isConnected
-                ? 'check-circle-filled'
-                : 'close-circle-filled'
+                  ? 'check-circle-filled'
+                  : 'close-circle-filled'
             }
           />
           <StatusText>{connectionStatusText}</StatusText>
@@ -330,15 +331,15 @@ export const ConnectionSection = (props: Props) => {
                 isPermissionDenied
                   ? onClickUnblock
                   : isConnected
-                  ? onClickDisconnect
-                  : onClickConnect
+                    ? onClickDisconnect
+                    : onClickConnect
               }
             >
               {isPermissionDenied
                 ? getLocale('braveWalletUnblock')
                 : isConnected
-                ? getLocale('braveWalletSitePermissionsDisconnect')
-                : getLocale('braveWalletAddAccountConnect')}
+                  ? getLocale('braveWalletSitePermissionsDisconnect')
+                  : getLocale('braveWalletAddAccountConnect')}
             </Button>
           </Row>
         </ControlsWrapper>

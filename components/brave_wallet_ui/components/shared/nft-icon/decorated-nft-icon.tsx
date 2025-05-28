@@ -15,7 +15,7 @@ import { NftIcon, NftIconProps } from './nft-icon'
 
 // styles
 import {
-  NetworkIconWrapper //
+  NetworkIconWrapper, //
 } from '../../../page/screens/composer_ui/token_list_item/token_list_item.style'
 import { IconWrapper } from './nft-icon-styles'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
@@ -34,7 +34,7 @@ export const DecoratedNftIcon = (props: Props) => {
   const { data: network } = useGetNetworkQuery(
     coinType !== undefined && chainId !== undefined
       ? { chainId: chainId, coin: coinType }
-      : skipToken
+      : skipToken,
   )
 
   return (

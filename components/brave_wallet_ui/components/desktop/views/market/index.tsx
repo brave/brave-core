@@ -10,10 +10,10 @@ import { useHistory } from 'react-router'
 import {
   useGetCoinMarketQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetMeldCryptoCurrenciesQuery
+  useGetMeldCryptoCurrenciesQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  useGetCombinedTokensListQuery //
+  useGetCombinedTokensListQuery, //
 } from '../../../../common/slices/api.slice.extra'
 
 // Constants
@@ -35,11 +35,11 @@ import {
   UpdateCoinMarketMessage,
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
-  UpdateIframeHeightMessage
+  UpdateIframeHeightMessage,
 } from '../../../../market/market-ui-messages'
 import {
   makeDepositFundsRoute,
-  makeFundWalletRoute
+  makeFundWalletRoute,
 } from '../../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getAssetSymbol } from '../../../../utils/meld_utils'
@@ -67,7 +67,7 @@ export const MarketView = () => {
   const { data: allCoins = [], isLoading: isLoadingCoinMarketData } =
     useGetCoinMarketQuery({
       vsAsset: defaultFiatCurrency,
-      limit: assetsRequestLimit
+      limit: assetsRequestLimit,
     })
 
   // Methods
@@ -88,7 +88,7 @@ export const MarketView = () => {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
           const foundMeldTokens = buyAssets?.filter(
-            (t) => getAssetSymbol(t) === symbolLower
+            (t) => getAssetSymbol(t) === symbolLower,
           )
           if (foundMeldTokens) {
             history.push(makeFundWalletRoute(foundMeldTokens[0]))
@@ -100,14 +100,14 @@ export const MarketView = () => {
           const { payload } = message as SelectDepositMessage
           const symbolLower = payload.symbol.toLowerCase()
           const foundTokens = combinedTokensList.filter(
-            (t) => t.symbol.toLowerCase() === symbolLower
+            (t) => t.symbol.toLowerCase() === symbolLower,
           )
 
           if (foundTokens.length === 1) {
             history.push(
               makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
-                searchText: symbolLower
-              })
+                searchText: symbolLower,
+              }),
             )
             return
           }
@@ -115,8 +115,8 @@ export const MarketView = () => {
           if (foundTokens.length > 1) {
             history.push(
               makeDepositFundsRoute('', {
-                searchText: symbolLower
-              })
+                searchText: symbolLower,
+              }),
             )
           }
         }
@@ -129,7 +129,7 @@ export const MarketView = () => {
         }
       }
     },
-    [buyAssets, combinedTokensList, history]
+    [buyAssets, combinedTokensList, history],
   )
 
   const onMarketDataFrameLoad = React.useCallback(() => {
@@ -146,30 +146,30 @@ export const MarketView = () => {
       command: MarketUiCommand.UpdateCoinMarkets,
       payload: {
         coins: allCoins,
-        defaultFiatCurrency
-      }
+        defaultFiatCurrency,
+      },
     }
     sendMessageToMarketUiFrame(
       marketDataIframeRef.current.contentWindow,
-      updateCoinsMsg
+      updateCoinsMsg,
     )
 
     const updateBuyableAssetsMsg: UpdateBuyableAssetsMessage = {
       command: MarketUiCommand.UpdateBuyableAssets,
-      payload: buyAssets
+      payload: buyAssets,
     }
     sendMessageToMarketUiFrame(
       marketDataIframeRef.current.contentWindow,
-      updateBuyableAssetsMsg
+      updateBuyableAssetsMsg,
     )
 
     const updateDepositableAssetsMsg: UpdateDepositableAssetsMessage = {
       command: MarketUiCommand.UpdateDepositableAssets,
-      payload: combinedTokensList
+      payload: combinedTokensList,
     }
     sendMessageToMarketUiFrame(
       marketDataIframeRef.current.contentWindow,
-      updateDepositableAssetsMsg
+      updateDepositableAssetsMsg,
     )
   }, [
     iframeLoaded,
@@ -177,7 +177,7 @@ export const MarketView = () => {
     allCoins,
     buyAssets,
     combinedTokensList,
-    defaultFiatCurrency
+    defaultFiatCurrency,
   ])
 
   React.useEffect(() => {

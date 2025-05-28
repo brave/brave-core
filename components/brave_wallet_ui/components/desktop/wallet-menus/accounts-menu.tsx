@@ -18,7 +18,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 
 export const AccountsMenu = () => {
@@ -28,10 +28,11 @@ export const AccountsMenu = () => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
   return (
     <StyledWrapper yPosition={42}>
-      {CreateAccountOptions.filter(option => (
-        // Filter out hardware wallet item on Android.
-        !isAndroid || option.name !== 'braveWalletConnectHardwareWallet'
-      )).map((option) => (
+      {CreateAccountOptions.filter(
+        (option) =>
+          // Filter out hardware wallet item on Android.
+          !isAndroid || option.name !== 'braveWalletConnectHardwareWallet',
+      ).map((option) => (
         <PopupButton
           key={option.name}
           onClick={() => history.push(option.route)}

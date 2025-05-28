@@ -12,10 +12,10 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
   isUrlWarning,
-  translateSimulationResultError
+  translateSimulationResultError,
 } from '../../../utils/tx-simulation-utils'
 import {
-  getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction //
+  getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction, //
 } from '../../../utils/solana-instruction-utils'
 import { getLocale } from '../../../../common/locale'
 
@@ -30,11 +30,11 @@ import { PanelTab } from '../panel-tab/index'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import NavButton from '../buttons/nav-button'
 import {
-  SolanaTransactionInstruction //
+  SolanaTransactionInstruction, //
 } from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 import { CriticalWarningPopup } from './critical-warning-popup'
 import {
-  PendingTransactionActionsFooter //
+  PendingTransactionActionsFooter, //
 } from './common/pending_tx_actions_footer'
 
 // Styled Components
@@ -45,16 +45,16 @@ import {
   WarningBox,
   WarningIcon,
   WarningText,
-  WarningTitle
+  WarningTitle,
 } from '../shared-panel-styles'
 import {
   SignPanelButtonRow,
   TopRow,
-  WarningTitleRow
+  WarningTitleRow,
 } from '../sign-panel/style'
 import {
   AccountNameAndAddress,
-  NetworkNameText
+  NetworkNameText,
 } from './confirm_simulated_tx_panel.styles'
 import { MessageBox } from './style'
 import { DetailColumn } from '../transaction-box/style'
@@ -78,7 +78,7 @@ const onClickLearnMore = () => {
   window.open(
     'https://support.brave.com/hc/en-us/articles/4409513799693',
     '_blank',
-    'noopener,noreferrer'
+    'noopener,noreferrer',
   )
 }
 
@@ -93,21 +93,21 @@ export const SignSimulatedTransactionPanel = ({
   signSolTransactionsRequest,
   signingAccount,
   txSimulation,
-  isSigningDisabled
+  isSigningDisabled,
 }: Props) => {
   // custom hooks
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signSolTransactionsRequest
+      signSolTransactionsRequest,
     })
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
-    SignDataSteps.SignRisk
+    SignDataSteps.SignRisk,
   )
   const [isCriticalWarningPopupOpen, setIsCriticalWarningPopupOpen] =
     React.useState(
-      txSimulation.action === BraveWallet.BlowfishSuggestedAction.kBlock
+      txSimulation.action === BraveWallet.BlowfishSuggestedAction.kBlock,
     )
   const [selectedTab, setSelectedTab] =
     React.useState<confirmPanelTabs>('transaction')
@@ -116,13 +116,13 @@ export const SignSimulatedTransactionPanel = ({
   // computed
   const simulationResultsErrorText = translateSimulationResultError(
     txSimulation?.error,
-    BraveWallet.CoinType.SOL
+    BraveWallet.CoinType.SOL,
   )
 
   // methods
   const onSelectTab = React.useCallback(
     (tab: confirmPanelTabs) => () => setSelectedTab(tab),
-    []
+    [],
   )
 
   // Critical Warning pop-up
@@ -215,7 +215,7 @@ export const SignSimulatedTransactionPanel = ({
                   network={network}
                   originInfo={signSolTransactionsRequest.originInfo}
                   isFlagged={txSimulation.warnings.some((w) =>
-                    isUrlWarning(w.kind)
+                    isUrlWarning(w.kind),
                   )}
                 />
               </Row>
@@ -276,7 +276,7 @@ export const SignSimulatedTransactionPanel = ({
                             })}
                           </DetailColumn>
                         )
-                      }
+                      },
                     )}
                   </MessageBox>
                 )}

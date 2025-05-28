@@ -12,7 +12,7 @@ import { getLocale } from '$web-common/locale'
 import {
   ProgressBar,
   BarAndMessageContainer,
-  BarMessage
+  BarMessage,
 } from './password-strength-bar.styles'
 
 // components
@@ -21,13 +21,11 @@ interface Props {
   criteria: boolean[]
 }
 
-export const PasswordStrengthBar: React.FC<Props> = ({
-  criteria
-}) => {
+export const PasswordStrengthBar: React.FC<Props> = ({ criteria }) => {
   // memos
   const strongPasswordCrtieriaPercentComplete = React.useMemo(
     () => (criteria.filter((c) => !!c).length / criteria.length) * 100,
-    [criteria]
+    [criteria],
   )
 
   // render
@@ -41,8 +39,8 @@ export const PasswordStrengthBar: React.FC<Props> = ({
         {strongPasswordCrtieriaPercentComplete === 100
           ? getLocale('braveWalletPasswordIsStrong')
           : strongPasswordCrtieriaPercentComplete < 50
-          ? getLocale('braveWalletPasswordIsWeak')
-          : getLocale('braveWalletPasswordIsMediumStrength')}
+            ? getLocale('braveWalletPasswordIsWeak')
+            : getLocale('braveWalletPasswordIsMediumStrength')}
       </BarMessage>
     </BarAndMessageContainer>
   )

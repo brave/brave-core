@@ -80,5 +80,5 @@ export const LineBreak = styled.br`
 
 Skeleton.defaultProps = {
   width: '100%',
-  height: '100%'
+  height: '100%',
 }

@@ -12,12 +12,12 @@ import {
   isComponentInStorybook,
   isIpfs,
   stripERC20TokenImageURL,
-  stripChromeImageURL
+  stripChromeImageURL,
 } from '../../../utils/string-utils'
 
 // hooks
 import {
-  useGetIpfsGatewayTranslatedNftUrlQuery //
+  useGetIpfsGatewayTranslatedNftUrlQuery, //
 } from '../../../common/slices/api.slice'
 
 // styles
@@ -25,7 +25,7 @@ import {
   NftImageIframe,
   NftImageResponsiveIframe,
   NftPlaceholderWrapper,
-  NFTPlacholderIcon
+  NFTPlacholderIcon,
 } from './nft-icon-styles'
 
 export interface NftIconProps {
@@ -47,7 +47,7 @@ export const NftIcon = (props: NftIconProps) => {
 
   // queries
   const { data: ipfsGatewayURL } = useGetIpfsGatewayTranslatedNftUrlQuery(
-    isIpfsTokenImageURL ? tokenImageURL : skipToken
+    isIpfsTokenImageURL ? tokenImageURL : skipToken,
   )
   const remoteImage = ipfsGatewayURL ?? tokenImageURL
 
@@ -56,8 +56,8 @@ export const NftIcon = (props: NftIconProps) => {
     const urlParams = new URLSearchParams({
       displayMode: 'icon',
       icon: `chrome-untrusted://image?url=${encodeURIComponent(
-        remoteImage
-      )}&staticEncode=true`
+        remoteImage,
+      )}&staticEncode=true`,
     })
     return `chrome-untrusted://nft-display?${urlParams.toString()}`
   }, [remoteImage])

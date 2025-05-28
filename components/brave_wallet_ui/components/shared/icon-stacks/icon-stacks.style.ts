@@ -31,7 +31,7 @@ export const IconWrapper = styled.div<{
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '16px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const AdditionalCountBubble = styled.div`

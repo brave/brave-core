@@ -15,7 +15,7 @@ import {
   Input,
   InputLabel,
   ButtonRow,
-  InfoText
+  InfoText,
 } from './style'
 
 // Utils
@@ -35,14 +35,14 @@ export const AdvancedTransactionSettings = (props: Props) => {
     nonce,
     chainId,
     txMetaId,
-    updateUnapprovedTransactionNonce
+    updateUnapprovedTransactionNonce,
   } = props
   const [customNonce, setCustomNonce] = React.useState<string>(
-    nonce && parseInt(nonce).toString()
+    nonce && parseInt(nonce).toString(),
   )
 
   const handleNonceInputChanged = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setCustomNonce(event.target.value)
   }
@@ -51,7 +51,7 @@ export const AdvancedTransactionSettings = (props: Props) => {
     updateUnapprovedTransactionNonce({
       chainId,
       txMetaId,
-      nonce: customNonce && new Amount(customNonce).toHex()
+      nonce: customNonce && new Amount(customNonce).toHex(),
     })
     onCancel()
   }
@@ -66,7 +66,7 @@ export const AdvancedTransactionSettings = (props: Props) => {
           <InputLabel>{getLocale('braveWalletEditNonce')}</InputLabel>
           <Input
             placeholder={getLocale(
-              'braveWalletAdvancedTransactionSettingsPlaceholder'
+              'braveWalletAdvancedTransactionSettingsPlaceholder',
             )}
             type='number'
             value={customNonce}

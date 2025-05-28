@@ -12,7 +12,7 @@ import { mockBtcToken } from '../../../../stories/mock-data/mock-asset-options'
 const mockBitcoinBalances = {
   availableBalance: '1000000',
   pendingBalance: '0',
-  totalBalance: '1000000'
+  totalBalance: '1000000',
 }
 
 export const _BalanceDetailsModal = {
@@ -20,13 +20,13 @@ export const _BalanceDetailsModal = {
     return (
       <WalletPageStory>
         <BalanceDetailsModal
-          onClose={() => { }}
+          onClose={() => {}}
           token={mockBtcToken}
           balances={mockBitcoinBalances}
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { title: 'Balance Details' }

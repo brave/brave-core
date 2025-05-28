@@ -13,7 +13,7 @@ import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
 // Hooks
 import {
-  useIsDAppVerified //
+  useIsDAppVerified, //
 } from '../../../common/hooks/use_is_dapp_verified'
 
 // Utils
@@ -21,14 +21,14 @@ import { getLocale } from '$web-common/locale'
 
 // Components
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
-  DefaultPanelHeader //
+  DefaultPanelHeader, //
 } from '../../desktop/card-headers/default-panel-header'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import {
-  ConnectionSection //
+  ConnectionSection, //
 } from './components/connection_section/connection_section'
 
 // Styled Components
@@ -38,7 +38,7 @@ import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
 const CONNECTABLE_COIN_TYPES = [
   BraveWallet.CoinType.ETH,
-  BraveWallet.CoinType.SOL
+  BraveWallet.CoinType.SOL,
 ]
 
 export const Connections = () => {
@@ -65,7 +65,7 @@ export const Connections = () => {
       >
         <FavIcon
           src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-            activeOrigin.originSpec
+            activeOrigin.originSpec,
           )}`}
         />
         <Column

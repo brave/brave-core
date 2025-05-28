@@ -10,7 +10,7 @@ import { AssetIconProps, AssetIconFactory, Column } from '../../shared/style'
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const AssetNameText = styled.span`

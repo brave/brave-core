@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AddOrEditNftModal } from './add-edit-nft-modal'
 
@@ -20,9 +20,9 @@ export const _AddNftModal = {
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: AddOrEditNftModal
+  component: AddOrEditNftModal,
 }

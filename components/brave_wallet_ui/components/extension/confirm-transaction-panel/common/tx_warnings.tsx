@@ -23,14 +23,14 @@ import {
   WarningButton,
   DismissButton,
   FullWidth,
-  CollapseTitle
+  CollapseTitle,
 } from './tx_warnings.styles'
 
 export function TxWarningBanner({
   retrySimulation,
   onDismiss,
   isCritical,
-  children
+  children,
 }: React.PropsWithChildren<{
   retrySimulation?: (() => void) | (() => Promise<void>)
   onDismiss?: (() => void) | (() => Promise<void>)
@@ -39,9 +39,7 @@ export function TxWarningBanner({
   // render
   return (
     <FullWidth>
-      <Alert
-        type={retrySimulation ? 'info' : isCritical ? 'error' : 'warning'}
-      >
+      <Alert type={retrySimulation ? 'info' : isCritical ? 'error' : 'warning'}>
         <div slot='icon'>{/* No Icon */}</div>
 
         <Row justifyContent='space-between'>
@@ -81,7 +79,7 @@ export function TransactionWarnings({
   setIsWarningCollapsed,
   warnings,
   onDismiss,
-  classifyAs
+  classifyAs,
 }: {
   classifyAs: 'risks' | 'issues'
   warnings: Array<Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>>
@@ -92,7 +90,7 @@ export function TransactionWarnings({
   // memos
   const hasCriticalWarnings = warnings.some(
     (warning) =>
-      warning.severity === BraveWallet.BlowfishWarningSeverity.kCritical
+      warning.severity === BraveWallet.BlowfishWarningSeverity.kCritical,
   )
 
   // no warnings
@@ -133,7 +131,7 @@ export function TransactionWarnings({
           {getLocale(
             classifyAs === 'risks'
               ? 'braveWalletFoundRisks'
-              : 'braveWalletFoundIssues'
+              : 'braveWalletFoundIssues',
           ).replace('$1', warnings.length.toString())}
         </CollapseTitle>
 

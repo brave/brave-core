@@ -12,7 +12,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 
 interface Props {

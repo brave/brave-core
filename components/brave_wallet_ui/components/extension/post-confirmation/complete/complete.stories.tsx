@@ -9,17 +9,17 @@ import {
   BraveWallet,
   StorybookCoinTypeOptions,
   StorybookTransactionArgs,
-  StorybookTransactionOptions
+  StorybookTransactionOptions,
 } from '../../../../constants/types'
 
 // Mocks
 import {
-  getPostConfirmationStatusMockTransaction //
+  getPostConfirmationStatusMockTransaction, //
 } from '../../../../stories/mock-data/mock-transaction-info'
 
 // Components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../../stories/wrappers/wallet-panel-story-wrapper'
 import { TransactionComplete } from './complete'
 
@@ -36,7 +36,7 @@ export const _TransactionComplete = {
     const transaction = getPostConfirmationStatusMockTransaction(
       transactionType,
       BraveWallet.TransactionStatus.Confirmed,
-      coinType
+      coinType,
     )
 
     return (
@@ -55,7 +55,7 @@ export const _TransactionComplete = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
@@ -63,11 +63,11 @@ export default {
   argTypes: {
     transactionType: {
       options: StorybookTransactionOptions,
-      control: { type: 'select' }
+      control: { type: 'select' },
     },
     coinType: {
       options: StorybookCoinTypeOptions,
-      control: { type: 'select' }
-    }
-  }
+      control: { type: 'select' },
+    },
+  },
 }

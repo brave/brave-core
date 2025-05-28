@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { CreateAccountTab } from '.'
 import { Meta } from '@storybook/react'
@@ -17,10 +17,12 @@ export const CreateAccount = {}
 export default {
   title: 'Create Account Tab',
   component: CreateAccountTab,
-  render: () => <WalletPanelStory>
-    <CreateAccountTab
-      network={mockNetworks[0]}
-      onCancel={() => { }}
-    />
-  </WalletPanelStory>
+  render: () => (
+    <WalletPanelStory>
+      <CreateAccountTab
+        network={mockNetworks[0]}
+        onCancel={() => {}}
+      />
+    </WalletPanelStory>
+  ),
 } as Meta<typeof CreateAccountTab>

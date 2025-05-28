@@ -22,7 +22,7 @@ import {
   TitleText,
   alertItemGap,
   CollapseTitleRow,
-  CollapseIcon
+  CollapseIcon,
 } from './evm_message_simulation_not_supported_sheet.styles'
 
 export const EvmMessageSimulationNotSupportedSheet = () => {
@@ -68,12 +68,12 @@ export const EvmMessageSimulationNotSupportedSheet = () => {
                 <Column gap={leo.spacing.m}>
                   <AlertTextContainer>
                     {getLocale(
-                      'braveWalletEvmMessageScanningFeatureSafetyExplanation'
+                      'braveWalletEvmMessageScanningFeatureSafetyExplanation',
                     )}
                   </AlertTextContainer>
                   <AlertTextContainer>
                     {getLocale(
-                      'braveWalletEvmMessageScanningFeatureAccuracyExplanation'
+                      'braveWalletEvmMessageScanningFeatureAccuracyExplanation',
                     )}
                   </AlertTextContainer>
                 </Column>

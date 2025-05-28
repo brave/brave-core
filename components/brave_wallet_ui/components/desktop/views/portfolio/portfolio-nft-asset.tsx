@@ -23,15 +23,15 @@ import { NftScreen } from '../../../../nft/components/nft-details/nft-screen'
 import {
   useGetNetworkQuery,
   useGetSimpleHashSpamNftsQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  useScopedBalanceUpdater //
+  useScopedBalanceUpdater, //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
-  selectHiddenNftsFromQueryResult
+  selectHiddenNftsFromQueryResult,
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Styled Components
@@ -57,8 +57,8 @@ export const PortfolioNftAsset = () => {
         hiddenNfts: selectHiddenNftsFromQueryResult(result),
         userVisibleTokensInfo:
           selectAllVisibleUserAssetsFromQueryResult(result),
-        isLoadingTokens: result.isLoading
-      })
+        isLoadingTokens: result.isLoading,
+      }),
     })
 
   const selectedAssetFromParams = React.useMemo(() => {
@@ -72,7 +72,7 @@ export const PortfolioNftAsset = () => {
 
   const { accounts } = useAccountsQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
-    selectedAssetFromParams ?? skipToken
+    selectedAssetFromParams ?? skipToken,
   )
 
   const candidateAccounts = React.useMemo(() => {
@@ -81,7 +81,7 @@ export const PortfolioNftAsset = () => {
     }
 
     return accounts.filter(
-      (account) => account.accountId.coin === selectedAssetFromParams.coin
+      (account) => account.accountId.coin === selectedAssetFromParams.coin,
     )
   }, [accounts, selectedAssetFromParams])
 
@@ -90,9 +90,9 @@ export const PortfolioNftAsset = () => {
       ? {
           network: selectedAssetNetwork,
           accounts: candidateAccounts,
-          tokens: [selectedAssetFromParams]
+          tokens: [selectedAssetFromParams],
         }
-      : skipToken
+      : skipToken,
   )
 
   const ownerAccount = React.useMemo(() => {
@@ -103,9 +103,9 @@ export const PortfolioNftAsset = () => {
         getBalance(
           account.accountId,
           selectedAssetFromParams,
-          tokenBalancesRegistry
-        )
-      ).gt(0)
+          tokenBalancesRegistry,
+        ),
+      ).gt(0),
     )
   }, [selectedAssetFromParams, candidateAccounts, tokenBalancesRegistry])
 
@@ -115,7 +115,7 @@ export const PortfolioNftAsset = () => {
     const balance = getBalance(
       ownerAccount.accountId,
       selectedAssetFromParams,
-      tokenBalancesRegistry
+      tokenBalancesRegistry,
     )
     return new Amount(balance).gt('0')
   }, [selectedAssetFromParams, ownerAccount, tokenBalancesRegistry])
@@ -130,10 +130,10 @@ export const PortfolioNftAsset = () => {
 
   // asset not found
   if (
-    !selectedAssetFromParams &&
-    !isLoadingSpamNfts &&
-    !isLoadingTokens &&
-    userVisibleTokensInfo.length === 0
+    !selectedAssetFromParams
+    && !isLoadingSpamNfts
+    && !isLoadingTokens
+    && userVisibleTokensInfo.length === 0
   ) {
     return <Redirect to={WalletRoutes.PortfolioNFTs} />
   }

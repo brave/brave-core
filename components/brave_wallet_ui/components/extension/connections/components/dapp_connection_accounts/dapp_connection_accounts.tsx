@@ -10,7 +10,7 @@ import { getLocale } from '../../../../../../common/locale'
 
 // Queries
 import {
-  useGetActiveOriginConnectedAccountIdsQuery //
+  useGetActiveOriginConnectedAccountIdsQuery, //
 } from '../../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
@@ -19,7 +19,7 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Components
 import {
-  ChangeAccountButton //
+  ChangeAccountButton, //
 } from './change_account_button/change_account_button'
 
 // Styled Components
@@ -46,8 +46,8 @@ export const DAppConnectionAccounts = (props: Props) => {
   const connectedAccounts = React.useMemo(() => {
     return accountByCoinType.filter((account) =>
       connectedAccountsIds.some(
-        (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
-      )
+        (accountId) => accountId.uniqueKey === account.accountId.uniqueKey,
+      ),
     )
   }, [accountByCoinType, connectedAccountsIds])
 
@@ -55,8 +55,8 @@ export const DAppConnectionAccounts = (props: Props) => {
     return accountByCoinType.filter(
       (account) =>
         !connectedAccountsIds.some(
-          (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
-        )
+          (accountId) => accountId.uniqueKey === account.accountId.uniqueKey,
+        ),
     )
   }, [accountByCoinType, connectedAccountsIds])
 

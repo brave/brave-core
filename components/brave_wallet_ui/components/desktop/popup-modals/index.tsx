@@ -14,7 +14,7 @@ import {
   BackIcon,
   Modal,
   Divider,
-  ModalContent
+  ModalContent,
 } from './style'
 
 export interface Props {
@@ -44,7 +44,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       onClose,
       onBack,
       height,
-      children
+      children,
     } = props
 
     const handleKeyDown = React.useCallback(
@@ -53,7 +53,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
           onClose()
         }
       },
-      [onClose]
+      [onClose],
     )
 
     React.useEffect(() => {
@@ -97,7 +97,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
         </Modal>
       </StyledWrapper>
     )
-  }
+  },
 )
 
 export default PopupModal

@@ -14,7 +14,7 @@ export const _FullPanelPopup = {
         CONTENT HERE
       </FullPanelPopup>
     )
-  }
+  },
 }
 
 export default { component: _FullPanelPopup }

@@ -17,14 +17,14 @@ import {
   useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPricesQuery,
   useRetryTransactionMutation,
-  useSpeedupTransactionMutation
+  useSpeedupTransactionMutation,
 } from '../../../../common/slices/api.slice'
 import {
   useGetCombinedTokensListQuery,
-  useAccountQuery
+  useAccountQuery,
 } from '../../../../common/slices/api.slice.extra'
 import {
-  accountInfoEntityAdaptorInitialState //
+  accountInfoEntityAdaptorInitialState, //
 } from '../../../../common/slices/entities/account-info.entity'
 
 // Hooks
@@ -35,7 +35,7 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 // Types
 import {
   BraveWallet,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
 } from '../../../../constants/types'
 
 // Utils
@@ -52,19 +52,19 @@ import {
   getTransactionTransferredValue,
   getTransactionFormattedSendCurrencyTotal,
   findTransactionToken,
-  isBridgeTransaction
+  isBridgeTransaction,
 } from '../../../../utils/tx-utils'
 import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 import {
   getAddressLabel,
-  getAccountLabel
+  getAccountLabel,
 } from '../../../../utils/account-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 
@@ -106,35 +106,35 @@ import {
   IconAndValue,
   TransactionValues,
   StatusBoxWrapper,
-  NFTIconWrapper
+  NFTIconWrapper,
 } from './transaction_details_modal.style'
 import {
   SellIconPlaceholder,
   BuyIconPlaceholder,
-  SwapPlaceholderIcon
+  SwapPlaceholderIcon,
 } from '../../portfolio_transaction_item/portfolio_transaction_item.style'
 import {
   Column,
   HorizontalSpace,
   Row,
   VerticalDivider,
-  VerticalSpace
+  VerticalSpace,
 } from '../../../shared/style'
 
 const ICON_ASSET_CONFIG = {
   size: 'big',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(
   AssetIcon,
-  ICON_ASSET_CONFIG
+  ICON_ASSET_CONFIG,
 )
 
 const ICON_SWAP_CONFIG = {
   size: 'small',
   marginLeft: 0,
-  marginRight: 8
+  marginRight: 8,
 } as const
 const SwapIconWithPlaceholder = withPlaceholderIcon(SwapIcon, ICON_SWAP_CONFIG)
 
@@ -142,24 +142,24 @@ const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_ASSET_CONFIG)
 
 const cancelSpeedupTxTypes = [
   BraveWallet.TransactionStatus.Submitted,
-  BraveWallet.TransactionStatus.Approved
+  BraveWallet.TransactionStatus.Approved,
 ]
 
 const pendingTxTypes = [
   BraveWallet.TransactionStatus.Submitted,
-  BraveWallet.TransactionStatus.Unapproved
+  BraveWallet.TransactionStatus.Unapproved,
 ]
 
 const successTxTypes = [
   BraveWallet.TransactionStatus.Approved,
   BraveWallet.TransactionStatus.Confirmed,
-  BraveWallet.TransactionStatus.Signed
+  BraveWallet.TransactionStatus.Signed,
 ]
 
 const errorTxTypes = [
   BraveWallet.TransactionStatus.Error,
   BraveWallet.TransactionStatus.Dropped,
-  BraveWallet.TransactionStatus.Rejected
+  BraveWallet.TransactionStatus.Rejected,
 ]
 
 interface Props {
@@ -186,27 +186,27 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     useGetDefaultFiatCurrencyQuery(undefined)
   const { data: txNetwork } = useGetNetworkQuery({
     chainId: transaction.chainId,
-    coin: txCoinType
+    coin: txCoinType,
   })
 
   const { data: toNetwork } = useGetNetworkQuery(
-    isBridgeTx &&
-      transaction.swapInfo?.toChainId &&
-      transaction.swapInfo.toCoin !== undefined
+    isBridgeTx
+      && transaction.swapInfo?.toChainId
+      && transaction.swapInfo.toCoin !== undefined
       ? {
           chainId: transaction.swapInfo.toChainId,
-          coin: transaction.swapInfo.toCoin
+          coin: transaction.swapInfo.toCoin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: solFeeEstimates } = useGetSolanaEstimatedFeeQuery(
     isSolanaTx && transaction.chainId && transaction.id
       ? {
           chainId: transaction.chainId,
-          txId: transaction.id
+          txId: transaction.id,
         }
-      : skipToken
+      : skipToken,
   )
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
@@ -235,14 +235,14 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     networkAssetPriceId,
     txTokenPriceId,
     sellTokenPriceId,
-    buyTokenPriceId
+    buyTokenPriceId,
   ].filter(Boolean)
 
   // price queries
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
     priceIds.length && defaultFiatCurrency
       ? { ids: priceIds, toCurrency: defaultFiatCurrency }
-      : skipToken
+      : skipToken,
   )
 
   // Hooks
@@ -257,7 +257,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     retryTx({
       coinType: txCoinType,
       chainId: transaction.chainId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
     })
   }
 
@@ -265,7 +265,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     speedupTx({
       coinType: txCoinType,
       chainId: transaction.chainId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
     })
   }
 
@@ -273,7 +273,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     cancelTx({
       coinType: txCoinType,
       chainId: transaction.chainId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
     })
   }
 
@@ -285,7 +285,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
         sellToken,
         token: txToken,
         txAccount: account,
-        txNetwork
+        txNetwork,
       })
       return [normalized.format(6), wei]
     }, [transaction, sellToken, txToken, account, txNetwork])
@@ -295,16 +295,16 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     tx: transaction,
     sellToken,
     token: txToken,
-    txNetwork
+    txNetwork,
   })
 
   // Computed
   const isBridgeOrSwap = isSwapTx || isBridgeTx
   const sendToken =
-    transaction.txType === BraveWallet.TransactionType.ETHSend ||
-    transaction.fromAccountId.coin === BraveWallet.CoinType.FIL ||
-    transaction.fromAccountId.coin === BraveWallet.CoinType.BTC ||
-    transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+    transaction.txType === BraveWallet.TransactionType.ETHSend
+    || transaction.fromAccountId.coin === BraveWallet.CoinType.FIL
+    || transaction.fromAccountId.coin === BraveWallet.CoinType.BTC
+    || transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
       ? networkAsset
       : txToken
 
@@ -312,7 +312,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     ? computeFiatAmount({
         spotPriceRegistry,
         value: buyAmountWei.format(),
-        token: buyToken
+        token: buyToken,
       }).formatAsFiat(defaultFiatCurrency)
     : ''
 
@@ -320,7 +320,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     ? computeFiatAmount({
         spotPriceRegistry,
         value: transferredValueWei.format(),
-        token: sendToken
+        token: sendToken,
       }).formatAsFiat(defaultFiatCurrency)
     : ''
 
@@ -337,10 +337,10 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
       ? 'braveWalletApprovalTransactionIntent'
       : isBridgeTx
-      ? 'braveWalletBridge'
-      : isSwapTx
-      ? 'braveWalletSwap'
-      : 'braveWalletTransactionSent'
+        ? 'braveWalletBridge'
+        : isSwapTx
+          ? 'braveWalletSwap'
+          : 'braveWalletTransactionSent'
 
   const formattedSellAmount = sellToken
     ? sellAmountWei
@@ -355,7 +355,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const gasFee =
     txCoinType === BraveWallet.CoinType.SOL
-      ? solFeeEstimates ?? ''
+      ? (solFeeEstimates ?? '')
       : getTransactionGasFee(transaction)
 
   const formattedGasFeeFiatValue =
@@ -363,7 +363,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       ? computeFiatAmount({
           spotPriceRegistry,
           value: gasFee,
-          token: networkAsset
+          token: networkAsset,
         }).formatAsFiat(defaultFiatCurrency)
       : ''
 
@@ -382,8 +382,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
           }`
         : formattedSendCurrencyTotal
       : sendToken?.isNft
-      ? sendToken.name
-      : formattedSendCurrencyTotal
+        ? sendToken.name
+        : formattedSendCurrencyTotal
 
   const txFiatTotal = sendToken?.isNft
     ? sendToken.symbol
@@ -399,12 +399,12 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const senderLabel = getAccountLabel(
     transaction.fromAccountId,
-    accountInfosRegistry
+    accountInfosRegistry,
   )
 
   const approvalTargetLabel = getAddressLabel(
     approvalTarget,
-    accountInfosRegistry
+    accountInfosRegistry,
   )
 
   const memoFromTransaction = transaction.txDataUnion.zecTxData?.memo
@@ -507,7 +507,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                             >
                               {getLocale('braveWalletOnNetwork').replace(
                                 '$1',
-                                toNetwork?.chainName ?? ''
+                                toNetwork?.chainName ?? '',
                               )}
                             </SwapAmountText>
                             {toNetwork && (
@@ -557,8 +557,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                     >
                       {txCurrencyTotal}
                     </TransactionTotalText>
-                    {transaction.txType !==
-                      BraveWallet.TransactionType.ERC20Approve && (
+                    {transaction.txType
+                      !== BraveWallet.TransactionType.ERC20Approve && (
                       <TransactionFiatText
                         isBold={false}
                         textSize='12px'
@@ -589,7 +589,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textAlign='right'
               >
                 {serializedTimeDeltaToJSDate(
-                  transaction.createdTime
+                  transaction.createdTime,
                 ).toUTCString()}
               </DateText>
               <NetworkNameText
@@ -652,7 +652,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   <Button
                     onClick={onClickViewOnBlockExplorer(
                       transaction.swapInfo?.provider === 'lifi' ? 'lifi' : 'tx',
-                      transaction.txHash
+                      transaction.txHash,
                     )}
                     kind='outline'
                     size='tiny'
@@ -729,8 +729,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                     textAlign='left'
                     textSize='12px'
                   >
-                    {transaction.txType ===
-                    BraveWallet.TransactionType.ERC20Approve
+                    {transaction.txType
+                    === BraveWallet.TransactionType.ERC20Approve
                       ? approvalTargetLabel
                       : recipientLabel}
                   </IntentAddressText>
@@ -766,8 +766,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
               textAlign='left'
               textSize='14px'
             >
-              {txNetwork &&
-                new Amount(gasFee)
+              {txNetwork
+                && new Amount(gasFee)
                   .divideByDecimals(txNetwork.decimals)
                   .formatAsAsset(6, txNetwork.symbol)}{' '}
               (

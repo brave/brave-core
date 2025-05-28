@@ -19,7 +19,7 @@ export const _AddNftForm = {
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: AddNftForm }

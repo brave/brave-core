@@ -13,7 +13,7 @@ import { CurrencySymbols } from '../../../utils/currency-symbols'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../shared/create-placeholder-icon/index'
 
 // Styled Components
@@ -24,7 +24,7 @@ import {
   AssetButton,
   AssetTicker,
   CaratDownIcon,
-  Input
+  Input,
 } from './buy_amount_input.style'
 
 export interface Props {
@@ -39,7 +39,7 @@ export interface Props {
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'small',
   marginLeft: 4,
-  marginRight: 8
+  marginRight: 8,
 })
 
 /**
@@ -57,14 +57,14 @@ export function BuyAmountInput({
   buyAmount,
   onAmountChange,
   onShowCurrencySelection,
-  selectedFiatCurrencyCode
+  selectedFiatCurrencyCode,
 }: Props) {
   // methods
   const onInputChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onAmountChange(event.target.value)
     },
-    [onAmountChange]
+    [onAmountChange],
   )
 
   // render
@@ -73,8 +73,11 @@ export function BuyAmountInput({
       <Row justifyContent='space-between'>
         <AssetButton onClick={onShowCurrencySelection}>
           <AssetTicker role='currency'>
-            {CurrencySymbols
-              [selectedFiatCurrencyCode as keyof typeof CurrencySymbols]}
+            {
+              CurrencySymbols[
+                selectedFiatCurrencyCode as keyof typeof CurrencySymbols
+              ]
+            }
           </AssetTicker>
           <CaratDownIcon />
           <HorizontalSpace space='8px' />

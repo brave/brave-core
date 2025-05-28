@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 // shared styles
 import { Row } from '../shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ControlBarWrapper = styled(Row)<{
@@ -36,7 +36,7 @@ export const SearchBarWrapper = styled(Row)<{
 
 export const BackButton = styled(Button).attrs({
   kind: 'outline',
-  size: 'tiny'
+  size: 'tiny',
 })`
   --leo-button-radius: 8px;
   --leo-button-color: ${leo.color.text.interactive};

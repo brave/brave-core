@@ -89,7 +89,7 @@ export const InfoText = styled(Text)`
 `
 
 export const WarningIcon = styled(Icon).attrs({
-  name: 'warning-triangle-filled'
+  name: 'warning-triangle-filled',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.systemfeedback.warningIcon};

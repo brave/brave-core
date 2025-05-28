@@ -14,7 +14,7 @@ import WalletLogoDark from '../../../assets/svg-icons/wallet_logo_dark.svg'
 // Shared Styles
 import {
   layoutSmallWidth,
-  navWidth
+  navWidth,
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled.div`

@@ -10,14 +10,14 @@ import { getRewardsProviderIcon } from '../../../utils/rewards_utils'
 // Types
 import { BraveWallet } from '../../../constants/types'
 import {
-  ExternalWalletProvider //
+  ExternalWalletProvider, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // styles
 import {
   AccountBox,
   ExternalAccountBox,
-  ExternalAccountIcon
+  ExternalAccountIcon,
 } from './create-account-icon.style'
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 

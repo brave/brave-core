@@ -44,7 +44,7 @@ export const Button = styled(WalletButton)`
 `
 
 export const LaunchIcon = styled(Icon).attrs({
-  name: 'launch'
+  name: 'launch',
 })`
   display: var(--icon-display);
   --leo-icon-size: 16px;

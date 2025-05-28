@@ -11,56 +11,56 @@ import { BraveWallet } from '../../../../constants/types'
 const warnings: Array<
   Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
 > = [
-    {
-      message: 'An example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Additional example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Yet another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Yet another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Yet another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Yet another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Yet another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    },
-    {
-      message: 'Yet another example warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kWarning
-    }
-  ]
+  {
+    message: 'An example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Additional example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Yet another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Yet another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Yet another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Yet another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Yet another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+  {
+    message: 'Yet another example warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+  },
+]
 
 const criticalWarnings: Array<
   Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
 > = [
-    {
-      message: 'An example critical warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kCritical
-    },
-    {
-      message: 'Another example critical warning',
-      severity: BraveWallet.BlowfishWarningSeverity.kCritical
-    }
-  ]
+  {
+    message: 'An example critical warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kCritical,
+  },
+  {
+    message: 'Another example critical warning',
+    severity: BraveWallet.BlowfishWarningSeverity.kCritical,
+  },
+]
 
 export const _TxWarning = {
   render: () => {
@@ -75,7 +75,7 @@ export const _TxWarning = {
         onDismiss={() => alert('dismiss')}
       />
     )
-  }
+  },
 }
 
 export const _TxWarnings = {
@@ -91,7 +91,7 @@ export const _TxWarnings = {
         onDismiss={() => alert('dismiss')}
       />
     )
-  }
+  },
 }
 
 export const _CriticalTxWarning = {
@@ -107,7 +107,7 @@ export const _CriticalTxWarning = {
         onDismiss={() => alert('dismiss')}
       />
     )
-  }
+  },
 }
 
 export const _CriticalTxWarnings = {
@@ -123,7 +123,7 @@ export const _CriticalTxWarnings = {
         onDismiss={() => alert('dismiss')}
       />
     )
-  }
+  },
 }
 
 export default { component: TransactionWarnings }

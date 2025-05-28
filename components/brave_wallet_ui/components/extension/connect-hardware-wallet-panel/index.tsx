@@ -17,7 +17,7 @@ import { PanelActions } from '../../../panel/actions'
 // types
 import {
   BraveWallet,
-  HardwareWalletResponseCodeType
+  HardwareWalletResponseCodeType,
 } from '../../../constants/types'
 
 // hooks
@@ -26,12 +26,12 @@ import { useDispatch } from 'react-redux'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
-  usePendingTransactions //
+  usePendingTransactions, //
 } from '../../../common/hooks/use-pending-transaction'
 import {
   useGetPendingSignMessageRequestsQuery,
   useProcessSignMessageRequestMutation,
-  useSignMessageHardwareMutation
+  useSignMessageHardwareMutation,
 } from '../../../common/slices/api.slice'
 
 // components
@@ -47,7 +47,7 @@ import {
   InstructionsButton,
   ButtonWrapper,
   Indicator,
-  ConnectionRow
+  ConnectionRow,
 } from './style'
 
 export interface Props {
@@ -85,7 +85,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   const history = useHistory()
 
   const selectedPendingTransactionId = useSafeUISelector(
-    UISelectors.selectedPendingTransactionId
+    UISelectors.selectedPendingTransactionId,
   )
 
   const isConfirming = !!selectedPendingTransactionId
@@ -105,7 +105,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   const {
     onConfirm: onConfirmTransaction,
     selectedPendingTransaction,
-    fromAccount: confirmTransactionAccount
+    fromAccount: confirmTransactionAccount,
   } = usePendingTransactions()
 
   const account = signMessageAccount || confirmTransactionAccount
@@ -113,8 +113,8 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   // memos
   const isConnected = React.useMemo((): boolean => {
     return (
-      hardwareWalletCode !== 'deviceNotConnected' &&
-      hardwareWalletCode !== 'unauthorized'
+      hardwareWalletCode !== 'deviceNotConnected'
+      && hardwareWalletCode !== 'unauthorized'
     )
   }, [hardwareWalletCode])
 
@@ -129,12 +129,12 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
     // Not connected
     if (
-      hardwareWalletCode === 'deviceNotConnected' ||
-      hardwareWalletCode === 'unauthorized'
+      hardwareWalletCode === 'deviceNotConnected'
+      || hardwareWalletCode === 'unauthorized'
     ) {
       return getLocale('braveWalletConnectHardwarePanelConnect').replace(
         '$1',
-        account.name
+        account.name,
       )
     }
 
@@ -161,19 +161,19 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     if (isHardwareAccount(signMessageAccount.accountId)) {
       await signMessageHardware({
         account: signMessageAccount,
-        request: request
+        request: request,
       }).unwrap()
     } else {
       await processSignMessageRequest({
         approved: true,
-        id: request.id
+        id: request.id,
       }).unwrap()
     }
   }, [
     signMessageAccount,
     processSignMessageRequest,
     request,
-    signMessageHardware
+    signMessageHardware,
   ])
 
   const retryHardwareOperation = React.useCallback(() => {
@@ -188,7 +188,7 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     isConfirming,
     selectedPendingTransaction,
     onSignData,
-    onConfirmTransaction
+    onConfirmTransaction,
   ])
 
   // custom hooks
@@ -214,11 +214,11 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
           {isConnected
             ? getLocale('braveWalletConnectHardwarePanelConnected').replace(
                 '$1',
-                account.name
+                account.name,
               )
             : getLocale('braveWalletConnectHardwarePanelDisconnected').replace(
                 '$1',
-                account.name
+                account.name,
               )}
         </Description>
       </ConnectionRow>
@@ -227,8 +227,8 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
         {getLocale('braveWalletConnectHardwarePanelInstructions')}
       </InstructionsButton>
       <PageIcon />
-      {hardwareWalletCode !== 'deviceBusy' &&
-        (hardwareWalletCode === 'unauthorized' ? (
+      {hardwareWalletCode !== 'deviceBusy'
+        && (hardwareWalletCode === 'unauthorized' ? (
           <AuthorizeHardwareDeviceIFrame coinType={account.accountId.coin} />
         ) : (
           <ButtonWrapper>

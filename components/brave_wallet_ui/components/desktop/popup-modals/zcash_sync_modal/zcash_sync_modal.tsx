@@ -12,7 +12,7 @@ import getAPIProxy from '../../../../common/async/bridge'
 // Hooks
 import {
   useStartShieldSyncMutation,
-  useStopShieldSyncMutation
+  useStopShieldSyncMutation,
 } from '../../../../common/slices/api.slice'
 
 // Utils
@@ -78,7 +78,7 @@ export const ZCashSyncModal = (props: Props) => {
         },
         onSyncStatusUpdate: (
           accountId: BraveWallet.AccountId,
-          status: BraveWallet.ZCashShieldSyncStatus
+          status: BraveWallet.ZCashShieldSyncStatus,
         ) => {
           if (account.accountId.uniqueKey === accountId.uniqueKey) {
             setSyncStatus('started')
@@ -92,11 +92,11 @@ export const ZCashSyncModal = (props: Props) => {
           if (account.accountId.uniqueKey === accountId.uniqueKey) {
             setSyncError(error)
           }
-        }
+        },
       })
 
     getAPIProxy().zcashWalletService.addObserver(
-      zcashWalletServiceObserver.$.bindNewPipeAndPassRemote()
+      zcashWalletServiceObserver.$.bindNewPipeAndPassRemote(),
     )
 
     return () => zcashWalletServiceObserver.$.close()
@@ -111,8 +111,8 @@ export const ZCashSyncModal = (props: Props) => {
     scannedRanges === 0
       ? startBlock
       : scannedRanges === totalRanges
-      ? endBlock
-      : scannedRanges * blocksPerRange + startBlock
+        ? endBlock
+        : scannedRanges * blocksPerRange + startBlock
   const syncComplete = syncStatus === 'stopped' && scannedRanges === totalRanges
 
   return (
@@ -120,7 +120,7 @@ export const ZCashSyncModal = (props: Props) => {
       onClose={onClose}
       title={getLocale('braveWalletSyncAccountName').replace(
         '$1',
-        account.name
+        account.name,
       )}
       width='600px'
     >
@@ -172,7 +172,7 @@ export const ZCashSyncModal = (props: Props) => {
                 >
                   {getLocale('braveWalletBlocksLeft').replace(
                     '$1',
-                    (endBlock - calculatedBlock).toLocaleString()
+                    (endBlock - calculatedBlock).toLocaleString(),
                   )}
                 </Text>
                 <Text
@@ -208,8 +208,8 @@ export const ZCashSyncModal = (props: Props) => {
                   syncComplete
                     ? onClose
                     : syncStatus === 'stopped'
-                    ? onStartShieldSync
-                    : onStopShieldSync
+                      ? onStartShieldSync
+                      : onStopShieldSync
                 }
                 kind={syncComplete ? 'filled' : 'outline'}
               >
@@ -224,8 +224,8 @@ export const ZCashSyncModal = (props: Props) => {
                 {syncComplete
                   ? getLocale('braveWalletButtonClose')
                   : syncStatus === 'stopped'
-                  ? getLocale('braveWalletButtonContinue')
-                  : getLocale('braveWalletPause')}
+                    ? getLocale('braveWalletButtonContinue')
+                    : getLocale('braveWalletPause')}
               </Button>
             </>
           )}

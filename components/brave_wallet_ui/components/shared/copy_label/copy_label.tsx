@@ -9,7 +9,7 @@ import Label from '@brave/leo/react/label'
 
 // utils
 import {
-  useCopyToClipboard //
+  useCopyToClipboard, //
 } from '../../../common/hooks/use-copy-to-clipboard'
 
 // styles
@@ -17,7 +17,7 @@ import { LabelButton, LabelText } from './copy_label.styles'
 
 export const CopyLabel = ({
   children,
-  textToCopy
+  textToCopy,
 }: {
   textToCopy: string
   children: React.ReactNode

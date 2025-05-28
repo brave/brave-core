@@ -6,7 +6,7 @@
 import * as React from 'react'
 import {
   RevealableContentContainer,
-  RevealableContentRow
+  RevealableContentRow,
 } from './row-reveal.styles'
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 export const RowReveal: React.FC<React.PropsWithChildren<Props>> = ({
   children,
-  hideContent
+  hideContent,
 }) => {
   return (
     <RevealableContentContainer hideContent={hideContent}>

@@ -11,7 +11,7 @@ import {
   Button,
   BackIcon,
   HeaderSpacing,
-  PlusIcon
+  PlusIcon,
 } from './style'
 
 export interface Props {

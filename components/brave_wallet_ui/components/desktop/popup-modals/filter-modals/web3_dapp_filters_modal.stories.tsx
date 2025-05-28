@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { Web3DappFilters } from './web3_dapp_filters_modal'
 
@@ -17,7 +17,7 @@ const dappCategories = [
   'Collectibles',
   'Gambling',
   'Social',
-  'Exchanges'
+  'Exchanges',
 ]
 
 export const _Web3DappFilters = {
@@ -30,9 +30,9 @@ export const _Web3DappFilters = {
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: Web3DappFilters
+  component: Web3DappFilters,
 }

@@ -10,8 +10,7 @@ import { Tooltip } from '.'
 export const _ToolTip = {
   render: () => {
     return <Tooltip text='tip text'>Hover</Tooltip>
-  }
+  },
 }
-
 
 export default { component: Tooltip }

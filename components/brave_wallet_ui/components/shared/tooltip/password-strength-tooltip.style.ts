@@ -14,8 +14,8 @@ export const Tooltip = styled(LeoTooltip)`
   --leo-tooltip-text-color: red;
   --leo-tooltip-padding: 16px;
   border-radius: ${leo.spacing.none};
-  --leo-tooltip-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.1),
-    0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+  --leo-tooltip-shadow:
+    0px 4px 16px -2px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
 `
 
 export const CriteriaCheckContainer = styled.div`
@@ -44,7 +44,7 @@ export const PasswordStrengthHeading = styled(PasswordStrengthText)`
 `
 
 export const GreenCheckmarkIcon = styled(Icon).attrs({
-  name: 'check-circle-outline'
+  name: 'check-circle-outline',
 })`
   --leo-icon-size: ${leo.spacing.xl};
   --leo-icon-color: ${leo.color.systemfeedback.successIcon};
@@ -52,7 +52,7 @@ export const GreenCheckmarkIcon = styled(Icon).attrs({
 `
 
 export const CloseCircleIcon = styled(Icon).attrs({
-  name: 'close-circle'
+  name: 'close-circle',
 })`
   --leo-icon-size: ${leo.spacing.xl};
   --leo-icon-color: ${leo.color.systemfeedback.errorIcon};

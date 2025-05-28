@@ -17,7 +17,7 @@ import {
   StyledButton,
   ButtonIcon,
   ButtonText,
-  SelectedIndicator
+  SelectedIndicator,
 } from './wallet-nav-button.style'
 
 export interface Props {

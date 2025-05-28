@@ -11,7 +11,7 @@ import { getLocale } from '../../../../../common/locale'
 // types
 import {
   BlockExplorerUrlTypes, //
-  BraveWallet
+  BraveWallet,
 } from '../../../../constants/types'
 
 // hooks
@@ -30,7 +30,7 @@ export function InlineViewOnBlockExplorerIconButton({
   address,
   id,
   network,
-  urlType
+  urlType,
 }: {
   address: string
   id?: string

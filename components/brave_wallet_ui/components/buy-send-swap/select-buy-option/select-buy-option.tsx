@@ -27,7 +27,7 @@ export const SelectBuyOption = ({
   onSelect,
   onBack,
   layoutType,
-  selectedOption
+  selectedOption,
 }: Props) => {
   return (
     <StyledWrapper layoutType={layoutType}>

@@ -18,7 +18,7 @@ import { CreateNetworkIcon } from '../../../../../shared/create-network-icon'
 import {
   NetworkButton,
   NetworkName,
-  ActiveIndicator
+  ActiveIndicator,
 } from './change_network_button.style'
 import { Row } from '../../../../../shared/style'
 

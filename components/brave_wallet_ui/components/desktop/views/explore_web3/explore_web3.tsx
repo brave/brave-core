@@ -14,10 +14,10 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import {
   useLocalStorage, //
-  useSyncedLocalStorage
+  useSyncedLocalStorage,
 } from '../../../../common/hooks/use_local_storage'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../common/constants/local-storage-keys'
 import { capitalizeFirstLetter } from '../../../../utils/string-utils'
 import { isDappMapEmpty } from '../../../../utils/dapp_utils'
@@ -25,19 +25,19 @@ import { isDappMapEmpty } from '../../../../utils/dapp_utils'
 // Hooks
 import { useGetTopDappsQuery } from '../../../../common/slices/api.slice'
 import {
-  useGetDappRadarNetworks //
+  useGetDappRadarNetworks, //
 } from '../../../../common/slices/api.slice.extra'
 import {
-  getNetworkId //
+  getNetworkId, //
 } from '../../../../common/slices/entities/network.entity'
 import { useQuery } from '../../../../common/hooks/use-query'
 
 // Components
 import {
-  HeaderControlBar //
+  HeaderControlBar, //
 } from '../../../header_control_bar/header_control_bar'
 import {
-  Web3DappFilters //
+  Web3DappFilters, //
 } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 import { DappListItem } from './dapp_list_item'
 import { DappFilter } from './dapp_filter'
@@ -64,7 +64,7 @@ export const ExploreWeb3View = () => {
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
     useSyncedLocalStorage<string[]>(
       LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
-      []
+      [],
     )
 
   const [filteredOutCategories, setFilteredOutCategories] = useLocalStorage<
@@ -98,8 +98,8 @@ export const ExploreWeb3View = () => {
     return [
       {
         buttonIconName: 'filter',
-        onClick: () => setShowFilters(true)
-      }
+        onClick: () => setShowFilters(true),
+      },
     ]
   }, [])
 
@@ -125,7 +125,7 @@ export const ExploreWeb3View = () => {
 
       const categoriesList = Array.from(categoriesSet)
       const visibleCategories = categoriesList.filter(
-        (category) => !filteredOutCategories.includes(category)
+        (category) => !filteredOutCategories.includes(category),
       )
       return [categoriesList, categoriesMap, visibleCategories]
     }, [filteredOutCategories, topDappsForChains])
@@ -142,8 +142,8 @@ export const ExploreWeb3View = () => {
         // filter items based on network and search term
         const categoryVisibleDapps = categoryDapps.filter((dapp) => {
           return (
-            dapp.name.toLowerCase().includes(searchValueLower) ||
-            dapp.description.toLowerCase().includes(searchValueLower)
+            dapp.name.toLowerCase().includes(searchValueLower)
+            || dapp.description.toLowerCase().includes(searchValueLower)
           )
         })
         if (categoryVisibleDapps.length > 0) {
@@ -161,25 +161,25 @@ export const ExploreWeb3View = () => {
 
   // computed
   const showFiltersRow =
-    (visibleCategories.length < dappCategories.length ||
-      visibleNetworks.length < dappNetworks.length) &&
-    selectedCategory === null
+    (visibleCategories.length < dappCategories.length
+      || visibleNetworks.length < dappNetworks.length)
+    && selectedCategory === null
 
   // methods
   const onSelectCategory = React.useCallback(
     (category: string) => {
       history.push({
         pathname: WalletRoutes.Web3,
-        search: `?dappCategory=${category}`
+        search: `?dappCategory=${category}`,
       })
     },
-    [history]
+    [history],
   )
 
   const onCategoryBack = React.useCallback(() => {
     history.push({
       pathname: WalletRoutes.Web3,
-      search: ''
+      search: '',
     })
   }, [history])
 
@@ -191,7 +191,7 @@ export const ExploreWeb3View = () => {
       }
       setFilteredOutCategories((prev) => prev.concat(category))
     },
-    [setFilteredOutCategories, visibleCategories.length]
+    [setFilteredOutCategories, visibleCategories.length],
   )
 
   const onRemoveNetworkFilter = React.useCallback(
@@ -202,7 +202,7 @@ export const ExploreWeb3View = () => {
       }
       setFilteredOutNetworkKeys((prev) => prev.concat(getNetworkId(network)))
     },
-    [setFilteredOutNetworkKeys, visibleNetworks.length]
+    [setFilteredOutNetworkKeys, visibleNetworks.length],
   )
 
   const onClearFilters = React.useCallback(() => {
@@ -288,8 +288,8 @@ export const ExploreWeb3View = () => {
           </Row>
         )}
 
-        {!isDappMapEmpty(visibleDappsMap) ||
-        selectedCategoryDapps?.length === 0 ? (
+        {!isDappMapEmpty(visibleDappsMap)
+        || selectedCategoryDapps?.length === 0 ? (
           selectedCategory ? (
             <DappsGrid>
               {(selectedCategoryDapps || []).map((dapp) => (

@@ -14,7 +14,7 @@ import { QueueStepButton, QueueStepRow, QueueStepText } from './style'
 export function TransactionQueueSteps({
   transactionsQueueLength,
   transactionQueueNumber,
-  queueNextTransaction
+  queueNextTransaction,
 }: {
   transactionsQueueLength: number
   transactionQueueNumber: number

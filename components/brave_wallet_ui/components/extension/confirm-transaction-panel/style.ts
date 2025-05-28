@@ -14,7 +14,7 @@ import {
   AssetIconProps,
   AssetIconFactory,
   WalletButton,
-  styledScrollbarMixin
+  styledScrollbarMixin,
 } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
@@ -207,7 +207,7 @@ export const TransactionText = styled.span<{ hasError?: boolean }>`
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const WarningIcon = styled(WarningBoxIcon)`
@@ -264,7 +264,7 @@ export const ExplorerIcon = styled.div`
 `
 
 export const WarningInfoCircleIcon = styled(Icon).attrs({
-  name: 'warning-circle-outline'
+  name: 'warning-circle-outline',
 })`
   --leo-icon-size: 16px;
   width: 16px;

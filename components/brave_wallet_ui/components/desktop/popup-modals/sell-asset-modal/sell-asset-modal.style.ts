@@ -43,16 +43,16 @@ export const Text = styled.span<{
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
   --line-height: ${(p) =>
-    p.textSize === '12px'
-      ? '18px'
-      : p.textSize === '14px'
-      ? '24px'
-      : p.textSize === '22px'
-      ? '32px'
-      : p.textSize === '32px'
-      ? '48px'
-      : '20px'}
-  font-family: 'Poppins';
+      p.textSize === '12px'
+        ? '18px'
+        : p.textSize === '14px'
+          ? '24px'
+          : p.textSize === '22px'
+            ? '32px'
+            : p.textSize === '32px'
+              ? '48px'
+              : '20px'}
+    font-family: 'Poppins';
   color: ${(p) =>
     p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
@@ -67,7 +67,7 @@ export const Text = styled.span<{
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '32px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const AmountInput = styled.input`

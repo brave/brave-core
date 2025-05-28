@@ -21,13 +21,13 @@ import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { BraveWallet } from '../../../constants/types'
 import {
   NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-  UNKNOWN_TOKEN_COINGECKO_ID
+  UNKNOWN_TOKEN_COINGECKO_ID,
 } from '../../../common/constants/magics'
 
 // Hooks
 import {
   useGetNetworkQuery,
-  useGetTokenInfoQuery
+  useGetTokenInfoQuery,
 } from '../../../common/slices/api.slice'
 
 // Styled Components
@@ -50,14 +50,14 @@ import {
   Spacer,
   SwapAssetAmountSymbol,
   LaunchButton,
-  SwapAmountRow
+  SwapAmountRow,
 } from './swap.style'
 import {
   IconsWrapper as SwapAssetIconWrapper,
   NetworkIconWrapper,
   LaunchIcon,
   Text,
-  Row
+  Row,
 } from '../../shared/style'
 
 type SwapToken = Pick<
@@ -76,14 +76,14 @@ type SwapToken = Pick<
 >
 
 const isNativeToken = (token: SwapToken) =>
-  token.contractAddress === '' ||
-  token.contractAddress.toLowerCase() === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+  token.contractAddress === ''
+  || token.contractAddress.toLowerCase() === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
 
 const makeToken = (
   token?: SwapToken,
   network?: BraveWallet.NetworkInfo,
   symbol?: string,
-  decimals?: number
+  decimals?: number,
 ) => {
   if (!token || !network) {
     return undefined
@@ -97,7 +97,7 @@ const makeToken = (
     return {
       ...token,
       decimals: network.decimals,
-      symbol: network.symbol
+      symbol: network.symbol,
     }
   }
 
@@ -108,7 +108,7 @@ const makeToken = (
   return {
     ...token,
     symbol,
-    decimals
+    decimals,
   }
 }
 
@@ -140,7 +140,7 @@ export function SwapBase(props: Props) {
     expectRecipientAddress,
     isBridgeTx,
     toChainId,
-    toCoin
+    toCoin,
   } = props
 
   // queries
@@ -149,31 +149,31 @@ export function SwapBase(props: Props) {
   const { data: buyAssetNetwork } = useGetNetworkQuery(
     isBridgeTx && toChainId && toCoin
       ? { chainId: toChainId, coin: toCoin }
-      : buyToken ?? skipToken
+      : (buyToken ?? skipToken),
   )
 
   const { data: sellTokenInfo } = useGetTokenInfoQuery(
-    sellToken &&
-      sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-      !isNativeToken(sellToken)
+    sellToken
+      && sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+      && !isNativeToken(sellToken)
       ? {
           contractAddress: sellToken.contractAddress,
           chainId: sellToken.chainId,
-          coin: sellToken.coin
+          coin: sellToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: buyTokenInfo } = useGetTokenInfoQuery(
-    buyToken &&
-      buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID &&
-      !isNativeToken(buyToken)
+    buyToken
+      && buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
+      && !isNativeToken(buyToken)
       ? {
           contractAddress: buyToken.contractAddress,
           chainId: buyToken.chainId,
-          coin: buyToken.coin
+          coin: buyToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const buyTokenResult = React.useMemo(
@@ -182,9 +182,9 @@ export function SwapBase(props: Props) {
         buyToken,
         buyAssetNetwork,
         buyTokenInfo?.symbol,
-        buyTokenInfo?.decimals
+        buyTokenInfo?.decimals,
       ),
-    [buyToken, buyAssetNetwork, buyTokenInfo]
+    [buyToken, buyAssetNetwork, buyTokenInfo],
   )
   const sellTokenResult = React.useMemo(
     () =>
@@ -192,9 +192,9 @@ export function SwapBase(props: Props) {
         sellToken,
         sellAssetNetwork,
         sellTokenInfo?.symbol,
-        sellTokenInfo?.decimals
+        sellTokenInfo?.decimals,
       ),
-    [sellToken, sellAssetNetwork, sellTokenInfo]
+    [sellToken, sellAssetNetwork, sellTokenInfo],
   )
 
   return (
@@ -306,7 +306,7 @@ function SwapAsset(props: SwapAssetProps) {
           >
             {getLocale('braveWalletOnNetwork').replace(
               '$1',
-              network?.chainName ?? ''
+              network?.chainName ?? '',
             )}
           </Text>
           <CreateNetworkIcon
@@ -368,7 +368,7 @@ function SwapAsset(props: SwapAssetProps) {
                       onClick={openBlockExplorerURL({
                         type: 'token',
                         network,
-                        value: asset.contractAddress
+                        value: asset.contractAddress,
                       })}
                     >
                       <LaunchIcon />

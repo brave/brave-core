@@ -38,7 +38,7 @@ export const AssetsFilterDropdown = (props: Props) => {
 
       onSelectFilter(value)
     },
-    [closeOnSelect, onSelectFilter]
+    [closeOnSelect, onSelectFilter],
   )
 
   return (
@@ -65,7 +65,7 @@ export const AssetsFilterDropdown = (props: Props) => {
 }
 
 AssetsFilterDropdown.defaultProps = {
-  closeOnSelect: true
+  closeOnSelect: true,
 }
 
 export default AssetsFilterDropdown

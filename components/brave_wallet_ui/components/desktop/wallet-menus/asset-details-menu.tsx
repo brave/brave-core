@@ -12,7 +12,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 
 interface Props {
@@ -29,7 +29,7 @@ export const AssetDetailsMenu = (props: Props) => {
     onClickTokenDetails,
     onClickViewOnExplorer,
     onClickHideToken,
-    onClickEditToken
+    onClickEditToken,
   } = props
 
   return (
@@ -59,7 +59,7 @@ export const AssetDetailsMenu = (props: Props) => {
         <PopupButtonText>
           {getLocale('braveWalletPortfolioHideTokenMenuLabel').replace(
             '$1',
-            assetSymbol
+            assetSymbol,
           )}
         </PopupButtonText>
       </PopupButton>

@@ -30,7 +30,7 @@ const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
   getAssetIdKey(data[i])
 
 export type RenderTokenFunc<T> = (
-  props: RenderTokenProps<T>
+  props: RenderTokenProps<T>,
 ) => JSX.Element | undefined | null
 
 type VirtualizedTokensListProps<T extends any[]> = {
@@ -52,7 +52,7 @@ const ListItem = React.memo(function <T>({
   index,
   renderToken,
   setSize,
-  style
+  style,
 }: ListItemProps<T>) {
   if (!data) {
     console.warn('Token was null at index', index, data)
@@ -64,17 +64,17 @@ const ListItem = React.memo(function <T>({
         setSize(index, ref.getBoundingClientRect().height)
       }
     },
-    [index, setSize]
+    [index, setSize],
   )
 
   return (
     <div style={style}>
-      {data &&
-        renderToken({
+      {data
+        && renderToken({
           index,
           item: data,
           viewMode: 'list',
-          ref: handleSetSize
+          ref: handleSetSize,
         })}
     </div>
   )
@@ -83,12 +83,12 @@ const ListItem = React.memo(function <T>({
 export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   renderToken,
   userAssetList,
-  selectedAssetId
+  selectedAssetId,
 }: VirtualizedTokensListProps<T>) {
   // Refs
   const listRef = React.useRef<List | null>(null)
   const itemSizes = React.useRef<number[]>(
-    new Array(userAssetList.length).fill(listItemInitialHeight)
+    new Array(userAssetList.length).fill(listItemInitialHeight),
   )
 
   // Methods
@@ -103,7 +103,7 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
       // Get selectedAssetId index
       if (listRef.current && selectedAssetId) {
         const itemIndex = userAssetList.findIndex(
-          (asset) => getAssetIdKey(asset) === selectedAssetId
+          (asset) => getAssetIdKey(asset) === selectedAssetId,
         )
         // Scroll selected asset into view
         if (itemIndex > -1) {
@@ -111,7 +111,7 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
         }
       }
     },
-    [listRef, selectedAssetId, userAssetList]
+    [listRef, selectedAssetId, userAssetList],
   )
 
   const setSize = React.useCallback(
@@ -126,14 +126,14 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
         }
       }
     },
-    [itemSizes, listRef]
+    [itemSizes, listRef],
   )
 
   const getSize = React.useCallback(
     (index: number) => {
       return itemSizes.current[index] || listItemInitialHeight
     },
-    [itemSizes]
+    [itemSizes],
   )
 
   // render

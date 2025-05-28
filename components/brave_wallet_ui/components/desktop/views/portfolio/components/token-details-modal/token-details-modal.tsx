@@ -28,7 +28,7 @@ import {
   FiatBalance,
   ContractAddress,
   HideTokenButton,
-  modalWidth
+  modalWidth,
 } from './token-details-modal-styles'
 import { AssetIcon } from '../../style'
 
@@ -50,7 +50,7 @@ export const TokenDetailsModal = (props: Props) => {
     assetBalance,
     formattedFiatBalance,
     onClose,
-    onShowHideTokenModal
+    onShowHideTokenModal,
   } = props
 
   return (

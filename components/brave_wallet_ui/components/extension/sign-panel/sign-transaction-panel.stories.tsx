@@ -12,24 +12,24 @@ import { BraveWallet } from '../../../constants/types'
 import {
   mockSolanaAccount,
   mockSolDappSignAllTransactionsRequest,
-  mockSolDappSignAndSendTransactionRequest
+  mockSolDappSignAndSendTransactionRequest,
 } from '../../../common/constants/mocks'
 import {
-  mockSolanaMainnetNetwork //
+  mockSolanaMainnetNetwork, //
 } from '../../../stories/mock-data/mock-networks'
 import {
-  mockSignMessageRequest //
+  mockSignMessageRequest, //
 } from '../../../stories/mock-data/mock-eth-requests'
 
 // utils
 import { SignInWithEthereumError } from './sign_in_with_ethereum_error'
 import {
-  deserializeTransaction //
+  deserializeTransaction, //
 } from '../../../utils/model-serialization-utils'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { SignTransactionPanel } from './sign-transaction-panel'
 import { SignInWithEthereum } from './sign_in_with_ethereum'
@@ -40,16 +40,16 @@ export const _SignAllSolanaTxPanel = {
       <WalletPanelStory
         uiStateOverride={{
           selectedPendingTransactionId:
-            mockSolDappSignAndSendTransactionRequest.id
+            mockSolDappSignAndSendTransactionRequest.id,
         }}
         walletApiDataOverrides={{
           signSolTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
           transactionInfos: [
             deserializeTransaction({
               ...mockSolDappSignAndSendTransactionRequest,
-              txStatus: BraveWallet.TransactionStatus.Unapproved
-            })
-          ]
+              txStatus: BraveWallet.TransactionStatus.Unapproved,
+            }),
+          ],
         }}
       >
         <SignTransactionPanel
@@ -65,7 +65,7 @@ export const _SignAllSolanaTxPanel = {
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _SignInWithEthereumErrorPanel = {
@@ -75,7 +75,7 @@ export const _SignInWithEthereumErrorPanel = {
         <SignInWithEthereumError />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _SignInWithEthereumPanel = {
@@ -89,12 +89,12 @@ export const _SignInWithEthereumPanel = {
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
   title: 'Sign Transaction Panel',
   parameters: {
-    layout: 'centered'
-  }
+    layout: 'centered',
+  },
 }

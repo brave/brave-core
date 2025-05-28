@@ -12,7 +12,7 @@ import { NftIcon } from './nft-icon'
 // mocks
 import {
   createMockStore,
-  renderComponentOptionsWithMockStore
+  renderComponentOptionsWithMockStore,
 } from '../../../utils/test-utils'
 
 describe('NFT Icon', () => {
@@ -23,7 +23,7 @@ describe('NFT Icon', () => {
     await act(async () => {
       render(
         <NftIcon icon='ipfs://QmXyZ' />,
-        renderComponentOptionsWithMockStore(mockStore)
+        renderComponentOptionsWithMockStore(mockStore),
       )
     })
 
@@ -37,7 +37,7 @@ describe('NFT Icon', () => {
     await act(async () => {
       render(
         <NftIcon icon='brave.com' />,
-        renderComponentOptionsWithMockStore(mockStore)
+        renderComponentOptionsWithMockStore(mockStore),
       )
     })
 

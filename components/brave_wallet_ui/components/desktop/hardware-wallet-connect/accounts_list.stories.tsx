@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 import {
-  mockAccountsFromDevice //
+  mockAccountsFromDevice, //
 } from '../../../stories/mock-data/mock-wallet-accounts'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { HardwareWalletAccountsList } from './accounts_list'
 import { Meta } from '@storybook/react'
@@ -17,7 +17,7 @@ import {
   DerivationScheme,
   EthLedgerDeprecatedHardwareImportScheme,
   EthLedgerLegacyHardwareImportScheme,
-  EthLedgerLiveHardwareImportScheme
+  EthLedgerLiveHardwareImportScheme,
 } from '../../../common/hardware/types'
 
 export const HardwareAccountsList = {
@@ -28,7 +28,7 @@ export const HardwareAccountsList = {
           return {
             ...a,
             shouldAddToWallet: i === 0,
-            alreadyInWallet: i !== 0
+            alreadyInWallet: i !== 0,
           }
         })}
         onLoadMore={function (): void {}}
@@ -36,17 +36,17 @@ export const HardwareAccountsList = {
         supportedSchemes={[
           EthLedgerLiveHardwareImportScheme,
           EthLedgerLegacyHardwareImportScheme,
-          EthLedgerDeprecatedHardwareImportScheme
+          EthLedgerDeprecatedHardwareImportScheme,
         ]}
         setHardwareImportScheme={function (scheme: DerivationScheme): void {}}
         onAddAccounts={function (): void {}}
         onAccountChecked={function (path: string, checked: boolean): void {}}
       />
     </WalletPageStory>
-  )
+  ),
 }
 
 export default {
   title: 'Hardware Wallet Accounts List',
-  component: HardwareWalletAccountsList
+  component: HardwareWalletAccountsList,
 } as Meta<typeof HardwareWalletAccountsList>

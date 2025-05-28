@@ -11,18 +11,18 @@ import { BraveWallet } from '../../../constants/types'
 // mocks
 import {
   mockSolDappSignAllTransactionsRequest,
-  mockSolDappSignAndSendTransactionRequest
+  mockSolDappSignAndSendTransactionRequest,
 } from '../../../common/constants/mocks'
 
 // utils
 import {
-  deserializeTransaction //
+  deserializeTransaction, //
 } from '../../../utils/model-serialization-utils'
 
 // components
 import {
   WalletPanelStory, //
-  WalletPanelStoryProps
+  WalletPanelStoryProps,
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
 import PendingSignatureRequestsPanel from './pending_signature_requests_panel'
@@ -31,19 +31,19 @@ const storyContextProps: WalletPanelStoryProps = {
   walletApiDataOverrides: {
     signSolTransactionsRequests: [
       mockSolDappSignAllTransactionsRequest,
-      mockSolDappSignAllTransactionsRequest
+      mockSolDappSignAllTransactionsRequest,
     ],
     transactionInfos: [
       deserializeTransaction(mockSolDappSignAndSendTransactionRequest),
       deserializeTransaction({
         ...mockSolDappSignAndSendTransactionRequest,
-        txStatus: BraveWallet.TransactionStatus.Unapproved
-      })
-    ]
+        txStatus: BraveWallet.TransactionStatus.Unapproved,
+      }),
+    ],
   },
   uiStateOverride: {
-    selectedPendingTransactionId: mockSolDappSignAndSendTransactionRequest.id
-  }
+    selectedPendingTransactionId: mockSolDappSignAndSendTransactionRequest.id,
+  },
 }
 
 export const _PendingSolanaSignAllSignatureRequestsPanel = {
@@ -53,12 +53,12 @@ export const _PendingSolanaSignAllSignatureRequestsPanel = {
         <PendingSignatureRequestsPanel />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
-  component: PendingSignatureRequestsPanel
+  component: PendingSignatureRequestsPanel,
 }

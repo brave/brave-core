@@ -10,7 +10,7 @@ import { mockAccount } from '../../../../common/constants/mocks'
 
 // Components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { ZCashSyncModal } from './zcash_sync_modal'
 
@@ -24,9 +24,9 @@ export const _ZCashSyncModal = {
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: ZCashSyncModal
+  component: ZCashSyncModal,
 }

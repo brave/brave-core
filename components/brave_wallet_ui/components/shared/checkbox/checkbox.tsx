@@ -30,7 +30,7 @@ export const Checkbox: React.FC<Props> = ({
   isChecked,
   onChange,
   size = 'small',
-  testId
+  testId,
 }) => {
   // methods
   const onClick = React.useCallback(() => {
@@ -46,7 +46,7 @@ export const Checkbox: React.FC<Props> = ({
         onClick()
       }
     },
-    [onClick]
+    [onClick],
   )
 
   // render

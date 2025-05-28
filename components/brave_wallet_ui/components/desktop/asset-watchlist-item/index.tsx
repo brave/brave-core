@@ -17,7 +17,7 @@ import { reduceInt } from '../../../utils/string-utils'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../shared/create-placeholder-icon/index'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
@@ -31,7 +31,7 @@ import {
   Icon,
   RightSide,
   NameAndSymbol,
-  AssetSymbol
+  AssetSymbol,
 } from './style'
 import { HorizontalSpace } from '../../shared/style'
 
@@ -109,14 +109,14 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
                 hash === WalletRoutes.AvailableAssetsHash
                   ? 'plus-add'
                   : isVisible
-                  ? 'eye-on'
-                  : 'eye-off'
+                    ? 'eye-on'
+                    : 'eye-off'
               }
             />
           </Button>
         </RightSide>
       </StyledWrapper>
     )
-  }
+  },
 )
 export default AssetWatchlistItem

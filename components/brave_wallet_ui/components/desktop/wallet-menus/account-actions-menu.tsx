@@ -11,7 +11,7 @@ import { getLocale } from '../../../../common/locale'
 // Types
 import {
   AccountModalTypes,
-  AccountButtonOptionsObjectType
+  AccountButtonOptionsObjectType,
 } from '../../../constants/types'
 
 // Styled Components
@@ -19,7 +19,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 import { VerticalDivider, VerticalSpace } from '../../shared/style'
 

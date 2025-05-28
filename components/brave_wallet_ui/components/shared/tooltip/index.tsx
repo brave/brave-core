@@ -11,7 +11,7 @@ import {
   Tip,
   Pointer,
   ActionNotification,
-  TipAndChildrenWrapper
+  TipAndChildrenWrapper,
 } from './style'
 
 export interface ToolTipProps {
@@ -41,7 +41,7 @@ export const Tooltip: React.FC<ToolTipProps> = ({
   text,
   verticalPosition = 'below',
   maxWidth,
-  minWidth
+  minWidth,
 }) => {
   // state
   const [active, setActive] = React.useState(!!disableHoverEvents)
@@ -63,13 +63,13 @@ export const Tooltip: React.FC<ToolTipProps> = ({
         verticalPosition={verticalPosition ?? 'below'}
       />
     ),
-    [verticalPosition, pointerPosition]
+    [verticalPosition, pointerPosition],
   )
 
   const toolTip = React.useMemo(
     () =>
-      active &&
-      isVisible && (
+      active
+      && isVisible && (
         <TipWrapper
           position={position ?? 'center'}
           verticalPosition={verticalPosition ?? 'below'}
@@ -101,8 +101,8 @@ export const Tooltip: React.FC<ToolTipProps> = ({
       maxWidth,
       minWidth,
       isAddress,
-      text
-    ]
+      text,
+    ],
   )
 
   // render
@@ -119,7 +119,7 @@ export const Tooltip: React.FC<ToolTipProps> = ({
 }
 
 Tooltip.defaultProps = {
-  isVisible: true
+  isVisible: true,
 }
 
 export default Tooltip

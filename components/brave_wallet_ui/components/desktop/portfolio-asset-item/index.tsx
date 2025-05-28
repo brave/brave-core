@@ -18,37 +18,37 @@ import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 import {
   getIsRewardsToken,
   getNormalizedExternalRewardsNetwork,
-  getRewardsTokenDescription
+  getRewardsTokenDescription,
 } from '../../../utils/rewards_utils'
 import {
-  externalWalletProviderFromString //
+  externalWalletProviderFromString, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Hooks
 import {
   useGetBitcoinBalancesQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../common/slices/api.slice'
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../shared/create-placeholder-icon/index'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 import {
-  WithHideBalancePlaceholder //
+  WithHideBalancePlaceholder, //
 } from '../with-hide-balance-placeholder/index'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { AssetItemMenu } from '../wallet-menus/asset-item-menu'
 import { RewardsMenu } from '../wallet-menus/rewards_menu'
 import {
-  BalanceDetailsModal //
+  BalanceDetailsModal, //
 } from '../popup-modals/balance_details_modal/balance_details_modal'
 import {
-  EditTokenModal //
+  EditTokenModal, //
 } from '../popup-modals/edit_token_modal/edit_token_modal'
 import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
 
@@ -71,7 +71,7 @@ import {
   Wrapper,
   InfoBar,
   LoadingRing,
-  InfoText
+  InfoText,
 } from './style'
 import { IconsWrapper, NetworkIconWrapper, Row } from '../../shared/style'
 
@@ -100,7 +100,7 @@ export const PortfolioAssetItem = ({
   spotPrice,
   account,
   isAccountDetails,
-  isGrouped
+  isGrouped,
 }: Props) => {
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -109,7 +109,7 @@ export const PortfolioAssetItem = ({
     useGetBitcoinBalancesQuery(
       token?.coin === BraveWallet.CoinType.BTC && account?.accountId
         ? account.accountId
-        : skipToken
+        : skipToken,
     )
 
   // state
@@ -128,7 +128,7 @@ export const PortfolioAssetItem = ({
   useOnClickOutside(
     balanceDetailsRef,
     () => setShowBalanceDetailsModal(false),
-    showBalanceDetailsModal
+    showBalanceDetailsModal,
   )
 
   // memos & computed
@@ -180,7 +180,7 @@ export const PortfolioAssetItem = ({
     : tokensNetwork
 
   const hasPendingBalance = !new Amount(
-    bitcoinBalances?.pendingBalance ?? '0'
+    bitcoinBalances?.pendingBalance ?? '0',
   ).isZero()
 
   const showBalanceInfo =
@@ -188,12 +188,12 @@ export const PortfolioAssetItem = ({
 
   const assetNameSkeletonWidth = React.useMemo(
     () => unbiasedRandom(100, 250),
-    []
+    [],
   )
 
   const assetNetworkSkeletonWidth = React.useMemo(
     () => unbiasedRandom(100, 250),
-    []
+    [],
   )
 
   // render
@@ -218,11 +218,11 @@ export const PortfolioAssetItem = ({
                   ) : (
                     <AssetIconWithPlaceholder asset={token} />
                   )}
-                  {!isPanel &&
-                    network &&
-                    checkIfTokenNeedsNetworkIcon(
+                  {!isPanel
+                    && network
+                    && checkIfTokenNeedsNetworkIcon(
                       network,
-                      token.contractAddress
+                      token.contractAddress,
                     ) && (
                       <NetworkIconWrapper>
                         <CreateNetworkIcon

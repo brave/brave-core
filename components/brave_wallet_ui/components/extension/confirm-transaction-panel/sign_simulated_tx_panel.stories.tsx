@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { SignSimulatedTransactionPanel } from './sign_simulated_tx_panel'
 
@@ -17,13 +17,13 @@ import { LongWrapper } from '../../../stories/style'
 
 // mocks
 import {
-  mockSolanaMainnetNetwork //
+  mockSolanaMainnetNetwork, //
 } from '../../../stories/mock-data/mock-networks'
 import {
   mockAccount,
   mockNoChangeSolSimulation,
   mockReceiveSolSimulation,
-  mockSolDappSignTransactionRequest
+  mockSolDappSignTransactionRequest,
 } from '../../../common/constants/mocks'
 
 export const _SignSimulatedTransactionPanel = {
@@ -47,7 +47,7 @@ export const _SignSimulatedTransactionPanel = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _EmptySignSimulatedTransactionPanel = {
@@ -71,9 +71,9 @@ export const _EmptySignSimulatedTransactionPanel = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
-  title: 'Sign Simulated Transaction Panel'
+  title: 'Sign Simulated Transaction Panel',
 }

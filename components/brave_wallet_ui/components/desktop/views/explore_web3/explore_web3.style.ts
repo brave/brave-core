@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 
 // styles
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const DappsGrid = styled.div`
@@ -36,7 +36,7 @@ export const CategoryHeader = styled.p`
 `
 
 export const PlainButton = styled(Button).attrs({
-  kind: 'plain'
+  kind: 'plain',
 })`
   --leo-button-color: ${leo.color.text.interactive};
   --leo-button-padding: 8px;
@@ -45,7 +45,7 @@ export const PlainButton = styled(Button).attrs({
 
 export const FilterLabel = styled(Label).attrs({
   color: 'neutral',
-  mode: 'default'
+  mode: 'default',
 })`
   --leo-label-padding: 8px;
   --leo-label-icon-size: 14px;
@@ -57,14 +57,14 @@ export const FilterLabel = styled(Label).attrs({
 `
 
 export const FilterClose = styled(Icon).attrs({
-  name: 'close'
+  name: 'close',
 })`
   --leo-icon-size: 14px;
 `
 
 export const FilterButton = styled(Button).attrs({
   kind: 'plain-faint',
-  size: 'tiny'
+  size: 'tiny',
 })`
   --leo-button-padding: 0;
   --leo-button-radius: 4px;

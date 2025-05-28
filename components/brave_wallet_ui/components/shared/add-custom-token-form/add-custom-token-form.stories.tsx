@@ -21,7 +21,7 @@ export const _AddCustomTokenForm = {
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: AddCustomTokenForm }

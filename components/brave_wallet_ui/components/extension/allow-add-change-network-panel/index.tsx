@@ -13,7 +13,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   useAcknowledgePendingAddChainRequestMutation,
   useAcknowledgeSwitchChainRequestMutation,
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../common/slices/api.slice'
 
 // Components
@@ -30,7 +30,7 @@ import {
   ButtonRow,
   FavIcon,
   NetworkDetail,
-  TabRow
+  TabRow,
 } from './style'
 
 import {
@@ -38,7 +38,7 @@ import {
   CenterColumn,
   Description,
   PanelTitle,
-  URLText
+  URLText,
 } from '../shared-panel-styles'
 
 export type tabs = 'network' | 'details'
@@ -57,8 +57,8 @@ const onLearnMore = () => {
   chrome.tabs
     .create({
       url:
-        'https://support.brave.com' +
-        '/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ'
+        'https://support.brave.com'
+        + '/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ',
     })
     .catch((e) => {
       console.error(e)
@@ -76,9 +76,9 @@ export function AllowAddChangeNetworkPanel(props: Props) {
           // Passed ETH here since AllowAddChangeNetworkPanel
           // is only used for EVM networks
           // and switchChainRequest doesn't return coinType.
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
         }
-      : skipToken
+      : skipToken,
   )
 
   const network = switchChainRequest
@@ -118,7 +118,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     }
     await acknowledgePendingAddChainRequest({
       chainId: addChainRequest.networkInfo.chainId,
-      isApproved: true
+      isApproved: true,
     }).unwrap()
   }
 
@@ -128,7 +128,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     }
     await acknowledgeSwitchChainRequest({
       requestId: switchChainRequest.requestId,
-      isApproved: true
+      isApproved: true,
     }).unwrap()
   }
 
@@ -138,7 +138,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     }
     await acknowledgePendingAddChainRequest({
       chainId: addChainRequest.networkInfo.chainId,
-      isApproved: false
+      isApproved: false,
     }).unwrap()
   }
 
@@ -148,7 +148,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     }
     await acknowledgeSwitchChainRequest({
       requestId: switchChainRequest.requestId,
-      isApproved: false
+      isApproved: false,
     }).unwrap()
   }
 
@@ -158,7 +158,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
       <CenterColumn>
         <FavIcon
           src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-            originInfo.originSpec
+            originInfo.originSpec,
           )}`}
         />
         <URLText>

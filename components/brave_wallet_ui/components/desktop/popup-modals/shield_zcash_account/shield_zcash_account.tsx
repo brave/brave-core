@@ -9,7 +9,7 @@ import Input from '@brave/leo/react/input'
 // Slices
 import {
   useGetChainTipStatusQuery,
-  useMakeAccountShieldedMutation
+  useMakeAccountShieldedMutation,
 } from '../../../../common/slices/api.slice'
 
 // Types
@@ -21,7 +21,7 @@ import { getLocale } from '../../../../../common/locale'
 // Components
 import { PopupModal } from '../../popup-modals/index'
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../shared/create-account-icon/create-account-icon'
 
 // Styles
@@ -31,7 +31,7 @@ import {
   ShieldIcon,
   AdvancedSettingsWrapper,
   AdvancedSettingsButton,
-  CollapseIcon
+  CollapseIcon,
 } from './shield_zcash_account.style'
 import { Column, Text, Row, LeoSquaredButton } from '../../../shared/style'
 
@@ -61,12 +61,12 @@ export const ShieldZCashAccountModal = (props: Props) => {
   const accountBirthdayBlock =
     customBirthdayBlock !== '' ? Number(customBirthdayBlock) : 0
   const birthdayBlockIsToLow =
-    customBirthdayBlock !== '' &&
-    accountBirthdayBlock < MIN_ACCOUNT_BIRTHDAY_BLOCK
+    customBirthdayBlock !== ''
+    && accountBirthdayBlock < MIN_ACCOUNT_BIRTHDAY_BLOCK
   const birthdayBlockIsToHigh =
-    customBirthdayBlock !== '' &&
-    chainTipStatus?.chainTip !== undefined &&
-    accountBirthdayBlock > chainTipStatus.chainTip
+    customBirthdayBlock !== ''
+    && chainTipStatus?.chainTip !== undefined
+    && accountBirthdayBlock > chainTipStatus.chainTip
   const invalidBirthdayBlock = birthdayBlockIsToLow || birthdayBlockIsToHigh
 
   // Methods
@@ -77,7 +77,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
     setIsShielding(true)
     await shieldAccount({
       accountId: account.accountId,
-      accountBirthdayBlock: accountBirthdayBlock
+      accountBirthdayBlock: accountBirthdayBlock,
     })
     setIsShielding(false)
     onClose()
@@ -203,11 +203,11 @@ export const ShieldZCashAccountModal = (props: Props) => {
                     {birthdayBlockIsToLow
                       ? getLocale('braveWalletAccountBirthdayTooLow').replace(
                           '$1',
-                          MIN_ACCOUNT_BIRTHDAY_BLOCK.toString()
+                          MIN_ACCOUNT_BIRTHDAY_BLOCK.toString(),
                         )
                       : getLocale('braveWalletAccountBirthdayTooHigh').replace(
                           '$1',
-                          chainTipStatus?.chainTip.toString() ?? ''
+                          chainTipStatus?.chainTip.toString() ?? '',
                         )}
                   </Text>
                 </Row>

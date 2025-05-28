@@ -10,21 +10,21 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  CoinTypes
+  CoinTypes,
 } from '../../../constants/types'
 
 // Components
 import { ConfirmSwapTransaction } from '../confirm-transaction-panel/swap'
 import {
-  ConfirmTransactionPanel //
+  ConfirmTransactionPanel, //
 } from '../confirm-transaction-panel/confirm-transaction-panel'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 import {
   EnableTransactionSimulations, //
-  LoadingSimulation
+  LoadingSimulation,
 } from '../enable_transaction_simulations/enable_transaction_simulations'
 import {
-  ConfirmSimulatedTransactionPanel //
+  ConfirmSimulatedTransactionPanel, //
 } from '../confirm-transaction-panel/confirm_simulated_tx_panel'
 
 // Utils
@@ -34,7 +34,7 @@ import {
   useGetEVMTransactionSimulationQuery,
   useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
-  useGetSolanaTransactionSimulationQuery
+  useGetSolanaTransactionSimulationQuery,
 } from '../../../common/slices/api.slice'
 
 // Style
@@ -50,7 +50,7 @@ const SIMPLE_TRANSACTION_TYPES = [
   BraveWallet.TransactionType.ETHSend,
   BraveWallet.TransactionType.SolanaCompressedNftTransfer,
   BraveWallet.TransactionType.SolanaSystemTransfer,
-  BraveWallet.TransactionType.ETHSwap // use safer-sign UI
+  BraveWallet.TransactionType.ETHSwap, // use safer-sign UI
 ]
 
 interface Props {
@@ -58,38 +58,38 @@ interface Props {
 }
 
 export const PendingTransactionPanel: React.FC<Props> = ({
-  selectedPendingTransaction
+  selectedPendingTransaction,
 }) => {
   // queries & query args
   const selectedPendingTxCoinType = getCoinFromTxDataUnion(
-    selectedPendingTransaction.txDataUnion
+    selectedPendingTransaction.txDataUnion,
   )
 
   const shouldSkipSimulation = SIMPLE_TRANSACTION_TYPES.includes(
-    selectedPendingTransaction.txType
+    selectedPendingTransaction.txType,
   )
 
   const {
     data: txSimulationOptIn, //
-    isLoading: isLoadingSimulationOptInStatus
+    isLoading: isLoadingSimulationOptInStatus,
   } = useGetIsTxSimulationOptInStatusQuery(
-    shouldSkipSimulation ? skipToken : undefined
+    shouldSkipSimulation ? skipToken : undefined,
   )
 
   const isSimulationPermitted =
-    !shouldSkipSimulation &&
-    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
+    !shouldSkipSimulation
+    && txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
 
   const {
     data: networkHasTxSimulationSupport,
-    isLoading: isCheckingSimulationNetworkSupport
+    isLoading: isCheckingSimulationNetworkSupport,
   } = useGetHasTransactionSimulationSupportQuery(
     shouldSkipSimulation
       ? skipToken
       : {
           chainId: selectedPendingTransaction.chainId,
-          coinType: selectedPendingTxCoinType
-        }
+          coinType: selectedPendingTxCoinType,
+        },
   )
 
   const {
@@ -97,39 +97,39 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     isLoading: isLoadingEvmTxSimulation,
     isFetching: isFetchingEvmTxSimulation,
     isError: hasEvmSimulationError,
-    refetch: retryEvmSimulation
+    refetch: retryEvmSimulation,
   } = useGetEVMTransactionSimulationQuery(
-    isSimulationPermitted &&
-      networkHasTxSimulationSupport &&
-      selectedPendingTxCoinType === CoinTypes.ETH
+    isSimulationPermitted
+      && networkHasTxSimulationSupport
+      && selectedPendingTxCoinType === CoinTypes.ETH
       ? {
-          txMetaId: selectedPendingTransaction.id
+          txMetaId: selectedPendingTransaction.id,
         }
-      : skipToken
+      : skipToken,
   )
   const {
     data: solanaTxSimulation,
     isLoading: isLoadingSolanaTxSimulation,
     isFetching: isFetchingSolanaTxSimulation,
     isError: hasSolanaSimulationError,
-    refetch: retrySolanaSimulation
+    refetch: retrySolanaSimulation,
   } = useGetSolanaTransactionSimulationQuery(
-    isSimulationPermitted &&
-      networkHasTxSimulationSupport &&
-      selectedPendingTxCoinType === CoinTypes.SOL
+    isSimulationPermitted
+      && networkHasTxSimulationSupport
+      && selectedPendingTxCoinType === CoinTypes.SOL
       ? {
-          txMetaId: selectedPendingTransaction.id
+          txMetaId: selectedPendingTransaction.id,
         }
-      : skipToken
+      : skipToken,
   )
 
   // render
 
   // Simulations Opt-in screen
   if (
-    networkHasTxSimulationSupport &&
-    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset &&
-    selectedPendingTransaction.txType !== BraveWallet.TransactionType.ETHSwap
+    networkHasTxSimulationSupport
+    && txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset
+    && selectedPendingTransaction.txType !== BraveWallet.TransactionType.ETHSwap
   ) {
     return <EnableTransactionSimulations />
   }
@@ -141,26 +141,26 @@ export const PendingTransactionPanel: React.FC<Props> = ({
 
   // Simulating
   if (
-    isSimulationPermitted &&
-    networkHasTxSimulationSupport &&
-    (isLoadingEvmTxSimulation ||
-      isFetchingEvmTxSimulation ||
-      isFetchingSolanaTxSimulation ||
-      isLoadingSolanaTxSimulation)
+    isSimulationPermitted
+    && networkHasTxSimulationSupport
+    && (isLoadingEvmTxSimulation
+      || isFetchingEvmTxSimulation
+      || isFetchingSolanaTxSimulation
+      || isLoadingSolanaTxSimulation)
   ) {
     return <LoadingSimulation />
   }
 
   // Simulated EVM Transaction
   if (
-    isSimulationPermitted &&
-    networkHasTxSimulationSupport &&
+    isSimulationPermitted
+    && networkHasTxSimulationSupport
     // has valid EVM pending transaction simulation
-    selectedPendingTxCoinType === CoinTypes.ETH &&
-    !hasEvmSimulationError &&
-    !isLoadingEvmTxSimulation &&
-    !isFetchingEvmTxSimulation &&
-    evmTxSimulation
+    && selectedPendingTxCoinType === CoinTypes.ETH
+    && !hasEvmSimulationError
+    && !isLoadingEvmTxSimulation
+    && !isFetchingEvmTxSimulation
+    && evmTxSimulation
   ) {
     return (
       <LongWrapper>
@@ -175,13 +175,13 @@ export const PendingTransactionPanel: React.FC<Props> = ({
 
   // Simulated Solana Transaction
   if (
-    isSimulationPermitted &&
-    networkHasTxSimulationSupport &&
-    selectedPendingTxCoinType === CoinTypes.SOL &&
-    !hasSolanaSimulationError &&
-    !isLoadingSolanaTxSimulation &&
-    !isFetchingSolanaTxSimulation &&
-    solanaTxSimulation
+    isSimulationPermitted
+    && networkHasTxSimulationSupport
+    && selectedPendingTxCoinType === CoinTypes.SOL
+    && !hasSolanaSimulationError
+    && !isLoadingSolanaTxSimulation
+    && !isFetchingSolanaTxSimulation
+    && solanaTxSimulation
   ) {
     return (
       <LongWrapper>
@@ -214,12 +214,12 @@ export const PendingTransactionPanel: React.FC<Props> = ({
         }
         retrySimulation={
           isSimulationPermitted && networkHasTxSimulationSupport
-            ? selectedPendingTxCoinType === CoinTypes.SOL &&
-              hasSolanaSimulationError
+            ? selectedPendingTxCoinType === CoinTypes.SOL
+              && hasSolanaSimulationError
               ? retrySolanaSimulation
               : hasEvmSimulationError
-              ? retryEvmSimulation
-              : undefined
+                ? retryEvmSimulation
+                : undefined
             : undefined
         }
       />

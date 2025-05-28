@@ -43,7 +43,7 @@ export const AccountMenuButton = styled(WalletButton)`
 `
 
 export const AccountMenuIcon = styled(Icon).attrs({
-  name: 'more-vertical'
+  name: 'more-vertical',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};

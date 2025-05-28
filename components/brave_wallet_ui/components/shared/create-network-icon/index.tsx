@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Types
 import {
-  externalWalletProviderFromString //
+  externalWalletProviderFromString, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Constants
@@ -18,11 +18,11 @@ import {
   stripERC20TokenImageURL,
   isRemoteImageURL,
   isValidIconExtension,
-  isComponentInStorybook
+  isComponentInStorybook,
 } from '../../../utils/string-utils'
 import {
   getRewardsProviderIcon,
-  getIsRewardsNetwork
+  getIsRewardsNetwork,
 } from '../../../utils/rewards_utils'
 
 // Styled components
@@ -101,9 +101,9 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
 
   // needs placeholder
   if (
-    !networkImageURL ||
-    !isStorybook ||
-    (isRemoteURL || isSandboxUrl
+    !networkImageURL
+    || !isStorybook
+    || (isRemoteURL || isSandboxUrl
       ? !isValidIconExtension(new URL(networkIcon).pathname)
       : true)
   ) {
@@ -139,7 +139,7 @@ export default CreateNetworkIcon
 function NetworkPlaceholderIcon({
   marginRight,
   network,
-  size
+  size,
 }: {
   marginRight: number | undefined
   network?: SimpleNetwork | null

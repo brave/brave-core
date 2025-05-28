@@ -13,19 +13,19 @@ import { BraveWallet } from '../../../constants/types'
 import {
   DerivationScheme,
   HardwareImportScheme,
-  AccountFromDevice
+  AccountFromDevice,
 } from '../../../common/hardware/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 import {
-  useGetNetworksRegistryQuery //
+  useGetNetworksRegistryQuery, //
 } from '../../../common/slices/api.slice'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   networkEntityAdapter, //
-  selectAllNetworksFromQueryResult
+  selectAllNetworksFromQueryResult,
 } from '../../../common/slices/entities/network.entity'
 
 // Components
@@ -36,7 +36,7 @@ import { AccountListItem } from './account_list_item'
 // Styles
 import {
   DisclaimerText,
-  DisclaimerWrapper
+  DisclaimerWrapper,
 } from '../popup-modals/add-account-modal/style'
 import {
   ButtonsContainer,
@@ -50,10 +50,10 @@ import {
   AccountListHeader,
   AccountListContent,
   DropdownLabel,
-  HelpLink
+  HelpLink,
 } from './hardware_wallet_connect.styles'
 import {
-  ContinueButton //
+  ContinueButton, //
 } from '../../../page/screens/onboarding/onboarding.style'
 import { Row } from '../../shared/style'
 
@@ -73,7 +73,7 @@ interface Props {
 }
 
 const defaultNetworkId = (
-  currentHardwareImportScheme: HardwareImportScheme
+  currentHardwareImportScheme: HardwareImportScheme,
 ) => {
   if (currentHardwareImportScheme.coin === BraveWallet.CoinType.ETH) {
     return BraveWallet.MAINNET_CHAIN_ID
@@ -94,13 +94,13 @@ const defaultNetworkId = (
   }
 
   assertNotReached(
-    `Unknown currentHardwareImportScheme ${currentHardwareImportScheme}`
+    `Unknown currentHardwareImportScheme ${currentHardwareImportScheme}`,
   )
 }
 
 const coinsSupportingSchemesDropdown = [
   BraveWallet.CoinType.ETH,
-  BraveWallet.CoinType.SOL
+  BraveWallet.CoinType.SOL,
 ]
 
 const getHardwareImportSchemeLabel = (scheme: HardwareImportScheme): string => {
@@ -114,7 +114,7 @@ export const HardwareWalletAccountsList = ({
   accounts,
   onLoadMore,
   onAccountChecked,
-  onAddAccounts
+  onAddAccounts,
 }: Props) => {
   const { coin } = currentHardwareImportScheme
 
@@ -127,7 +127,7 @@ export const HardwareWalletAccountsList = ({
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
-    defaultNetworkId(currentHardwareImportScheme)
+    defaultNetworkId(currentHardwareImportScheme),
   )
 
   // memos
@@ -145,11 +145,11 @@ export const HardwareWalletAccountsList = ({
 
     if (currentHardwareImportScheme.fixedNetwork) {
       return selectAllNetworksFromQueryResult({
-        data: networksRegistry
+        data: networksRegistry,
       }).filter(
         (n) =>
-          n.coin === currentHardwareImportScheme.coin &&
-          n.chainId === currentHardwareImportScheme.fixedNetwork
+          n.coin === currentHardwareImportScheme.coin
+          && n.chainId === currentHardwareImportScheme.fixedNetwork,
       )
     }
 
@@ -159,7 +159,7 @@ export const HardwareWalletAccountsList = ({
   }, [networksRegistry, currentHardwareImportScheme])
 
   const showSchemesDropdown = coinsSupportingSchemesDropdown.includes(
-    currentHardwareImportScheme.coin
+    currentHardwareImportScheme.coin,
   )
 
   const dropdownItems = React.useMemo(() => {
@@ -198,8 +198,8 @@ export const HardwareWalletAccountsList = ({
     } else {
       const filteredList = accounts.filter((account) => {
         return (
-          account.address.toLowerCase() === search.toLowerCase() ||
-          account.address.toLowerCase().startsWith(search.toLowerCase())
+          account.address.toLowerCase() === search.toLowerCase()
+          || account.address.toLowerCase().startsWith(search.toLowerCase())
         )
       })
       setFilteredAccountList(filteredList)
@@ -216,7 +216,7 @@ export const HardwareWalletAccountsList = ({
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
       assert(!currentHardwareImportScheme.fixedNetwork)
     },
-    [currentHardwareImportScheme]
+    [currentHardwareImportScheme],
   )
 
   const onChangeDerivationScheme = (value?: string) => {
@@ -312,9 +312,9 @@ export const HardwareWalletAccountsList = ({
           </NoSearchResultText>
         )}
 
-        {accountNativeAsset &&
-          accounts.length > 0 &&
-          filteredAccountList.length > 0 && (
+        {accountNativeAsset
+          && accounts.length > 0
+          && filteredAccountList.length > 0 && (
             <AccountListContainer>
               <AccountListHeader>
                 <div>{getLocale('braveWalletSubviewAccount')}</div>
@@ -345,9 +345,9 @@ export const HardwareWalletAccountsList = ({
           onClick={onClickLoadMore}
           isLoading={isLoadingMore}
           isDisabled={
-            isLoadingMore ||
-            accounts.length === 0 ||
-            currentHardwareImportScheme.singleAccount
+            isLoadingMore
+            || accounts.length === 0
+            || currentHardwareImportScheme.singleAccount
           }
         >
           {isLoadingMore

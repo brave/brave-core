@@ -16,7 +16,7 @@ import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../shared/create-account-icon/create-account-icon'
 
 // Utils
@@ -37,7 +37,7 @@ import {
   DetailsKeyText,
   DetailsInfoText,
   CodeBlock,
-  URLText
+  URLText,
 } from './sign_in_with_ethereum.style'
 import {
   Row,
@@ -45,7 +45,7 @@ import {
   VerticalDivider,
   VerticalSpace,
   HorizontalSpace,
-  ScrollableColumn
+  ScrollableColumn,
 } from '../../shared/style'
 
 // Helpers
@@ -57,8 +57,10 @@ export const getKeyLocale = (key: string) => {
     : getLocale(localeString)
 }
 
-const getFormattedKeyValue = (key: keyof BraveWallet.SIWEMessage,
-  data?: BraveWallet.SIWEMessage) => {
+const getFormattedKeyValue = (
+  key: keyof BraveWallet.SIWEMessage,
+  data?: BraveWallet.SIWEMessage,
+) => {
   if (!data?.[key]) {
     return ''
   }
@@ -69,9 +71,9 @@ const getFormattedKeyValue = (key: keyof BraveWallet.SIWEMessage,
         {JSON.stringify(
           Object.fromEntries(
             Object.entries(data[key]).filter(
-              ([k]) => !k.includes('nonceIfOpaque')
-            )
-          )
+              ([k]) => !k.includes('nonceIfOpaque'),
+            ),
+          ),
         )}
       </CodeBlock>
     )
@@ -113,7 +115,7 @@ export const SignInWithEthereum = (props: Props) => {
     ? []
     : Object.keys(data.signData.ethSiweData).filter(
         (key: keyof BraveWallet.SIWEMessage) =>
-          data.signData?.ethSiweData?.[key] !== null
+          data.signData?.ethSiweData?.[key] !== null,
       )
 
   const hasMessageAndResource =
@@ -144,33 +146,34 @@ export const SignInWithEthereum = (props: Props) => {
           fullHeight={true}
           padding='0px 16px'
         >
-          {dataKeys.map((objectKey: keyof BraveWallet.SIWEMessage,
-            key: number) => (
-            <React.Fragment key={objectKey}>
-              <Row
-                justifyContent='flex-start'
-                padding='8px 0px'
-              >
-                <DetailsKeyText
-                  textSize='14px'
-                  isBold={true}
+          {dataKeys.map(
+            (objectKey: keyof BraveWallet.SIWEMessage, key: number) => (
+              <React.Fragment key={objectKey}>
+                <Row
+                  justifyContent='flex-start'
+                  padding='8px 0px'
                 >
-                  {getKeyLocale(objectKey)}
-                </DetailsKeyText>
-                <DetailsInfoText
-                  textSize='12px'
-                  isBold={false}
-                >
-                  {getFormattedKeyValue(objectKey, data.signData.ethSiweData)}
-                </DetailsInfoText>
-              </Row>
-              {dataKeys.length - 1 !== key && (
-                <Row>
-                  <VerticalDivider />
+                  <DetailsKeyText
+                    textSize='14px'
+                    isBold={true}
+                  >
+                    {getKeyLocale(objectKey)}
+                  </DetailsKeyText>
+                  <DetailsInfoText
+                    textSize='12px'
+                    isBold={false}
+                  >
+                    {getFormattedKeyValue(objectKey, data.signData.ethSiweData)}
+                  </DetailsInfoText>
                 </Row>
-              )}
-            </React.Fragment>
-          ))}
+                {dataKeys.length - 1 !== key && (
+                  <Row>
+                    <VerticalDivider />
+                  </Row>
+                )}
+              </React.Fragment>
+            ),
+          )}
         </ScrollableColumn>
       </StyledWrapper>
     )
@@ -195,7 +198,7 @@ export const SignInWithEthereum = (props: Props) => {
       >
         <FavIcon
           src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-            data.originInfo.originSpec
+            data.originInfo.originSpec,
           )}`}
         />
         <OriginName
@@ -253,7 +256,7 @@ export const SignInWithEthereum = (props: Props) => {
             >
               {getLocale('braveWalletSignInWithBraveWalletMessage').replaceAll(
                 '$1',
-                data.originInfo.eTldPlusOne
+                data.originInfo.eTldPlusOne,
               )}
             </MessageText>
             <Row justifyContent='flex-start'>

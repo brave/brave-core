@@ -10,7 +10,7 @@ import {
   Header,
   Title,
   CloseButton,
-  Modal
+  Modal,
 } from './popup-modals.style'
 
 interface Props {
@@ -30,7 +30,7 @@ export const PopupModal = (props: Props) => {
         onClose()
       }
     },
-    [onClose]
+    [onClose],
   )
 
   React.useEffect(() => {

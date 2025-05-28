@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { Pagination } from './pagination'
 
@@ -25,7 +25,7 @@ export const _Pagination = {
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: Pagination }

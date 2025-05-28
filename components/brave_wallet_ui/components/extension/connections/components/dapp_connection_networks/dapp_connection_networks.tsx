@@ -10,7 +10,7 @@ import { getLocale } from '../../../../../../common/locale'
 
 // Queries
 import {
-  useGetVisibleNetworksQuery //
+  useGetVisibleNetworksQuery, //
 } from '../../../../../common/slices/api.slice'
 
 // Types
@@ -18,12 +18,12 @@ import {
   BraveWallet,
   DAppSupportedCoinTypes,
   DAppSupportedPrimaryChains,
-  SupportedTestNetworks
+  SupportedTestNetworks,
 } from '../../../../../constants/types'
 
 // Components
 import {
-  ChangeNetworkButton //
+  ChangeNetworkButton, //
 } from './change_network_button/change_network_button'
 
 // Styled Components
@@ -45,27 +45,27 @@ export const DAppConnectionNetworks = (props: Props) => {
   const dappSupportedNetwork = React.useMemo(() => {
     return networkList.filter(
       (network) =>
-        DAppSupportedCoinTypes.includes(network.coin) && network.coin === coin
+        DAppSupportedCoinTypes.includes(network.coin) && network.coin === coin,
     )
   }, [networkList, coin])
 
   const primaryNetworks = React.useMemo(() => {
     return dappSupportedNetwork.filter((network) =>
-      DAppSupportedPrimaryChains.includes(network.chainId)
+      DAppSupportedPrimaryChains.includes(network.chainId),
     )
   }, [dappSupportedNetwork])
 
   const secondaryNetworks = React.useMemo(() => {
     return dappSupportedNetwork.filter(
       (network) =>
-        !DAppSupportedPrimaryChains.includes(network.chainId) &&
-        !SupportedTestNetworks.includes(network.chainId)
+        !DAppSupportedPrimaryChains.includes(network.chainId)
+        && !SupportedTestNetworks.includes(network.chainId),
     )
   }, [dappSupportedNetwork])
 
   const testNetworks = React.useMemo(() => {
     return dappSupportedNetwork.filter((network) =>
-      SupportedTestNetworks.includes(network.chainId)
+      SupportedTestNetworks.includes(network.chainId),
     )
   }, [dappSupportedNetwork])
 

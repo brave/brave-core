@@ -63,7 +63,7 @@ const SelectBuy = (props: Props) => {
 }
 
 SelectBuy.defaultProps = {
-  closeOnSelect: true
+  closeOnSelect: true,
 }
 
 export default SelectBuy

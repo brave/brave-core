@@ -18,7 +18,7 @@ interface Props {
 export const InfoIconTooltip = ({
   text,
   placement,
-  maxContentWidth
+  maxContentWidth,
 }: Props) => {
   return (
     <Tooltip

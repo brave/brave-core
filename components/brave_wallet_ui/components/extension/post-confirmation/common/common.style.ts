@@ -93,7 +93,7 @@ export const HeaderIcon = styled(LeoIcon)`
 `
 
 export const ExplorerIcon = styled(LeoIcon).attrs({
-  name: 'arrow-diagonal-up-right'
+  name: 'arrow-diagonal-up-right',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.icon.interactive};
