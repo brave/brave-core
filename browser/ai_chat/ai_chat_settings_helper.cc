@@ -111,31 +111,31 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
     if (model->options->is_leo_model_options()) {
       if (model->key == "chat-basic") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_BASIC_SUBTITLE);
       } else if (model->key == "chat-leo-expanded") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_LEO_EXPANDED_SUBTITLE);
       } else if (model->key == "chat-claude-instant") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_CLAUDE_INSTANT_SUBTITLE);
       } else if (model->key == "chat-claude-haiku") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_CLAUDE_HAIKU_SUBTITLE);
       } else if (model->key == "chat-claude-sonnet") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_CLAUDE_SONNET_SUBTITLE);
       } else if (model->key == "chat-qwen") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_QWEN_SUBTITLE);
       } else if (model->key == "chat-vision-basic") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_VISION_BASIC_SUBTITLE);
       } else if (model->key == "chat-deepseek-r1") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_DEEPSEEK_R1_SUBTITLE);
       } else if (model->key == "chat-automatic") {
         modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CHAT_AUTOMATIC_SUBTITLE);
       }
     }
 

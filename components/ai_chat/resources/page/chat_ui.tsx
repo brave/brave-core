@@ -18,7 +18,7 @@ import Main from './components/main'
 import FullScreen from './components/full_page'
 import Loading from './components/loading'
 import { ActiveChatProviderFromUrl } from './state/active_chat_context'
-import 'gen/brave/components/ai_chat/core/browser/string_ids'
+import 'gen/components/ai_chat_strings'
 
 setIconBasePath('chrome://resources/brave-icons')
 

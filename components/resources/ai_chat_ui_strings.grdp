@@ -1,582 +1,582 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message webui="true" name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Brave AI product">
+  <message webui="ai_chat" name="IDS_AI_CHAT_TITLE" translateable="false" desc="Title for the Brave AI product">
     Leo AI
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PWA_TITLE" translateable="false" desc="Title for the Brave AI product when installed">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PWA_TITLE" translateable="false" desc="Title for the Brave AI product when installed">
     Brave Leo AI
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL" desc="Label for when summarization is not possible">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUMMARIZE_FAILED_LABEL" desc="Label for when summarization is not possible">
     The summarizer feature is currently available only for select articles and other long-form web pages.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ACCEPT_BUTTON_LABEL" desc="Label for button to accept agreement">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ACCEPT_BUTTON_LABEL" desc="Label for button to accept agreement">
     I understand
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUMMARIZE_BUTTON_LABEL" desc="Label for button to summarize the current page's content">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUMMARIZE_BUTTON_LABEL" desc="Label for button to summarize the current page's content">
     Summarize
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
     About Leo
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)">
     Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model will change from time to time. See the <ph name="LINK_BEFORE">$1</ph>Brave Help Center<ph name="LINK_AFTER">$2</ph> for more details.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="Outlining the functioning of AIChat (paragraph 2 of 3)">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ABOUT_DESCRIPTION_2" desc="Outlining the functioning of AIChat (paragraph 2 of 3)">
     By default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo's options in Settings any time. Go to Settings > Leo.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
     Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">$2</ph> for more information.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INITIAL_PLACEHOLDER_LABEL" desc="Placeholder text for the initial input box on a new chat">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INITIAL_PLACEHOLDER_LABEL" desc="Placeholder text for the initial input box on a new chat">
     How can I help you today?
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Ask follow up
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions">
     Suggest questions…
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
     Summarize this video
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION" desc="Button to summarize the currently attached page(s) [ICU Syntax]">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUMMARIZE_PAGES_SUGGESTION" desc="Button to summarize the currently attached page(s) [ICU Syntax]">
     {PAGE_COUNT, plural,
       =1 {Summarize this page}
       other {Summarize these pages}
     }
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_INTERNAL" desc="A general error message for processing user requests">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_INTERNAL" desc="A general error message for processing user requests">
     Something went wrong while processing your request. Please try again later.
   </message>
-  <message webui="true" name="IDS_CUSTOM_MODEL_ENDPOINT_INVALID_ERROR" desc="An error presented when the model endpoint is invalid">
+  <message webui="ai_chat" name="IDS_CUSTOM_MODEL_ENDPOINT_INVALID_ERROR" desc="An error presented when the model endpoint is invalid">
     This model has an invalid endpoint. Please check your configuration and try again.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_NETWORK" desc="An error presented when there is a network issue in the UI">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_NETWORK" desc="An error presented when there is a network issue in the UI">
      There was a network issue connecting to Leo, check your connection and try again.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
     You've reached the premium rate limit. Please try again in a few hours.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_OAI_RATE_LIMIT" desc="An error presented when the BYOM user has exhausted the API request limit">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_OAI_RATE_LIMIT" desc="An error presented when the BYOM user has exhausted the API request limit">
     You've reached the rate limit for this model or are out of credits. Please try again later.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_INVALID_API_KEY" desc="An error presented when the configured API key is invalid">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_INVALID_API_KEY" desc="An error presented when the configured API key is invalid">
     The API key configured for this model is invalid. Please check your configuration and try again.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_SERVICE_OVERLOADED" desc="An error presented when the API service is overloaded">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_SERVICE_OVERLOADED" desc="An error presented when the API service is overloaded">
     The endpoint is currently overloaded. Please try again later.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
+  <message webui="ai_chat" name="IDS_AI_CHAT_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MODIFY_CONFIGURATION_LABEL" desc="A button label to configure custom models">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MODIFY_CONFIGURATION_LABEL" desc="A button label to configure custom models">
      Configure
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_AUTOMATIC" desc="AI Chat intro message for the default model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_AUTOMATIC" desc="AI Chat intro message for the default model">
     Model changes dynamically to use the best one for the task.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the basic model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the basic model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_QWEN" desc="AI Chat intro message for the qwen model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEEPSEEK_R1" desc="AI Chat intro message for the deepseek-r1 model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_DEEPSEEK_R1" desc="AI Chat intro message for the deepseek-r1 model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. Mixtral is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_LEO_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_VISION_BASIC" desc="AI Chat intro message for the default vision model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_INTRO_MESSAGE_CHAT_VISION_BASIC" desc="AI Chat intro message for the default vision model">
     Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama Vision, a model created by Meta to be performant and applicable to many use cases. Llama Vision is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model">
     Premium
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
     Chat
   </message>
-  <message webui="true" name="IDS_CHAT_UI_LABEL_OPEN_FULL_PAGE" desc="Menu item to expand a sidebar conversation to a the full page experience">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LABEL_OPEN_FULL_PAGE" desc="Menu item to expand a sidebar conversation to a the full page experience">
     Open full page
   </message>
-  <message webui="true" name="IDS_CHAT_UI_LABEL_CLOSE" desc="Button label to close the UI showing a chat conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LABEL_CLOSE" desc="Button label to close the UI showing a chat conversation">
     Close
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_NEW_CHAT" desc="Menu item for new chat">
     New chat
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
     Go Premium
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION" desc="Menu item for managing premium subscription">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_MANAGE_SUBSCRIPTION" desc="Menu item for managing premium subscription">
     Manage subscription
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_CONVERSATION_HISTORY" desc="Menu item for opening the list of conversations">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_CONVERSATION_HISTORY" desc="Menu item for opening the list of conversations">
     Conversation history
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_SETTINGS" desc="Menu item for Settings">
     Advanced Settings
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_TITLE_MODELS" desc="Menu section title for language models">
     Language models
   </message>
-  <message webui="true" name="IDS_CHAT_UI_UPGRADE_BUTTON_LABEL" desc="A button label to upgrade to premium model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_UPGRADE_BUTTON_LABEL" desc="A button label to upgrade to premium model">
      Try 7 days free
   </message>
-   <message webui="true" name="IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
+   <message webui="ai_chat" name="IDS_AI_CHAT_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
      Response rate limit reached
   </message>
-  <message webui="true" name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
+  <message webui="ai_chat" name="IDS_AI_CHAT_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
     You've reached the rate limit for Leo. Unlock a higher response rate by subscribing to Premium, or try again soon.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_1" desc="A premium feature">
     Explore different AI models
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_2" desc="A premium feature">
     Unlock your creativity
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_3" desc="A premium feature">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_3" desc="A premium feature">
     Stay on topic
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_4" desc="A premium feature">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_4" desc="A premium feature">
     Chat for longer
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
      Leo Premium
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
     USD $ <ph name="PRICE_VALUE">$1<ex>14.99</ex></ph> /month
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_ANNUAL_PRICING" desc="Price label to subscribe for annual Premium model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_ANNUAL_PRICING" desc="Price label to subscribe for annual Premium model">
     USD $ <ph name="PRICE_VALUE">$1<ex>149.99</ex></ph> /year
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MONTHLY_LABEL" desc="Monthly label for Premium modal">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MONTHLY_LABEL" desc="Monthly label for Premium modal">
     Monthly
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ONE_YEAR_LABEL" desc="One year label for Premium modal">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ONE_YEAR_LABEL" desc="One year label for Premium modal">
     One year
   </message>
-  <message webui="true" name="IDS_CHAT_UI_BEST_VALUE_LABEL" desc="Best value label for Premium modal">
+  <message webui="ai_chat" name="IDS_AI_CHAT_BEST_VALUE_LABEL" desc="Best value label for Premium modal">
     Best value
   </message>
-  <message webui="true" name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
+  <message webui="ai_chat" name="IDS_AI_CHAT_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
     Switch to the free model
   </message>
-  <message webui="true" name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
+  <message webui="ai_chat" name="IDS_AI_CHAT_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
     Unleash Leo's full powers with Premium:
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
     Priority access to powerful models with different skills.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature to various AI models">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_2_DESC" desc="A premium feature to various AI models">
     Access models better suited for creative tasks and content generation.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_3_DESC" desc="A premium feature to stay scoped within a topic">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_3_DESC" desc="A premium feature to stay scoped within a topic">
     Get more accurate answers for more nuanced conversations.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_FEATURE_4_DESC" desc="A premium feature that allows higher rate limits">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_FEATURE_4_DESC" desc="A premium feature that allows higher rate limits">
     Get higher rate limits for longer conversations.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
     Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION" desc="Action to take when AI Chat Premium authentication is expired">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PREMIUM_REFRESH_WARNING_ACTION" desc="Action to take when AI Chat Premium authentication is expired">
     Refresh
   </message>
-  <message webui="true" name="IDS_CHAT_UI_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
+  <message webui="ai_chat" name="IDS_AI_CHAT_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
     Feedback sent successfully
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ANSWER_DISLIKED" desc="Notification for a disliked answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ANSWER_DISLIKED" desc="Notification for a disliked answer">
     Answer disliked
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ANSWER_LIKED" desc="Notification for a liked answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ANSWER_LIKED" desc="Notification for a liked answer">
     Answer liked
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ADD_FEEDBACK_BUTTON_LABEL" desc="Button label to add feedback">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ADD_FEEDBACK_BUTTON_LABEL" desc="Button label to add feedback">
     Add feedback
   </message>
-  <message webui="true" name="IDS_CHAT_UI_COPY_BUTTON_LABEL" desc="Button label to copy text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_COPY_BUTTON_LABEL" desc="Button label to copy text">
     Copy
   </message>
-  <message webui="true" name="IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer">
     Like answer
   </message>
-  <message webui="true" name="IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
     Dislike answer
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
     Provide Brave AI Feedback
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC" desc="Prompt to select feedback topic">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SELECT_FEEDBACK_TOPIC" desc="Prompt to select feedback topic">
     Select your feedback topic
   </message>
-  <message webui="true" name="IDS_CHAT_UI_FEEDBACK_CATEGORY_LABEL" desc="Label asking for the category of feedback">
+  <message webui="ai_chat" name="IDS_AI_CHAT_FEEDBACK_CATEGORY_LABEL" desc="Label asking for the category of feedback">
     What's your feedback about?
   </message>
-  <message webui="true" name="IDS_CHAT_UI_FEEDBACK_DESCRIPTION_LABEL" desc="Label prompting user to provide feedback">
+  <message webui="ai_chat" name="IDS_AI_CHAT_FEEDBACK_DESCRIPTION_LABEL" desc="Label prompting user to provide feedback">
     Provide feedback here
   </message>
-  <message webui="true" name="IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE" desc="Note about the benefits of a premium subscription">
+  <message webui="ai_chat" name="IDS_AI_CHAT_FEEDBACK_PREMIUM_NOTE" desc="Note about the benefits of a premium subscription">
     Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUBMIT_BUTTON_LABEL" desc="Button label to submit data/form">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUBMIT_BUTTON_LABEL" desc="Button label to submit data/form">
     Submit
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CANCEL_BUTTON_LABEL" desc="Button label to cancel action">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CANCEL_BUTTON_LABEL" desc="Button label to cancel action">
     Cancel
   </message>
-  <message webui="true" name="IDS_CHAT_UI_DELETE_BUTTON_LABEL" desc="Button label to delete conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_DELETE_BUTTON_LABEL" desc="Button label to delete conversation">
     Delete
   </message>
-  <message webui="true" name="IDS_CHAT_UI_DELETE_CONVERSATION_WARNING" desc="A warning issued when the user is trying to delete a conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_DELETE_CONVERSATION_WARNING" desc="A warning issued when the user is trying to delete a conversation">
     Are you sure you want to delete this conversation? This action cannot be undone.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SAVE_BUTTON_LABEL" desc="Button label to save data/form">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SAVE_BUTTON_LABEL" desc="Button label to save data/form">
     Save
   </message>
-  <message webui="true" name="IDS_CHAT_UI_EDITED_LABEL" desc="Text for indicating the content is edited">
+  <message webui="ai_chat" name="IDS_AI_CHAT_EDITED_LABEL" desc="Text for indicating the content is edited">
     Edited
   </message>
-  <message webui="true" name="IDS_CHAT_UI_EDIT_BUTTON_LABEL" desc="Button title to edit content">
+  <message webui="ai_chat" name="IDS_AI_CHAT_EDIT_BUTTON_LABEL" desc="Button title to edit content">
     Edit
   </message>
-  <message webui="true" name="IDS_CHAT_UI_EDIT_PROMPT_BUTTON_LABEL" desc="Button title to edit prompt content">
+  <message webui="ai_chat" name="IDS_AI_CHAT_EDIT_PROMPT_BUTTON_LABEL" desc="Button title to edit prompt content">
     Edit prompt
   </message>
-  <message webui="true" name="IDS_CHAT_UI_COPY_PROMPT_BUTTON_LABEL" desc="Button title to copy prompt content">
+  <message webui="ai_chat" name="IDS_AI_CHAT_COPY_PROMPT_BUTTON_LABEL" desc="Button title to copy prompt content">
     Copy prompt
   </message>
-  <message webui="true" name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer">
     Edit answer
   </message>
-  <message webui="true" name="IDS_CHAT_UI_REGENERATE_ANSWER_BUTTON_LABEL" desc="Button title to regenerate AI agent answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_REGENERATE_ANSWER_BUTTON_LABEL" desc="Button title to regenerate AI agent answer">
     Regenerate
   </message>
-  <message webui="true" name="IDS_CHAT_UI_REGENERATE_ANSWER_MENU_TITLE" desc="Title of menu to regenerate AI agent answer">
+  <message webui="ai_chat" name="IDS_AI_CHAT_REGENERATE_ANSWER_MENU_TITLE" desc="Title of menu to regenerate AI agent answer">
     Change model for answer
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
     Not helpful
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPTION_INCORRECT" desc="Select option for feedback form if the answer is not correct">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPTION_INCORRECT" desc="Select option for feedback form if the answer is not correct">
     Incorrect
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL" desc="Select option for feedback form if the answer is unsafe or harmful">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPTION_UNSAFE_HARMFUL" desc="Select option for feedback form if the answer is unsafe or harmful">
     Unsafe/harmful
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPTION_OTHER" desc="Select option for feedback form if the answer is other kind">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPTION_OTHER" desc="Select option for feedback form if the answer is other kind">
     Other
   </message>
-  <message webui="true" name="IDS_CHAT_UI_RATING_ERROR" desc="An error message when the user's rating could not be submitted">
+  <message webui="ai_chat" name="IDS_AI_CHAT_RATING_ERROR" desc="An error message when the user's rating could not be submitted">
     Your rating could not be submitted, please check network connection and try again
   </message>
-  <message webui="true" name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
+  <message webui="ai_chat" name="IDS_AI_CHAT_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
     Your feedback could not be submitted, please check network connection and try again
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING" desc="An error message when the user's chat history is reaching to maximum threshold">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ERROR_CONTEXT_LIMIT_REACHING" desc="An error message when the user's chat history is reaching to maximum threshold">
     This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="A button label for clearing chat history">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CLEAR_CHAT_BUTTON_LABEL" desc="A button label for clearing chat history">
     Clear conversation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation">
     Start a new conversation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation">
     Rename conversation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation">
     Delete conversation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_REASONING_LABEL" desc="A label shown while AI Assistant is reasoning the conversation response">
+  <message webui="ai_chat" name="IDS_AI_CHAT_REASONING_LABEL" desc="A label shown while AI Assistant is reasoning the conversation response">
     Reasoning...
   </message>
-  <message webui="true" name="IDS_CHAT_UI_REASONING_COMPLETE_LABEL" desc="A label show after the AI Assistant is done reasoning the conversation response">
+  <message webui="ai_chat" name="IDS_AI_CHAT_REASONING_COMPLETE_LABEL" desc="A label show after the AI Assistant is done reasoning the conversation response">
     Reasoning complete
   </message>
-  <message webui="true" name="IDS_CHAT_UI_HIDE_DETAILS_BUTTON_LABEL" desc="A button label to hide details of the AI Assistant reasoning">
+  <message webui="ai_chat" name="IDS_AI_CHAT_HIDE_DETAILS_BUTTON_LABEL" desc="A button label to hide details of the AI Assistant reasoning">
     Hide details
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SHOW_DETAILS_BUTTON_LABEL" desc="A button label to show details of the AI Assistant reasoning">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SHOW_DETAILS_BUTTON_LABEL" desc="A button label to show details of the AI Assistant reasoning">
     Show details
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPEN_LABEL" desc="A button label to open a link">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPEN_LABEL" desc="A button label to open a link">
     Open
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK" desc="A button label to open a link">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPEN_EXTERNAL_LINK" desc="A button label to open a link">
     Open external link?
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK_INFO" desc="Info text to open a link">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPEN_EXTERNAL_LINK_INFO" desc="Info text to open a link">
     Leo AI wants to open a website in a new tab. Do you want to continue?
   </message>
-  <message webui="true" name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK_CHECKBOX_LABEL" desc="A checkbox label to open a link without asking me again">
+  <message webui="ai_chat" name="IDS_AI_CHAT_OPEN_EXTERNAL_LINK_CHECKBOX_LABEL" desc="A checkbox label to open a link without asking me again">
     Open links without asking me again
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SEND_BUTTON_LABEL" desc="A button label for sending a chat message rating">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SEND_BUTTON_LABEL" desc="A button label for sending a chat message rating">
     Send
   </message>
-  <message webui="true" name="IDS_CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_TITLE" desc="A title for the rate message privacy modal">
+  <message webui="ai_chat" name="IDS_AI_CHAT_RATE_MESSAGE_PRIVACY_MODAL_TITLE" desc="A title for the rate message privacy modal">
     Response Feedback
   </message>
-  <message webui="true" name="IDS_CHAT_UI_RATE_MESSAGE_PRIVACY_MODAL_DESCRIPTION" desc="A description for the rate message privacy modal">
+  <message webui="ai_chat" name="IDS_AI_CHAT_RATE_MESSAGE_PRIVACY_MODAL_DESCRIPTION" desc="A description for the rate message privacy modal">
     Liking or disliking an answer will send rating, conversation, model, language, version, and premium status to Brave in order to improve Leo. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message">
     Send message to Leo
   </message>
-  <message webui="true" name="IDS_CHAT_UI_STOP_GENERATION_BUTTON_LABEL" desc="A button label for stopping generation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_STOP_GENERATION_BUTTON_LABEL" desc="A button label for stopping generation">
     Stop answering
   </message>
-  <message webui="true" name="IDS_CHAT_UI_GOT_IT_BUTTON_LABEL" desc="A button label for dismissing a warning">
+  <message webui="ai_chat" name="IDS_AI_CHAT_GOT_IT_BUTTON_LABEL" desc="A button label for dismissing a warning">
     Got it
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PAGE_CONTENT_TOO_LONG_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
     The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read <ph name="PERCENTAGE">$1<ex>75.5%</ex></ph> of the page's contents.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_TRIMMED_TOKENS_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
+  <message webui="ai_chat" name="IDS_AI_CHAT_TRIMMED_TOKENS_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
     Some context could be missing from the conversation. Leo was able to retain <ph name="PERCENTAGE">$1<ex>75.5%</ex></ph> of the conversation's associated content.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PAGE_CONTENT_REFINED_WARNING" desc="A warning issued when the page content has been refined">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PAGE_CONTENT_REFINED_WARNING" desc="A warning issued when the page content has been refined">
     The page content has been refined through extracting the most relevant information from the page because it was too long for Leo.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PAGE_CONTENT_REFINED_IN_PROGRESS" desc="An indicator to show page content refined is in progress">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PAGE_CONTENT_REFINED_IN_PROGRESS" desc="An indicator to show page content refined is in progress">
     Finding the relevant parts of the web page...
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SEARCH_IN_PROGRESS" desc="Status to indicate that AI response is being enhaced with Brave Search">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SEARCH_IN_PROGRESS" desc="Status to indicate that AI response is being enhaced with Brave Search">
     Improving your answer with Brave Search…
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SEARCH_QUERIES" desc="AI Response status to indicate that search queries were used to enhance the response">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SEARCH_QUERIES" desc="AI Response status to indicate that search queries were used to enhance the response">
     Improved answer searching for <ph name="SEARCH_TERMS">$1<ex>"my first search engine query", "my second search engine query"</ex></ph>.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SOURCES" desc="Heading for a list of website sources that were used to generate an AI chat response">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SOURCES" desc="Heading for a list of website sources that were used to generate an AI chat response">
     Sources
   </message>
-  <message webui="true" name="IDS_CHAT_UI_EXPAND_SOURCES" desc="Button to expand the list of sources and explains how many more sources are available">
+  <message webui="ai_chat" name="IDS_AI_CHAT_EXPAND_SOURCES" desc="Button to expand the list of sources and explains how many more sources are available">
     <ph name="COUNT">$1<ex>3</ex></ph> more…
   </message>
-  <message webui="true" name="IDS_CHAT_UI_LEARN_MORE" desc="Link text to learn more about a feature">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LEARN_MORE" desc="Link text to learn more about a feature">
     Learn more
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CLOSE_NOTICE" desc="Label for button which closes a notice">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CLOSE_NOTICE" desc="Label for button which closes a notice">
     Close this notice
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ATTACHMENTS_SEARCH_PLACEHOLDER" desc="Placeholder for the attachments search input">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ATTACHMENTS_SEARCH_PLACEHOLDER" desc="Placeholder for the attachments search input">
     Search tabs
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ATTACHMENTS_TITLE" desc="Title for the attachments section">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ATTACHMENTS_TITLE" desc="Title for the attachments section">
     Attachments
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION" desc="Description for the attachments section">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ATTACHMENTS_DESCRIPTION" desc="Description for the attachments section">
     Add your browser tabs to give Leo more context for the conversation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE" desc="Title for the browser tabs section">
+  <message webui="ai_chat" name="IDS_AI_CHAT_ATTACHMENTS_BROWSER_TABS_TITLE" desc="Title for the browser tabs section">
     Browser tabs
   </message>
-  <message webui="true" name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
+  <message webui="ai_chat" name="IDS_AI_CHAT_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY" desc="Main text for a notice that the conversation list is empty">
+  <message webui="ai_chat" name="IDS_AI_CHAT_NOTICE_CONVERSATION_HISTORY_EMPTY" desc="Main text for a notice that the conversation list is empty">
     Your conversation history will appear here once you start a conversation.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE_DISABLED_PREF" desc="Title for a notice that the conversation history preference is disabled">
+  <message webui="ai_chat" name="IDS_AI_CHAT_NOTICE_CONVERSATION_HISTORY_TITLE_DISABLED_PREF" desc="Title for a notice that the conversation history preference is disabled">
     History is disabled
   </message>
-  <message webui="true" name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF" desc="Main text for a notice that the conversation history preference is disabled">
+  <message webui="ai_chat" name="IDS_AI_CHAT_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF" desc="Main text for a notice that the conversation history preference is disabled">
     In order to view your previous conversations with Leo, you need to enable conversation history.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF_BUTTON" desc="Button label to enable conversation history preference">
+  <message webui="ai_chat" name="IDS_AI_CHAT_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF_BUTTON" desc="Button label to enable conversation history preference">
     Enable
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for the llama chat model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for the llama chat model">
     Advanced chat tasks
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model">
     Conversation and text generation
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE" desc="A description for claude-3-haiku model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_CLAUDE_HAIKU_SUBTITLE" desc="A description for claude-3-haiku model">
     Lightning fast chat
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE" desc="A description for claude-3-sonnet model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_CLAUDE_SONNET_SUBTITLE" desc="A description for claude-3-sonnet model">
     Balanced speed and intelligence
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_QWEN_SUBTITLE" desc="A description for qwen model">
       General purpose chat, coding, and more
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model">
     General purpose vision
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_DEEPSEEK_R1_SUBTITLE" desc="A description for deepseek-r1 model">
     Reasoning model
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE" desc="A description for automatic model">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CHAT_AUTOMATIC_SUBTITLE" desc="A description for automatic model">
     Model changes dynamically to use the best one for the task
   </message>
-  <message webui="true" name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
     Leo settings
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_TITLE" desc="A title for welcome guide component presented for first time users">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_TITLE" desc="A title for welcome guide component presented for first time users">
     Hi, I'm Leo!
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users">
     An AI-powered intelligent assistant, built right into Brave.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_TITLE" desc="This is the title for a user prompt card designed to offer assistance with website-related tasks.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_SITE_HELP_CARD_TITLE" desc="This is the title for a user prompt card designed to offer assistance with website-related tasks.">
     Need help with a website?
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_DESC" desc="This description informs the user that the chatbot is capable of assisting with various website-related tasks such as summarizing articles and elaborating on website content. There is no specific call to action in this message.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_SITE_HELP_CARD_DESC" desc="This description informs the user that the chatbot is capable of assisting with various website-related tasks such as summarizing articles and elaborating on website content. There is no specific call to action in this message.">
     I can help you summarizing articles, expanding on a site's content and much more.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION" desc="This description provides similar information to the previous message but concludes with a specific call to action or suggestion for the user to get started with assistance.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION" desc="This description provides similar information to the previous message but concludes with a specific call to action or suggestion for the user to get started with assistance.">
     I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_TITLE" desc="Title for the chat card option.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_CHAT_CARD_TITLE" desc="Title for the chat card option.">
     Just want to chat?
   </message>
-  <message webui="true" name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC" desc="Description prompting the user to engage in a casual conversation with the chatbot.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_WELCOME_GUIDE_CHAT_CARD_DESC" desc="Description prompting the user to engage in a casual conversation with the chatbot.">
     Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
     Chat Privately with Brave Leo
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
     Shape answers based on the tab(s) contents
   </message>
-  <message webui="true" name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
     Toggle on to ask about these tab(s). Contents will be sent to Brave Leo along with your messages.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
   </message>
-  <message webui="true" name="IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL" desc="A checkbox label to opt-in or out for sending current tab's url">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SEND_SITE_HOSTNAME_LABEL" desc="A checkbox label to opt-in or out for sending current tab's url">
     Share the hostname of the page you are on (<ph name="HOST_NAME">$1<ex>www.example.com</ex></ph>) to help us make Leo better.
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
     Leo AI tools
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS" desc="The title of the context menu section for AI quick actions">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS" desc="The title of the context menu section for AI quick actions">
     Quick actions
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CREATE" desc="The title of the context menu section for AI creation tools">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CREATE" desc="The title of the context menu section for AI creation tools">
     Create
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_REWRITE" desc="The title of the context menu section for AI rewrite tools">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_REWRITE" desc="The title of the context menu section for AI rewrite tools">
     Rewrite
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT" desc="The text label of context menu item to summarize selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT" desc="The text label of context menu item to summarize selected text">
     Summarize
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT" desc="The text label of context menu item to create a short social media post using selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT" desc="The text label of context menu item to create a short social media post using selected text">
     Short post
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG" desc="The text label of context menu item to create a long social media post using selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG" desc="The text label of context menu item to create a long social media post using selected text">
     Long post
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CREATE_BLOG_POST" desc="The text label of context menu item to create a blog post using selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CREATE_BLOG_POST" desc="The text label of context menu item to create a blog post using selected text">
     Blog post
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE" desc="The text label of context menu item to create a tagline using selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE" desc="The text label of context menu item to create a tagline using selected text">
     Tagline
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_PARAPHRASE" desc="The text label of context menu item to paraphrase selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_PARAPHRASE" desc="The text label of context menu item to paraphrase selected text">
     Paraphrase
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_EXPLAIN" desc="The text label of context menu item to explain selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_EXPLAIN" desc="The text label of context menu item to explain selected text">
     Explain
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_IMPROVE" desc="The text label of context menu item to improve selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_IMPROVE" desc="The text label of context menu item to improve selected text">
     Improve
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CHANGE_TONE" desc="The text label of submenu for changing the tone of selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CHANGE_TONE" desc="The text label of submenu for changing the tone of selected text">
     Change tone
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE" desc="The text label of context menu item to professionalize selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE" desc="The text label of context menu item to professionalize selected text">
     Professional
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE" desc="The text label of context menu item to rewrite the selected text in a persuasive tone">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE" desc="The text label of context menu item to rewrite the selected text in a persuasive tone">
     Persuasive
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_ACADEMICIZE" desc="The text label of context menu item to academicize selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_ACADEMICIZE" desc="The text label of context menu item to academicize selected text">
     Academic
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CASUALIZE" desc="The text label of context menu item to casualize selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CASUALIZE" desc="The text label of context menu item to casualize selected text">
     Casual
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_FUNNY_TONE" desc="The text label of context menu item to rewrite the selected text in a funny tone">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_FUNNY_TONE" desc="The text label of context menu item to rewrite the selected text in a funny tone">
     Funny
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_SHORTEN" desc="The text label of context menu item to shorten selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_SHORTEN" desc="The text label of context menu item to shorten selected text">
     Shorten
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_EXPAND" desc="The text label of context menu item to expand selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_EXPAND" desc="The text label of context menu item to expand selected text">
     Expand
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH" desc="The text label of submenu for changing the length of selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH" desc="The text label of submenu for changing the length of selected text">
     Change length
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST" desc="The text label of submenu for creating social media posts using selected text">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST" desc="The text label of submenu for creating social media posts using selected text">
     Social media
   </message>
-  <message webui="true" name="IDS_AI_CHAT_MAYBE_LATER_LABEL" desc="The button label that dismisses an error prompt">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MAYBE_LATER_LABEL" desc="The button label that dismisses an error prompt">
     Maybe later
   </message>
-  <message webui="true" name="IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL" desc="The button label for Leo's slash tools">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL" desc="The button label for Leo's slash tools">
     Leo tools
   </message>
-  <message webui="true" name="IDS_AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL" desc="The button label for Leo's attachment menu">
+  <message webui="ai_chat" name="IDS_AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL" desc="The button label for Leo's attachment menu">
     Attachment
   </message>
-  <message webui="true" name="IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL" desc="The button label for upload file">
+  <message webui="ai_chat" name="IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL" desc="The button label for upload file">
     Upload file...
   </message>
-  <message webui="true" name="IDS_AI_CHAT_UPLOADING_FILE_LABEL" desc="The label for uploading a file">
+  <message webui="ai_chat" name="IDS_AI_CHAT_UPLOADING_FILE_LABEL" desc="The label for uploading a file">
     Uploading file...
   </message>
-  <message webui="true" name="IDS_AI_CHAT_TAKE_A_PICTURE_BUTTON_LABEL" desc="The button label for upload a picture from camera">
+  <message webui="ai_chat" name="IDS_AI_CHAT_TAKE_A_PICTURE_BUTTON_LABEL" desc="The button label for upload a picture from camera">
     Take a picture...
   </message>
-  <message webui="true" name="IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL" desc="The button label for screenshot">
+  <message webui="ai_chat" name="IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL" desc="The button label for screenshot">
     Screenshot
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents">
     Current tab contents
   </message>
-  <message webui="true" name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature">
+  <message webui="ai_chat" name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature">
     Use microphone
   </message>
-  <message webui="true" name="IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS" desc="The menu section label for custom models added by the user">
+  <message webui="ai_chat" name="IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS" desc="The menu section label for custom models added by the user">
     Custom models
   </message>
-  <message webui="true" name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
     Start new conversation
   </message>
-  <message webui="true" name="IDS_AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON" desc="A button to go back to the previous conversation">
+  <message webui="ai_chat" name="IDS_AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON" desc="A button to go back to the previous conversation">
     Go back to the active conversation
   </message>
-  <message webui="true" name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
+  <message webui="ai_chat" name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
     New conversation
   </message>
 </grit-part>

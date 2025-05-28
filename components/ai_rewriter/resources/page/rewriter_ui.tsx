@@ -9,7 +9,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import Context from './Context'
 import Layout from './components/Layout'
 
-import 'gen/brave/components/ai_chat/core/browser/string_ids'
+import 'gen/components/ai_chat_strings'
 
 setIconBasePath('//resources/brave-icons')
 

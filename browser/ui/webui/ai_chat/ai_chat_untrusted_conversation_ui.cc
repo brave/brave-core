@@ -16,14 +16,13 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
-#include "brave/components/ai_chat/resources/localized_strings.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/ai_chat_strings.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
@@ -159,7 +158,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
-  for (const auto& str : ai_chat_ui::GetLocalizedStrings()) {
+  for (const auto& str : ai_chat::GetLocalizedStrings()) {
     source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
   }
 

@@ -10,6 +10,6 @@ import override_utils
 def _IsValidAttribute(self, original_method, name, value):
     if original_method(self, name, value):
         return True
-    if name == 'webui' and value in ['true']:
+    if name == 'webui':
         return True
     return False

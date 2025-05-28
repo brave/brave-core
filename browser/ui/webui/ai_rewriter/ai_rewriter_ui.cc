@@ -22,7 +22,6 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/resources/localized_strings.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "brave/components/ai_rewriter/resources/page/grit/ai_rewriter_ui_generated_map.h"
@@ -30,6 +29,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "components/ai_chat_strings.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -53,7 +53,7 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
       web_ui, kRewriterUIHost, kAiRewriterUiGenerated, IDR_REWRITER_UI_HTML);
   DCHECK(source);
 
-  for (const auto& str : ai_chat_ui::GetLocalizedStrings()) {
+  for (const auto& str : ai_chat::GetLocalizedStrings()) {
     source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
   }
 

@@ -24,10 +24,10 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
-#include "brave/components/ai_chat/resources/localized_strings.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "components/ai_chat_strings.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
@@ -83,7 +83,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddResourcePath("manifest.webmanifest", IDR_AI_CHAT_UI_MANIFEST);
   source->AddResourcePath("pwa_icon.svg", IDR_AI_CHAT_UI_PWA_ICON);
 
-  for (const auto& str : ai_chat_ui::GetLocalizedStrings()) {
+  for (const auto& str : ai_chat::GetLocalizedStrings()) {
     source->AddString(str.name, l10n_util::GetStringUTF16(str.id));
   }
 

@@ -11,7 +11,7 @@ import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 
-import 'gen/brave/components/ai_chat/core/browser/string_ids'
+import 'gen/components/ai_chat_strings'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 

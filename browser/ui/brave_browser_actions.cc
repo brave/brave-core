@@ -66,8 +66,8 @@ void BraveBrowserActions::InitializeBrowserActions() {
   Profile* profile = browser_->profile();
   if (ai_chat::IsAIChatEnabled(profile->GetPrefs())) {
     root_action_item_->AddChild(
-        SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
-                        IDS_CHAT_UI_TITLE, kLeoProductBraveLeoIcon,
+        SidePanelAction(SidePanelEntryId::kChatUI, IDS_AI_CHAT_TITLE,
+                        IDS_AI_CHAT_TITLE, kLeoProductBraveLeoIcon,
                         kActionSidePanelShowChatUI, browser, false)
             .Build());
   }

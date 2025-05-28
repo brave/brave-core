@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/common/generate_string_resources.gni")
 import("//brave/resources/brave_grit.gni")
 import("rust_to_wasm.gni")
 
@@ -93,31 +92,11 @@ brave_common_web_compile_inputs = [
 #     If not used, we default to asynchronous WASM loading (experiments.asyncWebAssembly).
 #   no_iife
 #     If true, the resulting bundle will not be wrapped in an IIFE.
-#   strings_grdp
-#     If defined, WebUI strings and C++ files for exposing the strings to WebUI
-#     will be generated from the GRDP file.
-#   strip_string_prefixes
-#     If defined, the string prefixes will be stripped from the string ids.
-#     This is useful for removing common prefixes from the string ids.
 template("transpile_web_ui") {
   if (defined(invoker.rust_packages)) {
     rust_to_wasm("build_rust_packages") {
       forward_variables_from(invoker, [ "inputs" ])
       rust_packages = invoker.rust_packages
-    }
-  }
-
-  if (defined(invoker.strings_grdp)) {
-    name = target_name
-    generate_string_resources(target_name + "__string_resources") {
-      input_grdp = invoker.strings_grdp
-      cpp_namespace = name
-      generate_ts = true
-      generate_localized_strings = true
-
-      if (defined(invoker.strip_string_prefixes)) {
-        strip_string_prefixes = invoker.strip_string_prefixes
-      }
     }
   }
 
@@ -136,10 +115,6 @@ template("transpile_web_ui") {
       # generated
       "//brave/components/webpack:generate_tsconfig",
     ]
-
-    if (defined(invoker.strings_grdp)) {
-      deps += [ ":" + target_name + "__string_resources" ]
-    }
 
     if (defined(invoker.deps)) {
       # If there are any mojo js bindings deps make sure to build mojo js

@@ -74,7 +74,6 @@ static_library("browser") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/ai_chat/core/proto",
-    "//brave/components/ai_chat/resources:ai_chat_ui__string_resources__localized_strings",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_service_keys",

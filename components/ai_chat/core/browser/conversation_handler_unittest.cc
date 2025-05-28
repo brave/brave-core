@@ -375,7 +375,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
           if (should_send_content) {
             EXPECT_THAT(state->suggested_questions,
                         testing::ElementsAre(l10n_util::GetStringUTF8(
-                            IDS_CHAT_UI_SUMMARIZE_PAGE)));
+                            IDS_AI_CHAT_SUMMARIZE_PAGE)));
           } else {
             EXPECT_EQ(4u, state->suggested_questions.size());
           }
@@ -1931,7 +1931,7 @@ TEST_F(ConversationHandlerUnitTest,
 TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
   std::string page_content = "Some example page content";
   const std::string initial_question =
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE);
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_PAGE);
   const std::vector<std::string> questions = {"Question 1?", "Question 2?",
                                               "Question 3?", "Question 4?"};
   std::vector<std::string> expected_results;
