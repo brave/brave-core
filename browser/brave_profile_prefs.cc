@@ -206,6 +206,11 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2024-07
   registry->RegisterBooleanPref(kHangoutsEnabled, false);
+
+  // Added 2025-05
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  registry->RegisterBooleanPref(kWebTorrentEnabled, false);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -257,11 +262,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
                                 false);
-
-  // WebTorrent
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  webtorrent::RegisterProfilePrefs(registry);
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
