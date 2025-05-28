@@ -31,6 +31,7 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void ShowContextMenuForTab(Tab* tab,
                              const gfx::Point& p,
                              ui::mojom::MenuSourceType source_type) override;
+  int GetIndexOfLastFocusedTabInSplit(int model_index) override;
 
  private:
   // If non-NULL it means we're showing a menu for the tab.
