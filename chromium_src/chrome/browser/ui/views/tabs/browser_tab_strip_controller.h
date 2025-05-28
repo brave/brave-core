@@ -11,11 +11,8 @@
   friend class BraveBrowserTabStripController; \
   void CloseContextMenuForTesting
 
-#define GetIndexOfLastFocusedTabInSplit virtual GetIndexOfLastFocusedTabInSplit
-
 #include "src/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"  // IWYU pragma: export
 
-#undef GetIndexOfLastFocusedTabInSplit
 #undef CloseContextMenuForTesting
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_BROWSER_TAB_STRIP_CONTROLLER_H_
