@@ -1043,7 +1043,8 @@ public class BrowserViewController: UIViewController {
 
     Task { @MainActor in
       // Track sync chain restoration via backup
-      let shouldDeleteSyncChain = try await braveCore.syncAPI.isSyncChainFromCloudRestoration()
+      let shouldDeleteSyncChain = try await profileController.syncAPI
+        .isSyncChainFromCloudRestoration()
       if shouldDeleteSyncChain {
         let alert = UIAlertController(
           title: Strings.Sync.deviceRestoreDetectedTitle,
@@ -1053,7 +1054,7 @@ public class BrowserViewController: UIViewController {
         alert.addAction(
           .init(title: Strings.Sync.deviceRestoreResetActionTitle, style: .default) {
             [weak self] _ in
-            self?.braveCore.syncAPI.resetSyncChain()
+            self?.profileController.syncAPI.resetSyncChain()
           }
         )
 
