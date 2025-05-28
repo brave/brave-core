@@ -115,6 +115,7 @@ type EditMode =
   | 'None'
   | 'Create'
   | 'Edit'
+  | 'Delete'
 
 export type EditState = {
   mode: EditMode,
@@ -132,6 +133,38 @@ const RefreshButton = ({ onClick, waiting }:
         <Icon name="refresh" />
       </Button>}
   </ButtonWrapper>
+}
+
+export const DeleteAliasModal = ({
+  onReturnToMain,
+  alias,
+  emailAliasesService }: {
+  onReturnToMain: () => void,
+  alias: Alias,
+  emailAliasesService: EmailAliasesServiceInterface
+}) => {
+  const onDeleteAlias = () => {
+    emailAliasesService.deleteAlias(alias.email)
+    onReturnToMain()
+  }
+  return <ModalCol>
+    <ModalTitle>{getLocale('emailAliasesDeleteAliasTitle')}</ModalTitle>
+    <ModalDescription>
+      {formatLocale('emailAliasesDeleteAliasDescription',
+        { $1: <b>{alias.email}</b> })}
+    </ModalDescription>
+    <Alert type='warning'>
+      {getLocale('emailAliasesDeleteWarning')}
+    </Alert>
+    <ButtonRow>
+      <Button onClick={onReturnToMain} kind='plain-faint'>
+        {getLocale('emailAliasesCancelButton')}
+      </Button>
+      <Button onClick={onDeleteAlias} kind='filled'>
+        {getLocale('emailAliasesDeleteAliasButton')}
+      </Button>
+    </ButtonRow>
+  </ModalCol>
 }
 
 export const EmailAliasModal = (

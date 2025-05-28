@@ -13,10 +13,10 @@ import Row from './styles/Row'
 import styled from 'styled-components'
 
 import {
+  AliasesUpdatedInfo,
   AuthenticationStatus,
   AuthState,
-  Alias,
-  EmailAliasesServiceInterface
+  EmailAliasesServiceInterface,
 } from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const SpacedRow = styled(Row)`
@@ -27,12 +27,12 @@ const SpacedRow = styled(Row)`
 `
 
 export const MainView = ({
-  aliasesState,
+  aliasesInfo,
   authState,
   emailAliasesService
 }: {
   authState: AuthState,
-  aliasesState: Alias[],
+  aliasesInfo: AliasesUpdatedInfo,
   emailAliasesService: EmailAliasesServiceInterface
 }) => (authState.status === AuthenticationStatus.kStartup
         ? <SpacedRow>
@@ -43,7 +43,8 @@ export const MainView = ({
             <MainEmailDisplay
               email={authState.email}
               emailAliasesService={emailAliasesService} />
-            <AliasList aliases={aliasesState}
+            <AliasList
+              aliasesInfo={aliasesInfo}
               authEmail={authState.email}
               emailAliasesService={emailAliasesService} />
           </span>)

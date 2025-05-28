@@ -42,6 +42,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE" desc="The title for the email alias list">
     Your Email aliases
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_INFO_ERROR_MESSAGE" desc="The label for the info error message">
+    Error retrieving email aliases from our servers. Please check your internet connection.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE" desc="The title for the create alias">
     New email alias
   </message>
@@ -89,6 +92,18 @@
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON" desc="The label for the save alias button">
     Save
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE" desc="The title for the delete alias">
+    Delete email alias
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION" desc="The description for the delete alias">
+    Removing $1 as an alias will result in the loss of your ability to receive emails.
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON" desc="The label for the delete alias button">
+    Delete
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING" desc="The warning for the delete alias">
+    This action is irreversible. Please ensure you want to proceed before continuing.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT" desc="The label for the sign in or create account">
     To get started, sign in or create a Brave account

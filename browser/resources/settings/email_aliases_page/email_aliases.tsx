@@ -8,13 +8,13 @@ import { ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
 import * as React from 'react'
 import {
+  AliasesUpdatedInfo,
   AuthenticationStatus,
   AuthState,
-  Alias,
   EmailAliasesServiceInterface,
-  EmailAliasesServiceRemote,
+  EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverRemote,
-  EmailAliasesServiceObserverInterface
+  EmailAliasesServiceRemote,
 } from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
@@ -23,24 +23,27 @@ export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
   }) => {
   const [authState, setAuthState] = React.useState<AuthState>(
       { status: AuthenticationStatus.kStartup, email: '' })
-  const [aliasesState, setAliasesState] = React.useState<Alias[]>([]);
+  const [aliasesInfo, setAliasesInfo] = React.useState<AliasesUpdatedInfo>({
+    aliases: [],
+    errorMessage: ''
+  });
   React.useEffect(() => {
     // Note: We keep track of the status here so we can avoid setting aliases
     // when the user is not logged in.
     let status: AuthenticationStatus = AuthenticationStatus.kStartup
     const observer : EmailAliasesServiceObserverInterface = {
-      onAliasesUpdated: (aliases: Alias[]) => {
+      onAliasesUpdated: (info: AliasesUpdatedInfo) => {
         if (status !== AuthenticationStatus.kAuthenticated) {
           return
         }
-        setAliasesState(aliases)
+        setAliasesInfo(info)
       },
       onAuthStateChanged: (state: AuthState) => {
         status = state.status
 
         setAuthState(state)
         if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesState([])
+          setAliasesInfo({ aliases: [], errorMessage: '' })
         }
       },
     }
@@ -49,7 +52,7 @@ export const ManagePageConnected = ({ emailAliasesService, bindObserver }: {
   return (
     <ManagePage
       authState={authState}
-      aliasesState={aliasesState}
+      aliasesInfo={aliasesInfo}
       emailAliasesService={emailAliasesService} />
   )
 }

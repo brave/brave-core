@@ -5,7 +5,7 @@
 
 import { AliasItem } from './email_aliases_item'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
-import { EditState, EmailAliasModal } from './email_aliases_modal'
+import { DeleteAliasModal, EditState, EmailAliasModal } from './email_aliases_modal'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
@@ -14,8 +14,9 @@ import Description from './styles/Description'
 import Dialog from '@brave/leo/react/dialog'
 import Row from './styles/Row'
 import styled from 'styled-components'
-import { Alias, EmailAliasesServiceInterface, MAX_ALIASES }
+import { AliasesUpdatedInfo, EmailAliasesServiceInterface, MAX_ALIASES }
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
+import Alert from '@brave/leo/react/alert'
 
 const AliasListIntro = styled(Row)`
   justify-content: space-between;
@@ -62,38 +63,46 @@ export const ListIntroduction = ({
 )
 
 export const AliasList = ({
-  aliases, authEmail, emailAliasesService }: {
+  aliasesInfo, authEmail, emailAliasesService }: {
     emailAliasesService: EmailAliasesServiceInterface,
-    aliases: Alias[],
+    aliasesInfo: AliasesUpdatedInfo,
     authEmail: string
   }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
   return (
     <DivWithTopDivider>
       <ListIntroduction
-        aliasesCount={aliases.length}
+        aliasesCount={aliasesInfo.aliases.length}
         onCreateClicked={() => setEditState({ mode: 'Create' })} />
-      {aliases.map(
+      {aliasesInfo.errorMessage &&
+        <Alert>{aliasesInfo.errorMessage}</Alert>}
+      {aliasesInfo.aliases.map(
         alias =>
           <AliasItem
             key={alias.email}
             alias={alias}
             onEdit={() => setEditState({ mode: 'Edit', alias: alias })}
-            onDelete={() => emailAliasesService.deleteAlias(alias.email)}>
+            onDelete={() => setEditState({ mode: 'Delete', alias: alias })}>
           </AliasItem>)}
-      {(editState.mode === 'Create' || editState.mode === 'Edit') &&
+      {(editState.mode !== 'None') &&
         <AliasDialog
           isOpen
           onClose={() => setEditState({ mode: 'None' })}
           backdropClickCloses
           modal
           showClose>
-          <EmailAliasModal
-            onReturnToMain={() => setEditState({ mode: 'None' })}
-            editState={editState}
-            mainEmail={authEmail}
-            aliasCount={aliases.length}
-            emailAliasesService={emailAliasesService} />
+          {editState.mode === 'Delete' && editState.alias &&
+            <DeleteAliasModal
+              onReturnToMain={() => setEditState({ mode: 'None' })}
+              alias={editState.alias}
+              emailAliasesService={emailAliasesService} />}
+          {(editState.mode === 'Create' || editState.mode === 'Edit') &&
+            <EmailAliasModal
+              onReturnToMain={() => setEditState({ mode: 'None' })}
+              editState={editState}
+              mainEmail={authEmail}
+              aliasCount={aliasesInfo.aliases.length}
+              emailAliasesService={emailAliasesService} />}
         </AliasDialog>}
     </DivWithTopDivider>
   )
