@@ -62,9 +62,12 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 }
 
 - (CWVUserAgentType)currentItemUserAgentType {
-  return static_cast<CWVUserAgentType>(self.webState->GetNavigationManager()
-                                           ->GetVisibleItem()
-                                           ->GetUserAgentType());
+  web::NavigationItem* visibleItem =
+      self.webState->GetNavigationManager()->GetVisibleItem();
+  if (!visibleItem) {
+    return CWVUserAgentTypeNone;
+  }
+  return static_cast<CWVUserAgentType>(visibleItem->GetUserAgentType());
 }
 
 - (void)reloadWithUserAgentType:(CWVUserAgentType)userAgentType {
