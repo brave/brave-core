@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index 23cd457563d7d534e924428ac6da2b475e579326..3f76aee4a65d69fa28365ce24b25c6769fc89a88 100644
+index b58c9d354fed0793810a491e0564b8bf163dccc9..53d4848caeaacf2f0579e52f0eca864e8e1e1180 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -5154,6 +5154,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
@@ -18,23 +18,15 @@ index 23cd457563d7d534e924428ac6da2b475e579326..3f76aee4a65d69fa28365ce24b25c676
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -5223,6 +5225,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
-     // current value of net::features::ThirdPartyStoragePartitioning.
-     if (rfs_document_data_for_storage_key->runtime_feature_state_read_context()
-             .IsDisableThirdPartyStoragePartitioning3Enabled()) {
-+      BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
-       return false;
-     }
-     // Compile the list of third-party origins we need to check in addition to
-@@ -5240,6 +5243,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
-     if (rfs_document_data_for_storage_key->runtime_feature_state_read_context()
-             .IsDisableThirdPartyStoragePartitioning3EnabledForThirdParty(
-                 third_party_origins)) {
-+      BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
-       return false;
-     }
+@@ -5221,6 +5223,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+   if (rfs_document_data_for_storage_key && unpartitioned_key_allowed &&
+       rfs_document_data_for_storage_key->runtime_feature_state_read_context()
+           .IsThirdPartyStoragePartitioningUserBypassEnabled()) {
++    BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
+     return false;
    }
-@@ -9774,6 +9778,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+ 
+@@ -9754,6 +9757,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  
