@@ -829,7 +829,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setIgnoreExternalLinkWarning: () => { },
     handleCloseRateMessagePrivacyModal:
       () => setArgs({ ratingTurnUuid: undefined }),
-    handleRateMessage: () => Promise.resolve()
+    handleRateMessage: () => Promise.resolve(),
+    disassociateContent: () => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
@@ -845,7 +846,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile,
     allModels: MODELS,
-    currentModelKey: currentModel?.key ?? ''
+    currentModelKey: currentModel?.key ?? '',
+    associatedContent: [associatedContent],
   }
 
   return (

@@ -89,6 +89,13 @@
 }
 
 .subtitle {
+  --leo-icon-size: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
 

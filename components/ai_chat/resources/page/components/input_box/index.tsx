@@ -14,6 +14,8 @@ import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
 import { AttachmentImageItem, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
+import usePromise from '$web-common/usePromise'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 type Props = Pick<
   ConversationContext,
@@ -40,6 +42,7 @@ type Props = Pick<
   | 'isUploadingFiles'
   | 'shouldSendPageContents'
   | 'updateShouldSendPageContents'
+  | 'disassociateContent'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -47,6 +50,18 @@ interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
+}
+
+function usePlaceholderText(attachmentsCount: number, shouldSendPageContents: boolean, conversationStarted: boolean) {
+  const { result: attachmentsPlaceholder } = usePromise(() => PluralStringProxyImpl.getInstance().getPluralString('placeholderAttachedPagesLabel', attachmentsCount), [attachmentsCount])
+
+  if (conversationStarted) return getLocale('placeholderLabel')
+
+  if (shouldSendPageContents && attachmentsCount > 0) {
+    return attachmentsPlaceholder
+  }
+
+  return getLocale('initialPlaceholderLabel')
 }
 
 function InputBox(props: InputBoxProps) {
@@ -115,6 +130,12 @@ function InputBox(props: InputBoxProps) {
     }
   }, [props.context.pendingMessageImages])
 
+  const placeholderText = usePlaceholderText(
+    props.context.associatedContentInfo.length,
+    props.context.shouldSendPageContents,
+    props.conversationStarted
+  )
+
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -144,7 +165,7 @@ function InputBox(props: InputBoxProps) {
               <AttachmentPageItem
                 title={content.title}
                 url={content.url.url}
-                remove={() => props.context.updateShouldSendPageContents(false)}
+                remove={() => props.context.disassociateContent(content)}
               />
             ))}
           {props.context.isUploadingFiles && (
@@ -165,9 +186,7 @@ function InputBox(props: InputBoxProps) {
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(props.conversationStarted
-            ? 'placeholderLabel'
-            : 'initialPlaceholderLabel')}
+          placeholder={placeholderText}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
