@@ -23,6 +23,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         get_title_from_first_commit, push_branches_to_remote,
                         set_issue_details)
 
+from reformat_branch import get_changed_files, format_files, reformat_commits
 
 class PrConfig():
     channel_names = channels()
@@ -301,6 +302,7 @@ def main():
     fancy_print('NOTE: Commits are being detected by diffing "' + local_branch +
                 '" against "' + top_level_base + '"')
     local_branches = {}
+    reformatted = False
     branch = ''
     try:
         for channel in config.channels_to_process:
@@ -308,6 +310,25 @@ def main():
                                    remote_branches[channel], local_branch, args)
             local_branches[channel] = branch
     except Exception as e:
+        print('[WARNING] cherry-pick failed for branch "' + branch +
+              '". Retrying with reformatting enabled...\n' + str(e))
+        reformatted = True
+
+        # Reformat commits in the local_branch first (the branch can be old).
+        execute(['git', 'checkout', local_branch])
+        reformat_commits(top_level_base, local_branch)
+        execute(['git', 'checkout', '-B', local_branch])
+
+        # Try again with preformatting the changed files.
+        for channel in config.channels_to_process:
+            branch = create_branch(channel,
+                                   top_level_base,
+                                   remote_branches[channel],
+                                   local_branch,
+                                   args,
+                                   preformat=True)
+            local_branches[channel] = branch
+
         print('[ERROR] cherry-pick failed for branch "' + branch +
               '". Please resolve manually:\n' + str(e))
         return 1
@@ -322,7 +343,7 @@ def main():
         print('\nCreating the pull requests...')
         for channel in config.channels_to_process:
             submit_pr(channel, top_level_base, remote_branches[channel],
-                      local_branches[channel], issues_fixed)
+                      local_branches[channel], issues_fixed, reformatted)
         print('\nDone!')
     except Exception as e:
         print('\n[ERROR] Unhandled error while creating pull request; ' +
@@ -352,7 +373,12 @@ def is_sha(ref):
     return False
 
 
-def create_branch(channel, top_level_base, remote_base, local_branch, args):
+def create_branch(channel,
+                  top_level_base,
+                  remote_base,
+                  local_branch,
+                  args,
+                  preformat=False):
     global config
 
     if is_nightly(channel):
@@ -396,9 +422,15 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                 execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
+            if preformat:
+                changed_files = get_changed_files(
+                    f'{compare_from}..{sha_list[-1]}')
+                format_files(changed_files, stage=True, commit=True)
+
             # TODO: handle errors thrown by cherry-pick
             for sha in sha_list:
-                output = execute(['git', 'cherry-pick', sha]).split('\n')
+                output = execute(['git', 'cherry-pick', '--allow-empty',
+                                  sha]).split('\n')
                 print('- picked ' + sha + ' (' + output[0] + ')')
 
             # squash all commits into one
@@ -440,7 +472,12 @@ def get_milestone_for_branch(channel_branch):
     return None
 
 
-def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
+def submit_pr(channel,
+              top_level_base,
+              remote_base,
+              local_branch,
+              issues_fixed,
+              reformatted=False):
     global config
 
     milestone_number = get_milestone_for_branch(remote_base)
@@ -463,6 +500,8 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
         if len(issues_fixed) > 0:
             for fixed in issues_fixed:
                 pr_body += (fixed[0] + '\n')
+        if reformatted:
+            pr_body += 'NOTE: The PR was automatically reformatted.\n'
 
         pr_body += '\nPre-approval checklist: \n'
         pr_body += '- [ ] You have tested your change on Nightly. \n'
