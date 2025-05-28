@@ -5,16 +5,17 @@
 
 import Foundation
 
-/// Formats a Duration dynamically based on if the value is over an hour.
+/// Formats a Duration dynamically based on if the value is over an hour ignoring fractional seconds
 struct TimestampFormatStyle: FormatStyle {
   func format(_ value: Duration) -> String {
     let pattern: Duration.TimeFormatStyle.Pattern
-    if abs(value.components.seconds) >= (60 * 60) {
+    let clippedDuration = Duration.seconds(value.components.seconds)
+    if abs(clippedDuration.components.seconds) >= (60 * 60) {
       pattern = .hourMinuteSecond
     } else {
       pattern = .minuteSecond
     }
-    return value.formatted(.time(pattern: pattern))
+    return clippedDuration.formatted(.time(pattern: pattern))
   }
 }
 
