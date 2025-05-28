@@ -60,7 +60,7 @@ interface EmailAliasesService {
   GenerateAlias() => (GenerateAliasResult result);
 
   // Create or Update an existing email alias.
-  UpdateAlias(string alias_email, string? note);
+  UpdateAlias(string alias_email, string? note) => (string? error_message);
 
   // Delete an email alias.
   DeleteAlias(string alias_email);
