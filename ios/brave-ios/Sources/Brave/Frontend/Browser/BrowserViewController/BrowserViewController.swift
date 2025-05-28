@@ -1041,6 +1041,28 @@ public class BrowserViewController: UIViewController {
       }
       .store(in: &cancellables)
 
+    Task { @MainActor in
+      // Track sync chain restoration via backup
+      let shouldDeleteSyncChain = try await profileController.syncAPI
+        .isSyncChainFromCloudRestoration()
+      if shouldDeleteSyncChain {
+        let alert = UIAlertController(
+          title: Strings.Sync.deviceRestoreDetectedTitle,
+          message: Strings.Sync.deviceRestoreDetectedMessage,
+          preferredStyle: .alert
+        )
+        alert.addAction(
+          .init(title: Strings.Sync.deviceRestoreResetActionTitle, style: .default) {
+            [weak self] _ in
+            self?.profileController.syncAPI.resetSyncChain()
+          }
+        )
+
+        alert.addAction(.init(title: Strings.CancelString, style: .destructive))
+        self.present(alert, animated: true)
+      }
+    }
+
     syncPlaylistFolders()
     checkCrashRestorationOrSetupTabs()
   }

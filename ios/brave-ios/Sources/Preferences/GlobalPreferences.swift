@@ -259,6 +259,11 @@ extension Preferences {
       key: "chromium.last.webviewsflagstate",
       default: nil
     )
+    /// Sync Device Restoration Token
+    public static let hasSyncDeviceRestorationToken = Option<Bool>(
+      key: "chromium.sync.hasSyncDeviceRestorationToken",
+      default: false
+    )
   }
 
   public final class Debug {
