@@ -14,13 +14,16 @@ import MarkdownRenderer from '../markdown_renderer'
 import WebSourcesEvent from './web_sources_event'
 import styles from './style.module.scss'
 
-function SearchSummary (props: { searchQueries: string[] }) {
+function SearchSummary(props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
 
-  const handleOpenSearchQuery = React.useCallback((e: React.MouseEvent, query: string) => {
-    e.preventDefault()
-    context.uiHandler?.openSearchURL(query)
-  }, [])
+  const handleOpenSearchQuery = React.useCallback(
+    (e: React.MouseEvent, query: string) => {
+      e.preventDefault()
+      context.uiHandler?.openSearchURL(query)
+    },
+    [],
+  )
 
   const handleLearnMore = () => {
     context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
@@ -30,46 +33,61 @@ function SearchSummary (props: { searchQueries: string[] }) {
     placeholders: {
       $1: props.searchQueries.map((query, i, a) => (
         <React.Fragment key={i}>
-          "<a className={styles.searchQueryLink} href='#' onClick={(e) => handleOpenSearchQuery(e, query)}>
+          "
+          <a
+            className={styles.searchQueryLink}
+            href='#'
+            onClick={(e) => handleOpenSearchQuery(e, query)}
+          >
             {query}
-          </a>"{(i < a.length-1) ? ', ' : null}
+          </a>
+          "{i < a.length - 1 ? ', ' : null}
         </React.Fragment>
-      ))
-    }
+      )),
+    },
   })
 
   return (
     <div className={styles.searchSummary}>
-      <Icon name="brave-icon-search-color" />
+      <Icon name='brave-icon-search-color' />
       <span>
-        {message} <a className={styles.searchLearnMoreLink} href='#' onClick={handleLearnMore}>{getLocale('learnMore')}</a>
+        {message}{' '}
+        <a
+          className={styles.searchLearnMoreLink}
+          href='#'
+          onClick={handleLearnMore}
+        >
+          {getLocale('learnMore')}
+        </a>
       </span>
     </div>
   )
 }
 
 function AssistantEvent(props: {
-  event: Mojom.ConversationEntryEvent,
-  hasCompletionStarted: boolean,
-  isEntryInProgress: boolean,
-  allowedLinks: string[],
+  event: Mojom.ConversationEntryEvent
+  hasCompletionStarted: boolean
+  isEntryInProgress: boolean
+  allowedLinks: string[]
   isLeoModel: boolean
 }) {
-  const { allowedLinks, event, isEntryInProgress, isLeoModel } = props;
+  const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
 
   if (event.completionEvent) {
     const numberedLinks =
       allowedLinks.length > 0
-        ? allowedLinks.map((url: string, index: number) =>
-                           `[${index + 1}]: ${url}`).join('\n') + '\n\n'
-        : '';
+        ? allowedLinks
+            .map((url: string, index: number) => `[${index + 1}]: ${url}`)
+            .join('\n') + '\n\n'
+        : ''
 
     // Replaces 2 consecutive citations with a separator so that
     // they will both render as links.
-    const completion =
-      event.completionEvent.completion.replace(/(\[\d+\])(?=\[\d+\])/g,
-                                               '$1\u200B')
-    const fullText = `${numberedLinks}${completion}`;
+    const completion = event.completionEvent.completion.replace(
+      /(\[\d+\])(?=\[\d+\])/g,
+      '$1\u200B',
+    )
+    const fullText = `${numberedLinks}${completion}`
 
     return (
       <MarkdownRenderer
@@ -80,14 +98,28 @@ function AssistantEvent(props: {
       />
     )
   }
-  if (props.event.searchStatusEvent && props.isEntryInProgress && !props.hasCompletionStarted) {
+  if (
+    props.event.searchStatusEvent
+    && props.isEntryInProgress
+    && !props.hasCompletionStarted
+  ) {
     return (
-      <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
+      <div className={styles.actionInProgress}>
+        <ProgressRing />
+        Improving answer with Brave Search…
+      </div>
     )
   }
-  if (props.event.pageContentRefineEvent && props.isEntryInProgress && !props.hasCompletionStarted) {
+  if (
+    props.event.pageContentRefineEvent
+    && props.isEntryInProgress
+    && !props.hasCompletionStarted
+  ) {
     return (
-      <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
+      <div className={styles.actionInProgress}>
+        <ProgressRing />
+        {getLocale('pageContentRefinedInProgress')}
+      </div>
     )
   }
   // TODO(petemill): Consider displaying in-progress queries if the API
@@ -103,38 +135,44 @@ function AssistantEvent(props: {
 }
 
 export default function AssistantResponse(props: {
-  entry: Mojom.ConversationTurn,
-  isEntryInProgress: boolean,
-  allowedLinks: string[],
+  entry: Mojom.ConversationTurn
+  isEntryInProgress: boolean
+  allowedLinks: string[]
   isLeoModel: boolean
 }) {
   // Extract certain events which need to render at specific locations (e.g. end of the events)
-  const searchQueriesEvent = props.entry.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
-  const sourcesEvent = props.entry.events?.find(event => !!event.sourcesEvent)?.sourcesEvent
+  const searchQueriesEvent = props.entry.events?.find(
+    (event) => event.searchQueriesEvent,
+  )?.searchQueriesEvent
+  const sourcesEvent = props.entry.events?.find(
+    (event) => !!event.sourcesEvent,
+  )?.sourcesEvent
 
-  const hasCompletionStarted = !props.isEntryInProgress ||
-    (props.entry.events?.some(event => event.completionEvent) ?? false)
+  const hasCompletionStarted =
+    !props.isEntryInProgress
+    || (props.entry.events?.some((event) => event.completionEvent) ?? false)
 
-  return (<>
-  {
-    props.entry.events?.map((event, i) =>
-      <AssistantEvent
-        key={i}
-        event={event}
-        hasCompletionStarted={hasCompletionStarted}
-        isEntryInProgress={props.isEntryInProgress}
-        allowedLinks={props.allowedLinks}
-        isLeoModel={props.isLeoModel}
-      />
-    )
-  }
-
-  {
-    !props.isEntryInProgress &&
+  return (
     <>
-      {searchQueriesEvent && <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />}
-      {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
+      {props.entry.events?.map((event, i) => (
+        <AssistantEvent
+          key={i}
+          event={event}
+          hasCompletionStarted={hasCompletionStarted}
+          isEntryInProgress={props.isEntryInProgress}
+          allowedLinks={props.allowedLinks}
+          isLeoModel={props.isLeoModel}
+        />
+      ))}
+
+      {!props.isEntryInProgress && (
+        <>
+          {searchQueriesEvent && (
+            <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
+          )}
+          {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
+        </>
+      )}
     </>
-  }
-  </>)
+  )
 }

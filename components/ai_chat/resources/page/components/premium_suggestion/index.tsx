@@ -23,23 +23,23 @@ const featuresList = [
   {
     title: getLocale('premiumFeature_1'),
     desc: getLocale('premiumFeature_1_desc'),
-    icon: 'widget-generic'
+    icon: 'widget-generic',
   },
   {
     title: getLocale('premiumFeature_2'),
     desc: getLocale('premiumFeature_2_desc'),
-    icon: 'idea'
+    icon: 'idea',
   },
   {
     title: getLocale('premiumFeature_3'),
     desc: getLocale('premiumFeature_3_desc'),
-    icon: 'edit-pencil'
+    icon: 'edit-pencil',
   },
   {
     title: getLocale('premiumFeature_4'),
     desc: getLocale('premiumFeature_4_desc'),
-    icon: 'message-bubble-comments'
-  }
+    icon: 'message-bubble-comments',
+  },
 ]
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
@@ -48,14 +48,14 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
 
   const pricingInfo = formatMessage(getLocale('premiumPricing'), {
     placeholders: {
-      $1: <data>14.99</data>
-    }
+      $1: <data>14.99</data>,
+    },
   })
 
   const pricingAnnualInfo = formatMessage(getLocale('premiumAnnualPricing'), {
     placeholders: {
-      $1: <data>149.99</data>
-    }
+      $1: <data>149.99</data>,
+    },
   })
 
   React.useEffect(() => {
@@ -72,30 +72,45 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
       <div className={styles.features}>
         <ul>
           {featuresList.map((entry, i) => {
-            return <li key={i}>
-              <div className={styles.icon}>
-                <Icon name={entry.icon} />
-              </div>
-              <span>
-                {entry.title}
-                <p>{entry.desc}</p>
-              </span>
-            </li>
+            return (
+              <li key={i}>
+                <div className={styles.icon}>
+                  <Icon name={entry.icon} />
+                </div>
+                <span>
+                  {entry.title}
+                  <p>{entry.desc}</p>
+                </span>
+              </li>
+            )
           })}
         </ul>
       </div>
       {!aiChatContext.isMobile && (
         <div className={styles.priceListWrapper}>
           <div className={styles.priceList}>
-            <button className={styles.priceButton} tabIndex={-1}>
+            <button
+              className={styles.priceButton}
+              tabIndex={-1}
+            >
               <div className={styles.bestValueColumn}>
-                <span className={styles.priceButtonLabel}>{getLocale('oneYearLabel')}</span>
+                <span className={styles.priceButtonLabel}>
+                  {getLocale('oneYearLabel')}
+                </span>
                 <Label color='green'>{getLocale('bestValueLabel')}</Label>
               </div>
               <span className={styles.price}>{pricingAnnualInfo}</span>
             </button>
-            <button className={classnames(styles.priceButton, styles.priceButtonMonthly)} tabIndex={-1}>
-              <span className={styles.priceButtonLabel}>{getLocale('monthlyLabel')}</span>
+            <button
+              className={classnames(
+                styles.priceButton,
+                styles.priceButtonMonthly,
+              )}
+              tabIndex={-1}
+            >
+              <span className={styles.priceButtonLabel}>
+                {getLocale('monthlyLabel')}
+              </span>
               <span className={styles.price}>{pricingInfo}</span>
             </button>
           </div>
@@ -105,7 +120,10 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         </div>
       )}
       <div className={styles.actions}>
-        <Button onClick={aiChatContext.goPremium} ref={buttonRef}>
+        <Button
+          onClick={aiChatContext.goPremium}
+          ref={buttonRef}
+        >
           {getLocale('upgradeButtonLabel')}
         </Button>
         {props.secondaryActionButton}

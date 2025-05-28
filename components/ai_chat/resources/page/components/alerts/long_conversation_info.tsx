@@ -13,7 +13,7 @@ import { useActiveChat } from '../../state/active_chat_context'
 
 export default function LongConversationInfo() {
   const context = useConversation()
-  const {createNewConversation } = useActiveChat()
+  const { createNewConversation } = useActiveChat()
 
   const handleClearChat = () => {
     createNewConversation()
@@ -27,7 +27,11 @@ export default function LongConversationInfo() {
       </div>
       <div className={styles.infoText}>
         {getLocale('errorContextLimitReaching')}
-        <Button kind="plain-faint" className={styles.link} onClick={handleClearChat}>
+        <Button
+          kind='plain-faint'
+          className={styles.link}
+          onClick={handleClearChat}
+        >
           <span>{getLocale('clearChatButtonLabel')}</span>
         </Button>
       </div>

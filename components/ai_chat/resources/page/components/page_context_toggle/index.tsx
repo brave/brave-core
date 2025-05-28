@@ -22,7 +22,7 @@ function PageContextToggle() {
   }
 
   const toggleTooltipVisibility = () => {
-    setIsTooltipVisible(state => !state)
+    setIsTooltipVisible((state) => !state)
   }
 
   return (
@@ -33,12 +33,12 @@ function PageContextToggle() {
         checked={conversationContext.shouldSendPageContents}
         className={styles.toggle}
       >
-        <span slot="on-icon" />
+        <span slot='on-icon' />
         <div className={styles.label}>
           <span>{getLocale('contextToggleLabel')}</span>
           <Tooltip
             visible={isTooltipVisible}
-            mode="default"
+            mode='default'
             className={styles.tooltip}
             onVisibilityChange={(detail) => {
               setTimeout(() => {

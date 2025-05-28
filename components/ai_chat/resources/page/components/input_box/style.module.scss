@@ -21,7 +21,8 @@
     }
   }
 }
-.form:hover, .form:focus-visible{
+.form:hover,
+.form:focus-visible {
   box-shadow: var(--leo-effect-elevation-01);
 }
 
@@ -38,12 +39,16 @@
     border: 0;
     overflow: hidden;
 
-    &:focus { outline: none; }
-    &::placeholder { color: var(--leo-color-text-tertiary); }
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: var(--leo-color-text-tertiary);
+    }
   }
 
   &::after {
-    content: attr(data-replicated-value) " ";
+    content: attr(data-replicated-value) ' ';
     white-space: pre-wrap;
     visibility: hidden;
   }
@@ -92,7 +97,9 @@
   padding: 3px 16px;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.2s linear, opacity 0.2s linear;
+  transition:
+    visibility 0.2s linear,
+    opacity 0.2s linear;
 }
 
 .counterTextVisible {

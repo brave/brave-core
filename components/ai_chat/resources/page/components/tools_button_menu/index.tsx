@@ -10,10 +10,10 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
 interface Props {
-  inputText: string,
-  isToolsMenuOpen: boolean,
-  setIsToolsMenuOpen: (open: boolean) => void,
-  actionList: Mojom.ActionGroup[],
+  inputText: string
+  isToolsMenuOpen: boolean
+  setIsToolsMenuOpen: (open: boolean) => void
+  actionList: Mojom.ActionGroup[]
   handleActionTypeClick: (action: Mojom.ActionType) => void
 }
 
@@ -23,7 +23,7 @@ export default function ToolsButtonMenu(props: Props) {
       className={classnames({
         [styles.buttonMenu]: true,
         [styles.highlightFirstItem]:
-          props.isToolsMenuOpen && props.inputText.startsWith('/')
+          props.isToolsMenuOpen && props.inputText.startsWith('/'),
       })}
       isOpen={props.isToolsMenuOpen}
       onClose={() => props.setIsToolsMenuOpen(false)}
@@ -36,14 +36,21 @@ export default function ToolsButtonMenu(props: Props) {
             </div>
             {actionGroup.entries.map((entry, i) => {
               if (entry.subheading) {
-                return <div key={i} className={styles.menuSubtitle}>{entry.subheading}</div>
+                return (
+                  <div
+                    key={i}
+                    className={styles.menuSubtitle}
+                  >
+                    {entry.subheading}
+                  </div>
+                )
               } else {
                 return (
                   <leo-menu-item
                     key={i}
                     onClick={() =>
                       props.handleActionTypeClick(
-                        entry.details?.type ?? Mojom.ActionType.UNSPECIFIED
+                        entry.details?.type ?? Mojom.ActionType.UNSPECIFIED,
                       )
                     }
                   >

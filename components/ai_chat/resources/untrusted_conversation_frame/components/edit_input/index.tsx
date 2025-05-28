@@ -30,8 +30,12 @@ function EditInput(props: Props) {
   }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing &&
-        !props.isSubmitDisabled) {
+    if (
+      e.key === 'Enter'
+      && !e.shiftKey
+      && !e.nativeEvent.isComposing
+      && !props.isSubmitDisabled
+    ) {
       if (!e.repeat) {
         props.onSubmit(e.currentTarget.value)
       }
@@ -47,14 +51,14 @@ function EditInput(props: Props) {
         className={styles.growWrap}
         data-replicated-value={text}
       >
-          <textarea
-            ref={textareaRef}
-            value={text}
-            onChange={(e) => setText(e.currentTarget.value)}
-            onKeyDown={handleKeyDown}
-            autoFocus
-            rows={1}
-          />
+        <textarea
+          ref={textareaRef}
+          value={text}
+          onChange={(e) => setText(e.currentTarget.value)}
+          onKeyDown={handleKeyDown}
+          autoFocus
+          rows={1}
+        />
       </div>
       <div className={styles.actions}>
         <Button
@@ -62,9 +66,9 @@ function EditInput(props: Props) {
           kind='plain-faint'
           onClick={props.onCancel}
         >
-        <span className={styles.buttonText}>
-          {getLocale('cancelButtonLabel')}
-        </span>
+          <span className={styles.buttonText}>
+            {getLocale('cancelButtonLabel')}
+          </span>
         </Button>
         <Button
           size='small'
@@ -72,7 +76,7 @@ function EditInput(props: Props) {
           isDisabled={props.isSubmitDisabled}
           onClick={() => props.onSubmit(text)}
         >
-        {getLocale('saveButtonLabel')}
+          {getLocale('saveButtonLabel')}
         </Button>
       </div>
     </div>

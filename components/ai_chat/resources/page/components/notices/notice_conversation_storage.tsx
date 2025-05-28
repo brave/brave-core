@@ -15,11 +15,12 @@ export default function NoticeConversationStorage() {
   const aiChatContext = useAIChat()
 
   return (
-    <div
-      className={styles.notice}
-    >
+    <div className={styles.notice}>
       <div className={styles.illustration}>
-        <img src={illustrationUrl} alt="illustration" />
+        <img
+          src={illustrationUrl}
+          alt='illustration'
+        />
       </div>
       <div className={styles.content}>
         <h4>{getLocale('menuConversationHistory')}</h4>
@@ -35,7 +36,6 @@ export default function NoticeConversationStorage() {
           >
             {getLocale('learnMore')}
           </a>
-
         </p>
       </div>
       <Button
@@ -46,7 +46,10 @@ export default function NoticeConversationStorage() {
         title={getLocale('closeNotice')}
         onClick={aiChatContext.dismissStorageNotice}
       >
-        <Icon className={styles.closeIcon} name='close' />
+        <Icon
+          className={styles.closeIcon}
+          name='close'
+        />
       </Button>
     </div>
   )

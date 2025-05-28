@@ -4,11 +4,20 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .markdownContainer {
-
-  h1,h2,h3,h4,h5,h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: var(--leo-spacing-xl) 0 0 0;
   }
-  h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong, {
+  h1 strong,
+  h2 strong,
+  h3 strong,
+  h4 strong,
+  h5 strong,
+  h6 strong {
     font-weight: inherit;
   }
 
@@ -28,18 +37,20 @@
     font: var(--leo-font-heading-h4);
   }
 
-  h5, h6 {
+  h5,
+  h6 {
     font: var(--leo-font-large-semibold);
   }
 
-  ul,ol {
+  ul,
+  ol {
     padding-left: var(--leo-spacing-xl);
   }
 
   p {
     margin: var(--leo-spacing-l) 0 0 0;
   }
-  
+
   li {
     margin: var(--leo-spacing-l) 0 0 0;
   }
@@ -54,14 +65,14 @@
 
   // Markdown elements have a margin which introduces additional space to the message layout.
   // Removes the top margin of the first child and the bottom margin of the last child to align neatly.
-  >*:first-child {
+  > *:first-child {
     margin-top: 0;
   }
 
-  >*:last-child {
+  > *:last-child {
     margin-bottom: 0;
   }
-  
+
   word-break: break-word;
 }
 

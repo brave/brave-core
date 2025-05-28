@@ -1,89 +1,89 @@
 .root {
-    background: var(--leo-color-container-highlight);
-    padding: var(--leo-spacing-m);
-    border-radius: var(--leo-radius-l);
-    box-shadow: var(--leo-effect-elevation-01);
+  background: var(--leo-color-container-highlight);
+  padding: var(--leo-spacing-m);
+  border-radius: var(--leo-radius-l);
+  box-shadow: var(--leo-effect-elevation-01);
 
-    max-height: 100%;
+  max-height: 100%;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    & leo-button[fab] {
-        flex: 0;
-    }
+  & leo-button[fab] {
+    flex: 0;
+  }
 
-    & h4 {
-        margin: 0;
-        color: var(--leo-color-text-secondary);
-        font: var(--leo-font-heading-h4);
-    }
+  & h4 {
+    margin: 0;
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-heading-h4);
+  }
 
-    & h5 {
-        margin: 0;
-        color: var(--leo-color-text-secondary);
-        font: var(--leo-font-default-semibold);
-    }
+  & h5 {
+    margin: 0;
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-default-semibold);
+  }
 }
 
 leo-dialog .root {
-    max-height: 90vh;
+  max-height: 90vh;
 }
 
 .header {
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
 }
 
 .tabSearchContainer {
-    background: var(--leo-color-container-background);
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-    border-radius: var(--leo-radius-l);
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-m);
+  background: var(--leo-color-container-background);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
 
-    flex-shrink: 1;
-    overflow: hidden;
+  flex-shrink: 1;
+  overflow: hidden;
 }
 
 .tabList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
 
-    border: 1px solid var(--leo-color-divider-subtle);
-    border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
 
-    padding: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m);
 
-    overflow: hidden auto;
+  overflow: hidden auto;
 }
 
 .description {
-    font: var(--leo-font-small-regular);
-    color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
 }
 
 .tabItem {
-    --leo-checkbox-flex-direction: row-reverse;
+  --leo-checkbox-flex-direction: row-reverse;
 
-    padding: var(--leo-spacing-m);
-    display: flex;
-    gap: var(--leo-spacing-m);
-    align-items: center;
-    justify-content: space-between;
+  padding: var(--leo-spacing-m);
+  display: flex;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+  justify-content: space-between;
 
-    & .icon {
-        flex-shrink: 0;
-    }
+  & .icon {
+    flex-shrink: 0;
+  }
 
-    & .title {
-        text-wrap: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        flex: 1;
+  & .title {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1;
 
-        color: var(--leo-color-text-primary);
-        font: var(--leo-font-default-regular);
-    }
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-default-regular);
+  }
 }

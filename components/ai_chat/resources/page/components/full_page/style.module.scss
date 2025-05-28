@@ -28,7 +28,8 @@
 }
 
 .content {
-  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
+  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m)
+    var(--leo-radius-xl);
   flex: 1 1 0%;
   overflow: hidden;
   display: flex;
@@ -49,7 +50,11 @@
   @media (max-width: 1024px) {
     position: fixed;
     z-index: 2;
-    box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)), 0px var(--leo-elevation-xs, 4px) var(--leo-elevation-xs, 16px) -2px var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.10));
+    box-shadow:
+      0px var(--leo-elevation-xxs, 1px) 0px 0px
+        var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)),
+      0px var(--leo-elevation-xs, 4px) var(--leo-elevation-xs, 16px) -2px
+        var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.1));
   }
 
   padding-top: var(--top-padding);

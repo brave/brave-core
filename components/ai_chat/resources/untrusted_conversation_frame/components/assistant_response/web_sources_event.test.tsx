@@ -12,18 +12,21 @@ test('WebSourcesEvent shows chrome-untrusted:// favicon URL as-is', () => {
     <WebSourcesEvent
       sources={[
         {
-          faviconUrl: { url:
-            'chrome-untrusted://resources/brave-icons/globe.svg' },
+          faviconUrl: {
+            url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+          },
           url: { url: 'https://example.com' },
-          title: 'Example Site'
-        }
+          title: 'Example Site',
+        },
       ]}
-    />
+    />,
   )
 
   const img = screen.getByRole('img')
-  expect(img).toHaveAttribute('src',
-      'chrome-untrusted://resources/brave-icons/globe.svg')
+  expect(img).toHaveAttribute(
+    'src',
+    'chrome-untrusted://resources/brave-icons/globe.svg',
+  )
 })
 
 test('WebSourcesEvent sanitizes non-chrome-untrusted favicon URL', () => {
@@ -35,13 +38,15 @@ test('WebSourcesEvent sanitizes non-chrome-untrusted favicon URL', () => {
         {
           faviconUrl: { url: faviconUrl },
           url: { url: 'https://example.com' },
-          title: 'Example Site'
-        }
+          title: 'Example Site',
+        },
       ]}
-    />
+    />,
   )
 
   const img = screen.getByRole('img')
-  expect(img).toHaveAttribute('src',
-      '//image?url=https%3A%2F%2Fimgs.search.brave.com%2Ffavicon.ico')
+  expect(img).toHaveAttribute(
+    'src',
+    '//image?url=https%3A%2F%2Fimgs.search.brave.com%2Ffavicon.ico',
+  )
 })

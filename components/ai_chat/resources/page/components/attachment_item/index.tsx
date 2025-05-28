@@ -69,7 +69,7 @@ export function AttachmentImageItem(props: {
 }) {
   const dataUrl = React.useMemo(() => {
     const blob = new Blob([new Uint8Array(props.uploadedImage.data)], {
-      type: 'image/*'
+      type: 'image/*',
     })
     return URL.createObjectURL(blob)
   }, [props.uploadedImage])

@@ -7,5 +7,5 @@ export enum LEO_DISTILLATION_LEVEL {
   LOW = 0,
   MEDIUM = 1,
   HIGH = 2,
-  FULL = 3
+  FULL = 3,
 }

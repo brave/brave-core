@@ -9,7 +9,7 @@ export enum SupportedPage {
   PULL_REQUESTS = 'pull_requests',
   PULL_REQUEST = 'pull_request',
   BRANCHES = 'branches',
-  PROFILE = 'profile'
+  PROFILE = 'profile',
 }
 
 export function GetPageType(document: Document): SupportedPage | null {

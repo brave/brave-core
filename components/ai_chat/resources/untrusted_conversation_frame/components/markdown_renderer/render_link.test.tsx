@@ -13,7 +13,7 @@ test('Test RenderLink component with allowed links.', async () => {
     <RenderLink
       a={{ href: 'https://example.com', children: 'Test Link' }}
       allowedLinks={['https://example.com']}
-    />
+    />,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('A')
@@ -25,7 +25,7 @@ test('Test RenderLink component with disallowed links.', async () => {
     <RenderLink
       a={{ href: 'https://example.com', children: 'Test Link' }}
       allowedLinks={['https://brave.com']}
-    />
+    />,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('SPAN')
@@ -37,7 +37,7 @@ test('Test RenderLink component with citations.', async () => {
     <RenderLink
       a={{ href: 'https://brave.com', children: '1' }}
       allowedLinks={['https://brave.com']}
-    />
+    />,
   )
   expect(screen.getByText('1')).toBeInTheDocument()
   expect(screen.getByText('1').tagName).toBe('A')
@@ -50,7 +50,7 @@ test('Test RenderLink component with disableLinkRestrictions.', async () => {
       a={{ href: 'https://example.com', children: 'Test Link' }}
       allowedLinks={[]}
       disableLinkRestrictions={true}
-    />
+    />,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('A')
@@ -64,7 +64,7 @@ test('Test RenderLink component with http links.', async () => {
       a={{ href: 'http://example.com', children: 'Test Link' }}
       allowedLinks={['http://example.com']}
       disableLinkRestrictions={true}
-    />
+    />,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('SPAN')

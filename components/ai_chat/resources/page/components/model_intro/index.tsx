@@ -77,8 +77,8 @@ export default function ModelIntro() {
                           {content}
                         </a>
                       )
-                    }
-                  }
+                    },
+                  },
                 })}
               </div>
               <Button

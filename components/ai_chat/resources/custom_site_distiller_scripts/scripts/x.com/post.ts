@@ -10,7 +10,7 @@ import {
   wrapLines,
   isString,
   decodeHTMLSpecialChars,
-  getDateString
+  getDateString,
 } from './utils'
 import { distillCard } from './cards'
 import { distillPostMediaEntities } from './entities'
@@ -30,7 +30,7 @@ function getPostMetrics(post: any) {
     { key: 'quote', singular: 'Quote', plural: 'Quotes' },
     { key: 'reply', singular: 'Reply', plural: 'Replies' },
     { key: 'retweet', singular: 'Repost', plural: 'Reposts' },
-    { key: 'bookmark', singular: 'Bookmark', plural: 'Bookmarks' }
+    { key: 'bookmark', singular: 'Bookmark', plural: 'Bookmarks' },
   ]
 
   /**
@@ -112,7 +112,7 @@ function buildPostBody(post: any, level: number) {
     text ? wrapLines(text) : null,
     card ? [`\n${indentLines(wrapLines(card), ' | ')}`] : null,
     quoted ? [`\n${indentLines(quoted, ' > ')}`] : null,
-    attachments ? [`\nAttachments:\n${attachments}`] : null
+    attachments ? [`\nAttachments:\n${attachments}`] : null,
   ]
     .flat()
     .filter(Boolean)
@@ -131,7 +131,7 @@ function distillPostHeader(post: any) {
   return [
     `From: ${signature}`,
     buildPostActionLine(post),
-    metrics.length > 0 ? `Metrics: ${metrics.join(' | ')}` : null
+    metrics.length > 0 ? `Metrics: ${metrics.join(' | ')}` : null,
   ]
     .filter(Boolean)
     .join('\n')

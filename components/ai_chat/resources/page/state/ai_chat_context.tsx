@@ -15,7 +15,9 @@ export interface ConversationEntriesProps {
 }
 
 type AIChatContextProps = {
-  conversationEntriesComponent: (props: ConversationEntriesProps) => React.ReactElement
+  conversationEntriesComponent: (
+    props: ConversationEntriesProps,
+  ) => React.ReactElement
 }
 
 type AIChatContextInternal = AIChatContextProps & {
@@ -31,11 +33,11 @@ type AIChatContextInternal = AIChatContextProps & {
   service?: Mojom.ServiceRemote
 
   editingConversationId: string | null
-  setEditingConversationId: (uuid: string | null) => void,
+  setEditingConversationId: (uuid: string | null) => void
   deletingConversationId: string | null
   setDeletingConversationId: (uuid: string | null) => void
 
-  showSidebar: boolean,
+  showSidebar: boolean
   toggleSidebar: () => void
 }
 
@@ -44,23 +46,23 @@ export type AIChatContext = AIChat.State & AIChatContextInternal
 const defaultContext: AIChatContext = {
   ...AIChat.defaultUIState,
   initialized: false,
-  goPremium: () => { },
-  managePremium: () => { },
-  handleAgreeClick: () => { },
-  enableStoragePref: () => { },
-  dismissStorageNotice: () => { },
-  dismissPremiumPrompt: () => { },
-  userRefreshPremiumSession: () => { },
+  goPremium: () => {},
+  managePremium: () => {},
+  handleAgreeClick: () => {},
+  enableStoragePref: () => {},
+  dismissStorageNotice: () => {},
+  dismissPremiumPrompt: () => {},
+  userRefreshPremiumSession: () => {},
 
   editingConversationId: null,
-  setEditingConversationId: () => { },
+  setEditingConversationId: () => {},
   deletingConversationId: null,
-  setDeletingConversationId: () => { },
+  setDeletingConversationId: () => {},
 
   showSidebar: false,
-  toggleSidebar: () => { },
+  toggleSidebar: () => {},
 
-  conversationEntriesComponent: () => <></>
+  conversationEntriesComponent: () => <></>,
 }
 
 export const AIChatReactContext =
@@ -70,13 +72,17 @@ export function useIsSmall() {
   return useMediaQuery('(max-width: 1024px)')
 }
 
-export function AIChatContextProvider(props: React.PropsWithChildren<AIChatContextProps>) {
+export function AIChatContextProvider(
+  props: React.PropsWithChildren<AIChatContextProps>,
+) {
   const api = getAPI()
   const context = useAPIState(api, defaultContext)
-  const [editingConversationId, setEditingConversationId] =
-    React.useState<string | null>(null)
-  const [deletingConversationId, setDeletingConversationId] =
-    React.useState<string | null>(null)
+  const [editingConversationId, setEditingConversationId] = React.useState<
+    string | null
+  >(null)
+  const [deletingConversationId, setDeletingConversationId] = React.useState<
+    string | null
+  >(null)
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
@@ -96,7 +102,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     deletingConversationId,
     setDeletingConversationId,
     showSidebar,
-    toggleSidebar: () => setShowSidebar(s => !s),
+    toggleSidebar: () => setShowSidebar((s) => !s),
     conversationEntriesComponent: props.conversationEntriesComponent,
   }
 

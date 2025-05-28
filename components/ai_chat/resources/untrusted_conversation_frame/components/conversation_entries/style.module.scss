@@ -10,7 +10,8 @@
   gap: var(--leo-spacing-xl);
   font: var(--leo-font-large-regular);
   color: var(--leo-color-text-primary);
-  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0
+    var(--leo-spacing-2xl);
 }
 
 .turnContainerMobile {
@@ -41,7 +42,8 @@
   align-items: flex-start;
   flex-direction: column;
   padding: var(--leo-spacing-xl);
-  border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-s) var(--leo-spacing-xl);
+  border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl)
+    var(--leo-spacing-s) var(--leo-spacing-xl);
   background-color: var(--leo-color-neutral-10);
   max-width: 520px;
   gap: var(--leo-spacing-m);
@@ -62,7 +64,7 @@
   align-items: center;
   gap: var(--leo-spacing-xs);
   border-radius: var(--leo-radius-s);
-  background: var( --leo-color-container-background);
+  background: var(--leo-color-container-background);
 }
 
 .editLabelText {

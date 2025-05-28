@@ -15,11 +15,11 @@ import * as Mojom from './mojom'
  */
 export function updateConversationHistory(
   currentHistory: Mojom.ConversationTurn[],
-  newEntry: Mojom.ConversationTurn
+  newEntry: Mojom.ConversationTurn,
 ): Mojom.ConversationTurn[] {
   // Check if an entry with the same UUID already exists
   const existingEntryIndex = currentHistory.findIndex(
-    (existingEntry) => existingEntry.uuid === newEntry.uuid
+    (existingEntry) => existingEntry.uuid === newEntry.uuid,
   )
 
   if (existingEntryIndex !== -1) {
@@ -27,7 +27,7 @@ export function updateConversationHistory(
     const updatedHistory = [...currentHistory]
     updatedHistory[existingEntryIndex] = {
       ...updatedHistory[existingEntryIndex],
-      ...newEntry
+      ...newEntry,
     }
     return updatedHistory
   } else {
@@ -43,9 +43,11 @@ export function updateConversationHistory(
  * @returns Filtered array containing only image and screenshot files
  */
 export function getImageFiles(
-  files?: Mojom.UploadedFile[]): Mojom.UploadedFile[] | undefined {
-  return files?.filter(file =>
-    file.type === Mojom.UploadedFileType.kImage ||
-    file.type === Mojom.UploadedFileType.kScreenshot
-  );
+  files?: Mojom.UploadedFile[],
+): Mojom.UploadedFile[] | undefined {
+  return files?.filter(
+    (file) =>
+      file.type === Mojom.UploadedFileType.kImage
+      || file.type === Mojom.UploadedFileType.kScreenshot,
+  )
 }

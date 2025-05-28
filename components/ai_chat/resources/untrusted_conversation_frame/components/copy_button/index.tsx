@@ -28,12 +28,12 @@ function CopyButton(props: Props) {
     <Tooltip
       mode='mini'
       visible={isActive}
-      text="Copied"
+      text='Copied'
     >
       <Button
         className={classnames({
           [styles.copyButton]: true,
-          [styles.copyButtonActive]: isActive
+          [styles.copyButtonActive]: isActive,
         })}
         fab
         size='small'

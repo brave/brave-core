@@ -17,79 +17,80 @@ interface ActionTypeLabelProps {
 }
 
 function getCategoryAndItem(actionType: Mojom.ActionType): {
-  category: string | undefined, item: string | undefined
+  category: string | undefined
+  item: string | undefined
 } {
   switch (actionType) {
-      case Mojom.ActionType.SUMMARIZE_SELECTED_TEXT:
-        return { category: undefined, item: getLocale('summarizeLabel')}
-      case Mojom.ActionType.EXPLAIN:
-        return { category: undefined, item: getLocale('explainLabel')}
-      case Mojom.ActionType.CREATE_TAGLINE:
-        return {
-          category: getLocale('createCategoryTitle'),
-          item: getLocale('taglineLabel')
-        }
-      case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
-        return {
-          category: getLocale('socialMediaPostLabel'),
-          item: getLocale('socialMediaShortLabel')
-        }
-      case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG:
-        return {
-          category: getLocale('socialMediaPostLabel'),
-          item: getLocale('socialMediaLongLabel')
-        }
-      case Mojom.ActionType.PARAPHRASE:
-        return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('paraphraseLabel')
-        }
-      case Mojom.ActionType.IMPROVE:
-        return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('improveLabel')
-        }
-      case Mojom.ActionType.ACADEMICIZE:
-        return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('academicizeLabel')
-        }
-      case Mojom.ActionType.PROFESSIONALIZE:
-        return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('professionalizeLabel')
-        }
-      case Mojom.ActionType.PERSUASIVE_TONE:
-        return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('persuasiveToneLabel')
-        }
-      case Mojom.ActionType.CASUALIZE:
-        return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('casualizeLabel')
-        }
-      case Mojom.ActionType.FUNNY_TONE:
-        return {
-          category: getLocale('changeToneLabel'),
-          item: getLocale('funnyToneLabel')
-        }
-      case Mojom.ActionType.SHORTEN:
-        return {
-          category: getLocale('changeLengthLabel'),
-          item: getLocale('shortenLabel')
-        }
-      case Mojom.ActionType.EXPAND:
-        return {
-          category: getLocale('changeLengthLabel'),
-          item: getLocale('expandLabel')
-        }
-      default:
-        return { category: undefined, item: undefined }
+    case Mojom.ActionType.SUMMARIZE_SELECTED_TEXT:
+      return { category: undefined, item: getLocale('summarizeLabel') }
+    case Mojom.ActionType.EXPLAIN:
+      return { category: undefined, item: getLocale('explainLabel') }
+    case Mojom.ActionType.CREATE_TAGLINE:
+      return {
+        category: getLocale('createCategoryTitle'),
+        item: getLocale('taglineLabel'),
+      }
+    case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
+      return {
+        category: getLocale('socialMediaPostLabel'),
+        item: getLocale('socialMediaShortLabel'),
+      }
+    case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG:
+      return {
+        category: getLocale('socialMediaPostLabel'),
+        item: getLocale('socialMediaLongLabel'),
+      }
+    case Mojom.ActionType.PARAPHRASE:
+      return {
+        category: getLocale('rewriteCategoryTitle'),
+        item: getLocale('paraphraseLabel'),
+      }
+    case Mojom.ActionType.IMPROVE:
+      return {
+        category: getLocale('rewriteCategoryTitle'),
+        item: getLocale('improveLabel'),
+      }
+    case Mojom.ActionType.ACADEMICIZE:
+      return {
+        category: getLocale('changeToneLabel'),
+        item: getLocale('academicizeLabel'),
+      }
+    case Mojom.ActionType.PROFESSIONALIZE:
+      return {
+        category: getLocale('changeToneLabel'),
+        item: getLocale('professionalizeLabel'),
+      }
+    case Mojom.ActionType.PERSUASIVE_TONE:
+      return {
+        category: getLocale('changeToneLabel'),
+        item: getLocale('persuasiveToneLabel'),
+      }
+    case Mojom.ActionType.CASUALIZE:
+      return {
+        category: getLocale('changeToneLabel'),
+        item: getLocale('casualizeLabel'),
+      }
+    case Mojom.ActionType.FUNNY_TONE:
+      return {
+        category: getLocale('changeToneLabel'),
+        item: getLocale('funnyToneLabel'),
+      }
+    case Mojom.ActionType.SHORTEN:
+      return {
+        category: getLocale('changeLengthLabel'),
+        item: getLocale('shortenLabel'),
+      }
+    case Mojom.ActionType.EXPAND:
+      return {
+        category: getLocale('changeLengthLabel'),
+        item: getLocale('expandLabel'),
+      }
+    default:
+      return { category: undefined, item: undefined }
   }
 }
 
-function ActionTypeLabel (props: ActionTypeLabelProps) {
+function ActionTypeLabel(props: ActionTypeLabelProps) {
   const { category, item } = getCategoryAndItem(props.actionType)
 
   let removeButtonElement = null
@@ -99,11 +100,11 @@ function ActionTypeLabel (props: ActionTypeLabelProps) {
       <Button
         className={styles.removeButton}
         fab
-        kind="plain-faint"
-        title="remove action"
+        kind='plain-faint'
+        title='remove action'
         onClick={props.onCloseClick}
       >
-        <Icon name="close"/>
+        <Icon name='close' />
       </Button>
     )
   }

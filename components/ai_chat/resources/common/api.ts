@@ -10,15 +10,13 @@ export default abstract class API<T> {
   private eventTarget = new EventTarget()
 
   constructor(defaultState: T) {
-    this.state = {...defaultState}
+    this.state = { ...defaultState }
   }
 
   // Debounce multiple state changes in the same task causing multiple
   // events to be dispatched.
   private dispatchDebouncedStateChange = debounce(() => {
-    this.eventTarget.dispatchEvent(
-      new Event('statechange')
-    )
+    this.eventTarget.dispatchEvent(new Event('statechange'))
   }, 0)
 
   public setPartialState(partialState: Partial<T>) {

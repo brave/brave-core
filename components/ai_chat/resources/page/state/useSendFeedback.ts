@@ -18,13 +18,13 @@ export interface SendFeedbackState {
   handleFeedbackFormSubmit: (
     selectedCategory: string,
     feedbackText: string,
-    shouldSendUrl: boolean
+    shouldSendUrl: boolean,
   ) => Promise<void>
   handleCloseRateMessagePrivacyModal: () => void
   handleRateMessage: (
     turnUuid: string,
     isLiked: boolean,
-    ignoreFutureWarnings?: boolean
+    ignoreFutureWarnings?: boolean,
   ) => Promise<void>
 }
 
@@ -34,7 +34,7 @@ export const defaultSendFeedbackState: SendFeedbackState = {
   handleFeedbackFormCancel: () => {},
   handleFeedbackFormSubmit: async () => {},
   handleCloseRateMessagePrivacyModal: () => {},
-  handleRateMessage: async () => {}
+  handleRateMessage: async () => {},
 }
 
 /**
@@ -45,20 +45,18 @@ export const defaultSendFeedbackState: SendFeedbackState = {
  */
 export default function useSendFeedback(
   conversationHandler: Mojom.ConversationHandlerRemote,
-  conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
+  conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter,
 ): SendFeedbackState {
-
   const feedbackId = React.useRef<string | null>(null)
-  const [isFeedbackFormVisible, setIsFeedbackFormVisible] = React.useState(false)
-  const [ratingTurnUuid, setRatingTurnUuid] = React.useState<
-    { isLiked: boolean; turnUuid: string }
-  >()
+  const [isFeedbackFormVisible, setIsFeedbackFormVisible] =
+    React.useState(false)
+  const [ratingTurnUuid, setRatingTurnUuid] = React.useState<{
+    isLiked: boolean
+    turnUuid: string
+  }>()
 
   const handleRateMessage = React.useCallback(
-    async (
-      turnUuid: string,
-      isLiked: boolean
-    ) => {
+    async (turnUuid: string, isLiked: boolean) => {
       // Reset feedback form
       feedbackId.current = null
       setIsFeedbackFormVisible(false)
@@ -76,7 +74,7 @@ export default function useSendFeedback(
         showAlert({
           type: 'error',
           content: getLocale('ratingError'),
-          actions: []
+          actions: [],
         })
         setRatingTurnUuid(undefined)
         return
@@ -85,34 +83,37 @@ export default function useSendFeedback(
         showAlert({
           type: 'info',
           content: getLocale('answerLiked'),
-          actions: []
+          actions: [],
         })
       } else {
         // Allow the alert to stay for longer so that the user has time
         // to click the button to add feedback.
         feedbackId.current = response.ratingId
-        showAlert({
-          type: 'info',
-          content: getLocale('answerDisliked'),
-          actions: [
-            {
-              text: getLocale('addFeedbackButtonLabel'),
-              kind: 'plain-faint',
-              action: () => setIsFeedbackFormVisible(true)
-            }
-          ]
-        }, 5000)
+        showAlert(
+          {
+            type: 'info',
+            content: getLocale('answerDisliked'),
+            actions: [
+              {
+                text: getLocale('addFeedbackButtonLabel'),
+                kind: 'plain-faint',
+                action: () => setIsFeedbackFormVisible(true),
+              },
+            ],
+          },
+          5000,
+        )
       }
       setRatingTurnUuid(undefined)
     },
-    [conversationHandler, ratingTurnUuid]
+    [conversationHandler, ratingTurnUuid],
   )
 
   // Listen to ratings requests from the child frame
   React.useEffect(() => {
     const listenerId =
       conversationEntriesFrameObserver.rateMessage.addListener(
-        handleRateMessage
+        handleRateMessage,
       )
 
     return () => {
@@ -129,17 +130,22 @@ export default function useSendFeedback(
   }
 
   async function handleFeedbackFormSubmit(
-    selectedCategory: string, feedbackText: string, shouldSendUrl: boolean
+    selectedCategory: string,
+    feedbackText: string,
+    shouldSendUrl: boolean,
   ) {
     if (feedbackId.current) {
       const response = await conversationHandler?.sendFeedback(
-        selectedCategory, feedbackText, feedbackId.current, shouldSendUrl
+        selectedCategory,
+        feedbackText,
+        feedbackId.current,
+        shouldSendUrl,
       )
       if (!response.isSuccess) {
         showAlert({
           type: 'error',
           content: getLocale('feedbackError'),
-          actions: []
+          actions: [],
         })
         return
       }
@@ -147,7 +153,7 @@ export default function useSendFeedback(
       showAlert({
         type: 'success',
         content: getLocale('feedbackSent'),
-        actions: []
+        actions: [],
       })
       setIsFeedbackFormVisible(false)
     }
@@ -159,6 +165,6 @@ export default function useSendFeedback(
     handleFeedbackFormCancel,
     handleFeedbackFormSubmit,
     handleCloseRateMessagePrivacyModal,
-    handleRateMessage
+    handleRateMessage,
   }
 }

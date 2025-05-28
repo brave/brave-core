@@ -20,7 +20,7 @@ export function distillNotificationElement(element: HTMLElement) {
     const message = distillNotificationData(notificationData)
     distilled.push(
       message && `Notification: ${message}`,
-      notificationURL && `URL: ${notificationURL}`
+      notificationURL && `URL: ${notificationURL}`,
     )
   }
 
@@ -38,7 +38,7 @@ function distillNotificationData(notification: any) {
 function distillNotificationDataAggregateUserActionsV1(notification: any) {
   const {
     message: { text, entities },
-    template: { aggregateUserActionsV1 }
+    template: { aggregateUserActionsV1 },
   } = notification
 
   let distilled: string = text

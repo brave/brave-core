@@ -19,21 +19,25 @@ function SiteTitle(props: SiteTitleProps) {
     <div
       className={classnames({
         [styles.box]: true,
-        [styles.boxSm]: props.size === 'small'
+        [styles.boxSm]: props.size === 'small',
       })}
     >
       <div
         className={classnames({
           [styles.favIconContainer]: true,
-          [styles.favIconContainerSm]: props.size === 'small'
+          [styles.favIconContainerSm]: props.size === 'small',
         })}
       >
-        {props.content.url?.url && <img src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}`} />}
+        {props.content.url?.url && (
+          <img
+            src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}`}
+          />
+        )}
       </div>
       <div
         className={classnames({
           [styles.titleContainer]: true,
-          [styles.titleContainerSm]: props.size === 'small'
+          [styles.titleContainerSm]: props.size === 'small',
         })}
       >
         <p
@@ -49,10 +53,20 @@ function SiteTitle(props: SiteTitleProps) {
 
 export default function SiteTitles(props: { size: 'default' | 'small' }) {
   const context = useConversation()
-  return <div className={classnames({
-    [styles.container]: true,
-    [styles.small]: props.size === 'small'
-  })}>
-    {context.associatedContentInfo.map(c => <SiteTitle key={c.uuid} size={props.size} content={c} />)}
-  </div>
+  return (
+    <div
+      className={classnames({
+        [styles.container]: true,
+        [styles.small]: props.size === 'small',
+      })}
+    >
+      {context.associatedContentInfo.map((c) => (
+        <SiteTitle
+          key={c.uuid}
+          size={props.size}
+          content={c}
+        />
+      ))}
+    </div>
+  )
 }

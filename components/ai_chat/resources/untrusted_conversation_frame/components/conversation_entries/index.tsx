@@ -50,7 +50,7 @@ function ConversationEntries() {
       if (id === null) return
       showHumanMenu(parseInt(id))
     },
-    onTouchMove: () => setActiveMenuId(undefined)
+    onTouchMove: () => setActiveMenuId(undefined),
   })
 
   const getCompletion = (turn: Mojom.ConversationTurn) => {
@@ -58,29 +58,32 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
-  const allAllowedLinks: string[] = conversationContext.conversationHistory
-    .flatMap(turn =>
-    turn.events?.flatMap(event =>
-      event.sourcesEvent?.sources?.map(source => source.url.url) || []
-    ) || []
-  )
+  const allAllowedLinks: string[] =
+    conversationContext.conversationHistory.flatMap(
+      (turn) =>
+        turn.events?.flatMap(
+          (event) =>
+            event.sourcesEvent?.sources?.map((source) => source.url.url) || [],
+        ) || [],
+    )
 
   return (
     <>
       <div>
         {conversationContext.conversationHistory.map((turn, id) => {
           const isLastEntry =
-            (id === conversationContext.conversationHistory.length - 1)
+            id === conversationContext.conversationHistory.length - 1
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
             isLastEntry && isAIAssistant && conversationContext.isGenerating
           const isHuman = turn.characterType === Mojom.CharacterType.HUMAN
           const showLongPageContentInfo =
-            id === 1 &&
-            isAIAssistant &&
-            ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
-             (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
+            id === 1
+            && isAIAssistant
+            && ((conversationContext.contentUsedPercentage ?? 100) < 100
+              || (conversationContext.trimmedTokens > 0
+                && conversationContext.totalTokens > 0))
           const showEditInput = editInputId === id
           const showEditIndicator = !showEditInput && !!turn.edits?.length
           const latestEdit = turn.edits?.at(-1)
@@ -92,24 +95,24 @@ function ConversationEntries() {
           const hasReasoning = latestTurnText.includes('<think>')
 
           const turnModelKey = turn.modelKey
-            ? conversationContext.allModels
-                .find(m => m.key === turn.modelKey)
-                ?.key ?? undefined
-            : undefined;
+            ? (conversationContext.allModels.find(
+                (m) => m.key === turn.modelKey,
+              )?.key ?? undefined)
+            : undefined
 
           const turnContainer = classnames({
-            [styles.turnContainerMobile]: conversationContext.isMobile
+            [styles.turnContainerMobile]: conversationContext.isMobile,
           })
 
           const turnClass = classnames({
             [styles.turn]: true,
-            [styles.turnAI]: isAIAssistant
+            [styles.turnAI]: isAIAssistant,
           })
 
           const handleCopyText = () => {
             if (isAIAssistant) {
               const event = latestTurn.events?.find(
-                (event) => event.completionEvent
+                (event) => event.completionEvent,
               )
               if (!event?.completionEvent) return
               navigator.clipboard.writeText(event.completionEvent.completion)
@@ -118,8 +121,7 @@ function ConversationEntries() {
             }
           }
 
-          const imageFiles =
-            getImageFiles(latestTurn.uploadedFiles) || []
+          const imageFiles = getImageFiles(latestTurn.uploadedFiles) || []
 
           return (
             <div
@@ -148,8 +150,8 @@ function ConversationEntries() {
                     <AssistantReasoning
                       text={getReasoningText(latestTurnText)}
                       isReasoning={
-                        isEntryInProgress &&
-                        !latestTurnText.includes('</think>')
+                        isEntryInProgress
+                        && !latestTurnText.includes('</think>')
                       }
                     />
                   )}
@@ -185,7 +187,7 @@ function ConversationEntries() {
                             </div>
                           )}
                         </div>
-                        {imageFiles.length > 0 &&
+                        {imageFiles.length > 0 && (
                           <div className={styles.uploadedImages}>
                             {imageFiles.map((img) => (
                               <AttachmentImageItem
@@ -194,7 +196,7 @@ function ConversationEntries() {
                               />
                             ))}
                           </div>
-                        }
+                        )}
                       </div>
                     </>
                   )}
@@ -217,10 +219,10 @@ function ConversationEntries() {
                 {isAIAssistant && showEditIndicator && (
                   <EditIndicator time={lastEditedTime} />
                 )}
-                {isAIAssistant &&
-                  conversationContext.isLeoModel &&
-                  !turn.selectedText &&
-                  !showEditInput && (
+                {isAIAssistant
+                  && conversationContext.isLeoModel
+                  && !turn.selectedText
+                  && !showEditInput && (
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
                       turnModelKey={turnModelKey}

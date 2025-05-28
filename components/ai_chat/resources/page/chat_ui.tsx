@@ -9,10 +9,14 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import getAPI from './api'
-import { AIChatContextProvider, ConversationEntriesProps, useAIChat } from './state/ai_chat_context'
+import {
+  AIChatContextProvider,
+  ConversationEntriesProps,
+  useAIChat,
+} from './state/ai_chat_context'
 import {
   ConversationContextProvider,
-  useConversation
+  useConversation,
 } from './state/conversation_context'
 import Main from './components/main'
 import FullScreen from './components/full_page'
@@ -33,7 +37,7 @@ function App() {
     <AIChatContextProvider conversationEntriesComponent={ConversationEntries}>
       <ActiveChatProviderFromUrl>
         <ConversationContextProvider>
-            <Content />
+          <Content />
         </ConversationContextProvider>
       </ActiveChatProviderFromUrl>
     </AIChatContextProvider>
@@ -78,15 +82,19 @@ function ConversationEntries(props: ConversationEntriesProps) {
   // it will never grow until a user action happens.
   React.useEffect(() => {
     // conversationUuid populated is a sign that data has been fetched
-    if (!hasNotifiedContentReady.current && conversationContext.conversationUuid &&
-        !conversationContext.conversationHistory.length && hasLoaded) {
+    if (
+      !hasNotifiedContentReady.current
+      && conversationContext.conversationUuid
+      && !conversationContext.conversationHistory.length
+      && hasLoaded
+    ) {
       hasNotifiedContentReady.current = true
       props.onIsContentReady(true)
     }
   }, [
     conversationContext.conversationUuid,
     conversationContext.conversationHistory.length,
-    hasLoaded
+    hasLoaded,
   ])
 
   React.useEffect(() => {
@@ -104,7 +112,10 @@ function ConversationEntries(props: ConversationEntriesProps) {
         props.onHeightChanged()
       }
     }
-    const id = api.conversationEntriesFrameObserver.childHeightChanged.addListener(listener)
+    const id =
+      api.conversationEntriesFrameObserver.childHeightChanged.addListener(
+        listener,
+      )
 
     return () => {
       api.conversationEntriesFrameObserver.removeListener(id)
@@ -115,7 +126,10 @@ function ConversationEntries(props: ConversationEntriesProps) {
     <iframe
       sandbox='allow-scripts allow-same-origin'
       allow='clipboard-write'
-      src={'chrome-untrusted://leo-ai-conversation-entries/' + conversationContext.conversationUuid}
+      src={
+        'chrome-untrusted://leo-ai-conversation-entries/'
+        + conversationContext.conversationUuid
+      }
       ref={iframeRef}
       onLoad={() => setHasLoaded(true)}
     />

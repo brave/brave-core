@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import selectors from './selectors';
+import selectors from './selectors'
 import { LEO_DISTILLATION_LEVEL } from '../distillation'
 import { getDistillationLevel } from './distiller'
 
@@ -12,17 +12,16 @@ export function isString(value: any) {
 }
 
 export function isSupportedPage(document: Document) {
-
   // If this is a user profile page, we can distill it.
   if (document.querySelector(selectors.userProfileHeaderItems)) {
-    return true;
+    return true
   }
 
   const supportedPaths = [
     '/',
     '/home',
     '/notifications',
-    /^\/.*?\/status\/\d+/ // Post detail pages
+    /^\/.*?\/status\/\d+/, // Post detail pages
   ]
 
   for (const entry of supportedPaths) {
@@ -44,7 +43,7 @@ export function isSupportedPage(document: Document) {
  */
 export function decodeHTMLSpecialChars(text: string) {
   const isolatedDocument = document.implementation.createHTMLDocument()
-  const textarea = isolatedDocument.createElement("textarea")
+  const textarea = isolatedDocument.createElement('textarea')
   // eslint-disable-next-line no-unsanitized/property
   textarea.innerHTML = text
   return textarea.value

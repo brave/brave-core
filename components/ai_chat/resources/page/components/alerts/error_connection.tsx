@@ -13,19 +13,17 @@ interface PromptAutoSuggestionProps {
   onRetry?: () => void
 }
 
-function ErrorConnection (props: PromptAutoSuggestionProps) {
+function ErrorConnection(props: PromptAutoSuggestionProps) {
   return (
     <div className={styles.alert}>
-      <Alert
-        type='error'
-      >
+      <Alert type='error'>
         {getLocale('errorNetworkLabel')}
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale('retryButtonLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

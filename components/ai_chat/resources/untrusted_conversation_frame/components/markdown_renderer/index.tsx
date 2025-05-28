@@ -13,7 +13,7 @@ import { visit } from 'unist-util-visit'
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'
 import {
-  useUntrustedConversationContext //
+  useUntrustedConversationContext, //
 } from '../../untrusted_conversation_context'
 
 const removeReasoning = (text: string) => {
@@ -21,10 +21,10 @@ const removeReasoning = (text: string) => {
 }
 
 const CodeBlock = React.lazy(async () => ({
-  default: (await import('../code_block')).default.Block
+  default: (await import('../code_block')).default.Block,
 }))
 const CodeInline = React.lazy(async () => ({
-  default: (await import('../code_block')).default.Inline
+  default: (await import('../code_block')).default.Inline,
 }))
 
 const allowedElements = [
@@ -59,7 +59,7 @@ const allowedElements = [
   'hr',
 
   // Hyperlinks
-  'a'
+  'a',
 ]
 
 interface CursorDecoratorProps {
@@ -90,7 +90,7 @@ interface RenderLinkProps {
 }
 
 export function RenderLink(props: RenderLinkProps) {
-  const { a, allowedLinks, disableLinkRestrictions} = props
+  const { a, allowedLinks, disableLinkRestrictions } = props
   const { href, children } = a
 
   // Context
@@ -98,8 +98,10 @@ export function RenderLink(props: RenderLinkProps) {
 
   // Computed
   const isHttps = href?.toLowerCase().startsWith('https://')
-  const isLinkAllowed = isHttps && (disableLinkRestrictions ||
-    (allowedLinks?.some((link) => href?.startsWith(link)) ?? false))
+  const isLinkAllowed =
+    isHttps
+    && (disableLinkRestrictions
+      || (allowedLinks?.some((link) => href?.startsWith(link)) ?? false))
 
   const handleLinkClicked = React.useCallback(() => {
     if (href && isLinkAllowed) {
@@ -150,8 +152,8 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
 
       visit(tree, 'element', (el: HastElement) => {
         if (
-          lastElLineEndsAt === el.position?.end.line &&
-          lastElCharEndsAt === el.position?.end.offset
+          lastElLineEndsAt === el.position?.end.line
+          && lastElCharEndsAt === el.position?.end.offset
         ) {
           lastElementRef.current = el
         }
@@ -211,7 +213,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
               allowedLinks={mainProps.allowedLinks}
               disableLinkRestrictions={mainProps.disableLinkRestrictions}
             />
-          )
+          ),
         }}
       />
     </div>

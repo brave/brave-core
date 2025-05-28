@@ -66,9 +66,10 @@ function ConversationItem(props: ConversationItemProps) {
   const conversationContext = useConversation()
 
   const { uuid } = props.conversation
-  const title = props.conversation.title || getLocale('conversationListUntitled')
+  const title =
+    props.conversation.title || getLocale('conversationListUntitled')
 
-  const handleButtonMenuChange = (e: {isOpen: boolean}) => {
+  const handleButtonMenuChange = (e: { isOpen: boolean }) => {
     setIsOptionsMenuOpen(e.isOpen)
   }
 
@@ -91,7 +92,7 @@ function ConversationItem(props: ConversationItemProps) {
         className={classnames(
           styles.navItem,
           isActive && styles.navItemActive,
-          isOptionsMenuOpen && styles.isOptionsMenuOpen
+          isOptionsMenuOpen && styles.isOptionsMenuOpen,
         )}
         onClick={(e) => {
           if (isEditing) {
@@ -103,9 +104,7 @@ function ConversationItem(props: ConversationItemProps) {
         onDoubleClick={() => aiChatContext.setEditingConversationId(uuid)}
         href={`/${uuid}`}
       >
-        <div
-          className={styles.displayTitle}
-        >
+        <div className={styles.displayTitle}>
           <div className={styles.displayTitleContent}>
             <div
               className={styles.text}
@@ -166,36 +165,48 @@ export default function ConversationsList(props: ConversationsListProps) {
     <>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
-          {!aiChatContext.isStoragePrefEnabled &&
-          <Alert type='notice'>
-            <Icon name='history' slot='icon' />
-            <div slot='title'>{getLocale('noticeConversationHistoryTitleDisabledPref')}</div>
-            {getLocale('noticeConversationHistoryDisabledPref')}
-            <div slot='actions'>
-              <Button kind='outline' onClick={aiChatContext.enableStoragePref}>
-                {getLocale('noticeConversationHistoryDisabledPrefButton')}
-              </Button>
-            </div>
-          </Alert>
-          }
-          {aiChatContext.isStoragePrefEnabled && aiChatContext.visibleConversations.length === 0 &&
-          <Alert type='notice'>
-            <Icon name='history' slot='icon' />
-            <div slot='title'>{getLocale('menuConversationHistory')}</div>
-            {getLocale('noticeConversationHistoryEmpty')}
-          </Alert>
-          }
-          {aiChatContext.visibleConversations.length > 0 &&
-          <ol>
-            {aiChatContext.visibleConversations.map(conversation =>
-              <ConversationItem
-                key={conversation.uuid}
-                {...props}
-                conversation={conversation}
+          {!aiChatContext.isStoragePrefEnabled && (
+            <Alert type='notice'>
+              <Icon
+                name='history'
+                slot='icon'
               />
+              <div slot='title'>
+                {getLocale('noticeConversationHistoryTitleDisabledPref')}
+              </div>
+              {getLocale('noticeConversationHistoryDisabledPref')}
+              <div slot='actions'>
+                <Button
+                  kind='outline'
+                  onClick={aiChatContext.enableStoragePref}
+                >
+                  {getLocale('noticeConversationHistoryDisabledPrefButton')}
+                </Button>
+              </div>
+            </Alert>
+          )}
+          {aiChatContext.isStoragePrefEnabled
+            && aiChatContext.visibleConversations.length === 0 && (
+              <Alert type='notice'>
+                <Icon
+                  name='history'
+                  slot='icon'
+                />
+                <div slot='title'>{getLocale('menuConversationHistory')}</div>
+                {getLocale('noticeConversationHistoryEmpty')}
+              </Alert>
             )}
-          </ol>
-          }
+          {aiChatContext.visibleConversations.length > 0 && (
+            <ol>
+              {aiChatContext.visibleConversations.map((conversation) => (
+                <ConversationItem
+                  key={conversation.uuid}
+                  {...props}
+                  conversation={conversation}
+                />
+              ))}
+            </ol>
+          )}
         </nav>
       </div>
     </>

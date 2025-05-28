@@ -18,15 +18,19 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage' | 'getScreenshots' |
-  'conversationHistory' | 'associatedContentInfo'> &
-  Pick<AIChatContext, 'isMobile'>
+type Props = Pick<
+  ConversationContext,
+  | 'uploadImage'
+  | 'getScreenshots'
+  | 'conversationHistory'
+  | 'associatedContentInfo'
+>
+  & Pick<AIChatContext, 'isMobile'>
 
 export default function AttachmentButtonMenu(props: Props) {
   const totalUploadedImages = props.conversationHistory.reduce(
-    (total, turn) => total +
-      (getImageFiles(turn.uploadedFiles)?.length || 0),
-    0
+    (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
+    0,
   )
 
   const isMenuDisabled = totalUploadedImages >= MAX_IMAGES
@@ -53,18 +57,18 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale('uploadFileButtonLabel')}
           </div>
         </leo-menu-item>
-        {!!props.associatedContentInfo &&
+        {!!props.associatedContentInfo && (
           <leo-menu-item onClick={() => props.getScreenshots()}>
-             <div className={styles.buttonContent}>
-               <Icon
-                 className={styles.buttonIcon}
-                 name='screenshot'
-               />
-               {getLocale('screenshotButtonLabel')}
-             </div>
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='screenshot'
+              />
+              {getLocale('screenshotButtonLabel')}
+            </div>
           </leo-menu-item>
-       }
-        {props.isMobile &&
+        )}
+        {props.isMobile && (
           <leo-menu-item onClick={() => props.uploadImage(true)}>
             <div className={styles.buttonContent}>
               <Icon
@@ -74,7 +78,7 @@ export default function AttachmentButtonMenu(props: Props) {
               {getLocale('takeAPictureButtonLabel')}
             </div>
           </leo-menu-item>
-        }
+        )}
       </ButtonMenu>
     </>
   )

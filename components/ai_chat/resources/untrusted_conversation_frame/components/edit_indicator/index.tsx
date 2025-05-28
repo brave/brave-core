@@ -13,7 +13,7 @@ import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 
 interface Props {
-  time: Time;
+  time: Time
 }
 
 const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -21,8 +21,8 @@ const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
   day: 'numeric',
   year: 'numeric',
   hour: 'numeric',
-  minute: 'numeric'
-});
+  minute: 'numeric',
+})
 
 function EditIndicator(props: Props) {
   return (
@@ -33,7 +33,7 @@ function EditIndicator(props: Props) {
         {dateTimeFormatter.format(mojoTimeToJSDate(props.time))}
       </span>
     </div>
-  );
+  )
 }
 
-export default EditIndicator;
+export default EditIndicator

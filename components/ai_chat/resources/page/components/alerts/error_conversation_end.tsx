@@ -15,9 +15,7 @@ function ErrorConversationEnd() {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='error'
-      >
+      <Alert type='error'>
         {getLocale('errorConversationEnd')}
         <Button
           slot='actions'

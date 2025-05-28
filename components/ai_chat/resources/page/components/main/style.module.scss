@@ -5,7 +5,9 @@
 
 .main {
   --conversation-content-margin: var(--leo-spacing-2xl);
-  --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
+  --conversation-content-max-width: calc(
+    680px + calc(var(--conversation-content-margin) * 2)
+  );
 
   display: flex;
   flex-direction: column;
@@ -86,8 +88,9 @@
   max-width: var(--conversation-content-max-width);
   // Adjust padding to account for scrollbar width so content lines up with
   // input area which is outside of the scroller.
-  padding:
-    0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
+  padding: 0
+    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0
+    calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
 
   // Hide until content is ready
   opacity: 0;
@@ -138,7 +141,12 @@
 
 .logo {
   --leo-icon-size: 20px;
-  --leo-icon-color: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
+  --leo-icon-color: linear-gradient(
+    314.42deg,
+    #fa7250 8.49%,
+    #ff1893 43.72%,
+    #a78aff 99.51%
+  );
 
   display: flex;
   align-items: center;

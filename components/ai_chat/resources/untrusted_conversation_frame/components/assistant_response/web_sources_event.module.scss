@@ -8,10 +8,10 @@
     margin: 16px 0 6px 0;
     font: var(--leo-font-small-regular);
     color: var(--leo-color-text-tertiary);
-
   }
 
-  ul, li {
+  ul,
+  li {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -28,7 +28,8 @@
     display: contents;
   }
 
-  a, button {
+  a,
+  button {
     border-radius: var(--leo-radius-s);
     border: 1px solid var(--leo-color-divider-subtle);
     padding: 2px 6px 2px 2px;
@@ -48,7 +49,8 @@
     color: var(--leo-color-text-secondary);
   }
 
-  img, .expandIcon {
+  img,
+  .expandIcon {
     --leo-icon-size: 16px;
     padding: 4px;
     width: 24px;

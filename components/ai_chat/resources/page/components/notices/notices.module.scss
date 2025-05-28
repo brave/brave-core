@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  overflow: hidden;;
+  overflow: hidden;
   color: var(--leo-color-text-secondary);
 }
 
@@ -19,7 +19,7 @@
   flex: 0 0 auto;
   width: 40%;
   max-width: 260px;
-  background-color: #FF815C;
+  background-color: #ff815c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,9 +58,11 @@
 }
 
 .closeButton {
-  --leo-button-color: color-mix(in srgb,
+  --leo-button-color: color-mix(
+    in srgb,
     transparent 50%,
-    var(--leo-color-container-background));
+    var(--leo-color-container-background)
+  );
   --leo-button-padding: var(--leo-spacing-xs);
   --leo-button-radius: 100px;
   position: absolute;

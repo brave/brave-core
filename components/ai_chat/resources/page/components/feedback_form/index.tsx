@@ -17,7 +17,7 @@ const CATEGORY_OPTIONS = new Map([
   ['not-helpful', getLocale('optionNotHelpful')],
   ['incorrect', getLocale('optionIncorrect')],
   ['unsafe-harmful', getLocale('optionUnsafeHarmful')],
-  ['other', getLocale('optionOther')]
+  ['other', getLocale('optionOther')],
 ])
 
 const getHostName = (url: string) => {
@@ -39,7 +39,11 @@ function FeedbackForm() {
   const canSubmit = !!category
 
   const handleSubmit = () => {
-    conversationContext.handleFeedbackFormSubmit(category, feedbackText, shouldSendUrl)
+    conversationContext.handleFeedbackFormSubmit(
+      category,
+      feedbackText,
+      shouldSendUrl,
+    )
   }
 
   const handleSelectOnChange = ({ value }: { value: string }) => {
@@ -50,7 +54,7 @@ function FeedbackForm() {
     setFeedbackText(e.target.value)
   }
 
-  const handleCheckboxChange = ({ checked }: { checked: boolean; }) => {
+  const handleCheckboxChange = ({ checked }: { checked: boolean }) => {
     setShouldSendUrl(checked)
   }
 
@@ -62,7 +66,10 @@ function FeedbackForm() {
   // is selected when user attempts to Submit.
 
   return (
-    <div ref={ref} className={styles.form}>
+    <div
+      ref={ref}
+      className={styles.form}
+    >
       <h4>{getLocale('provideFeedbackTitle')}</h4>
       <form>
         <fieldset>
@@ -76,7 +83,10 @@ function FeedbackForm() {
             <div slot='label'>{getLocale('feedbackCategoryLabel')}</div>
             {[...CATEGORY_OPTIONS.keys()].map((key) => {
               return (
-                <leo-option key={key} value={key}>
+                <leo-option
+                  key={key}
+                  value={key}
+                >
                   {CATEGORY_OPTIONS.get(key)}
                 </leo-option>
               )
@@ -94,14 +104,19 @@ function FeedbackForm() {
         </fieldset>
         {conversationContext.associatedContentInfo.length > 0 && (
           <fieldset>
-            <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
-              <label>{
-                formatMessage(getLocale('sendSiteHostnameLabel'), {
+            <Checkbox
+              checked={shouldSendUrl}
+              onChange={handleCheckboxChange}
+            >
+              <label>
+                {formatMessage(getLocale('sendSiteHostnameLabel'), {
                   placeholders: {
-                    $1: conversationContext.associatedContentInfo.map(c => getHostName(c.url.url)).join(', ')
-                  }
-                })
-              }</label>
+                    $1: conversationContext.associatedContentInfo
+                      .map((c) => getHostName(c.url.url))
+                      .join(', '),
+                  },
+                })}
+              </label>
             </Checkbox>
           </fieldset>
         )}
@@ -110,19 +125,29 @@ function FeedbackForm() {
             {formatMessage(getLocale('feedbackPremiumNote'), {
               tags: {
                 $1: (linkText) => (
-                  <Button kind='plain' size='medium' onClick={aiChatContext.goPremium}>
+                  <Button
+                    kind='plain'
+                    size='medium'
+                    onClick={aiChatContext.goPremium}
+                  >
                     {linkText}
                   </Button>
-                )
-              }
+                ),
+              },
             })}
           </div>
         )}
         <fieldset className={styles.actions}>
-          <Button onClick={conversationContext.handleFeedbackFormCancel} kind='plain-faint'>
+          <Button
+            onClick={conversationContext.handleFeedbackFormCancel}
+            kind='plain-faint'
+          >
             {getLocale('cancelButtonLabel')}
           </Button>
-          <Button isDisabled={!canSubmit} onClick={handleSubmit}>
+          <Button
+            isDisabled={!canSubmit}
+            onClick={handleSubmit}
+          >
             {getLocale('submitButtonLabel')}
           </Button>
         </fieldset>

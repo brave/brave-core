@@ -14,12 +14,12 @@ describe('attachment item', () => {
         title='Title'
         subtitle='Subtitle'
         icon={<img src='https://example.com/image.jpg' />}
-      />
+      />,
     )
     expect(screen.getByText('Title')).toBeInTheDocument()
     expect(screen.getByText('Subtitle')).toBeInTheDocument()
     expect(
-      container.querySelector('img[src="https://example.com/image.jpg"]')
+      container.querySelector('img[src="https://example.com/image.jpg"]'),
     ).toBeTruthy()
 
     expect(document.querySelector('leo-button')).not.toBeInTheDocument()
@@ -31,7 +31,7 @@ describe('attachment item', () => {
         title='Title'
         subtitle='Subtitle'
         icon={<img src='https://example.com/image.jpg' />}
-      />
+      />,
     )
 
     const tooltip = container.querySelector('leo-tooltip')
@@ -46,10 +46,10 @@ describe('attachment item', () => {
         title='Title'
         subtitle=''
         icon={<img src='https://example.com/image.jpg' />}
-      />
+      />,
     )
     expect(
-      container.querySelector('[data-key="subtitle"]')
+      container.querySelector('[data-key="subtitle"]'),
     ).not.toBeInTheDocument()
   })
 
@@ -61,7 +61,7 @@ describe('attachment item', () => {
         subtitle='Subtitle'
         icon={<img src='https://example.com/image.jpg' />}
         remove={clickHandler}
-      />
+      />,
     )
 
     const button: any = document.querySelector('leo-button')!

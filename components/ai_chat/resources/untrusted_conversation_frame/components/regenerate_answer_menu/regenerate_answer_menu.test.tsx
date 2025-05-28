@@ -21,10 +21,10 @@ const mockModels = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
-      customModelOptions: undefined
-    }
+      customModelOptions: undefined,
+    },
   },
   {
     key: '2',
@@ -37,11 +37,11 @@ const mockModels = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.PREMIUM,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
-      customModelOptions: undefined
-    }
-  }
+      customModelOptions: undefined,
+    },
+  },
 ]
 
 describe('regenerate answer menu', () => {
@@ -73,7 +73,7 @@ describe('regenerate answer menu', () => {
     })
 
     const menu: any = await waitFor(
-      () => document.querySelector('leo-buttonmenu')!
+      () => document.querySelector('leo-buttonmenu')!,
     )
 
     // Covers that onOpen was called
@@ -104,7 +104,7 @@ describe('regenerate answer menu', () => {
         onRegenerate={onRegenerateMock}
         leoModels={mockModels}
         turnModelKey='1'
-      />
+      />,
     )
 
     const anchorButton: any = document.querySelector('leo-button')
@@ -112,20 +112,20 @@ describe('regenerate answer menu', () => {
 
     // Make sure the menu is open
     const menu: any = await waitFor(
-      () => document.querySelector('leo-buttonmenu')!
+      () => document.querySelector('leo-buttonmenu')!,
     )
     expect(menu).toBeInTheDocument()
 
     // Make sure the model one option is selected
     const modelOneOption: any = document.querySelector(
-      'leo-menu-item[data-key="1"]'
+      'leo-menu-item[data-key="1"]',
     )
     expect(modelOneOption).toBeInTheDocument()
     expect(modelOneOption).toHaveAttribute('aria-selected', 'true')
 
     // Make sure the model two option is not selected
     const modelTwoOption: any = document.querySelector(
-      'leo-menu-item[data-key="2"]'
+      'leo-menu-item[data-key="2"]',
     )
     expect(modelTwoOption).toBeInTheDocument()
     expect(modelTwoOption).not.toHaveAttribute('aria-selected')
@@ -143,7 +143,7 @@ describe('regenerate answer menu', () => {
     // Click the regenerate button and make sure the onRegenerate
     // function is called with model two
     const regenerateButton: any = document.querySelector(
-      'leo-menu-item[data-key="regenerate"]'
+      'leo-menu-item[data-key="regenerate"]',
     )
     expect(regenerateButton).toBeInTheDocument()
     await act(async () => {
@@ -162,7 +162,7 @@ describe('regenerate answer menu', () => {
         onRegenerate={onRegenerateMock}
         leoModels={mockModels}
         turnModelKey='3'
-      />
+      />,
     )
 
     const anchorButton: any = document.querySelector('leo-button')
@@ -170,16 +170,16 @@ describe('regenerate answer menu', () => {
 
     // Make sure the menu is open
     const menu: any = await waitFor(
-      () => document.querySelector('leo-buttonmenu')!
+      () => document.querySelector('leo-buttonmenu')!,
     )
     expect(menu).toBeInTheDocument()
 
     // Verify no model is selected
     const modelOneOption: any = document.querySelector(
-      'leo-menu-item[data-key="1"]'
+      'leo-menu-item[data-key="1"]',
     )
     const modelTwoOption: any = document.querySelector(
-      'leo-menu-item[data-key="2"]'
+      'leo-menu-item[data-key="2"]',
     )
     expect(modelOneOption).not.toHaveAttribute('aria-selected')
     expect(modelTwoOption).not.toHaveAttribute('aria-selected')
@@ -188,7 +188,7 @@ describe('regenerate answer menu', () => {
     // function is not called since the turnModelKey is not in
     // the models list
     const regenerateButton: any = document.querySelector(
-      'leo-menu-item[data-key="regenerate"]'
+      'leo-menu-item[data-key="regenerate"]',
     )
     expect(regenerateButton).toBeInTheDocument()
     await act(async () => {

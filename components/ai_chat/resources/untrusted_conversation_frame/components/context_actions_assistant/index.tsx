@@ -24,7 +24,7 @@ interface ContextActionsAssistantProps {
 }
 
 export default function ContextActionsAssistant(
-  props: ContextActionsAssistantProps
+  props: ContextActionsAssistantProps,
 ) {
   const conversationContext = useUntrustedConversationContext()
   const [currentRatingStatus, setCurrentRatingStatus] =
@@ -38,7 +38,7 @@ export default function ContextActionsAssistant(
     setCurrentRatingStatus(status)
     conversationContext.parentUiFrame?.rateMessage(
       props.turnUuid,
-      status === 'liked'
+      status === 'liked',
     )
   }
 
@@ -48,12 +48,12 @@ export default function ContextActionsAssistant(
     }
     conversationContext.conversationHandler?.regenerateAnswer(
       props.turnUuid,
-      selectedModelKey
+      selectedModelKey,
     )
   }
 
   const leoModels = conversationContext.allModels.filter(
-    (model) => model.options.leoModelOptions
+    (model) => model.options.leoModelOptions,
   )
 
   return (
@@ -80,7 +80,7 @@ export default function ContextActionsAssistant(
         <Icon
           name='thumb-up'
           className={classnames({
-            [styles.liked]: currentRatingStatus === 'liked'
+            [styles.liked]: currentRatingStatus === 'liked',
           })}
         />
       </Button>
@@ -95,11 +95,11 @@ export default function ContextActionsAssistant(
         <Icon
           name='thumb-down'
           className={classnames({
-            [styles.disliked]: currentRatingStatus === 'disliked'
+            [styles.disliked]: currentRatingStatus === 'disliked',
           })}
         />
       </Button>
-      {props.turnModelKey &&(
+      {props.turnModelKey && (
         <RegenerateAnswerMenu
           isOpen={isRegenerateAnswerMenuOpen}
           onOpen={() => setIsRegenerateAnswerMenuOpen(true)}

@@ -35,28 +35,24 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
         <Button
           fab
           slot='anchor-content'
-          size="tiny"
-          kind="plain-faint"
+          size='tiny'
+          kind='plain-faint'
           onClick={props.onClick}
           className={classnames({
             [styles.moreButton]: true,
             [styles.moreButtonActive]: props.isOpen,
-            [styles.moreButtonHide]: conversationContext.isMobile
+            [styles.moreButtonHide]: conversationContext.isMobile,
           })}
         >
           <Icon name='more-vertical' />
         </Button>
         {conversationContext.canSubmitUserEntries && (
-          <leo-menu-item
-            onClick={props.onEditQuestionClicked}
-          >
+          <leo-menu-item onClick={props.onEditQuestionClicked}>
             <Icon name='edit-pencil' />
             <span>{getLocale('editPromptButtonLabel')}</span>
           </leo-menu-item>
         )}
-        <leo-menu-item
-          onClick={props.onCopyQuestionClicked}
-        >
+        <leo-menu-item onClick={props.onCopyQuestionClicked}>
           <Icon name='copy' />
           <span>{getLocale('copyPromptButtonLabel')}</span>
         </leo-menu-item>

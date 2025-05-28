@@ -38,8 +38,8 @@ type Props = Pick<
   | 'conversationHistory'
   | 'associatedContentInfo'
   | 'isUploadingFiles'
-> &
-  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
+>
+  & Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
 interface InputBoxProps {
   context: Props
@@ -80,9 +80,9 @@ function InputBox(props: InputBoxProps) {
     }
 
     if (
-      e.key === 'Backspace' &&
-      props.context.inputText === '' &&
-      props.context.selectedActionType
+      e.key === 'Backspace'
+      && props.context.inputText === ''
+      && props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
     }
@@ -92,15 +92,17 @@ function InputBox(props: InputBoxProps) {
     if (!node) {
       return
     }
-    if (props.context.selectedActionType ||
-      props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
+    if (
+      props.context.selectedActionType
+      || props.maybeShowSoftKeyboard?.(querySubmitted.current)
+    ) {
       node.focus()
     }
   }
 
   const updateAttachmentWrapperHeight = () => {
     let { height } = attachmentWrapperRef?.current?.getBoundingClientRect() ?? {
-      height: 0
+      height: 0,
     }
     setAttachmentWrapperHeight(height)
   }
@@ -124,13 +126,13 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {(props.context.pendingMessageImages.length > 0 ||
-        props.context.isUploadingFiles) && (
+      {(props.context.pendingMessageImages.length > 0
+        || props.context.isUploadingFiles) && (
         <div
           className={classnames({
             [styles.attachmentWrapper]: true,
             [styles.attachmentWrapperScrollStyles]:
-              attachmentWrapperHeight >= 240
+              attachmentWrapperHeight >= 240,
           })}
           ref={attachmentWrapperRef}
         >
@@ -152,9 +154,11 @@ function InputBox(props: InputBoxProps) {
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale(props.conversationStarted
-            ? 'placeholderLabel'
-            : 'initialPlaceholderLabel')}
+          placeholder={getLocale(
+            props.conversationStarted
+              ? 'placeholderLabel'
+              : 'initialPlaceholderLabel',
+          )}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
@@ -167,7 +171,7 @@ function InputBox(props: InputBoxProps) {
           className={classnames({
             [styles.counterText]: true,
             [styles.counterTextVisible]: props.context.isCharLimitApproaching,
-            [styles.counterTextError]: props.context.isCharLimitExceeded
+            [styles.counterTextError]: props.context.isCharLimitExceeded,
           })}
         >
           {props.context.inputTextCharCountDisplay}
@@ -179,18 +183,16 @@ function InputBox(props: InputBoxProps) {
             fab
             kind='plain-faint'
             size='large'
-            onClick={(e) =>
-              {
-                e.preventDefault()
-                e.stopPropagation()
-                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-              }
-            }
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            }}
             title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
               className={classnames({
-                [styles.slashIconActive]: props.context.isToolsMenuOpen
+                [styles.slashIconActive]: props.context.isToolsMenuOpen,
               })}
               name='slash'
             />

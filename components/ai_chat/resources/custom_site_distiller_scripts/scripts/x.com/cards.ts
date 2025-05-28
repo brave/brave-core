@@ -28,7 +28,7 @@ export function distillCard(post: any) {
       host && cardURL
         ? ` - Address: [${host.string_value}](${cardURL.string_value})`
         : null,
-      desc ? ` - Description: "${desc.string_value}"` : null
+      desc ? ` - Description: "${desc.string_value}"` : null,
     ]
       .filter(Boolean)
       .join('\n')
@@ -63,11 +63,11 @@ function distillUnifiedCardComponents(card: any) {
 
 function distillUnifiedCardMedia(component: any, card: any) {
   const {
-    data: { id }
+    data: { id },
   } = component
   const {
     type,
-    original_info: { width, height }
+    original_info: { width, height },
   } = card.media_entities[id]
 
   if (type !== 'photo') {
@@ -113,12 +113,12 @@ function distillUnifiedCardCommunityDetails(component: any, card: any) {
       destination,
       member_count: memberCount,
       members_facepile: membersFacepile,
-      name
-    }
+      name,
+    },
   } = component
 
   const {
-    data: { url_data: urlData }
+    data: { url_data: urlData },
   } = card.destination_objects[destination]
 
   const facepileSignatures = membersFacepile
@@ -133,7 +133,7 @@ function distillUnifiedCardCommunityDetails(component: any, card: any) {
     'Community:',
     ` - Name: ${name}`,
     ` - Members: ${facepileSignatures.join(', ')}, and ${count} others`,
-    ` - URL: ${urlData.url}`
+    ` - URL: ${urlData.url}`,
   ]
     .filter(Boolean)
     .join('\n')

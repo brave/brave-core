@@ -6,33 +6,49 @@
 import { provideStrings } from '../../../../../../.storybook/locale'
 
 provideStrings({
-  summarizeFailedLabel: 'The summarizer feature is currently available only for select articles and other long-form web pages.',
+  summarizeFailedLabel:
+    'The summarizer feature is currently available only for select articles and other long-form web pages.',
   placeholderLabel: 'Enter a prompt here',
   aboutTitle: 'About Leo',
-  aboutDescription: 'Brave Leo is an AI smart assistant that can summarize web pages, transcribe videos, and answer questions. Brave Leo Premium uses advanced $1AI models$2 for even more nuanced replies, and gives early access to new features.',
+  aboutDescription:
+    'Brave Leo is an AI smart assistant that can summarize web pages, transcribe videos, and answer questions. Brave Leo Premium uses advanced $1AI models$2 for even more nuanced replies, and gives early access to new features.',
   aboutDescription_2: `The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar.`,
-  aboutDescription_3: 'Leo does not collect or otherwise process identifiers such as IP Address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.',
+  aboutDescription_3:
+    'Leo does not collect or otherwise process identifiers such as IP Address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.',
   acceptButtonLabel: 'Accept and begin',
-  pageContentWarning: 'Disconnect to stop sending this page content to Leo, and start a new conversation',
-  customModelInvalidEndpoint: 'This model has an invalid endpoint. Please check your configuration and try again.',
+  pageContentWarning:
+    'Disconnect to stop sending this page content to Leo, and start a new conversation',
+  customModelInvalidEndpoint:
+    'This model has an invalid endpoint. Please check your configuration and try again.',
   customModelModifyConfigurationLabel: 'Configure',
-  errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
-  errorOAIRateLimit: 'You\'ve reached the rate limit for this model or are out of credits. Please try again later.',
-  errorInvalidAPIKey: 'The API key configured for this model is invalid. Please check your configuration and try again.',
-  errorRateLimit: 'You\'ve reached the premium rate limit. Please try again in a few hours.',
-  errorServiceOverloaded: 'The endpoint is currently overloaded. Please try again later.',
-  braveLeoAssistantEndpointInvalidError: 'The endpoint URL is invalid. Please check the URL and try again.',
-  braveLeoAssistantEndpointValidAsPrivateIp: 'If you would like to use a private IP address, you must first enable "Private IP Addresses for Custom Model Enpoints" via brave://flags/#brave-ai-chat-allow-private-ips',
+  errorNetworkLabel:
+    'There was a network issue connecting to Leo, check your connection and try again.',
+  errorOAIRateLimit:
+    "You've reached the rate limit for this model or are out of credits. Please try again later.",
+  errorInvalidAPIKey:
+    'The API key configured for this model is invalid. Please check your configuration and try again.',
+  errorRateLimit:
+    "You've reached the premium rate limit. Please try again in a few hours.",
+  errorServiceOverloaded:
+    'The endpoint is currently overloaded. Please try again later.',
+  braveLeoAssistantEndpointInvalidError:
+    'The endpoint URL is invalid. Please check the URL and try again.',
+  braveLeoAssistantEndpointValidAsPrivateIp:
+    'If you would like to use a private IP address, you must first enable "Private IP Addresses for Custom Model Enpoints" via brave://flags/#brave-ai-chat-allow-private-ips',
   retryButtonLabel: 'Retry',
   learnMore: 'Learn more',
-  noticeConversationHistoryBody: 'Leo will now remember your previous conversations so you can go back to them. They are stored privately on your device, and you can delete them any time.',
-  noticeConversationHistoryEmpty: 'Your conversation history will appear here once you start a conversation.',
+  noticeConversationHistoryBody:
+    'Leo will now remember your previous conversations so you can go back to them. They are stored privately on your device, and you can delete them any time.',
+  noticeConversationHistoryEmpty:
+    'Your conversation history will appear here once you start a conversation.',
   noticeConversationHistoryTitleDisabledPref: 'History is disabled',
-  noticeConversationHistoryDisabledPref: 'In order to view and search your previous conversations with Leo, you need to enable conversation history.',
+  noticeConversationHistoryDisabledPref:
+    'In order to view and search your previous conversations with Leo, you need to enable conversation history.',
   noticeConversationHistoryDisabledPrefButton: 'Enable',
   dismissButtonLabel: 'Dismiss',
   'introMessage-0': `I'm here to help. What can I assist you with today? $1Learn more$2`,
-  'introMessage-1': 'I have a vast base of knowledge and a large memory able to help with more complex challenges. $1Learn more$2',
+  'introMessage-1':
+    'I have a vast base of knowledge and a large memory able to help with more complex challenges. $1Learn more$2',
   modelFreemiumLabelNonPremium: 'Limited',
   modelPremiumLabelNonPremium: 'Premium',
   'modelCategory-chat': 'Chat',
@@ -44,13 +60,17 @@ provideStrings({
   suggestQuestionsTitle: 'Suggest questions…',
   upgradeButtonLabel: 'Upgrade now',
   rateLimitReachedTitle: 'Response rate limit reached',
-  rateLimitReachedDesc: "You've reached the rate limit for Leo. Unlock a higher response rate by subscribing to Premium, or try again soon.",
+  rateLimitReachedDesc:
+    "You've reached the rate limit for Leo. Unlock a higher response rate by subscribing to Premium, or try again soon.",
   premiumFeature_1: 'Explore different AI models',
-  premiumFeature_1_desc: 'Priority access to powerful models with different skills',
+  premiumFeature_1_desc:
+    'Priority access to powerful models with different skills',
   premiumFeature_2: 'Unlock your creativity',
-  premiumFeature_2_desc: 'Access models better suited for creative tasks and content generation.',
+  premiumFeature_2_desc:
+    'Access models better suited for creative tasks and content generation.',
   premiumFeature_3: 'Stay on topic',
-  premiumFeature_3_desc: 'Get more accurate answers for more nuanced conversations.',
+  premiumFeature_3_desc:
+    'Get more accurate answers for more nuanced conversations.',
   premiumFeature_4: 'Chat for longer',
   premiumFeature_4_desc: 'Get higher rate limits for longer conversations.',
   premiumLabel: 'Leo Premium',
@@ -59,7 +79,7 @@ provideStrings({
   monthlyLabel: 'Monthly',
   onYearLabel: 'One year',
   bestValueLabel: 'Best value',
-  unlockPremiumTitle: 'Unleash Leo\'s full powers with Premium:',
+  unlockPremiumTitle: "Unleash Leo's full powers with Premium:",
   feedbackSent: 'Feedback sent successfully',
   answerLiked: 'Answer liked',
   answerDisliked: 'Answer disliked',
@@ -71,7 +91,8 @@ provideStrings({
   selectFeedbackTopic: 'Select your feedback topic',
   feedbackCategoryLabel: 'Whats your feedback about?',
   feedbackDescriptionLabel: 'Provide feedback here',
-  feedbackPremiumNote: 'Leo Premium provides access to an expanded set of language models for even greater answer nuance. $1Learn more$2',
+  feedbackPremiumNote:
+    'Leo Premium provides access to an expanded set of language models for even greater answer nuance. $1Learn more$2',
   submitButtonLabel: 'Submit',
   cancelButtonLabel: 'Cancel',
   saveButtonLabel: 'Save',
@@ -83,37 +104,50 @@ provideStrings({
   optionIncorrect: 'Incorrect',
   optionUnsafeHarmful: 'Unsafe/harmful',
   optionOther: 'Other',
-  ratingError: 'Your rating could not be submitted, please check network connection and try again',
-  feedbackError: 'Your feedback could not be submitted, please check network connection and try again',
-  premiumRefreshWarningDescription: 'Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.',
+  ratingError:
+    'Your rating could not be submitted, please check network connection and try again',
+  feedbackError:
+    'Your feedback could not be submitted, please check network connection and try again',
+  premiumRefreshWarningDescription:
+    'Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.',
   premiumRefreshWarningAction: 'Refresh',
   switchToBasicModelButtonLabel: 'Switch to the free model',
   clearChatButtonLabel: 'Clear chat',
-  errorContextLimitReaching: 'This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it',
+  errorContextLimitReaching:
+    'This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it',
   gotItButtonLabel: 'Got it',
   braveLeoChatDefaultSubtitle: 'General purpose chat',
   braveLeoChatLeoExpandedSubtitle: 'Advanced and accurate chat',
   braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks',
-  pageContentTooLongWarning: 'The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read $1 of the page\'s contents.',
-  trimmedTokensWarning: 'Some context could be missing from the conversation. Leo was able to retain $1 of the conversation.',
-  errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
+  pageContentTooLongWarning:
+    "The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read $1 of the page's contents.",
+  trimmedTokensWarning:
+    'Some context could be missing from the conversation. Leo was able to retain $1 of the conversation.',
+  errorConversationEnd:
+    'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
   searchInProgress: 'Improving your answer with Brave Search…',
   searchQueries: 'Improved answer searching for $1.',
   sources: 'Sources',
   expandSources: '$1 more…',
   leoSettingsTooltipLabel: 'Leo settings',
   summarizePageButtonLabel: 'Summarize this page',
-  welcomeGuideTitle: 'Hi, I\'m Leo!',
-  welcomeGuideSubtitle: 'An AI-powered intelligent assistant, built right into Brave',
+  welcomeGuideTitle: "Hi, I'm Leo!",
+  welcomeGuideSubtitle:
+    'An AI-powered intelligent assistant, built right into Brave',
   welcomeGuideSiteHelpCardTitle: 'Need help with a website?',
-  welcomeGuideSiteHelpCardDesc: 'I can help you summarizing articles, expanding on a site\'s content and much more.',
-  welcomeGuideSiteHelpCardDescWithAction: 'I can help you summarizing articles, expanding on a site\'s content and much more. Not sure where to start? Try this:',
+  welcomeGuideSiteHelpCardDesc:
+    "I can help you summarizing articles, expanding on a site's content and much more.",
+  welcomeGuideSiteHelpCardDescWithAction:
+    "I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:",
   welcomeGuideShatCardTitle: 'Just want to chat?',
-  welcomeGuideShatCardDesc: 'Ask me anything! We can talk about any topic you want. I\'m always learning and improving to provide better answers.',
+  welcomeGuideShatCardDesc:
+    "Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.",
   privacyTitle: 'Privacy agreement',
-  contextToggleLabel: 'Shape answers based on the page\'s contents',
-  contextToggleTooltipInfo: 'Toggle on to ask about this page. It\'s content will be sent to Brave Leo along with your messages.',
-  subscriptionPolicyInfo: 'All subscriptions are auto-renewed but can be cancelled at any time before renewal.',
+  contextToggleLabel: "Shape answers based on the page's contents",
+  contextToggleTooltipInfo:
+    "Toggle on to ask about this page. It's content will be sent to Brave Leo along with your messages.",
+  subscriptionPolicyInfo:
+    'All subscriptions are auto-renewed but can be cancelled at any time before renewal.',
   summarizeLabel: 'Summarize',
   changeLengthLabel: 'Change length',
   shortenLabel: 'Shorten',
@@ -134,7 +168,8 @@ provideStrings({
   conversationListUntitled: 'New conversation',
   stopGenerationButtonLabel: 'Stop answering',
   deleteButtonLabel: 'Delete',
-  deleteConversationWarning: 'Are you sure you want to delete this conversation? This action cannot be undone.',
+  deleteConversationWarning:
+    'Are you sure you want to delete this conversation? This action cannot be undone.',
   menuDeleteConversation: 'Delete conversation',
   reasoningLabel: 'Reasoning...',
   reasoningCompleteLabel: 'Reasoning complete',
@@ -143,15 +178,15 @@ provideStrings({
   openLabel: 'Open',
   openExternalLink: 'Open external link?',
   openExternalLinkInfo:
-    'Leo AI wants to open a website in a new tab. ' +
-    'Do you want to continue?',
+    'Leo AI wants to open a website in a new tab. '
+    + 'Do you want to continue?',
   openExternalLinkCheckboxLabel: 'Open links without asking me again',
   sendButtonLabel: 'Send',
   rateMessagePrivacyModalTitle: 'Response Feedback',
   rateMessagePrivacyModalDescription:
-    'Liking or disliking an answer will send rating, conversation, ' +
-    'model, language, version, and premium status to Brave in order ' +
-    'to improve Leo. $1Learn more$1',
+    'Liking or disliking an answer will send rating, conversation, '
+    + 'model, language, version, and premium status to Brave in order '
+    + 'to improve Leo. $1Learn more$1',
   regenerateAnswerMenuTitle: 'Change model for answer',
-  regenerateAnswerButtonLabel: 'Regenerate'
+  regenerateAnswerButtonLabel: 'Regenerate',
 })

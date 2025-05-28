@@ -26,22 +26,22 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   trimmedTokens: BigInt(0),
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
-  isMobile: loadTimeData.getBoolean('isMobile')
+  isMobile: loadTimeData.getBoolean('isMobile'),
 }
 
 // Define how to get the initial data and update the state from events
 export default class UntrustedConversationFrameAPI extends API<ConversationEntriesUIState> {
-  public conversationHandler: Mojom.UntrustedConversationHandlerRemote
-    = Mojom.UntrustedConversationHandler.getRemote()
+  public conversationHandler: Mojom.UntrustedConversationHandlerRemote =
+    Mojom.UntrustedConversationHandler.getRemote()
 
-  public uiHandler: Mojom.UntrustedUIHandlerRemote
-    = Mojom.UntrustedUIHandler.getRemote()
+  public uiHandler: Mojom.UntrustedUIHandlerRemote =
+    Mojom.UntrustedUIHandler.getRemote()
 
-  public parentUIFrame: Mojom.ParentUIFrameRemote
-    = new Mojom.ParentUIFrameRemote()
+  public parentUIFrame: Mojom.ParentUIFrameRemote =
+    new Mojom.ParentUIFrameRemote()
 
-  private conversationObserver: Mojom.UntrustedConversationUICallbackRouter
-    = new Mojom.UntrustedConversationUICallbackRouter
+  private conversationObserver: Mojom.UntrustedConversationUICallbackRouter =
+    new Mojom.UntrustedConversationUICallbackRouter()
 
   constructor() {
     super(defaultConversationEntriesUIState)
@@ -49,27 +49,27 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   }
 
   async initialize() {
-    const [
-      { conversationEntriesState },
-      { conversationHistory }
-     ] = await Promise.all([
-      this.conversationHandler.bindUntrustedConversationUI(
-        this.conversationObserver.$.bindNewPipeAndPassRemote()
-      ),
-      this.conversationHandler.getConversationHistory()
-    ])
+    const [{ conversationEntriesState }, { conversationHistory }] =
+      await Promise.all([
+        this.conversationHandler.bindUntrustedConversationUI(
+          this.conversationObserver.$.bindNewPipeAndPassRemote(),
+        ),
+        this.conversationHandler.getConversationHistory(),
+      ])
     this.setPartialState({
       ...conversationEntriesState,
-      conversationHistory
+      conversationHistory,
     })
     this.conversationObserver.onConversationHistoryUpdate.addListener(
       async (entry?: Mojom.ConversationTurn) => {
         if (entry) {
           // Use the shared utility function to update the history
-          const updatedHistory =
-            updateConversationHistory(this.state.conversationHistory, entry)
+          const updatedHistory = updateConversationHistory(
+            this.state.conversationHistory,
+            entry,
+          )
           this.setPartialState({
-            conversationHistory: updatedHistory
+            conversationHistory: updatedHistory,
           })
         } else {
           // When no entry is provided, fetch the full history
@@ -77,15 +77,19 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
             await this.conversationHandler.getConversationHistory()
           this.setPartialState({ conversationHistory })
         }
-      }
+      },
     )
 
-    this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {
-      this.setPartialState(state)
-    })
+    this.conversationObserver.onEntriesUIStateChanged.addListener(
+      (state: Mojom.ConversationEntriesState) => {
+        this.setPartialState(state)
+      },
+    )
 
     // Set up communication with the parent frame
-    this.uiHandler.bindParentPage(this.parentUIFrame.$.bindNewPipeAndPassReceiver())
+    this.uiHandler.bindParentPage(
+      this.parentUIFrame.$.bindNewPipeAndPassReceiver(),
+    )
 
     // Send document height to parent frame
     window.addEventListener('resize', () => this.sendDocumentHeight())

@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useMemo } from "react";
-import { useAIChat } from "../state/ai_chat_context";
+import { useMemo } from 'react'
+import { useAIChat } from '../state/ai_chat_context'
 
 export default function useIsConversationVisible(conversationId?: string) {
-    const context = useAIChat()
+  const context = useAIChat()
 
-    return useMemo<boolean>(
-      () => context.visibleConversations.some(c => c.uuid === conversationId),
-      [conversationId, context.visibleConversations]
-    )
+  return useMemo<boolean>(
+    () => context.visibleConversations.some((c) => c.uuid === conversationId),
+    [conversationId, context.visibleConversations],
+  )
 }
