@@ -184,10 +184,17 @@ TEST_F(ModelServiceTestWithSamePremiumModel,
 }
 
 TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
-  GetService()->SetDefaultModelKeyWithoutValidationForTesting("chat-default");
-  ModelService::MigrateProfilePrefs(&pref_service_);
+  constexpr std::array<const char*, 2> old_keys = {
+      "chat-default",
+      "chat-leo-expanded",
+  };
 
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  for (const char* old_key : old_keys) {
+    GetService()->SetDefaultModelKeyWithoutValidationForTesting(old_key);
+    ModelService::MigrateProfilePrefs(&pref_service_);
+    EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-automatic")
+        << "Failed to migrate key: " << old_key;
+  }
 }
 
 TEST_F(ModelServiceTest, AddAndModifyCustomModel) {

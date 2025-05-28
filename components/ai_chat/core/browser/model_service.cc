@@ -338,14 +338,21 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
   if (ai_chat::features::IsAIChatEnabled()) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
-    // migrate model key from "chat-default" to "chat-basic"
-    static const std::string kDefaultModelBasicFrom = "chat-default";
-    static const std::string kDefaultModelBasicTo = "chat-basic";
+    // Migrate old model keys to "chat-automatic"
+    constexpr char kModelKeyNew[] = "chat-automatic";
+    constexpr std::array<const char*, 2> kOldModelKeys = {
+        "chat-default",
+        "chat-leo-expanded",
+    };
+
     if (auto* default_model_value =
             profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
-      if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
-                                           kDefaultModelBasicFrom)) {
-        profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+      const std::string& current_value = default_model_value->GetString();
+      for (const char* old_key : kOldModelKeys) {
+        if (base::EqualsCaseInsensitiveASCII(current_value, old_key)) {
+          profile_prefs->SetString(kDefaultModelKey, kModelKeyNew);
+          break;
+        }
       }
     }
   }
