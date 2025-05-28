@@ -192,7 +192,8 @@ TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
   for (const char* old_key : old_keys) {
     GetService()->SetDefaultModelKeyWithoutValidationForTesting(old_key);
     ModelService::MigrateProfilePrefs(&pref_service_);
-    EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-automatic")
+    EXPECT_EQ(GetService()->GetDefaultModelKey(),
+              features::kAIModelsDefaultKey.Get())
         << "Failed to migrate key: " << old_key;
   }
 }
