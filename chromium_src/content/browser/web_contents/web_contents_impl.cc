@@ -11,13 +11,14 @@ bool WebContentsImpl::ShouldDoLearning() {
   if (!ShouldDoLearning_ChromiumImpl()) {
     return false;
   }
-  if (GetBrowserContext()->IsOffTheRecord()) {
-    return false;
-  }
   return GetContentClient()
       ->browser()
       ->IsWindowsRecallEnabled(GetBrowserContext())
       .value_or(true);
+}
+
+void WebContentsImpl::GetShouldDoLearningForTesting(bool& should) {
+  should = ShouldDoLearning();
 }
 
 }  // namespace content

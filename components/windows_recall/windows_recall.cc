@@ -12,7 +12,7 @@
 namespace windows_recall {
 
 bool IsWindowsRecallAvailable() {
-  return base::win::GetVersion() >= base::win::Version::WIN10;
+  return base::win::GetVersion() >= base::win::Version::WIN11;
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
