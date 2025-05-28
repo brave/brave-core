@@ -7,15 +7,16 @@ package org.chromium.chrome.browser.download.settings;
 
 import android.os.Bundle;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
@@ -24,8 +25,11 @@ public class BraveDownloadSettings extends DownloadSettings
     private static final String PREF_AUTOMATICALLY_OPEN_WHEN_POSSIBLE =
             "automatically_open_when_possible";
     public static final String PREF_LOCATION_PROMPT_ENABLED = "location_prompt_enabled";
-    private static final String PREF_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE =
+
+    @VisibleForTesting
+    public static final String PREF_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE =
             "download_progress_notification_bubble";
+
     private static final String PREF_ENABLE_PARALLEL_DOWNLOADING = "enable_parallel_downloading";
     private static final String PARALLEL_DOWNLOADING = "ParallelDownloading";
 
@@ -66,16 +70,20 @@ public class BraveDownloadSettings extends DownloadSettings
     }
 
     private void updateDownloadSettings() {
-        boolean automaticallyOpenWhenPossible = ContextUtils.getAppSharedPreferences().getBoolean(
-                BravePreferenceKeys.BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE, true);
+        boolean automaticallyOpenWhenPossible =
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(
+                                BravePreferenceKeys
+                                        .BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE,
+                                true);
         mAutomaticallyOpenWhenPossiblePref.setChecked(automaticallyOpenWhenPossible);
 
         boolean downloadProgressNotificationBubble =
-                ContextUtils.getAppSharedPreferences()
-                        .getBoolean(
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(
                                 BravePreferenceKeys
                                         .BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE,
-                                false);
+                                true);
         mDownloadProgressNotificationBubblePref.setChecked(downloadProgressNotificationBubble);
 
         boolean isParallelDownloadingEnabled = ChromeFeatureList.isEnabled(PARALLEL_DOWNLOADING);
@@ -86,20 +94,16 @@ public class BraveDownloadSettings extends DownloadSettings
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_AUTOMATICALLY_OPEN_WHEN_POSSIBLE.equals(preference.getKey())) {
-            ContextUtils.getAppSharedPreferences()
-                    .edit()
-                    .putBoolean(
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
                             BravePreferenceKeys.BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE,
-                            (boolean) newValue)
-                    .apply();
+                            (boolean) newValue);
         } else if (PREF_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE.equals(preference.getKey())) {
-            ContextUtils.getAppSharedPreferences()
-                    .edit()
-                    .putBoolean(
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
                             BravePreferenceKeys
                                     .BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE,
-                            (boolean) newValue)
-                    .apply();
+                            (boolean) newValue);
         } else if (PREF_ENABLE_PARALLEL_DOWNLOADING.equals(preference.getKey())) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.ENABLE_PARALLEL_DOWNLOADING, (boolean) newValue, false);
