@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
@@ -37,6 +38,8 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/containers/core/browser/settings_page_handler.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -44,13 +47,17 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "build/build_config.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
@@ -84,6 +91,62 @@
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
+
+namespace {
+
+class ContainersSettingsPageHandlerDelegate
+    : public containers::SettingsPageHandler::Delegate,
+      public content::BrowsingDataRemover::Observer {
+ public:
+  explicit ContainersSettingsPageHandlerDelegate(
+      content::BrowserContext* browser_context)
+      : browser_context_(browser_context),
+        remover_(browser_context_->GetBrowsingDataRemover()) {
+    remover_->AddObserver(this);
+  }
+
+  ~ContainersSettingsPageHandlerDelegate() override {
+    remover_->RemoveObserver(this);
+  }
+
+  void RemoveContainerData(const std::string& id,
+                           base::OnceClosure callback) override {
+    content::BrowsingDataRemover::DataType data_to_remove =
+        (content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
+         chrome_browsing_data_remover::FILTERABLE_DATA_TYPES);
+
+    content::BrowsingDataRemover::OriginType origin_type =
+        content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
+        content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
+
+    auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+        content::BrowsingDataFilterBuilder::Mode::kPreserve);
+    filter_builder->SetStoragePartitionConfig(
+        content::StoragePartitionConfig::Create(browser_context_, id,
+                                                std::string(), false));
+
+    callbacks_.push_back(std::move(callback));
+
+    remover_->RemoveWithFilterAndReply(base::Time(), base::Time::Max(),
+                                       data_to_remove, origin_type,
+                                       std::move(filter_builder), this);
+  }
+
+  void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override {
+    auto callbacks = std::move(callbacks_);
+    callbacks_.clear();
+    for (auto& callback : callbacks) {
+      std::move(callback).Run();
+    }
+  }
+
+ private:
+  raw_ptr<content::BrowserContext> browser_context_;
+  raw_ptr<content::BrowsingDataRemover> remover_;
+  std::vector<base::OnceClosure> callbacks_;
+};
+
+}  // namespace
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
@@ -173,6 +236,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("extensionsManifestV2Feature",
                           base::FeatureList::IsEnabled(kExtensionsManifestV2));
 
+  html_source->AddBoolean(
+      "isContainersEnabled",
+      base::FeatureList::IsEnabled(containers::features::kBraveContainers));
+
   html_source->AddBoolean("isLeoAssistantAllowed",
                           ai_chat::IsAIChatEnabled(profile->GetPrefs()));
   html_source->AddBoolean("isLeoAssistantHistoryAllowed",
@@ -224,4 +291,24 @@ void BraveSettingsUI::BindInterface(
         pending_receiver) {
   brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
       std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<containers::mojom::SettingsPageHandlerFactory>
+        pending_receiver) {
+  containers_page_handler_factory_receiver_.reset();
+  containers_page_handler_factory_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::CreateSettingsPageHandler(
+    mojo::PendingRemote<containers::mojom::SettingsPage> page,
+    mojo::PendingReceiver<containers::mojom::SettingsPageHandler> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<containers::SettingsPageHandler>(
+          std::move(page),
+          user_prefs::UserPrefs::Get(
+              web_ui()->GetWebContents()->GetBrowserContext()),
+          std::make_unique<ContainersSettingsPageHandlerDelegate>(
+              web_ui()->GetWebContents()->GetBrowserContext())),
+      std::move(receiver));
 }

@@ -754,6 +754,11 @@ source_set("ui") {
     }
   }
 
+  deps += [
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+  ]
+
   # brave's obsolete infobar is only used on Windows and Mac now.
   if (is_win || is_mac) {
     sources += [

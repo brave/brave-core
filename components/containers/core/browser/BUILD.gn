@@ -1,0 +1,26 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "prefs.cc",
+    "prefs.h",
+    "settings_page_handler.cc",
+    "settings_page_handler.h",
+  ]
+
+  public_deps = [ "//brave/components/containers/core/mojom" ]
+
+  deps = [
+    "//base",
+    "//brave/components/containers/core/common",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//net/base/registry_controlled_domains",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}

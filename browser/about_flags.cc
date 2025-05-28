@@ -25,6 +25,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
@@ -1019,6 +1020,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-containers",                                                  \
+          "Brave Containers",                                                  \
+          "Enable Brave Containers",                                           \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(containers::features::kBraveContainers),          \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \

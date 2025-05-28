@@ -81,6 +81,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/core/common/features.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
@@ -833,6 +834,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_account::mojom::BraveAccountHandler, BraveSettingsUI>(map);
+  if (base::FeatureList::IsEnabled(containers::features::kBraveContainers)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        containers::mojom::SettingsPageHandlerFactory, BraveSettingsUI>(map);
+  }
 #endif
 
   auto* prefs =

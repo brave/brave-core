@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tab_ui_helper.cc b/chrome/browser/ui/tab_ui_helper.cc
+index dca1a48a9b0cb1daba89d33500e1161556510545..faeb815650f77dd7c6a6ac967f35257601337db7 100644
+--- a/chrome/browser/ui/tab_ui_helper.cc
++++ b/chrome/browser/ui/tab_ui_helper.cc
+@@ -18,7 +18,7 @@ TabUIHelper::TabUIHelper(content::WebContents* contents)
+ 
+ TabUIHelper::~TabUIHelper() = default;
+ 
+-std::u16string TabUIHelper::GetTitle() const {
++std::u16string TabUIHelper::GetTitle_ChromiumImpl() const {
+   const std::u16string& contents_title = web_contents()->GetTitle();
+   if (!contents_title.empty()) {
+     return contents_title;
