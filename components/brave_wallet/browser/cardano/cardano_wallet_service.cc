@@ -183,7 +183,7 @@ void CardanoWalletService::SignAndPostTransaction(
 
   CHECK(cardano_transaction.IsSigned());
   auto serialized_transaction =
-      CardanoSerializer::SerializeTransaction(cardano_transaction);
+      CardanoSerializer().SerializeTransaction(cardano_transaction);
 
   GetCardanoRpc(GetNetworkForCardanoAccount(account_id))
       ->PostTransaction(
@@ -211,7 +211,7 @@ bool CardanoWalletService::SignTransactionInternal(
                         std::move(addr->payment_key_id));
   }
 
-  auto hash = CardanoSerializer::GetTxHash(tx);
+  auto hash = CardanoSerializer().GetTxHash(tx);
 
   std::vector<CardanoTransaction::TxWitness> witnesses;
   for (const auto& input : tx.inputs()) {
