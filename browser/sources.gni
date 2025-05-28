@@ -403,6 +403,8 @@ if (is_android) {
     "//brave/browser/sync/brave_sync_devices_android.h",
     "//chrome/browser/bookmarks/bookmark_html_writer.cc",
     "//chrome/browser/bookmarks/bookmark_html_writer.h",
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.cc",
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.h",
     "//chrome/browser/importer/profile_writer.cc",
     "//chrome/browser/importer/profile_writer.h",
   ]
@@ -427,6 +429,7 @@ if (is_android) {
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
     "//components/sync_device_info",
+    "//third_party/zxcvbn-cpp",
   ]
 } else {
   brave_chrome_browser_sources += [
