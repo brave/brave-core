@@ -2438,6 +2438,9 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
 
   const std::string eth_addr = "0x407637cC04893DA7FA4A7C0B58884F82d69eD448";
   const std::string sol_addr = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const std::string ada_addr =
+      "Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b";
+
   auto origin = url::Origin::Create(GURL(kBraveUrl));
   auto* delegate = service_->GetDelegateForTesting();
   ASSERT_TRUE(delegate);
@@ -2446,14 +2449,18 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin, eth_addr));
   ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
       blink::PermissionType::BRAVE_SOLANA, profile_.get(), origin, sol_addr));
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_CARDANO, profile_.get(), origin, ada_addr));
 
   ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
   ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ADA, origin, ada_addr));
 
   service_->Reset();
 
   EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
   EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
+  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ADA, origin, ada_addr));
 
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));

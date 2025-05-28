@@ -36,6 +36,8 @@
     return "brave_localhost_access";                    \
   case PermissionName::BRAVE_OPEN_AI_CHAT:              \
     return "brave_open_ai_chat";                        \
+  case PermissionName::BRAVE_CARDANO:                   \
+    return "brave_cardano";                             \
   case PermissionName::WEB_PRINTING
 
 #include "src/third_party/blink/renderer/modules/permissions/permission_utils.cc"

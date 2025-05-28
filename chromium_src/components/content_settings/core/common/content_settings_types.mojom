@@ -49,4 +49,6 @@ enum ContentSettingsType {
   BRAVE_WEBCOMPAT_ALL,
 
   BRAVE_SHIELDS_METADATA,
+
+  BRAVE_CARDANO,
 };

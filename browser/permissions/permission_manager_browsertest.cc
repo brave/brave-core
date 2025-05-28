@@ -200,7 +200,12 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
        {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
          "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
         ContentSettingsType::BRAVE_SOLANA,
-        blink::PermissionType::BRAVE_SOLANA}});
+        blink::PermissionType::BRAVE_SOLANA},
+       {{"Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b",
+         "DdzFFzCqrhsfZHjaBunVySZBU8i9Zom7Gujham6Jz8scCcAdkDmEbD9XSdXKdBiPoa1fj"
+         "gL4ksGjQXD8ZkSNHGJfT25ieA9rWNCSA5qc"},
+        ContentSettingsType::BRAVE_CARDANO,
+        blink::PermissionType::BRAVE_CARDANO}});
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.type);
 
@@ -367,7 +372,12 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
        {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
          "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
         ContentSettingsType::BRAVE_SOLANA,
-        blink::PermissionType::BRAVE_SOLANA}});
+        blink::PermissionType::BRAVE_SOLANA},
+       {{"Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b",
+         "DdzFFzCqrhsfZHjaBunVySZBU8i9Zom7Gujham6Jz8scCcAdkDmEbD9XSdXKdBiPoa1fj"
+         "gL4ksGjQXD8ZkSNHGJfT25ieA9rWNCSA5qc"},
+        ContentSettingsType::BRAVE_CARDANO,
+        blink::PermissionType::BRAVE_CARDANO}});
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.type);
 
@@ -446,7 +456,11 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
         ContentSettingsType::BRAVE_ETHEREUM},
        {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
          "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
-        ContentSettingsType::BRAVE_SOLANA}});
+        ContentSettingsType::BRAVE_SOLANA},
+       {{"addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n4n2"
+         "qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz",
+         "Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b"},
+        ContentSettingsType::BRAVE_CARDANO}});
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.type);
 
