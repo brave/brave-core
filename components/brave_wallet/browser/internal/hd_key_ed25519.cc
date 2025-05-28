@@ -12,7 +12,6 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "crypto/hmac.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"

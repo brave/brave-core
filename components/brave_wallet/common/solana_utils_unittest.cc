@@ -9,6 +9,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"

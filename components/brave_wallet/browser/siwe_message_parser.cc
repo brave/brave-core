@@ -12,6 +12,7 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_tokenizer.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_address.h"

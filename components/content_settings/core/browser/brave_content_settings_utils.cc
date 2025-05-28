@@ -11,7 +11,6 @@
 #include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "url/gurl.h"

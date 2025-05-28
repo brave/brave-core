@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/url_loader.h"

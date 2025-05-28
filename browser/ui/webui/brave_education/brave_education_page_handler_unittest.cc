@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"

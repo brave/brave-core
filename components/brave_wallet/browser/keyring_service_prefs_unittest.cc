@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"

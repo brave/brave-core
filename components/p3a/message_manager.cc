@@ -13,7 +13,6 @@
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/constellation_helper.h"
 #include "brave/components/p3a/constellation_log_store.h"
 #include "brave/components/p3a/features.h"

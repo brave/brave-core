@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/pref_names.h"

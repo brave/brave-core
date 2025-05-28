@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 
 namespace web_discovery {

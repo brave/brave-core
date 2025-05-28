@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"

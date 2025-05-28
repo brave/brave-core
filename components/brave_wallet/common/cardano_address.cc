@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/containers/span_writer.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 
 namespace brave_wallet {

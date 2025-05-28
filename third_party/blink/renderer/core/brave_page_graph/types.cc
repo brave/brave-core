@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 

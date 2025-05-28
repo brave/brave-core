@@ -12,7 +12,6 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/ipfs/ipfs_common.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"

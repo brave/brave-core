@@ -10,6 +10,7 @@
 
 #include "base/containers/extend.h"
 #include "base/numerics/safe_math.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "crypto/aes_ctr.h"
 #include "crypto/kdf.h"

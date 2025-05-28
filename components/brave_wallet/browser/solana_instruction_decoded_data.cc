@@ -7,6 +7,8 @@
 
 #include <optional>
 
+#include "base/strings/string_number_conversions.h"
+
 namespace brave_wallet {
 
 SolanaInstructionDecodedData::SolanaInstructionDecodedData() = default;

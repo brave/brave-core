@@ -12,7 +12,6 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
