@@ -55,14 +55,16 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           readOnly: true,
           type: Array,
         },
+        isHistoryFeatureEnabled_: {
+          type: Boolean,
+          value: () => loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
+        },
       }
     }
 
     private declare isPremiumUser_: boolean
 
-    isHistoryFeatureEnabled_: boolean =
-      loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
-
+    declare isHistoryFeatureEnabled_: boolean
     declare leoAssistantShowOnToolbarPref_: boolean
     declare selectedModelDisplayName_: string
     declare defaultModelKeyPrefValue_: string
