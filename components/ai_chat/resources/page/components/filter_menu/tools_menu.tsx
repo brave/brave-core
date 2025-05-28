@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { ActionEntry, ActionType } from "components/ai_chat/resources/common/mojom";
-import ToolsButtonMenu, { Props } from "./filter_menu";
+import FilterMenu, { Props } from "./filter_menu";
 import styles from "./style.module.scss";
 import * as React from "react";
 import { matches } from "./query";
@@ -22,7 +22,7 @@ export default function ToolsMenu({
 }: {
   handleClick: (type: ActionType) => void
 } & Pick<Props<ActionEntry>, "categories" | "isOpen" | "setIsOpen" | "query">) {
-  return <ToolsButtonMenu
+  return <FilterMenu
     categories={categories}
     isOpen={isOpen}
     setIsOpen={setIsOpen}
@@ -37,5 +37,5 @@ export default function ToolsMenu({
       >
         {item.details.label}
       </leo-menu-item>}
-  </ToolsButtonMenu>
+  </FilterMenu>
 }
