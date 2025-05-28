@@ -137,6 +137,9 @@ void SplitViewSeparator::AddedToWidget() {
   ResizeArea::AddedToWidget();
 
   CreateMenuButton();
+
+  // Invisible by default. Call it after menu button creation to hide it also.
+  SetVisible(false);
 }
 
 void SplitViewSeparator::VisibilityChanged(views::View* starting_from,

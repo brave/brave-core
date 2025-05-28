@@ -79,6 +79,21 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
     return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   }
 
+  BraveBrowserView* brave_browser_view() const {
+    return BraveBrowserView::From(
+        BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  SplitViewSeparator* split_view_separator() const {
+    return views::AsViewClass<SplitViewSeparator>(
+        brave_multi_contents_view()->resize_area_for_testing());
+  }
+
+  BraveMultiContentsView* brave_multi_contents_view() const {
+    return static_cast<BraveMultiContentsView*>(
+        brave_browser_view()->multi_contents_view_for_testing());
+  }
+
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
@@ -90,19 +105,12 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
   EXPECT_FALSE(!!split_view_data);
 
-  auto* browser_view =
-      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser()));
-  auto* multi_contents_view = static_cast<BraveMultiContentsView*>(
-      browser_view->multi_contents_view_for_testing());
-  ASSERT_TRUE(multi_contents_view);
-
   // Check MultiContentsView uses our separator and initially hidden.
-  auto* split_view_separator = views::AsViewClass<SplitViewSeparator>(
-      multi_contents_view->resize_area_for_testing());
-  ASSERT_TRUE(split_view_separator);
-  EXPECT_FALSE(split_view_separator->GetVisible());
+  EXPECT_FALSE(split_view_separator()->GetVisible());
+  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // separator should not be empty when split view is closed.
+  auto* browser_view = brave_browser_view();
   EXPECT_NE(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
 
@@ -111,9 +119,13 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // separator should be empty when split view is opened.
   EXPECT_EQ(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
-  EXPECT_TRUE(split_view_separator->GetVisible());
+  EXPECT_TRUE(split_view_separator()->GetVisible());
+  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Check corner radius.
+  auto* multi_contents_view = brave_multi_contents_view();
+  ASSERT_TRUE(multi_contents_view);
+
   auto* start_contents_web_view =
       multi_contents_view->start_contents_view_for_testing();
   auto* end_contents_web_view =
@@ -139,8 +151,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
 
-  split_view_separator->OnResize(30, false);
-  split_view_separator->OnResize(30, true);
+  split_view_separator()->OnResize(30, false);
+  split_view_separator()->OnResize(30, true);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() != end_contents_web_view->width();
@@ -152,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
                        ui::EF_LEFT_MOUSE_BUTTON);
   event.SetClickCount(2);
-  split_view_separator->OnMousePressed(event);
+  split_view_separator()->OnMousePressed(event);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
@@ -163,18 +175,27 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_EQ(2, tab_strip()->GetActiveIndex());
 
+  EXPECT_FALSE(split_view_separator()->GetVisible());
+  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
+
   // Created new tab(at 3) for new split view with existing tab(at 2).
   chrome::NewSplitTab(browser());
   EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
   EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
+  EXPECT_TRUE(split_view_separator()->GetVisible());
+  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
+  EXPECT_FALSE(split_view_separator()->GetVisible());
+  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Check selected split tab becomes active tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());
   EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+  EXPECT_TRUE(split_view_separator()->GetVisible());
+  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
@@ -213,6 +234,10 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   SplitView& split_view() { return *browser_view().split_view_; }
+
+  SplitViewSeparator& split_view_separator() {
+    return *browser_view().split_view_->split_view_separator_;
+  }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
 };
@@ -288,6 +313,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   // Given secondary web view is hidden as there's no tiled tabs
   ASSERT_FALSE(secondary_contents_container().GetVisible());
 
+  EXPECT_FALSE(split_view_separator().GetVisible());
+  EXPECT_FALSE(split_view_separator().menu_button_widget_->IsVisible());
+
   // When tiling tabs and one of them is the active tab,
   brave::NewSplitViewForTab(browser());
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
@@ -299,6 +327,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
   // Secondary web view should become visible
   EXPECT_TRUE(secondary_contents_container().GetVisible());
+  EXPECT_TRUE(split_view_separator().GetVisible());
+  EXPECT_TRUE(split_view_separator().menu_button_widget_->IsVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
@@ -311,6 +341,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
       tab_strip_model().GetTabAtIndex(0)->GetHandle()));
   ASSERT_TRUE(split_view_data->IsTabTiled(
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
+  EXPECT_TRUE(split_view_separator().GetVisible());
+  EXPECT_TRUE(split_view_separator().menu_button_widget_->IsVisible());
 
   // When breaking the tile
   split_view_data->BreakTile(tab_strip_model().GetTabAtIndex(0)->GetHandle());
@@ -319,6 +351,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
   // Then, the secondary web view should become hidden
   EXPECT_FALSE(secondary_contents_container().GetVisible());
+  EXPECT_FALSE(split_view_separator().GetVisible());
+  EXPECT_FALSE(split_view_separator().menu_button_widget_->IsVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
@@ -333,6 +367,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
       tab_strip_model().GetTabAtIndex(1)->GetHandle()));
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ false);
   ASSERT_TRUE(secondary_contents_container().GetVisible());
+  EXPECT_TRUE(split_view_separator().GetVisible());
+  EXPECT_TRUE(split_view_separator().menu_button_widget_->IsVisible());
 
   // When activating non-tiled tab
   tab_strip_model().ActivateTabAt(2);
@@ -340,6 +376,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   // Then, the secondary web view should become hidden
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !secondary_contents_container().GetVisible(); }));
+  EXPECT_FALSE(split_view_separator().GetVisible());
+  EXPECT_FALSE(split_view_separator().menu_button_widget_->IsVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
