@@ -68,6 +68,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
+  disassociateContent: (content: Mojom.AssociatedContent) => void
   conversationHandler?: Mojom.ConversationHandlerRemote
 
   showAttachments: boolean
@@ -120,6 +121,7 @@ const defaultContext: ConversationContext = {
   resetSelectedActionType: () => { },
   handleActionTypeClick: () => { },
   setIsToolsMenuOpen: () => { },
+  disassociateContent: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
@@ -496,6 +498,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     resetSelectedActionType()
   }
 
+  const disassociateContent = (content: Mojom.AssociatedContent) => {
+    const tab = aiChatContext.tabs.find(t => t.contentId === content.contentId)
+    if (!tab) {
+      console.error('Could not find tab for content', content)
+      return
+    }
+    aiChatContext.uiHandler?.disassociateTab(tab, context.conversationUuid!)
+  }
+
   // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
   // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
@@ -696,7 +707,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     conversationHandler,
     setGeneratedUrlToBeOpened:
       (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
-    setIgnoreExternalLinkWarning
+    setIgnoreExternalLinkWarning,
+    disassociateContent
   }
 
   return (

@@ -574,6 +574,10 @@ interface UntrustedConversationHandler {
 interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  // Called when the associated content is changed - called when the untrusted
+  // conversation frame is attached and when the content is changed.
+  AssociatedContentChanged(array<AssociatedContent> associated_content);
 };
 
 interface ConversationUI {

@@ -61,6 +61,9 @@ export default function BeginGeneration() {
           conversationHistory: [],
           pendingMessageImages: [],
           isUploadingFiles: false,
+          shouldSendPageContents: false,
+          updateShouldSendPageContents: () => {},
+          disassociateContent: () => {}
         }} />
     </FiltersContainer>
     <NoContent />
