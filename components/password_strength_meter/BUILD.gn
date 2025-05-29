@@ -7,14 +7,15 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("password_strength_meter") {
   sources = [
-    "password_strength_meter_handler.cc",
-    "password_strength_meter_handler.h",
+    "password_strength_meter.cc",
+    "password_strength_meter.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/password_strength_meter:mojom",
     "//components/password_manager/core/browser/ui",
+    "//mojo/public/cpp/bindings",
   ]
 }
 

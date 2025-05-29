@@ -6,14 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
 
-#include <memory>
 #include <utility>
 
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/password_strength_meter/password_strength_meter.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
-#include "brave/components/password_strength_meter/password_strength_meter_handler.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -33,9 +32,7 @@ class BraveAccountDialogsUIBase {
       mojo::PendingReceiver<
           password_strength_meter::mojom::PasswordStrengthMeterHandler>
           pending_receiver) {
-    password_strength_meter_handler_ =
-        std::make_unique<password_strength_meter::PasswordStrengthMeterHandler>(
-            std::move(pending_receiver));
+    password_strength_meter::BindInterface(std::move(pending_receiver));
   }
 
  private:
@@ -145,9 +142,6 @@ class BraveAccountDialogsUIBase {
       u"https://brave.com/terms-of-use/";
   static inline constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
       u"https://brave.com/privacy/browser/";
-
-  std::unique_ptr<password_strength_meter::PasswordStrengthMeterHandler>
-      password_strength_meter_handler_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_UI_BASE_H_
