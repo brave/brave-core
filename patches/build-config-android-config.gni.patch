@@ -1,8 +1,8 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index c86e623b7c3a77534e2fee24c6bdc9082901f941..ca76740a7d954ebee449241616933b435ca1feb4 100644
+index 701181f55e0e60ab45764a98ea6bb7a329fc7d77..607eeea0b2b39087b4bc6e1eedc08d861f7a648b 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
-@@ -28,6 +28,7 @@ assert(!(incremental_install && !is_java_debug),
+@@ -30,6 +30,7 @@ assert(!(incremental_install && !is_java_debug),
  # Toolchain used to create native libraries for robolectric_binary() targets.
  robolectric_toolchain = "//build/toolchain/android:robolectric_$host_cpu"
  
