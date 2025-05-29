@@ -336,14 +336,19 @@ try {
           if (this.readyState !== this.DONE || this.status !== 200) {
               return;
           }
-
-          const element = document.createElement('style');
-          element.type = 'text/css';
-          element.charset = 'UTF-8';
-          element.innerText = processCSS(this.responseText) + braveExtraStyles;
-          document.head.appendChild(element);
+          
+          if ('adoptedStyleSheets' in Document.prototype && 'replaceSync' in CSSStyleSheet.prototype) {
+              const sheet = new CSSStyleSheet();
+              sheet.replaceSync(processCSS(this.responseText) + braveExtraStyles);
+              document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+          } else {
+              const element = document.createElement('style');
+              element.type = 'text/css';
+              element.charset = 'UTF-8';
+              element.innerText = processCSS(this.responseText) + braveExtraStyles;
+              document.head.appendChild(element);
+          }
       }
-      
       xhr.send();
   }
 } catch(error) {
