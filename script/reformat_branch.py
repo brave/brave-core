@@ -126,7 +126,7 @@ def format_file(file: str) -> None:
             f'Failed to format file {file}: {prettier_result.stderr}')
 
 
-def format_files(files: List[str], stage=False, commit=False) -> Optional[str]:
+def format_files(files: List[str], stage=False, commit=False) -> None:
     for file in files:
         if not os.path.isfile(file) or not is_supported_file(file):
             continue
@@ -136,14 +136,12 @@ def format_files(files: List[str], stage=False, commit=False) -> Optional[str]:
     if commit and is_dirty():
         run_git_command(
             ['commit', '-m', '[autoformat] Pre-format changed files'])
-        return run_git_command(['rev-parse', 'HEAD']).strip()
-    return None
 
 
-def format_all_touched_files(start_ref: str, end_ref: str) -> Optional[str]:
+def format_all_touched_files(start_ref: str, end_ref: str) -> None:
     all_touched_files = get_changed_files(f'{start_ref}..{end_ref}')
     print(f'Preformatting {len(all_touched_files)} files...')
-    return format_files(all_touched_files, stage=True, commit=True)
+    format_files(all_touched_files, stage=True, commit=True)
 
 
 def reformat_and_cherry_pick_commits(start: str, end: str) -> None:
@@ -170,13 +168,12 @@ def reformat_and_cherry_pick_commits(start: str, end: str) -> None:
             run_git_command(['cherry-pick', '--continue', '--no-edit'])
 
 
-def reformat_branch(target_ref: str, base=DEFAULT_BRANCH) -> Optional[str]:
+def reformat_branch(target_ref: str, base=DEFAULT_BRANCH) -> None:
     merge_base = run_git_command(['merge-base', base, target_ref])
     print(f'Merge base is: {merge_base}')
     run_git_command(['checkout', merge_base])
-    pre_format_commit = format_all_touched_files(merge_base, target_ref)
+    format_all_touched_files(merge_base, target_ref)
     reformat_and_cherry_pick_commits('HEAD', target_ref)
-    return pre_format_commit
 
 
 def main() -> None:

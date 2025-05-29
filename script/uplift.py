@@ -12,6 +12,7 @@ import os
 import re
 import sys
 import json
+from typing import List, NamedTuple, Optional, Tuple
 
 from lib.config import get_env_var, BRAVE_CORE_ROOT
 from lib.util import execute, scoped_cwd
@@ -124,10 +125,6 @@ def validate_channel(channel):
 def parse_args():
     parser = argparse.ArgumentParser(
         description='create PRs for all branches given branch against master')
-    parser.add_argument('-g',
-                        '--gpgsign',
-                        help='GPG sign GitHub commit',
-                        action='store_true')
     parser.add_argument(
         '--owners',
         help='comma seperated list of GitHub logins to mark as assignee',
@@ -297,74 +294,52 @@ def main():
         config.title = get_title_from_first_commit(BRAVE_CORE_ROOT,
                                                    top_level_base)
 
-    # Create a branch for each channel
-    print('\nCreating branches...')
     fancy_print('NOTE: Commits are being detected by diffing "' + local_branch +
                 '" against "' + top_level_base + '"')
-    local_branches = {}
-    use_reformat = False
-    branch = ''
     if is_sha(top_level_base):
         compare_from = top_level_base
     else:
         compare_from = 'origin/' + top_level_base
+    squashed_branch = squash_commits(local_branch, compare_from)
 
-    try:
-        for channel in config.channels_to_process:
-            branch = create_branch(channel, compare_from,
-                                   remote_branches[channel], local_branch,
-                                   args)
-            local_branches[channel] = branch
-    except Exception as e:
-        print('[WARNING] cherry-pick failed for branch "' + branch + str(e))
-        use_reformat = True
+    for channel in config.channels_to_process:
+        target = remote_branches[channel]
+        result = create_branch(channel, target, squashed_branch, False)
+        was_reformatted = False
+        if not result.branch:
+            print(f'Retrying with reformatting enabled...')
+            was_reformatted = True
+            result = create_branch(channel, target, squashed_branch, True)
+            if not result.branch:
+                # Push the intermediate branches to allow manual resolution
+                push_branches_to_remote(BRAVE_CORE_ROOT,
+                                        result.intermediate_branches,
+                                        dryrun=config.is_dryrun,
+                                        token=config.github_token)
+                print(f'[ERROR] cherry-pick failed for {channel}')
+                print('Use the following instruction and re-run the job.')
+                print(result.message)
+                return 1
 
-    if use_reformat:
+        # Cherry-pick was successful, continue
+        push_branches_to_remote(BRAVE_CORE_ROOT, [result.branch],
+                                dryrun=config.is_dryrun,
+                                token=config.github_token)
+
+        pr_notes = None
+        if result.manually_resolved:
+            pr_notes = 'The PR has conflicts that were resolved manually.\n'
+        if was_reformatted:
+            pr_notes = pr_notes or ''
+            pr_notes += 'The PR was automatically reformatted.\n'
+
         try:
-            fancy_print('[INFO] Retrying with reformatting enabled')
-
-            pre_format_commit = None
-
-            # Reformat commits in the local_branch first (the branch can be old).
-            with scoped_cwd(BRAVE_CORE_ROOT):
-                execute(['git', 'checkout', local_branch])
-
-                print(
-                    f'Reformatting branch {local_branch}, base {compare_from}')
-                pre_format_commit = reformat_branch(local_branch, compare_from)
-                execute(['git', 'checkout', '-B', local_branch])
-
-            # Try again with preformatting the changed files.
-            for channel in config.channels_to_process:
-                branch = create_branch(channel,
-                                       pre_format_commit or compare_from,
-                                       remote_branches[channel],
-                                       local_branch,
-                                       args,
-                                       preformat=True)
-                local_branches[channel] = branch
-
-        except Exception as e:
-            print('[ERROR] cherry-pick failed for branch "' + branch +
-                  '". Please resolve manually:\n' + str(e))
-            return 1
-
-    print('\nPushing local branches to remote...')
-    push_branches_to_remote(BRAVE_CORE_ROOT,
-                            config.branches_to_push,
-                            dryrun=config.is_dryrun,
-                            token=config.github_token)
-
-    try:
-        print('\nCreating the pull requests...')
-        for channel in config.channels_to_process:
             submit_pr(channel, top_level_base, remote_branches[channel],
-                      local_branches[channel], issues_fixed, use_reformat)
-        print('\nDone!')
-    except Exception as e:
-        print('\n[ERROR] Unhandled error while creating pull request; ' +
-              str(e))
-        return 1
+                      result.branch, issues_fixed, pr_notes)
+        except Exception as e:
+            print(f'[ERROR] Unhandled error while creating pull request; ' +
+                  str(e))
+            return 1
 
     return 0
 
@@ -389,95 +364,139 @@ def is_sha(ref):
     return False
 
 
-def create_branch(channel,
-                  compare_from,
-                  remote_base,
-                  local_branch,
-                  args,
-                  preformat=False):
+def get_merge_base(branch, base):
+    with scoped_cwd(BRAVE_CORE_ROOT):
+        return execute(['git', 'merge-base', branch, base]).strip()
+
+
+def get_commit_count(start, end):
+    with scoped_cwd(BRAVE_CORE_ROOT):
+        return int(
+            execute(['git', 'rev-list', '--count', f'{start}..{end}']).strip())
+
+
+def squash_commits(branch, base) -> str:
+    with scoped_cwd(BRAVE_CORE_ROOT):
+        squash_branch = branch + '-squashed'
+        merge_base = get_merge_base(branch, base)
+        commit_count = get_commit_count(merge_base, branch)
+        if commit_count > 1000:
+            raise Exception(f'The diff has too many commits. Bad branch?')
+        if commit_count == 0:
+            raise Exception(f'The diff has no commits. Bad branch?')
+
+        execute(['git', 'checkout', branch])
+        execute(['git', 'checkout', '-B', squash_branch])
+        execute(['git', 'reset', '--soft', merge_base])
+
+        message = f'Squash of {commit_count} commits from branch "{branch}"'
+        execute(['git', 'commit', '-m', message])
+        print(f'- Squash done: "{message}"')
+        return squash_branch
+
+
+def recreate_branch_from_remote(branch: str):
+    with scoped_cwd(BRAVE_CORE_ROOT):
+        execute(['git', 'fetch', 'origin', branch])
+        execute(['git', 'checkout', '-f', 'FETCH_HEAD'])
+        execute(['git', 'checkout', '-B', branch])
+        return branch
+
+
+def fix_up_commit_message(channel: str):
+    """Adjust commit message to include the PR number and channel"""
     global config
+    with scoped_cwd(BRAVE_CORE_ROOT):
+        if int(config.master_pr_number) > 0:
+            execute(['git', 'commit', '--amend', '-m', 'Uplift of #' + \
+                str(config.master_pr_number) + ' (squashed) to ' + channel])
 
+
+def get_resolve_instructions(target_branch: str, squashed_branch: str,
+                             squashed_sha1: str) -> str:
+    return (f'git fetch origin {target_branch}:{target_branch} '
+            f'{squashed_branch}:{squashed_branch}' + '\n' +
+            f'git checkout {target_branch}' + '\n' +
+            f'git cherry-pick {squashed_sha1}' + '\n' +
+            'Resolve the conflicts, stage the changes.' + '\n' +
+            'git cherry-pick --continue' + '\n' +
+            f'git push origin {target_branch}' + '\n' +
+            f'git push origin :{squashed_branch}' + '\n')
+
+
+class CreateBranchResult(NamedTuple):
+    branch: Optional[str]
+    intermediate_branches: List[str]
+    message: Optional[str]
+    manually_resolved: bool
+
+
+def create_branch(
+    channel: str,
+    target: str,  # remote branch to uplift to
+    squashed_branch: str,  # local branch to cherry-pick from with 1 commit
+    reformat: bool,
+) -> CreateBranchResult:
     if is_nightly(channel):
-        return local_branch
+        return CreateBranchResult(squashed_branch, [], None, False)
 
-    channel_branch = local_branch + '_' + remote_base
+    target_branch = squashed_branch + '_' + target
+    fancy_print(f'Processing uplift to {channel}, branch: {target_branch}...')
 
     with scoped_cwd(BRAVE_CORE_ROOT):
-        # get SHA for all commits (in order)
-        sha_list = execute([
-            'git', 'log', compare_from + '..HEAD', '--pretty=format:%h',
-            '--reverse'
-        ])
-        sha_list = sha_list.split('\n')
-        if len(sha_list) > 1000:
-            raise Exception('Too many commits!')
-        if len(sha_list) == 0:
-            raise Exception('No changes detected!')
+        # Stage 1: Try to use the existing branch if it exists.
         try:
-            # check if branch exists already
-            try:
-                branch_sha = execute(
-                    ['git', 'rev-parse', '-q', '--verify', channel_branch])
-            except Exception:
-                branch_sha = ''
-
-            if len(branch_sha) > 0:
-                # branch exists; reset it
-                print('(' + channel + ') branch "' + channel_branch +
-                      '" exists; resetting to origin/' + remote_base)
-                execute(['git', 'checkout', channel_branch])
-                execute(['git', 'reset', '--hard', 'origin/' + remote_base])
+            last_commit_message = execute(
+                ['git', 'log', '-1', '--pretty=%s', target_branch]).strip()
+            commit_count = get_commit_count(target, target_branch)
+            if commit_count >= 1 and not last_commit_message.startswith(
+                    '[autoformat]'):
+                # Fast track: the conflicts were manually resolved by humans.
+                print(f'Using existing branch "{target_branch}"')
+                fix_up_commit_message(channel)
+                return CreateBranchResult(target_branch, [], None, True)
             else:
-                # create the branch
-                print('(' + channel + ') creating "' + channel_branch +
-                      '" from ' + remote_base)
-                execute(['git', 'checkout', remote_base])
-                execute(['git', 'pull', 'origin', remote_base])
-                execute(['git', 'checkout', '-b', channel_branch])
+                print(
+                    f'Branch "{target_branch}" exists, but looks unresolved.')
+        except Exception as e:
+            pass
 
-            if preformat:
-                merge_base = execute(
-                    ['git', 'merge-base', compare_from, local_branch]).strip()
-                pre_format_commit = format_all_touched_files(
-                    merge_base, local_branch)
-                if pre_format_commit:
-                    remote_base = pre_format_commit
+        # Stage 2: Reformat the squashed branch (optional).
+        if reformat:
+            execute(['git', 'checkout', '-f', squashed_branch])
+            reformat_branch(squashed_branch, f'{squashed_branch}~1')
+            execute(['git', 'checkout', '-B', squashed_branch])
 
-            # TODO: handle errors thrown by cherry-pick
-            for sha in sha_list:
-                output = execute(['git', 'cherry-pick', '--allow-empty',
-                                  sha]).split('\n')
-                print('- picked ' + sha + ' (' + output[0] + ')')
+        # Stage 3: Create and checkout the target branch.
+        recreate_branch_from_remote(target)
+        execute(['git', 'checkout', '-B', target_branch])
 
-            # squash all commits into one
-            # NOTE: master is not squashed. This only runs for uplifts.
-            execute(['git', 'reset', '--soft', remote_base])
-            squash_message = 'Squash of commits from branch "' + \
-                str(local_branch) + '" to ' + channel
-            if int(config.master_pr_number) > 0:
-                squash_message = 'Uplift of #' + \
-                    str(config.master_pr_number) + ' (squashed) to ' + channel
-            if args.gpgsign:
-                cmdline = ['git', 'commit', '-S', '-m', squash_message]
-            else:
-                cmdline = ['git', 'commit', '-m', squash_message]
-            execute(cmdline)
-            squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
-            print('- squashed all commits into ' + squash_hash +
-                  ' with message: "' + squash_message + '"')
+        # Stage 4: Preformat the touched files to match the style of the PR
+        # (optional).
+        squashed_sha1 = execute(['git', 'rev-parse', squashed_branch]).strip()
+        if reformat:
+            format_all_touched_files(f'{squashed_sha1}~1', squashed_sha1)
 
-        finally:
-            # switch back to original branch
+        # Stage 5: Cherry-pick the squashed commits
+        try:
+            execute(['git', 'cherry-pick', squashed_sha1])
+        except Exception as e:
+            print(f'Cherry-pick failed: {e}', file=sys.stderr)
             try:
                 execute(['git', 'cherry-pick', '--abort'])
             except Exception:
                 pass
-            execute(['git', 'checkout', local_branch])
-            execute(['git', 'reset', '--hard', sha_list[-1]])
 
-    config.branches_to_push.append(channel_branch)
+            message = get_resolve_instructions(target_branch, squashed_branch,
+                                               squashed_sha1)
+            return CreateBranchResult(None, [target_branch, squashed_branch],
+                                      message, True)
 
-    return channel_branch
+        # Stage 6: Adjust commit message to include the PR number and channel.
+        fix_up_commit_message(channel)
+
+        return CreateBranchResult(target_branch, [], None, False)
+
 
 
 def get_milestone_for_branch(channel_branch):
@@ -492,12 +511,8 @@ def get_milestone_for_branch(channel_branch):
     return None
 
 
-def submit_pr(channel,
-              top_level_base,
-              remote_base,
-              local_branch,
-              issues_fixed,
-              reformatted=False):
+def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed,
+              pr_notes: Optional[str]):
     global config
 
     milestone_number = get_milestone_for_branch(remote_base)
@@ -520,8 +535,9 @@ def submit_pr(channel,
         if len(issues_fixed) > 0:
             for fixed in issues_fixed:
                 pr_body += (fixed[0] + '\n')
-        if reformatted:
-            pr_body += 'NOTE: The PR was automatically reformatted.\n'
+
+        if pr_notes:
+            pr_body += '\n' + pr_notes
 
         pr_body += '\nPre-approval checklist: \n'
         pr_body += '- [ ] You have tested your change on Nightly. \n'
