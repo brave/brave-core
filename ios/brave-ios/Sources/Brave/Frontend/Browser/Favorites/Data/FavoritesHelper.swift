@@ -15,9 +15,11 @@ struct FavoritesHelper {
   static let initPrefsKey = "FavoritesHelperInitPrefsKey"
 
   // MARK: - Favorites initialization
-  static func addDefaultFavorites() async {
-    let list = await FavoritesPreloadedData.getList()
-    Favorite.addDefaults(from: list)
+  static func addDefaultFavorites() {
+    Task { @MainActor in
+      let list = await FavoritesPreloadedData.getList()
+      Favorite.addDefaults(from: list)
+    }
   }
 
   static func add(url: URL, title: String?) {
