@@ -40,22 +40,21 @@ BraveWebUIIOSDataSource* CreateAndAddWebUIDataSource(
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  
   auto* source = BraveWebUIIOSDataSource::CreateAndAdd(
       ProfileIOS::FromWebUIIOS(web_ui), name);
-  
+
   source->AddResourcePaths(resource_paths);
   source->SetDefaultResource(html_resource_id);
 
   source->UseStringsJs();
   source->EnableReplaceI18nInJS();
-  
+
   CustomizeWebUIHTMLSource(web_ui, name, source);
-  
+
   if (disable_trusted_types_csp) {
     source->DisableTrustedTypesCSP();
   }
-  
+
   return source;
 }
 
