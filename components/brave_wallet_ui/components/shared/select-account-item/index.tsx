@@ -21,7 +21,7 @@ import {
   IconsWrapper,
   NetworkIconWrapper,
   SwitchAccountIcon,
-  Row
+  Row,
 } from '../style'
 import {
   StyledWrapper,
@@ -32,7 +32,7 @@ import {
   LeftSide,
   BigCheckMark,
   SwitchAccountIconContainer,
-  CaratDown
+  CaratDown,
 } from './style'
 
 // hooks
@@ -59,7 +59,7 @@ export function SelectAccountItem({
   selectedNetwork,
   hideAddress,
   showSwitchAccountsIcon: showSwitchAccountsLink,
-  isV2
+  isV2,
 }: Props) {
   // methods
   const onKeyPress = React.useCallback(
@@ -69,7 +69,7 @@ export function SelectAccountItem({
         onSelectAccount()
       }
     },
-    [onSelectAccount]
+    [onSelectAccount],
   )
 
   // memos / computed
@@ -82,7 +82,7 @@ export function SelectAccountItem({
     return showTooltips
       ? Tooltip
       : ({
-          children
+          children,
         }: React.PropsWithChildren<{
           text: string
           isAddress?: boolean

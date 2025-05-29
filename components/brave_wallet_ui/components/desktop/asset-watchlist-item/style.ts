@@ -10,7 +10,7 @@ import LeoIcon from '@brave/leo/react/icon'
 import {
   AssetIconProps,
   AssetIconFactory,
-  WalletButton
+  WalletButton,
 } from '../../shared/style'
 import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
@@ -96,7 +96,7 @@ export const BalanceColumn = styled.div`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const CheckboxRow = styled.div`

@@ -8,14 +8,14 @@ import Button from '@brave/leo/react/button'
 
 // Types
 import {
-  ExternalWalletProvider //
+  ExternalWalletProvider, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { getRewardsProviderName } from '../../../utils/rewards_utils'
 import {
-  reconnectURL //
+  reconnectURL, //
 } from '../../../../brave_rewards/resources/shared/lib/rewards_urls'
 
 // Styled Components
@@ -23,7 +23,7 @@ import {
   LoginWrapper,
   InfoIcon,
   InfoText,
-  ButtonWrapper
+  ButtonWrapper,
 } from './rewards_login.style'
 import { Row } from '../../shared/style'
 
@@ -35,22 +35,22 @@ export const RewardsLogin = ({ provider }: Props) => {
   // Computed
   const providerName = getRewardsProviderName(provider)
   const loginDescription = getLocale(
-    'braveWalletBraveRewardsLoggedOutDescription'
+    'braveWalletBraveRewardsLoggedOutDescription',
   ).replace('$1', providerName)
 
   // Methods
   const onClickLogin = () => {
     chrome.tabs.create(
       {
-        url: reconnectURL
+        url: reconnectURL,
       },
       () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
-      }
+      },
     )
   }
 

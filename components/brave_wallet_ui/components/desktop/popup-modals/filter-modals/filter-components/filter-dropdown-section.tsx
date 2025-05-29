@@ -17,7 +17,7 @@ import {
   Description,
   IconWrapper,
   Icon,
-  DropdownFilter
+  DropdownFilter,
 } from './filter-components.style'
 import { Row, Column } from '../../../../shared/style'
 
@@ -52,14 +52,14 @@ export const FilterDropdownSection = (props: Props) => {
     icon,
     dropdownOptions,
     selectedOptionId,
-    onSelectOption
+    onSelectOption,
   } = props
 
   // Memos
   const selectedDropdownName = React.useMemo(() => {
     return (
-      dropdownOptions.find((option) => option.id === selectedOptionId)?.name ??
-      ''
+      dropdownOptions.find((option) => option.id === selectedOptionId)?.name
+      ?? ''
     )
   }, [dropdownOptions, selectedOptionId])
 

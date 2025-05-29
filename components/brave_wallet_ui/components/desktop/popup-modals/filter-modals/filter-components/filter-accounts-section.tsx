@@ -11,15 +11,15 @@ import { getAccountTypeDescription } from '../../../../../utils/account-utils'
 import { getLocale } from '../../../../../../common/locale'
 
 import {
-  useGetAccountInfosRegistryQuery //
+  useGetAccountInfosRegistryQuery, //
 } from '../../../../../common/slices/api.slice'
 import {
-  selectAllAccountInfosFromQuery //
+  selectAllAccountInfosFromQuery, //
 } from '../../../../../common/slices/entities/account-info.entity'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
@@ -27,7 +27,7 @@ import {
   SelectAllButton,
   Title,
   CheckboxText,
-  Description
+  Description,
 } from './filter-components.style'
 import { Row, Column } from '../../../../shared/style'
 
@@ -42,8 +42,8 @@ export const FilterAccountsSection = (props: Props) => {
   const { data: accountsList } = useGetAccountInfosRegistryQuery(undefined, {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
-      data: selectAllAccountInfosFromQuery(res)
-    })
+      data: selectAllAccountInfosFromQuery(res),
+    }),
   })
 
   // Methods
@@ -51,20 +51,22 @@ export const FilterAccountsSection = (props: Props) => {
     (uniqueKey: string) => {
       return filteredOutAccountIds.includes(uniqueKey)
     },
-    [filteredOutAccountIds]
+    [filteredOutAccountIds],
   )
 
   const onCheckAccount = React.useCallback(
     (uniqueKey: string) => {
       if (isAccountFilteredOut(uniqueKey)) {
         setFilteredOutAccountIds(
-          filteredOutAccountIds.filter((addressKey) => addressKey !== uniqueKey)
+          filteredOutAccountIds.filter(
+            (addressKey) => addressKey !== uniqueKey,
+          ),
         )
         return
       }
       setFilteredOutAccountIds([...filteredOutAccountIds, uniqueKey])
     },
-    [filteredOutAccountIds, isAccountFilteredOut, setFilteredOutAccountIds]
+    [filteredOutAccountIds, isAccountFilteredOut, setFilteredOutAccountIds],
   )
 
   const onSelectOrDeselectAllAccounts = React.useCallback(() => {
@@ -73,7 +75,7 @@ export const FilterAccountsSection = (props: Props) => {
       return
     }
     setFilteredOutAccountIds(
-      accountsList.map((account) => account.accountId.uniqueKey)
+      accountsList.map((account) => account.accountId.uniqueKey),
     )
   }, [accountsList, filteredOutAccountIds, setFilteredOutAccountIds])
 

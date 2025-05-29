@@ -9,7 +9,7 @@ import { Redirect, Route, Switch, useHistory } from 'react-router'
 // types
 import {
   CreateAccountOptionsType,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../constants/types'
 
 // components
@@ -27,11 +27,11 @@ export const AddAccountModal = () => {
       history.push(
         WalletRoutes.AddHardwareAccountModal.replace(
           ':accountTypeName?',
-          accountType.name.toLowerCase()
-        )
+          accountType.name.toLowerCase(),
+        ),
       )
     },
-    [history]
+    [history],
   )
 
   return (

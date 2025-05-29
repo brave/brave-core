@@ -18,7 +18,7 @@ import { NftIcon } from '../../../../../shared/nft-icon/nft-icon'
 import {
   CollectionGrid,
   EmptyCollectionGridItem,
-  NftIconStyles
+  NftIconStyles,
 } from './nft-collection-grid-view-item.styles'
 
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
 export const NftCollectionGridViewItem = ({
   collectionToken,
   tokensInCollection,
-  onSelectAsset
+  onSelectAsset,
 }: Props) => {
   // render
   if (tokensInCollection.length === 0) {

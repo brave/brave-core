@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { ShieldZCashAccountModal } from './shield_zcash_account'
 import { mockAccount } from '../../../../common/constants/mocks'
@@ -21,9 +21,9 @@ export const _ShieldZCashAccountModal = {
         />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: ShieldZCashAccountModal
+  component: ShieldZCashAccountModal,
 }

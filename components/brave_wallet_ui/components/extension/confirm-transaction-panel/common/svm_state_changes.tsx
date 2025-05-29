@@ -18,28 +18,28 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { IconAsset } from '../../../shared/create-placeholder-icon'
 import { getAddressLabel } from '../../../../utils/account-utils'
 import {
-  getNetworkId //
+  getNetworkId, //
 } from '../../../../common/slices/entities/network.entity'
 
 // hooks
 import {
   useGetCombinedTokensRegistryQuery,
-  useGetIsRegistryTokenQuery
+  useGetIsRegistryTokenQuery,
 } from '../../../../common/slices/api.slice.extra'
 import {
-  useGetAccountInfosRegistryQuery //
+  useGetAccountInfosRegistryQuery, //
 } from '../../../../common/slices/api.slice'
 
 // components
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import {
   ChainInfo,
-  InlineViewOnBlockExplorerIconButton
+  InlineViewOnBlockExplorerIconButton,
 } from './view_on_explorer_button'
 import {
   AssetIconWithPlaceholder,
   NftAssetIconWithPlaceholder,
-  NFT_ICON_STYLE
+  NFT_ICON_STYLE,
 } from './state_change_asset_icons'
 import { CopyLabel } from '../../../shared/copy_label/copy_label'
 
@@ -49,13 +49,13 @@ import {
   IconsWrapper,
   NetworkIconWrapper,
   Row,
-  Text
+  Text,
 } from '../../../shared/style'
 import {
   ArrowRightIcon,
   UnverifiedTokenIndicator,
   StateChangeText,
-  TooltipContent
+  TooltipContent,
 } from './state_changes.styles'
 
 type BlockchainInfo = Pick<
@@ -71,13 +71,13 @@ type BlockchainInfo = Pick<
 
 const METAPLEX_NFT_KINDS = [
   BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible,
-  BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungibleEdition
+  BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungibleEdition,
 ] as const
 
 export const SOLTransfer = ({
   network,
   transfer,
-  transactionDetails
+  transactionDetails,
 }: {
   transfer: BraveWallet.BlowfishSOLTransferData
   transactionDetails?: ParsedTransaction
@@ -96,13 +96,13 @@ export const SOLTransfer = ({
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
       chainId: network.chainId,
-      isShielded: false
+      isShielded: false,
     }
   }, [transfer, network])
 
   const normalizedAmount = React.useMemo(() => {
     return new Amount(transfer.diff.digits).divideByDecimals(
-      transfer.asset.decimals
+      transfer.asset.decimals,
     )
   }, [transfer])
 
@@ -133,11 +133,11 @@ export const SOLTransfer = ({
          * counterparty not currently provided by Blowfish
          * show the account/address only if it is a simple transfer TX type
          */}
-        {!isReceive &&
-          (transactionDetails?.txType ===
-            BraveWallet.TransactionType.SolanaSystemTransfer ||
-            isAssociatedTokenAccountCreation) &&
-          transactionDetails?.recipient && (
+        {!isReceive
+          && (transactionDetails?.txType
+            === BraveWallet.TransactionType.SolanaSystemTransfer
+            || isAssociatedTokenAccountCreation)
+          && transactionDetails?.recipient && (
             <Tooltip>
               <TooltipContent slot='content'>
                 {transactionDetails.recipient}
@@ -184,7 +184,7 @@ export const SOLTransfer = ({
 
 export const SPLTokenTransfer = ({
   network,
-  transfer
+  transfer,
 }: {
   transfer: BraveWallet.BlowfishSPLTransferData
   network: BlockchainInfo
@@ -192,7 +192,7 @@ export const SPLTokenTransfer = ({
   // queries
   const { isVerified } = useGetIsRegistryTokenQuery({
     address: transfer.asset.mint,
-    chainId: network.chainId
+    chainId: network.chainId,
   })
   const { data: accountsRegistry } = useGetAccountInfosRegistryQuery()
 
@@ -203,8 +203,8 @@ export const SPLTokenTransfer = ({
     const foundTokenId = combinedTokensRegistry
       ? combinedTokensRegistry.idsByChainId[getNetworkId(network)].find(
           (id) =>
-            combinedTokensRegistry.entities[id]?.contractAddress ===
-            transfer.asset.mint
+            combinedTokensRegistry.entities[id]?.contractAddress
+            === transfer.asset.mint,
         )
       : undefined
     const foundToken = foundTokenId
@@ -221,13 +221,13 @@ export const SPLTokenTransfer = ({
       symbol: transfer.asset.symbol,
       chainId: network.chainId,
       isNft: METAPLEX_NFT_KINDS.includes(transfer.asset.metaplexTokenStandard),
-      isShielded: false
+      isShielded: false,
     }
   }, [transfer, combinedTokensRegistry, network])
 
   const normalizedAmount = React.useMemo(() => {
     return new Amount(transfer.diff.digits).divideByDecimals(
-      transfer.asset.decimals
+      transfer.asset.decimals,
     )
   }, [transfer])
 
@@ -322,17 +322,17 @@ export const SPLTokenTransfer = ({
 
 export const SPLTokenApproval = ({
   network,
-  approval
+  approval,
 }: {
   approval: BraveWallet.BlowfishSPLApprovalData
   network: BlockchainInfo
 }): JSX.Element => {
   // computed
   const isNft =
-    approval.asset.metaplexTokenStandard ===
-      BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible ||
-    approval.asset.metaplexTokenStandard ===
-      BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungibleEdition
+    approval.asset.metaplexTokenStandard
+      === BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungible
+    || approval.asset.metaplexTokenStandard
+      === BraveWallet.BlowfishMetaplexTokenStandardKind.kNonFungibleEdition
 
   // memos
   const afterAmount = React.useMemo(() => {
@@ -371,7 +371,7 @@ export const SPLTokenApproval = ({
           <Text textSize='11px'>
             {getLocale('braveWalletSpenderAddress').replace(
               '$1',
-              reduceAddress(approval.delegate)
+              reduceAddress(approval.delegate),
             )}
           </Text>
         </CopyTooltip>
@@ -389,7 +389,7 @@ export const SPLTokenApproval = ({
 const AddressChange = ({
   fromAddress,
   toAddress,
-  network
+  network,
 }: {
   fromAddress: string
   toAddress: string
@@ -430,7 +430,7 @@ const AddressChange = ({
 
 export const SolStakingAuthChange = ({
   authChange,
-  network
+  network,
 }: {
   authChange: BraveWallet.BlowfishSOLStakeAuthorityChangeData
   network: BlockchainInfo
@@ -439,8 +439,8 @@ export const SolStakingAuthChange = ({
   const hasStakerChange =
     authChange.currentAuthorities.staker !== authChange.futureAuthorities.staker
   const hasWithdrawerChange =
-    authChange.currentAuthorities.withdrawer !==
-    authChange.futureAuthorities.withdrawer
+    authChange.currentAuthorities.withdrawer
+    !== authChange.futureAuthorities.withdrawer
 
   // render
   return (
@@ -494,7 +494,7 @@ export const SolStakingAuthChange = ({
 
 export const SolAccountOwnershipChange = ({
   ownerChange,
-  network
+  network,
 }: {
   ownerChange: BraveWallet.BlowfishSolanaUserAccountOwnerChangeData
   network: BlockchainInfo
@@ -524,7 +524,7 @@ export const SolAccountOwnershipChange = ({
 export function getComponentForSvmTransfer(
   transfer: BraveWallet.BlowfishSolanaStateChange,
   network: ChainInfo,
-  transactionDetails?: ParsedTransaction
+  transactionDetails?: ParsedTransaction,
 ) {
   const { data } = transfer.rawInfo
 

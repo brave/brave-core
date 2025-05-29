@@ -23,7 +23,7 @@ import {
   AssetIconProps,
   Column,
   Row,
-  Text
+  Text,
 } from '../../../shared/style'
 
 export const NftIconStyles = { height: 140, width: 140 }
@@ -135,13 +135,13 @@ export const TransactionFiatText = styled(Text)`
 
 const assetIconProps = {
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 }
 export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
 
 const swapIconProps = {
   width: '24px',
-  height: 'auto'
+  height: 'auto',
 }
 export const SwapIcon = AssetIconFactory<AssetIconProps>(swapIconProps)
 
@@ -163,30 +163,30 @@ export const StatusBox = styled.div<{
   border-radius: 4px;
   margin-bottom: 8px;
   background-color: ${(p) =>
-    p.status === BraveWallet.TransactionStatus.Confirmed ||
-    p.status === BraveWallet.TransactionStatus.Approved
+    p.status === BraveWallet.TransactionStatus.Confirmed
+    || p.status === BraveWallet.TransactionStatus.Approved
       ? leo.color.systemfeedback.successBackground
-      : p.status === BraveWallet.TransactionStatus.Error ||
-        p.status === BraveWallet.TransactionStatus.Dropped
-      ? leo.color.systemfeedback.errorBackground
-      : p.status === BraveWallet.TransactionStatus.Unapproved
-      ? leo.color.divider.strong
-      : leo.color.systemfeedback.infoBackground};
+      : p.status === BraveWallet.TransactionStatus.Error
+          || p.status === BraveWallet.TransactionStatus.Dropped
+        ? leo.color.systemfeedback.errorBackground
+        : p.status === BraveWallet.TransactionStatus.Unapproved
+          ? leo.color.divider.strong
+          : leo.color.systemfeedback.infoBackground};
 `
 
 export const StatusText = styled(Text)<{
   status: BraveWallet.TransactionStatus
 }>`
   color: ${(p) =>
-    p.status === BraveWallet.TransactionStatus.Confirmed ||
-    p.status === BraveWallet.TransactionStatus.Approved
+    p.status === BraveWallet.TransactionStatus.Confirmed
+    || p.status === BraveWallet.TransactionStatus.Approved
       ? leo.color.systemfeedback.successText
-      : p.status === BraveWallet.TransactionStatus.Error ||
-        p.status === BraveWallet.TransactionStatus.Dropped
-      ? leo.color.systemfeedback.errorText
-      : p.status === BraveWallet.TransactionStatus.Unapproved
-      ? leo.color.text.secondary
-      : leo.color.systemfeedback.infoText};
+      : p.status === BraveWallet.TransactionStatus.Error
+          || p.status === BraveWallet.TransactionStatus.Dropped
+        ? leo.color.systemfeedback.errorText
+        : p.status === BraveWallet.TransactionStatus.Unapproved
+          ? leo.color.text.secondary
+          : leo.color.systemfeedback.infoText};
   line-height: normal;
   letter-spacing: 0.4px;
   text-transform: uppercase;
@@ -205,7 +205,7 @@ export const LoadingIcon = styled(ProgressRing)<{
 `
 
 export const SuccessIcon = styled(Icon).attrs({
-  name: 'check-circle-outline'
+  name: 'check-circle-outline',
 })`
   --leo-icon-size: 14px;
   color: ${leo.color.systemfeedback.successIcon};
@@ -213,7 +213,7 @@ export const SuccessIcon = styled(Icon).attrs({
 `
 
 export const ErrorIcon = styled(Icon).attrs({
-  name: 'warning-circle-outline'
+  name: 'warning-circle-outline',
 })`
   --leo-icon-size: 14px;
   color: ${leo.color.systemfeedback.errorIcon};
@@ -232,7 +232,7 @@ export const NetworkNameText = styled(DateText)`
 `
 
 export const SpeedupIcon = styled(Icon).attrs({
-  name: 'network-speed-fast'
+  name: 'network-speed-fast',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.white};
@@ -240,7 +240,7 @@ export const SpeedupIcon = styled(Icon).attrs({
 `
 
 export const RetryIcon = styled(Icon).attrs({
-  name: 'refresh'
+  name: 'refresh',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.icon.interactive};
@@ -264,7 +264,7 @@ export const SwapFiatValueText = styled(Text)`
 `
 
 export const ArrowIcon = styled(Icon).attrs({
-  name: 'arrow-right'
+  name: 'arrow-right',
 })`
   --leo-icon-size: 14px;
   color: ${leo.color.icon.default};

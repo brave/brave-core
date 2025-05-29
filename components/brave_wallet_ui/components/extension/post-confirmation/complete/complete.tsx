@@ -5,7 +5,7 @@
 import * as React from 'react'
 import LeoButton from '@brave/leo/react/button'
 import {
-  PluralStringProxyImpl //
+  PluralStringProxyImpl, //
 } from 'chrome://resources/js/plural_string_proxy.js'
 import usePromise from '$web-common/usePromise'
 
@@ -14,12 +14,12 @@ import { getLocale } from '$web-common/locale'
 
 // Hooks
 import {
-  usePendingTransactions //
+  usePendingTransactions, //
 } from '../../../../common/hooks/use-pending-transaction'
 
 // Components
 import {
-  PostConfirmationHeader //
+  PostConfirmationHeader, //
 } from '../common/post_confirmation_header'
 
 // Styled Components
@@ -28,7 +28,7 @@ import {
   Title,
   Wrapper,
   ErrorOrSuccessIconWrapper,
-  ErrorOrSuccessIcon
+  ErrorOrSuccessIcon,
 } from '../common/common.style'
 import { Column, Row, Text } from '../../../shared/style'
 import { SerializableTransactionInfo } from '../../../../constants/types'
@@ -51,9 +51,9 @@ export const TransactionComplete = (props: Props) => {
     async () =>
       PluralStringProxyImpl.getInstance().getPluralString(
         'braveWalletPendingTransactions',
-        transactionsQueueLength
+        transactionsQueueLength,
       ),
-    [transactionsQueueLength]
+    [transactionsQueueLength],
   )
   const hasMoreTransactions = transactionsQueueLength >= 1
 

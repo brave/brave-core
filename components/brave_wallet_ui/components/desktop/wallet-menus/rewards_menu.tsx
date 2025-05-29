@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Queries
 import {
-  useGetRewardsInfoQuery //
+  useGetRewardsInfoQuery, //
 } from '../../../common/slices/api.slice'
 import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 
@@ -19,32 +19,32 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 
 const onClickRewardsSettings = () => {
   chrome.tabs.create(
     {
-      url: 'brave://rewards'
+      url: 'brave://rewards',
     },
     () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
-    }
+    },
   )
 }
 
 export const RewardsMenu = () => {
   // Queries
   const {
-    data: { accountLink: providerAccountUrl, providerName } = emptyRewardsInfo
+    data: { accountLink: providerAccountUrl, providerName } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
 
   // Computed
   const providerButtonText = getLocale('braveWalletViewOn').replace(
     '$1',
-    providerName
+    providerName,
   )
 
   // Methods
@@ -54,15 +54,15 @@ export const RewardsMenu = () => {
     }
     chrome.tabs.create(
       {
-        url: providerAccountUrl
+        url: providerAccountUrl,
       },
       () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
-      }
+      },
     )
   }
 

@@ -13,25 +13,25 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Options
 import {
-  ChartTimelineOptions //
+  ChartTimelineOptions, //
 } from '../../../../options/chart-timeline-options'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  setStoredPortfolioTimeframe //
+  setStoredPortfolioTimeframe, //
 } from '../../../../utils/local-storage-utils'
 
 // Components
 import {
-  LineChartControlsMenu //
+  LineChartControlsMenu, //
 } from '../../wallet-menus/line-chart-controls-menu'
 
 // Styled Components
 import {
   SelectTimelinButton,
   SelectTimelineClickArea,
-  SelectTimelinButtonIcon
+  SelectTimelinButtonIcon,
 } from './line-chart-controls.style'
 
 interface Props {
@@ -53,7 +53,7 @@ export const LineChartControls = (props: Props) => {
   useOnClickOutside(
     lineChartControlMenuRef,
     () => setShowLineChartControlMenu(false),
-    showLineChartControlMenu
+    showLineChartControlMenu,
   )
 
   // methods
@@ -63,7 +63,7 @@ export const LineChartControls = (props: Props) => {
       setStoredPortfolioTimeframe(id)
       setShowLineChartControlMenu(false)
     },
-    [onSelectTimeline]
+    [onSelectTimeline],
   )
 
   return (

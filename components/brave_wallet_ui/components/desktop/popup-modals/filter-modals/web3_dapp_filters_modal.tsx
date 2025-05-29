@@ -9,16 +9,16 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../common/constants/local-storage-keys'
 import {
-  useGetDappRadarNetworks //
+  useGetDappRadarNetworks, //
 } from '../../../../common/slices/api.slice.extra'
 
 // components
 import PopupModal from '..'
 import {
-  FilterNetworksSection //
+  FilterNetworksSection, //
 } from './filter-components/filter-networks-section'
 import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 
@@ -26,7 +26,7 @@ import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 import {
   ScrollableColumn,
   HorizontalSpace,
-  LeoSquaredButton
+  LeoSquaredButton,
 } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
@@ -40,13 +40,13 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
   const [filteredOutDappNetworkKeys, setFilteredOutDappNetworkKeys] =
     useLocalStorage<string[]>(
       LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
-      []
+      [],
     )
 
   const [filteredOutDappCategories, setFilteredOutDappCategories] =
     useLocalStorage<string[]>(
       LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_CATEGORIES,
-      []
+      [],
     )
 
   // state
@@ -74,20 +74,20 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
     filteredOutNetworkKeys,
     setFilteredOutDappCategories,
     filteredOutCategories,
-    onClose
+    onClose,
   ])
 
   const onCheckCategory = (category: string) =>
     setFilteredOutCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
-        : prev.concat(category)
+        : prev.concat(category),
     )
 
   // computed
   const showSelectAll =
-    filteredOutCategories.length > 0 &&
-    categories.some((category) => filteredOutCategories.includes(category))
+    filteredOutCategories.length > 0
+    && categories.some((category) => filteredOutCategories.includes(category))
 
   const onSelectOrDeselectAllCategories = React.useCallback(() => {
     setFilteredOutCategories(showSelectAll ? [] : categories)

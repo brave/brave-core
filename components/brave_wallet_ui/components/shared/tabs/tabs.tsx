@@ -11,7 +11,7 @@ import {
   Tab,
   Indicator,
   TabWrapper,
-  LabelSummary
+  LabelSummary,
 } from './tabs.styles'
 
 export interface TabOption {
@@ -40,7 +40,7 @@ export const Tabs = ({ options, onSelect }: Props) => {
       setActiveTab(option)
       onSelect(option)
     },
-    [activeTab, onSelect]
+    [activeTab, onSelect],
   )
 
   return (

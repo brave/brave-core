@@ -17,7 +17,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   SegmentedControl as StyledSegmentedControl,
   ControlItemWrapper,
-  StyledWrapper
+  StyledWrapper,
 } from './segmented_control.style'
 
 interface Props {
@@ -35,7 +35,7 @@ export const SegmentedControl = ({ navOptions, maxWidth }: Props) => {
     navOptions.find((option) =>
       option.route.startsWith('#')
         ? option.route === hash
-        : option.route === walletLocation
+        : option.route === walletLocation,
     )?.route || navOptions[0].route
 
   // Render

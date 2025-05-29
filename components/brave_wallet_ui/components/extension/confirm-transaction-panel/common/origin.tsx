@@ -12,7 +12,7 @@ import BraveIcon from '../../../../assets/svg-icons/brave-icon.svg'
 import { SiteOrigin } from '../../../shared/create-site-origin'
 import {
   ChainInfo,
-  InlineViewOnBlockExplorerIconButton
+  InlineViewOnBlockExplorerIconButton,
 } from './view_on_explorer_button'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 
@@ -25,7 +25,7 @@ import {
   InlineContractRow,
   OriginIndicatorIconWrapper,
   OriginURLText,
-  OriginWarningIndicator
+  OriginWarningIndicator,
 } from './origin.style'
 
 // Types
@@ -35,7 +35,7 @@ import { BraveWallet } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import {
   getIsBraveWalletOrigin,
-  isComponentInStorybook
+  isComponentInStorybook,
 } from '../../../../utils/string-utils'
 import { getLocale } from '../../../../../common/locale'
 
@@ -57,9 +57,7 @@ export function Origin(props: Props) {
   const { originInfo } = props
   return (
     <>
-      <FavIcon
-        src={getFaviconSrc(originInfo)}
-      />
+      <FavIcon src={getFaviconSrc(originInfo)} />
       <URLText>
         <SiteOrigin
           originSpec={originInfo.originSpec}
@@ -74,7 +72,7 @@ export function TransactionOrigin({
   contractAddress,
   originInfo,
   isFlagged,
-  network
+  network,
 }: Props & {
   contractAddress?: string
   network: ChainInfo

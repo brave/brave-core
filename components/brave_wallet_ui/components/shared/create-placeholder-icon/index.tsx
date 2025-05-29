@@ -16,7 +16,7 @@ import {
   isRemoteImageURL,
   isValidIconExtension,
   isDataURL,
-  isComponentInStorybook
+  isComponentInStorybook,
 } from '../../../utils/string-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
@@ -54,13 +54,13 @@ export function withPlaceholderIcon<
   P extends {
     icon?: string
   } & JSX.IntrinsicAttributes,
-  PROPS_FOR_FUNCTION = Omit<P, 'icon' | 'onLoad'>
+  PROPS_FOR_FUNCTION = Omit<P, 'icon' | 'onLoad'>,
 >(
   // ignore "onLoad" prop differences since it is not used
   WrappedComponent: React.ComponentType<
     PROPS_FOR_FUNCTION & { icon?: string | undefined }
   >,
-  config: Config
+  config: Config,
 ): (props: Props & PROPS_FOR_FUNCTION) => JSX.Element | null {
   const { size, marginLeft, marginRight } = config
 
@@ -82,7 +82,7 @@ export function withPlaceholderIcon<
       isRemoteURL || isNonFungibleToken || isNative
         ? initialTokenImageURL
         : `chrome://erc-token-images/${encodeURIComponent(
-            initialTokenImageURL
+            initialTokenImageURL,
           )}`
 
     // memos + computed
@@ -109,7 +109,7 @@ export function withPlaceholderIcon<
         return background({
           seed: asset?.contractAddress
             ? asset?.contractAddress.toLowerCase()
-            : asset?.name
+            : asset?.name,
         })
       }
     }, [needsPlaceholder, asset?.contractAddress, asset?.name])
@@ -117,7 +117,7 @@ export function withPlaceholderIcon<
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
         return `chrome://image?url=${encodeURIComponent(
-          tokenImageURL
+          tokenImageURL,
         )}&staticEncode=true`
       }
       return ''

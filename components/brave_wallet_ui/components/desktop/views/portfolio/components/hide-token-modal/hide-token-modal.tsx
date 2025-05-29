@@ -23,7 +23,7 @@ import {
   ButtonRow,
   OkButton,
   CancelButton,
-  IconWrapper
+  IconWrapper,
 } from './hide-token-modal-styles'
 import { AssetIcon } from '../../style'
 

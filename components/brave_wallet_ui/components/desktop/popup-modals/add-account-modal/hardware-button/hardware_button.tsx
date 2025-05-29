@@ -11,7 +11,7 @@ import {
   Container,
   Title,
   ArrowIcon,
-  Description
+  Description,
 } from './hardware_button.style'
 
 interface Props {

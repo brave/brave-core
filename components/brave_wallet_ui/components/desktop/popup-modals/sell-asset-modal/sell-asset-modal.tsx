@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../../constants/types'
 // Utils
 import {
   formatTokenBalanceWithSymbol,
-  getPercentAmount
+  getPercentAmount,
 } from '../../../../utils/balance-utils'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
@@ -20,13 +20,13 @@ import Amount from '../../../../utils/amount'
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
-  useScopedBalanceUpdater //
+  useScopedBalanceUpdater, //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../shared/create-placeholder-icon/index'
 
 // Styled Components
@@ -38,14 +38,14 @@ import {
   AmountInput,
   PresetButton,
   ErrorBox,
-  ErrorIcon
+  ErrorIcon,
 } from './sell-asset-modal.style'
 
 import {
   VerticalSpacer,
   Row,
   Column,
-  LeoSquaredButton
+  LeoSquaredButton,
 } from '../../../shared/style'
 
 interface Props {
@@ -68,7 +68,7 @@ export const SellAssetModal = (props: Props) => {
     account,
     setSellAmount,
     openSellAssetLink,
-    onClose
+    onClose,
   } = props
 
   // Refs
@@ -79,7 +79,7 @@ export const SellAssetModal = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, {
       size: 'medium',
       marginLeft: 4,
-      marginRight: 8
+      marginRight: 8,
     })
   }, [])
 
@@ -91,18 +91,18 @@ export const SellAssetModal = (props: Props) => {
     sellAmount.startsWith('0') && !sellAmount.includes('.')
   const isNotNumeric = new Amount(sellAmount).isNaN()
   const isSellButtonDisabled =
-    isInvalidAmount ||
-    isNotNumeric ||
-    sellAmount === '' ||
-    Number(sellAmount) <= 0 ||
-    insufficientBalance
+    isInvalidAmount
+    || isNotNumeric
+    || sellAmount === ''
+    || Number(sellAmount) <= 0
+    || insufficientBalance
 
   // Methods
   const handleInputAmountChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setSellAmount(event.target.value)
     },
-    [setSellAmount]
+    [setSellAmount],
   )
 
   const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
@@ -110,12 +110,12 @@ export const SellAssetModal = (props: Props) => {
       ? {
           network: {
             chainId: selectedAsset.chainId,
-            coin: account.accountId.coin
+            coin: account.accountId.coin,
           },
           accounts: [account],
-          tokens: [selectedAsset]
+          tokens: [selectedAsset],
         }
-      : skipToken
+      : skipToken,
   )
 
   const setPresetAmountValue = React.useCallback(
@@ -129,11 +129,11 @@ export const SellAssetModal = (props: Props) => {
           selectedAsset,
           account.accountId,
           percent,
-          tokenBalancesRegistry
-        )
+          tokenBalancesRegistry,
+        ),
       )
     },
-    [setSellAmount, selectedAsset, account, tokenBalancesRegistry]
+    [setSellAmount, selectedAsset, account, tokenBalancesRegistry],
   )
 
   const onCloseSellModal = React.useCallback(() => {
@@ -178,7 +178,7 @@ export const SellAssetModal = (props: Props) => {
                   {formatTokenBalanceWithSymbol(
                     sellAssetBalance,
                     selectedAsset.decimals,
-                    selectedAsset.symbol
+                    selectedAsset.symbol,
                   )}
                 </Text>
               </Row>
@@ -229,7 +229,7 @@ export const SellAssetModal = (props: Props) => {
               >
                 {getLocale('braveWalletNotEnoughBalance').replace(
                   '$1',
-                  selectedAsset.symbol
+                  selectedAsset.symbol,
                 )}
               </Text>
             </ErrorBox>

@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // options
 import {
-  defaultQuerySubscriptionOptions //
+  defaultQuerySubscriptionOptions, //
 } from '../../../common/slices/constants'
 
 // utils
@@ -20,17 +20,17 @@ import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 import {
   checkIfTokenNeedsNetworkIcon,
-  getAssetIdKey
+  getAssetIdKey,
 } from '../../../utils/asset-utils'
 import {
   getTokenPriceAmountFromRegistry,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../utils/pricing-utils'
 
 // hooks
 import {
   useGetNetworkQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../common/slices/api.slice'
 
 // components
@@ -38,7 +38,7 @@ import {
   IconsWrapper,
   MediumAssetIcon,
   NetworkIconWrapper,
-  Row
+  Row,
 } from '../style'
 import { withPlaceholderIcon } from '../create-placeholder-icon/index'
 import { CreateNetworkIcon } from '../create-network-icon/index'
@@ -52,7 +52,7 @@ import {
   NameColumn,
   NetworkDescriptionText,
   PriceContainer,
-  PriceText
+  PriceText,
 } from './buy-asset-option.styles'
 import { LoadIcon } from './buy-option-item-styles'
 
@@ -67,7 +67,7 @@ interface Props {
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 8 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(
   MediumAssetIcon,
-  ICON_CONFIG
+  ICON_CONFIG,
 )
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
@@ -85,16 +85,16 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
     const {
       data: priceRegistry,
       isFetching: isFetchingPrice,
-      isLoading: isLoadingPrice
+      isLoading: isLoadingPrice,
     } = useGetTokenSpotPricesQuery(
       !tokenIds.length || !selectedCurrency
         ? skipToken
         : {
             ids: tokenIds,
-            toCurrency: selectedCurrency
+            toCurrency: selectedCurrency,
           },
       // refresh every 15 seconds
-      defaultQuerySubscriptionOptions
+      defaultQuerySubscriptionOptions,
     )
     const { data: tokenNetwork } = useGetNetworkQuery(token ?? skipToken)
 
@@ -145,11 +145,11 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
               ) : (
                 <AssetIconWithPlaceholder asset={token} />
               )}
-              {tokenNetwork &&
-                !isPanel &&
-                checkIfTokenNeedsNetworkIcon(
+              {tokenNetwork
+                && !isPanel
+                && checkIfTokenNeedsNetworkIcon(
                   tokenNetwork,
-                  token.contractAddress
+                  token.contractAddress,
                 ) && (
                   <NetworkIconWrapper>
                     <CreateNetworkIcon
@@ -179,7 +179,7 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
         </AssetButton>
       </Row>
     )
-  }
+  },
 )
 
 export default BuyAssetOptionItem

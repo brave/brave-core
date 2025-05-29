@@ -13,10 +13,10 @@ import {
   BraveWallet,
   WalletRoutes,
   TokenPriceHistory,
-  LineChartIframeData
+  LineChartIframeData,
 } from '../../../../constants/types'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../common/constants/local-storage-keys'
 
 // Utils
@@ -24,21 +24,21 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import {
   makeDepositFundsRoute,
-  makeFundWalletRoute
+  makeFundWalletRoute,
 } from '../../../../utils/routes-utils'
 import { getIsRewardsToken } from '../../../../utils/rewards_utils'
 import {
-  getStoredPortfolioTimeframe //
+  getStoredPortfolioTimeframe, //
 } from '../../../../utils/local-storage-utils'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 
 // actions
@@ -46,14 +46,14 @@ import { WalletPageActions } from '../../../../page/actions'
 
 // Components
 import {
-  LineChartControls //
+  LineChartControls, //
 } from '../../line-chart/line-chart-controls/line-chart-controls'
 import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
 import {
-  TokenDetailsModal //
+  TokenDetailsModal, //
 } from '../portfolio/components/token-details-modal/token-details-modal'
 import {
-  HideTokenModal //
+  HideTokenModal, //
 } from '../portfolio/components/hide-token-modal/hide-token-modal'
 import { CoinStats } from '../portfolio/components/coin-stats/coin-stats'
 
@@ -65,24 +65,24 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetCoinMarketQuery,
   useGetTokenSpotPricesQuery,
-  useUpdateUserAssetVisibleMutation
+  useUpdateUserAssetVisibleMutation,
 } from '../../../../common/slices/api.slice'
 import {
   useAccountsQuery,
-  useGetCombinedTokensListQuery
+  useGetCombinedTokensListQuery,
 } from '../../../../common/slices/api.slice.extra'
 import {
-  useScopedBalanceUpdater //
+  useScopedBalanceUpdater, //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import {
-  useSyncedLocalStorage //
+  useSyncedLocalStorage, //
 } from '../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import { Row, Column, LeoSquaredButton } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { ButtonRow, StyledWrapper } from '../portfolio/style'
 
@@ -95,7 +95,7 @@ export const MarketAsset = () => {
   const [showHideTokenModel, setShowHideTokenModal] =
     React.useState<boolean>(false)
   const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
-    getStoredPortfolioTimeframe
+    getStoredPortfolioTimeframe,
   )
 
   // routing
@@ -108,7 +108,7 @@ export const MarketAsset = () => {
   // local-storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-    false
+    false,
   )
 
   // redux
@@ -119,7 +119,7 @@ export const MarketAsset = () => {
   const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
   const { data: coinMarketData = [] } = useGetCoinMarketQuery({
     limit: 250,
-    vsAsset: defaultFiat
+    vsAsset: defaultFiat,
   })
 
   // Mutations
@@ -132,7 +132,7 @@ export const MarketAsset = () => {
     }
 
     return coinMarketData.find(
-      (token) => token.id.toLowerCase() === coingeckoIdLower
+      (token) => token.id.toLowerCase() === coingeckoIdLower,
     )
   }, [coinMarketData, coingeckoIdLower])
 
@@ -144,15 +144,15 @@ export const MarketAsset = () => {
     const marketSymbolLower = selectedCoinMarket.symbol.toLowerCase()
 
     const foundTokens = combinedTokensList.filter(
-      (t) => t.symbol.toLowerCase() === marketSymbolLower
+      (t) => t.symbol.toLowerCase() === marketSymbolLower,
     )
 
     if (foundTokens.length) {
       return {
         selectedAssetFromParams:
-          foundTokens.find((t) => t.coingeckoId === selectedCoinMarket.id) ||
-          foundTokens[0],
-        foundTokens
+          foundTokens.find((t) => t.coingeckoId === selectedCoinMarket.id)
+          || foundTokens[0],
+        foundTokens,
       }
     }
 
@@ -170,7 +170,7 @@ export const MarketAsset = () => {
   // queries
   const { accounts } = useAccountsQuery()
   const { data: selectedAssetsNetwork } = useGetNetworkQuery(
-    selectedAssetFromParams ?? skipToken
+    selectedAssetFromParams ?? skipToken,
   )
 
   const assetPriceId = selectedAssetFromParams
@@ -179,30 +179,30 @@ export const MarketAsset = () => {
 
   const {
     data: selectedAssetPriceHistory,
-    isFetching: isFetchingPortfolioPriceHistory
+    isFetching: isFetchingPortfolioPriceHistory,
   } = useGetPriceHistoryQuery(
     assetPriceId && defaultFiat
       ? {
           tokenParam: assetPriceId,
           timeFrame: selectedTimeline,
-          vsAsset: defaultFiat
+          vsAsset: defaultFiat,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
     assetPriceId && defaultFiat
       ? {
           ids: [assetPriceId],
-          toCurrency: defaultFiat
+          toCurrency: defaultFiat,
         }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   // custom hooks
   const { foundMeldBuyToken } = useFindBuySupportedToken(
-    selectedAssetFromParams
+    selectedAssetFromParams,
   )
 
   // memos / computed
@@ -223,7 +223,7 @@ export const MarketAsset = () => {
     }
 
     return accounts.filter((account) =>
-      networkSupportsAccount(selectedAssetsNetwork, account.accountId)
+      networkSupportsAccount(selectedAssetsNetwork, account.accountId),
     )
   }, [selectedAssetsNetwork, accounts])
 
@@ -232,9 +232,9 @@ export const MarketAsset = () => {
       ? {
           network: selectedAssetsNetwork,
           accounts: candidateAccounts,
-          tokens: [selectedAssetFromParams]
+          tokens: [selectedAssetFromParams],
         }
-      : skipToken
+      : skipToken,
   )
 
   /**
@@ -246,8 +246,8 @@ export const MarketAsset = () => {
       getBalance(
         account.accountId,
         selectedAssetFromParams,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+      ),
     )
 
     // If a user has not yet created a FIL or SOL account,
@@ -267,10 +267,10 @@ export const MarketAsset = () => {
         ? computeFiatAmount({
             spotPriceRegistry,
             value: fullAssetBalance,
-            token: selectedAssetFromParams
+            token: selectedAssetFromParams,
           })
         : Amount.empty(),
-    [selectedAssetFromParams, fullAssetBalance, spotPriceRegistry]
+    [selectedAssetFromParams, fullAssetBalance, spotPriceRegistry],
   )
 
   // methods
@@ -282,19 +282,19 @@ export const MarketAsset = () => {
 
   const onCloseTokenDetailsModal = React.useCallback(
     () => setShowTokenDetailsModal(false),
-    []
+    [],
   )
 
   const onCloseHideTokenModal = React.useCallback(
     () => setShowHideTokenModal(false),
-    []
+    [],
   )
 
   const onHideAsset = React.useCallback(async () => {
     if (!selectedAssetFromParams) return
     await updateUserAssetVisible({
       token: selectedAssetFromParams,
-      isVisible: false
+      isVisible: false,
     }).unwrap()
     setShowHideTokenModal(false)
     setShowTokenDetailsModal(false)
@@ -311,8 +311,8 @@ export const MarketAsset = () => {
     if (foundTokens.length === 1) {
       history.push(
         makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
-          searchText: foundTokens[0].symbol
-        })
+          searchText: foundTokens[0].symbol,
+        }),
       )
       return
     }
@@ -320,8 +320,8 @@ export const MarketAsset = () => {
     if (foundTokens.length > 1) {
       history.push(
         makeDepositFundsRoute('', {
-          searchText: foundTokens[0].symbol
-        })
+          searchText: foundTokens[0].symbol,
+        }),
       )
     }
   }, [foundTokens, history])
@@ -345,7 +345,7 @@ export const MarketAsset = () => {
   const iframeData: LineChartIframeData = {
     priceData,
     hidePortfolioBalances,
-    defaultFiatCurrency: defaultFiat || 'USD'
+    defaultFiatCurrency: defaultFiat || 'USD',
   }
 
   const encodedPriceData = encodeURIComponent(JSON.stringify(iframeData))
@@ -402,23 +402,23 @@ export const MarketAsset = () => {
             )}
           </ButtonRow>
         </Row>
-        {showTokenDetailsModal &&
-          selectedAssetFromParams &&
-          selectedAssetsNetwork && (
+        {showTokenDetailsModal
+          && selectedAssetFromParams
+          && selectedAssetsNetwork && (
             <TokenDetailsModal
               onClose={onCloseTokenDetailsModal}
               selectedAsset={selectedAssetFromParams}
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={undefined}
               formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
-                defaultFiat
+                defaultFiat,
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}
             />
           )}
-        {showHideTokenModel &&
-          selectedAssetFromParams &&
-          selectedAssetsNetwork && (
+        {showHideTokenModel
+          && selectedAssetFromParams
+          && selectedAssetsNetwork && (
             <HideTokenModal
               selectedAsset={selectedAssetFromParams}
               onClose={onCloseHideTokenModal}

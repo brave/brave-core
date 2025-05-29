@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import ConnectHardwareWalletPanel from '.'
 import { PanelWrapper } from '../../../panel/style'
@@ -20,7 +20,7 @@ export const _ConnectHardwareWalletPanel = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: ConnectHardwareWalletPanel }

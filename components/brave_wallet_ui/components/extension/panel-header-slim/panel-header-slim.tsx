@@ -9,7 +9,7 @@ import {
   HeaderTitle,
   HeaderWrapper,
   TopRow,
-  CloseButton
+  CloseButton,
 } from './panel-header-slim.style'
 
 // Constants
@@ -27,7 +27,7 @@ export const PanelHeaderSlim = React.memo(function (props: Props) {
     (path: PanelTypes) => () => {
       action(path)
     },
-    [action]
+    [action],
   )
 
   return (

@@ -90,7 +90,7 @@ export const SwitchAccountIconContainer = styled.div`
 `
 
 export const CaratDown = styled(Icon).attrs({
-  name: 'carat-down'
+  name: 'carat-down',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.icon.default};

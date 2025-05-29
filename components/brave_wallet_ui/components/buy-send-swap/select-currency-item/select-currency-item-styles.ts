@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import {
   AssetIconProps,
   AssetIconFactory,
-  WalletButton
+  WalletButton,
 } from '../../shared/style'
 
 export const StyledWrapper = styled(WalletButton)`
@@ -63,5 +63,5 @@ export const CurrencySymbol = styled.span`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '24px',
-  height: 'auto'
+  height: 'auto',
 })

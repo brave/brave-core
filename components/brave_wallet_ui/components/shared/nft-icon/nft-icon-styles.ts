@@ -54,7 +54,7 @@ export const NftPlaceholderWrapper = styled.div`
 `
 
 export const NFTPlacholderIcon = styled(Icon).attrs({
-  name: 'nft'
+  name: 'nft',
 })`
   --leo-icon-size: 75px;
   color: ${leo.color.container.background};

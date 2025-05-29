@@ -15,7 +15,7 @@ import { getLocale } from '../../../../../common/locale'
 import { CreateSiteOrigin } from '../../../shared/create-site-origin/index'
 import { Tooltip } from '../../../shared/tooltip/index'
 import {
-  VerifiedLabel //
+  VerifiedLabel, //
 } from '../../../shared/verified_label/verified_label'
 
 // Styled Components
@@ -33,7 +33,7 @@ import {
   GradientLine,
   LinkIconCircle,
   LinkIcon,
-  VerifiedIcon
+  VerifiedIcon,
 } from './connect-with-site-header.style'
 import { AccountCircle } from '../select-account-item/select-account-item.style'
 import { HorizontalSpace, Column, Row } from '../../../shared/style'
@@ -41,7 +41,7 @@ import { HorizontalSpace, Column, Row } from '../../../shared/style'
 // Hooks
 import { useAddressOrb } from '../../../../common/hooks/use-orb'
 import {
-  useIsDAppVerified //
+  useIsDAppVerified, //
 } from '../../../../common/hooks/use_is_dapp_verified'
 
 interface Props {
@@ -107,7 +107,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
               <Tooltip text={originInfo.eTldPlusOne}>
                 <FavIcon
                   src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-                    originInfo.originSpec
+                    originInfo.originSpec,
                   )}`}
                   isReadyToConnect={isReadyToConnect}
                 />
@@ -123,7 +123,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
             >
               <FavIcon
                 src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-                  originInfo.originSpec
+                  originInfo.originSpec,
                 )}`}
                 isReadyToConnect={isReadyToConnect}
               />

@@ -10,13 +10,13 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   WalletRoutes,
   BraveWallet,
-  DAppConnectedPermissionsOption
+  DAppConnectedPermissionsOption,
 } from '../../../constants/types'
 
 // Options
 import {
   DAppPermittedOptions,
-  DAppNotPermittedOptions
+  DAppNotPermittedOptions,
 } from '../../../options/dapp-connected-permissions'
 
 // Components
@@ -42,17 +42,17 @@ import {
   IconCircle,
   WhiteSpace,
   NavButton,
-  DurationLabel
+  DurationLabel,
 } from './connect-with-site-panel.style'
 import {
   ConnectPanelButton,
-  AccountNameText
+  AccountNameText,
 } from './select-account-item/select-account-item.style'
 import {
   Row,
   HorizontalSpace,
   VerticalSpace,
-  VerticalDivider
+  VerticalDivider,
 } from '../../shared/style'
 
 // Utils
@@ -64,7 +64,7 @@ import {
   useCancelConnectToSiteMutation,
   useConnectToSiteMutation,
   useGetIsPrivateWindowQuery,
-  useGetVisibleNetworksQuery
+  useGetVisibleNetworksQuery,
 } from '../../../common/slices/api.slice'
 
 const onClickAddAccount = () => {
@@ -74,7 +74,7 @@ const onClickAddAccount = () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
-    }
+    },
   )
 }
 
@@ -90,7 +90,7 @@ export const ConnectWithSite = (props: Props) => {
   const [addressToConnect, setAddressToConnect] = React.useState<string>()
   const [selectedDuration, setSelectedDuration] =
     React.useState<BraveWallet.PermissionLifetimeOption>(
-      BraveWallet.PermissionLifetimeOption.kPageClosed
+      BraveWallet.PermissionLifetimeOption.kPageClosed,
     )
   const [isReadyToConnect, setIsReadyToConnect] = React.useState<boolean>(false)
   const [isScrolled, setIsScrolled] = React.useState<boolean>(false)
@@ -128,7 +128,7 @@ export const ConnectWithSite = (props: Props) => {
       }
       setAddressToConnect(account.address)
     },
-    [addressToConnect]
+    [addressToConnect],
   )
 
   const onScroll = () => {
@@ -149,16 +149,16 @@ export const ConnectWithSite = (props: Props) => {
     accountsToConnect && networkList
       ? {
           accounts: accountsToConnect,
-          networks: networkList
+          networks: networkList,
         }
-      : skipToken
+      : skipToken,
   )
 
   return (
     <StyledWrapper>
       <BackgroundContainer
         backgroundImage={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-          originInfo.originSpec
+          originInfo.originSpec,
         )}`}
       />
 
@@ -257,8 +257,8 @@ export const ConnectWithSite = (props: Props) => {
                       DAppPermittedOptions.length < 2
                         ? 0
                         : index === DAppPermittedOptions.length - 1
-                        ? 16
-                        : 8
+                          ? 16
+                          : 8
                     }
                     justifyContent='flex-start'
                   >
@@ -270,7 +270,7 @@ export const ConnectWithSite = (props: Props) => {
                     </BulletContainer>
                     <SectionPoint>{getLocale(option.name)}</SectionPoint>
                   </Row>
-                )
+                ),
               )}
               <SectionLabel>
                 {getLocale('braveWalletConnectNotPermittedLabel')}
@@ -283,8 +283,8 @@ export const ConnectWithSite = (props: Props) => {
                       DAppNotPermittedOptions.length < 2
                         ? 0
                         : index === DAppPermittedOptions.length - 1
-                        ? 16
-                        : 8
+                          ? 16
+                          : 8
                     }
                     justifyContent='flex-start'
                   >
@@ -296,7 +296,7 @@ export const ConnectWithSite = (props: Props) => {
                     </BulletContainer>
                     <SectionPoint>{getLocale(option.name)}</SectionPoint>
                   </Row>
-                )
+                ),
               )}
             </PermissionsContainer>
           </PermissionsWrapper>

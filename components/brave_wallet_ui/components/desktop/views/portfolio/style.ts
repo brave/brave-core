@@ -12,7 +12,7 @@ import {
   NoAccountsIconDark,
   NoAccountsIconLight,
   NoTransactionsIconDark,
-  NoTransactionsIconLight
+  NoTransactionsIconLight,
 } from '../../../../assets/svg-icons/empty-state-icons'
 
 // Shared Styles
@@ -21,11 +21,11 @@ import {
   AssetIconFactory,
   WalletButton,
   Row,
-  Column
+  Column,
 } from '../../../shared/style'
 import {
   layoutSmallWidth,
-  layoutPanelWidth
+  layoutPanelWidth,
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
@@ -98,7 +98,7 @@ export const BalanceRow = styled.div<{ gap?: string }>`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const SubDivider = styled.div`

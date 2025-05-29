@@ -53,13 +53,13 @@ const getCriteriaPercentColor = (
       criteria: boolean[]
     },
     DefaultTheme
-  >
+  >,
 ) => {
   const percentComplete =
     (p.criteria.filter((c) => !!c).length / p.criteria.length) * 100
   return percentComplete === 100
     ? leo.color.systemfeedback.successIcon
     : percentComplete < 50
-    ? leo.color.systemfeedback.errorIcon
-    : leo.color.systemfeedback.warningIcon
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.warningIcon
 }

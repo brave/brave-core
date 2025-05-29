@@ -8,10 +8,10 @@ import * as React from 'react'
 // types
 import {
   BraveWallet,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
 } from '../../../constants/types'
 import {
-  TypedSolanaInstructionWithParams //
+  TypedSolanaInstructionWithParams, //
 } from '../../../utils/solana-instruction-utils'
 
 // utils
@@ -21,7 +21,7 @@ import { getTransactionTypeName } from '../../../utils/tx-utils'
 
 // components
 import {
-  SolanaTransactionInstruction //
+  SolanaTransactionInstruction, //
 } from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 
 // style
@@ -32,7 +32,7 @@ import {
   CodeSnippetText,
   DetailColumn,
   DetailText,
-  TransactionText
+  TransactionText,
 } from './style'
 
 export interface Props {
@@ -42,7 +42,7 @@ export interface Props {
 
 export const TransactionDetailBox = ({
   transactionInfo,
-  instructions
+  instructions,
 }: Props) => {
   const { txArgs, txParams, txType, txDataUnion } = transactionInfo
 

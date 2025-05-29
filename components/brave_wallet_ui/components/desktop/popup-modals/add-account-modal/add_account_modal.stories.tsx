@@ -10,7 +10,7 @@ import { Route, Switch, Redirect } from 'react-router'
 import { WalletRoutes } from '../../../../constants/types'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AddAccountModal } from './add-account-modal'
 
@@ -22,7 +22,7 @@ export const _CreateAccountModal = {
       </WalletPageStory>
     )
   },
-  title: 'Create Account Modal'
+  title: 'Create Account Modal',
 }
 
 export const _AddHardwareAccountModal = {
@@ -38,7 +38,7 @@ export const _AddHardwareAccountModal = {
       </WalletPageStory>
     )
   },
-  title: 'Add Hardware Account Modal'
+  title: 'Add Hardware Account Modal',
 }
 
 export const _ImportAccountModal = {
@@ -54,9 +54,9 @@ export const _ImportAccountModal = {
         </Switch>
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: AddAccountModal
+  component: AddAccountModal,
 }

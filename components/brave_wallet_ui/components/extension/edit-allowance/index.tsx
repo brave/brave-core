@@ -19,7 +19,7 @@ import {
   Description,
   AllowanceTitle,
   AllowanceContent,
-  AllowanceOption
+  AllowanceOption,
 } from './style'
 
 type AllowanceTypes = 'proposed' | 'custom'
@@ -44,7 +44,7 @@ export const EditAllowance = (props: Props) => {
     proposedAllowance,
     approvalTarget,
     symbol,
-    isApprovalUnlimited
+    isApprovalUnlimited,
   } = props
 
   const toggleAllowanceRadio = (key: AllowanceTypes) => {
@@ -52,7 +52,7 @@ export const EditAllowance = (props: Props) => {
   }
 
   const onChangeCustomAllowance = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setCustomAllowance(event.target.value)
   }
@@ -81,14 +81,14 @@ export const EditAllowance = (props: Props) => {
         <Description>
           {getLocale('braveWalletEditPermissionsDescription').replace(
             '$1',
-            approvalTarget
+            approvalTarget,
           )}
         </Description>
         <FormColumn>
           <Radio
             value={{
               proposed: allowanceType === 'proposed',
-              custom: allowanceType === 'custom'
+              custom: allowanceType === 'custom',
             }}
             onChange={toggleAllowanceRadio}
           >

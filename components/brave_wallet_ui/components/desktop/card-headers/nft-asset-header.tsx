@@ -21,7 +21,7 @@ import {
   MenuButton,
   HeaderTitle,
   MenuButtonIcon,
-  SendButton
+  SendButton,
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
@@ -36,7 +36,7 @@ export const NftAssetHeader = ({
   assetName,
   tokenId,
   onBack,
-  onSend
+  onSend,
 }: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)

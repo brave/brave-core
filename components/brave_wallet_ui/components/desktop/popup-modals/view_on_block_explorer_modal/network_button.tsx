@@ -46,7 +46,7 @@ export const NetworkButton = (props: Props) => {
         >
           {getLocale('braveWalletNetworkExplorer').replace(
             '$1',
-            network.chainName
+            network.chainName,
           )}
         </Text>
       </Row>

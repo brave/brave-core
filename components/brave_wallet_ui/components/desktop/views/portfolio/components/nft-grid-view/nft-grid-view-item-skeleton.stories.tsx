@@ -7,5 +7,5 @@ import { NftGridViewItemSkeleton } from './nft-grid-view-item-skeleton'
 
 export const _NftGridViewItemSkeleton = {}
 export default {
-  component: NftGridViewItemSkeleton
+  component: NftGridViewItemSkeleton,
 }

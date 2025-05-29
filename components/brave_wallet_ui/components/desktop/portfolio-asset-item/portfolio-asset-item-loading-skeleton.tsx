@@ -15,7 +15,7 @@ import {
   NameColumn,
   Spacer,
   BalanceColumn,
-  Button
+  Button,
 } from './style'
 import { IconsWrapper } from '../../shared/style'
 

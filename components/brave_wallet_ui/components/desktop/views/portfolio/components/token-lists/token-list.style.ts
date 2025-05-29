@@ -8,14 +8,14 @@ import styled from 'styled-components'
 // Shared Styles
 import { Column } from '../../../../../shared/style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const listItemInitialHeight = 76
 
 export const AutoSizerStyle: React.CSSProperties = {
   width: '100%',
-  height: '100%'
+  height: '100%',
 }
 
 export const FlatTokenListWrapper = styled(Column)`

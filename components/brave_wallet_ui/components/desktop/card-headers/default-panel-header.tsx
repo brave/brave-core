@@ -22,7 +22,7 @@ import {
   Button,
   ButtonIcon,
   LeftRightContainer,
-  ClickAwayArea
+  ClickAwayArea,
 } from './shared-panel-headers.style'
 import { HeaderTitle, MenuWrapper } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
@@ -45,7 +45,7 @@ export const DefaultPanelHeader = (props: Props) => {
   useOnClickOutside(
     settingsMenuRef,
     () => setShowSettingsMenu(false),
-    showSettingsMenu
+    showSettingsMenu,
   )
 
   // Methods

@@ -31,7 +31,7 @@ export const StateChangeText = styled.span<{ color?: string }>`
 `
 
 export const ArrowRightIcon = styled(Icon).attrs({
-  name: 'arrow-right'
+  name: 'arrow-right',
 })`
   display: inline-block;
   --leo-icon-size: 14px;

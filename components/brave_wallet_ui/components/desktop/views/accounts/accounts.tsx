@@ -14,7 +14,7 @@ import { WalletSelectors } from '../../../../common/selectors'
 // constants
 import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
@@ -22,7 +22,7 @@ import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 import { getLocale } from '../../../../../common/locale'
 import {
   groupAccountsById,
-  sortAccountsByName
+  sortAccountsByName,
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
 import { getPriceIdForToken } from '../../../../utils/pricing-utils'
@@ -35,13 +35,13 @@ import { Column, Row } from '../../../shared/style'
 // Components
 import AccountListItem from '../../account-list-item'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { AccountsHeader } from '../../card-headers/accounts-header'
 
 // Hooks
 import {
-  useBalancesFetcher //
+  useBalancesFetcher, //
 } from '../../../../common/hooks/use-balances-fetcher'
 import {
   useGetDefaultFiatCurrencyQuery,
@@ -49,7 +49,7 @@ import {
   useGetTokenSpotPricesQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
-  useGetIsShieldingAvailableQuery
+  useGetIsShieldingAvailableQuery,
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -59,13 +59,13 @@ export const Accounts = () => {
 
   // selectors
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
-    WalletSelectors.isZCashShieldedTransactionsEnabled
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
 
   // queries
   const { accounts } = useAccountsQuery()
   const {
-    data: { rewardsAccount: externalRewardsAccount } = emptyRewardsInfo
+    data: { rewardsAccount: externalRewardsAccount } = emptyRewardsInfo,
   } = useGetRewardsInfoQuery()
   const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
 
@@ -76,7 +76,7 @@ export const Accounts = () => {
   const { data: isShieldingAvailable } = useGetIsShieldingAvailableQuery(
     isZCashShieldedTransactionsEnabled && zcashAccountIds
       ? zcashAccountIds
-      : skipToken
+      : skipToken,
   )
 
   // methods
@@ -84,31 +84,31 @@ export const Accounts = () => {
     (account: BraveWallet.AccountInfo | undefined) => {
       if (account) {
         history.push(
-          makeAccountRoute(account, AccountPageTabs.AccountAssetsSub)
+          makeAccountRoute(account, AccountPageTabs.AccountAssetsSub),
         )
       }
     },
-    [history]
+    [history],
   )
 
   // memos && computed
   const derivedAccounts = React.useMemo(() => {
     return accounts.filter(
-      (account) => account.accountId.kind === BraveWallet.AccountKind.kDerived
+      (account) => account.accountId.kind === BraveWallet.AccountKind.kDerived,
     )
   }, [accounts])
 
   const importedAccounts = React.useMemo(() => {
     return accounts.filter(
-      (account) => account.accountId.kind === BraveWallet.AccountKind.kImported
+      (account) => account.accountId.kind === BraveWallet.AccountKind.kImported,
     )
   }, [accounts])
 
   const trezorAccounts = React.useMemo(() => {
     const foundTrezorAccounts = accounts.filter((account) => {
       return (
-        account.accountId.kind === BraveWallet.AccountKind.kHardware &&
-        account.hardware?.vendor === BraveWallet.HardwareVendor.kTrezor
+        account.accountId.kind === BraveWallet.AccountKind.kHardware
+        && account.hardware?.vendor === BraveWallet.HardwareVendor.kTrezor
       )
     })
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
@@ -117,8 +117,8 @@ export const Accounts = () => {
   const ledgerAccounts = React.useMemo(() => {
     const foundLedgerAccounts = accounts.filter((account) => {
       return (
-        account.accountId.kind === BraveWallet.AccountKind.kHardware &&
-        account.hardware?.vendor === BraveWallet.HardwareVendor.kLedger
+        account.accountId.kind === BraveWallet.AccountKind.kHardware
+        && account.hardware?.vendor === BraveWallet.HardwareVendor.kLedger
       )
     })
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
@@ -130,7 +130,7 @@ export const Accounts = () => {
   const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
     useBalancesFetcher({
       accounts,
-      networks
+      networks,
     })
 
   const tokenPriceIds = React.useMemo(() => {
@@ -147,7 +147,7 @@ export const Accounts = () => {
       tokenPriceIds.length && defaultFiatCurrency
         ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
         : skipToken,
-      querySubscriptionOptions60s
+      querySubscriptionOptions60s,
     )
 
   const trezorKeys = React.useMemo(() => {
@@ -173,7 +173,7 @@ export const Accounts = () => {
               isLoadingSpotPrices={isLoadingSpotPrices}
               isShieldingAvailable={isShieldingAvailable}
             />
-          )
+          ),
         )}
       </AccountsListWrapper>
     ))
@@ -185,7 +185,7 @@ export const Accounts = () => {
     spotPriceRegistry,
     isLoadingBalances,
     isLoadingSpotPrices,
-    isShieldingAvailable
+    isShieldingAvailable,
   ])
 
   const ledgerKeys = React.useMemo(() => {
@@ -211,7 +211,7 @@ export const Accounts = () => {
               isLoadingSpotPrices={isLoadingSpotPrices}
               isShieldingAvailable={isShieldingAvailable}
             />
-          )
+          ),
         )}
       </AccountsListWrapper>
     ))
@@ -223,7 +223,7 @@ export const Accounts = () => {
     spotPriceRegistry,
     isLoadingBalances,
     isLoadingSpotPrices,
-    isShieldingAvailable
+    isShieldingAvailable,
   ])
 
   // computed

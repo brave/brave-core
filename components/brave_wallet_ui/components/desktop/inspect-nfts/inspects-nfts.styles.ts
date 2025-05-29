@@ -100,7 +100,7 @@ export const NftCountHeading = styled.h1`
 `
 
 export const PinNftsButton = styled(ActionButton).attrs({
-  'data-theme': 'dark'
+  'data-theme': 'dark',
 })`
   margin: 32px;
 

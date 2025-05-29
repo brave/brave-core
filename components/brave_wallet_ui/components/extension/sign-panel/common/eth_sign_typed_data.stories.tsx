@@ -10,7 +10,7 @@ import { EthSignTypedData } from './eth_sign_typed_data'
 
 // mocks
 import {
-  mockSignMessageRequest //
+  mockSignMessageRequest, //
 } from '../../../../stories/mock-data/mock-eth-requests'
 
 export const _EthSignTypedData = {
@@ -22,7 +22,7 @@ export const _EthSignTypedData = {
         height={'100%'}
       />
     )
-  }
+  },
 }
 
 export default { component: EthSignTypedData }

@@ -20,13 +20,13 @@ import {
   FullWidthChildrenColumn,
   SeeAvailableNetworksLink, //
   TitleText,
-  alertItemGap
+  alertItemGap,
 } from './transaction_simulation_not_supported_sheet.styles'
 
 const openSupportedNetworksList = () => {
   openTab(
-    'https://github.com/brave/brave-browser/wiki/' +
-      'Transaction-Simulation#current-supported-networks'
+    'https://github.com/brave/brave-browser/wiki/'
+      + 'Transaction-Simulation#current-supported-networks',
   )
 }
 

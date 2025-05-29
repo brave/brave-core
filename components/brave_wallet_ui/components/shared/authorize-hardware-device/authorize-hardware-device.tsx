@@ -30,9 +30,9 @@ const bridgeTypeFromCoin = (coinType: BraveWallet.CoinType) => {
 
 export const AuthorizeHardwareDeviceIFrame = (props: Props) => {
   const src =
-    LEDGER_BRIDGE_URL +
-    `?targetUrl=${encodeURIComponent(window.origin)}` +
-    `&bridgeType=${encodeURIComponent(bridgeTypeFromCoin(props.coinType))}`
+    LEDGER_BRIDGE_URL
+    + `?targetUrl=${encodeURIComponent(window.origin)}`
+    + `&bridgeType=${encodeURIComponent(bridgeTypeFromCoin(props.coinType))}`
   return (
     <StyledIFrame
       src={src}

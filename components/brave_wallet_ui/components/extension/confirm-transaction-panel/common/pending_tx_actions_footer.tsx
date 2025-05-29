@@ -12,7 +12,7 @@ import { ParsedTransaction } from '../../../../utils/tx-utils'
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  translateSimulationWarning //
+  translateSimulationWarning, //
 } from '../../../../utils/tx-simulation-utils'
 
 // components
@@ -24,7 +24,7 @@ import { QueueStepButton } from './style'
 import {
   FooterButtonRow,
   rejectAllButtonRowPadding,
-  FooterContainer
+  FooterContainer,
 } from './pending_tx_actions_footer.style'
 
 interface Props {
@@ -60,13 +60,13 @@ export function PendingTransactionActionsFooter({
   onReject,
   onConfirm,
   isAccountSyncing,
-  isShieldingFunds
+  isShieldingFunds,
 }: Props) {
   // state
   const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
   const [transactionConfirmed, setTranactionConfirmed] = React.useState(false)
   const [queueLength, setQueueLength] = React.useState<number | undefined>(
-    undefined
+    undefined,
   )
 
   // methods
@@ -87,7 +87,7 @@ export function PendingTransactionActionsFooter({
     if (blowfishWarnings?.length) {
       return blowfishWarnings.map((w) => ({
         message: translateSimulationWarning(w),
-        severity: w.severity
+        severity: w.severity,
       }))
     }
 
@@ -100,20 +100,20 @@ export function PendingTransactionActionsFooter({
         : undefined,
       !insufficientFundsForGasError && insufficientFundsError
         ? getLocale('braveWalletSwapInsufficientBalance')
-        : undefined
+        : undefined,
     ]
       .filter((warning): warning is string => Boolean(warning))
       .map(
         (warning): Warning => ({
           message: warning,
-          severity: BraveWallet.BlowfishWarningSeverity.kWarning
-        })
+          severity: BraveWallet.BlowfishWarningSeverity.kWarning,
+        }),
       )
   }, [
     transactionDetails,
     blowfishWarnings,
     insufficientFundsForGasError,
-    insufficientFundsError
+    insufficientFundsError,
   ])
 
   const hasWarnings = Boolean(warnings.length)
@@ -131,8 +131,8 @@ export function PendingTransactionActionsFooter({
           {isAccountSyncing
             ? getLocale('braveWalletSyncing')
             : isShieldingFunds
-            ? getLocale('braveWalletShieldZEC')
-            : getLocale('braveWalletAllowSpendConfirmButton')}
+              ? getLocale('braveWalletShieldZEC')
+              : getLocale('braveWalletAllowSpendConfirmButton')}
         </LeoSquaredButton>
       ),
       rejectButton: (
@@ -144,7 +144,7 @@ export function PendingTransactionActionsFooter({
         >
           {getLocale('braveWalletAllowSpendRejectButton')}
         </LeoSquaredButton>
-      )
+      ),
     }
   }, [
     hasWarnings,
@@ -153,7 +153,7 @@ export function PendingTransactionActionsFooter({
     transactionConfirmed,
     onReject,
     isAccountSyncing,
-    isShieldingFunds
+    isShieldingFunds,
   ])
 
   // computed
@@ -193,7 +193,7 @@ export function PendingTransactionActionsFooter({
           <QueueStepButton onClick={rejectAllTransactions}>
             {getLocale('braveWalletQueueRejectAll').replace(
               '$1',
-              transactionsQueueLength.toString()
+              transactionsQueueLength.toString(),
             )}
           </QueueStepButton>
         </Row>

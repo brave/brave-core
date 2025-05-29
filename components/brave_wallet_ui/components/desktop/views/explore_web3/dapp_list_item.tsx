@@ -14,7 +14,7 @@ import { isHttpsUrl } from '../../../../utils/string-utils'
 // styles
 import { Column, Text } from '../../../shared/style'
 import {
-  TextWithOverflowEllipsis //
+  TextWithOverflowEllipsis, //
 } from '../../../../page/screens/send/shared.styles'
 import { PlaceholderImage, StyledWrapper } from './dapp_list_item.styles'
 

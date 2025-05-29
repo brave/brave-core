@@ -23,7 +23,7 @@ import {
   PasswordMatchRow,
   PasswordValidationText,
   PasswordValidationIcon,
-  TooltipWrapper
+  TooltipWrapper,
 } from './new-password-input.styles'
 import { Asterisk, InputLabel } from './password-input-v2.style'
 
@@ -45,7 +45,7 @@ export const NewPasswordInput = ({
   showToggleButton,
   initialPassword,
   onSubmit,
-  onChange
+  onChange,
 }: Props) => {
   // state
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] =
@@ -61,7 +61,7 @@ export const NewPasswordInput = ({
     onPasswordChanged,
     password,
     setConfirmedPassword,
-    passwordsMatch
+    passwordsMatch,
   } = usePasswordStrength(initialPassword)
 
   const handleKeyDown = React.useCallback(
@@ -72,7 +72,7 @@ export const NewPasswordInput = ({
         }
       }
     },
-    [hasConfirmedPasswordError, onSubmit, isValid, password]
+    [hasConfirmedPasswordError, onSubmit, isValid, password],
   )
 
   // effect
@@ -123,7 +123,7 @@ export const NewPasswordInput = ({
                   criteria={[
                     passwordStrength.isLongEnough, // weak
                     password.length >= 12, // medium
-                    password.length >= 16 // strong
+                    password.length >= 16, // strong
                   ]}
                 />
               ) : (
@@ -172,7 +172,7 @@ export const NewPasswordInput = ({
                     {getLocale(
                       passwordsMatch
                         ? 'braveWalletPasswordMatch'
-                        : 'braveWalletConfirmPasswordError'
+                        : 'braveWalletConfirmPasswordError',
                     )}
                   </PasswordValidationText>
                 </>
@@ -188,7 +188,7 @@ export const NewPasswordInput = ({
 }
 
 NewPasswordInput.defaultProps = {
-  showToggleButton: true
+  showToggleButton: true,
 }
 
 export default NewPasswordInput

@@ -15,7 +15,7 @@ describe('wallet search bar', () => {
         value='test'
         action={() => {}}
         isV2={true}
-      />
+      />,
     )
 
     // Test search input

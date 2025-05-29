@@ -21,10 +21,10 @@ import { getLocale } from '../../../../common/locale'
 // Options
 import {
   AllNetworksOption,
-  SupportedTopLevelChainIds
+  SupportedTopLevelChainIds,
 } from '../../../options/network-filter-options'
 import {
-  AllAccountsOptionUniqueKey //
+  AllAccountsOptionUniqueKey, //
 } from '../../../options/account-filter-options'
 
 // Styled Components
@@ -35,7 +35,7 @@ import {
   DropDownIcon,
   SelectorLeftSide,
   SecondaryNetworkText,
-  ClickAwayArea
+  ClickAwayArea,
 } from './style'
 
 interface Props {
@@ -58,7 +58,7 @@ export const NetworkFilterSelector = ({
   isV2,
   selectedAccount,
   disableAllAccountsOption,
-  dropdownPosition
+  dropdownPosition,
 }: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] =
@@ -74,10 +74,10 @@ export const NetworkFilterSelector = ({
   // memos
   const filteredNetworks: BraveWallet.NetworkInfo[] = React.useMemo(() => {
     // Filters networks by coinType if a selectedAccountFilter is selected
-    return selectedAccount &&
-      selectedAccount.accountId.uniqueKey !== AllAccountsOptionUniqueKey
+    return selectedAccount
+      && selectedAccount.accountId.uniqueKey !== AllAccountsOptionUniqueKey
       ? networks?.filter(
-          (network) => network.coin === selectedAccount.accountId.coin
+          (network) => network.coin === selectedAccount.accountId.coin,
         )
       : networks
   }, [networks, selectedAccount])
@@ -114,7 +114,7 @@ export const NetworkFilterSelector = ({
       return {
         primaryNetworks,
         secondaryNetworks,
-        testNetworks
+        testNetworks,
       }
     }, [filteredNetworks, disableAllAccountsOption])
 
@@ -131,7 +131,7 @@ export const NetworkFilterSelector = ({
       onSelectNetwork(network)
       hideNetworkFilter()
     },
-    [onSelectNetwork, hideNetworkFilter]
+    [onSelectNetwork, hideNetworkFilter],
   )
 
   // render
@@ -162,9 +162,9 @@ export const NetworkFilterSelector = ({
               network={network}
               onSelectNetwork={onSelectAndClose}
               isSelected={
-                network.chainId === selectedNetwork.chainId &&
-                network.symbol.toLowerCase() ===
-                  selectedNetwork.symbol.toLowerCase()
+                network.chainId === selectedNetwork.chainId
+                && network.symbol.toLowerCase()
+                  === selectedNetwork.symbol.toLowerCase()
               }
             ></NetworkFilterItem>
           ))}
@@ -180,9 +180,9 @@ export const NetworkFilterSelector = ({
                   network={network}
                   onSelectNetwork={onSelectAndClose}
                   isSelected={
-                    network.chainId === selectedNetwork.chainId &&
-                    network.symbol.toLowerCase() ===
-                      selectedNetwork.symbol.toLowerCase()
+                    network.chainId === selectedNetwork.chainId
+                    && network.symbol.toLowerCase()
+                      === selectedNetwork.symbol.toLowerCase()
                   }
                 />
               ))}
@@ -200,9 +200,9 @@ export const NetworkFilterSelector = ({
                   network={network}
                   onSelectNetwork={onSelectAndClose}
                   isSelected={
-                    network.chainId === selectedNetwork.chainId &&
-                    network.symbol.toLowerCase() ===
-                      selectedNetwork.symbol.toLowerCase()
+                    network.chainId === selectedNetwork.chainId
+                    && network.symbol.toLowerCase()
+                      === selectedNetwork.symbol.toLowerCase()
                   }
                 />
               ))}

@@ -13,19 +13,14 @@ import { Column, Row, Text, WalletButton } from '../../../../shared/style'
 export const ConnectionCard = styled(Column)<{
   connectionStatus: 'connected' | 'not-connected' | 'blocked'
 }>`
-  --connected-background: linear-gradient(
-      180deg,
-      rgba(203, 251, 192, 0.4) 0%,
-      transparent 70%
-    ),
+  --connected-background:
+    linear-gradient(180deg, rgba(203, 251, 192, 0.4) 0%, transparent 70%),
     ${leo.color.page.background};
-  --not-connected-background: linear-gradient(
-      180deg,
-      rgba(227, 227, 232, 0.4) 0%,
-      transparent 70%
-    ),
+  --not-connected-background:
+    linear-gradient(180deg, rgba(227, 227, 232, 0.4) 0%, transparent 70%),
     ${leo.color.page.background};
-  --blocked-background: linear-gradient(
+  --blocked-background:
+    linear-gradient(
       180deg,
       rgba(255, 218, 217, 0.6) 0%,
       rgba(255, 218, 217, 0.4) 70%
@@ -35,8 +30,8 @@ export const ConnectionCard = styled(Column)<{
     p.connectionStatus === 'blocked'
       ? leo.color.red[60]
       : p.connectionStatus === 'connected'
-      ? leo.color.green[60]
-      : leo.color.neutral[60]};
+        ? leo.color.green[60]
+        : leo.color.neutral[60]};
   --card-border-blocked: linear-gradient(
     90deg,
     rgba(255, 188, 186, 0) 0%,
@@ -53,14 +48,14 @@ export const ConnectionCard = styled(Column)<{
     p.connectionStatus === 'blocked'
       ? 'var(--card-border-blocked)'
       : p.connectionStatus === 'connected'
-      ? 'var(--card-border-connected)'
-      : 'transparent'};
+        ? 'var(--card-border-connected)'
+        : 'transparent'};
   background: ${(p) =>
     p.connectionStatus === 'blocked'
       ? 'var(--blocked-background)'
       : p.connectionStatus === 'connected'
-      ? 'var(--connected-background)'
-      : 'var(--not-connected-background)'};
+        ? 'var(--connected-background)'
+        : 'var(--not-connected-background)'};
   border-radius: ${leo.radius.xl};
   overflow: hidden;
 `
@@ -73,7 +68,8 @@ export const TopCardBorder = styled(Row)`
 export const ControlsWrapper = styled(Column)`
   background-color: ${leo.color.container.background};
   border-radius: ${leo.radius.l};
-  box-shadow: 0px var(--Elevation-xxs, 1px) 0px 0px
+  box-shadow:
+    0px var(--Elevation-xxs, 1px) 0px 0px
       var(--Semantic-Elevation-Primary, rgba(0, 0, 0, 0.05)),
     0px var(--Elevation-xxs, 1px) var(--Elevation-xs, 4px) 0px
       var(--Semantic-Elevation-Secondary, rgba(0, 0, 0, 0.1));
@@ -112,7 +108,7 @@ export const SelectButton = styled(WalletButton)`
 `
 
 export const SelectButtonIcon = styled(LeoIcon).attrs({
-  name: 'arrow-up-and-down'
+  name: 'arrow-up-and-down',
 })`
   --leo-icon-color: ${leo.color.icon.default};
   --leo-icon-size: 18px;

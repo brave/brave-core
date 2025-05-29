@@ -18,7 +18,7 @@ import { SerializableTransactionInfo } from '../../../../constants/types'
 
 // Hooks
 import {
-  useSpeedupTransactionMutation //
+  useSpeedupTransactionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // Styled Components
@@ -43,7 +43,7 @@ export const SpeedUpAlert = (props: Props) => {
     speedupTx({
       coinType: txCoinType,
       chainId: transaction.chainId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
     })
     dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
   }

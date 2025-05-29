@@ -21,7 +21,7 @@ import {
   StyledWrapper,
   TopRow,
   SignPanelButtonRow,
-  HeaderTitle
+  HeaderTitle,
 } from './style'
 import { WalletButton } from '../../shared/style'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
@@ -29,7 +29,7 @@ import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 // Components
 import { NavButton } from '../buttons/nav-button/index'
 import {
-  TransactionQueueSteps //
+  TransactionQueueSteps, //
 } from '../confirm-transaction-panel/common/queue'
 import { Origin } from '../confirm-transaction-panel/common/origin'
 import { SwapBase } from '../swap'
@@ -37,11 +37,11 @@ import { EthSignTypedData } from './common/eth_sign_typed_data'
 
 // Queries
 import {
-  useGetCombinedTokensListQuery //
+  useGetCombinedTokensListQuery, //
 } from '../../../common/slices/api.slice.extra'
 import {
   useGetAccountInfosRegistryQuery, //
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../common/slices/api.slice'
 
 // Hooks
@@ -50,7 +50,7 @@ import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 const makeUnknownToken = (
   chainId: string,
   coin: BraveWallet.CoinType,
-  contractAddress: string
+  contractAddress: string,
 ) => ({
   chainId,
   coin,
@@ -62,7 +62,7 @@ const makeUnknownToken = (
   name: '',
   coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
   decimals: 0,
-  isShielded: false
+  isShielded: false,
 })
 
 interface Props {
@@ -83,7 +83,7 @@ export function SignCowSwapOrder(props: Props) {
     isDisabled,
     onQueueNextSignMessage,
     onSignIn,
-    onCancel
+    onCancel,
   } = props
 
   // State
@@ -103,18 +103,18 @@ export function SignCowSwapOrder(props: Props) {
 
   const { data: network } = useGetNetworkQuery({
     chainId: data.chainId,
-    coin: data.coin
+    coin: data.coin,
   })
 
   const senderLabel = accounts && getAccountLabel(data.accountId, accounts)
   const recipientLabel =
-    accounts &&
-    cowSwapOrder &&
-    cowSwapOrder.receiver &&
-    getAddressLabel(cowSwapOrder.receiver, accounts)
+    accounts
+    && cowSwapOrder
+    && cowSwapOrder.receiver
+    && getAddressLabel(cowSwapOrder.receiver, accounts)
   const senderOrb = useAccountOrb({
     accountId: data.accountId,
-    address: data.accountId.address
+    address: data.accountId.address,
   })
   const recipientOrb = useAddressOrb(cowSwapOrder?.receiver, { scale: 10 })
 
@@ -136,18 +136,18 @@ export function SignCowSwapOrder(props: Props) {
       {!showDetails && (
         <SwapBase
           sellToken={
-            sellToken ||
-            (cowSwapOrder
+            sellToken
+            || (cowSwapOrder
               ? makeUnknownToken(
                   data.chainId,
                   data.coin,
-                  cowSwapOrder.sellToken
+                  cowSwapOrder.sellToken,
                 )
               : undefined)
           }
           buyToken={
-            buyToken ||
-            (cowSwapOrder
+            buyToken
+            || (cowSwapOrder
               ? makeUnknownToken(data.chainId, data.coin, cowSwapOrder.buyToken)
               : undefined)
           }

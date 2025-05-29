@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../common/selectors'
 
@@ -23,7 +23,7 @@ import {
   Description,
   Header,
   Link,
-  Underline
+  Underline,
 } from './enable-nft-discovery-modal.style'
 import { LeoSquaredButton, Column } from '../../../shared/style'
 
@@ -35,16 +35,21 @@ interface Props {
 const LEARN_MORE_LINK =
   'https://github.com/brave/brave-browser/wiki/NFT-Discovery'
 
-const enableNftAutoDiscovery = formatLocale('braveWalletEnableNftAutoDiscoveryModalDescription', {
-  $1: content => <Underline>{content}</Underline>,
-  $2: content => <Link
-    target='_blank'
-    rel='noreferrer'
-    href={LEARN_MORE_LINK}
-  >
-    {content}
-  </Link>
-})
+const enableNftAutoDiscovery = formatLocale(
+  'braveWalletEnableNftAutoDiscoveryModalDescription',
+  {
+    $1: (content) => <Underline>{content}</Underline>,
+    $2: (content) => (
+      <Link
+        target='_blank'
+        rel='noreferrer'
+        href={LEARN_MORE_LINK}
+      >
+        {content}
+      </Link>
+    ),
+  },
+)
 
 export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
   // Selectors
@@ -67,9 +72,7 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
         <Header>
           {getLocale('braveWalletEnableNftAutoDiscoveryModalHeader')}
         </Header>
-        <Description>
-          {enableNftAutoDiscovery}
-        </Description>
+        <Description>{enableNftAutoDiscovery}</Description>
         <ButtonRow>
           <LeoSquaredButton
             onClick={onCancel}

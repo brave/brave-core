@@ -28,7 +28,7 @@ import {
   HeaderTitle,
   MenuButton,
   MenuButtonIcon,
-  MenuWrapper
+  MenuWrapper,
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
@@ -47,7 +47,7 @@ export const AccountsHeader = () => {
   useOnClickOutside(
     portfolioOverviewMenuRef,
     () => setShowPortfolioOverviewMenu(false),
-    showPortfolioOverviewMenu
+    showPortfolioOverviewMenu,
   )
 
   return isPanel ? (

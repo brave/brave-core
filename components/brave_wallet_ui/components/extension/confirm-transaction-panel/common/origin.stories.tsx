@@ -15,7 +15,7 @@ import { Column } from '../../../shared/style'
 import {
   mockBraveWalletOrigin,
   mockOriginInfo,
-  mockUniswapOriginInfo
+  mockUniswapOriginInfo,
 } from '../../../../stories/mock-data/mock-origin-info'
 import { mockERC20Token } from '../../../../stories/mock-data/mock-asset-options'
 import { mockEthMainnet } from '../../../../stories/mock-data/mock-networks'
@@ -27,7 +27,7 @@ export const _LongOrigin = {
         <Origin originInfo={mockOriginInfo} />
       </Column>
     )
-  }
+  },
 }
 
 export const _Origin = {
@@ -37,7 +37,7 @@ export const _Origin = {
         <Origin originInfo={mockUniswapOriginInfo} />
       </Column>
     )
-  }
+  },
 }
 
 export const BraveOrigin = {
@@ -47,7 +47,7 @@ export const BraveOrigin = {
         <Origin originInfo={mockBraveWalletOrigin} />
       </Column>
     )
-  }
+  },
 }
 
 export const _TransactionOrigin = {
@@ -61,7 +61,7 @@ export const _TransactionOrigin = {
         />
       </Column>
     )
-  }
+  },
 }
 
 export default { title: 'Origin Info' }

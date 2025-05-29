@@ -7,14 +7,14 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../../../../stories/wrappers/wallet-panel-story-wrapper'
 import { PanelWrapper } from '../../../../../../panel/style'
 import { NFTGridViewItem } from './nft-grid-view-item'
 
 // mocks
 import {
-  mockMoonCatNFT //
+  mockMoonCatNFT, //
 } from '../../../../../../stories/mock-data/mock-asset-options'
 
 export const _NftGridViewItem = {
@@ -32,7 +32,7 @@ export const _NftGridViewItem = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 export const _JunkAndWatchOnlyNftGridViewItem = {
   render: () => {
@@ -49,8 +49,8 @@ export const _JunkAndWatchOnlyNftGridViewItem = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 export default {
-  component: NFTGridViewItem
+  component: NFTGridViewItem,
 }

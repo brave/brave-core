@@ -8,7 +8,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import {
   AssetIconProps,
   AssetIconFactory,
-  WalletButton
+  WalletButton,
 } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
@@ -89,7 +89,7 @@ export const ContractAddress = styled(WalletButton)`
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '60px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const ButtonWrapper = styled.div`

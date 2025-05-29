@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const InfoIcon = styled(Icon).attrs({
-  name: 'info-outline'
+  name: 'info-outline',
 })`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.default};

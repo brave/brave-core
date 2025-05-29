@@ -18,7 +18,7 @@ import {
   FullWidthChildrenColumn,
   WarningButtonText,
   CriticalWarningTitle,
-  CriticalWarningDescription
+  CriticalWarningDescription,
 } from './critical-warning-popup.styles'
 
 interface Props {
@@ -28,7 +28,7 @@ interface Props {
 
 export const CriticalWarningPopup: React.FC<Props> = ({
   onProceed,
-  onCancel
+  onCancel,
 }) => {
   return (
     <FullPanelPopup kind='danger'>

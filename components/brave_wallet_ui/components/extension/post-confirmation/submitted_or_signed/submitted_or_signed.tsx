@@ -8,18 +8,18 @@ import LeoButton from '@brave/leo/react/button'
 // Constants
 import {
   BraveWallet,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
 } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 import {
-  getCoinFromTxDataUnion //
+  getCoinFromTxDataUnion, //
 } from '../../../../utils/network-utils'
 
 // Components
 import {
-  PostConfirmationHeader //
+  PostConfirmationHeader, //
 } from '../common/post_confirmation_header'
 import { SpeedUpAlert } from '../common/speed_up_alert'
 import { TransactionIntent } from '../common/transaction_intent'
@@ -29,7 +29,7 @@ import { LoadingRing, StatusIcon, Wrapper, Title } from '../common/common.style'
 import { Column, Row, Text, VerticalSpace } from '../../../shared/style'
 import {
   isBridgeTransaction,
-  isSwapTransaction
+  isSwapTransaction,
 } from '../../../../utils/tx-utils'
 
 interface Props {
@@ -44,7 +44,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
     transaction,
     onClose,
     onShowCancelTransaction,
-    onClickViewInActivity
+    onClickViewInActivity,
   } = props
 
   // State

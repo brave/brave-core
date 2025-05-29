@@ -17,7 +17,7 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowWrapper,
-  StyledTR
+  StyledTR,
 } from './style'
 
 import { SortOrder } from '../../../constants/types'
@@ -65,7 +65,7 @@ export const Table = (props: Props) => {
         onSort(header.id, newSortOrder)
       }
     },
-    [onSort]
+    [onSort],
   )
 
   const onRowClick = React.useCallback(
@@ -74,7 +74,7 @@ export const Table = (props: Props) => {
         row.onClick(row.data)
       }
     },
-    []
+    [],
   )
 
   return (

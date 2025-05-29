@@ -13,13 +13,13 @@ import {
   BraveWallet,
   WalletRoutes,
   TokenPriceHistory,
-  LineChartIframeData
+  LineChartIframeData,
 } from '../../../../constants/types'
 
 // constants
 import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../common/constants/local-storage-keys'
 
 // Utils
@@ -27,17 +27,17 @@ import Amount from '../../../../utils/amount'
 import {
   findTransactionToken,
   getETHSwapTransactionBuyAndSellTokens,
-  sortTransactionByDate
+  sortTransactionByDate,
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwapOrBridge
+  getDoesCoinSupportSwapOrBridge,
 } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import { makeNetworkAsset } from '../../../../options/asset-options'
@@ -46,10 +46,10 @@ import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
   makeSendRoute,
-  makeSwapOrBridgeRoute
+  makeSwapOrBridgeRoute,
 } from '../../../../utils/routes-utils'
 import {
-  getStoredPortfolioTimeframe //
+  getStoredPortfolioTimeframe, //
 } from '../../../../utils/local-storage-utils'
 
 // actions
@@ -57,21 +57,21 @@ import { WalletPageActions } from '../../../../page/actions'
 
 // Components
 import {
-  LineChartControls //
+  LineChartControls, //
 } from '../../line-chart/line-chart-controls/line-chart-controls'
 import {
-  AccountsAndTransactionsList //
+  AccountsAndTransactionsList, //
 } from './components/accounts-and-transctions-list'
 import {
-  EditTokenModal //
+  EditTokenModal, //
 } from '../../popup-modals/edit_token_modal/edit_token_modal'
 import {
-  PortfolioAssetActionButton //
+  PortfolioAssetActionButton, //
 } from './components/portfolio_asset_action_button/portfolio_asset_action_button'
 
 // Hooks
 import {
-  useScopedBalanceUpdater //
+  useScopedBalanceUpdater, //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
@@ -82,28 +82,28 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
-  useUpdateUserAssetVisibleMutation
+  useUpdateUserAssetVisibleMutation,
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 import {
-  useSyncedLocalStorage //
+  useSyncedLocalStorage, //
 } from '../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import { StyledWrapper, ButtonRow } from './style'
 import { Row, Column } from '../../../shared/style'
 import {
-  TokenDetailsModal //
+  TokenDetailsModal, //
 } from './components/token-details-modal/token-details-modal'
 import {
-  WalletActions //
+  WalletActions, //
 } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
 
@@ -116,7 +116,7 @@ export const PortfolioFungibleAsset = () => {
   const [showHideTokenModel, setShowHideTokenModal] =
     React.useState<boolean>(false)
   const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
-    getStoredPortfolioTimeframe
+    getStoredPortfolioTimeframe,
   )
   const [showEditTokenModal, setShowEditTokenModal] =
     React.useState<boolean>(false)
@@ -134,7 +134,7 @@ export const PortfolioFungibleAsset = () => {
   // Local-Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-    false
+    false,
   )
 
   // Queries
@@ -143,7 +143,7 @@ export const PortfolioFungibleAsset = () => {
   const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
   const {
     data: { rewardsToken } = emptyRewardsInfo,
-    isLoading: isLoadingRewards
+    isLoading: isLoadingRewards,
   } = useGetRewardsInfoQuery(isRewardsToken ? undefined : skipToken)
 
   // params
@@ -161,7 +161,7 @@ export const PortfolioFungibleAsset = () => {
   const { accounts } = useAccountsQuery()
 
   const { data: selectedAssetsNetwork } = useGetNetworkQuery(
-    selectedAssetFromParams ?? skipToken
+    selectedAssetFromParams ?? skipToken,
   )
 
   const { data: transactionsByNetwork = [] } = useGetTransactionsQuery(
@@ -169,9 +169,9 @@ export const PortfolioFungibleAsset = () => {
       ? {
           accountId: null,
           chainId: selectedAssetFromParams.chainId,
-          coinType: selectedAssetFromParams.coin
+          coinType: selectedAssetFromParams.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const candidateAccounts = React.useMemo(() => {
@@ -180,7 +180,7 @@ export const PortfolioFungibleAsset = () => {
     }
 
     return accounts.filter((account) =>
-      networkSupportsAccount(selectedAssetsNetwork, account.accountId)
+      networkSupportsAccount(selectedAssetsNetwork, account.accountId),
     )
   }, [selectedAssetsNetwork, accounts])
 
@@ -190,9 +190,9 @@ export const PortfolioFungibleAsset = () => {
         ? {
             network: selectedAssetsNetwork,
             accounts: candidateAccounts,
-            tokens: [selectedAssetFromParams]
+            tokens: [selectedAssetFromParams],
           }
-        : skipToken
+        : skipToken,
     )
 
   const tokenPriceIds = React.useMemo(
@@ -200,25 +200,25 @@ export const PortfolioFungibleAsset = () => {
       selectedAssetFromParams
         ? [getPriceIdForToken(selectedAssetFromParams)]
         : [],
-    [selectedAssetFromParams]
+    [selectedAssetFromParams],
   )
 
   const {
     data: selectedAssetPriceHistory,
-    isFetching: isFetchingPortfolioPriceHistory
+    isFetching: isFetchingPortfolioPriceHistory,
   } = useGetPriceHistoryQuery(
     selectedAssetFromParams && defaultFiat
       ? {
           tokenParam: tokenPriceIds[0],
           timeFrame: selectedTimeline,
-          vsAsset: defaultFiat
+          vsAsset: defaultFiat,
         }
-      : skipToken
+      : skipToken,
   )
 
   // custom hooks
   const { foundMeldBuyToken } = useFindBuySupportedToken(
-    selectedAssetFromParams
+    selectedAssetFromParams,
   )
 
   // memos
@@ -231,8 +231,8 @@ export const PortfolioFungibleAsset = () => {
       getBalance(
         account.accountId,
         selectedAssetFromParams,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+      ),
     )
 
     // If a user has not yet created a FIL or SOL account,
@@ -254,11 +254,11 @@ export const PortfolioFungibleAsset = () => {
     tokenPriceIds.length && defaultFiat
       ? { ids: tokenPriceIds, toCurrency: defaultFiat }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
   const isSwapOrBridgeSupported =
-    selectedAssetFromParams &&
-    getDoesCoinSupportSwapOrBridge(selectedAssetFromParams.coin)
+    selectedAssetFromParams
+    && getDoesCoinSupportSwapOrBridge(selectedAssetFromParams.coin)
 
   const selectedAssetTransactions = React.useMemo(() => {
     const nativeAsset = makeNetworkAsset(selectedAssetsNetwork)
@@ -275,15 +275,15 @@ export const PortfolioFungibleAsset = () => {
             {
               nativeAsset,
               tokensList: [selectedAssetFromParams],
-              tx
-            }
+              tx,
+            },
           )
           const buyTokenId = buyToken ? getAssetIdKey(buyToken) : undefined
           const sellTokenId = sellToken ? getAssetIdKey(sellToken) : undefined
           return (
-            selectedAssetIdKey === tokenId ||
-            selectedAssetIdKey === buyTokenId ||
-            selectedAssetIdKey === sellTokenId
+            selectedAssetIdKey === tokenId
+            || selectedAssetIdKey === buyTokenId
+            || selectedAssetIdKey === sellTokenId
           )
         }
 
@@ -300,10 +300,10 @@ export const PortfolioFungibleAsset = () => {
         ? computeFiatAmount({
             spotPriceRegistry,
             value: fullAssetBalance,
-            token: selectedAssetFromParams
+            token: selectedAssetFromParams,
           })
         : Amount.empty(),
-    [fullAssetBalance, selectedAssetFromParams, spotPriceRegistry]
+    [fullAssetBalance, selectedAssetFromParams, spotPriceRegistry],
   )
 
   const formattedFullAssetBalance = React.useMemo(
@@ -313,7 +313,7 @@ export const PortfolioFungibleAsset = () => {
             .divideByDecimals(selectedAssetFromParams.decimals)
             .formatAsAsset(6, selectedAssetFromParams.symbol)
         : '',
-    [selectedAssetFromParams, fullAssetBalance]
+    [selectedAssetFromParams, fullAssetBalance],
   )
 
   const formattedAssetBalance = React.useMemo(
@@ -323,7 +323,7 @@ export const PortfolioFungibleAsset = () => {
             .divideByDecimals(selectedAssetFromParams.decimals)
             .formatAsAsset(8)
         : '',
-    [selectedAssetFromParams, fullAssetBalance]
+    [selectedAssetFromParams, fullAssetBalance],
   )
 
   const isSelectedAssetDepositSupported =
@@ -337,19 +337,19 @@ export const PortfolioFungibleAsset = () => {
 
   const onCloseTokenDetailsModal = React.useCallback(
     () => setShowTokenDetailsModal(false),
-    []
+    [],
   )
 
   const onCloseHideTokenModal = React.useCallback(
     () => setShowHideTokenModal(false),
-    []
+    [],
   )
 
   const onHideAsset = React.useCallback(async () => {
     if (!selectedAssetFromParams) return
     await updateUserAssetVisible({
       token: selectedAssetFromParams,
-      isVisible: false
+      isVisible: false,
     }).unwrap()
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
     if (showHideTokenModel) setShowHideTokenModal(false)
@@ -361,7 +361,7 @@ export const PortfolioFungibleAsset = () => {
     selectedAssetFromParams,
     showHideTokenModel,
     showTokenDetailsModal,
-    updateUserAssetVisible
+    updateUserAssetVisible,
   ])
 
   const onClickBuy = React.useCallback(() => {
@@ -373,7 +373,7 @@ export const PortfolioFungibleAsset = () => {
   const onClickDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
       history.push(
-        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams))
+        makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams)),
       )
     }
   }, [history, selectedAssetFromParams])
@@ -390,12 +390,12 @@ export const PortfolioFungibleAsset = () => {
         history.push(
           makeSwapOrBridgeRoute({
             fromToken: selectedAssetFromParams,
-            routeType
-          })
+            routeType,
+          }),
         )
       }
     },
-    [history, selectedAssetFromParams]
+    [history, selectedAssetFromParams],
   )
 
   // asset not found
@@ -411,7 +411,7 @@ export const PortfolioFungibleAsset = () => {
   const iframeData: LineChartIframeData = {
     priceData,
     hidePortfolioBalances,
-    defaultFiatCurrency: defaultFiat || 'USD'
+    defaultFiatCurrency: defaultFiat || 'USD',
   }
 
   const encodedPriceData = encodeURIComponent(JSON.stringify(iframeData))
@@ -493,24 +493,24 @@ export const PortfolioFungibleAsset = () => {
           </ButtonRow>
         </Row>
 
-        {showTokenDetailsModal &&
-          selectedAssetFromParams &&
-          selectedAssetsNetwork && (
+        {showTokenDetailsModal
+          && selectedAssetFromParams
+          && selectedAssetsNetwork && (
             <TokenDetailsModal
               onClose={onCloseTokenDetailsModal}
               selectedAsset={selectedAssetFromParams}
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={formattedAssetBalance}
               formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
-                defaultFiat
+                defaultFiat,
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}
             />
           )}
 
-        {showHideTokenModel &&
-          selectedAssetFromParams &&
-          selectedAssetsNetwork && (
+        {showHideTokenModel
+          && selectedAssetFromParams
+          && selectedAssetsNetwork && (
             <HideTokenModal
               selectedAsset={selectedAssetFromParams}
               onClose={onCloseHideTokenModal}

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { ProvidePubKeyPanel } from '.'
 
@@ -19,7 +19,7 @@ export const _ProvidePublicEncryptionKeyPanel = {
         <ProvidePubKeyPanel payload={mockEncryptionKeyRequest} />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: ProvidePubKeyPanel }

@@ -21,7 +21,7 @@ import {
   useGetIsTxSimulationOptInStatusQuery,
   useGetNetworkQuery,
   useProcessSignMessageRequestMutation,
-  useSignMessageHardwareMutation
+  useSignMessageHardwareMutation,
 } from '../../../common/slices/api.slice'
 import { isHardwareAccount } from '../../../utils/account-utils'
 
@@ -32,10 +32,10 @@ import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import { SignInWithEthereum } from './sign_in_with_ethereum'
 import { SignCowSwapOrder } from './cow_swap_order'
 import {
-  EthSignTypedData //
+  EthSignTypedData, //
 } from './common/eth_sign_typed_data'
 import {
-  EvmMessageSimulationNotSupportedSheet //
+  EvmMessageSimulationNotSupportedSheet, //
 } from '../evm_message_simulation_not_supported_sheet/evm_message_simulation_not_supported_sheet'
 
 // Styled Components
@@ -49,13 +49,13 @@ import {
   MessageBox,
   MessageText,
   SignPanelButtonRow,
-  WarningTitleRow
+  WarningTitleRow,
 } from './style'
 
 import {
   QueueStepRow,
   QueueStepButton,
-  QueueStepText
+  QueueStepText,
 } from '../confirm-transaction-panel/common/style'
 
 import {
@@ -65,7 +65,7 @@ import {
   WarningText,
   LearnMoreButton,
   URLText,
-  WarningIcon
+  WarningIcon,
 } from '../shared-panel-styles'
 
 interface Props {
@@ -78,13 +78,13 @@ interface Props {
 const onClickLearnMore = () => {
   chrome.tabs.create(
     {
-      url: 'https://support.brave.com/hc/en-us/articles/4409513799693'
+      url: 'https://support.brave.com/hc/en-us/articles/4409513799693',
     },
     () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
-    }
+    },
   )
 }
 
@@ -96,9 +96,9 @@ export const SignPanel = (props: Props) => {
     signMessageData[0]
       ? {
           chainId: signMessageData[0].chainId,
-          coin: signMessageData[0].coin
+          coin: signMessageData[0].coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: simulationOptInStatus } = useGetIsTxSimulationOptInStatusQuery()
@@ -111,7 +111,7 @@ export const SignPanel = (props: Props) => {
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
-    SignDataSteps.SignData
+    SignDataSteps.SignData,
   )
   const [selectedQueueData, setSelectedQueueData] =
     React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
@@ -127,7 +127,7 @@ export const SignPanel = (props: Props) => {
   const onCancel = async () => {
     await processSignMessageRequest({
       approved: false,
-      id: signMessageData[0].id
+      id: signMessageData[0].id,
     }).unwrap()
   }
 
@@ -139,16 +139,16 @@ export const SignPanel = (props: Props) => {
     return {
       queueLength: signMessageData.length,
       queueNumber:
-        signMessageData.findIndex((data) => data.id === selectedQueueData.id) +
-        1
+        signMessageData.findIndex((data) => data.id === selectedQueueData.id)
+        + 1,
     }
   }, [signMessageData, selectedQueueData])
 
   const isDisabled = React.useMemo(
     (): boolean =>
-      signMessageData.findIndex((data) => data.id === selectedQueueData.id) !==
-      0,
-    [signMessageData, selectedQueueData]
+      signMessageData.findIndex((data) => data.id === selectedQueueData.id)
+      !== 0,
+    [signMessageData, selectedQueueData],
   )
 
   // methods
@@ -172,12 +172,12 @@ export const SignPanel = (props: Props) => {
     if (isHardwareAccount(account.accountId)) {
       await signMessageHardware({
         account,
-        request: signMessageData[0]
+        request: signMessageData[0],
       }).unwrap()
     } else {
       await processSignMessageRequest({
         approved: true,
-        id: signMessageData[0].id
+        id: signMessageData[0].id,
       }).unwrap()
     }
   }
@@ -230,8 +230,8 @@ export const SignPanel = (props: Props) => {
               {signMessageQueueInfo.queueLength}
             </QueueStepText>
             <QueueStepButton onClick={onQueueNextSignMessage}>
-              {signMessageQueueInfo.queueNumber ===
-              signMessageQueueInfo.queueLength
+              {signMessageQueueInfo.queueNumber
+              === signMessageQueueInfo.queueLength
                 ? getLocale('braveWalletQueueFirst')
                 : getLocale('braveWalletQueueNext')}
             </QueueStepButton>
@@ -275,7 +275,7 @@ export const SignPanel = (props: Props) => {
           </TabRow>
 
           {hasUnicode(
-            selectedQueueData.signData.ethStandardSignData?.message ?? ''
+            selectedQueueData.signData.ethStandardSignData?.message ?? '',
           ) && (
             <WarningBox warningType='warning'>
               <WarningTitleRow>

@@ -9,17 +9,17 @@ import { useDispatch } from 'react-redux'
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../../../common/constants/local-storage-keys'
 
 // hooks
 import {
   useRemoveUserTokenMutation,
   useUpdateNftSpamStatusMutation,
-  useUpdateUserAssetVisibleMutation
+  useUpdateUserAssetVisibleMutation,
 } from '../../../../../../common/slices/api.slice'
 import {
-  useSyncedLocalStorage //
+  useSyncedLocalStorage, //
 } from '../../../../../../common/hooks/use_local_storage'
 
 // actions
@@ -47,7 +47,7 @@ import {
   MoreButton,
   JunkMarker,
   JunkIcon,
-  WatchOnlyMarker
+  WatchOnlyMarker,
 } from './style'
 import { Row } from '../../../../../shared/style'
 
@@ -64,7 +64,7 @@ export const NFTGridViewItem = ({
   isTokenHidden,
   isTokenSpam,
   onSelectAsset,
-  isWatchOnly
+  isWatchOnly,
 }: Props) => {
   const tokenImageURL = stripERC20TokenImageURL(token.logo)
   const [showRemoveNftModal, setShowRemoveNftModal] =
@@ -73,7 +73,7 @@ export const NFTGridViewItem = ({
   // redux
   const [showNetworkLogoOnNfts] = useSyncedLocalStorage<boolean>(
     LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
-    false
+    false,
   )
 
   // state
@@ -94,7 +94,7 @@ export const NFTGridViewItem = ({
       event?.stopPropagation()
       setShowMore((currentValue) => !currentValue)
     },
-    []
+    [],
   )
 
   const onHideModal = React.useCallback(() => {
@@ -110,7 +110,7 @@ export const NFTGridViewItem = ({
     setShowMore(false)
     await updateUserAssetVisible({
       token,
-      isVisible: false
+      isVisible: false,
     }).unwrap()
   }, [token, updateUserAssetVisible])
 
@@ -118,7 +118,7 @@ export const NFTGridViewItem = ({
     setShowMore(false)
     await updateUserAssetVisible({
       token,
-      isVisible: true
+      isVisible: true,
     }).unwrap()
     if (isTokenSpam) {
       // remove from spam

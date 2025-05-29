@@ -11,12 +11,12 @@ import { NavOption } from '../../../../../../constants/types'
 
 // Hooks
 import {
-  useOnClickOutside //
+  useOnClickOutside, //
 } from '../../../../../../common/hooks/useOnClickOutside'
 
 // Options
 import {
-  BuySendSwapDepositOptions //
+  BuySendSwapDepositOptions, //
 } from '../../../../../../options/nav-options'
 
 // Utils
@@ -24,7 +24,7 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Components
 import {
-  PortfolioAccountMenu //
+  PortfolioAccountMenu, //
 } from '../../../../wallet-menus/portfolio_actions_more_menu'
 
 // Styled Components
@@ -33,7 +33,7 @@ import {
   ButtonIcon,
   ButtonText,
   ButtonWrapper,
-  MoreMenuWrapper
+  MoreMenuWrapper,
 } from './buy-send-swap-deposit-nav.style'
 import { Row } from '../../../../../shared/style'
 
@@ -55,7 +55,7 @@ export const BuySendSwapDepositNav = () => {
     (option: NavOption) => {
       history.push(option.route)
     },
-    [history]
+    [history],
   )
 
   return (

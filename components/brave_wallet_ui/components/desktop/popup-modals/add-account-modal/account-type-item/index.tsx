@@ -13,7 +13,7 @@ import {
   Title,
   Description,
   NetworkIcon,
-  LeftSide
+  LeftSide,
 } from './style'
 
 export interface Props {

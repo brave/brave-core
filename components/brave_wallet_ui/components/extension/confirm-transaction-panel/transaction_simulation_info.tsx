@@ -17,19 +17,19 @@ import { getLocale } from '../../../../common/locale'
 // components
 import {
   getComponentForEvmApproval,
-  getComponentForEvmTransfer
+  getComponentForEvmTransfer,
 } from './common/evm_state_changes'
 import {
   getComponentForSvmTransfer,
   SolAccountOwnershipChange,
   SolStakingAuthChange,
-  SPLTokenApproval
+  SPLTokenApproval,
 } from './common/svm_state_changes'
 
 // style
 import {
   groupSimulatedEVMStateChanges,
-  decodeSimulatedSVMStateChanges
+  decodeSimulatedSVMStateChanges,
 } from '../../../utils/tx-simulation-utils'
 import {
   CollapseHeaderDivider,
@@ -37,7 +37,7 @@ import {
   TransactionChangeCollapse,
   TransactionChangeCollapseContainer,
   TransactionChangeCollapseContent,
-  TransactionChangeCollapseTitle
+  TransactionChangeCollapseTitle,
 } from './confirm_simulated_tx_panel.styles'
 import { ChainInfo } from './common/view_on_explorer_button'
 import { StateChangeText } from './common/state_changes.styles'
@@ -67,7 +67,7 @@ export const TransactionSimulationInfo = ({
   simulation,
   simulationType,
   network,
-  transactionDetails
+  transactionDetails,
 }: TransactionInfoProps) => {
   // computed
   const { expectedStateChanges } = simulation
@@ -77,40 +77,40 @@ export const TransactionSimulationInfo = ({
     return simulationType === 'EVM'
       ? {
           evmChanges: groupSimulatedEVMStateChanges(
-            expectedStateChanges as BraveWallet.BlowfishEVMStateChange[]
+            expectedStateChanges as BraveWallet.BlowfishEVMStateChange[],
           ),
-          svmChanges: undefined
+          svmChanges: undefined,
         }
       : {
           svmChanges: decodeSimulatedSVMStateChanges(
-            expectedStateChanges as BraveWallet.BlowfishSolanaStateChange[]
+            expectedStateChanges as BraveWallet.BlowfishSolanaStateChange[],
           ),
-          evmChanges: undefined
+          evmChanges: undefined,
         }
   }, [simulationType, expectedStateChanges])
 
   // computed
   const hasAccountOwnershipChanges = Boolean(
-    svmChanges?.accountOwnerChangeData.length
+    svmChanges?.accountOwnerChangeData.length,
   )
 
   const hasApprovals = Boolean(
-    evmChanges?.evmApprovals.length || svmChanges?.splApprovals.length
+    evmChanges?.evmApprovals.length || svmChanges?.splApprovals.length,
   )
 
   const hasTransfers = Boolean(
-    evmChanges?.evmTransfers.length || svmChanges?.svmTransfers.length
+    evmChanges?.evmTransfers.length || svmChanges?.svmTransfers.length,
   )
 
   const hasSolStakingAuthChanges = Boolean(
-    svmChanges?.solStakeAuthorityChanges.length
+    svmChanges?.solStakeAuthorityChanges.length,
   )
 
   const changesCategories = [
     hasApprovals,
     hasTransfers,
     hasSolStakingAuthChanges,
-    hasAccountOwnershipChanges
+    hasAccountOwnershipChanges,
   ].filter(Boolean)
 
   const hasMultipleCategories = changesCategories.length > 1
@@ -122,12 +122,12 @@ export const TransactionSimulationInfo = ({
       hasAccountOwnershipChanges
         ? 'accountOwnership'
         : hasTransfers
-        ? 'transfers'
-        : hasApprovals
-        ? 'approvals'
-        : hasSolStakingAuthChanges
-        ? 'solStakingAuthChanges'
-        : 'noChanges'
+          ? 'transfers'
+          : hasApprovals
+            ? 'approvals'
+            : hasSolStakingAuthChanges
+              ? 'solStakingAuthChanges'
+              : 'noChanges',
     )
 
   // render
@@ -144,7 +144,7 @@ export const TransactionSimulationInfo = ({
                   setOpenedCategorySectionName((prev) =>
                     prev === 'accountOwnership'
                       ? 'noChanges'
-                      : 'accountOwnership'
+                      : 'accountOwnership',
                   )
               : undefined
           }
@@ -168,7 +168,7 @@ export const TransactionSimulationInfo = ({
                   />
                   {i < arr.length - 1 ? <Divider /> : null}
                 </React.Fragment>
-              ) : null
+              ) : null,
             )}
           </TransactionChangeCollapseContent>
         </TransactionChangeCollapse>
@@ -181,7 +181,7 @@ export const TransactionSimulationInfo = ({
             hasMultipleCategories
               ? () =>
                   setOpenedCategorySectionName((prev) =>
-                    prev === 'transfers' ? 'noChanges' : 'transfers'
+                    prev === 'transfers' ? 'noChanges' : 'transfers',
                   )
               : undefined
           }
@@ -209,7 +209,7 @@ export const TransactionSimulationInfo = ({
                 {getComponentForSvmTransfer(
                   transfer,
                   network,
-                  transactionDetails
+                  transactionDetails,
                 )}
                 {i < arr.length - 1 ? <Divider /> : null}
               </React.Fragment>
@@ -225,7 +225,7 @@ export const TransactionSimulationInfo = ({
             hasMultipleCategories
               ? () =>
                   setOpenedCategorySectionName((prev) =>
-                    prev === 'approvals' ? 'noChanges' : 'approvals'
+                    prev === 'approvals' ? 'noChanges' : 'approvals',
                   )
               : undefined
           }
@@ -255,7 +255,7 @@ export const TransactionSimulationInfo = ({
                   />
                   {i < arr.length - 1 ? <Divider /> : null}
                 </React.Fragment>
-              ) : null
+              ) : null,
             )}
           </TransactionChangeCollapseContent>
         </TransactionChangeCollapse>
@@ -270,7 +270,7 @@ export const TransactionSimulationInfo = ({
                   setOpenedCategorySectionName((prev) =>
                     prev === 'solStakingAuthChanges'
                       ? 'noChanges'
-                      : 'solStakingAuthChanges'
+                      : 'solStakingAuthChanges',
                   )
               : undefined
           }
@@ -294,7 +294,7 @@ export const TransactionSimulationInfo = ({
                   />
                   {i < arr.length - 1 ? <Divider /> : null}
                 </React.Fragment>
-              ) : null
+              ) : null,
             )}
           </TransactionChangeCollapseContent>
         </TransactionChangeCollapse>

@@ -13,7 +13,7 @@ import {
   ButtonIcon,
   Popup,
   PopupButton,
-  PopupButtonText
+  PopupButtonText,
 } from './nft-more-popup.styles'
 
 interface Props {
@@ -40,7 +40,7 @@ export const NftMorePopup = (props: Props) => {
     onUnSpam,
     onRemoveNft,
     onClose,
-    onMarkAsSpam
+    onMarkAsSpam,
   } = props
 
   const popupRef = React.useRef<HTMLDivElement>(null)

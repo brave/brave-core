@@ -55,13 +55,13 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
     background-color: ${(p) =>
       p.disabled
         ? leo.color.icon.disabled
-        : p.buttonType === 'primary' ||
-          p.buttonType === 'confirm' ||
-          p.buttonType === 'sign'
-        ? leo.color.primitive.primary[40]
-        : p.buttonType === 'danger'
-        ? p.theme.color.errorBorder
-        : 'transparent'};
+        : p.buttonType === 'primary'
+            || p.buttonType === 'confirm'
+            || p.buttonType === 'sign'
+          ? leo.color.primitive.primary[40]
+          : p.buttonType === 'danger'
+            ? p.theme.color.errorBorder
+            : 'transparent'};
 
     border: ${(p) =>
       p.buttonType === 'secondary' || p.buttonType === 'reject'
@@ -82,7 +82,7 @@ export const StyledLink = styled(Link).withConfig<StyledButtonProps>({
   shouldForwardProp: (prop) => {
     // prevents reactDOM errors (Link does not support these props)
     return prop !== 'minWidth' && prop !== 'maxHeight' && prop !== 'buttonType'
-  }
+  },
 })`
   ${(p) => StyledButtonCssMixin(p)}
 `
@@ -96,9 +96,9 @@ export const ButtonText = styled.span<{
   font-weight: 600;
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
   color: ${(p) =>
-    p.buttonType === 'secondary' ||
-    p.buttonType === 'reject' ||
-    p.buttonType === 'cancel'
+    p.buttonType === 'secondary'
+    || p.buttonType === 'reject'
+    || p.buttonType === 'cancel'
       ? leo.color.text.secondary
       : p.theme.palette.white};
 `

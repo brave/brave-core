@@ -7,10 +7,10 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import {
-  TransactionSimulationNotSupportedSheet //
+  TransactionSimulationNotSupportedSheet, //
 } from './transaction_simulation_not_supported_sheet'
 
 export const _TransactionSimulationNotSupportedSheet = {
@@ -21,10 +21,10 @@ export const _TransactionSimulationNotSupportedSheet = {
         <TransactionSimulationNotSupportedSheet />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
   title: 'Transaction Simulation Not Supported Sheet',
-  component: TransactionSimulationNotSupportedSheet
+  component: TransactionSimulationNotSupportedSheet,
 }

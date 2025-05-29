@@ -25,11 +25,11 @@ export function SelectNetwork({
   onSelectCustomNetwork,
   selectedNetwork,
   customNetwork,
-  networkListSubset
+  networkListSubset,
 }: Props) {
   // queries
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery(undefined, {
-    skip: !!networkListSubset
+    skip: !!networkListSubset,
   })
 
   // Computed

@@ -54,7 +54,7 @@ function createNavPageNumbers(currentPage: number, totalPages: number) {
 export function Pagination({
   onSelectPageNumber,
   currentPageNumber,
-  lastPageNumber
+  lastPageNumber,
 }: {
   onSelectPageNumber: (pageNumber: number) => void
   currentPageNumber: number
@@ -101,7 +101,7 @@ export function Pagination({
               {newPageNumber}
             </PaginationButton>
           )
-        }
+        },
       )}
 
       {/* Forward */}

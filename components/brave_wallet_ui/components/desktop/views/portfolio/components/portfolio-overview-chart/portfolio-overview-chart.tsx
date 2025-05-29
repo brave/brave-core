@@ -9,23 +9,23 @@ import * as React from 'react'
 import {
   BraveWallet,
   LineChartIframeData,
-  TokenPriceHistory
+  TokenPriceHistory,
 } from '../../../../../../constants/types'
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../../../common/constants/local-storage-keys'
 
 // utils
 import {
-  useGetDefaultFiatCurrencyQuery //
+  useGetDefaultFiatCurrencyQuery, //
 } from '../../../../../../common/slices/api.slice'
 import {
-  useSyncedLocalStorage //
+  useSyncedLocalStorage, //
 } from '../../../../../../common/hooks/use_local_storage'
 
 // components
 import {
-  LineChartControls //
+  LineChartControls, //
 } from '../../../../line-chart/line-chart-controls/line-chart-controls'
 
 // style
@@ -45,12 +45,12 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
   portfolioPriceHistory,
   isLoading,
   timeframe,
-  onTimeframeChanged
+  onTimeframeChanged,
 }) => {
   // local-Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-    false
+    false,
   )
 
   // state
@@ -65,14 +65,14 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
       defaultFiatCurrency,
       hidePortfolioBalances,
       priceData:
-        hasZeroBalance || !portfolioPriceHistory ? [] : portfolioPriceHistory
+        hasZeroBalance || !portfolioPriceHistory ? [] : portfolioPriceHistory,
     }
     return encodeURIComponent(JSON.stringify(iframeData))
   }, [
     portfolioPriceHistory,
     hasZeroBalance,
     defaultFiatCurrency,
-    hidePortfolioBalances
+    hidePortfolioBalances,
   ])
 
   // methods

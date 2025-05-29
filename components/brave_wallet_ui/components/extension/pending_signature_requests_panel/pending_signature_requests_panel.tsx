@@ -11,12 +11,12 @@ import { BraveWallet } from '../../../constants/types'
 
 // Hooks
 import {
-  useSignSolanaTransactionsQueue //
+  useSignSolanaTransactionsQueue, //
 } from '../../../common/hooks/use_sign_solana_tx_queue'
 import {
   useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
-  useGetSolanaSignTransactionsRequestSimulationQuery
+  useGetSolanaSignTransactionsRequestSimulationQuery,
 } from '../../../common/slices/api.slice'
 
 // Components
@@ -24,10 +24,10 @@ import SignTransactionPanel from '../sign-panel/sign-transaction-panel'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 import {
   EnableTransactionSimulations, //
-  LoadingSimulation
+  LoadingSimulation,
 } from '../enable_transaction_simulations/enable_transaction_simulations'
 import {
-  SignSimulatedTransactionPanel //
+  SignSimulatedTransactionPanel, //
 } from '../confirm-transaction-panel/sign_simulated_tx_panel'
 
 // Style
@@ -42,27 +42,27 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
     queueNextSignTransaction,
     queueNumber,
     selectedRequest,
-    signingAccount
+    signingAccount,
   } = useSignSolanaTransactionsQueue()
 
   // queries
   const {
     data: txSimulationOptIn, //
-    isLoading: isLoadingSimulationOptInStatus
+    isLoading: isLoadingSimulationOptInStatus,
   } = useGetIsTxSimulationOptInStatusQuery()
   const isSimulationPermitted =
     txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
 
   const {
     data: networkHasTxSimulationSupport,
-    isLoading: isCheckingSimulationNetworkSupport
+    isLoading: isCheckingSimulationNetworkSupport,
   } = useGetHasTransactionSimulationSupportQuery(
     network
       ? {
           chainId: network.chainId,
-          coinType: network.coin
+          coinType: network.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const {
@@ -70,53 +70,53 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
     isLoading: isLoadingSolanaSimulation,
     isFetching: isFetchingSolanaSimulation,
     isError: hasSimulationError,
-    refetch: retrySimulation
+    refetch: retrySimulation,
   } = useGetSolanaSignTransactionsRequestSimulationQuery(
-    isSimulationPermitted &&
-      network &&
-      networkHasTxSimulationSupport &&
-      selectedRequest
+    isSimulationPermitted
+      && network
+      && networkHasTxSimulationSupport
+      && selectedRequest
       ? {
-          signSolTransactionsRequestId: selectedRequest.id
+          signSolTransactionsRequestId: selectedRequest.id,
         }
-      : skipToken
+      : skipToken,
   )
 
   // render
 
   // Simulations Opt-in screen
   if (
-    networkHasTxSimulationSupport &&
-    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset
+    networkHasTxSimulationSupport
+    && txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset
   ) {
     return <EnableTransactionSimulations />
   }
 
   // Loading
   if (
-    !network ||
-    !selectedRequest ||
-    !signingAccount ||
-    isLoadingSimulationOptInStatus ||
-    isCheckingSimulationNetworkSupport
+    !network
+    || !selectedRequest
+    || !signingAccount
+    || isLoadingSimulationOptInStatus
+    || isCheckingSimulationNetworkSupport
   ) {
     return <LoadingPanel />
   }
 
   // Simulating
   if (
-    isSimulationPermitted &&
-    (isLoadingSolanaSimulation || isFetchingSolanaSimulation)
+    isSimulationPermitted
+    && (isLoadingSolanaSimulation || isFetchingSolanaSimulation)
   ) {
     return <LoadingSimulation />
   }
 
   // Simulated Signature Request
   if (
-    isSimulationPermitted &&
-    networkHasTxSimulationSupport &&
-    !hasSimulationError &&
-    solanaSimulation
+    isSimulationPermitted
+    && networkHasTxSimulationSupport
+    && !hasSimulationError
+    && solanaSimulation
   ) {
     return (
       <LongWrapper>
@@ -150,9 +150,9 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
           isSimulationPermitted && !networkHasTxSimulationSupport
         }
         retrySimulation={
-          isSimulationPermitted &&
-          networkHasTxSimulationSupport &&
-          hasSimulationError
+          isSimulationPermitted
+          && networkHasTxSimulationSupport
+          && hasSimulationError
             ? retrySimulation
             : undefined
         }

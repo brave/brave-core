@@ -31,5 +31,5 @@ export const EmptyCollectionGridItem = styled.div`
 export const NftIconStyles: CSSProperties = {
   borderRadius: 8,
   width: '100%',
-  height: 'auto'
+  height: 'auto',
 }

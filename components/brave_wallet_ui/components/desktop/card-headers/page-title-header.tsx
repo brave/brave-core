@@ -21,7 +21,7 @@ import { Row } from '../../shared/style'
 import {
   MenuButtonIcon,
   MenuButton,
-  HeaderTitle
+  HeaderTitle,
 } from './shared-card-headers.style'
 
 interface Props {
@@ -35,7 +35,7 @@ export const PageTitleHeader = ({
   title,
   showBackButton,
   onBack,
-  expandRoute
+  expandRoute,
 }: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)

@@ -10,17 +10,17 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import {
-  reduceAccountDisplayName //
+  reduceAccountDisplayName, //
 } from '../../../utils/reduce-account-name'
 
 // Options
 import {
-  AllAccountsOption //
+  AllAccountsOption, //
 } from '../../../options/account-filter-options'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../create-account-icon/create-account-icon'
 
 // Styled Components
@@ -41,7 +41,7 @@ export const AccountsDropdown = (props: Props) => {
     selectedAccount,
     showAllAccountsOption,
     onSelectAccount,
-    checkIsAccountOptionDisabled
+    checkIsAccountOptionDisabled,
   } = props
 
   return (
@@ -53,16 +53,16 @@ export const AccountsDropdown = (props: Props) => {
         slot='value'
         justifyContent='flex-start'
       >
-        {selectedAccount.accountId.uniqueKey !==
-          AllAccountsOption.accountId.uniqueKey && (
+        {selectedAccount.accountId.uniqueKey
+          !== AllAccountsOption.accountId.uniqueKey && (
           <CreateAccountIcon
             size='tiny'
             account={selectedAccount}
             marginRight={8}
           />
         )}
-        {selectedAccount.accountId.uniqueKey ===
-        AllAccountsOption.accountId.uniqueKey
+        {selectedAccount.accountId.uniqueKey
+        === AllAccountsOption.accountId.uniqueKey
           ? selectedAccount.name
           : reduceAccountDisplayName(selectedAccount.name, 12)}
       </Row>
@@ -73,8 +73,8 @@ export const AccountsDropdown = (props: Props) => {
             isDisabled={false}
           >
             {AllAccountsOption.name}
-            {selectedAccount.accountId.uniqueKey ===
-              AllAccountsOption.accountId.uniqueKey && (
+            {selectedAccount.accountId.uniqueKey
+              === AllAccountsOption.accountId.uniqueKey && (
               <Icon name='check-normal' />
             )}
           </DropdownOption>
@@ -94,8 +94,8 @@ export const AccountsDropdown = (props: Props) => {
             }
           >
             <Row width='unset'>
-              {account.accountId.uniqueKey !==
-                AllAccountsOption.accountId.uniqueKey && (
+              {account.accountId.uniqueKey
+                !== AllAccountsOption.accountId.uniqueKey && (
                 <CreateAccountIcon
                   size='tiny'
                   account={account}
@@ -104,8 +104,8 @@ export const AccountsDropdown = (props: Props) => {
               )}
               {account.name}
             </Row>
-            {selectedAccount.accountId.uniqueKey ===
-              account.accountId.uniqueKey && <Icon name='check-normal' />}
+            {selectedAccount.accountId.uniqueKey
+              === account.accountId.uniqueKey && <Icon name='check-normal' />}
           </DropdownOption>
         </leo-option>
       ))}

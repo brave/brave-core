@@ -10,13 +10,13 @@ import { BraveWallet } from '../../../constants/types'
 
 // Mocks
 import {
-  mockTransactionInfo //
+  mockTransactionInfo, //
 } from '../../../stories/mock-data/mock-transaction-info'
 import { mockAccount } from '../../../common/constants/mocks'
 
 // Components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { LongWrapper } from '../../../stories/style'
 import { PanelWrapper } from '../../../panel/style'
@@ -24,7 +24,7 @@ import { ConfirmSwapTransaction } from './swap'
 
 // Utils
 import {
-  deserializeTransaction //
+  deserializeTransaction, //
 } from '../../../utils/model-serialization-utils'
 
 export const _ConfirmSwapTransaction = {
@@ -33,32 +33,32 @@ export const _ConfirmSwapTransaction = {
       <WalletPanelStory
         walletStateOverride={{
           hasInitialized: true,
-          isWalletCreated: true
+          isWalletCreated: true,
         }}
         uiStateOverride={{
-          selectedPendingTransactionId: mockTransactionInfo.id
+          selectedPendingTransactionId: mockTransactionInfo.id,
         }}
         panelStateOverride={{
-          hasInitialized: true
+          hasInitialized: true,
         }}
         walletApiDataOverrides={{
           simulationOptInStatus: BraveWallet.BlowfishOptInStatus.kAllowed,
           evmSimulationResponse: {
             error: {
               humanReadableError: 'Simulation failed',
-              kind: BraveWallet.BlowfishEVMErrorKind.kSimulationFailed
+              kind: BraveWallet.BlowfishEVMErrorKind.kSimulationFailed,
             },
             expectedStateChanges: [],
             action: BraveWallet.BlowfishSuggestedAction.kWarn,
-            warnings: []
+            warnings: [],
           },
           transactionInfos: [
             deserializeTransaction({
               ...mockTransactionInfo,
-              txStatus: BraveWallet.TransactionStatus.Unapproved
-            })
+              txStatus: BraveWallet.TransactionStatus.Unapproved,
+            }),
           ],
-          accountInfos: [mockAccount]
+          accountInfos: [mockAccount],
         }}
       >
         <PanelWrapper isLonger={true}>
@@ -68,7 +68,7 @@ export const _ConfirmSwapTransaction = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: ConfirmSwapTransaction }

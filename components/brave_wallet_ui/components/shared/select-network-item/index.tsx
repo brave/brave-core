@@ -43,8 +43,8 @@ export function SelectNetworkItem(props: Props) {
         )}
         <NetworkName>{network.chainName}</NetworkName>
       </LeftSide>
-      {selectedNetwork?.chainId === network.chainId &&
-        selectedNetwork?.coin === network.coin && <BigCheckMark />}
+      {selectedNetwork?.chainId === network.chainId
+        && selectedNetwork?.coin === network.coin && <BigCheckMark />}
     </StyledWrapper>
   )
 }

@@ -16,7 +16,7 @@ import {
   DropDownIcon,
   DropDown,
   DropDownItem,
-  DropdownContainer
+  DropdownContainer,
 } from './nft-group-selector.styles'
 
 export interface NftDropdownOption {

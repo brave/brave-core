@@ -19,14 +19,14 @@ import {
   StackContainer,
   AssetIcon,
   IconWrapper,
-  AdditionalCountBubble
+  AdditionalCountBubble,
 } from './icon-stacks.style'
 
 // Methods
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'tiny',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 })
 
 const calculateIconLeftPosition = (index: number) => {

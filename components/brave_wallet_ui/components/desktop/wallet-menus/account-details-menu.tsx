@@ -8,7 +8,7 @@ import * as React from 'react'
 // Types
 import {
   AccountButtonOptionsObjectType,
-  AccountModalTypes
+  AccountModalTypes,
 } from '../../../constants/types'
 
 // Utils
@@ -19,7 +19,7 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon
+  ButtonIcon,
 } from './wellet-menus.style'
 import { VerticalDivider, VerticalSpace } from '../../shared/style'
 

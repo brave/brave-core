@@ -8,7 +8,7 @@ import * as React from 'react'
 // Types
 import {
   BraveWallet,
-  DAppPermissionDurationOption
+  DAppPermissionDurationOption,
 } from '../../../../constants/types'
 
 // Options
@@ -23,7 +23,7 @@ import {
   DropDownButton,
   DropDownIcon,
   DropDown,
-  PermissionButton
+  PermissionButton,
 } from './permission-duration-dropdown.style'
 
 interface Props {
@@ -43,15 +43,14 @@ export const PermissionDurationDropdown = (props: Props) => {
       setSelectedDuration(duration)
       setShowDropdown(false)
     },
-    [setSelectedDuration]
+    [setSelectedDuration],
   )
 
   // Memos
   const selectedDurationInfo = React.useMemo(() => {
     return (
-      DAppPermissionDurationOptions.find(
-        (item) => item.id === selectedDuration
-      ) ?? DAppPermissionDurationOptions[0]
+      DAppPermissionDurationOptions.find((item) => item.id === selectedDuration)
+      ?? DAppPermissionDurationOptions[0]
     )
   }, [selectedDuration])
 
@@ -74,7 +73,7 @@ export const PermissionDurationDropdown = (props: Props) => {
               >
                 {getLocale(duration.name)}
               </PermissionButton>
-            )
+            ),
           )}
         </DropDown>
       )}

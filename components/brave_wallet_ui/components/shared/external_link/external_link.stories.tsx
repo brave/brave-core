@@ -15,9 +15,9 @@ export const _ExternalLink = {
         text='Brave'
       />
     )
-  }
+  },
 }
 
 export default {
-  component: ExternalLink
+  component: ExternalLink,
 }

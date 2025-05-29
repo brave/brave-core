@@ -93,7 +93,7 @@ export const NetworkIcon = AssetIconFactory<IconProps>((props) => ({
   width: props.isExternalProvider
     ? getExternalProviderIconSize(props.size)
     : getNetworkIconWidthFromSize(props.size),
-  height: 'auto'
+  height: 'auto',
 }))
 
 export const Placeholder = styled.div<{

@@ -25,7 +25,7 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   HeaderTitle,
   MenuButton,
-  MenuButtonIcon
+  MenuButtonIcon,
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 

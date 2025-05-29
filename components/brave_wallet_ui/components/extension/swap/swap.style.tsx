@@ -9,7 +9,7 @@ import ArrowDown2Icon from '../../../assets/svg-icons/arrow-down-2.svg'
 import {
   AssetIconFactory,
   AssetIconProps,
-  WalletButton
+  WalletButton,
 } from '../../shared/style'
 
 export const ExchangeRate = styled.div`
@@ -129,7 +129,7 @@ export const SwapAssetDetailsContainer = styled.div`
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const SwapAmountColumn = styled.div`

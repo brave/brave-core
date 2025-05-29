@@ -31,7 +31,7 @@ export const StyledWrapper = styled(WalletButton)`
 `
 
 export const PlaceholderImage = styled(Icon).attrs({
-  name: 'image'
+  name: 'image',
 })<{ size?: string }>`
   --leo-icon-size: ${(p) => p.size ?? '40px'};
 `

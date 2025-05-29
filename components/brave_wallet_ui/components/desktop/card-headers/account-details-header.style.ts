@@ -36,7 +36,7 @@ export const AccountBalanceText = styled(Text)`
 `
 
 export const CopyIcon = styled(Icon).attrs({
-  name: 'copy'
+  name: 'copy',
 })`
   cursor: pointer;
   --leo-icon-size: 14px;

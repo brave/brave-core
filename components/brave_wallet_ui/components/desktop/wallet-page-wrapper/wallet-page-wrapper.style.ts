@@ -118,8 +118,8 @@ export const ContainerCard = styled.div<{
     p.noBackground
       ? 'unset'
       : p.useDarkBackground
-      ? leo.color.page.background
-      : leo.color.container.background};
+        ? leo.color.page.background
+        : leo.color.container.background};
   border-radius: ${(p) => (p.hideCardHeader ? '24px' : '0px 0px 24px 24px')};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
   box-sizing: border-box;
@@ -147,8 +147,8 @@ export const ContainerCard = styled.div<{
       p.noBorderRadius
         ? '0px'
         : p.hideCardHeader || p.usePanelCard
-        ? '24px 24px 0px 0px'
-        : '0px'};
+          ? '24px 24px 0px 0px'
+          : '0px'};
   }
 `
 

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { CopyLabel } from './copy_label'
 
@@ -20,10 +20,10 @@ export const _CopyLabel = {
         </CopyLabel>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
   title: 'Copy Label',
-  component: CopyLabel
+  component: CopyLabel,
 }

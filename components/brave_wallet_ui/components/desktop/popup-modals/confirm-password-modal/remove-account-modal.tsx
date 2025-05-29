@@ -11,7 +11,7 @@ import { type InputEventDetail } from '@brave/leo/react/input'
 // actions
 import {
   AccountsTabActions,
-  AccountsTabState
+  AccountsTabState,
 } from '../../../../page/reducers/accounts-tab-reducer'
 
 // utils
@@ -22,7 +22,7 @@ import { UISelectors } from '../../../../common/selectors'
 
 // hooks
 import {
-  usePasswordAttempts //
+  usePasswordAttempts, //
 } from '../../../../common/hooks/use-password-attempts'
 import { useRemoveAccountMutation } from '../../../../common/slices/api.slice'
 import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
@@ -34,7 +34,7 @@ import { PopupModal } from '../index'
 import { Column, LeoSquaredButton, Row, Text } from '../../../shared/style'
 import { modalWidth, StyledWrapper } from './remove-account-modal.style'
 import {
-  PasswordInputNala //
+  PasswordInputNala, //
 } from '../../../shared/password-input/password_input_nala'
 
 export const RemoveAccountModal = () => {
@@ -47,7 +47,7 @@ export const RemoveAccountModal = () => {
   // accounts tab state
   const accountToRemove = useSelector(
     ({ accountsTab }: { accountsTab: AccountsTabState }) =>
-      accountsTab.accountToRemove
+      accountsTab.accountToRemove,
   )
 
   // state
@@ -71,15 +71,15 @@ export const RemoveAccountModal = () => {
       const { accountId } = accountToRemove
 
       if (
-        accountId.kind === BraveWallet.AccountKind.kHardware ||
-        accountId.kind === BraveWallet.AccountKind.kImported
+        accountId.kind === BraveWallet.AccountKind.kHardware
+        || accountId.kind === BraveWallet.AccountKind.kImported
       ) {
         await removeAccount({ accountId, password })
       }
 
       dispatch(AccountsTabActions.setAccountToRemove(undefined)) // close modal
     },
-    [accountToRemove, dispatch, removeAccount]
+    [accountToRemove, dispatch, removeAccount],
   )
 
   const onSubmit = React.useCallback(async () => {
@@ -108,7 +108,7 @@ export const RemoveAccountModal = () => {
       setIsCorrectPassword(true) // clear error
       setPassword(detail.value)
     },
-    []
+    [],
   )
 
   const handlePasswordKeyDown = React.useCallback(
@@ -118,7 +118,7 @@ export const RemoveAccountModal = () => {
         onSubmit()
       }
     },
-    [onSubmit]
+    [onSubmit],
   )
 
   // render
@@ -147,7 +147,7 @@ export const RemoveAccountModal = () => {
               >
                 {getLocale('braveWalletRemoveAccountModalTitle').replace(
                   '$1',
-                  accountToRemove.name ?? accountToRemove.accountId.address
+                  accountToRemove.name ?? accountToRemove.accountId.address,
                 )}
               </Text>
 

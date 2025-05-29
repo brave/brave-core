@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 // Assets
 import {
   UnlockIconDark,
-  UnlockIconLight
+  UnlockIconLight,
 } from '../../../assets/svg-icons/unlock-wallet-icons'
 // Assets
 import BraveLogoLight from '../../../assets/svg-icons/wallet_logo_light.svg'
@@ -18,7 +18,7 @@ import BraveLogoDark from '../../../assets/svg-icons/wallet_logo_dark.svg'
 
 // Shared Styles
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 import { Text, Column, WalletButton } from '../../shared/style'
 
@@ -119,7 +119,7 @@ export const AndroidLockScreenWrapper = styled(WalletButton)`
 `
 
 export const DoubleTapIcon = styled(Icon).attrs({
-  name: 'finger-double-tap'
+  name: 'finger-double-tap',
 })`
   --leo-icon-size: 72px;
   color: ${leo.color.icon.interactive};

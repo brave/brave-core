@@ -26,7 +26,7 @@ import {
   MessageBox,
   MessageText,
   ButtonRow,
-  DecryptButton
+  DecryptButton,
 } from './style'
 
 import { TabRow, URLText } from '../shared-panel-styles'
@@ -36,7 +36,7 @@ import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 import {
   useProcessPendingDecryptRequestMutation,
-  useProcessPendingGetEncryptionPublicKeyRequestMutation
+  useProcessPendingGetEncryptionPublicKeyRequestMutation,
 } from '../../../common/slices/api.slice'
 
 export interface ProvidePubKeyPanelProps {
@@ -53,25 +53,30 @@ export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
 
   const orb = useAccountOrb(account)
 
-  const description = formatLocale('braveWalletProvideEncryptionKeyDescription', {
-    $1: <CreateSiteOrigin
-      originSpec={payload.originInfo.originSpec}
-      eTldPlusOne={payload.originInfo.eTldPlusOne}
-    />
-  })
+  const description = formatLocale(
+    'braveWalletProvideEncryptionKeyDescription',
+    {
+      $1: (
+        <CreateSiteOrigin
+          originSpec={payload.originInfo.originSpec}
+          eTldPlusOne={payload.originInfo.eTldPlusOne}
+        />
+      ),
+    },
+  )
 
   // methods
   const onProvideOrAllow = async () => {
     await processGetEncryptionPublicKeyRequest({
       requestId: payload.requestId,
-      approved: true
+      approved: true,
     }).unwrap()
   }
 
   const onCancel = async (requestId: string) => {
     await processGetEncryptionPublicKeyRequest({
       requestId,
-      approved: false
+      approved: false,
     }).unwrap()
   }
 
@@ -92,9 +97,7 @@ export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
         />
       </TabRow>
       <MessageBox needsCenterAlignment={false}>
-        <MessageText>
-          {description}
-        </MessageText>
+        <MessageText>{description}</MessageText>
       </MessageBox>
       <ButtonRow>
         <NavButton
@@ -133,14 +136,14 @@ export function DecryptRequestPanel({ payload }: DecryptRequestPanelProps) {
   const onAllow = async () => {
     await processDecryptRequest({
       requestId: payload.requestId,
-      approved: true
+      approved: true,
     }).unwrap()
   }
 
   const onCancel = async () => {
     await processDecryptRequest({
       requestId: payload.requestId,
-      approved: false
+      approved: false,
     }).unwrap()
   }
 

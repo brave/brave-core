@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 import {
-  layoutSmallWidth //
+  layoutSmallWidth, //
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
@@ -120,7 +120,7 @@ export const HiddenPhraseContainer = styled.div`
 `
 
 export const EyeOffIcon = styled(Icon).attrs({
-  name: 'eye-off'
+  name: 'eye-off',
 })`
   --leo-icon-size: 24px;
   --leo-icon-color: ${leo.color.icon.default};

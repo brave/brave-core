@@ -12,23 +12,23 @@ import { emptyRewardsInfo } from '../../../../../common/async/base-query-cache'
 // Queries
 import {
   useGetVisibleNetworksQuery,
-  useGetRewardsInfoQuery
+  useGetRewardsInfoQuery,
 } from '../../../../../common/slices/api.slice'
 
 // Types
 import {
   BraveWallet,
-  SupportedTestNetworks
+  SupportedTestNetworks,
 } from '../../../../../constants/types'
 
 // Options
 import {
-  SupportedTopLevelChainIds //
+  SupportedTopLevelChainIds, //
 } from '../../../../../options/network-filter-options'
 
 // Utils
 import {
-  networkEntityAdapter //
+  networkEntityAdapter, //
 } from '../../../../../common/slices/entities/network.entity'
 import { getLocale } from '../../../../../../common/locale'
 
@@ -48,11 +48,11 @@ interface Props {
 export const FilterNetworksSection = ({
   filteredOutNetworkKeys,
   setFilteredOutNetworkKeys,
-  networksSubset
+  networksSubset,
 }: Props) => {
   // Queries
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery(
-    networksSubset ? skipToken : undefined
+    networksSubset ? skipToken : undefined,
   )
   const { data: { rewardsNetwork: providerNetwork } = emptyRewardsInfo } =
     useGetRewardsInfoQuery(networksSubset ? skipToken : undefined)
@@ -61,32 +61,32 @@ export const FilterNetworksSection = ({
   // Memos
   const primaryNetworks = React.useMemo(() => {
     return networks.filter((network) =>
-      SupportedTopLevelChainIds.includes(network.chainId)
+      SupportedTopLevelChainIds.includes(network.chainId),
     )
   }, [networks])
 
   const secondaryNetworks = React.useMemo(() => {
     return networks.filter(
       (network) =>
-        !SupportedTopLevelChainIds.includes(network.chainId) &&
-        !SupportedTestNetworks.includes(network.chainId)
+        !SupportedTopLevelChainIds.includes(network.chainId)
+        && !SupportedTestNetworks.includes(network.chainId),
     )
   }, [networks])
 
   const testNetworks = React.useMemo(() => {
     return networks.filter((network) =>
-      SupportedTestNetworks.includes(network.chainId)
+      SupportedTestNetworks.includes(network.chainId),
     )
   }, [networks])
 
   // Computed
   const isSelectAll = React.useMemo(() => {
     return (
-      filteredOutNetworkKeys.length > 0 &&
-      networks.some((network) =>
+      filteredOutNetworkKeys.length > 0
+      && networks.some((network) =>
         filteredOutNetworkKeys.includes(
-          networkEntityAdapter.selectId(network).toString()
-        )
+          networkEntityAdapter.selectId(network).toString(),
+        ),
       )
     )
   }, [networks, filteredOutNetworkKeys])
@@ -95,20 +95,20 @@ export const FilterNetworksSection = ({
     (key: string) => {
       return filteredOutNetworkKeys.includes(key)
     },
-    [filteredOutNetworkKeys]
+    [filteredOutNetworkKeys],
   )
 
   const onCheckNetwork = React.useCallback(
     (key: string) => {
       if (isNetworkFilteredOut(key)) {
         setFilteredOutNetworkKeys(
-          filteredOutNetworkKeys.filter((networkKey) => networkKey !== key)
+          filteredOutNetworkKeys.filter((networkKey) => networkKey !== key),
         )
         return
       }
       setFilteredOutNetworkKeys([...filteredOutNetworkKeys, key])
     },
-    [filteredOutNetworkKeys, isNetworkFilteredOut, setFilteredOutNetworkKeys]
+    [filteredOutNetworkKeys, isNetworkFilteredOut, setFilteredOutNetworkKeys],
   )
 
   const onSelectOrDeselectAllNetworks = React.useCallback(() => {
@@ -118,8 +118,8 @@ export const FilterNetworksSection = ({
     }
     setFilteredOutNetworkKeys(
       networks.map((network) =>
-        networkEntityAdapter.selectId(network).toString()
-      )
+        networkEntityAdapter.selectId(network).toString(),
+      ),
     )
   }, [networks, setFilteredOutNetworkKeys, isSelectAll])
 

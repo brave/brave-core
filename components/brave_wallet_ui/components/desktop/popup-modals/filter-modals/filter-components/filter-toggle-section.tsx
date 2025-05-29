@@ -11,7 +11,7 @@ import {
   CheckboxText,
   Description,
   IconWrapper,
-  Icon
+  Icon,
 } from './filter-components.style'
 import { Row, Column } from '../../../../shared/style'
 

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { PanelWrapper } from '../../../panel/style'
 import { LongWrapper } from '../../../stories/style'
@@ -22,9 +22,9 @@ export const _SignCowSwapOrder = {
           <LongWrapper>
             <SignCowSwapOrder
               data={mockSignMessageRequest}
-              onCancel={() => { }}
-              onSignIn={() => { }}
-              onQueueNextSignMessage={() => { }}
+              onCancel={() => {}}
+              onSignIn={() => {}}
+              onQueueNextSignMessage={() => {}}
               queueLength={1}
               queueNumber={0}
               isDisabled={false}
@@ -33,7 +33,7 @@ export const _SignCowSwapOrder = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: SignCowSwapOrder }

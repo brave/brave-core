@@ -18,7 +18,7 @@ interface WarningProps {
 }
 
 export const WarningCloseIcon = styled(Icon).attrs({
-  name: 'close'
+  name: 'close',
 })`
   --leo-icon-size: 20px;
 `
@@ -30,8 +30,8 @@ export const WarningButton = styled(Button)<
     p.isInfo
       ? leo.color.systemfeedback.infoIcon
       : p.isCritical
-      ? leo.color.systemfeedback.errorIcon
-      : leo.color.systemfeedback.warningIcon};
+        ? leo.color.systemfeedback.errorIcon
+        : leo.color.systemfeedback.warningIcon};
 `
 
 export const WarningCollapse = styled(Collapse)<WarningProps>`
@@ -86,8 +86,8 @@ export const AlertTitle = styled.span<WarningProps & { isInfo?: boolean }>`
     p.isInfo
       ? leo.color.systemfeedback.infoText
       : p.isCritical
-      ? leo.color.systemfeedback.errorText
-      : leo.color.systemfeedback.warningText};
+        ? leo.color.systemfeedback.errorText
+        : leo.color.systemfeedback.warningText};
   font: ${leo.font.small.semibold};
 `
 

@@ -12,7 +12,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 // magics
 import {
   BLOWFISH_UNLIMITED_VALUE,
-  NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
 } from '../../../../common/constants/magics'
 
 // types
@@ -24,14 +24,14 @@ import { getLocale } from '../../../../../common/locale'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { IconAsset } from '../../../shared/create-placeholder-icon'
 import {
-  useGetCombinedTokensRegistryQuery //
+  useGetCombinedTokensRegistryQuery, //
 } from '../../../../common/slices/api.slice.extra'
 import {
-  networkEntityAdapter //
+  networkEntityAdapter, //
 } from '../../../../common/slices/entities/network.entity'
 import { getAddressLabel } from '../../../../utils/account-utils'
 import {
-  useGetAccountInfosRegistryQuery //
+  useGetAccountInfosRegistryQuery, //
 } from '../../../../common/slices/api.slice'
 
 // components
@@ -39,11 +39,11 @@ import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import {
   AssetIconWithPlaceholder,
   NFT_ICON_STYLE,
-  NftAssetIconWithPlaceholder
+  NftAssetIconWithPlaceholder,
 } from './state_change_asset_icons'
 import {
   ChainInfo,
-  InlineViewOnBlockExplorerIconButton
+  InlineViewOnBlockExplorerIconButton,
 } from './view_on_explorer_button'
 import { CopyLabel } from '../../../shared/copy_label/copy_label'
 
@@ -53,13 +53,13 @@ import {
   IconsWrapper,
   NetworkIconWrapper,
   Row,
-  Text
+  Text,
 } from '../../../shared/style'
 import {
   UnverifiedTokenIndicator,
   StateChangeText,
   ArrowRightIcon,
-  TooltipContent
+  TooltipContent,
 } from './state_changes.styles'
 
 type EVMApprovalData =
@@ -70,7 +70,7 @@ type EVMApprovalData =
 
 export const EvmNativeAssetOrErc20TokenTransfer = ({
   network,
-  transfer
+  transfer,
 }: {
   transfer:
     | BraveWallet.BlowfishERC20TransferData
@@ -89,8 +89,8 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
       networkEntityAdapter.selectId(network)
     ].find(
       (id) =>
-        tokensRegistry?.entities[id]?.contractAddress?.toLowerCase() ===
-        transferAssetAddressLower
+        tokensRegistry?.entities[id]?.contractAddress?.toLowerCase()
+        === transferAssetAddressLower,
     )
 
     const foundTokenLogo =
@@ -118,8 +118,8 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
   const isReceive = normalizedAmount.isPositive()
 
   const isNativeAsset =
-    asset.contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS ||
-    asset.contractAddress === ''
+    asset.contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+    || asset.contractAddress === ''
 
   // render
   return (
@@ -148,7 +148,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
               <strong>
                 {getAddressLabel(
                   transfer.counterparty.address,
-                  accountsRegistry
+                  accountsRegistry,
                 )}
               </strong>
             </CopyLabel>
@@ -203,7 +203,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
  */
 export const NonFungibleErcTokenTransfer = ({
   network,
-  transfer
+  transfer,
 }: {
   network: ChainInfo
   transfer: Pick<
@@ -229,9 +229,8 @@ export const NonFungibleErcTokenTransfer = ({
     const foundTokenId = knownNftIds?.find((id) => {
       const token = tokensRegistry?.entities[id]
       return (
-        token?.contractAddress?.toLowerCase() ===
-          transferAssetTokenAddressLower &&
-        token?.tokenId === transferAssetTokenIdHex
+        token?.contractAddress?.toLowerCase() === transferAssetTokenAddressLower
+        && token?.tokenId === transferAssetTokenIdHex
       )
     })
 
@@ -249,8 +248,9 @@ export const NonFungibleErcTokenTransfer = ({
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
       tokenId: transfer.asset.tokenId || '',
-      isShielded: false
-  } }, [transfer, network, tokensRegistry])
+      isShielded: false,
+    }
+  }, [transfer, network, tokensRegistry])
 
   // computed
   const isReceive = new Amount(transfer.amount.after) //
@@ -287,7 +287,7 @@ export const NonFungibleErcTokenTransfer = ({
               <strong>
                 {getAddressLabel(
                   transfer.counterparty.address,
-                  accountsRegistry
+                  accountsRegistry,
                 )}
               </strong>
             </CopyLabel>
@@ -328,17 +328,17 @@ export const NonFungibleErcTokenTransfer = ({
             <strong>
               {isReceive ? ' + ' : ' - '}
 
-              {asset.isNft &&
-                `${asset.name}${
+              {asset.isNft
+                && `${asset.name}${
                   // show token id if not included in asset name
-                  tokenIdNumber !== undefined &&
-                  !asset.name.includes(tokenIdNumber.toString())
+                  tokenIdNumber !== undefined
+                  && !asset.name.includes(tokenIdNumber.toString())
                     ? ` #${tokenIdNumber}`
                     : ''
                 }`}
 
-              {!asset.isNft &&
-                new Amount(transfer.amount.after)
+              {!asset.isNft
+                && new Amount(transfer.amount.after)
                   .minus(transfer.amount.before)
                   .toAbsoluteValue()
                   .formatAsAsset(6, asset.name || asset.symbol || '???')}
@@ -364,7 +364,7 @@ export const ErcTokenApproval = ({
   approval,
   isERC20,
   network,
-  isApprovalForAll
+  isApprovalForAll,
 }: {
   network: ChainInfo
 } & (
@@ -384,23 +384,23 @@ export const ErcTokenApproval = ({
    */
   const assetSymbol = isERC20
     ? approval?.asset?.symbol || undefined
-    : (
+    : ((
         approval as
           | BraveWallet.BlowfishERC721ApprovalForAllData
           | BraveWallet.BlowfishERC721ApprovalData
-      )?.asset.symbol ?? undefined
+      )?.asset.symbol ?? undefined)
 
   // memos
   const beforeAmount = React.useMemo(() => {
     const before = new Amount(approval.amount.before)
 
     if (
-      before.gte(BLOWFISH_UNLIMITED_VALUE) ||
-      (before.gt(0) && isApprovalForAll)
+      before.gte(BLOWFISH_UNLIMITED_VALUE)
+      || (before.gt(0) && isApprovalForAll)
     ) {
       return getLocale('braveWalletUnlimitedAssetAmount').replace(
         '$1',
-        assetSymbol || ''
+        assetSymbol || '',
       )
     }
 
@@ -416,12 +416,12 @@ export const ErcTokenApproval = ({
     const after = new Amount(approval.amount.after)
 
     if (
-      after.gte(BLOWFISH_UNLIMITED_VALUE) ||
-      (after.gt(0) && isApprovalForAll)
+      after.gte(BLOWFISH_UNLIMITED_VALUE)
+      || (after.gt(0) && isApprovalForAll)
     ) {
       return getLocale('braveWalletUnlimitedAssetAmount').replace(
         '$1',
-        assetSymbol || ''
+        assetSymbol || '',
       )
     }
 
@@ -466,7 +466,7 @@ export const ErcTokenApproval = ({
           <Text textSize='11px'>
             {getLocale('braveWalletSpenderAddress').replace(
               '$1',
-              reduceAddress(approval.spender.address)
+              reduceAddress(approval.spender.address),
             )}
           </Text>
         </CopyTooltip>
@@ -486,7 +486,7 @@ function getTransferTokenVerificationStatusText(
     | BraveWallet.BlowfishERC20TransferData
     | BraveWallet.BlowfishNativeAssetTransferData
     | BraveWallet.BlowfishERC721TransferData
-    | BraveWallet.BlowfishERC1155TransferData
+    | BraveWallet.BlowfishERC1155TransferData,
 ) {
   if (!transfer.asset.verified) {
     return getLocale('braveWalletTokenIsUnverified')
@@ -494,14 +494,14 @@ function getTransferTokenVerificationStatusText(
   return transfer.asset.lists.length > 1
     ? getLocale('braveWalletTokenIsVerifiedByLists').replace(
         '$1',
-        transfer.asset.lists.length.toString()
+        transfer.asset.lists.length.toString(),
       )
     : getLocale('braveWalletTokenIsVerified')
 }
 
 export function getComponentForEvmApproval(
   approval: BraveWallet.BlowfishEVMStateChange,
-  network: ChainInfo
+  network: ChainInfo,
 ) {
   const { data } = approval.rawInfo
 
@@ -553,7 +553,7 @@ export function getComponentForEvmApproval(
 
 export function getComponentForEvmTransfer(
   transfer: BraveWallet.BlowfishEVMStateChange,
-  network: ChainInfo
+  network: ChainInfo,
 ) {
   const { data } = transfer.rawInfo
 

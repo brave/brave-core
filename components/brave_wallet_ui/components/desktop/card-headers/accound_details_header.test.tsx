@@ -18,7 +18,7 @@ import { AccountDetailsHeader } from './account-details-header'
 // Mocks
 import {
   mockAccount,
-  mockTokenBalanceRegistry //
+  mockTokenBalanceRegistry, //
 } from '../../../common/constants/mocks'
 
 interface RenderComponentProps {
@@ -40,7 +40,7 @@ describe('AccountDetailsHeader', () => {
             isPanel={props.isPanel}
           />
         </BraveCoreThemeProvider>
-      </Provider>
+      </Provider>,
     )
     return { container }
   }
@@ -48,26 +48,27 @@ describe('AccountDetailsHeader', () => {
   it('renders account details header desktop', async () => {
     const { container } = renderComponent({
       isAndroid: false,
-      isPanel: false
+      isPanel: false,
     })
     // Wait for all async operations to complete
     await waitFor(() => {
       // Test Mock Data
       expect(container).toBeInTheDocument()
       expect(screen.getByText(mockAccount.name)).toBeInTheDocument()
-      expect(screen.getByText(reduceAddress(mockAccount.address)))
-        .toBeInTheDocument()
+      expect(
+        screen.getByText(reduceAddress(mockAccount.address)),
+      ).toBeInTheDocument()
 
       // Should be visible on desktop
-      expect(container.querySelector(
-        '[data-key="account-balance-column"]'
-      )).toBeInTheDocument()
+      expect(
+        container.querySelector('[data-key="account-balance-column"]'),
+      ).toBeInTheDocument()
 
       // Test Styles
-      expect(container.querySelector(
-        '[data-key="account-details-header"]'
-      )).toHaveStyle({
-        padding: '24px 0px'
+      expect(
+        container.querySelector('[data-key="account-details-header"]'),
+      ).toHaveStyle({
+        padding: '24px 0px',
       })
     })
   })
@@ -75,20 +76,20 @@ describe('AccountDetailsHeader', () => {
   it('renders account details header panel', async () => {
     const { container } = renderComponent({
       isAndroid: false,
-      isPanel: true
+      isPanel: true,
     })
 
     await waitFor(() => {
       // Should not be visible on panel
-      expect(container.querySelector(
-        '[data-key="account-balance-column"]'
-      )).not.toBeInTheDocument()
+      expect(
+        container.querySelector('[data-key="account-balance-column"]'),
+      ).not.toBeInTheDocument()
 
       // Test Styles
-      expect(container.querySelector(
-        '[data-key="account-details-header"]'
-      )).toHaveStyle({
-        padding: '16px'
+      expect(
+        container.querySelector('[data-key="account-details-header"]'),
+      ).toHaveStyle({
+        padding: '16px',
       })
     })
   })
@@ -96,20 +97,20 @@ describe('AccountDetailsHeader', () => {
   it('renders account details header android', async () => {
     const { container } = renderComponent({
       isAndroid: true,
-      isPanel: false
+      isPanel: false,
     })
 
     await waitFor(() => {
       // Should not be visible on android
-      expect(container.querySelector(
-        '[data-key="account-balance-column"]'
-      )).not.toBeInTheDocument()
+      expect(
+        container.querySelector('[data-key="account-balance-column"]'),
+      ).not.toBeInTheDocument()
 
       // Test Styles
-      expect(container.querySelector(
-        '[data-key="account-details-header"]'
-      )).toHaveStyle({
-        padding: '16px 0px 0px 0px'
+      expect(
+        container.querySelector('[data-key="account-details-header"]'),
+      ).toHaveStyle({
+        padding: '16px 0px 0px 0px',
       })
     })
   })

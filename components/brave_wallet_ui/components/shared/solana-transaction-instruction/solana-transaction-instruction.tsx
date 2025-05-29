@@ -15,7 +15,7 @@ import { findAccountByAddress } from '../../../utils/account-utils'
 import { BraveWallet } from '../../../constants/types'
 import {
   formatSolInstructionParamValue,
-  TypedSolanaInstructionWithParams
+  TypedSolanaInstructionWithParams,
 } from '../../../utils/solana-instruction-utils'
 
 // components
@@ -25,19 +25,19 @@ import { CopyTooltip } from '../copy-tooltip/copy-tooltip'
 import {
   Divider,
   SectionRow,
-  TransactionTitle
+  TransactionTitle,
 } from '../../extension/confirm-transaction-panel/style'
 
 import {
   InstructionBox,
   InstructionParamBox,
   AddressText,
-  CodeSectionTitle
+  CodeSectionTitle,
 } from './solana-transaction-instruction.style'
 
 import {
   CodeSnippet,
-  CodeSnippetText
+  CodeSnippetText,
 } from '../../extension/transaction-box/style'
 
 // queries
@@ -54,8 +54,8 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
     programId,
     type,
     params,
-    accountMetas
-  }
+    accountMetas,
+  },
 }) => {
   const { data: accounts } = useGetAccountInfosRegistryQuery()
 
@@ -220,7 +220,7 @@ export default SolanaTransactionInstruction
 const AddressParamValue = ({
   accounts,
   pubkey,
-  lookupTableIndex
+  lookupTableIndex,
 }: {
   accounts: EntityState<BraveWallet.AccountInfo> | undefined
   pubkey: string

@@ -10,7 +10,7 @@ import { getLocale } from '../../../../../common/locale'
 
 // components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import WalletPageWrapper from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
@@ -35,7 +35,7 @@ export const _ExploreWeb3View = {
         </WalletPageWrapper>
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: ExploreWeb3View }

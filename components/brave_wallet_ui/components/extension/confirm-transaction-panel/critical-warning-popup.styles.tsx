@@ -10,7 +10,7 @@ import { Column } from '../../shared/style'
 import Icon from '@brave/leo/react/icon'
 
 export const LargeWarningCircleIcon = styled(Icon).attrs({
-  name: 'warning-circle-filled'
+  name: 'warning-circle-filled',
 })`
   --leo-icon-size: 40px;
   color: ${leo.color.systemfeedback.errorIcon};

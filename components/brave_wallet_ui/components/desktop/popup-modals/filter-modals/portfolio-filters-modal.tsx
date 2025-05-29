@@ -12,46 +12,46 @@ import { WalletRoutes } from '../../../../constants/types'
 // Options
 import {
   AssetFilterOptions,
-  HighToLowAssetsFilterOption
+  HighToLowAssetsFilterOption,
 } from '../../../../options/asset-filter-options'
 import {
   GroupAssetsByOptions,
-  NoneGroupByOption
+  NoneGroupByOption,
 } from '../../../../options/group-assets-by-options'
 
 // Constants
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../../common/constants/local-storage-keys'
 import {
-  HIDE_SMALL_BALANCES_FIAT_THRESHOLD //
+  HIDE_SMALL_BALANCES_FIAT_THRESHOLD, //
 } from '../../../../common/constants/magics'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import {
-  useGetDefaultFiatCurrencyQuery //
+  useGetDefaultFiatCurrencyQuery, //
 } from '../../../../common/slices/api.slice'
 import {
   useLocalStorage,
-  useSyncedLocalStorage
+  useSyncedLocalStorage,
 } from '../../../../common/hooks/use_local_storage'
 import {
-  makeInitialFilteredOutNetworkKeys //
+  makeInitialFilteredOutNetworkKeys, //
 } from '../../../../utils/local-storage-utils'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
 import {
-  FilterNetworksSection //
+  FilterNetworksSection, //
 } from './filter-components/filter-networks-section'
 import {
-  FilterAccountsSection //
+  FilterAccountsSection, //
 } from './filter-components/filter-accounts-section'
 import { FilterToggleSection } from './filter-components/filter-toggle-section'
 import {
-  FilterDropdownSection //
+  FilterDropdownSection, //
 } from './filter-components/filter-dropdown-section'
 
 // Styles
@@ -60,7 +60,7 @@ import {
   VerticalSpacer,
   ScrollableColumn,
   HorizontalSpace,
-  LeoSquaredButton
+  LeoSquaredButton,
 } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
@@ -78,42 +78,42 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
   const [filteredOutPortfolioNetworkKeys, setFilteredOutPortfolioNetworkKeys] =
     useLocalStorage(
       LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
-      makeInitialFilteredOutNetworkKeys
+      makeInitialFilteredOutNetworkKeys,
     )
   const [filteredOutPortfolioAccountIds, setFilteredOutPortfolioAccountIds] =
     useLocalStorage<string[]>(
       LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
-      []
+      [],
     )
   const [selectedGroupAssetsByItem, setSelectedGroupAssetsByItem] =
     useLocalStorage<string>(
       LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
-      NoneGroupByOption.id
+      NoneGroupByOption.id,
     )
   const [selectedAssetFilter, setSelectedAssetFilter] = useLocalStorage<string>(
     LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION,
-    HighToLowAssetsFilterOption.id
+    HighToLowAssetsFilterOption.id,
   )
   const [hidePortfolioSmallBalances, setHidePortfolioSmallBalances] =
     useLocalStorage<boolean>(
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
-      false
+      false,
     )
   const [groupNftsByCollection, setGroupNftsByCollection] =
     useLocalStorage<boolean>(
       LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_NFTS_BY_COLLECTION,
-      false
+      false,
     )
 
   // Synced Local-Storage
   const [showNetworkLogoOnNfts, setShowNetworkLogoOnNfts] =
     useSyncedLocalStorage<boolean>(
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
-      false
+      false,
     )
   const [hideUnownedNfts, setHideUnownedNfts] = useSyncedLocalStorage<boolean>(
     LOCAL_STORAGE_KEYS.HIDE_UNOWNED_NFTS,
-    false
+    false,
   )
 
   // queries
@@ -127,14 +127,14 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
     string[]
   >(filteredOutPortfolioAccountIds)
   const [hideSmallBalances, setHideSmallBalances] = React.useState<boolean>(
-    hidePortfolioSmallBalances
+    hidePortfolioSmallBalances,
   )
   const [selectedAssetFilterOption, setSelectedAssetFilterOption] =
     React.useState<string>(selectedAssetFilter)
   const [selectedGroupAssetsByOption, setSelectedGroupAssetsByOption] =
     React.useState<string>(selectedGroupAssetsByItem)
   const [showNetworkLogo, setShowNetworkLogo] = React.useState(
-    showNetworkLogoOnNfts
+    showNetworkLogoOnNfts,
   )
   const [hideUnownedNftsToggle, setHideUnownedNftsToggle] =
     React.useState(hideUnownedNfts)
@@ -148,7 +148,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
       .split('.')[0]
     return getLocale('braveWalletHideSmallBalancesDescription').replace(
       '$1',
-      minAmount
+      minAmount,
     )
   }, [defaultFiatCurrency])
 
@@ -185,7 +185,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
     setGroupNftsByCollection,
     groupNftsByCollectionToggle,
     onSave,
-    onClose
+    onClose,
   ])
 
   // render
@@ -209,7 +209,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
               <FilterToggleSection
                 title={getLocale('braveWalletShowNetworkLogoOnNftsTitle')}
                 description={getLocale(
-                  'braveWalletShowNetworkLogoOnNftsDescription'
+                  'braveWalletShowNetworkLogoOnNftsDescription',
                 )}
                 icon='web3'
                 isSelected={showNetworkLogo}
@@ -219,7 +219,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
               <FilterToggleSection
                 title={getLocale('braveWalletGroupByCollection')}
                 description={getLocale(
-                  'braveWalletPortfolioGroupByDescription'
+                  'braveWalletPortfolioGroupByDescription',
                 )}
                 icon='stack'
                 isSelected={groupNftsByCollectionToggle}
@@ -252,7 +252,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
               <FilterDropdownSection
                 title={getLocale('braveWalletPortfolioGroupByTitle')}
                 description={getLocale(
-                  'braveWalletPortfolioGroupByDescription'
+                  'braveWalletPortfolioGroupByDescription',
                 )}
                 icon='stack'
                 dropdownOptions={GroupAssetsByOptions}

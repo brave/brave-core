@@ -16,7 +16,7 @@ import { openWalletRouteTab } from '../../../utils/routes-utils'
 import {
   Button,
   ButtonIcon,
-  LeftRightContainer
+  LeftRightContainer,
 } from './shared-panel-headers.style'
 import { Row } from '../../shared/style'
 import { HeaderTitle } from './shared-card-headers.style'

@@ -19,12 +19,12 @@ import {
   Title,
   Description,
   ButtonWrapper,
-  EmptyStateIcon
+  EmptyStateIcon,
 } from './empty-token-list-state.style'
 import {
   Row,
   VerticalSpace,
-  HorizontalSpace
+  HorizontalSpace,
 } from '../../../../../shared/style'
 
 export const EmptyTokenListState = () => {

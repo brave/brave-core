@@ -28,7 +28,7 @@ export function EditPendingTransactionGas(props: Props) {
     updateUnapprovedTransactionGasFields,
     baseFeePerGas,
     transactionsNetwork,
-    selectedPendingTransaction
+    selectedPendingTransaction,
   } = usePendingTransactions()
 
   if (!selectedPendingTransaction || !transactionsNetwork) {

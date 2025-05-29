@@ -22,8 +22,8 @@ const getLabelProps = (p: StyleProps) => {
     --checkbox-border-color: ${p.disabled
       ? '#EBECF0'
       : p.selected
-      ? '#A1A8F2'
-      : '#D1D1DB'};
+        ? '#A1A8F2'
+        : '#D1D1DB'};
 
     @media (prefers-color-scheme: dark) {
       --checkbox-box-color: #a1a8f2;
@@ -31,8 +31,8 @@ const getLabelProps = (p: StyleProps) => {
       --checkbox-border-color: ${p.disabled
         ? '#686978'
         : p.selected
-        ? '#696FDC'
-        : '#D1D1DB'};
+          ? '#696FDC'
+          : '#D1D1DB'};
     }
 
     &:focus,

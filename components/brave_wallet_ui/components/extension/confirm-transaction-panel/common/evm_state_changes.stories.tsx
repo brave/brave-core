@@ -7,12 +7,12 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../../stories/wrappers/wallet-panel-story-wrapper'
 import {
   ErcTokenApproval,
   EvmNativeAssetOrErc20TokenTransfer,
-  NonFungibleErcTokenTransfer
+  NonFungibleErcTokenTransfer,
 } from './evm_state_changes'
 
 // mocks
@@ -24,7 +24,7 @@ import {
   mockReceiveMultiStandardTokenEvent,
   mockReceiveNftEvent,
   mockSendEthEvent,
-  mockedReceiveDaiEvent
+  mockedReceiveDaiEvent,
 } from '../../../../common/constants/mocks'
 
 function assertDefined<T>(data: T) {
@@ -41,13 +41,13 @@ export const _EvmErc20TokenTransfer = {
       <WalletPanelStory>
         <EvmNativeAssetOrErc20TokenTransfer
           transfer={assertDefined(
-            mockedReceiveDaiEvent.rawInfo.data.erc20TransferData
+            mockedReceiveDaiEvent.rawInfo.data.erc20TransferData,
           )}
           network={mockEthMainnet}
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _UnverifiedEvmErc20TokenTransfer = {
@@ -57,22 +57,22 @@ export const _UnverifiedEvmErc20TokenTransfer = {
         <EvmNativeAssetOrErc20TokenTransfer
           transfer={{
             ...assertDefined(
-              mockedReceiveDaiEvent.rawInfo.data.erc20TransferData
+              mockedReceiveDaiEvent.rawInfo.data.erc20TransferData,
             ),
             asset: {
               ...assertDefined(
-                mockedReceiveDaiEvent.rawInfo.data.erc20TransferData
+                mockedReceiveDaiEvent.rawInfo.data.erc20TransferData,
               ).asset,
               verified: false,
               lists: [],
-              address: 'UNKNOWN'
-            }
+              address: 'UNKNOWN',
+            },
           }}
           network={mockEthMainnet}
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _EvmNativeAssetTransfer = {
@@ -81,13 +81,13 @@ export const _EvmNativeAssetTransfer = {
       <WalletPanelStory>
         <EvmNativeAssetOrErc20TokenTransfer
           transfer={assertDefined(
-            mockSendEthEvent.rawInfo.data.nativeAssetTransferData
+            mockSendEthEvent.rawInfo.data.nativeAssetTransferData,
           )}
           network={mockEthMainnet}
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _Erc721TokenTransfer = {
@@ -97,12 +97,12 @@ export const _Erc721TokenTransfer = {
         <NonFungibleErcTokenTransfer
           network={mockEthMainnet}
           transfer={assertDefined(
-            mockReceiveNftEvent.rawInfo.data.erc721TransferData
+            mockReceiveNftEvent.rawInfo.data.erc721TransferData,
           )}
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _Erc1155TokenTransfer = {
@@ -112,12 +112,12 @@ export const _Erc1155TokenTransfer = {
         <NonFungibleErcTokenTransfer
           network={mockEthMainnet}
           transfer={assertDefined(
-            mockReceiveMultiStandardTokenEvent.rawInfo.data.erc1155TransferData
+            mockReceiveMultiStandardTokenEvent.rawInfo.data.erc1155TransferData,
           )}
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _Erc20TokenApproval = {
@@ -125,14 +125,14 @@ export const _Erc20TokenApproval = {
     return (
       <ErcTokenApproval
         approval={assertDefined(
-          mockApproveUsdtEvent.rawInfo.data.erc20ApprovalData
+          mockApproveUsdtEvent.rawInfo.data.erc20ApprovalData,
         )}
         network={mockEthMainnet}
         isApprovalForAll={false}
         isERC20
       />
     )
-  }
+  },
 }
 
 export const _Erc721TokenApproval = {
@@ -140,14 +140,14 @@ export const _Erc721TokenApproval = {
     return (
       <ErcTokenApproval
         approval={assertDefined(
-          mockApproveBoredApeNftTransferEvent.rawInfo.data.erc721ApprovalData
+          mockApproveBoredApeNftTransferEvent.rawInfo.data.erc721ApprovalData,
         )}
         network={mockEthMainnet}
         isApprovalForAll={false}
         isERC20={false}
       />
     )
-  }
+  },
 }
 
 export const _Erc721TokenApprovalForAll = {
@@ -155,16 +155,16 @@ export const _Erc721TokenApprovalForAll = {
     return (
       <ErcTokenApproval
         approval={assertDefined(
-          mockApproveAllBoredApeNFTsEvent.rawInfo.data.erc721ApprovalForAllData
+          mockApproveAllBoredApeNFTsEvent.rawInfo.data.erc721ApprovalForAllData,
         )}
         network={mockEthMainnet}
         isApprovalForAll={true}
         isERC20={false}
       />
     )
-  }
+  },
 }
 
 export default {
-  title: 'Evm State Changes'
+  title: 'Evm State Changes',
 }

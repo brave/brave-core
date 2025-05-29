@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { EnableTransactionSimulations } from './enable_transaction_simulations'
 
@@ -26,7 +26,7 @@ export const _EnableTransactionSimulations = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: EnableTransactionSimulations }

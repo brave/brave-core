@@ -18,7 +18,7 @@ import {
   StatLabel,
   StatValue,
   StatWrapper,
-  StyledWrapper
+  StyledWrapper,
 } from './coin-stats-styles'
 import { DividerText, SubDivider } from '../../style'
 
@@ -33,7 +33,7 @@ export const CoinStats = (props: Props) => {
   const formattedMarketCap = new Amount(marketCap).abbreviate(
     2,
     undefined,
-    'billion'
+    'billion',
   )
   const formattedVolume = new Amount(volume).abbreviate(2, undefined, 'billion')
 

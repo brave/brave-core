@@ -9,7 +9,7 @@ import {
   Background,
   BottomCard,
   CloseButton,
-  CloseIcon
+  CloseIcon,
 } from './bottom_sheet.style'
 import { Row, Text } from '../style'
 

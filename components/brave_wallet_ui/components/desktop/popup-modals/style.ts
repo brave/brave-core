@@ -94,14 +94,14 @@ export const HeaderButton = styled(WalletButton)`
 `
 
 export const CloseIcon = styled(Icon).attrs({
-  name: 'close'
+  name: 'close',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};
 `
 
 export const BackIcon = styled(Icon).attrs({
-  name: 'arrow-left'
+  name: 'arrow-left',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};

@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { RemoveAccountModal } from './remove-account-modal'
 
@@ -21,11 +21,11 @@ export default {
     <div style={{ width: '100%', height: '100%' }}>
       <WalletPageStory
         accountTabStateOverride={{
-          accountToRemove: { ...mockAccount, name: 'BTC Import' }
+          accountToRemove: { ...mockAccount, name: 'BTC Import' },
         }}
       >
         <RemoveAccountModal />
       </WalletPageStory>
     </div>
-  )
+  ),
 }

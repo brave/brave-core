@@ -19,7 +19,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   NavOptions,
   PanelNavOptions,
-  BuySendSwapDepositOptions
+  BuySendSwapDepositOptions,
 } from '../../../options/nav-options'
 
 // Components
@@ -32,7 +32,7 @@ import {
   PageOptionsWrapper,
   PanelOptionsWrapper,
   LeoNavigation,
-  WalletLogo
+  WalletLogo,
 } from './wallet-nav.style'
 import { Row, VerticalDivider } from '../../shared/style'
 

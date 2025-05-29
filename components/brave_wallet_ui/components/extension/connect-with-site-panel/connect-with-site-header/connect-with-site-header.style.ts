@@ -146,7 +146,7 @@ export const LinkIcon = styled(Icon)`
 `
 
 export const VerifiedIcon = styled(Icon).attrs({
-  name: 'verification-filled'
+  name: 'verification-filled',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.purple[60]};

@@ -17,7 +17,7 @@ import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 
 // Hooks
 import {
-  useCancelTransactionMutation //
+  useCancelTransactionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // Components
@@ -48,7 +48,7 @@ export const CancelTransaction = (props: Props) => {
     cancelTx({
       coinType: txCoinType,
       chainId: transaction.chainId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
     })
     dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
   }

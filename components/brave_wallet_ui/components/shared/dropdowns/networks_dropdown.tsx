@@ -10,19 +10,19 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import {
-  reduceNetworkDisplayName //
+  reduceNetworkDisplayName, //
 } from '../../../utils/network-utils'
 import { getNetworkId } from '../../../common/slices/entities/network.entity'
 
 // Options
 import {
   AllNetworksOption, //
-  AllNetworksOptionNetworkId
+  AllNetworksOptionNetworkId,
 } from '../../../options/network-filter-options'
 
 // Components
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../create-network-icon'
 
 // Styled Components
@@ -47,7 +47,7 @@ export const NetworksDropdown = (props: Props) => {
     onSelectNetwork,
     checkIsNetworkOptionDisabled,
     placeholder,
-    label
+    label,
   } = props
 
   // computed
@@ -80,8 +80,8 @@ export const NetworksDropdown = (props: Props) => {
         {selectedNetworkId === AllNetworksOptionNetworkId
           ? AllNetworksOption?.chainName
           : selectedNetwork
-          ? reduceNetworkDisplayName(selectedNetwork.chainName)
-          : placeholder ?? ''}
+            ? reduceNetworkDisplayName(selectedNetwork.chainName)
+            : (placeholder ?? '')}
       </Row>
       {showAllNetworksOption && (
         <leo-option value={AllNetworksOptionNetworkId}>

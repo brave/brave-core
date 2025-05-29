@@ -26,7 +26,7 @@ import {
   DappDetailDialog,
   DappCategoryLabel,
   DappMetricContainer,
-  Title
+  Title,
 } from './web3_dapp_details.styles'
 import { PlaceholderImage } from './dapp_list_item.styles'
 
@@ -148,7 +148,7 @@ export const DappDetails = ({ dapp, ...rest }: DappDetailsProps) => {
 function DappMetric({
   meticValue,
   metricName,
-  isUSDValue
+  isUSDValue,
 }: {
   metricName: string
   meticValue: string | number

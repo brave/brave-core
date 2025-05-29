@@ -12,7 +12,7 @@ import {
   LoadingIconBG,
   LoadingIconFG,
   LoadingIconWrapper,
-  LoadingMessage
+  LoadingMessage,
 } from './loading_panel.styles'
 
 interface Props {

@@ -14,7 +14,7 @@ import { AccountModalTypes } from '../../../constants/types'
 import { WalletButton, Row } from '../../shared/style'
 import {
   layoutPanelWidth,
-  layoutSmallWidth
+  layoutSmallWidth,
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div<{

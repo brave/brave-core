@@ -20,7 +20,7 @@ import {
   Title,
   TermsLabel,
   TermsButton,
-  Graphic
+  Graphic,
 } from './partners_consent_modal.style'
 import { Row } from '../../../shared/style'
 
@@ -30,15 +30,15 @@ const onClickTermsOfUse = () => {
   if (chrome.tabs !== undefined) {
     chrome.tabs.create(
       {
-        url: MELD_TERMS_OF_USE_URL
+        url: MELD_TERMS_OF_USE_URL,
       },
       () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message,
           )
         }
-      }
+      },
     )
     return
   }
@@ -49,7 +49,7 @@ const onClickTermsOfUse = () => {
 const meldTermsOfUse = formatLocale('braveWalletMeldTermsOfUse', {
   $1: (content) => (
     <TermsButton onClick={onClickTermsOfUse}>{content}</TermsButton>
-  )
+  ),
 })
 
 interface PartnerConsentModalProps {
@@ -59,7 +59,7 @@ interface PartnerConsentModalProps {
 }
 
 export function PartnersConsentModal(
-  props: Readonly<PartnerConsentModalProps>
+  props: Readonly<PartnerConsentModalProps>,
 ) {
   const { isOpen, onClose, onContinue } = props
 

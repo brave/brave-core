@@ -10,16 +10,16 @@ import { BraveWallet } from '../../../constants/types'
 
 // utils
 import {
-  deserializeTransaction //
+  deserializeTransaction, //
 } from '../../../utils/model-serialization-utils'
 import { findAccountByAccountId } from '../../../utils/account-utils'
 import {
-  accountInfoEntityAdaptor //
+  accountInfoEntityAdaptor, //
 } from '../../../common/slices/entities/account-info.entity'
 
 // components
 import {
-  WalletPanelStory //
+  WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { PanelWrapper } from '../../../panel/style'
 import { LongWrapper } from '../../../stories/style'
@@ -37,12 +37,12 @@ import {
   mockSimulatedERC721Approve,
   mockSimulatedSwapETHForDAI,
   mockSolStakingChangeSimulation,
-  mockSvmSimulationResult
+  mockSvmSimulationResult,
 } from '../../../common/constants/mocks'
 import {
   mockSolanaTransactionInfoAccount,
   mockSvmTxInfos,
-  mockTransactionInfo //
+  mockTransactionInfo, //
 } from '../../../stories/mock-data/mock-transaction-info'
 
 const _mockEvmAccountInfos: BraveWallet.AccountInfo[] = [
@@ -50,21 +50,21 @@ const _mockEvmAccountInfos: BraveWallet.AccountInfo[] = [
     accountId: mockTransactionInfo.fromAccountId,
     address: mockTransactionInfo.fromAccountId.address,
     hardware: undefined,
-    name: 'EVM Account 1'
-  }
+    name: 'EVM Account 1',
+  },
 ]
 
 const mockEvmTxInfos: BraveWallet.TransactionInfo[] = [
   deserializeTransaction({
     ...mockTransactionInfo,
     fromAccountId: mockTransactionInfo.fromAccountId,
-    txStatus: BraveWallet.TransactionStatus.Unapproved
+    txStatus: BraveWallet.TransactionStatus.Unapproved,
   }),
   deserializeTransaction({
     ...mockTransactionInfo,
     fromAccountId: mockTransactionInfo.fromAccountId,
-    txStatus: BraveWallet.TransactionStatus.Unapproved
-  })
+    txStatus: BraveWallet.TransactionStatus.Unapproved,
+  }),
 ]
 
 const evmSimulationResponse: BraveWallet.EVMSimulationResponse = {
@@ -73,50 +73,50 @@ const evmSimulationResponse: BraveWallet.EVMSimulationResponse = {
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'Unsafe to sign with high risk of losing funds.'
+      message: 'Unsafe to sign with high risk of losing funds.',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
       message:
-        'Gives permission for someone else to transfer' +
-        ' many tokens on your behalf.'
+        'Gives permission for someone else to transfer'
+        + ' many tokens on your behalf.',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'YOUR ACCOUNT WILL BE DRAINED!'
+      message: 'YOUR ACCOUNT WILL BE DRAINED!',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'A HORRIBLE EVENT WILL TAKE PLACE IF YOU SIGN THIS'
+      message: 'A HORRIBLE EVENT WILL TAKE PLACE IF YOU SIGN THIS',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'ANOTHER HORRIBLE EVENT WILL TAKE PLACE IF YOU SIGN THIS'
+      message: 'ANOTHER HORRIBLE EVENT WILL TAKE PLACE IF YOU SIGN THIS',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'YET ANOTHER HORRIBLE EVENT WILL TAKE PLACE IF YOU SIGN THIS'
+      message: 'YET ANOTHER HORRIBLE EVENT WILL TAKE PLACE IF YOU SIGN THIS',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'VERY DANGEROUS'
+      message: 'VERY DANGEROUS',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'VERY DANGEROUS!!!'
+      message: 'VERY DANGEROUS!!!',
     },
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'VERY DANGEROUS!!!!!!!!'
-    }
+      message: 'VERY DANGEROUS!!!!!!!!',
+    },
   ],
   error: mockSimulatedSwapETHForDAI.error,
   expectedStateChanges: [
@@ -126,13 +126,13 @@ const evmSimulationResponse: BraveWallet.EVMSimulationResponse = {
     ...mockEvmSimulatedERC20Approval.expectedStateChanges,
     ...mockSimulatedERC721Approve.expectedStateChanges,
     ...mockERC721ApproveForAllSim.expectedStateChanges,
-    ...mockERC721ApproveForAllSim.expectedStateChanges
-  ]
+    ...mockERC721ApproveForAllSim.expectedStateChanges,
+  ],
 }
 
 const mockAccountsRegistry = accountInfoEntityAdaptor.addMany(
   accountInfoEntityAdaptor.getInitialState(),
-  _mockEvmAccountInfos.concat([mockSolanaTransactionInfoAccount])
+  _mockEvmAccountInfos.concat([mockSolanaTransactionInfoAccount]),
 )
 
 const svmSimulationResponse: BraveWallet.SolanaSimulationResponse = {
@@ -142,13 +142,13 @@ const svmSimulationResponse: BraveWallet.SolanaSimulationResponse = {
     {
       severity: BraveWallet.BlowfishWarningSeverity.kCritical,
       kind: BraveWallet.BlowfishWarningKind.kKnownMalicious,
-      message: 'Unsafe to sign with high risk of losing funds.'
-    }
+      message: 'Unsafe to sign with high risk of losing funds.',
+    },
   ],
   error: mockReceiveSolSimulation.error,
   expectedStateChanges: mockReceiveSolSimulation.expectedStateChanges
     .concat(mockSendSolNftEvent)
-    .concat(mockSolStakingChangeSimulation.expectedStateChanges[0])
+    .concat(mockSolStakingChangeSimulation.expectedStateChanges[0]),
 }
 export const _ConfirmSimulatedEvmTransactionPanel = {
   title: 'Confirm Simulated EVM Transaction Panel',
@@ -157,22 +157,22 @@ export const _ConfirmSimulatedEvmTransactionPanel = {
       <WalletPanelStory
         walletStateOverride={{
           hasInitialized: true,
-          isWalletCreated: true
+          isWalletCreated: true,
         }}
         panelStateOverride={{
-          hasInitialized: true
+          hasInitialized: true,
         }}
         uiStateOverride={{
-          selectedPendingTransactionId: mockEvmTxInfos[0].id
+          selectedPendingTransactionId: mockEvmTxInfos[0].id,
         }}
         walletApiDataOverrides={{
           accountInfos: _mockEvmAccountInfos,
           evmSimulationResponse: evmSimulationResponse,
           selectedAccountId: findAccountByAccountId(
             mockEvmTxInfos[0].fromAccountId,
-            mockAccountsRegistry
+            mockAccountsRegistry,
           )?.accountId,
-          transactionInfos: mockEvmTxInfos
+          transactionInfos: mockEvmTxInfos,
         }}
       >
         <PanelWrapper isLonger>
@@ -185,7 +185,7 @@ export const _ConfirmSimulatedEvmTransactionPanel = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export const _ConfirmSimulatedSvmTransactionPanel = {
@@ -195,22 +195,22 @@ export const _ConfirmSimulatedSvmTransactionPanel = {
       <WalletPanelStory
         walletStateOverride={{
           hasInitialized: true,
-          isWalletCreated: true
+          isWalletCreated: true,
         }}
         panelStateOverride={{
-          hasInitialized: true
+          hasInitialized: true,
         }}
         uiStateOverride={{
-          selectedPendingTransactionId: mockSvmTxInfos[0].id
+          selectedPendingTransactionId: mockSvmTxInfos[0].id,
         }}
         walletApiDataOverrides={{
           accountInfos: [mockSolanaTransactionInfoAccount],
           svmSimulationResponse: svmSimulationResponse,
           selectedAccountId: findAccountByAccountId(
             mockSvmTxInfos[0].fromAccountId,
-            mockAccountsRegistry
+            mockAccountsRegistry,
           )?.accountId,
-          transactionInfos: mockSvmTxInfos
+          transactionInfos: mockSvmTxInfos,
         }}
       >
         <ConfirmSimulatedTransactionPanel
@@ -219,9 +219,9 @@ export const _ConfirmSimulatedSvmTransactionPanel = {
         />
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default {
-  title: 'Confirm Simulated Transaction Panel'
+  title: 'Confirm Simulated Transaction Panel',
 }

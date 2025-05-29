@@ -25,9 +25,7 @@ export const WalletBanner = (props: Props) => {
 
   return (
     <StyledWrapper>
-      <Alert
-        type={bannerType}
-      >
+      <Alert type={bannerType}>
         <Icon
           slot='icon'
           name={

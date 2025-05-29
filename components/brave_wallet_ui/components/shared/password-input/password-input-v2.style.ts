@@ -73,7 +73,7 @@ export const ErrorText = styled(Text)`
 `
 
 export const ErrorIcon = styled(LeoIcon).attrs({
-  name: 'warning-triangle-outline'
+  name: 'warning-triangle-outline',
 })`
   --leo-icon-size: 16px;
   color: ${leo.color.systemfeedback.errorIcon};

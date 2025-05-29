@@ -19,7 +19,7 @@ import {
   NetworkName,
   LeftSide,
   NetworkItemWrapper,
-  BigCheckMark
+  BigCheckMark,
 } from './style'
 
 export interface Props {

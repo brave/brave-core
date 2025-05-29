@@ -17,7 +17,7 @@ export const _AddSuggestedTokenPanel = {
         </PanelWrapper>
       </WalletPanelStory>
     )
-  }
+  },
 }
 
 export default { component: AddSuggestedTokenPanel }

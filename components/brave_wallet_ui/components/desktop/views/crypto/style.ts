@@ -7,7 +7,7 @@ import styled from 'styled-components'
 // Shared Styles
 import { Row } from '../../../shared/style'
 import {
-  layoutSmallWidth //
+  layoutSmallWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const SegmentedControlsWrapperWeb3 = styled(Row)`

@@ -11,13 +11,13 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import {
-  getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction //
+  getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction, //
 } from '../../../utils/solana-instruction-utils'
 
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 import {
-  useProcessSignSolanaTransaction //
+  useProcessSignSolanaTransaction, //
 } from '../../../common/hooks/use_sign_solana_tx_queue'
 
 // Components
@@ -26,10 +26,10 @@ import PanelTab from '../panel-tab/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 import {
-  TxWarningBanner //
+  TxWarningBanner, //
 } from '../confirm-transaction-panel/common/tx_warnings'
 import {
-  TransactionSimulationNotSupportedSheet //
+  TransactionSimulationNotSupportedSheet, //
 } from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
 
 // Styled Components
@@ -42,13 +42,13 @@ import {
   PanelTitle,
   MessageBox,
   SignPanelButtonRow,
-  WarningTitleRow
+  WarningTitleRow,
 } from './style'
 
 import {
   QueueStepRow,
   QueueStepButton,
-  QueueStepText
+  QueueStepText,
 } from '../confirm-transaction-panel/common/style'
 
 import {
@@ -58,7 +58,7 @@ import {
   WarningText,
   LearnMoreButton,
   URLText,
-  WarningIcon
+  WarningIcon,
 } from '../shared-panel-styles'
 
 import { DetailColumn } from '../transaction-box/style'
@@ -83,7 +83,7 @@ const onClickLearnMore = () => {
   window.open(
     'https://support.brave.com/hc/en-us/articles/4409513799693',
     '_blank',
-    'noreferrer'
+    'noreferrer',
   )
 }
 
@@ -96,14 +96,14 @@ export const SignTransactionPanel = ({
   queueNumber,
   signingAccount,
   retrySimulation,
-  showSimulationNotSupportedMessage
+  showSimulationNotSupportedMessage,
 }: Props) => {
   // custom hooks
   const orb = useAccountOrb(signingAccount)
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
-    SignDataSteps.SignRisk
+    SignDataSteps.SignRisk,
   )
   const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
     React.useState(false)
@@ -115,7 +115,7 @@ export const SignTransactionPanel = ({
 
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signSolTransactionsRequest: selectedRequest
+      signSolTransactionsRequest: selectedRequest,
     })
 
   // render
@@ -181,7 +181,7 @@ export const SignTransactionPanel = ({
                       <SolanaTransactionInstruction
                         key={index}
                         typedInstructionWithParams={getTypedSolTxInstruction(
-                          instruction
+                          instruction,
                         )}
                       />
                     )

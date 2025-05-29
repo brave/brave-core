@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { LockScreen } from '.'
 
@@ -17,7 +17,7 @@ export const _LockScreen = {
         <LockScreen />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { title: 'Lock Screen', component: LockScreen }

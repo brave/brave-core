@@ -18,7 +18,7 @@ import { SelectCurrencyItem } from '../select-currency-item/select-currency-item
 
 // Hooks
 import {
-  useGetOnRampFiatCurrenciesQuery //
+  useGetOnRampFiatCurrenciesQuery, //
 } from '../../../common/slices/api.slice'
 
 // Styled Components
@@ -47,8 +47,8 @@ export const SelectOnRampFiatCurrency = (props: Props) => {
     return currencies && trimmedSearch
       ? currencies.filter(
           (c) =>
-            c.currencyCode.toLowerCase().includes(trimmedSearch) ||
-            c.currencyName.toLowerCase().includes(trimmedSearch)
+            c.currencyCode.toLowerCase().includes(trimmedSearch)
+            || c.currencyName.toLowerCase().includes(trimmedSearch),
         )
       : currencies || []
   }, [search, currencies])

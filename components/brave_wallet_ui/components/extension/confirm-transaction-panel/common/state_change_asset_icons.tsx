@@ -14,7 +14,7 @@ import { AssetIconFactory, AssetIconProps } from '../../../shared/style'
 
 const assetIconSizeProps = {
   width: '24px',
-  height: 'auto'
+  height: 'auto',
 }
 const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconSizeProps)
 
@@ -22,9 +22,9 @@ const ICON_CONFIG = { size: 'small', marginLeft: 0, marginRight: 8 } as const
 export const NFT_ICON_STYLE: React.CSSProperties = { width: 24, maxHeight: 24 }
 export const AssetIconWithPlaceholder = withPlaceholderIcon(
   AssetIcon,
-  ICON_CONFIG
+  ICON_CONFIG,
 )
 export const NftAssetIconWithPlaceholder = withPlaceholderIcon(
   NftIcon,
-  ICON_CONFIG
+  ICON_CONFIG,
 )

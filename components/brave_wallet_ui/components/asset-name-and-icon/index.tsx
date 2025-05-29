@@ -10,7 +10,7 @@ import {
   NameAndSymbolWrapper,
   AssetName,
   AssetSymbol,
-  AssetIcon
+  AssetIcon,
 } from './style'
 
 export interface Props {
@@ -26,7 +26,7 @@ export const AssetNameAndIcon = (props: Props) => {
     <StyledWrapper>
       <AssetIcon
         src={`chrome-untrusted://image?url=${encodeURIComponent(
-          assetLogo
+          assetLogo,
         )}&staticEncode=true`}
         loading='lazy'
       />

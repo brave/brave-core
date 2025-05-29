@@ -15,15 +15,15 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
   getPriceIdForToken,
-  getTokenPriceFromRegistry
+  getTokenPriceFromRegistry,
 } from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
 import {
   getIsRewardsToken,
-  getRewardsTokenDescription
+  getRewardsTokenDescription,
 } from '../../../utils/rewards_utils'
 import {
-  externalWalletProviderFromString //
+  externalWalletProviderFromString, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
@@ -31,7 +31,7 @@ import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
@@ -50,7 +50,7 @@ import {
   MenuButton,
   MenuButtonIcon,
   MenuWrapper,
-  HorizontalDivider
+  HorizontalDivider,
 } from './shared-card-headers.style'
 import {
   AssetIcon,
@@ -60,7 +60,7 @@ import {
   PercentChange,
   UpDownIcon,
   IconsWrapper,
-  NetworkIconWrapper
+  NetworkIconWrapper,
 } from './asset-details-header.style'
 import { Button, ButtonIcon } from './shared-panel-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
@@ -69,7 +69,7 @@ import { Skeleton } from '../../shared/loading-skeleton/styles'
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'big',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 })
 
 interface Props {
@@ -90,7 +90,7 @@ export const AssetDetailsHeader = (props: Props) => {
     onClickTokenDetails,
     onClickEditToken,
     isShowingMarketData,
-    selectedTimeline
+    selectedTimeline,
   } = props
 
   // UI Selectors (safe)
@@ -112,7 +112,7 @@ export const AssetDetailsHeader = (props: Props) => {
   useOnClickOutside(
     assetDetailsMenuRef,
     () => setShowAssetDetailsMenu(false),
-    showAssetDetailsMenu
+    showAssetDetailsMenu,
   )
 
   const openExplorer = useExplorer(selectedAssetsNetwork)
@@ -143,7 +143,7 @@ export const AssetDetailsHeader = (props: Props) => {
 
   const tokenPriceIds = React.useMemo(
     () => (selectedAsset ? [getPriceIdForToken(selectedAsset)] : []),
-    [selectedAsset]
+    [selectedAsset],
   )
 
   // queries
@@ -152,29 +152,29 @@ export const AssetDetailsHeader = (props: Props) => {
       ? {
           ids: tokenPriceIds,
           timeframe: selectedTimeline,
-          toCurrency: defaultFiatCurrency
+          toCurrency: defaultFiatCurrency,
         }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   // computed
   const isRewardsToken = getIsRewardsToken(selectedAsset)
 
   const networkDescription = isShowingMarketData
-    ? selectedAsset?.symbol ?? ''
+    ? (selectedAsset?.symbol ?? '')
     : isRewardsToken
-    ? getRewardsTokenDescription(
-        externalWalletProviderFromString(selectedAsset?.chainId ?? '')
-      )
-    : getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', selectedAsset?.symbol ?? '')
-        .replace('$2', selectedAssetsNetwork?.chainName ?? '')
+      ? getRewardsTokenDescription(
+          externalWalletProviderFromString(selectedAsset?.chainId ?? ''),
+        )
+      : getLocale('braveWalletPortfolioAssetNetworkDescription')
+          .replace('$1', selectedAsset?.symbol ?? '')
+          .replace('$2', selectedAssetsNetwork?.chainName ?? '')
 
   const selectedAssetFiatPrice =
-    selectedAsset &&
-    spotPriceRegistry &&
-    getTokenPriceFromRegistry(spotPriceRegistry, selectedAsset)
+    selectedAsset
+    && spotPriceRegistry
+    && getTokenPriceFromRegistry(spotPriceRegistry, selectedAsset)
 
   const isSelectedAssetPriceDown = selectedAssetFiatPrice
     ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
@@ -213,10 +213,10 @@ export const AssetDetailsHeader = (props: Props) => {
           {selectedAsset ? (
             <IconsWrapper>
               <AssetIconWithPlaceholder asset={selectedAsset} />
-              {selectedAssetsNetwork &&
-                checkIfTokenNeedsNetworkIcon(
+              {selectedAssetsNetwork
+                && checkIfTokenNeedsNetworkIcon(
                   selectedAssetsNetwork,
-                  selectedAsset.contractAddress
+                  selectedAsset.contractAddress,
                 ) && (
                   <NetworkIconWrapper>
                     <CreateNetworkIcon
@@ -241,7 +241,7 @@ export const AssetDetailsHeader = (props: Props) => {
                 <AssetNameText>
                   {selectedAsset.isShielded
                     ? 'Zcash'
-                    : selectedAsset?.name ?? ''}
+                    : (selectedAsset?.name ?? '')}
                 </AssetNameText>
                 {selectedAsset.isShielded && <ShieldedLabel />}
               </Row>
@@ -269,7 +269,7 @@ export const AssetDetailsHeader = (props: Props) => {
           <PriceText>
             {selectedAssetFiatPrice
               ? new Amount(selectedAssetFiatPrice.price).formatAsFiat(
-                  defaultFiatCurrency
+                  defaultFiatCurrency,
                 )
               : '0.00'}
           </PriceText>
@@ -298,10 +298,10 @@ export const AssetDetailsHeader = (props: Props) => {
             %
           </PercentChange>
         </Column>
-        {selectedAsset?.contractAddress &&
-          !selectedAsset?.isErc721 &&
-          !selectedAsset.isNft &&
-          !isRewardsToken && (
+        {selectedAsset?.contractAddress
+          && !selectedAsset?.isErc721
+          && !selectedAsset.isNft
+          && !isRewardsToken && (
             <>
               {isPanel ? (
                 <HorizontalSpace space='12px' />

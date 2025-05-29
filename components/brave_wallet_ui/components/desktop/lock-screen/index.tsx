@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 
 // Constants
 import {
-  LOCAL_STORAGE_KEYS //
+  LOCAL_STORAGE_KEYS, //
 } from '../../../common/constants/local-storage-keys'
 import { WalletRoutes } from '../../../constants/types'
 
@@ -37,7 +37,7 @@ import {
   InputLabel,
   DoubleTapIcon,
   AndroidLockScreenWrapper,
-  BraveLogo
+  BraveLogo,
 } from './style'
 import { VerticalSpace, Row, Text } from '../../shared/style'
 
@@ -64,7 +64,7 @@ export const LockScreen = () => {
     setPassword('')
     if (success) {
       const sessionRoute = window.localStorage.getItem(
-        LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE
+        LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
       )
       history.push(sessionRoute || WalletRoutes.PortfolioAssets)
     } else {
@@ -78,7 +78,7 @@ export const LockScreen = () => {
         await unlockWallet()
       }
     },
-    [unlockWallet, disabled]
+    [unlockWallet, disabled],
   )
 
   const handlePasswordChanged = React.useCallback(
@@ -90,7 +90,7 @@ export const LockScreen = () => {
         setHasIncorrectPassword(false)
       }
     },
-    [hasIncorrectPassword]
+    [hasIncorrectPassword],
   )
 
   const onShowRestore = React.useCallback(() => {

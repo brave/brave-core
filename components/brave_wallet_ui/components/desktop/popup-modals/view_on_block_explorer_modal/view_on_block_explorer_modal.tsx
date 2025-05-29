@@ -9,19 +9,19 @@ import { BraveWallet } from '../../../../constants/types'
 
 // Queries
 import {
-  useGetVisibleNetworksQuery //
+  useGetVisibleNetworksQuery, //
 } from '../../../../common/slices/api.slice'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  getNetworkId //
+  getNetworkId, //
 } from '../../../../common/slices/entities/network.entity'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../shared/create-account-icon/create-account-icon'
 import { NetworkButton } from './network_button'
 
@@ -29,7 +29,7 @@ import { NetworkButton } from './network_button'
 import {
   AccountInfoRow,
   StyledWrapper,
-  AddressText
+  AddressText,
 } from './view_on_block_explorer_modal.style'
 import { Column, Text, Row, ScrollableColumn } from '../../../shared/style'
 
@@ -47,7 +47,7 @@ export const ViewOnBlockExplorerModal = (props: Props) => {
   // Memos
   const networksByAccountCoinType = React.useMemo(() => {
     return visibleNetworks.filter(
-      (network) => network.coin === account.accountId.coin
+      (network) => network.coin === account.accountId.coin,
     )
   }, [visibleNetworks, account])
 

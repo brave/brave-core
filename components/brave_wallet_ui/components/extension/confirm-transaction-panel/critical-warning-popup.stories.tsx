@@ -18,7 +18,7 @@ export const _TransactionCriticalWarningPopup = {
         }}
       />
     )
-  }
+  },
 }
 
 export default { component: CriticalWarningPopup }

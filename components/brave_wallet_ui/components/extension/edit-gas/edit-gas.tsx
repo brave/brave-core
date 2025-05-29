@@ -9,7 +9,7 @@ import Alert from '@brave/leo/react/alert'
 import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
 } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 
@@ -22,13 +22,13 @@ import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   getTokenPriceAmountFromRegistry,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../utils/pricing-utils'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
@@ -50,12 +50,12 @@ import {
   SliderLabel,
   SliderWrapper,
   SliderValue,
-  WarningText
+  WarningText,
 } from './edit-gas.styles'
 
 export enum MaxPriorityPanels {
   setSuggested = 0,
-  setCustom = 1
+  setCustom = 1,
 }
 
 interface Props {
@@ -67,7 +67,7 @@ interface Props {
   suggestedSliderStep: string
   maxPriorityPanel: MaxPriorityPanels
   updateUnapprovedTransactionGasFields: (
-    payload: UpdateUnapprovedTransactionGasFieldsType
+    payload: UpdateUnapprovedTransactionGasFieldsType,
   ) => void
   setSuggestedSliderStep: (value: string) => void
   setMaxPriorityPanel: (value: MaxPriorityPanels) => void
@@ -83,11 +83,11 @@ export const EditGas = ({
   maxPriorityPanel,
   updateUnapprovedTransactionGasFields,
   setSuggestedSliderStep,
-  setMaxPriorityPanel
+  setMaxPriorityPanel,
 }: Props) => {
   const transactionFees = React.useMemo(
     () => parseTransactionFeesWithoutPrices(transactionInfo),
-    [transactionInfo]
+    [transactionInfo],
   )
   const { isEIP1559Transaction } = transactionFees
 
@@ -95,23 +95,23 @@ export const EditGas = ({
   const [suggestedMaxPriorityFee, setSuggestedMaxPriorityFee] =
     React.useState<string>(suggestedMaxPriorityFeeChoices[1])
   const [gasLimit, setGasLimit] = React.useState<string>(
-    transactionFees.gasLimit
+    transactionFees.gasLimit,
   )
   const [gasPrice, setGasPrice] = React.useState<string>(
     new Amount(transactionFees.gasPrice)
       .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
-      .format()
+      .format(),
   )
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] =
     React.useState<string>(
       new Amount(transactionFees.maxPriorityFeePerGas)
         .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
-        .format()
+        .format(),
     )
   const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(
     new Amount(transactionFees.maxFeePerGas)
       .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
-      .format()
+      .format(),
   )
 
   // queries
@@ -121,7 +121,7 @@ export const EditGas = ({
 
   const networkTokenPriceIds = React.useMemo(
     () => (networkAsset ? [getPriceIdForToken(networkAsset)] : []),
-    [networkAsset]
+    [networkAsset],
   )
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -130,12 +130,12 @@ export const EditGas = ({
     networkTokenPriceIds.length && defaultFiatCurrency
       ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   // methods
   const handleGasPriceInputChanged = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setGasPrice(event.target.value)
   }
@@ -144,19 +144,19 @@ export const EditGas = ({
     ({
       target: {
         value,
-        validity: { valid }
-      }
+        validity: { valid },
+      },
     }: React.ChangeEvent<HTMLInputElement>) => {
       if (valid) {
         const val = new Amount(value).toNumber().toString()
         setGasLimit(val)
       }
     },
-    []
+    [],
   )
 
   const handleMaxPriorityFeePerGasInputChanged = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value
     setMaxPriorityFeePerGas(value)
@@ -165,7 +165,7 @@ export const EditGas = ({
     const maxPriorityFeePerGasWei = new Amount(value).multiplyByDecimals(9)
 
     const computedMaxFeePerGasWei = new Amount(baseFeePerGas).plus(
-      maxPriorityFeePerGasWei
+      maxPriorityFeePerGasWei,
     )
 
     const computedMaxFeePerGasGWei = computedMaxFeePerGasWei
@@ -176,7 +176,7 @@ export const EditGas = ({
   }
 
   const handleMaxFeePerGasInputChanged = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setMaxFeePerGas(event.target.value)
   }
@@ -209,7 +209,7 @@ export const EditGas = ({
         chainId: transactionInfo.chainId,
         txMetaId: transactionInfo.id,
         gasPrice: new Amount(gasPrice).multiplyByDecimals(9).toHex(),
-        gasLimit: new Amount(gasLimit).toHex()
+        gasLimit: new Amount(gasLimit).toHex(),
       })
 
       onCancel()
@@ -224,7 +224,7 @@ export const EditGas = ({
           .multiplyByDecimals(9)
           .toHex(),
         maxFeePerGas: new Amount(maxFeePerGas).multiplyByDecimals(9).toHex(),
-        gasLimit: new Amount(gasLimit).toHex()
+        gasLimit: new Amount(gasLimit).toHex(),
       })
     } else if (maxPriorityPanel === MaxPriorityPanels.setSuggested) {
       updateUnapprovedTransactionGasFields({
@@ -234,7 +234,7 @@ export const EditGas = ({
         maxPriorityFeePerGas: suggestedMaxPriorityFee,
         maxFeePerGas: new Amount(baseFeePerGas)
           .plus(suggestedMaxPriorityFee)
-          .toHex()
+          .toHex(),
       })
     }
 
@@ -255,9 +255,9 @@ export const EditGas = ({
     : undefined
 
   const suggestedEIP1559FiatGasFee =
-    suggestedEIP1559GasFee &&
-    spotPriceRegistry &&
-    new Amount(suggestedEIP1559GasFee)
+    suggestedEIP1559GasFee
+    && spotPriceRegistry
+    && new Amount(suggestedEIP1559GasFee)
       .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
       .formatAsFiat()
 
@@ -269,9 +269,9 @@ export const EditGas = ({
         .format(6)
     : undefined
   const customEIP1559FiatGasFee =
-    customEIP1559GasFee &&
-    spotPriceRegistry &&
-    new Amount(customEIP1559GasFee)
+    customEIP1559GasFee
+    && spotPriceRegistry
+    && new Amount(customEIP1559GasFee)
       .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
       .formatAsFiat()
 
@@ -292,14 +292,14 @@ export const EditGas = ({
         )}
       </>
     ),
-    [gasLimit, handleGasLimitInputChanged]
+    [gasLimit, handleGasLimitInputChanged],
   )
 
   const isZeroGasPrice = React.useMemo(() => {
     return (
-      !isEIP1559Transaction &&
-      gasPrice !== '' &&
-      new Amount(gasPrice).multiplyByDecimals(9).isZero()
+      !isEIP1559Transaction
+      && gasPrice !== ''
+      && new Amount(gasPrice).multiplyByDecimals(9).isZero()
     )
   }, [gasPrice, isEIP1559Transaction])
 
@@ -317,8 +317,8 @@ export const EditGas = ({
     }
 
     if (
-      !isEIP1559Transaction &&
-      new Amount(gasPrice).multiplyByDecimals(9).isNegative()
+      !isEIP1559Transaction
+      && new Amount(gasPrice).multiplyByDecimals(9).isNegative()
     ) {
       return true
     }
@@ -328,35 +328,35 @@ export const EditGas = ({
     }
 
     return (
-      isEIP1559Transaction &&
-      new Amount(maxPriorityFeePerGas).multiplyByDecimals(9).isNegative()
+      isEIP1559Transaction
+      && new Amount(maxPriorityFeePerGas).multiplyByDecimals(9).isNegative()
     )
   }, [
     gasLimit,
     isEIP1559Transaction,
     gasPrice,
     maxFeePerGas,
-    maxPriorityFeePerGas
+    maxPriorityFeePerGas,
   ])
 
   const isCustomGasBelowBaseFee =
-    isEIP1559Transaction &&
-    new Amount(maxFeePerGas).multiplyByDecimals(9).lt(baseFeePerGas)
+    isEIP1559Transaction
+    && new Amount(maxFeePerGas).multiplyByDecimals(9).lt(baseFeePerGas)
 
   // effects
   React.useEffect(() => {
     const maxPriorityFeePerGasWei = new Amount(
-      maxPriorityFeePerGas
+      maxPriorityFeePerGas,
     ).multiplyByDecimals(9) // GWei-per-gas → Wei conversion
 
     const maxFeePerGasWeiValue = new Amount(baseFeePerGas).plus(
-      maxPriorityFeePerGasWei
+      maxPriorityFeePerGasWei,
     )
 
     setMaxFeePerGas(
       maxFeePerGasWeiValue
         .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
-        .format()
+        .format(),
     )
   }, [maxPriorityFeePerGas, baseFeePerGas])
 
@@ -426,9 +426,7 @@ export const EditGas = ({
             </MaximumFeeRow>
             {isCustomGasBelowBaseFee && (
               <Row margin={'16px 0px'}>
-                <Alert
-                  type='error'
-                >
+                <Alert type='error'>
                   <Column
                     alignItems='center'
                     justifyContent='center'
@@ -439,7 +437,7 @@ export const EditGas = ({
                       textSize='14px'
                     >
                       {getLocale(
-                        'braveWalletGasFeeLimitLowerThanBaseFeeWarning'
+                        'braveWalletGasFeeLimitLowerThanBaseFeeWarning',
                       )}
                     </Text>
                   </Column>
@@ -503,15 +501,15 @@ export const EditGas = ({
               !isEIP1559Transaction
                 ? getLocale('braveWalletButtonCancel')
                 : maxPriorityPanel === MaxPriorityPanels.setCustom
-                ? getLocale('braveWalletEditGasSetSuggested')
-                : getLocale('braveWalletEditGasSetCustom')
+                  ? getLocale('braveWalletEditGasSetSuggested')
+                  : getLocale('braveWalletEditGasSetCustom')
             }
             onSubmit={
               !isEIP1559Transaction
                 ? onCancel
                 : maxPriorityPanel === MaxPriorityPanels.setCustom
-                ? onSetPanelToSuggested
-                : onSetPanelToCustom
+                  ? onSetPanelToSuggested
+                  : onSetPanelToCustom
             }
           />
 

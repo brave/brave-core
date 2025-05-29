@@ -7,12 +7,12 @@ import * as React from 'react'
 
 // Mock Data
 import {
-  mockBasicAttentionToken //
+  mockBasicAttentionToken, //
 } from '../../../../stories/mock-data/mock-asset-options'
 
 // Components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { EditTokenModal } from './edit_token_modal'
 
@@ -20,10 +20,12 @@ export const _EditTokenModal = {}
 
 export default {
   component: EditTokenModal,
-  render: () => <WalletPageStory>
-    <EditTokenModal
-      onClose={() => { }}
-      token={mockBasicAttentionToken}
-    />
-  </WalletPageStory>
+  render: () => (
+    <WalletPageStory>
+      <EditTokenModal
+        onClose={() => {}}
+        token={mockBasicAttentionToken}
+      />
+    </WalletPageStory>
+  ),
 }

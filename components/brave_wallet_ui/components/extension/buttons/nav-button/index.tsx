@@ -14,7 +14,7 @@ import {
   ConfirmIcon,
   StyledLink,
   LaunchIcon,
-  PanelButtonTypes
+  PanelButtonTypes,
 } from './style'
 import { Row } from '../../../shared/style'
 
@@ -53,7 +53,7 @@ export const NavButton: React.FC<Props> = ({
   text,
   url,
   isV2,
-  isExternalLink = false
+  isExternalLink = false,
 }) => {
   // memos
   const buttonContent = React.useMemo(() => {
