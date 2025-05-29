@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.download;
 import android.text.TextUtils;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.offline_items_collection.LegacyHelpers;
 import org.chromium.components.offline_items_collection.OfflineItem;
 
@@ -23,7 +23,9 @@ public class BraveDownloadMessageUiControllerImpl {
             return false;
         }
 
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                BravePreferenceKeys.BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(
+                        BravePreferenceKeys.BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE,
+                        true);
     }
 }
