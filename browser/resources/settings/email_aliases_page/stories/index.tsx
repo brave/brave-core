@@ -165,7 +165,9 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { result: { errorMessage, aliasEmail } }
   }
 
-  async requestAuthentication (email: string) {
+  async requestAuthentication (email: string) : Promise<{
+    errorMessage: string | null,
+  }> {
     if (Math.random() < 1/3) {
       return {
         errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
@@ -190,7 +192,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
         })
       })
     }, 5000);
-    return { errorMessage: undefined }
+    return { errorMessage: null }
   }
 
   cancelAuthenticationOrLogout () {
