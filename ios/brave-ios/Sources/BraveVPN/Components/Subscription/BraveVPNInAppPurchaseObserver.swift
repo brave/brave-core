@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStore
 import Foundation
 import Preferences
 import Shared
@@ -77,8 +78,8 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
 
     // Filter for VPN only transactions. We do not want to call `finishTransaction` on other transactions
     let vpnTransactions = transactions.filter({
-      ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
-        || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
+      ($0.payment.productIdentifier == BraveStoreProduct.vpnMonthly.rawValue)
+        || ($0.payment.productIdentifier == BraveStoreProduct.vpnYearly.rawValue)
     })
 
     // There was no VPN purchases
@@ -192,8 +193,8 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     // This check is done because this observer is used in browser
     let productIdentifier = product.productIdentifier
     guard
-      productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub
-        || productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub
+      productIdentifier == BraveStoreProduct.vpnMonthly.rawValue
+        || productIdentifier == BraveStoreProduct.vpnYearly.rawValue
     else {
       return false
     }
