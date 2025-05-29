@@ -23,6 +23,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
@@ -49,7 +50,7 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
                                 content::BrowserContext* context) {
     auto id = country_codes::CountryId(country_id);
     Profile::FromBrowserContext(context)->GetPrefs()->SetInteger(
-        country_codes::kCountryIDAtInstall, id.Serialize());
+        regional_capabilities::prefs::kCountryIDAtInstall, id.Serialize());
   }
 
  protected:
