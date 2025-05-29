@@ -16,6 +16,10 @@ extension BrowserViewController: TabObserver {
   public func tabDidCreateWebView(_ tab: some TabState) {
     tab.view.frame = webViewContainer.frame
 
+    if tab.isVisible, let scrollView = tab.webViewProxy?.scrollView {
+      toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
+    }
+
     var injectedScripts: [TabContentScript] = [
       ReaderModeScriptHandler(),
       ErrorPageHelper(certStore: profile.certStore),

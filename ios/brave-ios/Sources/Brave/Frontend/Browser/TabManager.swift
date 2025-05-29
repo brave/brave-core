@@ -357,7 +357,7 @@ class TabManager: NSObject {
       preserveScreenshot(for: previousTab)
     }
 
-    if let t = selectedTab, !t.isWebViewCreated {
+    if let t = selectedTab, !t.isWebViewCreated, t.opener == nil {
       selectedTab?.createWebView()
       restoreTab(t)
     }
@@ -374,7 +374,9 @@ class TabManager: NSObject {
     }
 
     UIImpactFeedbackGenerator(style: .light).vibrate()
-    selectedTab?.createWebView()
+    if tab?.opener == nil {
+      selectedTab?.createWebView()
+    }
 
     if let selectedTab = selectedTab,
       selectedTab.visibleURL == nil
@@ -643,7 +645,9 @@ class TabManager: NSObject {
       while insertIndex < allTabs.count && allTabs[insertIndex].isDescendentOf(parent) {
         insertIndex += 1
       }
-      tab.opener = parent
+      if isPopup {
+        tab.opener = parent
+      }
       allTabs.insert(tab, at: insertIndex)
     }
 
