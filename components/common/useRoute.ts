@@ -80,9 +80,40 @@ export const useRoute = <Route extends string>(route: Route): RouteParams<Route>
       if (params) e.intercept()
       setParams(params)
     }
-    window.navigation.addEventListener('navigate', handler)
-    return () => {
-      window.navigation.removeEventListener('navigate', handler)
+
+    if (typeof window.navigation !== 'undefined') {
+      window.navigation.addEventListener('navigate', handler)
+      return () => {
+        window.navigation.removeEventListener('navigate', handler)
+      }
+    } else {
+      const updateParams = () => {
+        setParams(extractParams(window.location.href, route))
+      }
+
+      window.addEventListener('popstate', updateParams)
+      window.addEventListener('hashchange', updateParams)
+
+      const originalPushState = history.pushState
+      const originalReplaceState = history.replaceState
+
+      const patchHistoryMethod = (method: 'pushState' | 'replaceState') => {
+        const original = history[method]
+        history[method] = function (...args) {
+          original.apply(this, args)
+          updateParams()
+        }
+      }
+
+      patchHistoryMethod('pushState')
+      patchHistoryMethod('replaceState')
+
+      return () => {
+        window.removeEventListener('popstate', updateParams)
+        window.removeEventListener('hashchange', updateParams)
+        history.pushState = originalPushState
+        history.replaceState = originalReplaceState
+      }
     }
   }, [route])
 
