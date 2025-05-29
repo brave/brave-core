@@ -46,7 +46,7 @@ class SplitViewLocationBarBrowserTest
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     if (IsSideBySideEnabled()) {
       return *static_cast<BraveMultiContentsView*>(
-                  browser_view->multi_contents_view_for_testing())
+                  browser_view->multi_contents_view())
                   ->secondary_location_bar_;
     }
     return *static_cast<BraveBrowserView*>(browser_view)
