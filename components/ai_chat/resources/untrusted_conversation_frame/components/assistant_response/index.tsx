@@ -85,11 +85,6 @@ function AssistantEvent(props: {
       <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
     )
   }
-  if (props.event.pageContentRefineEvent && props.isEntryInProgress && !props.hasCompletionStarted) {
-    return (
-      <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
-    )
-  }
   // TODO(petemill): Consider displaying in-progress queries if the API
   // timing improves (or worsens for the completion events).
   // if (event.searchQueriesEvent && props.isEntryInProgress) {

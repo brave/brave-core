@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DELEGATE_H_
 
 #include <string>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "url/gurl.h"
@@ -73,18 +73,6 @@ class AssociatedContentDelegate {
   virtual void GetScreenshots(
       mojom::ConversationHandler::GetScreenshotsCallback callback);
 
-  void GetTopSimilarityWithPromptTilContextLimit(
-      const std::string& prompt,
-      const std::string& text,
-      uint32_t context_limit,
-      TextEmbedder::TopSimilarityCallback callback);
-
-  void SetTextEmbedderForTesting(
-      std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder) {
-    text_embedder_ = std::move(text_embedder);
-  }
-  TextEmbedder* GetTextEmbedderForTesting() { return text_embedder_.get(); }
-
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -102,20 +90,8 @@ class AssociatedContentDelegate {
   virtual void OnNewPage(int64_t navigation_id);
 
  private:
-  void OnTextEmbedderInitialized(bool initialized);
-
   std::string uuid_;
   base::ObserverList<Observer> observers_;
-
-  // Owned by this class so that all associated conversation can benefit from
-  // a single cache as page content is unlikely to change between messages
-  // and conversations.
-  std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder_;
-  std::vector<std::tuple<std::string,  // prompt
-                         std::string,  // text
-                         uint32_t,     // context_limit
-                         TextEmbedder::TopSimilarityCallback>>
-      pending_top_similarity_requests_;
 
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };

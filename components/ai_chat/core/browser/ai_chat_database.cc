@@ -90,6 +90,14 @@ bool MigrateFrom4to5(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom5to6(sql::Database* db) {
+  static constexpr char kRemoveIsContentRefinedColumnQuery[] =
+      "ALTER TABLE associated_content DROP COLUMN is_content_refined";
+  sql::Statement statement(
+      db->GetUniqueStatement(kRemoveIsContentRefinedColumnQuery));
+
+  return statement.is_valid() && statement.Run();
+}
 void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
                               store::WebSourcesEventProto* proto_event) {
   proto_event->clear_sources();
@@ -143,10 +151,10 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 
 // The oldest version of the schema such that a legacy Brave client using that
 // version can still read/write the current database.
-constexpr int kCompatibleDatabaseVersionNumber = 1;
+constexpr int kCompatibleDatabaseVersionNumber = 6;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 5;
+constexpr int kCurrentDatabaseVersion = 6;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -243,6 +251,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 5;
     }
+    if (migration_success && current_version == 5) {
+      migration_success = MigrateFrom5to6(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(6);
+      }
+      current_version = 6;
+    }
 
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
@@ -275,8 +292,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       "  last_activity_date.date,"
       "  associated_content.uuid, associated_content.title,"
       "  associated_content.url, associated_content.content_type,"
-      "  associated_content.content_used_percentage,"
-      "  associated_content.is_content_refined"
+      "  associated_content.content_used_percentage"
       " FROM conversation"
       " LEFT JOIN associated_content"
       " ON conversation.uuid = associated_content.conversation_uuid"
@@ -332,7 +348,6 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
           static_cast<mojom::ContentType>(statement.ColumnInt(index++));
       associated_content->content_used_percentage =
           statement.ColumnInt(index++);
-      associated_content->is_content_refined = statement.ColumnBool(index++);
 
       conversation->associated_content.push_back(std::move(associated_content));
     }
@@ -686,8 +701,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
           " url = ?,"
           " content_type = ?,"
           " last_contents = ?,"
-          " content_used_percentage = ?,"
-          " is_content_refined = ?"
+          " content_used_percentage = ?"
           " WHERE uuid=? and conversation_uuid=?";
       insert_or_update_statement.Assign(
           GetDB().GetUniqueStatement(kUpdateAssociatedContentQuery));
@@ -697,8 +711,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
       static constexpr char kInsertAssociatedContentQuery[] =
           "INSERT INTO associated_content(title, url,"
           " content_type, last_contents, content_used_percentage,"
-          " is_content_refined, uuid, conversation_uuid)"
-          " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
+          " uuid, conversation_uuid)"
+          " VALUES(?, ?, ?, ?, ?, ?, ?) ";
       insert_or_update_statement.Assign(
           GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
     }
@@ -715,7 +729,6 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                                  content_text);
     insert_or_update_statement.BindInt(index++,
                                        content->content_used_percentage);
-    insert_or_update_statement.BindBool(index++, content->is_content_refined);
     insert_or_update_statement.BindString(index++, content->uuid);
     insert_or_update_statement.BindString(index, conversation_uuid);
 
@@ -1379,8 +1392,7 @@ bool AIChatDatabase::CreateSchema() {
       // Don't need REAL for content_used_percentage since
       // we're never using decimal values.
       // UI expects 0 - 100 values.
-      "content_used_percentage INTEGER NOT NULL,"
-      "is_content_refined INTEGER NOT NULL)";
+      "content_used_percentage INTEGER NOT NULL)";
   CHECK(GetDB().IsSQLValid(kCreateAssociatedContentTableQuery));
   if (!GetDB().Execute(kCreateAssociatedContentTableQuery)) {
     return false;

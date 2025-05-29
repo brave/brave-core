@@ -1011,52 +1011,12 @@ void ConversationHandler::PerformAssistantGeneration(
     return;
   }
 
-  auto data_received_callback =
-      base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
-                          weak_ptr_factory_.GetWeakPtr());
-
-  auto data_completed_callback =
-      base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
-                     weak_ptr_factory_.GetWeakPtr());
-
-  const size_t max_content_length =
-      ModelService::CalcuateMaxAssociatedContentLengthForModel(
-          GetCurrentModel());
-
-  mojom::ConversationTurnPtr& last_entry = chat_history_.back();
-
-  if (features::IsPageContentRefineEnabled() &&
-      page_content.length() > max_content_length &&
-      last_entry->action_type != mojom::ActionType::SUMMARIZE_PAGE &&
-      associated_content_manager_->HasAssociatedContent()) {
-    DVLOG(2) << "Refining content of length: " << page_content.length();
-
-    auto refined_content_callback = base::BindOnce(
-        &ConversationHandler::OnGetRefinedPageContent,
-        weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback),
-        std::move(data_completed_callback), page_content, is_video);
-
-    associated_content_manager_->GetTopSimilarityWithPromptTilContextLimit(
-        last_entry->prompt.value_or(last_entry->text), page_content,
-        max_content_length, std::move(refined_content_callback));
-
-    UpdateOrCreateLastAssistantEntry(EngineConsumer::GenerationResultData(
-        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-            mojom::PageContentRefineEvent::New()),
-        std::nullopt /* model_key */));
-    return;
-  } else if (is_content_refined_) {
-    // If we previously refined content but we're not anymore (perhaps the
-    // content shrunk or the model changed to one with a larger content length
-    // limit), update the UI to let them know we're not refining content
-    // anymore.
-    is_content_refined_ = false;
-    OnAssociatedContentUpdated();
-  }
-
   engine_->GenerateAssistantResponse(
       is_video, page_content, chat_history_, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
+                          weak_ptr_factory_.GetWeakPtr()),
+      base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1331,39 +1291,6 @@ void ConversationHandler::OnGeneratePageContentComplete(
   OnAssociatedContentUpdated();
 }
 
-void ConversationHandler::OnGetRefinedPageContent(
-    EngineConsumer::GenerationDataCallback data_received_callback,
-    EngineConsumer::GenerationCompletedCallback data_completed_callback,
-    std::string page_content,
-    bool is_video,
-    base::expected<std::string, std::string> refined_page_content) {
-  // Remove tenative assistant entry dedicated for page content event
-  const auto& last_turn = chat_history_.back();
-  if (last_turn->events && !last_turn->events->empty() &&
-      last_turn->events->back()->is_page_content_refine_event()) {
-    chat_history_.pop_back();
-    OnHistoryUpdate(nullptr);
-  } else {
-    VLOG(1) << "last entry should be page content refine event";
-  }
-  std::string page_content_to_use = std::move(page_content);
-  if (refined_page_content.has_value()) {
-    page_content_to_use = std::move(refined_page_content.value());
-    is_content_refined_ = true;
-    OnAssociatedContentUpdated();
-  } else {
-    VLOG(1) << "Failed to get refined page content: "
-            << refined_page_content.error();
-    if (is_content_refined_) {
-      is_content_refined_ = false;
-      OnAssociatedContentUpdated();
-    }
-  }
-  engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
-}
-
 void ConversationHandler::OnEngineCompletionDataReceived(
     EngineConsumer::GenerationResultData result) {
   UpdateOrCreateLastAssistantEntry(std::move(result));
@@ -1551,7 +1478,6 @@ ConversationHandler::GetStateForConversationEntries() {
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
   entries_state->is_generating = IsRequestInProgress();
-  entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->all_models = std::move(models_copy);
   entries_state->current_model_key = model.key;

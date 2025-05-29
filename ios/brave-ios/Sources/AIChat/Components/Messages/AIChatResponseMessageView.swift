@@ -115,26 +115,6 @@ struct AIChatResponseMessageView: View {
           }
           .fixedSize()
           .frame(maxWidth: .infinity, alignment: .leading)
-        } else if event.tag == .pageContentRefineEvent && isEntryInProgress && !hasCompletionStarted
-        {
-          HStack {
-            ProgressView()
-              .progressViewStyle(
-                BraveProgressStyleCircular(
-                  thickness: 4.0
-                )
-              )
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .backgroundStyle(Color(braveSystemName: .iconInteractive))
-
-            Text(Strings.AIChat.leoPageContentRefineInProgress)
-              .font(.subheadline)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
-              .multilineTextAlignment(.leading)
-              .frame(maxWidth: .infinity, alignment: .leading)
-          }
-          .fixedSize()
-          .frame(maxWidth: .infinity, alignment: .leading)
         }
       }
 

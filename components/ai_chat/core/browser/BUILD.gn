@@ -62,10 +62,7 @@ static_library("browser") {
     ]
   }
 
-  public_deps = [
-    ":text_embedder",
-    "//base",
-  ]
+  public_deps = [ "//base" ]
 
   deps = [
     ":generated_brave_search_responses",
@@ -112,22 +109,6 @@ static_library("browser") {
   }
 }
 
-source_set("text_embedder") {
-  sources = [
-    "text_embedder.cc",
-    "text_embedder.h",
-  ]
-
-  deps = [ "//base" ]
-
-  public_deps = [
-    "//brave/third_party/tflite_support",
-    "//third_party/tflite",
-    "//third_party/tflite_support",
-    "//third_party/tflite_support:tflite_support_proto",
-  ]
-}
-
 if (!is_ios) {
   source_set("unit_tests") {
     testonly = true
@@ -145,11 +126,9 @@ if (!is_ios) {
       "engine/oai_api_client_unittest.cc",
       "engine/test_utils.cc",
       "engine/test_utils.h",
-      "local_models_updater_unittest.cc",
       "model_service_unittest.cc",
       "model_validator_unittest.cc",
       "tab_tracker_service_unittest.cc",
-      "text_embedder_unittest.cc",
       "utils_unittest.cc",
     ]
 

@@ -27,7 +27,7 @@ void RegisterComponentsForUpdate() {
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
   psst::RegisterPsstComponent(cus);
-  ai_chat::ManageLocalModelsComponentRegistration(cus);
+  ai_chat::MigrateDeprecatedLocalModelsComponent(cus);
 }
 
 }  // namespace component_updater

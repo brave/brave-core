@@ -49,10 +49,6 @@ std::string MessageConversationEntryEvents(
                                 event->get_conversation_title_event()->title});
         break;
       }
-      case mojom::ConversationEntryEvent::Tag::kPageContentRefineEvent: {
-        message = base::StrCat({message, "\n - content refine event"});
-        break;
-      }
       default:
         message = base::StrCat({message, "\n - unknown event"});
     }
@@ -102,7 +98,6 @@ void ExpectAssociatedContentEquals(
     EXPECT_EQ(a_content->content_type, b_content->content_type);
     EXPECT_EQ(a_content->content_used_percentage,
               b_content->content_used_percentage);
-    EXPECT_EQ(a_content->is_content_refined, b_content->is_content_refined);
   }
 }
 

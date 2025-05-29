@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
+#include <memory>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -57,11 +59,6 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void GetContent(base::OnceClosure callback);
   void GetScreenshots(ConversationHandler::GetScreenshotsCallback callback);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
-  void GetTopSimilarityWithPromptTilContextLimit(
-      const std::string& prompt,
-      const std::string& text,
-      uint32_t context_limit,
-      TextEmbedder::TopSimilarityCallback callback);
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
 

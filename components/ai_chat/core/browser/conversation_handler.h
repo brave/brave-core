@@ -260,9 +260,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                            OnGetStagedEntriesFromContent_FailedChecks);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
                            SelectedLanguage);
-  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
-  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
-  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
                            ContentReceipt);
 
@@ -307,12 +304,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GeneratePageContentInternal(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(GetPageContentCallback callback,
                                      std::string previous_content);
-  void OnGetRefinedPageContent(
-      EngineConsumer::GenerationDataCallback data_received_callback,
-      EngineConsumer::GenerationCompletedCallback data_completed_callback,
-      std::string page_content,
-      bool is_video,
-      base::expected<std::string, std::string> refined_page_content);
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
@@ -361,7 +352,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::SuggestionGenerationStatus suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::None;
 
-  bool is_content_refined_ = false;
   // When this is true, the most recent content retrieval was different to the
   // previous one.
   bool is_content_different_ = true;

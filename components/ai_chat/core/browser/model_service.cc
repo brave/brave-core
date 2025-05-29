@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <ios>
 #include <iterator>
 #include <memory>
@@ -23,6 +24,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
+#include "base/numerics/checked_math.h"
 #include "base/numerics/safe_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -39,7 +41,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "cc/task/core/task_utils.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -394,7 +395,7 @@ void ModelService::SetAssociatedContentLengthMetrics(mojom::Model& model) {
   model.options->get_custom_model_options()->max_associated_content_length =
       max_associated_content_length;
 
-  base::CheckedNumeric<uint32> warn_at = base::CheckMul<size_t>(
+  base::CheckedNumeric<uint32_t> warn_at = base::CheckMul<size_t>(
       max_associated_content_length, kMaxContentLengthThreshold);
 
   if (warn_at.IsValid()) {
