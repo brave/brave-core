@@ -371,9 +371,6 @@
       <message name="IDS_CONCAT_TWO_STRINGS_WITH_COMMA" desc="This string concatenates two other strings. In the English language, this particular concatenation is done via a comma and a whitespace in between the other strings. For example: '1 compromised password, 2 weak passwords'">
         <ph name="TYPE_1">%1$s<ex>2 compromised passwords</ex></ph>, <ph name="TYPE_2">%2$s<ex>7 weak passwords</ex></ph>
       </message>
-      <message name="IDS_CONCAT_TWO_STRINGS_WITH_PERIODS" desc="This string concatenates two other strings. In the English language, this particular concatenation is done via a period and a whitespace after the first string, and a period after the second string. For example: '1 compromised password. 2 weak passwords.'">
-        <ph name="TYPE_1">%1$s<ex>2 compromised passwords</ex></ph>. <ph name="TYPE_2">%2$s<ex>7 weak passwords</ex></ph>.
-      </message>
 
       <!-- Certificate viewer -->
       <message name="IDS_CERTTITLE" desc="Dialog box title for viewing security certificates. [CHAR_LIMIT=32]">
@@ -579,9 +576,6 @@
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_TITLE" desc="Label shown on a dialog that allows users to turn off third-party cookie blocking for a specific site.">
         Site not working?
-      </message>
-      <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_PERMANENT" desc="Descriptive text in the Page Info UI explaining the trade-off of allowing third-party cookies for this site, a change that will not automatically expire in the future.">
-        Try allowing third-party cookies, which means less protection but site features are more likely to work
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_TRACKING_PROTECTION" desc="Descriptive text in the Page Info UI explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
         Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
@@ -1128,8 +1122,8 @@
       </message>
 
       <!-- Magic stack strings -->
-      <message name="IDS_HOME_MODULES_CONTEXT_MENU_CUSTOMIZE" desc="The context menu item to show the customize homepage settings.">
-        Customize
+      <message name="IDS_HOME_MODULES_CONTEXT_MENU_MORE_SETTINGS" desc="The context menu item to show more settings to customize the new tab page.">
+        More settings
       </message>
       <message name="IDS_HOME_MODULES_CONFIGURATION" desc="The title for the configuration page which customizes the home modules settings.">
         New tab page cards
@@ -1273,8 +1267,11 @@
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_NOTIFICATIONS_TITLE" desc="Title for the notification review Safety Check module on the Magic Stack. Shown when Safety Check has identified several sites that sent lots of notifications.">
         Stop lots of notifications
       </message>
-      <message name="IDS_SAFETY_HUB_MAGIC_STACK_SAFE_STATE_BUTTON_TEXT" desc="Action button for the safe state modules of Safety Check in the Magic Stack. Shown in the notification or permissison review modules. Opens Safety Check when clicked.">
+      <message name="IDS_SAFETY_HUB_MAGIC_STACK_SAFE_STATE_BUTTON_TEXT" desc="Action button for the safe state modules of Safety Check in the Magic Stack. Shown in the notification or permissions review modules. Opens Safety Check when clicked.">
         Review
+      </message>
+      <message name="IDS_SAFETY_HUB_MAGIC_STACK_SAFE_STATE_BUTTON_CONTENT_DESCRIPTION" desc="Accessibility text for the button for the safe state modules of Safety Check in the Magic Stack. Shown in the notification or permissions review modules. Opens Safety Check when clicked.">
+        Review Safety Check
       </message>
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing module of Safety Check in the Magic Stack. Shown when Safe Browsing is turned off by the user.">
         Turn on Safe Browsing

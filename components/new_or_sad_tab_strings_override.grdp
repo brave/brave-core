@@ -42,7 +42,7 @@
       <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title of the new private tab page, not to be confused with the action of opening a new private tab.">
         New Private Tab
       </message>
-      <message name="IDS_INCOGNITO_TAB_LEARN_MORE_ACCESSIBILITY_LABEL" desc="Accessibility label for a link labeled 'Learn more' that links to a help article about Private mode.">
+      <message name="IDS_INCOGNITO_TAB_LEARN_MORE_ACCESSIBILITY_LABEL" desc="Accessibility label for a link labeled 'Learn more' that links to a help article about Private mode." formatter_data="android_java">
         Learn more about Private
       </message>
       <if expr="not is_android">

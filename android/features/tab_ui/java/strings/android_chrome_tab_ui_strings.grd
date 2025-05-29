@@ -360,7 +360,7 @@
 
       <!-- Tab Grid Dialog strings -->
       <message name="IDS_REMOVE_TAB_FROM_GROUP" desc="Content description for an action which removes a tab from its group.">
-        Remove from group
+        Remove tab from group
       </message>
       <message name="IDS_TAB_GRID_DIALOG_TOOLBAR_EDIT_GROUP_NAME" desc="This text shows in the TabGridDialog toolbar menu as one menu item. When user selects this item, the group name field will be focused and the keyboard will show for users to edit the group name.">
         Edit group name
@@ -768,6 +768,11 @@
       <message name="IDS_PLUS_HIDDEN_TAB_COUNT" desc="A string to show how many other tabs are contained in a tab group who's favicons are not shown. [CHAR_LIMIT=5]">
         +<ph name="HIDDEN_TABS_COUNT">%1$s<ex>3</ex></ph>
       </message>
+      <message name="IDS_MOVE_GROUP_TO_ANOTHER_WINDOW_CONTEXT_MENU_ITEM" desc="Menu item text which will be displayed for tab group context menu on strip to move the group to another window.">
+        {WINDOW_COUNT, plural,
+          =1 {Move group to new window}
+          other {Move group to another window}}
+      </message>
       <message name="IDS_OPEN_NEW_TAB_IN_GROUP_CONTEXT_MENU_ITEM" desc="Menu item text which will be display for tab group context menu on strip to allow opening a new tab in the tab group.">
         New tab in group
       </message>
@@ -953,6 +958,20 @@
         Send feedback
       </message>
 
+      <!-- Auto Delete Decision Promo Strings -->
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_TITLE" desc="Title text for the Auto Delete Decision Bottom Sheet.">
+        Keep your inactive section tidy?
+      </message>
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_DESCRIPTION" desc="Description text or the Auto Delete Decision Bottom Sheet.">
+        Brave automatically closes items in the inactive section that you haven't used in 3 months. You can turn this off now or anytime in Settings.
+      </message>
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_YES_BUTTON" desc="Button to accept the Auto Delete feature. ">
+        Yes. I'm in
+      </message>
+      <message name="IDS_ARCHIVED_TABS_AUTO_DELETE_PROMO_NO_BUTTON" desc="Button to deny the Auto Delete feature. ">
+        Turn off
+      </message>
+
       <!-- Tab Group Removed Message Strings -->
       <message name="IDS_ONE_TAB_GROUP_REMOVED_MESSAGE_CARD_DESCRIPTION" desc="Description text on the message card which is shown when user is no longer a part of one tab group. [CHAR_LIMIT=40]">
         "<ph name="TAB_GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group no longer available
@@ -971,9 +990,6 @@
       </message>
 
       <!-- Tab context menu (for individual tabs) -->
-      <message name="IDS_ADD_TAB_TO_GROUP" desc="Content description for an action which adds a tab to a group.">
-        Add to group
-      </message>
       <message name="IDS_SELECT_TAB" desc="Content description for an action which selects a singular tab.">
         Select tab
       </message>
@@ -982,11 +998,8 @@
       </message>
       <message name="IDS_MOVE_TAB_TO_ANOTHER_WINDOW" desc="Content description for an action which moves a tab to another window.">
         {WINDOW_COUNT, plural,
-          =1 {Move to new window}
-          other {Move to other window}}
-      </message>
-      <message name="IDS_MOVE_TAB_TO_GROUP" desc="Content description for an action which moves a tab to another group.">
-        Move to group
+          =1 {Move tab to new window}
+          other {Move tab to another window}}
       </message>
 
       <!-- Tab Group List Bottom Sheet -->
