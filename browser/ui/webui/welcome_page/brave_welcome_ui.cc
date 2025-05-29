@@ -17,6 +17,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
+#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/browser/ui/webui/welcome_page/welcome_dom_handler.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
@@ -130,7 +131,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   country_codes::CountryId country_id =
       country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
   const bool is_jpn = country_id == country_codes::CountryId("JP");
-  if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
+  if (!profile->GetPrefs()->GetBoolean(
+          brave::welcome_ui::prefs::kHasSeenBraveWelcomePage)) {
     if (is_jpn) {
       base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
@@ -153,7 +155,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       "hardwareAccelerationEnabledAtStartup",
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
-  profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
+  profile->GetPrefs()->SetBoolean(
+      brave::welcome_ui::prefs::kHasSeenBraveWelcomePage, true);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
