@@ -8,8 +8,8 @@
 
 #include <memory>
 
+#include "brave/browser/ui/webui/brave_account/brave_account.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
-#include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
