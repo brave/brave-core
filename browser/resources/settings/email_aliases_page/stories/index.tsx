@@ -165,7 +165,11 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { result: { errorMessage, aliasEmail } }
   }
 
-  requestAuthentication (email: string) {
+  async requestAuthentication (email: string) {
+    if (Math.random() < 1/3) {
+      return {
+        errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
+    }
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kAuthenticating,
@@ -186,10 +190,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
         })
       })
     }, 5000);
-    const errorMessage = Math.random() < 1/3
-      ? getLocale('emailAliasesRequestAuthenticationError')
-      : null
-    return { errorMessage }
+    return { errorMessage: undefined }
   }
 
   cancelAuthenticationOrLogout () {
