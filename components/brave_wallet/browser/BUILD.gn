@@ -329,6 +329,7 @@ static_library("browser") {
     "//components/country_codes",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/sync_preferences",
     "//components/update_client",
     "//components/value_store",
