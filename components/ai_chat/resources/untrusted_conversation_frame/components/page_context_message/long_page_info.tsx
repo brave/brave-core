@@ -14,16 +14,16 @@ export default function LongPageInfo() {
   const context = useUntrustedConversationContext()
   let warningText
   if (context.isContentRefined) {
-    warningText = getLocale('pageContentRefinedWarning')
+    warningText = getLocale(StringIds.PageContentRefinedWarning)
   } else if (context.trimmedTokens > 0 && context.totalTokens > 0) {
       const percentage = 100 - Math.floor((Number(context.trimmedTokens) / Number(context.totalTokens)) * 100)
-      warningText = formatMessage(getLocale('trimmedTokensWarning'), {
+      warningText = formatMessage(getLocale(StringIds.TrimmedTokensWarning), {
         placeholders: {
           $1: percentage + '%'
         }
       })
   } else {
-    warningText = formatMessage(getLocale('pageContentTooLongWarning'), {
+    warningText = formatMessage(getLocale(StringIds.PageContentTooLongWarning), {
         placeholders: {
           $1: context.contentUsedPercentage + '%'
         }

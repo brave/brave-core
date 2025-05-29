@@ -35,7 +35,7 @@ function PageContextToggle() {
       >
         <span slot="on-icon" />
         <div className={styles.label}>
-          <span>{getLocale('contextToggleLabel')}</span>
+          <span>{getLocale(StringIds.ContextToggleLabel)}</span>
           <Tooltip
             visible={isTooltipVisible}
             mode="default"
@@ -55,7 +55,7 @@ function PageContextToggle() {
               }}
             >
               <div className={styles.tooltipInfo}>
-                {getLocale('contextToggleTooltipInfo')}
+                {getLocale(StringIds.ContextToggleTooltipInfo)}
               </div>
               <div className={styles.tooltipSiteTitle}>
                 <SiteTitles size='small' />

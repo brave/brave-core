@@ -279,13 +279,13 @@ function Main() {
             {shouldShowPremiumSuggestionForModel && (
               <div className={styles.promptContainer}>
                 <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
+                  title={getLocale(StringIds.UnlockPremiumTitle)}
                   secondaryActionButton={
                     <Button
                       kind='plain-faint'
                       onClick={() => conversationContext.switchToBasicModel()}
                     >
-                      {getLocale('switchToBasicModelButtonLabel')}
+                      {getLocale(StringIds.SwitchToBasicModelButtonLabel)}
                     </Button>
                   }
                 />
@@ -294,13 +294,13 @@ function Main() {
             {shouldShowPremiumSuggestionStandalone && (
               <div className={styles.promptContainer}>
                 <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
+                  title={getLocale(StringIds.UnlockPremiumTitle)}
                   secondaryActionButton={
                     <Button
                       kind='plain-faint'
                       onClick={() => aiChatContext.dismissPremiumPrompt()}
                     >
-                      {getLocale('dismissButtonLabel')}
+                      {getLocale(StringIds.DismissButtonLabel)}
                     </Button>
                   }
                 />

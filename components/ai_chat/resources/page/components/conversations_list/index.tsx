@@ -66,9 +66,9 @@ function ConversationItem(props: ConversationItemProps) {
   const conversationContext = useConversation()
 
   const { uuid } = props.conversation
-  const title = props.conversation.title || getLocale('conversationListUntitled')
+  const title = props.conversation.title || getLocale(StringIds.ConversationListUntitled)
 
-  const handleButtonMenuChange = (e: {isOpen: boolean}) => {
+  const handleButtonMenuChange = (e: { isOpen: boolean }) => {
     setIsOptionsMenuOpen(e.isOpen)
   }
 
@@ -127,13 +127,13 @@ function ConversationItem(props: ConversationItemProps) {
             <leo-menu-item onClick={handleEditTitle}>
               <div className={styles.optionsMenuItemWithIcon}>
                 <Icon name='edit-pencil' />
-                <div>{getLocale('menuRenameConversation')}</div>
+                <div>{getLocale(StringIds.MenuRenameConversation)}</div>
               </div>
             </leo-menu-item>
             <leo-menu-item onClick={handleDelete}>
               <div className={styles.optionsMenuItemWithIcon}>
                 <Icon name='trash' />
-                <div>{getLocale('menuDeleteConversation')}</div>
+                <div>{getLocale(StringIds.MenuDeleteConversation)}</div>
               </div>
             </leo-menu-item>
           </ButtonMenu>
@@ -169,11 +169,11 @@ export default function ConversationsList(props: ConversationsListProps) {
           {!aiChatContext.isStoragePrefEnabled &&
           <Alert type='notice'>
             <Icon name='history' slot='icon' />
-            <div slot='title'>{getLocale('noticeConversationHistoryTitleDisabledPref')}</div>
-            {getLocale('noticeConversationHistoryDisabledPref')}
+            <div slot='title'>{getLocale(StringIds.NoticeConversationHistoryTitleDisabledPref)}</div>
+            {getLocale(StringIds.NoticeConversationHistoryDisabledPref)}
             <div slot='actions'>
               <Button kind='outline' onClick={aiChatContext.enableStoragePref}>
-                {getLocale('noticeConversationHistoryDisabledPrefButton')}
+                {getLocale(StringIds.NoticeConversationHistoryDisabledPrefButton)}
               </Button>
             </div>
           </Alert>
@@ -181,8 +181,8 @@ export default function ConversationsList(props: ConversationsListProps) {
           {aiChatContext.isStoragePrefEnabled && aiChatContext.visibleConversations.length === 0 &&
           <Alert type='notice'>
             <Icon name='history' slot='icon' />
-            <div slot='title'>{getLocale('menuConversationHistory')}</div>
-            {getLocale('noticeConversationHistoryEmpty')}
+            <div slot='title'>{getLocale(StringIds.MenuConversationHistory)}</div>
+            {getLocale(StringIds.NoticeConversationHistoryEmpty)}
           </Alert>
           }
           {aiChatContext.visibleConversations.length > 0 &&

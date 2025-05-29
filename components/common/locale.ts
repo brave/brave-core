@@ -39,9 +39,9 @@ export const getLocale = (
   return returnVal
 }
 
-type Replacement = string | React.ReactNode | ((contents: string) => React.ReactNode | string)
-type ReturnType<T extends Replacement> = T extends (string | ((contents: string) => string)) ? string : React.ReactNode
-type Options = {
+export type Replacement = string | React.ReactNode | ((contents: string) => React.ReactNode | string)
+export type ReturnType<T extends Replacement> = T extends (string | ((contents: string) => string)) ? string : React.ReactNode
+export type Options = {
   noErrorOnMissingReplacement?: boolean
 }
 

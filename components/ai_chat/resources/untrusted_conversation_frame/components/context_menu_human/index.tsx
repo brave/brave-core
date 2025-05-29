@@ -51,14 +51,14 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
             onClick={props.onEditQuestionClicked}
           >
             <Icon name='edit-pencil' />
-            <span>{getLocale('editPromptButtonLabel')}</span>
+            <span>{getLocale(StringIds.EditPromptButtonLabel)}</span>
           </leo-menu-item>
         )}
         <leo-menu-item
           onClick={props.onCopyQuestionClicked}
         >
           <Icon name='copy' />
-          <span>{getLocale('copyPromptButtonLabel')}</span>
+          <span>{getLocale(StringIds.CopyPromptButtonLabel)}</span>
         </leo-menu-item>
       </ButtonMenu>
     </>

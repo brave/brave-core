@@ -91,14 +91,14 @@ tab_search::mojom::ErrorPtr TabSearchPageHandler::GetError(
     bool is_premium = ai_chat_service->IsPremiumStatus();
     error->message =
         is_premium
-            ? l10n_util::GetStringUTF8(IDS_CHAT_UI_ERROR_RATE_LIMIT)
-            : l10n_util::GetStringUTF8(IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC);
+            ? l10n_util::GetStringUTF8(IDS_AI_CHAT_ERROR_RATE_LIMIT)
+            : l10n_util::GetStringUTF8(IDS_AI_CHAT_RATE_LIMIT_REACHED_DESC);
     error->rate_limited_info =
         tab_search::mojom::RateLimitedInfo::New(is_premium);
   } else if (api_error == ai_chat::mojom::APIError::ConnectionIssue) {
-    error->message = l10n_util::GetStringUTF8(IDS_CHAT_UI_ERROR_NETWORK);
+    error->message = l10n_util::GetStringUTF8(IDS_AI_CHAT_ERROR_NETWORK);
   } else {
-    error->message = l10n_util::GetStringUTF8(IDS_CHAT_UI_ERROR_INTERNAL);
+    error->message = l10n_util::GetStringUTF8(IDS_AI_CHAT_ERROR_INTERNAL);
   }
 
   return error;

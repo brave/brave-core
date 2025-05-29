@@ -21,7 +21,6 @@
 
 namespace ai_chat {
 
-base::span<const webui::LocalizedString> GetLocalizedStrings();
 std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 
 inline constexpr auto kPrintPreviewRetrievalHosts =

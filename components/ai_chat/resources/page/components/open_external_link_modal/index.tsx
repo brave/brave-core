@@ -50,15 +50,15 @@ export default function OpenExternalLinkModal() {
         slot='title'
         className={styles.dialogTitle}
       >
-        {getLocale('openExternalLink')}
+        {getLocale(StringIds.OpenExternalLink)}
       </div>
       <div className={styles.description}>
-        {getLocale('openExternalLinkInfo')}
+        {getLocale(StringIds.OpenExternalLinkInfo)}
         <Checkbox
           checked={ignoreChecked}
           onChange={({ checked }) => setIgnoreChecked(checked)}
         >
-          <span>{getLocale('openExternalLinkCheckboxLabel')}</span>
+          <span>{getLocale(StringIds.OpenExternalLinkCheckboxLabel)}</span>
         </Checkbox>
       </div>
       <div
@@ -73,14 +73,14 @@ export default function OpenExternalLinkModal() {
               conversationContext.setGeneratedUrlToBeOpened(undefined)
             }
           >
-            {getLocale('cancelButtonLabel')}
+            {getLocale(StringIds.CancelButtonLabel)}
           </Button>
           <Button
             kind='filled'
             size='medium'
             onClick={onOpenClicked}
           >
-            {getLocale('openLabel')}
+            {getLocale(StringIds.OpenLabel)}
           </Button>
         </div>
       </div>

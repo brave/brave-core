@@ -1,0 +1,22 @@
+diff --git a/tools/grit/grit_rule.gni b/tools/grit/grit_rule.gni
+index 912fdae64996f353eedae2cbbbbb2d053f18a1c6..f204a009a62e6d39123db2fad07d53726a91894a 100644
+--- a/tools/grit/grit_rule.gni
++++ b/tools/grit/grit_rule.gni
+@@ -311,7 +311,7 @@ template("grit") {
+     foreach(_output, _grit_outputs) {
+       _extension = get_path_info(_output, "extension")
+       if (_extension != "json" && _extension != "gz" && _extension != "pak" &&
+-          _extension != "xml") {
++          _extension != "xml" && _extension != "ts") {
+         sources += [ _output ]
+       }
+     }
+@@ -320,7 +320,7 @@ template("grit") {
+     # grit above rather than this library. This target needs to depend on the
+     # action publicly so other scripts can take the outputs from the grit
+     # script as inputs.
+-    public_deps = [ ":$_grit_custom_target" ]
++    public_deps = [ ":$_grit_custom_target", "//base" ]
+ 
+     if (defined(invoker.public_configs)) {
+       public_configs += invoker.public_configs

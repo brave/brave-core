@@ -47,14 +47,14 @@ export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) 
 
   return (
     <div className={styles.sources}>
-      <h4>{getLocale('sources')}</h4>
+      <h4>{getLocale(StringIds.Sources)}</h4>
       <ul>
         {unhiddenSources.map(source => <WebSource key={source.url.url} source={source} />)}
         {!isExpanded && hiddenSources.length > 0 && (
           <li>
             <button name='expand' onClick={() => setIsExpanded(true)}>
               <Icon className={styles.expandIcon} name='plus-add' />
-              {formatMessage(getLocale('expandSources'), { placeholders: { $1: hiddenSources.length } })}
+              {formatMessage(getLocale(StringIds.ExpandSources), { placeholders: { $1: hiddenSources.length } })}
             </button>
           </li>
         )}

@@ -28,13 +28,13 @@ function ErrorRateLimit(props: Props) {
     return (
       <div className={styles.alert}>
         <Alert type='warning'>
-          {getLocale('errorOAIRateLimit')}
+          {getLocale(StringIds.ErrorOaiRateLimit)}
           <Button
             slot='actions'
             kind='filled'
             onClick={conversationContext.retryAPIRequest}
           >
-            {getLocale('retryButtonLabel')}
+            {getLocale(StringIds.RetryButtonLabel)}
           </Button>
         </Alert>
       </div>
@@ -45,14 +45,14 @@ function ErrorRateLimit(props: Props) {
   if (!aiChatContext.isPremiumUser) {
     return (
       <PremiumSuggestion
-        title={getLocale('rateLimitReachedTitle')}
-        description={getLocale('rateLimitReachedDesc')}
+        title={getLocale(StringIds.RateLimitReachedTitle)}
+        description={getLocale(StringIds.RateLimitReachedDesc)}
         secondaryActionButton={
           <Button
             kind='plain-faint'
             onClick={conversationContext.handleResetError}
           >
-            {getLocale('maybeLaterLabel')}
+            {getLocale(StringIds.MaybeLaterLabel)}
           </Button>
         }
       />
@@ -62,13 +62,13 @@ function ErrorRateLimit(props: Props) {
   return (
     <div className={styles.alert}>
       <Alert type='warning'>
-        {getLocale('errorRateLimit')}
+        {getLocale(StringIds.ErrorRateLimit)}
         <Button
           slot='actions'
           kind='filled'
           onClick={conversationContext.retryAPIRequest}
         >
-          {getLocale('retryButtonLabel')}
+          {getLocale(StringIds.RetryButtonLabel)}
         </Button>
       </Alert>
     </div>

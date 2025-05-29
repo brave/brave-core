@@ -650,7 +650,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
     }
     case SidebarItem::BuiltInItemType::kChatUI: {
       if (ai_chat::IsAIChatEnabled(prefs_)) {
-        return SidebarItem::Create(l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE),
+        return SidebarItem::Create(l10n_util::GetStringUTF16(IDS_AI_CHAT_TITLE),
                                    SidebarItem::Type::kTypeBuiltIn,
                                    SidebarItem::BuiltInItemType::kChatUI,
                                    /* open_in_panel = */ true);

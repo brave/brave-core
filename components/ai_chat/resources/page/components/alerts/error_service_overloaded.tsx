@@ -17,13 +17,13 @@ export default function ErrorServiceOverloaded(props: ElementProps) {
   return (
     <div className={styles.alert}>
       <Alert type='error'>
-        {getLocale('errorServiceOverloaded')}
+        {getLocale(StringIds.ErrorServiceOverloaded)}
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-          {getLocale('retryButtonLabel')}
+          {getLocale(StringIds.RetryButtonLabel)}
         </Button>
       </Alert>
     </div>

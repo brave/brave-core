@@ -19,6 +19,7 @@ brave_grit("static_resources") {
 
   output_name = "brave_components_resources_new"
 
+  output_dir = "$root_gen_dir/components"
   outputs = [
     "grit/brave_components_resources.h",
     "brave_components_static.pak",
@@ -45,8 +46,6 @@ brave_grit("static_resources") {
     "enable_playlist=$enable_playlist",
     "enable_speedreader=$enable_speedreader",
   ]
-
-  output_dir = "$root_gen_dir/components"
 }
 
 repack("resources") {
@@ -147,7 +146,12 @@ repack("resources") {
 brave_grit("strings") {
   source = "brave_components_strings.grd"
 
-  outputs = [ "grit/brave_components_strings.h" ]
+  outputs = [
+    "grit/brave_components_strings.h",
+    "ai_chat_strings.cc",
+    "ai_chat_strings.h",
+    "ai_chat_strings.ts",
+  ]
 
   defines = [
     "enable_speedreader=$enable_speedreader",

@@ -727,7 +727,7 @@ void ConversationHandler::SubmitSummarizationRequest() {
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_PAGE,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_PAGE),
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
@@ -1199,12 +1199,12 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     if (!has_summarized) {
       if (associated_content_manager_->IsVideo()) {
         suggestions_.emplace_back(
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO),
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_VIDEO),
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO),
             mojom::ActionType::SUMMARIZE_VIDEO);
       } else {
         suggestions_.emplace_back(
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_SUMMARIZE_PAGE),
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
             mojom::ActionType::SUMMARIZE_PAGE);
       }
@@ -1217,7 +1217,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     // The title for the summarize page suggestion needs to be updated when
     // the number of associated content items changes.
     suggestions_[0].title =
-        l10n_util::GetPluralStringFUTF8(IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+        l10n_util::GetPluralStringFUTF8(IDS_AI_CHAT_SUMMARIZE_PAGES_SUGGESTION,
                                         metadata_->associated_content.size());
     OnSuggestedQuestionsChanged();
   }

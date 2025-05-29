@@ -22,8 +22,8 @@ export default function NoticeConversationStorage() {
         <img src={illustrationUrl} alt="illustration" />
       </div>
       <div className={styles.content}>
-        <h4>{getLocale('menuConversationHistory')}</h4>
-        <p>{getLocale('noticeConversationHistoryBody')}</p>
+        <h4>{getLocale(StringIds.MenuConversationHistory)}</h4>
+        <p>{getLocale(StringIds.NoticeConversationHistoryBody)}</p>
         <p>
           <a
             href='#'
@@ -33,7 +33,7 @@ export default function NoticeConversationStorage() {
               aiChatContext.uiHandler?.openStorageSupportUrl()
             }}
           >
-            {getLocale('learnMore')}
+            {getLocale(StringIds.LearnMore)}
           </a>
 
         </p>
@@ -43,7 +43,7 @@ export default function NoticeConversationStorage() {
         kind='filled'
         size='tiny'
         fab
-        title={getLocale('closeNotice')}
+        title={getLocale(StringIds.CloseNotice)}
         onClick={aiChatContext.dismissStorageNotice}
       >
         <Icon className={styles.closeIcon} name='close' />

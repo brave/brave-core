@@ -179,7 +179,7 @@ function ConversationEntries() {
                           {latestEdit && (
                             <div className={styles.editLabel}>
                               <span className={styles.editLabelText}>
-                                {getLocale('editedLabel')}
+                                {getLocale(StringIds.EditedLabel)}
                               </span>
                             </div>
                           )}

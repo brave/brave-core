@@ -9,6 +9,8 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import Context from './Context'
 import Layout from './components/Layout'
 
+import 'gen/components/ai_chat_strings'
+
 setIconBasePath('//resources/brave-icons')
 
 createRoot(document.querySelector('#root')!).render(<Context>

@@ -64,7 +64,7 @@ export default function ContextActionsAssistant(
         fab
         size='small'
         kind='plain-faint'
-        title={getLocale('editButtonLabel')}
+        title={getLocale(StringIds.EditButtonLabel)}
         className={styles.button}
       >
         <Icon name='edit-pencil' />
@@ -74,7 +74,7 @@ export default function ContextActionsAssistant(
         fab
         size='small'
         kind='plain-faint'
-        title={getLocale('likeAnswerButtonLabel')}
+        title={getLocale(StringIds.LikeAnswerButtonLabel)}
         className={styles.button}
       >
         <Icon
@@ -89,7 +89,7 @@ export default function ContextActionsAssistant(
         fab
         size='small'
         kind='plain-faint'
-        title={getLocale('dislikeAnswerButtonLabel')}
+        title={getLocale(StringIds.DislikeAnswerButtonLabel)}
         className={styles.button}
       >
         <Icon

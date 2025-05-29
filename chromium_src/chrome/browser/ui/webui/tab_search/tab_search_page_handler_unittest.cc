@@ -146,7 +146,7 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
         EXPECT_EQ(
             error,
             tab_search::mojom::Error::New(
-                l10n_util::GetStringUTF8(IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC),
+                l10n_util::GetStringUTF8(IDS_AI_CHAT_RATE_LIMIT_REACHED_DESC),
                 std::move(rate_limited_info)));
       }));
 
@@ -170,7 +170,7 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
         EXPECT_EQ(
             error,
             tab_search::mojom::Error::New(
-                l10n_util::GetStringUTF8(IDS_CHAT_UI_ERROR_NETWORK), nullptr));
+                l10n_util::GetStringUTF8(IDS_AI_CHAT_ERROR_NETWORK), nullptr));
       }));
 
   // Uninteresting calls from upstream.
@@ -282,7 +282,7 @@ TEST_F(TabSearchPageHandlerTest, GetFocusTabs) {
                 tab_search::mojom::RateLimitedInfo::New(false /* is_premium */);
             EXPECT_EQ(error, tab_search::mojom::Error::New(
                                  l10n_util::GetStringUTF8(
-                                     IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC),
+                                     IDS_AI_CHAT_RATE_LIMIT_REACHED_DESC),
                                  std::move(rate_limited_info)));
           }));
 

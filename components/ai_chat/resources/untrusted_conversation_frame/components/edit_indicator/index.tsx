@@ -28,7 +28,7 @@ function EditIndicator(props: Props) {
   return (
     <div className={styles.editIndicator}>
       <Icon name='edit-pencil' />
-      <span className={styles.editedText}>{getLocale('editedLabel')}</span>
+      <span className={styles.editedText}>{getLocale(StringIds.EditedLabel)}</span>
       <span className={styles.time}>
         {dateTimeFormatter.format(mojoTimeToJSDate(props.time))}
       </span>

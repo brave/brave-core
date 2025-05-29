@@ -4,6 +4,9 @@
     <output filename="grit/brave_components_strings.h" type="rc_header">
       <emit emit_type='prepend'></emit>
     </output>
+    <output filename="ai_chat_strings.cc" type="webui_locale_source" lang="ai_chat" />
+    <output filename="ai_chat_strings.h" type="webui_locale_header" lang="ai_chat" />
+    <output filename="ai_chat_strings.ts" type="webui_locale_ts" lang="ai_chat" />
     <output filename="brave_components_strings_af.pak" type="data_package" lang="af" />
     <output filename="brave_components_strings_am.pak" type="data_package" lang="am" />
     <output filename="brave_components_strings_ar.pak" type="data_package" lang="ar" />

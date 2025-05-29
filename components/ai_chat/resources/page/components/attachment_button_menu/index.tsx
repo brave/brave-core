@@ -38,7 +38,7 @@ export default function AttachmentButtonMenu(props: Props) {
           <Button
             fab
             kind='plain-faint'
-            title={getLocale('attachmentMenuButtonLabel')}
+            title={getLocale(StringIds.LeoAttachmentMenuButtonLabel)}
             isDisabled={isMenuDisabled}
           >
             <Icon name='attachment' />
@@ -50,7 +50,7 @@ export default function AttachmentButtonMenu(props: Props) {
               className={styles.buttonIcon}
               name='upload'
             />
-            {getLocale('uploadFileButtonLabel')}
+            {getLocale(StringIds.UploadFileButtonLabel)}
           </div>
         </leo-menu-item>
         {!!props.associatedContentInfo &&
@@ -60,7 +60,7 @@ export default function AttachmentButtonMenu(props: Props) {
                  className={styles.buttonIcon}
                  name='screenshot'
                />
-               {getLocale('screenshotButtonLabel')}
+               {getLocale(StringIds.ScreenshotButtonLabel)}
              </div>
           </leo-menu-item>
        }
@@ -71,7 +71,7 @@ export default function AttachmentButtonMenu(props: Props) {
                 className={styles.buttonIcon}
                 name='camera'
               />
-              {getLocale('takeAPictureButtonLabel')}
+              {getLocale(StringIds.TakeAPictureButtonLabel)}
             </div>
           </leo-menu-item>
         }

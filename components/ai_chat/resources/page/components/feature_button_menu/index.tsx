@@ -15,6 +15,8 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
+import { camelCase } from '$web-common/camelCase'
+
 export interface Props {
   setIsConversationsListOpen?: (value: boolean) => unknown
 }
@@ -42,14 +44,14 @@ export default function FeatureMenu(props: Props) {
     <ButtonMenu className={styles.buttonMenu}>
       <Button
         slot='anchor-content'
-        title={getLocale('leoSettingsTooltipLabel')}
+        title={getLocale(StringIds.LeoSettingsTooltipLabel)}
         fab
         kind='plain-faint'
       >
         <Icon name='more-vertical' />
       </Button>
       <div className={styles.menuSectionTitle}>
-        {getLocale('menuTitleModels')}
+        {getLocale(StringIds.MenuTitleModels)}
       </div>
       {leoModels.map((model) => {
         return (
@@ -64,7 +66,7 @@ export default function FeatureMenu(props: Props) {
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>
                 <p className={styles.modelSubtitle}>
-                  {getLocale(`braveLeoModelSubtitle-${model.key}`)}
+                  {getLocale(`${camelCase(model.key)}Subtitle`)}
                 </p>
               </div>
               {model.options.leoModelOptions?.access ===
@@ -75,7 +77,7 @@ export default function FeatureMenu(props: Props) {
                     mode={'outline'}
                     color='blue'
                   >
-                    {getLocale('modelPremiumLabelNonPremium')}
+                    {getLocale(StringIds.ModelPremiumLabelNonPremium)}
                   </Label>
                 )}
             </div>
@@ -86,7 +88,7 @@ export default function FeatureMenu(props: Props) {
         <>
           <div className={styles.menuSeparator} />
           <div className={styles.menuSectionCustomModel}>
-            {getLocale('menuTitleCustomModels')}
+            {getLocale(StringIds.MenuTitleCustomModels)}
           </div>
         </>
       )}
@@ -120,7 +122,7 @@ export default function FeatureMenu(props: Props) {
           )}>
             <Icon name='edit-pencil' />
             <div className={styles.menuText}>
-              <div>{getLocale('menuRenameConversation')}</div>
+              <div>{getLocale(StringIds.MenuRenameConversation)}</div>
             </div>
           </div>
         </leo-menu-item>
@@ -131,7 +133,7 @@ export default function FeatureMenu(props: Props) {
           )}>
             <Icon name='trash' />
             <div className={styles.menuText}>
-              <div>{getLocale('menuDeleteConversation')}</div>
+              <div>{getLocale(StringIds.MenuDeleteConversation)}</div>
             </div>
           </div>
         </leo-menu-item>
@@ -148,7 +150,7 @@ export default function FeatureMenu(props: Props) {
           >
             <Icon name='lock-open' />
             <span className={styles.menuText}>
-              {getLocale('menuGoPremium')}
+              {getLocale(StringIds.MenuGoPremium)}
             </span>
           </div>
         </leo-menu-item>
@@ -164,7 +166,7 @@ export default function FeatureMenu(props: Props) {
           >
             <Icon name='lock-open' />
             <span className={styles.menuText}>
-              {getLocale('menuManageSubscription')}
+              {getLocale(StringIds.MenuManageSubscription)}
             </span>
           </div>
         </leo-menu-item>
@@ -181,7 +183,7 @@ export default function FeatureMenu(props: Props) {
               )}
             >
               <Icon name='history' />
-              <span className={styles.menuText}>{getLocale('menuConversationHistory')}</span>
+              <span className={styles.menuText}>{getLocale(StringIds.MenuConversationHistory)}</span>
             </div>
           </leo-menu-item>
         </>
@@ -194,7 +196,7 @@ export default function FeatureMenu(props: Props) {
           )}
         >
           <Icon name='settings' />
-          <span className={styles.menuText}>{getLocale('menuSettings')}</span>
+          <span className={styles.menuText}>{getLocale(StringIds.MenuSettings)}</span>
         </div>
       </leo-menu-item>
     </ButtonMenu>
