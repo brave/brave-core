@@ -5,36 +5,11 @@
 
 #include <optional>
 
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
-#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#include "chrome/browser/extensions/extension_service.h"
-#include "extensions/browser/extension_system.h"
-#endif
 
 #define AddRestoredTab AddRestoredTab_ChromiumImpl
 #include "src/chrome/browser/ui/browser_tabrestore.cc"
 #undef AddRestoredTab
-
-namespace {
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-void MaybeLoadWebtorrent(Browser* browser,
-                         bool from_session_restore,
-                         const GURL& restore_url) {
-  if (!from_session_restore || !webtorrent::IsWebtorrentURL(restore_url))
-    return;
-
-  extensions::BraveWebTorrentNavigationThrottle::MaybeLoadWebtorrent(
-      browser->profile(), restore_url);
-}
-#endif
-
-}  // namespace
 
 namespace chrome {
 
@@ -54,12 +29,7 @@ WebContents* AddRestoredTab(
     const std::map<std::string, std::string>& extra_data,
     bool from_session_restore,
     std::optional<bool> is_active_browser) {
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  MaybeLoadWebtorrent(
-      browser,
-      from_session_restore,
-      navigations.at(selected_navigation).original_request_url());
-#endif
+  // TODO(bsclifton): is this needed?
 
   return AddRestoredTab_ChromiumImpl(
       browser, navigations, tab_index, selected_navigation, extension_app_id,

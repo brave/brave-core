@@ -44,14 +44,6 @@
     "includes": [30300],
   },
   # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_webtorrent/brave_webtorrent.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [30310],
-  },
-  "brave/components/brave_webtorrent/resources.grd": {
-    "includes": [30320],
-  },
-  # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [30330],

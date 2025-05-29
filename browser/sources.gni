@@ -45,7 +45,6 @@ import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -183,7 +182,6 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_wallet/common:mojom",
   "//brave/components/brave_wallet/common:pref_names",
   "//brave/components/brave_wayback_machine/buildflags",
-  "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
   "//brave/components/containers/buildflags",
@@ -455,11 +453,6 @@ if (enable_extensions) {
     "//extensions/browser",
     "//extensions/common:common_constants",
   ]
-
-  if (enable_brave_webtorrent) {
-    brave_chrome_browser_deps +=
-        [ "//brave/components/brave_webtorrent/browser" ]
-  }
 }
 
 if (enable_brave_wayback_machine) {

@@ -21,7 +21,6 @@
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
 #include "brave/browser/net/search_ads_header_network_delegate_helper.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -32,10 +31,6 @@
 #include "net/base/features.h"
 #include "net/base/net_errors.h"
 #include "third_party/blink/public/common/features.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
-#endif
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
@@ -102,12 +97,6 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  brave::OnHeadersReceivedCallback headers_received_callback =
-      base::BindRepeating(webtorrent::OnHeadersReceived_TorrentRedirectWork);
-  headers_received_callbacks_.push_back(headers_received_callback);
-#endif
-
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveAdblockCspRules)) {
     brave::OnHeadersReceivedCallback headers_received_callback2 =
@@ -163,6 +152,7 @@ int BraveRequestHandler::OnHeadersReceived(
 
   if (headers_received_callbacks_.empty() &&
       !ctx->request_url.SchemeIs(content::kChromeUIScheme)) {
+    // TODO(bsclifton): can this be removed?
     // Extension scheme not excluded since brave_webtorrent needs it.
     return net::OK;
   }

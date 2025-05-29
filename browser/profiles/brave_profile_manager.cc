@@ -19,7 +19,6 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
@@ -135,9 +134,6 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   ProfileManager::InitProfileUserPrefs(profile);
   RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  brave::SetWebTorrentEnabled(profile, profile->IsNewProfile());
-#endif
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
   MigrateHttpsUpgradeSettings(profile);

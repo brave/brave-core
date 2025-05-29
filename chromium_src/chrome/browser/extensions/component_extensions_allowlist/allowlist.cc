@@ -10,7 +10,6 @@
 #undef IsComponentExtensionAllowlisted
 
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
 
@@ -18,8 +17,7 @@ namespace extensions {
 
   bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
     const char* const kAllowed[] = {
-      brave_extension_id,
-      brave_webtorrent_extension_id
+      brave_extension_id
     };
 
     for (const auto* id : kAllowed) {
@@ -35,7 +33,6 @@ namespace extensions {
     switch (manifest_resource_id) {
       // Please keep the list in alphabetical order.
       case IDR_BRAVE_EXTENSION:
-      case IDR_BRAVE_WEBTORRENT:
         return true;
     }
 
