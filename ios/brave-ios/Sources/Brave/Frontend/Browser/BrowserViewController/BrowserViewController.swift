@@ -308,8 +308,10 @@ public class BrowserViewController: UIViewController {
 
     // Add default favorites
     if !Preferences.NewTabPage.preloadedFavoritiesInitialized.value {
-      FavoritesHelper.addDefaultFavorites()
-      Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true
+      Task {
+        await FavoritesHelper.addDefaultFavorites()
+        Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true
+      }
     }
 
     // Initialize TabManager
@@ -539,8 +541,8 @@ public class BrowserViewController: UIViewController {
 
       guard let sites = sites, !sites.isEmpty else { return }
 
-      DispatchQueue.main.async {
-        let defaultFavorites = FavoritesPreloadedData.getList()
+      Task { @MainActor in
+        let defaultFavorites = await FavoritesPreloadedData.getList()
         let currentFavorites = Favorite.allFavorites
 
         if defaultFavorites.count != currentFavorites.count {

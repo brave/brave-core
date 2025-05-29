@@ -205,33 +205,13 @@ extension Favorite {
   // MARK: Create
 
   class func addDefaultBatchInternal(items: [(url: URL, title: String)]) {
-    DataController.performOnMainContext { context in
-      for (offset, (url, title)) in items.enumerated() {
-        let bk = Favorite(entity: entity(context: context), insertInto: context)
-
-        let location = url.absoluteString
-
-        bk.url = location
-        bk.title = title
-        bk.customTitle = nil
-        bk.isFavorite = true
-        bk.created = Date()
-        bk.lastVisited = bk.created
-        bk.order = Int16(offset)
-
-        if let url = URL(string: location) {
-          bk.domain = Domain.getOrCreateInternal(
-            url,
-            context: context,
-            saveStrategy: .persistentStore
-          )
-        }
-      }
-      do {
-        try context.save()
-      } catch {
-        Logger.module.error(
-          "Failed to save default favorites: \(error.localizedDescription, privacy: .public)"
+    DataController.perform { context in
+      items.forEach {
+        addInternal(
+          url: $0.url,
+          title: $0.title,
+          isFavorite: true,
+          context: .existing(context)
         )
       }
     }

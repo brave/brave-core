@@ -45,17 +45,21 @@ struct FavoritesPreloadedData {
 
   /// Returns a list of websites that should be preloaded for specific region. Currently all users get the same websites.
   // swift-format-ignore
-  static func getList() -> [FavoriteSite] {
+  static func getList() async -> [FavoriteSite] {
     let region = Locale.current.region?.identifier ?? ""
     Logger.module.debug("Preloading favorites, current region: \(region)")
 
-    guard let filePath = Bundle.module.path(forResource: "top_sites_by_region", ofType: "json") else {
-      Logger.module.error("Failed to get bundle path for \"top_sites_by_region.json\"")
+    guard let fileURL = Bundle.module.url(forResource: "top_sites_by_region", withExtension: "json") else {
+      Logger.module.error("Failed to get bundle url for \"top_sites_by_region.json\"")
+      return popularFavorites
+    }
+
+    guard let file = await AsyncFileManager.default.contents(atPath: fileURL.path(percentEncoded: false)) else {
+      Logger.module.error("Failed to read \"top_sites_by_region.json\"")
       return popularFavorites
     }
 
     do {
-      let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
       let json = try JSONDecoder().decode([TopSiteForRegion].self, from: file)
       if let topSitesForRegion = json.first(where: { $0.region == region }) {
         return topSitesForRegion.topSites.compactMap { topSite in
@@ -68,7 +72,7 @@ struct FavoritesPreloadedData {
       return popularFavorites
     } catch {
       Logger.module.error(
-        "Failed to get default icons at \(filePath): \(error.localizedDescription)"
+        "Failed to decode \"top_sites_by_region.json\": \(error.localizedDescription)"
       )
       return popularFavorites
     }
