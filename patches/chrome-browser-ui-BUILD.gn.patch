@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 13941994fd5df2d1a1312102b12919cd4054bd5e..48470924c2b97471371ac503a0923cf8a81dbb4a 100644
+index bf57403c6fcb264e20edba6a8e2fd46387b9faa0..a7a3e0349c59c5fe3ead0488e68f9013b9f011c6 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -744,6 +744,7 @@ static_library("ui") {
@@ -10,7 +10,7 @@ index 13941994fd5df2d1a1312102b12919cd4054bd5e..48470924c2b97471371ac503a0923cf8
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3529,7 +3530,10 @@ static_library("ui") {
+@@ -3522,7 +3523,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index 13941994fd5df2d1a1312102b12919cd4054bd5e..48470924c2b97471371ac503a0923cf8
      }
    }
  
-@@ -5745,6 +5749,7 @@ static_library("ui_public_dependencies") {
+@@ -5731,6 +5735,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }

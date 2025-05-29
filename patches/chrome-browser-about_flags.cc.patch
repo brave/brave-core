@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 256d81ecf39a558fa9703aa33588de4a73f5833f..c19c8f4d01a7dfbb91e2500cb04a3c148098c3f5 100644
+index 661f56dd5c4f8e234a4a01c24c70abd9d728b047..4d97af76c9baa395e174e7b297a8eb79e3ee4500 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4694,6 +4694,7 @@ const FeatureEntry::FeatureVariation kHistorySyncOptinExpansionPillVariations[]
+@@ -4678,6 +4678,7 @@ const FeatureEntry::FeatureVariation kHistorySyncOptinExpansionPillVariations[]
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

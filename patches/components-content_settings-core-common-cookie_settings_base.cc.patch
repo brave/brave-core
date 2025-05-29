@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index ab08cd903dd8d5686f33d595fdb1f5b67f4322ea..b31b8f429634ec35ce1186a4ed74e223ad358954 100644
+index 57e2bc50336f9c8b42b6ad76ca3e65ee561db0e3..d683a69b4fd4ac82182a8b3fdfbbdc110a0191f8 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -621,6 +621,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
+@@ -658,6 +658,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
      return BlockAllCookies{};
    }
  
@@ -10,7 +10,7 @@ index ab08cd903dd8d5686f33d595fdb1f5b67f4322ea..b31b8f429634ec35ce1186a4ed74e223
    if (!is_third_party_request) {
      return AllowAllCookies{ThirdPartyCookieAllowMechanism::kNone};
    }
-@@ -799,6 +800,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+@@ -836,6 +837,7 @@ CookieSettingsBase::GetCookieSettingInternal(
    if (std::holds_alternative<AllowPartitionedCookies>(choice)) {
      CHECK(is_third_party_request);
      CHECK(block_third_party_cookies);
