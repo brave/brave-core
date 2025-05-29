@@ -1,5 +1,5 @@
 diff --git a/third_party/lit/v3_0/BUILD.gn b/third_party/lit/v3_0/BUILD.gn
-index 14e9d8bffdd6a2feec0b2881f9349ad2a07732d1..db6baa6f45fcffa82e4186be84ef0460bab3fa63 100644
+index abc50e655d1d872b0b6d4685b7f0cfbdbfd56cdc..06faf70d459287991cf8697302b6d8924a5b5ae7 100644
 --- a/third_party/lit/v3_0/BUILD.gn
 +++ b/third_party/lit/v3_0/BUILD.gn
 @@ -121,6 +121,7 @@ ts_library("build_ts") {
@@ -16,5 +16,5 @@ index 14e9d8bffdd6a2feec0b2881f9349ad2a07732d1..db6baa6f45fcffa82e4186be84ef0460
    ]
 +  import("//brave/third_party/lit/v3_0/sources.gni") visibility += brave_lit_build_ts_visibility
  }
- 
+
  bundle_js("build_bundle") {

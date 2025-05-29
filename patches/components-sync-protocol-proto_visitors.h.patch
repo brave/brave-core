@@ -1,8 +1,8 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 991df45251ac45fa4f225af0cf5608a2ac180bce..6e8156577c76b0bbfcf70fc90f933b34e2f67e58 100644
+index 11f700f46f3dce3b82072194d00752e54be0471b..3eadc633c74b7f9842284967efcec133325ad148 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -632,6 +632,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -634,6 +634,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(manufacturer);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -10,11 +10,11 @@ index 991df45251ac45fa4f225af0cf5608a2ac180bce..6e8156577c76b0bbfcf70fc90f933b34
    VISIT(sharing_fields);
    VISIT(invalidation_fields);
    VISIT(paask_fields);
-@@ -654,6 +655,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+@@ -656,6 +657,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(floating_workspace_last_signin_time_windows_epoch_micros);
  }
  
 +BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
-   VISIT(vapid_fcm_token);
-   VISIT_BYTES(vapid_p256dh);
+   VISIT_REP(enabled_features);
+   VISIT(sender_id_fcm_token_v2);
