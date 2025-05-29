@@ -386,7 +386,7 @@ void BindBraveSearchFallbackHost(
 void BindBraveSearchDefaultHost(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchDefault> receiver) {
-  const GURL frame_host_url = frame_host->GetLastCommittedURL();
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
   if (!brave_search::IsAllowedHost(frame_host_url)) {
     return;
   }
@@ -412,14 +412,15 @@ void BindBraveSearchDefaultHost(
 void BindIAPSubscription(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<ai_chat::mojom::IAPSubscription> receiver) {
-  const GURL frame_host_url = frame_host->GetLastCommittedURL();
-  if (skus::IsSafeOrigin(frame_host_url)) {
-    auto* context = frame_host->GetBrowserContext();
-    auto* profile = Profile::FromBrowserContext(context);
-    mojo::MakeSelfOwnedReceiver(
-        std::make_unique<ai_chat::AIChatIAPSubscription>(profile->GetPrefs()),
-        std::move(receiver));
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+  if (!skus::IsSafeOrigin(frame_host_url)) {
+    return;
   }
+  auto* context = frame_host->GetBrowserContext();
+  auto* profile = Profile::FromBrowserContext(context);
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<ai_chat::AIChatIAPSubscription>(profile->GetPrefs()),
+      std::move(receiver));
 }
 #endif
 
@@ -427,22 +428,24 @@ void BindIAPSubscription(
 void MaybeBindBraveVpnImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
-  const GURL frame_host_url = frame_host->GetLastCommittedURL();
-  if (skus::IsSafeOrigin(frame_host_url)) {
-    auto* context = frame_host->GetBrowserContext();
-    brave_vpn::BraveVpnServiceFactory::BindForContext(context,
-                                                      std::move(receiver));
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+  if (!skus::IsSafeOrigin(frame_host_url)) {
+    return;
   }
+  auto* context = frame_host->GetBrowserContext();
+  brave_vpn::BraveVpnServiceFactory::BindForContext(context,
+                                                    std::move(receiver));
 }
 #endif
 void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusService> receiver) {
-  const GURL frame_host_url = frame_host->GetLastCommittedURL();
-  if (skus::IsSafeOrigin(frame_host_url)) {
-    auto* context = frame_host->GetBrowserContext();
-    skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+  if (!skus::IsSafeOrigin(frame_host_url)) {
+    return;
   }
+  auto* context = frame_host->GetBrowserContext();
+  skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
 
 }  // namespace
