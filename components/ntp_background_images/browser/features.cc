@@ -24,10 +24,9 @@ BASE_FEATURE(kBraveNTPSuperReferralWallpaper,
 #endif
 );
 
-// TODO(tmancey): Disable this feature before merging.
 BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
              "BraveNTPBrandedWallpaperSurveyPanelist",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveNTPBrandedWallpaper,
              "BraveNTPBrandedWallpaper",

@@ -645,12 +645,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
       // Survey Panelist Page
       {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
-      {"braveSurveyPanelistAboutLabel",
-       IDS_SETTINGS_SURVEY_PANELIST_ABOUT_LABEL},
-      {"braveSurveyPanelistAboutDesc1",
-       IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_1},
-      {"braveSurveyPanelistAboutDesc2",
-       IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_2},
       {"braveSurveyPanelistLabel", IDS_SETTINGS_SURVEY_PANELIST_LABEL},
       {"braveSurveyPanelistDesc", IDS_SETTINGS_SURVEY_PANELIST_DESC},
 
@@ -1057,9 +1051,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
                                  kLeoPrivacyPolicyURL));
 
+  html_source->AddString("braveSurveyPanelistLearnMoreURL",
+                         kSurveyPanelistLearnMoreURL);
+
   html_source->AddString(
-      "braveSurveyPanelistAboutDesc2",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_2,
+      "braveSurveyPanelistDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_SURVEY_PANELIST_DESC,
                                  kSurveyPanelistLearnMoreURL));
 }  // NOLINT(readability/fn_size)
 

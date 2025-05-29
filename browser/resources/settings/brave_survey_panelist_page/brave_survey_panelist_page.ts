@@ -28,7 +28,7 @@ class BraveSurveyPanelistPageElement extends BraveSurveyPanelistPageBaseElement 
     return getTemplate()
   }
 
-  openLearnMore_() {
+  onSurveyPanelistLearnMoreLinkClick_() {
     window.open(loadTimeData.getString('braveSurveyPanelistLearnMoreURL'), "_blank", "noopener noreferrer")
   }
 }
