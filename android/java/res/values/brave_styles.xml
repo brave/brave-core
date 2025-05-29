@@ -509,4 +509,20 @@
     <item name="android:typeface">monospace</item>
   </style>
 
+    <!--
+        Styling for an icon in an app menu icon row.
+        This is a backport taken from upstream's
+        chrome/browser/ui/android/appmenu/java/res/values/styles.xml of the
+        revision previous to fa431a3660de796f7aa18130fd8a6da39f1cc1d7
+        to fix buttons align and colors at
+        brave/android/java/res/layout/icon_row_menu_footer.xml
+    -->
+    <style name="BraveOverflowMenuButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?attr/listChoiceBackgroundIndicator</item>
+        <item name="android:scaleType">center</item>
+        <item name="tint">@color/default_icon_color_tint_list</item>
+    </style>
 </resources>
