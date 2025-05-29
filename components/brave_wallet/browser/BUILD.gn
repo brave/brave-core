@@ -332,6 +332,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/update_client",
     "//components/value_store",
     "//crypto",
