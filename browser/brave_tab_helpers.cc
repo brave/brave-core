@@ -47,7 +47,7 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/background_video/background_video_playback_tab_helper.h"
+#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -107,7 +107,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
 #if BUILDFLAG(IS_ANDROID)
-  BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
+  YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);

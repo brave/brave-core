@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
-#include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"

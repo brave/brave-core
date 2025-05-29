@@ -5,10 +5,10 @@
 
 import("//build/config/android/rules.gni")
 
-source_set("background_video") {
+source_set("youtube_script_injector") {
   sources = [
-    "background_video_playback_tab_helper.cc",
-    "background_video_playback_tab_helper.h",
+    "youtube_script_injector_tab_helper.cc",
+    "youtube_script_injector_tab_helper.h",
   ]
 
   public_deps = [ "//content/public/browser" ]
@@ -37,11 +37,11 @@ source_set("features") {
 source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   testonly = true
-  sources = [ "background_video_playback_tab_helper_browsertest.cc" ]
+  sources = [ "youtube_script_injector_tab_helper_browsertest.cc" ]
 
   deps = [
-    ":background_video",
     ":features",
+    ":youtube_script_injector",
     "//base",
     "//brave/components/constants",
     "//chrome/test:test_support",

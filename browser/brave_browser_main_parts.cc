@@ -60,7 +60,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #else
-#include "brave/browser/android/background_video/features.h"
+#include "brave/browser/android/youtube_script_injector/features.h"
 #endif
 
 #if BUILDFLAG(DEPRECATE_IPFS)

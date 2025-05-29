@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/android/background_video/features.h"
+#include "brave/browser/android/youtube_script_injector/features.h"
 
 #include "base/feature_list.h"
 #include "build/build_config.h"
