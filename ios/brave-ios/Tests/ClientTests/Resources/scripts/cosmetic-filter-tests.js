@@ -25,7 +25,8 @@
       'localFrameElement': results.localFrameElement,
       'hasTextDisplayIsNone': results.hasTextDisplayIsNone,
       'hasDisplayIsNone': results.hasDisplayIsNone,
-      'delayedHasTextHidden': results.delayedHasTextHidden
+      'delayedHasTextHidden': results.delayedHasTextHidden,
+      'delayedChildHasTextHidden': results.delayedChildHasTextHidden,
     })
   }
 
@@ -47,7 +48,8 @@
       localFrameElement: false,
       hasTextDisplayIsNone: false,
       hasDisplayIsNone: false,
-      delayedHasTextHidden: false
+      delayedHasTextHidden: false,
+      delayedChildHasTextHidden: []
     }
 
     elements.forEach((node) => {
@@ -109,6 +111,21 @@
             results.localFrameElement = window.getComputedStyle(node).display === 'none'
           }
         })
+      }
+    })
+
+    const elementsWithClass = document.querySelectorAll('[class]')
+    elementsWithClass.forEach((node) => {
+      if (!node.hasAttribute('class')) {
+        return
+      }
+
+      if (node.getAttribute('class') === 'procedural-filter-child-node-class') {
+        const nodeDisplay = window.getComputedStyle(node).display
+        // 2 elements have this class, we want to test both their display values
+        const delayedChildHasTextHidden = results.delayedChildHasTextHidden
+        delayedChildHasTextHidden.push(nodeDisplay === 'none')
+        results.delayedChildHasTextHidden = delayedChildHasTextHidden
       }
     })
 
