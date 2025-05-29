@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/barrier_callback.h"
@@ -111,6 +112,15 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
   }
 
   if (delegate) {
+    // If we've already added this delegate, don't add it again.
+    // Note: We can get here if the user is clicking around quickly in the
+    // attachments UI.
+    if (std::ranges::find(content_delegates_, delegate, [](const auto& ptr) {
+          return ptr;
+        }) != content_delegates_.end()) {
+      return;
+    }
+
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
   }

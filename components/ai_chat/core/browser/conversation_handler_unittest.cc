@@ -692,6 +692,37 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 }
 
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       MultiContentConversation_AddingContentMultipleTimesDoesNotCrash) {
+  NiceMock<MockAssociatedContent> associated_content1{};
+  associated_content1.SetContentId(1);
+  ON_CALL(associated_content1, GetTextContent)
+      .WillByDefault(testing::Return("Content 1"));
+
+  ConversationHandler* conversation = ai_chat_service_->CreateConversation();
+  conversation->associated_content_manager()->AddContent(&associated_content1);
+  EXPECT_EQ(
+      conversation->associated_content_manager()->GetAssociatedContent().size(),
+      1u);
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasNonArchiveContent());
+
+  conversation->associated_content_manager()->AddContent(&associated_content1);
+  EXPECT_EQ(
+      conversation->associated_content_manager()->GetAssociatedContent().size(),
+      1u);
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasAssociatedContent());
+  EXPECT_TRUE(
+      conversation->associated_content_manager()->HasNonArchiveContent());
+
+  WaitForAssociatedContentFetch(conversation->associated_content_manager());
+  EXPECT_EQ(conversation->associated_content_manager()->GetCachedTextContent(),
+            "Content 1");
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MultiContentConversation_RemoveContent) {
   NiceMock<MockAssociatedContent> associated_content1{};
   associated_content1.SetContentId(1);
