@@ -4,6 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 const NSSVG = 'http://www.w3.org/2000/svg'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+setIconBasePath('chrome://resources/brave-icons')
+
+import Icon from '@brave/leo/react/icon'
+
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
@@ -542,12 +547,81 @@ const elementPickerUserModifiedRule = (selector: string) => {
   }
 }
 
+const setMinimizeState = (root: ShadowRoot, minimized: boolean) => {
+  const mainSection = root.getElementById('main-section')
+  if (!mainSection) return;
+  mainSection.classList.toggle('minimized', minimized);
+}
+
+const setupDragging = (root: ShadowRoot): void => {
+  const mainSection = root.getElementById('main-section') as HTMLElement | null;
+  const dragHeader = root.getElementById('drag-header') as HTMLElement | null;
+
+  if (!mainSection || !dragHeader) return;
+
+  const sectionHeight = mainSection.offsetHeight;
+  const HEADER_HEIGHT = 28;
+
+  let isDragging = false;
+  let startY = 0;
+  let startTransform = 0;
+
+  const parseTranslateY = (transform: string): number => {
+    if (transform === 'none') return 0;
+    const match = transform.match(/matrix\(.*,\s*([-\d.]+)\)$/);
+    if (match) return parseFloat(match[1]);
+    const parts = transform.split(',');
+    return parseFloat(parts[5]) || 0;
+  };
+
+  const handleDragStart = (e: TouchEvent): void => {
+    isDragging = true;
+    startY = e.touches[0].clientY;
+    startTransform = parseTranslateY(window.getComputedStyle(mainSection).transform);
+  };
+
+  const handleDragMove = (e: TouchEvent): void => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    const deltaY = e.touches[0].clientY - startY;
+    const newTransform = Math.min(Math.max(startTransform + deltaY, 0), sectionHeight - HEADER_HEIGHT);
+    mainSection.style.transform = `translateY(${newTransform}px)`;
+  };
+
+  const handleDragEnd = (): void => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const currentTransform = parseTranslateY(window.getComputedStyle(mainSection).transform);
+    setMinimizeState(root, currentTransform > sectionHeight / 4)
+    mainSection.style.transform = '';
+  };
+
+  dragHeader.addEventListener('touchstart', handleDragStart);
+  root.addEventListener('touchmove', handleDragMove);
+  root.addEventListener('touchend', handleDragEnd);
+};
+
 const launchElementPicker = (root: ShadowRoot) => {
   let hasSelectedTarget = false
 
   const btnShowRulesBox = root.getElementById('btnShowRulesBox')
   if (isAndroid && btnShowRulesBox) {
     btnShowRulesBox.style.display = 'none'
+  }
+
+  if (isAndroid) {
+    setupDragging(root)
+  } else {
+    const closeButton = root.getElementById('close-btn')!
+    closeButton.addEventListener('click', () => {
+      quitElementPicker()
+    })
+    // const minimizeButton = root.getElementById('minimize-dlg-btn')!
+    // minimizeButton.addEventListener('click', () => {
+    //   setMinimizeState(root, true)
+    // })
   }
 
   root.addEventListener(
@@ -648,6 +722,11 @@ const launchElementPicker = (root: ShadowRoot) => {
         root.querySelectorAll('.secondary-button').forEach(e =>
           (e as HTMLElement).style.setProperty('background-color', colorHex))
 
+        const dragHeader = root.getElementById('drag-header')
+        if (dragHeader) {
+          dragHeader.style.setProperty('background-color', colorHex)
+        }
+        
         setDarkModeButtons(isDarkModeEnabled)
       })
   }
@@ -676,8 +755,14 @@ const launchElementPicker = (root: ShadowRoot) => {
     dispatchSelect()
   })
 
+
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
+
+    if(isAndroid) {
+      setMinimizeState(root, false);
+    }
+
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
     } else if (event instanceof TouchEvent) {
