@@ -610,5 +610,38 @@ describe('ManagePageConnected', () => {
     })
   })
 
+  it('you can recover from an authentication error', async () => {
+    const mockEmailAliasesService = new MockEmailAliasesService()
 
+    await act(async () => {
+      render(<ManagePageConnected
+        emailAliasesService={mockEmailAliasesService}
+        bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticating,
+        mockEmail,
+        'mockErrorMessage'
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText(/mockErrorMessage/))
+        .toBeInTheDocument()
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticating,
+        mockEmail)
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText(/mockErrorMessage/))
+        .not.toBeInTheDocument()
+    })
+  })
 })
