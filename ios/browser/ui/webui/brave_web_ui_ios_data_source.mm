@@ -24,7 +24,7 @@
 #include "ui/base/webui/web_ui_util.h"
 
 // static
-BraveWebUIIOSDataSource* BraveWebUIIOSDataSource::Create(
+web::WebUIIOSDataSource* BraveWebUIIOSDataSource::Create(
     const std::string& source_name) {
   return new BraveWebUIIOSDataSource(source_name);
 }

@@ -20,7 +20,7 @@ class BrowserState;
 
 class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  public:
-  static BraveWebUIIOSDataSource* Create(const std::string& source_name);
+  static web::WebUIIOSDataSource* Create(const std::string& source_name);
 
   static BraveWebUIIOSDataSource* CreateAndAdd(web::BrowserState* browser_state,
                                                const std::string& source_name);
