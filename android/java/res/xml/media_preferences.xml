@@ -15,7 +15,6 @@
             android:summary="@string/prefs_enable_widevine_summary" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="background_video_playback"
-            android:defaultValue="false"
             android:title="@string/prefs_background_video_playback"
             android:summary="@string/prefs_background_video_playback_on" />
     </PreferenceCategory>

@@ -93,7 +93,6 @@ import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
-import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -1093,8 +1092,6 @@ public abstract class BraveActivity extends ChromeActivity
         BraveSetDefaultBrowserUtils.checkForBraveSetDefaultBrowser(
                 appOpenCount, BraveActivity.this);
 
-        migrateBgPlaybackToFeature();
-
         Context app = ContextUtils.getApplicationContext();
         if (null != app
                 && BraveReflectionUtil.equalTypes(this.getClass(), ChromeTabbedActivity.class)) {
@@ -1473,33 +1470,6 @@ public abstract class BraveActivity extends ChromeActivity
                 && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
             BraveNewsUtils.getBraveNewsSettingsDataPerProfile(mTabModelProfileSupplier.get());
         }
-    }
-
-    private void migrateBgPlaybackToFeature() {
-        // Settings UI uses original profile always, so we must
-        // use mTabModelProfileSupplier.get().getOriginalProfile().
-        if (ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
-                        false)) {
-            if (UserPrefs.get(mTabModelProfileSupplier.get().getOriginalProfile())
-                            .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED)
-                    && ChromeFeatureList.isEnabled(
-                            BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
-                UserPrefs.get(mTabModelProfileSupplier.get().getOriginalProfile())
-                        .setBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED, false);
-            }
-            return;
-        }
-        if (UserPrefs.get(mTabModelProfileSupplier.get().getOriginalProfile())
-                .getBoolean(BravePref.BACKGROUND_VIDEO_PLAYBACK_ENABLED)) {
-            BraveFeatureUtil.enableFeature(
-                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, true, true);
-        }
-        ChromeSharedPreferences.getInstance()
-                .writeBoolean(
-                        BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
-                        true);
     }
 
     public void setDormantUsersPrefs() {
