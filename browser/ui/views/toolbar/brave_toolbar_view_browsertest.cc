@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -132,6 +133,10 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
       return false;
     }
     return button->GetVisible();
+  }
+
+  views::View* split_tabs() const {
+    return toolbar_view_->split_tabs_for_testing();
   }
 
   raw_ptr<ToolbarButtonProvider, DanglingUntriaged> toolbar_button_provider_ =
@@ -394,4 +399,25 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
   // Normal winwow still has visible button.
   EXPECT_TRUE(is_wallet_button_shown(browser()));
+}
+
+// Check split tabs toolbar button is disabled always.
+class BraveToolbarViewTest_SideBySideEnabled : public BraveToolbarViewTest {
+ public:
+  BraveToolbarViewTest_SideBySideEnabled() {
+    scoped_feature_list_.InitWithFeatures({features::kSideBySide}, {});
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_SideBySideEnabled,
+                       SplitTabsToolbarButtonDisabledTest) {
+  EXPECT_FALSE(split_tabs());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       SplitTabsToolbarButtonDisabledTest) {
+  EXPECT_FALSE(split_tabs());
 }

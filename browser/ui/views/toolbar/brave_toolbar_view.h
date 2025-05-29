@@ -56,6 +56,7 @@ class BraveToolbarView : public ToolbarView,
       const views::ViewHierarchyChangedDetails& details) override;
 
  private:
+  friend class BraveToolbarViewTest;
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
 
   void LoadImages() override;
@@ -72,6 +73,7 @@ class BraveToolbarView : public ToolbarView,
   void UpdateWalletButtonVisibility();
 
   views::View* toolbar_divider_for_testing() { return toolbar_divider_; }
+  views::View* split_tabs_for_testing() const { return split_tabs_; }
 
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
