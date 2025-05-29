@@ -35,7 +35,7 @@
 
     #main-section {
       background-color: #FFFFFF;
-      border-radius: .6em;
+      border-radius: 28px;
       border: 1px solid #aaa;
       color-scheme: light only;
       bottom: 4px;
@@ -44,7 +44,7 @@
       width: calc(30% - 4px);
       box-sizing: border-box;
       min-width: 24em;
-      padding-top: 16px;
+      padding-top: 56px;
       padding-right: 16px;
       padding-left: 16px;
       position: fixed;
@@ -57,16 +57,74 @@
         bottom: 0;
         right: 0;
         left: 0;
-        border-radius: unset;
+        border-radius: 28px 28px 0 0;
+        padding-top: 32px;
         border: none;
         width: 100%;
+        transition: transform 0.3s ease;
+      }
+      #main-section.minimized:not(.desktop) {
+        transform: translateY(calc(100% - 28px));
       }
     }
   
+    #main-section .drag-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 28px;
+      background-color: #f0f0f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 28px 28px 0 0;
+    }
+
+    #main-section.desktop .drag-header {
+      height: 48px;
+      justify-content: right;
+    }
+
+    #main-section:not(.desktop) .drag-indicator {
+      width: 36px;
+      height: 4px;
+      background-color: #AAAAAA;
+      border-radius: 2px;
+    }
+
+    #main-section.desktop .drag-indicator {
+      display: none;
+    }
+
+    #main-section.desktop .close-dlg-btn {
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757E%22%20d%3D%22M5.287%205.287a.85.85%200%200%200%200%201.202L10.797%2012l-5.51%205.511a.85.85%200%200%200%201.202%201.202L12%2013.203l5.51%205.51a.85.85%200%200%200%201.202-1.203L13.202%2012l5.51-5.51a.85.85%200%200%200-1.202-1.202L12%2010.798%206.489%205.287a.85.85%200%200%200-1.202%200%22%2F%3E%3C%2Fsvg%3E');
+      width: 28px;
+      height: 28px;
+      margin-right: 20px;
+    }
+
+    #main-section.desktop .minimize-dlg-btn {
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757E%22%20fill-rule%3D%22evenodd%22%20d%3D%22M10.566%2011.357a.8.8%200%200%200%20.8-.8V5.12a.8.8%200%200%200-1.6%200v3.515l-5.4-5.4a.8.8%200%200%200-1.132%201.13l5.392%205.392H5.18a.8.8%200%200%200%200%201.6zm2.868%201.286a.8.8%200%200%200-.8.8v5.437a.8.8%200%201%200%201.6%200v-3.515l5.4%205.4a.8.8%200%200%200%201.132-1.13l-5.392-5.392h3.446a.8.8%200%200%200%200-1.6z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E');
+      width: 28px;
+      height: 28px;
+      margin-right: 20px;
+    }
+
+    #main-section.desktop.minimized {
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757E%22%20fill-rule%3D%22evenodd%22%20d%3D%22M4.8%204a.8.8%200%200%200-.8.8v5.437a.8.8%200%200%200%201.6%200V6.722l4.4%204.4a.8.8%200%201%200%201.132-1.13L6.74%205.6h3.446a.8.8%200%200%200%200-1.6zm14.4%2016a.8.8%200%200%200%20.8-.8v-5.437a.8.8%200%200%200-1.6%200v3.515l-4.4-4.4a.8.8%200%201%200-1.132%201.13L17.26%2018.4h-3.446a.8.8%200%200%200%200%201.6z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E');
+      width: 28px;
+      height: 28px;
+    }
+
+    #main-section.desktop.minimized > * {
+      display: none;
+    }
+
     #main-section input {
       width: calc(100% - 4px);
     }
-  
+
     #buttons {
       display: flex;
       justify-content: space-between;
@@ -170,6 +228,11 @@
   <rect id="darken" x="0" y="0" width="100%" height="100vh" mask="url(#highlight-mask)">
 </svg>
 <section id="main-section">
+  <div id="drag-header" class="drag-header">
+    <div class="drag-indicator"></div>
+     <div class="minimize-dlg-btn"></div>
+     <div id="close-btn" class="close-dlg-btn"></div>
+  </div>
   <div id="rules-box">
     <textarea></textarea>
   </div>
