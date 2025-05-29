@@ -129,13 +129,13 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   country_codes::CountryId country_id =
       country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
   const bool is_jpn = country_id == country_codes::CountryId("JP");
-  if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
-    if (is_jpn) {
-      base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-          FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
-          base::Seconds(3));
-    }
+  // if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
+  if (is_jpn) {
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
+        base::Seconds(3));
   }
+  // }
 
   for (const auto& str : kLocalizedStrings) {
     std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
@@ -152,7 +152,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       "hardwareAccelerationEnabledAtStartup",
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
-  profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
+  // profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }

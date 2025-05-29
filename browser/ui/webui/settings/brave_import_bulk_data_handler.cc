@@ -95,8 +95,8 @@ void BraveImportBulkDataHandler::PrepareProfile(
                        Profile* created_profile) {
                       CHECK(created_profile);
                       // Migrate welcome page flag to new profiles.
-                      created_profile->GetPrefs()->SetBoolean(
-                          prefs::kHasSeenWelcomePage, true);
+                      // created_profile->GetPrefs()->SetBoolean(
+                      //     prefs::kHasSeenWelcomePage, true);
                       std::move(initialized_callback).Run(created_profile);
                     },
                     std::move(profile_callback)));
