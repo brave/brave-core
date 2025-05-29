@@ -101,7 +101,11 @@ def is_dirty() -> bool:
 
 def is_supported_file(file: str) -> bool:
     # Files that should NOT be formatted by prettier
-    excluded_exts = ['.cc', '.h', '.java', '.py', '.gn', '.gni', '.mm', '.rs']
+    excluded_exts = [
+        '.cc', '.cpp', '.h', '.java', '.py', '.gn', '.gni', '.mm', '.m', '.rs',
+        '.mojom', '.test-mojom', '.swift', '.proto', '.fbs', '.typemap',
+        '.star', '.grd', '.grdp'
+    ]
     return not any(file.endswith(ext) for ext in excluded_exts)
 
 
