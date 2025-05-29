@@ -92,10 +92,6 @@
 #include "brave/browser/web_discovery/web_discovery_service_factory.h"
 #endif
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/windows_recall/windows_recall_service_factory.h"
-#endif
-
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -191,10 +187,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryServiceFactory::GetInstance();
-#endif
-
-#if BUILDFLAG(IS_WIN)
-  windows_recall::WindowsRecallServiceFactory::GetInstance();
 #endif
 }
 
