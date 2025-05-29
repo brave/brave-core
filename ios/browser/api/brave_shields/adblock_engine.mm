@@ -105,6 +105,7 @@ class AdblockEngineBox final {
         *error =
             [[self class] adblockErrorForKind:adblock::ResultKind::AdblockError
                                       message:"Failed to deserialize data"];
+        return nil;
       }
     }
   }
