@@ -698,4 +698,41 @@ describe('ManagePageConnected', () => {
       expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
     })
   })
+
+  it('doesn\'t show an error message if the string is empty', async () => {
+    const mockEmailAliasesService = new MockEmailAliasesService()
+
+    await act(async () => {
+      render(<ManagePageConnected
+        emailAliasesService={mockEmailAliasesService}
+        bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticating,
+        mockEmail,
+        'mockErrorMessage'
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText('mockErrorMessage emailAliasesAuthTryAgain'))
+        .toBeInTheDocument()
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticating,
+        mockEmail,
+        ''
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText('emailAliasesAuthTryAgain'))
+        .not.toBeInTheDocument()
+    })
+  })
 })
