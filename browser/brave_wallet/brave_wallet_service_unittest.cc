@@ -56,6 +56,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_task_environment.h"
@@ -3257,7 +3258,8 @@ TEST_F(BraveWalletServiceUnitTest, GetCountryCode) {
   } kCountryCodeCases[] = {{21843, "US"}, {17217, "CA"}, {16725, "AU"}};
 
   for (const auto& [country_code, expected_country] : kCountryCodeCases) {
-    GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall, country_code);
+    GetPrefs()->SetInteger(regional_capabilities::prefs::kCountryIDAtInstall,
+                           country_code);
     service_->GetCountryCode(base::BindLambdaForTesting(
         [&expected_country](const std::string& cc) -> void {
           EXPECT_EQ(expected_country, cc);
