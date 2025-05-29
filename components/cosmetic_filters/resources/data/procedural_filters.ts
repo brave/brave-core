@@ -5,15 +5,6 @@
 
 /**
  *
- *  This file should be kept up to date with
- *  https://github.com/brave-experiments/procedural-filters-js
- *  until the full implementation can be shared with iOS inside
- *  the brave-core repo.
- *
- */
-
-/**
- *
  * src/declarations.d.ts
  *
  * note: `ProceduralOperator` and `ProceduralSelector`
@@ -205,13 +196,13 @@ const _nextSiblingElement = (element: HTMLElement): HTMLElement | null => {
 const _allChildren = (element: HTMLElement): HTMLElement[] => {
   return W.Array.from(element.children)
     .map(e => _asHTMLElement(e))
-    .filter(e => e !== null) as HTMLElement[]
+    .filter(e => e !== null)
 }
 
 const _allChildrenRecursive = (element: HTMLElement): HTMLElement[] => {
   return W.Array.from(element.querySelectorAll(':scope *'))
     .map(e => _asHTMLElement(e))
-    .filter(e => e !== null) as HTMLElement[]
+    .filter(e => e !== null)
 }
 
 const _stripCssOperator = (operator: string, selector: string) => {

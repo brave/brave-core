@@ -299,9 +299,15 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
   if (CC.hasProceduralActions) {
     const addedElements : Element[] = [];
     mutations.forEach(mutation =>
-      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
-        n.nodeType === Node.ELEMENT_NODE && addedElements.push(n as Element)
-      )
+      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
+        if (n.nodeType === Node.ELEMENT_NODE) {
+          addedElements.push(n as Element)
+          const childNodes = (n as Element).querySelectorAll('*')
+          childNodes.length !== 0 && childNodes.forEach(c => {
+            c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
+          })
+        }
+      })
     )
     if (addedElements.length !== 0) {
       executeProceduralActions(addedElements);
@@ -415,7 +421,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
 
   if (elm.getAttribute) {
     if (elm.hasAttribute('id')) {
-      const elmId = elm.getAttribute('id') as string
+      const elmId = elm.getAttribute('id')!
       if (elmId.startsWith('google_ads_iframe_') ||
         elmId.startsWith('div-gpt-ad') ||
         elmId.startsWith('adfox_')) {
@@ -425,7 +431,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     }
 
     if (elm.hasAttribute('src')) {
-      const elmSrc = elm.getAttribute('src') as string
+      const elmSrc = elm.getAttribute('src')!
       const elmSrcIsFirstParty = isFirstPartyUrl(elmSrc)
       if (elmSrcIsFirstParty) {
         queryResult.foundFirstPartyResource = true
@@ -435,7 +441,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     }
 
     if (elm.hasAttribute('style')) {
-      const elmStyle = elm.getAttribute('style') as string
+      const elmStyle = elm.getAttribute('style')!
       if (elmStyle.includes('url(') ||
         elmStyle.includes('//')) {
         queryResult.foundThirdPartyResource = true
@@ -443,7 +449,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     }
 
     if (elm.hasAttribute('srcdoc')) {
-      const elmSrcDoc = elm.getAttribute('srcdoc') as string
+      const elmSrcDoc = elm.getAttribute('srcdoc')!
       if (elmSrcDoc.trim() === '') {
         queryResult.foundThirdPartyResource = true
       }
@@ -495,7 +501,7 @@ const unhideSelectors = (selectors: Set<string>) => {
   for (const ruleIdx of rulesToRemove) {
     // Safe to asset ruleIdx is a number because we've already filtered out
     // any `undefined` instances with the filter call above.
-    CC.cosmeticStyleSheet.deleteRule(ruleIdx as number)
+    CC.cosmeticStyleSheet.deleteRule(ruleIdx)
   }
   // Re-sync the indexes
   // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.
