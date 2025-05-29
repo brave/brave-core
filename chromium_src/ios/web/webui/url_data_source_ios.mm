@@ -10,7 +10,7 @@ namespace web {
 std::string URLDataSourceIOS::GetContentSecurityPolicyFrameSrc() const {
   // Default for iOS:
   // https://source.chromium.org/chromium/chromium/src/+/main:ios/web/webui/url_data_manager_ios_backend.mm;l=511?q=set_content_security_policy_frame_source&ss=chromium%2Fchromium%2Fsrc
-  return "frame-src 'none';";
+  return "frame-src 'none'; script-src chrome://resources 'self';";
 }
 
 }  // namespace web

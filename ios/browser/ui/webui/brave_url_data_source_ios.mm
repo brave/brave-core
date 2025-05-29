@@ -47,9 +47,6 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
         network::mojom::CSPDirectiveName::FrameAncestors));
   }
 
-  // Add the iOS default frame-src
-  csp_header.append(GetContentSecurityPolicyFrameSrc());
-
   return csp_header;
 }
 
