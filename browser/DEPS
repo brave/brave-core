@@ -116,7 +116,4 @@ specific_include_rules = {
   ".*test.*\.cc": [
     "!brave/components/l10n/common/test/scoped_default_locale.h",
   ],
-  "brave_content_browser_client_browsertest.cc": [
-    "+content/browser/web_contents/web_contents_impl.h"
-  ]
 }
