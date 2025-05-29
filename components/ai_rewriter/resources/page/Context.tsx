@@ -2,79 +2,92 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { ActionGroup, ActionType } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m';
-import { AIRewriterPageCallbackRouter, AIRewriterPageHandler, AIRewriterPageHandlerRemote } from 'gen/brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.m';
-import * as React from 'react';
-import { CharCountContext, defaultCharCountContext, getFirstValidAction, useActionMenu, useCharCountInfo } from '../../../ai_chat/resources/page/state/conversation_context';
+import {
+  ActionGroup,
+  ActionType,
+} from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m'
+import {
+  AIRewriterPageCallbackRouter,
+  AIRewriterPageHandler,
+  AIRewriterPageHandlerRemote,
+} from 'gen/brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.m'
+import * as React from 'react'
+import {
+  CharCountContext,
+  defaultCharCountContext,
+  getFirstValidAction,
+  useActionMenu,
+  useCharCountInfo,
+} from '../../../ai_chat/resources/page/state/conversation_context'
 
 interface Context extends CharCountContext {
-  initialText: string;
+  initialText: string
   setInitialText: (next: string) => void
 
-  instructionsText: string,
+  instructionsText: string
   setInstructionsText: (instructions: string) => void
 
-  isToolsMenuOpen: boolean,
+  isToolsMenuOpen: boolean
   setIsToolsMenuOpen: (open: boolean) => void
 
-  submitRewriteRequest: () => void,
-  generatedText?: string,
+  submitRewriteRequest: () => void
+  generatedText?: string
 
-  resetSelectedActionType: () => void,
-  selectedActionType: ActionType | undefined,
-  handleActionTypeClick: (actionType: ActionType) => void,
+  resetSelectedActionType: () => void
+  selectedActionType: ActionType | undefined
+  handleActionTypeClick: (actionType: ActionType) => void
   actionList: ActionGroup[]
 
-  isGenerating: boolean,
+  isGenerating: boolean
 
-  undo: () => void,
-  canUndo: boolean,
+  undo: () => void
+  canUndo: boolean
 
-  redo: () => void,
-  canRedo: boolean,
+  redo: () => void
+  canRedo: boolean
 
-  erase: () => void,
-  canErase: boolean,
+  erase: () => void
+  canErase: boolean
 
-  close: () => void,
-  openSettings: () => void,
+  close: () => void
+  openSettings: () => void
 
   acceptGeneratedText: () => void
 }
 
 const RewriterContext = React.createContext<Context>({
   initialText: '',
-  setInitialText: () => { },
+  setInitialText: () => {},
 
   instructionsText: '',
-  setInstructionsText: () => { },
+  setInstructionsText: () => {},
 
   selectedActionType: undefined,
-  resetSelectedActionType: () => { },
-  handleActionTypeClick: () => { },
+  resetSelectedActionType: () => {},
+  handleActionTypeClick: () => {},
   actionList: [],
 
   isToolsMenuOpen: false,
-  setIsToolsMenuOpen: () => { },
+  setIsToolsMenuOpen: () => {},
 
-  submitRewriteRequest: () => { },
+  submitRewriteRequest: () => {},
 
   generatedText: undefined,
   isGenerating: false,
 
-  undo: () => { },
+  undo: () => {},
   canUndo: false,
 
-  redo: () => { },
+  redo: () => {},
   canRedo: false,
 
-  erase: () => { },
+  erase: () => {},
   canErase: false,
 
-  close: () => { },
-  openSettings: () => { },
+  close: () => {},
+  openSettings: () => {},
 
-  acceptGeneratedText: () => { },
+  acceptGeneratedText: () => {},
 
   ...defaultCharCountContext,
 })
@@ -85,9 +98,9 @@ export function getRewriterPageHandler() {
   if (!pageHandler) {
     pageHandler = AIRewriterPageHandler.getRemote()
     callbackRouter = new AIRewriterPageCallbackRouter()
-    pageHandler.setPage(callbackRouter.$.bindNewPipeAndPassRemote());
+    pageHandler.setPage(callbackRouter.$.bindNewPipeAndPassRemote())
   }
-  return pageHandler;
+  return pageHandler
 }
 
 export function getCallbackRouter() {
@@ -134,118 +147,139 @@ export default function Context(props: React.PropsWithChildren) {
   }, [])
 
   React.useEffect(() => {
-    if (instructionsText.startsWith('/'))
-      setIsToolsMenuOpen(true)
+    if (instructionsText.startsWith('/')) setIsToolsMenuOpen(true)
   }, [instructionsText])
 
-  const context = React.useMemo<Context>(() => ({
-    initialText,
-    setInitialText,
+  const context = React.useMemo<Context>(
+    () => ({
+      initialText,
+      setInitialText,
 
-    instructionsText,
-    setInstructionsText,
+      instructionsText,
+      setInstructionsText,
 
-    isToolsMenuOpen: isToolsMenuOpen,
-    setIsToolsMenuOpen: setIsToolsMenuOpen,
+      isToolsMenuOpen: isToolsMenuOpen,
+      setIsToolsMenuOpen: setIsToolsMenuOpen,
 
-    submitRewriteRequest: () => {
-      // Don't let multiple generation requests run simultaneously
-      if (isGenerating) return
+      submitRewriteRequest: () => {
+        // Don't let multiple generation requests run simultaneously
+        if (isGenerating) return
 
-      const rewriteText = generatedText || initialText
-      if (!rewriteText) return
-      if (charCountContext.isCharLimitExceeded) return
-      if (isToolsMenuOpen && instructionsText.startsWith('/')) {
-        setActionType(getFirstValidAction(actionList))
-        setInstructionsText('')
-        setIsToolsMenuOpen(false)
-        return
-      }
-
-      setIsGenerating(true)
-      getRewriterPageHandler()
-        // If we have some generated text, generate from that instead of the initial text.
-        .rewriteText(generatedText || initialText, actionType ?? ActionType.UNSPECIFIED, instructionsText)
-        .then(() => {
-          // Reset Action/Instructions
-          setActionType(undefined)
+        const rewriteText = generatedText || initialText
+        if (!rewriteText) return
+        if (charCountContext.isCharLimitExceeded) return
+        if (isToolsMenuOpen && instructionsText.startsWith('/')) {
+          setActionType(getFirstValidAction(actionList))
           setInstructionsText('')
+          setIsToolsMenuOpen(false)
+          return
+        }
 
-          // Don't update history if the text didn't change.
-          if (generatedTextRef.current === generatedText) {
-            return
-          }
+        setIsGenerating(true)
+        getRewriterPageHandler()
+          // If we have some generated text, generate from that instead of the initial text.
+          .rewriteText(
+            generatedText || initialText,
+            actionType ?? ActionType.UNSPECIFIED,
+            instructionsText,
+          )
+          .then(() => {
+            // Reset Action/Instructions
+            setActionType(undefined)
+            setInstructionsText('')
 
-          // Update history
-          // TODO: include action & instructions in history
-          setForwardHistory([])
-          setBackHistory(h => [...h, generatedText!])
-        })
-        .finally(() => setIsGenerating(false))
-    },
-    generatedText,
-    isGenerating,
+            // Don't update history if the text didn't change.
+            if (generatedTextRef.current === generatedText) {
+              return
+            }
 
-    selectedActionType: actionType,
-    resetSelectedActionType: () => setActionType(undefined),
-    handleActionTypeClick: (action) => {
-      if (instructionsText.startsWith('/'))
-        setInstructionsText('')
+            // Update history
+            // TODO: include action & instructions in history
+            setForwardHistory([])
+            setBackHistory((h) => [...h, generatedText!])
+          })
+          .finally(() => setIsGenerating(false))
+      },
+      generatedText,
+      isGenerating,
 
-      setActionType(action)
-      setIsToolsMenuOpen(false)
-    },
-    actionList,
+      selectedActionType: actionType,
+      resetSelectedActionType: () => setActionType(undefined),
+      handleActionTypeClick: (action) => {
+        if (instructionsText.startsWith('/')) setInstructionsText('')
 
-    undo: () => {
-      if (backHistory.length === 0) return
-      const copy = [...backHistory]
-      const last = copy.at(-1)
-      copy.length -= 1
+        setActionType(action)
+        setIsToolsMenuOpen(false)
+      },
+      actionList,
 
-      setBackHistory(copy)
-      if (generatedText)
-        setForwardHistory(h => [...h, generatedText])
-      setGeneratedText(last)
-    },
-    canUndo: backHistory.length > 0 && !isGenerating,
+      undo: () => {
+        if (backHistory.length === 0) return
+        const copy = [...backHistory]
+        const last = copy.at(-1)
+        copy.length -= 1
 
-    redo: () => {
-      if (forwardHistory.length === 0) return
+        setBackHistory(copy)
+        if (generatedText) setForwardHistory((h) => [...h, generatedText])
+        setGeneratedText(last)
+      },
+      canUndo: backHistory.length > 0 && !isGenerating,
 
-      const copy = [...forwardHistory]
-      const last = copy.at(-1)
-      copy.length -= 1
+      redo: () => {
+        if (forwardHistory.length === 0) return
 
-      setForwardHistory(copy)
-      setBackHistory(h => [...h, generatedText!])
-      setGeneratedText(last)
-    },
-    canRedo: forwardHistory.length > 0 && !isGenerating,
+        const copy = [...forwardHistory]
+        const last = copy.at(-1)
+        copy.length -= 1
 
-    erase: () => {
-      if (!generatedText) return
-      setBackHistory(h => [...h, generatedText])
-      setGeneratedText(undefined)
-    },
-    canErase: generatedText !== undefined && !isGenerating,
+        setForwardHistory(copy)
+        setBackHistory((h) => [...h, generatedText!])
+        setGeneratedText(last)
+      },
+      canRedo: forwardHistory.length > 0 && !isGenerating,
 
-    close: () => getRewriterPageHandler().close(),
+      erase: () => {
+        if (!generatedText) return
+        setBackHistory((h) => [...h, generatedText])
+        setGeneratedText(undefined)
+      },
+      canErase: generatedText !== undefined && !isGenerating,
 
-    openSettings: () => getRewriterPageHandler().openSettings(),
+      close: () => getRewriterPageHandler().close(),
 
-    acceptGeneratedText: () => {
-      if (!generatedText) return
+      openSettings: () => getRewriterPageHandler().openSettings(),
 
-      setIsGenerating(true)
-      getRewriterPageHandler().insertTextAndClose(generatedText)
-        .finally(() => setIsGenerating(false))
-    },
+      acceptGeneratedText: () => {
+        if (!generatedText) return
 
-    ...charCountContext
-  }), [initialText, instructionsText, actionType, actionList, generatedText, isGenerating, forwardHistory, charCountContext.inputTextCharCountDisplay, charCountContext.isCharLimitApproaching, charCountContext.isCharLimitExceeded, backHistory, actionList, isToolsMenuOpen])
+        setIsGenerating(true)
+        getRewriterPageHandler()
+          .insertTextAndClose(generatedText)
+          .finally(() => setIsGenerating(false))
+      },
 
-  return <RewriterContext.Provider value={context}>
-    {props.children}
-  </RewriterContext.Provider>
+      ...charCountContext,
+    }),
+    [
+      initialText,
+      instructionsText,
+      actionType,
+      actionList,
+      generatedText,
+      isGenerating,
+      forwardHistory,
+      charCountContext.inputTextCharCountDisplay,
+      charCountContext.isCharLimitApproaching,
+      charCountContext.isCharLimitExceeded,
+      backHistory,
+      actionList,
+      isToolsMenuOpen,
+    ],
+  )
+
+  return (
+    <RewriterContext.Provider value={context}>
+      {props.children}
+    </RewriterContext.Provider>
+  )
 }

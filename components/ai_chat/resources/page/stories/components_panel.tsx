@@ -12,9 +12,19 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as Mojom from '../../common/mojom'
-import { ActiveChatContext, SelectedChatDetails } from '../state/active_chat_context'
-import { AIChatContext, AIChatReactContext, useIsSmall } from '../state/ai_chat_context'
-import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
+import {
+  ActiveChatContext,
+  SelectedChatDetails,
+} from '../state/active_chat_context'
+import {
+  AIChatContext,
+  AIChatReactContext,
+  useIsSmall,
+} from '../state/ai_chat_context'
+import {
+  ConversationContext,
+  ConversationReactContext,
+} from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
@@ -23,7 +33,10 @@ import './story_utils/locale'
 import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
-import { UntrustedConversationContext, UntrustedConversationReactContext } from '../../untrusted_conversation_frame/untrusted_conversation_context'
+import {
+  UntrustedConversationContext,
+  UntrustedConversationReactContext,
+} from '../../untrusted_conversation_frame/untrusted_conversation_context'
 import ErrorConnection from '../components/alerts/error_connection'
 import ErrorConversationEnd from '../components/alerts/error_conversation_end'
 import ErrorInvalidAPIKey from '../components/alerts/error_invalid_api_key'
@@ -42,41 +55,43 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
   sourcesEvent: undefined,
-  contentReceiptEvent: undefined
+  contentReceiptEvent: undefined,
 }
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    completionEvent: { completion: text }
+    completionEvent: { completion: text },
   }
 }
 
 function getSearchEvent(queries: string[]): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    searchQueriesEvent: { searchQueries: queries }
+    searchQueriesEvent: { searchQueries: queries },
   }
 }
 
 function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    searchStatusEvent: { isSearching: true }
+    searchStatusEvent: { isSearching: true },
   }
 }
 
-function getWebSourcesEvent(sources: Mojom.WebSource[]): Mojom.ConversationEntryEvent {
+function getWebSourcesEvent(
+  sources: Mojom.WebSource[],
+): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    sourcesEvent: { sources }
+    sourcesEvent: { sources },
   }
 }
 
 function getPageContentRefineEvent(): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    pageContentRefineEvent: { isRefining: true }
+    pageContentRefineEvent: { isRefining: true },
   }
 }
 
@@ -92,7 +107,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     trimmedTokens: BigInt(0),
   },
   {
-    title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
+    title:
+      'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
     uuid: '2',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000001') },
@@ -110,7 +126,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
-  }
+  },
 ]
 
 const HISTORY: Mojom.ConversationTurn[] = [
@@ -124,9 +140,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -137,10 +153,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')],
-    uploadedFiles : [],
+    events: [
+      getCompletionEvent(
+        'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -152,9 +172,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -165,10 +185,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent(`# Title 1\n ## Title 2\n ## **Title 2** using bold that doesn't look different\n### Title 3\n#### Title 4\n \nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
-    uploadedFiles : [],
+    events: [
+      getCompletionEvent(
+        `# Title 1\n ## Title 2\n ## **Title 2** using bold that doesn't look different\n### Title 3\n#### Title 4\n \nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`,
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -180,9 +204,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getPageContentRefineEvent()],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -194,9 +218,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -207,10 +231,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')],
-    uploadedFiles : [],
+    events: [
+      getCompletionEvent(
+        'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.',
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -222,9 +250,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -235,10 +263,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")],
-    uploadedFiles : [],
+    events: [
+      getCompletionEvent(
+        'Hello! As a helpful and respectful AI assistant, I\'d be happy to assist you with your question. However, I\'m a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a "hello world" program in C++.\n\nTo write a "hello world" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << "Hello, world!" << std::endl;\n    return 0;\n}\n```\nThis code will print "Hello, world!" and uses `iostream` std library. If you have any further questions or need more information, please don\'t hesitate to ask!',
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -246,13 +278,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     characterType: Mojom.CharacterType.HUMAN,
     actionType: Mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
     prompt: undefined,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
+    selectedText:
+      'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -263,10 +296,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
-    uploadedFiles : [],
+    events: [
+      getCompletionEvent(
+        'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -274,13 +311,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     characterType: Mojom.CharacterType.HUMAN,
     actionType: Mojom.ActionType.SHORTEN,
     prompt: undefined,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
+    selectedText:
+      'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -294,16 +332,30 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [
       getSearchStatusEvent(),
       getSearchEvent(['pointer compression', 'c++ language specification']),
-      getCompletionEvent('[1]:https://www.example.com\n[2]:https://lttstore.com\n[3]:https://www.tesla.com/modely\n[Pointer compression](https://www.example.com) is a [memory](https://brave.com/wont-show-as-link) optimization technique.[1][3]'),
+      getCompletionEvent(
+        '[1]:https://www.example.com\n[2]:https://lttstore.com\n[3]:https://www.tesla.com/modely\n[Pointer compression](https://www.example.com) is a [memory](https://brave.com/wont-show-as-link) optimization technique.[1][3]',
+      ),
       getWebSourcesEvent([
-        { url: { url: 'https://www.example.com' }, title: 'Pointer Compression', faviconUrl: { url: 'https://www.example.com/favicon.ico' } },
-        { title: 'LTT Store', faviconUrl: { url: 'https://lttstore.com/favicon.ico' }, url: { url: 'https://lttstore.com' } },
-        { title: 'Tesla Model Y', faviconUrl: { url: 'https://www.tesla.com/favicon.ico' }, url: { url: 'https://www.tesla.com/modely' } }
-      ])
+        {
+          url: { url: 'https://www.example.com' },
+          title: 'Pointer Compression',
+          faviconUrl: { url: 'https://www.example.com/favicon.ico' },
+        },
+        {
+          title: 'LTT Store',
+          faviconUrl: { url: 'https://lttstore.com/favicon.ico' },
+          url: { url: 'https://lttstore.com' },
+        },
+        {
+          title: 'Tesla Model Y',
+          faviconUrl: { url: 'https://www.tesla.com/favicon.ico' },
+          url: { url: 'https://www.tesla.com/modely' },
+        },
+      ]),
     ],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -312,25 +364,27 @@ const HISTORY: Mojom.ConversationTurn[] = [
     actionType: Mojom.ActionType.SHORTEN,
     prompt: undefined,
     selectedText: '',
-    edits: [{
-      uuid: undefined,
-      text: 'Will it fit in a Tesla Model Y frunk?',
-      characterType: Mojom.CharacterType.HUMAN,
-      actionType: Mojom.ActionType.SHORTEN,
-      prompt: undefined,
-      selectedText: '',
-      createdTime: { internalValue: BigInt('13278618001000000') },
-      edits: [],
-      events: [],
-      uploadedFiles : [],
-      fromBraveSearchSERP: false,
-      modelKey: '1'
-    }],
+    edits: [
+      {
+        uuid: undefined,
+        text: 'Will it fit in a Tesla Model Y frunk?',
+        characterType: Mojom.CharacterType.HUMAN,
+        actionType: Mojom.ActionType.SHORTEN,
+        prompt: undefined,
+        selectedText: '',
+        createdTime: { internalValue: BigInt('13278618001000000') },
+        edits: [],
+        events: [],
+        uploadedFiles: [],
+        fromBraveSearchSERP: false,
+        modelKey: '1',
+      },
+    ],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -341,10 +395,16 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])],
-    uploadedFiles : [],
+    events: [
+      getSearchStatusEvent(),
+      getSearchEvent([
+        'LTT store backpack dimensions',
+        'Tesla Model Y frunk dimensions',
+      ]),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -356,14 +416,16 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [
-      { filename: 'lion.png', filesize: 128,
+    uploadedFiles: [
+      {
+        filename: 'lion.png',
+        filesize: 128,
         data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kImage
-      }
+        type: Mojom.UploadedFileType.kImage,
+      },
     ],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -375,9 +437,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('It is a lion!')],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -389,18 +451,22 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [
-      { filename: 'full_screenshot_0.png', filesize: 128,
+    uploadedFiles: [
+      {
+        filename: 'full_screenshot_0.png',
+        filesize: 128,
         data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot
+        type: Mojom.UploadedFileType.kScreenshot,
       },
-      { filename: 'full_screenshot_1.png', filesize: 128,
+      {
+        filename: 'full_screenshot_1.png',
+        filesize: 128,
         data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot
+        type: Mojom.UploadedFileType.kScreenshot,
       },
     ],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -413,11 +479,12 @@ const HISTORY: Mojom.ConversationTurn[] = [
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
       getCompletionEvent(
-        'This website compares differences between Juniper Model Y and legacy one.'
-      )],
-    uploadedFiles : [],
+        'This website compares differences between Juniper Model Y and legacy one.',
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -429,22 +496,28 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [
-      { filename: 'full_screenshot_0.png', filesize: 128,
+    uploadedFiles: [
+      {
+        filename: 'full_screenshot_0.png',
+        filesize: 128,
         data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot
+        type: Mojom.UploadedFileType.kScreenshot,
       },
-      { filename: 'full_screenshot_1.png', filesize: 128,
+      {
+        filename: 'full_screenshot_1.png',
+        filesize: 128,
         data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot
+        type: Mojom.UploadedFileType.kScreenshot,
       },
-      { filename: 'lion.png', filesize: 128,
+      {
+        filename: 'lion.png',
+        filesize: 128,
         data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kImage
-      }
+        type: Mojom.UploadedFileType.kImage,
+      },
     ],
     fromBraveSearchSERP: false,
-    modelKey: '1'
+    modelKey: '1',
   },
   {
     uuid: undefined,
@@ -457,12 +530,13 @@ const HISTORY: Mojom.ConversationTurn[] = [
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
       getCompletionEvent(
-        'According to screenshots, this website compares differences between Juniper Model Y and legacy one. And a lion image.'
-      )],
-    uploadedFiles : [],
+        'According to screenshots, this website compares differences between Juniper Model Y and legacy one. And a lion image.',
+      ),
+    ],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1'
-  }
+    modelKey: '1',
+  },
 ]
 
 const MODELS: Mojom.Model[] = [
@@ -477,10 +551,10 @@ const MODELS: Mojom.Model[] = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
       customModelOptions: undefined,
-    }
+    },
   },
   {
     key: '2',
@@ -493,10 +567,10 @@ const MODELS: Mojom.Model[] = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.PREMIUM,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
       customModelOptions: undefined,
-    }
+    },
   },
   {
     key: '3',
@@ -509,10 +583,10 @@ const MODELS: Mojom.Model[] = [
         category: Mojom.ModelCategory.CHAT,
         access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 10000,
-        longConversationWarningCharacterLimit: 9700
+        longConversationWarningCharacterLimit: 9700,
       },
       customModelOptions: undefined,
-    }
+    },
   },
   {
     key: '4',
@@ -530,12 +604,12 @@ const MODELS: Mojom.Model[] = [
         maxAssociatedContentLength: 131072 * 4,
         longConversationWarningCharacterLimit: 131072 * 4 * 0.6,
         modelSystemPrompt:
-          'You are a helpful AI assistant who wishes not to be ' +
-          'associated with a character named Clippy.',
+          'You are a helpful AI assistant who wishes not to be '
+          + 'associated with a character named Clippy.',
         endpoint: { url: 'https://example.com' },
         apiKey: '123456',
       },
-    }
+    },
   },
 ]
 
@@ -543,7 +617,7 @@ const SAMPLE_QUESTIONS = [
   'Summarize this article',
   'What was the score?',
   'Any injuries?',
-  'Why did google executives disregard this character in the company?'
+  'Why did google executives disregard this character in the company?',
 ]
 
 const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
@@ -610,7 +684,8 @@ const args: CustomArgs = {
   isPremiumUser: true,
   isPremiumUserDisconnected: false,
   currentErrorState: 'ConnectionIssue' satisfies keyof typeof Mojom.APIError,
-  suggestionStatus: 'None' satisfies keyof typeof Mojom.SuggestionGenerationStatus,
+  suggestionStatus:
+    'None' satisfies keyof typeof Mojom.SuggestionGenerationStatus,
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
@@ -625,64 +700,74 @@ const args: CustomArgs = {
   showAttachments: true,
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
-  ratingTurnUuid: undefined
+  ratingTurnUuid: undefined,
 }
 
 const meta: Meta<CustomArgs> = {
   title: 'Chat/Chat',
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     ...InferControlsFromArgs(args),
     currentErrorState: {
       options: getKeysForMojomEnum(Mojom.APIError),
-      control: { type: 'select' }
+      control: { type: 'select' },
     },
     suggestionStatus: {
       options: getKeysForMojomEnum(Mojom.SuggestionGenerationStatus),
-      control: { type: 'select' }
+      control: { type: 'select' },
     },
     model: {
-      options: MODELS.map(model => model.displayName),
-      control: { type: 'select' }
+      options: MODELS.map((model) => model.displayName),
+      control: { type: 'select' },
     },
     visibleConversationListCount: {
-      control: { type: 'number' }
+      control: { type: 'number' },
     },
     deletingConversationId: {
-      options: CONVERSATIONS.map(conversation => conversation.uuid),
-      control: { type: 'select' }
+      options: CONVERSATIONS.map((conversation) => conversation.uuid),
+      control: { type: 'select' },
     },
     generatedUrlToBeOpened: {
       options: [{ url: 'https://www.example.com' }],
-      control: { type: 'select' }
+      control: { type: 'select' },
     },
     ratingTurnUuid: {
       options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
-      control: { type: 'select' }
-    }
+      control: { type: 'select' },
+    },
   },
   args,
   decorators: [
     (Story, options) => {
       const [, setArgs] = useArgs()
       return (
-        <StoryContext args={options.args} setArgs={setArgs}>
+        <StoryContext
+          args={options.args}
+          setArgs={setArgs}
+        >
           <Story />
         </StoryContext>
       )
-    }
-  ]
+    },
+  ],
 }
 
-function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs: (newArgs: Partial<CustomArgs>) => void }>) {
+function StoryContext(
+  props: React.PropsWithChildren<{
+    args: CustomArgs
+    setArgs: (newArgs: Partial<CustomArgs>) => void
+  }>,
+) {
   const isSmall = useIsSmall()
 
   const options = { args: props.args }
   const { setArgs } = props
 
-  const associatedContent = options.args.hasAssociatedContent ? ASSOCIATED_CONTENT : new Mojom.AssociatedContent()
+  const associatedContent = options.args.hasAssociatedContent
+    ? ASSOCIATED_CONTENT
+    : new Mojom.AssociatedContent()
   const suggestedQuestions = options.args.hasSuggestedQuestions
     ? SAMPLE_QUESTIONS
     : associatedContent
@@ -691,10 +776,13 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
 
   const currentError = Mojom.APIError[options.args.currentErrorState]
   const apiHasError = currentError !== Mojom.APIError.None
-  const currentModel = MODELS.find(m => m.displayName === options.args.model)
+  const currentModel = MODELS.find((m) => m.displayName === options.args.model)
 
   const switchToBasicModel = () => {
-    const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC)
+    const nonPremiumModel = MODELS.find(
+      (model) =>
+        model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC,
+    )
     setArgs({ model: nonPremiumModel?.key })
   }
 
@@ -705,11 +793,21 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
   let visibleConversations: typeof CONVERSATIONS = []
-  for (let i = 0; i < Math.floor(options.args.visibleConversationListCount / CONVERSATIONS.length); i++) {
+  for (
+    let i = 0;
+    i
+    < Math.floor(
+      options.args.visibleConversationListCount / CONVERSATIONS.length,
+    );
+    i++
+  ) {
     visibleConversations = visibleConversations.concat(CONVERSATIONS)
   }
-  const remainingConversationsCount = options.args.visibleConversationListCount % CONVERSATIONS.length
-  visibleConversations = visibleConversations.concat(CONVERSATIONS.slice(0, remainingConversationsCount))
+  const remainingConversationsCount =
+    options.args.visibleConversationListCount % CONVERSATIONS.length
+  visibleConversations = visibleConversations.concat(
+    CONVERSATIONS.slice(0, remainingConversationsCount),
+  )
 
   const aiChatContext: AIChatContext = {
     conversationEntriesComponent: StorybookConversationEntries,
@@ -728,47 +826,54 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
-    tabs: [{
-      id: 1,
-      contentId: 1,
-      url: { url: 'https://www.example.com' },
-      title: 'Example',
-    }, {
-      id: 2,
-      contentId: 2,
-      url: { url: 'https://topos.nz' },
-      title: 'NZ Topo',
-    }, {
-      id: 3,
-      contentId: 3,
-      url: { url: 'https://brave.com' },
-      title: 'Brave',
-    }, {
-      id: 4,
-      contentId: 4,
-      url: { url: 'https://search.brave.com' },
-      title: 'Brave Search',
-    }],
-    goPremium: () => { },
-    managePremium: () => { },
-    handleAgreeClick: () => { },
-    enableStoragePref: () => { },
-    dismissStorageNotice: () => { },
-    dismissPremiumPrompt: () => { },
-    userRefreshPremiumSession: () => { },
-    setEditingConversationId: (id: string | null) => setArgs({ editingConversationId: id }),
-    setDeletingConversationId: (id: string | null) => setArgs({ deletingConversationId: id }),
+    tabs: [
+      {
+        id: 1,
+        contentId: 1,
+        url: { url: 'https://www.example.com' },
+        title: 'Example',
+      },
+      {
+        id: 2,
+        contentId: 2,
+        url: { url: 'https://topos.nz' },
+        title: 'NZ Topo',
+      },
+      {
+        id: 3,
+        contentId: 3,
+        url: { url: 'https://brave.com' },
+        title: 'Brave',
+      },
+      {
+        id: 4,
+        contentId: 4,
+        url: { url: 'https://search.brave.com' },
+        title: 'Brave Search',
+      },
+    ],
+    goPremium: () => {},
+    managePremium: () => {},
+    handleAgreeClick: () => {},
+    enableStoragePref: () => {},
+    dismissStorageNotice: () => {},
+    dismissPremiumPrompt: () => {},
+    userRefreshPremiumSession: () => {},
+    setEditingConversationId: (id: string | null) =>
+      setArgs({ editingConversationId: id }),
+    setDeletingConversationId: (id: string | null) =>
+      setArgs({ deletingConversationId: id }),
     showSidebar: showSidebar,
-    toggleSidebar: () => setShowSidebar(s => !s)
+    toggleSidebar: () => setShowSidebar((s) => !s),
   }
 
   const activeChatContext: SelectedChatDetails = {
     selectedConversationId: CONVERSATIONS[0].uuid,
-    updateSelectedConversationId: () => { },
+    updateSelectedConversationId: () => {},
     callbackRouter: undefined!,
     conversationHandler: undefined!,
-    createNewConversation: () => { },
-    isTabAssociated: options.args.isDefaultConversation
+    createNewConversation: () => {},
+    isTabAssociated: options.args.isDefaultConversation,
   }
 
   const inputText = options.args.inputText
@@ -784,7 +889,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     currentModel,
     suggestedQuestions,
     isGenerating: options.args.isGenerating,
-    suggestionStatus: Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
+    suggestionStatus:
+      Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
     currentError,
     apiHasError,
     isFeedbackFormVisible: options.args.isFeedbackFormVisible,
@@ -805,54 +911,58 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,
     setInputText,
-    setCurrentModel: () => { },
+    setCurrentModel: () => {},
     switchToBasicModel,
-    generateSuggestedQuestions: () => { },
-    dismissLongConversationInfo: () => { },
-    updateShouldSendPageContents: () => { },
-    retryAPIRequest: () => { },
-    handleResetError: () => { },
-    handleStopGenerating: async () => { },
-    submitInputTextToAPI: () => { },
-    resetSelectedActionType: () => { },
-    handleActionTypeClick: () => { },
-    setIsToolsMenuOpen: () => { },
-    handleFeedbackFormCancel: () => { },
+    generateSuggestedQuestions: () => {},
+    dismissLongConversationInfo: () => {},
+    updateShouldSendPageContents: () => {},
+    retryAPIRequest: () => {},
+    handleResetError: () => {},
+    handleStopGenerating: async () => {},
+    submitInputTextToAPI: () => {},
+    resetSelectedActionType: () => {},
+    handleActionTypeClick: () => {},
+    setIsToolsMenuOpen: () => {},
+    handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
     removeImage: () => {},
     uploadImage: (useMediaCapture: boolean) => {},
     getScreenshots: () => {},
-    setGeneratedUrlToBeOpened:
-      (url?: Url) => setArgs({ generatedUrlToBeOpened: url }),
-    setIgnoreExternalLinkWarning: () => { },
-    handleCloseRateMessagePrivacyModal:
-      () => setArgs({ ratingTurnUuid: undefined }),
-    handleRateMessage: () => Promise.resolve()
+    setGeneratedUrlToBeOpened: (url?: Url) =>
+      setArgs({ generatedUrlToBeOpened: url }),
+    setIgnoreExternalLinkWarning: () => {},
+    handleCloseRateMessagePrivacyModal: () =>
+      setArgs({ ratingTurnUuid: undefined }),
+    handleRateMessage: () => Promise.resolve(),
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
     conversationHistory: conversationContext.conversationHistory,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
-    contentUsedPercentage: (options.args.shouldShowLongPageWarning ||
-                            options.args.shouldShowRefinedWarning)
-      ? 48 : 100,
+    contentUsedPercentage:
+      options.args.shouldShowLongPageWarning
+      || options.args.shouldShowRefinedWarning
+        ? 48
+        : 100,
     isContentRefined: options.args.shouldShowRefinedWarning,
     totalTokens: BigInt(options.args.totalTokens),
     trimmedTokens: BigInt(options.args.trimmedTokens),
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile,
     allModels: MODELS,
-    currentModelKey: currentModel?.key ?? ''
+    currentModelKey: currentModel?.key ?? '',
   }
 
   return (
     <AIChatReactContext.Provider value={aiChatContext}>
       <ActiveChatContext.Provider value={activeChatContext}>
         <ConversationReactContext.Provider value={conversationContext}>
-          <UntrustedConversationReactContext.Provider value={conversationEntriesContext}>
+          <UntrustedConversationReactContext.Provider
+            value={conversationEntriesContext}
+          >
             {props.children}
           </UntrustedConversationReactContext.Provider>
         </ConversationReactContext.Provider>
@@ -872,7 +982,7 @@ export const _Panel: Story = {
         <Main />
       </div>
     )
-  }
+  },
 }
 
 export const _Alerts = {
@@ -890,7 +1000,7 @@ export const _Alerts = {
         <WarningPremiumDisconnected />
       </div>
     )
-  }
+  },
 }
 
 export const _FeedbackForm = {
@@ -900,13 +1010,13 @@ export const _FeedbackForm = {
         <FeedbackForm />
       </div>
     )
-  }
+  },
 }
 
 export const _FullPage = {
   args: {
     isStandalone: true,
-    isDefaultConversation: false
+    isDefaultConversation: false,
   },
   render: () => {
     return (
@@ -914,7 +1024,7 @@ export const _FullPage = {
         <FullPage />
       </div>
     )
-  }
+  },
 }
 
 export const _NewFullpageConversation = {
@@ -926,15 +1036,17 @@ export const _NewFullpageConversation = {
     hasSiteInfo: false,
   },
   render: () => {
-    return <div className={styles.container}>
-      <FullPage />
-    </div>
-  }
+    return (
+      <div className={styles.container}>
+        <FullPage />
+      </div>
+    )
+  },
 }
 export const _AttachmentsPanel = {
   args: {
     isStandalone: true,
-    isDefaultConversation: false
+    isDefaultConversation: false,
   },
   render: () => {
     return (
@@ -942,12 +1054,12 @@ export const _AttachmentsPanel = {
         <Attachments />
       </div>
     )
-  }
+  },
 }
 
 export const _Loading = {
   args: {
-    initialized: false
+    initialized: false,
   },
   render: () => {
     return (
@@ -955,5 +1067,5 @@ export const _Loading = {
         <Loading />
       </div>
     )
-  }
+  },
 }
