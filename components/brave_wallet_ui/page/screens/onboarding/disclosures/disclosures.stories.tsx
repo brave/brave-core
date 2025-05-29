@@ -16,7 +16,7 @@ export const _OnboardingDisclosures = {
         <OnboardingDisclosures />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: OnboardingDisclosures }

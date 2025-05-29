@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Mock Data
 import {
-  mockMeldFiatCurrencies //
+  mockMeldFiatCurrencies, //
 } from '../../../../../common/constants/mocks'
 
 // Types
@@ -16,7 +16,7 @@ import { MeldFiatCurrency } from '../../../../../constants/types'
 // Components
 import { SelectCurrency } from './select_currency'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectCurrency = () => {
@@ -40,5 +40,5 @@ export const _SelectCurrency = () => {
 
 export default {
   component: _SelectCurrency,
-  title: 'Fund Wallet - Select Currency'
+  title: 'Fund Wallet - Select Currency',
 }

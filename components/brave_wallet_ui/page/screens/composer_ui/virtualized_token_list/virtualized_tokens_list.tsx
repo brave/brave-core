@@ -16,13 +16,13 @@ import { BraveWallet, SpotPriceRegistry } from '../../../../constants/types'
 
 // Components
 import {
-  TokenListItem //
+  TokenListItem, //
 } from '../token_list_item/token_list_item'
 
 // Styled Components
 import {
   AutoSizerStyle,
-  listItemInitialHeight
+  listItemInitialHeight,
 } from './virtualized_tokens_list.style'
 
 interface VirtualizedTokensListProps {
@@ -38,7 +38,7 @@ interface VirtualizedTokensListProps {
   onViewTokenDetails: (token: BraveWallet.BlockchainToken) => void
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
   getAllAccountsWithBalance: (
-    token: BraveWallet.BlockchainToken
+    token: BraveWallet.BlockchainToken,
   ) => BraveWallet.AccountInfo[]
 }
 
@@ -51,7 +51,7 @@ interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
 
 const getListItemKey = (
   index: number,
-  tokenList: BraveWallet.BlockchainToken[]
+  tokenList: BraveWallet.BlockchainToken[],
 ) => {
   const token = tokenList[index]
   return getAssetIdKey(token)
@@ -73,37 +73,37 @@ const ListItem = (props: ListItemProps) => {
     modalType,
     userTokenBalances,
     getAllAccountsWithBalance,
-    onViewTokenDetails
+    onViewTokenDetails,
   } = props
   const token = data[index]
 
   const disabledText = React.useMemo(() => {
     if (
-      selectingFromOrTo === 'to' &&
-      selectedFromToken?.contractAddress === token.contractAddress &&
-      selectedFromToken?.coin === token.coin &&
-      selectedFromToken?.chainId === token.chainId
+      selectingFromOrTo === 'to'
+      && selectedFromToken?.contractAddress === token.contractAddress
+      && selectedFromToken?.coin === token.coin
+      && selectedFromToken?.chainId === token.chainId
     ) {
       return 'braveWalletFromToken'
     }
-    return selectingFromOrTo === 'from' &&
-      selectedToToken?.contractAddress === token.contractAddress &&
-      selectedToToken?.coin === token.coin &&
-      selectedToToken?.chainId === token.chainId
+    return selectingFromOrTo === 'from'
+      && selectedToToken?.contractAddress === token.contractAddress
+      && selectedToToken?.coin === token.coin
+      && selectedToToken?.chainId === token.chainId
       ? 'braveWalletToToken'
       : undefined
   }, [selectedFromToken, selectedToToken, token, selectingFromOrTo])
 
   const groupingLabel = React.useMemo(() => {
     if (
-      modalType !== 'send' &&
-      index === 0 &&
-      firstNoBalanceTokenKey !== getAssetIdKey(token)
+      modalType !== 'send'
+      && index === 0
+      && firstNoBalanceTokenKey !== getAssetIdKey(token)
     ) {
       return 'owned'
     }
-    return modalType !== 'send' &&
-      firstNoBalanceTokenKey === getAssetIdKey(token)
+    return modalType !== 'send'
+      && firstNoBalanceTokenKey === getAssetIdKey(token)
       ? 'not-owned'
       : undefined
   }, [modalType, index, token, firstNoBalanceTokenKey])
@@ -114,7 +114,7 @@ const ListItem = (props: ListItemProps) => {
         setSize(index, ref.getBoundingClientRect().height)
       }
     },
-    [index, setSize]
+    [index, setSize],
   )
 
   return (
@@ -152,13 +152,13 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
     modalType,
     userTokenBalances,
     onViewTokenDetails,
-    getAllAccountsWithBalance
+    getAllAccountsWithBalance,
   } = props
 
   // Refs
   const listRef = React.useRef<List | null>(null)
   const itemSizes = React.useRef<number[]>(
-    new Array(tokenList.length).fill(listItemInitialHeight)
+    new Array(tokenList.length).fill(listItemInitialHeight),
   )
 
   // Methods
@@ -171,7 +171,7 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
         listRef.current.resetAfterIndex(0)
       }
     },
-    [listRef]
+    [listRef],
   )
 
   const setSize = React.useCallback(
@@ -186,14 +186,14 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
         }
       }
     },
-    [itemSizes, listRef]
+    [itemSizes, listRef],
   )
 
   const getSize = React.useCallback(
     (index: number) => {
       return itemSizes.current[index] || listItemInitialHeight
     },
-    [itemSizes]
+    [itemSizes],
   )
 
   return (

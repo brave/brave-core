@@ -5,7 +5,7 @@
 
 import {
   AddressMessageInfoIds,
-  AddressMessageInfo
+  AddressMessageInfo,
 } from '../../../constants/types'
 
 export const ENSOffchainLookupMessage: AddressMessageInfo = {
@@ -13,28 +13,28 @@ export const ENSOffchainLookupMessage: AddressMessageInfo = {
   description: 'braveWalletEnsOffChainLookupDescription',
   url: 'https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup',
   id: AddressMessageInfoIds.ensOffchainLookupWarning,
-  type: 'info'
+  type: 'info',
 }
 
 export const HasNoDomainAddressMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletNotDomain',
   id: AddressMessageInfoIds.hasNoDomainAddress,
-  type: 'error'
+  type: 'error',
 }
 
 export const FailedChecksumMessage: AddressMessageInfo = {
   title: 'braveWalletFailedChecksumTitle',
   description: 'braveWalletFailedChecksumDescription',
   type: 'error',
-  id: AddressMessageInfoIds.invalidChecksumError
+  id: AddressMessageInfoIds.invalidChecksumError,
 }
 
 export const MissingChecksumMessage: AddressMessageInfo = {
   title: 'braveWalletFailedChecksumTitle',
   description: 'braveWalletFailedChecksumDescription',
   type: 'warning',
-  id: AddressMessageInfoIds.missingChecksumWarning
+  id: AddressMessageInfoIds.missingChecksumWarning,
 }
 
 export const FEVMAddressConversionMessage: AddressMessageInfo = {
@@ -42,35 +42,35 @@ export const FEVMAddressConversionMessage: AddressMessageInfo = {
   description: 'braveWalletFEVMAddressTranslationDescription',
   url: 'https://docs.filecoin.io/smart-contracts/filecoin-evm-runtime/address-types/',
   type: 'warning',
-  id: AddressMessageInfoIds.FEVMTranslationWarning
+  id: AddressMessageInfoIds.FEVMTranslationWarning,
 }
 
 export const InvalidAddressMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletNotValidAddress',
   type: 'error',
-  id: AddressMessageInfoIds.invalidAddressError
+  id: AddressMessageInfoIds.invalidAddressError,
 }
 
 export const SameAddressMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletSameAddressError',
   type: 'error',
-  id: AddressMessageInfoIds.sameAddressError
+  id: AddressMessageInfoIds.sameAddressError,
 }
 
 export const ContractAddressMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletContractAddressError',
   type: 'error',
-  id: AddressMessageInfoIds.contractAddressError
+  id: AddressMessageInfoIds.contractAddressError,
 }
 
 export const InvalidDomainExtensionMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletInvalidDomainExtension',
   type: 'error',
-  id: AddressMessageInfoIds.invalidDomainExtension
+  id: AddressMessageInfoIds.invalidDomainExtension,
 }
 
 // ZCash
@@ -78,14 +78,14 @@ export const ZCashInvalidTransparentAddressErrorMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletZCashInvalidTransparentAddress',
   type: 'error',
-  id: AddressMessageInfoIds.zcashInvalidTransparentAddressError
+  id: AddressMessageInfoIds.zcashInvalidTransparentAddressError,
 }
 
 export const ZCashInvalidUnifiedAddressErrorMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletZCashInvalidUnifiedAddress',
   type: 'error',
-  id: AddressMessageInfoIds.zcashInvalidUnifiedAddressError
+  id: AddressMessageInfoIds.zcashInvalidUnifiedAddressError,
 }
 
 // eslint-disable-next-line max-len
@@ -94,7 +94,7 @@ export const ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage: AddressMe
     title: '',
     description: 'braveWalletZCashInvalidUnifiedAddressMissingOrchardPart',
     type: 'error',
-    id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError
+    id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError,
   }
 
 // eslint-disable-next-line max-len
@@ -104,7 +104,7 @@ export const ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage: Addre
     description: 'braveWalletZCashInvalidUnifiedAddressMissingTransparentPart',
     type: 'error',
     // eslint-disable-next-line max-len
-    id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError
+    id: AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError,
   }
 
 // eslint-disable-next-line max-len
@@ -113,7 +113,7 @@ export const ZCashInvalidAddressNetworkMismatchErrorMessage: AddressMessageInfo 
     title: '',
     description: 'braveWalletZCashInvalidAddressNetworkMismatch',
     type: 'error',
-    id: AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
+    id: AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError,
   }
 
 export const AddressValidationMessages = [
@@ -130,5 +130,5 @@ export const AddressValidationMessages = [
   ZCashInvalidUnifiedAddressErrorMessage,
   ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage,
   ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage,
-  ZCashInvalidAddressNetworkMismatchErrorMessage
+  ZCashInvalidAddressNetworkMismatchErrorMessage,
 ]

@@ -122,7 +122,7 @@ export const BackButtonWrapper = styled.div`
 `
 
 export const BackButtonIcon = styled(Icon).attrs({
-  name: 'arrow-left'
+  name: 'arrow-left',
 })`
   color: ${leo.color.icon.interactive};
   --leo-icon-size: 18px;
@@ -156,7 +156,7 @@ export const BackgroundGradientBottomLayer = styled.div`
 `
 
 export const BraveIcon = styled(Icon).attrs({
-  name: 'brave-icon-release-color'
+  name: 'brave-icon-release-color',
 })`
   --leo-icon-size: 20px;
 `

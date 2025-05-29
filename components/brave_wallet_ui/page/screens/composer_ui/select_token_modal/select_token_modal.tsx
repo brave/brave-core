@@ -11,10 +11,10 @@ import { useHistory } from 'react-router'
 // Selectors
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult,
-  selectAllVisibleUserNFTsFromQueryResult
+  selectAllVisibleUserNFTsFromQueryResult,
 } from '../../../../common/slices/entities/blockchain-token.entity'
 import {
-  selectAllAccountInfosFromQuery //
+  selectAllAccountInfosFromQuery, //
 } from '../../../../common/slices/entities/account-info.entity'
 import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../common/selectors'
@@ -23,31 +23,31 @@ import { UISelectors } from '../../../../common/selectors'
 import {
   BraveWallet,
   SendPageTabHashes,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../constants/types'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../../../../common/slices/entities/token-balance.entity'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import {
   filterNetworksForAccount,
-  networkSupportsAccount
+  networkSupportsAccount,
 } from '../../../../utils/network-utils'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
   getTokenPriceFromRegistry,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import {
-  getEntitiesListFromEntityState //
+  getEntitiesListFromEntityState, //
 } from '../../../../utils/entities.utils'
 import {
-  getAccountsForNetwork //
+  getAccountsForNetwork, //
 } from '../../../../utils/account-utils'
 
 // Queries
@@ -57,47 +57,47 @@ import {
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery,
   useGetAccountInfosRegistryQuery,
-  useGetSwapSupportedNetworksQuery
+  useGetSwapSupportedNetworksQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  useGetCombinedTokensRegistryQuery //
+  useGetCombinedTokensRegistryQuery, //
 } from '../../../../common/slices/api.slice.extra'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 
 // hooks
 import {
-  useBalancesFetcher //
+  useBalancesFetcher, //
 } from '../../../../common/hooks/use-balances-fetcher'
 
 // Options
 import {
-  AllNetworksOption //
+  AllNetworksOption, //
 } from '../../../../options/network-filter-options'
 import {
-  AllAccountsOption //
+  AllAccountsOption, //
 } from '../../../../options/account-filter-options'
 
 // Components
 import {
-  TokenListItemSkeleton //
+  TokenListItemSkeleton, //
 } from '../token_list_item/token_list_item_skeleton'
 import {
-  PopupModal //
+  PopupModal, //
 } from '../../../../components/desktop/popup-modals/index'
 import {
-  SelectSendOptionButtons //
+  SelectSendOptionButtons, //
 } from '../select_send_option_buttons/select_send_option_buttons'
 import {
-  VirtualizedTokenList //
+  VirtualizedTokenList, //
 } from '../virtualized_token_list/virtualized_tokens_list'
 import { SelectAccount } from './select_account/select_account'
 import { TokenDetails } from './token_details/token_details'
 import { NetworksDropdown } from '../../../../components/shared/dropdowns/networks_dropdown'
 import { AccountsDropdown } from '../../../../components/shared/dropdowns/accounts_dropdown'
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../../components/shared/bottom_sheet/bottom_sheet'
 
 // Styled Components
@@ -105,16 +105,16 @@ import { Row, Column } from '../../../../components/shared/style'
 import {
   ScrollContainer,
   NoAssetsText,
-  SearchInput
+  SearchInput,
 } from './select_token_modal.style'
 
 const checkIsSwapDropdownOptionDisabled = (
   account: BraveWallet.AccountInfo,
-  network: BraveWallet.NetworkInfo
+  network: BraveWallet.NetworkInfo,
 ) => {
   if (
-    account.accountId.uniqueKey === AllAccountsOption.accountId.uniqueKey ||
-    network.chainId === AllNetworksOption.chainId
+    account.accountId.uniqueKey === AllAccountsOption.accountId.uniqueKey
+    || network.chainId === AllNetworksOption.chainId
   ) {
     return false
   }
@@ -123,7 +123,7 @@ const checkIsSwapDropdownOptionDisabled = (
 
 const checkIsBridgeNetworkDropdownOptionDisabled = (
   networkChainId: string,
-  tokenChainId: string
+  tokenChainId: string,
 ) => {
   return networkChainId === tokenChainId
 }
@@ -132,7 +132,7 @@ const getFullAssetBalance = (
   asset: BraveWallet.BlockchainToken,
   networks: BraveWallet.NetworkInfo[],
   accounts: BraveWallet.AccountInfo[],
-  tokenBalancesRegistry?: TokenBalancesRegistry | null
+  tokenBalancesRegistry?: TokenBalancesRegistry | null,
 ) => {
   if (!tokenBalancesRegistry) {
     return ''
@@ -140,7 +140,7 @@ const getFullAssetBalance = (
 
   const network = networks.find(
     (network) =>
-      network.coin === asset.coin && network.chainId === asset.chainId
+      network.coin === asset.coin && network.chainId === asset.chainId,
   )
 
   if (!network) {
@@ -152,7 +152,7 @@ const getFullAssetBalance = (
       return network && networkSupportsAccount(network, account.accountId)
     })
     .map((account) =>
-      getBalance(account.accountId, asset, tokenBalancesRegistry)
+      getBalance(account.accountId, asset, tokenBalancesRegistry),
     )
 
   if (amounts.length === 0) {
@@ -172,7 +172,7 @@ interface Props {
   selectingFromOrTo: 'from' | 'to'
   onSelectAsset: (
     asset: BraveWallet.BlockchainToken,
-    account?: BraveWallet.AccountInfo
+    account?: BraveWallet.AccountInfo,
   ) => void
   onSelectSendOption?: (sendOption: SendPageTabHashes) => void
   selectedNetwork?: BraveWallet.NetworkInfo
@@ -192,7 +192,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       onSelectSendOption,
       selectedNetwork,
       modalType,
-      needsAccount
+      needsAccount,
     } = props
 
     // Routing
@@ -202,7 +202,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const [searchValue, setSearchValue] = React.useState<string>('')
     const [selectedNetworkFilter, setSelectedNetworkFilter] =
       React.useState<BraveWallet.NetworkInfo>(
-        selectedNetwork || AllNetworksOption
+        selectedNetwork || AllNetworksOption,
       )
     const [selectedAccountFilter, setSelectedAccountFilter] =
       React.useState<BraveWallet.AccountInfo>(AllAccountsOption)
@@ -225,20 +225,20 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery(
       undefined,
       {
-        skip: modalType !== 'send'
-      }
+        skip: modalType !== 'send',
+      },
     )
     const { data: swapNetworks = [] } = useGetSwapSupportedNetworksQuery(
       undefined,
       {
-        skip: modalType === 'send'
-      }
+        skip: modalType === 'send',
+      },
     )
 
     const { accounts } = useGetAccountInfosRegistryQuery(undefined, {
       selectFromResult: (res) => ({
-        accounts: selectAllAccountInfosFromQuery(res)
-      })
+        accounts: selectAllAccountInfosFromQuery(res),
+      }),
     })
 
     const { data: combinedTokenRegistry } = useGetCombinedTokensRegistryQuery()
@@ -249,7 +249,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       }
       return getEntitiesListFromEntityState(
         combinedTokenRegistry,
-        combinedTokenRegistry.fungibleVisibleTokenIds
+        combinedTokenRegistry.fungibleVisibleTokenIds,
       )
     }, [combinedTokenRegistry])
 
@@ -258,35 +258,35 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         selectFromResult: (result) => ({
           userVisibleFungibleTokens:
             selectAllVisibleFungibleUserAssetsFromQueryResult(result),
-          userVisibleNfts: selectAllVisibleUserNFTsFromQueryResult(result)
-        })
+          userVisibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
+        }),
       })
 
     const bridgeAndSwapNetworks = React.useMemo(() => {
       if (
-        modalType === 'bridge' &&
-        selectingFromOrTo === 'to' &&
-        selectedFromToken
+        modalType === 'bridge'
+        && selectingFromOrTo === 'to'
+        && selectedFromToken
       ) {
         return swapNetworks.filter(
           (network) =>
             !checkIsBridgeNetworkDropdownOptionDisabled(
               network.chainId,
-              selectedFromToken.chainId
-            )
+              selectedFromToken.chainId,
+            ),
         )
       }
       if (
-        modalType === 'bridge' &&
-        selectingFromOrTo === 'from' &&
-        selectedToToken
+        modalType === 'bridge'
+        && selectingFromOrTo === 'from'
+        && selectedToToken
       ) {
         return swapNetworks.filter(
           (network) =>
             !checkIsBridgeNetworkDropdownOptionDisabled(
               network.chainId,
-              selectedToToken.chainId
-            )
+              selectedToToken.chainId,
+            ),
         )
       }
       return swapNetworks
@@ -295,7 +295,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       selectingFromOrTo,
       selectedFromToken,
       selectedToToken,
-      swapNetworks
+      swapNetworks,
     ])
 
     const networks =
@@ -304,7 +304,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
       useBalancesFetcher({
         accounts,
-        networks
+        networks,
       })
 
     // Methods
@@ -316,28 +316,30 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
         return accounts.filter((account) =>
           new Amount(
-            getBalance(account.accountId, asset, tokenBalancesRegistry)
-          ).gt(0)
+            getBalance(account.accountId, asset, tokenBalancesRegistry),
+          ).gt(0),
         )
       },
-      [tokenBalancesRegistry, accounts]
+      [tokenBalancesRegistry, accounts],
     )
 
     const tokensBySelectedComposerOption = React.useMemo(() => {
       if (modalType === 'swap' || modalType === 'bridge') {
         return fullVisibleFungibleTokensList.filter((token) =>
-          bridgeAndSwapNetworks.some(({ chainId }) => chainId === token.chainId)
+          bridgeAndSwapNetworks.some(
+            ({ chainId }) => chainId === token.chainId,
+          ),
         )
       }
 
       if (selectedSendOption === SendPageTabHashes.nft) {
         return userVisibleNfts.filter(
-          (token) => getAllAccountsWithBalance(token).length > 0
+          (token) => getAllAccountsWithBalance(token).length > 0,
         )
       }
 
       return userVisibleFungibleTokens.filter(
-        (token) => getAllAccountsWithBalance(token).length > 0
+        (token) => getAllAccountsWithBalance(token).length > 0,
       )
     }, [
       modalType,
@@ -346,7 +348,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       userVisibleNfts,
       userVisibleFungibleTokens,
       selectedSendOption,
-      getAllAccountsWithBalance
+      getAllAccountsWithBalance,
     ])
 
     // Memos
@@ -358,18 +360,18 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       const balancesMap: Record<string, string> = {}
       for (const asset of tokensBySelectedComposerOption) {
         balancesMap[getAssetIdKey(asset)] =
-          selectedAccountFilter.accountId.uniqueKey ===
-          AllAccountsOption.accountId.uniqueKey
+          selectedAccountFilter.accountId.uniqueKey
+          === AllAccountsOption.accountId.uniqueKey
             ? getFullAssetBalance(
                 asset,
                 networks,
                 accounts,
-                tokenBalancesRegistry
+                tokenBalancesRegistry,
               )
             : getBalance(
                 selectedAccountFilter.accountId,
                 asset,
-                tokenBalancesRegistry
+                tokenBalancesRegistry,
               )
       }
       return balancesMap
@@ -378,35 +380,35 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       accounts,
       networks,
       tokenBalancesRegistry,
-      selectedAccountFilter
+      selectedAccountFilter,
     ])
 
     const tokenPriceIds = React.useMemo(
       () =>
         tokensBySelectedComposerOption
           .filter(
-            (token) => !token.isNft && !token.isErc721 && !token.isErc1155
+            (token) => !token.isNft && !token.isErc721 && !token.isErc1155,
           )
           .filter((token) =>
-            new Amount(userTokenBalances[getAssetIdKey(token)]).gt(0)
+            new Amount(userTokenBalances[getAssetIdKey(token)]).gt(0),
           )
           .map((token) => getPriceIdForToken(token)),
-      [tokensBySelectedComposerOption, userTokenBalances]
+      [tokensBySelectedComposerOption, userTokenBalances],
     )
 
     const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
       useGetTokenSpotPricesQuery(
-        !isLoadingBalances &&
-          tokenPriceIds.length &&
-          defaultFiatCurrency &&
-          selectedSendOption !== '#nft'
+        !isLoadingBalances
+          && tokenPriceIds.length
+          && defaultFiatCurrency
+          && selectedSendOption !== '#nft'
           ? {
               ids: tokenPriceIds,
               timeframe: BraveWallet.AssetPriceTimeframe.OneDay,
-              toCurrency: defaultFiatCurrency
+              toCurrency: defaultFiatCurrency,
             }
           : skipToken,
-        querySubscriptionOptions60s
+        querySubscriptionOptions60s,
       )
 
     const tokensSortedByValue = React.useMemo(() => {
@@ -417,13 +419,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         const bFiatBalance = computeFiatAmount({
           spotPriceRegistry,
           value: bBalance,
-          token: b
+          token: b,
         })
 
         const aFiatBalance = computeFiatAmount({
           spotPriceRegistry,
           value: aBalance,
-          token: a
+          token: a,
         })
 
         return bFiatBalance.minus(aFiatBalance).toNumber()
@@ -436,28 +438,28 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       }
       return tokensSortedByValue.filter(
         (token) =>
-          token.chainId === selectedNetworkFilter.chainId &&
-          token.coin === selectedNetworkFilter.coin
+          token.chainId === selectedNetworkFilter.chainId
+          && token.coin === selectedNetworkFilter.coin,
       )
     }, [tokensSortedByValue, selectedNetworkFilter])
 
     const tokensFilteredByAccount = React.useMemo(() => {
       if (
-        selectedAccountFilter.accountId.uniqueKey ===
-        AllAccountsOption.accountId.uniqueKey
+        selectedAccountFilter.accountId.uniqueKey
+        === AllAccountsOption.accountId.uniqueKey
       ) {
         return tokensFilteredByNetwork
       }
 
       const chainList = filterNetworksForAccount(
         networks,
-        selectedAccountFilter.accountId
+        selectedAccountFilter.accountId,
       ).map((network) => network.chainId)
 
       return tokensFilteredByNetwork.filter(
         (token) =>
-          token.coin === selectedAccountFilter.accountId.coin &&
-          chainList.includes(token.chainId)
+          token.coin === selectedAccountFilter.accountId.coin
+          && chainList.includes(token.chainId),
       )
     }, [networks, selectedAccountFilter, tokensFilteredByNetwork])
 
@@ -468,17 +470,17 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       const lowercaseSearchValue = searchValue.toLowerCase()
       return tokensFilteredByAccount.filter(
         (token) =>
-          token.name.toLowerCase() === lowercaseSearchValue ||
-          token.name.toLowerCase().includes(lowercaseSearchValue) ||
-          token.symbol.toLocaleLowerCase() === lowercaseSearchValue ||
-          token.symbol.toLowerCase().includes(lowercaseSearchValue) ||
-          token.contractAddress.toLocaleLowerCase() === lowercaseSearchValue
+          token.name.toLowerCase() === lowercaseSearchValue
+          || token.name.toLowerCase().includes(lowercaseSearchValue)
+          || token.symbol.toLocaleLowerCase() === lowercaseSearchValue
+          || token.symbol.toLowerCase().includes(lowercaseSearchValue)
+          || token.contractAddress.toLocaleLowerCase() === lowercaseSearchValue,
       )
     }, [tokensFilteredByAccount, searchValue])
 
     const firstNoBalanceTokenKey = React.useMemo(() => {
       const token = tokensBySearchValue.find((token) =>
-        new Amount(userTokenBalances[getAssetIdKey(token)]).isZero()
+        new Amount(userTokenBalances[getAssetIdKey(token)]).isZero(),
       )
       return token ? getAssetIdKey(token) : ''
     }, [tokensBySearchValue, userTokenBalances])
@@ -490,17 +492,21 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return getAccountsForNetwork(pendingSelectedAsset, accounts).sort(
         function (a, b) {
           return new Amount(
-            getBalance(b.accountId, pendingSelectedAsset, tokenBalancesRegistry)
+            getBalance(
+              b.accountId,
+              pendingSelectedAsset,
+              tokenBalancesRegistry,
+            ),
           )
             .minus(
               getBalance(
                 a.accountId,
                 pendingSelectedAsset,
-                tokenBalancesRegistry
-              )
+                tokenBalancesRegistry,
+              ),
             )
             .toNumber()
-        }
+        },
       )
     }, [accounts, pendingSelectedAsset, tokenBalancesRegistry])
 
@@ -518,7 +524,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
         setPendingSelectedAssetState(token)
       },
-      [onSelectAsset, onClose, selectingFromOrTo, modalType]
+      [onSelectAsset, onClose, selectingFromOrTo, modalType],
     )
 
     const handleSelectAccount = React.useCallback(
@@ -528,7 +534,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           onClose()
         }
       },
-      [onSelectAsset, onClose, pendingSelectedAsset]
+      [onSelectAsset, onClose, pendingSelectedAsset],
     )
 
     const checkIsNetworkOptionDisabled = React.useCallback(
@@ -536,27 +542,27 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         if (modalType === 'swap') {
           return checkIsSwapDropdownOptionDisabled(
             selectedAccountFilter,
-            network
+            network,
           )
         }
         if (
-          modalType === 'bridge' &&
-          selectingFromOrTo === 'to' &&
-          selectedFromToken
+          modalType === 'bridge'
+          && selectingFromOrTo === 'to'
+          && selectedFromToken
         ) {
           return checkIsBridgeNetworkDropdownOptionDisabled(
             selectedFromToken.chainId,
-            network.chainId
+            network.chainId,
           )
         }
         if (
-          modalType === 'bridge' &&
-          selectingFromOrTo === 'from' &&
-          selectedToToken
+          modalType === 'bridge'
+          && selectingFromOrTo === 'from'
+          && selectedToToken
         ) {
           return checkIsBridgeNetworkDropdownOptionDisabled(
             selectedToToken.chainId,
-            network.chainId
+            network.chainId,
           )
         }
         return false
@@ -566,8 +572,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         selectingFromOrTo,
         selectedAccountFilter,
         selectedFromToken,
-        selectedToToken
-      ]
+        selectedToToken,
+      ],
     )
 
     const checkIsAccountOptionDisabled = React.useCallback(
@@ -575,27 +581,27 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         if (modalType === 'swap') {
           return checkIsSwapDropdownOptionDisabled(
             account,
-            selectedNetworkFilter
+            selectedNetworkFilter,
           )
         }
         if (
-          modalType === 'bridge' &&
-          selectingFromOrTo === 'to' &&
-          selectedFromToken
+          modalType === 'bridge'
+          && selectingFromOrTo === 'to'
+          && selectedFromToken
         ) {
           return (
-            account.accountId.coin === BraveWallet.CoinType.SOL &&
-            selectedFromToken.coin === BraveWallet.CoinType.SOL
+            account.accountId.coin === BraveWallet.CoinType.SOL
+            && selectedFromToken.coin === BraveWallet.CoinType.SOL
           )
         }
         if (
-          modalType === 'bridge' &&
-          selectingFromOrTo === 'from' &&
-          selectedToToken
+          modalType === 'bridge'
+          && selectingFromOrTo === 'from'
+          && selectedToToken
         ) {
           return (
-            account.accountId.coin === BraveWallet.CoinType.SOL &&
-            selectedToToken.coin === BraveWallet.CoinType.SOL
+            account.accountId.coin === BraveWallet.CoinType.SOL
+            && selectedToToken.coin === BraveWallet.CoinType.SOL
           )
         }
         return false
@@ -605,8 +611,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         selectingFromOrTo,
         selectedFromToken,
         selectedToToken,
-        selectedNetworkFilter
-      ]
+        selectedNetworkFilter,
+      ],
     )
 
     const onSelectNetworkFilter = React.useCallback(
@@ -616,20 +622,20 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         }
         setSelectedNetworkFilter(network)
       },
-      [checkIsNetworkOptionDisabled]
+      [checkIsNetworkOptionDisabled],
     )
 
     const onSelectAccountFilter = React.useCallback(
       (uniqueKey: string) => {
         const account =
-          accounts.find((a) => a.accountId.uniqueKey === uniqueKey) ??
-          AllAccountsOption
+          accounts.find((a) => a.accountId.uniqueKey === uniqueKey)
+          ?? AllAccountsOption
         if (checkIsAccountOptionDisabled(account)) {
           return
         }
         setSelectedAccountFilter(account)
       },
-      [accounts, checkIsAccountOptionDisabled]
+      [accounts, checkIsAccountOptionDisabled],
     )
 
     const clearParams = React.useCallback(() => {
@@ -637,8 +643,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         modalType === 'send'
           ? WalletRoutes.Send
           : modalType === 'bridge'
-          ? WalletRoutes.Bridge
-          : WalletRoutes.Swap
+            ? WalletRoutes.Bridge
+            : WalletRoutes.Swap,
       )
     }, [modalType, history])
 
@@ -713,14 +719,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       firstNoBalanceTokenKey,
       modalType,
       getAllAccountsWithBalance,
-      userTokenBalances
+      userTokenBalances,
     ])
 
     const swapSupportedAccounts = React.useMemo(() => {
       return accounts.filter(
         (account) =>
-          account.accountId.coin === BraveWallet.CoinType.ETH ||
-          account.accountId.coin === BraveWallet.CoinType.SOL
+          account.accountId.coin === BraveWallet.CoinType.ETH
+          || account.accountId.coin === BraveWallet.CoinType.SOL,
       )
     }, [accounts])
 
@@ -743,7 +749,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               spotPriceRegistry
                 ? getTokenPriceFromRegistry(
                     spotPriceRegistry,
-                    pendingSelectedAsset
+                    pendingSelectedAsset,
                   )
                 : undefined
             }
@@ -775,8 +781,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             modalType === 'swap'
               ? 'braveWalletChooseAssetToSwap'
               : modalType === 'bridge'
-              ? 'braveWalletChooseAssetToBridge'
-              : 'braveWalletChooseAssetToSend'
+                ? 'braveWalletChooseAssetToBridge'
+                : 'braveWalletChooseAssetToSend',
           )}
           width='560px'
           height='90vh'
@@ -858,7 +864,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                   spotPriceRegistry
                     ? getTokenPriceFromRegistry(
                         spotPriceRegistry,
-                        pendingSelectedAsset
+                        pendingSelectedAsset,
                       )
                     : undefined
                 }
@@ -877,5 +883,5 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         )}
       </>
     )
-  }
+  },
 )

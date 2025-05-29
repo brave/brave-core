@@ -9,9 +9,12 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { BraveWallet } from '../../../constants/types'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../components/shared/loading-skeleton/index'
-import { CoinType, ZCashShieldSyncStatus } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import {
+  CoinType,
+  ZCashShieldSyncStatus,
+} from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 const StyledWrapper = styled.div`
@@ -59,66 +62,68 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     BraveWallet.ZCashBalance | undefined
   >()
   const [shieldResult, setShieldResult] = React.useState<string>()
-  const [
-    makeAccountShieldableResult,
-    setMakeAccountShieldableResult] = React.useState<string>()
-  const [syncStatusResult, setSyncStatusResult] = React.useState<string>();
+  const [makeAccountShieldableResult, setMakeAccountShieldableResult] =
+    React.useState<string>()
+  const [syncStatusResult, setSyncStatusResult] = React.useState<string>()
   const [shieldedBalanceValue, setShieldedBalanceValue] =
-    React.useState<string>();
+    React.useState<string>()
   const [accountBirthdayValue, setAccountBirthdayValue] =
-    React.useState<string>();
-  const [syncBlockLimit, setSyncBlockLimit] = React.useState<string>();
+    React.useState<string>()
+  const [syncBlockLimit, setSyncBlockLimit] = React.useState<string>()
 
-  const makeAccountShielded = async() => {
+  const makeAccountShielded = async () => {
     const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
-        props.accountId, Number(accountBirthdayValue || '0'));
-    setMakeAccountShieldableResult(result.errorMessage || 'Done');
+      props.accountId,
+      Number(accountBirthdayValue || '0'),
+    )
+    setMakeAccountShieldableResult(result.errorMessage || 'Done')
   }
 
   // methods
-  const startOrchardSync = async() => {
+  const startOrchardSync = async () => {
     setSyncStatusResult('')
-    const result =
-        await getAPIProxy().zcashWalletService.startShieldSync(
-          props.accountId, Number(syncBlockLimit || '0'));
+    const result = await getAPIProxy().zcashWalletService.startShieldSync(
+      props.accountId,
+      Number(syncBlockLimit || '0'),
+    )
 
     if (result.errorMessage) {
-      setSyncStatusResult("Sync error " + result.errorMessage);
+      setSyncStatusResult('Sync error ' + result.errorMessage)
     }
   }
 
-  const stopOrchardSync = async() => {
-    const result =
-      await getAPIProxy().zcashWalletService.stopShieldSync(props.accountId);
+  const stopOrchardSync = async () => {
+    const result = await getAPIProxy().zcashWalletService.stopShieldSync(
+      props.accountId,
+    )
     if (result.errorMessage) {
-      setSyncStatusResult("Stop error " + result.errorMessage);
+      setSyncStatusResult('Stop error ' + result.errorMessage)
     }
   }
 
-  const resetAccountSyncState = async() => {
-    const result =
-      await getAPIProxy().zcashWalletService.resetSyncState(props.accountId);
+  const resetAccountSyncState = async () => {
+    const result = await getAPIProxy().zcashWalletService.resetSyncState(
+      props.accountId,
+    )
     if (result.errorMessage) {
-      setSyncStatusResult("Stop error " + result.errorMessage);
+      setSyncStatusResult('Stop error ' + result.errorMessage)
     }
   }
 
   const shieldAllFunds = async () => {
-    let {
-      txId,
-      errorMessage,
-    } = await getAPIProxy().zcashWalletService.shieldAllFunds(
-      BraveWallet.Z_CASH_MAINNET,
-      props.accountId
-    )
-    setShieldResult(txId || errorMessage || "unknown")
+    let { txId, errorMessage } =
+      await getAPIProxy().zcashWalletService.shieldAllFunds(
+        BraveWallet.Z_CASH_MAINNET,
+        props.accountId,
+      )
+    setShieldResult(txId || errorMessage || 'unknown')
   }
 
   const fetchBalance = React.useCallback(async () => {
     setLoading(true)
     const result = await getAPIProxy().zcashWalletService.getBalance(
       BraveWallet.Z_CASH_MAINNET,
-      props.accountId
+      props.accountId,
     )
     setBalance(result.balance || undefined)
     setLoading(false)
@@ -127,36 +132,45 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   // effects
   React.useEffect(() => {
     const zcashWalletServiceObserver =
-        new BraveWallet.ZCashWalletServiceObserverReceiver({
-      onSyncStart: (accountId: BraveWallet.AccountId) => {
-        if (props.accountId.uniqueKey === accountId.uniqueKey) {
-          setSyncStatusResult("Started");
-        }
-      },
-      onSyncStop: (accountId: BraveWallet.AccountId) => {
-        if (props.accountId.uniqueKey === accountId.uniqueKey) {
-          setSyncStatusResult("Stopped");
-        }
-      },
-      onSyncStatusUpdate: (accountId: BraveWallet.AccountId,
-                           status: ZCashShieldSyncStatus) => {
-        if (props.accountId.uniqueKey === accountId.uniqueKey) {
-          setSyncStatusResult("Current block " +
-                              status.endBlock + "-" +
-                              status.startBlock + " " +
-                              status.scannedRanges + "/" + status.totalRanges);
-          setShieldedBalanceValue("Found balance: " + status.spendableBalance);
-        }
-      },
-      onSyncError: (accountId: BraveWallet.AccountId, error: string) => {
-        if (props.accountId.uniqueKey === accountId.uniqueKey) {
-          setSyncStatusResult("Error : " + error);
-        }
-      }
-    });
+      new BraveWallet.ZCashWalletServiceObserverReceiver({
+        onSyncStart: (accountId: BraveWallet.AccountId) => {
+          if (props.accountId.uniqueKey === accountId.uniqueKey) {
+            setSyncStatusResult('Started')
+          }
+        },
+        onSyncStop: (accountId: BraveWallet.AccountId) => {
+          if (props.accountId.uniqueKey === accountId.uniqueKey) {
+            setSyncStatusResult('Stopped')
+          }
+        },
+        onSyncStatusUpdate: (
+          accountId: BraveWallet.AccountId,
+          status: ZCashShieldSyncStatus,
+        ) => {
+          if (props.accountId.uniqueKey === accountId.uniqueKey) {
+            setSyncStatusResult(
+              'Current block '
+                + status.endBlock
+                + '-'
+                + status.startBlock
+                + ' '
+                + status.scannedRanges
+                + '/'
+                + status.totalRanges,
+            )
+            setShieldedBalanceValue('Found balance: ' + status.spendableBalance)
+          }
+        },
+        onSyncError: (accountId: BraveWallet.AccountId, error: string) => {
+          if (props.accountId.uniqueKey === accountId.uniqueKey) {
+            setSyncStatusResult('Error : ' + error)
+          }
+        },
+      })
 
     getAPIProxy().zcashWalletService.addObserver(
-        zcashWalletServiceObserver.$.bindNewPipeAndPassRemote());
+      zcashWalletServiceObserver.$.bindNewPipeAndPassRemote(),
+    )
 
     return () => zcashWalletServiceObserver.$.close()
   }, [props.accountId])
@@ -208,19 +222,19 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
           <h3>shielded balance: {shieldedBalanceValue}</h3>
 
           <ul>
-            {balance?.balances &&
-              Object.entries(balance.balances as { [key: string]: BigInt }).map(
-                ([address, balance]) => {
-                  return (
-                    <li key={address}>
-                      <AddressLine>
-                        <Address>{address}</Address>
-                        <Balance>{balance.toString()}</Balance>
-                      </AddressLine>
-                    </li>
-                  )
-                }
-              )}
+            {balance?.balances
+              && Object.entries(
+                balance.balances as { [key: string]: BigInt },
+              ).map(([address, balance]) => {
+                return (
+                  <li key={address}>
+                    <AddressLine>
+                      <Address>{address}</Address>
+                      <Balance>{balance.toString()}</Balance>
+                    </AddressLine>
+                  </li>
+                )
+              })}
           </ul>
         </>
       )}
@@ -232,9 +246,9 @@ interface GetZCashAccountInfoSectionProps {
   accountId: BraveWallet.AccountId
 }
 
-const GetZCashAccountInfoSection: React.FC<
-  GetZCashAccountInfoSectionProps
-> = ({ accountId }) => {
+const GetZCashAccountInfoSection: React.FC<GetZCashAccountInfoSectionProps> = ({
+  accountId,
+}) => {
   const [loading, setLoading] = React.useState<boolean>(true)
   const [zcashAccountInfo, setZCashAccountInfo] = React.useState<
     BraveWallet.ZCashAccountInfo | undefined
@@ -279,15 +293,11 @@ const GetZCashAccountInfoSection: React.FC<
         <>
           <div>
             <code>Unified address: </code>
-            <code>
-              {zcashAccountInfo?.unifiedAddress || '-'}
-            </code>
+            <code>{zcashAccountInfo?.unifiedAddress || '-'}</code>
           </div>
           <div>
             <code>Orchard address: </code>
-            <code>
-              {zcashAccountInfo?.orchardAddress || '-'}
-            </code>
+            <code>{zcashAccountInfo?.orchardAddress || '-'}</code>
           </div>
           <div>
             <code>Account shielded birthday: </code>
@@ -297,10 +307,12 @@ const GetZCashAccountInfoSection: React.FC<
           </div>
           <div>
             <code>Next Receive Address: </code>
-            <code>{keyId(zcashAccountInfo?.nextTransparentReceiveAddress.keyId)}
+            <code>
+              {keyId(zcashAccountInfo?.nextTransparentReceiveAddress.keyId)}
             </code>
             <code>
-              {zcashAccountInfo?.nextTransparentReceiveAddress.addressString || '-'}
+              {zcashAccountInfo?.nextTransparentReceiveAddress.addressString
+                || '-'}
             </code>
             <button onClick={() => onRunDiscoverClick(false)}>
               Run discovery
@@ -308,11 +320,12 @@ const GetZCashAccountInfoSection: React.FC<
           </div>
           <div>
             <code>Next Change Address: </code>
-            <code>{keyId(
-                zcashAccountInfo?.nextTransparentChangeAddress.keyId)}
+            <code>
+              {keyId(zcashAccountInfo?.nextTransparentChangeAddress.keyId)}
             </code>
             <code>
-              {zcashAccountInfo?.nextTransparentChangeAddress.addressString || '-'}
+              {zcashAccountInfo?.nextTransparentChangeAddress.addressString
+                || '-'}
             </code>
             <button onClick={() => onRunDiscoverClick(true)}>
               Run discovery
@@ -345,18 +358,17 @@ const AccountSection = (props: AccountSectionProps) => {
 export const DevZCash = () => {
   const { accounts } = useAccountsQuery()
   const zecAccounts = React.useMemo(() => {
-    return accounts.filter(
-      (account) => account.accountId.coin === CoinType.ZEC
-    )
+    return accounts.filter((account) => account.accountId.coin === CoinType.ZEC)
   }, [accounts])
   return (
     <div>
-      {zecAccounts && zecAccounts.map((account) => (
-        <div key={account.accountId.uniqueKey}>
-          <AccountSection accountInfo={account} />
-          <hr />
-        </div>
-      ))}
+      {zecAccounts
+        && zecAccounts.map((account) => (
+          <div key={account.accountId.uniqueKey}>
+            <AccountSection accountInfo={account} />
+            <hr />
+          </div>
+        ))}
     </div>
   )
 }

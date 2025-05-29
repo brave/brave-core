@@ -16,7 +16,7 @@ export const _BackupRecoveryPhrase = {
         <BackupRecoveryPhrase />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default { component: BackupRecoveryPhrase }

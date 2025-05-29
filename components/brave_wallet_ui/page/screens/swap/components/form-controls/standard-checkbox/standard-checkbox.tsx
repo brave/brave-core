@@ -10,7 +10,7 @@ import {
   HiddenCheckBox,
   Label,
   StyledCheckbox,
-  StyledIcon
+  StyledIcon,
 } from './standard-checkbox.style'
 import { Row } from '../../shared-swap.styles'
 

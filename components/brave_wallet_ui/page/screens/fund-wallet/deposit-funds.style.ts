@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import LeoSegmentedControl, {
-  SegmentedControlProps
+  SegmentedControlProps,
 } from '@brave/leo/react/segmentedControl'
 
 // Shared Styles
@@ -21,7 +21,7 @@ export const ControlsWrapper = styled(Row)`
 `
 
 export const SegmentedControl = styled(LeoSegmentedControl).attrs({
-  size: 'default'
+  size: 'default',
 })<SegmentedControlProps>``
 
 export const AddressText = styled(Text)`

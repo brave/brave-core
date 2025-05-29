@@ -7,13 +7,13 @@ import * as React from 'react'
 
 // Mock Data
 import {
-  mockMeldFiatCurrency //
+  mockMeldFiatCurrency, //
 } from '../../../../../common/constants/mocks'
 
 // Components
 import { AmountButton } from './amount_button'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _AmountButton = () => {
@@ -35,9 +35,9 @@ export const _AmountButton = () => {
 }
 
 _AmountButton.story = {
-  name: 'Fund Wallet - Amount Button'
+  name: 'Fund Wallet - Amount Button',
 }
 
 export default {
-  component: _AmountButton
+  component: _AmountButton,
 }

@@ -18,7 +18,7 @@ import { Column, Text } from '../../shared.styles'
 import {
   CheckboxWrapper,
   StyledRow,
-  WarningIcon
+  WarningIcon,
 } from './ordinals-warning-message.style'
 
 interface Props {

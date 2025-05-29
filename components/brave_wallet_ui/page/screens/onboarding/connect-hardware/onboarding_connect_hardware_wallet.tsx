@@ -9,19 +9,19 @@ import { useHistory } from 'react-router'
 // types
 import {
   CreateAccountOptionsType,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../constants/types'
 
 // utils
 import {
-  CreateAccountOptions //
+  CreateAccountOptions, //
 } from '../../../../options/create-account-options'
 import { getLocale } from '../../../../../common/locale'
 
 // components
 import { AccountType } from './components/account_type'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 
 // styles
@@ -40,7 +40,7 @@ export const OnboardingConnectHardwareWallet = () => {
 
   // redux
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinLedgerEnabled
+    WalletSelectors.isBitcoinLedgerEnabled,
   )
 
   // queries
@@ -50,7 +50,7 @@ export const OnboardingConnectHardwareWallet = () => {
     visibleNetworks,
     isBitcoinEnabled: isBitcoinLedgerEnabled,
     isZCashEnabled: false, // No zcash hardware accounts by now.
-    isCardanoEnabled: false // No cardano hardware accounts by now.
+    isCardanoEnabled: false, // No cardano hardware accounts by now.
   })
 
   // methods
@@ -59,11 +59,11 @@ export const OnboardingConnectHardwareWallet = () => {
       history.push(
         WalletRoutes.OnboardingHardwareWalletConnectSelectDevice.replace(
           ':accountTypeName?',
-          accountType.name.toLowerCase()
-        )
+          accountType.name.toLowerCase(),
+        ),
       )
     },
-    [history]
+    [history],
   )
 
   return (

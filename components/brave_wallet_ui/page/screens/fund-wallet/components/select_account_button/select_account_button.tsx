@@ -10,12 +10,12 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Hooks
 import {
-  useReceiveAddressQuery //
+  useReceiveAddressQuery, //
 } from '../../../../../common/slices/api.slice.extra'
 
 // Components
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../../components/shared/create-account-icon/create-account-icon'
 
 // Styled Components
@@ -32,7 +32,7 @@ interface SelectAccountProps {
 export const SelectAccountButton = ({
   labelText,
   selectedAccount,
-  onClick
+  onClick,
 }: SelectAccountProps) => {
   const { receiveAddress } = useReceiveAddressQuery(selectedAccount?.accountId)
 

@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../../../components/shared/style'
 import {
-  layoutSmallWidth //
+  layoutSmallWidth, //
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Button = styled(WalletButton)`
@@ -52,7 +52,7 @@ export const ProviderIcon = styled.img`
 `
 
 export const FlipIcon = styled(Icon).attrs({
-  name: 'swap-vertical'
+  name: 'swap-vertical',
 })`
   --leo-icon-size: 20px;
   color: ${leo.color.icon.default};

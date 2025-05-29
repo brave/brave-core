@@ -23,7 +23,7 @@ export const StandardInput = (props: Props) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange],
   )
 
   return (

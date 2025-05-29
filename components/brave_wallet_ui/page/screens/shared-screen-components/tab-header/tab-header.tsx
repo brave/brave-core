@@ -14,13 +14,13 @@ import {
   BraveLogo,
   SettingsButton,
   SettingsIcon,
-  SettingsWrapper
+  SettingsWrapper,
 } from './tab-header.style'
 import { Row } from '../../send/shared.styles'
 
 // Components
 import {
-  WalletSettingsMenu //
+  WalletSettingsMenu, //
 } from '../../../../components/desktop/wallet-menus/wallet_settings_menu'
 
 export interface Props {
@@ -40,7 +40,7 @@ export const TabHeader = (props: Props) => {
   useOnClickOutside(
     settingsModalRef,
     () => setShowSettings(false),
-    showSettings
+    showSettings,
   )
 
   // render

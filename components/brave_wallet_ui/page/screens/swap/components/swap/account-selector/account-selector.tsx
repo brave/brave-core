@@ -10,10 +10,10 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Hooks
 import {
-  useOnClickOutside //
+  useOnClickOutside, //
 } from '../../../../../../common/hooks/useOnClickOutside'
 import {
-  useAccountsQuery //
+  useAccountsQuery, //
 } from '../../../../../../common/slices/api.slice.extra'
 
 // Types
@@ -21,7 +21,7 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  AccountListButton //
+  AccountListButton, //
 } from '../../buttons/account-list-button/account-list-button'
 
 // Styled Components
@@ -29,7 +29,7 @@ import {
   SelectButton,
   SelectorBox,
   SelectorWrapper,
-  StyledCaratDownIcon
+  StyledCaratDownIcon,
 } from './account-selector.style'
 import { Text, HorizontalSpacer } from '../../shared-swap.styles'
 
@@ -49,7 +49,7 @@ export const AccountSelector = (props: Props) => {
     selectedAccount,
     selectedNetwork,
     showAccountSelector,
-    setShowAccountSelector
+    setShowAccountSelector,
   } = props
 
   // queries
@@ -61,7 +61,7 @@ export const AccountSelector = (props: Props) => {
   // Memos
   const networkAccounts = React.useMemo(() => {
     return accounts.filter(
-      (account) => account.accountId.coin === selectedNetwork?.coin
+      (account) => account.accountId.coin === selectedNetwork?.coin,
     )
   }, [accounts, selectedNetwork])
 
@@ -75,14 +75,14 @@ export const AccountSelector = (props: Props) => {
       onSelectAccount(account)
       setShowAccountSelector(false)
     },
-    [onSelectAccount, setShowAccountSelector]
+    [onSelectAccount, setShowAccountSelector],
   )
 
   // Hooks
   useOnClickOutside(
     accountSelectorRef,
     () => setShowAccountSelector(false),
-    showAccountSelector
+    showAccountSelector,
   )
 
   return (

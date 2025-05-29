@@ -35,8 +35,8 @@ export const Text = styled.span<{
       p.responsiveTextSize
         ? p.responsiveTextSize
         : p.textSize
-        ? p.textSize
-        : '18px'};
+          ? p.textSize
+          : '18px'};
   }
 `
 
@@ -262,7 +262,7 @@ export const LPIcon = styled.div<{ icon: string; size?: string }>`
 `
 
 export const BankIcon = styled(LeoIcon).attrs({
-  name: 'bank'
+  name: 'bank',
 })<{ size?: string }>`
   --leo-icon-size: ${(p) => p.size ?? '20px'};
   color: ${leo.color.icon.default};

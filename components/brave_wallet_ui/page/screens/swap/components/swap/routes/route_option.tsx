@@ -12,7 +12,7 @@ import usePromise from '$web-common/usePromise'
 import { QuoteOption } from '../../../constants/types'
 import {
   BraveWallet,
-  SwapProviderNameMapping
+  SwapProviderNameMapping,
 } from '../../../../../../constants/types'
 
 // Constants
@@ -22,32 +22,29 @@ import { SwapProviderMetadata } from '../../../constants/metadata'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetTokenSpotPricesQuery //
+  useGetTokenSpotPricesQuery, //
 } from '../../../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../../../common/slices/constants'
 
 // Utils
+import { getLocale, formatLocale } from '$web-common/locale'
 import {
-  getLocale,
-  formatLocale
-} from '$web-common/locale'
-import {
-  formatDateAsRelative //
+  formatDateAsRelative, //
 } from '../../../../../../utils/datetime-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../../../../components/shared/create-placeholder-icon/index'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../../components/shared/create-network-icon'
 import { RouteStep } from './route_step'
 
@@ -66,7 +63,7 @@ import {
   StepsWrapper,
   PercentBubble,
   Triangle,
-  Dot
+  Dot,
 } from './routes.style'
 import { LPIcon, BankIcon } from '../../shared-swap.styles'
 import { Row, Text, Column } from '../../../../../../components/shared/style'
@@ -74,7 +71,7 @@ import { Row, Text, Column } from '../../../../../../components/shared/style'
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'medium',
   marginLeft: 0,
-  marginRight: 0
+  marginRight: 0,
 })
 
 interface Props {
@@ -96,18 +93,18 @@ export const RouteOption = (props: Props) => {
     toToken
       ? {
           chainId: toToken.chainId,
-          coin: toToken.coin
+          coin: toToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: fromTokensNetwork } = useGetNetworkQuery(
     fromToken
       ? {
           chainId: fromToken.chainId,
-          coin: fromToken.coin
+          coin: fromToken.coin,
         }
-      : skipToken
+      : skipToken,
   )
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -116,10 +113,10 @@ export const RouteOption = (props: Props) => {
     toToken && defaultFiatCurrency
       ? {
           ids: [getPriceIdForToken(toToken)],
-          toCurrency: defaultFiatCurrency
+          toCurrency: defaultFiatCurrency,
         }
       : skipToken,
-    querySubscriptionOptions60s
+    querySubscriptionOptions60s,
   )
 
   // Methods
@@ -144,7 +141,7 @@ export const RouteOption = (props: Props) => {
     return computeFiatAmount({
       spotPriceRegistry,
       value: toAmount.multiplyByDecimals(toToken.decimals).toHex(),
-      token: toToken
+      token: toToken,
     }).formatAsFiat(defaultFiatCurrency)
   }, [spotPriceRegistry, toToken, toAmount, defaultFiatCurrency])
 
@@ -152,8 +149,8 @@ export const RouteOption = (props: Props) => {
   const firstStep =
     option.sources.find((source) =>
       source.includedSteps?.some(
-        (step) => step.type === BraveWallet.LiFiStepType.kCross
-      )
+        (step) => step.type === BraveWallet.LiFiStepType.kCross,
+      ),
     ) || option.sources[0]
   const firstStepName = firstStep.name
   const firstStepIcon = getLPIcon(firstStep)
@@ -163,9 +160,9 @@ export const RouteOption = (props: Props) => {
     async () =>
       PluralStringProxyImpl.getInstance().getPluralString(
         'braveWalletExchangeNamePlusSteps',
-        additionalRoutesLength
+        additionalRoutesLength,
       ),
-    [additionalRoutesLength]
+    [additionalRoutesLength],
   )
 
   return (
@@ -181,8 +178,8 @@ export const RouteOption = (props: Props) => {
           width='unset'
           gap='4px'
         >
-          {option.tags.length > 0 &&
-            option.tags.map(tag => (
+          {option.tags.length > 0
+            && option.tags.map((tag) => (
               <Label
                 key={tag}
                 color={tag === 'CHEAPEST' ? 'purple' : 'blue'}
@@ -190,7 +187,7 @@ export const RouteOption = (props: Props) => {
                 {getLocale(
                   tag === 'CHEAPEST'
                     ? 'braveWalletCheapest'
-                    : 'braveWalletFastest'
+                    : 'braveWalletFastest',
                 )}
               </Label>
             ))}
@@ -291,89 +288,89 @@ export const RouteOption = (props: Props) => {
           </Row>
           <StepsWrapper fullWidth={true}>
             <Lines />
-            {option.sources
-              .reverse()
-              .map(source => {
-                const lpIcon = getLPIcon(source)
-                const exchangeViaProvider = formatLocale('braveWalletExchangeViaProvider', {
-                  $1: <Text
+            {option.sources.reverse().map((source) => {
+              const lpIcon = getLPIcon(source)
+              const exchangeViaProvider = formatLocale(
+                'braveWalletExchangeViaProvider',
+                {
+                  $1: (
+                    <Text
                       textSize='16px'
                       isBold={true}
                       textColor='primary'
                     >
                       {source.name}
-                    </Text>,
-                  $2: <Text
-                    textSize='12px'
-                    isBold={false}
-                    textColor='tertiary'
-                  >
-                    {SwapProviderNameMapping[option.provider] ?? ''}
-                  </Text>,
+                    </Text>
+                  ),
+                  $2: (
+                    <Text
+                      textSize='12px'
+                      isBold={false}
+                      textColor='tertiary'
+                    >
+                      {SwapProviderNameMapping[option.provider] ?? ''}
+                    </Text>
+                  ),
                   $3: source.name,
-                  $4: SwapProviderNameMapping[option.provider] ?? ''
-                })
-                return (
-                  <Column
-                    fullWidth={true}
-                    alignItems='flex-start'
-                    margin='12px 0px 12px 4px'
-                    key={source.name}
-                  >
-                    <Row justifyContent='flex-start'>
-                      <LPIconWrapper
-                        padding='2px'
-                        margin='0px 12px 0px 0px'
+                  $4: SwapProviderNameMapping[option.provider] ?? '',
+                },
+              )
+              return (
+                <Column
+                  fullWidth={true}
+                  alignItems='flex-start'
+                  margin='12px 0px 12px 4px'
+                  key={source.name}
+                >
+                  <Row justifyContent='flex-start'>
+                    <LPIconWrapper
+                      padding='2px'
+                      margin='0px 12px 0px 0px'
+                    >
+                      {lpIcon !== '' ? <LPIcon icon={lpIcon} /> : <BankIcon />}
+                      <ProviderIcon
+                        size='14px'
+                        icon={SwapProviderMetadata[option.provider]}
+                      />
+                    </LPIconWrapper>
+                    <Row
+                      justifyContent='flex-start'
+                      width='unset'
+                      gap='4px'
+                    >
+                      <Text
+                        textSize='16px'
+                        isBold={true}
+                        textColor='primary'
                       >
-                        {lpIcon !== '' ? (
-                          <LPIcon icon={lpIcon} />
-                        ) : (
-                          <BankIcon />
-                        )}
-                        <ProviderIcon
-                          size='14px'
-                          icon={SwapProviderMetadata[option.provider]}
-                        />
-                      </LPIconWrapper>
-                      <Row
-                        justifyContent='flex-start'
-                        width='unset'
-                        gap='4px'
+                        {exchangeViaProvider}
+                      </Text>
+                      <PercentBubble
+                        padding='4px 6px'
+                        margin='0px 0px 0px 8px'
                       >
-
                         <Text
-                          textSize='16px'
+                          textSize='10px'
                           isBold={true}
                           textColor='primary'
                         >
-                          {exchangeViaProvider}
+                          {source.proportion.times(100).format()}%
                         </Text>
-                        <PercentBubble
-                          padding='4px 6px'
-                          margin='0px 0px 0px 8px'
-                        >
-                          <Text
-                            textSize='10px'
-                            isBold={true}
-                            textColor='primary'
-                          >
-                            {source.proportion.times(100).format()}%
-                          </Text>
-                        </PercentBubble>
-                      </Row>
+                      </PercentBubble>
                     </Row>
-                    {source.includedSteps &&
-                      Array.from(source.includedSteps)
-                        .reverse()
-                        .map(step => (
-                          <RouteStep
-                            step={step}
-                            key={step.id}
-                          />
-                        ))}
-                  </Column>
-                )
-              })}
+                  </Row>
+                  {source.includedSteps
+                    && Array.from(source.includedSteps)
+                      .reverse()
+                      .map((step) => (
+                        <RouteStep
+                          step={step}
+                          key={step.id}
+                        />
+                      ))}
+                </Column>
+              )
+            })}
           </StepsWrapper>
           <Row
             justifyContent='flex-start'
@@ -409,7 +406,7 @@ export const RouteOption = (props: Props) => {
               >
                 {getLocale('braveWalletOnNetwork').replace(
                   '$1',
-                  fromTokensNetwork?.chainName ?? ''
+                  fromTokensNetwork?.chainName ?? '',
                 )}
               </Text>
             </Column>

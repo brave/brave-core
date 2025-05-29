@@ -13,12 +13,12 @@ import { getLocale } from '../../../../../common/locale'
 import { getWordIndicesToVerify } from '../../../../utils/ordinal-utils'
 import {
   useCompleteWalletBackupMutation,
-  useReportOnboardingActionMutation
+  useReportOnboardingActionMutation,
 } from '../../../../common/slices/api.slice'
 
 // selectors
 import {
-  useSafePageSelector //
+  useSafePageSelector, //
 } from '../../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../selectors'
 
@@ -31,14 +31,14 @@ import { WalletPageActions } from '../../../actions'
 // components
 import Button from '@brave/leo/react/button'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../../onboarding/components/onboarding_content_layout/content_layout'
 import { PhraseInput } from './components/phrase_input'
 import { VerificationProgress } from './components/verification_progress'
 
 // styles
 import {
-  Title //
+  Title, //
 } from '../../onboarding/components/onboarding_content_layout/content_layout.style'
 import { Column, Row } from '../../../../components/shared/style'
 import { BackButton } from './verify_recovery_phrase.style'
@@ -118,7 +118,7 @@ export const VerifyRecoveryPhrase = () => {
 
   const verificationIndices = React.useMemo(
     () => getWordIndicesToVerify(recoveryPhrase.length),
-    [recoveryPhrase.length]
+    [recoveryPhrase.length],
   )
 
   const verificationIndex = verificationIndices[currentStep]

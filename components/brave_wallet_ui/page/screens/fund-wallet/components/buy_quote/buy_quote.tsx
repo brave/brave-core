@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import {
   MeldCryptoCurrency,
   MeldCryptoQuote,
-  MeldServiceProvider
+  MeldServiceProvider,
 } from '../../../../../constants/types'
 
 // Utils
@@ -35,7 +35,7 @@ import {
   QuoteTotal,
   BuyButton,
   BestOptionLabel,
-  WrapperForPadding
+  WrapperForPadding,
 } from './buy_quote.style'
 import { Column, Row } from '../../../../../components/shared/style'
 
@@ -56,7 +56,7 @@ export const BuyQuote = ({
   isCreatingWidget,
   selectedAsset,
   isOpenOverride,
-  onBuy
+  onBuy,
 }: BuyQuoteProps) => {
   const {
     serviceProvider,
@@ -67,7 +67,7 @@ export const BuyQuote = ({
     exchangeRate,
     sourceAmountWithoutFee,
     totalFee,
-    paymentMethod
+    paymentMethod,
   } = quote
 
   // State
@@ -76,7 +76,7 @@ export const BuyQuote = ({
   // Computed
   const formattedSourceAmount = new Amount(sourceAmount ?? '').formatAsFiat(
     sourceCurrencyCode,
-    2
+    2,
   )
 
   const assetsSymbol = selectedAsset
@@ -84,24 +84,24 @@ export const BuyQuote = ({
     : destinationCurrencyCode
 
   const formattedCryptoAmount = new Amount(
-    destinationAmount ?? ''
+    destinationAmount ?? '',
   ).formatAsAsset(5, assetsSymbol)
 
   const formattedExchangeRate = new Amount(exchangeRate ?? '').formatAsFiat(
     '',
-    2
+    2,
   )
   const amountWithoutFees = new Amount(
-    sourceAmountWithoutFee ?? ''
+    sourceAmountWithoutFee ?? '',
   ).formatAsFiat('', 2)
   const formattedTotalFee = new Amount(totalFee ?? '').formatAsFiat('', 2)
   const [isCreditCardSupported, isDeditCardSupported] = [
     paymentMethod?.includes('CREDIT'),
-    paymentMethod?.includes('DEBIT')
+    paymentMethod?.includes('DEBIT'),
   ]
   const formattedProviderName = toProperCase(serviceProvider ?? '')
   const quoteServiceProvider = serviceProviders.find(
-    (provider) => provider.serviceProvider === serviceProvider
+    (provider) => provider.serviceProvider === serviceProvider,
   )
   const providerImageUrl = window.matchMedia('(prefers-color-scheme: dark)')
     .matches
@@ -123,7 +123,9 @@ export const BuyQuote = ({
           alignItems='center'
         >
           {providerImageUrl ? (
-            <ProviderImage src={`chrome://image?url=${encodeURIComponent(providerImageUrl)}&staticEncode=true`} />
+            <ProviderImage
+              src={`chrome://image?url=${encodeURIComponent(providerImageUrl)}&staticEncode=true`}
+            />
           ) : null}
 
           <Column alignItems='flex-start'>
@@ -194,7 +196,7 @@ export const BuyQuote = ({
                 <QuoteDetailsLabel>
                   {getLocale('braveWalletPriceCurrency').replace(
                     '$1',
-                    sourceCurrencyCode ?? ''
+                    sourceCurrencyCode ?? '',
                   )}
                 </QuoteDetailsLabel>
                 <QuoteDetailsValue>
@@ -232,7 +234,7 @@ export const BuyQuote = ({
           >
             {getLocale('braveWalletBuyWithProvider').replace(
               '$1',
-              formattedProviderName
+              formattedProviderName,
             )}
             <div slot='icon-after'>
               <Icon name='launch' />

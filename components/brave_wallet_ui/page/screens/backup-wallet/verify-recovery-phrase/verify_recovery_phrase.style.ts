@@ -33,14 +33,14 @@ export const Bold = styled(FormLabel)`
 `
 
 export const FormInput = styled(Input).attrs({
-  mode: 'filled'
+  mode: 'filled',
 })`
   width: 100%;
 `
 
 export const ErrorAlert = styled(Alert).attrs({
   kind: 'error',
-  mode: 'simple'
+  mode: 'simple',
 })`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
@@ -52,7 +52,7 @@ export const ErrorAlert = styled(Alert).attrs({
 `
 
 export const CloseButton = styled(Button).attrs({
-  kind: 'plain'
+  kind: 'plain',
 })`
   --leo-button-padding: 0;
   height: 20px;
@@ -60,13 +60,13 @@ export const CloseButton = styled(Button).attrs({
 `
 
 export const CloseIcon = styled(Icon).attrs({
-  name: 'close'
+  name: 'close',
 })`
   --leo-icon-color: ${leo.color.systemfeedback.errorIcon};
 `
 
 export const BackButton = styled(Button).attrs({
-  kind: 'plain'
+  kind: 'plain',
 })`
   width: '100%';
 `

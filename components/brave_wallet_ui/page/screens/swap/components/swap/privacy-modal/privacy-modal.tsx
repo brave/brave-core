@@ -19,7 +19,7 @@ import {
   Text,
   IconButton,
   VerticalSpacer,
-  Icon
+  Icon,
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -138,5 +138,5 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
         </Column>
       </StandardModal>
     )
-  }
+  },
 )

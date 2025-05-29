@@ -16,7 +16,7 @@ import { getLocale } from '../../../../common/locale'
 
 // Components
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 
 // Styled Components
@@ -24,7 +24,7 @@ import {
   ContentWrapper,
   PageNotFoundIllustration,
   StyledWrapper,
-  Title
+  Title,
 } from './page_not_found.style'
 import { Column, Text } from '../../../components/shared/style'
 

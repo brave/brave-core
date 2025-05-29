@@ -7,13 +7,13 @@ import * as React from 'react'
 
 // Mock Data
 import {
-  mockMeldCryptoCurrencies //
+  mockMeldCryptoCurrencies, //
 } from '../../../../../common/constants/mocks'
 
 // Components
 import { SelectAssetButton } from './select_asset_button'
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectAssetButton = () => {
@@ -30,5 +30,5 @@ export const _SelectAssetButton = () => {
 
 export default {
   component: _SelectAssetButton,
-  title: 'Fund Wallet - Select Asset Button'
+  title: 'Fund Wallet - Select Asset Button',
 }

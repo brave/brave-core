@@ -16,10 +16,10 @@ import {
   Row,
   Column,
   Text,
-  WalletButton
+  WalletButton,
 } from '../../../../../components/shared/style'
 import {
-  layoutSmallWidth //
+  layoutSmallWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const AccountSection = styled(Row)`
@@ -96,7 +96,7 @@ export const AddressButtonText = styled(Text)`
 `
 
 export const WalletIcon = styled(Icon).attrs({
-  name: 'product-brave-wallet'
+  name: 'product-brave-wallet',
 })`
   --leo-icon-size: 40px;
   color: ${leo.color.icon.default};

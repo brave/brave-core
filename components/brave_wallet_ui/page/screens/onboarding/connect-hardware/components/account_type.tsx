@@ -13,7 +13,7 @@ import {
   NetworkIcon,
   ArrowIcon,
   NetworkIcons,
-  Description
+  Description,
 } from './account_type.style'
 
 interface Props {

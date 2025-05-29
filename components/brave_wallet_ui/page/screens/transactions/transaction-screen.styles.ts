@@ -8,7 +8,7 @@ import styled from 'styled-components'
 // Icons
 import {
   NoTransactionsIconDark,
-  NoTransactionsIconLight
+  NoTransactionsIconLight,
 } from '../../../assets/svg-icons/empty-state-icons'
 
 export const SearchAndFiltersRow = styled.div`

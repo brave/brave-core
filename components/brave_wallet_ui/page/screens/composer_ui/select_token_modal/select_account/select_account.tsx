@@ -10,10 +10,10 @@ import { BraveWallet } from '../../../../../constants/types'
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../../../common/slices/api.slice'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../../../../../common/slices/entities/token-balance.entity'
 
 // Utils
@@ -21,20 +21,20 @@ import Amount from '../../../../../utils/amount'
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import {
   formatTokenBalanceWithSymbol,
-  getBalance
+  getBalance,
 } from '../../../../../utils/balance-utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../../../components/shared/create-placeholder-icon/index'
 import { NftIcon } from '../../../../../components/shared/nft-icon/nft-icon'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../components/shared/create-network-icon'
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../../components/shared/create-account-icon/create-account-icon'
 
 // Styles
@@ -43,13 +43,13 @@ import {
   ScrollableColumn,
   LeoSquaredButton,
   Row,
-  Text
+  Text,
 } from '../../../../../components/shared/style'
 import {
   IconsWrapper,
   AssetIcon,
   NetworkIconWrapper,
-  AccountButton
+  AccountButton,
 } from './select_account.style'
 
 const getFiatBalance = (
@@ -57,7 +57,7 @@ const getFiatBalance = (
   token: BraveWallet.BlockchainToken,
   defaultFiatCurrency: string,
   tokenBalancesRegistry?: TokenBalancesRegistry | null,
-  spotPrice?: BraveWallet.AssetPrice
+  spotPrice?: BraveWallet.AssetPrice,
 ) => {
   return spotPrice
     ? new Amount(getBalance(accountId, token, tokenBalancesRegistry))
@@ -129,8 +129,8 @@ export const SelectAccount = (props: Props) => {
           <AccountButton
             key={account.accountId.uniqueKey}
             isSelected={
-              account.accountId.uniqueKey ===
-              selectedAccount.accountId.uniqueKey
+              account.accountId.uniqueKey
+              === selectedAccount.accountId.uniqueKey
             }
             onClick={() => setSelectedAccount(account)}
           >
@@ -169,7 +169,7 @@ export const SelectAccount = (props: Props) => {
                 {formatTokenBalanceWithSymbol(
                   getBalance(account.accountId, token, tokenBalancesRegistry),
                   token.decimals,
-                  token.symbol
+                  token.symbol,
                 )}
               </Text>
               <Text
@@ -183,7 +183,7 @@ export const SelectAccount = (props: Props) => {
                   token,
                   defaultFiatCurrency,
                   tokenBalancesRegistry,
-                  spotPrice
+                  spotPrice,
                 )}
               </Text>
             </Column>

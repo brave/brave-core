@@ -33,7 +33,7 @@ export const NetworkAndFiatRow = styled(Row)`
 `
 
 export const RefreshIcon = styled(Icon).attrs({
-  name: 'refresh'
+  name: 'refresh',
 })`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.default};

@@ -10,7 +10,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 
 // Selectors
 import {
-  useSafeWalletSelector //
+  useSafeWalletSelector, //
 } from '../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../common/selectors'
 
@@ -19,14 +19,14 @@ import {
   BraveWallet,
   AddressMessageInfo,
   AddressMessageInfoIds,
-  CoinTypesMap
+  CoinTypesMap,
 } from '../../../../../constants/types'
 
 // Queries
 import {
   useAccountsQuery,
   useGetCombinedTokensListQuery,
-  useReceiveAddressQuery
+  useReceiveAddressQuery,
 } from '../../../../../common/slices/api.slice.extra'
 import {
   useEnableEnsOffchainLookupMutation,
@@ -36,7 +36,7 @@ import {
   useGetFVMAddressQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
   useGetZCashAccountInfoQuery,
-  useGetZCashTransactionTypeQuery
+  useGetZCashTransactionTypeQuery,
 } from '../../../../../common/slices/api.slice'
 
 // Utils
@@ -44,7 +44,7 @@ import {
   isValidBtcAddress,
   isValidEVMAddress,
   isValidFilAddress,
-  isValidCardanoAddress
+  isValidCardanoAddress,
 } from '../../../../../utils/address-utils'
 
 // Messages
@@ -52,7 +52,7 @@ import {
   FEVMAddressConversionMessage,
   InvalidAddressMessage,
   HasNoDomainAddressMessage,
-  AddressValidationMessages
+  AddressValidationMessages,
 } from '../../send-ui-messages'
 
 // Utils
@@ -60,7 +60,7 @@ import { getLocale } from '../../../../../../common/locale'
 import { endsWithAny } from '../../../../../utils/string-utils'
 import {
   findTokenByContractAddress,
-  getAssetIdKey
+  getAssetIdKey,
 } from '../../../../../utils/asset-utils'
 import { isFVMAccount } from '../../../../../utils/account-utils'
 
@@ -68,18 +68,18 @@ import { isFVMAccount } from '../../../../../utils/account-utils'
 import {
   supportedENSExtensions,
   supportedSNSExtensions,
-  supportedUDExtensions
+  supportedUDExtensions,
 } from '../../../../../common/constants/domain-extensions'
 
 // Components
 import {
-  PopupModal //
+  PopupModal, //
 } from '../../../../../components/desktop/popup-modals/index'
 import {
-  AddressMessage //
+  AddressMessage, //
 } from '../../components/address-message/address-message'
 import {
-  AccountListItem //
+  AccountListItem, //
 } from '../account_list_item/account_list_item'
 import { ChecksumInfo } from './checksum_info'
 
@@ -88,7 +88,7 @@ import {
   Row,
   Column,
   VerticalSpace,
-  Text
+  Text,
 } from '../../../../../components/shared/style'
 import {
   Wrapper,
@@ -99,7 +99,7 @@ import {
   WalletIcon,
   AddressButtonText,
   DomainLoadIcon,
-  SearchBoxContainer
+  SearchBoxContainer,
 } from './select_address_modal.style'
 
 interface Props {
@@ -121,7 +121,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       selectedAsset,
       toAddressOrUrl,
       setToAddressOrUrl,
-      setResolvedDomainAddress
+      setResolvedDomainAddress,
     } = props
 
     // Mutations
@@ -131,7 +131,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>(
-      toAddressOrUrl ?? ''
+      toAddressOrUrl ?? '',
     )
     const [showChecksumInfo, setShowChecksumInfo] =
       React.useState<boolean>(false)
@@ -152,31 +152,31 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     const lowercaseSearchValue = searchValue.toLowerCase()
 
     const searchValueHasValidExtension = lowercaseSearchValue
-      ? endsWithAny(supportedUDExtensions, lowercaseSearchValue) ||
-        (selectedAsset?.coin === BraveWallet.CoinType.SOL &&
-          endsWithAny(supportedSNSExtensions, lowercaseSearchValue)) ||
-        (selectedAsset?.coin === BraveWallet.CoinType.ETH &&
-          endsWithAny(supportedENSExtensions, lowercaseSearchValue))
+      ? endsWithAny(supportedUDExtensions, lowercaseSearchValue)
+        || (selectedAsset?.coin === BraveWallet.CoinType.SOL
+          && endsWithAny(supportedSNSExtensions, lowercaseSearchValue))
+        || (selectedAsset?.coin === BraveWallet.CoinType.ETH
+          && endsWithAny(supportedENSExtensions, lowercaseSearchValue))
       : false
 
     const {
       data: nameServiceInfo,
       isFetching: isSearchingForDomain,
-      isError: hasNameServiceError = false
+      isError: hasNameServiceError = false,
     } = useGetAddressFromNameServiceUrlQuery(
       searchValueHasValidExtension
         ? {
             tokenId: selectedSendAssetId,
             // preventing additional lookups for address casing changes
-            url: lowercaseSearchValue
+            url: lowercaseSearchValue,
           }
-        : skipToken
+        : skipToken,
     )
 
     const resolvedDomainAddress =
-      searchValueHasValidExtension &&
-      !hasNameServiceError &&
-      nameServiceInfo?.address
+      searchValueHasValidExtension
+      && !hasNameServiceError
+      && nameServiceInfo?.address
         ? nameServiceInfo.address
         : ''
 
@@ -191,10 +191,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
 
       if (fromAccountId.coin === BraveWallet.CoinType.FIL) {
         const filecoinAccounts = accounts.filter(
-          (account) => account.accountId.keyringId === fromAccountId?.keyringId
+          (account) => account.accountId.keyringId === fromAccountId?.keyringId,
         )
         const fevmAccounts = accounts.filter(
-          (account) => account.accountId.coin === BraveWallet.CoinType.ETH
+          (account) => account.accountId.coin === BraveWallet.CoinType.ETH,
         )
         return filecoinAccounts.concat(fevmAccounts)
       }
@@ -204,9 +204,9 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       // https://github.com/brave/brave-browser/issues/29262
       return accounts.filter(
         (account) =>
-          account.accountId.keyringId === fromAccountId.keyringId ||
-          (selectedAsset?.contractAddress === '' &&
-            isFVMAccount(account, selectedNetwork))
+          account.accountId.keyringId === fromAccountId.keyringId
+          || (selectedAsset?.contractAddress === ''
+            && isFVMAccount(account, selectedNetwork)),
       )
     }, [accounts, selectedNetwork, fromAccountId, selectedAsset])
 
@@ -215,8 +215,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         (account) =>
           account.accountId.address
             .toLocaleLowerCase()
-            .startsWith(searchValue.toLocaleLowerCase()) ||
-          account.name.toLowerCase().startsWith(searchValue.toLocaleLowerCase())
+            .startsWith(searchValue.toLocaleLowerCase())
+          || account.name
+            .toLowerCase()
+            .startsWith(searchValue.toLocaleLowerCase()),
       )
     }, [accountsByNetwork, searchValue])
 
@@ -224,60 +226,60 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       () =>
         accountsByNetwork
           .filter(
-            (account) => account.accountId.coin === BraveWallet.CoinType.ETH
+            (account) => account.accountId.coin === BraveWallet.CoinType.ETH,
           )
           .map((account) => account.accountId.address),
-      [accountsByNetwork]
+      [accountsByNetwork],
     )
 
     const { data: fevmTranslatedAddresses } = useGetFVMAddressQuery(
-      selectedNetwork &&
-        selectedNetwork?.coin === BraveWallet.CoinType.FIL &&
-        evmAddressesForFVMTranslation.length
+      selectedNetwork
+        && selectedNetwork?.coin === BraveWallet.CoinType.FIL
+        && evmAddressesForFVMTranslation.length
         ? {
             coin: selectedNetwork.coin,
             addresses: evmAddressesForFVMTranslation,
-            isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET
+            isMainNet: selectedNetwork.chainId === BraveWallet.FILECOIN_MAINNET,
           }
-        : skipToken
+        : skipToken,
     )
 
     const trimmedSearchValue = searchValue.trim()
     const isValidEvmAddress = isValidEVMAddress(trimmedSearchValue)
 
     const { data: ethAddressChecksum = '' } = useGetEthAddressChecksumQuery(
-      isValidEvmAddress ? trimmedSearchValue : skipToken
+      isValidEvmAddress ? trimmedSearchValue : skipToken,
     )
 
     const showFilecoinFEVMWarning =
       fromAccountId?.coin === BraveWallet.CoinType.FIL
-        ? trimmedSearchValue.startsWith('0x') &&
-          !validateETHAddress(trimmedSearchValue, ethAddressChecksum)
+        ? trimmedSearchValue.startsWith('0x')
+          && !validateETHAddress(trimmedSearchValue, ethAddressChecksum)
         : false
 
     const { data: isBase58 = false } = useGetIsBase58EncodedSolPubkeyQuery(
       fromAccountId?.coin === BraveWallet.CoinType.SOL && trimmedSearchValue
         ? trimmedSearchValue
-        : skipToken
+        : skipToken,
     )
 
     const {
       data: getZCashTransactionTypeResult = {
         txType: BraveWallet.ZCashTxType.kUnknown,
-        error: BraveWallet.ZCashAddressError.kNoError
-      }
+        error: BraveWallet.ZCashAddressError.kNoError,
+      },
     } = useGetZCashTransactionTypeQuery(
-      fromAccountId &&
-        selectedNetwork &&
-        fromAccountId.coin === BraveWallet.CoinType.ZEC &&
-        trimmedSearchValue
+      fromAccountId
+        && selectedNetwork
+        && fromAccountId.coin === BraveWallet.CoinType.ZEC
+        && trimmedSearchValue
         ? {
             chainId: selectedNetwork.chainId,
             accountId: fromAccountId,
             useShieldedPool: !!selectedAsset?.isShielded,
-            address: trimmedSearchValue
+            address: trimmedSearchValue,
           }
-        : skipToken
+        : skipToken,
     )
 
     const addressMessageId: AddressMessageInfoIds | undefined =
@@ -296,7 +298,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           isSearchingForDomain,
           resolvedDomainAddress,
           showEnsOffchainWarning,
-          isOffChainEnsWarningDismissed
+          isOffChainEnsWarningDismissed,
         })
       }, [
         trimmedSearchValue,
@@ -312,7 +314,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         isSearchingForDomain,
         resolvedDomainAddress,
         showEnsOffchainWarning,
-        isOffChainEnsWarningDismissed
+        isOffChainEnsWarningDismissed,
       ])
 
     const addressMessageInformation = React.useMemo(() => {
@@ -321,24 +323,24 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         fevmTranslatedAddresses,
         toAddressOrUrl: searchValue,
         messageId: addressMessageId,
-        coinType: fromAccountId?.coin
+        coinType: fromAccountId?.coin,
       })
     }, [
       showFilecoinFEVMWarning,
       fevmTranslatedAddresses,
       searchValue,
       addressMessageId,
-      fromAccountId?.coin
+      fromAccountId?.coin,
     ])
 
     const showAddressMessage =
-      (addressMessageInformation &&
-        addressMessageInformation.id ===
-          AddressMessageInfoIds.sameAddressError &&
-        filteredAccounts.length !== 0) ||
-      (!isSearchingForDomain &&
-        addressMessageInformation &&
-        filteredAccounts.length === 0)
+      (addressMessageInformation
+        && addressMessageInformation.id
+          === AddressMessageInfoIds.sameAddressError
+        && filteredAccounts.length !== 0)
+      || (!isSearchingForDomain
+        && addressMessageInformation
+        && filteredAccounts.length === 0)
 
     // Methods
     const onSelectAccount = React.useCallback(
@@ -350,12 +352,12 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           return
         }
         if (
-          account.accountId.coin === BraveWallet.CoinType.BTC ||
-          account.accountId.coin === BraveWallet.CoinType.ZEC ||
-          account.accountId.coin === BraveWallet.CoinType.ADA
+          account.accountId.coin === BraveWallet.CoinType.BTC
+          || account.accountId.coin === BraveWallet.CoinType.ZEC
+          || account.accountId.coin === BraveWallet.CoinType.ADA
         ) {
           const generatedAddress = await generateReceiveAddress(
-            account.accountId
+            account.accountId,
           ).unwrap()
           setToAddressOrUrl(generatedAddress)
         } else {
@@ -368,8 +370,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         setToAddressOrUrl,
         generateReceiveAddress,
         onClose,
-        setResolvedDomainAddress
-      ]
+        setResolvedDomainAddress,
+      ],
     )
 
     const onSelectAddress = React.useCallback(
@@ -382,8 +384,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         setToAddressOrUrl,
         setResolvedDomainAddress,
         resolvedDomainAddress,
-        onClose
-      ]
+        onClose,
+      ],
     )
 
     const onENSConsent = React.useCallback(() => {
@@ -502,10 +504,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                   </Text>
                 </Row>
               )}
-              {filteredAccounts.length === 0 &&
-                !isSearchingForDomain &&
-                !showEnsOffchainWarning &&
-                addressMessageInformation?.type !== 'error' && (
+              {filteredAccounts.length === 0
+                && !isSearchingForDomain
+                && !showEnsOffchainWarning
+                && addressMessageInformation?.type !== 'error' && (
                   <AddressButton onClick={() => onSelectAddress(searchValue)}>
                     <WalletIcon />
                     <Column alignItems='flex-start'>
@@ -536,16 +538,16 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                   <AddressMessage
                     addressMessageInfo={addressMessageInformation}
                     onClickEnableENSOffchain={
-                      addressMessageInformation.id ===
-                      AddressMessageInfoIds.ensOffchainLookupWarning
+                      addressMessageInformation.id
+                      === AddressMessageInfoIds.ensOffchainLookupWarning
                         ? onENSConsent
                         : undefined
                     }
                     onClickHowToSolve={
-                      addressMessageInformation.id ===
-                        AddressMessageInfoIds.invalidChecksumError ||
-                      addressMessageInformation.id ===
-                        AddressMessageInfoIds.missingChecksumWarning
+                      addressMessageInformation.id
+                        === AddressMessageInfoIds.invalidChecksumError
+                      || addressMessageInformation.id
+                        === AddressMessageInfoIds.missingChecksumWarning
                         ? () => setShowChecksumInfo(true)
                         : undefined
                     }
@@ -557,14 +559,14 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         </Wrapper>
       </PopupModal>
     )
-  }
+  },
 )
 
 interface AccountsListProps {
   account: BraveWallet.AccountInfo
   onSelectAccount: (
     account: BraveWallet.AccountInfo,
-    shieldedAddress?: string
+    shieldedAddress?: string,
   ) => void
   selectedAsset?: BraveWallet.BlockchainToken
   fromAccountId?: BraveWallet.AccountId
@@ -577,27 +579,27 @@ export const AccountGroupItem = (props: AccountsListProps) => {
     onSelectAccount,
     selectedAsset,
     fromAccountId,
-    accountAlias
+    accountAlias,
   } = props
 
   // Selectors
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
-    WalletSelectors.isZCashShieldedTransactionsEnabled
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
 
   // Queries
   const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
-    isZCashShieldedTransactionsEnabled &&
-      account.accountId.coin === BraveWallet.CoinType.ZEC
+    isZCashShieldedTransactionsEnabled
+      && account.accountId.coin === BraveWallet.CoinType.ZEC
       ? account.accountId
-      : skipToken
+      : skipToken,
   )
 
   // Computed
   const isShieldedAccount =
-    isZCashShieldedTransactionsEnabled &&
-    !!zcashAccountInfo &&
-    !!zcashAccountInfo.accountShieldBirthday
+    isZCashShieldedTransactionsEnabled
+    && !!zcashAccountInfo
+    && !!zcashAccountInfo.accountShieldBirthday
 
   return (
     <>
@@ -605,13 +607,13 @@ export const AccountGroupItem = (props: AccountsListProps) => {
         account={account}
         onClick={() => onSelectAccount(account)}
         isDisabled={
-          !!selectedAsset?.isShielded ||
-          account.accountId.uniqueKey === fromAccountId?.uniqueKey
+          !!selectedAsset?.isShielded
+          || account.accountId.uniqueKey === fromAccountId?.uniqueKey
         }
         isSelected={account.accountId.uniqueKey === fromAccountId?.uniqueKey}
         addressOverride={
-          account.accountId.coin === BraveWallet.CoinType.ZEC &&
-          zcashAccountInfo
+          account.accountId.coin === BraveWallet.CoinType.ZEC
+          && zcashAccountInfo
             ? zcashAccountInfo.nextTransparentReceiveAddress.addressString
             : undefined
         }
@@ -625,13 +627,13 @@ export const AccountGroupItem = (props: AccountsListProps) => {
           }
           isDisabled={!!selectedAsset?.isShielded}
           isSelected={
-            !!selectedAsset?.isShielded &&
-            account.accountId.uniqueKey === fromAccountId?.uniqueKey
+            !!selectedAsset?.isShielded
+            && account.accountId.uniqueKey === fromAccountId?.uniqueKey
           }
           isShielded={true}
           addressOverride={
-            account.accountId.coin === BraveWallet.CoinType.ZEC &&
-            zcashAccountInfo
+            account.accountId.coin === BraveWallet.CoinType.ZEC
+            && zcashAccountInfo
               ? zcashAccountInfo.orchardInternalAddress
               : undefined
           }
@@ -647,7 +649,7 @@ function getAddressMessageInfo({
   showFilecoinFEVMWarning,
   toAddressOrUrl,
   messageId,
-  coinType
+  coinType,
 }: {
   showFilecoinFEVMWarning: boolean
   fevmTranslatedAddresses: Record<string, string> | undefined
@@ -658,29 +660,29 @@ function getAddressMessageInfo({
   if (showFilecoinFEVMWarning) {
     return {
       ...FEVMAddressConversionMessage,
-      placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
+      placeholder: fevmTranslatedAddresses?.[toAddressOrUrl],
     }
   }
   if (
-    messageId === AddressMessageInfoIds.invalidAddressError &&
+    messageId === AddressMessageInfoIds.invalidAddressError
     // Checking for not undefined here since BTC coinType is 0
     // which is a falsey value.
-    coinType !== undefined
+    && coinType !== undefined
   ) {
     return {
       ...InvalidAddressMessage,
-      placeholder: CoinTypesMap[coinType]
+      placeholder: CoinTypesMap[coinType],
     }
   }
   if (
-    messageId === AddressMessageInfoIds.hasNoDomainAddress &&
+    messageId === AddressMessageInfoIds.hasNoDomainAddress
     // Checking for not undefined here since BTC coinType is 0
     // which is a falsey value.
-    coinType !== undefined
+    && coinType !== undefined
   ) {
     return {
       ...HasNoDomainAddressMessage,
-      placeholder: CoinTypesMap[coinType]
+      placeholder: CoinTypesMap[coinType],
     }
   }
 
@@ -706,13 +708,13 @@ const validateETHAddress = (address: string, checksumAddress: string) => {
 const processEthereumAddress = (
   addressOrUrl: string,
   token: BraveWallet.BlockchainToken | undefined,
-  checksumAddress: string
+  checksumAddress: string,
 ) => {
   if (
-    token &&
-    (token.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
-      token.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID) &&
-    isValidFilAddress(addressOrUrl)
+    token
+    && (token.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID
+      || token.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID)
+    && isValidFilAddress(addressOrUrl)
   ) {
     return undefined
   }
@@ -721,7 +723,7 @@ const processEthereumAddress = (
 }
 
 const processZCashAddress = (
-  zcashAddressError: BraveWallet.ZCashAddressError
+  zcashAddressError: BraveWallet.ZCashAddressError,
 ) => {
   if (zcashAddressError === BraveWallet.ZCashAddressError.kNoError) {
     return undefined
@@ -732,28 +734,29 @@ const processZCashAddress = (
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressError
   }
   if (
-    zcashAddressError ===
-    BraveWallet.ZCashAddressError.kInvalidTransparentAddress
+    zcashAddressError
+    === BraveWallet.ZCashAddressError.kInvalidTransparentAddress
   ) {
     return AddressMessageInfoIds.zcashInvalidTransparentAddressError
   }
   if (
-    zcashAddressError ===
-    BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingTransparentPart
+    zcashAddressError
+    === BraveWallet.ZCashAddressError
+      .kInvalidUnifiedAddressMissingTransparentPart
   ) {
     // eslint-disable-next-line max-len
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingTransparentPartError
   }
   if (
-    zcashAddressError ===
-    BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingOrchardPart
+    zcashAddressError
+    === BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingOrchardPart
   ) {
     // eslint-disable-next-line max-len
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressMissingOrchardPartError
   }
   if (
-    zcashAddressError ===
-    BraveWallet.ZCashAddressError.kInvalidAddressNetworkMismatch
+    zcashAddressError
+    === BraveWallet.ZCashAddressError.kInvalidAddressNetworkMismatch
   ) {
     return AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
   }
@@ -808,7 +811,7 @@ const processDomainLookupResponseWarning = (
   hasDomainLookupError: boolean,
   showEnsOffchainWarning: boolean,
   isOffChainEnsWarningDismissed: boolean,
-  fromAccountAddress?: string
+  fromAccountAddress?: string,
 ) => {
   if (showEnsOffchainWarning && !isOffChainEnsWarningDismissed) {
     return AddressMessageInfoIds.ensOffchainLookupWarning
@@ -824,8 +827,8 @@ const processDomainLookupResponseWarning = (
 
   // If found address is the same as the selectedAccounts Wallet Address
   if (
-    fromAccountAddress &&
-    resolvedAddress.toLowerCase() === fromAccountAddress.toLowerCase()
+    fromAccountAddress
+    && resolvedAddress.toLowerCase() === fromAccountAddress.toLowerCase()
   ) {
     return AddressMessageInfoIds.sameAddressError
   }
@@ -847,7 +850,7 @@ function processAddressOrUrl({
   isSearchingForDomain,
   hasNameServiceError,
   showEnsOffchainWarning,
-  isOffChainEnsWarningDismissed
+  isOffChainEnsWarningDismissed,
 }: {
   addressOrUrl: string
   fromAccountAddress: string | undefined
@@ -876,13 +879,13 @@ function processAddressOrUrl({
       hasNameServiceError,
       showEnsOffchainWarning,
       isOffChainEnsWarningDismissed,
-      fromAccountAddress
+      fromAccountAddress,
     )
   }
 
   if (
-    fromAccountAddress &&
-    fromAccountAddress.toLowerCase() === addressOrUrl.toLowerCase()
+    fromAccountAddress
+    && fromAccountAddress.toLowerCase() === addressOrUrl.toLowerCase()
   ) {
     return AddressMessageInfoIds.sameAddressError
   }
@@ -906,7 +909,7 @@ function processAddressOrUrl({
     case BraveWallet.CoinType.BTC: {
       return processBitcoinAddress(
         addressOrUrl,
-        token?.chainId === BraveWallet.BITCOIN_TESTNET
+        token?.chainId === BraveWallet.BITCOIN_TESTNET,
       )
     }
     case BraveWallet.CoinType.ZEC: {
@@ -915,7 +918,7 @@ function processAddressOrUrl({
     case BraveWallet.CoinType.ADA: {
       return processCardanoAddress(
         addressOrUrl,
-        token?.chainId === BraveWallet.CARDANO_TESTNET
+        token?.chainId === BraveWallet.CARDANO_TESTNET,
       )
     }
     default: {

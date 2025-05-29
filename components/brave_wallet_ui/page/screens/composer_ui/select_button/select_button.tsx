@@ -19,10 +19,10 @@ import { useGetNetworkQuery } from '../../../../common/slices/api.slice'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../../components/shared/create-placeholder-icon/index'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../components/shared/create-network-icon/index'
 import { NftIcon } from '../../../../components/shared/nft-icon/nft-icon'
 
@@ -31,7 +31,7 @@ import {
   AssetIcon,
   NetworkIconWrapper,
   IconsWrapper,
-  SelectButtonText
+  SelectButtonText,
 } from './select_button.style'
 import { Row } from '../../../../components/shared/style'
 import { CaratIcon, Button } from '../shared_composer.style'
@@ -82,10 +82,10 @@ export const SelectButton = (props: Props) => {
             ) : (
               <AssetIconWithPlaceholder asset={token} />
             )}
-            {tokensNetwork &&
-              checkIfTokenNeedsNetworkIcon(
+            {tokensNetwork
+              && checkIfTokenNeedsNetworkIcon(
                 tokensNetwork,
-                token.contractAddress
+                token.contractAddress,
               ) && (
                 <NetworkIconWrapper>
                   <CreateNetworkIcon

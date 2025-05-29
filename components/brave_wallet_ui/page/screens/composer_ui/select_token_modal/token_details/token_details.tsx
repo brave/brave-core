@@ -12,10 +12,10 @@ import { BraveWallet } from '../../../../../constants/types'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../../common/slices/constants'
 
 // Hooks
@@ -28,23 +28,23 @@ import { isNativeAsset } from '../../../../../utils/asset-utils'
 import { getLocale } from '../../../../../../common/locale'
 import {
   getPriceIdForToken,
-  getTokenPriceFromRegistry
+  getTokenPriceFromRegistry,
 } from '../../../../../utils/pricing-utils'
 import {
   getNFTTokenStandard,
-  reduceInt
+  reduceInt,
 } from '../../../../../utils/string-utils'
 
 // Components
 import {
-  withPlaceholderIcon //
+  withPlaceholderIcon, //
 } from '../../../../../components/shared/create-placeholder-icon/index'
 import { NftIcon } from '../../../../../components/shared/nft-icon/nft-icon'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../../../components/shared/loading-skeleton'
 import {
-  CopyTooltip //
+  CopyTooltip, //
 } from '../../../../../components/shared/copy-tooltip/copy-tooltip'
 
 // Styles
@@ -52,7 +52,7 @@ import {
   Column,
   LeoSquaredButton,
   Row,
-  Text
+  Text,
 } from '../../../../../components/shared/style'
 import { PercentChangeText, CopyIcon } from './token_details.style'
 import { AssetIcon } from '../../shared_composer.style'
@@ -76,7 +76,7 @@ export const TokenDetails = (props: Props) => {
       defaultFiatCurrency
         ? { ids: [getPriceIdForToken(token)], toCurrency: defaultFiatCurrency }
         : skipToken,
-      querySubscriptionOptions60s
+      querySubscriptionOptions60s,
     )
 
   // Hooks
@@ -166,7 +166,7 @@ export const TokenDetails = (props: Props) => {
                   isBold={true}
                 >
                   {new Amount(spotPrice?.price ?? '').formatAsFiat(
-                    defaultFiatCurrency
+                    defaultFiatCurrency,
                   )}
                 </Text>
                 <PercentChangeText
@@ -175,7 +175,7 @@ export const TokenDetails = (props: Props) => {
                   isBold={false}
                 >
                   {`${!isPriceDown ? '+' : ''}${Number(
-                    spotPrice?.assetTimeframeChange ?? ''
+                    spotPrice?.assetTimeframeChange ?? '',
                   ).toFixed(2)}%`}
                 </PercentChangeText>
               </Row>
@@ -277,7 +277,7 @@ export const TokenDetails = (props: Props) => {
                 ? onClickViewOnBlockExplorer(
                     'nft',
                     token.contractAddress,
-                    token.tokenId
+                    token.tokenId,
                   )
                 : onClickViewOnBlockExplorer('token', token.contractAddress)
             }

@@ -85,7 +85,7 @@ export const BackupInstructions = styled.p`
 export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
   src: window.matchMedia('(prefers-color-scheme: dark)').matches
     ? ExamplePhraseDark
-    : ExamplePhraseLight
+    : ExamplePhraseLight,
 }))`
   width: 100%;
   height: 208px;
@@ -95,7 +95,7 @@ export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
 export const SkipDialog = styled(Dialog).attrs({
   modal: true,
   showClose: true,
-  backdropClickCloses: true
+  backdropClickCloses: true,
 })`
   --leo-dialog-background: ${leo.color.container.background};
   --leo-dialog-border-radius: 16px;
@@ -112,7 +112,7 @@ export const WarningText = styled.p`
 `
 
 export const CopyButton = styled(Button).attrs({
-  kind: 'plain'
+  kind: 'plain',
 })<{ isCopied?: boolean }>`
   --leo-button-color: ${(p) =>
     p.isCopied ? leo.color.systemfeedback.successText : leo.color.icon.default};
@@ -125,7 +125,7 @@ export const CopyText = styled.span`
 `
 
 export const CopiedTick = styled(Icon).attrs({
-  name: 'check-normal'
+  name: 'check-normal',
 })`
   --leo-icon-size: 16px;
   --leo-icon-color: ${leo.color.systemfeedback.successText};

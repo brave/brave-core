@@ -14,12 +14,12 @@ import {
   Row,
   WalletButton,
   Text,
-  Column
+  Column,
 } from '../../../../components/shared/style'
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto'
+  height: 'auto',
 })
 
 export const NetworkIconWrapper = styled.div`
@@ -135,7 +135,7 @@ export const DisabledLabel = styled.div`
 `
 
 export const AccountsIcon = styled(Icon).attrs({
-  name: 'user-accounts'
+  name: 'user-accounts',
 })`
   --leo-icon-size: 16px;
   margin-right: 8px;
@@ -152,7 +152,7 @@ export const InfoButton = styled(WalletButton)`
 `
 
 export const InfoIcon = styled(Icon).attrs({
-  name: 'info-outline'
+  name: 'info-outline',
 })`
   --leo-icon-size: 15px;
   color: ${leo.color.icon.default};

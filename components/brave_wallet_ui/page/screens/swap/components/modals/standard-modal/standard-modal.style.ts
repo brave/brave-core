@@ -37,8 +37,8 @@ export const Modal = styled(StyledDiv)<{
     p.modalHeight === 'full'
       ? '85%'
       : p.modalHeight === 'dynamic'
-      ? 'unset'
-      : '520px'};
+        ? 'unset'
+        : '520px'};
   justify-content: flex-start;
   overflow: hidden;
   position: absolute;

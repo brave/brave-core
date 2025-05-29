@@ -14,17 +14,17 @@ import * as leo from '@brave/leo/tokens/css/variables'
 // context
 import {
   ChainSelectionContextProvider,
-  useChainSelectionContext
+  useChainSelectionContext,
 } from '../../../../common/context/network_selection_context'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  getNetworkId //
+  getNetworkId, //
 } from '../../../../common/slices/entities/network.entity'
 import {
   getOnboardingTypeFromPath,
-  openNetworkSettings
+  openNetworkSettings,
 } from '../../../../utils/routes-utils'
 import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 
@@ -32,7 +32,7 @@ import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 import {
   useGetAllKnownNetworksQuery,
   useHideNetworksMutation,
-  useRestoreNetworksMutation
+  useRestoreNetworksMutation,
 } from '../../../../common/slices/api.slice'
 
 // types
@@ -40,16 +40,16 @@ import {
   BraveWallet,
   SupportedTestNetworkEntityIds,
   SupportedTestNetworks,
-  WalletRoutes
+  WalletRoutes,
 } from '../../../../constants/types'
 
 // components
 import { SearchBar } from '../../../../components/shared/search-bar'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../components/shared/create-network-icon'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 
 // styles
@@ -58,7 +58,7 @@ import {
   MutedLinkText,
   Row,
   Text,
-  VerticalSpace
+  VerticalSpace,
 } from '../../../../components/shared/style'
 import { ContinueButton, NextButtonRow } from '../onboarding.style'
 import {
@@ -66,7 +66,7 @@ import {
   GroupingText,
   NetworkSelectionContainer,
   NetworkSelectionGrid,
-  ScrollableColumn
+  ScrollableColumn,
 } from './onboarding_network_selection.style'
 import { WalletActions } from '../../../../common/actions'
 
@@ -77,18 +77,18 @@ const featuredChainIds = [
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.BITCOIN_MAINNET,
   BraveWallet.Z_CASH_MAINNET,
-  BraveWallet.CARDANO_MAINNET
+  BraveWallet.CARDANO_MAINNET,
 ]
 
 /** Forcing ETH, SOL account creation until their networks can be hidden */
 const mandatoryChainIds = [
   BraveWallet.SOLANA_MAINNET,
-  BraveWallet.MAINNET_CHAIN_ID
+  BraveWallet.MAINNET_CHAIN_ID,
 ]
 
 function NetworkCheckbox({
   network,
-  isDisabled
+  isDisabled,
 }: {
   network: BraveWallet.NetworkInfo
   isDisabled?: boolean
@@ -106,9 +106,9 @@ function NetworkCheckbox({
       selectChains((prev) =>
         isChecked
           ? prev.filter((id) => id !== chainIdentifier)
-          : prev.concat(chainIdentifier)
+          : prev.concat(chainIdentifier),
       ),
-    [isChecked, selectChains, chainIdentifier]
+    [isChecked, selectChains, chainIdentifier],
   )
 
   // render
@@ -168,13 +168,13 @@ export const OnboardingNetworkSelection = () => {
   /** Always include test networks */
   const selectedChainsContext = React.useMemo(
     () => [selectedChainIds, setSelectedChainIds] as const,
-    [selectedChainIds, setSelectedChainIds]
+    [selectedChainIds, setSelectedChainIds],
   )
 
   const mainnetChainIds = React.useMemo(
     () =>
       networkIds.filter((id) => !SupportedTestNetworkEntityIds.includes(id)),
-    [networkIds]
+    [networkIds],
   )
 
   // filter out test networks if needed
@@ -182,7 +182,7 @@ export const OnboardingNetworkSelection = () => {
     return showTestNets
       ? selectedChainIds
       : selectedChainIds.filter(
-          (id) => !SupportedTestNetworkEntityIds.includes(id)
+          (id) => !SupportedTestNetworkEntityIds.includes(id),
         )
   }, [showTestNets, selectedChainIds])
 
@@ -190,7 +190,7 @@ export const OnboardingNetworkSelection = () => {
     if (!networks) {
       return {
         featuredNetworks: [],
-        popularNetworks: []
+        popularNetworks: [],
       }
     }
     // group networks
@@ -199,7 +199,7 @@ export const OnboardingNetworkSelection = () => {
       .filter((net): net is BraveWallet.NetworkInfo => Boolean(net))
 
     const popularNetworks = networks.filter(
-      (net) => !featuredChainIds.includes(net.chainId)
+      (net) => !featuredChainIds.includes(net.chainId),
     )
 
     // sort popular networks
@@ -211,8 +211,8 @@ export const OnboardingNetworkSelection = () => {
       popularNetworks: showTestNets
         ? popularNetworks
         : popularNetworks.filter(
-            ({ chainId }) => !SupportedTestNetworks.includes(chainId)
-          )
+            ({ chainId }) => !SupportedTestNetworks.includes(chainId),
+          ),
     }
   }, [networks, showTestNets])
 
@@ -222,16 +222,16 @@ export const OnboardingNetworkSelection = () => {
       if (!trimmedSearchText) {
         return {
           filteredFeaturedNetworks: featuredNetworks,
-          filteredPopularNetworks: popularNetworks
+          filteredPopularNetworks: popularNetworks,
         }
       }
       return {
         filteredFeaturedNetworks: featuredNetworks.filter(({ chainName }) =>
-          chainName.toLowerCase().includes(trimmedSearchText)
+          chainName.toLowerCase().includes(trimmedSearchText),
         ),
         filteredPopularNetworks: popularNetworks.filter(({ chainName }) =>
-          chainName.toLowerCase().includes(trimmedSearchText)
-        )
+          chainName.toLowerCase().includes(trimmedSearchText),
+        ),
       }
     }, [featuredNetworks, popularNetworks, searchText])
 
@@ -266,16 +266,16 @@ export const OnboardingNetworkSelection = () => {
     // prevent creation of unwanted bitcoin & filecoin accounts
     dispatch(
       WalletActions.setAllowedNewWalletAccountTypeNetworkIds(
-        visibleSelectedChainIds
-      )
+        visibleSelectedChainIds,
+      ),
     )
 
     history.push(
       onboardingType === 'hardware'
         ? WalletRoutes.OnboardingHardwareWalletCreatePassword
         : onboardingType === 'import'
-        ? WalletRoutes.OnboardingRestoreWallet
-        : WalletRoutes.OnboardingNewWalletCreatePassword
+          ? WalletRoutes.OnboardingRestoreWallet
+          : WalletRoutes.OnboardingNewWalletCreatePassword,
     )
   }, [
     networks,
@@ -284,7 +284,7 @@ export const OnboardingNetworkSelection = () => {
     dispatch,
     visibleSelectedChainIds,
     history,
-    onboardingType
+    onboardingType,
   ])
 
   // effects
@@ -299,8 +299,8 @@ export const OnboardingNetworkSelection = () => {
 
   // computed
   const areAllChainsSelected =
-    visibleSelectedChainIds.length ===
-    featuredNetworks.length + popularNetworks.length
+    visibleSelectedChainIds.length
+    === featuredNetworks.length + popularNetworks.length
 
   // render
   return (
@@ -383,14 +383,14 @@ export const OnboardingNetworkSelection = () => {
                         areAllChainsSelected
                           ? setSelectedChainIds(mandatoryChainIds)
                           : setSelectedChainIds(
-                              showTestNets ? networkIds : mainnetChainIds
+                              showTestNets ? networkIds : mainnetChainIds,
                             )
                       }}
                     >
                       {getLocale(
                         areAllChainsSelected
                           ? 'braveWalletDeselectAll'
-                          : 'braveWalletSelectAll'
+                          : 'braveWalletSelectAll',
                       )}
                     </SelectAllText>
                   )}
@@ -421,13 +421,13 @@ export const OnboardingNetworkSelection = () => {
             ? getLocale('braveWalletContinueWithXItems')
                 .replace(
                   '$1', // Number of items
-                  visibleSelectedChainIds.length.toString()
+                  visibleSelectedChainIds.length.toString(),
                 )
                 .replace(
                   '$2', // Item name (maybe plural)
                   visibleSelectedChainIds.length > 1
                     ? getLocale('braveWalletNetworks')
-                    : getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')
+                    : getLocale('braveWalletAllowAddNetworkNetworkPanelTitle'),
                 )
             : getLocale('braveWalletButtonContinue')}
         </ContinueButton>

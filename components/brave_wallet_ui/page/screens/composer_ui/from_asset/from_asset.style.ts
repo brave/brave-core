@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { Column, Text, Row } from '../../../../components/shared/style'
 
@@ -52,7 +52,7 @@ export const NetworkAndFiatRow = styled(Row)`
 `
 
 export const InfoIcon = styled(Icon).attrs({
-  name: 'info-outline'
+  name: 'info-outline',
 })`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.interactive};

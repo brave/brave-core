@@ -11,31 +11,31 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   formatTokenBalanceWithSymbol,
   getBalance,
-  getPercentAmount
+  getPercentAmount,
 } from '../../../../utils/balance-utils'
 import { getLocale } from '../../../../../common/locale'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 
 // Hooks
 import {
-  useOnClickOutside //
+  useOnClickOutside, //
 } from '../../../../common/hooks/useOnClickOutside'
 
 // Queries
 import {
   useGetBitcoinBalancesQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../../../../common/slices/entities/token-balance.entity'
 
 // Types
@@ -44,13 +44,13 @@ import { BraveWallet } from '../../../../constants/types'
 // Components
 import { SelectButton } from '../select_button/select_button'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../../components/shared/loading-skeleton/index'
 import {
-  BalanceDetailsModal //
+  BalanceDetailsModal, //
 } from '../../../../components/desktop/popup-modals/balance_details_modal/balance_details_modal'
 import {
-  ShieldedLabel //
+  ShieldedLabel, //
 } from '../../../../components/shared/shielded_label/shielded_label'
 
 // Styled Components
@@ -64,13 +64,13 @@ import {
   NetworkAndFiatRow,
   SelectTokenAndInputRow,
   InfoIcon,
-  AccountNameAndBalanceRow
+  AccountNameAndBalanceRow,
 } from './from_asset.style'
 import { AmountInput, PresetButton } from '../shared_composer.style'
 import {
   Column,
   Row,
-  HorizontalSpace
+  HorizontalSpace,
 } from '../../../../components/shared/style'
 
 interface Props {
@@ -95,7 +95,7 @@ export const FromAsset = (props: Props) => {
     network,
     tokenBalancesRegistry,
     isLoadingBalances,
-    account
+    account,
   } = props
 
   // State
@@ -109,7 +109,7 @@ export const FromAsset = (props: Props) => {
   useOnClickOutside(
     balanceDetailsRef,
     () => setShowBalanceDetailsModal(false),
-    showBalanceDetailsModal
+    showBalanceDetailsModal,
   )
 
   // Queries
@@ -117,24 +117,24 @@ export const FromAsset = (props: Props) => {
     useGetBitcoinBalancesQuery(
       token && token?.coin === BraveWallet.CoinType.BTC && account?.accountId
         ? account.accountId
-        : skipToken
+        : skipToken,
     )
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      token &&
-        !token.isNft &&
-        !token.isErc721 &&
-        !token.isErc1155 &&
-        defaultFiatCurrency
+      token
+        && !token.isNft
+        && !token.isErc721
+        && !token.isErc1155
+        && defaultFiatCurrency
         ? {
             ids: [getPriceIdForToken(token)],
-            toCurrency: defaultFiatCurrency
+            toCurrency: defaultFiatCurrency,
           }
         : skipToken,
-      querySubscriptionOptions60s
+      querySubscriptionOptions60s,
     )
 
   // methods
@@ -149,19 +149,19 @@ export const FromAsset = (props: Props) => {
           token,
           account.accountId,
           percent,
-          tokenBalancesRegistry
+          tokenBalancesRegistry,
         ),
-        percent === 1
+        percent === 1,
       )
     },
-    [token, account, tokenBalancesRegistry, onChange]
+    [token, account, tokenBalancesRegistry, onChange],
   )
 
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value, false)
     },
-    [onChange]
+    [onChange],
   )
 
   const tokenBalance = React.useMemo(() => {
@@ -175,7 +175,7 @@ export const FromAsset = (props: Props) => {
   }, [account, token, tokenBalancesRegistry, bitcoinBalances])
 
   const hasPendingBalance = !new Amount(
-    bitcoinBalances?.pendingBalance ?? '0'
+    bitcoinBalances?.pendingBalance ?? '0',
   ).isZero()
 
   const accountNameAndBalance = React.useMemo(() => {
@@ -230,7 +230,7 @@ export const FromAsset = (props: Props) => {
                   tokenBalance,
                   token.decimals,
                   token.symbol,
-                  6
+                  6,
                 )}
               </BalanceText>
               {token.isShielded && <ShieldedLabel />}
@@ -268,7 +268,7 @@ export const FromAsset = (props: Props) => {
     account,
     isLoadingBalances,
     isLoadingBitcoinBalances,
-    hasPendingBalance
+    hasPendingBalance,
   ])
 
   const fiatValue = React.useMemo(() => {
@@ -281,7 +281,7 @@ export const FromAsset = (props: Props) => {
       value: new Amount(inputValue !== '' ? inputValue : '0')
         .multiplyByDecimals(token.decimals)
         .toHex(),
-      token: token
+      token: token,
     }).formatAsFiat(defaultFiatCurrency)
   }, [spotPriceRegistry, token, inputValue, defaultFiatCurrency])
 

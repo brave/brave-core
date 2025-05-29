@@ -7,11 +7,11 @@ import styled from 'styled-components'
 import LeoInput from '@brave/leo/react/input'
 import LeoDialog from '@brave/leo/react/dialog'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Dialog = styled(LeoDialog).attrs({
-  size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal'
+  size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal',
 })`
   --leo-dialog-padding: 32px;
   --leo-dialog-width: 600px;

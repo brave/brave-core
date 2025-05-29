@@ -33,7 +33,7 @@ import {
   LegacyCheckboxRow,
   FormWrapper,
   InputColumn,
-  FormText
+  FormText,
 } from './restore-wallet.style'
 
 // hooks
@@ -54,7 +54,7 @@ export const RestoreWallet = () => {
     password,
     onPasswordChanged: handlePasswordChanged,
     setConfirmedPassword: handleConfirmPasswordChanged,
-    isValid: isPasswordValid
+    isValid: isPasswordValid,
   } = usePasswordStrength()
 
   // mutations
@@ -112,7 +112,7 @@ export const RestoreWallet = () => {
       mnemonic: recoveryPhrase.trimEnd(),
       password,
       isLegacy: isLegacyWallet,
-      completeWalletSetup: true
+      completeWalletSetup: true,
     }).unwrap()
 
     if (success) {
@@ -130,7 +130,7 @@ export const RestoreWallet = () => {
       // This Prevents there from being more than one space between words.
       const removedDoubleSpaces = removeBegginingWhiteSpace.replace(
         / +(?= )/g,
-        ''
+        '',
       )
 
       // Although the above removes double spaces, it is initially recognized as
@@ -145,7 +145,7 @@ export const RestoreWallet = () => {
         setRecoveryPhrase(removePeriod)
       }
     },
-    [recoveryPhrase]
+    [recoveryPhrase],
   )
 
   const handleKeyDown = React.useCallback(
@@ -154,7 +154,7 @@ export const RestoreWallet = () => {
         onSubmitRestore()
       }
     },
-    [onSubmitRestore, isDisabled]
+    [onSubmitRestore, isDisabled],
   )
 
   const onShowRecoveryPhrase = React.useCallback(
@@ -163,7 +163,7 @@ export const RestoreWallet = () => {
         setShowRecoveryPhrase(selected)
       }
     },
-    []
+    [],
   )
 
   const onSetIsLegacyWallet = React.useCallback(
@@ -172,7 +172,7 @@ export const RestoreWallet = () => {
         setIsLegacyWallet(selected)
       }
     },
-    []
+    [],
   )
 
   const onClearClipboard = React.useCallback(() => {

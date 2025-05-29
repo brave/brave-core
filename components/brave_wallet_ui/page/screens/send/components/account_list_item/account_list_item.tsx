@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Hooks
 import {
-  CreateAccountIcon //
+  CreateAccountIcon, //
 } from '../../../../../components/shared/create-account-icon/create-account-icon'
 
 // Utils
@@ -19,7 +19,7 @@ import { getLocale } from '../../../../../../common/locale'
 
 // Components
 import {
-  ShieldedLabel //
+  ShieldedLabel, //
 } from '../../../../../components/shared/shielded_label/shielded_label'
 
 // Styled Components
@@ -27,7 +27,7 @@ import {
   Button,
   NameAndBalanceText,
   AddressText,
-  DisabledLabel
+  DisabledLabel,
 } from './account_list_item.style'
 import { Column, Row } from '../../../../../components/shared/style'
 
@@ -49,7 +49,7 @@ export const AccountListItem = (props: Props) => {
     isDisabled,
     accountAlias,
     isShielded,
-    addressOverride
+    addressOverride,
   } = props
 
   return (

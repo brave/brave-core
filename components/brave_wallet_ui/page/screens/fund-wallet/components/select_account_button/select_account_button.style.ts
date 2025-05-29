@@ -8,7 +8,7 @@ import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const AccountName = styled.h3`

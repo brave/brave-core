@@ -9,7 +9,7 @@ import { render, screen } from '@testing-library/react'
 // Mock Data
 import {
   mockMeldCryptoQuotes,
-  mockServiceProviders
+  mockServiceProviders,
 } from '../../../../../common/constants/mocks'
 
 // Components
@@ -26,7 +26,7 @@ describe('buy quote option', () => {
         isBestOption={true}
         isOpenOverride={true}
         onBuy={clickHandler}
-      />
+      />,
     )
 
     // Test Text
@@ -35,12 +35,12 @@ describe('buy quote option', () => {
 
     // Test Styles
     const styledWrapper = container.querySelector(
-      '[data-key="buy-quote-wrapper"]'
+      '[data-key="buy-quote-wrapper"]',
     )
     expect(styledWrapper).toBeInTheDocument()
     expect(styledWrapper).toHaveStyle({
       boxSizing: 'border-box',
-      overflow: 'hidden'
+      overflow: 'hidden',
     })
 
     // Test Carat Icon

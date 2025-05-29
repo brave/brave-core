@@ -14,7 +14,7 @@ import { getLocale } from '../../../../../common/locale'
 import { PageSelectors } from '../../../selectors'
 import { WalletPageActions } from '../../../actions'
 import {
-  useReportOnboardingActionMutation //
+  useReportOnboardingActionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // routes
@@ -22,19 +22,19 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // hooks
 import {
-  useTemporaryCopyToClipboard //
+  useTemporaryCopyToClipboard, //
 } from '../../../../common/hooks/use-copy-to-clipboard'
 import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
 
 // components
 import {
-  RecoveryPhrase //
+  RecoveryPhrase, //
 } from '../../../../components/desktop/recovery-phrase/recovery-phrase'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../../onboarding/components/onboarding_content_layout/content_layout'
 import {
-  SkipWarningDialog //
+  SkipWarningDialog, //
 } from '../explain-recovery-phrase/skip_warning_dialog'
 
 // styles
@@ -43,14 +43,14 @@ import {
   Subtitle,
   CopyButton,
   CopiedTick,
-  CopyText
+  CopyText,
 } from '../explain-recovery-phrase/explain-recovery-phrase.style'
 import {
   ContinueButton,
   NextButtonRow,
   PhraseCard,
   PhraseCardBody,
-  PhraseCardBottomRow
+  PhraseCardBottomRow,
 } from '../../onboarding/onboarding.style'
 import { ScrollableColumn } from '../../../../components/shared/style'
 
@@ -102,7 +102,7 @@ export const BackupRecoveryPhrase = () => {
       >
         <Subtitle>
           {getLocale(
-            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
+            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription',
           )}
         </Subtitle>
         <BackupInstructions>
@@ -141,7 +141,7 @@ export const BackupRecoveryPhrase = () => {
               history.push(
                 isOnboarding
                   ? WalletRoutes.OnboardingVerifyRecoveryPhrase
-                  : WalletRoutes.BackupVerifyRecoveryPhrase
+                  : WalletRoutes.BackupVerifyRecoveryPhrase,
               )
             }
           >

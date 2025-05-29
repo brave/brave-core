@@ -16,7 +16,7 @@ import { Wrapper, InfoColumn, InfoGraphic, Link } from './checksum_info.style'
 import {
   Column,
   Text,
-  VerticalSpacer
+  VerticalSpacer,
 } from '../../../../../components/shared/style'
 
 export const ChecksumInfo = () => {

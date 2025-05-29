@@ -17,7 +17,7 @@ import { toMojoUnion } from '../../../../utils/mojo-utils'
 // Query hooks
 import {
   useGenerateSwapTransactionMutation,
-  useSendEvmTransactionMutation
+  useSendEvmTransactionMutation,
 } from '../../../../common/slices/api.slice'
 
 export function useZeroEx(params: SwapParams) {
@@ -29,7 +29,7 @@ export function useZeroEx(params: SwapParams) {
     toAccountId,
     toToken,
     toAmount,
-    slippageTolerance
+    slippageTolerance,
   } = params
 
   // Mutations
@@ -39,11 +39,11 @@ export function useZeroEx(params: SwapParams) {
   const exchange = useCallback(
     async function () {
       if (
-        !fromAccount ||
-        !toAccountId ||
-        !fromToken ||
-        !toToken ||
-        !fromNetwork
+        !fromAccount
+        || !toAccountId
+        || !fromToken
+        || !toToken
+        || !fromNetwork
       ) {
         return
       }
@@ -55,13 +55,13 @@ export function useZeroEx(params: SwapParams) {
       const fromAmountWrapped = new Amount(fromAmount)
       const toAmountWrapped = new Amount(toAmount)
       const isFromAmountEmpty =
-        fromAmountWrapped.isZero() ||
-        fromAmountWrapped.isNaN() ||
-        fromAmountWrapped.isUndefined()
+        fromAmountWrapped.isZero()
+        || fromAmountWrapped.isNaN()
+        || fromAmountWrapped.isUndefined()
       const isToAmountEmpty =
-        toAmountWrapped.isZero() ||
-        toAmountWrapped.isNaN() ||
-        toAmountWrapped.isUndefined()
+        toAmountWrapped.isZero()
+        || toAmountWrapped.isNaN()
+        || toAmountWrapped.isUndefined()
 
       if (isFromAmountEmpty && isToAmountEmpty) {
         return
@@ -76,29 +76,29 @@ export function useZeroEx(params: SwapParams) {
                 fromAccountId: fromAccount.accountId,
                 fromChainId: fromToken.chainId,
                 fromAmount:
-                  fromAmount &&
-                  new Amount(fromAmount)
+                  fromAmount
+                  && new Amount(fromAmount)
                     .multiplyByDecimals(fromToken.decimals)
                     .format(),
                 fromToken: fromToken.contractAddress,
                 toAccountId,
                 toChainId: toToken.chainId,
                 toAmount:
-                  toAmount &&
-                  new Amount(toAmount)
+                  toAmount
+                  && new Amount(toAmount)
                     .multiplyByDecimals(toToken.decimals)
                     .format(),
                 toToken: toToken.contractAddress,
                 slippagePercentage: slippageTolerance,
                 routePriority: BraveWallet.RoutePriority.kCheapest,
-                provider: BraveWallet.SwapProvider.kZeroEx
+                provider: BraveWallet.SwapProvider.kZeroEx,
               },
               jupiterTransactionParams: undefined,
               lifiTransactionParams: undefined,
-              squidTransactionParams: undefined
+              squidTransactionParams: undefined,
             },
-            'zeroExTransactionParams'
-          )
+            'zeroExTransactionParams',
+          ),
         ).unwrap()
       } catch (e) {
         console.log(`Error getting 0x swap quote: ${e}`)
@@ -122,7 +122,7 @@ export function useZeroEx(params: SwapParams) {
           value: new Amount(value).toHex(),
           gasLimit: new Amount(gas).toHex(),
           data: hexStrToNumberArray(data),
-          network: fromNetwork
+          network: fromNetwork,
         })
       } catch (e) {
         // bubble up error
@@ -141,11 +141,11 @@ export function useZeroEx(params: SwapParams) {
       slippageTolerance,
       toAccountId,
       toAmount,
-      toToken
-    ]
+      toToken,
+    ],
   )
 
   return {
-    exchange
+    exchange,
   }
 }

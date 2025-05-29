@@ -8,7 +8,7 @@ import {
   StyledInput,
   Icon,
   StyledDiv,
-  StyledLabel
+  StyledLabel,
 } from '../../shared-swap.styles'
 
 export const HiddenCheckBox = styled(StyledInput)`

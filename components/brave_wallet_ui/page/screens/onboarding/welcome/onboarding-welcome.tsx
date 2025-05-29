@@ -14,7 +14,7 @@ import { PageSelectors } from '../../../selectors'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  useReportOnboardingActionMutation //
+  useReportOnboardingActionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // components
@@ -35,7 +35,7 @@ import {
   Heading,
   ActionsContainer,
   Footer,
-  SubHeading
+  SubHeading,
 } from './onboarding-welcome.style'
 
 const walletIcons = [
@@ -44,7 +44,7 @@ const walletIcons = [
   'metamask-color',
   'coinbase-color',
   'trezor-color',
-  'wallet-ledger'
+  'wallet-ledger',
 ]
 
 export const OnboardingWelcome = () => {
@@ -96,7 +96,7 @@ export const OnboardingWelcome = () => {
             <WelcomeAction
               title={getLocale('braveWalletWelcomeImportWalletTitle')}
               description={getLocale(
-                'braveWalletWelcomeImportWalletDescription'
+                'braveWalletWelcomeImportWalletDescription',
               )}
               iconName='import-arrow'
               walletIcons={walletIcons}

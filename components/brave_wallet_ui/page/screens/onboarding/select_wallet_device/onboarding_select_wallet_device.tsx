@@ -9,15 +9,15 @@ import { Redirect, useHistory, useParams } from 'react-router'
 // utils
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import {
-  CreateAccountOptions //
+  CreateAccountOptions, //
 } from '../../../../options/create-account-options'
 
 // components
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 import {
-  HardwareWalletConnect //
+  HardwareWalletConnect, //
 } from '../../../../components/desktop/hardware-wallet-connect/hardware_wallet_connect'
 import { getLocale } from '../../../../../common/locale'
 
@@ -42,14 +42,14 @@ export const OnboardingSelectWalletDevice = () => {
 
   // redux
   const isBitcoinLedgerEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinLedgerEnabled
+    WalletSelectors.isBitcoinLedgerEnabled,
   )
 
   const accountOptions = CreateAccountOptions({
     visibleNetworks,
     isBitcoinEnabled: isBitcoinLedgerEnabled,
     isZCashEnabled: false, // No zcash hardware accounts by now.
-    isCardanoEnabled: false // No cardano hardware accounts by now.
+    isCardanoEnabled: false, // No cardano hardware accounts by now.
   })
 
   // state

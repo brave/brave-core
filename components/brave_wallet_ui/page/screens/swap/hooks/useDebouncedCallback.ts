@@ -7,7 +7,7 @@ import { useEffect, useRef, useCallback } from 'react'
 
 export function useDebouncedCallback<A extends any[]>(
   callback: ((...args: A) => Promise<void>) | ((...args: A) => void),
-  wait: number
+  wait: number,
 ) {
   // Track args & timeout handle between calls
   const argsRef = useRef<A>()
@@ -38,6 +38,6 @@ export function useDebouncedCallback<A extends any[]>(
         }
       }, wait)
     },
-    [argsRef, timeout, cleanup, callback, wait]
+    [argsRef, timeout, cleanup, callback, wait],
   )
 }

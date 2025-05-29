@@ -10,20 +10,20 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { getLocale, formatLocale } from '$web-common/locale'
 import {
   computeFiatAmount,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from '../../../../utils/pricing-utils'
 import {
-  getDominantColorFromImageURL //
+  getDominantColorFromImageURL, //
 } from '../../../../utils/style.utils'
 import Amount from '../../../../utils/amount'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
 } from '../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s //
+  querySubscriptionOptions60s, //
 } from '../../../../common/slices/constants'
 
 // Types
@@ -33,7 +33,7 @@ import { SwapParamsOverrides } from '../../swap/constants/types'
 // Components
 import { SelectButton } from '../select_button/select_button'
 import {
-  LoadingSkeleton //
+  LoadingSkeleton, //
 } from '../../../../components/shared/loading-skeleton/index'
 
 // Styled Components
@@ -44,7 +44,7 @@ import {
   ReceiveAndQuoteRow,
   SelectAndInputRow,
   RefreshIcon,
-  RefreshButton
+  RefreshButton,
 } from './to_asset.style'
 import { AmountInput, ToSectionWrapper } from '../shared_composer.style'
 import { Column, Row, Text } from '../../../../components/shared/style'
@@ -92,7 +92,7 @@ export const ToAsset = (props: Props) => {
     selectedSendOption,
     isFetchingQuote,
     timeUntilNextQuote,
-    children
+    children,
   } = props
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -102,10 +102,10 @@ export const ToAsset = (props: Props) => {
       token && defaultFiatCurrency
         ? {
             ids: [getPriceIdForToken(token)],
-            toCurrency: defaultFiatCurrency
+            toCurrency: defaultFiatCurrency,
           }
         : skipToken,
-      querySubscriptionOptions60s
+      querySubscriptionOptions60s,
     )
 
   // State
@@ -116,7 +116,7 @@ export const ToAsset = (props: Props) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange],
   )
 
   const handleRefreshQuote = React.useCallback(() => {
@@ -135,14 +135,14 @@ export const ToAsset = (props: Props) => {
       value: new Amount(inputValue !== '' ? inputValue : '0')
         .multiplyByDecimals(token.decimals)
         .toHex(),
-      token: token
+      token: token,
     }).formatAsFiat(defaultFiatCurrency)
   }, [
     spotPriceRegistry,
     token,
     inputValue,
     defaultFiatCurrency,
-    selectedSendOption
+    selectedSendOption,
   ])
 
   const tokenColor = React.useMemo(() => {
@@ -156,13 +156,15 @@ export const ToAsset = (props: Props) => {
       : ''
 
   const newQuote = formatLocale('braveWalletNewQuoteIn', {
-    $1: <Text
-      textSize='12px'
-      isBold
-      textColor='primary'
-    >
-      {countdown}
-    </Text>
+    $1: (
+      <Text
+        textSize='12px'
+        isBold
+        textColor='primary'
+      >
+        {countdown}
+      </Text>
+    ),
   })
 
   // render

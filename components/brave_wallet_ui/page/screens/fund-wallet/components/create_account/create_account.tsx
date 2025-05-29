@@ -13,12 +13,12 @@ import Button from '@brave/leo/react/button'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useAddAccountMutation,
-  useGetNetworkQuery
+  useGetNetworkQuery,
 } from '../../../../../common/slices/api.slice'
 
 // Selectors
 import {
-  useSafeUISelector //
+  useSafeUISelector, //
 } from '../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../common/selectors'
 
@@ -33,10 +33,10 @@ import { getMeldTokensCoinType } from '../../../../../utils/meld_utils'
 
 // Components
 import {
-  BottomSheet //
+  BottomSheet, //
 } from '../../../../../components/shared/bottom_sheet/bottom_sheet'
 import {
-  CreateNetworkIcon //
+  CreateNetworkIcon, //
 } from '../../../../../components/shared/create-network-icon'
 
 // Styled Components
@@ -49,7 +49,7 @@ interface Props extends DialogProps {
   token?: MeldCryptoCurrency
   onSelectToken: (
     asset: MeldCryptoCurrency,
-    account?: BraveWallet.AccountInfo
+    account?: BraveWallet.AccountInfo,
   ) => void
   onClose: () => void
 }
@@ -69,9 +69,9 @@ export const CreateAccount = (props: Props) => {
     token?.chainId
       ? {
           chainId: token.chainId,
-          coin: getMeldTokensCoinType(token)
+          coin: getMeldTokensCoinType(token),
         }
-      : skipToken
+      : skipToken,
   )
 
   // Computed
@@ -91,7 +91,7 @@ export const CreateAccount = (props: Props) => {
       const account = await addAccount({
         coin: network.coin,
         keyringId: keyringIdForNewAccount(network.coin, network.chainId),
-        accountName: suggestedAccountName
+        accountName: suggestedAccountName,
       }).unwrap()
 
       if (account) {
@@ -112,7 +112,7 @@ export const CreateAccount = (props: Props) => {
         onClickCreateAccount()
       }
     },
-    [onClickCreateAccount]
+    [onClickCreateAccount],
   )
 
   // Effects
@@ -143,7 +143,7 @@ export const CreateAccount = (props: Props) => {
             {token
               ? getLocale('braveWalletCreateAccountToBuyTitle').replace(
                   '$1',
-                  token.name ?? ''
+                  token.name ?? '',
                 )
               : ''}
           </Text>
@@ -199,7 +199,7 @@ export const CreateAccount = (props: Props) => {
     accountName,
     onClose,
     onClickCreateAccount,
-    handleKeyDown
+    handleKeyDown,
   ])
 
   if (isPanel) {

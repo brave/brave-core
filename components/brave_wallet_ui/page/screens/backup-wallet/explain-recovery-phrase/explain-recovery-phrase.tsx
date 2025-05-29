@@ -13,7 +13,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 import {
-  useReportOnboardingActionMutation //
+  useReportOnboardingActionMutation, //
 } from '../../../../common/slices/api.slice'
 
 // routes
@@ -27,11 +27,11 @@ import { ContinueButton } from '../../onboarding/onboarding.style'
 import {
   Subtitle,
   BackupInstructions,
-  ExampleRecoveryPhrase
+  ExampleRecoveryPhrase,
 } from './explain-recovery-phrase.style'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../../onboarding/components/onboarding_content_layout/content_layout'
 
 export const RecoveryPhraseExplainer = () => {
@@ -64,7 +64,7 @@ export const RecoveryPhraseExplainer = () => {
     history.push(
       isOnboarding
         ? WalletRoutes.OnboardingBackupRecoveryPhrase
-        : WalletRoutes.BackupRecoveryPhrase
+        : WalletRoutes.BackupRecoveryPhrase,
     )
   }
 
@@ -87,7 +87,7 @@ export const RecoveryPhraseExplainer = () => {
       >
         <Subtitle>
           {getLocale(
-            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
+            'braveWalletOnboardingRecoveryPhraseBackupIntroDescription',
           )}
         </Subtitle>
         <VerticalSpace space='14px' />

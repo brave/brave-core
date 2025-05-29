@@ -18,30 +18,32 @@ export const _OnboardingRestoreFromRecoveryPhrase = {
       </WalletPageStory>
     )
   },
-  title: 'Restore From Recovery Phrase'
-
+  title: 'Restore From Recovery Phrase',
 }
 
 export default {
   component: OnboardingRestoreFromExtension,
   render: (args) => {
-    return <WalletPageStory>
-      <OnboardingRestoreFromExtension restoreFrom={args.restoreFrom} />
-    </WalletPageStory>
-  }
+    return (
+      <WalletPageStory>
+        <OnboardingRestoreFromExtension restoreFrom={args.restoreFrom} />
+      </WalletPageStory>
+    )
+  },
 } as Meta<typeof OnboardingRestoreFromExtension>
-
 
 export const RestoreFromRecoveryPhrase = {
   render: () => {
-    return <WalletPageStory>
-      <OnboardingRestoreFromRecoveryPhrase />
-    </WalletPageStory>
-  }
+    return (
+      <WalletPageStory>
+        <OnboardingRestoreFromRecoveryPhrase />
+      </WalletPageStory>
+    )
+  },
 }
 
 export const RestoreFromMetamaskWallet = {
   args: {
-    restoreFrom: 'metamask'
-  }
+    restoreFrom: 'metamask',
+  },
 }

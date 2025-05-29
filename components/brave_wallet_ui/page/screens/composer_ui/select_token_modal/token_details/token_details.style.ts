@@ -20,7 +20,7 @@ export const PercentChangeText = styled(Text)<{
 `
 
 export const CopyIcon = styled(Icon).attrs({
-  name: 'copy'
+  name: 'copy',
 })`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.default};

@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Options
 import {
-  SwapAndSendOptions //
+  SwapAndSendOptions, //
 } from '../../../../../../options/swap-and-send-options'
 
 // Types
@@ -18,13 +18,13 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Components
 import {
-  StandardCheckbox //
+  StandardCheckbox, //
 } from '../../form-controls/standard-checkbox/standard-checkbox'
 import {
-  StandardRadio //
+  StandardRadio, //
 } from '../../form-controls/standard-radio/standard-radio'
 import {
-  StandardSwitch //
+  StandardSwitch, //
 } from '../../form-controls/standard-switch/standard-switch'
 import { StandardInput } from '../../inputs/standard-input/standard-input'
 import { AccountSelector } from '../account-selector/account-selector'
@@ -36,7 +36,7 @@ import {
   Row,
   Text,
   VerticalSpacer,
-  HorizontalSpacer
+  HorizontalSpacer,
 } from '../../shared-swap.styles'
 
 interface Props {
@@ -51,7 +51,7 @@ interface Props {
   handleOnSetToAnotherAddress: (value: string) => void
   onSelectSwapAndSendOption: (value: string) => void
   onSelectSwapSendAccount: (
-    account: BraveWallet.AccountInfo | undefined
+    account: BraveWallet.AccountInfo | undefined,
   ) => void
 }
 
@@ -67,7 +67,7 @@ export const SwapAndSend = (props: Props) => {
     onCheckUserConfirmedAddress,
     handleOnSetToAnotherAddress,
     onSelectSwapAndSendOption,
-    onSelectSwapSendAccount
+    onSelectSwapSendAccount,
   } = props
 
   // State
@@ -83,7 +83,7 @@ export const SwapAndSend = (props: Props) => {
       }
       onSelectSwapAndSendOption(value)
     },
-    [onSelectSwapAndSendOption, onSelectSwapSendAccount]
+    [onSelectSwapAndSendOption, onSelectSwapSendAccount],
   )
 
   return (
@@ -163,15 +163,15 @@ export const SwapAndSend = (props: Props) => {
                     <HorizontalSpacer size={32} />
                     <StandardInput
                       placeholder={getLocale(
-                        'braveSwapAddressInputePlaceholder'
+                        'braveSwapAddressInputePlaceholder',
                       )}
                       onChange={handleOnSetToAnotherAddress}
                       value={toAnotherAddress}
                       disabled={selectedSwapAndSendOption !== 'to-address'}
                     />
                   </Row>
-                  {selectedSwapAndSendOption === 'to-address' &&
-                    toAnotherAddress !== '' && (
+                  {selectedSwapAndSendOption === 'to-address'
+                    && toAnotherAddress !== '' && (
                       <>
                         <VerticalSpacer size={16} />
                         <Row

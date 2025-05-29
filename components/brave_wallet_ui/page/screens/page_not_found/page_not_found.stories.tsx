@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Components
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { PageNotFound } from './page_not_found'
 
@@ -18,9 +18,9 @@ export const _PageNotFound = {
         <PageNotFound />
       </WalletPageStory>
     )
-  }
+  },
 }
 
 export default {
-  component: PageNotFound
+  component: PageNotFound,
 }

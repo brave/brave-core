@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  WalletPageStory //
+  WalletPageStory, //
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AutoLockSettings } from './auto_lock_settings'
 import { Row } from '../../../../../components/shared/style'
@@ -32,9 +32,9 @@ export const AutoLock = {
       </WalletPageStory>
     )
   },
-  title: 'Auto lock settings'
+  title: 'Auto lock settings',
 }
 
 export default {
-  component: AutoLockSettings
+  component: AutoLockSettings,
 }

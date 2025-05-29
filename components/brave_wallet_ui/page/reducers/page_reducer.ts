@@ -5,13 +5,10 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {
-  PageState,
-  NFTMetadataReturnType
-} from '../../constants/types'
+import { PageState, NFTMetadataReturnType } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
-  RecoveryWordsAvailablePayloadType
+  RecoveryWordsAvailablePayloadType,
 } from '../constants/action_types'
 
 const defaultState: PageState = {
@@ -23,7 +20,7 @@ const defaultState: PageState = {
   enablingAutoPin: false,
   isAutoPinEnabled: false,
   setupStillInProgress: false,
-  walletTermsAcknowledged: false
+  walletTermsAcknowledged: false,
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -37,7 +34,7 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       recoveryWordsAvailable(
         state,
-        { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>
+        { payload }: PayloadAction<RecoveryWordsAvailablePayloadType>,
       ) {
         if (state.mnemonic !== payload.mnemonic) {
           state.mnemonic = payload.mnemonic
@@ -50,21 +47,21 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateNFTMetadata(
         state,
-        { payload }: PayloadAction<NFTMetadataReturnType | undefined>
+        { payload }: PayloadAction<NFTMetadataReturnType | undefined>,
       ) {
         state.nftMetadata = payload
       },
 
       updateNftMetadataError(
         state,
-        { payload }: PayloadAction<string | undefined>
+        { payload }: PayloadAction<string | undefined>,
       ) {
         state.nftMetadataError = payload
       },
 
       walletCreated(
         state,
-        { payload }: PayloadAction<WalletCreatedPayloadType>
+        { payload }: PayloadAction<WalletCreatedPayloadType>,
       ) {
         state.mnemonic = payload.mnemonic
         state.setupStillInProgress = true
@@ -82,8 +79,8 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateAutoPinEnabled(state, { payload }: PayloadAction<boolean>) {
         state.isAutoPinEnabled = payload
-      }
-    }
+      },
+    },
   })
 }
 

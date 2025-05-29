@@ -13,7 +13,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import { getWalletLocationTitle } from '../utils/string-utils'
 import {
   getInitialSessionRoute,
-  isPersistableSessionRoute
+  isPersistableSessionRoute,
 } from '../utils/routes-utils'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -31,7 +31,7 @@ import { WalletRoutes } from '../constants/types'
 import {
   useSafePageSelector,
   useSafeUISelector,
-  useSafeWalletSelector
+  useSafeWalletSelector,
 } from '../common/hooks/use-safe-selector'
 import { useLocationPathName } from '../common/hooks/use-pathname'
 import { useLocalStorage } from '../common/hooks/use_local_storage'
@@ -40,32 +40,32 @@ import { useLocalStorage } from '../common/hooks/use_local_storage'
 import 'emptykit.css'
 import {
   FullScreenWrapper,
-  SimplePageWrapper
+  SimplePageWrapper,
 } from './screens/page-screen.styles'
 
 // components
 import { LockScreen } from '../components/desktop/lock-screen/index'
 import {
-  WalletPageLayout //
+  WalletPageLayout, //
 } from '../components/desktop/wallet-page-layout/index'
 import {
-  WalletSubViewLayout //
+  WalletSubViewLayout, //
 } from '../components/desktop/wallet-sub-view-layout/index'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import {
-  WalletPageWrapper //
+  WalletPageWrapper, //
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
-  ProtectedRoute //
+  ProtectedRoute, //
 } from '../components/shared/protected-routing/protected-route'
 import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevZCash } from './screens/dev-zcash/dev-zcash'
 import {
-  PartnersConsentModal //
+  PartnersConsentModal, //
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 import { Connections } from '../components/extension/connections/connections'
 import { PageNotFound } from './screens/page_not_found/page_not_found'
@@ -83,14 +83,14 @@ export const Container = () => {
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isBitcoinEnabled = useSafeWalletSelector(
-    WalletSelectors.isBitcoinEnabled
+    WalletSelectors.isBitcoinEnabled,
   )
   const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
 
   // page selectors (safe)
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
   const setupStillInProgress = useSafePageSelector(
-    PageSelectors.setupStillInProgress
+    PageSelectors.setupStillInProgress,
   )
 
   // ui selectors (safe)
@@ -111,8 +111,8 @@ export const Container = () => {
   const defaultRedirect = walletNotYetCreated
     ? WalletRoutes.OnboardingWelcome
     : isWalletLocked
-    ? WalletRoutes.Unlock
-    : sessionRoute || WalletRoutes.PortfolioAssets
+      ? WalletRoutes.Unlock
+      : sessionRoute || WalletRoutes.PortfolioAssets
 
   // Methods
   const handleAcceptPartnerConsent = () => {
@@ -138,15 +138,15 @@ export const Container = () => {
     if (isPersistableSessionRoute(walletLocation, isPanel)) {
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
-        walletLocation
+        walletLocation,
       )
       setSessionRoute(walletLocation)
     }
     // clean recovery phrase if not backing up or onboarding on route change
     if (
-      mnemonic &&
-      !walletLocation.includes(WalletRoutes.Backup) &&
-      !walletLocation.includes(WalletRoutes.Onboarding)
+      mnemonic
+      && !walletLocation.includes(WalletRoutes.Backup)
+      && !walletLocation.includes(WalletRoutes.Onboarding)
     ) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     }
@@ -154,8 +154,8 @@ export const Container = () => {
 
   React.useEffect(() => {
     if (
-      !acceptedPartnerConsentTerms &&
-      walletLocation.includes(WalletRoutes.FundWalletPageStart)
+      !acceptedPartnerConsentTerms
+      && walletLocation.includes(WalletRoutes.FundWalletPageStart)
     ) {
       setShowPartnerConsentModal(true)
     }

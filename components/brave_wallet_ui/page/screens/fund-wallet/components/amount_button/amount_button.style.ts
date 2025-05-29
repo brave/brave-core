@@ -11,7 +11,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { Column } from '../../../../../components/shared/style'
 import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
 import {
-  layoutPanelWidth //
+  layoutPanelWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled(Column)`
@@ -41,7 +41,7 @@ export const CurrencyCode = styled.span`
 
 export const AmountInput = styled(Input).attrs({
   hasError: false,
-  type: 'number'
+  type: 'number',
 })`
   color: ${color.text.primary};
   font: ${font.heading.h1};

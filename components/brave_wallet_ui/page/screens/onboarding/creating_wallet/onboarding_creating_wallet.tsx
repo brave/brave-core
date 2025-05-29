@@ -10,13 +10,13 @@ import { getLocale } from '../../../../../common/locale'
 
 // components
 import {
-  OnboardingContentLayout //
+  OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/content_layout'
 
 // Style
 import {
   CreatingWalletText,
-  LoadingIcon
+  LoadingIcon,
 } from './onboarding_creating_wallet.style'
 import { Column } from '../../../../components/shared/style'
 
