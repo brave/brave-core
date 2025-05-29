@@ -19,16 +19,16 @@ The scheme:
 
 Usage: python3 reformat_branch.py [--target BRANCH] [--base BRANCH]
 """
-
 import argparse
-from functools import lru_cache
+import atexit
+import json
+import os
 import shutil
 import subprocess
-import os
 import sys
-import json
-import atexit
 import tempfile
+
+from functools import lru_cache
 from typing import List, Optional
 
 DEFAULT_BRANCH = 'origin/master'

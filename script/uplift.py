@@ -438,9 +438,10 @@ def create_branch(channel,
             if preformat:
                 merge_base = execute(
                     ['git', 'merge-base', compare_from, local_branch]).strip()
-                pre_format_commit = format_all_touched_files(merge_base, local_branch)
+                pre_format_commit = format_all_touched_files(
+                    merge_base, local_branch)
                 if pre_format_commit:
-                  remote_base = pre_format_commit
+                    remote_base = pre_format_commit
 
             # TODO: handle errors thrown by cherry-pick
             for sha in sha_list:
