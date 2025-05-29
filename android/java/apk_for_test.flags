@@ -541,6 +541,9 @@
 }
 
 -keep class org.chromium.chrome.browser.contextmenu.BraveChromeContextMenuPopulator {
+    *** mItemDelegate;
+    *** mParams;
+    *** getProfile(...);
     public <init>(...);
 }
 

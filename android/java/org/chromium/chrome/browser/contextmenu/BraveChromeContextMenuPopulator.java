@@ -9,20 +9,20 @@ import android.content.Context;
 
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
 import org.chromium.chrome.browser.tab.TabContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
-public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator
-        implements ConnectionErrorHandler {
-    private final TabContextMenuItemDelegate mItemDelegate;
-    private final ContextMenuParams mParams;
+public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator {
+    // To be deleted via bytecode and super field to be used
+    private TabContextMenuItemDelegate mItemDelegate;
+    // To be deleted via bytecode and super field to be used
+    private ContextMenuParams mParams;
 
     public BraveChromeContextMenuPopulator(
             TabContextMenuItemDelegate itemDelegate,
@@ -32,26 +32,31 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator
             ContextMenuParams params,
             ContextMenuNativeDelegate nativeDelegate) {
         super(itemDelegate, shareDelegate, mode, context, params, nativeDelegate);
-
-        mItemDelegate = itemDelegate;
-        mParams = params;
     }
 
     @Override
     public boolean onItemSelected(int itemId) {
-        if (itemId == R.id.contextmenu_copy_clean_link) {
-            UrlSanitizerService urlSanitizerService =
-                    UrlSanitizerServiceFactory.getInstance().getUrlSanitizerAndroidService(this);
-            urlSanitizerService.sanitizeUrl(mParams.getUnfilteredLinkUrl().getSpec(), result -> {
-                mItemDelegate.onSaveToClipboard(
-                        result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
-            });
-
-        } else {
-            super.onItemSelected(itemId);
+        if (itemId != R.id.contextmenu_copy_clean_link) {
+            return super.onItemSelected(itemId);
         }
+        UrlSanitizerService urlSanitizerService =
+                UrlSanitizerServiceFactory.getInstance()
+                        .getUrlSanitizerAndroidService(getProfile(), null);
+        if (urlSanitizerService != null) {
+            urlSanitizerService.sanitizeUrl(
+                    mParams.getUnfilteredLinkUrl().getSpec(),
+                    result -> {
+                        mItemDelegate.onSaveToClipboard(
+                                result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
+                        urlSanitizerService.close();
+                    });
+        }
+
         return true;
     }
-    @Override
-    public void onConnectionError(MojoException e) {}
+
+    private Profile getProfile() {
+        assert false : "This method should be overridden via bytecode manipulation!";
+        return null;
+    }
 }

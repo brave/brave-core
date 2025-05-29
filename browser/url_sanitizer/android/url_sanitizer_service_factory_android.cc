@@ -16,10 +16,6 @@ static jlong JNI_UrlSanitizerServiceFactory_GetInterfaceToUrlSanitizerService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
-  if (profile == nullptr) {
-    return static_cast<jlong>(-1);
-  }
-
   auto pending =
       brave::URLSanitizerServiceFactory::GetInstance()->GetRemoteForProfile(
           profile);

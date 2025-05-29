@@ -8,12 +8,22 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveChromeContextMenuPopulatorAdapter extends BraveClassVisitor {
-    static String sContoller = "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator";
-    static String sBraveContoller =
+    static String sController =
+            "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator";
+    static String sBraveController =
             "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator";
 
     public BraveChromeContextMenuPopulatorAdapter(ClassVisitor visitor) {
         super(visitor);
-        redirectConstructor(sContoller, sBraveContoller);
+        redirectConstructor(sController, sBraveController);
+
+        deleteMethod(sBraveController, "getProfile");
+        makePublicMethod(sController, "getProfile");
+
+        deleteField(sBraveController, "mItemDelegate");
+        makeProtectedField(sController, "mItemDelegate");
+
+        deleteField(sBraveController, "mParams");
+        makeProtectedField(sController, "mParams");
     }
 }

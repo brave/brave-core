@@ -746,6 +746,12 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
+                        "getProfile",
+                        MethodModifier.REGULAR,
+                        Profile.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
                         "isKeyInUse",
                         MethodModifier.REGULAR,
@@ -2327,6 +2333,14 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabActivity",
                         "mIsEnterAnimationCompleted"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
+                        "mItemDelegate"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
+                        "mParams"));
     }
 
     @Test

@@ -8,7 +8,8 @@ package org.chromium.chrome.browser.shields;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -17,38 +18,37 @@ import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
+@NullMarked
 @JNINamespace("chrome::android")
 public class UrlSanitizerServiceFactory {
     private static final Object sLock = new Object();
-    private static UrlSanitizerServiceFactory instance;
+    private static @Nullable UrlSanitizerServiceFactory sInstance;
 
     public static UrlSanitizerServiceFactory getInstance() {
         synchronized (sLock) {
-            if (instance == null) {
-                instance = new UrlSanitizerServiceFactory();
+            if (sInstance == null) {
+                sInstance = new UrlSanitizerServiceFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private UrlSanitizerServiceFactory() {}
 
-    public UrlSanitizerService getUrlSanitizerAndroidService(
-            ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // Always use regular profile
-        if (profile == null) {
-            return null;
-        }
+    public @Nullable UrlSanitizerService getUrlSanitizerAndroidService(
+            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         long nativeHandle =
                 UrlSanitizerServiceFactoryJni.get().getInterfaceToUrlSanitizerService(profile);
-        if (nativeHandle == -1) {
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        if (!handle.isValid()) {
             return null;
         }
-        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         UrlSanitizerService urlSanitizerServiceAndroid =
                 UrlSanitizerService.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) urlSanitizerServiceAndroid).getProxyHandler();
-        handler.setErrorHandler(connectionErrorHandler);
+        if (connectionErrorHandler != null) {
+            Handler handler = ((Interface.Proxy) urlSanitizerServiceAndroid).getProxyHandler();
+            handler.setErrorHandler(connectionErrorHandler);
+        }
 
         return urlSanitizerServiceAndroid;
     }
