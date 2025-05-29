@@ -34,6 +34,9 @@ from typing import List, Optional
 DEFAULT_BRANCH = 'origin/master'
 TEMP_DIR: Optional[str] = None
 
+GIT = 'git.bat' if sys.platform == 'win32' else 'git'
+NPX = 'npx.cmd' if sys.platform == 'win32' else 'npx'
+
 
 @atexit.register
 def cleanup() -> None:
@@ -43,7 +46,7 @@ def cleanup() -> None:
 
 
 def run_git_command(cmd: List[str]) -> str:
-    result = subprocess.run(['git'] + cmd,
+    result = subprocess.run([GIT] + cmd,
                             capture_output=True,
                             text=True,
                             check=True)
@@ -63,7 +66,7 @@ def load_file_from_git(file: str, ref=DEFAULT_BRANCH) -> str:
 
 
 def git_cherry_pick(commit: str) -> bool:
-    result = subprocess.run(['git', 'cherry-pick', '--allow-empty', commit],
+    result = subprocess.run([GIT, 'cherry-pick', '--allow-empty', commit],
                             capture_output=True,
                             text=True,
                             check=False)
@@ -76,6 +79,10 @@ def git_cherry_pick(commit: str) -> bool:
 
 def get_changed_files(commit_range: str) -> List[str]:
     '''Get list of files changed in the given commit range.'''
+    num_commits = len(run_git_command(['rev-list', commit_range]).splitlines())
+    if num_commits > 1000:
+        raise Exception(f'Bad commit range: {commit_range} (too many commits)')
+
     return run_git_command(['diff', '--name-only', commit_range]).splitlines()
 
 
@@ -103,7 +110,7 @@ def format_file(file: str) -> None:
     ignore = load_file_from_git('.prettierignore')
 
     args = [
-        'npx', f'prettier@{get_prettier_version()}', '--config', config,
+        NPX, '-y', f'prettier@{get_prettier_version()}', '--config', config,
         '--ignore-unknown', '--ignore-path', ignore, '--write', file
     ]
     prettier_result = subprocess.run(args,
@@ -115,7 +122,7 @@ def format_file(file: str) -> None:
             f'Failed to format file {file}: {prettier_result.stderr}')
 
 
-def format_files(files: List[str], stage=False, commit=False) -> None:
+def format_files(files: List[str], stage=False, commit=False) -> Optional[str]:
     for file in files:
         if not os.path.isfile(file) or not is_supported_file(file):
             continue
@@ -125,33 +132,47 @@ def format_files(files: List[str], stage=False, commit=False) -> None:
     if commit and is_dirty():
         run_git_command(
             ['commit', '-m', '[autoformat] Pre-format changed files'])
+        return run_git_command(['rev-parse', 'HEAD']).strip()
+    return None
 
 
-def reformat_commits(start: str, end: str) -> None:
+def format_all_touched_files(start_ref: str, end_ref: str) -> Optional[str]:
+    all_touched_files = get_changed_files(f'{start_ref}..{end_ref}')
+    print(f'Preformatting {len(all_touched_files)} files...')
+    return format_files(all_touched_files, stage=True, commit=True)
+
+
+def reformat_and_cherry_pick_commits(start: str, end: str) -> None:
     '''Reformat all commits in the given range.'''
-    all_touched_files = get_changed_files(f'{start}..{end}')
-
-    format_files(all_touched_files, stage=True, commit=True)
 
     commits = run_git_command(['rev-list', '--reverse',
                                f'{start}..{end}']).splitlines()
     for commit in commits:
-        print(f'Reformatting commit: {commit}')
-        changed_files = get_changed_files(f'{commit}^..{commit}')
+        changed_files = get_changed_files(f'{commit}~1..{commit}')
+        print(f'Reformatting commit: {commit} ({len(changed_files)} files)')
 
         if git_cherry_pick(commit):
             format_files(changed_files, stage=True)
             run_git_command(['commit', '--amend', '--no-edit'])
         else:
             for file in changed_files:
-                # git checkout <commit> -- <file> will:
-                # - Update file to version in commit (if file exists in commit)
-                # - Delete file  (if file doesn't exist in commit)
-                # Both cases are correct.
-                run_git_command(['checkout', commit, '--', file])
+                try:
+                    run_git_command(['checkout', commit, '--', file])
+                except:
+                    # the file was deleted in the commit, remove it
+                    run_git_command(['rm', file])
 
             format_files(changed_files, stage=True)
             run_git_command(['cherry-pick', '--continue', '--no-edit'])
+
+
+def reformat_branch(target_ref: str, base=DEFAULT_BRANCH) -> Optional[str]:
+    merge_base = run_git_command(['merge-base', base, target_ref])
+    print(f'Merge base is: {merge_base}')
+    run_git_command(['checkout', merge_base])
+    pre_format_commit = format_all_touched_files(merge_base, target_ref)
+    reformat_and_cherry_pick_commits('HEAD', target_ref)
+    return pre_format_commit
 
 
 def main() -> None:
@@ -178,23 +199,19 @@ def main() -> None:
     target_ref = run_git_command(['rev-parse', target_branch])
     base = args.base
 
-    merge_base = run_git_command(['merge-base', base, target_ref])
-    print(f'Merge base is: {merge_base}')
-
-    run_git_command(['checkout', merge_base])
-
-    temp_branch = f'{target_branch}-reformat'
-    run_git_command(['checkout', '-B', temp_branch])
-
     try:
-        reformat_commits(merge_base, target_ref)
+        reformat_branch(target_ref, base)
+        temp_branch = f'{target_branch}-reformatted'
+        run_git_command(['checkout', '-B', temp_branch])
         print(f'Formatting complete. You are now on branch {temp_branch}.')
         print(f'You may want to rebase this branch onto {base}')
     except Exception as e:
         print(f'Error during reformatting: {e}', file=sys.stderr)
-        print(f'Restoring original branch: {original_branch}', file=sys.stderr)
         if original_branch:
-            run_git_command(['checkout', original_branch])
+            print(f'Restoring the original branch: {original_branch}..')
+            if input(
+                    f'Call git checkout -f {original_branch}? (y/n): ') == 'y':
+                run_git_command(['checkout', '-f', original_branch])
         raise
 
 
