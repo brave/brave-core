@@ -203,9 +203,9 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
 
     let template: HTMLTemplateTags | undefined
     if (!getTemplate) {
-        template = findTemplate(() => true)
+        template = findTemplates(() => true).next().value
     } else if (typeof getTemplate === 'function') {
-        template = findTemplate(getTemplate)
+        template = findTemplates(getTemplate).next().value
     } else {
         template = getTemplate
     }
@@ -250,30 +250,38 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
         })
 }
 
+/**
+ * Mangles all templates that match the given predicate.
+ *
+ * @param mangler The function to use to mangle the template.
+ * @param matchTemplate The predicate to use to find the templates to mangle.
+ */
+export const mangleAll = (mangler: (element: DocumentFragment) => void, matchTemplate: (template: HTMLTemplateTags) => boolean) => {
+    for (const template of findTemplates(matchTemplate)) {
+        mangle(mangler, template)
+    }
+}
+
 // Note: This doesn't check the template param against the predicate, only its children.
-export const findTemplate = (predicate: (template: HTMLTemplateTags) => boolean, template?: HTMLTemplateTags): HTMLTemplateTags | undefined => {
+export function* findTemplates(predicate: (template: HTMLTemplateTags) => boolean, template?: HTMLTemplateTags): IterableIterator<HTMLTemplateTags> {
     if (!result) {
         throw new Error("This should only be called after load!")
     }
 
     for (const child of (template ?? result).children) {
         if (predicate(child)) {
-            return child
+            yield child
         }
 
-        const result = findTemplate(predicate, child)
-        if (result) {
-            return result
-        }
+        yield* findTemplates(predicate, child)
     }
-
-    return undefined
 }
 
 // Utils to make testing easier
 export const utilsForTest = {
-    findTemplate,
+    findTemplates,
     mangle,
+    mangleAll,
     injectPlaceholders,
     replacePlaceholders,
     getTemplateLiterals,
