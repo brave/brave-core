@@ -23,7 +23,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         get_title_from_first_commit, push_branches_to_remote,
                         set_issue_details)
 
-from reformat_branch import get_changed_files, format_files, reformat_commits
+from reformat_branch import format_all_touched_files, format_files, reformat_branch
 
 class PrConfig():
     channel_names = channels()
@@ -302,36 +302,52 @@ def main():
     fancy_print('NOTE: Commits are being detected by diffing "' + local_branch +
                 '" against "' + top_level_base + '"')
     local_branches = {}
-    reformatted = False
+    use_reformat = False
     branch = ''
+    if is_sha(top_level_base):
+        compare_from = top_level_base
+    else:
+        compare_from = 'origin/' + top_level_base
+
     try:
         for channel in config.channels_to_process:
-            branch = create_branch(channel, top_level_base,
-                                   remote_branches[channel], local_branch, args)
+            branch = create_branch(channel, compare_from,
+                                   remote_branches[channel], local_branch,
+                                   args)
             local_branches[channel] = branch
     except Exception as e:
-        print('[WARNING] cherry-pick failed for branch "' + branch +
-              '". Retrying with reformatting enabled...\n' + str(e))
-        reformatted = True
+        print('[WARNING] cherry-pick failed for branch "' + branch + str(e))
+        use_reformat = True
 
-        # Reformat commits in the local_branch first (the branch can be old).
-        execute(['git', 'checkout', local_branch])
-        reformat_commits(top_level_base, local_branch)
-        execute(['git', 'checkout', '-B', local_branch])
+    if use_reformat:
+        try:
+            fancy_print('[INFO] Retrying with reformatting enabled')
 
-        # Try again with preformatting the changed files.
-        for channel in config.channels_to_process:
-            branch = create_branch(channel,
-                                   top_level_base,
-                                   remote_branches[channel],
-                                   local_branch,
-                                   args,
-                                   preformat=True)
-            local_branches[channel] = branch
+            pre_format_commit = None
 
-        print('[ERROR] cherry-pick failed for branch "' + branch +
-              '". Please resolve manually:\n' + str(e))
-        return 1
+            # Reformat commits in the local_branch first (the branch can be old).
+            with scoped_cwd(BRAVE_CORE_ROOT):
+                execute(['git', 'checkout', local_branch])
+
+                print(
+                    f'Reformatting branch {local_branch}, base {compare_from}')
+                pre_format_commit = reformat_branch(local_branch, compare_from)
+                execute(['git', 'checkout', '-B', local_branch])
+
+            # Try again with preformatting the changed files.
+            for channel in config.channels_to_process:
+                branch = create_branch(channel,
+                                       pre_format_commit or compare_from,
+                                       remote_branches[channel],
+                                       local_branch,
+                                       args,
+                                       preformat=True)
+                local_branches[channel] = branch
+
+        except Exception as e:
+            print('[ERROR] cherry-pick failed for branch "' + branch +
+                  '". Please resolve manually:\n' + str(e))
+            return 1
 
     print('\nPushing local branches to remote...')
     push_branches_to_remote(BRAVE_CORE_ROOT,
@@ -374,7 +390,7 @@ def is_sha(ref):
 
 
 def create_branch(channel,
-                  top_level_base,
+                  compare_from,
                   remote_base,
                   local_branch,
                   args,
@@ -386,11 +402,6 @@ def create_branch(channel,
 
     channel_branch = local_branch + '_' + remote_base
 
-    if is_sha(top_level_base):
-        compare_from = top_level_base
-    else:
-        compare_from = 'origin/' + top_level_base
-
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
         sha_list = execute([
@@ -398,6 +409,8 @@ def create_branch(channel,
             '--reverse'
         ])
         sha_list = sha_list.split('\n')
+        if len(sha_list) > 1000:
+            raise Exception('Too many commits!')
         if len(sha_list) == 0:
             raise Exception('No changes detected!')
         try:
@@ -423,9 +436,9 @@ def create_branch(channel,
                 execute(['git', 'checkout', '-b', channel_branch])
 
             if preformat:
-                changed_files = get_changed_files(
-                    f'{compare_from}..{sha_list[-1]}')
-                format_files(changed_files, stage=True, commit=True)
+                merge_base = execute(
+                    ['git', 'merge-base', compare_from, local_branch]).strip()
+                format_all_touched_files(merge_base, local_branch)
 
             # TODO: handle errors thrown by cherry-pick
             for sha in sha_list:
@@ -452,6 +465,10 @@ def create_branch(channel,
 
         finally:
             # switch back to original branch
+            try:
+                execute(['git', 'cherry-pick', '--abort'])
+            except Exception:
+                pass
             execute(['git', 'checkout', local_branch])
             execute(['git', 'reset', '--hard', sha_list[-1]])
 
