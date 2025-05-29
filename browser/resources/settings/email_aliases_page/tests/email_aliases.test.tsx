@@ -90,13 +90,18 @@ const mockAliases = [{
   domains: undefined
 }]
 
-const authenticate = async (service: MockEmailAliasesService, status: AuthenticationStatus, email: string = mockEmail, errorMessage?: string) => {
+const authenticate = async (
+  service: MockEmailAliasesService,
+  status: AuthenticationStatus,
+  email: string = mockEmail,
+  errorMessage?: string) => {
   await act(() => {
     service.notifyObserverAuthStateChanged(status, email, errorMessage)
   })
 }
 
-const updateAliases = async (service: MockEmailAliasesService, aliases = mockAliases) => {
+const updateAliases = async (service: MockEmailAliasesService,
+  aliases = mockAliases) => {
   await act(() => {
     service.notifyObserverAliasesUpdated(aliases)
   })
@@ -126,7 +131,7 @@ describe('ManagePageConnected', () => {
 
   it('shows sign up form when no email is available', async () => {
     const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
+    await authenticate(service, AuthenticationStatus.kUnauthenticated)
 
     await waitFor(() => {
       expect(screen.getByText('emailAliasesSignInOrCreateAccount'))
@@ -150,7 +155,7 @@ describe('ManagePageConnected', () => {
 
   it('shows verification pending view', async () => {
     const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticating, '')
+    await authenticate(service, AuthenticationStatus.kAuthenticating)
 
     await waitFor(() => {
       expect(screen.getByText('emailAliasesLoginEmailOnTheWay'))
@@ -374,7 +379,7 @@ describe('ManagePageConnected', () => {
       expect(screen.queryByText('alias2@brave.com')).toBeInTheDocument()
     })
 
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
+    await authenticate(service, AuthenticationStatus.kUnauthenticated)
     await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // We shouldn't be showing the aliases from the previous login
@@ -384,7 +389,8 @@ describe('ManagePageConnected', () => {
   it('shows error message when auth fails', async () => {
     const service = await setupTest()
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail, 'mockErrorMessage')
+    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
+      'mockErrorMessage')
 
     await waitFor(() => {
       expect(screen.getByText(/mockErrorMessage/)).toBeInTheDocument()
@@ -396,7 +402,7 @@ describe('ManagePageConnected', () => {
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
     await updateAliases(service)
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
+    await authenticate(service, AuthenticationStatus.kUnauthenticated)
 
     await expectAliasesNotVisible()
   })
@@ -404,7 +410,8 @@ describe('ManagePageConnected', () => {
   it('can recover from an authentication error', async () => {
     const service = await setupTest()
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail, 'mockErrorMessage')
+    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
+      'mockErrorMessage')
 
     await waitFor(() => {
       expect(screen.queryByText(/mockErrorMessage/))
@@ -424,7 +431,8 @@ describe('ManagePageConnected', () => {
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
     await updateAliases(service)
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, mockEmail)
+    await authenticate(
+      service, AuthenticationStatus.kUnauthenticated, mockEmail)
     await expectAliasesNotVisible()
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
@@ -434,14 +442,16 @@ describe('ManagePageConnected', () => {
   it('doesn\'t show an error message if the string is empty', async () => {
     const service = await setupTest()
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail, 'mockErrorMessage')
+    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
+       'mockErrorMessage')
 
     await waitFor(() => {
       expect(screen.queryByText('mockErrorMessage emailAliasesAuthTryAgain'))
         .toBeInTheDocument()
     })
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail, '')
+    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
+       '' /* empty string */ )
 
     await waitFor(() => {
       expect(screen.queryByText('emailAliasesAuthTryAgain'))
