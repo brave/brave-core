@@ -1864,13 +1864,6 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
-      <!-- Welcome page (chrome://welcome) strings -->
-      <if expr="not is_chromeos and not is_android">
-        <message name="IDS_WELCOME_HEADER" desc="A message which will appear as the header on the Welcome UI if the user has never run Brave before.">
-          Welcome to Brave
-        </message>
-      </if>
-
       <!-- Native notifications for Windows 10 -->
       <if expr="is_win">
         <message name="IDS_WIN_NOTIFICATION_SETTINGS_CONTEXT_MENU_ITEM_NAME" desc="The name of the button in Windows Notification Center which leads to Brave notification settings.">
