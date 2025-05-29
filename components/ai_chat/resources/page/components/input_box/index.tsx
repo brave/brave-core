@@ -182,7 +182,7 @@ function InputBox(props: InputBoxProps) {
       )}
       <div
         className={styles.growWrap}
-        data-replicated-value={props.context.inputText}
+        data-replicated-value={props.context.inputText || placeholderText}
       >
         <textarea
           ref={maybeAutofocus}
