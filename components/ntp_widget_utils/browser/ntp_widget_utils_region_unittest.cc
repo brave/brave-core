@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
+
+#include <memory>
 
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -40,8 +41,8 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionAllowedAllowList) {
   auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
-                                  id.Serialize());
+  profile->GetPrefs()->SetInteger(
+      regional_capabilities::prefs::kCountryIDAtInstall, id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);
@@ -59,8 +60,8 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedAllowList) {
   auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
-                                  id.Serialize());
+  profile->GetPrefs()->SetInteger(
+      regional_capabilities::prefs::kCountryIDAtInstall, id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);
@@ -78,8 +79,8 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionAllowedDenyList) {
   auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
-                                  id.Serialize());
+  profile->GetPrefs()->SetInteger(
+      regional_capabilities::prefs::kCountryIDAtInstall, id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), unsupported_regions, false);
@@ -97,8 +98,8 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedDenyList) {
   auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
-                                  id.Serialize());
+  profile->GetPrefs()->SetInteger(
+      regional_capabilities::prefs::kCountryIDAtInstall, id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), unsupported_regions, false);
