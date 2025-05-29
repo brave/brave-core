@@ -15,8 +15,6 @@ import * as React from 'react'
 import {
   CharCountContext,
   defaultCharCountContext,
-  getFirstValidAction,
-  useActionMenu,
   useCharCountInfo,
 } from '../../../ai_chat/resources/page/state/conversation_context'
 
@@ -124,9 +122,8 @@ export default function Context(props: React.PropsWithChildren) {
   const [forwardHistory, setForwardHistory] = React.useState<string[]>([])
   const [backHistory, setBackHistory] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
-  const [allActions, setAllActions] = React.useState<ActionGroup[]>([])
+  const [actionList, setActionList] = React.useState<ActionGroup[]>([])
 
-  const actionList = useActionMenu(instructionsText, allActions)
   const charCountContext = useCharCountInfo(instructionsText)
 
   React.useEffect(() => {
@@ -137,7 +134,7 @@ export default function Context(props: React.PropsWithChildren) {
 
     rewriterAPI
       .getActionMenuList()
-      .then(({ actionList }) => setAllActions(actionList))
+      .then(({ actionList }) => setActionList(actionList))
 
     const callbackRouter = getCallbackRouter()
     callbackRouter.onUpdatedGeneratedText.addListener(setGeneratedText)
@@ -168,12 +165,6 @@ export default function Context(props: React.PropsWithChildren) {
         const rewriteText = generatedText || initialText
         if (!rewriteText) return
         if (charCountContext.isCharLimitExceeded) return
-        if (isToolsMenuOpen && instructionsText.startsWith('/')) {
-          setActionType(getFirstValidAction(actionList))
-          setInstructionsText('')
-          setIsToolsMenuOpen(false)
-          return
-        }
 
         setIsGenerating(true)
         getRewriterPageHandler()

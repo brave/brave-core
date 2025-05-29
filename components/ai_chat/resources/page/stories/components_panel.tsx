@@ -791,6 +791,7 @@ function StoryContext(
   }
 
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
 
   let visibleConversations: typeof CONVERSATIONS = []
   for (
@@ -825,7 +826,7 @@ function StoryContext(
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
     isStandalone: options.args.isStandalone,
-    allActions: ACTIONS_LIST,
+    actionList: ACTIONS_LIST,
     tabs: [
       {
         id: 1,
@@ -899,9 +900,8 @@ function StoryContext(
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
     shouldSendPageContents: !!associatedContent,
     inputText,
-    actionList: ACTIONS_LIST,
     selectedActionType: undefined,
-    isToolsMenuOpen: false,
+    isToolsMenuOpen,
     isCurrentModelLeo: true,
     isCharLimitApproaching: inputText.length > 64,
     isCharLimitExceeded: inputText.length > 70,
@@ -922,7 +922,7 @@ function StoryContext(
     submitInputTextToAPI: () => {},
     resetSelectedActionType: () => {},
     handleActionTypeClick: () => {},
-    setIsToolsMenuOpen: () => {},
+    setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),

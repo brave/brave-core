@@ -42,12 +42,13 @@ import {
   GenerateSuggestionsButton,
   SuggestedQuestion,
 } from '../suggested_question'
-import ToolsButtonMenu from '../tools_button_menu'
+import ToolsMenu from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import Attachments from '../attachments'
 import { useIsElementSmall } from '../../hooks/useIsElementSmall'
+import { extractQuery } from '../filter_menu/query'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -403,7 +404,16 @@ function Main() {
               <PageContextToggle />
             </div>
           )}
-          <ToolsButtonMenu {...conversationContext} />
+          <ToolsMenu
+            isOpen={conversationContext.isToolsMenuOpen}
+            setIsOpen={conversationContext.setIsToolsMenuOpen}
+            query={extractQuery(conversationContext.inputText, {
+              onlyAtStart: false,
+              triggerCharacter: '/',
+            })}
+            categories={aiChatContext.actionList}
+            handleClick={conversationContext.handleActionTypeClick}
+          />
           <InputBox
             conversationStarted={isVisible}
             context={{ ...conversationContext, ...aiChatContext }}

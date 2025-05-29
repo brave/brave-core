@@ -54,8 +54,6 @@ export type ConversationContext = SendFeedbackState
     shouldShowLongConversationInfo: boolean
     shouldSendPageContents: boolean
     inputText: string
-    // TODO(petemill): rename to `filteredActions`?
-    actionList: Mojom.ActionGroup[]
     selectedActionType: Mojom.ActionType | undefined
     isToolsMenuOpen: boolean
     isCurrentModelLeo: boolean
@@ -107,7 +105,6 @@ const defaultContext: ConversationContext = {
   shouldShowLongConversationInfo: false,
   shouldSendPageContents: true,
   inputText: '',
-  actionList: [],
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
@@ -148,39 +145,6 @@ export function useCharCountInfo(inputText: string) {
     isCharLimitApproaching,
     inputTextCharCountDisplay,
   }
-}
-
-function normalizeText(text: string) {
-  return text.trim().replace(/\s/g, '').toLocaleLowerCase()
-}
-
-export const getFirstValidAction = (actionList: Mojom.ActionGroup[]) =>
-  actionList
-    .flatMap((actionGroup) => actionGroup.entries)
-    .find((entries) => entries.details)?.details?.type
-
-export function useActionMenu(filter: string, actionList: Mojom.ActionGroup[]) {
-  return React.useMemo(() => {
-    const reg = new RegExp(/^\/\w+/)
-
-    // If we aren't filtering the actions, then just return our original list.
-    if (!reg.test(filter)) return actionList
-
-    // effectively remove the leading slash (/), and normalize before comparing it to the action labels.
-    const normalizedFilter = normalizeText(filter.substring(1))
-
-    // Filter the actionlist by our text
-    return actionList
-      .map((group) => ({
-        ...group,
-        entries: group.entries.filter(
-          (entry) =>
-            !!entry.details
-            && normalizeText(entry.details.label).includes(normalizedFilter),
-        ),
-      }))
-      .filter((group) => group.entries.length > 0)
-  }, [actionList, filter])
 }
 
 export const ConversationReactContext =
@@ -387,8 +351,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }, [aiChatContext.visibleConversations, context.conversationUuid])
 
-  const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
-
   const shouldShowLongConversationInfo = React.useMemo(() => {
     const chatHistoryCharTotal = context.conversationHistory.reduce(
       (charCount, curr) => charCount + curr.text.length,
@@ -446,44 +408,22 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }, [context.selectedActionType])
 
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
-    setPartialContext({
+    const update: Partial<ConversationContext> = {
       selectedActionType: actionType,
-    })
-    // TODO(petemill): Explain why the settimeout?
-    setTimeout(() => {
-      if (context.inputText.startsWith('/')) {
-        setPartialContext({
-          inputText: '',
-        })
-      }
-    })
-  }
-
-  React.useEffect(() => {
-    const isOpen = context.inputText.startsWith('/') && actionList.length > 0
-    setPartialContext({
-      isToolsMenuOpen: isOpen,
-    })
-  }, [context.inputText, actionList])
-
-  const handleFilterActivation = () => {
-    if (context.isToolsMenuOpen && context.inputText.startsWith('/')) {
-      setPartialContext({
-        selectedActionType: getFirstValidAction(actionList),
-        inputText: '',
-        isToolsMenuOpen: false,
-      })
-      return true
+      isToolsMenuOpen: false,
     }
 
-    return false
+    if (context.inputText.startsWith('/')) {
+      update.inputText = ''
+    }
+
+    setPartialContext(update)
   }
 
   const submitInputTextToAPI = () => {
     if (!context.inputText) return
     if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
-    if (handleFilterActivation()) return
 
     if (
       !aiChatContext.isStorageNoticeDismissed
@@ -679,7 +619,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const store: ConversationContext = {
     ...context,
     ...sendFeedbackState,
-    actionList,
     apiHasError,
     shouldDisableUserInput,
     isCharLimitApproaching,
