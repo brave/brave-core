@@ -806,6 +806,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void checkForTooltip(Tab tab) {
+        // We are disabling this feature for now for bottom address bar, until new design is ready
+        // https://github.com/brave/brave-browser/issues/46252
+        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) return;
         try {
             if (!BraveShieldsUtils.isTooltipShown
                     && !BraveActivity.getBraveActivity().mIsDeepLink) {
