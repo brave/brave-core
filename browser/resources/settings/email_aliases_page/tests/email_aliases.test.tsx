@@ -677,7 +677,7 @@ describe('ManagePageConnected', () => {
     await act(() => {
       mockEmailAliasesService.notifyObserverAuthStateChanged(
         AuthenticationStatus.kUnauthenticated,
-        ''
+        mockEmail
       )
     })
 
