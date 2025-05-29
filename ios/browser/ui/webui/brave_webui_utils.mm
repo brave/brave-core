@@ -30,34 +30,33 @@ void CustomizeWebUIHTMLSource(web::WebUIIOS* web_ui,
   source->AddLocalizedStrings(brave::GetWebUILocalizedStrings(name));
 }
 
-web::WebUIIOSDataSource* CreateWebUIDataSource(
-    web::WebUIIOS* web_ui,
-    const std::string& name,
-    base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id,
-    bool disable_trusted_types_csp) {
-  web::WebUIIOSDataSource* source = BraveWebUIIOSDataSource::CreateAndAdd(
-      ProfileIOS::FromWebUIIOS(web_ui), name);
-
-  source->UseStringsJs();
-  source->AddResourcePaths(resource_paths);
-  source->SetDefaultResource(html_resource_id);
-  CustomizeWebUIHTMLSource(web_ui, name, source);
-  return source;
-}
-
 }  // namespace
 
 namespace brave {
 
-web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
+BraveWebUIIOSDataSource* CreateAndAddWebUIDataSource(
     web::WebUIIOS* web_ui,
     const std::string& name,
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  return CreateWebUIDataSource(web_ui, name, resource_paths, html_resource_id,
-                               disable_trusted_types_csp);
+  
+  auto* source = BraveWebUIIOSDataSource::CreateAndAdd(
+      ProfileIOS::FromWebUIIOS(web_ui), name);
+  
+  source->AddResourcePaths(resource_paths);
+  source->SetDefaultResource(html_resource_id);
+
+  source->UseStringsJs();
+  source->EnableReplaceI18nInJS();
+  
+  CustomizeWebUIHTMLSource(web_ui, name, source);
+  
+  if (disable_trusted_types_csp) {
+    source->DisableTrustedTypesCSP();
+  }
+  
+  return source;
 }
 
 }  // namespace brave

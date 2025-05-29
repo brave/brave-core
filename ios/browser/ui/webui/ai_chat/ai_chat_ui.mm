@@ -52,25 +52,6 @@
 
 namespace {
 
-BraveWebUIIOSDataSource* CreateAndAddWebUIDataSource(
-    web::WebUIIOS* web_ui,
-    const std::string& name,
-    base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id) {
-  BraveWebUIIOSDataSource* source = static_cast<BraveWebUIIOSDataSource*>(
-      BraveWebUIIOSDataSource::Create(name));
-  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
-  source->UseStringsJs();
-
-  // Add required resources.
-  source->AddResourcePaths(resource_paths);
-  source->SetDefaultResource(html_resource_id);
-
-  source->AddResourcePaths(brave::GetWebUIResources(name));
-  source->AddLocalizedStrings(brave::GetWebUILocalizedStrings(name));
-  return source;
-}
-
 web::WebState* GetActiveWebState(web::WebUIIOS* web_ui) {
   BrowserList* browser_list =
       BrowserListFactory::GetForProfile(ProfileIOS::FromWebUIIOS(web_ui));
@@ -99,7 +80,7 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   DCHECK(!profile_->IsOffTheRecord());
 
   // Create a URLDataSource and add resources.
-  BraveWebUIIOSDataSource* source = CreateAndAddWebUIDataSource(
+  BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
       web_ui, url.host(), kAiChatUiGenerated, IDR_AI_CHAT_UI_HTML);
 
   source->AddResourcePath("styles.css", IDR_AI_CHAT_UI_CSS);
@@ -136,6 +117,7 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
+  // TODO:
   //  content::URLDataSource::Add(
   //      profile_, std::make_unique<FaviconSource>(
   //                    profile_, chrome::FaviconUrlFormat::kFavicon2));

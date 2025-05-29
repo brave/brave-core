@@ -18,6 +18,7 @@ source_set("ads") {
     "//brave/components/constants",
     "//brave/components/resources:static_resources",
     "//brave/ios/browser/brave_ads",
+    "//brave/ios/browser/ui/webui:web_ui_sources",
     "//components/prefs",
     "//components/resources",
     "//ios/chrome/browser/shared/model/profile",

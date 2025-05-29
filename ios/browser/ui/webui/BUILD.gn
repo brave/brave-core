@@ -9,17 +9,12 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 source_set("webui") {
   sources = [
-    "brave_url_data_source_ios.h",
-    "brave_url_data_source_ios.mm",
     "brave_web_ui_controller_factory.h",
     "brave_web_ui_controller_factory.mm",
-    "brave_web_ui_ios_data_source.h",
-    "brave_web_ui_ios_data_source.mm",
-    "brave_webui_utils.h",
-    "brave_webui_utils.mm",
   ]
 
   deps = [
+    ":web_ui_sources",
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/ui/webui/ads",
@@ -40,6 +35,33 @@ source_set("webui") {
     "//services/network/public/mojom",
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
+    "//ui/base",
+  ]
+}
+
+source_set("web_ui_sources") {
+  sources = [
+    "brave_url_data_source_ios.h",
+    "brave_url_data_source_ios.mm",
+    "brave_web_ui_ios_data_source.h",
+    "brave_web_ui_ios_data_source.mm",
+    "brave_webui_utils.h",
+    "brave_webui_utils.mm",
+  ]
+
+  deps = [
+    "//brave/components/constants",
+    "//components/prefs",
+    "//components/profile_metrics",
+    "//components/resources",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/components/webui:url_constants",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//ios/web/webui:webui",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//services/service_manager/public/cpp",
     "//ui/base",
   ]
 }

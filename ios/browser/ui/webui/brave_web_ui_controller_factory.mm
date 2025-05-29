@@ -15,6 +15,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -54,7 +55,10 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   const std::string url_host = url.host();
 
   if (url.SchemeIs(kChromeUIUntrustedScheme)) {
-    CHECK(0);
+    if (url_host == kAIChatUntrustedConversationUIHost) {
+      return &NewWebUIIOS<AIChatUntrustedConversationUI>;
+    }
+    return nullptr;
   }
 
   if (url_host == kAdsInternalsHost) {

@@ -13,6 +13,8 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
@@ -181,17 +183,13 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   CHECK(ai_chat::features::IsAIChatHistoryEnabled());
   CHECK(active_chat_tab_helper_);
 
-  // TODO: Fix
-
-  //  active_chat_tab_helper_->web_state()->OpenURL(
-  //      {
-  //          ConversationUrl(conversation_uuid),
-  //          web::Referrer(),
-  //          WindowOpenDisposition::NEW_FOREGROUND_TAB,
-  //          ui::PAGE_TRANSITION_TYPED,
-  //          false,
-  //      },
-  //      {});
+  active_chat_tab_helper_->web_state()->OpenURL({
+      ConversationUrl(conversation_uuid),
+      web::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_TYPED,
+      false,
+  });
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
@@ -231,7 +229,7 @@ void AIChatUIPageHandler::ManagePremium() {
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
-  //  OpenURL(GURL(kLeoModelSupportUrl));
+  OpenURL(GURL(kLeoModelSupportUrl));
 }
 
 void AIChatUIPageHandler::ChatContextObserver::WebStateDestroyed(

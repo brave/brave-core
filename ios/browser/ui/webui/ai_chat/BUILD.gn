@@ -14,6 +14,8 @@ source_set("ai_chat") {
     "ai_chat_ui.mm",
     "ai_chat_ui_page_handler.h",
     "ai_chat_ui_page_handler.mm",
+    "ai_chat_untrusted_conversation_ui.h",
+    "ai_chat_untrusted_conversation_ui.mm",
   ]
 
   deps = [
@@ -25,6 +27,7 @@ source_set("ai_chat") {
     "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/ios/browser/api/ai_chat",
+    "//brave/ios/browser/ui/webui:web_ui_sources",
     "//components/favicon/core",
     "//components/prefs",
     "//components/resources",
