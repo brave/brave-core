@@ -567,4 +567,48 @@ describe('ManagePageConnected', () => {
     })
   })
 
+  it('clears aliases when we are suddenly unauthenticated', async () => {
+    const mockEmailAliasesService = new MockEmailAliasesService()
+
+    await act(async () => {
+      render(<ManagePageConnected
+        emailAliasesService={mockEmailAliasesService}
+        bindObserver={createBindObserver(mockEmailAliasesService)}
+      />)
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kAuthenticated,
+        mockEmail
+      )
+    })
+
+    // Notify of aliases.
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAliasesUpdated([{
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined
+      }, {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined
+      }])
+    })
+
+    await act(() => {
+      mockEmailAliasesService.notifyObserverAuthStateChanged(
+        AuthenticationStatus.kUnauthenticated,
+        ''
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
+      expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
+    })
+  })
+
+
 })
