@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 150px;
+  min-height: fit-content;
   max-width: var(--conversation-content-max-width);
   margin: 0 auto;
   padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
@@ -42,7 +42,7 @@
   &:has(.attachmentsContainer) {
     display: grid;
     grid-template-columns: 1fr 400px;
-    grid-template-rows: auto min-content;
+    grid-template-rows: 1fr min-content;
     gap: var(--leo-spacing-m);
 
     height: 100%;
