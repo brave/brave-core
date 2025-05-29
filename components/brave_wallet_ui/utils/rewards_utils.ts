@@ -8,7 +8,7 @@ import {
   UpholdIcon,
   GeminiIcon,
   ZebpayIcon,
-  BitflyerIcon
+  BitflyerIcon,
 } from '../assets/svg-icons/provider_icons'
 
 // Utils
@@ -43,24 +43,24 @@ export const getRewardsAccountName = (provider?: string) => {
   }
   return getLocale('braveWalletRewardsAccount').replace(
     '$1',
-    getRewardsProviderName(provider)
+    getRewardsProviderName(provider),
   )
 }
 
 export const getRewardsTokenDescription = (
-  provider: ExternalWalletProvider | null
+  provider: ExternalWalletProvider | null,
 ) => {
   if (!provider) {
     return ''
   }
   return getLocale('braveWalletBraveRewardsDescription').replace(
     '$1',
-    getRewardsProviderName(provider)
+    getRewardsProviderName(provider),
   )
 }
 
 export const getNormalizedExternalRewardsWallet = (
-  externalRewardsProvider?: ExternalWalletProvider | null
+  externalRewardsProvider?: ExternalWalletProvider | null,
 ): BraveWallet.AccountInfo | undefined => {
   if (!externalRewardsProvider) {
     return undefined
@@ -72,16 +72,16 @@ export const getNormalizedExternalRewardsWallet = (
       coin: BraveWallet.CoinType.ETH,
       keyringId: 0,
       kind: 0,
-      uniqueKey: externalRewardsProvider
+      uniqueKey: externalRewardsProvider,
     },
     address: '0x',
     hardware: undefined,
-    name: getRewardsAccountName(externalRewardsProvider)
+    name: getRewardsAccountName(externalRewardsProvider),
   }
 }
 
 export const getNormalizedExternalRewardsNetwork = (
-  externalRewardsProvider?: ExternalWalletProvider | null
+  externalRewardsProvider?: ExternalWalletProvider | null,
 ): BraveWallet.NetworkInfo | undefined => {
   if (!externalRewardsProvider) {
     return undefined
@@ -97,12 +97,12 @@ export const getNormalizedExternalRewardsNetwork = (
     iconUrls: [],
     rpcEndpoints: [],
     symbol: externalRewardsProvider,
-    symbolName: externalRewardsProvider
+    symbolName: externalRewardsProvider,
   }
 }
 
 export const getIsRewardsAccount = (
-  accountId?: Pick<BraveWallet.AccountId, 'uniqueKey'>
+  accountId?: Pick<BraveWallet.AccountId, 'uniqueKey'>,
 ) => {
   if (!accountId) {
     return false
@@ -111,7 +111,7 @@ export const getIsRewardsAccount = (
 }
 
 export const getIsRewardsNetwork = (
-  network?: Pick<BraveWallet.NetworkInfo, 'chainId'>
+  network?: Pick<BraveWallet.NetworkInfo, 'chainId'>,
 ) => {
   if (!network) {
     return false
@@ -120,7 +120,7 @@ export const getIsRewardsNetwork = (
 }
 
 export const getIsRewardsToken = (
-  token?: Pick<BraveWallet.BlockchainToken, 'chainId'>
+  token?: Pick<BraveWallet.BlockchainToken, 'chainId'>,
 ) => {
   if (!token) {
     return false
@@ -129,7 +129,7 @@ export const getIsRewardsToken = (
 }
 
 export const getRewardsProviderIcon = (
-  provider: ExternalWalletProvider | null
+  provider: ExternalWalletProvider | null,
 ) => {
   switch (provider) {
     case 'bitflyer':
@@ -146,7 +146,7 @@ export const getRewardsProviderIcon = (
 }
 
 export const getRewardsProviderBackground = (
-  provider: ExternalWalletProvider | null
+  provider: ExternalWalletProvider | null,
 ) => {
   switch (provider) {
     case 'bitflyer':
@@ -163,7 +163,7 @@ export const getRewardsProviderBackground = (
 }
 
 export const getRewardsBATToken = (
-  provider: ExternalWalletProvider | undefined
+  provider: ExternalWalletProvider | undefined,
 ): BraveWallet.BlockchainToken | undefined => {
   if (!provider) {
     return undefined
@@ -186,7 +186,7 @@ export const getRewardsBATToken = (
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
     isShielded: false,
-    chainId: provider
+    chainId: provider,
   }
 }
 
@@ -194,7 +194,9 @@ export const isRewardsAssetId = (assetId: string) => {
   const assetIdLower = assetId.toLowerCase()
 
   return (
-    assetIdLower.includes(BatRewardsContractAddress.toLowerCase()) &&
-    externalWalletProviders.some((provider) => assetIdLower.includes(provider))
+    assetIdLower.includes(BatRewardsContractAddress.toLowerCase())
+    && externalWalletProviders.some((provider) =>
+      assetIdLower.includes(provider),
+    )
   )
 }

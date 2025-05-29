@@ -17,7 +17,7 @@ type DefaultTags = (typeof defaultTags)[number]
 
 function concatErrorCache<T, ID>(
   existingCache: CacheList<T, ID>,
-  error: FetchBaseQueryError | undefined
+  error: FetchBaseQueryError | undefined,
 ): CacheList<T, ID> {
   // unknown error
   return [...existingCache, 'UNKNOWN_ERROR']
@@ -41,10 +41,10 @@ export type CacheList<T, ID> = Array<
  */
 type InnerProvidesList<T> = <
   Results extends Array<{ id?: unknown }>,
-  Error extends FetchBaseQueryError
+  Error extends FetchBaseQueryError,
 >(
   results: Results | undefined,
-  error: Error | undefined
+  error: Error | undefined,
 ) => CacheList<T, Results[number]['id']>
 
 /**
@@ -53,10 +53,10 @@ type InnerProvidesList<T> = <
  */
 type InnerProvidesRegistry<T> = <
   Results extends EntityState<{}>,
-  Error extends FetchBaseQueryError
+  Error extends FetchBaseQueryError,
 >(
   results: Results | undefined,
-  error: Error | undefined
+  error: Error | undefined,
 ) => CacheList<T, Results['ids'][number]>
 
 /**
@@ -87,7 +87,7 @@ export const providesList =
       // successful query
       return [
         { type, id: 'LIST' },
-        ...results.map((result) => ({ type, id: result.id } as const))
+        ...results.map((result) => ({ type, id: result.id }) as const),
       ]
     }
     // Received an error, include an error cache item to the cache list
@@ -124,7 +124,7 @@ export const providesRegistry =
       // successful query
       return [
         { type, id: 'LIST' },
-        ...results.ids.map((id) => ({ type, id } as const))
+        ...results.ids.map((id) => ({ type, id }) as const),
       ]
     }
     // Received an error, include an error cache item to the cache list
@@ -163,7 +163,7 @@ export const cacheByIdArg =
   <ID, Result = undefined, Error = undefined>(
     result: Result,
     error: Error,
-    id: ID
+    id: ID,
   ): readonly [CacheItem<T, ID>] =>
     [{ type, id }] as const
 
@@ -183,7 +183,7 @@ export const cacheByIdArgProperty =
   <Arg extends { id: unknown }, Result = undefined, Error = undefined>(
     result: Result,
     error: Error,
-    arg: Arg
+    arg: Arg,
   ): readonly [CacheItem<T, Arg['id']>] | [] =>
     [{ type, id: arg.id }] as const
 
@@ -203,11 +203,11 @@ export const cacheByBlockchainTokenArg =
   <Arg extends GetBlockchainTokenIdArg, Result = undefined, Error = undefined>(
     result: Result,
     error: Error,
-    arg: Arg
+    arg: Arg,
   ): readonly ['UNKNOWN_ERROR'] | readonly [CacheItem<T, EntityId>] | [] => {
     const tag = {
       type,
-      id: blockchainTokenEntityAdaptor.selectId(arg)
+      id: blockchainTokenEntityAdaptor.selectId(arg),
     } as const
     return error ? (['UNKNOWN_ERROR'] as const) : ([tag] as const)
   }
@@ -228,14 +228,14 @@ export const cacheByIdResultProperty =
   <Result extends { id: EntityId } | undefined, Arg = any, Error = undefined>(
     result: Result,
     error: Error,
-    arg: Arg
+    arg: Arg,
   ):
     | readonly ['UNKNOWN_ERROR']
     | readonly [
         {
           readonly type: T
           readonly id: EntityId
-        }
+        },
       ] => {
     // is result available?
     if (result?.id) {
@@ -254,9 +254,8 @@ export const invalidatesUnauthorized =
   <Arg = undefined, Result = undefined, Error = undefined>(
     result: Result,
     error: Error,
-    arg: Arg
-  ): ['UNAUTHORIZED'] =>
-    ['UNAUTHORIZED']
+    arg: Arg,
+  ): ['UNAUTHORIZED'] => ['UNAUTHORIZED']
 
 /**
  * HOF to invalidate the 'UNKNOWN_ERROR' type cache item.
@@ -266,40 +265,39 @@ export const invalidatesUnknownErrors =
   <Arg = undefined, Result = undefined, Error = undefined>(
     result: Result,
     error: Error,
-    arg: Arg
-  ): ['UNKNOWN_ERROR'] =>
-    ['UNKNOWN_ERROR']
+    arg: Arg,
+  ): ['UNKNOWN_ERROR'] => ['UNKNOWN_ERROR']
 
 export const TX_CACHE_TAGS = {
   ID: (txId: BraveWallet.TransactionInfo['id']) => ({
     type: 'Transactions' as const,
-    id: txId
+    id: txId,
   }),
   IDS: (txIds: Array<BraveWallet.TransactionInfo['id']>) =>
     txIds.map((id) => TX_CACHE_TAGS.ID(id)),
   FOR_COIN_TYPE: (coinType: BraveWallet.CoinType) =>
     ({
       type: 'Transactions',
-      id: `coinType: ${coinType}`
-    } as const),
+      id: `coinType: ${coinType}`,
+    }) as const,
   FOR_CHAIN_ID: (chainId: string) =>
     ({
       type: 'Transactions',
-      id: `chainId: ${chainId}`
-    } as const),
+      id: `chainId: ${chainId}`,
+    }) as const,
   FROM_ACCOUNT_ID: (fromAccountId: BraveWallet.AccountId) =>
     ({
       type: 'Transactions',
-      id: `fromAccountId: ${fromAccountId.uniqueKey}`
-    } as const),
+      id: `fromAccountId: ${fromAccountId.uniqueKey}`,
+    }) as const,
   TXS_LIST: {
     type: 'Transactions' as const,
-    id: `LIST`
+    id: `LIST`,
   },
   LISTS: ({
     chainId,
     coin,
-    fromAccountId
+    fromAccountId,
   }: {
     chainId: string | null
     coin: BraveWallet.CoinType | null
@@ -309,8 +307,8 @@ export const TX_CACHE_TAGS = {
       TX_CACHE_TAGS.TXS_LIST,
       ...(coin !== null ? [TX_CACHE_TAGS.FOR_COIN_TYPE(coin)] : []),
       ...(fromAccountId ? [TX_CACHE_TAGS.FROM_ACCOUNT_ID(fromAccountId)] : []),
-      ...(chainId ? [TX_CACHE_TAGS.FOR_CHAIN_ID(chainId)] : [])
-    ] as const
+      ...(chainId ? [TX_CACHE_TAGS.FOR_CHAIN_ID(chainId)] : []),
+    ] as const,
 } as const
 
 /**
@@ -327,5 +325,5 @@ export const cacher = {
   invalidatesUnknownErrors,
   providesList,
   providesRegistry,
-  TX_CACHE_TAGS
+  TX_CACHE_TAGS,
 }

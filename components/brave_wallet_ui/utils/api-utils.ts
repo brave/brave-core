@@ -19,13 +19,13 @@ import getAPIProxy from '../common/async/bridge'
 export function handleEndpointError(
   endpointName: string,
   friendlyMessage: string,
-  error: any
+  error: any,
 ) {
   const message = `${friendlyMessage}: ${error?.message || error}`
   console.log(`error in: ${endpointName || 'endpoint'}: ${message}`)
   console.error(error)
   return {
-    error: friendlyMessage
+    error: friendlyMessage,
   }
 }
 
@@ -49,7 +49,7 @@ export async function getVisibleNetworksList(api: WalletApiProxy) {
 
 export function navigateToConnectHardwareWallet(
   panelHandler: BraveWallet.PanelHandlerRemote,
-  store: Pick<Store, 'dispatch' | 'getState'>
+  store: Pick<Store, 'dispatch' | 'getState'>,
 ) {
   panelHandler.setCloseOnDeactivate(false)
 

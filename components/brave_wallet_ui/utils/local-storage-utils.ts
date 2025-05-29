@@ -8,10 +8,10 @@ import {
   SupportedTestNetworks,
   BraveWallet,
   PanelTypes,
-  AssetIdsByCollectionNameRegistry
+  AssetIdsByCollectionNameRegistry,
 } from '../constants/types'
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../common/slices/entities/token-balance.entity'
 
 // utils
@@ -24,18 +24,18 @@ export const setLocalStorageItem = (key: string, stringifiedValue: string) => {
   window.localStorage.setItem(key, stringifiedValue)
   window.dispatchEvent(
     new StorageEvent('local-storage', {
-      key
-    })
+      key,
+    }),
   )
 }
 
 export const parseJSONFromLocalStorage = <T = any>(
   storageString: keyof typeof LOCAL_STORAGE_KEYS,
-  fallback: T
+  fallback: T,
 ): T => {
   try {
     return JSON.parse(
-      window.localStorage.getItem(LOCAL_STORAGE_KEYS[storageString]) || ''
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS[storageString]) || '',
     ) as T
   } catch (e) {
     return fallback
@@ -46,39 +46,39 @@ export const makeInitialFilteredOutNetworkKeys = () => {
   const localHostNetworkKeys = [
     getNetworkId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
+      coin: BraveWallet.CoinType.ETH,
     }),
     getNetworkId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.SOL
+      coin: BraveWallet.CoinType.SOL,
     }),
     getNetworkId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: BraveWallet.CoinType.FIL
-    })
+      coin: BraveWallet.CoinType.FIL,
+    }),
   ]
 
   const testNetworkKeys = SupportedTestNetworks.filter(
-    (chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID
+    (chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID,
   ).map((chainId) => {
     if (
-      chainId === BraveWallet.SOLANA_DEVNET ||
-      chainId === BraveWallet.SOLANA_TESTNET
+      chainId === BraveWallet.SOLANA_DEVNET
+      || chainId === BraveWallet.SOLANA_TESTNET
     ) {
       return getNetworkId({
         chainId: chainId,
-        coin: BraveWallet.CoinType.SOL
+        coin: BraveWallet.CoinType.SOL,
       })
     }
     if (chainId === BraveWallet.FILECOIN_TESTNET) {
       return getNetworkId({
         chainId: chainId,
-        coin: BraveWallet.CoinType.FIL
+        coin: BraveWallet.CoinType.FIL,
       })
     }
     return getNetworkId({
       chainId: chainId,
-      coin: BraveWallet.CoinType.ETH
+      coin: BraveWallet.CoinType.ETH,
     })
   })
   return [...testNetworkKeys, ...localHostNetworkKeys]
@@ -92,7 +92,7 @@ export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
 
 export function storeCurrentAndPreviousPanel(
   panelType: PanelTypes,
-  previousPanel: PanelTypes | undefined
+  previousPanel: PanelTypes | undefined,
 ) {
   if (!isPersistanceOfPanelProhibited(panelType)) {
     window.localStorage.setItem(LOCAL_STORAGE_KEYS.CURRENT_PANEL, panelType)
@@ -101,19 +101,21 @@ export function storeCurrentAndPreviousPanel(
   if (previousPanel && !isPersistanceOfPanelProhibited(previousPanel)) {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.LAST_VISITED_PANEL,
-      previousPanel
+      previousPanel,
     )
   }
 }
 
 export function getStoredPortfolioTimeframe(): BraveWallet.AssetPriceTimeframe {
   const storedValue = window.localStorage.getItem(
-    LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION
+    LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
   )
 
   if (storedValue !== undefined) {
     return Number(
-      window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION)
+      window.localStorage.getItem(
+        LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
+      ),
     )
   }
 
@@ -121,24 +123,24 @@ export function getStoredPortfolioTimeframe(): BraveWallet.AssetPriceTimeframe {
 }
 
 export function setStoredPortfolioTimeframe(
-  timeframe: BraveWallet.AssetPriceTimeframe
+  timeframe: BraveWallet.AssetPriceTimeframe,
 ) {
   window.localStorage.setItem(
     LOCAL_STORAGE_KEYS.PORTFOLIO_TIME_LINE_OPTION,
-    timeframe.toString()
+    timeframe.toString(),
   )
 }
 
 export const getPersistedTokenBalances = (
-  isSpamRegistry = false
+  isSpamRegistry = false,
 ): TokenBalancesRegistry => {
   try {
     const registry: TokenBalancesRegistry = JSON.parse(
       window.localStorage.getItem(
         isSpamRegistry
           ? LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES
-          : LOCAL_STORAGE_KEYS.TOKEN_BALANCES
-      ) || JSON.stringify(createEmptyTokenBalancesRegistry())
+          : LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
+      ) || JSON.stringify(createEmptyTokenBalancesRegistry()),
     )
     if (registry.accounts) {
       return registry
@@ -160,7 +162,7 @@ export const getPersistedTokenBalancesSubset = (arg: {
   // return a subset of the registry for
   // the accounts and networks passed as args
   const registrySubset: TokenBalancesRegistry = {
-    accounts: {}
+    accounts: {},
   }
 
   for (const accountId of arg.accountIds) {
@@ -171,7 +173,7 @@ export const getPersistedTokenBalancesSubset = (arg: {
       // filter account balances to just
       // the chains that have been passed as args
       const accountNetworkIds = Object.keys(
-        registrySubset.accounts[accountId.uniqueKey].chains
+        registrySubset.accounts[accountId.uniqueKey].chains,
       )
       for (const network of arg.networks) {
         const networkId = getNetworkId(network)
@@ -188,14 +190,14 @@ export const getPersistedTokenBalancesSubset = (arg: {
 
 export const setPersistedPortfolioTokenBalances = (
   registry: TokenBalancesRegistry,
-  isSpamRegistry = false
+  isSpamRegistry = false,
 ) => {
   try {
     window.localStorage.setItem(
       isSpamRegistry
         ? LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES
         : LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
-      JSON.stringify(registry)
+      JSON.stringify(registry),
     )
   } catch (error) {
     console.error(error)
@@ -208,8 +210,8 @@ export const getPersistedNftCollectionNamesRegistry =
     try {
       const registry: AssetIdsByCollectionNameRegistry = JSON.parse(
         window.localStorage.getItem(
-          LOCAL_STORAGE_KEYS.NFT_COLLECTION_NAMES_REGISTRY
-        ) || JSON.stringify(emptyRegistry)
+          LOCAL_STORAGE_KEYS.NFT_COLLECTION_NAMES_REGISTRY,
+        ) || JSON.stringify(emptyRegistry),
       )
       return registry ?? emptyRegistry
     } catch (error) {
@@ -219,12 +221,12 @@ export const getPersistedNftCollectionNamesRegistry =
   }
 
 export const setPersistedNftCollectionNamesRegistry = (
-  registry: AssetIdsByCollectionNameRegistry
+  registry: AssetIdsByCollectionNameRegistry,
 ) => {
   try {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.NFT_COLLECTION_NAMES_REGISTRY,
-      JSON.stringify(registry)
+      JSON.stringify(registry),
     )
   } catch (error) {
     console.error(error)

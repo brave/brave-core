@@ -15,7 +15,7 @@ export const MockedJsonRpcErrorEnum = {
   kInvalidParams: -32602,
   kInternalError: -32603,
   MIN_VALUE: -32700,
-  MAX_VALUE: -32600
+  MAX_VALUE: -32600,
 }
 
 describe('getGetCleanedMojoEnumKeys', () => {
@@ -25,7 +25,7 @@ describe('getGetCleanedMojoEnumKeys', () => {
       'InvalidRequest',
       'MethodNotFound',
       'InvalidParams',
-      'InternalError'
+      'InternalError',
     ])
   })
 })

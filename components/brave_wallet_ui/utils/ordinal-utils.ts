@@ -30,14 +30,14 @@ export const ORDINALS = {
   20: getLocale('braveWalletOrdinalTwentyFirst'),
   21: getLocale('braveWalletOrdinalTwentySecond'),
   22: getLocale('braveWalletOrdinalTwentyThird'),
-  23: getLocale('braveWalletOrdinalTwentyFourth')
+  23: getLocale('braveWalletOrdinalTwentyFourth'),
 }
 
 const suffixes = new Map([
   ['one', getLocale('braveWalletOrdinalSuffixOne')],
   ['two', getLocale('braveWalletOrdinalSuffixTwo')],
   ['few', getLocale('braveWalletOrdinalSuffixFew')],
-  ['other', getLocale('braveWalletOrdinalSuffixOther')]
+  ['other', getLocale('braveWalletOrdinalSuffixOther')],
 ])
 
 export const formatOrdinals = (n: number) => {

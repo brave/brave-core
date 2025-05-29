@@ -18,7 +18,7 @@ export interface BalanceResult {
   balance: string
   coinType: BraveWallet.CoinType
   /** For NFTs */
-  tokenId: string,
+  tokenId: string
   isShielded: boolean
 }
 
@@ -30,7 +30,7 @@ export const formatTokenBalanceWithSymbol = (
   balance: string,
   decimals: number,
   symbol: string,
-  decimalPlace?: number
+  decimalPlace?: number,
 ) => {
   return `${new Amount(balance)
     .divideByDecimals(decimals)
@@ -38,7 +38,7 @@ export const formatTokenBalanceWithSymbol = (
 }
 
 export const getAccountBalancesKey = (
-  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
 ) => {
   return accountId.uniqueKey
 }
@@ -47,7 +47,7 @@ export const getPercentAmount = (
   asset: BraveWallet.BlockchainToken,
   accountId: BraveWallet.AccountId,
   percent: number,
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null,
 ): string => {
   const assetBalance =
     getBalance(accountId, asset, tokenBalancesRegistry) || '0'
@@ -64,7 +64,7 @@ export const getPercentAmount = (
 export const getIsTokenInRegistry = (
   accountId: BraveWallet.AccountId,
   asset: BraveWallet.BlockchainToken,
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null,
 ) => {
   if (!tokenBalancesRegistry) {
     return false
@@ -79,7 +79,7 @@ export const getIsTokenInRegistry = (
 export const getBalance = (
   accountId: BraveWallet.AccountId | undefined,
   asset: BraveWallet.BlockchainToken | undefined,
-  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null,
 ) => {
   if (!accountId || !asset || !tokenBalancesRegistry) {
     return ''
@@ -108,7 +108,7 @@ export function setBalance({
   tokenBalancesRegistry,
   coinType,
   tokenId,
-  isShielded
+  isShielded,
 }: SetBalanceArg) {
   const accountBalanceKey = getAccountBalancesKey(accountId)
   if (!tokenBalancesRegistry.accounts[accountBalanceKey]) {
@@ -127,7 +127,8 @@ export function setBalance({
       coin: coinType,
       contractAddress,
       tokenId,
-      isShielded })
+      isShielded,
+    })
   ] = balance
 }
 
@@ -138,14 +139,14 @@ export function getBalanceFromRegistry({
   contractAddress,
   tokenId,
   coin,
-  isShielded
+  isShielded,
 }: {
   registry: TokenBalancesRegistry
   accountUniqueId: string
   chainId: string
   contractAddress: string
   tokenId: string
-  coin: BraveWallet.CoinType,
+  coin: BraveWallet.CoinType
   isShielded: boolean
 }) {
   return (
@@ -155,7 +156,7 @@ export function getBalanceFromRegistry({
         chainId,
         contractAddress: contractAddress,
         tokenId,
-        isShielded
+        isShielded,
       })
     ] || '0'
   )
@@ -164,7 +165,7 @@ export function getBalanceFromRegistry({
 export function getAccountAndChainBalancesFromRegistry({
   registry,
   accountUniqueId,
-  chainId
+  chainId,
 }: {
   registry: TokenBalancesRegistry
   accountUniqueId: string
@@ -177,14 +178,14 @@ export function getAccountAndChainBalancesFromRegistry({
 
 export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {
   return {
-    accounts: {}
+    accounts: {},
   }
 }
 
 export const getActiveWalletCount = (
   accountIds: BraveWallet.AccountId[],
   tokenBalancesRegistry: TokenBalancesRegistry,
-  countTestNetworks: boolean
+  countTestNetworks: boolean,
 ) => {
   const activeWalletCount: Record<BraveWallet.CoinType, number> = {}
 
@@ -204,7 +205,7 @@ export const getActiveWalletCount = (
     let chainsWithBalance: string[] = []
 
     for (const [chainId, chainBalances] of Object.entries(
-      accountBalances.chains
+      accountBalances.chains,
     )) {
       for (const tokenBalance of Object.values(chainBalances.tokenBalances)) {
         const amount = new Amount(tokenBalance)
@@ -216,10 +217,10 @@ export const getActiveWalletCount = (
     }
 
     const hasMainnetBalance = chainsWithBalance.some(
-      (chainId) => !SupportedTestNetworks.includes(chainId)
+      (chainId) => !SupportedTestNetworks.includes(chainId),
     )
     const hasTestnetBalance = chainsWithBalance.some((chainId) =>
-      SupportedTestNetworks.includes(chainId)
+      SupportedTestNetworks.includes(chainId),
     )
 
     if (hasMainnetBalance || (countTestNetworks && hasTestnetBalance)) {

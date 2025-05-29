@@ -6,26 +6,26 @@
 import {
   cleanupRecoveryPhraseInput,
   isPhraseLengthValid,
-  normalizeRecoveryPhraseInput
+  normalizeRecoveryPhraseInput,
 } from './recovery-phrase-utils'
 
 describe('cleanupRecoveryPhraseInput', () => {
   it('prevents a space at the begining of the phrase', () => {
     expect(cleanupRecoveryPhraseInput(' phrase words here')).toBe(
-      'phrase words here'
+      'phrase words here',
     )
   })
 
   it('removes periods', () => {
     expect(cleanupRecoveryPhraseInput('phrase. words. here.')).toBe(
-      'phrase words here'
+      'phrase words here',
     )
   })
 
   it('prevents an extra space at the end of a 24 word phrase', () => {
     const recoveryWordsWithSpace = Array(24).fill('word ').join('')
     expect(cleanupRecoveryPhraseInput(recoveryWordsWithSpace)).toBe(
-      recoveryWordsWithSpace.trim()
+      recoveryWordsWithSpace.trim(),
     )
   })
 })
@@ -35,15 +35,15 @@ describe('isPhraseLengthValid', () => {
     'length: %i should be valid',
     (length: number) => {
       expect(
-        isPhraseLengthValid(Array(length).fill('word').join(' ')).isInvalid
+        isPhraseLengthValid(Array(length).fill('word').join(' ')).isInvalid,
       ).toBe(false)
-    }
+    },
   )
   it.each([
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25,
   ])('length: %i should be invalid', (length: number) => {
     expect(
-      isPhraseLengthValid(Array(length).fill('word').join(' ')).isInvalid
+      isPhraseLengthValid(Array(length).fill('word').join(' ')).isInvalid,
     ).toBe(true)
   })
 })

@@ -12,7 +12,7 @@ import {
   BitcoinMainnetKeyringIds,
   BitcoinTestnetKeyringIds,
   ZCashTestnetKeyringIds,
-  CardanoTestnetKeyringIds
+  CardanoTestnetKeyringIds,
 } from '../constants/types'
 
 // constants
@@ -25,7 +25,7 @@ import { EntityState } from '@reduxjs/toolkit'
 export const sortAccountsByName = (accounts: BraveWallet.AccountInfo[]) => {
   return [...accounts].sort(function (
     a: BraveWallet.AccountInfo,
-    b: BraveWallet.AccountInfo
+    b: BraveWallet.AccountInfo,
   ) {
     if (a.name < b.name) {
       return -1
@@ -41,7 +41,7 @@ export const sortAccountsByName = (accounts: BraveWallet.AccountInfo[]) => {
 
 export const groupAccountsById = (
   accounts: BraveWallet.AccountInfo[],
-  key: string
+  key: string,
 ) => {
   return accounts.reduce<Record<string, BraveWallet.AccountInfo[]>>(
     (result, obj) => {
@@ -49,15 +49,15 @@ export const groupAccountsById = (
       ;(result[resultKey] = result[resultKey] || []).push(obj)
       return result
     },
-    {}
+    {},
   )
 }
 
 export const findAccountByUniqueKey = <
-  T extends { accountId: { uniqueKey: string } }
+  T extends { accountId: { uniqueKey: string } },
 >(
   accounts: T[],
-  uniqueKey: string | undefined
+  uniqueKey: string | undefined,
 ): T | undefined => {
   if (!uniqueKey) {
     return
@@ -67,14 +67,14 @@ export const findAccountByUniqueKey = <
 }
 
 export const entityIdFromAccountId = (
-  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
 ) => {
   return accountId.uniqueKey
 }
 
 export const findAccountByAddress = (
   address: string,
-  accounts: EntityState<BraveWallet.AccountInfo> | undefined
+  accounts: EntityState<BraveWallet.AccountInfo> | undefined,
 ): BraveWallet.AccountInfo | undefined => {
   if (!address || !accounts) return undefined
   for (const id of accounts.ids) {
@@ -89,7 +89,7 @@ export const findAccountByAddress = (
 
 export const findAccountByAccountId = (
   accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
-  accounts: EntityState<BraveWallet.AccountInfo> | undefined
+  accounts: EntityState<BraveWallet.AccountInfo> | undefined,
 ): BraveWallet.AccountInfo | undefined => {
   if (!accounts) {
     return undefined
@@ -100,28 +100,28 @@ export const findAccountByAccountId = (
 
 export const getAddressLabel = (
   address: string,
-  accounts?: EntityState<BraveWallet.AccountInfo>
+  accounts?: EntityState<BraveWallet.AccountInfo>,
 ): string => {
   if (!accounts) {
     return (
-      registry[address.toLowerCase() as keyof typeof registry] ??
-      reduceAddress(address)
+      registry[address.toLowerCase() as keyof typeof registry]
+      ?? reduceAddress(address)
     )
   }
   return (
-    registry[address.toLowerCase() as keyof typeof registry] ??
-    findAccountByAddress(address, accounts)?.name ??
-    reduceAddress(address)
+    registry[address.toLowerCase() as keyof typeof registry]
+    ?? findAccountByAddress(address, accounts)?.name
+    ?? reduceAddress(address)
   )
 }
 
 export const getAccountLabel = (
   accountId: BraveWallet.AccountId,
-  accounts: EntityState<BraveWallet.AccountInfo>
+  accounts: EntityState<BraveWallet.AccountInfo>,
 ): string => {
   return (
-    findAccountByAccountId(accountId, accounts)?.name ??
-    reduceAddress(accountId.address)
+    findAccountByAccountId(accountId, accounts)?.name
+    ?? reduceAddress(accountId.address)
   )
 }
 
@@ -131,7 +131,7 @@ export function isHardwareAccount(account: BraveWallet.AccountId) {
 
 export const keyringIdForNewAccount = (
   coin: BraveWallet.CoinType,
-  chainId?: string | undefined
+  chainId?: string | undefined,
 ) => {
   if (coin === BraveWallet.CoinType.ETH) {
     return BraveWallet.KeyringId.kDefault
@@ -143,8 +143,8 @@ export const keyringIdForNewAccount = (
 
   if (coin === BraveWallet.CoinType.FIL) {
     if (
-      chainId === BraveWallet.FILECOIN_MAINNET ||
-      chainId === BraveWallet.LOCALHOST_CHAIN_ID
+      chainId === BraveWallet.FILECOIN_MAINNET
+      || chainId === BraveWallet.LOCALHOST_CHAIN_ID
     ) {
       return BraveWallet.KeyringId.kFilecoin
     }
@@ -213,52 +213,52 @@ export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
 
 export const isFVMAccount = (
   account: BraveWallet.AccountInfo,
-  network: BraveWallet.NetworkInfo
+  network: BraveWallet.NetworkInfo,
 ) => {
   return (
-    (network.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
-      account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
-    (network.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID &&
-      account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet)
+    (network.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID
+      && account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin)
+    || (network.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
+      && account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet)
   )
 }
 
 export const getAccountsForNetwork = (
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>,
-  accounts: BraveWallet.AccountInfo[]
+  accounts: BraveWallet.AccountInfo[],
 ) => {
   if (network.chainId === BraveWallet.BITCOIN_MAINNET) {
     return accounts.filter((account) =>
-      BitcoinMainnetKeyringIds.includes(account.accountId.keyringId)
+      BitcoinMainnetKeyringIds.includes(account.accountId.keyringId),
     )
   }
   if (network.chainId === BraveWallet.BITCOIN_TESTNET) {
     return accounts.filter((account) =>
-      BitcoinTestnetKeyringIds.includes(account.accountId.keyringId)
+      BitcoinTestnetKeyringIds.includes(account.accountId.keyringId),
     )
   }
   if (network.chainId === BraveWallet.Z_CASH_MAINNET) {
     return accounts.filter(
       (account) =>
-        account.accountId.keyringId === BraveWallet.KeyringId.kZCashMainnet
+        account.accountId.keyringId === BraveWallet.KeyringId.kZCashMainnet,
     )
   }
   if (network.chainId === BraveWallet.Z_CASH_TESTNET) {
     return accounts.filter(
       (account) =>
-        account.accountId.keyringId === BraveWallet.KeyringId.kZCashTestnet
+        account.accountId.keyringId === BraveWallet.KeyringId.kZCashTestnet,
     )
   }
   if (network.chainId === BraveWallet.FILECOIN_MAINNET) {
     return accounts.filter(
       (account) =>
-        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin,
     )
   }
   if (network.chainId === BraveWallet.FILECOIN_TESTNET) {
     return accounts.filter(
       (account) =>
-        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet,
     )
   }
   return accounts.filter((account) => account.accountId.coin === network.coin)

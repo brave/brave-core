@@ -18,14 +18,14 @@ const powers = {
   trillion: Math.pow(10, 12),
   billion: Math.pow(10, 9),
   million: Math.pow(10, 6),
-  thousand: Math.pow(10, 3)
+  thousand: Math.pow(10, 3),
 } as const
 
 const abbreviations = {
   thousand: 'k',
   million: 'M',
   billion: 'B',
-  trillion: 'T'
+  trillion: 'T',
 } as const
 
 export default class Amount {
@@ -200,7 +200,7 @@ export default class Amount {
 
   private static formatAmountWithCommas(
     value: string,
-    commas: boolean
+    commas: boolean,
   ): string {
     // Remove trailing zeros, including the decimal separator if necessary.
     // Example: 1.0000000000 becomes 1.
@@ -227,18 +227,18 @@ export default class Amount {
     const desiredDecimalPlaces = 2
     if (
       this.value.isGreaterThanOrEqualTo(
-        10 ** (significantDigits - desiredDecimalPlaces)
+        10 ** (significantDigits - desiredDecimalPlaces),
       )
     ) {
       return Amount.formatAmountWithCommas(
         this.value.toFixed(desiredDecimalPlaces),
-        commas
+        commas,
       )
     }
 
     return Amount.formatAmountWithCommas(
       this.value.precision(significantDigits).toFixed(),
-      commas
+      commas,
     )
   }
 
@@ -259,7 +259,7 @@ export default class Amount {
     const options: Intl.NumberFormatOptions = {
       style: 'decimal',
       minimumFractionDigits: 2,
-      maximumFractionDigits: maxDecimals
+      maximumFractionDigits: maxDecimals,
     }
 
     const currencyCode = currency?.toUpperCase() as keyof typeof CurrencySymbols
@@ -270,7 +270,7 @@ export default class Amount {
     }
 
     return Intl.NumberFormat(navigator.language, options).format(
-      new BigNumber(this.format(4)).toNumber()
+      new BigNumber(this.format(4)).toNumber(),
     )
   }
 
@@ -334,7 +334,7 @@ export default class Amount {
   abbreviate(
     decimals: number,
     currency?: string,
-    forceAbbreviation?: AbbreviationOptions
+    forceAbbreviation?: AbbreviationOptions,
   ): string {
     if (this.value === undefined) {
       return ''
@@ -350,7 +350,7 @@ export default class Amount {
       currency: currency,
       currencyDisplay: 'narrowSymbol',
       minimumFractionDigits: fractionDigits,
-      maximumFractionDigits: fractionDigits
+      maximumFractionDigits: fractionDigits,
     })
 
     const abs = this.value.absoluteValue().toNumber()
@@ -358,9 +358,9 @@ export default class Amount {
     let abbreviation = ''
 
     if (
-      forceAbbreviation &&
-      abbreviations[forceAbbreviation] &&
-      powers[forceAbbreviation]
+      forceAbbreviation
+      && abbreviations[forceAbbreviation]
+      && powers[forceAbbreviation]
     ) {
       abbreviation = abbreviations[forceAbbreviation]
       value = value / powers[forceAbbreviation]

@@ -5,7 +5,7 @@
 
 // types
 import type {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../common/slices/entities/token-balance.entity'
 
 // constants
@@ -18,16 +18,16 @@ import getAPIProxy from '../common/async/bridge'
 
 export async function reportActiveWalletsToP3A(
   accountIds: BraveWallet.AccountId[],
-  tokenBalancesRegistry: TokenBalancesRegistry
+  tokenBalancesRegistry: TokenBalancesRegistry,
 ) {
   const countTestNetworks = loadTimeData.getBoolean(
-    BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY
+    BraveWallet.P3A_COUNT_TEST_NETWORKS_LOAD_TIME_KEY,
   )
 
   const activeWalletCount = getActiveWalletCount(
     accountIds,
     tokenBalancesRegistry,
-    countTestNetworks
+    countTestNetworks,
   )
 
   const { braveWalletP3A } = getAPIProxy()

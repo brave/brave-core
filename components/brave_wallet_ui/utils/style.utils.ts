@@ -45,7 +45,7 @@ export const getDominantColorFromImageURL = (src: string) => {
   // Calculate canvas sizes.
   const scaleRatio = Math.min(
     precision / naturalWidth,
-    precision / naturalHeight
+    precision / naturalHeight,
   )
   const width = Math.ceil(naturalWidth * scaleRatio)
   const height = Math.ceil(naturalHeight * scaleRatio)

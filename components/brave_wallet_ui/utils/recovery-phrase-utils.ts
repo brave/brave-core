@@ -9,12 +9,12 @@ export const isPhraseLengthValid = (phrase: string) => {
   const wordsInPhraseValue = phrase.trim().split(/\s+/g).length
   // valid lengths: 12, 15, 18, 21, or 24
   const isInvalid =
-    wordsInPhraseValue < 12 ||
-    (wordsInPhraseValue > 12 && wordsInPhraseValue < 15) ||
-    (wordsInPhraseValue > 15 && wordsInPhraseValue < 18) ||
-    (wordsInPhraseValue > 18 && wordsInPhraseValue < 21) ||
-    (wordsInPhraseValue > 21 && wordsInPhraseValue < 24) ||
-    wordsInPhraseValue > 24
+    wordsInPhraseValue < 12
+    || (wordsInPhraseValue > 12 && wordsInPhraseValue < 15)
+    || (wordsInPhraseValue > 15 && wordsInPhraseValue < 18)
+    || (wordsInPhraseValue > 18 && wordsInPhraseValue < 21)
+    || (wordsInPhraseValue > 21 && wordsInPhraseValue < 24)
+    || wordsInPhraseValue > 24
 
   return { isInvalid, wordsInPhraseValue }
 }

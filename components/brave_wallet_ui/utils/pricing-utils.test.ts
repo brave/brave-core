@@ -13,14 +13,14 @@ import {
   getTokenPriceFromRegistry,
   getTokenPriceAmountFromRegistry,
   computeFiatAmountToAssetValue,
-  getPriceIdForToken
+  getPriceIdForToken,
 } from './pricing-utils'
 
 describe('getTokenPriceFromRegistry', () => {
   it('should get the price of a coin from the spot prices registry', () => {
     expect(
       getTokenPriceFromRegistry(mockSpotPriceRegistry, mockBasicAttentionToken)
-        ?.price
+        ?.price,
     ).toBe('0.88')
   })
 })
@@ -30,8 +30,8 @@ describe('getTokenPriceAmountFromRegistry', () => {
     expect(
       getTokenPriceAmountFromRegistry(
         mockSpotPriceRegistry,
-        mockBasicAttentionToken
-      ).formatAsFiat()
+        mockBasicAttentionToken,
+      ).formatAsFiat(),
     ).toBe('0.88')
   })
 })
@@ -42,8 +42,8 @@ describe('computeFiatAmount', () => {
       computeFiatAmount({
         spotPriceRegistry: mockSpotPriceRegistry,
         value: '20',
-        token: mockBasicAttentionToken
-      }).format()
+        token: mockBasicAttentionToken,
+      }).format(),
     ).toBe('0.0000000000000000176')
   })
 })
@@ -54,8 +54,8 @@ describe('computeFiatAmountToAssetValue', () => {
       computeFiatAmountToAssetValue({
         spotPriceRegistry: mockSpotPriceRegistry,
         value: '200',
-        token: mockBasicAttentionToken
-      }).format(6)
+        token: mockBasicAttentionToken,
+      }).format(6),
     ).toBe('227.273')
   })
 })
@@ -63,7 +63,7 @@ describe('computeFiatAmountToAssetValue', () => {
 describe('Check getPriceIdForToken()', () => {
   test('Value should return contract address', () => {
     expect(getPriceIdForToken(mockBasicAttentionToken)).toEqual(
-      '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
+      '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
     )
   })
 
@@ -71,8 +71,8 @@ describe('Check getPriceIdForToken()', () => {
     expect(
       getPriceIdForToken({
         ...mockBasicAttentionToken,
-        contractAddress: ''
-      })
+        contractAddress: '',
+      }),
     ).toEqual('bat')
   })
 
@@ -80,8 +80,8 @@ describe('Check getPriceIdForToken()', () => {
     expect(
       getPriceIdForToken({
         ...mockBasicAttentionToken,
-        coingeckoId: 'mockCoingeckoId'
-      })
+        coingeckoId: 'mockCoingeckoId',
+      }),
     ).toEqual('mockcoingeckoid')
   })
 })

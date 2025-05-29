@@ -13,7 +13,7 @@ export const generateQRCode = (data: string): Promise<string> => {
       .on('data', (chunk: Uint8Array) => chunks.push(chunk))
       .on('end', () => {
         resolve(
-          `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`
+          `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`,
         )
       })
   })

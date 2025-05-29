@@ -6,8 +6,8 @@ import { copyToClipboard } from './copy-to-clipboard'
 
 Object.assign(navigator, {
   clipboard: {
-    writeText: (text: string) => {}
-  }
+    writeText: (text: string) => {},
+  },
 })
 
 describe('copyToClipboard', () => {

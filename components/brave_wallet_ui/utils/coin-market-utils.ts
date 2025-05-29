@@ -8,14 +8,14 @@ import {
   MarketAssetFilterOption,
   MarketGridColumnTypes,
   MeldCryptoCurrency,
-  SortOrder
+  SortOrder,
 } from '../constants/types'
 import { getAssetSymbol } from './meld_utils'
 
 export const sortCoinMarkets = (
   marketData: BraveWallet.CoinMarket[],
   sortOrder: SortOrder,
-  columnId: MarketGridColumnTypes
+  columnId: MarketGridColumnTypes,
 ) => {
   if (sortOrder === 'asc') {
     // @ts-expect-error - there are some soundness issues here - not all
@@ -32,7 +32,7 @@ export const sortCoinMarkets = (
 
 export const searchCoinMarkets = (
   searchList: BraveWallet.CoinMarket[],
-  searchTerm: string
+  searchTerm: string,
 ): BraveWallet.CoinMarket[] => {
   const trimmedSearch = searchTerm.trim().toLowerCase()
   if (!trimmedSearch) {
@@ -41,25 +41,25 @@ export const searchCoinMarkets = (
 
   return searchList.filter(
     (coin) =>
-      coin.name.toLowerCase().includes(trimmedSearch) ||
-      coin.symbol.toLowerCase().includes(trimmedSearch)
+      coin.name.toLowerCase().includes(trimmedSearch)
+      || coin.symbol.toLowerCase().includes(trimmedSearch),
   )
 }
 
 export const filterCoinMarkets = (
   coins: BraveWallet.CoinMarket[],
   tradableAssets: MeldCryptoCurrency[] | undefined,
-  filter: MarketAssetFilterOption
+  filter: MarketAssetFilterOption,
 ) => {
   const tradableAssetsSymbols = tradableAssets?.map((asset) =>
-    getAssetSymbol(asset).toLowerCase()
+    getAssetSymbol(asset).toLowerCase(),
   )
 
   if (filter === 'all') {
     return coins
   } else if (filter === 'tradable') {
     return coins.filter((asset) =>
-      tradableAssetsSymbols?.includes(asset.symbol.toLowerCase())
+      tradableAssetsSymbols?.includes(asset.symbol.toLowerCase()),
     )
   }
 

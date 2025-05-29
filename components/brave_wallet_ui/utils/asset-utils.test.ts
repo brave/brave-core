@@ -5,7 +5,7 @@
 
 // types
 import {
-  TokenBalancesRegistry //
+  TokenBalancesRegistry, //
 } from '../common/slices/entities/token-balance.entity'
 
 // utils
@@ -15,7 +15,7 @@ import {
   searchNftCollectionsAndGetTotalNftsFound,
   getTokenCollectionName,
   getAssetIdKey,
-  isTokenWatchOnly
+  isTokenWatchOnly,
 } from './asset-utils'
 import { getAccountBalancesKey } from './balance-utils'
 
@@ -25,7 +25,7 @@ import {
   mockEthToken,
   mockBasicAttentionToken,
   mockMoonCatNFT,
-  mockErc721Token
+  mockErc721Token,
 } from '../stories/mock-data/mock-asset-options'
 import { mockAccounts } from '../stories/mock-data/mock-wallet-accounts'
 
@@ -36,15 +36,15 @@ const nftTokenTwo = { ...mockMoonCatNFT, tokenId: '0x42a7' }
 
 const mockCollectionAssetsRegistry = {
   'MoonCatsRescue': [mockMoonCatNFT, nftTokenTwo],
-  'Invisible Friends': [mockErc721Token]
+  'Invisible Friends': [mockErc721Token],
 }
 
 const mockCollectionAssetIdsRegistry = {
   'MoonCatsRescue': [
     getAssetIdKey({ ...mockMoonCatNFT, tokenId: '' }),
-    getAssetIdKey({ ...nftTokenTwo, tokenId: '' })
+    getAssetIdKey({ ...nftTokenTwo, tokenId: '' }),
   ],
-  'Invisible Friends': [getAssetIdKey({ ...mockErc721Token, tokenId: '' })]
+  'Invisible Friends': [getAssetIdKey({ ...mockErc721Token, tokenId: '' })],
 }
 
 const mockUserTokenBalancesRegistry: TokenBalancesRegistry = {
@@ -53,12 +53,12 @@ const mockUserTokenBalancesRegistry: TokenBalancesRegistry = {
       chains: {
         [mockMoonCatNFT.chainId]: {
           tokenBalances: {
-            [getAssetIdKey(mockMoonCatNFT)]: '1'
-          }
-        }
-      }
-    }
-  }
+            [getAssetIdKey(mockMoonCatNFT)]: '1',
+          },
+        },
+      },
+    },
+  },
 }
 
 const mockEmptyUserTokenBalancesRegistry: TokenBalancesRegistry = {
@@ -67,12 +67,12 @@ const mockEmptyUserTokenBalancesRegistry: TokenBalancesRegistry = {
       chains: {
         [mockMoonCatNFT.chainId]: {
           tokenBalances: {
-            [getAssetIdKey(mockMoonCatNFT)]: '0'
-          }
-        }
-      }
-    }
-  }
+            [getAssetIdKey(mockMoonCatNFT)]: '0',
+          },
+        },
+      },
+    },
+  },
 }
 
 describe('Check if tokens match', () => {
@@ -96,13 +96,13 @@ describe('Check if tokens match', () => {
 describe('Check if token needs Network icon', () => {
   test('Comparing ETH to Ethereum Network, should return false', () => {
     expect(
-      checkIfTokenNeedsNetworkIcon(mockEthMainnet, ethToken.contractAddress)
+      checkIfTokenNeedsNetworkIcon(mockEthMainnet, ethToken.contractAddress),
     ).toBeFalsy()
   })
 
   test('Comparing BAT to Ethereum Network, should return true', () => {
     expect(
-      checkIfTokenNeedsNetworkIcon(mockEthMainnet, batToken.contractAddress)
+      checkIfTokenNeedsNetworkIcon(mockEthMainnet, batToken.contractAddress),
     ).toBeTruthy()
   })
 })
@@ -111,39 +111,39 @@ describe('searchNftCollectionsAndGetTotalNftsFound', () => {
   test('should return the correct count of assets in the registry', () => {
     const moonCatsCollectionAsset = {
       ...mockMoonCatNFT,
-      name: 'MoonCatsRescue'
+      name: 'MoonCatsRescue',
     }
 
     expect(
       searchNftCollectionsAndGetTotalNftsFound(
         'moon',
         [],
-        mockCollectionAssetsRegistry
-      ).totalNftsFound
+        mockCollectionAssetsRegistry,
+      ).totalNftsFound,
     ).toBe(0)
 
     expect(
       searchNftCollectionsAndGetTotalNftsFound(
         'moon',
         [moonCatsCollectionAsset],
-        mockCollectionAssetsRegistry
-      ).totalNftsFound
+        mockCollectionAssetsRegistry,
+      ).totalNftsFound,
     ).toBe(2)
 
     expect(
       searchNftCollectionsAndGetTotalNftsFound(
         'nothing',
         [moonCatsCollectionAsset],
-        mockCollectionAssetsRegistry
-      ).totalNftsFound
+        mockCollectionAssetsRegistry,
+      ).totalNftsFound,
     ).toBe(0)
 
     expect(
       searchNftCollectionsAndGetTotalNftsFound(
         'sun',
         [{ ...mockMoonCatNFT, name: 'SunCatsRescue' }],
-        mockCollectionAssetsRegistry
-      ).totalNftsFound
+        mockCollectionAssetsRegistry,
+      ).totalNftsFound,
     ).toBe(0)
   })
 })
@@ -154,12 +154,12 @@ describe('getTokenCollectionName', () => {
     const moonCatCollectionName = getTokenCollectionName(
       collectionNames,
       mockCollectionAssetIdsRegistry,
-      mockMoonCatNFT
+      mockMoonCatNFT,
     )
     const invisibleFriendCollectionName = getTokenCollectionName(
       collectionNames,
       mockCollectionAssetIdsRegistry,
-      mockErc721Token
+      mockErc721Token,
     )
     expect(moonCatCollectionName).toBe('MoonCatsRescue')
     expect(invisibleFriendCollectionName).toBe('Invisible Friends')
@@ -173,16 +173,16 @@ describe('isTokenWatchOnly', () => {
         mockMoonCatNFT,
         mockAccounts,
         mockUserTokenBalancesRegistry,
-        mockUserTokenBalancesRegistry
-      )
+        mockUserTokenBalancesRegistry,
+      ),
     ).toBe(false)
     expect(
       isTokenWatchOnly(
         mockMoonCatNFT,
         mockAccounts,
         mockEmptyUserTokenBalancesRegistry,
-        mockEmptyUserTokenBalancesRegistry
-      )
+        mockEmptyUserTokenBalancesRegistry,
+      ),
     ).toBe(true)
   })
 })

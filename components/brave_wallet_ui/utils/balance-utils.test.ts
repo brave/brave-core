@@ -10,7 +10,7 @@ import {
   getActiveWalletCount,
   getBalance,
   getPercentAmount,
-  setBalance
+  setBalance,
 } from './balance-utils'
 
 // mocks
@@ -21,12 +21,12 @@ import {
   mockEthAccountInfo,
   mockFilecoinAccount,
   mockSolanaAccount,
-  mockZecAccount
+  mockZecAccount,
 } from '../common/constants/mocks'
 import {
   mockBasicAttentionToken,
   mockBinanceCoinErc20Token,
-  mockERC20Token
+  mockERC20Token,
 } from '../stories/mock-data/mock-asset-options'
 
 describe('getBalance', () => {
@@ -40,15 +40,15 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
       getBalance(
         mockAccount.accountId,
         mockBasicAttentionToken,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+      ),
     ).toBe('123')
   })
 
@@ -62,15 +62,15 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
       getBalance(
         mockAccount.accountId,
         mockBinanceCoinErc20Token,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+      ),
     ).toBe('0')
   })
 
@@ -84,15 +84,15 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
       getBalance(
         mockAccount.accountId,
         mockBinanceCoinErc20Token,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+      ),
     ).toBe('0')
   })
 
@@ -106,21 +106,21 @@ describe('getBalance', () => {
       tokenBalancesRegistry,
       coinType: mockBasicAttentionToken.coin,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
       getBalance(
         mockAccount.accountId,
         mockBinanceCoinErc20Token,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+      ),
     ).toBe('0')
   })
 
   it('returns empty string if tokenBalancesRegistry is undefined', () => {
     expect(
-      getBalance(mockAccount.accountId, mockBinanceCoinErc20Token, undefined)
+      getBalance(mockAccount.accountId, mockBinanceCoinErc20Token, undefined),
     ).toBe('')
   })
 })
@@ -135,10 +135,10 @@ describe('getPercentAmount', () => {
       '100% of 1.000000000000000001 ETH',
       '1000000000000000001',
       1,
-      '1.000000000000000001'
+      '1.000000000000000001',
     ], // 1.000000000000000001 ---(100%)---> 1.000000000000000001
     ['100% of 50.297939 ETH', '50297939000000000000', 1, '50.297939'], // 50.297939 ---(100%)---> 50.297939
-    ['25% of 0.0001 ETH', '100000000000000', 0.25, '0.000025'] // 0.0001 ---(25%)---> 0.000025
+    ['25% of 0.0001 ETH', '100000000000000', 0.25, '0.000025'], // 0.0001 ---(25%)---> 0.000025
   ])(
     'should compute %s correctly',
     (_, balance: string, percent, expected: string) => {
@@ -151,7 +151,7 @@ describe('getPercentAmount', () => {
         tokenBalancesRegistry,
         coinType: mockERC20Token.coin,
         tokenId: '',
-        isShielded: false
+        isShielded: false,
       })
 
       expect(
@@ -159,10 +159,10 @@ describe('getPercentAmount', () => {
           mockERC20Token,
           mockAccount.accountId,
           percent,
-          tokenBalancesRegistry
-        )
+          tokenBalancesRegistry,
+        ),
       ).toBe(expected)
-    }
+    },
   )
 })
 
@@ -172,7 +172,7 @@ const mockAccounts = [
   mockFilecoinAccount,
   mockBitcoinAccount,
   mockBitcoinTestAccount,
-  mockZecAccount
+  mockZecAccount,
 ]
 
 const createMockRegistry = (balance: string) => {
@@ -187,7 +187,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.ETH,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   // Native MATIC
@@ -199,7 +199,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.ETH,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   // Native SOL
@@ -211,7 +211,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.SOL,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   // NATIVE FIL
@@ -223,7 +223,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.FIL,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   // NATIVE BTC
@@ -235,7 +235,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.BTC,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   // NATIVE TESTNET BTC
@@ -247,7 +247,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.BTC,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   // NATIVE ZEC
@@ -259,7 +259,7 @@ const createMockRegistry = (balance: string) => {
     tokenBalancesRegistry,
     coinType: BraveWallet.CoinType.ZEC,
     tokenId: '',
-    isShielded: false
+    isShielded: false,
   })
 
   return tokenBalancesRegistry
@@ -280,14 +280,14 @@ describe('getActiveWalletCount', () => {
       getActiveWalletCount(
         mockAccountIds,
         registry,
-        false //
-      )
+        false, //
+      ),
     ).toStrictEqual({
       [BraveWallet.CoinType.BTC]: 0,
       [BraveWallet.CoinType.ETH]: 0,
       [BraveWallet.CoinType.FIL]: 0,
       [BraveWallet.CoinType.ZEC]: 0,
-      [BraveWallet.CoinType.SOL]: 0
+      [BraveWallet.CoinType.SOL]: 0,
     })
   })
 
@@ -303,7 +303,7 @@ describe('getActiveWalletCount', () => {
       tokenBalancesRegistry,
       coinType: BraveWallet.CoinType.ETH,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     // TESTNET BTC
@@ -315,17 +315,17 @@ describe('getActiveWalletCount', () => {
       tokenBalancesRegistry,
       coinType: BraveWallet.CoinType.BTC,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
-      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, false)
+      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, false),
     ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 0,
       [BraveWallet.CoinType.SOL]: 0,
       [BraveWallet.CoinType.FIL]: 0,
       [BraveWallet.CoinType.ZEC]: 0,
-      [BraveWallet.CoinType.BTC]: 0
+      [BraveWallet.CoinType.BTC]: 0,
     })
   })
 
@@ -341,7 +341,7 @@ describe('getActiveWalletCount', () => {
       tokenBalancesRegistry,
       coinType: BraveWallet.CoinType.ETH,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     // TESTNET BTC
@@ -353,17 +353,17 @@ describe('getActiveWalletCount', () => {
       tokenBalancesRegistry,
       coinType: BraveWallet.CoinType.BTC,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
-      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, true)
+      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, true),
     ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 1,
       [BraveWallet.CoinType.SOL]: 0,
       [BraveWallet.CoinType.FIL]: 0,
       [BraveWallet.CoinType.ZEC]: 0,
-      [BraveWallet.CoinType.BTC]: 1
+      [BraveWallet.CoinType.BTC]: 1,
     })
   })
 
@@ -375,7 +375,7 @@ describe('getActiveWalletCount', () => {
       [BraveWallet.CoinType.SOL]: 1,
       [BraveWallet.CoinType.FIL]: 1,
       [BraveWallet.CoinType.ZEC]: 1,
-      [BraveWallet.CoinType.BTC]: 2 // mainnet and testnet accounts
+      [BraveWallet.CoinType.BTC]: 2, // mainnet and testnet accounts
     })
   })
 
@@ -394,7 +394,7 @@ describe('getActiveWalletCount', () => {
       tokenBalancesRegistry,
       coinType: BraveWallet.CoinType.ETH,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     const mockZecAccount2 = { ...mockZecAccount }
@@ -409,7 +409,7 @@ describe('getActiveWalletCount', () => {
       tokenBalancesRegistry,
       coinType: BraveWallet.CoinType.ZEC,
       tokenId: '',
-      isShielded: false
+      isShielded: false,
     })
 
     expect(
@@ -417,17 +417,17 @@ describe('getActiveWalletCount', () => {
         [
           ...mockAccountIds,
           mockEthAccountInfo2.accountId,
-          mockZecAccount2.accountId
+          mockZecAccount2.accountId,
         ],
         tokenBalancesRegistry,
-        true
-      )
+        true,
+      ),
     ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 2,
       [BraveWallet.CoinType.SOL]: 1,
       [BraveWallet.CoinType.FIL]: 1,
       [BraveWallet.CoinType.ZEC]: 2,
-      [BraveWallet.CoinType.BTC]: 2
+      [BraveWallet.CoinType.BTC]: 2,
     })
   })
 })

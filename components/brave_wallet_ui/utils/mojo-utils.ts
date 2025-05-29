@@ -13,11 +13,11 @@
  */
 export const toMojoUnion = <T extends {}>(
   union: T,
-  unionMemberKey: keyof T
+  unionMemberKey: keyof T,
 ) => {
   // typescript wants `undefined` values for other fields,
   // but mojom runtime wants no other properties assigned
   return {
-    [unionMemberKey]: union[unionMemberKey]
+    [unionMemberKey]: union[unionMemberKey],
   } as T
 }

@@ -55,7 +55,7 @@ export function objectEquals(x: MaybeObj, y: MaybeObj): boolean {
   const xKeys = Object.keys(x)
   const yKeys = Object.keys(y)
   return (
-    yKeys.every((yKey) => xKeys.includes(yKey)) &&
-    xKeys.every((xKey) => objectEquals(x[xKey], y[xKey]))
+    yKeys.every((yKey) => xKeys.includes(yKey))
+    && xKeys.every((xKey) => objectEquals(x[xKey], y[xKey]))
   )
 }

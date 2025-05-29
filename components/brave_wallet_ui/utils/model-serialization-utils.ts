@@ -10,25 +10,25 @@ import type {
   SerializableTimeDelta,
   SerializableTransactionInfo,
   SerializableTxDataUnion,
-  TimeDelta
+  TimeDelta,
 } from '../constants/types'
 
 export function makeSerializableTimeDelta(
-  td: TimeDelta | SerializableTimeDelta
+  td: TimeDelta | SerializableTimeDelta,
 ): SerializableTimeDelta {
   return {
-    microseconds: Number(td.microseconds)
+    microseconds: Number(td.microseconds),
   }
 }
 
 export function deserializeTimeDelta(td: SerializableTimeDelta): TimeDelta {
   return {
-    microseconds: BigInt(td.microseconds)
+    microseconds: BigInt(td.microseconds),
   }
 }
 
 export function makeSerializableSolanaTxDataSendOptions(
-  solanaTxData: BraveWallet.SolanaTxData
+  solanaTxData: BraveWallet.SolanaTxData,
 ): SerializableSolanaTxDataSendOptions {
   if (!solanaTxData.sendOptions) {
     return undefined
@@ -38,14 +38,14 @@ export function makeSerializableSolanaTxDataSendOptions(
     ...solanaTxData.sendOptions,
     maxRetries: solanaTxData.sendOptions?.maxRetries
       ? {
-          maxRetries: Number(solanaTxData.sendOptions.maxRetries)
+          maxRetries: Number(solanaTxData.sendOptions.maxRetries),
         }
-      : undefined
+      : undefined,
   }
 }
 
 export function makeSerializableSolanaTxData(
-  solanaTxData: BraveWallet.SolanaTxData
+  solanaTxData: BraveWallet.SolanaTxData,
 ): SerializableSolanaTxData {
   return {
     ...solanaTxData,
@@ -58,17 +58,17 @@ export function makeSerializableSolanaTxData(
           maxRetries: solanaTxData.sendOptions?.maxRetries
             ? {
                 maxRetries: Number(
-                  solanaTxData.sendOptions.maxRetries.maxRetries
-                )
+                  solanaTxData.sendOptions.maxRetries.maxRetries,
+                ),
               }
-            : undefined
+            : undefined,
         }
-      : undefined
+      : undefined,
   }
 }
 
 export function deserializeSolanaTxData(
-  solanaTxData: SerializableSolanaTxData
+  solanaTxData: SerializableSolanaTxData,
 ): BraveWallet.SolanaTxData {
   return {
     ...solanaTxData,
@@ -81,35 +81,35 @@ export function deserializeSolanaTxData(
           maxRetries: solanaTxData.sendOptions?.maxRetries
             ? {
                 maxRetries: BigInt(
-                  solanaTxData.sendOptions.maxRetries.maxRetries
-                )
+                  solanaTxData.sendOptions.maxRetries.maxRetries,
+                ),
               }
-            : undefined
+            : undefined,
         }
-      : undefined
+      : undefined,
   }
 }
 
 export function makeSerializableTransaction(
-  tx: BraveWallet.TransactionInfo
+  tx: BraveWallet.TransactionInfo,
 ): SerializableTransactionInfo {
   return {
     ...tx,
     txDataUnion: tx.txDataUnion.solanaTxData
       ? {
           solanaTxData: makeSerializableSolanaTxData(
-            tx.txDataUnion.solanaTxData
-          )
+            tx.txDataUnion.solanaTxData,
+          ),
         }
       : (tx.txDataUnion as SerializableTxDataUnion),
     confirmedTime: makeSerializableTimeDelta(tx.confirmedTime),
     createdTime: makeSerializableTimeDelta(tx.createdTime),
-    submittedTime: makeSerializableTimeDelta(tx.submittedTime)
+    submittedTime: makeSerializableTimeDelta(tx.submittedTime),
   }
 }
 
 export function deserializeTransaction(
-  tx: SerializableTransactionInfo
+  tx: SerializableTransactionInfo,
 ): BraveWallet.TransactionInfo {
   const txDataUnion = tx.txDataUnion.solanaTxData
     ? { solanaTxData: deserializeSolanaTxData(tx.txDataUnion.solanaTxData) }
@@ -120,6 +120,6 @@ export function deserializeTransaction(
     txDataUnion: txDataUnion as BraveWallet.TxDataUnion,
     confirmedTime: deserializeTimeDelta(tx.confirmedTime),
     createdTime: deserializeTimeDelta(tx.createdTime),
-    submittedTime: deserializeTimeDelta(tx.submittedTime)
+    submittedTime: deserializeTimeDelta(tx.submittedTime),
   }
 }
