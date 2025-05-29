@@ -245,13 +245,6 @@ void AIChatUIPageHandler::HandleWebStateDestroyed() {
   chat_context_observer_.reset();
 }
 
-void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
-  // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
-  // where it would like to remain associated with the Tab and move away from
-  // Conversations of previous navigations. That doens't apply to the standalone
-  // UI where it will keep a previous navigation's conversation active.
-  chat_ui_->OnNewDefaultConversation();
-}
 void AIChatUIPageHandler::CloseUI() {
   // TODO: Fix
   //  ai_chat::CloseActivity(owner_web_state_);
@@ -302,9 +295,26 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
 
             AIChatServiceFactory::GetForProfile(
                 ProfileIOS::FromBrowserState(web_state->GetBrowserState()))
-                ->AssociateContent(tab_helper, conversation_uuid);
+                ->MaybeAssociateContent(tab_helper, conversation_uuid);
           },
           conversation_uuid));
+}
+
+void AIChatUIPageHandler::DisassociateTab(
+    mojom::TabDataPtr mojom_tab,
+    const std::string& conversation_uuid) {
+  auto* web_state = GetTabFromId(profile_, mojom_tab->id);
+  if (!web_state) {
+    return;
+  }
+
+  auto* tab_helper = ai_chat::AIChatTabHelper::FromWebState(web_state);
+  if (!tab_helper) {
+    return;
+  }
+
+  AIChatServiceFactory::GetForProfile(profile_)->DisassociateContent(
+      tab_helper, conversation_uuid);
 }
 
 void AIChatUIPageHandler::NewConversation(

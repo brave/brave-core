@@ -64,6 +64,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       override;
   void AssociateTab(mojom::TabDataPtr tab,
                     const std::string& conversation_uuid) override;
+  void DisassociateTab(::ai_chat::mojom::TabDataPtr tab,
+                       const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
@@ -90,8 +92,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void HandleWebStateDestroyed();
 
   // AIChatTabHelper::Observer
-  void OnAssociatedContentNavigated(int new_navigation_id) override;
-
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<web::WebState> owner_web_state_ = nullptr;
   raw_ptr<ProfileIOS> profile_ = nullptr;

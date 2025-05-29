@@ -40,7 +40,7 @@ class AIChatTabHelper : public web::WebStateObserver,
                         public mojom::PageContentExtractorHost,
                         public AssociatedContentDriverIOS {
  public:
-  using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
+  using GetPageContentCallback = GetPageContentCallback;
 
   static void BindPageContentExtractorHost(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
