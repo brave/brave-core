@@ -71,7 +71,7 @@ extends SettingBraveDataCollectionPageElementBase
         },
       },
       showRestartForMetricsReporting_: Boolean,
-      showNewTabPageSponsoredImagesSurveyPanelist_: Boolean,
+      showSurveyPanelist_: Boolean,
     }
   }
 
@@ -79,7 +79,7 @@ extends SettingBraveDataCollectionPageElementBase
   private declare statsUsagePingEnabledPref_: Object
   private declare metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
   private declare showRestartForMetricsReporting_: boolean
-  private declare showNewTabPageSponsoredImagesSurveyPanelist_: boolean
+  private declare showSurveyPanelist_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 
@@ -108,8 +108,7 @@ extends SettingBraveDataCollectionPageElementBase
     this.browserProxy_.getStatsUsagePingEnabled().then(
       (enabled: boolean) => setStatsUsagePingEnabledPref(enabled))
 
-    this.showNewTabPageSponsoredImagesSurveyPanelist_ =
-      loadTimeData.getBoolean('isSurveyPanelistAllowed')
+    this.showSurveyPanelist_ = loadTimeData.getBoolean('isSurveyPanelistAllowed')
   }
 
   setP3AEnabledPref_(enabled: boolean) {
@@ -176,7 +175,7 @@ extends SettingBraveDataCollectionPageElementBase
     window.open("chrome://restart", "_self")
   }
 
-  onNewTabPageSponsoredImagesSurveyPanelistChange_() {
+  onSurveyPanelistLinkClicked_() {
     const router = Router.getInstance()
     router.navigateTo(router.getRoutes().BRAVE_SURVEY_PANELIST)
   }

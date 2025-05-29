@@ -1699,9 +1699,6 @@ Leo AI. This action can't be undone.
   <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">
     Survey Panelist
   </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_DESC" desc="Description for an item in the 'Survey Panelist' section of Brave Settings">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  </message>
   <message name="IDS_SETTINGS_SURVEY_PANELIST_ABOUT_LABEL" desc="Label for the about survey panelist section">
     About Survey Panelist
   </message>
@@ -1711,11 +1708,11 @@ Leo AI. This action can't be undone.
   <message name="IDS_SETTINGS_SURVEY_PANELIST_ABOUT_DESC_2" desc="Description for learning more about becoming a survey panelist">
     Nulla vitae elit libero, a pharetra augue. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_CONTROL_LABEL" desc="The text for settings control to enable survey panelist">
-    Help us improve Brave
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_LABEL" desc="The text for settings option to enable survey panelist">
+    Allow Brave surveys
   </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_CONTROL_DESC" desc="The description for settings control to enable survey panelist">
-    Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+  <message name="IDS_SETTINGS_SURVEY_PANELIST_DESC" desc="The description for settings option to enable survey panelist">
+    Show private surveys from Brave in the new tab page. Surveys help us build better features, and measure the effectiveness of ad campaigns in the browser.
   </message>
 
   <!-- Settings / Playlist -->

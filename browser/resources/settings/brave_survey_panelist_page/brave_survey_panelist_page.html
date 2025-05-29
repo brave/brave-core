@@ -3,27 +3,9 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<style include="settings-shared md-select">
-  .header {
-    padding: 24px;
-  }
-
-  .main-header {
-    font: 600 16px/26px 'Roboto', sans-serif;
-  }
-</style>
-
-<div class="settings-box header">
-  <div class="flex">
-    <div class="main-header">$i18n{braveSurveyPanelistAboutLabel}</div>
-    <div class="label secondary">
-      <p>$i18n{braveSurveyPanelistAboutDesc1}</p>
-      <p>$i18nRaw{braveSurveyPanelistAboutDesc2}</p>
-    </div>
-  </div>
-</div>
-<settings-toggle-button class="cr-row hr" id="survey-panelist"
+<settings-toggle-button class="hr" id="survey-panelist"
   pref="{{prefs.brave.new_tab_page.sponsored_images.survey_panelist}}"
-  label="$i18n{braveSurveyPanelistControlLabel}"
-  sub-label="$i18n{braveSurveyPanelistControlDesc}">
+  label="$i18n{braveSurveyPanelistLabel}"
+  sub-label="$i18n{braveSurveyPanelistDesc}"
+  learn-more-url="$i18n{surveyPanelistLearnMoreURL}">
 </settings-toggle-button>
