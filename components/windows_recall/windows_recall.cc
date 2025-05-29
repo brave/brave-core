@@ -5,9 +5,27 @@
 
 #include "brave/components/windows_recall/windows_recall.h"
 
+#include <memory>
+
+#include "base/supports_user_data.h"
 #include "base/win/windows_version.h"
-#include "brave/components/windows_recall/windows_recall_service.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+
+namespace {
+
+struct WindowsRecallData : public base::SupportsUserData::Data {
+  static const int kKey = 0;  // Only address is used.
+
+  explicit WindowsRecallData(const bool enabled)
+      : is_windows_recall_enabled(enabled) {}
+
+  const bool is_windows_recall_enabled = false;
+};
+
+}  // namespace
 
 namespace windows_recall {
 
@@ -25,16 +43,22 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
 WindowsRecallState GetWindowsRecallState(
     content::BrowserContext* browser_context) {
-  if (!IsWindowsRecallAvailable()) {
+  if (!IsWindowsRecallAvailable() || browser_context->IsOffTheRecord()) {
     return WindowsRecallState::kUnavailable;
   }
 
-  auto* service = WindowsRecallService::Get(browser_context);
-  if (!service) {
-    return WindowsRecallState::kUnavailable;
+  bool enabled = false;
+  if (auto* windows_recall_data = static_cast<WindowsRecallData*>(
+          browser_context->GetUserData(&WindowsRecallData::kKey))) {
+    enabled = windows_recall_data->is_windows_recall_enabled;
+  } else {
+    // Pref contains the blocked state, invert the value.
+    enabled = !user_prefs::UserPrefs::Get(browser_context)
+                   ->GetBoolean(prefs::kBlockWindowsRecall);
+    browser_context->SetUserData(&WindowsRecallData::kKey,
+                                 std::make_unique<WindowsRecallData>(enabled));
   }
-  return service->IsWindowsRecallEnabled() ? WindowsRecallState::kEnabled
-                                           : WindowsRecallState::kDisabled;
+  return enabled ? WindowsRecallState::kEnabled : WindowsRecallState::kDisabled;
 }
 
 }  // namespace windows_recall
