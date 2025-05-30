@@ -659,6 +659,11 @@ void AIChatService::MaybeUnloadConversation(
     return;
   }
 
+  if (IsAIChatHistoryEnabled() && conversation_handler->IsRequestInProgress()) {
+    // Don't unload if it's still processing a response
+    return;
+  }
+
   bool has_history = conversation_handler->HasAnyHistory();
 
   // We can keep a conversation with history in memory until there is no active
@@ -680,8 +685,9 @@ void AIChatService::MaybeUnloadConversation(
            << conversation_handlers_.size()
            << " ConversationHandler instances.";
   if (!IsAIChatHistoryEnabled() || !has_history) {
-    // Can erase because no active UI and no history, so it's
-    // not a real / persistable conversation
+    // Can erase metadata because no active UI and no history, so it's
+    // not a real / persistable conversation and won't be able
+    // to be loaded in the future.
     conversations_.erase(uuid);
     std::erase_if(content_conversations_,
                   [&uuid](const auto& kv) { return kv.second == uuid; });
