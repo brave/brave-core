@@ -29,9 +29,9 @@ class AIChatUntrustedConversationUI : public web::WebUIIOSController {
       const AIChatUntrustedConversationUI&) = delete;
   ~AIChatUntrustedConversationUI() override;
 
-  void BindInterface(
+  void BindInterfaceUntrustedUIHandler(
       mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver);
-  void BindInterface(
+  void BindInterfaceUntrustedConversationHandler(
       mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
           receiver);
 

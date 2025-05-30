@@ -150,16 +150,33 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   // TODO: Fix
   //  content::URLDataSource::Add(
   //      profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
+
+  // Bind Mojom Interface
+  web_ui->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->AddUntrustedInterface(
+          url,
+          base::BindRepeating(
+              &AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler,
+              base::Unretained(this)));
+
+  web_ui->GetWebState()
+      ->GetInterfaceBinderForMainFrame()
+      ->AddUntrustedInterface(
+          url,
+          base::BindRepeating(&AIChatUntrustedConversationUI::
+                                  BindInterfaceUntrustedConversationHandler,
+                              base::Unretained(this)));
 }
 
 AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
 
-void AIChatUntrustedConversationUI::BindInterface(
+void AIChatUntrustedConversationUI::BindInterfaceUntrustedUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
   ui_handler_ = std::make_unique<UIHandler>(web_ui(), std::move(receiver));
 }
 
-void AIChatUntrustedConversationUI::BindInterface(
+void AIChatUntrustedConversationUI::BindInterfaceUntrustedConversationHandler(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
         receiver) {
   // Get conversation from URL

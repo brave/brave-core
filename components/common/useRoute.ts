@@ -75,13 +75,13 @@ export const useRoute = <Route extends string>(route: Route): RouteParams<Route>
   const [params, setParams] = useState(() => extractParams(window.location.href, route))
 
   useEffect(() => {
-    const handler = (e: NavigateEvent) => {
-      const params = extractParams(e.destination.url, route)
-      if (params) e.intercept()
-      setParams(params)
-    }
-
     if (typeof window.navigation !== 'undefined') {
+      const handler = (e: NavigateEvent) => {
+        const params = extractParams(e.destination.url, route)
+        if (params) e.intercept()
+        setParams(params)
+      }
+
       window.navigation.addEventListener('navigate', handler)
       return () => {
         window.navigation.removeEventListener('navigate', handler)
