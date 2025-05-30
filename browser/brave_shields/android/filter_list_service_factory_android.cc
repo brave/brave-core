@@ -16,10 +16,6 @@ static jlong JNI_FilterListServiceFactory_GetInterfaceToFilterListService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
-  if (profile == nullptr) {
-    return static_cast<jlong>(-1);
-  }
-
   auto pending = brave_shields::FilterListServiceFactory::GetInstance()
                      ->GetRemoteForProfile(profile);
 

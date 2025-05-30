@@ -9,7 +9,8 @@ import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -17,38 +18,37 @@ import org.chromium.mojo.bindings.Interface.Proxy.Handler;
 import org.chromium.mojo.system.MessagePipeHandle;
 import org.chromium.mojo.system.impl.CoreImpl;
 
+@NullMarked
 @JNINamespace("chrome::android")
 public class FilterListServiceFactory {
     private static final Object sLock = new Object();
-    private static FilterListServiceFactory instance;
+    private static @Nullable FilterListServiceFactory sInstance;
 
     public static FilterListServiceFactory getInstance() {
         synchronized (sLock) {
-            if (instance == null) {
-                instance = new FilterListServiceFactory();
+            if (sInstance == null) {
+                sInstance = new FilterListServiceFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private FilterListServiceFactory() {}
 
-    public FilterListAndroidHandler getFilterListAndroidHandler(
-            ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // Always use regular profile
-        if (profile == null) {
-            return null;
-        }
+    public @Nullable FilterListAndroidHandler getFilterListAndroidHandler(
+            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         long nativeHandle =
                 FilterListServiceFactoryJni.get().getInterfaceToFilterListService(profile);
-        if (nativeHandle == -1) {
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        if (!handle.isValid()) {
             return null;
         }
-        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         FilterListAndroidHandler filterListAndroidHandler =
                 FilterListAndroidHandler.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) filterListAndroidHandler).getProxyHandler();
-        handler.setErrorHandler(connectionErrorHandler);
+        if (connectionErrorHandler != null) {
+            Handler handler = ((Interface.Proxy) filterListAndroidHandler).getProxyHandler();
+            handler.setErrorHandler(connectionErrorHandler);
+        }
 
         return filterListAndroidHandler;
     }

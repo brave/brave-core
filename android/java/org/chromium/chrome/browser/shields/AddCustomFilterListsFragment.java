@@ -26,12 +26,9 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.url.mojom.Url;
 
-public class AddCustomFilterListsFragment extends BravePreferenceFragment
-        implements ConnectionErrorHandler {
+public class AddCustomFilterListsFragment extends BravePreferenceFragment {
     private FilterListAndroidHandler mFilterListAndroidHandler;
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -97,19 +94,14 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment
                 });
     }
 
-    @Override
-    public void onConnectionError(MojoException e) {
-        mFilterListAndroidHandler = null;
-        initFilterListAndroidHandler();
-    }
-
     private void initFilterListAndroidHandler() {
         if (mFilterListAndroidHandler != null) {
             return;
         }
 
         mFilterListAndroidHandler =
-                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
+                FilterListServiceFactory.getInstance()
+                        .getFilterListAndroidHandler(getProfile(), null);
     }
 
     @Override
@@ -124,6 +116,7 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment
     public void onDestroy() {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
+            mFilterListAndroidHandler = null;
         }
         super.onDestroy();
     }
