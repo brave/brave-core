@@ -85,9 +85,9 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/build/android:jni_headers",
-      "//chrome/browser/ui:tab_model_enums_java",
       "//chrome/browser/ui:ui",
       "//chrome/browser/ui/android/tab_model",
+      "//chrome/browser/ui/android/tab_model:enums_java",
     ]
   } else {
     sources += [
