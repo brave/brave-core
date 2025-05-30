@@ -8,7 +8,6 @@
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_rewards/core/mojom/rewards_panel.mojom.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "url/gurl.h"
 
@@ -32,18 +31,11 @@ class RewardsPanelCoordinator
   // Opens the Rewards panel with the default view.
   bool OpenRewardsPanel();
 
-  // Opens the Rewards panel with setup view.
-  bool ShowRewardsSetup();
-
-  // Opens the Rewards panel in order to display the currently scheduled
-  // adaptive captcha for the user.
-  bool ShowAdaptiveCaptcha();
-
   class Observer : public base::CheckedObserver {
    public:
     // Called when an application component requests that the Rewards panel be
     // opened.
-    virtual void OnRewardsPanelRequested(const mojom::RewardsPanelArgs& args) {}
+    virtual void OnRewardsPanelRequested() {}
   };
 
   void AddObserver(Observer* observer);
@@ -51,17 +43,9 @@ class RewardsPanelCoordinator
   using Observation =
       base::ScopedObservation<RewardsPanelCoordinator, Observer>;
 
-  // Retrieves the `mojom::RewardsPanelArgs` associated with the most recent
-  // Rewards panel request.
-  const mojom::RewardsPanelArgs& panel_args() const { return panel_args_; }
-
  private:
   friend class BrowserUserData<RewardsPanelCoordinator>;
 
-  // Opens the Rewards panel using the specified arguments.
-  bool OpenWithArgs(mojom::RewardsPanelArgs&& args);
-
-  mojom::RewardsPanelArgs panel_args_;
   base::ObserverList<Observer> observers_;
 
   BROWSER_USER_DATA_KEY_DECL();
