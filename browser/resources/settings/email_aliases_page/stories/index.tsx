@@ -179,7 +179,8 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
 
   async requestAuthentication (email: string) {
     if (Math.random() < 1/3) {
-      return { errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
+      return {
+        errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
     }
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
