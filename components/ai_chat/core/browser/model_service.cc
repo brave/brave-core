@@ -120,25 +120,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Mistral AI";
-      options->name = "mixtral-8x7b-instruct";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = kFreemiumAccess;
-      options->max_associated_content_length = 64000;
-      options->long_conversation_warning_character_limit = 9700;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-leo-expanded";
-      model->display_name = "Mixtral";
-      model->vision_support = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    {
-      auto options = mojom::LeoModelOptions::New();
       options->display_maker = "DeepSeek";
       options->name = "bedrock-us.deepseek-r1-v1:0";
       options->category = mojom::ModelCategory::CHAT;
@@ -357,14 +338,22 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
   if (ai_chat::features::IsAIChatEnabled()) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
-    // migrate model key from "chat-default" to "chat-basic"
-    static const std::string kDefaultModelBasicFrom = "chat-default";
-    static const std::string kDefaultModelBasicTo = "chat-basic";
+    // Migrate old model keys to "chat-automatic"
+    constexpr std::array<const char*, 2> kOldModelKeys = {
+        // Added: June 6, 2024. Checks can be removed eventually
+        "chat-default",
+        // Added: May 28, 2025. Checks can be removed eventually
+        "chat-leo-expanded",
+    };
+
     if (auto* default_model_value =
             profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
-      if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
-                                           kDefaultModelBasicFrom)) {
-        profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+      const std::string& current_value = default_model_value->GetString();
+      for (const char* old_key : kOldModelKeys) {
+        if (base::EqualsCaseInsensitiveASCII(current_value, old_key)) {
+          profile_prefs->ClearPref(kDefaultModelKey);
+          break;
+        }
       }
     }
   }
