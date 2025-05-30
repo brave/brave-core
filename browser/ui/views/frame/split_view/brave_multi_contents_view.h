@@ -35,6 +35,7 @@ class BraveMultiContentsView : public MultiContentsView,
 
  private:
   friend class SplitViewLocationBarBrowserTest;
+  friend class SideBySideEnabledBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
 
