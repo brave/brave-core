@@ -21,6 +21,7 @@ import ErrorInvalidEndpointURL from '../alerts/error_invalid_endpoint_url'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import ErrorServiceOverloaded from '../alerts/error_service_overloaded'
 import LongConversationInfo from '../alerts/long_conversation_info'
+import TemporaryChatInfo from '../alerts/temporary_chat_info'
 import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import ConversationsList from '../conversations_list'
@@ -39,9 +40,9 @@ import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_quest
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
-import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import Attachments from '../attachments'
 import { useIsElementSmall } from '../../hooks/useIsElementSmall'
+import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -93,6 +94,8 @@ function Main() {
   const showAttachments = useSupportsAttachments()
     && conversationContext.showAttachments
     && aiChatContext.tabs.length > 0
+
+  const showTemporaryChatInfo = conversationContext.isTemporaryChat
 
   let currentErrorElement = null
 
@@ -172,7 +175,8 @@ function Main() {
     (conversationContext.suggestedQuestions.length > 0 ||
       SUGGESTION_STATUS_SHOW_BUTTON.has(conversationContext.suggestionStatus))
 
-  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
+  const hasConversationStarted =
+    useHasConversationStarted(conversationContext.conversationUuid)
 
   const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
     if (aiChatContext.isMobile && aiChatContext.hasAcceptedAgreement &&
@@ -232,6 +236,12 @@ function Main() {
             {aiChatContext.hasAcceptedAgreement && (
               <>
                 <ModelIntro />
+
+                {showTemporaryChatInfo && (
+                  <div className={styles.promptContainer}>
+                    <TemporaryChatInfo />
+                  </div>
+                )}
 
                 {conversationContext.associatedContentInfo && conversationContext.shouldSendPageContents && (
                   <div className={styles.siteTitleContainer}>
@@ -336,7 +346,7 @@ function Main() {
           )}
           <ToolsButtonMenu {...conversationContext} />
           <InputBox
-            conversationStarted={isVisible}
+            conversationStarted={hasConversationStarted}
             context={{ ...conversationContext, ...aiChatContext }}
             maybeShowSoftKeyboard={maybeShowSoftKeyboard}
           />

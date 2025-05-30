@@ -165,8 +165,7 @@ class AIChatService : public KeyedService,
   void EnableStoragePref() override;
   void DismissStorageNotice() override;
   void DismissPremiumPrompt() override;
-  void GetVisibleConversations(
-      GetVisibleConversationsCallback callback) override;
+  void GetConversations(GetConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
   void DeleteConversation(const std::string& id) override;
@@ -218,6 +217,11 @@ class AIChatService : public KeyedService,
 
   void SetTabTrackerServiceForTesting(TabTrackerService* tab_tracker_service) {
     tab_tracker_service_ = tab_tracker_service;
+  }
+
+  void SetDatabaseForTesting(
+      base::SequenceBound<std::unique_ptr<AIChatDatabase>> db) {
+    ai_chat_db_ = std::move(db);
   }
 
  private:
@@ -301,7 +305,7 @@ class AIChatService : public KeyedService,
   base::FilePath profile_path_;
 
   // Storage for conversations
-  base::SequenceBound<AIChatDatabase> ai_chat_db_;
+  base::SequenceBound<std::unique_ptr<AIChatDatabase>> ai_chat_db_;
 
   // nullopt if haven't started fetching, empty if done fetching
   std::optional<std::vector<ConversationMapCallback>>

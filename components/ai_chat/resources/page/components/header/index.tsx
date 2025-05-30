@@ -39,7 +39,9 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
   const shouldDisplayEraseAction = (!aiChatContext.isStandalone || isMobile) &&
     conversationContext.conversationHistory.length >= 1
 
-  const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
+  const activeConversation = aiChatContext.conversations.find(
+    (c: Conversation) => c.uuid === conversationContext.conversationUuid
+  )
   const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !isMobile
   const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
   const supportsAttachments = useSupportsAttachments()

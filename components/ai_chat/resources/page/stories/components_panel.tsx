@@ -82,6 +82,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
+    temporary: false
   },
   {
     title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
@@ -92,6 +93,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
+    temporary: false
   },
   {
     title: '',
@@ -102,6 +104,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
+    temporary: false
   }
 ]
 
@@ -541,7 +544,7 @@ type CustomArgs = {
   hasConversation: boolean
   editingConversationId: string | null
   deletingConversationId: string | null
-  visibleConversationListCount: number
+  conversationListCount: number
   hasSuggestedQuestions: boolean
   hasAssociatedContent: boolean
   isFeedbackFormVisible: boolean
@@ -566,13 +569,14 @@ type CustomArgs = {
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
+  isTemporaryChat: boolean
 }
 
 const args: CustomArgs = {
   initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
-  visibleConversationListCount: CONVERSATIONS.length,
+  conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
   editingConversationId: null,
@@ -600,7 +604,8 @@ const args: CustomArgs = {
   showAttachments: true,
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
-  ratingTurnUuid: undefined
+  ratingTurnUuid: undefined,
+  isTemporaryChat: false
 }
 
 const meta: Meta<CustomArgs> = {
@@ -622,7 +627,7 @@ const meta: Meta<CustomArgs> = {
       options: MODELS.map(model => model.displayName),
       control: { type: 'select' }
     },
-    visibleConversationListCount: {
+    conversationListCount: {
       control: { type: 'number' }
     },
     deletingConversationId: {
@@ -679,19 +684,21 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
 
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
-  let visibleConversations: typeof CONVERSATIONS = []
-  for (let i = 0; i < Math.floor(options.args.visibleConversationListCount / CONVERSATIONS.length); i++) {
-    visibleConversations = visibleConversations.concat(CONVERSATIONS)
+  let conversations: typeof CONVERSATIONS = []
+
+  if (CONVERSATIONS.length <= options.args.conversationListCount) {
+    conversations = conversations.concat(CONVERSATIONS)
+  } else {
+    const remainingConversationsCount = options.args.conversationListCount - conversations.length
+    conversations = conversations.concat(CONVERSATIONS.slice(0, remainingConversationsCount))
   }
-  const remainingConversationsCount = options.args.visibleConversationListCount % CONVERSATIONS.length
-  visibleConversations = visibleConversations.concat(CONVERSATIONS.slice(0, remainingConversationsCount))
 
   const aiChatContext: AIChatContext = {
     conversationEntriesComponent: StorybookConversationEntries,
     initialized: options.args.initialized,
     editingConversationId: options.args.editingConversationId,
     deletingConversationId: options.args.deletingConversationId,
-    visibleConversations,
+    conversations,
     isStoragePrefEnabled: options.args.isStoragePrefEnabled,
     hasAcceptedAgreement: options.args.hasAcceptedAgreement,
     isPremiumStatusFetching: false,
@@ -779,6 +786,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     generatedUrlToBeOpened: options.args.generatedUrlToBeOpened,
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,
+    isTemporaryChat: options.args.isTemporaryChat,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,
@@ -804,7 +812,10 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setIgnoreExternalLinkWarning: () => { },
     handleCloseRateMessagePrivacyModal:
       () => setArgs({ ratingTurnUuid: undefined }),
-    handleRateMessage: () => Promise.resolve()
+    handleRateMessage: () => Promise.resolve(),
+    setTemporary: (temporary: boolean) => {
+      setArgs({ isTemporaryChat: temporary })
+    }
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {

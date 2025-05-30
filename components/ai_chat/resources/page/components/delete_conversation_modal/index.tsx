@@ -15,7 +15,7 @@ export default function DeleteConversationModal() {
   const aiChatContext = useAIChat()
 
   // Computed
-  const title = aiChatContext.visibleConversations.find(
+  const title = aiChatContext.conversations.find(
         (conversation) =>
           conversation.uuid === aiChatContext.deletingConversationId
       )?.title || getLocale('conversationListUntitled')

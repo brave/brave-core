@@ -152,6 +152,64 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;
 };
 
+class MockAIChatDatabase : public AIChatDatabase {
+ public:
+  MockAIChatDatabase()
+      : AIChatDatabase(base::FilePath(),
+                       os_crypt_async::GetTestEncryptorForTesting()) {}
+  ~MockAIChatDatabase() override = default;
+
+  MOCK_METHOD(bool,
+              AddConversation,
+              (mojom::ConversationPtr,
+               std::vector<std::string>,
+               mojom::ConversationTurnPtr),
+              (override));
+
+  MOCK_METHOD(bool,
+              AddConversationEntry,
+              (std::string_view,
+               mojom::ConversationTurnPtr,
+               std::optional<std::string_view>,
+               std::optional<std::string>),
+              (override));
+
+  MOCK_METHOD(bool,
+              AddOrUpdateAssociatedContent,
+              (std::string_view,
+               std::vector<mojom::AssociatedContentPtr>,
+               std::vector<std::string>),
+              (override));
+
+  MOCK_METHOD(bool,
+              UpdateConversationTitle,
+              (std::string_view, std::string_view),
+              (override));
+
+  MOCK_METHOD(bool,
+              UpdateConversationTokenInfo,
+              (std::string_view, uint64_t, uint64_t),
+              (override));
+
+  MOCK_METHOD(bool, DeleteConversationEntry, (std::string_view), (override));
+  MOCK_METHOD(bool, DeleteConversation, (std::string_view), (override));
+  MOCK_METHOD(bool, DeleteAllData, (), (override));
+  MOCK_METHOD(bool,
+              DeleteAssociatedWebContent,
+              (std::optional<base::Time>, std::optional<base::Time>),
+              (override));
+
+  MOCK_METHOD(std::vector<mojom::ConversationPtr>,
+              GetAllConversations,
+              (),
+              (override));
+
+  MOCK_METHOD(mojom::ConversationArchivePtr,
+              GetConversationData,
+              (std::string_view),
+              (override));
+};
+
 }  // namespace
 
 class AIChatServiceUnitTest : public testing::Test,
@@ -223,15 +281,14 @@ class AIChatServiceUnitTest : public testing::Test,
     CreateService();
   }
 
-  void ExpectVisibleConversationsSize(base::Location location, size_t size) {
+  void ExpectConversationsSize(base::Location location, size_t size) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    client_->service_remote()->GetVisibleConversations(
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::ConversationPtr> conversations) {
-              EXPECT_EQ(conversations.size(), size);
-              run_loop.Quit();
-            }));
+    client_->service_remote()->GetConversations(base::BindLambdaForTesting(
+        [&](std::vector<mojom::ConversationPtr> conversations) {
+          EXPECT_EQ(conversations.size(), size);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
@@ -331,29 +388,39 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
-  // Shouldn't get any visible conversations when no conversations have messages
-  EXPECT_CALL(*client_, OnConversationListChanged(testing::IsEmpty()))
-      .Times(testing::AnyNumber());
+  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(1))).Times(2);
+  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(2))).Times(2);
+  // 1 extra calls in OnLoadConversationsLazyData if history is enabled.
+  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(3)))
+      .Times(IsAIChatHistoryEnabled() ? 2 : 1);
+  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(0))).Times(1);
 
   ConversationHandler* conversation_handler1 = CreateConversation();
 
   ConversationHandler* conversation_handler2 = CreateConversation();
 
-  // Shouldn't "display" any conversations without messages
-  ExpectVisibleConversationsSize(FROM_HERE, 0);
+  ConversationHandler* temporary_conversation = CreateConversation();
+  temporary_conversation->SetTemporary(true);
+
+  ExpectConversationsSize(FROM_HERE, 3);
 
   // Before connecting any clients to the conversations, none should be deleted
-  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 3u);
 
   // Connect a client then disconnect
   auto client1 = CreateConversationClient(conversation_handler1);
   DisconnectConversationClient(client1.get());
   // Only 1 should be deleted
-  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
 
   // Connect a client then disconnect
   auto client2 = CreateConversationClient(conversation_handler2);
   DisconnectConversationClient(client2.get());
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+
+  // Connect a client then disconnect for temporary conversation
+  auto temp_client = CreateConversationClient(temporary_conversation);
+  DisconnectConversationClient(temp_client.get());
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
   testing::Mock::VerifyAndClearExpectations(client_.get());
@@ -362,12 +429,15 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
 
 TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   // Should have these combinations at some point
-  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(0)))
-      .Times(testing::AtLeast(1));
   EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(1)))
       .Times(testing::AtLeast(1));
   EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(2)))
       .Times(testing::AtLeast(1));
+  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(3)))
+      .Times(testing::AtLeast(1));
+  // 0 times if history is enabled because there are entries persisted.
+  EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(0)))
+      .Times(IsAIChatHistoryEnabled() ? 0 : 1);
 
   ConversationHandler* conversation_handler1 = CreateConversation();
   conversation_handler1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
@@ -375,27 +445,38 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   ConversationHandler* conversation_handler2 = CreateConversation();
   conversation_handler2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
 
-  ExpectVisibleConversationsSize(FROM_HERE, 2u);
+  ConversationHandler* temporary_conversation = CreateConversation();
+  temporary_conversation->SetTemporary(true);
+  temporary_conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ExpectConversationsSize(FROM_HERE, 3u);
 
   // Before connecting any clients to the conversations, none should be deleted
-  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 3u);
 
   // Connect a client then disconnect
   auto client1 = CreateConversationClient(conversation_handler1);
   auto client2 = CreateConversationClient(conversation_handler2);
+  auto temp_client = CreateConversationClient(temporary_conversation);
 
   DisconnectConversationClient(client1.get());
   // Only 1 should be deleted, whether we preserve history or not (is preserved
   // in the database).
-  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
 
-  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 1u);
+  ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 3u : 2u);
 
   // Connect a client then disconnect
   DisconnectConversationClient(client2.get());
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+
+  ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 3u : 1u);
+
+  // Disconnect temporary conversation client
+  DisconnectConversationClient(temp_client.get());
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
-  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 0u);
+  ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 0u);
 
   testing::Mock::VerifyAndClearExpectations(client_.get());
   task_environment_.RunUntilIdle();
@@ -415,8 +496,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
       conversation_with_content_no_messages,
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr()));
-  // Shouldn't be visible without messages
-  ExpectVisibleConversationsSize(FROM_HERE, 0u);
+  ExpectConversationsSize(FROM_HERE, 1u);
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
   // Disconnecting the client should unload the handler and delete the
   // conversation.
@@ -424,7 +504,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
       CreateConversationClient(conversation_with_content_no_messages);
   DisconnectConversationClient(client1.get());
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
-  ExpectVisibleConversationsSize(FROM_HERE, 0u);
+  ExpectConversationsSize(FROM_HERE, 0u);
 
   // Create a new conversation for same content, with messages this time
   ConversationHandler* conversation_with_content =
@@ -432,14 +512,36 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
           associated_content.GetContentId(), associated_content.GetWeakPtr());
   conversation_with_content->SetChatHistoryForTesting(
       CreateSampleChatHistory(1u));
-  ExpectVisibleConversationsSize(FROM_HERE, 1u);
+  ExpectConversationsSize(FROM_HERE, 1u);
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
   auto client2 = CreateConversationClient(conversation_with_content);
   DisconnectConversationClient(client2.get());
   // Disconnecting all clients should keep the handler in memory until
   // the content is destroyed.
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
-  ExpectVisibleConversationsSize(FROM_HERE, 1u);
+  ExpectConversationsSize(FROM_HERE, 1u);
+
+  // Create a temporary conversation with content
+  NiceMock<MockAssociatedContent> associated_content2{};
+  ON_CALL(associated_content2, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example2.com")));
+  associated_content2.SetContentId(2);
+  ConversationHandler* temporary_conversation_with_content =
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content2.GetContentId(), associated_content2.GetWeakPtr());
+  temporary_conversation_with_content->SetTemporary(true);
+  temporary_conversation_with_content->SetChatHistoryForTesting(
+      CreateSampleChatHistory(1u));
+  ExpectConversationsSize(FROM_HERE, 2u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
+  auto temp_client =
+      CreateConversationClient(temporary_conversation_with_content);
+  DisconnectConversationClient(temp_client.get());
+  // Handler would still be in memory until the content is destroyed unless
+  // it is a temporary chat.
+  // Conversation would be unloaded when there are no live associated content.
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+  ExpectConversationsSize(FROM_HERE, 1u);
 
   // Reset the content to be empty.
   conversation_with_content->associated_content_manager()->AddContent(
@@ -447,10 +549,10 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
 
   if (IsAIChatHistoryEnabled()) {
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
-    ExpectVisibleConversationsSize(FROM_HERE, 1u);
+    ExpectConversationsSize(FROM_HERE, 1u);
   } else {
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
-    ExpectVisibleConversationsSize(FROM_HERE, 0u);
+    ExpectConversationsSize(FROM_HERE, 0u);
   }
 }
 
@@ -557,10 +659,10 @@ TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
     uuid = conversation_handler->get_conversation_uuid();
     auto client = CreateConversationClient(conversation_handler);
     conversation_handler->SetChatHistoryForTesting(CloneHistory(history));
-    ExpectVisibleConversationsSize(FROM_HERE, 1);
+    ExpectConversationsSize(FROM_HERE, 1);
     DisconnectConversationClient(client.get());
   }
-  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+  ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
 
   // Allow entries to finish being persisted before restarting service
   task_environment_.RunUntilIdle();
@@ -607,10 +709,11 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
 
   ConversationHandler* conversation_handler3 = CreateConversation();
   auto client3 = CreateConversationClient(conversation_handler3);
+  conversation_handler3->SetTemporary(true);
   conversation_handler3->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
 
   DisconnectConversationClient(client2.get());
-  ExpectVisibleConversationsSize(FROM_HERE, 3);
+  ExpectConversationsSize(FROM_HERE, 3);
 
   // Disable storage
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
@@ -618,21 +721,21 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   task_environment_.RunUntilIdle();
 
   // Conversation with no client was erased from memory
-  ExpectVisibleConversationsSize(FROM_HERE, 2);
+  ExpectConversationsSize(FROM_HERE, 2);
 
   // Disconnecting conversations should erase them fom memory
   DisconnectConversationClient(client1.get());
   DisconnectConversationClient(client3.get());
-  ExpectVisibleConversationsSize(FROM_HERE, 0);
+  ExpectConversationsSize(FROM_HERE, 0);
 
   // Restart service and verify still doesn't load from storage
   ResetService();
-  ExpectVisibleConversationsSize(FROM_HERE, 0);
+  ExpectConversationsSize(FROM_HERE, 0);
 
   // Re-enable storage preference
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
   // Conversations are no longer in persistant storage
-  ExpectVisibleConversationsSize(FROM_HERE, 0);
+  ExpectConversationsSize(FROM_HERE, 0);
 }
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
@@ -706,15 +809,21 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations) {
   auto client3 = CreateConversationClient(conversation_handler3);
   conversation_handler3->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
 
-  ExpectVisibleConversationsSize(FROM_HERE, 3);
+  // Create a temporary conversation
+  ConversationHandler* temporary_conversation = CreateConversation();
+  temporary_conversation->SetTemporary(true);
+  auto temp_client = CreateConversationClient(temporary_conversation);
+  temporary_conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ExpectConversationsSize(FROM_HERE, 4);
 
   ai_chat_service_->DeleteConversations();
 
-  ExpectVisibleConversationsSize(FROM_HERE, 0);
+  ExpectConversationsSize(FROM_HERE, 0);
 
   // Verify deleted from database
   ResetService();
-  ExpectVisibleConversationsSize(FROM_HERE, 0);
+  ExpectConversationsSize(FROM_HERE, 0);
 }
 
 TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
@@ -738,16 +847,24 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
   conversation_handler3->SetChatHistoryForTesting(
       CreateSampleChatHistory(1u, -1));
 
-  ExpectVisibleConversationsSize(FROM_HERE, 3);
+  // Create a temporary conversation 3 hours in the past
+  ConversationHandler* temporary_conversation = CreateConversation();
+  temporary_conversation->SetTemporary(true);
+  auto temp_client = CreateConversationClient(temporary_conversation);
+  temporary_conversation->SetChatHistoryForTesting(
+      CreateSampleChatHistory(1u, -3));
+
+  ExpectConversationsSize(FROM_HERE, 4);
 
   ai_chat_service_->DeleteConversations(base::Time::Now() - base::Minutes(245),
                                         base::Time::Now() - base::Minutes(110));
 
-  ExpectVisibleConversationsSize(FROM_HERE, 1);
+  // Should only keep conversation_handler3 (1 hour ago)
+  ExpectConversationsSize(FROM_HERE, 1);
 
   // Verify deleted from database
   ResetService();
-  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+  ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
 }
 
 TEST_P(AIChatServiceUnitTest, MaybeAssociateContent) {
@@ -999,7 +1116,7 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
       }));
   deletion_run_loop.Run();
 
-  ExpectVisibleConversationsSize(FROM_HERE, 3);
+  ExpectConversationsSize(FROM_HERE, 3);
 
   task_environment_.RunUntilIdle();
 
@@ -1065,6 +1182,69 @@ TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_CacheTopics) {
   TestGetSuggestedTopics(topics1);
   ai_chat_service_->TabDataChanged({});
   TestGetSuggestedTopics(topics2);
+}
+
+TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
+  // We create mock DB object regardless of whether history is enabled.
+  // In real case, there's no DB object at all if history is disabled, this
+  // test is irrelevant when there's no DB object at all.
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+
+  // Create a mock database
+  auto mock_ptr = std::make_unique<NiceMock<MockAIChatDatabase>>();
+  auto* mock_db_ptr = mock_ptr.get();
+  auto mock_db = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
+      task_environment_.GetMainThreadTaskRunner(), std::move(mock_ptr));
+
+  // Set up expectations - no database calls should be made
+  EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, AddOrUpdateAssociatedContent(_, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationTitle(_, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, UpdateConversationTokenInfo(_, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, DeleteConversationEntry(_)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, DeleteConversation(_)).Times(0);
+
+  // Replace the real database with our mock
+  ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
+
+  // Create a temporary conversation
+  ConversationHandler* conversation = CreateConversation();
+  auto client = CreateConversationClient(conversation);
+
+  conversation->SetTemporary(true);
+  auto uuid = conversation->get_conversation_uuid();
+
+  // This would trigger OnConversationEntryAdded.
+  conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  // Test title change
+  ai_chat_service_->OnConversationTitleChanged(uuid, "New Title");
+
+  // Test token info change
+  ai_chat_service_->OnConversationTokenInfoChanged(uuid, 100, 50);
+
+  // Test removing a message
+  ai_chat_service_->OnConversationEntryRemoved(conversation, "uuid");
+
+  DisconnectConversationClient(client.get());
+
+  // Verify no database calls were made
+  testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+
+  // Also do a simple sanity test with permanent conversation (test add only),
+  // just for making sure our mock is working as expected. Permanent
+  // conversation is already tested in other test cases.
+  ConversationHandler* permanent_conversation = CreateConversation();
+  auto client2 = CreateConversationClient(permanent_conversation);
+  ASSERT_FALSE(permanent_conversation->GetIsTemporary());
+  permanent_conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(1);
+  EXPECT_CALL(*mock_db_ptr, AddConversationEntry(_, _, _, _)).Times(1);
+  DisconnectConversationClient(client2.get());
+  testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
 }
 
 }  // namespace ai_chat

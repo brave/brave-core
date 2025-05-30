@@ -329,7 +329,8 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
       associated_content_manager_->GetAssociatedContent(),
-      associated_content_manager_->should_send(), current_error_);
+      associated_content_manager_->should_send(), current_error_,
+      metadata_->temporary);
 
   std::move(callback).Run(std::move(state));
 }
@@ -1577,6 +1578,15 @@ bool ConversationHandler::should_send_page_contents() const {
 
 mojom::APIError ConversationHandler::current_error() const {
   return current_error_;
+}
+
+void ConversationHandler::SetTemporary(bool temporary) {
+  // This API is limited to the start of the conversation.
+  if (metadata_->has_content) {
+    return;
+  }
+
+  metadata_->temporary = temporary;
 }
 
 }  // namespace ai_chat

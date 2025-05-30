@@ -237,7 +237,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL},
        {"goBackToActiveConversationButton",
         IDS_AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON},
-       {"conversationListUntitled", IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED}});
+       {"conversationListUntitled", IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED},
+       {"temporaryChatLabel", IDS_AI_CHAT_TEMPORARY_CHAT_LABEL},
+       {"temporaryChatInfo", IDS_AI_CHAT_TEMPORARY_CHAT_DESCRIPTION}});
 
   return kLocalizedStrings;
 }

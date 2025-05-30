@@ -146,6 +146,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void SetTemporary(bool temporary) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    RateMessageCallback callback) override;
@@ -208,6 +209,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
+
+  bool GetIsTemporary() const { return metadata_->temporary; }
 
   std::string get_conversation_uuid() const { return metadata_->uuid; }
 
