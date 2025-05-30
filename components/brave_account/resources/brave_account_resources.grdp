@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG" file="../brave_account/resources/images/full_brave_brand.svg" type="BINDATA" />
+  <include name="IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG" file="../brave_account/resources/images/full_brave_brand_dark.svg" type="BINDATA" />
+</grit-part>
