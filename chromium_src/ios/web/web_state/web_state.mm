@@ -13,8 +13,21 @@ bool WebState::InterfaceBinder::IsAllowedForOrigin(
   DCHECK(!interface_name.empty());
   if (auto it = untrusted_callbacks_.find(origin.host_piece());
       it != untrusted_callbacks_.end()) {
-    return it->second == interface_name;
+    return it->second.count(std::string(interface_name)) > 0;
   }
   return false;
+}
+
+void WebState::InterfaceBinder::RemoveUntrustedInterface(
+    const GURL& origin,
+    std::string_view interface_name) {
+  if (auto it = untrusted_callbacks_.find(origin.host_piece());
+      it != untrusted_callbacks_.end()) {
+    it->second.erase(std::string(interface_name));
+
+    if (it->second.empty()) {
+      untrusted_callbacks_.erase(it);
+    }
+  }
 }
 }  // namespace web
