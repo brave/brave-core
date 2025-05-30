@@ -39,7 +39,6 @@ source_set("brave_rewards_impl") {
     ":util",
     "//base",
     "//brave/browser/brave_wallet",
-    "//brave/browser/ui:brave_rewards_source",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",

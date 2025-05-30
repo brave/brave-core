@@ -35,12 +35,11 @@ mojom::PublisherBannerPtr GetPublisherBannerFromMessage(
   banner->description = banner_details.description();
 
   if (!banner_details.background_url().empty()) {
-    banner->background =
-        "chrome://rewards-image/" + banner_details.background_url();
+    banner->background = banner_details.background_url();
   }
 
   if (!banner_details.logo_url().empty()) {
-    banner->logo = "chrome://rewards-image/" + banner_details.logo_url();
+    banner->logo = banner_details.logo_url();
   }
 
   if (banner_details.has_social_links()) {
