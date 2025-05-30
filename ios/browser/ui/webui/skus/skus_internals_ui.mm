@@ -21,6 +21,7 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
+#include "brave/ios/browser/ui/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -38,21 +39,6 @@
 #include "ui/base/webui/web_ui_util.h"
 
 namespace {
-
-web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
-    web::WebUIIOS* web_ui,
-    const std::string& name,
-    base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id) {
-  web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
-  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
-  source->UseStringsJs();
-
-  // Add required resources.
-  source->AddResourcePaths(resource_paths);
-  source->SetDefaultResource(html_resource_id);
-  return source;
-}
 
 UIViewController* GetParentControllerFromView(UIView* view) {
   UIResponder* nextResponder = [view nextResponder];
@@ -79,8 +65,8 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()),
       local_state_(GetApplicationContext()->GetLocalState()) {
   // Set up the brave://skus-internals/ source.
-  CreateAndAddWebUIDataSource(web_ui, url.host(), kSkusInternalsGenerated,
-                              IDR_SKUS_INTERNALS_HTML);
+  brave::CreateAndAddWebUIDataSource(
+      web_ui, url.host(), kSkusInternalsGenerated, IDR_SKUS_INTERNALS_HTML);
 
   ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
   skus_service_getter_ = base::BindRepeating(
