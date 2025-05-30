@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import SwiftUI
 import WebKit
 
@@ -116,6 +117,12 @@ private struct CompileContentBlockersSectionView: View {
         self.selectionId = selection.filterListInfo.source.debugDescription
       }
     }
+
+    Section {
+      Button(action: corruptAdblockDATCache) {
+        Text("Corrupt Adblock Engine DAT Cache")
+      }
+    }
   }
 
   @MainActor private func stopCompiling() {
@@ -181,5 +188,51 @@ private struct CompileContentBlockersSectionView: View {
         where: { $0.setting.uuid == uuid }
       )?.setting.externalURL.lastPathComponent ?? uuid
     }
+  }
+
+  private func corruptAdblockDATCache() {
+    Task {
+      guard
+        let folderURL = try? AsyncFileManager.default.url(
+          for: .cachesDirectory,
+          in: .userDomainMask
+        )
+      else {
+        return
+      }
+
+      let standardCacheFolderURL =
+        folderURL
+        .appendingPathComponent("engines", conformingTo: .folder)
+        .appendingPathComponent("standard", conformingTo: .folder)
+      if await corruptListDATFile(in: standardCacheFolderURL) {
+
+      }
+
+      let aggressiveCacheFolderURL =
+        folderURL
+        .appendingPathComponent("engines", conformingTo: .folder)
+        .appendingPathComponent("aggressive", conformingTo: .folder)
+      if await corruptListDATFile(in: aggressiveCacheFolderURL) {
+
+      }
+    }
+  }
+
+  private func corruptListDATFile(in directory: URL) async -> Bool {
+    guard await AsyncFileManager.default.fileExists(atPath: directory.path) else {
+      return false
+    }
+    let cachedDATFile = directory.appendingPathComponent("list.dat", conformingTo: .data)
+    guard await AsyncFileManager.default.fileExists(atPath: cachedDATFile.path) else {
+      // if file doesn't exist, we can't corrupt it.
+      return false
+    }
+    // remove the cached DAT file
+    try? await AsyncFileManager.default.removeItem(atPath: cachedDATFile.path)
+    // 'corrupt' by replacing with empty file
+    await AsyncFileManager.default.createFile(atPath: cachedDATFile.path, contents: Data())
+
+    return true
   }
 }
