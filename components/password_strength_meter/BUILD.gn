@@ -12,8 +12,8 @@ source_set("password_strength_meter") {
   ]
 
   deps = [
+    "//brave/components/password_manager/core/browser/ui",
     "//brave/components/password_strength_meter:mojom",
-    "//components/password_manager/core/browser/ui",
     "//mojo/public/cpp/bindings",
   ]
 }
