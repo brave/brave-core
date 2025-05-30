@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
-import { EmailAliasModal, EditState, DeleteAliasModal }
+import { EmailAliasModal, EditState, DeleteAliasModal, EditMode }
   from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
@@ -38,10 +38,17 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
 describe('EmailAliasModal', () => {
   const mockOnReturnToMain = jest.fn()
   const mockEmail = 'test@brave.com'
+  const mockAlias: Alias = {
+    email: 'existing@brave.com',
+    note: 'Existing Alias',
+    domains: ['brave.com']
+  }
 
   beforeEach(() => {
     jest.clearAllMocks()
     mockEmailAliasesService.updateAlias = jest.fn().mockResolvedValue(
+      Promise.resolve({ errorMessage: null }))
+    mockEmailAliasesService.deleteAlias = jest.fn().mockResolvedValue(
       Promise.resolve({ errorMessage: null }))
     mockEmailAliasesService.generateAlias = jest.fn()
       .mockResolvedValue({
@@ -394,5 +401,31 @@ describe('EmailAliasModal', () => {
       })
     })
   }
+
+  it('shows error message when deleting alias fails', async () => {
+    mockEmailAliasesService.deleteAlias = jest.fn().mockImplementation(
+      () => Promise.resolve({ errorMessage: 'emailAliasesDeleteAliasError' }))
+
+    render(
+      <DeleteAliasModal
+        onReturnToMain={mockOnReturnToMain}
+        alias={mockAlias}
+        emailAliasesService={mockEmailAliasesService}
+      />
+    )
+
+    // Click delete button
+    await act(async () => {
+      const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
+      clickLeoButton(deleteButton)
+    })
+
+    // Wait for error message to appear. Delete button should be enabled.
+    await waitFor(() => {
+      expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalled()
+      expect(screen.getByText('emailAliasesDeleteAliasError'))
+        .toBeInTheDocument()
+    })
+  })
 
 })
