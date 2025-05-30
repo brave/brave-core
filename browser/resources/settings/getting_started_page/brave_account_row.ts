@@ -5,16 +5,12 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl
+} from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
-
-export enum Dialog {
-  NONE,
-  CREATE,
-  ENTRY,
-  FORGOT_PASSWORD,
-  SIGN_IN
-}
 
 export class SettingsBraveAccountRow extends CrLitElement {
   static get is() {
@@ -31,26 +27,16 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: Dialog },
       signedIn: { type: Boolean, reflect: true },
     }
   }
 
-  protected onBackButtonClicked() {
-    switch (this.dialog) {
-      case Dialog.CREATE:
-        this.dialog = Dialog.ENTRY
-        break
-      case Dialog.FORGOT_PASSWORD:
-        this.dialog = Dialog.SIGN_IN
-        break
-      case Dialog.SIGN_IN:
-        this.dialog = Dialog.ENTRY
-        break
-    }
+  protected onButtonClicked() {
+    this.browserProxy.handler.openDialog()
   }
 
-  protected accessor dialog: Dialog = Dialog.NONE
+  private browserProxy: BraveAccountBrowserProxy =
+    BraveAccountBrowserProxyImpl.getInstance()
   protected accessor signedIn: boolean = false
 }
 
