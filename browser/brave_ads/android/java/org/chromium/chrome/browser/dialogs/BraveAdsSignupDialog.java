@@ -13,7 +13,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,11 +22,13 @@ import org.jni_zero.CalledByNative;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.util.PackageUtils;
 
@@ -174,31 +175,27 @@ public class BraveAdsSignupDialog {
     }
 
     private static boolean shouldShowForViewCount() {
-        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+        int viewCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, 0);
 
-        int viewCount = sharedPref.getInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, 0);
         return 0 == viewCount || 20 == viewCount || 40 == viewCount;
     }
 
     private static void updateViewCount() {
-        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, sharedPref.getInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, 0) + 1);
-        editor.apply();
+        SharedPreferencesManager sharedPreferencesManager = ChromeSharedPreferences.getInstance();
+        sharedPreferencesManager.writeInt(
+                SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER,
+                sharedPreferencesManager.readInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, 0)
+                        + 1);
     }
 
     private static void neverShowOnboardingDialogAgain() {
-        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putBoolean(SHOULD_SHOW_ONBOARDING_DIALOG, false);
-        editor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(SHOULD_SHOW_ONBOARDING_DIALOG, false);
     }
 
     private static boolean shouldShowOnboardingDialog() {
-        SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-
-        return sharedPref.getBoolean(SHOULD_SHOW_ONBOARDING_DIALOG, true);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(SHOULD_SHOW_ONBOARDING_DIALOG, true);
     }
 }

@@ -1,14 +1,11 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.RemoteException;
 
@@ -25,6 +22,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,8 +68,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
 
         @Override
         public void run() {
-            SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-            if (sharedPref.getBoolean(BRAVE_REFERRER_RECEIVED, false)
+            if (ChromeSharedPreferences.getInstance().readBoolean(BRAVE_REFERRER_RECEIVED, false)
                     || !PackageUtils.isFirstInstall(mContext)) {
                 onReferrerReady();
                 return;
@@ -160,10 +157,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     }
                     mReferrerClient.endConnection();
                     // Set flag to not repeat this procedure
-                    SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putBoolean(BRAVE_REFERRER_RECEIVED, true);
-                    editor.apply();
+                    ChromeSharedPreferences.getInstance()
+                            .writeBoolean(BRAVE_REFERRER_RECEIVED, true);
                 } catch (RemoteException e) {
                     Log.e(TAG, "Could not get referral: " + e.getMessage());
                 }

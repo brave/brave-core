@@ -5,17 +5,15 @@
 
 package org.chromium.chrome.browser.shields;
 
-import android.content.SharedPreferences;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
@@ -54,15 +52,11 @@ public class BraveShieldsUtils {
     }
 
     public static boolean hasShieldsTooltipShown(String tooltipType) {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        return mSharedPreferences.getBoolean(tooltipType, false);
+        return ChromeSharedPreferences.getInstance().readBoolean(tooltipType, false);
     }
 
     public static void setShieldsTooltipShown(String tooltipType, boolean isShown) {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(tooltipType, isShown);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeBoolean(tooltipType, isShown);
     }
 
     public static class BraveShieldsWorkerTask extends AsyncTask<Void> {

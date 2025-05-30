@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -123,21 +122,12 @@ public class BraveStatsPreferences extends BravePreferenceFragment
 
     public static void setOnPreferenceValue(String preferenceName, boolean newValue) {
         if (PREF_BRAVE_STATS.equals(preferenceName)) {
-            OnboardingPrefManager.getInstance().setBraveStatsEnabled((boolean)newValue);
+            OnboardingPrefManager.getInstance().setBraveStatsEnabled((boolean) newValue);
         } else if (PREF_BRAVE_STATS_NOTIFICATION.equals(preferenceName)) {
-            OnboardingPrefManager.getInstance().setBraveStatsNotificationEnabled((boolean)newValue);
+            OnboardingPrefManager.getInstance()
+                    .setBraveStatsNotificationEnabled((boolean) newValue);
         } else {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(preferenceName, newValue);
-            sharedPreferencesEditor.apply();
+            assert false : "Unexpected preferenceName " + preferenceName;
         }
-    }
-
-    public static void setOnPreferenceValue(String preferenceName, int newValue) {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putInt(preferenceName, newValue);
-        sharedPreferencesEditor.apply();
     }
 }
