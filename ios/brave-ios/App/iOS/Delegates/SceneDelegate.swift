@@ -142,6 +142,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       container.isNavigationBarHidden = true
       container.edgesForExtendedLayout = []
       window.rootViewController = container
+      window.backgroundColor = .black
 
       self.windowProtection = WindowProtection(windowScene: windowScene)
       browserViewController.windowProtection = windowProtection
