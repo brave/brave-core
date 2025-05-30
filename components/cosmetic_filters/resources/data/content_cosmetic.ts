@@ -760,32 +760,33 @@ const executeProceduralActions = (added?: Element[]) => {
     }
   }
   for (const { selector, action } of CC.proceduralActionFilters) {
-    let matchingElements: Element[] | NodeListOf<any>;
-    let startOperator: number;
+    try {
+      let matchingElements: Element[] | NodeListOf<any>;
+      let startOperator: number;
 
-    if (selector[0].type === 'css-selector' && added === undefined) {
-      matchingElements = document.querySelectorAll(selector[0].arg);
-      startOperator = 1;
-    } else if (added === undefined) {
-      matchingElements = document.querySelectorAll('*');
-      startOperator = 0;
-    } else {
-      matchingElements = added;
-      startOperator = 0;
-    }
+      if (selector[0].type === 'css-selector' && added === undefined) {
+        matchingElements = document.querySelectorAll(selector[0].arg);
+        startOperator = 1;
+      } else if (added === undefined) {
+        matchingElements = document.querySelectorAll('*');
+        startOperator = 0;
+      } else {
+        matchingElements = added;
+        startOperator = 0;
+      }
 
-    if (startOperator === selector.length) {
-      // First `css-selector` was already handled, and no more elements remain
-      matchingElements.forEach(elem => performAction(elem, action))
-    } else {
-      try {
+      if (startOperator === selector.length) {
+        // First `css-selector` was already handled, and no more elements remain
+        matchingElements.forEach(elem => performAction(elem, action))
+      } else {
         const filter = compileProceduralSelector(selector.slice(startOperator));
         applyCompiledSelector(filter, matchingElements as HTMLElement[]).forEach(elem => performAction(elem, action))
-      } catch (e) {
-        console.error('Failed to apply filter ' + JSON.stringify(selector) + ' ' + JSON.stringify(action) + ': ');
-        console.error(e.message);
-        console.error(e.stack);
       }
+    } catch (e) {
+      console.error('Failed to apply filter ' + JSON.stringify(selector)
+        + ' ' + JSON.stringify(action) + ': ');
+      console.error(e.message);
+      console.error(e.stack);
     }
   }
 };

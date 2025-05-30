@@ -1213,36 +1213,37 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
       }
     }
     for (const { selector, action } of CC.proceduralActionFilters) {
-      let matchingElements = [];
-      let startOperator = 0;
+      try {
+        let matchingElements = [];
+        let startOperator = 0;
 
-      if (selector[0].type === 'css-selector' && added === undefined) {
-        matchingElements = document.querySelectorAll(selector[0].arg);
-        startOperator = 1;
-      } else if (added === undefined) {
-        matchingElements = document.querySelectorAll('*');
-      } else {
-        matchingElements = added;
-      }
+        if (selector[0].type === 'css-selector' && added === undefined) {
+          matchingElements = document.querySelectorAll(selector[0].arg);
+          startOperator = 1;
+        } else if (added === undefined) {
+          matchingElements = document.querySelectorAll('*');
+        } else {
+          matchingElements = added;
+        }
 
-      if (startOperator === selector.length) {
-        // First `css-selector` was already handled, and no more elements remain
-        matchingElements.forEach(elem => {
-          performAction(elem, action);
-        });
-      } else {
-        try {
+        if (startOperator === selector.length) {
+          // First `css-selector` was already handled, and no more elements
+          // remain
+          matchingElements.forEach(elem => {
+            performAction(elem, action);
+          });
+        } else {
           const filter = compileProceduralSelector(
             selector.slice(startOperator));
           applyCompiledSelector(filter, matchingElements).forEach(elem => {
             performAction(elem, action);
           });
-        } catch (e) {
-          console.error('Failed to apply filter ' + JSON.stringify(selector)
-            + ' ' + JSON.stringify(action) + ': ');
-          console.error(e.message);
-          console.error(e.stack);
         }
+      } catch (e) {
+        console.error('Failed to apply filter ' + JSON.stringify(selector)
+          + ' ' + JSON.stringify(action) + ': ');
+        console.error(e.message);
+        console.error(e.stack);
       }
     }
     // update stylesheet for procedural actions
