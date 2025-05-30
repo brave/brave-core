@@ -16,9 +16,7 @@
 namespace extensions {
 
   bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
-    const char* const kAllowed[] = {
-      brave_extension_id
-    };
+    const char* const kAllowed[] = {brave_extension_id};
 
     for (const auto* id : kAllowed) {
       if (extension_id == id) {
